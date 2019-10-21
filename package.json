@@ -1,5 +1,26 @@
 {
-  "name": "rails-template",
+  "name": "beis-report-overseas-development-assistance",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "govuk-frontend": "^3.3.0"
+  },
+  "description": "## Getting started",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UKGovernmentBEIS/beis-report-overseas-development-assistance.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UKGovernmentBEIS/beis-report-overseas-development-assistance/issues"
+  },
+  "homepage": "https://github.com/UKGovernmentBEIS/beis-report-overseas-development-assistance#readme"
 }
