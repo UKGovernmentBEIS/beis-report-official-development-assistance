@@ -1,15 +1,33 @@
 !!!
-%html
+/[if lt IE 9] <html class="lte-ie8" lang="en">
+/[if gt IE 8]><!
+%html.govuk-template.app-html-class{lang: "en"}
+  /<![endif]
   %head
-    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
-    %title= content_for?(:title) ? yield(:title) : 'Rails Template'
-    %meta{:name => "description", :content => "#{content_for?(:description) ? yield(:description) : 'Rails Template'}"}
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => 'reload'
-    = javascript_include_tag 'application', 'data-turbolinks-track' => 'reload'
+    %meta{charset: "utf-8"}/
+    %title #{content_for :page_title_prefix} — #{t('app.title')}
+    %meta{content: "width=device-width, initial-scale=1", name: "viewport"}/
+    %meta{content: "blue", name: "theme-color"}/
+    %link{href: asset_path("favicon.ico"), rel: "shortcut icon", type: "image/x-icon"}/
+
+    /[if !IE 8]
+    = stylesheet_link_tag 'application', media: 'all'
+    /[if lt IE 9]
+    = javascript_include_tag 'application'
     = csrf_meta_tags
-  %body
+  %body{class: 'govuk-template__body app-body-class'}
+    %a.govuk-skip-link{href: "#main-content"} Skip to main content
     %header
       = render 'layouts/navigation'
-    %main{:role => "main"}
-      = render 'layouts/messages'
-      = yield
+
+    .govuk-width-container
+      .govuk-phase-banner
+        %p.govuk-phase-banner__content
+          %strong.govuk-tag.govuk-phase-banner__content__tag
+            beta
+          %span.govuk-phase-banner__text
+            This is a new service
+
+      %main#main-content.govuk-main-wrapper.app-main-class{role: "main"}
+        = render 'layouts/messages'
+        = yield

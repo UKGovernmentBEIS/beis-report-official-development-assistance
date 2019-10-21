@@ -12,6 +12,13 @@ This service enables the Department for Business, Energy and Industrial Strategy
   ```bash
   bundle exec rake db:setup
   ```
+
+1. get the required GOVUK assets with NPM
+
+  ```bash
+  npm install
+  ```
+
 1. start the server
 
   ```bash
