@@ -1,28 +1,43 @@
-# Using this template
+# Report Overseas Development Assistance (RODA)
 
-Search for `TODO` across the project to customise the template to a project
-
-TODO: Remove this section from the README once complete
-
----
-
-# Rails Template
-
-TODO: replace README header with project name
-
-TODO: Add a summary of who the application is for and what it will do.
+This service enables the Department for Business, Energy and Industrial Strategy (BEIS) and their delivery partners to collect and report information on the spending of Overseas Development Assistance (ODA).
 
 ## Getting started
 
 1. copy `/.env.example` into `/.env.development.local`.
 
   Our intention is that the example should include enough to get the application started quickly. If this is not the case, please ask another developer for a copy of their `/.env.development.local` file.
+1. set up the local database
 
-TODO: Add getting started steps
+  ```bash
+  bundle exec rake db:setup
+  ```
+1. start the server
+
+  ```bash
+  bundle exec rails server
+  ```
 
 ## Running the tests
 
-TODO: Add testing instructions
+To run all the tests, and linters we use `rake`:
+
+```
+bundle exec rake
+```
+
+Under the hood this is using RSpec so normal commands can be used:
+
+```
+bundle exec rspec spec
+```
+
+### Initial set up
+
+```
+createuser --super test
+RAILS_ENV=test rake db:setup
+```
 
 ## Architecture decision records
 
