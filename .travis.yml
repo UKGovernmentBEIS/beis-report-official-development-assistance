@@ -1,0 +1,26 @@
+language: ruby
+cache:
+  bundler: true
+  npm: true
+rvm:
+  - 2.6.3
+
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database roda_test;' -U postgres
+  - npm install
+
+jobs:
+  include:
+    - stage: "Build"
+      name: "Setup the test database"
+      env:
+        - RAILS_ENV=test
+      script: bundle exec rake db:setup
+    - stage: "Test"
+      name: "Run the tests"
+      env:
+        - RAILS_ENV=test
+      script: bundle exec rake
