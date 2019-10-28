@@ -26,7 +26,9 @@ Rails.application.configure do
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
-  # config.assets.css_compressor = :sass
+  # Set a css_compressor so sassc-rails does not overwrite the compressor
+  # See https://github.com/DFE-Digital/dfe-teachers-payment-service/commit/74ec587cfbe9aa6d0df01a72e99d70ffe9024748
+  config.assets.css_compressor = nil
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
