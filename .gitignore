@@ -94,3 +94,5 @@ config/master.key
 
 # node_modules
 /node_modules
+
+docker-compose.env
