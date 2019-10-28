@@ -49,7 +49,7 @@ RUN \
 
 COPY . $INSTALL_PATH
 
-RUN RAILS_ENV=$RAILS_ENV SECRET_KEY_BASE="super secret" bundle exec rake assets:precompile --trace
+RUN RAILS_ENV=$RAILS_ENV SECRET_KEY_BASE="super secret" bundle exec rake assets:precompile --quiet
 
 # db setup
 COPY ./docker-entrypoint.sh /
