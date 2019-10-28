@@ -1,0 +1,33 @@
+version: '3.1'
+services:
+  web:
+    build:
+      context: .
+      args:
+        RAILS_ENV: "development"
+    image: local/beis_roda
+    ports: ["3000:3000"]
+    container_name: beis-roda_dev_web_1
+    environment:
+      RAILS_ENV: "development"
+    env_file:
+      - docker-compose.env
+    depends_on:
+      - db
+    tty: true
+    stdin_open: true
+    restart: on-failure
+    volumes:
+      - .:/srv/beis-roda:cached
+      - node_modules:/srv/beis-roda/node_modules
+
+  db:
+    image: postgres
+    container_name: beis-roda_dev_db_1
+    volumes:
+      - pg_data:/var/lib/postgresql/data/:cached
+    restart: on-failure
+
+volumes:
+  pg_data: {}
+  node_modules:

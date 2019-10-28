@@ -46,6 +46,24 @@ createuser --super test
 RAILS_ENV=test rake db:setup
 ```
 
+## Running with Docker
+
+The application can also be run with Docker. 
+
+### Prerequisites
+
+- [Docker](https://docs.docker.com/docker-for-mac)
+
+Once you have installed Docker, set up your `.env` file:
+ 
+`cp docker-compose.env.example docker-compose.env`
+
+Run the application:
+
+```bash
+  docker-compose up
+```
+
 ## Architecture decision records
 
 We use ADRs to document architectural decisions that we make. They can be found in doc/architecture/decisions and contributed to with the [adr-tools](https://github.com/npryce/adr-tools).
