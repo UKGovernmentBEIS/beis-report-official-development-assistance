@@ -3,28 +3,32 @@ cache:
   bundler: true
   npm: true
 rvm:
-  - 2.6.3
-
+- 2.6.3
 services:
-  - postgresql
-
+- postgresql
 before_install:
-  - gem update --system
-  - gem install bundler
-
+- gem update --system
+- gem install bundler
 before_script:
-  - psql -c 'create database roda_test;' -U postgres
-  - npm install
-
+- psql -c 'create database roda_test;' -U postgres
+- npm install
 jobs:
   include:
-    - stage: "Build"
-      name: "Setup the test database"
-      env:
-        - RAILS_ENV=test
-      script: bundle exec rake db:setup
-    - stage: "Test"
-      name: "Run the tests"
-      env:
-        - RAILS_ENV=test
-      script: bundle exec rake
+  - stage: Build
+    name: Setup the test database
+    env:
+    - RAILS_ENV=test
+    script: bundle exec rake db:setup
+  - stage: Test
+    name: Run the tests
+    env:
+    - RAILS_ENV=test
+    script: bundle exec rake
+deploy:
+  provider: heroku
+  api_key:
+    secure: j0Mnb7CfzDofSJeLm16a955cVYicGzzubBU9FX2TyP38RVE2+VKnN9hW8ZhN5b7isB3erRgzqms828Dyg/96USuToRQqYLH8Nc7kDmBEha84GJYNetSLNIFo8Omg+CXtMUH7CeQpL7+lVEVyK4tM3N8NZr85YQ1upXDavB0yFtzf4PiGdJEIB4BORePeCIwt5ti4oabe2JUSE5o5sozuZoJevtBIoHVzw8wD/5YuYUQmyoqrOrIJlV6oMEivFad8JDyAXmGDW3s17rY8q/DayvaSpu+XdhL1pCtNg6SThjCGG5ExxHrIzFdDRiS/pqhEThWe6oeAwL0cpgsna7/mMW9aH4AuHi4jD9rFoWnaAQ/Ik8UCOI2w6+ciZYjsSiFtV+F2E1/fhYCpk/+KEkVKMyi2nmPHC8cx5HPVao90GHBNtSUZgI6iRBDJWqWGZJBOhW9u8jtINo+G5RBy+4QHOuuGCCuPMkHOgsxMcJJ3Or1QLj1Mttm+PTcLf8Bh8LG9Me/dGObosWpXJI+3MLz8DWZw2jk3jgYmb6c0Ayfup34vjbanw+QVNbdWszVo9EGknBjP4iMOjGWScUT7EbQwo4+fL5uE8Zo3u9FAHtUKxdSt+A6fxFrYpcqTs/KMH8BwVgFFqktKhCL8yqri0BHoo0ZErETeDZ2QAd7WVe6PlFo=
+  on:
+    branch: develop
+  app: beis-oda-staging
+
