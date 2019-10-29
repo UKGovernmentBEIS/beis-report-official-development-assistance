@@ -2,6 +2,9 @@
 
 Rails.application.routes.draw do
   get "health_check" => "application#health_check"
+
+  resource :dashboard, only: :show
+
   root to: "visitors#index"
 
   # Authentication
