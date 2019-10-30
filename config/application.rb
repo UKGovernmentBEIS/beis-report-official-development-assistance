@@ -19,6 +19,9 @@ module RailsTemplate
         controller_specs: false,
         request_specs: false
       g.fixture_replacement :factory_bot, dir: "spec/factories"
+
+      # Use UUIDs as primary keys by default
+      g.orm :active_record, primary_key_type: :uuid
     end
 
     # Initialize configuration defaults for originally generated Rails version.
