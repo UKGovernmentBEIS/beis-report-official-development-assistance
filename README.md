@@ -81,7 +81,15 @@ To manage sensitive environment variables:
 
 ## Access
 
-TODO: Where can people find the service and the different environments?
+### Staging
+
+The app is currently hosted on Heroku: [https://beis-roda-staging.herokuapp.com/]()
+
+The `develop` branch is deployed to staging after a successful build via Travis CI.
+
+### Production
+
+TBC
 
 ## Source
 
