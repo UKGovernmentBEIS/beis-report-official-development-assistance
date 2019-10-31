@@ -48,14 +48,14 @@ RAILS_ENV=test rake db:setup
 
 ## Running with Docker
 
-The application can also be run with Docker. 
+The application can also be run with Docker.
 
 ### Prerequisites
 
 - [Docker](https://docs.docker.com/docker-for-mac)
 
 Once you have installed Docker, set up your `.env` file:
- 
+
 `cp docker-compose.env.example docker-compose.env`
 
 Run the application:
