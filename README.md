@@ -48,14 +48,14 @@ RAILS_ENV=test rake db:setup
 
 ## Running with Docker
 
-The application can also be run with Docker. 
+The application can also be run with Docker.
 
 ### Prerequisites
 
 - [Docker](https://docs.docker.com/docker-for-mac)
 
 Once you have installed Docker, set up your `.env` file:
- 
+
 `cp docker-compose.env.example docker-compose.env`
 
 Run the application:
@@ -83,7 +83,7 @@ To manage sensitive environment variables:
 
 ### Staging
 
-The app is currently hosted on Heroku: [https://beis-roda-staging.herokuapp.com/]()
+The app is currently hosted on Heroku: [https://beis-roda-staging.herokuapp.com/](https://beis-roda-staging.herokuapp.com/)
 
 The `develop` branch is deployed to staging after a successful build via Travis CI.
 
