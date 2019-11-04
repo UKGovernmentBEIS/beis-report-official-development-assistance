@@ -4,6 +4,7 @@
 %html.govuk-template.app-html-class{lang: "en"}
   /<![endif]
   %head
+    = render partial: 'shared/google_tag_manager_head'
     %meta{charset: "utf-8"}/
     %title #{content_for :page_title_prefix} — #{t('app.title')}
     %meta{content: "width=device-width, initial-scale=1", name: "viewport"}/
@@ -16,6 +17,7 @@
     = javascript_include_tag 'application'
     = csrf_meta_tags
   %body{class: 'govuk-template__body app-body-class'}
+    = render partial: 'shared/google_tag_manager_body'
     %a.govuk-skip-link{href: "#main-content"} Skip to main content
     %header.govuk-header{"data-module": "govuk-header", role: "banner"}
       .govuk-header__container.govuk-width-container
