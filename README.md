@@ -79,6 +79,22 @@ To manage sensitive environment variables:
 1. Add the new key and safe default value to the `/.env.example` file eg. `ROLLBAR_TOKEN=ROLLBAR_TOKEN`
 2. Add the new key and real value to your local `/.env.development.local` file, which should never be checked into Git. This file will look something like `ROLLBAR_TOKEN=123456789`
 
+## Release process
+
+Releases are documented in the [CHANGELOG](CHANGELOG.md) following the [Keep a changelog](https://keepachangelog.com/en/1.0.0/) format.
+
+When a new release is deployed to production (process TBC), a new second-level heading should be created in CHANGELOG.md with the release number and details of what has changed in this release.
+
+The heading should link to a Github URL at the bottom of the file, which shows the differences between the current release and the previous one. For example:
+
+```
+## [release-1]
+- A change
+- Another change
+
+[release-1]: https://github.com/UKGovernmentBEIS/beis-report-overseas-development-assistance/compare/release-0...release-1
+```
+
 ## Access
 
 ### Staging
