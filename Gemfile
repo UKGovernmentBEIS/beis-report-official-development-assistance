@@ -21,6 +21,10 @@ gem "turbolinks", "~> 5"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "uglifier", ">= 1.3.0"
 
+# Authentication
+gem "omniauth-auth0", "~> 2.2"
+gem "omniauth-rails_csrf_protection", "~> 0.1"
+
 group :development do
   gem "listen", ">= 3.0.5", "< 3.3"
   gem "spring"
@@ -32,6 +36,7 @@ group :test do
   gem "capybara", ">= 2.15"
   gem "chromedriver-helper"
   gem "selenium-webdriver"
+  gem "webmock", "~> 3.5"
 end
 
 group :development do
