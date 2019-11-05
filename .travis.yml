@@ -12,6 +12,10 @@ before_install:
 before_script:
 - psql -c 'create database roda_test;' -U postgres
 - npm install
+branches:
+  only:
+  - develop
+  - master
 jobs:
   include:
   - stage: Build
