@@ -1,0 +1,15 @@
+=content_for :page_title_prefix, t("page_title.dashboard")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.dashboard")
+
+      %p.govuk-body
+        %strong
+          = t(".welcome", name: current_user.name)
+
+      %p.govuk-body
+        %a{ href: sign_out_path }
+          = t("generic.link.sign_out")
