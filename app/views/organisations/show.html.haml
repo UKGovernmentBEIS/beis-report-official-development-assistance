@@ -1,0 +1,27 @@
+=content_for :page_title_prefix, t("page_title.organisation", name: @organisation.name)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = @organisation.name
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %dl
+        %dt
+          = t("organisation.name")
+        %dd
+          = @organisation.name
+        %dt
+          = t("organisation.type")
+        %dd
+          = @organisation.organisation_type
+        %dt
+          = t("organisation.language_code")
+        %dd
+          = @organisation.language_code
+        %dt
+          = t("organisation.default_currency")
+        %dd
+          = @organisation.default_currency

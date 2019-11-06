@@ -8,7 +8,16 @@ en:
     link:
       sign_out: "Sign out"
       start_now: "Start now"
+  organisations:
+    title: "Organisations"
+  organisation:
+    name: "Name"
+    type: "Type"
+    language_code: "Language code"
+    default_currency: "Default currency"
   page_title:
     home: "Home"
     welcome: "Report Overseas Development Assistance"
     dashboard: "Dashboard"
+    organisations: "Organisations"
+    organisation: "Organisation %{name}"
