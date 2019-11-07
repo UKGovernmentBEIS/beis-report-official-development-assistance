@@ -6,8 +6,10 @@
       %h1.govuk-heading-xl
         = t("organisations.title")
 
-        - if @organisations
-          %ul
-            - @organisations.each do |organisation|
-              %li
-                = link_to organisation.name, organisation_path(organisation.id)
+      = link_to(I18n.t("organisations.create_new"), new_organisation_path, class: "govuk-button")
+
+      - if @organisations
+        %ul
+          - @organisations.each do |organisation|
+            %li
+              = link_to organisation.name, organisation_path(organisation.id)
