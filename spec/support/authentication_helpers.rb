@@ -9,4 +9,9 @@ module AuthenticationHelpers
       }
     )
   end
+
+  def log_in
+    visit dashboard_path
+    click_on "Start now"
+  end
 end
