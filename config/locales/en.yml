@@ -1,9 +1,10 @@
 en:
   app:
     title: "BEIS - Report Overseas Development Assistance"
-  dashboards:
-    show:
-      welcome: "Welcome back, %{name}"
+  users:
+    dashboards:
+      show:
+        welcome: "Welcome back, %{name}"
   generic:
     link:
       sign_out: "Sign out"
