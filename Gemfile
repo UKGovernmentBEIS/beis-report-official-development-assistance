@@ -46,7 +46,6 @@ group :development do
   gem "html2haml"
   gem "rails_layout"
   gem "spring-commands-rspec"
-  gem "pry"
 end
 
 group :development, :test do
@@ -57,6 +56,7 @@ group :development, :test do
   gem "faker"
   gem "rspec-rails"
   gem "standard"
+  gem "pry"
 end
 
 group :test do
