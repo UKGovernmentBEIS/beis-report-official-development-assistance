@@ -1,0 +1,14 @@
+%table.govuk-table.users
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header
+        Name
+      %th.govuk-table__header
+        Email address
+      %th.govuk-table__header
+
+  %tbody.govuk-table__body
+    - users.each do |user|
+      %tr.govuk-table__row
+        %td.govuk-table__cell= user.name
+        %td.govuk-table__cell= user.email

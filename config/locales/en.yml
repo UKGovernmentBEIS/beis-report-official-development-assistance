@@ -21,9 +21,13 @@ en:
         label: Organisation type
       submit: Submit
     user:
+      create:
+        success: User successfully created
+      submit: Submit
   generic:
     link:
       back: Back
+      show: Show
       sign_out: Sign out
       start_now: Start now
   organisation:
@@ -46,7 +50,7 @@ en:
         create: Create organisation
     users:
       button:
-        create_user: Create user
+        create: Create user
   page_title:
     dashboard: Dashboard
     home: Home
