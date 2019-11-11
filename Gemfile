@@ -38,6 +38,7 @@ group :test do
   gem "capybara", ">= 2.15"
   gem "chromedriver-helper"
   gem "selenium-webdriver"
+  gem "rack_session_access"
   gem "webmock", "~> 3.5"
 end
 
