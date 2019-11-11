@@ -8,7 +8,8 @@ class OrganisationsController < ApplicationController
   end
 
   def show
-    @organisation = Organisation.find(params[:id])
+    organisation = Organisation.find(params[:id])
+    @organisation_presenter = OrganisationPresenter.new(organisation)
   end
 
   def new
