@@ -31,5 +31,14 @@ module RailsTemplate
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # Add IATI locales (:en is the default locale)
+    config.i18n.load_path += Dir[Rails.root.join("config", "locales", "codelists", "**", "*.{rb,yml}")]
+    config.i18n.default_locale = :en
+    config.i18n.enforce_available_locales = false
+
+    config.i18n.locale = :iati
+
+    config.i18n.fallbacks = [:en]
   end
 end

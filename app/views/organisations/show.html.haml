@@ -18,12 +18,12 @@
         %dt
           = t("organisation.type")
         %dd
-          = @organisation.organisation_type
+          = t("organisation.organisation_type.#{@organisation.organisation_type}")
         %dt
           = t("organisation.language_code")
         %dd
-          = @organisation.language_code
+          = t("organisation.language_code.#{@organisation.language_code.downcase}")
         %dt
           = t("organisation.default_currency")
         %dd
-          = @organisation.default_currency
+          = t("organisation.default_currency.#{@organisation.default_currency.downcase}")
