@@ -1,4 +1,4 @@
-# 2. Use a changelog for tracking changes in a release
+# 7. Use a changelog for tracking changes in a release
 
 Date: 2019-11-04
 
