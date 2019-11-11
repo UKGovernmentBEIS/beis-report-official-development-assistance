@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.feature "Users can sign in with Auth0" do
   scenario "successful sign in" do
