@@ -21,9 +21,9 @@ RSpec.feature "Users can view organisations" do
       click_link organisation.name
 
       expect(page).to have_content(organisation.name)
-      expect(page).to have_content(organisation.organisation_type)
-      expect(page).to have_content(organisation.language_code)
-      expect(page).to have_content(organisation.default_currency)
+      expect(page).to have_content("Government")
+      expect(page).to have_content("English")
+      expect(page).to have_content("Pound Sterling")
     end
   end
 
