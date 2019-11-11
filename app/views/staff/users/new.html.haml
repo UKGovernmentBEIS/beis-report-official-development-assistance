@@ -1,0 +1,15 @@
+=content_for :page_title_prefix, t("page_title.users.new")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.users.new")
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      = simple_form_for @user do |f|
+        .govuk-form-group
+          = f.input :name
+          = f.input :email
+        = f.button :submit, I18n.t("form.user.submit")
