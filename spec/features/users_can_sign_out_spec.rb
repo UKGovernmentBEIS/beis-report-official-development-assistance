@@ -1,6 +1,9 @@
+require 'rails_helper'
+
 RSpec.feature "Users can sign out of service" do
   scenario "successful sign out" do
     mock_successful_authentication
+    stub_authenticated_session
 
     visit root_path
     click_on I18n.t("generic.link.start_now")
