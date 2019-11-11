@@ -1,8 +1,7 @@
 RSpec.feature "Users can view organisations" do
   context "a user who successfully logged in" do
     before do
-      mock_successful_authentication(name: "Alex Smith")
-      log_in
+      stub_authenticated_session
     end
 
     scenario "organisation index page" do
