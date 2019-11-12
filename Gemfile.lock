@@ -210,6 +210,9 @@ GEM
     rack (2.0.7)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
+    rack_session_access (0.2.0)
+      builder (>= 2.0.0)
+      rack (>= 1.0.0)
     rails (6.0.0)
       actioncable (= 6.0.0)
       actionmailbox (= 6.0.0)
@@ -290,6 +293,11 @@ GEM
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
     sexp_processor (4.13.0)
+    shoulda-matchers (4.1.2)
+      activesupport (>= 4.2.0)
+    simple_form (5.0.1)
+      actionpack (>= 5.0)
+      activemodel (>= 5.0)
     spring (2.1.0)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
@@ -364,6 +372,7 @@ DEPENDENCIES
   pg
   pry
   puma (~> 4.1)
+  rack_session_access
   rails (~> 6.0.0)
   rails_layout
   rollbar
@@ -371,6 +380,8 @@ DEPENDENCIES
   sass-rails (~> 6.0)
   sassc (~> 2.0.1)
   selenium-webdriver
+  shoulda-matchers
+  simple_form
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)

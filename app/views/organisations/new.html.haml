@@ -1,0 +1,26 @@
+=content_for :page_title_prefix, t("page_title.create_organisation")
+
+%p
+  = link_to t("generic.link.back"), organisations_path, class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("create_organisation.title")
+
+      = simple_form_for @organisation do |f|
+        .govuk-form-group
+          = f.input :name
+          = f.input :organisation_type,
+                    wrapper: 'select',
+                    collection: yaml_to_options("organisation_type")
+          = f.input :language_code,
+                    wrapper: 'select',
+                    collection: yaml_to_options("language_code"),
+                    hint: I18n.t("create_organisation.language_code.hint")
+          = f.input :default_currency,
+                    wrapper: 'select',
+                    collection: yaml_to_options("default_currency"),
+                    hint: I18n.t("create_organisation.default_currency.hint")
+
+        = f.button :submit, I18n.t("create_organisation.submit")

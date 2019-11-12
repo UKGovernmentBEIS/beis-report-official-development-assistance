@@ -1,0 +1,15 @@
+=content_for :page_title_prefix, t("page_title.organisations")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("organisations.title")
+
+      = link_to(I18n.t("organisations.create_new"), new_organisation_path, class: "govuk-button")
+
+      - if @organisations
+        %ul
+          - @organisations.each do |organisation|
+            %li
+              = link_to organisation.name, organisation_path(organisation.id)

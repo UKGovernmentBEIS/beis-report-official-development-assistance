@@ -21,6 +21,7 @@ gem "sass-rails", "~> 6.0"
 gem "turbolinks", "~> 5"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "uglifier", ">= 1.3.0"
+gem "simple_form"
 
 # Authentication
 gem "omniauth-auth0", "~> 2.2"
@@ -37,6 +38,7 @@ group :test do
   gem "capybara", ">= 2.15"
   gem "chromedriver-helper"
   gem "selenium-webdriver"
+  gem "rack_session_access"
   gem "webmock", "~> 3.5"
 end
 
@@ -45,7 +47,6 @@ group :development do
   gem "html2haml"
   gem "rails_layout"
   gem "spring-commands-rspec"
-  gem "pry"
 end
 
 group :development, :test do
@@ -56,9 +57,11 @@ group :development, :test do
   gem "faker"
   gem "rspec-rails"
   gem "standard"
+  gem "pry"
 end
 
 group :test do
   gem "database_cleaner"
   gem "launchy"
+  gem "shoulda-matchers"
 end
