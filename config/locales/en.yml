@@ -26,10 +26,14 @@ en:
       sign_out: Sign out
       start_now: Start now
   organisation:
-    default_currency: Default currency
-    language_code: Language code
-    name: Name
-    type: Type
+    default_currency:
+      label: Default currency
+    language_code:
+      label: Language code
+    name:
+      label: Name
+    type:
+      label: Type
   organisations:
     create_new: New organisation
     title: Organisations
