@@ -1,41 +1,42 @@
+---
 en:
   app:
-    title: "BEIS - Report Overseas Development Assistance"
+    title: BEIS - Report Overseas Development Assistance
+  create_organisation:
+    create:
+      success: Organisation successfully created
+    default_currency:
+      hint: Default currency for all financial values in this activity report
+      label: Default currency
+    language_code:
+      hint: Default language of text in this organisation
+      label: Language code
+    name:
+      label: Name
+    organisation_type:
+      label: Organisation type
+    submit: Submit
+    title: Create a new organisation
   dashboards:
     show:
-      welcome: "Welcome back, %{name}"
+      welcome: Welcome back, %{name}
   generic:
     link:
-      sign_out: "Sign out"
-      start_now: "Start now"
-      back: "Back"
-  organisations:
-    title: "Organisations"
-    create_new: "New organisation"
+      back: Back
+      sign_out: Sign out
+      start_now: Start now
   organisation:
-    name: "Name"
-    type: "Type"
-    language_code: "Language code"
-    default_currency: "Default currency"
-  create_organisation:
-    title: "Create a new organisation"
-    submit: "Submit"
-    name:
-      label: "Name"
-    organisation_type:
-      label: "Organisation type"
-    default_currency:
-      label: "Default currency"
-      hint: "Default currency for all financial values in this activity report"
-    language_code:
-      label: "Language code"
-      hint: "Default language of text in this organisation"
-    create:
-      success: "Organisation successfully created"
+    default_currency: Default currency
+    language_code: Language code
+    name: Name
+    type: Type
+  organisations:
+    create_new: New organisation
+    title: Organisations
   page_title:
-    home: "Home"
-    welcome: "Report Overseas Development Assistance"
-    dashboard: "Dashboard"
-    organisations: "Organisations"
-    organisation: "Organisation %{name}"
-    create_organisation: "Create a new organisation"
+    create_organisation: Create a new organisation
+    dashboard: Dashboard
+    home: Home
+    organisation: Organisation %{name}
+    organisations: Organisations
+    welcome: Report Overseas Development Assistance
