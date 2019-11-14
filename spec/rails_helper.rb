@@ -72,4 +72,10 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
+
+  config.around(:each) do |example|
+    ClimateControl.modify AUTH0_DOMAIN: "testdomain" do
+      example.run
+    end
+  end
 end
