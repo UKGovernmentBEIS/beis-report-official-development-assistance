@@ -3,6 +3,10 @@ class Staff::UsersController < Staff::BaseController
     @users = User.all
   end
 
+  def show
+    @user = User.find(id)
+  end
+
   def new
     @user = User.new
   end
@@ -22,4 +26,7 @@ class Staff::UsersController < Staff::BaseController
     params.require(:user).permit(:name, :email)
   end
 
+  def id
+    params[:id]
+  end
 end

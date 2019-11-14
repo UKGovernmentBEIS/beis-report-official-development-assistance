@@ -61,4 +61,8 @@ en:
     users:
       index: Manage users
       new: Create user
+      show: User
     welcome: Report Overseas Development Assistance
+  user:
+    email: Email address
+    name: Full name
