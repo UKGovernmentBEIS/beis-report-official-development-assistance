@@ -22,6 +22,7 @@ en:
       submit: Submit
     user:
       create:
+        failed: The service is experiencing issues creating new users and the team has been alerted to the problem.
         success: User successfully created
       submit: Submit
   generic:
@@ -65,4 +66,5 @@ en:
     welcome: Report Overseas Development Assistance
   user:
     email: Email address
+    identifier: Auth0 identifier
     name: Full name
