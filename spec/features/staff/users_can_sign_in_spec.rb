@@ -2,7 +2,10 @@ require "rails_helper"
 
 RSpec.feature "Users can sign in with Auth0" do
   scenario "successful sign in" do
-    mock_successful_authentication(name: "Alex Smith")
+    user = create(:user)
+    mock_successful_authentication(
+      uid: user.identifier, name: user.name, email: user.email
+    )
 
     visit dashboard_path
     expect(page).to have_content(I18n.t("page_title.welcome"))
@@ -10,7 +13,7 @@ RSpec.feature "Users can sign in with Auth0" do
     click_on I18n.t("generic.link.start_now")
 
     expect(page).to have_content(I18n.t("page_title.dashboard"))
-    expect(page).to have_content "Welcome back, Alex Smith"
+    expect(page).to have_content "Welcome back, #{user.name}"
     expect(page).to have_content(I18n.t("generic.link.sign_out"))
   end
 

@@ -3,7 +3,7 @@ class Staff::BaseController < ApplicationController
 
   helper_method :current_user
   def current_user
-    @current_user ||= User.where(identifier: signed_in_user_identifier).first_or_create! { |user|
+    @current_user ||= User.find_by!(identifier: signed_in_user_identifier) { |user|
       user.name = session.dig(:userinfo, "info", "name")
       user.email = session.dig(:userinfo, "info", "email")
     }
