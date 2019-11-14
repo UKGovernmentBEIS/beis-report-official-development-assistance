@@ -55,6 +55,7 @@ group :development, :test do
   gem "dotenv-rails"
   gem "factory_bot_rails"
   gem "faker"
+  gem "i18n-tasks", "~> 0.9.29"
   gem "rspec-rails"
   gem "standard"
   gem "pry"
