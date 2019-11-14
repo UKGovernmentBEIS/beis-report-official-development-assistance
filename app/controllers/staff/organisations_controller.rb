@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class OrganisationsController < ApplicationController
+class Staff::OrganisationsController < Staff::BaseController
   include Secured
 
   def index
