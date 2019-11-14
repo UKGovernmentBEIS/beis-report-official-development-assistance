@@ -10,11 +10,6 @@ module AuthenticationHelpers
     )
   end
 
-  def log_in
-    visit dashboard_path
-    click_on "Start now"
-  end
-
   def stub_authenticated_session(name: "Alex", email: "alex@example.com")
     page.set_rack_session(userinfo: {uid: "123456789", info: {name: name, email: email}})
   end
