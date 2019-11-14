@@ -2,24 +2,25 @@
 en:
   app:
     title: BEIS - Report Overseas Development Assistance
-  create_organisation:
-    create:
-      success: Organisation successfully created
-    default_currency:
-      hint: Default currency for all financial values in this activity report
-      label: Default currency
-    language_code:
-      hint: Default language of text in this organisation
-      label: Language code
-    name:
-      label: Name
-    organisation_type:
-      label: Organisation type
-    submit: Submit
-    title: Create a new organisation
   dashboards:
     show:
       welcome: Welcome back, %{name}
+  form:
+    organisation:
+      create:
+        success: Organisation successfully created
+      default_currency:
+        hint: Default currency for all financial values in this activity report
+        label: Default currency
+      language_code:
+        hint: Default language of text in this organisation
+        label: Language code
+      name:
+        label: Name
+      organisation_type:
+        label: Organisation type
+      submit: Submit
+    user:
   generic:
     link:
       back: Back
@@ -34,13 +35,26 @@ en:
       label: Name
     type:
       label: Type
-  organisations:
-    create_new: New organisation
-    title: Organisations
+  page_content:
+    dashboard:
+      button:
+        manage_users: Manage users
+      header:
+        manage_users: Users
+    organisations:
+      button:
+        create: Create organisation
+    users:
+      button:
+        create_user: Create user
   page_title:
-    create_organisation: Create a new organisation
     dashboard: Dashboard
     home: Home
-    organisation: Organisation %{name}
-    organisations: Organisations
+    organisation:
+      index: Organisations
+      new: Create a new organisation
+      show: Organisation %{name}
+    users:
+      index: Manage users
+      new: Create user
     welcome: Report Overseas Development Assistance

@@ -9,7 +9,7 @@ RSpec.feature "Users can view organisations" do
 
       visit organisations_path
 
-      expect(page).to have_content(I18n.t("page_title.organisations"))
+      expect(page).to have_content(I18n.t("page_title.organisation.index"))
       expect(page).to have_content organisation.name
     end
 
