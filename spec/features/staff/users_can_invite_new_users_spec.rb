@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.feature "users can invite new users to the service" do
   before(:each) do
-    stub_authenticated_session
+    log_in
   end
 
   scenario "a new user can be created" do
@@ -16,8 +16,7 @@ RSpec.feature "users can invite new users to the service" do
     )
 
     # Navigate from the landing page
-    visit root_path
-    click_on(I18n.t("generic.link.start_now"))
+    visit dashboard_path
     click_on(I18n.t("page_content.dashboard.button.manage_users"))
 
     # Navigate to the users page
