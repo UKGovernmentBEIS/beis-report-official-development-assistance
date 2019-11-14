@@ -14,9 +14,9 @@ class Staff::UsersController < Staff::BaseController
   def create
     @user = User.new(user_params)
     if @user.valid?
-      @user.save
-      flash[:notice] = I18n.t("form.user.create.success")
-      redirect_to users_path(@user)
+      result = CreateUser.new(user: @user).call
+        flash.now[:notice] = I18n.t("form.user.create.success")
+        return redirect_to user_path(@user.reload.id)
     else
       render :new
     end

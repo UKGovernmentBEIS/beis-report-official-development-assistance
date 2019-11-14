@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.feature "users can invite new users to the service" do
   before(:each) do
     log_in
+    stub_auth0_token_request
   end
 
   scenario "a new user can be created" do
