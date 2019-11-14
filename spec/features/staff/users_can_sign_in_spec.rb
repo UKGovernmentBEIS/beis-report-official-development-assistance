@@ -7,7 +7,7 @@ RSpec.feature "Users can sign in with Auth0" do
     visit dashboard_path
     expect(page).to have_content(I18n.t("page_title.welcome"))
 
-    click_on "Start now"
+    click_on I18n.t("generic.link.start_now")
 
     expect(page).to have_content(I18n.t("page_title.dashboard"))
     expect(page).to have_content "Welcome back, Alex Smith"
