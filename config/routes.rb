@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get "health_check" => "application#health_check"
+  scope module: "public" do
+    get "health_check" => "base#health_check"
+    root to: "visitors#index"
+  end
 
-  resource :dashboard, only: :show
-
-  root to: "visitors#index"
+  scope module: "staff" do
+    resource :dashboard, only: :show
+    resources :organisations
+  end
 
   # Authentication
   get "auth/oauth2/callback" => "auth0#callback"
   get "auth/failure" => "auth0#failure"
-  get "sign_out" => "application#sign_out"
-
-  resources :organisations
+  get "sign_out" => "staff/base#sign_out"
 end
