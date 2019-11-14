@@ -43,6 +43,16 @@ RSpec.feature "users can invite new users to the service" do
 
   context "when the name and email are not provided" do
     it "shows the user validation errors instead" do
+      visit new_user_path
+
+      expect(page).to have_content(I18n.t("page_title.users.new"))
+      fill_in "user[name]", with: "" # deliberately omit a value
+      fill_in "user[email]", with: "" # deliberately omit a value
+
+      click_button I18n.t("form.user.submit")
+
+      expect(page).to have_content("Name\ncan't be blank")
+      expect(page).to have_content("Email\ncan't be blank")
     end
   end
 
