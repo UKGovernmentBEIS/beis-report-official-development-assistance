@@ -121,7 +121,7 @@ GEM
       i18n (>= 1.6, < 1.8)
     faraday (0.17.0)
       multipart-post (>= 1.2, < 3)
-    ffi (1.11.1)
+    ffi (1.11.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     haml (5.1.2)
@@ -294,9 +294,8 @@ GEM
     safe_yaml (1.0.5)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
-    sassc (2.0.1)
+    sassc (2.2.1)
       ffi (~> 1.9)
-      rake
     sassc-rails (2.1.2)
       railties (>= 4.0.0)
       sassc (>= 2.0)
@@ -395,7 +394,7 @@ DEPENDENCIES
   rollbar
   rspec-rails
   sass-rails (~> 6.0)
-  sassc (~> 2.0.1)
+  sassc (~> 2.2.1)
   selenium-webdriver
   shoulda-matchers
   simple_form
