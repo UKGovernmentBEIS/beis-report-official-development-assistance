@@ -46,6 +46,10 @@ en:
         manage_users: Manage users
       header:
         manage_users: Users
+    errors:
+      not_authorised:
+        explanation: Whilst you have successfully signed in you have not been authorised to see this page.
+      support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
     organisations:
       button:
         create: Create organisation
@@ -54,6 +58,8 @@ en:
         create: Create user
   page_title:
     dashboard: Dashboard
+    errors:
+      not_authorised: You are not authorised
     home: Home
     organisation:
       index: Organisations
