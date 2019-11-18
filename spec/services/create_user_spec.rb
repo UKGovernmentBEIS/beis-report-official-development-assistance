@@ -18,7 +18,7 @@ RSpec.describe CreateUser do
 
     context "when Auth0 errors" do
       before(:each) do
-        stub_auth0_create_user_request_failure(user.email)
+        stub_auth0_create_user_request_failure(email: user.email)
       end
 
       it "returns a failed result" do
