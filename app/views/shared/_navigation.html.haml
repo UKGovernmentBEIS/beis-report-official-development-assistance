@@ -1,0 +1,6 @@
+%nav
+  %ul.govuk-header__navigation
+    -if defined?(current_user) && current_user
+      %li
+        %a{ href: sign_out_path, class: 'govuk-header__link' }
+          = t("generic.link.sign_out")

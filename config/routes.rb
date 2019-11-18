@@ -14,5 +14,5 @@ Rails.application.routes.draw do
   # Authentication
   get "auth/oauth2/callback" => "auth0#callback"
   get "auth/failure" => "auth0#failure"
-  get "sign_out" => "staff/base#sign_out"
+  get "sign_out" => "application#sign_out"
 end
