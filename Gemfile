@@ -16,7 +16,7 @@ gem "mini_racer"
 gem "puma", "~> 4.1"
 gem "rollbar"
 gem "rails", "~> 6.0.1"
-gem "sassc", "~> 2.0.1" # Downgrade to fix https://github.com/sass/sassc-ruby/issues/133
+gem "sassc", "~> 2.1.0" # Downgrade to fix https://github.com/sass/sassc-ruby/issues/133
 gem "sass-rails", "~> 6.0"
 gem "turbolinks", "~> 5"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
