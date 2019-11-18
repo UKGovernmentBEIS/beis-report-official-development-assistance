@@ -16,6 +16,14 @@ ActiveRecord::Schema.define(version: 2019_11_18_130234) do
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
+  create_table "funds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "organisation_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organisation_id"], name: "index_funds_on_organisation_id"
+  end
+
   create_table "organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "organisation_type"
