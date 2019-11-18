@@ -10,11 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_18_130234) do
+ActiveRecord::Schema.define(version: 2019_11_18_150004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "activities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "identifier"
+    t.string "sector"
+    t.string "title"
+    t.text "description"
+    t.string "status"
+    t.date "planned_start_date"
+    t.date "planned_end_date"
+    t.date "actual_start_date"
+    t.date "actual_end_date"
+    t.string "recipient_region"
+    t.string "flow"
+    t.string "finance"
+    t.string "aid_type"
+    t.string "tied_status"
+    t.uuid "fund_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["fund_id"], name: "index_activities_on_fund_id"
+  end
 
   create_table "funds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
