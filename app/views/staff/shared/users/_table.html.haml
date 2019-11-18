@@ -12,4 +12,4 @@
       %tr.govuk-table__row
         %td.govuk-table__cell= user.name
         %td.govuk-table__cell= user.email
-        %td.govuk-table__cell= link_to(I18n.t('generic.link.show'), user_path(user), class: 'govuk-link')
+        %td.govuk-table__cell= link_to(I18n.t('generic.link.show'), user_path(user), class: 'govuk-link', id: "#{user.email}-show")
