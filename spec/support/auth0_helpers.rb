@@ -10,9 +10,9 @@ module Auth0Helpers
       .to_return(status: 200, body: "{\"user_id\":\"#{auth0_identifier}\"}")
   end
 
-  # def stub_auth0_create_user_request_failure(email)
-  #   stub_request(:post, 'https://testdomain/api/v2/users')
-  #     .with(body: hash_including(email: email))
-  #     .to_return(status: 500, body: '')
-  # end
+  def stub_auth0_create_user_request_failure(email:)
+    stub_request(:post, "https://testdomain/api/v2/users")
+      .with(body: hash_including(email: email))
+      .to_return(status: 500, body: "")
+  end
 end
