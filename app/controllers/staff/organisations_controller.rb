@@ -21,7 +21,7 @@ class Staff::OrganisationsController < Staff::BaseController
 
     if @organisation.valid?
       @organisation.save
-      flash[:notice] = I18n.t("create_organisation.create.success")
+      flash[:notice] = I18n.t("form.organisation.create.success")
       redirect_to organisation_path(@organisation)
     else
       render :new

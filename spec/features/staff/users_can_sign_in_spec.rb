@@ -2,7 +2,10 @@ require "rails_helper"
 
 RSpec.feature "Users can sign in with Auth0" do
   scenario "successful sign in" do
-    mock_successful_authentication(name: "Alex Smith")
+    user = create(:user)
+    mock_successful_authentication(
+      uid: user.identifier, name: user.name, email: user.email
+    )
 
     visit dashboard_path
     expect(page).to have_content(I18n.t("page_title.welcome"))
@@ -10,7 +13,7 @@ RSpec.feature "Users can sign in with Auth0" do
     click_on I18n.t("generic.link.start_now")
 
     expect(page).to have_content(I18n.t("page_title.dashboard"))
-    expect(page).to have_content "Welcome back, Alex Smith"
+    expect(page).to have_content "Welcome back, #{user.name}"
     expect(page).to have_content(I18n.t("generic.link.sign_out"))
   end
 
@@ -18,5 +21,20 @@ RSpec.feature "Users can sign in with Auth0" do
     visit dashboard_path
 
     expect(page).to have_content(I18n.t("page_title.welcome"))
+  end
+
+  context "when the Auth0 identifier does not match a user record" do
+    scenario "informs the user their invitation has failed and the team has been notified" do
+      user = create(:user, identifier: "a-local-identifier")
+      mock_successful_authentication(
+        uid: "an-unknown-identifier", name: user.name, email: user.email
+      )
+
+      visit dashboard_path
+      click_on I18n.t("generic.link.start_now")
+
+      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
+      expect(page).to have_content(I18n.t("page_content.errors.not_authorised.explanation"))
+    end
   end
 end

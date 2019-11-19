@@ -1,7 +1,7 @@
 RSpec.feature "Users can view organisations" do
   context "a user who successfully logged in" do
     before do
-      stub_authenticated_session
+      log_in
     end
 
     scenario "organisation index page" do
@@ -9,7 +9,7 @@ RSpec.feature "Users can view organisations" do
 
       visit organisations_path
 
-      expect(page).to have_content(I18n.t("page_title.organisations"))
+      expect(page).to have_content(I18n.t("page_title.organisation.index"))
       expect(page).to have_content organisation.name
     end
 

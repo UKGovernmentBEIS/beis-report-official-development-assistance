@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   scope module: "staff" do
     resource :dashboard, only: :show
+    resources :users
     resources :organisations
   end
 

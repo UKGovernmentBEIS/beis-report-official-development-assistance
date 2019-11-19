@@ -1,12 +1,12 @@
-=content_for :page_title_prefix, t("page_title.organisations")
+=content_for :page_title_prefix, t("page_title.organisation.index")
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
-        = t("organisations.title")
+        = t("page_title.organisation.index")
 
-      = link_to(I18n.t("organisations.create_new"), new_organisation_path, class: "govuk-button")
+      = link_to(I18n.t("page_content.organisations.button.create"), new_organisation_path, class: "govuk-button")
 
       - if @organisations
         %ul

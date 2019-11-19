@@ -1,19 +1,19 @@
 RSpec.feature "Users can create organisations" do
   context "a user who successfully logged in" do
     before do
-      stub_authenticated_session
+      log_in
     end
 
     scenario "successfully creating an organisation" do
       visit new_organisation_path
 
-      expect(page).to have_content(I18n.t("page_title.create_organisation"))
+      expect(page).to have_content(I18n.t("page_title.organisation.new"))
       fill_in "organisation[name]", with: "My New Organisation"
       select "Government", from: "organisation[organisation_type]"
       select "Czech", from: "organisation[language_code]"
       select "Zloty", from: "organisation[default_currency]"
-      click_button I18n.t("create_organisation.submit")
-      expect(page).to have_content I18n.t("create_organisation.create.success")
+      click_button I18n.t("form.organisation.submit")
+      expect(page).to have_content I18n.t("form.organisation.create.success")
     end
 
     scenario "presence validation works as expected" do
@@ -21,11 +21,11 @@ RSpec.feature "Users can create organisations" do
 
       visit new_organisation_path
 
-      expect(page).to have_content(I18n.t("page_title.create_organisation"))
+      expect(page).to have_content(I18n.t("page_title.organisation.new"))
       fill_in "organisation[name]", with: "My New Organisation"
 
-      click_button I18n.t("create_organisation.submit")
-      expect(page).to_not have_content I18n.t("create_organisation.create.success")
+      click_button I18n.t("form.organisation.submit")
+      expect(page).to_not have_content I18n.t("form.organisation.create.success")
       expect(page).to have_content "can't be blank"
     end
   end
@@ -34,7 +34,7 @@ RSpec.feature "Users can create organisations" do
     scenario "tries to access the create organisation page but is redirected" do
       visit new_organisation_path
 
-      expect(page).to_not have_content(I18n.t("page_title.create_organisation"))
+      expect(page).to_not have_content(I18n.t("page_title.organisation.new"))
       expect(page).to have_content(I18n.t("generic.link.start_now"))
     end
   end
