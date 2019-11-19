@@ -12,4 +12,13 @@
         .govuk-form-group
           = f.input :name
           = f.input :email
+        .govuk-form-group
+          %fieldset.govuk-fieldset
+            = label_tag 'organisations', "Organisations", class: 'govuk-label'
+            .govuk-checkboxes.checkbox-group
+              - organisation_check_box_options.each_with_index do |organisation, i|
+                .govuk-checkboxes__item
+                  = check_box_tag 'organisations[]', organisation[1], false, id: 'organisations_' + organisation[1], class: 'govuk-checkboxes__input'
+                  = label_tag 'organisations[]', organisation[0], for: 'organisations_' + organisation[1], class: 'govuk-label govuk-checkboxes__label'
+
         = f.button :submit, I18n.t("form.user.submit")

@@ -10,6 +10,7 @@
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
+      %h2.govuk-heading-m Details
       %dl
         %dt
           = t("user.name")
@@ -23,3 +24,8 @@
           = t("user.identifier")
         %dd
           = @user.identifier
+    .govuk-grid-column-one-third.organisations
+      %h2.govuk-heading-m Organisations
+      %ul
+        - @user.organisations.each do |organisation|
+          %li= organisation.name

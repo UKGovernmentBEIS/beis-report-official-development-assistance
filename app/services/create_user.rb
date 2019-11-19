@@ -1,16 +1,18 @@
 require "./lib/auth0_api"
 
 class CreateUser
-  attr_accessor :user
+  attr_accessor :user, :organisations
 
-  def initialize(user:)
+  def initialize(user:, organisations: [])
     self.user = user
+    self.organisations = organisations
   end
 
   def call
     result = Result.new(true)
 
     User.transaction do
+      user.organisations = organisations
       user.save
       begin
         auth0_response = Auth0Api.new.client.create_user(

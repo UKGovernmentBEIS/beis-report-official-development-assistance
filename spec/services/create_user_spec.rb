@@ -16,6 +16,23 @@ RSpec.describe CreateUser do
       expect(result.failure?).to eq(false)
     end
 
+    context "when organisations are provided" do
+      it "associates them to the user" do
+        stub_auth0_create_user_request(email: user.email)
+
+        first_organisation = create(:organisation)
+        second_organisation = create(:organisation)
+
+        described_class.new(
+          user: user,
+          organisations: [first_organisation, second_organisation]
+        ).call
+
+        expect(user.reload.organisations).to include(first_organisation)
+        expect(user.reload.organisations).to include(second_organisation)
+      end
+    end
+
     context "when Auth0 errors" do
       before(:each) do
         stub_auth0_create_user_request_failure(email: user.email)
