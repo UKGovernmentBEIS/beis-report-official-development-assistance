@@ -79,7 +79,7 @@ RSpec.feature "users can invite new users to the service" do
       click_button I18n.t("form.user.submit")
 
       expect(page).to have_content(I18n.t("form.user.create.failed"))
-      expect(User.find_by(email: new_email)).to eq(nil)
+      expect(User.count).to eq(0)
     end
   end
 
