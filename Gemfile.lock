@@ -58,8 +58,6 @@ GEM
       zeitwerk (~> 2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    archive-zip (0.12.0)
-      io-like (~> 0.3.0)
     ast (2.4.0)
     auth0 (4.9.0)
       rest-client (~> 2.0.0)
@@ -90,9 +88,6 @@ GEM
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
     childprocess (3.0.0)
-    chromedriver-helper (2.1.1)
-      archive-zip (~> 0.10)
-      nokogiri (~> 1.8)
     climate_control (0.2.0)
     coderay (1.1.2)
     coffee-rails (5.0.0)
@@ -161,7 +156,6 @@ GEM
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
-    io-like (0.3.0)
     jaro_winkler (1.5.4)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
@@ -388,7 +382,6 @@ DEPENDENCIES
   bullet
   byebug
   capybara (>= 2.15)
-  chromedriver-helper
   climate_control
   coffee-rails (~> 5.0)
   database_cleaner
