@@ -10,8 +10,7 @@ module AuthenticationHelpers
     )
   end
 
-  def log_in
-    user = create(:user)
+  def authenticate!(user: create(:user))
     stub_authenticated_session(
       uid: user.identifier,
       name: user.name,
