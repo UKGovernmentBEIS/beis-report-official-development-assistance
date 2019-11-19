@@ -12,18 +12,18 @@
     .govuk-grid-column-two-thirds
       %dl
         %dt
-          = t("organisation.name")
+          = t("organisation.name.label")
         %dd
           = @organisation_presenter.name
         %dt
-          = t("organisation.type")
+          = t("organisation.type.label")
         %dd
           = t("organisation.organisation_type.#{@organisation_presenter.organisation_type}")
         %dt
-          = t("organisation.language_code")
+          = t("organisation.language_code.label")
         %dd
           = t("organisation.language_code.#{@organisation_presenter.language_code}")
         %dt
-          = t("organisation.default_currency")
+          = t("organisation.default_currency.label")
         %dd
           = t("organisation.default_currency.#{@organisation_presenter.default_currency}")
