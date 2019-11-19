@@ -1,7 +1,7 @@
 RSpec.feature "Users can create organisations" do
   context "a user who successfully logged in" do
     before do
-      stub_authenticated_session
+      log_in
     end
 
     scenario "successfully creating an organisation" do
