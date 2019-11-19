@@ -114,6 +114,18 @@ RSpec.feature "users can invite new users to the service" do
     end
   end
 
+  context "when there are no organisations" do
+    scenario "call to action to create a new organisation" do
+      visit new_user_path
+
+      expect(page).to have_content(I18n.t("page_content.users.new.no_organisations.cta"))
+
+      click_on(I18n.t("page_content.users.new.no_organisations.link"))
+
+      expect(page).to have_current_path(new_organisation_path)
+    end
+  end
+
   scenario "can go back to the previous page" do
     visit new_user_path
 
