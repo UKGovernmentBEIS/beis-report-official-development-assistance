@@ -24,4 +24,14 @@ RSpec.feature "users can view other users" do
     expect(page).to have_content(user.name)
     expect(page).to have_content(user.email)
   end
+
+  scenario "can go back to the previous page" do
+    user = create(:user)
+
+    visit user_path(user)
+
+    click_on I18n.t("generic.link.back")
+
+    expect(page).to have_current_path(users_path)
+  end
 end
