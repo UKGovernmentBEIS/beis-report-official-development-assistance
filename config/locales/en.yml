@@ -56,6 +56,10 @@ en:
     users:
       button:
         create: Create user
+      new:
+        no_organisations:
+          cta: There are no organisations yet,
+          link: you can make one now
   page_title:
     dashboard: Dashboard
     errors:
