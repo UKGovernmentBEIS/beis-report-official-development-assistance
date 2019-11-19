@@ -2,27 +2,33 @@
 en:
   app:
     title: BEIS - Report Overseas Development Assistance
-  create_organisation:
-    create:
-      success: Organisation successfully created
-    default_currency:
-      hint: Default currency for all financial values in this activity report
-      label: Default currency
-    language_code:
-      hint: Default language of text in this organisation
-      label: Language code
-    name:
-      label: Name
-    organisation_type:
-      label: Organisation type
-    submit: Submit
-    title: Create a new organisation
   dashboards:
     show:
       welcome: Welcome back, %{name}
+  form:
+    organisation:
+      create:
+        success: Organisation successfully created
+      default_currency:
+        hint: Default currency for all financial values in this activity report
+        label: Default currency
+      language_code:
+        hint: Default language of text in this organisation
+        label: Language code
+      name:
+        label: Name
+      organisation_type:
+        label: Organisation type
+      submit: Submit
+    user:
+      create:
+        failed: The service is experiencing issues creating new users and the team has been alerted to the problem.
+        success: User successfully created
+      submit: Submit
   generic:
     link:
       back: Back
+      show: Show
       sign_out: Sign out
       start_now: Start now
   organisation:
@@ -34,13 +40,41 @@ en:
       label: Name
     type:
       label: Type
-  organisations:
-    create_new: New organisation
-    title: Organisations
+  page_content:
+    dashboard:
+      button:
+        manage_users: Manage users
+      header:
+        manage_users: Users
+    errors:
+      not_authorised:
+        explanation: Whilst you have successfully signed in you have not been authorised to see this page.
+      support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
+    organisations:
+      button:
+        create: Create organisation
+    users:
+      button:
+        create: Create user
+      new:
+        no_organisations:
+          cta: There are no organisations yet,
+          link: you can make one now
   page_title:
-    create_organisation: Create a new organisation
     dashboard: Dashboard
+    errors:
+      not_authorised: You are not authorised
     home: Home
-    organisation: Organisation %{name}
-    organisations: Organisations
+    organisation:
+      index: Organisations
+      new: Create a new organisation
+      show: Organisation %{name}
+    users:
+      index: Users
+      new: Create user
+      show: User
     welcome: Report Overseas Development Assistance
+  user:
+    email: Email address
+    identifier: Auth0 identifier
+    name: Full name

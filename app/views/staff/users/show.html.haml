@@ -1,0 +1,31 @@
+=content_for :page_title_prefix, t("page_title.users.show", name: @user.name)
+
+%p
+  = link_to t("generic.link.back"), users_path, class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.users.show")
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h2.govuk-heading-m Details
+      %dl
+        %dt
+          = t("user.name")
+        %dd
+          = @user.name
+        %dt
+          = t("user.email")
+        %dd
+          = @user.email
+        %dt
+          = t("user.identifier")
+        %dd
+          = @user.identifier
+    .govuk-grid-column-one-third.organisations
+      %h2.govuk-heading-m Organisations
+      %ul
+        - @user.organisations.each do |organisation|
+          %li= organisation.name

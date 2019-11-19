@@ -34,6 +34,7 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 RSpec.configure do |config|
   config.include AuthenticationHelpers
+  config.include Auth0Helpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -69,6 +70,12 @@ RSpec.configure do |config|
     config.integrate do |with|
       with.test_framework :rspec
       with.library :rails
+    end
+  end
+
+  config.around(:each) do |example|
+    ClimateControl.modify AUTH0_DOMAIN: "testdomain" do
+      example.run
     end
   end
 end

@@ -10,7 +10,16 @@ module AuthenticationHelpers
     )
   end
 
-  def stub_authenticated_session(name: "Alex", email: "alex@example.com")
-    page.set_rack_session(userinfo: {uid: "123456789", info: {name: name, email: email}})
+  def log_in
+    user = create(:user)
+    stub_authenticated_session(
+      uid: user.identifier,
+      name: user.name,
+      email: user.email
+    )
+  end
+
+  def stub_authenticated_session(uid: "123456789", name: "Alex", email: "alex@example.com")
+    page.set_rack_session(userinfo: {uid: uid, info: {name: name, email: email}})
   end
 end
