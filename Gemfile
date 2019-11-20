@@ -14,7 +14,7 @@ gem "jbuilder", "~> 2.5"
 gem "jquery-rails"
 gem "pg"
 gem "mini_racer"
-gem "puma", "~> 4.1"
+gem "puma", "~> 4.3"
 gem "rollbar"
 gem "rails", "~> 6.0.1"
 gem "sassc", "~> 2.0.1" # Downgrade to fix https://github.com/sass/sassc-ruby/issues/133
