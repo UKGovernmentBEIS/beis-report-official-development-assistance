@@ -1,0 +1,19 @@
+=content_for :page_title_prefix, t("page_title.fund.new")
+
+%p
+  = link_to t("generic.link.back"), funds_path, class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.fund.new")
+
+      = simple_form_for @fund do |f|
+        .govuk-form-group
+          = f.input :organisation_id,
+                    wrapper: 'select',
+                    collection: @organisations,
+                    hint: t("form.fund.organisation.hint")
+          = f.input :name
+
+        = f.button :submit, t("form.fund.submit")

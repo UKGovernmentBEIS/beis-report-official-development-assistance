@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resource :dashboard, only: :show
     resources :users
     resources :organisations
+    resources :funds
   end
 
   # Authentication

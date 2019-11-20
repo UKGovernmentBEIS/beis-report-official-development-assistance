@@ -6,6 +6,12 @@ en:
     show:
       welcome: Welcome back, %{name}
   form:
+    fund:
+      create:
+        success: Fund successfully created
+      organisation:
+        hint: The organisation this fund is associated with
+      submit: Submit
     organisation:
       create:
         success: Organisation successfully created
@@ -43,6 +49,14 @@ en:
       not_authorised:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
+    fund:
+      name:
+        label: Name
+      organisation:
+        label: Organisation
+    funds:
+      button:
+        create: Create fund
     organisation:
       default_currency:
         label: Default currency
@@ -66,6 +80,10 @@ en:
     dashboard: Dashboard
     errors:
       not_authorised: You are not authorised
+    fund:
+      index: Funds
+      new: Create fund
+      show: Fund %{name}
     home: Home
     organisation:
       index: Organisations
