@@ -3,8 +3,16 @@ require "rails_helper"
 RSpec.feature "users can view other users" do
   let(:user) { create(:user) }
 
-  before(:each) do
-    stub_authenticated_session(uid: user.identifier, name: user.name, email: user.email)
+  before do
+    authenticate!(user: user)
+  end
+
+  context "when the user is not logged in" do
+    it "redirects the user to the root path" do
+      page.set_rack_session(userinfo: nil)
+      visit users_path
+      expect(current_path).to eq(root_path)
+    end
   end
 
   scenario "a user can be viewed" do

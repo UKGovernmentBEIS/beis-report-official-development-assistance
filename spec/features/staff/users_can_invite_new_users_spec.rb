@@ -1,9 +1,17 @@
 require "rails_helper"
 
 RSpec.feature "users can invite new users to the service" do
-  before(:each) do
-    log_in
+  before do
+    authenticate!
     stub_auth0_token_request
+  end
+
+  context "when the user is not logged in" do
+    it "redirects the user to the root path" do
+      page.set_rack_session(userinfo: nil)
+      visit new_user_path
+      expect(current_path).to eq(root_path)
+    end
   end
 
   scenario "a new user can be created" do
@@ -71,7 +79,7 @@ RSpec.feature "users can invite new users to the service" do
       click_button I18n.t("form.user.submit")
 
       expect(page).to have_content(I18n.t("form.user.create.failed"))
-      expect(User.find_by(email: new_email)).to eq(nil)
+      expect(User.count).to eq(0)
     end
   end
 
@@ -105,7 +113,7 @@ RSpec.feature "users can invite new users to the service" do
     check first_organisation.name
     check second_organisation.name
 
-    # Submit the form
+    # # Submit the form
     click_button I18n.t("form.user.submit")
 
     within(".organisations") do
