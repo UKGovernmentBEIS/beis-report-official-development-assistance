@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :users
     resources :organisations
     resources :funds
+    resources :activities
   end
 
   # Authentication

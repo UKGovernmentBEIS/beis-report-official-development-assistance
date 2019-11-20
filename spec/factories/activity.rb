@@ -1,7 +1,9 @@
 FactoryBot.define do
+  sequence(:identifier) { |n| "GB-GOV-13-GCRF-#{n}" }
+
   factory :activity do
     title { Faker::Lorem.sentence }
-    identifier { "GB-GOV-13-GCRF" }
+    identifier
     description { Faker::Lorem.paragraph }
     sector { "99" }
     status { "2" }

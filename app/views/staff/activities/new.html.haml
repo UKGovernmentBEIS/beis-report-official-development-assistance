@@ -1,0 +1,55 @@
+=content_for :page_title_prefix, t("page_title.activity.new")
+
+%p= link_to t("generic.link.back"), activities_path, class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.activity.new")
+
+      = simple_form_for @activity do |f|
+        .govuk-form-group
+          = f.input :fund_id,
+                    wrapper: "select",
+                    collection: @funds
+          = f.input :identifier
+          = f.input :sector,
+                    wrapper: "select",
+                    collection: yaml_to_options("activity", "sector")
+          = f.input :title
+          = f.input :description
+          = f.input :status,
+                     wrapper: "select",
+                     collection: yaml_to_options("activity", "status")
+          = render partial: "shared/date_fields", locals: { name: "planned_start_date",
+                                                            date: @activity.planned_start_date,
+                                                            label: t("form.activity.planned_start_date.label") }
+          = render partial: "shared/date_fields", locals: { name: "planned_end_date",
+                                                            date: @activity.planned_end_date,
+                                                            label: t("form.activity.planned_end_date.label") }
+          = render partial: "shared/date_fields", locals: { name: "actual_start_date",
+                                                            date: @activity.actual_start_date,
+                                                            label: t("form.activity.actual_start_date.label") }
+          = render partial: "shared/date_fields", locals: { name: "actual_end_date",
+                                                            date: @activity.actual_end_date,
+                                                            label: t("form.activity.actual_end_date.label") }
+          = f.input :recipient_region,
+                    wrapper: "select",
+                    collection: yaml_to_options("activity", "recipient_region"),
+                    selected: "998"
+          = f.input :flow,
+                    wrapper: "select",
+                    collection: yaml_to_options("activity", "flow"),
+                    selected: "10"
+          = f.input :finance,
+                    wrapper: "select",
+                    collection: yaml_to_options("activity", "finance")
+          = f.input :aid_type,
+                    wrapper: "select",
+                    collection: yaml_to_options("activity", "aid_type")
+          = f.input :tied_status,
+                    wrapper: "select",
+                    collection: yaml_to_options("activity", "tied_status"),
+                    selected: "5"
+
+        = f.button :submit, I18n.t("form.activity.submit")
