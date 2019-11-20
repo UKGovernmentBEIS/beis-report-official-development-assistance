@@ -6,6 +6,21 @@ en:
     show:
       welcome: Welcome back, %{name}
   form:
+    activity:
+      actual_end_date:
+        label: Actual end date
+      actual_start_date:
+        label: Actual start date
+      create:
+        success: Activity successfully created
+      day: Day
+      month: Month
+      planned_end_date:
+        label: Planned end date
+      planned_start_date:
+        label: Planned start date
+      submit: Submit
+      year: Year
     fund:
       create:
         success: Fund successfully created
@@ -38,6 +53,37 @@ en:
       sign_out: Sign out
       start_now: Start now
   page_content:
+    activity:
+      actual_end_date:
+        label: Actual end date
+      actual_start_date:
+        label: Actual start date
+      aid_type:
+        label: Aid type
+      button:
+        create: Create activity
+      description:
+        label: Description
+      finance:
+        label: Finance
+      flow:
+        label: Flow
+      identitfier:
+        label: Identifier
+      planned_end_date:
+        label: Planned end date
+      planned_start_date:
+        label: Planned start date
+      recipient_region:
+        label: Recipient region
+      sector:
+        label: Sector
+      status:
+        label: Status
+      tied_status:
+        label: Tied status
+      title:
+        label: Title
     dashboard:
       button:
         manage_organisations: Manage organisations
@@ -77,6 +123,10 @@ en:
           cta: There are no organisations yet,
           link: you can make one now
   page_title:
+    activity:
+      index: Activities
+      new: Create activity
+      show: Activity %{name}
     dashboard: Dashboard
     errors:
       not_authorised: You are not authorised
@@ -94,6 +144,9 @@ en:
       new: Create user
       show: User
     welcome: Report Official Development Assistance
+  time:
+    formats:
+      default: "%Y-%m-%d"
   user:
     email: Email address
     identifier: Auth0 identifier

@@ -1,0 +1,15 @@
+.govuk-label
+  = "#{label}"
+.govuk-fieldset
+  .govuk-date-input__item
+    .govuk-form-group
+      = label_tag "#{name}_day", t("form.activity.day"), class: "govuk-label govuk-date-input__label"
+      = text_field_tag "#{name}[day]", date&.day, class: "govuk-input govuk-date-input__input govuk-input--width-2", type: :number, pattern: "[0-9]*"
+  .govuk-date-input__item
+    .govuk-form-group
+      = label_tag "#{name}_month", t("form.activity.month"), class: "govuk-label govuk-date-input__label"
+      = text_field_tag "#{name}[month]", date&.month, class: "govuk-input govuk-date-input__input govuk-input--width-2", type: :number, pattern: "[0-9]*"
+  .govuk-date-input__item
+    .govuk-form-group
+      = label_tag "#{name}_year", t("form.activity.year"), class: "govuk-label govuk-date-input__label"
+      = text_field_tag "#{name}[year]", date&.year, class: "govuk-input govuk-date-input__input govuk-input--width-4", type: :number, pattern: "[0-9]*"
