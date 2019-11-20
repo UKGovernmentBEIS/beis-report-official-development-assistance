@@ -28,29 +28,6 @@ gem "simple_form"
 gem "omniauth-auth0", "~> 2.2"
 gem "omniauth-rails_csrf_protection", "~> 0.1"
 
-group :development do
-  gem "listen", ">= 3.0.5", "< 3.3"
-  gem "spring"
-  gem "spring-watcher-listen", "~> 2.0.0"
-  gem "web-console", ">= 3.3.0"
-end
-
-group :test do
-  gem "capybara", ">= 2.15"
-  gem "chromedriver-helper"
-  gem "climate_control"
-  gem "selenium-webdriver"
-  gem "rack_session_access"
-  gem "webmock", "~> 3.5"
-end
-
-group :development do
-  gem "better_errors"
-  gem "html2haml"
-  gem "rails_layout"
-  gem "spring-commands-rspec"
-end
-
 group :development, :test do
   gem "bullet"
   gem "byebug", platforms: %i[mri mingw x64_mingw]
@@ -63,8 +40,24 @@ group :development, :test do
   gem "pry"
 end
 
+group :development do
+  gem "better_errors"
+  gem "html2haml"
+  gem "listen", ">= 3.0.5", "< 3.3"
+  gem "spring"
+  gem "spring-commands-rspec"
+  gem "spring-watcher-listen", "~> 2.0.0"
+  gem "rails_layout"
+  gem "web-console", ">= 3.3.0"
+end
+
 group :test do
+  gem "capybara", ">= 2.15"
+  gem "climate_control"
   gem "database_cleaner"
   gem "launchy"
+  gem "rack_session_access"
   gem "shoulda-matchers"
+  gem "selenium-webdriver"
+  gem "webmock", "~> 3.5"
 end
