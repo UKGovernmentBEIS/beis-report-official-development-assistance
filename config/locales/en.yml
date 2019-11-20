@@ -31,15 +31,6 @@ en:
       show: Show
       sign_out: Sign out
       start_now: Start now
-  organisation:
-    default_currency:
-      label: Default currency
-    language_code:
-      label: Language code
-    name:
-      label: Name
-    type:
-      label: Type
   page_content:
     dashboard:
       button:
@@ -52,6 +43,15 @@ en:
       not_authorised:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
+    organisation:
+      default_currency:
+        label: Default currency
+      language_code:
+        label: Language code
+      name:
+        label: Name
+      type:
+        label: Type
     organisations:
       button:
         create: Create organisation
