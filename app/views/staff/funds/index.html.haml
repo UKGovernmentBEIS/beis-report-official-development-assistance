@@ -1,0 +1,17 @@
+=content_for :page_title_prefix, t("page_title.fund.index")
+
+%p
+  = link_to t("generic.link.back"), dashboard_path, class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.fund.index")
+
+      = link_to(t("page_content.funds.button.create"), new_fund_path, class: "govuk-button")
+
+      - if @funds
+        %ul
+          - @funds.each do |fund|
+            %li
+              = link_to fund.name, fund_path(fund.id)

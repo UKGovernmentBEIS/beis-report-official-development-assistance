@@ -1,0 +1,21 @@
+=content_for :page_title_prefix, t("page_title.fund.show", name: @fund.name)
+
+%p
+  = link_to t("generic.link.back"), funds_path, class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = @fund.name
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %dl
+        %dt
+          = t("page_content.fund.name.label")
+        %dd
+          = @fund.name
+        %dt
+          = t("page_content.fund.organisation.label")
+        %dd
+          = @fund.organisation.name
