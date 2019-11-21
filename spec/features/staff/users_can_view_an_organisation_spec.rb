@@ -20,4 +20,12 @@ RSpec.feature "Users can view an individual organisation" do
 
     expect(page).to have_content(I18n.t("page_title.organisation.show", name: organisation.name))
   end
+
+  scenario "can go back to the previous page" do
+    visit organisation_path(organisation)
+
+    click_on I18n.t("generic.link.back")
+
+    expect(page).to have_current_path(organisations_path)
+  end
 end
