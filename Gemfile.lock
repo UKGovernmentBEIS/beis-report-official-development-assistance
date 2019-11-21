@@ -98,6 +98,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.5)
+    connection_pool (2.2.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.5)
@@ -228,6 +229,8 @@ GEM
     pundit-matchers (1.6.0)
       rspec-rails (>= 3.0.0)
     rack (2.0.7)
+    rack-protection (2.0.7)
+      rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rack_session_access (0.2.0)
@@ -268,6 +271,9 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    redis (4.1.2)
+    redis-namespace (1.6.0)
+      redis (>= 3.0.4)
     regexp_parser (1.6.0)
     rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
@@ -322,6 +328,11 @@ GEM
     sexp_processor (4.13.0)
     shoulda-matchers (4.1.2)
       activesupport (>= 4.2.0)
+    sidekiq (5.2.7)
+      connection_pool (~> 2.2, >= 2.2.2)
+      rack (>= 1.5.0)
+      rack-protection (>= 1.5.0)
+      redis (>= 3.3.5, < 5)
     simple_form (5.0.1)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
@@ -411,12 +422,15 @@ DEPENDENCIES
   rack_session_access
   rails (~> 6.0.1)
   rails_layout
+  redis
+  redis-namespace
   rollbar
   rspec-rails
   sass-rails (~> 6.0)
   sassc (~> 2.0.1)
   selenium-webdriver
   shoulda-matchers
+  sidekiq
   simple_form
   spring
   spring-commands-rspec
