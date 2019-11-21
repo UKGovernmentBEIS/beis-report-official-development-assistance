@@ -19,7 +19,19 @@ This service enables the Department for Business, Energy and Industrial Strategy
   npm install
   ```
 
-1. start the server
+1. start Redis ([install guide](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-homebrew-eb8df9a4f298))
+
+  ```bash
+  redis-server /usr/local/etc/redis.conf
+  ```
+
+1. start Sidekiq
+
+  ```bash
+  bundle exec sidekiq -C config/sidekiq.yml
+  ```
+
+1. start Rails
 
   ```bash
   bundle exec rails server

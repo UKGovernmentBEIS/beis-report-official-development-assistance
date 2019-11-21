@@ -18,8 +18,11 @@ gem "puma", "~> 4.3"
 gem "pundit"
 gem "rollbar"
 gem "rails", "~> 6.0.1"
+gem "redis"
+gem "redis-namespace"
 gem "sassc", "~> 2.0.1" # Downgrade to fix https://github.com/sass/sassc-ruby/issues/133
 gem "sass-rails", "~> 6.0"
+gem "sidekiq"
 gem "turbolinks", "~> 5"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "uglifier", ">= 1.3.0"
