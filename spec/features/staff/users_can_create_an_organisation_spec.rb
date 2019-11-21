@@ -1,6 +1,6 @@
 RSpec.feature "Users can create organisations" do
   before do
-    authenticate!
+    authenticate!(user: build_stubbed(:administrator))
   end
 
   context "when the user is not logged in" do

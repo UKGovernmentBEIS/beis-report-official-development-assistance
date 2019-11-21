@@ -1,23 +1,26 @@
 # frozen_string_literal: true
 
 class Staff::OrganisationsController < Staff::BaseController
-  include Secured
-
   def index
     @organisations = Organisation.all
+    authorize @organisations
   end
 
   def show
     organisation = Organisation.find(params[:id])
+    authorize organisation
+
     @organisation_presenter = OrganisationPresenter.new(organisation)
   end
 
   def new
     @organisation = Organisation.new
+    authorize @organisation
   end
 
   def create
     @organisation = Organisation.new(organisation_params)
+    authorize @organisation
 
     if @organisation.valid?
       @organisation.save
