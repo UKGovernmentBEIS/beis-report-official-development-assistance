@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.feature "users can invite new users to the service" do
   before do
-    authenticate!
+    authenticate!(user: build_stubbed(:administrator))
     stub_auth0_token_request
   end
 

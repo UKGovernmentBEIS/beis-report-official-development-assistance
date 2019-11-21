@@ -1,18 +1,23 @@
 class Staff::UsersController < Staff::BaseController
   def index
     @users = User.all
+    authorize @users
   end
 
   def show
     @user = User.find(id)
+    authorize @user
   end
 
   def new
     @user = User.new
+    authorize @user
   end
 
   def create
     @user = User.new(user_params)
+    authorize @user
+
     if @user.valid?
       result = CreateUser.new(user: @user, organisations: organisations).call
       if result.success?
