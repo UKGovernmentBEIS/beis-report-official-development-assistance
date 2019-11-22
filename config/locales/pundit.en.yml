@@ -1,0 +1,4 @@
+---
+en:
+  pundit:
+    default: You cannot perform this action.
