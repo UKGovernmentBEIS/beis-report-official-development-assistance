@@ -19,7 +19,7 @@ RSpec.feature "Users can create an activity" do
     visit new_activity_path
 
     expect(page).to have_content(I18n.t("page_title.activity.new"))
-    select "My Space Fund", from: "activity[fund_id]"
+    select "My Space Fund", from: "activity[hierarchy_id]"
     fill_in "activity[identifier]", with: "A-Unique-Identifier"
     click_button I18n.t("form.organisation.submit")
     expect(page).to have_content I18n.t("form.activity.create.success")

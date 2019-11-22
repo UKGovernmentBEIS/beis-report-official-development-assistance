@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_18_150004) do
+ActiveRecord::Schema.define(version: 2019_11_22_152342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -31,10 +31,11 @@ ActiveRecord::Schema.define(version: 2019_11_18_150004) do
     t.string "finance"
     t.string "aid_type"
     t.string "tied_status"
-    t.uuid "fund_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["fund_id"], name: "index_activities_on_fund_id"
+    t.string "hierarchy_type"
+    t.uuid "hierarchy_id"
+    t.index ["hierarchy_type", "hierarchy_id"], name: "index_activities_on_hierarchy_type_and_hierarchy_id"
   end
 
   create_table "funds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

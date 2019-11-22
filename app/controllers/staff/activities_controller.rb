@@ -19,6 +19,8 @@ class Staff::ActivitiesController < Staff::BaseController
 
   def create
     @activity = Activity.new(activity_params)
+    fund = Fund.find(activity_params[:hierarchy_id])
+    @activity.hierarchy = fund
 
     if @activity.valid?
       @activity.save
@@ -38,7 +40,7 @@ class Staff::ActivitiesController < Staff::BaseController
       :actual_start_date_day, :actual_start_date_month, :actual_start_date_year,
       :actual_end_date_day, :actual_end_date_month, :actual_end_date_year,
       :recipient_region, :flow, :finance, :aid_type, :tied_status,
-      :fund_id)
+      :hierarchy_id)
   end
 
   def id

@@ -9,11 +9,11 @@ RSpec.feature "Users can view an activity" do
   let(:forbidden_fund) { create(:fund, organisation: organisation_2) }
   let(:viewable_activity) do
     create(:activity,
-      fund: viewable_fund,
+      hierarchy: viewable_fund,
       planned_start_date: Date.today,
       planned_end_date: Date.tomorrow)
   end
-  let(:forbidden_activity) { create(:activity, fund: forbidden_fund) }
+  let(:forbidden_activity) { create(:activity, hierarchy: forbidden_fund) }
   let(:user) { create(:user, organisations: [organisation]) }
 
   context "when the user is not logged in" do
