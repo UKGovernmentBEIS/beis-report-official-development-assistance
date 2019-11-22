@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Activity, type: :model do
   describe "relations" do
-    it { should belong_to(:fund) }
+    it { should belong_to(:hierarchy) }
   end
 
   describe "constraints" do

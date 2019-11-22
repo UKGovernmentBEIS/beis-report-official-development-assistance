@@ -12,6 +12,9 @@ FactoryBot.define do
     finance { "110" }
     aid_type { "A01" }
     tied_status { "3" }
-    association :fund, factory: :fund
+  end
+
+  factory :fund_activity do
+    association :hierarchy, factory: :fund
   end
 end
