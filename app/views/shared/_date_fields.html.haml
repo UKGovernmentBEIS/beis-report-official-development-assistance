@@ -1,6 +1,6 @@
-.govuk-label
-  = "#{label}"
-.govuk-fieldset
+.govuk-fieldset.date-fieldset
+  .govuk-label
+    = "#{label}"
   .govuk-date-input__item
     .govuk-form-group
       = label_tag "#{name}_day", t("form.activity.day"), class: "govuk-label govuk-date-input__label"
