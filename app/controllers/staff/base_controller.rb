@@ -3,6 +3,6 @@ class Staff::BaseController < ApplicationController
   include Authorisation
   include Pundit
 
-  # Ensure that Pundit 'authorize' is called
-  after_action :verify_authorized
+  # Ensure that Pundit 'authorize' and scopes are used
+  after_action :verify_authorized, :verify_policy_scoped
 end
