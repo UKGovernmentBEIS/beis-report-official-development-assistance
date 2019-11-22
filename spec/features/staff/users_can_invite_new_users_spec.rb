@@ -4,6 +4,7 @@ RSpec.feature "users can invite new users to the service" do
   before do
     authenticate!(user: build_stubbed(:administrator))
     stub_auth0_token_request
+    stub_welcome_email_delivery
   end
 
   context "when the user is not logged in" do
@@ -57,6 +58,9 @@ RSpec.feature "users can invite new users to the service" do
     expect(page).to have_content(I18n.t("page_title.users.new"))
     fill_in "user[name]", with: new_user_name
     fill_in "user[email]", with: new_user_email
+
+    # Ensure a welcome email is enqueued
+    expect_welcome_email_delivery
 
     # Submit the form
     click_button I18n.t("form.user.submit")

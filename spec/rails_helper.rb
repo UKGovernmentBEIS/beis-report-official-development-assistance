@@ -35,6 +35,7 @@ end
 RSpec.configure do |config|
   config.include AuthenticationHelpers
   config.include Auth0Helpers
+  config.include EmailHelpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -86,4 +87,8 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :rails
   end
+end
+
+def with_modified_env(options, &block)
+  ClimateControl.modify(options, &block)
 end
