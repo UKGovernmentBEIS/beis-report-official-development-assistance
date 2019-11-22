@@ -14,6 +14,25 @@ RSpec.feature "users can invite new users to the service" do
     end
   end
 
+  context "when the user is not allowed to add a new user" do
+    before do
+      authenticate!(user: build_stubbed(:user))
+    end
+
+    scenario "hides the 'Create user' button" do
+      visit users_path
+
+      expect(page).to have_no_content(I18n.t("page_content.users.button.create"))
+    end
+
+    scenario "redirects the user to the dashboard" do
+      visit new_user_path
+
+      expect(current_path).to eq(dashboard_path)
+      expect(page).to have_content(I18n.t("pundit.default"))
+    end
+  end
+
   scenario "a new user can be created" do
     new_user_name = "Foo Bar"
     new_user_email = "email@example.com"

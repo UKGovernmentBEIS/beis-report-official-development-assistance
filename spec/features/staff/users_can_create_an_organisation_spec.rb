@@ -11,6 +11,25 @@ RSpec.feature "Users can create organisations" do
     end
   end
 
+  context "when the user is not allowed to add a new user" do
+    before do
+      authenticate!(user: build_stubbed(:user))
+    end
+
+    scenario "hides the 'Create organisation' button" do
+      visit organisations_path
+
+      expect(page).to have_no_content(I18n.t("page_content.organisations.button.create"))
+    end
+
+    scenario "redirects the user to the dashboard" do
+      visit new_organisation_path
+
+      expect(current_path).to eq(dashboard_path)
+      expect(page).to have_content(I18n.t("pundit.default"))
+    end
+  end
+
   scenario "successfully creating an organisation" do
     visit new_organisation_path
 
