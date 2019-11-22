@@ -1,21 +1,21 @@
 class Staff::UsersController < Staff::BaseController
   def index
-    @users = User.all
+    @users = policy_scope(User)
     authorize @users
   end
 
   def show
-    @user = User.find(id)
+    @user = policy_scope(User).find(id)
     authorize @user
   end
 
   def new
-    @user = User.new
+    @user = policy_scope(User).new
     authorize @user
   end
 
   def create
-    @user = User.new(user_params)
+    @user = policy_scope(User).new(user_params)
     authorize @user
 
     if @user.valid?
