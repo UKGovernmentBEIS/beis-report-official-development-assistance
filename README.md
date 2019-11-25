@@ -1,6 +1,6 @@
-# Report Overseas Development Assistance (RODA)
+# Report Official Development Assistance (RODA)
 
-This service enables the Department for Business, Energy and Industrial Strategy (BEIS) and their delivery partners to collect and report information on the spending of Overseas Development Assistance (ODA).
+This service enables the Department for Business, Energy and Industrial Strategy (BEIS) and their delivery partners to collect and report information on the spending of Official Development Assistance (ODA).
 
 ## Getting started
 
@@ -86,7 +86,7 @@ The heading should link to a Github URL at the bottom of the file, which shows t
 - A change
 - Another change
 
-[release-1]: https://github.com/UKGovernmentBEIS/beis-report-overseas-development-assistance/compare/release-0...release-1
+[release-1]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-0...release-1
 ```
 
 ## Access
