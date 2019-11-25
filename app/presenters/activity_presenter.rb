@@ -2,6 +2,37 @@
 
 class ActivityPresenter < SimpleDelegator
   def aid_type
-    super.downcase
+    return if super.blank?
+    I18n.t("activity.aid_type.#{super.downcase}")
+  end
+
+  def sector
+    return if super.blank?
+    I18n.t("activity.sector.#{super}")
+  end
+
+  def status
+    return if super.blank?
+    I18n.t("activity.status.#{super}")
+  end
+
+  def recipient_region
+    return if super.blank?
+    I18n.t("activity.recipient_region.#{super}")
+  end
+
+  def flow
+    return if super.blank?
+    I18n.t("activity.flow.#{super}")
+  end
+
+  def finance
+    return if super.blank?
+    I18n.t("activity.finance.#{super}")
+  end
+
+  def tied_status
+    return if super.blank?
+    I18n.t("activity.tied_status.#{super}")
   end
 end

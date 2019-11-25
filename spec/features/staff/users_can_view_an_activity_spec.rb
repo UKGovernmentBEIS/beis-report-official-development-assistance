@@ -28,14 +28,16 @@ RSpec.feature "Users can view an activity" do
     scenario "the user can view the activity" do
       visit activity_path(viewable_activity)
 
-      expect(page).to have_content viewable_activity.identifier
-      expect(page).to have_content I18n.t("activity.sector.#{viewable_activity.sector}")
-      expect(page).to have_content viewable_activity.title
-      expect(page).to have_content viewable_activity.description
-      expect(page).to have_content viewable_activity.planned_start_date
-      expect(page).to have_content viewable_activity.planned_end_date
-      expect(page).to have_content I18n.t("activity.recipient_region.#{viewable_activity.recipient_region}")
-      expect(page).to have_content I18n.t("activity.flow.#{viewable_activity.flow}")
+      activity_presenter = ActivityPresenter.new(viewable_activity)
+
+      expect(page).to have_content activity_presenter.identifier
+      expect(page).to have_content activity_presenter.sector
+      expect(page).to have_content activity_presenter.title
+      expect(page).to have_content activity_presenter.description
+      expect(page).to have_content activity_presenter.planned_start_date
+      expect(page).to have_content activity_presenter.planned_end_date
+      expect(page).to have_content activity_presenter.recipient_region
+      expect(page).to have_content activity_presenter.flow
     end
   end
 

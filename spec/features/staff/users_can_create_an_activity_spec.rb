@@ -16,13 +16,54 @@ RSpec.feature "Users can create an activity" do
   end
 
   context "when the hierarchy is a Fund" do
-    scenario "successfully creating an activity" do
+    scenario "successfully creating a minimal activity" do
       visit new_fund_activity_path(fund)
 
       expect(page).to have_content(I18n.t("page_title.activity.new"))
       fill_in "activity[identifier]", with: "A-Unique-Identifier"
       click_button I18n.t("form.organisation.submit")
       expect(page).to have_content I18n.t("form.activity.create.success")
+    end
+
+    scenario "successfully creating an activity with all optional information" do
+      visit new_fund_activity_path(fund)
+
+      fill_in "activity[identifier]", with: "A-Unique-Identifier"
+      select "AidData", from: "activity[sector]"
+      fill_in "activity[title]", with: "My Aid Activity"
+      fill_in "activity[description]", with: Faker::Lorem.paragraph
+      select "Implementation", from: "activity[status]"
+      select "Developing countries, unspecified", from: "activity[recipient_region]"
+      select "ODA", from: "activity[flow]"
+      select "Standard grant", from: "activity[finance]"
+      select "General budget support", from: "activity[aid_type]"
+      select "Untied", from: "activity[tied_status]"
+      click_button I18n.t("form.organisation.submit")
+      expect(page).to have_content I18n.t("form.activity.create.success")
+
+      activity_presenter = ActivityPresenter.new(Activity.last)
+      expect(page).to have_content "A-Unique-Identifier"
+      expect(page).to have_content activity_presenter.sector
+      expect(page).to have_content activity_presenter.status
+      expect(page).to have_content activity_presenter.recipient_region
+      expect(page).to have_content activity_presenter.flow
+      expect(page).to have_content activity_presenter.finance
+      expect(page).to have_content activity_presenter.aid_type
+      expect(page).to have_content activity_presenter.tied_status
+    end
+
+    context "validations" do
+      scenario "validation errors work as expected" do
+        visit new_fund_activity_path(fund)
+
+        click_button I18n.t("form.organisation.submit")
+        expect(page).not_to have_content I18n.t("form.activity.create.success")
+        expect(page).to have_content "can't be blank"
+      end
+
+      scenario "an activity cannot be created without a fund" do
+        expect { visit "/activity/new" }.to raise_error(ActionController::RoutingError)
+      end
     end
 
     scenario "can go back to the previous page" do
