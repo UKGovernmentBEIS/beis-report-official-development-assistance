@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.feature "users can invite new users to the service" do
   before do
-    authenticate!
+    authenticate!(user: build_stubbed(:administrator))
     stub_auth0_token_request
   end
 
@@ -11,6 +11,25 @@ RSpec.feature "users can invite new users to the service" do
       page.set_rack_session(userinfo: nil)
       visit new_user_path
       expect(current_path).to eq(root_path)
+    end
+  end
+
+  context "when the user is not allowed to add a new user" do
+    before do
+      authenticate!(user: build_stubbed(:user))
+    end
+
+    scenario "hides the 'Create user' button" do
+      visit users_path
+
+      expect(page).to have_no_content(I18n.t("page_content.users.button.create"))
+    end
+
+    scenario "shows the 'unauthorised' error message to the user" do
+      visit new_user_path
+
+      expect(page).to have_content(I18n.t("pundit.default"))
+      expect(page).to have_http_status(:unauthorized)
     end
   end
 

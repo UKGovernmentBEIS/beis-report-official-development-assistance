@@ -6,3 +6,4 @@
 - Ensure missing I18n strings cause tests to fail
 - Users can be created both locally and in Auth0
 - Users can be associated with multiple organisations
+- Allow roles to be assigned to users

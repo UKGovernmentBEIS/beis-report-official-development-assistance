@@ -1,6 +1,6 @@
 RSpec.feature "Users can create organisations" do
   before do
-    authenticate!
+    authenticate!(user: build_stubbed(:administrator))
   end
 
   context "when the user is not logged in" do
@@ -8,6 +8,25 @@ RSpec.feature "Users can create organisations" do
       page.set_rack_session(userinfo: nil)
       visit new_organisation_path
       expect(current_path).to eq(root_path)
+    end
+  end
+
+  context "when the user is not allowed to add a new user" do
+    before do
+      authenticate!(user: build_stubbed(:user))
+    end
+
+    scenario "hides the 'Create organisation' button" do
+      visit organisations_path
+
+      expect(page).to have_no_content(I18n.t("page_content.organisations.button.create"))
+    end
+
+    scenario "shows the 'unauthorised' error message to the user" do
+      visit new_organisation_path
+
+      expect(page).to have_content(I18n.t("pundit.default"))
+      expect(page).to have_http_status(:unauthorized)
     end
   end
 
