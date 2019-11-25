@@ -1,7 +1,7 @@
 ---
 en:
   app:
-    title: BEIS - Report Overseas Development Assistance
+    title: BEIS - Report Official Development Assistance
   dashboards:
     show:
       welcome: Welcome back, %{name}
@@ -73,7 +73,7 @@ en:
       index: Users
       new: Create user
       show: User
-    welcome: Report Overseas Development Assistance
+    welcome: Report Official Development Assistance
   user:
     email: Email address
     identifier: Auth0 identifier
