@@ -4,19 +4,23 @@ class Staff::FundsController < Staff::BaseController
   include Secured
 
   def index
-    @funds = funds_for_current_user
+    @funds = policy_scope(Fund)
+    authorize @funds
   end
 
   def show
-    @fund = Fund.find(id)
+    @fund = policy_scope(Fund).find(id)
+    authorize @fund
   end
 
   def new
-    @fund = Fund.new
+    @fund = policy_scope(Fund).new
+    authorize @fund
   end
 
   def create
-    @fund = Fund.new(fund_params)
+    @fund = policy_scope(Fund).new(fund_params)
+    authorize @fund
     @fund.organisation = Organisation.find params[:organisation_id]
 
     if @fund.valid?
@@ -29,10 +33,6 @@ class Staff::FundsController < Staff::BaseController
   end
 
   private
-
-  def funds_for_current_user
-    Fund.for_user(current_user)
-  end
 
   def fund_params
     params.require(:fund).permit(:name, :organisation_id)
