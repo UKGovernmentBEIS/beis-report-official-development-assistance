@@ -13,11 +13,11 @@ class Staff::FundsController < Staff::BaseController
 
   def new
     @fund = Fund.new
-    @organisations = current_user.organisations.collect { |organisation| [organisation.name, organisation.id] }
   end
 
   def create
     @fund = Fund.new(fund_params)
+    @fund.organisation = Organisation.find params[:organisation_id]
 
     if @fund.valid?
       @fund.save

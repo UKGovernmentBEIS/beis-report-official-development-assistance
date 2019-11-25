@@ -10,26 +10,27 @@ RSpec.feature "Users can create an activity" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
-      visit new_activity_path
+      visit new_fund_activity_path(fund)
       expect(current_path).to eq(root_path)
     end
   end
 
-  scenario "successfully creating an activity" do
-    visit new_activity_path
+  context "when the hierarchy is a Fund" do
+    scenario "successfully creating an activity" do
+      visit new_fund_activity_path(fund)
 
-    expect(page).to have_content(I18n.t("page_title.activity.new"))
-    select "My Space Fund", from: "activity[hierarchy_id]"
-    fill_in "activity[identifier]", with: "A-Unique-Identifier"
-    click_button I18n.t("form.organisation.submit")
-    expect(page).to have_content I18n.t("form.activity.create.success")
-  end
+      expect(page).to have_content(I18n.t("page_title.activity.new"))
+      fill_in "activity[identifier]", with: "A-Unique-Identifier"
+      click_button I18n.t("form.organisation.submit")
+      expect(page).to have_content I18n.t("form.activity.create.success")
+    end
 
-  scenario "can go back to the previous page" do
-    visit new_activity_path
+    scenario "can go back to the previous page" do
+      visit new_fund_activity_path(fund)
 
-    click_on I18n.t("generic.link.back")
+      click_on I18n.t("generic.link.back")
 
-    expect(page).to have_current_path(activities_path)
+      expect(page).to have_current_path(activities_path)
+    end
   end
 end

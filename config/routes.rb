@@ -9,9 +9,13 @@ Rails.application.routes.draw do
   scope module: "staff" do
     resource :dashboard, only: :show
     resources :users
-    resources :organisations
-    resources :funds
-    resources :activities
+    resources :organisations do
+      resources :funds, only: [:new, :create]
+    end
+    resources :funds, only: [:index, :show] do
+      resources :activities, only: [:new, :create]
+    end
+    resources :activities, only: [:show, :index]
   end
 
   # Authentication

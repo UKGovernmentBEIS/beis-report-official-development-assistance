@@ -15,20 +15,18 @@ RSpec.feature "Users can create a fund" do
   end
 
   scenario "successfully creating a fund" do
-    visit new_fund_path
+    visit new_organisation_fund_path(organisation_id: organisation.id)
 
     expect(page).to have_content(I18n.t("page_title.fund.new"))
     fill_in "fund[name]", with: "My Space Fund"
-    select "UKSA", from: "fund[organisation_id]"
     click_button I18n.t("form.fund.submit")
     expect(page).to have_content I18n.t("form.fund.create.success")
   end
 
   scenario "presence validation works as expected" do
-    visit new_fund_path
+    visit visit new_organisation_fund_path(organisation_id: organisation.id)
 
     expect(page).to have_content(I18n.t("page_title.fund.new"))
-    fill_in "fund[name]", with: "My New Fund"
 
     click_button I18n.t("form.fund.submit")
     expect(page).to_not have_content I18n.t("form.fund.create.success")

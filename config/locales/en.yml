@@ -79,6 +79,10 @@ en:
       sign_out: Sign out
       start_now: Start now
   page_content:
+    activities:
+      cta:
+        html: To create a new Activity, first choose the %{funds_link} you wish to create the Activity under
+      fund: Fund
     activity:
       actual_end_date:
         label: Actual end date
@@ -122,6 +126,9 @@ en:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
     fund:
+      activity: Activity
+      button:
+        create_activity: Create activity
       name:
         label: Name
       organisation:
@@ -129,9 +136,15 @@ en:
     funds:
       button:
         create: Create fund
+      cta:
+        html: To create a new Fund, first choose the %{organisations_link} you wish to create the Fund under
+      organisation: Organisation
     organisation:
+      button:
+        create_fund: Create fund
       default_currency:
         label: Default currency
+      funds: Funds
       language_code:
         label: Language code
       name:
