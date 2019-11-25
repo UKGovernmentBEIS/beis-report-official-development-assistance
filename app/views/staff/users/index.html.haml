@@ -9,5 +9,6 @@
 
   .govuk-grid-row
     .govuk-grid-column-full
-      = link_to t("page_content.users.button.create"), new_user_path, class: "govuk-button"
+      - if policy(User).new?
+        = link_to t("page_content.users.button.create"), new_user_path, class: "govuk-button"
       = render partial: '/staff/shared/users/table', locals: { users: @users }

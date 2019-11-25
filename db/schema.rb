@@ -38,7 +38,9 @@ ActiveRecord::Schema.define(version: 2019_11_18_130234) do
     t.string "email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "role"
     t.index ["identifier"], name: "index_users_on_identifier"
+    t.index ["role"], name: "index_users_on_role"
   end
 
 end
