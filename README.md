@@ -37,6 +37,8 @@ This service enables the Department for Business, Energy and Industrial Strategy
   bundle exec rails server
   ```
 
+1. log in using the generic development user roda@dxw.com. Find the credentials in the team 1Password vault.
+
 ## Running the tests
 
 To run all the tests, and linters we use `rake`:
