@@ -7,11 +7,12 @@
       %h1.govuk-heading-xl
         = t("page_title.activity.new")
 
-      = simple_form_for @activity do |f|
+      = simple_form_for(@activity, method: :post, url: fund_activities_path) do |f|
+
         .govuk-form-group
           = f.input :hierarchy_id,
-                    wrapper: "select",
-                    collection: @funds
+                    as: :hidden,
+                    input_html: { value: params["fund_id"] }
           = f.input :identifier,
                     hint: t("form.activity.identifier.hint")
           = f.input :sector,

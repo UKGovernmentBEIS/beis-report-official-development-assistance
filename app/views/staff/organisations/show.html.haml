@@ -27,3 +27,13 @@
           = t("page_content.organisation.default_currency.label")
         %dd
           = t("organisation.default_currency.#{@organisation_presenter.default_currency}")
+
+    .govuk-grid-column-one-third
+      %h2.govuk-heading-m
+        = t("page_content.organisation.funds")
+
+      = link_to(t("page_content.organisation.button.create_fund"), new_organisation_fund_path(@organisation_presenter), class: "govuk-button")
+      %ul
+        - @funds.each do |fund|
+          %li
+            = link_to fund.name, fund_path(fund)

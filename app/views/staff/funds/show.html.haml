@@ -18,4 +18,13 @@
         %dt
           = t("page_content.fund.organisation.label")
         %dd
-          = @fund.organisation.name
+          = link_to @fund.organisation.name, organisation_path(@fund.organisation)
+
+    .govuk-grid-column-one-third
+      %h2.govuk-heading-m
+        = t("page_content.fund.activity")
+
+      - if @fund.activity
+        = link_to @fund.activity.identifier, activity_path(@fund.activity)
+      - else
+        = link_to(t("page_content.fund.button.create_activity"), new_fund_activity_path(@fund), class: "govuk-button")

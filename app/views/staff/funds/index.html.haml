@@ -8,8 +8,8 @@
       %h1.govuk-heading-xl
         = t("page_title.fund.index")
 
-      = link_to(t("page_content.funds.button.create"), new_fund_path, class: "govuk-button")
-
+      %p
+        = t("page_content.funds.cta.html", organisations_link: link_to(t('page_content.funds.organisation'), organisations_path))
       - if @funds
         %ul
           - @funds.each do |fund|

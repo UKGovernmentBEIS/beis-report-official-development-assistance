@@ -8,12 +8,10 @@
       %h1.govuk-heading-xl
         = t("page_title.fund.new")
 
-      = simple_form_for @fund do |f|
+      = simple_form_for(@fund, method: :post, url: organisation_funds_path) do |f|
         .govuk-form-group
           = f.input :organisation_id,
-                    wrapper: 'select',
-                    collection: @organisations,
-                    hint: t("form.fund.organisation.hint")
+                    as: :hidden
           = f.input :name
 
         = f.button :submit, t("form.fund.submit")

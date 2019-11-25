@@ -4,7 +4,7 @@ class Staff::ActivitiesController < Staff::BaseController
   include Secured
 
   def index
-    @activities = Fund.for_user(current_user).collect { |fund| fund.activity }.compact
+    @activities = Activity.all
   end
 
   def show
@@ -13,14 +13,13 @@ class Staff::ActivitiesController < Staff::BaseController
   end
 
   def new
-    @funds = Fund.for_user(current_user)
     @activity = Activity.new
   end
 
   def create
     @activity = Activity.new(activity_params)
-    fund = Fund.find(activity_params[:hierarchy_id])
-    @activity.hierarchy = fund
+    hierarchy = Fund.find(activity_params[:hierarchy_id])
+    @activity.hierarchy = hierarchy
 
     if @activity.valid?
       @activity.save
@@ -40,7 +39,7 @@ class Staff::ActivitiesController < Staff::BaseController
       :actual_start_date_day, :actual_start_date_month, :actual_start_date_year,
       :actual_end_date_day, :actual_end_date_month, :actual_end_date_year,
       :recipient_region, :flow, :finance, :aid_type, :tied_status,
-      :hierarchy_id)
+      :hierarchy_id, :fund_id)
   end
 
   def id
