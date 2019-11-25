@@ -8,7 +8,6 @@ class CreateUser
 
   def call
     result = Result.new(true)
-
     User.transaction do
       user.organisations = organisations
       user.save
@@ -21,6 +20,7 @@ class CreateUser
       end
     end
 
+    SendWelcomeEmail.new(user: user).call
     result
   end
 end

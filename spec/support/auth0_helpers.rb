@@ -15,4 +15,13 @@ module Auth0Helpers
       .with(body: hash_including(email: email))
       .to_return(status: 500, body: "")
   end
+
+  def stub_auth0_post_password_change(auth0_identifier: anything)
+    stub_request(:post, "https://testdomain/api/v2/tickets/password-change")
+      .with(body: hash_including(user_id: auth0_identifier))
+      .to_return(
+        status: 200,
+        body: "{\"ticket\":\"https://testdomain/lo/reset?ticket=123#\"}"
+      )
+  end
 end

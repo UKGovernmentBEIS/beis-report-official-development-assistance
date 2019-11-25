@@ -1,9 +1,10 @@
 require "rails_helper"
 
 RSpec.describe CreateUser do
-  let(:user) { build(:user, identifier: nil) }
+  let(:user) { build(:user) }
   before(:each) do
     stub_auth0_token_request
+    stub_welcome_email_delivery
   end
 
   describe "#call" do
@@ -52,6 +53,11 @@ RSpec.describe CreateUser do
         expect(Rails.logger).to receive(:error)
           .with("Error adding user #{user.email} to Auth0 during CreateUser with .")
         described_class.new(user: user).call
+      end
+
+      it "does not email the user" do
+        described_class.new(user: user).call
+        expect(SendWelcomeEmail).not_to receive(:new)
       end
     end
   end
