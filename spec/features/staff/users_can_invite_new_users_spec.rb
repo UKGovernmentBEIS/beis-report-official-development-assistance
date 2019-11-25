@@ -25,11 +25,11 @@ RSpec.feature "users can invite new users to the service" do
       expect(page).to have_no_content(I18n.t("page_content.users.button.create"))
     end
 
-    scenario "redirects the user to the dashboard" do
+    scenario "shows the 'unauthorised' error message to the user" do
       visit new_user_path
 
-      expect(current_path).to eq(dashboard_path)
       expect(page).to have_content(I18n.t("pundit.default"))
+      expect(page).to have_http_status(:unauthorized)
     end
   end
 

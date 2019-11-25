@@ -1,4 +1,4 @@
 ---
 en:
   pundit:
-    default: You cannot perform this action.
+    default: You have not been authorised to see this page.

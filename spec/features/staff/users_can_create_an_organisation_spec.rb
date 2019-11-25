@@ -22,11 +22,11 @@ RSpec.feature "Users can create organisations" do
       expect(page).to have_no_content(I18n.t("page_content.organisations.button.create"))
     end
 
-    scenario "redirects the user to the dashboard" do
+    scenario "shows the 'unauthorised' error message to the user" do
       visit new_organisation_path
 
-      expect(current_path).to eq(dashboard_path)
       expect(page).to have_content(I18n.t("pundit.default"))
+      expect(page).to have_http_status(:unauthorized)
     end
   end
 

@@ -5,8 +5,14 @@ module Authorisation
   included do
     helper_method :current_user
 
-    rescue_from(UserNotAuthorised) do
-      render "pages/errors/not_authorised", status: 401
+    rescue_from(UserNotAuthorised, Pundit::NotAuthorizedError) do |exception|
+      error_message = if exception.respond_to?(:policy)
+        t("#{exception.policy.class.to_s.underscore}.#{exception.query}", scope: "pundit", default: :default)
+      else
+        t("page_content.errors.not_authorised.explanation")
+      end
+
+      render "pages/errors/not_authorised", status: 401, locals: {error_message: error_message}
     end
   end
 
