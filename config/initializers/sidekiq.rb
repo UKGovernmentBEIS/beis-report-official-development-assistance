@@ -1,4 +1,4 @@
-redis_url = "#{ENV["REDIS_URL"]}/0"
+redis_url = ENV["REDIS_URL"]
 
 options = {
   concurrency: Integer(ENV.fetch("RAILS_MAX_THREADS") { 5 }),
