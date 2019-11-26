@@ -3,7 +3,7 @@
 -# TODO: This back links is going to break when we have programme activities. We
 -# could put this in a helper called something like `link_to_parent_hierarchy`?
 %p
-  = link_to t("generic.link.back"), fund_path(@activity_presenter.hierarchy), class: "govuk-back-link"
+  = link_to t("generic.link.back"), hierarchy_path_for(@activity_presenter), class: "govuk-back-link"
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
