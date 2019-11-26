@@ -6,6 +6,53 @@ en:
     show:
       welcome: Welcome back, %{name}
   form:
+    activity:
+      actual_end_date:
+        label: Actual end date
+      actual_start_date:
+        label: Actual start date
+      aid_type:
+        hint:
+          html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidTypeVocabulary/' target='_blank'>IATI descriptions can be found here.</a>
+      create:
+        success: Activity successfully created
+      day: Day
+      finance:
+        hint: DAC/CRS transaction classification used to distinguish financial instruments, e.g. grants or loans.
+      flow:
+        hint:
+          html: "<a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>IATI descriptions of each flow type can be found here.</a>"
+      identifier:
+        hint: Reference to link this to your internal systems so it can be found again later.
+      month: Month
+      planned_end_date:
+        label: Planned end date
+      planned_start_date:
+        label: Planned start date
+      recipient_region:
+        hint:
+          html: A supranational geopolitical region that will benefit from this activity. <a href='http://reference.iatistandard.org/203/codelists/Region/' target='_blank'>Find the region code from the IATI region list.</a>
+      reporting_organisation:
+        hint: The organisation issuing the report.
+      sector:
+        hint:
+          html: Select your IATI sector vocabulary <a href='http://reference.iatistandard.org/203/codelists/SectorVocabulary/' target='_blank'>as described here.</a>
+      status:
+        hint:
+          html: IATI activity status. <a href="http://reference.iatistandard.org/203/codelists/ActivityStatus/" target="_blank">See IATI for detailed descriptions.</a>
+      submit: Submit
+      tied_status:
+        hint:
+          html: "<a href='http://reference.iatistandard.org/203/codelists/TiedStatus/' target='_blank'>See the IATI tied status page for descriptions.</a>"
+      title:
+        hint: A short, human-readable title that contains a meaningful summary of the activity.
+      year: Year
+    fund:
+      create:
+        success: Fund successfully created
+      organisation:
+        hint: The organisation this fund is associated with
+      submit: Submit
     organisation:
       create:
         success: Organisation successfully created
@@ -31,16 +78,42 @@ en:
       show: Show
       sign_out: Sign out
       start_now: Start now
-  organisation:
-    default_currency:
-      label: Default currency
-    language_code:
-      label: Language code
-    name:
-      label: Name
-    type:
-      label: Type
   page_content:
+    activities:
+      cta:
+        html: To create a new Activity, first choose the %{funds_link} you wish to create the Activity under
+      fund: Fund
+    activity:
+      actual_end_date:
+        label: Actual end date
+      actual_start_date:
+        label: Actual start date
+      aid_type:
+        label: Aid type
+      button:
+        create: Create activity
+      description:
+        label: Description
+      finance:
+        label: Finance
+      flow:
+        label: Flow
+      identitfier:
+        label: Identifier
+      planned_end_date:
+        label: Planned end date
+      planned_start_date:
+        label: Planned start date
+      recipient_region:
+        label: Recipient region
+      sector:
+        label: Sector
+      status:
+        label: Status
+      tied_status:
+        label: Tied status
+      title:
+        label: Title
     dashboard:
       button:
         manage_organisations: Manage organisations
@@ -52,6 +125,32 @@ en:
       not_authorised:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
+    fund:
+      activity: Activity
+      button:
+        create_activity: Create activity
+      name:
+        label: Name
+      organisation:
+        label: Organisation
+    funds:
+      button:
+        create: Create fund
+      cta:
+        html: To create a new Fund, first choose the %{organisations_link} you wish to create the Fund under
+      organisation: Organisation
+    organisation:
+      button:
+        create_fund: Create fund
+      default_currency:
+        label: Default currency
+      funds: Funds
+      language_code:
+        label: Language code
+      name:
+        label: Name
+      type:
+        label: Type
     organisations:
       button:
         create: Create organisation
@@ -63,9 +162,17 @@ en:
           cta: There are no organisations yet,
           link: you can make one now
   page_title:
+    activity:
+      index: Activities
+      new: Create activity
+      show: Activity %{name}
     dashboard: Dashboard
     errors:
       not_authorised: You are not authorised
+    fund:
+      index: Funds
+      new: Create fund
+      show: Fund %{name}
     home: Home
     organisation:
       index: Organisations
@@ -76,6 +183,9 @@ en:
       new: Create user
       show: User
     welcome: Report Official Development Assistance
+  time:
+    formats:
+      default: "%Y-%m-%d"
   user:
     email: Email address
     identifier: Auth0 identifier
