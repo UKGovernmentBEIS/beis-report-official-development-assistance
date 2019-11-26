@@ -28,10 +28,9 @@ RSpec.feature "Users can view activities" do
 
   context "when there are activities belonging to funds in another organisation" do
     scenario "the user will not see them on the activities index page" do
-      skip "Not implemented yet"
       organisation_2 = create(:organisation)
       fund_2 = create(:fund, organisation: organisation_2)
-      activity = create(:activity, fund: fund_2)
+      activity = create(:activity, hierarchy: fund_2)
 
       visit activities_path
 
