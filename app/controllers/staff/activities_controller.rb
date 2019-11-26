@@ -24,6 +24,11 @@ class Staff::ActivitiesController < Staff::BaseController
     @fund = policy_scope(Fund).find(activity_params[:hierarchy_id])
     @activity.hierarchy = @fund
 
+    @activity.planned_start_date = format_date(planned_start_date)
+    @activity.planned_end_date = format_date(planned_end_date)
+    @activity.actual_start_date = format_date(actual_start_date)
+    @activity.actual_end_date = format_date(actual_end_date)
+
     if @activity.valid?
       @activity.save
       flash[:notice] = I18n.t("form.activity.create.success")
@@ -35,12 +40,32 @@ class Staff::ActivitiesController < Staff::BaseController
 
   private
 
+  def format_date(params)
+    date_parts = params.values_at(:day, :month, :year)
+    return unless date_parts.all?(&:present?)
+
+    day, month, year = date_parts.map(&:to_i)
+    Date.new(year, month, day)
+  end
+
+  def planned_start_date
+    params.require(:planned_start_date).permit(:day, :month, :year)
+  end
+
+  def planned_end_date
+    params.require(:planned_end_date).permit(:day, :month, :year)
+  end
+
+  def actual_start_date
+    params.require(:actual_start_date).permit(:day, :month, :year)
+  end
+
+  def actual_end_date
+    params.require(:actual_end_date).permit(:day, :month, :year)
+  end
+
   def activity_params
     params.require(:activity).permit(:identifier, :sector, :title, :description, :status,
-      :planned_start_date_day, :planned_start_date_month, :planned_start_date_year,
-      :planned_end_date_day, :planned_end_date_month, :planned_end_date_year,
-      :actual_start_date_day, :actual_start_date_month, :actual_start_date_year,
-      :actual_end_date_day, :actual_end_date_month, :actual_end_date_year,
       :recipient_region, :flow, :finance, :aid_type, :tied_status,
       :hierarchy_id, :fund_id)
   end
