@@ -36,4 +36,4 @@
       %ul
         - @funds.each do |fund|
           %li
-            = link_to fund.name, fund_path(fund)
+            = link_to fund.name, organisation_fund_path(fund.organisation, fund)

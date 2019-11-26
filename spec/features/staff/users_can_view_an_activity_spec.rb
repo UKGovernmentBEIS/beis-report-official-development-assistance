@@ -19,14 +19,14 @@ RSpec.feature "Users can view an activity" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
-      visit activity_path(viewable_activity)
+      visit fund_activity_path(id: viewable_activity, fund_id: viewable_fund)
       expect(current_path).to eq(root_path)
     end
   end
 
   context "when the activity belongs to a fund in the user's organisation" do
     scenario "the user can view the activity" do
-      visit activity_path(viewable_activity)
+      visit fund_activity_path(id: viewable_activity, fund_id: viewable_fund)
 
       activity_presenter = ActivityPresenter.new(viewable_activity)
 
@@ -48,10 +48,10 @@ RSpec.feature "Users can view an activity" do
   end
 
   scenario "can go back to the previous page" do
-    visit activity_path(viewable_activity)
+    visit fund_activity_path(id: viewable_activity, fund_id: viewable_fund)
 
     click_on I18n.t("generic.link.back")
 
-    expect(page).to have_current_path(activities_path)
+    expect(page).to have_current_path(fund_path(viewable_fund))
   end
 end
