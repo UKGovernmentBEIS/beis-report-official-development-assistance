@@ -43,8 +43,10 @@ en:
   page_content:
     dashboard:
       button:
+        manage_organisations: Manage organisations
         manage_users: Manage users
       header:
+        manage_organisations: Organisations
         manage_users: Users
     errors:
       not_authorised:
