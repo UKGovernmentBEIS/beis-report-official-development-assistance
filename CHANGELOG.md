@@ -9,3 +9,4 @@
 - Allow roles to be assigned to users
 - Users are welcomed and able to create their new password to access the service
 - Service name updated from "Overseas" to "Official"
+- Users can create and view Funds; users can create and view Activities

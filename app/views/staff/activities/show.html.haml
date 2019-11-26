@@ -1,0 +1,71 @@
+=content_for :page_title_prefix, t("page_title.activity.show", name: @activity_presenter.title)
+
+-# TODO: This back links is going to break when we have programme activities. We
+-# could put this in a helper called something like `link_to_parent_hierarchy`?
+%p
+  = link_to t("generic.link.back"), hierarchy_path_for(@activity_presenter), class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = @activity_presenter.title
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %dl
+        %dt
+          = t("page_content.activity.identitfier.label")
+        %dd
+          = @activity_presenter.identifier
+        %dt
+          = t("page_content.activity.sector.label")
+        %dd
+          = @activity_presenter.sector
+        %dt
+          = t("page_content.activity.title.label")
+        %dd
+          = @activity_presenter.title
+        %dt
+          = t("page_content.activity.description.label")
+        %dd
+          = @activity_presenter.description
+        %dt
+          = t("page_content.activity.status.label")
+        %dd
+          = @activity_presenter.status
+        %dt
+          = t("page_content.activity.planned_start_date.label")
+        %dd
+          = l(@activity_presenter.planned_start_date)
+        %dt
+          = t("page_content.activity.planned_end_date.label")
+        %dd
+          = l(@activity_presenter.planned_end_date)
+        %dt
+          = t("page_content.activity.actual_start_date.label")
+        %dd
+          = l(@activity_presenter.actual_start_date)
+        %dt
+          = t("page_content.activity.actual_end_date.label")
+        %dd
+          = l(@activity_presenter.actual_end_date)
+        %dt
+          = t("page_content.activity.recipient_region.label")
+        %dd
+          = @activity_presenter.recipient_region
+        %dt
+          = t("page_content.activity.flow.label")
+        %dd
+          = @activity_presenter.flow
+        %dt
+          = t("page_content.activity.finance.label")
+        %dd
+          = @activity_presenter.finance
+        %dt
+          = t("page_content.activity.aid_type.label")
+        %dd
+          = @activity_presenter.aid_type
+        %dt
+          = t("page_content.activity.tied_status.label")
+        %dd
+          = t("activity.tied_status.#{@activity_presenter.tied_status}")

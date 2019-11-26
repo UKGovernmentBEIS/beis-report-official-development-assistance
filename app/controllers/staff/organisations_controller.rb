@@ -11,6 +11,7 @@ class Staff::OrganisationsController < Staff::BaseController
     authorize organisation
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
+    @funds = Fund.where(organisation: organisation)
   end
 
   def new

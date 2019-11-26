@@ -12,18 +12,28 @@
     .govuk-grid-column-two-thirds
       %dl
         %dt
-          = t("organisation.name.label")
+          = t("page_content.organisation.name.label")
         %dd
           = @organisation_presenter.name
         %dt
-          = t("organisation.type.label")
+          = t("page_content.organisation.type.label")
         %dd
           = t("organisation.organisation_type.#{@organisation_presenter.organisation_type}")
         %dt
-          = t("organisation.language_code.label")
+          = t("page_content.organisation.language_code.label")
         %dd
           = t("organisation.language_code.#{@organisation_presenter.language_code}")
         %dt
-          = t("organisation.default_currency.label")
+          = t("page_content.organisation.default_currency.label")
         %dd
           = t("organisation.default_currency.#{@organisation_presenter.default_currency}")
+
+    .govuk-grid-column-one-third
+      %h2.govuk-heading-m
+        = t("page_content.organisation.funds")
+
+      = link_to(t("page_content.organisation.button.create_fund"), new_organisation_fund_path(@organisation_presenter), class: "govuk-button")
+      %ul
+        - @funds.each do |fund|
+          %li
+            = link_to fund.name, organisation_fund_path(fund.organisation, fund)

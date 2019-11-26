@@ -12,14 +12,14 @@
           = f.input :name
           = f.input :organisation_type,
                     wrapper: 'select',
-                    collection: yaml_to_options("organisation_type")
+                    collection: yaml_to_options("organisation", "organisation_type")
           = f.input :language_code,
                     wrapper: 'select',
-                    collection: yaml_to_options("language_code"),
+                    collection: yaml_to_options("organisation", "language_code"),
                     hint: I18n.t("form.organisation.language_code.hint")
           = f.input :default_currency,
                     wrapper: 'select',
-                    collection: yaml_to_options("default_currency"),
+                    collection: yaml_to_options("organisation", "default_currency"),
                     hint: I18n.t("form.organisation.default_currency.hint")
 
         = f.button :submit, I18n.t("form.organisation.submit")
