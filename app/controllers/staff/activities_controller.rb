@@ -2,6 +2,7 @@
 
 class Staff::ActivitiesController < Staff::BaseController
   include Secured
+  include ActivityHelper
 
   def show
     activity = policy_scope(Activity).find(id)
@@ -32,7 +33,7 @@ class Staff::ActivitiesController < Staff::BaseController
     if @activity.valid?
       @activity.save
       flash[:notice] = I18n.t("form.activity.create.success")
-      redirect_to fund_activity_path(fund_id: @fund.id, id: @activity)
+      redirect_to activity_path_for(@activity)
     else
       render :new
     end

@@ -52,6 +52,6 @@ RSpec.feature "Users can view an activity" do
 
     click_on I18n.t("generic.link.back")
 
-    expect(page).to have_current_path(fund_path(viewable_fund))
+    expect(page).to have_current_path(organisation_fund_path(viewable_fund, organisation_id: organisation))
   end
 end
