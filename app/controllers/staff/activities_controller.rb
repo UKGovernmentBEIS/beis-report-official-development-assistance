@@ -4,21 +4,27 @@ class Staff::ActivitiesController < Staff::BaseController
   include Secured
 
   def index
-    @activities = Activity.all
+    @activities = policy_scope(Activity)
+    authorize @activities
   end
 
   def show
-    activity = Activity.find(id)
+    activity = policy_scope(Activity).find(id)
+    authorize activity
+
     @activity_presenter = ActivityPresenter.new(activity)
   end
 
   def new
-    @activity = Activity.new
+    @activity = policy_scope(Activity).new
+    authorize @activity
   end
 
   def create
-    @activity = Activity.new(activity_params)
-    hierarchy = Fund.find(activity_params[:hierarchy_id])
+    @activity = policy_scope(Activity).new(activity_params)
+    authorize @activity
+
+    hierarchy = policy_scope(Fund).find(activity_params[:hierarchy_id])
     @activity.hierarchy = hierarchy
 
     if @activity.valid?

@@ -43,10 +43,7 @@ RSpec.feature "Users can view an activity" do
 
   context "when the activity belongs to another organisation" do
     scenario "the user cannot view the activity" do
-      skip "Not implemented yet"
-      visit activity_path(forbidden_activity)
-
-      expect(page).not_to have_content forbidden_activity.title
+      expect { visit fund_path(forbidden_activity) }.to raise_exception(ActiveRecord::RecordNotFound)
     end
   end
 
