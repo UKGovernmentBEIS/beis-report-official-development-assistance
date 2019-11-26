@@ -56,8 +56,8 @@ RSpec.describe CreateUser do
       end
 
       it "does not email the user" do
-        described_class.new(user: user).call
         expect(SendWelcomeEmail).not_to receive(:new)
+        described_class.new(user: user).call
       end
     end
   end
