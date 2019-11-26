@@ -13,8 +13,8 @@ RSpec.feature "Users can view all organisations" do
 
   scenario "organisation index page" do
     organisation = FactoryBot.create(:organisation)
-
-    visit organisations_path
+    visit dashboard_path
+    click_link I18n.t("page_content.dashboard.button.manage_organisations")
 
     expect(page).to have_content(I18n.t("page_title.organisation.index"))
     expect(page).to have_content organisation.name

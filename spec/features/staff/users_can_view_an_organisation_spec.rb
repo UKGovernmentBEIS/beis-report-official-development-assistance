@@ -14,8 +14,9 @@ RSpec.feature "Users can view an individual organisation" do
 
   scenario "organisation show page" do
     organisation = FactoryBot.create(:organisation)
-
-    visit organisation_path(organisation)
+    visit dashboard_path
+    click_link I18n.t("page_content.dashboard.button.manage_organisations")
+    click_link organisation.name
 
     expect(page).to have_content(I18n.t("page_title.organisation.show", name: organisation.name))
   end
