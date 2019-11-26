@@ -1,4 +1,4 @@
-RSpec.feature "Users can view funds" do
+RSpec.feature "Users can view funds on an organisation page" do
   before do
     authenticate!(user: user)
   end
@@ -10,7 +10,7 @@ RSpec.feature "Users can view funds" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
-      visit funds_path
+      visit organisation_path(user_organisation)
       expect(current_path).to eq(root_path)
     end
   end
@@ -38,10 +38,10 @@ RSpec.feature "Users can view funds" do
   end
 
   scenario "can go back to the previous page" do
-    visit funds_path
+    visit organisation_path(user_organisation)
 
     click_on I18n.t("generic.link.back")
 
-    expect(page).to have_current_path(dashboard_path)
+    expect(page).to have_current_path(organisations_path)
   end
 end
