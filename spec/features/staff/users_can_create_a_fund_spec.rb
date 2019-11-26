@@ -9,7 +9,7 @@ RSpec.feature "Users can create a fund" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
-      visit funds_path
+      visit new_organisation_fund_path(organisation)
       expect(current_path).to eq(root_path)
     end
   end
@@ -31,5 +31,13 @@ RSpec.feature "Users can create a fund" do
     click_button I18n.t("form.fund.submit")
     expect(page).to_not have_content I18n.t("form.fund.create.success")
     expect(page).to have_content "can't be blank"
+  end
+
+  scenario "can go back to the previous page" do
+    visit new_organisation_fund_path(organisation_id: organisation.id)
+
+    click_on I18n.t("generic.link.back")
+
+    expect(page).to have_current_path(organisation_path(organisation.id))
   end
 end
