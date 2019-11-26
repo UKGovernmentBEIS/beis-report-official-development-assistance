@@ -10,12 +10,12 @@ Rails.application.routes.draw do
     resource :dashboard, only: :show
     resources :users
     resources :organisations do
-      resources :funds, only: [:new, :create]
+      resources :funds, only: [:index, :show, :new, :create]
     end
-    resources :funds, only: [:index, :show] do
-      resources :activities, only: [:new, :create]
+
+    resources :funds do
+      resources :activities, only: [:new, :create, :show]
     end
-    resources :activities, only: [:show, :index]
   end
 
   # Authentication

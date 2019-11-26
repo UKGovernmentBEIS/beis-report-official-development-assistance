@@ -36,6 +36,6 @@ RSpec.feature "Users can view a fund" do
 
     click_on I18n.t("generic.link.back")
 
-    expect(page).to have_current_path(funds_path)
+    expect(page).to have_current_path(organisation_path(organisation.id))
   end
 end

@@ -1,7 +1,7 @@
 =content_for :page_title_prefix, t("page_title.fund.show", name: @fund.name)
 
 %p
-  = link_to t("generic.link.back"), funds_path, class: "govuk-back-link"
+  = link_to t("generic.link.back"), organisation_path(@fund.organisation), class: "govuk-back-link"
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
@@ -25,6 +25,6 @@
         = t("page_content.fund.activity")
 
       - if @fund.activity
-        = link_to @fund.activity.identifier, activity_path(@fund.activity)
+        = link_to @fund.activity.identifier, fund_activity_path(@fund, @fund.activity)
       - else
         = link_to(t("page_content.fund.button.create_activity"), new_fund_activity_path(@fund), class: "govuk-button")

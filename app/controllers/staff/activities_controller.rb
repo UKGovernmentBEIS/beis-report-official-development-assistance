@@ -3,11 +3,6 @@
 class Staff::ActivitiesController < Staff::BaseController
   include Secured
 
-  def index
-    @activities = policy_scope(Activity)
-    authorize @activities
-  end
-
   def show
     activity = policy_scope(Activity).find(id)
     authorize activity
@@ -18,19 +13,21 @@ class Staff::ActivitiesController < Staff::BaseController
   def new
     @activity = policy_scope(Activity).new
     authorize @activity
+
+    @fund = Fund.find params["fund_id"]
   end
 
   def create
     @activity = policy_scope(Activity).new(activity_params)
     authorize @activity
 
-    hierarchy = policy_scope(Fund).find(activity_params[:hierarchy_id])
-    @activity.hierarchy = hierarchy
+    @fund = policy_scope(Fund).find(activity_params[:hierarchy_id])
+    @activity.hierarchy = @fund
 
     if @activity.valid?
       @activity.save
       flash[:notice] = I18n.t("form.activity.create.success")
-      redirect_to activity_path(@activity)
+      redirect_to fund_activity_path(fund_id: @fund.id, id: @activity)
     else
       render :new
     end

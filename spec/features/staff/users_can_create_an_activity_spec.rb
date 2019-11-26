@@ -41,15 +41,14 @@ RSpec.feature "Users can create an activity" do
       click_button I18n.t("form.organisation.submit")
       expect(page).to have_content I18n.t("form.activity.create.success")
 
-      activity_presenter = ActivityPresenter.new(Activity.last)
       expect(page).to have_content "A-Unique-Identifier"
-      expect(page).to have_content activity_presenter.sector
-      expect(page).to have_content activity_presenter.status
-      expect(page).to have_content activity_presenter.recipient_region
-      expect(page).to have_content activity_presenter.flow
-      expect(page).to have_content activity_presenter.finance
-      expect(page).to have_content activity_presenter.aid_type
-      expect(page).to have_content activity_presenter.tied_status
+      expect(page).to have_content "AidData"
+      expect(page).to have_content "My Aid Activity"
+      expect(page).to have_content "Developing countries, unspecified"
+      expect(page).to have_content "ODA"
+      expect(page).to have_content "Standard grant"
+      expect(page).to have_content "General budget support"
+      expect(page).to have_content "Untied"
     end
 
     context "validations" do
@@ -71,7 +70,7 @@ RSpec.feature "Users can create an activity" do
 
       click_on I18n.t("generic.link.back")
 
-      expect(page).to have_current_path(activities_path)
+      expect(page).to have_current_path(organisation_fund_path(fund.id, organisation_id: organisation.id))
     end
   end
 end
