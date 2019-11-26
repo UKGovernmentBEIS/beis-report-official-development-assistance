@@ -38,9 +38,15 @@ RSpec.feature "Users can create an activity" do
       select "Standard grant", from: "activity[finance]"
       select "General budget support", from: "activity[aid_type]"
       select "Untied", from: "activity[tied_status]"
+      fill_in "planned_start_date[day]", with: "1"
+      fill_in "planned_start_date[month]", with: "1"
+      fill_in "planned_start_date[year]", with: "2020"
+      fill_in "planned_end_date[day]", with: "1"
+      fill_in "planned_end_date[month]", with: "1"
+      fill_in "planned_end_date[year]", with: "2021"
       click_button I18n.t("form.organisation.submit")
-      expect(page).to have_content I18n.t("form.activity.create.success")
 
+      expect(page).to have_content I18n.t("form.activity.create.success")
       expect(page).to have_content "A-Unique-Identifier"
       expect(page).to have_content "AidData"
       expect(page).to have_content "My Aid Activity"
@@ -49,6 +55,8 @@ RSpec.feature "Users can create an activity" do
       expect(page).to have_content "Standard grant"
       expect(page).to have_content "General budget support"
       expect(page).to have_content "Untied"
+      expect(page).to have_content "2020-01-01"
+      expect(page).to have_content "2021-01-01"
     end
 
     context "validations" do
