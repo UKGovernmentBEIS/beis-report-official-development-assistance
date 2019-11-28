@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+ <iati-activity default-currency="<%= @activity.default_currency %>">
+   <iati-identifier><%= @activity.identifier %></iati-identifier>
+   <reporting-org>
+     <narrative><%= @activity.organisation.name %></narrative>
+   </reporting-org>
+   <title>
+    <narrative><%= @activity.title %></narrative>
+   </title>
+   <description type="1">
+    <narrative><%= @activity.description %></narrative>
+   </description>
+   <activity-status code="<%= @activity.status %>"/>
+   <activity-date iso-date="<%= @activity.planned_start_date %>" type="1"/>
+   <activity-date iso-date="<%= @activity.planned_end_date %>" type="2"/>
+   <activity-date iso-date="<%= @activity.actual_start_date %>" type="3"/>
+   <activity-date iso-date="<%= @activity.actual_end_date %>" type="4"/>
+ </iati-activity>

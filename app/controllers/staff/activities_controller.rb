@@ -5,10 +5,15 @@ class Staff::ActivitiesController < Staff::BaseController
   include ActivityHelper
 
   def show
-    activity = policy_scope(Activity).find(id)
-    authorize activity
+    @activity = policy_scope(Activity).find(id)
+    authorize @activity
 
-    @activity_presenter = ActivityPresenter.new(activity)
+    @activity_presenter = ActivityPresenter.new(@activity)
+
+    respond_to do |format|
+      format.html
+      format.xml
+    end
   end
 
   def new
