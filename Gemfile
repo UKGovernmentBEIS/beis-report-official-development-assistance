@@ -7,6 +7,7 @@ ruby "2.6.3"
 gem "auth0", "~> 4.9"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "coffee-rails", "~> 5.0"
+gem "govuk_design_system_formbuilder", github: "dxw/govuk_design_system_formbuilder", branch: "i18n"
 gem "haml-rails"
 gem "high_voltage"
 gem "jbuilder", "~> 2.5"
