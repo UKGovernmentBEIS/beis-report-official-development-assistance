@@ -11,11 +11,13 @@ class Staff::UsersController < Staff::BaseController
 
   def new
     @user = policy_scope(User).new
+    @organisations = policy_scope(Organisation)
     authorize @user
   end
 
   def create
     @user = policy_scope(User).new(user_params)
+    @organisations = policy_scope(Organisation)
     authorize @user
 
     if @user.valid?
@@ -33,7 +35,7 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email)
+    params.require(:user).permit(:name, :email, organisation_ids: [])
   end
 
   def id
@@ -41,11 +43,10 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def organisation_ids
-    params[:organisations]
+    user_params[:organisation_ids]
   end
 
   def organisations
-    return [] if organisation_ids.blank?
-    Organisation.find(organisation_ids)
+    Organisation.where(id: organisation_ids)
   end
 end

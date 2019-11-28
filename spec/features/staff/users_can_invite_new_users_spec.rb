@@ -82,8 +82,8 @@ RSpec.feature "users can invite new users to the service" do
 
       click_button I18n.t("form.user.submit")
 
-      expect(page).to have_content("Name\ncan't be blank")
-      expect(page).to have_content("Email\ncan't be blank")
+      expect(page).to have_content("Name can't be blank")
+      expect(page).to have_content("Email can't be blank")
     end
   end
 
