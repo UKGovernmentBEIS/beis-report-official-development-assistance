@@ -1,6 +1,6 @@
 =content_for :page_title_prefix, t("page_title.activity.new")
 
-%p= link_to t("generic.link.back"), organisation_fund_path(@fund.id, organisation_id: @fund.organisation.id), class: "govuk-back-link"
+= link_to t("generic.link.back"), organisation_fund_path(@fund.id, organisation_id: @fund.organisation.id), class: "govuk-back-link"
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
