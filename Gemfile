@@ -6,7 +6,6 @@ ruby "2.6.3"
 
 gem "auth0", "~> 4.9"
 gem "bootsnap", ">= 1.1.0", require: false
-gem "bootstrap", ">= 4.3.1"
 gem "coffee-rails", "~> 5.0"
 gem "haml-rails"
 gem "high_voltage"
