@@ -34,6 +34,11 @@ RSpec.feature "Users can download an activity as XML" do
       expect(xml.at("activity-status/@code").text).to eq(activity.status)
       expect(xml.at("activity-date[@type = '1']/@iso-date").text).to eq(activity.planned_start_date.strftime("%Y-%m-%d"))
       expect(xml.at("activity-date[@type = '2']/@iso-date").text).to eq(activity.planned_end_date.strftime("%Y-%m-%d"))
+      expect(xml.at("recipient-region/@code").text).to eq(activity.recipient_region)
+      expect(xml.at("sector[@vocabulary = '1']/@code").text).to eq(activity.sector)
+      expect(xml.at("default-flow-type/@code").text).to eq(activity.flow)
+      expect(xml.at("default-finance-type/@code").text).to eq(activity.finance)
+      expect(xml.at("default-tied-status/@code").text).to eq(activity.tied_status)
     end
   end
 end
