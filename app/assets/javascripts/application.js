@@ -13,4 +13,5 @@
 //= require jquery3
 //= require rails-ujs
 //= require turbolinks
+//= require govuk-frontend/govuk/all
 //= require_tree .
