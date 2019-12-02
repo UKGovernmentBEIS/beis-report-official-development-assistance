@@ -29,7 +29,7 @@ RSpec.feature "Users can create an activity" do
       visit new_fund_activity_path(fund)
 
       fill_in "activity[identifier]", with: "A-Unique-Identifier"
-      select "AidData", from: "activity[sector]"
+      select "Education policy and administrative management", from: "activity[sector]"
       fill_in "activity[title]", with: "My Aid Activity"
       fill_in "activity[description]", with: Faker::Lorem.paragraph
       select "Implementation", from: "activity[status]"
@@ -48,7 +48,7 @@ RSpec.feature "Users can create an activity" do
 
       expect(page).to have_content I18n.t("form.activity.create.success")
       expect(page).to have_content "A-Unique-Identifier"
-      expect(page).to have_content "AidData"
+      expect(page).to have_content "Education policy and administrative management"
       expect(page).to have_content "My Aid Activity"
       expect(page).to have_content "Developing countries, unspecified"
       expect(page).to have_content "ODA"
