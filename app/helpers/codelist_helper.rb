@@ -4,7 +4,7 @@ module CodelistHelper
   def yaml_to_options(entity, type)
     yaml = load_yaml(entity, type)
     data = yaml["data"]
-    data.collect { |item| [item["name"], item["code"]] }
+    data.collect { |item| [item["name"], item["code"]] }.sort
   end
 
   def load_yaml(entity, type)
