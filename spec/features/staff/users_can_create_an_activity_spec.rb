@@ -70,10 +70,6 @@ RSpec.feature "Users can create an activity" do
         expect(page).not_to have_content I18n.t("form.activity.create.success")
         expect(page).to have_content "can't be blank"
       end
-
-      scenario "an activity cannot be created without a fund" do
-        expect { visit "/activity/new" }.to raise_error(ActionController::RoutingError)
-      end
     end
 
     scenario "can go back to the previous page" do
