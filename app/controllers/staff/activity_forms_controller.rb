@@ -1,7 +1,7 @@
 class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
 
-  steps :identifier, :purpose, :sector, :status, :dates, :country, :flow, :finance, :aid_type, :everything
+  steps :identifier, :purpose, :sector, :status, :dates, :country, :flow, :finance, :aid_type, :tied_status
 
   def index
     skip_policy_scope
