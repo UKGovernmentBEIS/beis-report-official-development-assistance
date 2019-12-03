@@ -61,6 +61,8 @@ RSpec.feature "Users can create an activity" do
       click_button I18n.t("form.activity.submit")
 
       select "General budget support", from: "activity[aid_type]"
+      click_button I18n.t("form.activity.submit")
+
       select "Untied", from: "activity[tied_status]"
       click_button I18n.t("form.activity.submit")
 
