@@ -1,7 +1,7 @@
 class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
 
-  steps :identifier, :purpose, :sector, :status, :everything
+  steps :identifier, :purpose, :sector, :status, :dates, :everything
 
   def index
     skip_policy_scope
@@ -23,14 +23,14 @@ class Staff::ActivityFormsController < Staff::BaseController
     @fund = policy_scope(Fund).find(params[:fund_id])
     authorize @activity
 
-    @activity.update(activity_params)
-
     case step
-    when :everything
+    when :dates
       @activity.planned_start_date = format_date(planned_start_date)
       @activity.planned_end_date = format_date(planned_end_date)
       @activity.actual_start_date = format_date(actual_start_date)
       @activity.actual_end_date = format_date(actual_end_date)
+    else
+      @activity.update(activity_params)
     end
 
     render_wizard @activity, notice: I18n.t("form.activity.create.success")
