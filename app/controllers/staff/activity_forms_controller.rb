@@ -11,6 +11,8 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def show
+    @page_title = t("page_title.activity_form.show.#{step}")
+
     @activity = policy_scope(Activity).find(params[:activity_id])
     @fund = policy_scope(Fund).find(params[:fund_id])
     authorize @activity
@@ -19,6 +21,8 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def update
+    @page_title = t("page_title.activity_form.show.#{step}")
+
     @activity = policy_scope(Activity).find(params[:activity_id])
     @fund = policy_scope(Fund).find(params[:fund_id])
     authorize @activity
