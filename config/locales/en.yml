@@ -40,7 +40,7 @@ en:
       status:
         hint:
           html: IATI activity status. <a href="http://reference.iatistandard.org/203/codelists/ActivityStatus/" target="_blank">See IATI for detailed descriptions.</a>
-      submit: Submit
+      submit: Continue
       tied_status:
         hint:
           html: "<a href='http://reference.iatistandard.org/203/codelists/TiedStatus/' target='_blank'>See the IATI tied status page for descriptions.</a>"

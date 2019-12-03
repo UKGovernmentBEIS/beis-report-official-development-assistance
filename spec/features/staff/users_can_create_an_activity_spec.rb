@@ -22,7 +22,7 @@ RSpec.feature "Users can create an activity" do
 
       expect(page).to have_content(I18n.t("page_title.activity.new"))
       fill_in "activity[identifier]", with: "A-Unique-Identifier"
-      click_button I18n.t("form.organisation.submit")
+      click_button I18n.t("form.activity.submit")
       expect(page).to have_content I18n.t("form.activity.create.success")
     end
 
@@ -31,7 +31,7 @@ RSpec.feature "Users can create an activity" do
       click_on I18n.t("page_content.fund.button.create_activity")
 
       fill_in "activity[identifier]", with: "A-Unique-Identifier"
-      click_button I18n.t("form.organisation.submit")
+      click_button I18n.t("form.activity.submit")
 
       select "Education policy and administrative management", from: "activity[sector]"
       fill_in "activity[title]", with: "My Aid Activity"
@@ -48,7 +48,7 @@ RSpec.feature "Users can create an activity" do
       fill_in "planned_end_date[day]", with: "1"
       fill_in "planned_end_date[month]", with: "1"
       fill_in "planned_end_date[year]", with: "2021"
-      click_button I18n.t("form.organisation.submit")
+      click_button I18n.t("form.activity.submit")
 
       expect(page).to have_content I18n.t("form.activity.create.success")
       expect(page).to have_content "A-Unique-Identifier"
@@ -68,7 +68,7 @@ RSpec.feature "Users can create an activity" do
         visit fund_path(fund)
         click_on I18n.t("page_content.fund.button.create_activity")
 
-        click_button I18n.t("form.organisation.submit")
+        click_button I18n.t("form.activity.submit")
         expect(page).not_to have_content I18n.t("form.activity.create.success")
         expect(page).to have_content "can't be blank"
       end
