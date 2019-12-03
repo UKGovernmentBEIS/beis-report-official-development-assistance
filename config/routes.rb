@@ -14,7 +14,9 @@ Rails.application.routes.draw do
     end
 
     resources :funds do
-      resources :activities, only: [:new, :create, :show]
+      resources :activities, only: [:new, :create, :show] do
+        resources :steps, controller: "activity_forms"
+      end
     end
   end
 
