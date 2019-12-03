@@ -20,7 +20,7 @@ RSpec.feature "Users can create an activity" do
       visit fund_path(fund)
       click_on I18n.t("page_content.fund.button.create_activity")
 
-      expect(page).to have_content(I18n.t("page_title.activity.new"))
+      expect(page).to have_content(I18n.t("page_title.activity_form.show.identifier"))
       fill_in "activity[identifier]", with: "A-Unique-Identifier"
       click_button I18n.t("form.activity.submit")
       expect(page).to have_content I18n.t("form.activity.create.success")
@@ -30,19 +30,24 @@ RSpec.feature "Users can create an activity" do
       visit fund_path(fund)
       click_on I18n.t("page_content.fund.button.create_activity")
 
+      expect(page).to have_content I18n.t("page_title.activity_form.show.identifier")
       fill_in "activity[identifier]", with: "A-Unique-Identifier"
       click_button I18n.t("form.activity.submit")
 
+      expect(page).to have_content I18n.t("page_title.activity_form.show.purpose")
       fill_in "activity[title]", with: "My Aid Activity"
       fill_in "activity[description]", with: Faker::Lorem.paragraph
       click_button I18n.t("form.activity.submit")
 
+      expect(page).to have_content I18n.t("page_title.activity_form.show.sector")
       select "Education policy and administrative management", from: "activity[sector]"
       click_button I18n.t("form.activity.submit")
 
+      expect(page).to have_content I18n.t("page_title.activity_form.show.status")
       select "Implementation", from: "activity[status]"
       click_button I18n.t("form.activity.submit")
 
+      expect(page).to have_content I18n.t("page_title.activity_form.show.dates")
       fill_in "planned_start_date[day]", with: "1"
       fill_in "planned_start_date[month]", with: "1"
       fill_in "planned_start_date[year]", with: "2020"
@@ -51,18 +56,23 @@ RSpec.feature "Users can create an activity" do
       fill_in "planned_end_date[year]", with: "2021"
       click_button I18n.t("form.activity.submit")
 
+      expect(page).to have_content I18n.t("page_title.activity_form.show.country")
       select "Developing countries, unspecified", from: "activity[recipient_region]"
       click_button I18n.t("form.activity.submit")
 
+      expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
       select "ODA", from: "activity[flow]"
       click_button I18n.t("form.activity.submit")
 
+      expect(page).to have_content I18n.t("page_title.activity_form.show.finance")
       select "Standard grant", from: "activity[finance]"
       click_button I18n.t("form.activity.submit")
 
+      expect(page).to have_content I18n.t("page_title.activity_form.show.aid_type")
       select "General budget support", from: "activity[aid_type]"
       click_button I18n.t("form.activity.submit")
 
+      expect(page).to have_content I18n.t("page_title.activity_form.show.tied_status")
       select "Untied", from: "activity[tied_status]"
       click_button I18n.t("form.activity.submit")
 

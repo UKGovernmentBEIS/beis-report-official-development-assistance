@@ -166,6 +166,18 @@ en:
       index: Activities
       new: Create activity
       show: Activity %{name}
+    activity_form:
+      show:
+        aid_type: Aid type
+        country: Country
+        dates: Dates
+        finance: Finance
+        flow: Flow
+        identifier: Your unique identifier
+        purpose: Purpose of activity
+        sector: Sector
+        status: Status
+        tied_status: Tied status
     dashboard: Dashboard
     errors:
       not_authorised: You are not authorised
