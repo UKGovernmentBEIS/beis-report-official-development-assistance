@@ -7,25 +7,18 @@
       %h1.govuk-heading-xl
         = t("page_title.users.new")
 
-  .govuk-grid-row
-    .govuk-grid-column-two-thirds
-      = simple_form_for @user do |f|
-        .govuk-form-group
-          = f.input :name
-          = f.input :email
-        .govuk-form-group
-          %fieldset.govuk-fieldset
-            = label_tag 'organisations', "Organisations", class: 'govuk-label'
-            .govuk-checkboxes.checkbox-group
-              - if organisation_check_box_options.present?
-                - organisation_check_box_options.each_with_index do |organisation, i|
-                  .govuk-checkboxes__item
-                    = check_box_tag 'organisations[]', organisation[1], false, id: 'organisations_' + organisation[1], class: 'govuk-checkboxes__input'
-                    = label_tag 'organisations[]', organisation[0], for: 'organisations_' + organisation[1], class: 'govuk-label govuk-checkboxes__label'
-              - else
-                .govuk-inset-text
-                  = succeed "." do
-                    = t("page_content.users.new.no_organisations.cta")
-                    = link_to t("page_content.users.new.no_organisations.link"), new_organisation_path
+      = form_with model: @user do |f|
+        = f.govuk_error_summary
 
-        = f.button :submit, t("form.user.submit")
+        = f.govuk_text_field :name
+        = f.govuk_email_field :email
+
+        - if @organisations.any?
+          = f.govuk_collection_check_boxes :organisation_ids, @organisations, :id, :name
+        - else
+          .govuk-inset-text
+            = succeed "." do
+              = t("page_content.users.new.no_organisations.cta")
+              = link_to t("page_content.users.new.no_organisations.link"), new_organisation_path
+
+        = f.govuk_submit t("form.user.submit")

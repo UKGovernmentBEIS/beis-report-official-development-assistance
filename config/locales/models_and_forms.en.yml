@@ -1,0 +1,16 @@
+---
+en:
+  activerecord:
+    attributes:
+      user:
+        organisation_ids: Organisations
+    errors:
+      models:
+        user:
+          attributes:
+            organisation_ids:
+              blank: Select the organisation(s) this user belongs to
+  helpers:
+    fieldset:
+      user:
+        organisation_ids: Organisations
