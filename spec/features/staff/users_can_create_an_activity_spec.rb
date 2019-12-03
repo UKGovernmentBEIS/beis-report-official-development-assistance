@@ -31,6 +31,8 @@ RSpec.feature "Users can create an activity" do
       click_on I18n.t("page_content.fund.button.create_activity")
 
       fill_in "activity[identifier]", with: "A-Unique-Identifier"
+      click_button I18n.t("form.organisation.submit")
+
       select "Education policy and administrative management", from: "activity[sector]"
       fill_in "activity[title]", with: "My Aid Activity"
       fill_in "activity[description]", with: Faker::Lorem.paragraph
