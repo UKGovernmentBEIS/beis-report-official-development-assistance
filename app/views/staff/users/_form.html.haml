@@ -1,0 +1,15 @@
+= form_with model: @user do |f|
+  = f.govuk_error_summary
+
+  = f.govuk_text_field :name
+  = f.govuk_email_field :email
+
+  - if @organisations.any?
+    = f.govuk_collection_check_boxes :organisation_ids, @organisations, :id, :name
+  - else
+    .govuk-inset-text
+      = succeed "." do
+        = t("page_content.users.new.no_organisations.cta")
+        = link_to t("page_content.users.new.no_organisations.link"), new_organisation_path
+
+  = f.govuk_submit t("form.user.submit")
