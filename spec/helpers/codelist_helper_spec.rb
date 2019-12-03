@@ -16,6 +16,11 @@ RSpec.describe CodelistHelper, type: :helper do
           ["Kwanza", "AOA"]
         )
       end
+
+      it "sorts the resulting multidimensional array in name order" do
+        expect(helper.yaml_to_options("organisation", "default_currency").first).to eq(["Afghani", "AFN"])
+        expect(helper.yaml_to_options("organisation", "default_currency").last).to eq(["Zloty", "PLN"])
+      end
     end
   end
 end
