@@ -10,11 +10,6 @@
       = simple_form_for(@activity, method: :put, url: wizard_path) do |f|
 
         .govuk-form-group
-          = f.input :flow,
-                    wrapper: "select",
-                    collection: yaml_to_options("activity", "flow"),
-                    selected: "10",
-                    hint: t("form.activity.flow.hint.html")
           = f.input :finance,
                     wrapper: "select",
                     collection: yaml_to_options("activity", "finance"),
