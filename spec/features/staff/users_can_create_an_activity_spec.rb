@@ -33,9 +33,11 @@ RSpec.feature "Users can create an activity" do
       fill_in "activity[identifier]", with: "A-Unique-Identifier"
       click_button I18n.t("form.activity.submit")
 
-      select "Education policy and administrative management", from: "activity[sector]"
       fill_in "activity[title]", with: "My Aid Activity"
       fill_in "activity[description]", with: Faker::Lorem.paragraph
+      click_button I18n.t("form.activity.submit")
+
+      select "Education policy and administrative management", from: "activity[sector]"
       select "Implementation", from: "activity[status]"
       select "Developing countries, unspecified", from: "activity[recipient_region]"
       select "ODA", from: "activity[flow]"

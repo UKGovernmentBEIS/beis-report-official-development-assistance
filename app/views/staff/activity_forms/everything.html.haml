@@ -14,8 +14,6 @@
                     wrapper: "select",
                     collection: yaml_to_options("activity", "sector"),
                     hint: t("form.activity.sector.hint.html")
-          = f.input :title
-          = f.input :description, input_html: { rows: 5, class: "govuk-textarea" }
           = f.input :status,
                      wrapper: "select",
                      collection: yaml_to_options("activity", "status"),
