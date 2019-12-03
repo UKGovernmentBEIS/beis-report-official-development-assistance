@@ -15,65 +15,19 @@ class Staff::ActivitiesController < Staff::BaseController
     end
   end
 
-  def new
+  def create
     @activity = policy_scope(Activity).new
     authorize @activity
 
-    @fund = Fund.find params["fund_id"]
-  end
-
-  def create
-    @activity = policy_scope(Activity).new(activity_params)
-    authorize @activity
-
-    @fund = policy_scope(Fund).find(activity_params[:hierarchy_id])
+    @fund = policy_scope(Fund).find(params[:fund_id])
     @activity.hierarchy = @fund
 
-    @activity.planned_start_date = format_date(planned_start_date)
-    @activity.planned_end_date = format_date(planned_end_date)
-    @activity.actual_start_date = format_date(actual_start_date)
-    @activity.actual_end_date = format_date(actual_end_date)
+    @activity.save(validate: false)
 
-    if @activity.valid?
-      @activity.save
-      flash[:notice] = I18n.t("form.activity.create.success")
-      redirect_to activity_path_for(@activity)
-    else
-      render :new
-    end
+    redirect_to fund_activity_steps_path(@fund, @activity)
   end
 
   private
-
-  def format_date(params)
-    date_parts = params.values_at(:day, :month, :year)
-    return unless date_parts.all?(&:present?)
-
-    day, month, year = date_parts.map(&:to_i)
-    Date.new(year, month, day)
-  end
-
-  def planned_start_date
-    params.require(:planned_start_date).permit(:day, :month, :year)
-  end
-
-  def planned_end_date
-    params.require(:planned_end_date).permit(:day, :month, :year)
-  end
-
-  def actual_start_date
-    params.require(:actual_start_date).permit(:day, :month, :year)
-  end
-
-  def actual_end_date
-    params.require(:actual_end_date).permit(:day, :month, :year)
-  end
-
-  def activity_params
-    params.require(:activity).permit(:identifier, :sector, :title, :description, :status,
-      :recipient_region, :flow, :finance, :aid_type, :tied_status,
-      :hierarchy_id, :fund_id)
-  end
 
   def id
     params[:id]
