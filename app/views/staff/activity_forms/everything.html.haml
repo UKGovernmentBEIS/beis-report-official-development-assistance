@@ -10,10 +10,6 @@
       = simple_form_for(@activity, method: :put, url: wizard_path) do |f|
 
         .govuk-form-group
-          = f.input :sector,
-                    wrapper: "select",
-                    collection: yaml_to_options("activity", "sector"),
-                    hint: t("form.activity.sector.hint.html")
           = f.input :status,
                      wrapper: "select",
                      collection: yaml_to_options("activity", "status"),

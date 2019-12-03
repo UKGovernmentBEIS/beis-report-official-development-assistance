@@ -38,6 +38,8 @@ RSpec.feature "Users can create an activity" do
       click_button I18n.t("form.activity.submit")
 
       select "Education policy and administrative management", from: "activity[sector]"
+      click_button I18n.t("form.activity.submit")
+
       select "Implementation", from: "activity[status]"
       select "Developing countries, unspecified", from: "activity[recipient_region]"
       select "ODA", from: "activity[flow]"
