@@ -4,7 +4,7 @@
 
 - Add Google Tag Manager in place of templated Google Analytics code
 - Ensure missing I18n strings cause tests to fail
-- Users can be created both locally and in Auth0
+- Users can be created/updated both locally and in Auth0
 - Users can be associated with multiple organisations
 - Allow roles to be assigned to users
 - Users are welcomed and able to create their new password to access the service
