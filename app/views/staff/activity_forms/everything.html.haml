@@ -10,10 +10,6 @@
       = simple_form_for(@activity, method: :put, url: wizard_path) do |f|
 
         .govuk-form-group
-          = f.input :status,
-                     wrapper: "select",
-                     collection: yaml_to_options("activity", "status"),
-                     hint: t("form.activity.status.hint.html")
           = render partial: "shared/date_fields", locals: { name: "planned_start_date",
                                                             date: @activity.planned_start_date,
                                                             label: t("form.activity.planned_start_date.label") }
