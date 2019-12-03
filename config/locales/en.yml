@@ -86,11 +86,15 @@ en:
       create:
         failed: The service is experiencing issues creating new users and the team has been alerted to the problem.
         success: User successfully created
+      submit: Submit
+      update:
+        success: User successfully updated
   generic:
     button:
       submit: Submit
     link:
       back: Back
+      edit: Edit
       show: Show
       sign_out: Sign out
       start_now: Start now
@@ -214,6 +218,7 @@ en:
     transaction:
       new: New transaction
     users:
+      edit: Edit user
       index: Users
       new: Create user
       show: User

@@ -34,6 +34,25 @@ class Staff::UsersController < Staff::BaseController
     end
   end
 
+  def edit
+    @user = policy_scope(User).find(id)
+    @organisations = policy_scope(Organisation)
+    authorize @user
+  end
+
+  def update
+    @user = policy_scope(User).find(id)
+    @organisations = policy_scope(Organisation)
+    authorize @user
+
+    if @user.update(user_params)
+      flash.now[:notice] = I18n.t("form.user.update.success")
+      redirect_to user_path(@user)
+    else
+      render :edit
+    end
+  end
+
   def user_params
     params.require(:user).permit(:name, :email, organisation_ids: [])
   end
