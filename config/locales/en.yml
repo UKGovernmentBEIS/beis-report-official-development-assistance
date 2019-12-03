@@ -36,7 +36,7 @@ en:
         hint: The organisation issuing the report.
       sector:
         hint:
-          html: Select your IATI sector vocabulary <a href='http://reference.iatistandard.org/203/codelists/SectorVocabulary/' target='_blank'>as described here.</a>
+          html: Classify the purpose of this activity. <a href='http://reference.iatistandard.org/203/codelists/Sector/' target='_blank'>Please provide the sector approriate to you from this list</a>.
       status:
         hint:
           html: IATI activity status. <a href="http://reference.iatistandard.org/203/codelists/ActivityStatus/" target="_blank">See IATI for detailed descriptions.</a>
