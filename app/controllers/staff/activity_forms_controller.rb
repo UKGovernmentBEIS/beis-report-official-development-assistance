@@ -1,7 +1,7 @@
 class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
 
-  steps :everything
+  steps :identifier, :everything
 
   def index
     skip_policy_scope
@@ -25,10 +25,13 @@ class Staff::ActivityFormsController < Staff::BaseController
 
     @activity.update(activity_params)
 
-    @activity.planned_start_date = format_date(planned_start_date)
-    @activity.planned_end_date = format_date(planned_end_date)
-    @activity.actual_start_date = format_date(actual_start_date)
-    @activity.actual_end_date = format_date(actual_end_date)
+    case step
+    when :everything
+      @activity.planned_start_date = format_date(planned_start_date)
+      @activity.planned_end_date = format_date(planned_end_date)
+      @activity.actual_start_date = format_date(actual_start_date)
+      @activity.actual_end_date = format_date(actual_end_date)
+    end
 
     render_wizard @activity, notice: I18n.t("form.activity.create.success")
   end
@@ -44,19 +47,19 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def planned_start_date
-    params.require(:planned_start_date).permit(:day, :month, :year)
+    params[:planned_start_date]
   end
 
   def planned_end_date
-    params.require(:planned_end_date).permit(:day, :month, :year)
+    params[:planned_end_date]
   end
 
   def actual_start_date
-    params.require(:actual_start_date).permit(:day, :month, :year)
+    params[:actual_start_date]
   end
 
   def actual_end_date
-    params.require(:actual_end_date).permit(:day, :month, :year)
+    params[:actual_end_date]
   end
 
   def activity_params
