@@ -1,16 +1,3 @@
-=content_for :page_title_prefix, @page_title
-
-%p= link_to t("generic.link.back"), organisation_fund_path(@fund.id, organisation_id: @fund.organisation.id), class: "govuk-back-link"
-%main.govuk-main-wrapper#main-content{ role: "main" }
-  .govuk-grid-row
-    .govuk-grid-column-two-thirds
-      %h1.govuk-heading-xl
-        = @page_title
-
-      = simple_form_for(@activity, method: :put, url: wizard_path) do |f|
-
-        .govuk-form-group
-          = f.input :identifier,
-                    hint: t("form.activity.identifier.hint")
-
-        = f.button :submit, I18n.t("form.activity.submit")
+= render layout: "wrapper" do |f|
+  = f.input :identifier,
+            hint: t("form.activity.identifier.hint")
