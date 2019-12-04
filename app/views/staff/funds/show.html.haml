@@ -22,11 +22,18 @@
             = link_to @fund.organisation.name, organisation_path(@fund.organisation)
 
     .govuk-grid-column-one-third
-      %h2.govuk-heading-m
-        = t("page_content.fund.activity")
+      .govuk-grid-row.activity
+        %h2.govuk-heading-m
+          = t("page_content.fund.activity")
 
-      - if @fund.activity
-        = link_to @fund.activity.identifier, fund_activity_path(@fund, @fund.activity)
-      - else
-        = form_tag(fund_activities_path(@fund), method: "post") do
-          = submit_tag t("page_content.fund.button.create_activity"), class: "govuk-button"
+        - if @fund.activity
+          = link_to @fund.activity.identifier, fund_activity_path(@fund, @fund.activity)
+        - else
+          = link_to(t("page_content.fund.button.create_activity"), new_fund_activity_path(@fund), class: "govuk-button")
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("page_content.fund.transactions")
+
+      = link_to(I18n.t("page_content.transactions.button.create"), new_fund_transaction_path(@fund), class: "govuk-button")
+      = render partial: '/staff/shared/transactions/table', locals: { transactions: @transactions }
