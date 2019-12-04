@@ -16,16 +16,6 @@ RSpec.feature "Users can create an activity" do
   end
 
   context "when the hierarchy is a Fund" do
-    scenario "successfully creating a minimal activity" do
-      visit fund_path(fund)
-      click_on I18n.t("page_content.fund.button.create_activity")
-
-      expect(page).to have_content(I18n.t("page_title.activity_form.show.identifier"))
-      fill_in "activity[identifier]", with: "A-Unique-Identifier"
-      click_button I18n.t("form.activity.submit")
-      expect(page).to have_content I18n.t("form.activity.create.success")
-    end
-
     scenario "successfully creating an activity with all optional information" do
       visit fund_path(fund)
       click_on I18n.t("page_content.fund.button.create_activity")
