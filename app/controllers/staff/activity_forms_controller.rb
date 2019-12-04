@@ -37,7 +37,7 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.update(activity_params)
     end
 
-    render_wizard @activity, notice: I18n.t("form.activity.create.success")
+    render_wizard @activity
   end
 
   private
@@ -72,6 +72,8 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def finish_wizard_path
+    flash[:notice] = I18n.t("form.activity.create.success")
+
     fund_activity_path(@fund, @activity)
   end
 end
