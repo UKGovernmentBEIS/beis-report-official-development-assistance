@@ -1,0 +1,32 @@
+=content_for :page_title_prefix, t("page_title.transaction.new")
+
+%p= link_to t("generic.link.back"), organisation_fund_path(@fund.id, organisation_id: @fund.organisation.id), class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.transaction.new")
+
+      = simple_form_for(@transaction, method: :post, url: fund_transactions_path) do |f|
+        .govuk-form-group
+          = f.input :reference,
+          hint: t("form.transaction.reference.hint")
+          = f.input :description, input_html: { rows: 5, class: "govuk-textarea" },
+                            hint: t("form.transaction.description.hint")
+          = f.input :transaction_type,
+                             wrapper: "select",
+                             collection: yaml_to_options("transaction", "transaction_type"),
+                             hint: t("form.transaction.transaction_type.hint")
+          = render partial: "shared/date_fields", locals: { name: "date",
+                                                            date: @transaction.date,
+                                                            label: t("form.transaction.date.label") }
+
+          = f.input :currency,
+                             wrapper: "select",
+                             collection: yaml_to_options("organisation", "default_currency")
+          = f.input :value
+          = f.input :disbursement_channel,
+                             wrapper: "select",
+                             collection: yaml_to_options("transaction", "disbursement_channel"),
+                             hint: t("form.transaction.disbursement_channel.hint")
+        = f.button :submit, t("generic.button.submit")

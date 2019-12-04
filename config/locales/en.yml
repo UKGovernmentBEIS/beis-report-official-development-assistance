@@ -67,12 +67,27 @@ en:
       organisation_type:
         label: Organisation type
       submit: Submit
+    transaction:
+      create:
+        success: Transaction successfully created
+      date:
+        label: Date
+      description:
+        hint: A human-readable description containing a meaningful description of the transaction.
+      disbursement_channel:
+        hint: The channel through which the funds will flow for this transaction.
+      reference:
+        hint: This reference should link this activity back to the finance system.
+      transaction_type:
+        hint: The type of the transaction (e.g. commitment, disbursement, expenditure, etc.).
     user:
       create:
         failed: The service is experiencing issues creating new users and the team has been alerted to the problem.
         success: User successfully created
       submit: Submit
   generic:
+    button:
+      submit: Submit
     link:
       back: Back
       show: Show
@@ -129,10 +144,12 @@ en:
       activity: Activity
       button:
         create_activity: Create activity
+        create_transaction: Create transaction
       name:
         label: Name
       organisation:
         label: Organisation
+      transactions: Transactions
     funds:
       button:
         create: Create fund
@@ -154,6 +171,9 @@ en:
     organisations:
       button:
         create: Create organisation
+    transactions:
+      button:
+        create: Create transaction
     users:
       button:
         create: Create user
@@ -190,6 +210,8 @@ en:
       index: Organisations
       new: Create a new organisation
       show: Organisation %{name}
+    transaction:
+      new: New transaction
     users:
       index: Users
       new: Create user

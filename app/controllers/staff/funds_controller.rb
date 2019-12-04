@@ -11,6 +11,8 @@ class Staff::FundsController < Staff::BaseController
   def show
     @fund = policy_scope(Fund).find(id)
     authorize @fund
+
+    @transactions = policy_scope(Transaction)
   end
 
   def new
