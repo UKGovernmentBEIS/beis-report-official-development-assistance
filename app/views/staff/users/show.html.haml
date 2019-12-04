@@ -10,19 +10,22 @@
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h2.govuk-heading-m Details
-      %dl
-        %dt
-          = t("user.name")
-        %dd
-          = @user.name
-        %dt
-          = t("user.email")
-        %dd
-          = @user.email
-        %dt
-          = t("user.identifier")
-        %dd
-          = @user.identifier
+      %dl.govuk-summary-list
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("user.name")
+          %dd.govuk-summary-list__value
+            = @user.name
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("user.email")
+          %dd.govuk-summary-list__value
+            = @user.email
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("user.identifier")
+          %dd.govuk-summary-list__value
+            = @user.identifier
     .govuk-grid-column-one-third.organisations
       %h2.govuk-heading-m Organisations
       %ul

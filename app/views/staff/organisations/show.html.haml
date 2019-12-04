@@ -9,23 +9,28 @@
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %dl
-        %dt
-          = t("page_content.organisation.name.label")
-        %dd
-          = @organisation_presenter.name
-        %dt
-          = t("page_content.organisation.type.label")
-        %dd
-          = t("organisation.organisation_type.#{@organisation_presenter.organisation_type}")
-        %dt
-          = t("page_content.organisation.language_code.label")
-        %dd
-          = t("organisation.language_code.#{@organisation_presenter.language_code}")
-        %dt
-          = t("page_content.organisation.default_currency.label")
-        %dd
-          = t("organisation.default_currency.#{@organisation_presenter.default_currency}")
+      %h2.govuk-heading-m Details
+      %dl.govuk-summary-list
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("page_content.organisation.name.label")
+          %dd.govuk-summary-list__value
+            = @organisation_presenter.name
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("page_content.organisation.type.label")
+          %dd.govuk-summary-list__value
+            = t("organisation.organisation_type.#{@organisation_presenter.organisation_type}")
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("page_content.organisation.language_code.label")
+          %dd.govuk-summary-list__value
+            = t("organisation.language_code.#{@organisation_presenter.language_code}")
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("page_content.organisation.default_currency.label")
+          %dd.govuk-summary-list__value
+            = t("organisation.default_currency.#{@organisation_presenter.default_currency}")
 
     .govuk-grid-column-one-third
       %h2.govuk-heading-m
