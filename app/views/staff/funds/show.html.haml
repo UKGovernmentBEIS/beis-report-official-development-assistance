@@ -27,4 +27,5 @@
       - if @fund.activity
         = link_to @fund.activity.identifier, fund_activity_path(@fund, @fund.activity)
       - else
-        = link_to(t("page_content.fund.button.create_activity"), new_fund_activity_path(@fund), class: "govuk-button")
+        = form_tag(fund_activities_path(@fund), method: "post") do
+          = submit_tag t("page_content.fund.button.create_activity"), class: "govuk-button"
