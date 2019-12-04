@@ -9,15 +9,17 @@
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %dl
-        %dt
-          = t("page_content.fund.name.label")
-        %dd
-          = @fund.name
-        %dt
-          = t("page_content.fund.organisation.label")
-        %dd
-          = link_to @fund.organisation.name, organisation_path(@fund.organisation)
+      %dl.govuk-summary-list
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("page_content.fund.name.label")
+          %dd.govuk-summary-list__value
+            = @fund.name
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("page_content.fund.organisation.label")
+          %dd.govuk-summary-list__value
+            = link_to @fund.organisation.name, organisation_path(@fund.organisation)
 
     .govuk-grid-column-one-third
       %h2.govuk-heading-m
