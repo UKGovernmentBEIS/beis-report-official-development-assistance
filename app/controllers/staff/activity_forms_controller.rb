@@ -1,7 +1,18 @@
 class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
 
-  steps :everything
+  steps(
+    :identifier,
+    :purpose,
+    :sector,
+    :status,
+    :dates,
+    :country,
+    :flow,
+    :finance,
+    :aid_type,
+    :tied_status,
+  )
 
   def index
     skip_policy_scope
@@ -11,6 +22,8 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def show
+    @page_title = t("page_title.activity_form.show.#{step}")
+
     @activity = policy_scope(Activity).find(params[:activity_id])
     @fund = policy_scope(Fund).find(params[:fund_id])
     authorize @activity
@@ -19,18 +32,23 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def update
+    @page_title = t("page_title.activity_form.show.#{step}")
+
     @activity = policy_scope(Activity).find(params[:activity_id])
     @fund = policy_scope(Fund).find(params[:fund_id])
     authorize @activity
 
-    @activity.update(activity_params)
+    case step
+    when :dates
+      @activity.planned_start_date = format_date(planned_start_date)
+      @activity.planned_end_date = format_date(planned_end_date)
+      @activity.actual_start_date = format_date(actual_start_date)
+      @activity.actual_end_date = format_date(actual_end_date)
+    else
+      @activity.update(activity_params)
+    end
 
-    @activity.planned_start_date = format_date(planned_start_date)
-    @activity.planned_end_date = format_date(planned_end_date)
-    @activity.actual_start_date = format_date(actual_start_date)
-    @activity.actual_end_date = format_date(actual_end_date)
-
-    render_wizard @activity, notice: I18n.t("form.activity.create.success")
+    render_wizard @activity
   end
 
   private
@@ -44,19 +62,19 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def planned_start_date
-    params.require(:planned_start_date).permit(:day, :month, :year)
+    params[:planned_start_date]
   end
 
   def planned_end_date
-    params.require(:planned_end_date).permit(:day, :month, :year)
+    params[:planned_end_date]
   end
 
   def actual_start_date
-    params.require(:actual_start_date).permit(:day, :month, :year)
+    params[:actual_start_date]
   end
 
   def actual_end_date
-    params.require(:actual_end_date).permit(:day, :month, :year)
+    params[:actual_end_date]
   end
 
   def activity_params
@@ -65,6 +83,8 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def finish_wizard_path
+    flash[:notice] = I18n.t("form.activity.create.success")
+
     fund_activity_path(@fund, @activity)
   end
 end

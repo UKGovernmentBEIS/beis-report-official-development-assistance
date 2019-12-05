@@ -1,0 +1,6 @@
+= render layout: "wrapper" do |f|
+  = f.input :sector,
+            wrapper: "select",
+            collection: yaml_to_options("activity", "sector"),
+            hint: t("form.activity.sector.hint.html")
+

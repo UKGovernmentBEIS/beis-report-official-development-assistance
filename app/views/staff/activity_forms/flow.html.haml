@@ -1,0 +1,6 @@
+= render layout: "wrapper" do |f|
+  = f.input :flow,
+            wrapper: "select",
+            collection: yaml_to_options("activity", "flow"),
+            selected: "10",
+            hint: t("form.activity.flow.hint.html")

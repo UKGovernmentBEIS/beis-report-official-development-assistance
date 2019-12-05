@@ -1,0 +1,5 @@
+= render layout: "wrapper" do |f|
+  = f.input :finance,
+            wrapper: "select",
+            collection: yaml_to_options("activity", "finance"),
+            hint: t("form.activity.finance.hint")
