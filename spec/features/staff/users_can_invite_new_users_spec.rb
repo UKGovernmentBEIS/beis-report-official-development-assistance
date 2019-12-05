@@ -63,7 +63,7 @@ RSpec.feature "users can invite new users to the service" do
     expect_welcome_email_delivery
 
     # Submit the form
-    click_button I18n.t("form.user.submit")
+    click_button I18n.t("generic.button.submit")
 
     # Verify the new user exists
     expect(page).to have_content(I18n.t("page_title.users.show"))
@@ -80,7 +80,7 @@ RSpec.feature "users can invite new users to the service" do
       fill_in "user[name]", with: "" # deliberately omit a value
       fill_in "user[email]", with: "" # deliberately omit a value
 
-      click_button I18n.t("form.user.submit")
+      click_button I18n.t("generic.button.submit")
 
       expect(page).to have_content("Name can't be blank")
       expect(page).to have_content("Email can't be blank")
@@ -99,7 +99,7 @@ RSpec.feature "users can invite new users to the service" do
       fill_in "user[name]", with: "foo"
       fill_in "user[email]", with: new_email
 
-      click_button I18n.t("form.user.submit")
+      click_button I18n.t("generic.button.submit")
 
       expect(page).to have_content(I18n.t("form.user.create.failed"))
       expect(User.count).to eq(0)
@@ -137,7 +137,7 @@ RSpec.feature "users can invite new users to the service" do
     check second_organisation.name
 
     # # Submit the form
-    click_button I18n.t("form.user.submit")
+    click_button I18n.t("generic.button.submit")
 
     within(".organisations") do
       expect(page).to have_content(first_organisation.name)

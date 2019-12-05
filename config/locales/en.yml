@@ -52,7 +52,6 @@ en:
         success: Fund successfully created
       organisation:
         hint: The organisation this fund is associated with
-      submit: Submit
     organisation:
       create:
         success: Organisation successfully created
@@ -66,7 +65,6 @@ en:
         label: Name
       organisation_type:
         label: Organisation type
-      submit: Submit
     transaction:
       create:
         success: Transaction successfully created
@@ -88,7 +86,6 @@ en:
       create:
         failed: The service is experiencing issues creating new users and the team has been alerted to the problem.
         success: User successfully created
-      submit: Submit
   generic:
     button:
       submit: Submit
