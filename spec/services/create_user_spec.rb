@@ -17,6 +17,19 @@ RSpec.describe CreateUser do
       expect(result.failure?).to eq(false)
     end
 
+    it "sends a welcome email to the user" do
+      stub_auth0_create_user_request(email: user.email)
+
+      mail_server = double(SendWelcomeEmail)
+      expect(SendWelcomeEmail).to receive(:new)
+        .with(user: user)
+        .and_return(mail_server)
+
+      expect(mail_server).to receive(:call)
+
+      described_class.new(user: user).call
+    end
+
     context "when organisations are provided" do
       it "associates them to the user" do
         stub_auth0_create_user_request(email: user.email)
