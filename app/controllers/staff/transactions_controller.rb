@@ -2,6 +2,7 @@
 
 class Staff::TransactionsController < Staff::BaseController
   include Secured
+  include DateHelper
 
   def new
     @transaction = policy_scope(Transaction).new
@@ -27,14 +28,6 @@ class Staff::TransactionsController < Staff::BaseController
   end
 
   private
-
-  def format_date(params)
-    date_parts = params.values_at(:day, :month, :year)
-    return unless date_parts.all?(&:present?)
-
-    day, month, year = date_parts.map(&:to_i)
-    Date.new(year, month, day)
-  end
 
   def date
     date_fields = params.require(:transaction).permit("date(3i)", "date(2i)", "date(1i)")
