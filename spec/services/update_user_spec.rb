@@ -3,6 +3,9 @@ require "rails_helper"
 RSpec.describe UpdateUser do
   let(:user) { create(:user, identifier: "auth0|1234") }
 
+  let(:updated_email) { "new@example.com" }
+  let(:updated_name) { "New Name" }
+
   before(:each) do
     stub_auth0_token_request
   end
@@ -37,6 +40,7 @@ RSpec.describe UpdateUser do
     context "when Auth0 errors" do
       before(:each) do
         stub_auth0_update_user_request_failure(auth0_identifier: "auth0|1234")
+        user.email = updated_email
       end
 
       it "returns a failed result" do
