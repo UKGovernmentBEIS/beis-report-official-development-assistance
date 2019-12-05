@@ -24,4 +24,15 @@ module Auth0Helpers
         body: "{\"ticket\":\"https://testdomain/lo/reset?ticket=123#\"}"
       )
   end
+
+  def stub_auth0_update_user_request(auth0_identifier:, email:, name:)
+    stub_request(:patch, "https://testdomain/api/v2/users/#{auth0_identifier}")
+      .with(body: hash_including(email: email, name: name))
+      .to_return(status: 200, body: "{\"user_id\":\"#{auth0_identifier}\"}")
+  end
+
+  def stub_auth0_update_user_request_failure(auth0_identifier:)
+    stub_request(:patch, "https://testdomain/api/v2/users/#{auth0_identifier}")
+      .to_return(status: 500, body: "")
+  end
 end
