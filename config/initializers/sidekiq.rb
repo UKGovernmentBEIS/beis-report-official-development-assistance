@@ -5,6 +5,7 @@ options = {
 }
 
 Sidekiq.configure_server do |config|
+  config.logger.level = Logger::WARN if Rails.env.production?
   config.options.merge!(options)
   config.redis = {
     url: redis_url,
@@ -19,5 +20,3 @@ Sidekiq.configure_client do |config|
     size: config.options[:concurrency] + 5,
   }
 end
-
-Sidekiq::Logging.logger.level = Logger::WARN if Rails.env.production?
