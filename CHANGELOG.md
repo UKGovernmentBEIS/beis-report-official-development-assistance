@@ -11,3 +11,4 @@
 - Service name updated from "Overseas" to "Official"
 - Users can create and view Funds; users can create and view Activities
 - Users can download an XML representation of an Activity
+- Split activity form into multiple steps

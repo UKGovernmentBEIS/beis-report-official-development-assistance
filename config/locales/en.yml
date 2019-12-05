@@ -40,7 +40,7 @@ en:
       status:
         hint:
           html: IATI activity status. <a href="http://reference.iatistandard.org/203/codelists/ActivityStatus/" target="_blank">See IATI for detailed descriptions.</a>
-      submit: Submit
+      submit: Continue
       tied_status:
         hint:
           html: "<a href='http://reference.iatistandard.org/203/codelists/TiedStatus/' target='_blank'>See the IATI tied status page for descriptions.</a>"
@@ -166,6 +166,18 @@ en:
       index: Activities
       new: Create activity
       show: Activity %{name}
+    activity_form:
+      show:
+        aid_type: Aid type
+        country: Country
+        dates: Dates
+        finance: Finance
+        flow: Flow
+        identifier: Your unique identifier
+        purpose: Purpose of activity
+        sector: Sector
+        status: Status
+        tied_status: Tied status
     dashboard: Dashboard
     errors:
       not_authorised: You are not authorised
