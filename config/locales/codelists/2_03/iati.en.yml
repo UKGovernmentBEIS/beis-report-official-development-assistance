@@ -431,7 +431,7 @@ iati:
       3: "Partially tied"
       4: "Tied"
       5: "Untied"
-  organisation:
+  generic:
     default_currency:
       aed: "UAE Dirham"
       afn: "Afghani"

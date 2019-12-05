@@ -44,7 +44,7 @@ RSpec.feature "Users can create a transaction" do
       expect(page).to have_content("2020-01-01")
       expect(page).to have_content("1000.01")
       expect(page).to have_content(I18n.t("transaction.disbursement_channel.1"))
-      expect(page).to have_content(I18n.t("organisation.default_currency.gbp"))
+      expect(page).to have_content(I18n.t("generic.default_currency.gbp"))
     end
   end
 

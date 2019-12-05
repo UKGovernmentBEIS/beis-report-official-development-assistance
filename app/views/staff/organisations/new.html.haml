@@ -19,7 +19,7 @@
                     hint: I18n.t("form.organisation.language_code.hint")
           = f.input :default_currency,
                     wrapper: 'select',
-                    collection: yaml_to_options("organisation", "default_currency"),
+                    collection: yaml_to_options("generic", "default_currency"),
                     hint: I18n.t("form.organisation.default_currency.hint")
 
         = f.button :submit, I18n.t("form.organisation.submit")
