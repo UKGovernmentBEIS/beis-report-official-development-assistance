@@ -70,16 +70,20 @@ en:
     transaction:
       create:
         success: Transaction successfully created
+      currency:
+        label: Currency
       date:
         label: Date
       description:
         hint: A human-readable description containing a meaningful description of the transaction.
       disbursement_channel:
         hint: The channel through which the funds will flow for this transaction.
+        label: Disbursement channel
       reference:
         hint: This reference should link this activity back to the finance system.
       transaction_type:
         hint: The type of the transaction (e.g. commitment, disbursement, expenditure, etc.).
+        label: Type
     user:
       create:
         failed: The service is experiencing issues creating new users and the team has been alerted to the problem.
