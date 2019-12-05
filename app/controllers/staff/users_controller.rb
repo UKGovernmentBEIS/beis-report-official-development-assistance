@@ -45,9 +45,18 @@ class Staff::UsersController < Staff::BaseController
     @organisations = policy_scope(Organisation)
     authorize @user
 
-    if @user.update(user_params)
-      flash.now[:notice] = I18n.t("form.user.update.success")
-      redirect_to user_path(@user)
+    @user.assign_attributes(user_params)
+
+    if @user.valid?
+      result = UpdateUser.new(user: @user, organisations: organisations).call
+
+      if result.success?
+        flash.now[:notice] = I18n.t("form.user.update.success")
+        redirect_to user_path(@user)
+      else
+        flash.now[:error] = I18n.t("form.user.update.failed")
+        render :edit
+      end
     else
       render :edit
     end
