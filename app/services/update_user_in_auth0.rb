@@ -8,6 +8,8 @@ class UpdateUserInAuth0
   end
 
   def call
+    return unless synchronise?
+
     auth0_client.update_user(
       user.identifier,
       email: user.email,
@@ -19,5 +21,9 @@ class UpdateUserInAuth0
 
   def auth0_client
     @auth0_client ||= Auth0Api.new.client
+  end
+
+  def synchronise?
+    user.email_changed? || user.name_changed?
   end
 end
