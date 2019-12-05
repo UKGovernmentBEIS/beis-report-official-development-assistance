@@ -37,7 +37,8 @@ class Staff::TransactionsController < Staff::BaseController
   end
 
   def date
-    params.require(:date).permit(:day, :month, :year)
+    date_fields = params.require(:transaction).permit("date(3i)", "date(2i)", "date(1i)")
+    {day: date_fields["date(3i)"], month: date_fields["date(2i)"], year: date_fields["date(1i)"]}
   end
 
   def transaction_params
@@ -45,7 +46,6 @@ class Staff::TransactionsController < Staff::BaseController
       :reference,
       :description,
       :transaction_type,
-      :date,
       :currency,
       :value,
       :disbursement_channel
