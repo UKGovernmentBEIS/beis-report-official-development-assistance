@@ -1,823 +1,825 @@
-iati:
+---
+en:
   activity:
     aid_type:
-      a01: "General budget support"
-      a02: "Sector budget support"
-      b01: "Core support to NGOs, other private bodies, PPPs and research institutes"
-      b02: "Core contributions to multilateral institutions"
-      b03: "Contributions to specific-purpose programmes and funds managed by international organisations (multilateral, INGO)"
-      b04: "Basket funds/pooled funding"
-      c01: "Project-type interventions"
-      d01: "Donor country personnel"
-      d02: "Other technical assistance"
-      e01: "Scholarships/training in donor country"
-      e02: "Imputed student costs"
-      f01: "Debt relief"
-      g01: "Administrative costs not included elsewhere"
-      h01: "Development awareness"
-      h02: "Refugees in donor countries"
+      a01: General budget support
+      a02: Sector budget support
+      b01: Core support to NGOs, other private bodies, PPPs and research institutes
+      b02: Core contributions to multilateral institutions
+      b03: Contributions to specific-purpose programmes and funds managed by international organisations (multilateral, INGO)
+      b04: Basket funds/pooled funding
+      c01: Project-type interventions
+      d01: Donor country personnel
+      d02: Other technical assistance
+      e01: Scholarships/training in donor country
+      e02: Imputed student costs
+      f01: Debt relief
+      g01: Administrative costs not included elsewhere
+      h01: Development awareness
+      h02: Refugees in donor countries
     finance:
-      110: "Standard grant"
-      111: "Subsidies to national private investors"
-      210: "Interest subsidy"
-      211: "Interest subsidy to national private exporters"
-      310: "Capital subscription on deposit basis"
-      311: "Capital subscription on encashment basis"
-      410: "Aid loan excluding debt reorganisation"
-      411: "Investment-related loan to developing countries"
-      412: "Loan in a joint venture with the recipient"
-      413: "Loan to national private investor"
-      414: "Loan to national private exporter"
-      421: "Standard loan"
-      422: "Reimbursable grant"
-      423: "Bonds"
-      424: "Asset-backed securities"
-      425: "Other debt securities"
-      431: "Subordinated loan"
-      432: "Preferred equity"
-      433: "Other hybrid instruments"
-      451: "Non-banks guaranteed export credits"
-      452: "Non-banks non-guaranteed portions of guaranteed export credits"
-      453: "Bank export credits"
-      510: "Common equity"
-      511: "Acquisition of equity not part of joint venture in developing countries"
-      512: "Other acquisition of equity"
-      520: "Shares in collective investment vehicles"
-      530: "Reinvested earnings"
-      610: "Debt forgiveness/conversion: ODA claims (P)"
-      611: "Debt forgiveness/conversion: ODA claims (I)"
-      612: "Debt forgiveness/conversion: OOF claims (P)"
-      613: "Debt forgiveness/conversion: OOF claims (I)"
-      614: "Debt forgiveness/conversion: Private claims (P)"
-      615: "Debt forgiveness/conversion: Private claims (I)"
-      616: "Debt forgiveness: OOF claims (DSR)"
-      617: "Debt forgiveness: Private claims (DSR)"
-      618: "Debt forgiveness: Other"
-      620: "Debt rescheduling: ODA claims (P)"
-      621: "Debt rescheduling: ODA claims (I)"
-      622: "Debt rescheduling: OOF claims (P)"
-      623: "Debt rescheduling: OOF claims (I)"
-      624: "Debt rescheduling: Private claims (P)"
-      625: "Debt rescheduling: Private claims (I)"
-      626: "Debt rescheduling: OOF claims (DSR)"
-      627: "Debt rescheduling: Private claims (DSR)"
-      630: "Debt rescheduling: OOF claim (DSR – original loan principal)"
-      631: "Debt rescheduling: OOF claim (DSR – original loan interest)"
-      632: "Debt rescheduling: Private claim (DSR – original loan principal)"
-      633: "Debt forgiveness/conversion: export credit claims (P)"
-      634: "Debt forgiveness/conversion: export credit claims (I)"
-      635: "Debt forgiveness: export credit claims (DSR)"
-      636: "Debt rescheduling: export credit claims (P)"
-      637: "Debt rescheduling: export credit claims (I)"
-      638: "Debt rescheduling: export credit claims (DSR)"
-      639: "Debt rescheduling: export credit claim (DSR – original loan principal)"
-      710: "Foreign direct investment"
-      711: "Other foreign direct investment, including reinvested earnings"
-      810: "Bank bonds"
-      811: "Non-bank bonds"
-      910: "Other bank securities/claims"
-      911: "Other non-bank securities/claims"
-      912: "Securities and other instruments issued by multilateral agencies"
-      1100: "Guarantees/insurance"
+      '110': Standard grant
+      '1100': Guarantees/insurance
+      '111': Subsidies to national private investors
+      '210': Interest subsidy
+      '211': Interest subsidy to national private exporters
+      '310': Capital subscription on deposit basis
+      '311': Capital subscription on encashment basis
+      '410': Aid loan excluding debt reorganisation
+      '411': Investment-related loan to developing countries
+      '412': Loan in a joint venture with the recipient
+      '413': Loan to national private investor
+      '414': Loan to national private exporter
+      '421': Standard loan
+      '422': Reimbursable grant
+      '423': Bonds
+      '424': Asset-backed securities
+      '425': Other debt securities
+      '431': Subordinated loan
+      '432': Preferred equity
+      '433': Other hybrid instruments
+      '451': Non-banks guaranteed export credits
+      '452': Non-banks non-guaranteed portions of guaranteed export credits
+      '453': Bank export credits
+      '510': Common equity
+      '511': Acquisition of equity not part of joint venture in developing countries
+      '512': Other acquisition of equity
+      '520': Shares in collective investment vehicles
+      '530': Reinvested earnings
+      '610': 'Debt forgiveness/conversion: ODA claims (P)'
+      '611': 'Debt forgiveness/conversion: ODA claims (I)'
+      '612': 'Debt forgiveness/conversion: OOF claims (P)'
+      '613': 'Debt forgiveness/conversion: OOF claims (I)'
+      '614': 'Debt forgiveness/conversion: Private claims (P)'
+      '615': 'Debt forgiveness/conversion: Private claims (I)'
+      '616': 'Debt forgiveness: OOF claims (DSR)'
+      '617': 'Debt forgiveness: Private claims (DSR)'
+      '618': 'Debt forgiveness: Other'
+      '620': 'Debt rescheduling: ODA claims (P)'
+      '621': 'Debt rescheduling: ODA claims (I)'
+      '622': 'Debt rescheduling: OOF claims (P)'
+      '623': 'Debt rescheduling: OOF claims (I)'
+      '624': 'Debt rescheduling: Private claims (P)'
+      '625': 'Debt rescheduling: Private claims (I)'
+      '626': 'Debt rescheduling: OOF claims (DSR)'
+      '627': 'Debt rescheduling: Private claims (DSR)'
+      '630': 'Debt rescheduling: OOF claim (DSR – original loan principal)'
+      '631': 'Debt rescheduling: OOF claim (DSR – original loan interest)'
+      '632': 'Debt rescheduling: Private claim (DSR – original loan principal)'
+      '633': 'Debt forgiveness/conversion: export credit claims (P)'
+      '634': 'Debt forgiveness/conversion: export credit claims (I)'
+      '635': 'Debt forgiveness: export credit claims (DSR)'
+      '636': 'Debt rescheduling: export credit claims (P)'
+      '637': 'Debt rescheduling: export credit claims (I)'
+      '638': 'Debt rescheduling: export credit claims (DSR)'
+      '639': 'Debt rescheduling: export credit claim (DSR – original loan principal)'
+      '710': Foreign direct investment
+      '711': Other foreign direct investment, including reinvested earnings
+      '810': Bank bonds
+      '811': Non-bank bonds
+      '910': Other bank securities/claims
+      '911': Other non-bank securities/claims
+      '912': Securities and other instruments issued by multilateral agencies
     flow:
-      10: "ODA"
-      20: "OOF"
-      21: "Non-export credit OOF"
-      22: "Officially supported export credits"
-      30: "Private grants"
-      35: "Private market"
-      36: "Private Foreign Direct Investment"
-      37: "Other Private flows at market terms"
-      40: "Non flow"
-      50: "Other flows"
+      '10': ODA
+      '20': OOF
+      '21': Non-export credit OOF
+      '22': Officially supported export credits
+      '30': Private grants
+      '35': Private market
+      '36': Private Foreign Direct Investment
+      '37': Other Private flows at market terms
+      '40': Non flow
+      '50': Other flows
     recipient_region:
-      88: "States Ex-Yugoslavia unspecified"
-      89: "Europe, regional"
-      189: "North of Sahara, regional"
-      289: "South of Sahara, regional"
-      298: "Africa, regional"
-      380: "West Indies, regional"
-      389: "North & Central America, regional"
-      489: "South America, regional"
-      498: "America, regional"
-      589: "Middle East, regional"
-      619: "Central Asia, regional"
-      679: "South Asia, regional"
-      689: "South & Central Asia, regional"
-      789: "Far East Asia, regional"
-      798: "Asia, regional"
-      889: "Oceania, regional"
-      998: "Developing countries, unspecified"
+      '189': North of Sahara, regional
+      '289': South of Sahara, regional
+      '298': Africa, regional
+      '380': West Indies, regional
+      '389': North & Central America, regional
+      '489': South America, regional
+      '498': America, regional
+      '589': Middle East, regional
+      '619': Central Asia, regional
+      '679': South Asia, regional
+      '689': South & Central Asia, regional
+      '789': Far East Asia, regional
+      '798': Asia, regional
+      '88': States Ex-Yugoslavia unspecified
+      '889': Oceania, regional
+      '89': Europe, regional
+      '998': Developing countries, unspecified
     sector:
-      11110: "Education policy and administrative management"
-      11120: "Education facilities and training"
-      11130: "Teacher training"
-      11182: "Educational research"
-      11220: "Primary education"
-      11230: "Basic life skills for youth and adults"
-      11231: "Basic life skills for youth"
-      11232: "Primary education equivalent for adults"
-      11240: "Early childhood education"
-      11250: "School feeding"
-      11320: "Secondary education"
-      11321: "Lower secondary education"
-      11322: "Upper secondary education"
-      11330: "Vocational training"
-      11420: "Higher education"
-      11430: "Advanced technical and managerial training"
-      12110: "Health policy and administrative management"
-      12181: "Medical education/training"
-      12182: "Medical research"
-      12191: "Medical services"
-      12220: "Basic health care"
-      12230: "Basic health infrastructure"
-      12240: "Basic nutrition"
-      12250: "Infectious disease control"
-      12261: "Health education"
-      12262: "Malaria control"
-      12263: "Tuberculosis control"
-      12281: "Health personnel development"
-      12310: "NCDs control, general"
-      12320: "Tobacco use control"
-      12330: "Control of harmful use of alcohol and drugs"
-      12340: "Promotion of mental health and well-being"
-      12350: "Other prevention and treatment of NCDs"
-      12382: "Research for prevention and control of NCDs"
-      13010: "Population policy and administrative management"
-      13020: "Reproductive health care"
-      13030: "Family planning"
-      13040: "STD control including HIV/AIDS"
-      13081: "Personnel development for population and reproductive health"
-      14010: "Water sector policy and administrative management"
-      14015: "Water resources conservation (including data collection)"
-      14020: "Water supply and sanitation - large systems"
-      14021: "Water supply - large systems"
-      14022: "Sanitation - large systems"
-      14030: "Basic drinking water supply and basic sanitation"
-      14031: "Basic drinking water supply"
-      14032: "Basic sanitation"
-      14040: "River basins development"
-      14050: "Waste management/disposal"
-      14081: "Education and training in water supply and sanitation"
-      15110: "Public sector policy and administrative management"
-      15111: "Public finance management (PFM)"
-      15112: "Decentralisation and support to subnational government"
-      15113: "Anti-corruption organisations and institutions"
-      15114: "Domestic revenue mobilisation"
-      15116: "Tax collection"
-      15117: "Budget planning"
-      15118: "National audit"
-      15119: "Debt and aid management"
-      15120: "Public sector financial management"
-      15121: "Foreign affairs"
-      15122: "Diplomatic missions"
-      15123: "Administration of developing countries' foreign aid"
-      15124: "General personnel services"
-      15125: "Public Procurement"
-      15126: "Other general public services"
-      15127: "National monitoring and evaluation"
-      15128: "Local government finance"
-      15129: "Other central transfers to institutions"
-      15130: "Legal and judicial development"
-      15131: "Justice, law and order policy, planning and administration"
-      15132: "Police"
-      15133: "Fire and rescue services"
-      15134: "Judicial affairs"
-      15135: "Ombudsman"
-      15136: "Immigration"
-      15137: "Prisons"
-      15140: "Government administration"
-      15142: "Macroeconomic policy"
-      15143: "Meteorological services"
-      15144: "National standards development"
-      15150: "Democratic participation and civil society"
-      15151: "Elections"
-      15152: "Legislatures and political parties"
-      15153: "Media and free flow of information"
-      15154: "Executive office"
-      15155: "Tax policy and administration support"
-      15156: "Other non-tax revenue mobilisation"
-      15160: "Human rights"
-      15161: "Elections"
-      15162: "Human rights"
-      15163: "Free flow of information"
-      15164: "Women's equality organisations and institutions"
-      15170: "Women's equality organisations and institutions"
-      15180: "Ending violence against women and girls"
-      15185: "Local government administration"
-      15190: "Facilitation of orderly, safe, regular and responsible migration and mobility"
-      15210: "Security system management and reform"
-      15220: "Civilian peace-building, conflict prevention and resolution"
-      15230: "Participation in international peacekeeping operations"
-      15240: "Reintegration and SALW control"
-      15250: "Removal of land mines and explosive remnants of war"
-      15261: "Child soldiers (prevention and demobilisation)"
-      16010: "Social Protection"
-      16011: "Social protection and welfare services policy, planning and administration"
-      16012: "Social security (excl pensions)"
-      16013: "General pensions"
-      16014: "Civil service pensions"
-      16015: "Social services (incl youth development and women+ children)"
-      16020: "Employment creation"
-      16030: "Housing policy and administrative management"
-      16040: "Low-cost housing"
-      16050: "Multisector aid for basic social services"
-      16061: "Culture and recreation"
-      16062: "Statistical capacity building"
-      16063: "Narcotics control"
-      16064: "Social mitigation of HIV/AIDS"
-      16065: "Recreation and sport"
-      16066: "Culture"
-      16070: "Labour Rights"
-      16080: "Social Dialogue"
-      21010: "Transport policy and administrative management"
-      21011: "Transport policy, planning and administration"
-      21012: "Public transport services"
-      21013: "Transport regulation"
-      21020: "Road transport"
-      21021: "Feeder road construction"
-      21022: "Feeder road maintenance"
-      21023: "National road construction"
-      21024: "National road maintenance"
-      21030: "Rail transport"
-      21040: "Water transport"
-      21050: "Air transport"
-      21061: "Storage"
-      21081: "Education and training in transport and storage"
-      22010: "Communications policy and administrative management"
-      22011: "Communications policy, planning and administration"
-      22012: "Postal services"
-      22013: "Information services"
-      22020: "Telecommunications"
-      22030: "Radio/television/print media"
-      22040: "Information and communication technology (ICT)"
-      23010: "Energy policy and administrative management"
-      23020: "Power generation/non-renewable sources"
-      23030: "Power generation/renewable sources"
-      23040: "Electrical transmission/ distribution"
-      23050: "Gas distribution"
-      23061: "Oil-fired power plants"
-      23062: "Gas-fired power plants"
-      23063: "Coal-fired power plants"
-      23064: "Nuclear power plants"
-      23065: "Hydro-electric power plants"
-      23066: "Geothermal energy"
-      23067: "Solar energy"
-      23068: "Wind power"
-      23069: "Ocean power"
-      23070: "Biomass"
-      23081: "Energy education/training"
-      23082: "Energy research"
-      23110: "Energy policy and administrative management"
-      23111: "Energy sector policy, planning and administration"
-      23112: "Energy regulation"
-      23181: "Energy education/training"
-      23182: "Energy research"
-      23183: "Energy conservation and demand-side efficiency"
-      23210: "Energy generation, renewable sources - multiple technologies"
-      23220: "Hydro-electric power plants"
-      23230: "Solar energy"
-      23240: "Wind energy"
-      23250: "Marine energy"
-      23260: "Geothermal energy"
-      23270: "Biofuel-fired power plants"
-      23310: "Energy generation, non-renewable sources, unspecified"
-      23320: "Coal-fired electric power plants"
-      23330: "Oil-fired electric power plants"
-      23340: "Natural gas-fired electric power plants"
-      23350: "Fossil fuel electric power plants with carbon capture and storage (CCS)"
-      23360: "Non-renewable waste-fired electric power plants"
-      23410: "Hybrid energy electric power plants"
-      23510: "Nuclear energy electric power plants"
-      23610: "Heat plants"
-      23620: "District heating and cooling"
-      23630: "Electric power transmission and distribution"
-      23640: "Gas distribution"
-      24010: "Financial policy and administrative management"
-      24020: "Monetary institutions"
-      24030: "Formal sector financial intermediaries"
-      24040: "Informal/semi-formal financial intermediaries"
-      24050: "Remittance facilitation, promotion and optimisation"
-      24081: "Education/training in banking and financial services"
-      25010: "Business Policy and Administration"
-      25020: "Privatisation"
-      25030: "Business development services"
-      25040: "Responsible Business Conduct"
-      31110: "Agricultural policy and administrative management"
-      31120: "Agricultural development"
-      31130: "Agricultural land resources"
-      31140: "Agricultural water resources"
-      31150: "Agricultural inputs"
-      31161: "Food crop production"
-      31162: "Industrial crops/export crops"
-      31163: "Livestock"
-      31164: "Agrarian reform"
-      31165: "Agricultural alternative development"
-      31166: "Agricultural extension"
-      31181: "Agricultural education/training"
-      31182: "Agricultural research"
-      31191: "Agricultural services"
-      31192: "Plant and post-harvest protection and pest control"
-      31193: "Agricultural financial services"
-      31194: "Agricultural co-operatives"
-      31195: "Livestock/veterinary services"
-      31210: "Forestry policy and administrative management"
-      31220: "Forestry development"
-      31261: "Fuelwood/charcoal"
-      31281: "Forestry education/training"
-      31282: "Forestry research"
-      31291: "Forestry services"
-      31310: "Fishing policy and administrative management"
-      31320: "Fishery development"
-      31381: "Fishery education/training"
-      31382: "Fishery research"
-      31391: "Fishery services"
-      32110: "Industrial policy and administrative management"
-      32120: "Industrial development"
-      32130: "Small and medium-sized enterprises (SME) development"
-      32140: "Cottage industries and handicraft"
-      32161: "Agro-industries"
-      32162: "Forest industries"
-      32163: "Textiles, leather and substitutes"
-      32164: "Chemicals"
-      32165: "Fertilizer plants"
-      32166: "Cement/lime/plaster"
-      32167: "Energy manufacturing"
-      32168: "Pharmaceutical production"
-      32169: "Basic metal industries"
-      32170: "Non-ferrous metal industries"
-      32171: "Engineering"
-      32172: "Transport equipment industry"
-      32182: "Technological research and development"
-      32210: "Mineral/mining policy and administrative management"
-      32220: "Mineral prospection and exploration"
-      32261: "Coal"
-      32262: "Oil and gas"
-      32263: "Ferrous metals"
-      32264: "Nonferrous metals"
-      32265: "Precious metals/materials"
-      32266: "Industrial minerals"
-      32267: "Fertilizer minerals"
-      32268: "Offshore minerals"
-      32310: "Construction policy and administrative management"
-      33110: "Trade policy and administrative management"
-      33120: "Trade facilitation"
-      33130: "Regional trade agreements (RTAs)"
-      33140: "Multilateral trade negotiations"
-      33150: "Trade-related adjustment"
-      33181: "Trade education/training"
-      33210: "Tourism policy and administrative management"
-      41010: "Environmental policy and administrative management"
-      41020: "Biosphere protection"
-      41030: "Bio-diversity"
-      41040: "Site preservation"
-      41050: "Flood prevention/control"
-      41081: "Environmental education/training"
-      41082: "Environmental research"
-      43010: "Multisector aid"
-      43030: "Urban development and management"
-      43031: "Urban land policy and management"
-      43032: "Urban development"
-      43040: "Rural development"
-      43041: "Rural land policy and management"
-      43042: "Rural development"
-      43050: "Non-agricultural alternative development"
-      43060: "Disaster Risk Reduction"
-      43071: "Food security policy and administrative management"
-      43072: "Household food security programmes"
-      43073: "Food safety and quality"
-      43081: "Multisector education/training"
-      43082: "Research/scientific institutions"
-      51010: "General budget support-related aid"
-      52010: "Food assistance"
-      53030: "Import support (capital goods)"
-      53040: "Import support (commodities)"
-      60010: "Action relating to debt"
-      60020: "Debt forgiveness"
-      60030: "Relief of multilateral debt"
-      60040: "Rescheduling and refinancing"
-      60061: "Debt for development swap"
-      60062: "Other debt swap"
-      60063: "Debt buy-back"
-      72010: "Material relief assistance and services"
-      72040: "Emergency food assistance"
-      72050: "Relief co-ordination and support services"
-      73010: "Immediate post-emergency reconstruction and rehabilitation"
-      74010: "Disaster prevention and preparedness"
-      74020: "Multi-hazard response preparedness"
-      91010: "Administrative costs (non-sector allocable)"
-      92010: "Support to national NGOs"
-      92020: "Support to international NGOs"
-      92030: "Support to local and regional NGOs"
-      93010: "Refugees/asylum seekers in donor countries (non-sector allocable)"
-      93011: "Refugees/asylum seekers in donor countries - food and shelter"
-      93012: "Refugees/asylum seekers in donor countries - training"
-      93013: "Refugees/asylum seekers in donor countries - health"
-      93014: "Refugees/asylum seekers in donor countries - other temporary sustenance"
-      93015: "Refugees/asylum seekers in donor countries - voluntary repatriation"
-      93016: "Refugees/asylum seekers in donor countries - transport"
-      93017: "Refugees/asylum seekers in donor countries - rescue at sea"
-      93018: "Refugees/asylum seekers in donor countries - administrative costs"
-      99810: "Sectors not specified"
-      99820: "Promotion of development awareness (non-sector allocable)"
+      '11110': Education policy and administrative management
+      '11120': Education facilities and training
+      '11130': Teacher training
+      '11182': Educational research
+      '11220': Primary education
+      '11230': Basic life skills for youth and adults
+      '11231': Basic life skills for youth
+      '11232': Primary education equivalent for adults
+      '11240': Early childhood education
+      '11250': School feeding
+      '11320': Secondary education
+      '11321': Lower secondary education
+      '11322': Upper secondary education
+      '11330': Vocational training
+      '11420': Higher education
+      '11430': Advanced technical and managerial training
+      '12110': Health policy and administrative management
+      '12181': Medical education/training
+      '12182': Medical research
+      '12191': Medical services
+      '12220': Basic health care
+      '12230': Basic health infrastructure
+      '12240': Basic nutrition
+      '12250': Infectious disease control
+      '12261': Health education
+      '12262': Malaria control
+      '12263': Tuberculosis control
+      '12281': Health personnel development
+      '12310': NCDs control, general
+      '12320': Tobacco use control
+      '12330': Control of harmful use of alcohol and drugs
+      '12340': Promotion of mental health and well-being
+      '12350': Other prevention and treatment of NCDs
+      '12382': Research for prevention and control of NCDs
+      '13010': Population policy and administrative management
+      '13020': Reproductive health care
+      '13030': Family planning
+      '13040': STD control including HIV/AIDS
+      '13081': Personnel development for population and reproductive health
+      '14010': Water sector policy and administrative management
+      '14015': Water resources conservation (including data collection)
+      '14020': Water supply and sanitation - large systems
+      '14021': Water supply - large systems
+      '14022': Sanitation - large systems
+      '14030': Basic drinking water supply and basic sanitation
+      '14031': Basic drinking water supply
+      '14032': Basic sanitation
+      '14040': River basins development
+      '14050': Waste management/disposal
+      '14081': Education and training in water supply and sanitation
+      '15110': Public sector policy and administrative management
+      '15111': Public finance management (PFM)
+      '15112': Decentralisation and support to subnational government
+      '15113': Anti-corruption organisations and institutions
+      '15114': Domestic revenue mobilisation
+      '15116': Tax collection
+      '15117': Budget planning
+      '15118': National audit
+      '15119': Debt and aid management
+      '15120': Public sector financial management
+      '15121': Foreign affairs
+      '15122': Diplomatic missions
+      '15123': Administration of developing countries' foreign aid
+      '15124': General personnel services
+      '15125': Public Procurement
+      '15126': Other general public services
+      '15127': National monitoring and evaluation
+      '15128': Local government finance
+      '15129': Other central transfers to institutions
+      '15130': Legal and judicial development
+      '15131': Justice, law and order policy, planning and administration
+      '15132': Police
+      '15133': Fire and rescue services
+      '15134': Judicial affairs
+      '15135': Ombudsman
+      '15136': Immigration
+      '15137': Prisons
+      '15140': Government administration
+      '15142': Macroeconomic policy
+      '15143': Meteorological services
+      '15144': National standards development
+      '15150': Democratic participation and civil society
+      '15151': Elections
+      '15152': Legislatures and political parties
+      '15153': Media and free flow of information
+      '15154': Executive office
+      '15155': Tax policy and administration support
+      '15156': Other non-tax revenue mobilisation
+      '15160': Human rights
+      '15161': Elections
+      '15162': Human rights
+      '15163': Free flow of information
+      '15164': Women's equality organisations and institutions
+      '15170': Women's equality organisations and institutions
+      '15180': Ending violence against women and girls
+      '15185': Local government administration
+      '15190': Facilitation of orderly, safe, regular and responsible migration and mobility
+      '15210': Security system management and reform
+      '15220': Civilian peace-building, conflict prevention and resolution
+      '15230': Participation in international peacekeeping operations
+      '15240': Reintegration and SALW control
+      '15250': Removal of land mines and explosive remnants of war
+      '15261': Child soldiers (prevention and demobilisation)
+      '16010': Social Protection
+      '16011': Social protection and welfare services policy, planning and administration
+      '16012': Social security (excl pensions)
+      '16013': General pensions
+      '16014': Civil service pensions
+      '16015': Social services (incl youth development and women+ children)
+      '16020': Employment creation
+      '16030': Housing policy and administrative management
+      '16040': Low-cost housing
+      '16050': Multisector aid for basic social services
+      '16061': Culture and recreation
+      '16062': Statistical capacity building
+      '16063': Narcotics control
+      '16064': Social mitigation of HIV/AIDS
+      '16065': Recreation and sport
+      '16066': Culture
+      '16070': Labour Rights
+      '16080': Social Dialogue
+      '21010': Transport policy and administrative management
+      '21011': Transport policy, planning and administration
+      '21012': Public transport services
+      '21013': Transport regulation
+      '21020': Road transport
+      '21021': Feeder road construction
+      '21022': Feeder road maintenance
+      '21023': National road construction
+      '21024': National road maintenance
+      '21030': Rail transport
+      '21040': Water transport
+      '21050': Air transport
+      '21061': Storage
+      '21081': Education and training in transport and storage
+      '22010': Communications policy and administrative management
+      '22011': Communications policy, planning and administration
+      '22012': Postal services
+      '22013': Information services
+      '22020': Telecommunications
+      '22030': Radio/television/print media
+      '22040': Information and communication technology (ICT)
+      '23010': Energy policy and administrative management
+      '23020': Power generation/non-renewable sources
+      '23030': Power generation/renewable sources
+      '23040': Electrical transmission/ distribution
+      '23050': Gas distribution
+      '23061': Oil-fired power plants
+      '23062': Gas-fired power plants
+      '23063': Coal-fired power plants
+      '23064': Nuclear power plants
+      '23065': Hydro-electric power plants
+      '23066': Geothermal energy
+      '23067': Solar energy
+      '23068': Wind power
+      '23069': Ocean power
+      '23070': Biomass
+      '23081': Energy education/training
+      '23082': Energy research
+      '23110': Energy policy and administrative management
+      '23111': Energy sector policy, planning and administration
+      '23112': Energy regulation
+      '23181': Energy education/training
+      '23182': Energy research
+      '23183': Energy conservation and demand-side efficiency
+      '23210': Energy generation, renewable sources - multiple technologies
+      '23220': Hydro-electric power plants
+      '23230': Solar energy
+      '23240': Wind energy
+      '23250': Marine energy
+      '23260': Geothermal energy
+      '23270': Biofuel-fired power plants
+      '23310': Energy generation, non-renewable sources, unspecified
+      '23320': Coal-fired electric power plants
+      '23330': Oil-fired electric power plants
+      '23340': Natural gas-fired electric power plants
+      '23350': Fossil fuel electric power plants with carbon capture and storage (CCS)
+      '23360': Non-renewable waste-fired electric power plants
+      '23410': Hybrid energy electric power plants
+      '23510': Nuclear energy electric power plants
+      '23610': Heat plants
+      '23620': District heating and cooling
+      '23630': Electric power transmission and distribution
+      '23640': Gas distribution
+      '24010': Financial policy and administrative management
+      '24020': Monetary institutions
+      '24030': Formal sector financial intermediaries
+      '24040': Informal/semi-formal financial intermediaries
+      '24050': Remittance facilitation, promotion and optimisation
+      '24081': Education/training in banking and financial services
+      '25010': Business Policy and Administration
+      '25020': Privatisation
+      '25030': Business development services
+      '25040': Responsible Business Conduct
+      '31110': Agricultural policy and administrative management
+      '31120': Agricultural development
+      '31130': Agricultural land resources
+      '31140': Agricultural water resources
+      '31150': Agricultural inputs
+      '31161': Food crop production
+      '31162': Industrial crops/export crops
+      '31163': Livestock
+      '31164': Agrarian reform
+      '31165': Agricultural alternative development
+      '31166': Agricultural extension
+      '31181': Agricultural education/training
+      '31182': Agricultural research
+      '31191': Agricultural services
+      '31192': Plant and post-harvest protection and pest control
+      '31193': Agricultural financial services
+      '31194': Agricultural co-operatives
+      '31195': Livestock/veterinary services
+      '31210': Forestry policy and administrative management
+      '31220': Forestry development
+      '31261': Fuelwood/charcoal
+      '31281': Forestry education/training
+      '31282': Forestry research
+      '31291': Forestry services
+      '31310': Fishing policy and administrative management
+      '31320': Fishery development
+      '31381': Fishery education/training
+      '31382': Fishery research
+      '31391': Fishery services
+      '32110': Industrial policy and administrative management
+      '32120': Industrial development
+      '32130': Small and medium-sized enterprises (SME) development
+      '32140': Cottage industries and handicraft
+      '32161': Agro-industries
+      '32162': Forest industries
+      '32163': Textiles, leather and substitutes
+      '32164': Chemicals
+      '32165': Fertilizer plants
+      '32166': Cement/lime/plaster
+      '32167': Energy manufacturing
+      '32168': Pharmaceutical production
+      '32169': Basic metal industries
+      '32170': Non-ferrous metal industries
+      '32171': Engineering
+      '32172': Transport equipment industry
+      '32182': Technological research and development
+      '32210': Mineral/mining policy and administrative management
+      '32220': Mineral prospection and exploration
+      '32261': Coal
+      '32262': Oil and gas
+      '32263': Ferrous metals
+      '32264': Nonferrous metals
+      '32265': Precious metals/materials
+      '32266': Industrial minerals
+      '32267': Fertilizer minerals
+      '32268': Offshore minerals
+      '32310': Construction policy and administrative management
+      '33110': Trade policy and administrative management
+      '33120': Trade facilitation
+      '33130': Regional trade agreements (RTAs)
+      '33140': Multilateral trade negotiations
+      '33150': Trade-related adjustment
+      '33181': Trade education/training
+      '33210': Tourism policy and administrative management
+      '41010': Environmental policy and administrative management
+      '41020': Biosphere protection
+      '41030': Bio-diversity
+      '41040': Site preservation
+      '41050': Flood prevention/control
+      '41081': Environmental education/training
+      '41082': Environmental research
+      '43010': Multisector aid
+      '43030': Urban development and management
+      '43031': Urban land policy and management
+      '43032': Urban development
+      '43040': Rural development
+      '43041': Rural land policy and management
+      '43042': Rural development
+      '43050': Non-agricultural alternative development
+      '43060': Disaster Risk Reduction
+      '43071': Food security policy and administrative management
+      '43072': Household food security programmes
+      '43073': Food safety and quality
+      '43081': Multisector education/training
+      '43082': Research/scientific institutions
+      '51010': General budget support-related aid
+      '52010': Food assistance
+      '53030': Import support (capital goods)
+      '53040': Import support (commodities)
+      '60010': Action relating to debt
+      '60020': Debt forgiveness
+      '60030': Relief of multilateral debt
+      '60040': Rescheduling and refinancing
+      '60061': Debt for development swap
+      '60062': Other debt swap
+      '60063': Debt buy-back
+      '72010': Material relief assistance and services
+      '72040': Emergency food assistance
+      '72050': Relief co-ordination and support services
+      '73010': Immediate post-emergency reconstruction and rehabilitation
+      '74010': Disaster prevention and preparedness
+      '74020': Multi-hazard response preparedness
+      '91010': Administrative costs (non-sector allocable)
+      '92010': Support to national NGOs
+      '92020': Support to international NGOs
+      '92030': Support to local and regional NGOs
+      '93010': Refugees/asylum seekers in donor countries (non-sector allocable)
+      '93011': Refugees/asylum seekers in donor countries - food and shelter
+      '93012': Refugees/asylum seekers in donor countries - training
+      '93013': Refugees/asylum seekers in donor countries - health
+      '93014': Refugees/asylum seekers in donor countries - other temporary sustenance
+      '93015': Refugees/asylum seekers in donor countries - voluntary repatriation
+      '93016': Refugees/asylum seekers in donor countries - transport
+      '93017': Refugees/asylum seekers in donor countries - rescue at sea
+      '93018': Refugees/asylum seekers in donor countries - administrative costs
+      '99810': Sectors not specified
+      '99820': Promotion of development awareness (non-sector allocable)
     status:
-      1: "Pipeline/identification"
-      2: "Implementation"
-      3: "Completion"
-      4: "Post-completion"
-      5: "Cancelled"
-      6: "Suspended"
+      '1': Pipeline/identification
+      '2': Implementation
+      '3': Completion
+      '4': Post-completion
+      '5': Cancelled
+      '6': Suspended
     tied_status:
-      3: "Partially tied"
-      4: "Tied"
-      5: "Untied"
+      '3': Partially tied
+      '4': Tied
+      '5': Untied
   generic:
     default_currency:
-      aed: "UAE Dirham"
-      afn: "Afghani"
-      all: "Lek"
-      amd: "Armenian Dram"
-      ang: "Netherlands Antillian Guilder"
-      aoa: "Kwanza"
-      ars: "Argentine Peso"
-      aud: "Australian Dollar"
-      awg: "Aruban Guilder"
-      azn: "Azerbaijanian Manat"
-      bam: "Convertible Marks"
-      bbd: "Barbados Dollar"
-      bdt: "Taka"
-      bgn: "Bulgarian Lev"
-      bhd: "Bahraini Dinar"
-      bif: "Burundi Franc"
-      bmd: "Bermudian Dollar"
-      bnd: "Brunei Dollar"
-      bob: "Boliviano"
-      bov: "Mvdol"
-      brl: "Brazilian Real"
-      bsd: "Bahamian Dollar"
-      btn: "Ngultrum"
-      bwp: "Pula"
-      byr: "Belarussian Ruble"
-      bzd: "Belize Dollar"
-      cad: "Canadian Dollar"
-      cdf: "Congolese Franc"
-      chf: "Swiss Franc"
-      clf: "Unidades de fomento"
-      clp: "Chilean Peso"
-      cny: "Yuan Renminbi"
-      cop: "Colombian Peso"
-      cou: "Unidad de Valor Real"
-      crc: "Costa Rican Colon"
-      cuc: "Peso Convertible"
-      cup: "Cuban Peso"
-      cve: "Cape Verde Escudo"
-      czk: "Czech Koruna"
-      djf: "Djibouti Franc"
-      dkk: "Danish Krone"
-      dop: "Dominican Peso"
-      dzd: "Algerian Dinar"
-      eek: "Kroon"
-      egp: "Egyptian Pound"
-      ern: "Nakfa"
-      etb: "Ethiopian Birr"
-      eur: "Euro"
-      fjd: "Fiji Dollar"
-      fkp: "Falkland Islands Pound"
-      gbp: "Pound Sterling"
-      gel: "Lari"
-      ghs: "Cedi"
-      gip: "Gibraltar Pound"
-      gmd: "Dalasi"
-      gnf: "Guinea Franc"
-      gtq: "Quetzal"
-      gyd: "Guyana Dollar"
-      hkd: "Hong Kong Dollar"
-      hnl: "Lempira"
-      hrk: "Kuna"
-      htg: "Gourde"
-      huf: "Forint"
-      idr: "Rupiah"
-      ils: "New Israeli Sheqel"
-      inr: "Indian Rupee"
-      iqd: "Iraqi Dinar"
-      irr: "Iranian Rial"
-      isk: "Iceland Krona"
-      jmd: "Jamaican Dollar"
-      jod: "Jordanian Dinar"
-      jpy: "Yen"
-      kes: "Kenyan Shilling"
-      kgs: "Som"
-      khr: "Riel"
-      kmf: "Comoro Franc"
-      kpw: "North Korean Won"
-      krw: "Won"
-      kwd: "Kuwaiti Dinar"
-      kyd: "Cayman Islands Dollar"
-      kzt: "Tenge"
-      lak: "Kip"
-      lbp: "Lebanese Pound"
-      lkr: "Sri Lanka Rupee"
-      lrd: "Liberian Dollar"
-      lsl: "Loti"
-      ltl: "Lithuanian Litas"
-      lvl: "Latvian Lats"
-      lyd: "Libyan Dinar"
-      mad: "Moroccan Dirham"
-      mdl: "Moldovan Leu"
-      mga: "Malagasy Ariary"
-      mkd: "Denar"
-      mmk: "Kyat"
-      mnt: "Tugrik"
-      mop: "Pataca"
-      mro: "Ouguiya"
-      mur: "Mauritius Rupee"
-      mvr: "Rufiyaa"
-      mwk: "Malawi Kwacha"
-      mxn: "Mexican Peso"
-      mxv: "Mexican Unidad de Inversion (UDI)"
-      myr: "Malaysian Ringgit"
-      mzn: "Metical"
-      nad: "Namibia Dollar"
-      ngn: "Naira"
-      nio: "Cordoba Oro"
-      nok: "Norwegian Krone"
-      npr: "Nepalese Rupee"
-      nzd: "New Zealand Dollar"
-      omr: "Rial Omani"
-      pab: "Balboa"
-      pen: "Nuevo Sol"
-      pgk: "Kina"
-      php: "Philippine Peso"
-      pkr: "Pakistan Rupee"
-      pln: "Zloty"
-      pyg: "Guarani"
-      qar: "Qatari Rial"
-      ron: "Romanian Leu"
-      rsd: "Serbian Dinar"
-      rub: "Russian Ruble"
-      rwf: "Rwanda Franc"
-      sar: "Saudi Riyal"
-      sbd: "Solomon Islands Dollar"
-      scr: "Seychelles Rupee"
-      sdg: "Sudanese Pound"
-      sek: "Swedish Krona"
-      sgd: "Singapore Dollar"
-      shp: "Saint Helena Pound"
-      sll: "Leone"
-      sos: "Somali Shilling"
-      ssp: "South Sudanese Pound"
-      srd: "Surinam Dollar"
-      std: "Dobra"
-      svc: "El Salvador Colon"
-      syp: "Syrian Pound"
-      szl: "Lilangeni"
-      thb: "Baht"
-      tjs: "Somoni"
-      tmt: "Manat"
-      tnd: "Tunisian Dinar"
-      top: "Paanga"
-      try: "Turkish Lira"
-      ttd: "Trinidad and Tobago Dollar"
-      twd: "New Taiwan Dollar"
-      tzs: "Tanzanian Shilling"
-      uah: "Hryvnia"
-      ugx: "Uganda Shilling"
-      usd: "US Dollar"
-      usn: "US Dollar (Next day)"
-      uss: "US Dollar (Same day)"
-      uyi: "Uruguay Peso en Unidades Indexadas"
-      uyu: "Peso Uruguayo"
-      uzs: "Uzbekistan Sum"
-      vef: "Bolivar"
-      vnd: "Dong"
-      vuv: "Vatu"
-      wst: "Tala"
-      xaf: "CFA Franc BEAC"
-      xbt: "Bitcoin"
-      xcd: "East Caribbean Dollar"
-      xdr: "International Monetary Fund (IMF) Special Drawing Right (SDR)"
-      xof: "CFA Franc BCEAO"
-      xpf: "CFP Franc"
-      yer: "Yemeni Rial"
-      zar: "Rand"
-      zmk: "Zambian Kwacha"
-      zwl: "Zimbabwe Dollar"
+      aed: UAE Dirham
+      afn: Afghani
+      all: Lek
+      amd: Armenian Dram
+      ang: Netherlands Antillian Guilder
+      aoa: Kwanza
+      ars: Argentine Peso
+      aud: Australian Dollar
+      awg: Aruban Guilder
+      azn: Azerbaijanian Manat
+      bam: Convertible Marks
+      bbd: Barbados Dollar
+      bdt: Taka
+      bgn: Bulgarian Lev
+      bhd: Bahraini Dinar
+      bif: Burundi Franc
+      bmd: Bermudian Dollar
+      bnd: Brunei Dollar
+      bob: Boliviano
+      bov: Mvdol
+      brl: Brazilian Real
+      bsd: Bahamian Dollar
+      btn: Ngultrum
+      bwp: Pula
+      byr: Belarussian Ruble
+      bzd: Belize Dollar
+      cad: Canadian Dollar
+      cdf: Congolese Franc
+      chf: Swiss Franc
+      clf: Unidades de fomento
+      clp: Chilean Peso
+      cny: Yuan Renminbi
+      cop: Colombian Peso
+      cou: Unidad de Valor Real
+      crc: Costa Rican Colon
+      cuc: Peso Convertible
+      cup: Cuban Peso
+      cve: Cape Verde Escudo
+      czk: Czech Koruna
+      djf: Djibouti Franc
+      dkk: Danish Krone
+      dop: Dominican Peso
+      dzd: Algerian Dinar
+      eek: Kroon
+      egp: Egyptian Pound
+      ern: Nakfa
+      etb: Ethiopian Birr
+      eur: Euro
+      fjd: Fiji Dollar
+      fkp: Falkland Islands Pound
+      gbp: Pound Sterling
+      gel: Lari
+      ghs: Cedi
+      gip: Gibraltar Pound
+      gmd: Dalasi
+      gnf: Guinea Franc
+      gtq: Quetzal
+      gyd: Guyana Dollar
+      hkd: Hong Kong Dollar
+      hnl: Lempira
+      hrk: Kuna
+      htg: Gourde
+      huf: Forint
+      idr: Rupiah
+      ils: New Israeli Sheqel
+      inr: Indian Rupee
+      iqd: Iraqi Dinar
+      irr: Iranian Rial
+      isk: Iceland Krona
+      jmd: Jamaican Dollar
+      jod: Jordanian Dinar
+      jpy: Yen
+      kes: Kenyan Shilling
+      kgs: Som
+      khr: Riel
+      kmf: Comoro Franc
+      kpw: North Korean Won
+      krw: Won
+      kwd: Kuwaiti Dinar
+      kyd: Cayman Islands Dollar
+      kzt: Tenge
+      lak: Kip
+      lbp: Lebanese Pound
+      lkr: Sri Lanka Rupee
+      lrd: Liberian Dollar
+      lsl: Loti
+      ltl: Lithuanian Litas
+      lvl: Latvian Lats
+      lyd: Libyan Dinar
+      mad: Moroccan Dirham
+      mdl: Moldovan Leu
+      mga: Malagasy Ariary
+      mkd: Denar
+      mmk: Kyat
+      mnt: Tugrik
+      mop: Pataca
+      mro: Ouguiya
+      mur: Mauritius Rupee
+      mvr: Rufiyaa
+      mwk: Malawi Kwacha
+      mxn: Mexican Peso
+      mxv: Mexican Unidad de Inversion (UDI)
+      myr: Malaysian Ringgit
+      mzn: Metical
+      nad: Namibia Dollar
+      ngn: Naira
+      nio: Cordoba Oro
+      nok: Norwegian Krone
+      npr: Nepalese Rupee
+      nzd: New Zealand Dollar
+      omr: Rial Omani
+      pab: Balboa
+      pen: Nuevo Sol
+      pgk: Kina
+      php: Philippine Peso
+      pkr: Pakistan Rupee
+      pln: Zloty
+      pyg: Guarani
+      qar: Qatari Rial
+      ron: Romanian Leu
+      rsd: Serbian Dinar
+      rub: Russian Ruble
+      rwf: Rwanda Franc
+      sar: Saudi Riyal
+      sbd: Solomon Islands Dollar
+      scr: Seychelles Rupee
+      sdg: Sudanese Pound
+      sek: Swedish Krona
+      sgd: Singapore Dollar
+      shp: Saint Helena Pound
+      sll: Leone
+      sos: Somali Shilling
+      srd: Surinam Dollar
+      ssp: South Sudanese Pound
+      std: Dobra
+      svc: El Salvador Colon
+      syp: Syrian Pound
+      szl: Lilangeni
+      thb: Baht
+      tjs: Somoni
+      tmt: Manat
+      tnd: Tunisian Dinar
+      top: Paanga
+      try: Turkish Lira
+      ttd: Trinidad and Tobago Dollar
+      twd: New Taiwan Dollar
+      tzs: Tanzanian Shilling
+      uah: Hryvnia
+      ugx: Uganda Shilling
+      usd: US Dollar
+      usn: US Dollar (Next day)
+      uss: US Dollar (Same day)
+      uyi: Uruguay Peso en Unidades Indexadas
+      uyu: Peso Uruguayo
+      uzs: Uzbekistan Sum
+      vef: Bolivar
+      vnd: Dong
+      vuv: Vatu
+      wst: Tala
+      xaf: CFA Franc BEAC
+      xbt: Bitcoin
+      xcd: East Caribbean Dollar
+      xdr: International Monetary Fund (IMF) Special Drawing Right (SDR)
+      xof: CFA Franc BCEAO
+      xpf: CFP Franc
+      yer: Yemeni Rial
+      zar: Rand
+      zmk: Zambian Kwacha
+      zwl: Zimbabwe Dollar
+  organisation:
     language_code:
-      aa: "Afar"
-      ab: "Abkhazian"
-      ae: "Avestan"
-      af: "Afrikaans"
-      ak: "Akan"
-      am: "Amharic"
-      an: "Aragonese"
-      ar: "Arabic"
-      as: "Assamese"
-      av: "Avaric"
-      ay: "Aymara"
-      az: "Azerbaijani"
-      ba: "Bashkir"
-      be: "Belarusian"
-      bg: "Bulgarian"
-      bh: "Bihari languages"
-      bi: "Bislama"
-      bm: "Bambara"
-      bn: "Bengali"
-      bo: "Tibetan"
-      br: "Breton"
-      bs: "Bosnian"
-      ca: "Catalan; Valencian"
-      ce: "Chechen"
-      ch: "Chamorro"
-      co: "Corsican"
-      cr: "Cree"
-      cs: "Czech"
-      cv: "Chuvash"
-      cy: "Welsh"
-      da: "Danish"
-      de: "German"
-      dv: "Divehi; Dhivehi; Maldivian"
-      dz: "Dzongkha"
-      ee: "Ewe"
-      el: "Greek"
-      en: "English"
-      eo: "Esperanto"
-      es: "Spanish; Castilian"
-      et: "Estonian"
-      eu: "Basque"
-      fa: "Persian"
-      ff: "Fulah"
-      fi: "Finnish"
-      fj: "Fijian"
-      fo: "Faroese"
-      fr: "French"
-      fy: "Western Frisian"
-      ga: "Irish"
-      gd: "Gaelic; Scottish Gaelic"
-      gl: "Galician"
-      gn: "Guarani"
-      gu: "Gujarati"
-      gv: "Manx"
-      ha: "Hausa"
-      he: "Hebrew"
-      hi: "Hindi"
-      ho: "Hiri Motu"
-      hr: "Croatian"
-      ht: "Haitian; Haitian Creole"
-      hu: "Hungarian"
-      hy: "Armenian"
-      hz: "Herero"
-      id: "Indonesian"
-      ig: "Igbo"
-      ii: "Sichuan Yi; Nuosu"
-      ik: "Inupiaq"
-      io: "Ido"
-      is: "Icelandic"
-      it: "Italian"
-      iu: "Inuktitut"
-      ja: "Japanese"
-      jv: "Javanese"
-      ka: "Georgian"
-      kg: "Kongo"
-      ki: "Kikuyu; Gikuyu"
-      kj: "Kuanyama; Kwanyama"
-      kk: "Kazakh"
-      kl: "Kalaallisut; Greenlandic"
-      km: "Central Khmer"
-      kn: "Kannada"
-      ko: "Korean"
-      kr: "Kanuri"
-      ks: "Kashmiri"
-      ku: "Kurdish"
-      kv: "Komi"
-      kw: "Cornish"
-      ky: "Kirghiz; Kyrgyz"
-      la: "Latin"
-      lb: "Luxembourgish; Letzeburgesch"
-      lg: "Ganda"
-      li: "Limburgan; Limburger; Limburgish"
-      ln: "Lingala"
-      lo: "Lao"
-      lt: "Lithuanian"
-      lu: "Luba-Katanga"
-      lv: "Latvian"
-      mg: "Malagasy"
-      mh: "Marshallese"
-      mi: "Maori"
-      mk: "Macedonian"
-      ml: "Malayalam"
-      mn: "Mongolian"
-      mr: "Marathi"
-      ms: "Malay"
-      mt: "Maltese"
-      my: "Burmese"
-      na: "Nauru"
-      nb: "Bokmål, Norwegian; Norwegian Bokmål"
-      nd: "Ndebele, North; North Ndebele"
-      ne: "Nepali"
-      ng: "Ndonga"
-      nl: "Dutch; Flemish"
-      nn: "Norwegian Nynorsk; Nynorsk, Norwegian"
-      no: "Norwegian"
-      nr: "Ndebele, South; South Ndebele"
-      nv: "Navajo; Navaho"
-      ny: "Chichewa; Chewa; Nyanja"
-      oc: "Occitan (post 1500)"
-      oj: "Ojibwa"
-      om: "Oromo"
-      or: "Oriya"
-      os: "Ossetian; Ossetic"
-      pa: "Panjabi; Punjabi"
-      pi: "Pali"
-      pl: "Polish"
-      ps: "Pushto; Pashto"
-      pt: "Portuguese"
-      qu: "Quechua"
-      rm: "Romansh"
-      rn: "Rundi"
-      ro: "Romanian; Moldavian; Moldovan"
-      ru: "Russian"
-      rw: "Kinyarwanda"
-      sa: "Sanskrit"
-      sc: "Sardinian"
-      sd: "Sindhi"
-      se: "Northern Sami"
-      sg: "Sango"
-      si: "Sinhala; Sinhalese"
-      sk: "Slovak"
-      sl: "Slovenian"
-      sm: "Samoan"
-      sn: "Shona"
-      so: "Somali"
-      sq: "Albanian"
-      sr: "Serbian"
-      ss: "Swati"
-      st: "Sotho, Southern"
-      su: "Sundanese"
-      sv: "Swedish"
-      sw: "Swahili"
-      ta: "Tamil"
-      te: "Telugu"
-      tg: "Tajik"
-      th: "Thai"
-      ti: "Tigrinya"
-      tk: "Turkmen"
-      tl: "Tagalog"
-      tn: "Tswana"
-      to: "Tonga (Tonga Islands)"
-      tr: "Turkish"
-      ts: "Tsonga"
-      tt: "Tatar"
-      tw: "Twi"
-      ty: "Tahitian"
-      ug: "Uighur; Uyghur"
-      uk: "Ukrainian"
-      ur: "Urdu"
-      uz: "Uzbek"
-      ve: "Venda"
-      vi: "Vietnamese"
-      vo: "Volapük"
-      wa: "Walloon"
-      wo: "Wolof"
-      xh: "Xhosa"
-      yi: "Yiddish"
-      yo: "Yoruba"
-      za: "Zhuang; Chuang"
-      zh: "Chinese"
-      zu: "Zulu"
+      aa: Afar
+      ab: Abkhazian
+      ae: Avestan
+      af: Afrikaans
+      ak: Akan
+      am: Amharic
+      an: Aragonese
+      ar: Arabic
+      as: Assamese
+      av: Avaric
+      ay: Aymara
+      az: Azerbaijani
+      ba: Bashkir
+      be: Belarusian
+      bg: Bulgarian
+      bh: Bihari languages
+      bi: Bislama
+      bm: Bambara
+      bn: Bengali
+      bo: Tibetan
+      br: Breton
+      bs: Bosnian
+      ca: Catalan; Valencian
+      ce: Chechen
+      ch: Chamorro
+      co: Corsican
+      cr: Cree
+      cs: Czech
+      cv: Chuvash
+      cy: Welsh
+      da: Danish
+      de: German
+      dv: Divehi; Dhivehi; Maldivian
+      dz: Dzongkha
+      ee: Ewe
+      el: Greek
+      en: English
+      eo: Esperanto
+      es: Spanish; Castilian
+      et: Estonian
+      eu: Basque
+      fa: Persian
+      'false': Norwegian
+      ff: Fulah
+      fi: Finnish
+      fj: Fijian
+      fo: Faroese
+      fr: French
+      fy: Western Frisian
+      ga: Irish
+      gd: Gaelic; Scottish Gaelic
+      gl: Galician
+      gn: Guarani
+      gu: Gujarati
+      gv: Manx
+      ha: Hausa
+      he: Hebrew
+      hi: Hindi
+      ho: Hiri Motu
+      hr: Croatian
+      ht: Haitian; Haitian Creole
+      hu: Hungarian
+      hy: Armenian
+      hz: Herero
+      id: Indonesian
+      ig: Igbo
+      ii: Sichuan Yi; Nuosu
+      ik: Inupiaq
+      io: Ido
+      is: Icelandic
+      it: Italian
+      iu: Inuktitut
+      ja: Japanese
+      jv: Javanese
+      ka: Georgian
+      kg: Kongo
+      ki: Kikuyu; Gikuyu
+      kj: Kuanyama; Kwanyama
+      kk: Kazakh
+      kl: Kalaallisut; Greenlandic
+      km: Central Khmer
+      kn: Kannada
+      ko: Korean
+      kr: Kanuri
+      ks: Kashmiri
+      ku: Kurdish
+      kv: Komi
+      kw: Cornish
+      ky: Kirghiz; Kyrgyz
+      la: Latin
+      lb: Luxembourgish; Letzeburgesch
+      lg: Ganda
+      li: Limburgan; Limburger; Limburgish
+      ln: Lingala
+      lo: Lao
+      lt: Lithuanian
+      lu: Luba-Katanga
+      lv: Latvian
+      mg: Malagasy
+      mh: Marshallese
+      mi: Maori
+      mk: Macedonian
+      ml: Malayalam
+      mn: Mongolian
+      mr: Marathi
+      ms: Malay
+      mt: Maltese
+      my: Burmese
+      na: Nauru
+      nb: Bokmål, Norwegian; Norwegian Bokmål
+      nd: Ndebele, North; North Ndebele
+      ne: Nepali
+      ng: Ndonga
+      nl: Dutch; Flemish
+      nn: Norwegian Nynorsk; Nynorsk, Norwegian
+      nr: Ndebele, South; South Ndebele
+      nv: Navajo; Navaho
+      ny: Chichewa; Chewa; Nyanja
+      oc: Occitan (post 1500)
+      oj: Ojibwa
+      om: Oromo
+      or: Oriya
+      os: Ossetian; Ossetic
+      pa: Panjabi; Punjabi
+      pi: Pali
+      pl: Polish
+      ps: Pushto; Pashto
+      pt: Portuguese
+      qu: Quechua
+      rm: Romansh
+      rn: Rundi
+      ro: Romanian; Moldavian; Moldovan
+      ru: Russian
+      rw: Kinyarwanda
+      sa: Sanskrit
+      sc: Sardinian
+      sd: Sindhi
+      se: Northern Sami
+      sg: Sango
+      si: Sinhala; Sinhalese
+      sk: Slovak
+      sl: Slovenian
+      sm: Samoan
+      sn: Shona
+      so: Somali
+      sq: Albanian
+      sr: Serbian
+      ss: Swati
+      st: Sotho, Southern
+      su: Sundanese
+      sv: Swedish
+      sw: Swahili
+      ta: Tamil
+      te: Telugu
+      tg: Tajik
+      th: Thai
+      ti: Tigrinya
+      tk: Turkmen
+      tl: Tagalog
+      tn: Tswana
+      to: Tonga (Tonga Islands)
+      tr: Turkish
+      ts: Tsonga
+      tt: Tatar
+      tw: Twi
+      ty: Tahitian
+      ug: Uighur; Uyghur
+      uk: Ukrainian
+      ur: Urdu
+      uz: Uzbek
+      ve: Venda
+      vi: Vietnamese
+      vo: Volapük
+      wa: Walloon
+      wo: Wolof
+      xh: Xhosa
+      yi: Yiddish
+      yo: Yoruba
+      za: Zhuang; Chuang
+      zh: Chinese
+      zu: Zulu
     organisation_type:
-      10: "Government"
-      11: "Local Government"
-      15: "Other Public Sector"
-      21: "International NGO"
-      22: "National NGO"
-      23: "Regional NGO"
-      24: "Partner Country based NGO"
-      30: "Public Private Partnership"
-      40: "Multilateral"
-      60: "Foundation"
-      70: "Private Sector"
-      71: "Private Sector in Provider Country"
-      72: "Private Sector in Aid Recipient Country"
-      73: "Private Sector in Third Country"
-      80: "Academic, Training and Research"
-      90: "Other"
+      '10': Government
+      '11': Local Government
+      '15': Other Public Sector
+      '21': International NGO
+      '22': National NGO
+      '23': Regional NGO
+      '24': Partner Country based NGO
+      '30': Public Private Partnership
+      '40': Multilateral
+      '60': Foundation
+      '70': Private Sector
+      '71': Private Sector in Provider Country
+      '72': Private Sector in Aid Recipient Country
+      '73': Private Sector in Third Country
+      '80': Academic, Training and Research
+      '90': Other
   transaction:
-    transaction_type:
-      1: "Incoming Funds"
-      2: "Outgoing Commitment"
-      3: "Disbursement"
-      4: "Expenditure"
-      5: "Interest Payment"
-      6: "Loan Repayment"
-      7: "Reimbursement"
-      8: "Purchase of Equity"
-      9: "Sale of Equity"
-      10: "Credit Guarantee"
-      11: "Incoming Commitment"
-      12: "Outgoing Pledge"
-      13: "Incoming Pledge"
     disbursement_channel:
-      1: "Money is disbursed through central Ministry of Finance or Treasury"
-      2: "Money is disbursed directly to the implementing institution and managed through a separate bank account"
-      3: "Aid in kind: Donors utilise third party agencies, e.g. NGOs or management companies"
-      4: "Aid in kind: Donors manage funds themselves"
+      '1': Money is disbursed through central Ministry of Finance or Treasury
+      '2': Money is disbursed directly to the implementing institution and managed through a separate bank account
+      '3': 'Aid in kind: Donors utilise third party agencies, e.g. NGOs or management companies'
+      '4': 'Aid in kind: Donors manage funds themselves'
+    transaction_type:
+      '1': Incoming Funds
+      '10': Credit Guarantee
+      '11': Incoming Commitment
+      '12': Outgoing Pledge
+      '13': Incoming Pledge
+      '2': Outgoing Commitment
+      '3': Disbursement
+      '4': Expenditure
+      '5': Interest Payment
+      '6': Loan Repayment
+      '7': Reimbursement
+      '8': Purchase of Equity
+      '9': Sale of Equity
