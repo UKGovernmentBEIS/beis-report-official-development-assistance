@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   scope module: "staff" do
     resource :dashboard, only: :show
     resources :users
-    resources :organisations do
+    resources :organisations, except: [:destroy] do
       resources :funds, only: [:index, :show, :new, :create]
     end
 
