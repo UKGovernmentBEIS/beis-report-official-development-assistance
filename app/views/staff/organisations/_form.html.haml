@@ -1,0 +1,19 @@
+= f.govuk_error_summary
+= f.govuk_text_field :name
+= f.govuk_collection_select :organisation_type,
+                     yaml_to_objects("organisation", "organisation_type"),
+                     :code,
+                     :name
+= f.govuk_collection_select :language_code,
+                     yaml_to_objects("organisation", "language_code"),
+                     :code,
+                     :name,
+                     label: { text: t("form.organisation.language_code.label") },
+                     hint_text: t("form.organisation.language_code.hint")
+= f.govuk_collection_select :default_currency,
+                     yaml_to_objects("generic", "default_currency"),
+                     :code,
+                     :name,
+                     label: { text: t("form.organisation.default_currency.label") },
+                     hint_text: t("form.organisation.default_currency.hint")
+= f.govuk_submit t("generic.button.submit")
