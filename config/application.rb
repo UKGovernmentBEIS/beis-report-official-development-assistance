@@ -36,7 +36,6 @@ module Roda
     config.i18n.load_path += Dir[Rails.root.join("config", "locales", "codelists", "**", "*.{rb,yml}")]
     config.i18n.default_locale = :en
     config.i18n.enforce_available_locales = false
-    config.i18n.fallbacks = [:en, :iati]
 
     config.active_job.queue_adapter = :sidekiq
 
