@@ -28,6 +28,6 @@
             = @user.identifier
     .govuk-grid-column-one-third.organisations
       %h2.govuk-heading-m Organisations
-      %ul
+      %ul.govuk-list.govuk-list--bullet
         - @user.organisations.each do |organisation|
           %li= organisation.name
