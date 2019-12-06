@@ -51,5 +51,11 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(helper.yaml_to_objects("generic", "default_currency", false).last).to eq(OpenStruct.new(name: "Zloty", code: "PLN"))
       end
     end
+
+    describe "#currency_select_options" do
+      it "returns an array of objects with GBP as the first (default) option" do
+        expect(helper.currency_select_options.first).to eq(OpenStruct.new(name: "Pound Sterling", code: "GBP"))
+      end
+    end
   end
 end

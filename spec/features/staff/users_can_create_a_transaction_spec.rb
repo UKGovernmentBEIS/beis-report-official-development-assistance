@@ -63,7 +63,6 @@ RSpec.feature "Users can create a transaction" do
     expect(page).to have_content("Description can't be blank")
     expect(page).to have_content("Transaction type can't be blank")
     expect(page).to have_content("Date can't be blank")
-    expect(page).to have_content("Currency can't be blank")
     expect(page).to have_content("Value can't be blank")
     expect(page).to have_content("Disbursement channel can't be blank")
   end
