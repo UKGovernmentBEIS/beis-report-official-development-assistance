@@ -37,4 +37,4 @@
         = t("page_content.fund.transactions")
 
       = link_to(I18n.t("page_content.transactions.button.create"), new_fund_transaction_path(@fund), class: "govuk-button")
-      = render partial: '/staff/shared/transactions/table', locals: { transactions: @transactions }
+      = render partial: '/staff/shared/transactions/table', locals: { transactions: @transaction_presenters }

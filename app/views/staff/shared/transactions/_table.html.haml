@@ -22,8 +22,8 @@
         %tr.govuk-table__row
           %td.govuk-table__cell= transaction.reference
           %td.govuk-table__cell= transaction.description
-          %td.govuk-table__cell= I18n.t("transaction.transaction_type.#{transaction.transaction_type}")
+          %td.govuk-table__cell= transaction.transaction_type
           %td.govuk-table__cell= transaction.date
-          %td.govuk-table__cell= I18n.t("generic.default_currency.#{transaction.currency.downcase}")
+          %td.govuk-table__cell= transaction.currency
           %td.govuk-table__cell= transaction.value
-          %td.govuk-table__cell= I18n.t("transaction.disbursement_channel.#{transaction.disbursement_channel}")
+          %td.govuk-table__cell= transaction.disbursement_channel
