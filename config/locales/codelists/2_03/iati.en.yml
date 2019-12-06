@@ -431,7 +431,7 @@ iati:
       3: "Partially tied"
       4: "Tied"
       5: "Untied"
-  organisation:
+  generic:
     default_currency:
       aed: "UAE Dirham"
       afn: "Afghani"
@@ -801,3 +801,23 @@ iati:
       73: "Private Sector in Third Country"
       80: "Academic, Training and Research"
       90: "Other"
+  transaction:
+    transaction_type:
+      1: "Incoming Funds"
+      2: "Outgoing Commitment"
+      3: "Disbursement"
+      4: "Expenditure"
+      5: "Interest Payment"
+      6: "Loan Repayment"
+      7: "Reimbursement"
+      8: "Purchase of Equity"
+      9: "Sale of Equity"
+      10: "Credit Guarantee"
+      11: "Incoming Commitment"
+      12: "Outgoing Pledge"
+      13: "Incoming Pledge"
+    disbursement_channel:
+      1: "Money is disbursed through central Ministry of Finance or Treasury"
+      2: "Money is disbursed directly to the implementing institution and managed through a separate bank account"
+      3: "Aid in kind: Donors utilise third party agencies, e.g. NGOs or management companies"
+      4: "Aid in kind: Donors manage funds themselves"

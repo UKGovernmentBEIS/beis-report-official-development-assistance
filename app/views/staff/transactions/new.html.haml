@@ -1,0 +1,34 @@
+=content_for :page_title_prefix, t("page_title.transaction.new")
+
+%p= link_to t("generic.link.back"), organisation_fund_path(@fund.id, organisation_id: @fund.organisation.id), class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.transaction.new")
+
+      = form_with model: @transaction, url: fund_transactions_path(@fund) do |f|
+        = f.govuk_error_summary
+        = f.govuk_text_field :reference
+        = f.govuk_text_area :description
+        = f.govuk_collection_select :transaction_type,
+                             yaml_to_objects("transaction", "transaction_type"),
+                             :code,
+                             :name,
+                             label: { text: t("form.transaction.transaction_type.label") },
+                             hint_text: t("form.transaction.transaction_type.hint")
+        = f.govuk_date_field :date,
+          legend: { text: t("form.transaction.date.label"), size: "s" }
+        = f.govuk_collection_select :currency,
+                             currency_select_options,
+                             :code,
+                             :name,
+                             label: { text: t("form.transaction.currency.label") }
+        = f.govuk_number_field :value
+        = f.govuk_collection_select :disbursement_channel,
+                             yaml_to_objects("transaction", "disbursement_channel"),
+                             :code,
+                             :name,
+                             label: { text: t("form.transaction.disbursement_channel.label") },
+                             hint_text: t("form.transaction.disbursement_channel.hint")
+        = f.govuk_submit t("generic.button.submit")

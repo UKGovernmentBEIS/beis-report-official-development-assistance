@@ -64,6 +64,7 @@ RSpec.feature "Users can create an activity" do
 
       expect(page).to have_content I18n.t("page_title.activity_form.show.tied_status")
       select "Untied", from: "activity[tied_status]"
+
       click_button I18n.t("form.activity.submit")
 
       expect(page).to have_content I18n.t("form.activity.create.success")
@@ -83,7 +84,6 @@ RSpec.feature "Users can create an activity" do
       scenario "validation errors work as expected" do
         visit fund_path(fund)
         click_on I18n.t("page_content.fund.button.create_activity")
-
         click_button I18n.t("form.activity.submit")
         expect(page).not_to have_content I18n.t("form.activity.create.success")
         expect(page).to have_content "can't be blank"

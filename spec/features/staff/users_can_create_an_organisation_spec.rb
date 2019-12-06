@@ -22,7 +22,7 @@ RSpec.feature "Users can create organisations" do
       select "Government", from: "organisation[organisation_type]"
       select "Czech", from: "organisation[language_code]"
       select "Zloty", from: "organisation[default_currency]"
-      click_button I18n.t("form.organisation.submit")
+      click_button I18n.t("generic.button.submit")
       expect(page).to have_content I18n.t("form.organisation.create.success")
     end
 
@@ -34,7 +34,7 @@ RSpec.feature "Users can create organisations" do
       expect(page).to have_content(I18n.t("page_title.organisation.new"))
       fill_in "organisation[name]", with: "My New Organisation"
 
-      click_button I18n.t("form.organisation.submit")
+      click_button I18n.t("generic.button.submit")
       expect(page).to_not have_content I18n.t("form.organisation.create.success")
       expect(page).to have_content "can't be blank"
     end
