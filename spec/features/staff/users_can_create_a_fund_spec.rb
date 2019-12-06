@@ -19,7 +19,7 @@ RSpec.feature "Users can create a fund" do
 
     expect(page).to have_content(I18n.t("page_title.fund.new"))
     fill_in "fund[name]", with: "My Space Fund"
-    click_button I18n.t("form.fund.submit")
+    click_button I18n.t("generic.button.submit")
     expect(page).to have_content I18n.t("form.fund.create.success")
   end
 
@@ -28,7 +28,7 @@ RSpec.feature "Users can create a fund" do
 
     expect(page).to have_content(I18n.t("page_title.fund.new"))
 
-    click_button I18n.t("form.fund.submit")
+    click_button I18n.t("generic.button.submit")
     expect(page).to_not have_content I18n.t("form.fund.create.success")
     expect(page).to have_content "can't be blank"
   end

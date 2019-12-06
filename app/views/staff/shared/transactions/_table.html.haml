@@ -1,0 +1,29 @@
+- unless transactions.empty?
+  %table.govuk-table.transactions
+    %thead.govuk-table__head
+      %tr.govuk-table__row
+        %th.govuk-table__header
+          Reference
+        %th.govuk-table__header
+          Description
+        %th.govuk-table__header
+          Type
+        %th.govuk-table__header
+          Date
+        %th.govuk-table__header
+          Currency
+        %th.govuk-table__header
+          Value
+        %th.govuk-table__header
+          Disbursement Channel
+
+    %tbody.govuk-table__body
+      - transactions.each do |transaction|
+        %tr.govuk-table__row
+          %td.govuk-table__cell= transaction.reference
+          %td.govuk-table__cell= transaction.description
+          %td.govuk-table__cell= I18n.t("transaction.transaction_type.#{transaction.transaction_type}")
+          %td.govuk-table__cell= transaction.date
+          %td.govuk-table__cell= I18n.t("generic.default_currency.#{transaction.currency.downcase}")
+          %td.govuk-table__cell= transaction.value
+          %td.govuk-table__cell= I18n.t("transaction.disbursement_channel.#{transaction.disbursement_channel}")

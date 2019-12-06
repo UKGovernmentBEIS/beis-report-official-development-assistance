@@ -1,5 +1,6 @@
 class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
+  include DateHelper
 
   steps(
     :identifier,
@@ -52,14 +53,6 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   private
-
-  def format_date(params)
-    date_parts = params.values_at(:day, :month, :year)
-    return unless date_parts.all?(&:present?)
-
-    day, month, year = date_parts.map(&:to_i)
-    Date.new(year, month, day)
-  end
 
   def planned_start_date
     params[:planned_start_date]
