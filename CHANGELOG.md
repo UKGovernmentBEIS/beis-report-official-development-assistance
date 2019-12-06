@@ -13,3 +13,4 @@
 - Users can download an XML representation of an Activity
 - Split activity form into multiple steps
 - Create Transactions associated with a Fund
+- Remove the distinction between Fund and Activity from the user
