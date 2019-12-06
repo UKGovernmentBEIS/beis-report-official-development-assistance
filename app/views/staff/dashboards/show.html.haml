@@ -6,17 +6,8 @@
       %h1.govuk-heading-xl
         = t("page_title.dashboard")
 
-      %p.govuk-body
-        %strong
-          = t("dashboards.show.welcome", name: current_user.name)
-
-      %p.govuk-body
-        %a{ href: sign_out_path, class: 'govuk-link govuk-link--no-visited-state' }
-          = t("generic.link.sign_out")
-
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %hr.govuk-section-break.govuk-section-break--visible.govuk-section-break--m
       %h3.govuk-heading-m
         = t("page_content.dashboard.header.manage_users")
       = link_to t("page_content.dashboard.button.manage_users"), users_path, class: "govuk-button"
