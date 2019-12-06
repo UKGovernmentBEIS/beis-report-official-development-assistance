@@ -10,7 +10,6 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
  *= require_self
  */
 
@@ -20,3 +19,4 @@ $govuk-images-path: "govuk-frontend/govuk/assets/images/";
 $govuk-fonts-path: "govuk-frontend/govuk/assets/fonts/";
 
 @import "govuk-frontend/govuk/all";
+@import "partials/*";
