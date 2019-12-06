@@ -149,7 +149,7 @@ en:
     fund:
       activity: Activity
       button:
-        create_activity: Create activity
+        create_activity: Add %{activity} information
         create_transaction: Create transaction
       name:
         label: Name
