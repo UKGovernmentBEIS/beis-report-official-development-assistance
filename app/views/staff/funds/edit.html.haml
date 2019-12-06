@@ -1,0 +1,11 @@
+=content_for :page_title_prefix, t("page_title.fund.edit")
+
+= link_to t("generic.link.back"), organisation_path(@fund.organisation), class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.fund.edit")
+
+      = form_with model: @fund, url: organisation_fund_path(@fund.organisation), method: :put do |f|
+        = render partial: 'form', locals: { f: f }
