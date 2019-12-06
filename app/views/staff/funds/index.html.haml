@@ -10,7 +10,7 @@
       %p
         = t("page_content.funds.cta.html", organisations_link: link_to(t('page_content.funds.organisation'), organisations_path))
       - if @funds
-        %ul
+        %ul.govuk-list.govuk-list--bullet
           - @funds.each do |fund|
             %li
               = link_to fund.name, fund_path(fund.id)
