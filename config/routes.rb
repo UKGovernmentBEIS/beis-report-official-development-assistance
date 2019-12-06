@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       resources :funds, only: [:index, :show, :new, :create]
     end
 
-    resources :funds do
+    resources :funds, only: [] do
       resources :activities, only: [:new, :create, :show] do
         resources :steps, controller: "activity_forms"
       end
