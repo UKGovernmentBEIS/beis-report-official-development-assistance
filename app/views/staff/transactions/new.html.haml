@@ -20,7 +20,7 @@
         = f.govuk_date_field :date,
           legend: { text: t("form.transaction.date.label"), size: "s" }
         = f.govuk_collection_select :currency,
-                             yaml_to_objects("generic", "default_currency"),
+                             currency_select_options,
                              :code,
                              :name,
                              label: { text: t("form.transaction.currency.label") }
