@@ -32,12 +32,10 @@
           %dd.govuk-summary-list__value
             = t("generic.default_currency.#{@organisation_presenter.default_currency}")
 
-    .govuk-grid-column-one-third
       %h2.govuk-heading-m
         = t("page_content.organisation.funds")
-
       = link_to(t("page_content.organisation.button.create_fund"), new_organisation_fund_path(@organisation_presenter), class: "govuk-button")
-      %ul
+      %ul.govuk-list.govuk-list--bullet
         - @funds.each do |fund|
           %li
             = link_to fund.name, organisation_fund_path(fund.organisation, fund)
