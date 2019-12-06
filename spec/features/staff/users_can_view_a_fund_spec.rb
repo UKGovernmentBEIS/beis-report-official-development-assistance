@@ -12,14 +12,14 @@ RSpec.feature "Users can view a fund" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
-      visit fund_path(viewable_fund)
+      visit organisation_fund_path(organisation, viewable_fund)
       expect(current_path).to eq(root_path)
     end
   end
 
   context "when the fund belongs to the user's organisation" do
     scenario "the user can view the fund" do
-      visit fund_path(viewable_fund)
+      visit organisation_fund_path(organisation, viewable_fund)
 
       expect(page).to have_content viewable_fund.name
     end
@@ -27,12 +27,13 @@ RSpec.feature "Users can view a fund" do
 
   context "when the fund belongs to another organisation" do
     scenario "the user cannot view the fund" do
-      expect { visit fund_path(forbidden_fund) }.to raise_exception(ActiveRecord::RecordNotFound)
+      expect { visit organisation_fund_path(organisation, forbidden_fund) }
+        .to raise_exception(ActiveRecord::RecordNotFound)
     end
   end
 
   scenario "can go back to the previous page" do
-    visit fund_path(viewable_fund)
+    visit organisation_fund_path(organisation, viewable_fund)
 
     click_on I18n.t("generic.link.back")
 

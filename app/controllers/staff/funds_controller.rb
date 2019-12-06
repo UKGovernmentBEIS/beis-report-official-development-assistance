@@ -18,18 +18,20 @@ class Staff::FundsController < Staff::BaseController
 
   def new
     @fund = policy_scope(Fund).new
+    @organisation = Organisation.find(organisation_id)
     authorize @fund
   end
 
   def create
     @fund = policy_scope(Fund).new(fund_params)
+    @organisation = Organisation.find(organisation_id)
+    @fund.organisation = @organisation
     authorize @fund
-    @fund.organisation = Organisation.find params[:organisation_id]
 
     if @fund.valid?
       @fund.save
       flash[:notice] = I18n.t("form.fund.create.success")
-      redirect_to fund_path(@fund)
+      redirect_to organisation_fund_path(@organisation, @fund)
     else
       render :new
     end
@@ -43,5 +45,9 @@ class Staff::FundsController < Staff::BaseController
 
   def id
     params[:id]
+  end
+
+  def organisation_id
+    params[:organisation_id]
   end
 end
