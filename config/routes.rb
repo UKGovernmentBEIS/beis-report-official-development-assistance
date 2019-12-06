@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     resource :dashboard, only: :show
     resources :users
     resources :organisations, except: [:destroy] do
-      resources :funds, only: [:index, :show, :new, :create]
+      resources :funds, except: [:destroy]
     end
 
     resources :funds, only: [] do

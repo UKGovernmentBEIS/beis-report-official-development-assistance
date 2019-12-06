@@ -37,6 +37,26 @@ class Staff::FundsController < Staff::BaseController
     end
   end
 
+  def edit
+    @fund = policy_scope(Fund).find(id)
+    authorize @fund
+  end
+
+  def update
+    @fund = policy_scope(Fund).find(id)
+    authorize @fund
+
+    @fund.assign_attributes(fund_params)
+
+    if @fund.valid?
+      @fund.save
+      flash[:notice] = I18n.t("form.fund.update.success")
+      redirect_to organisation_fund_path(@fund.organisation, @fund)
+    else
+      render :edit
+    end
+  end
+
   private
 
   def fund_params

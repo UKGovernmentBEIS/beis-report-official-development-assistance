@@ -52,6 +52,8 @@ en:
         success: Fund successfully created
       organisation:
         hint: The organisation this fund is associated with
+      update:
+        success: Fund successfully updated
     organisation:
       create:
         success: Organisation successfully created
@@ -153,6 +155,7 @@ en:
       button:
         create_activity: Add %{activity} information
         create_transaction: Create transaction
+        edit: Edit fund
       name:
         label: Name
       organisation:
@@ -211,6 +214,7 @@ en:
     errors:
       not_authorised: You are not authorised
     fund:
+      edit: Edit fund
       index: Funds
       new: Create fund
       show: Fund %{name}
