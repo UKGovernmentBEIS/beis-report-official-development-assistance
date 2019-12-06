@@ -7,10 +7,5 @@
       %h1.govuk-heading-xl
         = t("page_title.fund.new")
 
-      = simple_form_for(@fund, method: :post, url: organisation_funds_path) do |f|
-        .govuk-form-group
-          = f.input :organisation_id,
-                    as: :hidden
-          = f.input :name
-
-        = f.button :submit, t("generic.button.submit")
+      = form_with model: @fund, url: organisation_funds_path(@organisation) do |f|
+        = render partial: 'form', locals: { f: f }
