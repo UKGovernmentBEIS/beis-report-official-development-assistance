@@ -18,7 +18,7 @@ RSpec.feature "Users can create an activity" do
   context "when the hierarchy is a Fund" do
     scenario "successfully creating an activity with all optional information" do
       visit fund_path(fund)
-      click_on I18n.t("page_content.fund.button.create_activity")
+      click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
 
       expect(page).to have_content I18n.t("page_title.activity_form.show.identifier")
       fill_in "activity[identifier]", with: "A-Unique-Identifier"
@@ -83,7 +83,7 @@ RSpec.feature "Users can create an activity" do
     context "validations" do
       scenario "validation errors work as expected" do
         visit fund_path(fund)
-        click_on I18n.t("page_content.fund.button.create_activity")
+        click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
         click_button I18n.t("form.activity.submit")
         expect(page).not_to have_content I18n.t("form.activity.create.success")
         expect(page).to have_content "can't be blank"
@@ -92,7 +92,7 @@ RSpec.feature "Users can create an activity" do
 
     scenario "can go back to the previous page" do
       visit fund_path(fund)
-      click_on I18n.t("page_content.fund.button.create_activity")
+      click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
 
       click_on I18n.t("generic.link.back")
 

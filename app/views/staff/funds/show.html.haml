@@ -9,28 +9,23 @@
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %dl.govuk-summary-list
-        .govuk-summary-list__row
-          %dt.govuk-summary-list__key
-            = t("page_content.fund.name.label")
-          %dd.govuk-summary-list__value
-            = @fund.name
-        .govuk-summary-list__row
-          %dt.govuk-summary-list__key
-            = t("page_content.fund.organisation.label")
-          %dd.govuk-summary-list__value
-            = link_to @fund.organisation.name, organisation_path(@fund.organisation)
+      - if @fund.activity
+        = render partial: "staff/shared/activities/activity", locals: { activity_presenter: ActivityPresenter.new(@fund.activity) }
+      - else
+        %dl.govuk-summary-list
+          .govuk-summary-list__row
+            %dt.govuk-summary-list__key
+              = t("page_content.fund.name.label")
+            %dd.govuk-summary-list__value
+              = @fund.name
+          .govuk-summary-list__row
+            %dt.govuk-summary-list__key
+              = t("page_content.fund.organisation.label")
+            %dd.govuk-summary-list__value
+              = link_to @fund.organisation.name, organisation_path(@fund.organisation)
+        = form_tag(fund_activities_path(@fund), method: "post") do
+          = submit_tag t("page_content.fund.button.create_activity", activity: "fund"), class: "govuk-button"
 
-    .govuk-grid-column-one-third
-      .govuk-grid-row.activity
-        %h2.govuk-heading-m
-          = t("page_content.fund.activity")
-
-        - if @fund.activity
-          = link_to @fund.activity.identifier, fund_activity_path(@fund, @fund.activity)
-        - else
-          = form_tag(fund_activities_path(@fund), method: "post") do
-            = submit_tag t("page_content.fund.button.create_activity"), class: "govuk-button"
   .govuk-grid-row
     .govuk-grid-column-full
       %h2.govuk-heading-m
