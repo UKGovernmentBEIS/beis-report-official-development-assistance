@@ -38,39 +38,16 @@ class Staff::ActivityFormsController < Staff::BaseController
     @activity = policy_scope(Activity).find(params[:activity_id])
     authorize @activity
 
-    case step
-    when :dates
-      @activity.planned_start_date = format_date(planned_start_date)
-      @activity.planned_end_date = format_date(planned_end_date)
-      @activity.actual_start_date = format_date(actual_start_date)
-      @activity.actual_end_date = format_date(actual_end_date)
-    else
-      @activity.update(activity_params)
-    end
+    @activity.update(activity_params)
 
     render_wizard @activity
   end
 
   private
 
-  def planned_start_date
-    params[:planned_start_date]
-  end
-
-  def planned_end_date
-    params[:planned_end_date]
-  end
-
-  def actual_start_date
-    params[:actual_start_date]
-  end
-
-  def actual_end_date
-    params[:actual_end_date]
-  end
-
   def activity_params
     params.require(:activity).permit(:identifier, :sector, :title, :description, :status,
+      :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date,
       :recipient_region, :flow, :finance, :aid_type, :tied_status)
   end
 

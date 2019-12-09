@@ -1,13 +1,5 @@
 = render layout: "wrapper" do |f|
-  = render partial: "shared/date_fields", locals: { name: "planned_start_date",
-                                                    date: @activity.planned_start_date,
-                                                    label: t("form.activity.planned_start_date.label") }
-  = render partial: "shared/date_fields", locals: { name: "planned_end_date",
-                                                    date: @activity.planned_end_date,
-                                                    label: t("form.activity.planned_end_date.label") }
-  = render partial: "shared/date_fields", locals: { name: "actual_start_date",
-                                                    date: @activity.actual_start_date,
-                                                    label: t("form.activity.actual_start_date.label") }
-  = render partial: "shared/date_fields", locals: { name: "actual_end_date",
-                                                    date: @activity.actual_end_date,
-                                                    label: t("form.activity.actual_end_date.label") }
+  = f.govuk_date_field :planned_start_date
+  = f.govuk_date_field :planned_end_date
+  = f.govuk_date_field :actual_start_date
+  = f.govuk_date_field :actual_end_date
