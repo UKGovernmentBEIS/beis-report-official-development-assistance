@@ -5,6 +5,7 @@ class User < ApplicationRecord
   enum role: {
     administrator: "administrator",
     delivery_partner: "delivery_partner",
+    fund_manager: "fund_manager",
   }
 
   attribute :role, :string, default: "delivery_partner"
