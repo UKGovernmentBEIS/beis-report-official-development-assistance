@@ -2,6 +2,21 @@
 en:
   activerecord:
     attributes:
+      activity:
+        actual_end_date: Actual end date
+        actual_start_date: Actual start date
+        aid_type: Aid type
+        description: Description
+        finance: Finance
+        flow: Flow
+        identifier: Your unique identifier
+        planned_end_date: Planned end date
+        planned_start_date: Planned start date
+        recipient_region: Recipient region
+        sector: Sector
+        status: Status
+        tied_status: Tied status
+        title: Title
       organisation:
         default_currency: Default currency
         language_code: Language code
@@ -32,3 +47,20 @@ en:
     fieldset:
       user:
         organisation_ids: Organisations
+    hint:
+      activity:
+        aid_type:
+          html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidTypeVocabulary/' target='_blank'>IATI descriptions can be found here.</a>
+        finance: DAC/CRS transaction classification used to distinguish financial instruments, e.g. grants or loans.
+        flow:
+          html: "<a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>IATI descriptions of each flow type can be found here.</a>"
+        identifier: Reference to link this to your internal systems so it can be found again later.
+        recipient_region:
+          html: A supranational geopolitical region that will benefit from this activity. <a href='http://reference.iatistandard.org/203/codelists/Region/' target='_blank'>Find the region code from the IATI region list.</a>
+        sector:
+          html: Classify the purpose of this activity. <a href='http://reference.iatistandard.org/203/codelists/Sector/' target='_blank'>Please provide the sector appropriate to you from this list</a>.
+        status:
+          html: IATI activity status. <a href="http://reference.iatistandard.org/203/codelists/ActivityStatus/" target="_blank">See IATI for detailed descriptions.</a>
+        tied_status:
+          html: "<a href='http://reference.iatistandard.org/203/codelists/TiedStatus/' target='_blank'>See the IATI tied status page for descriptions.</a>"
+        title: A short, human-readable title that contains a meaningful summary of the activity.
