@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
-
-  include Authorisation
+  include Auth
 
   def sign_out
     reset_session
