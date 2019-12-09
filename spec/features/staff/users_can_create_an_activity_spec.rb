@@ -10,14 +10,14 @@ RSpec.feature "Users can create an activity" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
-      visit fund_path(fund)
+      visit organisation_fund_path(organisation, fund)
       expect(current_path).to eq(root_path)
     end
   end
 
   context "when the hierarchy is a Fund" do
     scenario "successfully creating an activity with all optional information" do
-      visit fund_path(fund)
+      visit organisation_fund_path(organisation, fund)
       click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
 
       expect(page).to have_content I18n.t("page_title.activity_form.show.identifier")
@@ -82,7 +82,7 @@ RSpec.feature "Users can create an activity" do
 
     context "validations" do
       scenario "validation errors work as expected" do
-        visit fund_path(fund)
+        visit organisation_fund_path(organisation, fund)
         click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
         click_button I18n.t("form.activity.submit")
         expect(page).not_to have_content I18n.t("form.activity.create.success")
@@ -91,7 +91,7 @@ RSpec.feature "Users can create an activity" do
     end
 
     scenario "can go back to the previous page" do
-      visit fund_path(fund)
+      visit organisation_fund_path(organisation, fund)
       click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
 
       click_on I18n.t("generic.link.back")

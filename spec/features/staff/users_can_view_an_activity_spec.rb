@@ -43,7 +43,8 @@ RSpec.feature "Users can view an activity" do
 
   context "when the activity belongs to another organisation" do
     scenario "the user cannot view the activity" do
-      expect { visit fund_path(forbidden_activity) }.to raise_exception(ActiveRecord::RecordNotFound)
+      expect { visit organisation_fund_path(organisation, forbidden_activity) }
+        .to raise_exception(ActiveRecord::RecordNotFound)
     end
   end
 
@@ -52,6 +53,8 @@ RSpec.feature "Users can view an activity" do
 
     click_on I18n.t("generic.link.back")
 
-    expect(page).to have_current_path(organisation_fund_path(viewable_fund, organisation_id: organisation))
+    expect(page).to have_current_path(
+      organisation_fund_path(viewable_fund, organisation_id: organisation)
+    )
   end
 end
