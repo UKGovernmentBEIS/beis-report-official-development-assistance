@@ -1,5 +1,5 @@
 class UserNotAuthorised < StandardError; end
-module Authorisation
+module Auth
   extend ActiveSupport::Concern
 
   included do
