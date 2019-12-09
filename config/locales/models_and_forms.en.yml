@@ -3,15 +3,11 @@ en:
   activerecord:
     attributes:
       activity:
-        actual_end_date: Actual end date
-        actual_start_date: Actual start date
         aid_type: Aid type
         description: Description
         finance: Finance
         flow: Flow
         identifier: Your unique identifier
-        planned_end_date: Planned end date
-        planned_start_date: Planned start date
         recipient_region: Recipient region
         sector: Sector
         status: Status
@@ -45,6 +41,11 @@ en:
               blank: Select the organisation(s) this user belongs to
   helpers:
     fieldset:
+      activity:
+        actual_end_date: Actual end date
+        actual_start_date: Actual start date
+        planned_end_date: Planned end date
+        planned_start_date: Planned start date
       user:
         organisation_ids: Organisations
     hint:
