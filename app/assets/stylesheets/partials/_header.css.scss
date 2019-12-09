@@ -1,0 +1,26 @@
+// override styles for header
+
+.app-header__container.govuk-header__container {
+
+  .app-header__user-links.govuk-header__content {
+
+    a {
+      @include govuk-font($size: false, $weight: bold);
+      padding-left: govuk-spacing(1);
+    }
+
+    &.app-visitor {
+      padding-bottom: govuk-spacing(2);
+    }
+  }
+
+  .app-header__navigation {
+    width: 100%;
+    border-top: 1px solid #fff;
+    margin-top: govuk-spacing(1);
+
+    .govuk-header__navigation {
+      padding-top: govuk-spacing(2);
+    }
+  }
+}
