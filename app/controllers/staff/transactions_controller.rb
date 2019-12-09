@@ -27,6 +27,29 @@ class Staff::TransactionsController < Staff::BaseController
     end
   end
 
+  def edit
+    @transaction = policy_scope(Transaction).find(id)
+    @fund = Fund.find(fund_id)
+    authorize @transaction
+  end
+
+  def update
+    @transaction = policy_scope(Transaction).find(id)
+    authorize @transaction
+
+    @transaction.assign_attributes(transaction_params)
+    @transaction.date = format_date(date)
+
+    fund = Fund.find(fund_id)
+
+    if @transaction.save
+      flash[:notice] = I18n.t("form.transaction.update.success")
+      redirect_to organisation_fund_path(fund.organisation, fund)
+    else
+      render :edit
+    end
+  end
+
   private
 
   def date
@@ -47,5 +70,9 @@ class Staff::TransactionsController < Staff::BaseController
 
   def fund_id
     params[:fund_id]
+  end
+
+  def id
+    params[:id]
   end
 end

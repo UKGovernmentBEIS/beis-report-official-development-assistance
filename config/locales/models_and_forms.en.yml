@@ -7,6 +7,13 @@ en:
         language_code: Language code
         name: Name
         organisation_type: Organisation type
+      transaction:
+        currency: Currency
+        description: Description
+        disbursement_channel: Disbursement channel
+        reference: Reference
+        transaction_type: Transaction type
+        value: Value
       user:
         organisation_ids: Organisations
     errors:
