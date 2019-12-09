@@ -6,6 +6,16 @@ Rails.application.config.action_view.form_with_generates_remote_forms = false
 # Use activerecord.attributes.model.attribute_name for label scope
 module GOVUKDesignSystemFormBuilder
   class Base
+    private def localised_text(context)
+      key = localisation_key(context)
+
+      return nil unless I18n.exists?(key)
+
+      translation = I18n.translate(key)
+      translation = translation.fetch(:html).html_safe if translation.is_a?(Hash) && translation.key?(:html)
+      translation
+    end
+
     private def localisation_key(context)
       return nil unless @object_name.present? && @attribute_name.present?
 
