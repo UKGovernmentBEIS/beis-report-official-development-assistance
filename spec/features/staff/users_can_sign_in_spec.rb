@@ -29,7 +29,10 @@ RSpec.feature "Users can sign in with Auth0" do
     visit dashboard_path
     expect(page).to have_content(I18n.t("page_title.welcome"))
 
-    click_on I18n.t("generic.link.start_now")
+    within ".app-visitor-welcome" do
+      expect(page).to have_content(I18n.t("generic.link.sign_in"))
+      click_on I18n.t("generic.link.sign_in")
+    end
 
     expect(page).to have_content(I18n.t("page_title.dashboard"))
     expect(page).to have_content(user.name)
@@ -50,7 +53,11 @@ RSpec.feature "Users can sign in with Auth0" do
       )
 
       visit dashboard_path
-      click_on I18n.t("generic.link.start_now")
+
+      within ".app-header__user-links" do
+        expect(page).to have_content(I18n.t("generic.link.sign_in"))
+        click_on I18n.t("generic.link.sign_in")
+      end
 
       expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
       expect(page).to have_content(I18n.t("page_content.errors.not_authorised.explanation"))
