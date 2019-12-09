@@ -11,7 +11,7 @@
         = link_to(I18n.t("page_content.organisations.button.create"), new_organisation_path, class: "govuk-button")
 
       - if @organisations
-        %ul
+        %ul.govuk-list.govuk-list--bullet
           - @organisations.each do |organisation|
             %li
               = link_to organisation.name, organisation_path(organisation.id)
