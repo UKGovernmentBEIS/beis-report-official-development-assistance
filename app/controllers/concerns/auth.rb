@@ -1,9 +1,10 @@
 class UserNotAuthorised < StandardError; end
-module Authorisation
+module Auth
   extend ActiveSupport::Concern
 
   included do
     helper_method :current_user
+    helper_method :authenticated?
 
     rescue_from(UserNotAuthorised, Pundit::NotAuthorizedError) do |exception|
       error_message = if exception.respond_to?(:policy)
@@ -30,6 +31,10 @@ module Authorisation
 
   def signed_in_user_identifier
     session.dig(:userinfo, "uid")
+  end
+
+  def authenticated?
+    current_user.present?
   end
 
   private def repudiate!
