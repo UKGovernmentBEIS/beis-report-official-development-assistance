@@ -1,6 +1,2 @@
 = render layout: "wrapper" do |f|
-  = f.input :tied_status,
-            wrapper: "select",
-            collection: yaml_to_options("activity", "tied_status"),
-            selected: "5",
-            hint: t("form.activity.tied_status.hint.html")
+  = f.govuk_collection_select :tied_status, yaml_to_options("activity", "tied_status"), :last, :first

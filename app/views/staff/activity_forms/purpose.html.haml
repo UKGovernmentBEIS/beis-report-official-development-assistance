@@ -1,3 +1,3 @@
 = render layout: "wrapper" do |f|
-  = f.input :title
-  = f.input :description, input_html: { rows: 5, class: "govuk-textarea" }
+  = f.govuk_text_field :title
+  = f.govuk_text_area :description, rows: 5
