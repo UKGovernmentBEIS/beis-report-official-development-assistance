@@ -2,9 +2,6 @@
 en:
   app:
     title: Report Official Development Assistance
-  dashboards:
-    show:
-      welcome: Welcome back, %{name}
   form:
     activity:
       actual_end_date:
@@ -96,13 +93,17 @@ en:
         success: User successfully updated
   generic:
     button:
+      menu: Menu
       submit: Submit
     link:
       back: Back
       edit: Edit
       show: Show
+      sign_in: Sign in
       sign_out: Sign out
-      start_now: Start now
+  header:
+    show:
+      welcome: "%{name}"
   page_content:
     activities:
       cta:

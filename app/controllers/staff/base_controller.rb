@@ -1,6 +1,6 @@
 class Staff::BaseController < ApplicationController
   include Secured
-  include Authorisation
+  include Auth
   include Pundit
 
   # Ensure that Pundit 'authorize' and scopes are used
