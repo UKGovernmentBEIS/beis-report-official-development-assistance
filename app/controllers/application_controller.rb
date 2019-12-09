@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+
+  include Authorisation
+
   def sign_out
     reset_session
     redirect_to logout_url.to_s
