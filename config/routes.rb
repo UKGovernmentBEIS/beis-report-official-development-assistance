@@ -10,10 +10,10 @@ Rails.application.routes.draw do
     resource :dashboard, only: :show
     resources :users
     resources :organisations, except: [:destroy] do
-      resources :funds, only: [:index, :show, :new, :create]
+      resources :funds, except: [:destroy]
     end
 
-    resources :funds do
+    resources :funds, only: [] do
       resources :activities, only: [:new, :create, :show] do
         resources :steps, controller: "activity_forms"
       end

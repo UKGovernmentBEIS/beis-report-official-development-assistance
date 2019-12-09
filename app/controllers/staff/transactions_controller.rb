@@ -21,7 +21,7 @@ class Staff::TransactionsController < Staff::BaseController
 
     if @transaction.save
       flash[:notice] = I18n.t("form.transaction.create.success")
-      redirect_to fund_path(@fund)
+      redirect_to organisation_fund_path(@fund.organisation, @fund)
     else
       render :new
     end
