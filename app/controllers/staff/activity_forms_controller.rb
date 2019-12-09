@@ -78,6 +78,6 @@ class Staff::ActivityFormsController < Staff::BaseController
   def finish_wizard_path
     flash[:notice] = I18n.t("form.activity.create.success")
 
-    fund_activity_path(@fund, @activity)
+    fund_path(@fund)
   end
 end

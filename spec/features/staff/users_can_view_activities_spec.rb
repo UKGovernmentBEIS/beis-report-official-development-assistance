@@ -21,21 +21,7 @@ RSpec.feature "Users can view activities (on a fund page)" do
 
       visit organisation_fund_path(id: fund.id, organisation_id: organisation.id)
 
-      expect(page).to have_content(I18n.t("page_content.fund.activity"))
-      expect(page).to have_content activity.identifier
-    end
-  end
-
-  context "when there is an activity belonging to a fund in another organisation" do
-    scenario "the user will not see it on the fund page" do
-      organisation_2 = create(:organisation)
-      fund_2 = create(:fund, organisation: organisation_2)
-      activity = create(:activity, hierarchy: fund_2)
-
-      visit organisation_fund_path(id: fund.id, organisation_id: organisation.id)
-
-      expect(page).to have_content(I18n.t("page_content.fund.activity"))
-      expect(page).not_to have_content activity.identifier
+      expect(page).to have_content(activity.identifier)
     end
   end
 
