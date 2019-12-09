@@ -32,7 +32,31 @@ class Staff::OrganisationsController < Staff::BaseController
     end
   end
 
+  def edit
+    @organisation = policy_scope(Organisation).find(id)
+    authorize @organisation
+  end
+
+  def update
+    @organisation = policy_scope(Organisation).find(id)
+    authorize @organisation
+
+    @organisation.assign_attributes(organisation_params)
+
+    if @organisation.valid?
+      @organisation.save
+      flash[:notice] = I18n.t("form.organisation.update.success")
+      redirect_to organisation_path(@organisation)
+    else
+      render :edit
+    end
+  end
+
   private
+
+  def id
+    params[:id]
+  end
 
   def organisation_params
     params.require(:organisation).permit(:name, :organisation_type, :default_currency, :language_code)

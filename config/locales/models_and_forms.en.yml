@@ -2,6 +2,11 @@
 en:
   activerecord:
     attributes:
+      organisation:
+        default_currency: Default currency
+        language_code: Language code
+        name: Name
+        organisation_type: Organisation type
       user:
         organisation_ids: Organisations
     errors:
