@@ -1,7 +1,26 @@
 require "rails_helper"
 
 RSpec.feature "Users can sign in with Auth0" do
-  scenario "successful sign in" do
+  scenario "successful sign in via header link" do
+    user = create(:user)
+    mock_successful_authentication(
+      uid: user.identifier, name: user.name, email: user.email
+    )
+
+    visit dashboard_path
+    expect(page).to have_content(I18n.t("page_title.welcome"))
+
+    within ".app-header__user-links" do
+      expect(page).to have_content(I18n.t("generic.link.sign_in"))
+      click_on I18n.t("generic.link.sign_in")
+    end
+
+    expect(page).to have_content(I18n.t("page_title.dashboard"))
+    expect(page).to have_content(user.name)
+    expect(page).to have_content(I18n.t("generic.link.sign_out"))
+  end
+
+  scenario "successful sign in via button link" do
     user = create(:user)
     mock_successful_authentication(
       uid: user.identifier, name: user.name, email: user.email
@@ -13,7 +32,7 @@ RSpec.feature "Users can sign in with Auth0" do
     click_on I18n.t("generic.link.start_now")
 
     expect(page).to have_content(I18n.t("page_title.dashboard"))
-    expect(page).to have_content "Welcome back, #{user.name}"
+    expect(page).to have_content(user.name)
     expect(page).to have_content(I18n.t("generic.link.sign_out"))
   end
 
