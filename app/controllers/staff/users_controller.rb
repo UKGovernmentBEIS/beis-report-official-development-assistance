@@ -24,7 +24,7 @@ class Staff::UsersController < Staff::BaseController
       result = CreateUser.new(user: @user, organisations: organisations).call
       if result.success?
         flash.now[:notice] = I18n.t("form.user.create.success")
-        return redirect_to user_path(@user.reload.id)
+        redirect_to user_path(@user.reload.id)
       else
         flash.now[:error] = I18n.t("form.user.create.failed")
         render :new
