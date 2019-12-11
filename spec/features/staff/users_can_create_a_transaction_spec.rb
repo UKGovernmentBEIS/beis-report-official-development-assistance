@@ -66,4 +66,28 @@ RSpec.feature "Users can create a transaction" do
     expect(page).to have_content("Value can't be blank")
     expect(page).to have_content("Disbursement channel can't be blank")
   end
+
+  context "Value number validation" do
+    scenario "Value must be between 1 and 99,999,999,999" do
+      visit dashboard_path
+      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+
+      click_on(organisation.name)
+      click_on(fund.name)
+
+      click_on(I18n.t("page_content.transactions.button.create"))
+      fill_in "transaction[reference]", with: "123"
+      fill_in "transaction[description]", with: "This money will be purchasing a new school roof"
+      select "Outgoing Pledge", from: "transaction[transaction_type]"
+      fill_in "transaction[date(3i)]", with: "1"
+      fill_in "transaction[date(2i)]", with: "1"
+      fill_in "transaction[date(1i)]", with: "2020"
+      fill_in "transaction[value]", with: "100000000000"
+      select "Money is disbursed through central Ministry of Finance or Treasury", from: "transaction[disbursement_channel]"
+      select "Pound Sterling", from: "transaction[currency]"
+      click_on(I18n.t("generic.button.submit"))
+
+      expect(page).to have_content("Value must be between 1 and 99,999,999,999")
+    end
+  end
 end
