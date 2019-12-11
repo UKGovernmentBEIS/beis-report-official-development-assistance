@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       resources :activities, only: [:new, :create, :show] do
         resources :steps, controller: "activity_forms"
       end
-      resources :transactions, only: [:new, :create, :show]
+      resources :transactions, only: [:new, :create, :show, :edit, :update]
     end
   end
 
