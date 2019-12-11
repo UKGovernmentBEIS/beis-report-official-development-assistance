@@ -18,6 +18,10 @@ en:
         organisation_ids: Organisations
     errors:
       models:
+        transaction:
+          attributes:
+            value:
+              inclusion: Value must be between 1 and 99,999,999,999
         user:
           attributes:
             organisation_ids:
