@@ -19,17 +19,24 @@ class Staff::ActivitiesController < Staff::BaseController
     @activity = policy_scope(Activity).new
     authorize @activity
 
-    @fund = policy_scope(Fund).find(params[:fund_id])
-    @activity.hierarchy = @fund
-
+    @activity.hierarchy = hierarchy
     @activity.save(validate: false)
 
-    redirect_to fund_activity_steps_path(@fund, @activity)
+    redirect_to url_for([@activity.hierarchy, @activity, :steps])
   end
 
   private
 
   def id
     params[:id]
+  end
+
+  def fund_id
+    params[:fund_id]
+  end
+
+  def hierarchy
+    # TODO: Add support for new hierarchies here and/or move to a service
+    @hierarchy = policy_scope(Fund).find(fund_id)
   end
 end
