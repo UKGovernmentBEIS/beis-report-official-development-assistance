@@ -1,0 +1,32 @@
+.alert {
+  padding: 0 govuk-spacing(4);
+  @include govuk-font($size: 24, $weight: bold);
+  border-width: govuk-spacing(1);
+  border-style: solid;
+  border-color: govuk-colour("black");
+
+  &.alert-success {
+    border-color: govuk-colour("green");
+
+    .alert-message {
+      color: govuk-colour("green");
+    }
+  }
+
+  &.alert-notice {
+    border-color: govuk-colour("blue");
+
+    .alert-message {
+      color: govuk-colour("blue");
+    }
+  }
+
+  &.alert-danger {
+    border-color: govuk-colour("red");
+
+    .alert-message {
+      color: govuk-colour("red");
+    }
+  }
+
+}
