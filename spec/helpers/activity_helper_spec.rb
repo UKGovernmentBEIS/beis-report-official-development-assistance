@@ -26,4 +26,35 @@ RSpec.describe ActivityHelper, type: :helper do
       end
     end
   end
+
+  describe "#edit_activity_path_for" do
+    context "when the hierarchy_type is a fund" do
+      let(:fund) { create(:fund, organisation: organisation) }
+      let(:fund_activity) { create(:activity, hierarchy: fund) }
+
+      it "returns the edit path for the first step by default" do
+        expect(
+          helper.edit_activity_path_for(activity: fund_activity)
+        ).to eq(
+          fund_activity_step_path(
+            fund_id: fund,
+            activity_id: fund_activity,
+            id: :identifier
+          )
+        )
+      end
+
+      it "returns the edit path for the given step" do
+        expect(
+          helper.edit_activity_path_for(activity: fund_activity, step: :sector)
+        ).to eq(
+          fund_activity_step_path(
+            fund_id: fund,
+            activity_id: fund_activity,
+            id: :sector
+          )
+        )
+      end
+    end
+  end
 end

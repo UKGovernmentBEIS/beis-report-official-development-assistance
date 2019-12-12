@@ -1,4 +1,6 @@
 RSpec.feature "Users can edit an activity" do
+  include ActivityHelper
+
   before do
     authenticate!(user: user)
   end
@@ -42,7 +44,7 @@ RSpec.feature "Users can edit an activity" do
     within(".identifier") do
       click_on I18n.t("generic.link.edit")
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/identifier"
+        edit_activity_path_for(activity: activity, step: :identifier)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -50,7 +52,7 @@ RSpec.feature "Users can edit an activity" do
     within(".sector") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/sector"
+        edit_activity_path_for(activity: activity, step: :sector)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -58,7 +60,7 @@ RSpec.feature "Users can edit an activity" do
     within(".title") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/purpose"
+        edit_activity_path_for(activity: activity, step: :purpose)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -66,7 +68,7 @@ RSpec.feature "Users can edit an activity" do
     within(".description") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/purpose"
+        edit_activity_path_for(activity: activity, step: :purpose)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -74,7 +76,7 @@ RSpec.feature "Users can edit an activity" do
     within(".status") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/status"
+        edit_activity_path_for(activity: activity, step: :status)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -82,7 +84,7 @@ RSpec.feature "Users can edit an activity" do
     within(".planned_start_date") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/dates"
+        edit_activity_path_for(activity: activity, step: :dates)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -90,7 +92,7 @@ RSpec.feature "Users can edit an activity" do
     within(".planned_end_date") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/dates"
+        edit_activity_path_for(activity: activity, step: :dates)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -98,7 +100,7 @@ RSpec.feature "Users can edit an activity" do
     within(".actual_start_date") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/dates"
+        edit_activity_path_for(activity: activity, step: :dates)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -106,7 +108,7 @@ RSpec.feature "Users can edit an activity" do
     within(".actual_end_date") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/dates"
+        edit_activity_path_for(activity: activity, step: :dates)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -114,7 +116,7 @@ RSpec.feature "Users can edit an activity" do
     within(".recipient_region") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/country"
+        edit_activity_path_for(activity: activity, step: :country)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -122,7 +124,7 @@ RSpec.feature "Users can edit an activity" do
     within(".flow") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/flow"
+        edit_activity_path_for(activity: activity, step: :flow)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -130,7 +132,7 @@ RSpec.feature "Users can edit an activity" do
     within(".finance") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/finance"
+        edit_activity_path_for(activity: activity, step: :finance)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -138,7 +140,7 @@ RSpec.feature "Users can edit an activity" do
     within(".aid_type") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/aid_type"
+        edit_activity_path_for(activity: activity, step: :aid_type)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -146,7 +148,7 @@ RSpec.feature "Users can edit an activity" do
     within(".tied_status") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        url_for([activity.hierarchy, activity]) + "/steps/tied_status"
+        edit_activity_path_for(activity: activity, step: :tied_status)
       )
     end
     click_on(I18n.t("generic.link.back"))
