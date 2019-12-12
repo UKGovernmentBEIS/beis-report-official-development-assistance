@@ -12,7 +12,7 @@ class Staff::FundsController < Staff::BaseController
     @fund = policy_scope(Fund).find(id)
     authorize @fund
 
-    transactions = policy_scope(Transaction)
+    transactions = policy_scope(Transaction).where(fund: @fund)
     @transaction_presenters = transactions.map { |transaction| TransactionPresenter.new(transaction) }
   end
 
