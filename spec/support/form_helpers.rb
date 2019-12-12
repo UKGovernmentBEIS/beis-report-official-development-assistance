@@ -91,6 +91,41 @@ module FormHelpers
     )
   end
 
+  def fill_in_transaction_form(expectations: true,
+    reference: "123",
+    description: "This money will be purchasing a new school roof",
+    transaction_type: "Outgoing Pledge",
+    date_year: "2020",
+    date_month: "1",
+    date_day: "2",
+    value: "1000.01",
+    disbursement_channel: "Money is disbursed through central Ministry of Finance or Treasury",
+    currency: "Pound Sterling")
+    fill_in "transaction[reference]", with: reference
+    fill_in "transaction[description]", with: description
+    select transaction_type, from: "transaction[transaction_type]"
+    fill_in "transaction[date(3i)]", with: date_day
+    fill_in "transaction[date(2i)]", with: date_month
+    fill_in "transaction[date(1i)]", with: date_year
+    fill_in "transaction[value]", with: value
+    select disbursement_channel, from: "transaction[disbursement_channel]"
+    select currency, from: "transaction[currency]"
+
+    click_on(I18n.t("generic.button.submit"))
+
+    if expectations
+      within ".transactions" do
+        expect(page).to have_content(reference)
+        expect(page).to have_content(description)
+        expect(page).to have_content(transaction_type)
+        expect(page).to have_content(date(year: date_year, month: date_month, day: date_day))
+        expect(page).to have_content(value)
+        expect(page).to have_content(disbursement_channel)
+        expect(page).to have_content(currency)
+      end
+    end
+  end
+
   def date(year:, month:, day:)
     Date.parse("#{year}-#{month}-#{day}")
   end
