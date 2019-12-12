@@ -28,13 +28,13 @@ RSpec.describe Transaction, type: :model do
       expect(transaction.valid?).to be_falsey
     end
 
-    it "does not allow a value of more than 99,999,999,999.00" do
-      transaction = build(:transaction, fund: fund, value: 100_000_000_000.00)
+    it "does not allow a value of more than 99,999,999,999" do
+      transaction = build(:transaction, fund: fund, value: 10_000_000_000)
       expect(transaction.valid?).to be_falsey
     end
 
-    it "allows a value between 1 and 99,999,999,999.00" do
-      transaction = build(:transaction, fund: fund, value: 500_000.00)
+    it "allows a value between 1 and 99,999,999,999" do
+      transaction = build(:transaction, fund: fund, value: 500_000)
       expect(transaction.valid?).to be_truthy
     end
   end
