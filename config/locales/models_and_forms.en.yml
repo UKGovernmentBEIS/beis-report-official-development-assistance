@@ -21,7 +21,7 @@ en:
         transaction:
           attributes:
             value:
-              inclusion: Value must be between 1 and 99,999,999,999
+              inclusion: Value must be between 1 and 99,999,999,999.00
         user:
           attributes:
             organisation_ids:

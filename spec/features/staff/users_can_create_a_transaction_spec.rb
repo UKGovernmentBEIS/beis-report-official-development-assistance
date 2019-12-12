@@ -45,7 +45,7 @@ RSpec.feature "Users can create a transaction" do
     expect(page).to have_content("Description can't be blank")
     expect(page).to have_content("Transaction type can't be blank")
     expect(page).to have_content("Date can't be blank")
-    expect(page).to have_content("Value must be between 1 and 99,999,999,999")
+    expect(page).to have_content("Value must be between 1 and 99,999,999,999.00")
     expect(page).to have_content("Disbursement channel can't be blank")
   end
 
@@ -70,7 +70,7 @@ RSpec.feature "Users can create a transaction" do
       select "Pound Sterling", from: "transaction[currency]"
       click_on(I18n.t("generic.button.submit"))
 
-      expect(page).to have_content("Value must be between 1 and 99,999,999,999")
+      expect(page).to have_content("Value must be between 1 and 99,999,999,999.00")
     end
 
     scenario "When the value includes a pound sign" do
