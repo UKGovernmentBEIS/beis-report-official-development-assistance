@@ -6,78 +6,126 @@
       = activity_presenter.hierarchy.name
     %dd.govuk-summary-list__actions
       = link_to t("generic.link.edit"), [:edit, activity_presenter.hierarchy.organisation, activity_presenter.hierarchy], class: "govuk-link"
+
   .govuk-summary-list__row
     %dt.govuk-summary-list__key
       = t("page_content.fund.organisation.label")
     %dd.govuk-summary-list__value
       = link_to activity_presenter.hierarchy.organisation.name, organisation_path(activity_presenter.hierarchy.organisation)
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+
+  .govuk-summary-list__row.identifier
     %dt.govuk-summary-list__key
       = t("page_content.activity.identitfier.label")
     %dd.govuk-summary-list__value
       = activity_presenter.identifier
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :identifier), class: "govuk-link"
+
+  .govuk-summary-list__row.sector
     %dt.govuk-summary-list__key
       = t("page_content.activity.sector.label")
     %dd.govuk-summary-list__value
       = activity_presenter.sector
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :sector), class: "govuk-link"
+
+  .govuk-summary-list__row.title
     %dt.govuk-summary-list__key
       = t("page_content.activity.title.label")
     %dd.govuk-summary-list__value
       = activity_presenter.title
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :purpose), class: "govuk-link"
+
+  .govuk-summary-list__row.description
     %dt.govuk-summary-list__key
       = t("page_content.activity.description.label")
     %dd.govuk-summary-list__value
       = activity_presenter.description
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :purpose), class: "govuk-link"
+
+  .govuk-summary-list__row.status
     %dt.govuk-summary-list__key
       = t("page_content.activity.status.label")
     %dd.govuk-summary-list__value
       = activity_presenter.status
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :status), class: "govuk-link"
+
+  .govuk-summary-list__row.planned_start_date
     %dt.govuk-summary-list__key
       = t("page_content.activity.planned_start_date.label")
     %dd.govuk-summary-list__value
       = l(activity_presenter.planned_start_date)
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :dates), class: "govuk-link"
+
+
+  .govuk-summary-list__row.planned_end_date
     %dt.govuk-summary-list__key
       = t("page_content.activity.planned_end_date.label")
     %dd.govuk-summary-list__value
       = l(activity_presenter.planned_end_date)
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :dates), class: "govuk-link"
+
+
+  .govuk-summary-list__row.actual_start_date
     %dt.govuk-summary-list__key
       = t("page_content.activity.actual_start_date.label")
     %dd.govuk-summary-list__value
       = l(activity_presenter.actual_start_date)
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :dates), class: "govuk-link"
+
+
+  .govuk-summary-list__row.actual_end_date
     %dt.govuk-summary-list__key
       = t("page_content.activity.actual_end_date.label")
     %dd.govuk-summary-list__value
       = l(activity_presenter.actual_end_date)
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :dates), class: "govuk-link"
+
+
+  .govuk-summary-list__row.recipient_region
     %dt.govuk-summary-list__key
       = t("page_content.activity.recipient_region.label")
     %dd.govuk-summary-list__value
       = activity_presenter.recipient_region
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :country), class: "govuk-link"
+
+  .govuk-summary-list__row.flow
     %dt.govuk-summary-list__key
       = t("page_content.activity.flow.label")
     %dd.govuk-summary-list__value
       = activity_presenter.flow
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :flow), class: "govuk-link"
+
+  .govuk-summary-list__row.finance
     %dt.govuk-summary-list__key
       = t("page_content.activity.finance.label")
     %dd.govuk-summary-list__value
       = activity_presenter.finance
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :finance), class: "govuk-link"
+
+  .govuk-summary-list__row.aid_type
     %dt.govuk-summary-list__key
       = t("page_content.activity.aid_type.label")
     %dd.govuk-summary-list__value
       = activity_presenter.aid_type
-  .govuk-summary-list__row
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :aid_type), class: "govuk-link"
+
+  .govuk-summary-list__row.tied_status
     %dt.govuk-summary-list__key
       = t("page_content.activity.tied_status.label")
     %dd.govuk-summary-list__value
       = activity_presenter.tied_status
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :tied_status), class: "govuk-link"

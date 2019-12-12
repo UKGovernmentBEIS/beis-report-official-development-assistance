@@ -17,3 +17,4 @@
 - Users can edit an organisation
 - Users can edit the basic fund record
 - Users can edit a transaction
+- Users can edit an activity record
