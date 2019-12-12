@@ -45,7 +45,7 @@ RSpec.feature "Users can create a transaction" do
     expect(page).to have_content("Description can't be blank")
     expect(page).to have_content("Transaction type can't be blank")
     expect(page).to have_content("Date can't be blank")
-    expect(page).to have_content("Value can't be blank")
+    expect(page).to have_content("Value must be between 1 and 99,999,999,999")
     expect(page).to have_content("Disbursement channel can't be blank")
   end
 
@@ -71,6 +71,62 @@ RSpec.feature "Users can create a transaction" do
       click_on(I18n.t("generic.button.submit"))
 
       expect(page).to have_content("Value must be between 1 and 99,999,999,999")
+    end
+
+    scenario "When the value includes a pound sign" do
+      visit dashboard_path
+      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+
+      click_on(organisation.name)
+      click_on(fund.name)
+
+      click_on(I18n.t("page_content.transactions.button.create"))
+
+      fill_in_transaction_form(value: "£123", expectations: false)
+
+      expect(page).to have_content "123"
+    end
+
+    scenario "When the value includes alphabetical characters" do
+      visit dashboard_path
+      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+
+      click_on(organisation.name)
+      click_on(fund.name)
+
+      click_on(I18n.t("page_content.transactions.button.create"))
+
+      fill_in_transaction_form(value: "abc123def", expectations: false)
+
+      expect(page).to have_content "123"
+    end
+
+    scenario "When the value includes decimal places" do
+      visit dashboard_path
+      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+
+      click_on(organisation.name)
+      click_on(fund.name)
+
+      click_on(I18n.t("page_content.transactions.button.create"))
+
+      fill_in_transaction_form(value: "100.12", expectations: false)
+
+      expect(page).to have_content "100.12"
+    end
+
+    scenario "When the value includes commas" do
+      visit dashboard_path
+      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+
+      click_on(organisation.name)
+      click_on(fund.name)
+
+      click_on(I18n.t("page_content.transactions.button.create"))
+
+      fill_in_transaction_form(value: "123,000,000", expectations: false)
+
+      expect(page).to have_content "123000000"
     end
   end
 end
