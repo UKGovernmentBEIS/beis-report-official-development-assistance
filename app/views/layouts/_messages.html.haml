@@ -2,4 +2,4 @@
 - flash.each do |name, msg|
   - if msg.is_a?(String)
     %div{:class => "alert alert-#{name.to_s == 'notice' ? 'success' : 'danger'}", :role  => "alert"}
-      = content_tag :span, msg, :id => "flash_#{name}", :class => ["govuk-caption-m"]
+      = content_tag :p, msg, :id => "flash_#{name}", :class => ["alert-message"]
