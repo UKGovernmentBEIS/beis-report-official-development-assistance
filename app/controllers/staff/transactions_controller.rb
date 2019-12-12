@@ -39,6 +39,7 @@ class Staff::TransactionsController < Staff::BaseController
     authorize @transaction
 
     @transaction.assign_attributes(transaction_params)
+    @transaction.value = monetary_value
     @transaction.date = format_date(date)
 
     fund = Fund.find(fund_id)
