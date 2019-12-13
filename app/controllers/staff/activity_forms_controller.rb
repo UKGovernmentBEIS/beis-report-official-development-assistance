@@ -1,6 +1,7 @@
 class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
   include DateHelper
+  include ActivityHelper
 
   steps(
     :identifier,
@@ -26,7 +27,6 @@ class Staff::ActivityFormsController < Staff::BaseController
     @page_title = t("page_title.activity_form.show.#{step}")
 
     @activity = policy_scope(Activity).find(params[:activity_id])
-    @fund = policy_scope(Fund).find(params[:fund_id])
     authorize @activity
 
     render_wizard
@@ -36,7 +36,6 @@ class Staff::ActivityFormsController < Staff::BaseController
     @page_title = t("page_title.activity_form.show.#{step}")
 
     @activity = policy_scope(Activity).find(params[:activity_id])
-    @fund = policy_scope(Fund).find(params[:fund_id])
     authorize @activity
 
     case step
@@ -77,7 +76,6 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def finish_wizard_path
     flash[:notice] = I18n.t("form.activity.create.success")
-
-    organisation_fund_path(@fund.organisation, @fund)
+    hierarchy_path_for(activity: @activity)
   end
 end
