@@ -10,4 +10,9 @@ class Transaction < ApplicationRecord
     :value,
     :disbursement_channel
   validates :value, inclusion: 1..99_999_999_999.00
+
+  FORM_FIELD_TRANSLATIONS = {
+    provider_id: :provider,
+    receiver_id: :receiver,
+  }.freeze
 end
