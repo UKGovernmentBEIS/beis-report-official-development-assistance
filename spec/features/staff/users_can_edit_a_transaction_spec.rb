@@ -53,7 +53,9 @@ RSpec.feature "Users can edit a transaction" do
       date_year: "2021",
       value: "2000.51",
       disbursement_channel: "Aid in kind: Donors manage funds themselves",
-      currency: "US Dollar"
+      currency: "US Dollar",
+      provider_organisation: organisation,
+      receiver_organisation: organisation
     )
 
     expect(page).to have_content(I18n.t("form.transaction.update.success"))

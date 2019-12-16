@@ -18,3 +18,4 @@
 - Users can edit the basic fund record
 - Users can edit a transaction
 - Users can edit an activity record
+- Transactions record the provider and receiver organisations

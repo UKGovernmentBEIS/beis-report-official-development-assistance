@@ -18,4 +18,15 @@
                                :code,
                                :name,
                                hint_text: t("form.transaction.disbursement_channel.hint")
+= f.govuk_collection_select :provider_id,
+                               list_of_organisations,
+                               :id,
+                               :name,
+                               hint_text: t("form.transaction.provider.hint")
+= f.govuk_collection_select :receiver_id,
+                               list_of_organisations,
+                               :id,
+                               :name,
+                               hint_text: t("form.transaction.receiver.hint")
+
 = f.govuk_submit t("generic.button.submit")
