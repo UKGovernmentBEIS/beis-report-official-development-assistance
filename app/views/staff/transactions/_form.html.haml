@@ -12,7 +12,7 @@
                                currency_select_options,
                                :code,
                                :name
-= f.govuk_number_field :value
+= f.govuk_text_field :value
 = f.govuk_collection_select :disbursement_channel,
                                yaml_to_objects("transaction", "disbursement_channel"),
                                :code,

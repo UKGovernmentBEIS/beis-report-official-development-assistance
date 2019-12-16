@@ -17,6 +17,7 @@ class Staff::TransactionsController < Staff::BaseController
     @fund = Fund.find(fund_id)
     @transaction.update(fund: @fund)
     @transaction.assign_attributes(transaction_params)
+    @transaction.value = monetary_value
     @transaction.date = format_date(date)
 
     if @transaction.save
@@ -38,6 +39,7 @@ class Staff::TransactionsController < Staff::BaseController
     authorize @transaction
 
     @transaction.assign_attributes(transaction_params)
+    @transaction.value = monetary_value
     @transaction.date = format_date(date)
 
     fund = Fund.find(fund_id)
@@ -66,6 +68,13 @@ class Staff::TransactionsController < Staff::BaseController
       :value,
       :disbursement_channel
     )
+  end
+
+  def monetary_value
+    @monetary_value ||= begin
+      string_value = params.require(:transaction).permit(:value)
+      Monetize.parse(string_value).to_f
+    end
   end
 
   def fund_id

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_152121) do
+ActiveRecord::Schema.define(version: 2019_12_11_114801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 2019_12_03_152121) do
     t.text "description"
     t.string "transaction_type"
     t.date "date"
-    t.decimal "value", precision: 7, scale: 2
+    t.decimal "value", precision: 13, scale: 2
     t.string "disbursement_channel"
     t.string "currency"
     t.uuid "fund_id"
