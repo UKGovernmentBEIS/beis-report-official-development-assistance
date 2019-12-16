@@ -1,15 +1,6 @@
 # frozen_string_literal: true
 
 module CodelistHelper
-  # TODO: Remove `yaml_to_options` when all forms are migrated from simple form to the govuk form builder,
-  # The govuk form builder expects an array of objects, not an array of arrays.
-  def yaml_to_options(entity, type)
-    data = load_yaml(entity, type)
-    return [] if data.empty?
-
-    data.collect { |item| [item["name"], item["code"]] }.sort
-  end
-
   def yaml_to_objects(entity, type, with_empty_item = true)
     data = load_yaml(entity, type)
     return [] if data.empty?
