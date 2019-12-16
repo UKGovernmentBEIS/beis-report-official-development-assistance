@@ -1,2 +1,2 @@
 = render layout: "wrapper" do |f|
-  = f.govuk_collection_select :tied_status, yaml_to_options("activity", "tied_status"), :last, :first
+  = f.govuk_collection_select :tied_status, yaml_to_objects("activity", "tied_status"), :code, :name
