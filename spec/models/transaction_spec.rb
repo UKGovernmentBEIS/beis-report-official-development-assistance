@@ -14,4 +14,28 @@ RSpec.describe Transaction, type: :model do
     it { should validate_presence_of(:value) }
     it { should validate_presence_of(:disbursement_channel) }
   end
+
+  context "value must be between 1 and 99,999,999,999.00 (100 billion minus one)" do
+    let(:fund) { build(:fund) }
+
+    it "does allows the maximum possible value" do
+      transaction = build(:transaction, fund: fund, value: 99_999_999_999.00)
+      expect(transaction.valid?).to be_truthy
+    end
+
+    it "does not allow a value of less than 1" do
+      transaction = build(:transaction, fund: fund, value: -1)
+      expect(transaction.valid?).to be_falsey
+    end
+
+    it "does not allow a value of more than 99,999,999,999.00" do
+      transaction = build(:transaction, fund: fund, value: 100_000_000_000.00)
+      expect(transaction.valid?).to be_falsey
+    end
+
+    it "allows a value between 1 and 99,999,999,999.00" do
+      transaction = build(:transaction, fund: fund, value: 500_000.00)
+      expect(transaction.valid?).to be_truthy
+    end
+  end
 end

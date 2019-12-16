@@ -43,20 +43,19 @@ RSpec.feature "Users can edit a transaction" do
     within("##{transaction.id}") do
       click_on(I18n.t("generic.link.edit"))
     end
-    fill_in "transaction[reference]", with: "new-transaction-reference"
-    fill_in "transaction[description]", with: "This money will be buying some books for students"
-    select "Expenditure", from: "transaction[transaction_type]"
-    fill_in "transaction[date(3i)]", with: "1"
-    fill_in "transaction[date(2i)]", with: "1"
-    fill_in "transaction[date(1i)]", with: "2021"
-    fill_in "transaction[value]", with: "2000.51"
-    select "Aid in kind: Donors manage funds themselves", from: "transaction[disbursement_channel]"
-    select "US Dollar", from: "transaction[currency]"
-    click_on(I18n.t("generic.button.submit"))
+
+    fill_in_transaction_form(
+      reference: "new-transaction-reference",
+      description: "This money will be buying some books for students",
+      transaction_type: "Expenditure",
+      date_day: "1",
+      date_month: "1",
+      date_year: "2021",
+      value: "2000.51",
+      disbursement_channel: "Aid in kind: Donors manage funds themselves",
+      currency: "US Dollar"
+    )
 
     expect(page).to have_content(I18n.t("form.transaction.update.success"))
-    expect(page).to have_content("new-transaction-reference")
-    expect(page).to have_content("This money will be buying some books for students")
-    expect(page).to have_content("2021-01-01")
   end
 end
