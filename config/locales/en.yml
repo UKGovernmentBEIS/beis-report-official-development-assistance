@@ -78,6 +78,10 @@ en:
       disbursement_channel:
         hint: The channel through which the funds will flow for this transaction.
         label: Disbursement channel
+      provider:
+        hint: The organisation where this transaction is coming from
+      receiver:
+        hint: The organisation receiving the money from this transaction
       reference:
         hint: This reference should link this activity back to the finance system.
       transaction_type:

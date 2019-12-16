@@ -100,7 +100,9 @@ module FormHelpers
     date_day: "2",
     value: "1000.01",
     disbursement_channel: "Money is disbursed through central Ministry of Finance or Treasury",
-    currency: "Pound Sterling")
+    currency: "Pound Sterling",
+    provider_organisation: Organisation.first,
+    receiver_organisation: Organisation.first)
     fill_in "transaction[reference]", with: reference
     fill_in "transaction[description]", with: description
     select transaction_type, from: "transaction[transaction_type]"
@@ -110,6 +112,8 @@ module FormHelpers
     fill_in "transaction[value]", with: value
     select disbursement_channel, from: "transaction[disbursement_channel]"
     select currency, from: "transaction[currency]"
+    select provider_organisation.name, from: "transaction[provider_id]"
+    select receiver_organisation.name, from: "transaction[receiver_id]"
 
     click_on(I18n.t("generic.button.submit"))
 
@@ -122,6 +126,15 @@ module FormHelpers
         expect(page).to have_content(value)
         expect(page).to have_content(disbursement_channel)
         expect(page).to have_content(currency)
+
+        # TODO: The table cannot support more horiztonal columns right now.
+        # Remove temporary substitute assertion that checks the DB instead.
+        # expect(page).to have_content(provider_organisation.name)
+        # expect(page).to have_content(receiver_organisation.name)
+        expect(Transaction.find_by(reference: reference).provider.name)
+          .to eq(provider_organisation.name)
+        expect(Transaction.find_by(reference: reference).receiver.name)
+          .to eq(receiver_organisation.name)
       end
     end
   end

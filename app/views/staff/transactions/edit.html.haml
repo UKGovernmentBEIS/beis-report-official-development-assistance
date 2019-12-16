@@ -8,4 +8,4 @@
         = t("page_title.transaction.edit")
 
       = form_with model: @transaction, url: fund_transaction_path(@fund) do |f|
-        = render partial: "form", locals: { f: f }
+        = render partial: "form", locals: { f: f, organisations: @organisations }

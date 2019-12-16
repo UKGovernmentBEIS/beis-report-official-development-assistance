@@ -11,6 +11,8 @@ en:
         currency: Currency
         description: Description
         disbursement_channel: Disbursement channel
+        provider_id: Providing organisation
+        receiver_id: Receiving organisation
         reference: Reference
         transaction_type: Transaction type
         value: Value
