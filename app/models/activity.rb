@@ -3,9 +3,11 @@ class Activity < ApplicationRecord
   validates_presence_of :identifier
   validates_uniqueness_of :identifier
 
-  attribute :recipient_region, :string, default: "998"
-  attribute :flow, :string, default: "10"
-  attribute :tied_status, :string, default: "5"
+  def set_hierarchy_defaults
+    case hierarchy.class.name
+    when "Fund" then set_fund_defaults
+    end
+  end
 
   def default_currency
     organisation.default_currency
@@ -13,5 +15,13 @@ class Activity < ApplicationRecord
 
   def organisation
     hierarchy.organisation
+  end
+
+  private
+
+  def set_fund_defaults
+    self.recipient_region = "998"
+    self.flow = "10"
+    self.tied_status = "5"
   end
 end
