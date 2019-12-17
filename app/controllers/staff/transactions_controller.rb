@@ -6,8 +6,9 @@ class Staff::TransactionsController < Staff::BaseController
 
   def new
     @transaction = policy_scope(Transaction).new
-    @fund = Fund.find(fund_id)
     authorize @transaction
+
+    @fund = Fund.find(fund_id)
   end
 
   def create
@@ -15,8 +16,11 @@ class Staff::TransactionsController < Staff::BaseController
     authorize @transaction
 
     @fund = Fund.find(fund_id)
-    @transaction.update(fund: @fund)
+
+    @transaction.fund = @fund
     @transaction.assign_attributes(transaction_params)
+    @transaction.provider = provider
+    @transaction.receiver = receiver
     @transaction.value = monetary_value
     @transaction.date = format_date(date)
 
@@ -30,23 +34,26 @@ class Staff::TransactionsController < Staff::BaseController
 
   def edit
     @transaction = policy_scope(Transaction).find(id)
-    @fund = Fund.find(fund_id)
     authorize @transaction
+
+    @fund = Fund.find(fund_id)
   end
 
   def update
     @transaction = policy_scope(Transaction).find(id)
     authorize @transaction
 
+    @fund = Fund.find(fund_id)
+
     @transaction.assign_attributes(transaction_params)
+    @transaction.provider = provider
+    @transaction.receiver = receiver
     @transaction.value = monetary_value
     @transaction.date = format_date(date)
 
-    fund = Fund.find(fund_id)
-
     if @transaction.save
       flash[:notice] = I18n.t("form.transaction.update.success")
-      redirect_to organisation_fund_path(fund.organisation, fund)
+      redirect_to organisation_fund_path(@fund.organisation, @fund)
     else
       render :edit
     end
@@ -66,8 +73,22 @@ class Staff::TransactionsController < Staff::BaseController
       :transaction_type,
       :currency,
       :value,
-      :disbursement_channel
+      :disbursement_channel,
     )
+  end
+
+  def provider
+    @provider ||= begin
+      provider_id = params.require(:transaction)[:provider_id]
+      Organisation.find(provider_id) if provider_id.present?
+    end
+  end
+
+  def receiver
+    @receiver ||= begin
+      receiver_id = params.require(:transaction)[:receiver_id]
+      Organisation.find(receiver_id) if receiver_id.present?
+    end
   end
 
   def monetary_value

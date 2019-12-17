@@ -9,5 +9,7 @@ FactoryBot.define do
     value { 110.01 }
     disbursement_channel { "1" }
     currency { "gbp" }
+    association :provider, factory: :organisation
+    association :receiver, factory: :organisation
   end
 end

@@ -7,5 +7,5 @@
       %h1.govuk-heading-xl
         = t("page_title.fund.edit")
 
-      = form_with model: @fund, url: organisation_fund_path(@fund.organisation), method: :put do |f|
+      = form_with model: @fund, url: organisation_fund_path(@fund.organisation) do |f|
         = render partial: 'form', locals: { f: f }

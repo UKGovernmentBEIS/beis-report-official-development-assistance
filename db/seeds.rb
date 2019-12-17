@@ -10,9 +10,20 @@
 
 # Generic development user
 if Rails.env.development?
-  User.find_or_create_by(
+  organisation_params = FactoryBot.build(
+    :organisation, name: "Department for Business, Energy & Industrial Strategy"
+  ).attributes
+  organisation = Organisation.find_or_create_by(organisation_params)
+
+  user = User.find_or_initialize_by(
     name: "Generic development user",
     email: "roda@dxw.com",
-    identifier: "auth0|5dc53e4b85758e0e95b062f0"
+    identifier: "auth0|5dc53e4b85758e0e95b062f0",
+    role: :administrator
   )
+  user.organisations << organisation
+  user.save
+
+  fund_params = FactoryBot.build(:fund, name: "GCRF", organisation: organisation).attributes
+  Fund.find_or_create_by(fund_params)
 end
