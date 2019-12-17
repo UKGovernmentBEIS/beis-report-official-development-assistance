@@ -42,8 +42,14 @@ RSpec.feature "Users can create an activity" do
       scenario "validation errors work as expected" do
         visit organisation_fund_path(organisation, fund)
         click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
+
+        # Don't provide an identifier
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content "can't be blank"
+
+        fill_in "activity[identifier]", with: "foo"
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content I18n.t("page_title.activity_form.show.purpose")
       end
     end
 

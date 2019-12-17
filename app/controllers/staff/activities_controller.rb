@@ -20,6 +20,7 @@ class Staff::ActivitiesController < Staff::BaseController
     authorize @activity
 
     @activity.hierarchy = hierarchy
+    @activity.wizard_status = "identifier"
     @activity.set_hierarchy_defaults
     @activity.save(validate: false)
 
