@@ -38,8 +38,9 @@ class Staff::ActivityFormsController < Staff::BaseController
     @activity = policy_scope(Activity).find(params[:activity_id])
     authorize @activity
 
-    @activity.update(activity_params)
-
+    @activity.assign_attributes(activity_params)
+    @activity.wizard_status = step
+    @activity.save
     render_wizard @activity
   end
 
