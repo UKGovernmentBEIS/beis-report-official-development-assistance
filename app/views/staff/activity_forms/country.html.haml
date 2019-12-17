@@ -1,6 +1,2 @@
 = render layout: "wrapper" do |f|
-  = f.input :recipient_region,
-            wrapper: "select",
-            collection: yaml_to_options("activity", "recipient_region"),
-            selected: "998",
-            hint: t("form.activity.recipient_region.hint.html")
+  = f.govuk_collection_select :recipient_region, yaml_to_objects("activity", "recipient_region"), :code, :name

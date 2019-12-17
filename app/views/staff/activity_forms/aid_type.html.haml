@@ -1,5 +1,2 @@
 = render layout: "wrapper" do |f|
-  = f.input :aid_type,
-            wrapper: "select",
-            collection: yaml_to_options("activity", "aid_type"),
-            hint: t("form.activity.aid_type.hint.html")
+  = f.govuk_collection_select :aid_type, yaml_to_objects("activity", "aid_type"), :code, :name

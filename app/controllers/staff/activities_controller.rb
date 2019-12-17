@@ -20,6 +20,7 @@ class Staff::ActivitiesController < Staff::BaseController
     authorize @activity
 
     @activity.hierarchy = hierarchy
+    @activity.set_hierarchy_defaults
     @activity.save(validate: false)
 
     redirect_to url_for([@activity.hierarchy, @activity, :steps])

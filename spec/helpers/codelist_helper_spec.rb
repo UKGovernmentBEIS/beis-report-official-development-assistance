@@ -5,24 +5,6 @@ require "rails_helper"
 RSpec.describe CodelistHelper, type: :helper do
   describe "version 2_03" do
     let(:version) { "2_03" }
-    describe "#yaml_to_options" do
-      it "formats the data in a yaml file to a nested array for use in options_for_select" do
-        expect(helper.yaml_to_options("generic", "default_currency")).to include(
-          ["UAE Dirham", "AED"],
-          ["Afghani", "AFN"],
-          ["Lek", "ALL"],
-          ["Armenian Dram", "AMD"],
-          ["Netherlands Antillian Guilder", "ANG"],
-          ["Kwanza", "AOA"]
-        )
-      end
-
-      it "sorts the resulting multidimensional array in name order" do
-        expect(helper.yaml_to_options("generic", "default_currency").first).to eq(["Afghani", "AFN"])
-        expect(helper.yaml_to_options("generic", "default_currency").last).to eq(["Zloty", "PLN"])
-      end
-    end
-
     describe "#yaml_to_objects" do
       it "gracefully handles a missing or incorrect yaml file" do
         expect(helper.yaml_to_objects("generic", "favourite_colours")).to eq([])
