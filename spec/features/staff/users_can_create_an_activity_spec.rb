@@ -43,7 +43,6 @@ RSpec.feature "Users can create an activity" do
         visit organisation_fund_path(organisation, fund)
         click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
         click_button I18n.t("form.activity.submit")
-        expect(page).not_to have_content I18n.t("form.activity.create.success")
         expect(page).to have_content "can't be blank"
       end
     end
