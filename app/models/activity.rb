@@ -1,7 +1,11 @@
 class Activity < ApplicationRecord
   belongs_to :hierarchy, polymorphic: true
-  validates_presence_of :identifier
+  validates :identifier, presence: true, if: :identifier_step?
   validates_uniqueness_of :identifier
+
+  def identifier_step?
+    wizard_status == "identifier"
+  end
 
   def set_hierarchy_defaults
     case hierarchy.class.name
