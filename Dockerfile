@@ -35,7 +35,8 @@ ENV RACK_ENV=${RAILS_ENV:-production}
 COPY Gemfile $INSTALL_PATH/Gemfile
 COPY Gemfile.lock $INSTALL_PATH/Gemfile.lock
 
-RUN gem update --system
+RUN gem update --system 3.0.3
+RUN gem update rake 13.0.1
 RUN gem install bundler
 
 # bundle ruby gems based on the current environment, default to production
