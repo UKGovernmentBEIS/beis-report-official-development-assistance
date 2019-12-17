@@ -50,6 +50,83 @@ RSpec.feature "Users can create an activity" do
         fill_in "activity[identifier]", with: "foo"
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.purpose")
+
+        # Don't provide a title and description
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "Title can't be blank"
+        expect(page).to have_content "Description can't be blank"
+
+        fill_in "activity[title]", with: Faker::Lorem.word
+        fill_in "activity[description]", with: Faker::Lorem.paragraph
+        click_button I18n.t("form.activity.submit")
+
+        expect(page).to have_content I18n.t("page_title.activity_form.show.sector")
+
+        # Don't provide a sector
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "Sector can't be blank"
+
+        select "Education policy and administrative management", from: "activity[sector]"
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content I18n.t("page_title.activity_form.show.status")
+
+        # Don't provide a status
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "Status can't be blank"
+
+        select "Implementation", from: "activity[status]"
+        click_button I18n.t("form.activity.submit")
+
+        expect(page).to have_content I18n.t("page_title.activity_form.show.dates")
+
+        # Dates are not mandatory so we can move through this step
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content I18n.t("page_title.activity_form.show.country")
+
+        # Recipient region has a default, so we need to deliberately select blank!
+        select "", from: "activity[recipient_region]"
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "Recipient region can't be blank"
+
+        select "Developing countries, unspecified", from: "activity[recipient_region]"
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
+
+        # Flow has a default, so we need to select blank!
+        select "", from: "activity[flow]"
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "Flow can't be blank"
+
+        select "ODA", from: "activity[flow]"
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content I18n.t("page_title.activity_form.show.finance")
+
+        # Don't select a finance
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "Finance can't be blank"
+
+        select "Standard grant", from: "activity[finance]"
+        click_button I18n.t("form.activity.submit")
+
+        expect(page).to have_content I18n.t("page_title.activity_form.show.aid_type")
+
+        # Don't select an aid type
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "Aid type can't be blank"
+
+        select "General budget support", from: "activity[aid_type]"
+        click_button I18n.t("form.activity.submit")
+
+        expect(page).to have_content I18n.t("page_title.activity_form.show.tied_status")
+
+        # Tied status has a default so we need to select blank!
+        select "", from: "activity[tied_status]"
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "Tied status can't be blank"
+
+        select "Untied", from: "activity[tied_status]"
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content fund.name
       end
     end
 
