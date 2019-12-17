@@ -6,9 +6,7 @@
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl= @page_title
 
-      = simple_form_for(@activity, method: :put, url: wizard_path) do |f|
+      = form_for @activity, url: wizard_path do |f|
+        = yield f
 
-        .govuk-form-group
-          = yield f
-
-        = f.button :submit, I18n.t("form.activity.submit")
+        = f.govuk_submit t("form.activity.submit")

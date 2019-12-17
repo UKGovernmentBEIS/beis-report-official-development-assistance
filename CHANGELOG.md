@@ -19,3 +19,4 @@
 - Users can edit a transaction
 - Users can edit an activity record
 - Transactions record the provider and receiver organisations
+- All forms now use `govuk_design_system_formbuilder` instead of `simple_form`

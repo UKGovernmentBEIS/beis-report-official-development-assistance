@@ -4,45 +4,11 @@ en:
     title: Report Official Development Assistance
   form:
     activity:
-      actual_end_date:
-        label: Actual end date
-      actual_start_date:
-        label: Actual start date
-      aid_type:
-        hint:
-          html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidTypeVocabulary/' target='_blank'>IATI descriptions can be found here.</a>
       create:
         success: Activity successfully created
       day: Day
-      finance:
-        hint: DAC/CRS transaction classification used to distinguish financial instruments, e.g. grants or loans.
-      flow:
-        hint:
-          html: "<a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>IATI descriptions of each flow type can be found here.</a>"
-      identifier:
-        hint: Reference to link this to your internal systems so it can be found again later.
       month: Month
-      planned_end_date:
-        label: Planned end date
-      planned_start_date:
-        label: Planned start date
-      recipient_region:
-        hint:
-          html: A supranational geopolitical region that will benefit from this activity. <a href='http://reference.iatistandard.org/203/codelists/Region/' target='_blank'>Find the region code from the IATI region list.</a>
-      reporting_organisation:
-        hint: The organisation issuing the report.
-      sector:
-        hint:
-          html: Classify the purpose of this activity. <a href='http://reference.iatistandard.org/203/codelists/Sector/' target='_blank'>Please provide the sector approriate to you from this list</a>.
-      status:
-        hint:
-          html: IATI activity status. <a href="http://reference.iatistandard.org/203/codelists/ActivityStatus/" target="_blank">See IATI for detailed descriptions.</a>
       submit: Continue
-      tied_status:
-        hint:
-          html: "<a href='http://reference.iatistandard.org/203/codelists/TiedStatus/' target='_blank'>See the IATI tied status page for descriptions.</a>"
-      title:
-        hint: A short, human-readable title that contains a meaningful summary of the activity.
       year: Year
     fund:
       create:

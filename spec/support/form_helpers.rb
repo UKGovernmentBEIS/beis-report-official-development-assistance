@@ -35,12 +35,12 @@ module FormHelpers
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.dates")
-    fill_in "planned_start_date[day]", with: planned_start_date_day
-    fill_in "planned_start_date[month]", with: planned_start_date_month
-    fill_in "planned_start_date[year]", with: planned_start_date_year
-    fill_in "planned_end_date[day]", with: planned_end_date_day
-    fill_in "planned_end_date[month]", with: planned_end_date_month
-    fill_in "planned_end_date[year]", with: planned_end_date_year
+    fill_in "activity[planned_start_date(3i)]", with: planned_start_date_day
+    fill_in "activity[planned_start_date(2i)]", with: planned_start_date_month
+    fill_in "activity[planned_start_date(1i)]", with: planned_start_date_year
+    fill_in "activity[planned_end_date(3i)]", with: planned_end_date_day
+    fill_in "activity[planned_end_date(2i)]", with: planned_end_date_month
+    fill_in "activity[planned_end_date(1i)]", with: planned_end_date_year
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.country")
