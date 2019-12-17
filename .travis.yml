@@ -7,7 +7,7 @@ rvm:
 services:
 - postgresql
 before_install:
-- gem update --system
+- gem update --system 3.0.3
 - gem install bundler
 before_script:
 - psql -c 'create database roda_test;' -U postgres
