@@ -20,7 +20,8 @@
     %dd.govuk-summary-list__value
       = activity_presenter.identifier
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :identifier), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :identifier)
+        = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :identifier), class: "govuk-link"
 
   .govuk-summary-list__row.title
     %dt.govuk-summary-list__key
@@ -28,7 +29,8 @@
     %dd.govuk-summary-list__value
       = activity_presenter.title
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :purpose), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :purpose)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:title)}"), edit_activity_path_for(activity: activity_presenter, step: :purpose), class: "govuk-link"
 
   .govuk-summary-list__row.description
     %dt.govuk-summary-list__key
@@ -36,7 +38,8 @@
     %dd.govuk-summary-list__value
       = activity_presenter.description
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :purpose), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :purpose)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:description)}"), edit_activity_path_for(activity: activity_presenter, step: :purpose), class: "govuk-link"
 
   .govuk-summary-list__row.sector
     %dt.govuk-summary-list__key
@@ -44,7 +47,8 @@
     %dd.govuk-summary-list__value
       = activity_presenter.sector
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :sector), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :sector)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:sector)}"), edit_activity_path_for(activity: activity_presenter, step: :sector), class: "govuk-link"
 
   .govuk-summary-list__row.status
     %dt.govuk-summary-list__key
@@ -52,7 +56,8 @@
     %dd.govuk-summary-list__value
       = activity_presenter.status
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :status), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :status)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:status)}"), edit_activity_path_for(activity: activity_presenter, step: :status), class: "govuk-link"
 
   .govuk-summary-list__row.planned_start_date
     %dt.govuk-summary-list__key
@@ -60,7 +65,8 @@
     %dd.govuk-summary-list__value
       = l(activity_presenter.planned_start_date)
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :dates), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :dates)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:planned_start_date)}"), edit_activity_path_for(activity: activity_presenter, step: :dates), class: "govuk-link"
 
 
   .govuk-summary-list__row.planned_end_date
@@ -69,7 +75,8 @@
     %dd.govuk-summary-list__value
       = l(activity_presenter.planned_end_date)
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :dates), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :dates)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:planned_start_date)}"), edit_activity_path_for(activity: activity_presenter, step: :dates), class: "govuk-link"
 
 
   .govuk-summary-list__row.actual_start_date
@@ -78,7 +85,8 @@
     %dd.govuk-summary-list__value
       = l(activity_presenter.actual_start_date)
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :dates), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :dates)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:planned_start_date)}"), edit_activity_path_for(activity: activity_presenter, step: :dates), class: "govuk-link"
 
 
   .govuk-summary-list__row.actual_end_date
@@ -87,7 +95,8 @@
     %dd.govuk-summary-list__value
       = l(activity_presenter.actual_end_date)
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :dates), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :dates)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:planned_start_date)}"), edit_activity_path_for(activity: activity_presenter, step: :dates), class: "govuk-link"
 
 
   .govuk-summary-list__row.recipient_region
@@ -96,7 +105,8 @@
     %dd.govuk-summary-list__value
       = activity_presenter.recipient_region
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :country), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :country)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:recipient_region)}"), edit_activity_path_for(activity: activity_presenter, step: :country), class: "govuk-link"
 
   .govuk-summary-list__row.flow
     %dt.govuk-summary-list__key
@@ -104,7 +114,8 @@
     %dd.govuk-summary-list__value
       = activity_presenter.flow
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :flow), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :flow)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:flow)}"), edit_activity_path_for(activity: activity_presenter, step: :flow), class: "govuk-link"
 
   .govuk-summary-list__row.finance
     %dt.govuk-summary-list__key
@@ -112,7 +123,8 @@
     %dd.govuk-summary-list__value
       = activity_presenter.finance
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :finance), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :finance)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:finance)}"), edit_activity_path_for(activity: activity_presenter, step: :finance), class: "govuk-link"
 
   .govuk-summary-list__row.aid_type
     %dt.govuk-summary-list__key
@@ -120,7 +132,8 @@
     %dd.govuk-summary-list__value
       = activity_presenter.aid_type
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :aid_type), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :aid_type)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:aid_type)}"), edit_activity_path_for(activity: activity_presenter, step: :aid_type), class: "govuk-link"
 
   .govuk-summary-list__row.tied_status
     %dt.govuk-summary-list__key
@@ -128,4 +141,5 @@
     %dd.govuk-summary-list__value
       = activity_presenter.tied_status
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :tied_status), class: "govuk-link"
+      - if show_activity_field?(activity: activity_presenter, step: :tied_status)
+        = link_to t("generic.link.#{activity_presenter.call_to_action(:tied_status)}"), edit_activity_path_for(activity: activity_presenter, step: :tied_status), class: "govuk-link"

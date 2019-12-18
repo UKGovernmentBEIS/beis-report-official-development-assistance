@@ -35,4 +35,8 @@ class ActivityPresenter < SimpleDelegator
     return if super.blank?
     I18n.t("activity.tied_status.#{super}")
   end
+
+  def call_to_action(attribute)
+    send(attribute).present? ? "edit" : "add"
+  end
 end

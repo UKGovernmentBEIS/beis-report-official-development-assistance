@@ -3,7 +3,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   include DateHelper
   include ActivityHelper
 
-  steps(
+  FORM_STEPS = [
     :identifier,
     :purpose,
     :sector,
@@ -14,7 +14,9 @@ class Staff::ActivityFormsController < Staff::BaseController
     :finance,
     :aid_type,
     :tied_status,
-  )
+  ]
+
+  steps(*FORM_STEPS)
 
   def index
     skip_policy_scope
