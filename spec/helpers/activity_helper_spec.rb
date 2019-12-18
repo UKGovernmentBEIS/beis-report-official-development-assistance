@@ -57,4 +57,44 @@ RSpec.describe ActivityHelper, type: :helper do
       end
     end
   end
+
+  describe "#show_activity_field?" do
+    context "when the activity has passed the identification step" do
+      it "returns true for the purpose fields" do
+        activity = build(:activity_at_identifier_step)
+        expect(helper.show_activity_field?(activity: activity, step: "purpose")).to be(true)
+      end
+
+      it "returns false for the next fields following the purpose field" do
+        activity = build(:activity_at_identifier_step)
+        expect(helper.show_activity_field?(activity: activity, step: "sector")).to be(false)
+        expect(helper.show_activity_field?(activity: activity, step: "status")).to be(false)
+        expect(helper.show_activity_field?(activity: activity, step: "dates")).to be(false)
+        expect(helper.show_activity_field?(activity: activity, step: "country")).to be(false)
+        expect(helper.show_activity_field?(activity: activity, step: "flow")).to be(false)
+        expect(helper.show_activity_field?(activity: activity, step: "finance")).to be(false)
+        expect(helper.show_activity_field?(activity: activity, step: "aid_type")).to be(false)
+        expect(helper.show_activity_field?(activity: activity, step: "tied_status")).to be(false)
+      end
+    end
+
+    context "when the activity has passed the country step" do
+      it "returns true for the previous field and only for the next field" do
+        activity = build(:activity_at_country_step)
+        expect(helper.show_activity_field?(activity: activity, step: "purpose")).to be(true)
+        expect(helper.show_activity_field?(activity: activity, step: "sector")).to be(true)
+        expect(helper.show_activity_field?(activity: activity, step: "status")).to be(true)
+        expect(helper.show_activity_field?(activity: activity, step: "dates")).to be(true)
+        expect(helper.show_activity_field?(activity: activity, step: "country")).to be(true)
+        expect(helper.show_activity_field?(activity: activity, step: "flow")).to be(true)
+      end
+
+      it "returns false for the next fields" do
+        activity = build(:activity_at_country_step)
+        expect(helper.show_activity_field?(activity: activity, step: "finance")).to be(false)
+        expect(helper.show_activity_field?(activity: activity, step: "aid_type")).to be(false)
+        expect(helper.show_activity_field?(activity: activity, step: "tied_status")).to be(false)
+      end
+    end
+  end
 end

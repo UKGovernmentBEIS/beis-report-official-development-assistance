@@ -27,16 +27,74 @@ RSpec.feature "Users can edit an activity" do
       fill_in_activity_form
     end
 
-    it "all edit links are available to take the user to the right step" do
-      fund = create(:fund, organisation: organisation)
-      activity = create(:activity, hierarchy: fund)
+    context "when the activity only has an identifier (and is incomplete)" do
+      it "shows edit link on the identifier, and add link on only the next step" do
+        fund = create(:fund, organisation: organisation)
+        _activity = create(:activity_at_identifier_step, hierarchy: fund)
 
-      visit dashboard_path
-      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
-      click_on(organisation.name)
-      click_on(fund.name)
+        visit dashboard_path
+        click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+        click_on(organisation.name)
+        click_on(fund.name)
 
-      assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
+        within(".identifier") do
+          expect(page).to have_content(I18n.t("generic.link.edit"))
+        end
+
+        within(".title") do
+          expect(page).to have_content(I18n.t("generic.link.add"))
+        end
+
+        within(".sector") do
+          expect(page).to_not have_content(I18n.t("generic.link.add"))
+        end
+      end
+    end
+
+    context "when the activity is complete" do
+      it "all edit links are available to take the user to the right step" do
+        fund = create(:fund, organisation: organisation)
+        activity = create(:activity, hierarchy: fund)
+
+        visit dashboard_path
+        click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+        click_on(organisation.name)
+        click_on(fund.name)
+
+        assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
+      end
+    end
+
+    context "when an activity attribute is present" do
+      it "the call to action is 'Edit'" do
+        fund = create(:fund, organisation: organisation)
+        _activity = create(:activity, hierarchy: fund, title: "My title", wizard_status: :purpose)
+
+        visit dashboard_path
+        click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+        click_on(organisation.name)
+        click_on(fund.name)
+
+        within(".title") do
+          expect(page).to have_content(I18n.t("generic.link.edit"))
+        end
+      end
+    end
+
+    context "when an activity attribute is not present" do
+      it "the call to action is 'Add'" do
+        fund = create(:fund, organisation: organisation)
+        _activity = create(:activity, hierarchy: fund, title: nil, wizard_status: :identifier)
+
+        visit dashboard_path
+        click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+        click_on(organisation.name)
+        click_on(fund.name)
+
+        within(".title") do
+          expect(page).to have_content(I18n.t("generic.link.add"))
+        end
+      end
     end
   end
 
