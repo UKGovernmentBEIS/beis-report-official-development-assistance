@@ -22,14 +22,6 @@
     %dd.govuk-summary-list__actions
       = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :identifier), class: "govuk-link"
 
-  .govuk-summary-list__row.sector
-    %dt.govuk-summary-list__key
-      = t("page_content.activity.sector.label")
-    %dd.govuk-summary-list__value
-      = activity_presenter.sector
-    %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :sector), class: "govuk-link"
-
   .govuk-summary-list__row.title
     %dt.govuk-summary-list__key
       = t("page_content.activity.title.label")
@@ -45,6 +37,14 @@
       = activity_presenter.description
     %dd.govuk-summary-list__actions
       = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :purpose), class: "govuk-link"
+
+  .govuk-summary-list__row.sector
+    %dt.govuk-summary-list__key
+      = t("page_content.activity.sector.label")
+    %dd.govuk-summary-list__value
+      = activity_presenter.sector
+    %dd.govuk-summary-list__actions
+      = link_to t("generic.link.edit"), edit_activity_path_for(activity: activity_presenter, step: :sector), class: "govuk-link"
 
   .govuk-summary-list__row.status
     %dt.govuk-summary-list__key
