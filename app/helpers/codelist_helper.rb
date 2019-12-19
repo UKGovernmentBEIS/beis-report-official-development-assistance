@@ -18,6 +18,11 @@ module CodelistHelper
     objects.unshift(OpenStruct.new(name: "Pound Sterling", code: "GBP")).uniq
   end
 
+  def region_select_options
+    objects = yaml_to_objects(entity: "activity", type: "recipient_region", with_empty_item: false)
+    objects.unshift(OpenStruct.new(name: "Developing countries, unspecified", code: "998")).uniq
+  end
+
   def load_yaml(entity:, type:)
     yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/IATI/#{IATI_VERSION}/#{entity}/#{type}.yml"))
     yaml["data"]
