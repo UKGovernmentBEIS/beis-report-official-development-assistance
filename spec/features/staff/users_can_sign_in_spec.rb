@@ -63,4 +63,23 @@ RSpec.feature "Users can sign in with Auth0" do
       expect(page).to have_content(I18n.t("page_content.errors.not_authorised.explanation"))
     end
   end
+
+  context "when there was a problem and Auth0 redirects to /failure" do
+    before(:each) do
+      OmniAuth.config.mock_auth[:auth0] = :invalid_credentials
+    end
+
+    it "the user is shown what the error message so they can try to correct the problem themselves" do
+      visit dashboard_path
+
+      within ".app-header__user-links" do
+        expect(page).to have_content(I18n.t("generic.link.sign_in"))
+        click_on I18n.t("generic.link.sign_in")
+      end
+
+      expect(page).to have_content(I18n.t("page_content.errors.auth0.failed.explanation"))
+      expect(page).to have_content("invalid_credentials")
+      expect(page).to have_content(I18n.t("page_content.errors.auth0.failed.prompt"))
+    end
+  end
 end
