@@ -21,3 +21,4 @@
 - Transactions record the provider and receiver organisations
 - All forms now use `govuk_design_system_formbuilder` instead of `simple_form`
 - Activity multi-step form now has validations
+- Users can view an XML representation of Transactions and Funds
