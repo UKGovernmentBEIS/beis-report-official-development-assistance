@@ -2,7 +2,7 @@
 = f.govuk_text_field :reference
 = f.govuk_text_area :description
 = f.govuk_collection_select :transaction_type,
-                               yaml_to_objects("transaction", "transaction_type"),
+                               yaml_to_objects(entity: "transaction", type: "transaction_type"),
                                :code,
                                :name,
                                hint_text: t("form.transaction.transaction_type.hint")
@@ -14,7 +14,7 @@
                                :name
 = f.govuk_text_field :value
 = f.govuk_collection_select :disbursement_channel,
-                               yaml_to_objects("transaction", "disbursement_channel"),
+                               yaml_to_objects(entity: "transaction", type: "disbursement_channel"),
                                :code,
                                :name,
                                hint_text: t("form.transaction.disbursement_channel.hint")
