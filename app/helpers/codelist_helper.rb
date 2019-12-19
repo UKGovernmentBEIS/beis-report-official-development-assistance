@@ -28,6 +28,11 @@ module CodelistHelper
     objects.unshift(OpenStruct.new(name: "ODA", code: "10")).uniq
   end
 
+  def tied_status_select_options
+    objects = yaml_to_objects(entity: "activity", type: "tied_status", with_empty_item: false)
+    objects.unshift(OpenStruct.new(name: "Untied", code: "5")).uniq
+  end
+
   def load_yaml(entity:, type:)
     yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/IATI/#{IATI_VERSION}/#{entity}/#{type}.yml"))
     yaml["data"]
