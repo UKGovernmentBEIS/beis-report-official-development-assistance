@@ -52,7 +52,15 @@ RSpec.describe CodelistHelper, type: :helper do
 
     describe "#currency_select_options" do
       it "returns an array of objects with GBP as the first (default) option" do
-        expect(helper.currency_select_options.first).to eq(OpenStruct.new(name: "Pound Sterling", code: "GBP"))
+        expect(helper.currency_select_options.first)
+          .to eq(OpenStruct.new(name: "Pound Sterling", code: "GBP"))
+      end
+    end
+
+    describe "#region_select_options" do
+      it "returns an array of region objects with 998 as the first (default) option" do
+        expect(helper.region_select_options.first)
+          .to eq(OpenStruct.new(name: "Developing countries, unspecified", code: "998"))
       end
     end
   end

@@ -83,11 +83,7 @@ RSpec.feature "Users can create an activity" do
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.country")
 
-        # Recipient region has a default, so we need to deliberately select blank!
-        select "", from: "activity[recipient_region]"
-        click_button I18n.t("form.activity.submit")
-        expect(page).to have_content "Recipient region can't be blank"
-
+        # Region has a default and can't be set to blank so we skip
         select "Developing countries, unspecified", from: "activity[recipient_region]"
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
