@@ -121,6 +121,10 @@ en:
         manage_organisations: Organisations
         manage_users: Users
     errors:
+      auth0:
+        failed:
+          explanation: Your request to sign in failed
+          prompt: Try signing in again and if you continue to have this issue please contact support.
       not_authorised:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
@@ -186,6 +190,8 @@ en:
         tied_status: Tied status
     dashboard: Dashboard
     errors:
+      auth0:
+        failed: Sign in failed
       not_authorised: You are not authorised
     fund:
       edit: Edit fund
