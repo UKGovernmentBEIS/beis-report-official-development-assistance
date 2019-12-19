@@ -27,24 +27,13 @@ RSpec.describe Activity, type: :model do
           .to include(flow: ["Flow can't be blank"])
       end
     end
-  end
 
-  describe "#set_hierarchy_defaults" do
-    let(:fund) { build_stubbed(:fund) }
-
-    context "when the hierarchy is unknown" do
-      it "should not set any defaults" do
-        activity = Activity.new(hierarchy: nil)
-        activity.set_hierarchy_defaults
-        expect(activity.changed?).to eq(false)
-      end
-    end
-
-    context "when it's a fund" do
-      it "should set the tied_status to 5" do
-        activity = build_stubbed(:activity, hierarchy: fund)
-        activity.set_hierarchy_defaults
-        expect(activity.tied_status).to eq("5")
+    context "when tied_status is blank" do
+      it "raises an error" do
+        activity = build(:activity, tied_status: nil, wizard_status: :tied_status)
+        activity.valid?
+        expect(activity.errors.messages)
+          .to include(tied_status: ["Tied status can't be blank"])
       end
     end
   end
