@@ -12,39 +12,39 @@ class Activity < ApplicationRecord
   validates_uniqueness_of :identifier
 
   def identifier_step?
-    wizard_status == "identifier"
+    %w[identifier complete].include?(wizard_status)
   end
 
   def purpose_step?
-    wizard_status == "purpose"
+    %w[purpose complete].include?(wizard_status)
   end
 
   def sector_step?
-    wizard_status == "sector"
+    %w[sector complete].include?(wizard_status)
   end
 
   def status_step?
-    wizard_status == "status"
+    %w[status complete].include?(wizard_status)
   end
 
   def country_step?
-    wizard_status == "country"
+    %w[country complete].include?(wizard_status)
   end
 
   def flow_step?
-    wizard_status == "flow"
+    %w[flow complete].include?(wizard_status)
   end
 
   def finance_step?
-    wizard_status == "finance"
+    %w[finance complete].include?(wizard_status)
   end
 
   def aid_type_step?
-    wizard_status == "aid_type"
+    %w[aid_type complete].include?(wizard_status)
   end
 
   def tied_status_step?
-    wizard_status == "tied_status"
+    %w[tied_status complete].include?(wizard_status)
   end
 
   def default_currency
