@@ -31,22 +31,22 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when planned_start_date is blank" do
-      subject { build(:activity, planned_start_date: nil, wizard_status: :dates)}
+      subject { build(:activity, planned_start_date: nil, wizard_status: :dates) }
       it { should_not validate_presence_of(:planned_start_date) }
     end
 
     context "when planned_end_date is blank" do
-      subject { build(:activity, planned_end_date: nil, wizard_status: :dates)}
+      subject { build(:activity, planned_end_date: nil, wizard_status: :dates) }
       it { should_not validate_presence_of(:planned_end_date) }
     end
 
     context "when actual_start_date is blank" do
-      subject { build(:activity, actual_start_date: nil, wizard_status: :dates)}
+      subject { build(:activity, actual_start_date: nil, wizard_status: :dates) }
       it { should_not validate_presence_of(:actual_start_date) }
     end
 
     context "when actual_end_date is blank" do
-      subject { build(:activity, actual_end_date: nil, wizard_status: :dates)}
+      subject { build(:activity, actual_end_date: nil, wizard_status: :dates) }
       it { should_not validate_presence_of(:actual_end_date) }
     end
 
@@ -67,6 +67,22 @@ RSpec.describe Activity, type: :model do
 
     context "when tied_status is blank" do
       subject { build(:activity, tied_status: nil, wizard_status: :tied_status) }
+      it { should validate_presence_of(:tied_status) }
+    end
+
+    context "when the wizard_status is complete" do
+      subject { build(:activity, wizard_status: "complete") }
+      it { should validate_presence_of(:title) }
+      it { should validate_presence_of(:description) }
+      it { should validate_presence_of(:sector) }
+      it { should validate_presence_of(:status) }
+      it { should_not validate_presence_of(:planned_start_date) }
+      it { should_not validate_presence_of(:planned_end_date) }
+      it { should_not validate_presence_of(:actual_start_date) }
+      it { should_not validate_presence_of(:actual_end_date) }
+      it { should validate_presence_of(:recipient_region) }
+      it { should validate_presence_of(:flow) }
+      it { should validate_presence_of(:finance) }
       it { should validate_presence_of(:tied_status) }
     end
   end
