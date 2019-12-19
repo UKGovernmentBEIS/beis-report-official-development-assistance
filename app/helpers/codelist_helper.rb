@@ -23,6 +23,11 @@ module CodelistHelper
     objects.unshift(OpenStruct.new(name: "Developing countries, unspecified", code: "998")).uniq
   end
 
+  def flow_select_options
+    objects = yaml_to_objects(entity: "activity", type: "flow", with_empty_item: false)
+    objects.unshift(OpenStruct.new(name: "ODA", code: "10")).uniq
+  end
+
   def load_yaml(entity:, type:)
     yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/IATI/#{IATI_VERSION}/#{entity}/#{type}.yml"))
     yaml["data"]

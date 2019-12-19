@@ -63,5 +63,12 @@ RSpec.describe CodelistHelper, type: :helper do
           .to eq(OpenStruct.new(name: "Developing countries, unspecified", code: "998"))
       end
     end
+
+    describe "#flow_select_options" do
+      it "returns an array of flow objects with 10 as the first (default) option" do
+        expect(helper.flow_select_options.first)
+          .to eq(OpenStruct.new(name: "ODA", code: "10"))
+      end
+    end
   end
 end
