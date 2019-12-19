@@ -9,6 +9,17 @@ RSpec.describe Activity, type: :model do
     it { should validate_uniqueness_of(:identifier) }
   end
 
+  describe "validations" do
+    context "when recipient_region is blank" do
+      it "raises an error" do
+        activity = build(:activity, recipient_region: nil, wizard_status: :country)
+        activity.valid?
+        expect(activity.errors.messages)
+          .to include(recipient_region: ["Recipient region can't be blank"])
+      end
+    end
+  end
+
   describe "#set_hierarchy_defaults" do
     let(:fund) { build_stubbed(:fund) }
 
@@ -21,12 +32,6 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when it's a fund" do
-      it "should set the recipient_region to 998" do
-        activity = build_stubbed(:activity, hierarchy: fund)
-        activity.set_hierarchy_defaults
-        expect(activity.recipient_region).to eq("998")
-      end
-
       it "should set the flow to 10" do
         activity = build_stubbed(:activity, hierarchy: fund)
         activity.set_hierarchy_defaults
