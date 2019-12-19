@@ -1,30 +1,27 @@
-language: ruby
-cache:
-  bundler: true
-  npm: true
-rvm:
-- 2.6.3
+language: minimal
 services:
-- postgresql
+  - docker
 before_install:
-- gem update --system 3.0.3
-- gem update rake 13.0.1
-- gem install bundler
-before_script:
-- psql -c 'create database roda_test;' -U postgres
-- npm install
+  - docker build . --build-arg RAILS_ENV=test -t app/test
 jobs:
   include:
-  - stage: Build
-    name: Setup the test database
-    env:
-    - RAILS_ENV=test
-    script: bundle exec rake db:setup
   - stage: Test
-    name: Run the tests
+    name: Build and test the current version of the application using Docker
     env:
-    - RAILS_ENV=test
-    script: bundle exec rake
+      - RAILS_ENV=test
+    script: |
+      docker network create test
+      docker run -d --name pg --network test -p 5432:5432 postgres:11.6
+      docker run -d \
+        --name test-container \
+        --network test \
+        -e RAILS_ENV=test \
+        -e DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL=true \
+        -e DATABASE_URL=postgres://postgres@pg:5432/roda_test \
+        --env-file .env.example \
+        app/test /bin/bash -c "tail -f /dev/null"
+      docker exec test-container rake db:setup
+      docker exec test-container rake
 deploy:
   - provider: heroku
     api_key:
