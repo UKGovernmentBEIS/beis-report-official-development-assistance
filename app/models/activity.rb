@@ -64,7 +64,6 @@ class Activity < ApplicationRecord
   private
 
   def set_fund_defaults
-    self.flow = "10"
     self.tied_status = "5"
   end
 end
