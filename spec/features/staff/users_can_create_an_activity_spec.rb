@@ -111,11 +111,7 @@ RSpec.feature "Users can create an activity" do
 
         expect(page).to have_content I18n.t("page_title.activity_form.show.tied_status")
 
-        # Tied status has a default so we need to select blank!
-        select "", from: "activity[tied_status]"
-        click_button I18n.t("form.activity.submit")
-        expect(page).to have_content "Tied status can't be blank"
-
+        # Tied status has a default and can't be set to blank so we skip
         select "Untied", from: "activity[tied_status]"
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content fund.name

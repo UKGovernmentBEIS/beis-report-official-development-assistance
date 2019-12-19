@@ -21,7 +21,6 @@ class Staff::ActivitiesController < Staff::BaseController
 
     @activity.hierarchy = hierarchy
     @activity.wizard_status = "identifier"
-    @activity.set_hierarchy_defaults
     @activity.save(validate: false)
 
     redirect_to url_for([@activity.hierarchy, @activity, :steps])
