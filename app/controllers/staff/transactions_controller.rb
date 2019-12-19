@@ -59,6 +59,16 @@ class Staff::TransactionsController < Staff::BaseController
     end
   end
 
+  def show
+    @transaction = policy_scope(Transaction).find(id)
+    authorize @transaction
+
+    @activity = Activity.find_by(hierarchy_id: @transaction.fund)
+
+    @provider = Organisation.find(@transaction.provider_id)
+    @receiver = Organisation.find(@transaction.receiver_id)
+  end
+
   private
 
   def date
