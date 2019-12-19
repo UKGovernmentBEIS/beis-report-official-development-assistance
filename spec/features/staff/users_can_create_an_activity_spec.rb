@@ -88,11 +88,7 @@ RSpec.feature "Users can create an activity" do
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
 
-        # Flow has a default, so we need to select blank!
-        select "", from: "activity[flow]"
-        click_button I18n.t("form.activity.submit")
-        expect(page).to have_content "Flow can't be blank"
-
+        # Flow has a default and can't be set to blank so we skip
         select "ODA", from: "activity[flow]"
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.finance")

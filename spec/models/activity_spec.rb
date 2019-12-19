@@ -18,6 +18,15 @@ RSpec.describe Activity, type: :model do
           .to include(recipient_region: ["Recipient region can't be blank"])
       end
     end
+
+    context "when flow is blank" do
+      it "raises an error" do
+        activity = build(:activity, flow: nil, wizard_status: :flow)
+        activity.valid?
+        expect(activity.errors.messages)
+          .to include(flow: ["Flow can't be blank"])
+      end
+    end
   end
 
   describe "#set_hierarchy_defaults" do
@@ -32,12 +41,6 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when it's a fund" do
-      it "should set the flow to 10" do
-        activity = build_stubbed(:activity, hierarchy: fund)
-        activity.set_hierarchy_defaults
-        expect(activity.flow).to eq("10")
-      end
-
       it "should set the tied_status to 5" do
         activity = build_stubbed(:activity, hierarchy: fund)
         activity.set_hierarchy_defaults
