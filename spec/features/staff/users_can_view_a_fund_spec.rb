@@ -27,8 +27,8 @@ RSpec.feature "Users can view a fund" do
 
   context "when the fund belongs to another organisation" do
     scenario "the user cannot view the fund" do
-      expect { visit organisation_fund_path(organisation, forbidden_fund) }
-        .to raise_exception(ActiveRecord::RecordNotFound)
+      visit organisation_fund_path(organisation, forbidden_fund)
+      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
     end
   end
 

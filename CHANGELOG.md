@@ -22,3 +22,5 @@
 - All forms now use `govuk_design_system_formbuilder` instead of `simple_form`
 - Activity multi-step form now has validations
 - Users can view an XML representation of Transactions and Funds
+- Delivery partners cannot interact with organisations they are not already associated with
+- Users can only create funds if they are associated with a given organisation

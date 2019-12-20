@@ -19,7 +19,8 @@
             %dd.govuk-summary-list__value
               = @fund.name
             %dd.govuk-summary-list__actions
-              = link_to t("generic.link.edit"), [:edit, @fund.organisation, @fund], class: "govuk-link"
+              - if policy(Fund).update?
+                = link_to t("generic.link.edit"), [:edit, @fund.organisation, @fund], class: "govuk-link"
           .govuk-summary-list__row
             %dt.govuk-summary-list__key
               = t("page_content.fund.organisation.label")

@@ -1,22 +1,22 @@
 class FundPolicy < ApplicationPolicy
   def index?
-    true
+    user.administrator? || user.organisations.include?(@record.organisation)
   end
 
   def show?
-    true
+    user.administrator? || user.organisations.include?(@record.organisation)
   end
 
   def create?
-    true
+    user.administrator?
   end
 
   def update?
-    true
+    user.administrator?
   end
 
   def destroy?
-    true
+    user.administrator?
   end
 
   class Scope < Scope
