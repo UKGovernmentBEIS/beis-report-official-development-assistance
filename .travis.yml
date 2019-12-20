@@ -1,14 +1,14 @@
 language: minimal
 services:
-  - docker
+- docker
 before_install:
-  - docker build . --build-arg RAILS_ENV=test -t app/test
+- docker build . --build-arg RAILS_ENV=test -t app/test
 jobs:
   include:
   - stage: Test
     name: Build and test the current version of the application using Docker
     env:
-      - RAILS_ENV=test
+    - RAILS_ENV=test
     script: |
       docker network create test
       docker run -d --name pg --network test -p 5432:5432 postgres:11.6
@@ -18,22 +18,30 @@ jobs:
         -e RAILS_ENV=test \
         -e DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL=true \
         -e DATABASE_URL=postgres://postgres@pg:5432/roda_test \
+        -e TRAVIS="$TRAVIS" \
         -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" \
         -e TRAVIS_BRANCH="$TRAVIS_BRANCH" \
+        -e TRAVIS_PULL_REQUEST="$TRAVIS_PULL_REQUEST" \
+        -e COVERALLS_SERVICE_NAME=travis-ci \
+        -e COVERALLS_REPO_TOKEN="$COVERALLS_REPO_TOKEN" \
+        -e CI=true \
         --env-file .env.example \
         app/test /bin/bash -c "tail -f /dev/null"
       docker exec test-container rake db:setup
       docker exec test-container rake
 deploy:
-  - provider: heroku
-    api_key:
-      secure: JwMXOsBBJl72mQ/o9YY/NEPF+WiRSN3hfZ7OT7MUAJSZuLxp5NLWdz4zVdrwUs8f2kfa6a1RpsWkl9CeY/eMB+8H7pIMBGivadfc9dA9TGQmhf1VdyOC6K79erHcc28CEHiO3DUIQVlzhSzpjNDEI/exlOVFt6wodcLBBLAtemlwiLHz5EKeUpMVuUX/wMHy5DDV+wYimbfA88R+nzwXHk6gXmeVM43BY3EDeIucItLf+ZONWuJxny72wd1bT4yoxqFy5ABNXK1YFzaT40wgWyR+OhdSYjXt/2h3dddhQ0/G5zAhAs+kLq74t9cTu2KVB/XMncDzKdlHr/0bmYPMqXxfhqbuzM8svMipLyuBej/NrK3ehUtfEiBsEMjzGfUmm3xZUx8QOAWpViwPl2Nl47DecAHjKTgqbqzjGy3HpwSNGR8wr3Vkz+U+iVaIcN6Az3HEnoBE7GugUPNRdnqPgefXuz6fTFpTGVKQiM8I0nkrG4K1+Csq0ZYunuaM69wMQE4gTnZUgWFLjtCEUnH7OlRPOi5dtdBtFBPPpEVHRhP9ZS/o3mAHHIi+mK9w+UCc8Yaoz5SS1q5c+m7D94Q3L9a6eVmSn92idg0V9E3og7RkObEdYg5hMcciz8gGIk6ONDweUEzGzhSDIXWiDg8BxUHaRwnphy29dI/Lfiluj5w=
-    on:
-      branch: develop
-    app: beis-roda-staging
-  - provider: heroku
-    api_key:
-      secure: JwMXOsBBJl72mQ/o9YY/NEPF+WiRSN3hfZ7OT7MUAJSZuLxp5NLWdz4zVdrwUs8f2kfa6a1RpsWkl9CeY/eMB+8H7pIMBGivadfc9dA9TGQmhf1VdyOC6K79erHcc28CEHiO3DUIQVlzhSzpjNDEI/exlOVFt6wodcLBBLAtemlwiLHz5EKeUpMVuUX/wMHy5DDV+wYimbfA88R+nzwXHk6gXmeVM43BY3EDeIucItLf+ZONWuJxny72wd1bT4yoxqFy5ABNXK1YFzaT40wgWyR+OhdSYjXt/2h3dddhQ0/G5zAhAs+kLq74t9cTu2KVB/XMncDzKdlHr/0bmYPMqXxfhqbuzM8svMipLyuBej/NrK3ehUtfEiBsEMjzGfUmm3xZUx8QOAWpViwPl2Nl47DecAHjKTgqbqzjGy3HpwSNGR8wr3Vkz+U+iVaIcN6Az3HEnoBE7GugUPNRdnqPgefXuz6fTFpTGVKQiM8I0nkrG4K1+Csq0ZYunuaM69wMQE4gTnZUgWFLjtCEUnH7OlRPOi5dtdBtFBPPpEVHRhP9ZS/o3mAHHIi+mK9w+UCc8Yaoz5SS1q5c+m7D94Q3L9a6eVmSn92idg0V9E3og7RkObEdYg5hMcciz8gGIk6ONDweUEzGzhSDIXWiDg8BxUHaRwnphy29dI/Lfiluj5w=
-    on:
-      branch: master
-    app: beis-roda-production
+- provider: heroku
+  api_key:
+    secure: JwMXOsBBJl72mQ/o9YY/NEPF+WiRSN3hfZ7OT7MUAJSZuLxp5NLWdz4zVdrwUs8f2kfa6a1RpsWkl9CeY/eMB+8H7pIMBGivadfc9dA9TGQmhf1VdyOC6K79erHcc28CEHiO3DUIQVlzhSzpjNDEI/exlOVFt6wodcLBBLAtemlwiLHz5EKeUpMVuUX/wMHy5DDV+wYimbfA88R+nzwXHk6gXmeVM43BY3EDeIucItLf+ZONWuJxny72wd1bT4yoxqFy5ABNXK1YFzaT40wgWyR+OhdSYjXt/2h3dddhQ0/G5zAhAs+kLq74t9cTu2KVB/XMncDzKdlHr/0bmYPMqXxfhqbuzM8svMipLyuBej/NrK3ehUtfEiBsEMjzGfUmm3xZUx8QOAWpViwPl2Nl47DecAHjKTgqbqzjGy3HpwSNGR8wr3Vkz+U+iVaIcN6Az3HEnoBE7GugUPNRdnqPgefXuz6fTFpTGVKQiM8I0nkrG4K1+Csq0ZYunuaM69wMQE4gTnZUgWFLjtCEUnH7OlRPOi5dtdBtFBPPpEVHRhP9ZS/o3mAHHIi+mK9w+UCc8Yaoz5SS1q5c+m7D94Q3L9a6eVmSn92idg0V9E3og7RkObEdYg5hMcciz8gGIk6ONDweUEzGzhSDIXWiDg8BxUHaRwnphy29dI/Lfiluj5w=
+  on:
+    branch: develop
+  app: beis-roda-staging
+- provider: heroku
+  api_key:
+    secure: JwMXOsBBJl72mQ/o9YY/NEPF+WiRSN3hfZ7OT7MUAJSZuLxp5NLWdz4zVdrwUs8f2kfa6a1RpsWkl9CeY/eMB+8H7pIMBGivadfc9dA9TGQmhf1VdyOC6K79erHcc28CEHiO3DUIQVlzhSzpjNDEI/exlOVFt6wodcLBBLAtemlwiLHz5EKeUpMVuUX/wMHy5DDV+wYimbfA88R+nzwXHk6gXmeVM43BY3EDeIucItLf+ZONWuJxny72wd1bT4yoxqFy5ABNXK1YFzaT40wgWyR+OhdSYjXt/2h3dddhQ0/G5zAhAs+kLq74t9cTu2KVB/XMncDzKdlHr/0bmYPMqXxfhqbuzM8svMipLyuBej/NrK3ehUtfEiBsEMjzGfUmm3xZUx8QOAWpViwPl2Nl47DecAHjKTgqbqzjGy3HpwSNGR8wr3Vkz+U+iVaIcN6Az3HEnoBE7GugUPNRdnqPgefXuz6fTFpTGVKQiM8I0nkrG4K1+Csq0ZYunuaM69wMQE4gTnZUgWFLjtCEUnH7OlRPOi5dtdBtFBPPpEVHRhP9ZS/o3mAHHIi+mK9w+UCc8Yaoz5SS1q5c+m7D94Q3L9a6eVmSn92idg0V9E3og7RkObEdYg5hMcciz8gGIk6ONDweUEzGzhSDIXWiDg8BxUHaRwnphy29dI/Lfiluj5w=
+  on:
+    branch: master
+  app: beis-roda-production
+env:
+  global:
+    secure: mBNvcyOEhYVAbbUJL4sXvwU6RM9LgFLAaEq/B5VKhUSOSKWvcYYInk5qWOldMF79aE8mC7JsOi5D4AC6fvPEEU2aM9N5jcvoNyR5FEKg80ltgK8GE8NwrzqjD3shS2IhFtKdBN1PI/vDxAtIJqefQ8eSy2/FwdpN/aB06QDGjEy5ye2dh/A4YH5fAz1W9lncFI8zr7ZdPC5N7FG6DkNCVju9wfqwzyHCQabuJ3iKvq3dxBaRvJgrIi6I2QVHV9ieWARuI5CHgYQWwm2VPVW5vUhrZ3ZaefD5qJZ4Bp+NzlnDH7frCjuDpPrCiNI6wYrbOxj4LFVDAWl9dMYcZ9BY6DNQjeTtSt9qLCgG6csBsTf9RHR5THz3zreChEyf/+iJvBqyh9XdSNj/ZtEDFAM4z4LTsyQy7VlxyjLoO+oYOONzQP/y4EOmELJ7YPvB6bZmazJ2Rpix91svlBmaxtcx63W0aZa8yqqzJ5n6mPdIIBnMQOlNkofUSapaKJRceMcVqHk/5EqjUG7ETTf8eohrfLqrHP/S344NPNCDMHmTIoWd4QL7K9E0IeAinBUOa8RfN4A3SfXvouOPvfZGqCjmciAsQi2r024EqZ/c39xu1BQDLIm+LZ9ThMBimi2u7yZV7W4ijoY7DRae3mgzqGxnHxEmWhtDMWWnEujfR2BM4oY= # Coveralls READ_TOKEN
