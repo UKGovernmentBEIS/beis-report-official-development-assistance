@@ -1,0 +1,22 @@
+%iati-activity{"default-currency" => "#{activity.default_currency}"}
+  %iati-identifier= activity.identifier
+  %reporting-org
+    %narrative= activity.organisation.name
+  %title
+    %narrative= activity.title
+  %description{type: "1"}
+    %narrative= activity.description
+  %activity-status{code: "#{activity.status}"}
+  %activity-date{"iso-date" => "#{activity.planned_start_date}", type: "1"}
+  %activity-date{"iso-date" => "#{activity.planned_end_date}", type: "2"}
+  %activity-date{"iso-date" => "#{activity.actual_start_date}", type: "3"}
+  %activity-date{"iso-date" => "#{activity.actual_end_date}", type: "4"}
+  %recipient-region{"code" => "#{activity.recipient_region}"}
+  %sector{"vocabulary" => "1", "code" => "#{activity.sector}"}
+  %default-flow-type{"code" => "#{activity.flow}"}
+  %default-finance-type{"code" => "#{activity.finance}"}
+  %default-aid-type{"code" => "#{activity.aid_type}"}
+  %default-tied-status{"code" => "#{activity.tied_status}"}
+  - if transactions
+    - transactions.each do |transaction|
+      = render partial: "staff/shared/xml/transaction", locals: { transaction: transaction }
