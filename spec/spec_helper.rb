@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "coveralls"
+Coveralls.wear!
+
 require "webmock/rspec"
 require "rack_session_access/capybara"
 require "pundit/matchers"
