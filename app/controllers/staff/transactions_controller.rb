@@ -5,14 +5,14 @@ class Staff::TransactionsController < Staff::BaseController
   include DateHelper
 
   def new
-    @transaction = policy_scope(Transaction).new
+    @transaction = Transaction.new
     authorize @transaction
 
     @fund = Fund.find(fund_id)
   end
 
   def create
-    @transaction = policy_scope(Transaction).new(transaction_params)
+    @transaction = Transaction.new(transaction_params)
     authorize @transaction
 
     @fund = Fund.find(fund_id)
@@ -33,14 +33,14 @@ class Staff::TransactionsController < Staff::BaseController
   end
 
   def edit
-    @transaction = policy_scope(Transaction).find(id)
+    @transaction = Transaction.find(id)
     authorize @transaction
 
     @fund = Fund.find(fund_id)
   end
 
   def update
-    @transaction = policy_scope(Transaction).find(id)
+    @transaction = Transaction.find(id)
     authorize @transaction
 
     @fund = Fund.find(fund_id)
@@ -60,7 +60,7 @@ class Staff::TransactionsController < Staff::BaseController
   end
 
   def show
-    @transaction = policy_scope(Transaction).find(id)
+    @transaction = Transaction.find(id)
     authorize @transaction
 
     @activity = Activity.find_by(hierarchy_id: @transaction.fund)

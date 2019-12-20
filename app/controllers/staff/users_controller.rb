@@ -5,18 +5,18 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def show
-    @user = policy_scope(User).find(id)
+    @user = User.find(id)
     authorize @user
   end
 
   def new
-    @user = policy_scope(User).new
+    @user = User.new
     @organisations = policy_scope(Organisation)
     authorize @user
   end
 
   def create
-    @user = policy_scope(User).new(user_params)
+    @user = User.new(user_params)
     @organisations = policy_scope(Organisation)
     authorize @user
 
@@ -35,13 +35,13 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def edit
-    @user = policy_scope(User).find(id)
+    @user = User.find(id)
     @organisations = policy_scope(Organisation)
     authorize @user
   end
 
   def update
-    @user = policy_scope(User).find(id)
+    @user = User.find(id)
     @organisations = policy_scope(Organisation)
     authorize @user
 

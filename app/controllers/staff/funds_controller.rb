@@ -9,7 +9,7 @@ class Staff::FundsController < Staff::BaseController
   end
 
   def show
-    @fund = policy_scope(Fund).find(id)
+    @fund = Fund.find(id)
     authorize @fund
 
     transactions = policy_scope(Transaction).where(fund: @fund)
@@ -22,13 +22,13 @@ class Staff::FundsController < Staff::BaseController
   end
 
   def new
-    @fund = policy_scope(Fund).new
+    @fund = Fund.new
     @organisation = Organisation.find(organisation_id)
     authorize @fund
   end
 
   def create
-    @fund = policy_scope(Fund).new(fund_params)
+    @fund = Fund.new(fund_params)
     @organisation = Organisation.find(organisation_id)
     @fund.organisation = @organisation
     authorize @fund
@@ -43,12 +43,12 @@ class Staff::FundsController < Staff::BaseController
   end
 
   def edit
-    @fund = policy_scope(Fund).find(id)
+    @fund = Fund.find(id)
     authorize @fund
   end
 
   def update
-    @fund = policy_scope(Fund).find(id)
+    @fund = Fund.find(id)
     authorize @fund
 
     @fund.assign_attributes(fund_params)

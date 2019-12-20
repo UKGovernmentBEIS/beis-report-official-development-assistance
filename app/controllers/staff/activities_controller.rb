@@ -4,7 +4,7 @@ class Staff::ActivitiesController < Staff::BaseController
   include ActivityHelper
 
   def show
-    @activity = policy_scope(Activity).find(id)
+    @activity = Activity.find(id)
     authorize @activity
 
     @activity_presenter = ActivityPresenter.new(@activity)
@@ -16,7 +16,7 @@ class Staff::ActivitiesController < Staff::BaseController
   end
 
   def create
-    @activity = policy_scope(Activity).new
+    @activity = Activity.new
     authorize @activity
 
     @activity.hierarchy = hierarchy
@@ -38,6 +38,6 @@ class Staff::ActivitiesController < Staff::BaseController
 
   def hierarchy
     # TODO: Add support for new hierarchies here and/or move to a service
-    @hierarchy = policy_scope(Fund).find(fund_id)
+    @hierarchy = Fund.find(fund_id)
   end
 end

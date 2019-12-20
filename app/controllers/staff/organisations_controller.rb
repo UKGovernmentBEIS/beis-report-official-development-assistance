@@ -7,7 +7,7 @@ class Staff::OrganisationsController < Staff::BaseController
   end
 
   def show
-    organisation = policy_scope(Organisation).find(params[:id])
+    organisation = Organisation.find(id)
     authorize organisation
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
@@ -33,12 +33,12 @@ class Staff::OrganisationsController < Staff::BaseController
   end
 
   def edit
-    @organisation = policy_scope(Organisation).find(id)
+    @organisation = Organisation.find(id)
     authorize @organisation
   end
 
   def update
-    @organisation = policy_scope(Organisation).find(id)
+    @organisation = Organisation.find(id)
     authorize @organisation
 
     @organisation.assign_attributes(organisation_params)
