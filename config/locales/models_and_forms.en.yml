@@ -20,6 +20,7 @@ en:
         organisation_type: Organisation type
       transaction:
         currency: Currency
+        date: Date
         description: Description
         disbursement_channel: Disbursement channel
         provider_id: Providing organisation
