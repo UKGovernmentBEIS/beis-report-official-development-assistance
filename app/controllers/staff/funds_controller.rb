@@ -14,6 +14,11 @@ class Staff::FundsController < Staff::BaseController
 
     transactions = policy_scope(Transaction).where(fund: @fund)
     @transaction_presenters = transactions.map { |transaction| TransactionPresenter.new(transaction) }
+
+    respond_to do |format|
+      format.html
+      format.xml
+    end
   end
 
   def new
