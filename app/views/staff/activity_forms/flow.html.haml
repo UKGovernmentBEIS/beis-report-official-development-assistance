@@ -1,2 +1,2 @@
 = render layout: "wrapper" do |f|
-  = f.govuk_collection_select :flow, yaml_to_objects("activity", "flow"), :code, :name
+  = f.govuk_collection_select :flow, flow_select_options, :code, :name, options: { selected: f.object.flow || flow_select_options.first.code }

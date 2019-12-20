@@ -20,3 +20,4 @@
 - Users can edit an activity record
 - Transactions record the provider and receiver organisations
 - All forms now use `govuk_design_system_formbuilder` instead of `simple_form`
+- Activity multi-step form now has validations

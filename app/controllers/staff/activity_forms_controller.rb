@@ -3,7 +3,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   include DateHelper
   include ActivityHelper
 
-  steps(
+  FORM_STEPS = [
     :identifier,
     :purpose,
     :sector,
@@ -14,7 +14,9 @@ class Staff::ActivityFormsController < Staff::BaseController
     :finance,
     :aid_type,
     :tied_status,
-  )
+  ]
+
+  steps(*FORM_STEPS)
 
   def index
     skip_policy_scope
@@ -38,8 +40,9 @@ class Staff::ActivityFormsController < Staff::BaseController
     @activity = policy_scope(Activity).find(params[:activity_id])
     authorize @activity
 
-    @activity.update(activity_params)
-
+    @activity.assign_attributes(activity_params)
+    @activity.wizard_status = step
+    @activity.save
     render_wizard @activity
   end
 
