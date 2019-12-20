@@ -126,15 +126,8 @@ module FormHelpers
         expect(page).to have_content(value)
         expect(page).to have_content(disbursement_channel)
         expect(page).to have_content(currency)
-
-        # TODO: The table cannot support more horiztonal columns right now.
-        # Remove temporary substitute assertion that checks the DB instead.
-        # expect(page).to have_content(provider_organisation.name)
-        # expect(page).to have_content(receiver_organisation.name)
-        expect(Transaction.find_by(reference: reference).provider.name)
-          .to eq(provider_organisation.name)
-        expect(Transaction.find_by(reference: reference).receiver.name)
-          .to eq(receiver_organisation.name)
+        expect(page).to have_content(provider_organisation.name)
+        expect(page).to have_content(receiver_organisation.name)
       end
     end
   end
