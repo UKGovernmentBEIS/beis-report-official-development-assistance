@@ -18,6 +18,8 @@ jobs:
         -e RAILS_ENV=test \
         -e DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL=true \
         -e DATABASE_URL=postgres://postgres@pg:5432/roda_test \
+        -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" \
+        -e TRAVIS_BRANCH="$TRAVIS_BRANCH" \
         --env-file .env.example \
         app/test /bin/bash -c "tail -f /dev/null"
       docker exec test-container rake db:setup
