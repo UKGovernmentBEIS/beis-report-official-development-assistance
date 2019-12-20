@@ -7,14 +7,45 @@ FactoryBot.define do
     description { Faker::Lorem.paragraph }
     sector { "99" }
     status { "2" }
+    planned_start_date { Date.today }
+    planned_end_date { Date.tomorrow }
+    actual_start_date { Date.today }
+    actual_end_date { Date.tomorrow }
     recipient_region { "489" }
     flow { "10" }
     finance { "110" }
     aid_type { "A01" }
     tied_status { "3" }
-  end
 
-  factory :fund_activity do
-    association :hierarchy, factory: :fund
+    wizard_status { "tied_status" } # this is the final step, aka "complete"
+
+    factory :fund_activity do
+      association :hierarchy, factory: :fund
+
+      factory :activity_at_identifier_step do
+        wizard_status { "identifier" }
+        title { nil }
+        description { nil }
+        sector { nil }
+        status { nil }
+        planned_start_date { nil }
+        planned_end_date { nil }
+        actual_start_date { nil }
+        actual_end_date { nil }
+        recipient_region { nil }
+        flow { nil }
+        finance { nil }
+        aid_type { nil }
+        tied_status { nil }
+      end
+
+      factory :activity_at_country_step do
+        wizard_status { "country" }
+        flow { nil }
+        finance { nil }
+        aid_type { nil }
+        tied_status { nil }
+      end
+    end
   end
 end
