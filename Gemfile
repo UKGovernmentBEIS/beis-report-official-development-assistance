@@ -61,6 +61,7 @@ end
 group :test do
   gem "capybara", ">= 2.15"
   gem "climate_control"
+  gem "coveralls", require: false
   gem "database_cleaner"
   gem "launchy"
   gem "pundit-matchers", "~> 1.6.0"
