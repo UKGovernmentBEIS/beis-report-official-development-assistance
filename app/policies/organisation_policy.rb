@@ -4,6 +4,20 @@ class OrganisationPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    user.administrator? || user.organisations.include?(@record)
+  end
+
+  def update?
+    user.administrator? || user.organisations.include?(@record)
+  end
+
+  class Scope < Scope
+    def resolve
+      if user.administrator?
+        scope.all
+      else
+        scope.where(id: user.organisation_ids)
+      end
+    end
   end
 end
