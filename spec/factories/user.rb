@@ -8,5 +8,9 @@ FactoryBot.define do
     factory :administrator do
       role { :administrator }
     end
+
+    factory :delivery_partner do
+      role { :delivery_partner }
+    end
   end
 end
