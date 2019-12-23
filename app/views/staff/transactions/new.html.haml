@@ -1,11 +1,12 @@
 =content_for :page_title_prefix, t("page_title.transaction.new")
 
-%p= link_to t("generic.link.back"), organisation_fund_path(@fund.id, organisation_id: @fund.organisation.id), class: "govuk-back-link"
+%p= link_to t("generic.link.back"), hierarchy_object_path(hierarchy: @hierarchy), class: "govuk-back-link"
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
         = t("page_title.transaction.new")
 
-      = form_with model: @transaction, url: fund_transactions_path(@fund) do |f|
+      =# TODO: replace fund_transactions_path with something hierarchy-agnostic
+      = form_with model: @transaction, url: fund_transactions_path(@hierarchy) do |f|
         = render partial: "form", locals: { f: f, organisations: @organisations }

@@ -5,7 +5,7 @@ RSpec.describe TransactionPolicy do
 
   let(:organisation) { create(:organisation) }
   let!(:fund) { create(:fund, organisation: organisation) }
-  let!(:transaction) { create(:transaction, fund: fund) }
+  let!(:transaction) { create(:transaction, hierarchy: fund) }
 
   context "as an administrator" do
     let(:user) { build_stubbed(:administrator) }
@@ -40,7 +40,7 @@ RSpec.describe TransactionPolicy do
     context "with transactions from funds in another organisation" do
       let(:other_organisation) { create(:organisation) }
       let(:forbidden_fund) { create(:fund, organisation: other_organisation) }
-      let(:transaction) { create(:transaction, fund: forbidden_fund) }
+      let(:transaction) { create(:transaction, hierarchy: forbidden_fund) }
 
       it "does not include transaction in resolved scope" do
         expect(resolved_scope).to_not include(transaction)

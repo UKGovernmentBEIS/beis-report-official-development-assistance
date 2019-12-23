@@ -3,21 +3,22 @@
 class Staff::TransactionsController < Staff::BaseController
   include Secured
   include DateHelper
+  include TransactionHelper
 
   def new
     @transaction = policy_scope(Transaction).new
     authorize @transaction
 
-    @fund = Fund.find(fund_id)
+    @hierarchy = hierarchy
   end
 
   def create
     @transaction = policy_scope(Transaction).new(transaction_params)
     authorize @transaction
 
-    @fund = Fund.find(fund_id)
+    @hierarchy = hierarchy
 
-    @transaction.fund = @fund
+    @transaction.hierarchy = @hierarchy
     @transaction.assign_attributes(transaction_params)
     @transaction.provider = provider
     @transaction.receiver = receiver
@@ -26,7 +27,7 @@ class Staff::TransactionsController < Staff::BaseController
 
     if @transaction.save
       flash[:notice] = I18n.t("form.transaction.create.success")
-      redirect_to organisation_fund_path(@fund.organisation, @fund)
+      redirect_to transaction_hierarchy_path_for(transaction: @transaction)
     else
       render :new
     end
@@ -36,14 +37,14 @@ class Staff::TransactionsController < Staff::BaseController
     @transaction = policy_scope(Transaction).find(id)
     authorize @transaction
 
-    @fund = Fund.find(fund_id)
+    @fund = hierarchy_for(transaction: @transaction)
   end
 
   def update
     @transaction = policy_scope(Transaction).find(id)
     authorize @transaction
 
-    @fund = Fund.find(fund_id)
+    @fund = hierarchy_for(transaction: @transaction)
 
     @transaction.assign_attributes(transaction_params)
     @transaction.provider = provider
@@ -53,7 +54,7 @@ class Staff::TransactionsController < Staff::BaseController
 
     if @transaction.save
       flash[:notice] = I18n.t("form.transaction.update.success")
-      redirect_to organisation_fund_path(@fund.organisation, @fund)
+      redirect_to transaction_hierarchy_path_for(transaction: @transaction)
     else
       render :edit
     end
@@ -63,7 +64,7 @@ class Staff::TransactionsController < Staff::BaseController
     @transaction = policy_scope(Transaction).find(id)
     authorize @transaction
 
-    @activity = Activity.find_by(hierarchy_id: @transaction.fund)
+    @activity = Activity.find_by(hierarchy_id: @transaction.hierarchy)
 
     @provider = Organisation.find(@transaction.provider_id)
     @receiver = Organisation.find(@transaction.receiver_id)
@@ -108,7 +109,15 @@ class Staff::TransactionsController < Staff::BaseController
     end
   end
 
-  def fund_id
+  def hierarchy
+    # TODO: extend to support other hierarchy types
+    if params[:fund_id]
+      Fund.find(hierarchy_id)
+    end
+  end
+
+  def hierarchy_id
+    # TODO This won't always be fund_id, eventually we'll have other hierarchies
     params[:fund_id]
   end
 

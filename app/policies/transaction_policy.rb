@@ -24,9 +24,10 @@ class TransactionPolicy < ApplicationPolicy
       if user.administrator?
         scope.all
       else
+        # TODO: when we add other hierarchy types, include them here somehow!
         organisations = user.organisation_ids
         funds = Fund.where(organisation_id: organisations)
-        scope.where(fund_id: funds)
+        scope.where(hierarchy_id: funds)
       end
     end
   end
