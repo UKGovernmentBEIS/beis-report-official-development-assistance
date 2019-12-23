@@ -46,6 +46,10 @@ FactoryBot.define do
         aid_type { nil }
         tied_status { nil }
       end
+
+      factory :activity_with_nil_wizard_status do
+        wizard_status { nil }
+      end
     end
   end
 end

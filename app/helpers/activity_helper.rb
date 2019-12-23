@@ -13,6 +13,9 @@ module ActivityHelper
 
   def show_activity_field?(activity:, step:)
     steps = Staff::ActivityFormsController::FORM_STEPS
+
+    return true if activity.wizard_status.nil?
+
     form_position = steps.index(step.to_sym)
     activity_position = steps.index(activity.wizard_status.to_sym)
 
