@@ -96,5 +96,16 @@ RSpec.describe ActivityHelper, type: :helper do
         expect(helper.show_activity_field?(activity: activity, step: "tied_status")).to be(false)
       end
     end
+
+    context "when the activity has a null .wizard_status field" do
+      it "shows all steps" do
+        activity = build(:activity_with_nil_wizard_status)
+        all_steps = Staff::ActivityFormsController::FORM_STEPS
+
+        all_steps.each do |step|
+          expect(helper.show_activity_field?(activity: activity, step: step)).to be(true)
+        end
+      end
+    end
   end
 end
