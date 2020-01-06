@@ -23,16 +23,6 @@ RSpec.feature "Users can view all organisations" do
     expect(page).to have_content organisation.name
   end
 
-  scenario "user does not see organisations they do not belong to" do
-    skip "Not implemented yet"
-    organisation_2 = create(:organisation)
-
-    visit organisations_path
-
-    expect(page).to have_content(I18n.t("page_title.organisation.index"))
-    expect(page).to_not have_content organisation_2.name
-  end
-
   scenario "can go back to the previous page" do
     visit organisations_path
 
