@@ -30,6 +30,10 @@ en:
         value: Value
       user:
         organisation_ids: Organisations
+        roles:
+          administrator: Administrator
+          delivery_partner: Delivery partner
+          fund_manager: Fund manager
     errors:
       models:
         transaction:

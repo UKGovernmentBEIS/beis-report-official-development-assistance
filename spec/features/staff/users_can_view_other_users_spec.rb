@@ -22,6 +22,7 @@ RSpec.feature "users can view other users" do
     expect(page).to have_content(I18n.t("page_title.users.index"))
     expect(page).to have_content(user.name)
     expect(page).to have_content(user.email)
+    expect(page).to have_content(user.role_name)
 
     # Navigate to the individual user page
     within(".users") do
@@ -31,6 +32,7 @@ RSpec.feature "users can view other users" do
     expect(page).to have_content(I18n.t("page_title.users.show"))
     expect(page).to have_content(user.name)
     expect(page).to have_content(user.email)
+    expect(page).to have_content(user.role_name)
   end
 
   scenario "can go back to the previous page" do
