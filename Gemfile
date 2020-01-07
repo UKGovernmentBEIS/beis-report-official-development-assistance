@@ -45,7 +45,7 @@ group :development, :test do
   gem "i18n-tasks", "~> 0.9.29"
   gem "rspec-rails"
   gem "standard"
-  gem "pry"
+  gem "pry-rails"
 end
 
 group :development do
