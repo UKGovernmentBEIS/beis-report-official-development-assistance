@@ -220,3 +220,4 @@ en:
     email: Email address
     identifier: Auth0 identifier
     name: Full name
+    role: Role
