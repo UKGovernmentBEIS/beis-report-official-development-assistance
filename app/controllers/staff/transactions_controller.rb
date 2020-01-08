@@ -12,7 +12,7 @@ class Staff::TransactionsController < Staff::BaseController
   end
 
   def create
-    @transaction = policy_scope(Transaction).new(transaction_params)
+    @transaction = policy_scope(Transaction).new
     authorize @transaction
 
     @fund = Fund.find(fund_id)
