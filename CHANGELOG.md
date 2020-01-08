@@ -23,3 +23,4 @@
 - Activity multi-step form now has validations
 - Users can view an XML representation of Transactions and Funds
 - Force SSL in production environments
+- A users role can be viewed, set and changed

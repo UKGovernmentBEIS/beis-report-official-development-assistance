@@ -63,7 +63,7 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, organisation_ids: [])
+    params.require(:user).permit(:name, :email, :role, organisation_ids: [])
   end
 
   def id
