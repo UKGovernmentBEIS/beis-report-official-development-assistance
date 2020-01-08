@@ -30,7 +30,7 @@ RSpec.feature "Users can edit an activity" do
     context "when the activity only has an identifier (and is incomplete)" do
       it "shows edit link on the identifier, and add link on only the next step" do
         fund = create(:fund, organisation: organisation)
-        _activity = create(:activity_at_identifier_step, hierarchy: fund)
+        _activity = create(:fund_activity, :at_identifier_step, hierarchy: fund)
 
         visit dashboard_path
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
