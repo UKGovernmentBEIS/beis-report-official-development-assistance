@@ -26,7 +26,7 @@ class TransactionPolicy < ApplicationPolicy
       else
         organisations = user.organisation_ids
         funds = Fund.where(organisation_id: organisations)
-        scope.where(fund_id: funds)
+        scope.where(hierarchy: funds)
       end
     end
   end

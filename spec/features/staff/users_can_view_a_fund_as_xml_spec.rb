@@ -6,7 +6,7 @@ RSpec.feature "Users can view a fund as XML" do
   let(:organisation) { create(:organisation) }
   let(:fund) { create(:fund, organisation: organisation) }
   let!(:activity) { create(:activity, hierarchy: fund) }
-  let!(:transaction) { create(:transaction, fund: fund) }
+  let!(:transaction) { create(:transaction, hierarchy: fund) }
   let(:user) { create(:user, organisations: [organisation]) }
 
   context "when the user is not logged in" do

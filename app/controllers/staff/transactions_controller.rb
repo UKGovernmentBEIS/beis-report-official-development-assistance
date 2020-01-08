@@ -17,7 +17,7 @@ class Staff::TransactionsController < Staff::BaseController
 
     @fund = Fund.find(fund_id)
 
-    @transaction.fund = @fund
+    @transaction.hierarchy = @fund
     @transaction.assign_attributes(transaction_params)
     @transaction.provider = provider
     @transaction.receiver = receiver
@@ -63,7 +63,7 @@ class Staff::TransactionsController < Staff::BaseController
     @transaction = policy_scope(Transaction).find(id)
     authorize @transaction
 
-    @activity = Activity.find_by(hierarchy_id: @transaction.fund)
+    @activity = Activity.find_by(hierarchy_id: @transaction.hierarchy)
 
     @provider = Organisation.find(@transaction.provider_id)
     @receiver = Organisation.find(@transaction.receiver_id)

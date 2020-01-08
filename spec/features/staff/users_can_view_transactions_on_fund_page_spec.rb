@@ -9,8 +9,8 @@ RSpec.feature "Users can view funds on an organisation page" do
   let(:other_fund) { create(:fund, organisation: organisation) }
 
   scenario "only transactions belonging to this fund are shown on the Fund#show page" do
-    transaction = create(:transaction, fund: fund)
-    other_transaction = create(:transaction, fund: other_fund)
+    transaction = create(:transaction, hierarchy: fund)
+    other_transaction = create(:transaction, hierarchy: other_fund)
 
     visit organisations_path
     click_link organisation.name
@@ -21,7 +21,7 @@ RSpec.feature "Users can view funds on an organisation page" do
   end
 
   scenario "transaction information is shown on the page" do
-    transaction = create(:transaction, fund: fund)
+    transaction = create(:transaction, hierarchy: fund)
     transaction_presenter = TransactionPresenter.new(transaction)
 
     visit organisations_path
