@@ -37,6 +37,7 @@ RSpec.feature "users can invite new users to the service" do
   scenario "a new user can be created" do
     new_user_name = "Foo Bar"
     new_user_email = "email@example.com"
+    new_user_role = "Fund manager"
     auth0_identifier = "auth0|00991122"
 
     stub_auth0_create_user_request(
@@ -58,6 +59,7 @@ RSpec.feature "users can invite new users to the service" do
     expect(page).to have_content(I18n.t("page_title.users.new"))
     fill_in "user[name]", with: new_user_name
     fill_in "user[email]", with: new_user_email
+    choose new_user_role
 
     # Ensure a welcome email is enqueued
     expect_welcome_email_delivery
@@ -69,6 +71,7 @@ RSpec.feature "users can invite new users to the service" do
     expect(page).to have_content(I18n.t("page_title.users.show"))
     expect(page).to have_content(new_user_name)
     expect(page).to have_content(new_user_email)
+    expect(page).to have_content(new_user_role)
     expect(page).to have_content(auth0_identifier)
   end
 
