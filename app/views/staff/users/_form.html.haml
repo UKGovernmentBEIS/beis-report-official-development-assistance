@@ -3,9 +3,18 @@
 
   = f.govuk_text_field :name
   = f.govuk_email_field :email
+  = f.govuk_collection_radio_buttons :role,
+      list_of_user_roles,
+      :id,
+      :name,
+      legend: { tag: :h2 }
 
   - if @organisations.any?
-    = f.govuk_collection_check_boxes :organisation_ids, @organisations, :id, :name
+    = f.govuk_collection_check_boxes :organisation_ids,
+        @organisations,
+        :id,
+        :name,
+        legend: { tag: :h2 }
   - else
     .govuk-inset-text
       = succeed "." do
