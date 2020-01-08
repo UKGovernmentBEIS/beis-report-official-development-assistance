@@ -79,8 +79,9 @@ ActiveRecord::Schema.define(version: 2020_01_16_172705) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "provider_id"
     t.uuid "receiver_id"
-    t.uuid "fund_id"
-    t.index ["fund_id"], name: "index_transactions_on_fund_id"
+    t.uuid "hierarchy_id"
+    t.string "hierarchy_type"
+    t.index ["hierarchy_id", "hierarchy_type"], name: "index_transactions_on_hierarchy_id_and_hierarchy_type"
     t.index ["provider_id"], name: "index_transactions_on_provider_id"
     t.index ["receiver_id"], name: "index_transactions_on_receiver_id"
   end
