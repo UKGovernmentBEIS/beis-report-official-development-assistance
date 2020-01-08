@@ -5,7 +5,7 @@ RSpec.feature "Fund managers can view a fund as XML" do
       organisation = create(:organisation)
       fund = create(:fund, organisation: organisation)
       activity = create(:activity, hierarchy: fund)
-      transaction = create(:transaction, fund: fund)
+      transaction = create(:transaction, hierarchy: fund)
       authenticate!(user: build_stubbed(:fund_manager, organisation: organisation))
 
       visit organisation_fund_path(organisation, fund, format: :xml)

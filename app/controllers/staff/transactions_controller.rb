@@ -7,7 +7,7 @@ class Staff::TransactionsController < Staff::BaseController
   def new
     @fund = Fund.find(fund_id)
     @transaction = Transaction.new
-    @transaction.fund = @fund
+    @transaction.hierarchy = @hierarchy
 
     authorize @transaction
   end
@@ -18,7 +18,6 @@ class Staff::TransactionsController < Staff::BaseController
     @transaction.fund = @fund
     authorize @transaction
 
-    @transaction.assign_attributes(transaction_params)
     @transaction.provider = provider
     @transaction.receiver = receiver
     @transaction.value = monetary_value
@@ -42,7 +41,7 @@ class Staff::TransactionsController < Staff::BaseController
   def update
     @transaction = Transaction.find(id)
     @fund = Fund.find(fund_id)
-    @transaction.fund = @fund
+    @transaction.hierarchy = @fund
     authorize @transaction
 
     @transaction.assign_attributes(transaction_params)
@@ -63,7 +62,7 @@ class Staff::TransactionsController < Staff::BaseController
     @transaction = Transaction.find(id)
     authorize @transaction
 
-    @activity = Activity.find_by(hierarchy_id: @transaction.fund)
+    @activity = Activity.find_by(hierarchy_id: @transaction.hierarchy)
 
     @provider = Organisation.find(@transaction.provider_id)
     @receiver = Organisation.find(@transaction.receiver_id)

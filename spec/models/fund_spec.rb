@@ -9,5 +9,6 @@ RSpec.describe Fund, type: :model do
     it { should belong_to(:organisation) }
     it { should have_one(:activity) }
     it { should have_many(:programmes) }
+    it { should have_many(:transactions) }
   end
 end

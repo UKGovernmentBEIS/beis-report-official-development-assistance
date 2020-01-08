@@ -5,9 +5,10 @@ RSpec.describe TransactionPolicy do
 
   subject { described_class.new(user, transaction) }
 
+
   context "for a fund" do
-    let!(:fund) { create(:fund, organisation: organisation) }
-    let!(:transaction) { create(:transaction, fund: fund) }
+  let!(:fund) { create(:fund, organisation: organisation) }
+  let!(:transaction) { create(:transaction, hierarchy: fund) }
 
     context "as an administrator" do
       let(:user) { build_stubbed(:administrator) }
@@ -48,9 +49,15 @@ RSpec.describe TransactionPolicy do
       it { is_expected.to forbid_edit_and_update_actions }
       it { is_expected.to forbid_action(:destroy) }
 
-      it "does not include transaction in resolved scope" do
-        resolved_scope = described_class::Scope.new(user, Transaction.all).resolve
-        expect(resolved_scope).not_to include(transaction)
+      context "with transactions from funds in another organisation" do
+        let(:other_organisation) { create(:organisation) }
+        let(:forbidden_fund) { create(:fund, organisation: other_organisation) }
+        let(:transaction) { create(:transaction, hierarchy: forbidden_fund) }
+
+        it "does not include transaction in resolved scope" do
+          resolved_scope = described_class::Scope.new(user, Transaction.all).resolve
+          expect(resolved_scope).not_to include(transaction)
+        end
       end
     end
   end

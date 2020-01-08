@@ -24,7 +24,7 @@ class TransactionPolicy < ApplicationPolicy
   end
 
   private def fund?
-    record.fund_id.present?
+    record.hierarchy_id.present?
   end
 
   class Scope < Scope
@@ -33,7 +33,7 @@ class TransactionPolicy < ApplicationPolicy
         scope.all
       else
         funds = Fund.where(organisation_id: user.organisation)
-        scope.where(fund_id: funds)
+        scope.where(hierarchy: funds)
       end
     end
   end
