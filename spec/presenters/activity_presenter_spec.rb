@@ -22,7 +22,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity does not have an aid_type set" do
       it "returns nil" do
-        activity = build(:activity_at_identifier_step)
+        activity = build(:fund_activity, :at_identifier_step)
         result = described_class.new(activity)
         expect(result.aid_type).to be_nil
       end

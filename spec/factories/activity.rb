@@ -22,7 +22,7 @@ FactoryBot.define do
     factory :fund_activity do
       association :hierarchy, factory: :fund
 
-      factory :activity_at_identifier_step do
+      trait :at_identifier_step do
         wizard_status { "identifier" }
         title { nil }
         description { nil }
@@ -39,7 +39,7 @@ FactoryBot.define do
         tied_status { nil }
       end
 
-      factory :activity_at_country_step do
+      trait :at_country_step do
         wizard_status { "country" }
         flow { nil }
         finance { nil }
@@ -47,7 +47,7 @@ FactoryBot.define do
         tied_status { nil }
       end
 
-      factory :activity_with_nil_wizard_status do
+      trait :nil_wizard_status do
         wizard_status { nil }
       end
     end
