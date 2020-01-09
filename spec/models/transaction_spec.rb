@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Transaction, type: :model do
+  let(:fund) { build(:fund) }
+
   describe "relations" do
     it { should belong_to(:fund) }
   end
@@ -16,9 +18,7 @@ RSpec.describe Transaction, type: :model do
   end
 
   context "value must be between 1 and 99,999,999,999.00 (100 billion minus one)" do
-    let(:fund) { build(:fund) }
-
-    it "does allows the maximum possible value" do
+    it "allows the maximum possible value" do
       transaction = build(:transaction, fund: fund, value: 99_999_999_999.00)
       expect(transaction.valid?).to be_truthy
     end
@@ -35,6 +35,30 @@ RSpec.describe Transaction, type: :model do
 
     it "allows a value between 1 and 99,999,999,999.00" do
       transaction = build(:transaction, fund: fund, value: 500_000.00)
+      expect(transaction.valid?).to be_truthy
+    end
+  end
+
+  context "date must be between 10 years ago and 25 years from now" do
+    it "does not allow a date more than 10 years ago" do
+      transaction = build(:transaction, fund: fund, date: 11.years.ago)
+      expect(transaction.valid?).to be_falsey
+      expect(transaction.errors[:date]).to include "Date must be between 10 years ago and 25 years in the future"
+    end
+
+    it "does not allow a date more than 25 years in the future" do
+      transaction = build(:transaction, fund: fund, date: 26.years.from_now)
+      expect(transaction.valid?).to be_falsey
+      expect(transaction.errors[:date]).to include "Date must be between 10 years ago and 25 years in the future"
+    end
+
+    it "allows a date between 10 years ago and 25 years in the future" do
+      transaction = build(:transaction, fund: fund, date: Date.today)
+      expect(transaction.valid?).to be_truthy
+    end
+
+    it "allows a nil date" do
+      transaction = build(:transaction, fund: fund, date: Date.today)
       expect(transaction.valid?).to be_truthy
     end
   end
