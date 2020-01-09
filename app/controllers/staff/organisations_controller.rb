@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 class Staff::OrganisationsController < Staff::BaseController
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
+
   def index
     @organisations = policy_scope(Organisation)
-    authorize @organisations
   end
 
   def show
-    organisation = policy_scope(Organisation).find(params[:id])
+    organisation = Organisation.find(id)
     authorize organisation
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
@@ -15,12 +17,12 @@ class Staff::OrganisationsController < Staff::BaseController
   end
 
   def new
-    @organisation = policy_scope(Organisation).new
+    @organisation = Organisation.new
     authorize @organisation
   end
 
   def create
-    @organisation = policy_scope(Organisation).new(organisation_params)
+    @organisation = Organisation.new(organisation_params)
     authorize @organisation
 
     if @organisation.valid?
@@ -33,12 +35,12 @@ class Staff::OrganisationsController < Staff::BaseController
   end
 
   def edit
-    @organisation = policy_scope(Organisation).find(id)
+    @organisation = Organisation.find(id)
     authorize @organisation
   end
 
   def update
-    @organisation = policy_scope(Organisation).find(id)
+    @organisation = Organisation.find(id)
     authorize @organisation
 
     @organisation.assign_attributes(organisation_params)
