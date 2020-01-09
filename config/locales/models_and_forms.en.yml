@@ -30,6 +30,10 @@ en:
         value: Value
       user:
         organisation_ids: Organisations
+        roles:
+          administrator: Administrator
+          delivery_partner: Delivery partner
+          fund_manager: Fund manager
     errors:
       models:
         transaction:
@@ -49,6 +53,7 @@ en:
         planned_start_date: Planned start date
       user:
         organisation_ids: Organisations
+        role: Role
     hint:
       activity:
         aid_type:
