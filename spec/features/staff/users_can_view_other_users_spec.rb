@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "users can view other users" do
-  let(:user) { create(:user) }
+  let(:user) { create(:administrator) }
 
   before do
     authenticate!(user: user)
@@ -36,7 +36,7 @@ RSpec.feature "users can view other users" do
   end
 
   scenario "can go back to the previous page" do
-    user = create(:user)
+    user = create(:administrator)
 
     visit user_path(user)
 

@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe UserPolicy do
   subject { described_class.new(user, target_user) }
 
-  let(:target_user) { create(:user) }
+  let(:target_user) { create(:administrator) }
 
   context "as an administrator" do
     let(:user) { build_stubbed(:administrator) }

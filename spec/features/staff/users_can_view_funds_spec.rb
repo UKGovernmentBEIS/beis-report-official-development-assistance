@@ -5,7 +5,7 @@ RSpec.feature "Users can view funds on an organisation page" do
 
   let(:user_organisation) { create(:organisation) }
   let(:other_organisation) { create(:organisation) }
-  let(:user) { create(:user, organisations: [user_organisation]) }
+  let(:user) { create(:administrator, organisations: [user_organisation]) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
