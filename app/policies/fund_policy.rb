@@ -24,7 +24,7 @@ class FundPolicy < ApplicationPolicy
       if user.administrator? || user.fund_manager?
         scope.all
       else
-        scope.where(organisation: [user.organisations])
+        scope.none
       end
     end
   end

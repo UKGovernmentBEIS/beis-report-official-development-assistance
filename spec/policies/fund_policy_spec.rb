@@ -48,8 +48,8 @@ RSpec.describe FundPolicy do
     context "with funds from my own organisation" do
       let(:user) { create(:delivery_partner, organisations: [organisation]) }
 
-      it "includes fund in resolved scope" do
-        expect(resolved_scope).to include(fund)
+      it "does not include fund in resolved scope" do
+        expect(resolved_scope).not_to include(fund)
       end
     end
 
