@@ -3,7 +3,7 @@ RSpec.feature "Users can view all organisations" do
     authenticate!(user: user)
   end
 
-  let(:user) { create(:user, organisations: [organisation]) }
+  let(:user) { create(:administrator, organisations: [organisation]) }
   let(:organisation) { create(:organisation) }
 
   context "when the user is not logged in" do

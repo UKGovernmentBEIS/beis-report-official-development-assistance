@@ -1,11 +1,11 @@
 require "rails_helper"
 
 RSpec.feature "Editing a user" do
-  let!(:user) { create(:user) }
+  let!(:user) { create(:delivery_partner) }
 
   before do
     stub_auth0_token_request
-    authenticate!(user: build_stubbed(:user, role: :administrator))
+    authenticate!(user: build_stubbed(:administrator))
   end
 
   scenario "the role can be changed" do

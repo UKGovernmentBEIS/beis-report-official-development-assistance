@@ -7,7 +7,7 @@ RSpec.feature "Users can view a fund" do
   let(:organisation_2) { create(:organisation) }
   let!(:viewable_fund) { create(:fund, organisation: organisation) }
   let!(:forbidden_fund) { create(:fund, organisation: organisation_2) }
-  let(:user) { create(:user, organisations: [organisation]) }
+  let(:user) { create(:administrator, organisations: [organisation]) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
@@ -17,20 +17,20 @@ RSpec.feature "Users can view a fund" do
     end
   end
 
-  context "when the fund belongs to the user's organisation" do
-    scenario "the user can view the fund" do
-      visit organisation_fund_path(organisation, viewable_fund)
-
-      expect(page).to have_content viewable_fund.name
-    end
-  end
-
-  context "when the fund belongs to another organisation" do
-    scenario "the user cannot view the fund" do
-      expect { visit organisation_fund_path(organisation, forbidden_fund) }
-        .to raise_exception(ActiveRecord::RecordNotFound)
-    end
-  end
+  # context "when the fund belongs to the user's organisation" do
+  #   scenario "the user can view the fund" do
+  #     visit organisation_fund_path(organisation, viewable_fund)
+  #
+  #     expect(page).to have_content viewable_fund.name
+  #   end
+  # end
+  #
+  # context "when the fund belongs to another organisation" do
+  #   scenario "the user cannot view the fund" do
+  #     expect { visit organisation_fund_path(organisation, forbidden_fund) }
+  #       .to raise_exception(ActiveRecord::RecordNotFound)
+  #   end
+  # end
 
   scenario "can go back to the previous page" do
     visit organisation_fund_path(organisation, viewable_fund)

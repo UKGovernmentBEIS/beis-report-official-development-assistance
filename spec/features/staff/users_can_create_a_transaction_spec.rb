@@ -6,7 +6,7 @@ RSpec.feature "Users can create a transaction" do
   let(:organisation) { create(:organisation, name: "UKSA") }
   let!(:fund) { create(:fund, organisation: organisation, name: "My Space Fund") }
   let!(:activity) { create(:activity, hierarchy: fund) }
-  let(:user) { create(:user, organisations: [organisation]) }
+  let(:user) { create(:administrator, organisations: [organisation]) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do

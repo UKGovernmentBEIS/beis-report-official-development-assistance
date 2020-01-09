@@ -3,7 +3,7 @@ require "auth0"
 
 RSpec.describe CreateUserInAuth0 do
   describe "#call" do
-    let(:user) { create(:user) }
+    let(:user) { create(:administrator) }
 
     subject { described_class.new(user: user).call }
 

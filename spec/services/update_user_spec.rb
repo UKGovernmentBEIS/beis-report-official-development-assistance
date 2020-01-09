@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe UpdateUser do
-  let(:user) { create(:user, identifier: "auth0|1234") }
+  let(:user) { create(:administrator, identifier: "auth0|1234") }
 
   let(:updated_email) { "new@example.com" }
   let(:updated_name) { "New Name" }

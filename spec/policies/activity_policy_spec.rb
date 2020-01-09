@@ -30,7 +30,7 @@ RSpec.describe ActivityPolicy do
     it { is_expected.to permit_action(:destroy) }
 
     context "with activities from funds in my own organisation" do
-      let(:user) { create(:user, organisations: [organisation]) }
+      let(:user) { create(:administrator, organisations: [organisation]) }
 
       it "includes activity in resolved scope" do
         expect(resolved_scope).to include(activity)
