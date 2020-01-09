@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe SendWelcomeEmail do
-  let(:user) { build_stubbed(:user) }
+  let(:user) { build_stubbed(:administrator) }
   before(:each) do
     stub_welcome_email_delivery
   end

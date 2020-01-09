@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :user do
+  factory :delivery_partner, class: "User" do
     identifier { SecureRandom.uuid }
     name { Faker::Name.name }
     email { Faker::Internet.email }
@@ -11,10 +11,6 @@ FactoryBot.define do
 
     factory :fund_manager do
       role { :fund_manager }
-    end
-
-    factory :delivery_partner do
-      role { :delivery_partner }
     end
   end
 end

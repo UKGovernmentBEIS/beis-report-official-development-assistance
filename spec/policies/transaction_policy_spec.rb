@@ -18,7 +18,7 @@ RSpec.describe TransactionPolicy do
   end
 
   context "as a delivery partner" do
-    let(:user) { build_stubbed(:user) }
+    let(:user) { build_stubbed(:delivery_partner) }
     let(:resolved_scope) do
       described_class::Scope.new(user, Transaction.all).resolve
     end
@@ -30,7 +30,7 @@ RSpec.describe TransactionPolicy do
     it { is_expected.to permit_action(:destroy) }
 
     context "with transactions from funds in my own organisation" do
-      let(:user) { create(:administrator, organisations: [organisation]) }
+      let(:user) { create(:delivery_partner, organisations: [organisation]) }
 
       it "includes transaction in resolved scope" do
         expect(resolved_scope).to include(transaction)
