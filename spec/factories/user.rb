@@ -12,5 +12,9 @@ FactoryBot.define do
     factory :fund_manager do
       role { :fund_manager }
     end
+
+    factory :delivery_partner do
+      role { :delivery_partner }
+    end
   end
 end
