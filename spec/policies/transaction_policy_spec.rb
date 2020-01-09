@@ -30,7 +30,7 @@ RSpec.describe TransactionPolicy do
     it { is_expected.to permit_action(:destroy) }
 
     context "with transactions from funds in my own organisation" do
-      let(:user) { create(:user, organisations: [organisation]) }
+      let(:user) { create(:administrator, organisations: [organisation]) }
 
       it "includes transaction in resolved scope" do
         expect(resolved_scope).to include(transaction)

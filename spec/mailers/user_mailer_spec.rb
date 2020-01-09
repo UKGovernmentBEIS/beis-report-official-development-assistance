@@ -10,7 +10,7 @@ RSpec.describe UserMailer, type: :mailer do
     end
   end
 
-  let(:user) { create(:user) }
+  let(:user) { create(:administrator) }
   before(:each) do
     stub_auth0_token_request
   end

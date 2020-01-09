@@ -3,7 +3,7 @@ require "auth0"
 
 RSpec.describe UpdateUserInAuth0 do
   describe "#call" do
-    let(:user) { create(:user, identifier: "auth0|555ffff") }
+    let(:user) { create(:administrator, identifier: "auth0|555ffff") }
 
     let(:updated_name) { "New Name" }
     let(:updated_email) { "new@example.com" }

@@ -14,7 +14,7 @@ RSpec.feature "Users can view an activity" do
       planned_end_date: Date.tomorrow)
   end
   let(:forbidden_activity) { create(:activity, hierarchy: forbidden_fund) }
-  let(:user) { create(:user, organisations: [organisation]) }
+  let(:user) { create(:administrator, organisations: [organisation]) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do

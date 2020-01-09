@@ -29,7 +29,7 @@ RSpec.describe FundPolicy do
     it { is_expected.to permit_action(:destroy) }
 
     context "with funds from my own organisation" do
-      let(:user) { create(:user, organisations: [organisation]) }
+      let(:user) { create(:administrator, organisations: [organisation]) }
 
       it "includes fund in resolved scope" do
         expect(resolved_scope).to include(fund)

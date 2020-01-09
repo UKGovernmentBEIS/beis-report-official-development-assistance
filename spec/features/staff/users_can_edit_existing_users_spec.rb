@@ -7,7 +7,7 @@ RSpec.feature "Editing a user" do
   end
 
   scenario "the details of the user can be updated" do
-    target_user = create(:user, name: "Old Name", email: "old@example.com")
+    target_user = create(:administrator, name: "Old Name", email: "old@example.com")
 
     updated_name = "New Name"
     updated_email = "new@example.com"

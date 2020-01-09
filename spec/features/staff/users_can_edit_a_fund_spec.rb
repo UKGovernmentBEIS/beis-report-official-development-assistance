@@ -5,7 +5,7 @@ RSpec.feature "Users can edit a fund" do
 
   let(:fund) { create(:fund, name: "old name", organisation: organisation) }
   let(:organisation) { create(:organisation, name: "UKSA") }
-  let(:user) { create(:user, organisations: [organisation]) }
+  let(:user) { create(:administrator, organisations: [organisation]) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
