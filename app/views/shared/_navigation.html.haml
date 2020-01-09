@@ -1,6 +1,7 @@
 %nav
   %ul{class: 'govuk-header__navigation', aria: { label: "Top Level Navigation"}}
     -if defined?(current_user) && current_user
-      %li.govuk-header__navigation-item
+
+      %li{ class: navigation_item_class(dashboard_path) }
         %a{ href: dashboard_path, class: 'govuk-header__link' }
           Dashboard
