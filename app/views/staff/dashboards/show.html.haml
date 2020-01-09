@@ -8,10 +8,11 @@
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %h3.govuk-heading-m
-        = t("page_content.dashboard.header.manage_users")
-      = link_to t("page_content.dashboard.button.manage_users"), users_path, class: "govuk-button"
-      %hr.govuk-section-break.govuk-section-break--visible.govuk-section-break--m
+      - if policy(User).index?
+        %h3.govuk-heading-m
+          = t("page_content.dashboard.header.manage_users")
+        = link_to t("page_content.dashboard.button.manage_users"), users_path, class: "govuk-button"
+        %hr.govuk-section-break.govuk-section-break--visible.govuk-section-break--m
       %h3.govuk-heading-m
         = t("page_content.dashboard.header.manage_organisations")
       = link_to t("page_content.dashboard.button.manage_organisations"), organisations_path, class: "govuk-button"

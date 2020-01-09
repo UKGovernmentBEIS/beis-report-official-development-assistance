@@ -1,8 +1,8 @@
 require "rails_helper"
 
-RSpec.feature "Editing a user" do
+RSpec.feature "Fund managers can edit users" do
   before do
-    authenticate!(user: build_stubbed(:user, role: :fund_manager))
+    authenticate!(user: build_stubbed(:fund_manager))
     stub_auth0_token_request
   end
 
@@ -38,5 +38,16 @@ RSpec.feature "Editing a user" do
     # Verify the user was updated
     expect(page).to have_content(updated_name)
     expect(page).to have_content(updated_email)
+  end
+
+  context "when the user is a delivery partner" do
+    before { authenticate!(user: build_stubbed(:delivery_partner)) }
+    scenario "the user cannot be edited" do
+      target_user = create(:administrator, name: "Old Name", email: "old@example.com")
+
+      visit user_path(target_user)
+    
+      expect(page).not_to have_content(I18n.t("generic.link.edit"))
+    end
   end
 end
