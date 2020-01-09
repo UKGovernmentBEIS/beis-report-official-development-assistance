@@ -13,7 +13,7 @@ class Staff::OrganisationsController < Staff::BaseController
     authorize organisation
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
-    @funds = Fund.includes(:organisation).where(organisation: organisation)
+    @funds = policy_scope(Fund).includes(:organisation).where(organisation: organisation)
   end
 
   def new
