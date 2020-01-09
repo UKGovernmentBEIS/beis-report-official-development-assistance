@@ -11,6 +11,7 @@ class Transaction < ApplicationRecord
     :value,
     :disbursement_channel
   validates :value, inclusion: 1..99_999_999_999.00
+  validates :date, date_in_range: true
 
   FORM_FIELD_TRANSLATIONS = {
     provider_id: :provider,
