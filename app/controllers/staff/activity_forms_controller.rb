@@ -1,4 +1,7 @@
 class Staff::ActivityFormsController < Staff::BaseController
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
+
   include Wicked::Wizard
   include DateHelper
   include ActivityHelper
@@ -28,7 +31,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   def show
     @page_title = t("page_title.activity_form.show.#{step}")
 
-    @activity = policy_scope(Activity).find(params[:activity_id])
+    @activity = Activity.find(params[:activity_id])
     authorize @activity
 
     render_wizard
@@ -37,7 +40,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   def update
     @page_title = t("page_title.activity_form.show.#{step}")
 
-    @activity = policy_scope(Activity).find(params[:activity_id])
+    @activity = Activity.find(params[:activity_id])
     authorize @activity
 
     @activity.assign_attributes(activity_params)

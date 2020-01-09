@@ -4,19 +4,27 @@ class ActivityPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    user.administrator? ||
+      fund? && user.fund_manager?
   end
 
   def create?
-    true
+    user.administrator? ||
+      fund? && user.fund_manager?
   end
 
   def update?
-    true
+    user.administrator? ||
+      fund? && user.fund_manager?
   end
 
   def destroy?
-    true
+    user.administrator? ||
+      fund? && user.fund_manager?
+  end
+
+  private def fund?
+    record.hierarchy.is_a?(Fund)
   end
 
   class Scope < Scope

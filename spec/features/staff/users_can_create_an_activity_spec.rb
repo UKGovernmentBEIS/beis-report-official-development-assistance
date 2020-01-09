@@ -1,30 +1,36 @@
 RSpec.feature "Users can create an activity" do
-  before do
-    authenticate!(user: user)
-  end
-
   let(:organisation) { create(:organisation, name: "UKSA") }
-  let!(:fund) { create(:fund, organisation: organisation, name: "My Space Fund") }
-  let(:user) { create(:administrator, organisations: [organisation]) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
+      fund = create(:fund, organisation: organisation)
+      activity = create(:activity, hierarchy: fund)
       page.set_rack_session(userinfo: nil)
-      visit organisation_fund_path(organisation, fund)
+      visit fund_activity_step_path(fund, activity, id: :identifier)
       expect(current_path).to eq(root_path)
     end
   end
 
-  context "when the hierarchy is a Fund" do
-    scenario "successfully creating an activity with all optional information" do
-      visit organisation_fund_path(organisation, fund)
+  context "when the user is a fund_manager" do
+    before { authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation]))}
+
+    scenario "successfully creates an activity with all optional information" do
+      fund = create(:fund, organisation: organisation)
+
+      visit dashboard_path
+      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+      click_on(organisation.name)
+      click_on(fund.name)
+
       click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
 
       fill_in_activity_form
     end
 
-    scenario "the activity form has some defaults" do
+    scenario "the activity form has some defaults for funds" do
+      fund = create(:fund, organisation: organisation)
       visit organisation_fund_path(organisation, fund)
+
       click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
       activity = Activity.last
 
@@ -40,6 +46,7 @@ RSpec.feature "Users can create an activity" do
 
     context "validations" do
       scenario "validation errors work as expected" do
+        fund = create(:fund, organisation: organisation)
         visit organisation_fund_path(organisation, fund)
         click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
 
@@ -119,12 +126,31 @@ RSpec.feature "Users can create an activity" do
     end
 
     scenario "can go back to the previous page" do
+      fund = create(:fund, organisation: organisation)
       visit organisation_fund_path(organisation, fund)
       click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
 
       click_on I18n.t("generic.link.back")
 
       expect(page).to have_current_path(organisation_fund_path(fund.id, organisation_id: organisation.id))
+    end
+  end
+
+  # TODO: When we come to create different types of activities for programmes etc
+  # These journeys will start off the same but may eventually diverge with different
+  # default form values etc. Bear this in mind when thinking about reuse.
+  context "when the user is a delivery_partner" do
+    before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation]))}
+
+    # Create and Edit flows use the same URL, protecting it tests both
+    # 'create?' and 'update?' actions in the ActivityPolicy
+    scenario "cannot create an activity that belongs to a fund" do
+      fund = create(:fund, organisation: organisation)
+      activity = create(:activity, hierarchy: fund)
+
+      visit fund_activity_step_path(fund, activity, id: :identifier)
+
+      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
     end
   end
 end
