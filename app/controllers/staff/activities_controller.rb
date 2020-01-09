@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 class Staff::ActivitiesController < Staff::BaseController
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
+
   include ActivityHelper
 
   def show
-    @activity = policy_scope(Activity).find(id)
+    @activity = Activity.find(id)
     authorize @activity
 
     @activity_presenter = ActivityPresenter.new(@activity)
@@ -16,10 +19,10 @@ class Staff::ActivitiesController < Staff::BaseController
   end
 
   def create
-    @activity = policy_scope(Activity).new
+    @activity = Activity.new
+    @activity.hierarchy = hierarchy
     authorize @activity
 
-    @activity.hierarchy = hierarchy
     @activity.wizard_status = "identifier"
     @activity.save(validate: false)
 
@@ -38,6 +41,6 @@ class Staff::ActivitiesController < Staff::BaseController
 
   def hierarchy
     # TODO: Add support for new hierarchies here and/or move to a service
-    @hierarchy = policy_scope(Fund).find(fund_id)
+    @hierarchy = authorize Fund.find(fund_id)
   end
 end
