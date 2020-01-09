@@ -12,4 +12,16 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(helper.l(Date.today)).to eq(Date.today.strftime("%Y-%m-%d"))
     end
   end
+
+  describe "#navigation_item_class" do
+    let(:subject) { helper.navigation_item_class("some_path") }
+
+    before do
+      allow(helper).to receive(:current_page?).and_return true
+    end
+
+    it "returns the active navigation item class" do
+      expect(subject).to eql "govuk-header__navigation-item govuk-header__navigation-item--active"
+    end
+  end
 end
