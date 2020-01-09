@@ -9,4 +9,8 @@ class User < ApplicationRecord
   }
 
   attribute :role, :string, default: "delivery_partner"
+
+  def role_name
+    I18n.t("activerecord.attributes.user.roles.#{role}")
+  end
 end
