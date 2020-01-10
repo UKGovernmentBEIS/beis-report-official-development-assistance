@@ -46,7 +46,7 @@ RSpec.feature "Fund managers can edit users" do
       target_user = create(:administrator, name: "Old Name", email: "old@example.com")
 
       visit user_path(target_user)
-    
+
       expect(page).not_to have_content(I18n.t("generic.link.edit"))
     end
   end
