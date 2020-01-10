@@ -14,7 +14,7 @@ RSpec.feature "Users can create an activity" do
   context "when the user is a fund_manager" do
     before { authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation]))}
 
-    scenario "successfully creates an activity with all optional information" do
+    scenario "successfully creates a fund activity with all optional information" do
       fund = create(:fund, organisation: organisation)
 
       visit dashboard_path
