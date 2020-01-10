@@ -24,3 +24,5 @@
 - Users can view an XML representation of Transactions and Funds
 - Force SSL in production environments
 - A users role can be viewed, set and changed
+- Restrict delivery partners so they can only view and edit their own organisation
+- Fund managers can manage users, organisations, funds, fund activites and fund transactions
