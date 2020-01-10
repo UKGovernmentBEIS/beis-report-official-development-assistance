@@ -1,7 +1,4 @@
 class Staff::UsersController < Staff::BaseController
-  after_action :verify_authorized, except: :index
-  after_action :verify_policy_scoped, only: :index
-
   def index
     authorize :user, :index?
     @users = policy_scope(User)
