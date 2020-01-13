@@ -1,24 +1,24 @@
 class Staff::UsersController < Staff::BaseController
   def index
+    authorize :user, :index?
     @users = policy_scope(User)
-    authorize @users
   end
 
   def show
-    @user = policy_scope(User).find(id)
+    @user = User.find(id)
     authorize @user
   end
 
   def new
-    @user = policy_scope(User).new
-    @organisations = policy_scope(Organisation)
+    @user = User.new
     authorize @user
+    @organisations = policy_scope(Organisation)
   end
 
   def create
-    @user = policy_scope(User).new(user_params)
-    @organisations = policy_scope(Organisation)
+    @user = User.new(user_params)
     authorize @user
+    @organisations = policy_scope(Organisation)
 
     if @user.valid?
       result = CreateUser.new(user: @user, organisations: organisations).call
@@ -35,15 +35,15 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def edit
-    @user = policy_scope(User).find(id)
-    @organisations = policy_scope(Organisation)
+    @user = User.find(id)
     authorize @user
+    @organisations = policy_scope(Organisation)
   end
 
   def update
-    @user = policy_scope(User).find(id)
-    @organisations = policy_scope(Organisation)
+    @user = User.find(id)
     authorize @user
+    @organisations = policy_scope(Organisation)
 
     @user.assign_attributes(user_params)
 

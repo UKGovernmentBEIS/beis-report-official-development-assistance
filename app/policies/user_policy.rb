@@ -1,10 +1,10 @@
 class UserPolicy < ApplicationPolicy
   def index?
-    true
+    user.administrator? || user.fund_manager?
   end
 
   def show?
-    true
+    user.administrator? || user.fund_manager?
   end
 
   def create?
@@ -12,6 +12,10 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
+    user.administrator? || user.fund_manager?
+  end
+
+  def destroy?
     user.administrator? || user.fund_manager?
   end
 end

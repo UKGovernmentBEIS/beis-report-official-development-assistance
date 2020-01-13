@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe CreateUser do
-  let(:user) { build(:user) }
+  let(:user) { build(:administrator) }
   before(:each) do
     stub_auth0_token_request
     stub_welcome_email_delivery

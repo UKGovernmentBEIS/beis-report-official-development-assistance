@@ -16,13 +16,25 @@ RSpec.describe OrganisationPolicy do
   end
 
   context "as a delivery partner" do
-    let(:user) { build_stubbed(:user) }
+    let(:user) { build_stubbed(:delivery_partner) }
 
     it { is_expected.to permit_action(:index) }
-    it { is_expected.to permit_action(:show) }
+    it { is_expected.to forbid_action(:show) }
 
     it { is_expected.to forbid_new_and_create_actions }
     it { is_expected.to forbid_edit_and_update_actions }
     it { is_expected.to forbid_action(:destroy) }
+
+    context "that belongs to that organisation" do
+      let(:user) do
+        build_stubbed(:delivery_partner, organisations: [organisation])
+      end
+
+      it { is_expected.to permit_action(:index) }
+      it { is_expected.to permit_action(:show) }
+      it { is_expected.to forbid_new_and_create_actions }
+      it { is_expected.to permit_edit_and_update_actions }
+      it { is_expected.to forbid_action(:destroy) }
+    end
   end
 end

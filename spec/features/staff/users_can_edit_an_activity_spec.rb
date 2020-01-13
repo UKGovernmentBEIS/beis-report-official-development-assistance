@@ -1,15 +1,12 @@
 RSpec.feature "Users can edit an activity" do
   include ActivityHelper
 
-  before do
-    authenticate!(user: user)
-  end
-
   let(:organisation) { create(:organisation, name: "UKSA") }
-  let(:user) { create(:user, organisations: [organisation]) }
 
-  context "when the activity belongs to a fund" do
-    it "clicking edit starts the ActivityForm journey from that step" do
+  context "when the user is a fund_manager" do
+    before { authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation])) }
+
+    scenario "clicking edit starts the ActivityForm journey from that step" do
       fund = create(:fund, organisation: organisation)
       create(:activity, hierarchy: fund)
 
@@ -210,5 +207,10 @@ RSpec.feature "Users can edit an activity" do
       )
     end
     click_on(I18n.t("generic.link.back"))
+  end
+
+  context "when the user is a delivery_partner" do
+    # TODO: Test editing a programme as well as a fund. These journeys are
+    # likely to diverge.
   end
 end

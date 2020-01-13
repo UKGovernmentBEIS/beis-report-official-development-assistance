@@ -1,34 +1,30 @@
 RSpec.feature "Users can view an activity" do
-  before do
-    authenticate!(user: user)
-  end
-
+  let(:fund) { create(:fund, organisation: organisation) }
   let(:organisation) { create(:organisation) }
-  let(:organisation_2) { create(:organisation) }
-  let(:viewable_fund) { create(:fund, organisation: organisation) }
-  let(:forbidden_fund) { create(:fund, organisation: organisation_2) }
-  let(:viewable_activity) do
-    create(:activity,
-      hierarchy: viewable_fund,
-      planned_start_date: Date.today,
-      planned_end_date: Date.tomorrow)
-  end
-  let(:forbidden_activity) { create(:activity, hierarchy: forbidden_fund) }
-  let(:user) { create(:user, organisations: [organisation]) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
+      activity = create(:activity, hierarchy: fund)
+
       page.set_rack_session(userinfo: nil)
-      visit fund_activity_path(id: viewable_activity, fund_id: viewable_fund)
+
+      visit fund_activity_path(fund, activity)
       expect(current_path).to eq(root_path)
     end
   end
 
-  context "when the activity belongs to a fund in the user's organisation" do
-    scenario "the user can view the activity" do
-      visit fund_activity_path(id: viewable_activity, fund_id: viewable_fund)
+  context "when the user is a fund_manager" do
+    before { authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation])) }
 
-      activity_presenter = ActivityPresenter.new(viewable_activity)
+    scenario "a fund activity can be viewed" do
+      activity = create(:activity, hierarchy: fund)
+
+      visit dashboard_path
+      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+      click_on(organisation.name)
+      click_on(fund.name)
+
+      activity_presenter = ActivityPresenter.new(activity)
 
       expect(page).to have_content activity_presenter.identifier
       expect(page).to have_content activity_presenter.sector
@@ -39,22 +35,27 @@ RSpec.feature "Users can view an activity" do
       expect(page).to have_content activity_presenter.recipient_region
       expect(page).to have_content activity_presenter.flow
     end
-  end
 
-  context "when the activity belongs to another organisation" do
-    scenario "the user cannot view the activity" do
-      expect { visit organisation_fund_path(organisation, forbidden_activity) }
-        .to raise_exception(ActiveRecord::RecordNotFound)
+    scenario "can go back to the previous page" do
+      activity = create(:activity, hierarchy: fund)
+
+      visit fund_activity_path(fund, activity)
+
+      click_on I18n.t("generic.link.back")
+
+      expect(page).to have_current_path(
+        organisation_fund_path(organisation, fund)
+      )
     end
   end
 
-  scenario "can go back to the previous page" do
-    visit fund_activity_path(id: viewable_activity, fund_id: viewable_fund)
+  context "when the user is a delivery_partner" do
+    before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation])) }
 
-    click_on I18n.t("generic.link.back")
+    scenario "the user cannot view the fund activity" do
+      visit organisation_fund_path(organisation, fund)
 
-    expect(page).to have_current_path(
-      organisation_fund_path(viewable_fund, organisation_id: organisation)
-    )
+      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
+    end
   end
 end
