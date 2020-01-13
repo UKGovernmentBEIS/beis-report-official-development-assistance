@@ -10,7 +10,7 @@ module AuthenticationHelpers
     )
   end
 
-  def authenticate!(user: build_stubbed(:user))
+  def authenticate!(user: build_stubbed(:administrator))
     allow(User).to receive(:find_by)
       .with(identifier: user.identifier)
       .and_return(user)

@@ -1,30 +1,30 @@
 class FundPolicy < ApplicationPolicy
   def index?
-    true
+    user.administrator? || user.fund_manager?
   end
 
   def show?
-    true
+    user.administrator? || user.fund_manager?
   end
 
   def create?
-    true
+    user.administrator? || user.fund_manager?
   end
 
   def update?
-    true
+    user.administrator? || user.fund_manager?
   end
 
   def destroy?
-    true
+    user.administrator? || user.fund_manager?
   end
 
   class Scope < Scope
     def resolve
-      if user.administrator?
+      if user.administrator? || user.fund_manager?
         scope.all
       else
-        scope.where(organisation: [user.organisations])
+        scope.none
       end
     end
   end

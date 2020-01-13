@@ -1,8 +1,4 @@
-RSpec.feature "Users can create organisations" do
-  before do
-    authenticate!(user: build_stubbed(:administrator))
-  end
-
+RSpec.feature "Fund managers can create organisations" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
@@ -12,6 +8,10 @@ RSpec.feature "Users can create organisations" do
   end
 
   context "when the user is allowed to add a new organisation" do
+    before do
+      authenticate!(user: create(:fund_manager))
+    end
+
     scenario "successfully creating an organisation" do
       visit dashboard_path
       click_link I18n.t("page_content.dashboard.button.manage_organisations")
@@ -40,9 +40,11 @@ RSpec.feature "Users can create organisations" do
     end
   end
 
-  context "when the user is not allowed to add a new organisation" do
+  context "when the user does not belong to an organisation" do
+    let(:user) { create(:delivery_partner, organisations: []) }
+
     before do
-      authenticate!(user: build_stubbed(:user))
+      authenticate!(user: user)
     end
 
     scenario "hides the 'Create organisation' button" do

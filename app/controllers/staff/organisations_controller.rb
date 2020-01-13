@@ -3,24 +3,23 @@
 class Staff::OrganisationsController < Staff::BaseController
   def index
     @organisations = policy_scope(Organisation)
-    authorize @organisations
   end
 
   def show
-    organisation = policy_scope(Organisation).find(params[:id])
+    organisation = Organisation.find(id)
     authorize organisation
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
-    @funds = Fund.includes(:organisation).where(organisation: organisation)
+    @funds = policy_scope(Fund).includes(:organisation).where(organisation: organisation)
   end
 
   def new
-    @organisation = policy_scope(Organisation).new
+    @organisation = Organisation.new
     authorize @organisation
   end
 
   def create
-    @organisation = policy_scope(Organisation).new(organisation_params)
+    @organisation = Organisation.new(organisation_params)
     authorize @organisation
 
     if @organisation.valid?
@@ -33,12 +32,12 @@ class Staff::OrganisationsController < Staff::BaseController
   end
 
   def edit
-    @organisation = policy_scope(Organisation).find(id)
+    @organisation = Organisation.find(id)
     authorize @organisation
   end
 
   def update
-    @organisation = policy_scope(Organisation).find(id)
+    @organisation = Organisation.find(id)
     authorize @organisation
 
     @organisation.assign_attributes(organisation_params)
