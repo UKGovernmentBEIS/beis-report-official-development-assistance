@@ -1,11 +1,11 @@
 require "rails_helper"
 
-RSpec.describe DateInRangeValidator do
+RSpec.describe DateWithinBoundariesValidator do
   subject do
     Class.new {
       include ActiveModel::Validations
       attr_accessor :date
-      validates :date, date_in_range: true
+      validates :date, date_within_boundaries: true
 
       def self.name
         "Transaction"
