@@ -1,4 +1,4 @@
-class DateInRangeValidator < ActiveModel::EachValidator
+class DateWithinBoundariesValidator < ActiveModel::EachValidator
   MIN = 10
   MAX = 25
 
