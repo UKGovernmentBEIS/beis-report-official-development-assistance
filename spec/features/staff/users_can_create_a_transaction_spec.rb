@@ -141,6 +141,56 @@ RSpec.feature "Users can create a transaction" do
       end
     end
 
+    context "Date validation" do
+      scenario "When the date is more than 25 years in the future" do
+        fund = create(:fund, organisation: organisation)
+
+        visit dashboard_path
+        click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+
+        click_on(organisation.name)
+        click_on(fund.name)
+
+        click_on(I18n.t("page_content.transactions.button.create"))
+
+        fill_in_transaction_form(date_day: 0o1, date_month: 0o1, date_year: 2100, expectations: false)
+
+        expect(page).to have_content "Date must be between 10 years ago and 25 years in the future"
+      end
+
+      scenario "When the date is more than 10 years in the past" do
+        fund = create(:fund, organisation: organisation)
+
+        visit dashboard_path
+        click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+
+        click_on(organisation.name)
+        click_on(fund.name)
+
+        click_on(I18n.t("page_content.transactions.button.create"))
+
+        fill_in_transaction_form(date_day: 0o1, date_month: 0o1, date_year: 1900, expectations: false)
+
+        expect(page).to have_content "Date must be between 10 years ago and 25 years in the future"
+      end
+
+      scenario "When the date is nil" do
+        fund = create(:fund, organisation: organisation)
+
+        visit dashboard_path
+        click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+
+        click_on(organisation.name)
+        click_on(fund.name)
+
+        click_on(I18n.t("page_content.transactions.button.create"))
+
+        fill_in_transaction_form(date_day: "", date_month: "", date_year: "", expectations: false)
+
+        expect(page).to_not have_content "Date must be between 10 years ago and 25 years in the future"
+      end
+    end
+
     # TODO: When we come to create transactions for different types of activity
     # for projects and programmes etc, we will want to test that users who are
     # deliver partners can create transactions for project activities too.

@@ -50,6 +50,26 @@ RSpec.describe Activity, type: :model do
       it { should_not validate_presence_of(:actual_end_date) }
     end
 
+    context "when planned_start_date is not blank" do
+      let(:fund) { build(:fund) }
+
+      it "does not allow a planned_start_date more than 10 years ago" do
+        activity = build(:activity, hierarchy: fund, planned_start_date: 11.years.ago)
+        expect(activity.valid?).to be_falsey
+        expect(activity.errors[:planned_start_date]).to include "Date must be between 10 years ago and 25 years in the future"
+      end
+
+      it "does not allow a planned_start_date more than 25 years in the future" do
+        activity = build(:activity, hierarchy: fund, planned_start_date: 26.years.from_now)
+        expect(activity.valid?).to be_falsey
+      end
+
+      it "allows a planned_start_date between 10 years ago and 25 years in the future" do
+        activity = build(:activity, hierarchy: fund, planned_start_date: Date.today)
+        expect(activity.valid?).to be_truthy
+      end
+    end
+
     context "when recipient_region is blank" do
       subject { build(:activity, recipient_region: nil, wizard_status: :country) }
       it { should validate_presence_of(:recipient_region) }
