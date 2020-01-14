@@ -10,6 +10,7 @@ class Activity < ApplicationRecord
   validates :aid_type, presence: true, if: :aid_type_step?
   validates :tied_status, presence: true, if: :tied_status_step?
   validates_uniqueness_of :identifier
+  validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
 
   def identifier_step?
     %w[identifier complete].include?(wizard_status)

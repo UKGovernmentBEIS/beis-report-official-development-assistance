@@ -36,8 +36,20 @@ en:
           fund_manager: Fund manager
     errors:
       models:
+        activity:
+          attributes:
+            actual_end_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+            actual_start_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+            planned_end_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+            planned_start_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
         transaction:
           attributes:
+            date:
+              between: Date must be between %{min} years ago and %{max} years in the future
             value:
               inclusion: Value must be between 1 and 99,999,999,999.00
         user:

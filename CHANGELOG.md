@@ -26,3 +26,4 @@
 - A users role can be viewed, set and changed
 - Restrict delivery partners so they can only view and edit their own organisation
 - Fund managers can manage users, organisations, funds, fund activites and fund transactions
+- Transaction and Activity dates are restricted to 10 years in the past or 25 years in the future at most
