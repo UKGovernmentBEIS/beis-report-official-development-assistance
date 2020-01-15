@@ -13,7 +13,7 @@ RSpec.feature "Users can view an activity" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: create(:fund_manager, organisations: [organisation])) }
+    before { authenticate!(user: build_stubbed(:fund_manager, organisation: organisation)) }
 
     scenario "an activity can be viewed" do
       activity = create(:activity, organisation: organisation)
@@ -48,7 +48,7 @@ RSpec.feature "Users can view an activity" do
   end
 
   context "when the user is a delivery_partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation])) }
+    before { authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation)) }
 
     scenario "the user cannot view the activity" do
       activity = create(:activity, organisation: organisation)

@@ -22,7 +22,7 @@ RSpec.describe ActivityPolicy do
   end
 
   context "as a fund_manager" do
-    let(:user) { build_stubbed(:fund_manager) }
+    let(:user) { build_stubbed(:fund_manager, organisation: organisation) }
 
     it { is_expected.to permit_action(:index) }
     it { is_expected.to permit_action(:show) }
@@ -49,7 +49,7 @@ RSpec.describe ActivityPolicy do
     it { is_expected.to forbid_action(:destroy) }
 
     context "with activities from my own organisation" do
-      let(:user) { create(:delivery_partner, organisations: [organisation]) }
+      let(:user) { create(:delivery_partner, organisation: organisation) }
 
       it "does not include activity in resolved scope" do
         expect(resolved_scope).not_to include(activity)

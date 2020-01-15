@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "Editing a user" do
-  let!(:user) { create(:delivery_partner) }
+  let!(:user) { create(:delivery_partner, organisation: create(:organisation)) }
 
   before do
     stub_auth0_token_request

@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_and_belongs_to_many :organisations
+  belongs_to :organisation, optional: true
   validates_presence_of :name, :email
 
   enum role: {

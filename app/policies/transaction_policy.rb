@@ -32,8 +32,7 @@ class TransactionPolicy < ApplicationPolicy
       if user.administrator?
         scope.all
       else
-        organisations = user.organisation_ids
-        activities = Activity.where(organisation_id: organisations)
+        activities = Activity.where(organisation_id: user.organisation)
         scope.where(activity_id: activities)
       end
     end

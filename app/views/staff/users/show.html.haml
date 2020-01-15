@@ -28,11 +28,11 @@
             = @user.role_name
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
+            = t("user.organisation")
+          %dd.govuk-summary-list__value
+            = @user.organisation.name
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
             = t("user.identifier")
           %dd.govuk-summary-list__value
             = @user.identifier
-    .govuk-grid-column-one-third.organisations
-      %h2.govuk-heading-m Organisations
-      %ul.govuk-list.govuk-list--bullet
-        - @user.organisations.each do |organisation|
-          %li= organisation.name

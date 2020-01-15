@@ -6,7 +6,7 @@ RSpec.feature "Users can edit a transaction" do
   let(:organisation) { create(:organisation) }
   let!(:activity) { create(:activity, organisation: organisation) }
   let!(:transaction) { create(:transaction, activity: activity) }
-  let(:user) { create(:administrator, organisations: [organisation]) }
+  let(:user) { create(:administrator, organisation: organisation) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
