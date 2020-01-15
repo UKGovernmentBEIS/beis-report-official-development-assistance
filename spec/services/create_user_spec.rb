@@ -11,7 +11,7 @@ RSpec.describe CreateUser do
     it "returns a successful result" do
       stub_auth0_create_user_request(email: user.email)
 
-      result = described_class.new(user: user).call
+      result = described_class.new(user: user, organisation: build_stubbed(:organisation)).call
 
       expect(result.success?).to eq(true)
       expect(result.failure?).to eq(false)
@@ -27,23 +27,21 @@ RSpec.describe CreateUser do
 
       expect(mail_server).to receive(:call)
 
-      described_class.new(user: user).call
+      described_class.new(user: user, organisation: build_stubbed(:organisation)).call
     end
 
-    context "when organisations are provided" do
-      it "associates them to the user" do
+    context "when an organisation is provided" do
+      it "associates a user to an organisation" do
         stub_auth0_create_user_request(email: user.email)
 
-        first_organisation = create(:organisation)
-        second_organisation = create(:organisation)
+        organisation = create(:organisation)
 
         described_class.new(
           user: user,
-          organisations: [first_organisation, second_organisation]
+          organisation: organisation
         ).call
 
-        expect(user.reload.organisations).to include(first_organisation)
-        expect(user.reload.organisations).to include(second_organisation)
+        expect(user.reload.organisation).to eql(organisation)
       end
     end
 
@@ -53,24 +51,24 @@ RSpec.describe CreateUser do
       end
 
       it "returns a failed result" do
-        result = described_class.new(user: user).call
+        result = described_class.new(user: user, organisation: build_stubbed(:organisation)).call
         expect(result.failure?).to eq(true)
       end
 
       it "does not save the user" do
-        described_class.new(user: user).call
+        described_class.new(user: user, organisation: build_stubbed(:organisation)).call
         expect(User.find_by(email: user.email)).to be_nil
       end
 
       it "logs a failure message" do
         expect(Rails.logger).to receive(:error)
           .with("Error adding user #{user.email} to Auth0 during CreateUser with .")
-        described_class.new(user: user).call
+        described_class.new(user: user, organisation: build_stubbed(:organisation)).call
       end
 
       it "does not email the user" do
         expect(SendWelcomeEmail).not_to receive(:new)
-        described_class.new(user: user).call
+        described_class.new(user: user, organisation: build_stubbed(:organisation)).call
       end
     end
   end

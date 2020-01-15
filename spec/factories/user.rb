@@ -5,6 +5,8 @@ FactoryBot.define do
     email { Faker::Internet.email }
     role { :delivery_partner }
 
+    organisation
+
     factory :administrator do
       role { :administrator }
     end

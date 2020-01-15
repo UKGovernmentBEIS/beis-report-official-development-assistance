@@ -1,16 +1,16 @@
 class CreateUser
-  attr_accessor :user, :organisations
+  attr_accessor :user, :organisation
 
-  def initialize(user:, organisations: [])
+  def initialize(user:, organisation:)
     self.user = user
-    self.organisations = organisations
+    self.organisation = organisation
   end
 
   def call
     result = Result.new(true)
 
     User.transaction do
-      user.organisations = organisations
+      user.organisation = organisation
       user.save
       begin
         CreateUserInAuth0.new(user: user).call

@@ -36,7 +36,7 @@ RSpec.feature "Users can view an organisation" do
   context "when the user is a delivery_partner that belongs to that organisation" do
     scenario "can see the organisation page" do
       organisation = create(:organisation)
-      authenticate!(user: create(:delivery_partner, organisations: [organisation]))
+      authenticate!(user: create(:delivery_partner, organisation: organisation))
 
       visit dashboard_path
       click_link I18n.t("page_content.dashboard.button.manage_organisations")

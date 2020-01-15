@@ -10,7 +10,7 @@ RSpec.feature "Users can download an activity as XML" do
       planned_end_date: Date.tomorrow,
       organisation: organisation)
   end
-  let(:user) { create(:administrator, organisations: [organisation]) }
+  let(:user) { create(:administrator, organisation: organisation) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
