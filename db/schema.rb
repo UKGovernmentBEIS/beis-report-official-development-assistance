@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_17_160336) do
+ActiveRecord::Schema.define(version: 2020_01_15_114151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -63,6 +63,16 @@ ActiveRecord::Schema.define(version: 2019_12_17_160336) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "programmes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "organisation_id"
+    t.uuid "fund_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["fund_id"], name: "index_programmes_on_fund_id"
+    t.index ["organisation_id"], name: "index_programmes_on_organisation_id"
+  end
+
   create_table "transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "reference"
     t.text "description"
@@ -71,11 +81,11 @@ ActiveRecord::Schema.define(version: 2019_12_17_160336) do
     t.decimal "value", precision: 13, scale: 2
     t.string "disbursement_channel"
     t.string "currency"
-    t.uuid "fund_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "provider_id"
     t.uuid "receiver_id"
+    t.uuid "fund_id"
     t.index ["fund_id"], name: "index_transactions_on_fund_id"
     t.index ["provider_id"], name: "index_transactions_on_provider_id"
     t.index ["receiver_id"], name: "index_transactions_on_receiver_id"

@@ -18,6 +18,8 @@ en:
         language_code: Language code
         name: Name
         organisation_type: Organisation type
+      programme:
+        fund_id: Fund
       transaction:
         currency: Currency
         date: Date

@@ -1,0 +1,22 @@
+=content_for :page_title_prefix, t("page_title.programme.show", name: @programme.name)
+
+= link_to t("generic.link.back"), organisation_fund_path(@programme.organisation, @programme.fund), class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = @programme.name
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %dl.govuk-summary-list
+        .govuk-summary-list__row.organisation_name
+          %dt.govuk-summary-list__key
+            = t("page_content.programmes.organisation_name.label")
+          %dd.govuk-summary-list__value
+            = @programme.organisation.name
+        .govuk-summary-list__row.fund_name
+          %dt.govuk-summary-list__key
+            = t("page_content.programmes.fund_name.label")
+          %dd.govuk-summary-list__value
+            = @programme.fund.name
