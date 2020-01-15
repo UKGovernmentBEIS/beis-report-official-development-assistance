@@ -10,11 +10,12 @@
       legend: { tag: :h2 }
 
   - if @organisations.any?
-    = f.govuk_collection_check_boxes :organisation_ids,
+    = f.govuk_collection_radio_buttons :organisation_id,
         @organisations,
         :id,
         :name,
-        legend: { tag: :h2 }
+        legend: { tag: :h2 , text: t('form.user.organisation.label')},
+        hint_text: t("form.user.organisation.hint")
   - else
     .govuk-inset-text
       = succeed "." do

@@ -10,7 +10,7 @@ RSpec.feature "Fund managers can create a fund level activity" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: create(:fund_manager, organisations: [])) }
+    before { authenticate!(user: build_stubbed(:fund_manager, organisation: organisation)) }
 
     scenario "successfully create a activity" do
       visit dashboard_path
@@ -123,7 +123,7 @@ RSpec.feature "Fund managers can create a fund level activity" do
   end
 
   context "when the user is a delivery_partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation])) }
+    before { authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation)) }
 
     scenario "hides the 'Create activity' button" do
       visit dashboard_path

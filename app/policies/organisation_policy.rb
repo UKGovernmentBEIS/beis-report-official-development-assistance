@@ -20,7 +20,7 @@ class OrganisationPolicy < ApplicationPolicy
   end
 
   private def associated_user?
-    user.organisations.include?(record)
+    user.organisation.eql?(record)
   end
 
   class Scope < Scope
@@ -28,7 +28,7 @@ class OrganisationPolicy < ApplicationPolicy
       if user.administrator? || user.fund_manager?
         scope.all
       else
-        scope.where(id: user.organisation_ids)
+        scope.where(id: user.organisation_id)
       end
     end
   end

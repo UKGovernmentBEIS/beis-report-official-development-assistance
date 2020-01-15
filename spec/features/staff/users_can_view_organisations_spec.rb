@@ -10,7 +10,7 @@ RSpec.feature "Users can view organisations" do
   context "when the user is a fund manager" do
     scenario "organisation index page" do
       organisation = create(:organisation)
-      authenticate!(user: create(:fund_manager, organisations: []))
+      authenticate!(user: create(:fund_manager, organisation: nil))
 
       visit organisations_path
 
@@ -19,7 +19,7 @@ RSpec.feature "Users can view organisations" do
     end
 
     scenario "can go back to the previous page" do
-      authenticate!(user: create(:fund_manager, organisations: []))
+      authenticate!(user: create(:fund_manager, organisation: nil))
 
       visit organisations_path
 
@@ -32,7 +32,7 @@ RSpec.feature "Users can view organisations" do
   context "when the user is a delivery partner" do
     scenario "organisation index page" do
       organisation = create(:organisation)
-      authenticate!(user: create(:delivery_partner, organisations: [organisation]))
+      authenticate!(user: create(:delivery_partner, organisation: organisation))
 
       visit organisations_path
 
@@ -42,7 +42,7 @@ RSpec.feature "Users can view organisations" do
 
     scenario "can go back to the previous page" do
       organisation = create(:organisation)
-      authenticate!(user: create(:delivery_partner, organisations: [organisation]))
+      authenticate!(user: create(:delivery_partner, organisation: organisation))
 
       visit organisations_path
 
@@ -54,7 +54,7 @@ RSpec.feature "Users can view organisations" do
     context "when the delivery partner is not associated with the organisation" do
       scenario "cannot see the organisation" do
         organisation = create(:organisation)
-        authenticate!(user: create(:delivery_partner, organisations: []))
+        authenticate!(user: create(:delivery_partner, organisation: nil))
 
         visit organisations_path
 
