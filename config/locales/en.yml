@@ -62,6 +62,9 @@ en:
       create:
         failed: The service is experiencing issues creating new users and the team has been alerted to the problem.
         success: User successfully created
+      organisation:
+        hint: What organisation does this user belong to?
+        label: Choose an organisation
       submit: Submit
       update:
         failed: The service is experiencing issues updating users and the team has been alerted to the problem.
@@ -233,4 +236,5 @@ en:
     email: Email address
     identifier: Auth0 identifier
     name: Full name
+    organisation: Organisation
     role: Role

@@ -12,7 +12,7 @@ RSpec.feature "Users can create an activity" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation])) }
+    before { authenticate!(user: build_stubbed(:fund_manager, organisation: organisation)) }
 
     scenario "successfully creates a fund activity with all optional information" do
       fund = create(:fund, organisation: organisation)
@@ -140,7 +140,7 @@ RSpec.feature "Users can create an activity" do
   # These journeys will start off the same but may eventually diverge with different
   # default form values etc. Bear this in mind when thinking about reuse.
   context "when the user is a delivery_partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation])) }
+    before { authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation)) }
 
     # Create and Edit flows use the same URL, protecting it tests both
     # 'create?' and 'update?' actions in the ActivityPolicy

@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_and_belongs_to_many :organisations
+  belongs_to :organisation, optional: true
   validates_presence_of :name, :email
   validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}
 

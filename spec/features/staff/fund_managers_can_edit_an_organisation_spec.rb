@@ -35,14 +35,14 @@ RSpec.feature "Fund managers can edit organisations" do
 
   context "when the user is a delivery partner" do
     scenario "successfully editing an organisation" do
-      authenticate!(user: create(:delivery_partner, organisations: [organisation]))
+      authenticate!(user: create(:delivery_partner, organisation: organisation))
 
       successfully_edit_an_organisation
     end
 
     context "and does not belong to the organisation" do
       scenario "cannot visit that organisations page" do
-        authenticate!(user: create(:delivery_partner, organisations: []))
+        authenticate!(user: create(:delivery_partner, organisation: nil))
 
         visit dashboard_path
 
@@ -51,7 +51,7 @@ RSpec.feature "Fund managers can edit organisations" do
       end
 
       scenario "shows the 'unauthorised' error message to the user" do
-        authenticate!(user: create(:delivery_partner, organisations: []))
+        authenticate!(user: create(:delivery_partner, organisation: nil))
 
         visit edit_organisation_path(organisation)
 

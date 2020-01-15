@@ -14,26 +14,24 @@ RSpec.describe UpdateUser do
     it "returns a successful result" do
       stub_auth0_update_user_request(auth0_identifier: "auth0|1234", email: user.email, name: user.name)
 
-      result = described_class.new(user: user).call
+      result = described_class.new(user: user, organisation: build_stubbed(:organisation)).call
 
       expect(result.success?).to eq(true)
       expect(result.failure?).to eq(false)
     end
 
-    context "when organisations are provided" do
-      it "associates them to the user" do
+    context "when an organisation is provided" do
+      it "associates the user to it" do
         stub_auth0_update_user_request(auth0_identifier: "auth0|1234", email: user.email, name: user.name)
 
-        first_organisation = create(:organisation)
-        second_organisation = create(:organisation)
+        organisation = create(:organisation)
 
         described_class.new(
           user: user,
-          organisations: [first_organisation, second_organisation]
+          organisation: organisation
         ).call
 
-        expect(user.reload.organisations).to include(first_organisation)
-        expect(user.reload.organisations).to include(second_organisation)
+        expect(user.reload.organisation).to eql(organisation)
       end
     end
 
@@ -44,19 +42,21 @@ RSpec.describe UpdateUser do
       end
 
       it "returns a failed result" do
-        result = described_class.new(user: user).call
+        result = described_class.new(user: user, organisation: build_stubbed(:organisation)).call
         expect(result.failure?).to eq(true)
       end
 
       it "does not save the user" do
-        expect { described_class.new(user: user).call }.to_not change { user.reload }
+        expect do
+          described_class.new(user: user, organisation: build_stubbed(:organisation)).call
+        end.to_not change { user.reload }
       end
 
       it "logs a failure message" do
         expect(Rails.logger).to receive(:error)
           .with("Error updating user #{user.email} to Auth0 during UpdateUser with .")
 
-        described_class.new(user: user).call
+        described_class.new(user: user, organisation: build_stubbed(:organisation)).call
       end
     end
   end

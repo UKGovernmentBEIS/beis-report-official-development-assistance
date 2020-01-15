@@ -4,7 +4,7 @@ RSpec.feature "Users can view funds on an organisation page" do
   end
 
   let(:organisation) { create(:organisation) }
-  let(:user) { create(:administrator, organisations: [organisation]) }
+  let(:user) { create(:administrator, organisation: organisation) }
   let(:fund) { create(:fund, organisation: organisation) }
   let(:other_fund) { create(:fund, organisation: organisation) }
 

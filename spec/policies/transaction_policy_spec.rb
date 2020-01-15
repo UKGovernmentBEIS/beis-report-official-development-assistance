@@ -25,7 +25,7 @@ RSpec.describe TransactionPolicy do
     end
 
     context "as a fund_manager" do
-      let(:user) { build_stubbed(:fund_manager, organisations: [organisation]) }
+      let(:user) { build_stubbed(:fund_manager, organisation: organisation) }
 
       it { is_expected.to permit_action(:index) }
       it { is_expected.to permit_action(:show) }

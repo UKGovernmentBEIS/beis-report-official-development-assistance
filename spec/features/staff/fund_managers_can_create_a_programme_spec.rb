@@ -3,7 +3,7 @@ RSpec.feature "Fund managers can create a programme" do
   let!(:fund) { create(:fund, name: "My fund", organisation: organisation) }
 
   context "when the user is a fund manager" do
-    before { authenticate!(user: create(:fund_manager, organisations: [organisation])) }
+    before { authenticate!(user: create(:fund_manager, organisation: organisation)) }
 
     context "when the user is not logged in" do
       it "redirects the user to the root path" do
@@ -36,7 +36,7 @@ RSpec.feature "Fund managers can create a programme" do
   end
 
   context "when the user is a delivery_partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation])) }
+    before { authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation)) }
 
     scenario "shows the 'unauthorised' error message to the user" do
       visit new_fund_programme_path(fund)

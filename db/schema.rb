@@ -99,7 +99,9 @@ ActiveRecord::Schema.define(version: 2020_01_16_172705) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "role"
+    t.uuid "organisation_id"
     t.index ["identifier"], name: "index_users_on_identifier"
+    t.index ["organisation_id"], name: "index_users_on_organisation_id"
     t.index ["role"], name: "index_users_on_role"
   end
 

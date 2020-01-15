@@ -21,7 +21,7 @@ class Staff::UsersController < Staff::BaseController
     @organisations = policy_scope(Organisation)
 
     if @user.valid?
-      result = CreateUser.new(user: @user, organisations: organisations).call
+      result = CreateUser.new(user: @user, organisation: organisation).call
       if result.success?
         flash.now[:notice] = I18n.t("form.user.create.success")
         redirect_to user_path(@user.reload.id)
@@ -48,7 +48,7 @@ class Staff::UsersController < Staff::BaseController
     @user.assign_attributes(user_params)
 
     if @user.valid?
-      result = UpdateUser.new(user: @user, organisations: organisations).call
+      result = UpdateUser.new(user: @user, organisation: organisation).call
 
       if result.success?
         flash.now[:notice] = I18n.t("form.user.update.success")
@@ -63,18 +63,18 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :role, organisation_ids: [])
+    params.require(:user).permit(:name, :email, :role, :organisation_id)
   end
 
   def id
     params[:id]
   end
 
-  def organisation_ids
-    user_params[:organisation_ids]
+  def organisation_id
+    user_params[:organisation_id]
   end
 
-  def organisations
-    Organisation.where(id: organisation_ids)
+  def organisation
+    Organisation.find(organisation_id)
   end
 end

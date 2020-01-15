@@ -10,7 +10,7 @@ RSpec.feature "Fund managers can view a fund" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation])) }
+    before { authenticate!(user: build_stubbed(:fund_manager, organisation: organisation)) }
 
     scenario "allows the fund to be viewed" do
       existing_fund = create(:fund, organisation: organisation)
@@ -32,7 +32,7 @@ RSpec.feature "Fund managers can view a fund" do
   end
 
   context "when the user is a delivery_partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation])) }
+    before { authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation)) }
 
     scenario "the fund cannot be viewed" do
       existing_fund = create(:fund, organisation: organisation)

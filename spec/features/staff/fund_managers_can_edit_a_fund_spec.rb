@@ -12,7 +12,7 @@ RSpec.feature "Fund managers can edit a fund" do
 
   context "when the user is a fund_manager" do
     before do
-      authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation]))
+      authenticate!(user: build_stubbed(:fund_manager, organisation: organisation))
     end
 
     context "when no associated fund activity exists" do
@@ -59,7 +59,7 @@ RSpec.feature "Fund managers can edit a fund" do
 
   context "when the user is a delivery_partner" do
     before do
-      authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation]))
+      authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation))
     end
 
     scenario "the user cannot edit the fund" do

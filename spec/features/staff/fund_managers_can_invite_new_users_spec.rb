@@ -44,16 +44,13 @@ RSpec.feature "Fund managers can invite new users to the service" do
       expect(page).to have_content(I18n.t("page_title.users.new"))
       fill_in "user[name]", with: new_user_name
       fill_in "user[email]", with: new_user_email
-      check first_organisation.name
-      check second_organisation.name
+      choose first_organisation.name
 
       # Submit the form
       click_button I18n.t("generic.button.submit")
 
-      within(".organisations") do
-        expect(page).to have_content(first_organisation.name)
-        expect(page).to have_content(second_organisation.name)
-      end
+      expect(page).to have_content(first_organisation.name)
+      expect(page).not_to have_content(second_organisation.name)
     end
 
     context "when the name and email are not provided" do
@@ -77,12 +74,14 @@ RSpec.feature "Fund managers can invite new users to the service" do
           stub_auth0_token_request
           new_email = "email@example.com"
           stub_auth0_create_user_request_failure(email: new_email)
+          organisation = create(:organisation)
 
           visit new_user_path
 
           expect(page).to have_content(I18n.t("page_title.users.new"))
           fill_in "user[name]", with: "foo"
           fill_in "user[email]", with: new_email
+          choose organisation.name
 
           click_button I18n.t("generic.button.submit")
 
@@ -95,10 +94,13 @@ RSpec.feature "Fund managers can invite new users to the service" do
         it "does not create the user and displays an invalid email message" do
           new_email = "tom"
           stub_auth0_create_user_request_failure(email: new_email)
+          organisation = create(:organisation)
 
           visit new_user_path
           fill_in "user[name]", with: "tom"
           fill_in "user[email]", with: "tom"
+          choose organisation.name
+          
           click_button I18n.t("generic.button.submit")
 
           expect(page).to have_content("Email is invalid")
