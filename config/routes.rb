@@ -23,7 +23,9 @@ Rails.application.routes.draw do
       resources :transactions, only: [:new, :create, :show, :edit, :update]
     end
 
-    resources :funds, only: [], concerns: [:activity, :transactionable]
+    resources :funds, only: [], concerns: [:activity, :transactionable] do
+      resources :programmes, only: [:new, :create, :show]
+    end
     # TODO: Extend with more hierarchies using this format
     # resources :programmes, only: [], concerns: [:activity, :transactionable]
   end

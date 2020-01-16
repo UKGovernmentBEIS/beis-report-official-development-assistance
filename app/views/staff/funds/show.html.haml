@@ -35,3 +35,17 @@
 
       = link_to(I18n.t("page_content.transactions.button.create"), new_fund_transaction_path(@fund), class: "govuk-button")
       = render partial: '/staff/shared/transactions/table', locals: { transactions: @transaction_presenters }
+
+  - if policy(Programme).index?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        %h2.govuk-heading-m
+          = t("page_content.organisation.programmes")
+
+        - if policy(Programme).create?
+          = link_to(t("page_content.organisation.button.create_programme"), new_fund_programme_path(@fund), class: "govuk-button")
+
+      %ul.govuk-list.govuk-list--bullet
+        - @programmes.each do |programme|
+          %li
+            = link_to programme.name, fund_programme_path(programme.fund, programme)

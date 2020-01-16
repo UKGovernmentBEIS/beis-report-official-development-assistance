@@ -8,5 +8,6 @@ RSpec.describe Fund, type: :model do
   describe "relations" do
     it { should belong_to(:organisation) }
     it { should have_one(:activity) }
+    it { should have_many(:programmes) }
   end
 end

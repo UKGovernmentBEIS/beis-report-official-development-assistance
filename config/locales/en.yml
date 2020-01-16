@@ -32,6 +32,9 @@ en:
         label: Organisation type
       update:
         success: Organisation successfully updated
+    programme:
+      create:
+        success: Programme successfully created
     transaction:
       create:
         success: Transaction successfully created
@@ -148,6 +151,7 @@ en:
     organisation:
       button:
         create_fund: Create fund
+        create_programme: Create programme
         edit: Edit organisation
       default_currency:
         label: Default currency
@@ -156,11 +160,17 @@ en:
         label: Language code
       name:
         label: Name
+      programmes: Programmes
       type:
         label: Type
     organisations:
       button:
         create: Create organisation
+    programmes:
+      fund_name:
+        label: Fund name
+      organisation_name:
+        label: Organisation name
     transactions:
       button:
         create: Create transaction
@@ -204,6 +214,9 @@ en:
       index: Organisations
       new: Create a new organisation
       show: Organisation %{name}
+    programme:
+      new: Create programme
+      show: Programme %{name}
     transaction:
       edit: Edit transaction
       new: New transaction
