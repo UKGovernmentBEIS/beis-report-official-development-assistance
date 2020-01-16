@@ -42,7 +42,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "mock_redis"
-  gem "i18n-tasks", "~> 0.9.29"
+  gem "i18n-tasks", "~> 0.9.30"
   gem "rspec-rails"
   gem "standard"
   gem "pry-rails"
