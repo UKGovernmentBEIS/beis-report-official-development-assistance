@@ -69,5 +69,5 @@ group :test do
   gem "rack_session_access"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
-  gem "webmock", "~> 3.5"
+  gem "webmock", "~> 3.8"
 end
