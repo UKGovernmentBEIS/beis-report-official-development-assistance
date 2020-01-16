@@ -49,13 +49,6 @@ ActiveRecord::Schema.define(version: 2020_01_28_155455) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "organisations_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
-    t.uuid "organisation_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "reference"
     t.text "description"
