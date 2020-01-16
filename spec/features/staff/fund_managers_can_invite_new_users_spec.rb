@@ -100,7 +100,7 @@ RSpec.feature "Fund managers can invite new users to the service" do
           fill_in "user[name]", with: "tom"
           fill_in "user[email]", with: "tom"
           choose organisation.name
-          
+
           click_button I18n.t("generic.button.submit")
 
           expect(page).to have_content("Email is invalid")

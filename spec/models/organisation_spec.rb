@@ -9,7 +9,7 @@ RSpec.describe Organisation, type: :model do
   end
 
   describe "associations" do
-    it { should have_and_belong_to_many(:users) }
+    it { should have_many(:users) }
   end
 
   describe "service_owner?" do
