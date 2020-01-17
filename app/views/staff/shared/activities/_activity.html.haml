@@ -5,7 +5,7 @@
     %dd.govuk-summary-list__value
       = activity_presenter.hierarchy.name
     %dd.govuk-summary-list__actions
-      = link_to t("generic.link.edit"), [:edit, activity_presenter.hierarchy.organisation, activity_presenter.hierarchy], class: "govuk-link"
+      = link_to t("generic.link.edit"), edit_hierarchy_path_for(activity: activity_presenter), class: "govuk-link"
 
   .govuk-summary-list__row
     %dt.govuk-summary-list__key
