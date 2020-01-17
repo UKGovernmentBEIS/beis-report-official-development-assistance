@@ -29,3 +29,4 @@
 - Transaction and Activity dates are restricted to 10 years in the past or 25 years in the future at most
 - Fund managers can create basic programmes
 - Provide a way to flag an organisation as BEIS
+- User email addresses must be valid emails

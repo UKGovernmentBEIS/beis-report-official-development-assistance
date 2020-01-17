@@ -72,21 +72,38 @@ RSpec.feature "Fund managers can invite new users to the service" do
     end
 
     context "when there was an error creating the user in auth0" do
-      it "does not create the user and displays an error message" do
-        stub_auth0_token_request
-        new_email = "email@example.com"
-        stub_auth0_create_user_request_failure(email: new_email)
+      context "when there was a generic error" do
+        it "does not create the user and displays an error message" do
+          stub_auth0_token_request
+          new_email = "email@example.com"
+          stub_auth0_create_user_request_failure(email: new_email)
 
-        visit new_user_path
+          visit new_user_path
 
-        expect(page).to have_content(I18n.t("page_title.users.new"))
-        fill_in "user[name]", with: "foo"
-        fill_in "user[email]", with: new_email
+          expect(page).to have_content(I18n.t("page_title.users.new"))
+          fill_in "user[name]", with: "foo"
+          fill_in "user[email]", with: new_email
 
-        click_button I18n.t("generic.button.submit")
+          click_button I18n.t("generic.button.submit")
 
-        expect(page).to have_content(I18n.t("form.user.create.failed"))
-        expect(User.count).to eq(0)
+          expect(page).to have_content(I18n.t("form.user.create.failed"))
+          expect(User.count).to eq(0)
+        end
+      end
+
+      context "when the email was invalid" do
+        it "does not create the user and displays an invalid email message" do
+          new_email = "tom"
+          stub_auth0_create_user_request_failure(email: new_email)
+
+          visit new_user_path
+          fill_in "user[name]", with: "tom"
+          fill_in "user[email]", with: "tom"
+          click_button I18n.t("generic.button.submit")
+
+          expect(page).to have_content("Email is invalid")
+          expect(page).not_to have_content(I18n.t("form.user.create.failed"))
+        end
       end
     end
 
