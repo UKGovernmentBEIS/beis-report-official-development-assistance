@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     resources :funds, only: [], concerns: [:activity, :transactionable] do
       resources :programmes, except: [:destroy]
     end
-    
+
     # TODO: Extend with more hierarchies using this format
     # resources :programmes, only: [], concerns: [:activity, :transactionable]
     resources :programmes, only: [], concerns: [:activity, :transactionable]
