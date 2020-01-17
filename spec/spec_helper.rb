@@ -9,7 +9,6 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
 ])
 
 SimpleCov.minimum_coverage 98
-SimpleCov.start
 
 require "webmock/rspec"
 require "rack_session_access/capybara"
@@ -116,4 +115,7 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
+
+  # Don't generate coverage for partial test runs
+  SimpleCov.start if config.files_to_run.map { |file| file.split("spec/").last.split("/").first }.uniq.size > 3
 end
