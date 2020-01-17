@@ -26,6 +26,17 @@ RSpec.feature "Fund managers can create a programme" do
       expect(page).to have_content organisation.name
     end
 
+    scenario "shows validation errors on the page" do
+      visit dashboard_path
+      click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
+      click_on(organisation.name)
+      click_on("My fund")
+      click_on "Create programme"
+
+      click_on I18n.t("generic.button.submit")
+      expect(page).to have_content "can't be blank"
+    end
+
     scenario "can go back to the previous page" do
       visit new_fund_programme_path(fund)
 
