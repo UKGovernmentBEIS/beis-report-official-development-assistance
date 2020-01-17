@@ -12,6 +12,36 @@ RSpec.describe Organisation, type: :model do
     it { should have_and_belong_to_many(:users) }
   end
 
+  describe "service_owner?" do
+    context "when an organisation is has been flagged as BEIS" do
+      it "should return true" do
+        beis_organisation = create(:organisation, service_owner: true)
+
+        result = beis_organisation.service_owner?
+
+        expect(result).to eq(true)
+      end
+    end
+    context "when an organisation is not flagged as BEIS" do
+      it " should return false" do
+        other_organisation = create(:organisation, service_owner: false)
+
+        result = other_organisation.service_owner?
+
+        expect(result).to eq(false)
+      end
+    end
+    context "when an organisation is not deliberately flagged as BEIS" do
+      it "should default to false" do
+        new_organisation = create(:organisation)
+
+        result = new_organisation.service_owner?
+
+        expect(result).to eq(false)
+      end
+    end
+  end
+
   describe ".sorted_by_name" do
     it "should sort name name a->z" do
       a_organisation = create(:organisation, name: "A", created_at: 3.days.ago)

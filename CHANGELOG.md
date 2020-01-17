@@ -28,3 +28,4 @@
 - Fund managers can manage users, organisations, funds, fund activites and fund transactions
 - Transaction and Activity dates are restricted to 10 years in the past or 25 years in the future at most
 - Fund managers can create basic programmes
+- Provide a way to flag an organisation as BEIS
