@@ -77,8 +77,8 @@ RSpec.feature "Fund managers can invite new users to the service" do
         it "does not create the user and displays an error message" do
           stub_auth0_token_request
           new_email = "email@example.com"
-          stub_auth0_create_user_request_failure(email: new_email)
           organisation = create(:organisation)
+          stub_auth0_create_user_request_failure(email: new_email)
 
           visit new_user_path
 
@@ -87,7 +87,9 @@ RSpec.feature "Fund managers can invite new users to the service" do
           fill_in "user[email]", with: new_email
           choose organisation.name
 
-          click_button I18n.t("generic.button.submit")
+          expect {
+            click_button I18n.t("generic.button.submit")
+          }.not_to change { User.count }
 
           expect(page).to have_content(I18n.t("form.user.create.failed"))
         end
@@ -96,8 +98,8 @@ RSpec.feature "Fund managers can invite new users to the service" do
       context "when the email was invalid" do
         it "does not create the user and displays an invalid email message" do
           new_email = "tom"
-          stub_auth0_create_user_request_failure(email: new_email)
           organisation = create(:organisation)
+          stub_auth0_create_user_request_failure(email: new_email)
 
           visit new_user_path
           fill_in "user[name]", with: "tom"
@@ -106,7 +108,8 @@ RSpec.feature "Fund managers can invite new users to the service" do
 
           click_button I18n.t("generic.button.submit")
 
-          expect(page).to have_content(I18n.t("form.user.create.failed"))
+          expect(page).to have_content("Email is invalid")
+          expect(page).not_to have_content(I18n.t("form.user.create.failed"))
         end
       end
     end
