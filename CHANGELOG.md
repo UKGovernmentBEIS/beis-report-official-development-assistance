@@ -31,3 +31,4 @@
 - Provide a way to flag an organisation as BEIS
 - User email addresses must be valid emails
 - Users are only associated with one organisation
+- Fund managers can add Activity information to a Programme
