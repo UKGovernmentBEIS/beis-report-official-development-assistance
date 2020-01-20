@@ -47,9 +47,9 @@ RSpec.describe UpdateUser do
       end
 
       it "does not save the user" do
-        expect do
+        expect {
           described_class.new(user: user, organisation: build_stubbed(:organisation)).call
-        end.to_not change { user.reload }
+        }.to_not change { user.reload }
       end
 
       it "logs a failure message" do
