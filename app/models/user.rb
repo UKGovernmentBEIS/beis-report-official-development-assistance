@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_and_belongs_to_many :organisations
   validates_presence_of :name, :email
+  validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}
 
   enum role: {
     administrator: "administrator",
