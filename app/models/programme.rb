@@ -5,4 +5,5 @@ class Programme < ApplicationRecord
   belongs_to :fund
 
   has_one :activity, as: :hierarchy
+  has_many :transactions, as: :hierarchy
 end

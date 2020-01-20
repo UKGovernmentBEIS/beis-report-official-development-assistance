@@ -5,10 +5,9 @@ RSpec.describe TransactionPolicy do
 
   subject { described_class.new(user, transaction) }
 
-
   context "for a fund" do
-  let!(:fund) { create(:fund, organisation: organisation) }
-  let!(:transaction) { create(:transaction, hierarchy: fund) }
+    let!(:fund) { create(:fund, organisation: organisation) }
+    let!(:transaction) { create(:transaction, hierarchy: fund) }
 
     context "as an administrator" do
       let(:user) { build_stubbed(:administrator) }

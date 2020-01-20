@@ -7,7 +7,7 @@ RSpec.feature "Users can view a fund as XML" do
   let(:fund) { create(:fund, organisation: organisation) }
   let!(:activity) { create(:activity, hierarchy: fund) }
   let!(:transaction) { create(:transaction, hierarchy: fund) }
-  let(:user) { create(:fund_manager, organisations: [organisation]) }
+  let(:user) { create(:fund_manager, organisation: organisation) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do

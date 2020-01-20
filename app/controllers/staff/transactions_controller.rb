@@ -6,7 +6,7 @@ class Staff::TransactionsController < Staff::BaseController
   include HierarchyHelper
 
   def new
-    @fund = Fund.find(fund_id)
+    @hierarchy = hierarchy
     @transaction = Transaction.new
     @transaction.hierarchy = @hierarchy
 
@@ -14,9 +14,10 @@ class Staff::TransactionsController < Staff::BaseController
   end
 
   def create
-    @fund = Fund.find(fund_id)
+    @hierarchy = hierarchy
     @transaction = Transaction.new(transaction_params)
-    @transaction.fund = @fund
+
+    @transaction.hierarchy = @hierarchy
     authorize @transaction
 
     @transaction.provider = provider
@@ -112,7 +113,19 @@ class Staff::TransactionsController < Staff::BaseController
     params[:fund_id]
   end
 
+  def programme_id
+    params[:programme_id]
+  end
+
   def id
     params[:id]
+  end
+
+  def hierarchy
+    if fund_id
+      Fund.find(fund_id)
+    elsif programme_id
+      Programme.find(programme_id)
+    end
   end
 end

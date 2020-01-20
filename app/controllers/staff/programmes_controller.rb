@@ -6,6 +6,9 @@ class Staff::ProgrammesController < Staff::BaseController
   def show
     @programme = Programme.find(id)
     authorize @programme
+
+    transactions = policy_scope(Transaction).where(hierarchy: @programme)
+    @transaction_presenters = transactions.map { |transaction| TransactionPresenter.new(transaction) }
   end
 
   def new

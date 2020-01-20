@@ -25,3 +25,11 @@
               = @programme.fund.name
         = form_tag(programme_activities_path(@programme), method: "post") do
           = submit_tag t("page_content.fund.button.create_activity", activity: "programme"), class: "govuk-button"
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("page_content.fund.transactions")
+
+      = link_to(I18n.t("page_content.transactions.button.create"), new_programme_transaction_path(@programme), class: "govuk-button")
+      = render partial: '/staff/shared/transactions/table', locals: { transactions: @transaction_presenters }
