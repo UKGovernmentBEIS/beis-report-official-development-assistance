@@ -11,7 +11,7 @@ RSpec.feature "Fund managers can view funds on an organisation page" do
 
   context "when the user is a fund_manager" do
     before do
-      authenticate!(user: create(:fund_manager, organisation: nil))
+      authenticate!(user: create(:fund_manager))
     end
 
     scenario "the user will see them on the organisation show page" do

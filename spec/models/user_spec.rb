@@ -7,8 +7,8 @@ RSpec.describe User, type: :model do
   end
 
   describe "associations" do
-  # This also validates that the relationship is present
-  it { is_expected.to belong_to(:organisation).optional(true) }
+    # This also validates that the relationship is present
+    it { is_expected.to belong_to(:organisation) }
   end
 
   describe "#role_name" do

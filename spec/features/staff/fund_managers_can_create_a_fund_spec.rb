@@ -10,7 +10,7 @@ RSpec.feature "Fund managers can create a fund" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: create(:fund_manager, organisation: nil)) }
+    before { authenticate!(user: create(:fund_manager)) }
 
     scenario "successfully create a fund" do
       visit dashboard_path

@@ -42,18 +42,24 @@ RSpec.feature "Fund managers can edit organisations" do
 
     context "and does not belong to the organisation" do
       scenario "cannot visit that organisations page" do
-        authenticate!(user: create(:delivery_partner, organisation: nil))
+        first_organisation = create(:organisation)
+        second_organisation = create(:organisation)
+        authenticate!(user: create(:delivery_partner, organisation: first_organisation))
 
         visit dashboard_path
 
         click_link I18n.t("page_content.dashboard.button.manage_organisations")
-        expect(page).to have_no_content(organisation.name)
+        expect(page).to have_content(first_organisation.name)
+        expect(page).to have_no_content(second_organisation.name)
       end
 
       scenario "shows the 'unauthorised' error message to the user" do
-        authenticate!(user: create(:delivery_partner, organisation: nil))
+        first_organisation = create(:organisation)
+        second_organisation = create(:organisation)
 
-        visit edit_organisation_path(organisation)
+        authenticate!(user: create(:delivery_partner, organisation: first_organisation))
+
+        visit edit_organisation_path(second_organisation)
 
         expect(page).to have_content(I18n.t("pundit.default"))
         expect(page).to have_http_status(:unauthorized)
