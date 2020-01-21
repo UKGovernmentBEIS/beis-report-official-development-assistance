@@ -5,7 +5,16 @@ class Auth0Controller < ApplicationController
     session[:userinfo] = request.env["omniauth.auth"]
 
     # Redirect to the URL you want after successful auth
-    redirect_to "/dashboard"
+
+    user = User.find_by(email: session[:userinfo][:info][:email])
+
+    if user.organisation
+      redirect_to organisation_path(user.organisation)
+    else
+      render "pages/errors/not_authorised",
+        status: 401,
+        locals: {error_message: I18n.t("page_content.errors.not_authorised.explanation")}
+    end
   end
 
   def failure
