@@ -32,3 +32,4 @@
 - User email addresses must be valid emails
 - Users are only associated with one organisation
 - Fund managers can add Activity information to a Programme
+- Fund managers can create Transactions associated with a Programme
