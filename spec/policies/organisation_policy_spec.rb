@@ -27,7 +27,7 @@ RSpec.describe OrganisationPolicy do
 
     context "that belongs to that organisation" do
       let(:user) do
-        build_stubbed(:delivery_partner, organisations: [organisation])
+        build_stubbed(:delivery_partner, organisation: organisation)
       end
 
       it { is_expected.to permit_action(:index) }

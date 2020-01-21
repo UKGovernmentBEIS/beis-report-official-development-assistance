@@ -5,7 +5,7 @@ RSpec.feature "Users can view activities (on a fund page)" do
 
   let(:organisation) { create(:organisation) }
   let(:fund) { create(:fund, organisation: organisation) }
-  let(:user) { create(:administrator, organisations: [organisation]) }
+  let(:user) { create(:administrator, organisation: organisation) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do

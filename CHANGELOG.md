@@ -30,3 +30,4 @@
 - Fund managers can create basic programmes
 - Provide a way to flag an organisation as BEIS
 - User email addresses must be valid emails
+- Users are only associated with one organisation

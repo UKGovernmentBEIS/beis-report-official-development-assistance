@@ -13,7 +13,7 @@ RSpec.feature "Fund managers can view a programme" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation])) }
+    before { authenticate!(user: build_stubbed(:fund_manager, organisation: organisation)) }
 
     scenario "allows the programme to be viewed" do
       programme = create(:programme, fund: fund, organisation: organisation)
@@ -41,7 +41,7 @@ RSpec.feature "Fund managers can view a programme" do
   end
 
   context "when the user is a delivery_partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation])) }
+    before { authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation)) }
 
     scenario "the programme cannot be viewed" do
       programme = create(:programme, organisation: organisation, fund: fund)

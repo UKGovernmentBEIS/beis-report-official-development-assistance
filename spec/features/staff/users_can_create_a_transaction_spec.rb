@@ -11,7 +11,7 @@ RSpec.feature "Users can create a transaction" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation])) }
+    before { authenticate!(user: build_stubbed(:fund_manager, organisation: organisation)) }
 
     scenario "successfully creates a transaction on a fund" do
       fund = create(:fund, organisation: organisation)
@@ -195,7 +195,7 @@ RSpec.feature "Users can create a transaction" do
     # for projects and programmes etc, we will want to test that users who are
     # deliver partners can create transactions for project activities too.
     context "when the user is a delivery_partner" do
-      before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation])) }
+      before { authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation)) }
 
       scenario "cannot create an transaction that belongs to a fund activity" do
         fund = create(:fund, organisation: organisation)

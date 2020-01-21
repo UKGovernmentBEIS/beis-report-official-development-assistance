@@ -57,13 +57,6 @@ ActiveRecord::Schema.define(version: 2020_01_16_172705) do
     t.boolean "service_owner", default: false
   end
 
-  create_table "organisations_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
-    t.uuid "organisation_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "programmes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.uuid "organisation_id"
@@ -99,7 +92,9 @@ ActiveRecord::Schema.define(version: 2020_01_16_172705) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "role"
+    t.uuid "organisation_id"
     t.index ["identifier"], name: "index_users_on_identifier"
+    t.index ["organisation_id"], name: "index_users_on_organisation_id"
     t.index ["role"], name: "index_users_on_role"
   end
 

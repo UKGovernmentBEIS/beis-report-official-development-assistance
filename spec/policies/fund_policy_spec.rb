@@ -46,7 +46,7 @@ RSpec.describe FundPolicy do
     it { is_expected.to forbid_action(:destroy) }
 
     context "with funds from my own organisation" do
-      let(:user) { create(:delivery_partner, organisations: [organisation]) }
+      let(:user) { create(:delivery_partner, organisation: organisation) }
 
       it "does not include fund in resolved scope" do
         expect(resolved_scope).not_to include(fund)
