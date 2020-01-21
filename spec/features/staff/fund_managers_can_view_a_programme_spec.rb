@@ -22,11 +22,14 @@ RSpec.feature "Fund managers can view a programme" do
       click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
       click_on(fund.name)
-      click_on(programme.name)
+      click_on I18n.t("generic.link.show")
 
       within "h1" do
         expect(page).to have_content(programme.name)
       end
+
+      expect(page).to have_content(organisation.name)
+      expect(page).to have_content(fund.name)
     end
 
     scenario "can go back to the previous page" do

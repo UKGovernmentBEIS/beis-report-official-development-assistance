@@ -44,8 +44,4 @@
 
         - if policy(Programme).create?
           = link_to(t("page_content.organisation.button.create_programme"), new_fund_programme_path(@fund), class: "govuk-button")
-
-      %ul.govuk-list.govuk-list--bullet
-        - @programmes.each do |programme|
-          %li
-            = link_to programme.name, fund_programme_path(programme.fund, programme)
+          = render partial: "/staff/shared/programmes/table", locals: { programmes: @programmes }

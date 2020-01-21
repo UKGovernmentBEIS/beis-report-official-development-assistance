@@ -19,8 +19,10 @@ class Staff::ProgrammesController < Staff::BaseController
   def create
     @programme = Programme.new(programme_params)
     @fund = Fund.find(fund_id)
+    @organisation = @fund.organisation
+
     @programme.fund = @fund
-    @programme.organisation = @fund.organisation
+    @programme.organisation = @organisation
 
     authorize @programme
 
@@ -30,6 +32,27 @@ class Staff::ProgrammesController < Staff::BaseController
       redirect_to fund_programme_path(@fund, @programme)
     else
       render :new
+    end
+  end
+
+  def edit
+    @programme = Programme.find(id)
+    @fund = Fund.find(fund_id)
+
+    authorize @programme
+  end
+
+  def update
+    @programme = Programme.find(id)
+    @fund = Fund.find(fund_id)
+
+    authorize @programme
+
+    if @programme.update(programme_params)
+      flash[:notice] = I18n.t("form.programme.update.success")
+      redirect_to fund_programme_path(@fund, @programme)
+    else
+      render :edit
     end
   end
 

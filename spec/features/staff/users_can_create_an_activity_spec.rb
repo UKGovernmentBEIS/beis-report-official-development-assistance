@@ -140,13 +140,16 @@ RSpec.feature "Users can create an activity" do
     context "when the activity's hierarchy is a programme" do
       scenario "successfully creates a programme activity with all optional information" do
         fund = create(:fund, organisation: organisation)
-        programme = create(:programme, organisation: organisation, fund: fund)
+        create(:programme, organisation: organisation, fund: fund)
 
         visit dashboard_path
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
         click_on(organisation.name)
         click_on(fund.name)
-        click_on(programme.name)
+
+        within ".programme" do
+          click_on I18n.t("generic.link.show")
+        end
 
         click_on I18n.t("page_content.fund.button.create_activity", activity: "programme")
 

@@ -35,6 +35,8 @@ en:
     programme:
       create:
         success: Programme successfully created
+      update:
+        success: Programme successfully updated
     transaction:
       create:
         success: Transaction successfully created
@@ -218,6 +220,7 @@ en:
       new: Create a new organisation
       show: Organisation %{name}
     programme:
+      edit: Edit programme
       new: Create programme
       show: Programme %{name}
     transaction:
