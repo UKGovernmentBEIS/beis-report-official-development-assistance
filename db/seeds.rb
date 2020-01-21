@@ -21,7 +21,7 @@ if Rails.env.development?
     identifier: "auth0|5dc53e4b85758e0e95b062f0",
     role: :administrator
   )
-  user.organisations << organisation
+  user.organisation = organisation
   user.save
 
   fund_params = FactoryBot.build(:fund, name: "GCRF", organisation: organisation).attributes
