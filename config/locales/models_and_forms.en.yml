@@ -20,6 +20,7 @@ en:
         organisation_type: Organisation type
       programme:
         fund_id: Fund
+        name: Name
       transaction:
         currency: Currency
         date: Date

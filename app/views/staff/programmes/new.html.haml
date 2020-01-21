@@ -1,6 +1,6 @@
 =content_for :page_title_prefix, t("page_title.programme.new")
 
-= link_to t("generic.link.back"), organisation_fund_path(@fund.organisation, @fund), class: "govuk-back-link"
+= link_to t("generic.link.back"), organisation_fund_path(@organisation, @fund), class: "govuk-back-link"
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
@@ -8,8 +8,4 @@
       %h1.govuk-heading-xl
         = t("page_title.programme.new")
 
-      = form_with model: @programme, url: fund_programmes_path(@fund) do |f|
-        = f.govuk_error_summary
-        = f.govuk_text_field :name
-
-        = f.govuk_submit t("generic.button.submit")
+      = render "form"

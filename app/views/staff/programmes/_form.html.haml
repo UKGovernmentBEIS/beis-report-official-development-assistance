@@ -1,0 +1,5 @@
+= form_with model: [@fund, @programme] do |f|
+  = f.govuk_error_summary
+  = f.govuk_text_field :name
+
+  = f.govuk_submit t("generic.button.submit")
