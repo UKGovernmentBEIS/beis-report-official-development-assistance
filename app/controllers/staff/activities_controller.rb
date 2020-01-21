@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Staff::ActivitiesController < Staff::BaseController
-  include ActivityHelper
+  include HierarchyHelper
 
   def show
     @activity = Activity.find(id)

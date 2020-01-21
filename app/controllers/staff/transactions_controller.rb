@@ -3,6 +3,7 @@
 class Staff::TransactionsController < Staff::BaseController
   include Secured
   include DateHelper
+  include HierarchyHelper
 
   def new
     @fund = Fund.find(fund_id)
@@ -25,7 +26,7 @@ class Staff::TransactionsController < Staff::BaseController
 
     if @transaction.save
       flash[:notice] = I18n.t("form.transaction.create.success")
-      redirect_to organisation_fund_path(@fund.organisation, @fund)
+      redirect_to hierarchy_path_for(item: @transaction)
     else
       render :new
     end
@@ -52,7 +53,7 @@ class Staff::TransactionsController < Staff::BaseController
 
     if @transaction.save
       flash[:notice] = I18n.t("form.transaction.update.success")
-      redirect_to organisation_fund_path(@fund.organisation, @fund)
+      redirect_to hierarchy_path_for(item: @transaction)
     else
       render :edit
     end

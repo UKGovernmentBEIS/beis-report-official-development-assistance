@@ -1,7 +1,7 @@
 class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
   include DateHelper
-  include ActivityHelper
+  include HierarchyHelper
 
   FORM_STEPS = [
     :identifier,
@@ -56,6 +56,6 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def finish_wizard_path
     flash[:notice] = I18n.t("form.activity.create.success")
-    hierarchy_path_for(activity: @activity)
+    hierarchy_path_for(item: @activity)
   end
 end
