@@ -9,14 +9,19 @@
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %dl.govuk-summary-list
-        .govuk-summary-list__row.organisation_name
-          %dt.govuk-summary-list__key
-            = t("page_content.programmes.organisation_name.label")
-          %dd.govuk-summary-list__value
-            = @programme.organisation.name
-        .govuk-summary-list__row.fund_name
-          %dt.govuk-summary-list__key
-            = t("page_content.programmes.fund_name.label")
-          %dd.govuk-summary-list__value
-            = @programme.fund.name
+      - if @programme.activity
+        = render partial: "staff/shared/activities/activity", locals: { activity_presenter: ActivityPresenter.new(@programme.activity) }
+      - else
+        %dl.govuk-summary-list
+          .govuk-summary-list__row.organisation_name
+            %dt.govuk-summary-list__key
+              = t("page_content.programmes.organisation_name.label")
+            %dd.govuk-summary-list__value
+              = @programme.organisation.name
+          .govuk-summary-list__row.fund_name
+            %dt.govuk-summary-list__key
+              = t("page_content.programmes.fund_name.label")
+            %dd.govuk-summary-list__value
+              = @programme.fund.name
+        = form_tag(programme_activities_path(@programme), method: "post") do
+          = submit_tag t("page_content.fund.button.create_activity", activity: "programme"), class: "govuk-button"

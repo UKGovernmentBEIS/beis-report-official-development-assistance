@@ -36,8 +36,17 @@ class Staff::ActivitiesController < Staff::BaseController
     params[:fund_id]
   end
 
+  def programme_id
+    params[:programme_id]
+  end
+
   def hierarchy
-    # TODO: Add support for new hierarchies here and/or move to a service
-    @hierarchy = authorize Fund.find(fund_id)
+    # TODO: This will eventually become unsustainable,
+    # we need a better way
+    if fund_id
+      @hierarchy = authorize Fund.find(fund_id)
+    elsif programme_id
+      @hierarchy = authorize Programme.find(programme_id)
+    end
   end
 end

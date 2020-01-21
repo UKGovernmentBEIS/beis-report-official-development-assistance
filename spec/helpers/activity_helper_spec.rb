@@ -13,6 +13,40 @@ RSpec.describe ActivityHelper, type: :helper do
           .to eq(organisation_fund_path(organisation.id, fund))
       end
     end
+
+    context "when the hierarchy_type is a programme" do
+      let(:fund) { create(:fund, organisation: organisation) }
+      let(:programme) { create(:programme, fund: fund) }
+      let(:programme_activity) { create(:activity, hierarchy: programme) }
+
+      it "returns the fund_programme_path" do
+        expect(helper.hierarchy_path_for(activity: programme_activity))
+          .to eq(fund_programme_path(fund, programme))
+      end
+    end
+  end
+
+  describe "#edit_hierarchy_path_for" do
+    context "when the hierarchy_type is a fund" do
+      let(:fund) { create(:fund, organisation: organisation) }
+      let(:fund_activity) { create(:activity, hierarchy: fund) }
+
+      it "returns edit_organisation_fund_path" do
+        expect(helper.edit_hierarchy_path_for(activity: fund_activity))
+          .to eq(edit_organisation_fund_path(organisation.id, fund))
+      end
+    end
+
+    context "when the hierarchy_type is a programme" do
+      let(:fund) { create(:fund, organisation: organisation) }
+      let(:programme) { create(:programme, fund: fund) }
+      let(:programme_activity) { create(:activity, hierarchy: programme) }
+
+      it "returns edit_fund_programme_path" do
+        expect(helper.edit_hierarchy_path_for(activity: programme_activity))
+          .to eq(edit_fund_programme_path(fund, programme))
+      end
+    end
   end
 
   describe "#activity_path_for" do

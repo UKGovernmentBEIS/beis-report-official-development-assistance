@@ -3,4 +3,6 @@ class Programme < ApplicationRecord
 
   belongs_to :organisation
   belongs_to :fund
+
+  has_one :activity, as: :hierarchy
 end

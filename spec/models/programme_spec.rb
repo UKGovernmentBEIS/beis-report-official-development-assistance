@@ -8,5 +8,6 @@ RSpec.describe Programme do
   describe "relations" do
     it { is_expected.to belong_to(:organisation) }
     it { is_expected.to belong_to(:fund) }
+    it { is_expected.to have_one(:activity) }
   end
 end

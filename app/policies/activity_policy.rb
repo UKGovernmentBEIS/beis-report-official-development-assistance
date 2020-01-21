@@ -4,27 +4,23 @@ class ActivityPolicy < ApplicationPolicy
   end
 
   def show?
-    user.administrator? ||
-      fund? && user.fund_manager?
+    user.administrator? || (user.fund_manager? && hierarchy?)
   end
 
   def create?
-    user.administrator? ||
-      fund? && user.fund_manager?
+    user.administrator? || (user.fund_manager? && hierarchy?)
   end
 
   def update?
-    user.administrator? ||
-      fund? && user.fund_manager?
+    user.administrator? || (user.fund_manager? && hierarchy?)
   end
 
   def destroy?
-    user.administrator? ||
-      fund? && user.fund_manager?
+    user.administrator? || (user.fund_manager? && hierarchy?)
   end
 
-  private def fund?
-    record.hierarchy.is_a?(Fund)
+  private def hierarchy?
+    record.hierarchy.is_a?(Programme) || record.hierarchy.is_a?(Fund)
   end
 
   class Scope < Scope
@@ -32,8 +28,11 @@ class ActivityPolicy < ApplicationPolicy
       if user.administrator?
         scope.all
       else
+        # TODO: This will eventually become unsustainable,
+        # we need a better way to do this
         funds = Fund.where(organisation_id: user.organisation)
-        scope.where(hierarchy: funds)
+        programmes = Programme.where(fund_id: funds)
+        scope.where(hierarchy: [funds + programmes])
       end
     end
   end
