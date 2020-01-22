@@ -27,18 +27,14 @@ class Staff::FundsController < Staff::BaseController
   end
 
   def create
-    @fund = Fund.new(fund_params)
-    @organisation = Organisation.find(organisation_id)
-    @fund.organisation = @organisation
+    @fund = Fund.new
+    @fund.organisation = Organisation.find(organisation_id)
     authorize @fund
 
-    if @fund.valid?
-      @fund.save
-      flash[:notice] = I18n.t("form.fund.create.success")
-      redirect_to organisation_fund_path(@organisation, @fund)
-    else
-      render :new
-    end
+    @fund.wizard_status = "identifier"
+    @fund.save(validate: false)
+
+    redirect_to fund_step_path(@fund.id, @fund.wizard_status)
   end
 
   def edit

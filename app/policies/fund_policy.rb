@@ -20,6 +20,7 @@ class FundPolicy < ApplicationPolicy
   end
 
   class Scope < Scope
+
     def resolve
       if user.administrator? || user.fund_manager?
         scope.all

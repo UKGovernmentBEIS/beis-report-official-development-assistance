@@ -19,7 +19,10 @@ RSpec.feature "Fund managers can view a fund" do
       click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
 
-      click_on(existing_fund.name)
+      click_on(existing_fund.title)
+
+      expect(page).to have_content(existing_fund.title)
+      expect(page).to have_content(existing_fund.organisation.name)
     end
 
     scenario "can go back to the previous page" do
@@ -42,7 +45,7 @@ RSpec.feature "Fund managers can view a fund" do
       click_on(organisation.name)
 
       expect(page).not_to have_content(I18n.t("page_content.organisation.funds"))
-      expect(page).not_to have_content(existing_fund.name)
+      expect(page).not_to have_content(existing_fund.title)
     end
   end
 end

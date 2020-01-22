@@ -20,7 +20,7 @@ RSpec.feature "Users can create a transaction" do
       click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
       click_on(organisation.name)
-      click_on(fund.name)
+      click_on(fund.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -36,7 +36,7 @@ RSpec.feature "Users can create a transaction" do
       click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
       click_on(organisation.name)
-      click_on(fund.name)
+      click_on(fund.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))
       click_on(I18n.t("generic.button.submit"))
@@ -58,7 +58,7 @@ RSpec.feature "Users can create a transaction" do
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(fund.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -83,7 +83,7 @@ RSpec.feature "Users can create a transaction" do
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(fund.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -99,7 +99,7 @@ RSpec.feature "Users can create a transaction" do
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(fund.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -115,7 +115,7 @@ RSpec.feature "Users can create a transaction" do
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(fund.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -131,7 +131,7 @@ RSpec.feature "Users can create a transaction" do
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(fund.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -149,7 +149,7 @@ RSpec.feature "Users can create a transaction" do
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(fund.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -165,7 +165,7 @@ RSpec.feature "Users can create a transaction" do
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(fund.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -181,7 +181,7 @@ RSpec.feature "Users can create a transaction" do
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(fund.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 

@@ -20,7 +20,7 @@ RSpec.feature "Users can create an activity" do
       visit dashboard_path
       click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
-      click_on(fund.name)
+      click_on(fund.title)
 
       click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
 
@@ -29,42 +29,41 @@ RSpec.feature "Users can create an activity" do
 
     scenario "the activity form has some defaults for funds" do
       fund = create(:fund, organisation: organisation)
+      activity_presenter = ActivityPresenter.new(fund)
       visit organisation_fund_path(organisation, fund)
 
       click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
-      activity = Activity.last
 
-      visit fund_activity_steps_path(fund_id: fund, activity_id: activity, id: :country)
-      expect(page.find("option[@selected = 'selected']").text).to eq("Developing countries, unspecified")
+      visit fund_step_path(fund, :country)
+      expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.recipient_region
 
-      visit fund_activity_steps_path(fund_id: fund, activity_id: activity, id: :flow)
-      expect(page.find("option[@selected = 'selected']").text).to eq("ODA")
+      visit fund_step_path(fund, :flow)
+      expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.flow
 
-      visit fund_activity_steps_path(fund_id: fund, activity_id: activity, id: :tied_status)
-      expect(page.find("option[@selected = 'selected']").text).to eq("Untied")
+      visit fund_step_path(fund, :tied_status)
+      expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.tied_status
     end
 
     context "validations" do
       scenario "validation errors work as expected" do
-        fund = create(:fund, organisation: organisation)
-        visit organisation_fund_path(organisation, fund)
-        click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
+        visit organisation_path(organisation)
+        click_on I18n.t("page_content.organisation.button.create_fund")
 
         # Don't provide an identifier
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content "can't be blank"
 
-        fill_in "activity[identifier]", with: "foo"
+        fill_in "fund[identifier]", with: "foo"
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.purpose")
 
         # Don't provide a title and description
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content "Title can't be blank"
+        expect(find_field("Title").value).to eq "Untitled fund"
         expect(page).to have_content "Description can't be blank"
 
-        fill_in "activity[title]", with: Faker::Lorem.word
-        fill_in "activity[description]", with: Faker::Lorem.paragraph
+        fill_in "fund[title]", with: Faker::Lorem.word
+        fill_in "fund[description]", with: Faker::Lorem.paragraph
         click_button I18n.t("form.activity.submit")
 
         expect(page).to have_content I18n.t("page_title.activity_form.show.sector")
@@ -73,7 +72,7 @@ RSpec.feature "Users can create an activity" do
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content "Sector can't be blank"
 
-        select "Education policy and administrative management", from: "activity[sector]"
+        select "Education policy and administrative management", from: "fund[sector]"
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.status")
 
@@ -81,7 +80,7 @@ RSpec.feature "Users can create an activity" do
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content "Status can't be blank"
 
-        select "Implementation", from: "activity[status]"
+        select "Implementation", from: "fund[status]"
         click_button I18n.t("form.activity.submit")
 
         expect(page).to have_content I18n.t("page_title.activity_form.show.dates")
@@ -91,12 +90,12 @@ RSpec.feature "Users can create an activity" do
         expect(page).to have_content I18n.t("page_title.activity_form.show.country")
 
         # Region has a default and can't be set to blank so we skip
-        select "Developing countries, unspecified", from: "activity[recipient_region]"
+        select "Developing countries, unspecified", from: "fund[recipient_region]"
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
 
         # Flow has a default and can't be set to blank so we skip
-        select "ODA", from: "activity[flow]"
+        select "ODA", from: "fund[flow]"
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.finance")
 
@@ -104,7 +103,7 @@ RSpec.feature "Users can create an activity" do
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content "Finance can't be blank"
 
-        select "Standard grant", from: "activity[finance]"
+        select "Standard grant", from: "fund[finance]"
         click_button I18n.t("form.activity.submit")
 
         expect(page).to have_content I18n.t("page_title.activity_form.show.aid_type")
@@ -113,15 +112,15 @@ RSpec.feature "Users can create an activity" do
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content "Aid type can't be blank"
 
-        select "General budget support", from: "activity[aid_type]"
+        select "General budget support", from: "fund[aid_type]"
         click_button I18n.t("form.activity.submit")
 
         expect(page).to have_content I18n.t("page_title.activity_form.show.tied_status")
 
         # Tied status has a default and can't be set to blank so we skip
-        select "Untied", from: "activity[tied_status]"
+        select "Untied", from: "fund[tied_status]"
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content fund.name
+        expect(page).to have_content Fund.last.title
       end
     end
 
@@ -129,9 +128,7 @@ RSpec.feature "Users can create an activity" do
       fund = create(:fund, organisation: organisation)
       visit organisation_fund_path(organisation, fund)
       click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
-
       click_on I18n.t("generic.link.back")
-
       expect(page).to have_current_path(organisation_fund_path(fund.id, organisation_id: organisation.id))
     end
   end

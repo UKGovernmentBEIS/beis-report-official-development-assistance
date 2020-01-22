@@ -20,7 +20,7 @@ RSpec.feature "Users can edit a transaction" do
     visit dashboard_path
     click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
     click_on(organisation.name)
-    click_on(fund.name)
+    click_on(fund.title)
 
     expect(page).to have_content(transaction.reference)
 
@@ -29,14 +29,14 @@ RSpec.feature "Users can edit a transaction" do
     end
     click_on(I18n.t("generic.link.back"))
 
-    expect(page).to have_content(fund.name)
+    expect(page).to have_content(fund.title)
   end
 
   scenario "editing a transaction" do
     visit dashboard_path
     click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
     click_on(organisation.name)
-    click_on(fund.name)
+    click_on(fund.title)
 
     expect(page).to have_content(transaction.reference)
 
