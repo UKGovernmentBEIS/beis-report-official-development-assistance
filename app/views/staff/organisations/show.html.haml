@@ -37,9 +37,10 @@
         %h2.govuk-heading-m
           = t("page_content.organisation.funds")
       - if policy(Fund).create?
-        = link_to(t("page_content.organisation.button.create_fund"), new_organisation_fund_path(@organisation_presenter), class: "govuk-button")
+        = form_tag(organisation_funds_path(@organisation_presenter), method: "post") do
+          = submit_tag t("page_content.organisation.button.create_fund", activity: "fund"), class: "govuk-button"
       - if policy(Fund).index?
         %ul.govuk-list.govuk-list--bullet
           - @funds.each do |fund|
             %li
-              = link_to fund.name, organisation_fund_path(fund.organisation, fund)
+              = link_to fund.title, organisation_fund_path(fund.organisation, fund)

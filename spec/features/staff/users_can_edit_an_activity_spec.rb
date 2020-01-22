@@ -8,12 +8,8 @@ RSpec.feature "Users can edit an activity" do
 
     scenario "clicking edit starts the ActivityForm journey from that step" do
       fund = create(:fund, organisation: organisation)
-      create(:activity, hierarchy: fund)
 
-      visit dashboard_path
-      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
-      click_on(organisation.name)
-      click_on(fund.name)
+      visit organisation_fund_path(fund.organisation, fund)
 
       # Click the first edit link that opens the form on step 1
       within(".identifier") do
@@ -26,13 +22,9 @@ RSpec.feature "Users can edit an activity" do
 
     context "when the activity only has an identifier (and is incomplete)" do
       it "shows edit link on the identifier, and add link on only the next step" do
-        fund = create(:fund, organisation: organisation)
-        _activity = create(:fund_activity, :at_identifier_step, hierarchy: fund)
+        fund = create(:fund, :at_purpose_step, organisation: organisation)
 
-        visit dashboard_path
-        click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
-        click_on(organisation.name)
-        click_on(fund.name)
+        visit organisation_fund_path(fund.organisation, fund)
 
         within(".identifier") do
           expect(page).to have_content(I18n.t("generic.link.edit"))
@@ -51,26 +43,21 @@ RSpec.feature "Users can edit an activity" do
     context "when the activity is complete" do
       it "all edit links are available to take the user to the right step" do
         fund = create(:fund, organisation: organisation)
-        activity = create(:activity, hierarchy: fund)
 
         visit dashboard_path
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(fund.title)
 
-        assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
+        assert_all_edit_links_go_to_the_correct_form_step(activity: fund)
       end
     end
 
-    context "when an activity attribute is present" do
+    context "when a title attribute is present" do
       it "the call to action is 'Edit'" do
-        fund = create(:fund, organisation: organisation)
-        _activity = create(:activity, hierarchy: fund, title: "My title", wizard_status: :purpose)
+        fund = create(:fund, organisation: organisation, wizard_status: :sector)
 
-        visit dashboard_path
-        click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
-        click_on(organisation.name)
-        click_on(fund.name)
+        visit organisation_fund_path(fund.organisation, fund)
 
         within(".title") do
           expect(page).to have_content(I18n.t("generic.link.edit"))
@@ -80,13 +67,9 @@ RSpec.feature "Users can edit an activity" do
 
     context "when an activity attribute is not present" do
       it "the call to action is 'Add'" do
-        fund = create(:fund, organisation: organisation)
-        _activity = create(:activity, hierarchy: fund, title: nil, wizard_status: :identifier)
+        fund = create(:fund, :at_purpose_step, organisation: organisation)
 
-        visit dashboard_path
-        click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
-        click_on(organisation.name)
-        click_on(fund.name)
+        visit organisation_fund_path(fund.organisation, fund)
 
         within(".title") do
           expect(page).to have_content(I18n.t("generic.link.add"))
@@ -99,7 +82,7 @@ RSpec.feature "Users can edit an activity" do
     within(".identifier") do
       click_on I18n.t("generic.link.edit")
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :identifier)
+        fund_step_path(activity, :identifier)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -107,7 +90,7 @@ RSpec.feature "Users can edit an activity" do
     within(".sector") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :sector)
+        fund_step_path(activity, :sector)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -115,7 +98,7 @@ RSpec.feature "Users can edit an activity" do
     within(".title") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :purpose)
+        fund_step_path(activity, :purpose)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -123,7 +106,7 @@ RSpec.feature "Users can edit an activity" do
     within(".description") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :purpose)
+        fund_step_path(activity, :purpose)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -131,7 +114,7 @@ RSpec.feature "Users can edit an activity" do
     within(".status") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :status)
+        fund_step_path(activity, :status)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -139,7 +122,7 @@ RSpec.feature "Users can edit an activity" do
     within(".planned_start_date") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :dates)
+        fund_step_path(activity, :dates)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -147,7 +130,7 @@ RSpec.feature "Users can edit an activity" do
     within(".planned_end_date") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :dates)
+        fund_step_path(activity, :dates)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -155,7 +138,7 @@ RSpec.feature "Users can edit an activity" do
     within(".actual_start_date") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :dates)
+        fund_step_path(activity, :dates)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -163,7 +146,7 @@ RSpec.feature "Users can edit an activity" do
     within(".actual_end_date") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :dates)
+        fund_step_path(activity, :dates)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -171,7 +154,7 @@ RSpec.feature "Users can edit an activity" do
     within(".recipient_region") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :country)
+        fund_step_path(activity, :country)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -179,7 +162,7 @@ RSpec.feature "Users can edit an activity" do
     within(".flow") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :flow)
+        fund_step_path(activity, :flow)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -187,7 +170,7 @@ RSpec.feature "Users can edit an activity" do
     within(".finance") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :finance)
+        fund_step_path(activity, :finance)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -195,7 +178,7 @@ RSpec.feature "Users can edit an activity" do
     within(".aid_type") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :aid_type)
+        fund_step_path(activity, :aid_type)
       )
     end
     click_on(I18n.t("generic.link.back"))
@@ -203,7 +186,7 @@ RSpec.feature "Users can edit an activity" do
     within(".tied_status") do
       click_on(I18n.t("generic.link.edit"))
       expect(page).to have_current_path(
-        edit_activity_path_for(activity: activity, step: :tied_status)
+        fund_step_path(activity, :tied_status)
       )
     end
     click_on(I18n.t("generic.link.back"))

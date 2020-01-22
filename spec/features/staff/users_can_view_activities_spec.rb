@@ -17,11 +17,10 @@ RSpec.feature "Users can view activities (on a fund page)" do
 
   context "when there is an activity belonging to a fund in the user's organisation" do
     scenario "the user will see it on the fund show page" do
-      activity = create(:activity, hierarchy: fund)
+      fund = create(:fund, organisation: organisation)
 
       visit organisation_fund_path(id: fund.id, organisation_id: organisation.id)
-
-      expect(page).to have_content(activity.identifier)
+      expect(page).to have_content(fund.identifier)
     end
   end
 
