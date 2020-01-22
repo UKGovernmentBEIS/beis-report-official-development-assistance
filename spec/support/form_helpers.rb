@@ -18,53 +18,53 @@ module FormHelpers
     tied_status: "Untied"
   )
     expect(page).to have_content I18n.t("page_title.activity_form.show.identifier")
-    fill_in "activity[identifier]", with: identifier
+    fill_in "fund[identifier]", with: identifier
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.purpose")
-    fill_in "activity[title]", with: title
-    fill_in "activity[description]", with: description
+    fill_in "fund[title]", with: title
+    fill_in "fund[description]", with: description
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.sector")
-    select sector, from: "activity[sector]"
+    select sector, from: "fund[sector]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.status")
-    select status, from: "activity[status]"
+    select status, from: "fund[status]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.dates")
-    fill_in "activity[planned_start_date(3i)]", with: planned_start_date_day
-    fill_in "activity[planned_start_date(2i)]", with: planned_start_date_month
-    fill_in "activity[planned_start_date(1i)]", with: planned_start_date_year
-    fill_in "activity[planned_end_date(3i)]", with: planned_end_date_day
-    fill_in "activity[planned_end_date(2i)]", with: planned_end_date_month
-    fill_in "activity[planned_end_date(1i)]", with: planned_end_date_year
+    fill_in "fund[planned_start_date(3i)]", with: planned_start_date_day
+    fill_in "fund[planned_start_date(2i)]", with: planned_start_date_month
+    fill_in "fund[planned_start_date(1i)]", with: planned_start_date_year
+    fill_in "fund[planned_end_date(3i)]", with: planned_end_date_day
+    fill_in "fund[planned_end_date(2i)]", with: planned_end_date_month
+    fill_in "fund[planned_end_date(1i)]", with: planned_end_date_year
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.country")
-    select recipient_region, from: "activity[recipient_region]"
+    select recipient_region, from: "fund[recipient_region]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
-    select flow, from: "activity[flow]"
+    select flow, from: "fund[flow]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.finance")
-    select finance, from: "activity[finance]"
+    select finance, from: "fund[finance]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.aid_type")
-    select aid_type, from: "activity[aid_type]"
+    select aid_type, from: "fund[aid_type]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.tied_status")
-    select tied_status, from: "activity[tied_status]"
+    select tied_status, from: "fund[tied_status]"
 
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("form.activity.create.success")
+    expect(page).to have_content I18n.t("form.fund.create.success")
     expect(page).to have_content identifier
     expect(page).to have_content title
     expect(page).to have_content description

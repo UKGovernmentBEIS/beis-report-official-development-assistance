@@ -1,6 +1,6 @@
 RSpec.feature "Fund managers can edit a fund" do
   let(:organisation) { create(:organisation, name: "UKSA") }
-  let(:fund) { create(:fund, name: "old name", organisation: organisation) }
+  let(:fund) { create(:fund, title: "old name", organisation: organisation) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
@@ -14,27 +14,7 @@ RSpec.feature "Fund managers can edit a fund" do
     before do
       authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation]))
     end
-
-    context "when no associated fund activity exists" do
-      scenario "successfully edit the fund" do
-        fund = create(:fund, organisation: organisation)
-
-        visit dashboard_path
-        click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
-
-        click_on(organisation.name)
-        click_on(fund.name)
-
-        within(".fund_name") do
-          click_on(I18n.t("generic.link.edit"))
-        end
-
-        fill_in "fund[name]", with: "My New Fund name"
-        click_button I18n.t("generic.button.submit")
-        expect(page).to have_content("My New Fund name")
-      end
-    end
-
+    
     context "when an activity record exists" do
       scenario "successfully editing a fund" do
         fund = create(:fund, organisation: organisation)
@@ -44,15 +24,15 @@ RSpec.feature "Fund managers can edit a fund" do
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(fund.title)
 
-        within(".fund_name") do
+        within(".title") do
           click_on(I18n.t("generic.link.edit"))
         end
 
-        fill_in "fund[name]", with: "My New Fund name"
-        click_button I18n.t("generic.button.submit")
-        expect(page).to have_content("My New Fund name")
+        fill_in "fund[title]", with: "My New Fund name"
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content I18n.t("page_title.activity_form.show.sector")
       end
     end
   end

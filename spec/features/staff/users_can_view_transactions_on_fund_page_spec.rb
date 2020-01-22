@@ -14,7 +14,7 @@ RSpec.feature "Users can view funds on an organisation page" do
 
     visit organisations_path
     click_link organisation.name
-    click_link fund.name
+    click_link fund.title
 
     expect(page).to have_content(transaction.reference)
     expect(page).to_not have_content(other_transaction.reference)
@@ -26,7 +26,7 @@ RSpec.feature "Users can view funds on an organisation page" do
 
     visit organisations_path
     click_link organisation.name
-    click_link fund.name
+    click_link fund.title
 
     expect(page).to have_content(transaction_presenter.reference)
     expect(page).to have_content(transaction_presenter.description)

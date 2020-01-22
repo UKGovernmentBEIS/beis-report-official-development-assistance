@@ -13,6 +13,17 @@ en:
         status: Status
         tied_status: Tied status
         title: Title
+      fund:
+        aid_type: Aid type
+        description: Description
+        finance: Finance
+        flow: Flow
+        identifier: Your unique identifier
+        recipient_region: Recipient region
+        sector: Sector
+        status: Status
+        tied_status: Tied status
+        title: Title
       organisation:
         default_currency: Default currency
         language_code: Language code
@@ -37,6 +48,16 @@ en:
     errors:
       models:
         activity:
+          attributes:
+            actual_end_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+            actual_start_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+            planned_end_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+            planned_start_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+        fund:
           attributes:
             actual_end_date:
               between: Date must be between %{min} years ago and %{max} years in the future
