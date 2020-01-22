@@ -1,5 +1,6 @@
 class Activity < ApplicationRecord
   belongs_to :hierarchy, polymorphic: true
+  has_many :budgets
   validates :identifier, presence: true, if: :identifier_step?
   validates :title, :description, presence: true, if: :purpose_step?
   validates :sector, presence: true, if: :sector_step?

@@ -49,6 +49,12 @@ en:
               between: Date must be between %{min} years ago and %{max} years in the future
             planned_start_date:
               between: Date must be between %{min} years ago and %{max} years in the future
+        budget:
+          attributes:
+            period_end_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+            period_start_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
         transaction:
           attributes:
             date:

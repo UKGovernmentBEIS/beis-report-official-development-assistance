@@ -29,7 +29,10 @@ Rails.application.routes.draw do
 
     # TODO: Extend with more hierarchies using this format
     # resources :programmes, only: [], concerns: [:activity, :transactionable]
-    resources :programmes, only: [], concerns: [:activity, :transactionable]
+
+    resources :programmes, only: [], concerns: [:activity, :transactionable] do
+      resources :budgets, except: [:destroy]
+    end
   end
 
   # Authentication
