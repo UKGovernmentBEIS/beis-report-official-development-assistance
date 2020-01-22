@@ -18,7 +18,7 @@ FactoryBot.define do
     tied_status { "3" }
     level { :fund }
 
-    wizard_status { "tied_status" } # this is the final step, aka "complete"
+    wizard_status { "complete" } # wizard is complete
 
     association :organisation, factory: :organisation
 
