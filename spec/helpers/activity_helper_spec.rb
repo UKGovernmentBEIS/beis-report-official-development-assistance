@@ -61,9 +61,20 @@ RSpec.describe ActivityHelper, type: :helper do
       end
     end
 
-    context "when the activity has a null .wizard_status field" do
-      it "shows all steps" do
+    context "when the activity wizard hasn't been started" do
+      it "shows no steps" do
         activity = build(:activity, :nil_wizard_status)
+        all_steps = Staff::ActivityFormsController::FORM_STEPS
+
+        all_steps.each do |step|
+          expect(helper.step_is_complete_or_next?(activity: activity, step: step)).to be(false)
+        end
+      end
+    end
+
+    context "when the activity wizard has been completed" do
+      it "shows all steps" do
+        activity = build(:activity, wizard_status: "complete")
         all_steps = Staff::ActivityFormsController::FORM_STEPS
 
         all_steps.each do |step|

@@ -24,39 +24,43 @@ class Activity < ApplicationRecord
   scope :programmes, -> { where(level: :programme) }
 
   def identifier_step?
-    %w[identifier complete].include?(wizard_status)
+    wizard_status == "identifier" || wizard_complete?
   end
 
   def purpose_step?
-    %w[purpose complete].include?(wizard_status)
+    wizard_status == "purpose" || wizard_complete?
   end
 
   def sector_step?
-    %w[sector complete].include?(wizard_status)
+    wizard_status == "sector" || wizard_complete?
   end
 
   def status_step?
-    %w[status complete].include?(wizard_status)
+    wizard_status == "status" || wizard_complete?
   end
 
   def country_step?
-    %w[country complete].include?(wizard_status)
+    wizard_status == "country" || wizard_complete?
   end
 
   def flow_step?
-    %w[flow complete].include?(wizard_status)
+    wizard_status == "flow" || wizard_complete?
   end
 
   def finance_step?
-    %w[finance complete].include?(wizard_status)
+    wizard_status == "finance" || wizard_complete?
   end
 
   def aid_type_step?
-    %w[aid_type complete].include?(wizard_status)
+    wizard_status == "aid_type" || wizard_complete?
   end
 
   def tied_status_step?
-    %w[tied_status complete].include?(wizard_status)
+    wizard_status == "tied_status" || wizard_complete?
+  end
+
+  def wizard_complete?
+    wizard_status == "complete"
   end
 
   def default_currency
