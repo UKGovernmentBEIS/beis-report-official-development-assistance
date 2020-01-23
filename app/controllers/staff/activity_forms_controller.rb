@@ -52,6 +52,8 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def update_wizard_status
+    return if @activity.invalid?
+
     if @activity.wizard_complete?
       flash[:notice] ||= I18n.t("form.#{@activity.level}.update.success")
       jump_to Wicked::FINISH_STEP
