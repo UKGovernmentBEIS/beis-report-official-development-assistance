@@ -9,36 +9,36 @@ This service enables the Department for Business, Energy and Industrial Strategy
 
 1. copy `/.env.example` into `/.env.development.local`.
 
-  Our intention is that the example should include enough to get the application started quickly. If this is not the case, please ask another developer for a copy of their `/.env.development.local` file.
+      Our intention is that the example should include enough to get the application started quickly. If this is not the case, please ask another developer for a copy of their `/.env.development.local` file.
 1. set up the local database
 
-  ```bash
-  bundle exec rake db:setup
-  ```
+      ```bash
+      bundle exec rake db:setup
+      ```
 
 1. get the required GOVUK assets with NPM
 
-  ```bash
-  npm install
-  ```
+      ```bash
+      npm install
+      ```
 
 1. start Redis ([install guide](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-homebrew-eb8df9a4f298))
 
-  ```bash
-  redis-server /usr/local/etc/redis.conf
-  ```
+      ```bash
+      redis-server /usr/local/etc/redis.conf
+      ```
 
 1. start Sidekiq
 
-  ```bash
-  bundle exec sidekiq -C config/sidekiq.yml
-  ```
+      ```bash
+      bundle exec sidekiq -C config/sidekiq.yml
+      ```
 
 1. start Rails
 
-  ```bash
-  bundle exec rails server
-  ```
+      ```bash
+      bundle exec rails server
+      ```
 
 1. log in using the generic development user roda@dxw.com. Find the credentials in the team 1Password vault.
 
