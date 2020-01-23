@@ -19,6 +19,10 @@ FactoryBot.define do
 
     wizard_status { "tied_status" } # this is the final step, aka "complete"
 
+    factory :programme_activity do
+      association :hierarchy, factory: :programme
+    end
+
     factory :fund_activity do
       association :hierarchy, factory: :fund
 
