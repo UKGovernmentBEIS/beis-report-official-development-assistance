@@ -1,0 +1,19 @@
+= form_with model: [@programme, @budget] do |f|
+  = f.govuk_error_summary
+  = f.govuk_collection_radio_buttons :budget_type,
+    list_of_budget_types,
+    :id,
+    :name,
+    legend: { tag: :h2, text: t('form.budget.budget_type.label') }
+  = f.govuk_collection_radio_buttons :status,
+    list_of_budget_statuses,
+    :id,
+    :name,
+    legend: { tag: :h2, text: t('form.budget.status.label') }
+  = f.govuk_date_field :period_start_date,
+            legend: { text: t("form.budget.period_start_date.label"), size: "s" }
+  = f.govuk_date_field :period_end_date,
+            legend: { text: t("form.budget.period_end_date.label"), size: "s" }
+  = f.govuk_text_field :value
+
+  = f.govuk_submit t("generic.button.submit")

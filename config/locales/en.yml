@@ -10,6 +10,17 @@ en:
       month: Month
       submit: Continue
       year: Year
+    budget:
+      budget_type:
+        label: Budget type
+      create:
+        success: Budget successfully created
+      period_end_date:
+        label: Period end date
+      period_start_date:
+        label: Period start date
+      status:
+        label: Status
     fund:
       create:
         success: Fund successfully created
@@ -171,7 +182,11 @@ en:
     organisations:
       button:
         create: Create organisation
+    programme:
+      button:
+        create_budget: Create budget
     programmes:
+      budgets: Budgets
       fund_name:
         label: Fund name
       organisation_name:
@@ -203,6 +218,8 @@ en:
         sector: Sector
         status: Status
         tied_status: Tied status
+    budget:
+      new: Create budget
     dashboard: Dashboard
     errors:
       auth0:

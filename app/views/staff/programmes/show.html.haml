@@ -25,3 +25,9 @@
               = @programme.fund.name
         = form_tag(programme_activities_path(@programme), method: "post") do
           = submit_tag t("page_content.fund.button.create_activity", activity: "programme"), class: "govuk-button"
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("page_content.programmes.budgets")
+      = link_to(t("page_content.programme.button.create_budget"), new_programme_budget_path(@programme), class: "govuk-button")
