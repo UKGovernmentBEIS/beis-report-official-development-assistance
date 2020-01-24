@@ -15,7 +15,11 @@ RSpec.feature "Fund managers can invite new users to the service" do
   end
 
   context "when the user is a fund manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager)) }
+    let(:user_fund_manager) { create(:fund_manager) }
+
+    before do
+      authenticate!(user: user_fund_manager)
+    end
 
     scenario "a new user can be created" do
       first_organisation = create(:organisation)
@@ -31,7 +35,7 @@ RSpec.feature "Fund managers can invite new users to the service" do
       )
 
       # Navigate from the landing page
-      visit dashboard_path
+      visit organisation_path(user_fund_manager.organisation)
       click_on(I18n.t("page_content.dashboard.button.manage_users"))
 
       # Navigate to the users page
@@ -86,7 +90,9 @@ RSpec.feature "Fund managers can invite new users to the service" do
           click_button I18n.t("generic.button.submit")
 
           expect(page).to have_content(I18n.t("form.user.create.failed"))
-          expect(User.count).to eq(0)
+
+          expect(User.count).to eq(1) # This is the fund_manager
+          expect(User.first).to eq(user_fund_manager)
         end
       end
 
@@ -109,23 +115,10 @@ RSpec.feature "Fund managers can invite new users to the service" do
       end
     end
 
-    context "when there are no organisations" do
-      scenario "call to action to create a new organisation" do
-        visit new_user_path
-
-        expect(page).to have_content(I18n.t("page_content.users.new.no_organisations.cta"))
-
-        click_on(I18n.t("page_content.users.new.no_organisations.link"))
-
-        expect(page).to have_current_path(new_organisation_path)
-      end
-    end
-
     scenario "can go back to the previous page" do
       visit new_user_path
 
       click_on I18n.t("generic.link.back")
-
       expect(page).to have_current_path(users_path)
     end
   end

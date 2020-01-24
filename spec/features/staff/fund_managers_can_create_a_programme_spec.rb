@@ -14,7 +14,7 @@ RSpec.feature "Fund managers can create a programme" do
     end
 
     scenario "successfully create a programme" do
-      visit dashboard_path
+      visit organisation_path(organisation)
       click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
       click_on("My fund")
@@ -27,7 +27,7 @@ RSpec.feature "Fund managers can create a programme" do
     end
 
     scenario "shows validation errors on the page" do
-      visit dashboard_path
+      visit organisation_path(organisation)
       click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
       click_on("My fund")

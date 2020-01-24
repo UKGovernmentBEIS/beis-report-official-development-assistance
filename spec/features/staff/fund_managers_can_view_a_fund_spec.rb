@@ -15,7 +15,7 @@ RSpec.feature "Fund managers can view a fund" do
     scenario "allows the fund to be viewed" do
       existing_fund = create(:fund, organisation: organisation)
 
-      visit dashboard_path
+      visit organisation_path(organisation)
       click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
 
@@ -37,9 +37,7 @@ RSpec.feature "Fund managers can view a fund" do
     scenario "the fund cannot be viewed" do
       existing_fund = create(:fund, organisation: organisation)
 
-      visit dashboard_path
-      click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
-      click_on(organisation.name)
+      visit organisation_path(organisation)
 
       expect(page).not_to have_content(I18n.t("page_content.organisation.funds"))
       expect(page).not_to have_content(existing_fund.name)

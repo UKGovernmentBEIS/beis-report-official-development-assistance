@@ -19,7 +19,7 @@ RSpec.feature "Users can view an activity" do
     scenario "a fund activity can be viewed" do
       activity = create(:activity, hierarchy: fund)
 
-      visit dashboard_path
+      visit organisation_path(organisation)
       click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
       click_on(fund.name)

@@ -15,7 +15,7 @@ RSpec.feature "Fund managers can update a programme" do
     end
 
     scenario "successfully update a programme" do
-      visit dashboard_path
+      visit organisation_path(organisation)
       click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
       click_on "My fund"

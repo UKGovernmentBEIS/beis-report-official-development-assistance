@@ -18,7 +18,7 @@ RSpec.feature "Users can create an activity" do
       scenario "successfully creates a fund activity with all optional information" do
         fund = create(:fund, organisation: organisation)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
         click_on(organisation.name)
         click_on(fund.name)
@@ -142,7 +142,7 @@ RSpec.feature "Users can create an activity" do
         fund = create(:fund, organisation: organisation)
         create(:programme, organisation: organisation, fund: fund)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
         click_on(organisation.name)
         click_on(fund.name)

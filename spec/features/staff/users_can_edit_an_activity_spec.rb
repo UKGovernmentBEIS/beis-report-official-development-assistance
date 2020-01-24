@@ -10,7 +10,7 @@ RSpec.feature "Users can edit an activity" do
       fund = create(:fund, organisation: organisation)
       create(:activity, hierarchy: fund)
 
-      visit dashboard_path
+      visit organisation_path(organisation)
       click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
       click_on(fund.name)
@@ -29,7 +29,7 @@ RSpec.feature "Users can edit an activity" do
         fund = create(:fund, organisation: organisation)
         _activity = create(:fund_activity, :at_identifier_step, hierarchy: fund)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
         click_on(organisation.name)
         click_on(fund.name)
@@ -53,7 +53,7 @@ RSpec.feature "Users can edit an activity" do
         fund = create(:fund, organisation: organisation)
         activity = create(:activity, hierarchy: fund)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
         click_on(organisation.name)
         click_on(fund.name)
@@ -67,7 +67,7 @@ RSpec.feature "Users can edit an activity" do
         fund = create(:fund, organisation: organisation)
         _activity = create(:activity, hierarchy: fund, title: "My title", wizard_status: :purpose)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
         click_on(organisation.name)
         click_on(fund.name)
@@ -83,7 +83,7 @@ RSpec.feature "Users can edit an activity" do
         fund = create(:fund, organisation: organisation)
         _activity = create(:activity, hierarchy: fund, title: nil, wizard_status: :identifier)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
         click_on(organisation.name)
         click_on(fund.name)

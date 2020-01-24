@@ -13,7 +13,7 @@ RSpec.feature "Fund managers can create a fund" do
     before { authenticate!(user: create(:fund_manager)) }
 
     scenario "successfully create a fund" do
-      visit dashboard_path
+      visit organisation_path(organisation)
       click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
       click_on(I18n.t("page_content.organisation.button.create_fund"))
@@ -48,9 +48,7 @@ RSpec.feature "Fund managers can create a fund" do
     before { authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation)) }
 
     scenario "hides the 'Create fund' button" do
-      visit dashboard_path
-      click_link I18n.t("page_content.dashboard.button.manage_organisations")
-      click_on(organisation.name)
+      visit organisation_path(organisation)
 
       expect(page).to have_no_content(I18n.t("page_content.organisation.button.create_fund"))
     end

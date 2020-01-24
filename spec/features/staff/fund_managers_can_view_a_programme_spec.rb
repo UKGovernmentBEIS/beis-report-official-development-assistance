@@ -18,7 +18,7 @@ RSpec.feature "Fund managers can view a programme" do
     scenario "allows the programme to be viewed" do
       programme = create(:programme, fund: fund, organisation: organisation)
 
-      visit dashboard_path
+      visit organisation_path(organisation)
       click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
       click_on(fund.name)

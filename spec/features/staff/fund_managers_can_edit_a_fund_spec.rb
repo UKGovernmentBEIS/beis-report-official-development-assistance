@@ -19,7 +19,7 @@ RSpec.feature "Fund managers can edit a fund" do
       scenario "successfully edit the fund" do
         fund = create(:fund, organisation: organisation)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
@@ -40,7 +40,7 @@ RSpec.feature "Fund managers can edit a fund" do
         fund = create(:fund, organisation: organisation)
         create(:activity, hierarchy: fund)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)

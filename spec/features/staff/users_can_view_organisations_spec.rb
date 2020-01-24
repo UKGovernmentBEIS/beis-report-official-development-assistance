@@ -41,7 +41,6 @@ RSpec.feature "Users can view organisations" do
       expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
     end
 
-
     scenario "cannot see the organisation they don't belong to" do
       organisation_they_belong_to = create(:organisation)
       another_organisation = create(:organisation)
