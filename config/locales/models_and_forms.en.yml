@@ -2,17 +2,6 @@
 en:
   activerecord:
     attributes:
-      activity:
-        aid_type: Aid type
-        description: Description
-        finance: Finance
-        flow: Flow
-        identifier: Your unique identifier
-        recipient_region: Recipient region
-        sector: Sector
-        status: Status
-        tied_status: Tied status
-        title: Title
       fund:
         aid_type: Aid type
         description: Description
@@ -47,16 +36,6 @@ en:
           fund_manager: Fund manager
     errors:
       models:
-        activity:
-          attributes:
-            actual_end_date:
-              between: Date must be between %{min} years ago and %{max} years in the future
-            actual_start_date:
-              between: Date must be between %{min} years ago and %{max} years in the future
-            planned_end_date:
-              between: Date must be between %{min} years ago and %{max} years in the future
-            planned_start_date:
-              between: Date must be between %{min} years ago and %{max} years in the future
         fund:
           attributes:
             actual_end_date:
@@ -79,7 +58,7 @@ en:
               blank: Select the organisation(s) this user belongs to
   helpers:
     fieldset:
-      activity:
+      fund:
         actual_end_date: Actual end date
         actual_start_date: Actual start date
         planned_end_date: Planned end date
@@ -88,7 +67,7 @@ en:
         organisation_ids: Organisations
         role: Role
     hint:
-      activity:
+      fund:
         aid_type:
           html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidTypeVocabulary/' target='_blank'>IATI descriptions can be found here.</a>
         finance: DAC/CRS transaction classification used to distinguish financial instruments, e.g. grants or loans.

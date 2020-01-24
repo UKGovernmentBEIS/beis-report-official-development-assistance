@@ -13,17 +13,11 @@ Rails.application.routes.draw do
       resources :funds, except: [:destroy]
     end
 
-    concern :activity do
-      resources :activities, only: [:new, :create, :show] do
-        resources :steps, controller: "activity_forms"
-      end
-    end
-
     concern :transactionable do
       resources :transactions, only: [:new, :create, :show, :edit, :update]
     end
 
-    resources :funds, only: [], concerns: [:activity, :transactionable] do
+    resources :funds, only: [], concerns: [:transactionable] do
       resources :steps, controller: "activity_forms"
     end
     # TODO: Extend with more hierarchies using this format
