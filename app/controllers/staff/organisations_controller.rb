@@ -3,6 +3,7 @@
 class Staff::OrganisationsController < Staff::BaseController
   def index
     @organisations = policy_scope(Organisation)
+    authorize @organisations
   end
 
   def show
