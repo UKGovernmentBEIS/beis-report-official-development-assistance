@@ -36,13 +36,11 @@ RSpec.feature "Fund managers can edit organisations" do
 
   context "when the user is a delivery partner" do
     scenario "cannot edit an organisation" do
-
       authenticate!(user: create(:delivery_partner, organisation: another_organisation))
 
       visit organisation_path(another_organisation)
 
       expect(page).to_not have_content(I18n.t("page_content.organisation.button.edit"))
-
     end
 
     context "and does not belong to the organisation" do

@@ -10,13 +10,17 @@ RSpec.feature "Fund managers can view other users" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:administrator)) }
+    let(:fund_manager) { create(:fund_manager) }
+
+    before do
+      authenticate!(user: fund_manager)
+    end
 
     scenario "a user can be viewed" do
       another_user = create(:delivery_partner)
 
       # Navigate from the landing page
-      visit dashboard_path
+      visit organisation_path(fund_manager.organisation)
       click_on(I18n.t("page_content.dashboard.button.manage_users"))
 
       # Navigate to the users page
@@ -26,7 +30,7 @@ RSpec.feature "Fund managers can view other users" do
 
       # Navigate to the individual user page
       within(".users") do
-        click_on(I18n.t("generic.link.show"))
+        find("tr", text: another_user.name).click_link("Show")
       end
 
       expect(page).to have_content(I18n.t("page_title.users.show"))
@@ -46,16 +50,20 @@ RSpec.feature "Fund managers can view other users" do
   end
 
   context "when the user is a delivery_partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner)) }
+    scenario "cannot manage other users in the organisation" do
+      delivery_partner = create(:delivery_partner)
+      authenticate!(user: delivery_partner)
 
-    scenario "cannot view the user" do
-      visit dashboard_path
+      visit organisation_path(delivery_partner.organisation)
       expect(page).not_to have_content(
         I18n.t("page_content.dashboard.button.manage_users")
       )
     end
 
-    scenario "cannot view all users" do
+    scenario "cannot view a list of all users" do
+      delivery_partner = create(:delivery_partner)
+      authenticate!(user: delivery_partner)
+
       visit users_path
       expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
     end

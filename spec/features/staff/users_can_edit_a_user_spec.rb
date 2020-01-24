@@ -5,11 +5,13 @@ RSpec.feature "Editing a user" do
 
   before do
     stub_auth0_token_request
-    authenticate!(user: build_stubbed(:administrator))
   end
 
   scenario "the role can be changed" do
-    visit dashboard_path
+    administrator_user = create(:administrator)
+    authenticate!(user: administrator_user)
+
+    visit organisation_path(administrator_user.organisation)
     click_on "Manage users"
 
     expect(page).to have_content(user.name)
