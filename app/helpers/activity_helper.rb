@@ -1,8 +1,4 @@
 module ActivityHelper
-  def activity_path_for(fund:)
-    fund_path(fund)
-  end
-
   def step_is_complete_or_next?(activity:, step:)
     steps = Staff::ActivityFormsController::FORM_STEPS
 

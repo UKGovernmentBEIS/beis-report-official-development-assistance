@@ -3,18 +3,16 @@ en:
   app:
     title: Report Official Development Assistance
   form:
-    activity:
-      create:
-        success: Activity successfully created
-      day: Day
-      month: Month
-      submit: Continue
-      year: Year
     fund:
       create:
         success: Fund successfully created
+      date:
+        day: Day
+        month: Month
+        year: Year
       organisation:
         hint: The organisation this fund is associated with
+      submit: Continue
       update:
         success: Fund successfully updated
     organisation:
@@ -129,13 +127,9 @@ en:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
     fund:
-      activity: Activity
       button:
-        create_activity: Add %{activity} information
         create_transaction: Create transaction
         edit: Edit fund
-      name:
-        label: Name
       organisation:
         label: Organisation
       transactions: Transactions
@@ -172,10 +166,6 @@ en:
           cta: There are no organisations yet,
           link: you can make one now
   page_title:
-    activity:
-      index: Activities
-      new: Create activity
-      show: Activity %{name}
     activity_form:
       show:
         aid_type: Aid type
