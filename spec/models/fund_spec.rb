@@ -108,7 +108,6 @@ RSpec.describe Fund, type: :model do
     end
   end
 
-
   describe "relations" do
     it { should belong_to(:organisation) }
   end

@@ -38,7 +38,7 @@
           = t("page_content.organisation.funds")
       - if policy(Fund).create?
         = form_tag(organisation_funds_path(@organisation_presenter), method: "post") do
-          = submit_tag t("page_content.organisation.button.create_fund", activity: "fund"), class: "govuk-button"
+          = submit_tag t("page_content.organisation.button.create_fund"), class: "govuk-button"
       - if policy(Fund).index?
         %ul.govuk-list.govuk-list--bullet
           - @funds.each do |fund|

@@ -11,11 +11,12 @@ class Staff::FundsController < Staff::BaseController
     @fund = Fund.find(id)
     authorize @fund
 
-    transactions = policy_scope(Transaction).where(fund: @fund)
-    @transaction_presenters = transactions.map { |transaction| TransactionPresenter.new(transaction) }
+    @transactions = policy_scope(Transaction).where(fund: @fund)
 
     respond_to do |format|
-      format.html
+      format.html do
+        @transaction_presenters = @transactions.map { |transaction| TransactionPresenter.new(transaction) }
+      end
       format.xml
     end
   end

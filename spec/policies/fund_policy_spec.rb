@@ -14,13 +14,15 @@ RSpec.describe FundPolicy do
     it { is_expected.to permit_new_and_create_actions }
     it { is_expected.to permit_edit_and_update_actions }
     it { is_expected.to permit_action(:destroy) }
+
+    it "includes fund in resolved scope" do
+      resolved_scope = described_class::Scope.new(user, Fund.all).resolve
+      expect(resolved_scope).to include(fund)
+    end
   end
 
   context "as a fund_manager" do
     let(:user) { build_stubbed(:fund_manager) }
-    let(:resolved_scope) do
-      described_class::Scope.new(user, Fund.all).resolve
-    end
 
     it { is_expected.to permit_action(:index) }
     it { is_expected.to permit_action(:show) }
@@ -29,6 +31,7 @@ RSpec.describe FundPolicy do
     it { is_expected.to permit_action(:destroy) }
 
     it "includes fund in resolved scope" do
+      resolved_scope = described_class::Scope.new(user, Fund.all).resolve
       expect(resolved_scope).to include(fund)
     end
   end

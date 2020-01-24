@@ -18,13 +18,6 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   steps(*FORM_STEPS)
 
-  def index
-    skip_policy_scope
-    authorize :activity, :index?
-
-    super
-  end
-
   def show
     @page_title = t("page_title.activity_form.show.#{step}")
     @fund = Fund.find(params[:fund_id])

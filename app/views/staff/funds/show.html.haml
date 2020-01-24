@@ -10,8 +10,6 @@
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       = render partial: "staff/shared/activities/activity", locals: { activity_presenter: ActivityPresenter.new(@fund) }
-      = form_tag(fund_activities_path(@fund), method: "post") do
-        = submit_tag t("page_content.fund.button.create_activity", activity: "fund"), class: "govuk-button"
 
   .govuk-grid-row
     .govuk-grid-column-full
