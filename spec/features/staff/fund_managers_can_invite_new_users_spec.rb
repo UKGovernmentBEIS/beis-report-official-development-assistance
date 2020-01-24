@@ -124,7 +124,7 @@ RSpec.feature "Fund managers can invite new users to the service" do
   end
 
   context "when the user is a delivery_partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner)) }
+    before { authenticate!(user: create(:delivery_partner)) }
 
     scenario "hides the 'Create user' button" do
       visit users_path

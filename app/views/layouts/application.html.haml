@@ -32,7 +32,11 @@
 
         - if authenticated?
           .govuk-header__content.app-header__service
-            %a.govuk-header__link.govuk-header__link--service-name{ href: dashboard_path }
+          - if current_user.organisation
+            %a.govuk-header__link.govuk-header__link--service-name{ href: organisation_path(current_user.organisation) }
+              = t('app.title')
+          - else
+            %span.govuk-header__link.govuk-header__link--service-name
               = t('app.title')
           .govuk-header__content.app-header__user-links
             %span

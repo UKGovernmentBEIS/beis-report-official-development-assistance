@@ -15,7 +15,7 @@ RSpec.feature "Users can sign in with Auth0" do
       click_on I18n.t("generic.link.sign_in")
     end
 
-    expect(page).to have_content(I18n.t("page_title.dashboard"))
+    expect(page).to have_content(user.organisation.name)
     expect(page).to have_content(user.name)
     expect(page).to have_content(I18n.t("generic.link.sign_out"))
   end
@@ -34,7 +34,7 @@ RSpec.feature "Users can sign in with Auth0" do
       click_on I18n.t("generic.link.sign_in")
     end
 
-    expect(page).to have_content(I18n.t("page_title.dashboard"))
+    expect(page).to have_content(user.organisation.name)
     expect(page).to have_content(user.name)
     expect(page).to have_content(I18n.t("generic.link.sign_out"))
   end
@@ -55,27 +55,6 @@ RSpec.feature "Users can sign in with Auth0" do
     end
 
     expect(page).to have_content(user.organisation.name)
-  end
-
-  context "when the user doesn't have an organisation" do
-    scenario "they see a 401 not authorised page" do
-      user = build(:administrator, organisation: nil)
-      user.save(validate: false)
-
-      mock_successful_authentication(
-        uid: user.identifier, name: user.name, email: user.email
-      )
-
-      visit root_path
-
-      within ".app-header__user-links" do
-        expect(page).to have_content(I18n.t("generic.link.sign_in"))
-        click_on I18n.t("generic.link.sign_in")
-      end
-
-      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
-      expect(page).to have_content(I18n.t("page_content.errors.not_authorised.explanation"))
-    end
   end
 
   scenario "protected pages cannot be visited unless signed in" do

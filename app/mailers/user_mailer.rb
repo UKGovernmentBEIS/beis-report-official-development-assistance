@@ -16,7 +16,7 @@ class UserMailer < ApplicationMailer
   def password_change_link(user:)
     Auth0Api.new.client.post_password_change(
       user_id: user.identifier,
-      result_url: dashboard_url,
+      result_url: organisation_url(user.organisation),
     )["ticket"]
   end
 end

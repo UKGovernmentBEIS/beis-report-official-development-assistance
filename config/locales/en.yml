@@ -203,7 +203,7 @@ en:
         sector: Sector
         status: Status
         tied_status: Tied status
-    dashboard: Dashboard
+    dashboard: Home
     errors:
       auth0:
         failed: Sign in failed

@@ -45,7 +45,7 @@ RSpec.feature "Fund managers can edit users" do
   end
 
   context "when the user is a delivery partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner)) }
+    before { authenticate!(user: create(:delivery_partner)) }
     scenario "the user cannot be edited" do
       target_user = create(:administrator, name: "Old Name", email: "old@example.com")
 
