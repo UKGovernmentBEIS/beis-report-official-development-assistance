@@ -18,7 +18,7 @@ RSpec.feature "Users can view an activity" do
     scenario "an activity can be viewed" do
       activity = create(:activity, organisation: organisation)
 
-      visit dashboard_path
+      visit organisation_path(organisation)
       click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
       click_on(activity.title)
