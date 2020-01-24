@@ -29,6 +29,7 @@ RSpec.feature "Fund managers can edit a fund level activity" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
+        # Click the first edit link that opens the form on step 1
         within(".identifier") do
           expect(page).to have_content(I18n.t("generic.link.edit"))
         end
@@ -47,10 +48,7 @@ RSpec.feature "Fund managers can edit a fund level activity" do
       it "all edit links are available to take the user to the right step" do
         activity = create(:activity, organisation: organisation)
 
-        visit dashboard_path
-        click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
-        click_on(organisation.name)
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
       end

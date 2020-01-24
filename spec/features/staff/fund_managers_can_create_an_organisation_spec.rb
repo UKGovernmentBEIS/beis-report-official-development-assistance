@@ -8,12 +8,14 @@ RSpec.feature "Fund managers can create organisations" do
   end
 
   context "when the user is allowed to add a new organisation" do
+    let(:user_fund_manager) { create(:fund_manager) }
+
     before do
-      authenticate!(user: create(:fund_manager))
+      authenticate!(user: user_fund_manager)
     end
 
     scenario "successfully creating an organisation" do
-      visit dashboard_path
+      visit organisation_path(user_fund_manager.organisation)
       click_link I18n.t("page_content.dashboard.button.manage_organisations")
       click_link I18n.t("page_content.organisations.button.create")
 
@@ -27,7 +29,7 @@ RSpec.feature "Fund managers can create organisations" do
     end
 
     scenario "presence validation works as expected" do
-      visit dashboard_path
+      visit organisation_path(user_fund_manager.organisation)
       click_link I18n.t("page_content.dashboard.button.manage_organisations")
       click_link I18n.t("page_content.organisations.button.create")
 
@@ -48,8 +50,7 @@ RSpec.feature "Fund managers can create organisations" do
     end
 
     scenario "hides the 'Create organisation' button" do
-      visit dashboard_path
-      click_link I18n.t("page_content.dashboard.button.manage_organisations")
+      visit organisation_path(user.organisation)
 
       expect(page).to have_no_content(I18n.t("page_content.organisations.button.create"))
     end

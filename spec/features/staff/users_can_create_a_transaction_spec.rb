@@ -16,7 +16,7 @@ RSpec.feature "Users can create a transaction" do
     scenario "successfully creates a transaction on a activity" do
       activity = create(:activity, organisation: organisation)
 
-      visit dashboard_path
+      visit organisation_path(organisation)
       click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
       click_on(organisation.name)
@@ -32,7 +32,7 @@ RSpec.feature "Users can create a transaction" do
     scenario "validations" do
       activity = create(:activity, organisation: organisation)
 
-      visit dashboard_path
+      visit organisation_path(organisation)
       click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
       click_on(organisation.name)
@@ -54,7 +54,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "Value must be between 1 and 99,999,999,999" do
         activity = create(:activity, organisation: organisation)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
@@ -79,7 +79,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the value includes a pound sign" do
         activity = create(:activity, organisation: organisation)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
@@ -95,7 +95,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the value includes alphabetical characters" do
         activity = create(:activity, organisation: organisation)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
@@ -111,7 +111,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the value includes decimal places" do
         activity = create(:activity, organisation: organisation)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
@@ -127,7 +127,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the value includes commas" do
         activity = create(:activity, organisation: organisation)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
@@ -145,7 +145,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the date is more than 25 years in the future" do
         activity = create(:activity, organisation: organisation)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
@@ -161,7 +161,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the date is more than 10 years in the past" do
         activity = create(:activity, organisation: organisation)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
@@ -177,7 +177,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the date is nil" do
         activity = create(:activity, organisation: organisation)
 
-        visit dashboard_path
+        visit organisation_path(organisation)
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
