@@ -90,9 +90,6 @@ RSpec.feature "Fund managers can invite new users to the service" do
           click_button I18n.t("generic.button.submit")
 
           expect(page).to have_content(I18n.t("form.user.create.failed"))
-
-          expect(User.count).to eq(1) # This is the fund_manager
-          expect(User.first).to eq(user_fund_manager)
         end
       end
 
@@ -110,8 +107,6 @@ RSpec.feature "Fund managers can invite new users to the service" do
           click_button I18n.t("generic.button.submit")
 
           expect(page).to have_content(I18n.t("form.user.create.failed"))
-          expect(User.count).to eq(1) # This is the fund_manager
-          expect(User.first).to eq(user_fund_manager)
         end
       end
     end
@@ -125,7 +120,7 @@ RSpec.feature "Fund managers can invite new users to the service" do
   end
 
   context "when the user is a delivery_partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner)) }
+    before { authenticate!(user: create(:delivery_partner)) }
 
     scenario "hides the 'Create user' button" do
       visit users_path
