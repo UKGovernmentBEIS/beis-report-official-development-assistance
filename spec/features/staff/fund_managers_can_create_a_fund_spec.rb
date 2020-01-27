@@ -56,7 +56,7 @@ RSpec.feature "Fund managers can create a fund" do
     scenario "shows the 'unauthorised' error message to the user" do
       visit new_organisation_fund_path(organisation)
 
-      expect(page).to have_content(I18n.t("pundit.default"))
+      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
       expect(page).to have_http_status(:unauthorized)
     end
   end

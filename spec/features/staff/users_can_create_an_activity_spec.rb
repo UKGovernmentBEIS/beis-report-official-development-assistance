@@ -12,7 +12,7 @@ RSpec.feature "Users can create an activity" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager, organisation: organisation)) }
+    before { authenticate!(user: create(:fund_manager, organisation: organisation)) }
 
     context "when the activity's hierarchy is a fund" do
       scenario "successfully creates a fund activity with all optional information" do
