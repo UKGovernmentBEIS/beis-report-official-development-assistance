@@ -10,7 +10,7 @@ RSpec.feature "Fund managers can view an activity" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager, organisation: organisation)) }
+    before { authenticate!(user: create(:fund_manager, organisation: organisation)) }
 
     scenario "allows the activity to be viewed" do
       existing_activity = create(:activity, organisation: organisation)
