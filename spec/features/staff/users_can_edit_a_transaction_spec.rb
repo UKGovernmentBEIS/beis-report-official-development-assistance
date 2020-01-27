@@ -4,14 +4,14 @@ RSpec.feature "Users can edit a transaction" do
   end
 
   let(:organisation) { create(:organisation) }
-  let!(:fund) { create(:fund, organisation: organisation) }
-  let!(:transaction) { create(:transaction, fund: fund) }
+  let!(:activity) { create(:activity, organisation: organisation) }
+  let!(:transaction) { create(:transaction, activity: activity) }
   let(:user) { create(:administrator, organisations: [organisation]) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
-      visit edit_organisation_fund_path(organisation, fund)
+      visit activity_step_path(double(Activity, id: "123"), :identifier)
       expect(current_path).to eq(root_path)
     end
   end
@@ -20,7 +20,7 @@ RSpec.feature "Users can edit a transaction" do
     visit dashboard_path
     click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
     click_on(organisation.name)
-    click_on(fund.title)
+    click_on(activity.title)
 
     expect(page).to have_content(transaction.reference)
 
@@ -29,14 +29,14 @@ RSpec.feature "Users can edit a transaction" do
     end
     click_on(I18n.t("generic.link.back"))
 
-    expect(page).to have_content(fund.title)
+    expect(page).to have_content(activity.title)
   end
 
   scenario "editing a transaction" do
     visit dashboard_path
     click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
     click_on(organisation.name)
-    click_on(fund.title)
+    click_on(activity.title)
 
     expect(page).to have_content(transaction.reference)
 

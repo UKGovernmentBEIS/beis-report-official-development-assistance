@@ -2,7 +2,7 @@
 en:
   activerecord:
     attributes:
-      fund:
+      activity:
         aid_type: Aid type
         description: Description
         finance: Finance
@@ -36,7 +36,7 @@ en:
           fund_manager: Fund manager
     errors:
       models:
-        fund:
+        activity:
           attributes:
             actual_end_date:
               between: Date must be between %{min} years ago and %{max} years in the future
@@ -58,7 +58,7 @@ en:
               blank: Select the organisation(s) this user belongs to
   helpers:
     fieldset:
-      fund:
+      activity:
         actual_end_date: Actual end date
         actual_start_date: Actual start date
         planned_end_date: Planned end date
@@ -67,7 +67,7 @@ en:
         organisation_ids: Organisations
         role: Role
     hint:
-      fund:
+      activity:
         aid_type:
           html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidTypeVocabulary/' target='_blank'>IATI descriptions can be found here.</a>
         finance: DAC/CRS transaction classification used to distinguish financial instruments, e.g. grants or loans.

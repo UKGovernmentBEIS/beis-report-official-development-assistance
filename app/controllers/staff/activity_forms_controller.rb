@@ -20,33 +20,33 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def show
     @page_title = t("page_title.activity_form.show.#{step}")
-    @fund = Fund.find(params[:fund_id])
-    authorize @fund
+    @activity = Activity.find(params[:activity_id])
+    authorize @activity
 
     render_wizard
   end
 
   def update
     @page_title = t("page_title.activity_form.show.#{step}")
-    @fund = Fund.find(params[:fund_id])
-    authorize @fund
+    @activity = Activity.find(params[:activity_id])
+    authorize @activity
 
-    @fund.assign_attributes(fund_params)
-    @fund.wizard_status = step
-    @fund.save
-    render_wizard @fund
+    @activity.assign_attributes(activity_params)
+    @activity.wizard_status = step
+    @activity.save
+    render_wizard @activity
   end
 
   private
 
-  def fund_params
-    params.require(:fund).permit(:identifier, :sector, :title, :description, :status,
+  def activity_params
+    params.require(:activity).permit(:identifier, :sector, :title, :description, :status,
       :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date,
       :recipient_region, :flow, :finance, :aid_type, :tied_status)
   end
 
   def finish_wizard_path
-    flash[:notice] = I18n.t("form.fund.create.success")
-    organisation_fund_path(@fund.organisation, @fund)
+    flash[:notice] = I18n.t("form.activity.create.success")
+    organisation_activity_path(@activity.organisation, @activity)
   end
 end

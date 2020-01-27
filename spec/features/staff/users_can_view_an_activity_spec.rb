@@ -3,11 +3,11 @@ RSpec.feature "Users can view an activity" do
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
-      fund = create(:fund)
+      activity = create(:activity)
 
       page.set_rack_session(userinfo: nil)
 
-      visit organisation_fund_path(organisation, fund)
+      visit organisation_activity_path(organisation, activity)
       expect(current_path).to eq(root_path)
     end
   end
@@ -15,14 +15,14 @@ RSpec.feature "Users can view an activity" do
   context "when the user is a fund_manager" do
     before { authenticate!(user: create(:fund_manager, organisations: [organisation])) }
 
-    scenario "a fund activity can be viewed" do
-      fund = create(:fund, organisation: organisation)
+    scenario "an activity can be viewed" do
+      activity = create(:activity, organisation: organisation)
 
       visit dashboard_path
       click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
-      click_on(fund.title)
-      activity_presenter = ActivityPresenter.new(fund)
+      click_on(activity.title)
+      activity_presenter = ActivityPresenter.new(activity)
 
       expect(page).to have_content activity_presenter.identifier
       expect(page).to have_content activity_presenter.sector
@@ -35,9 +35,9 @@ RSpec.feature "Users can view an activity" do
     end
 
     scenario "can go back to the previous page" do
-      fund = create(:fund, organisation: organisation)
+      activity = create(:activity, organisation: organisation)
 
-      visit organisation_fund_path(organisation, fund)
+      visit organisation_activity_path(organisation, activity)
 
       click_on I18n.t("generic.link.back")
 
@@ -50,10 +50,10 @@ RSpec.feature "Users can view an activity" do
   context "when the user is a delivery_partner" do
     before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation])) }
 
-    scenario "the user cannot view the fund activity" do
-      fund = create(:fund, organisation: organisation)
+    scenario "the user cannot view the activity" do
+      activity = create(:activity, organisation: organisation)
 
-      visit organisation_fund_path(organisation, fund)
+      visit organisation_activity_path(organisation, activity)
 
       expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
     end

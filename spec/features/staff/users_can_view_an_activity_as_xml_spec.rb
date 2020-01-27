@@ -4,8 +4,8 @@ RSpec.feature "Users can download an activity as XML" do
   end
 
   let(:organisation) { create(:organisation) }
-  let(:fund) do
-    create(:fund,
+  let(:activity) do
+    create(:activity,
       planned_start_date: Date.today,
       planned_end_date: Date.tomorrow,
       organisation: organisation)
@@ -15,36 +15,36 @@ RSpec.feature "Users can download an activity as XML" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
-      visit organisation_fund_path(fund.organisation, fund)
+      visit organisation_activity_path(activity.organisation, activity)
       expect(current_path).to eq(root_path)
     end
   end
 
   context "when the user belongs to the organisation the activity is part of" do
     it "returns an XML response" do
-      visit organisation_fund_path(fund.organisation, fund, format: :xml)
+      visit organisation_activity_path(activity.organisation, activity, format: :xml)
 
       xml = Nokogiri::XML::Document.parse(page.body)
 
-      expect(xml.at("iati-identifier").text).to eq(fund.identifier)
+      expect(xml.at("iati-identifier").text).to eq(activity.identifier)
       expect(xml.at("reporting-org/narrative").text).to eq(organisation.name)
-      expect(xml.at("title/narrative").text).to eq(fund.title)
-      expect(xml.at("description/narrative").text).to eq(fund.description)
-      expect(xml.at("activity-status/@code").text).to eq(fund.status)
-      expect(xml.at("activity-date[@type = '1']/@iso-date").text).to eq(fund.planned_start_date.strftime("%Y-%m-%d"))
-      expect(xml.at("activity-date[@type = '2']/@iso-date").text).to eq(fund.planned_end_date.strftime("%Y-%m-%d"))
-      expect(xml.at("recipient-region/@code").text).to eq(fund.recipient_region)
-      expect(xml.at("sector[@vocabulary = '1']/@code").text).to eq(fund.sector)
-      expect(xml.at("default-flow-type/@code").text).to eq(fund.flow)
-      expect(xml.at("default-finance-type/@code").text).to eq(fund.finance)
-      expect(xml.at("default-tied-status/@code").text).to eq(fund.tied_status)
+      expect(xml.at("title/narrative").text).to eq(activity.title)
+      expect(xml.at("description/narrative").text).to eq(activity.description)
+      expect(xml.at("activity-status/@code").text).to eq(activity.status)
+      expect(xml.at("activity-date[@type = '1']/@iso-date").text).to eq(activity.planned_start_date.strftime("%Y-%m-%d"))
+      expect(xml.at("activity-date[@type = '2']/@iso-date").text).to eq(activity.planned_end_date.strftime("%Y-%m-%d"))
+      expect(xml.at("recipient-region/@code").text).to eq(activity.recipient_region)
+      expect(xml.at("sector[@vocabulary = '1']/@code").text).to eq(activity.sector)
+      expect(xml.at("default-flow-type/@code").text).to eq(activity.flow)
+      expect(xml.at("default-finance-type/@code").text).to eq(activity.finance)
+      expect(xml.at("default-tied-status/@code").text).to eq(activity.tied_status)
     end
   end
 
   context "when an activity has a transaction" do
     it "returns an XML response with the transaction included" do
-      transaction = create(:transaction, fund: fund)
-      visit organisation_fund_path(fund.organisation, fund, format: :xml)
+      transaction = create(:transaction, activity: activity)
+      visit organisation_activity_path(activity.organisation, activity, format: :xml)
 
       xml = Nokogiri::XML::Document.parse(page.body)
 
