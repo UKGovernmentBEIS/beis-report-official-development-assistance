@@ -9,38 +9,66 @@ RSpec.feature "Users can view an organisation" do
   end
 
   context "when the user is a fund manager" do
+    let(:organisation) { create(:organisation) }
+
     before do
-      authenticate!(user: create(:fund_manager))
+      authenticate!(user: create(:fund_manager, organisation: organisation))
     end
 
-    scenario "can see the organisation page" do
-      organisation = create(:organisation)
-      visit organisation_path(organisation)
-      click_link I18n.t("page_content.dashboard.button.manage_organisations")
-      click_link organisation.name
+    context "viewing their own organisation" do
+      scenario "can see their own organisation page" do
+        visit organisation_path(organisation)
 
-      expect(page).to have_content(I18n.t("page_title.organisation.show", name: organisation.name))
+        expect(page).to have_content(I18n.t("page_title.organisation.show", name: organisation.name))
+      end
+
+      scenario "does not see a back link on their organisation page" do
+        visit organisation_path(organisation)
+
+        expect(page).to_not have_content(I18n.t("generic.link.back"))
+      end
     end
 
-    scenario "can go back to the previous page" do
-      organisation = create(:organisation)
+    context "viewing another organisation" do
+      let!(:other_organisation) { create(:organisation) }
 
-      visit organisation_path(organisation)
+      scenario "can see the other organisation's page" do
+        visit organisation_path(organisation)
+        click_link I18n.t("page_content.dashboard.button.manage_organisations")
+        click_link other_organisation.name
 
-      click_on I18n.t("generic.link.back")
+        expect(page).to have_content(I18n.t("page_title.organisation.show", name: other_organisation.name))
+      end
 
-      expect(page).to have_current_path(organisations_path)
+      scenario "can go back to the previous page" do
+        visit organisation_path(organisation)
+        click_link I18n.t("page_content.dashboard.button.manage_organisations")
+        click_link other_organisation.name
+
+        click_on I18n.t("generic.link.back")
+
+        expect(page).to have_current_path(organisations_path)
+      end
     end
   end
 
-  context "when the user is a delivery_partner that belongs to that organisation" do
-    scenario "can see the organisation page" do
-      organisation = create(:organisation)
-      authenticate!(user: create(:delivery_partner, organisation: organisation))
+  context "when the user is a delivery_partner" do
+    let(:organisation) { create(:organisation) }
 
+    before do
+      authenticate!(user: create(:delivery_partner, organisation: organisation))
+    end
+
+    scenario "can see their organisation page" do
       visit organisation_path(organisation)
 
       expect(page).to have_content(I18n.t("page_title.organisation.show", name: organisation.name))
+    end
+
+    scenario "does not see a back link on their organisation home page" do
+      visit organisation_path(organisation)
+
+      expect(page).to_not have_content(I18n.t("generic.link.back"))
     end
   end
 end
