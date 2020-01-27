@@ -11,7 +11,7 @@ RSpec.feature "Users can create a transaction" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager, organisation: organisation)) }
+    before { authenticate!(user: create(:fund_manager, organisation: organisation)) }
 
     scenario "successfully creates a transaction on a activity" do
       activity = create(:activity, organisation: organisation)

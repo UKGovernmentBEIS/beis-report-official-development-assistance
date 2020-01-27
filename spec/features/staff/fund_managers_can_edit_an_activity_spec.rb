@@ -4,7 +4,7 @@ RSpec.feature "Fund managers can edit a fund level activity" do
   let(:organisation) { create(:organisation, name: "UKSA") }
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager, organisation: organisation)) }
+    before { authenticate!(user: create(:fund_manager, organisation: organisation)) }
 
     scenario "clicking edit starts the ActivityForm journey from that step" do
       activity = create(:activity, organisation: organisation)
