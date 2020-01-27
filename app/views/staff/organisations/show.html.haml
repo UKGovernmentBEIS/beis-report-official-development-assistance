@@ -33,14 +33,14 @@
           %dd.govuk-summary-list__value
             = t("generic.default_currency.#{@organisation_presenter.default_currency}")
 
-      - if policy(Fund).index?
+      - if policy(Activity).index?
         %h2.govuk-heading-m
-          = t("page_content.organisation.funds")
-      - if policy(Fund).create?
-        = form_tag(organisation_funds_path(@organisation_presenter), method: "post") do
-          = submit_tag t("page_content.organisation.button.create_fund"), class: "govuk-button"
-      - if policy(Fund).index?
+          = t("page_content.organisation.activities")
+      - if policy(Activity).create?
+        = form_tag(organisation_activities_path(@organisation_presenter), method: "post") do
+          = submit_tag t("page_content.organisation.button.create_activity"), class: "govuk-button"
+      - if policy(Activity).index?
         %ul.govuk-list.govuk-list--bullet
-          - @funds.each do |fund|
+          - @activities.each do |activity|
             %li
-              = link_to fund.title, organisation_fund_path(fund.organisation, fund)
+              = link_to activity.title, organisation_activity_path(activity.organisation, activity)
