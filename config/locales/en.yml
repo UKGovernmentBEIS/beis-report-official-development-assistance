@@ -135,12 +135,12 @@ en:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
     organisation:
-      activities: Activities
       button:
         create_fund: Create fund
         edit: Edit organisation
       default_currency:
         label: Default currency
+      funds: Funds
       language_code:
         label: Language code
       name:
