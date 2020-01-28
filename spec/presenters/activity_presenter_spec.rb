@@ -146,4 +146,20 @@ RSpec.describe ActivityPresenter do
       expect(described_class.new(activity).call_to_action(:title)).to eql("add")
     end
   end
+
+  describe "#display_title" do
+    context "when the title is nil" do
+      it "returns a default display_title" do
+        activity = create(:activity, :at_identifier_step, title: nil)
+        expect(described_class.new(activity).display_title).to eql("Untitled (#{activity.id})")
+      end
+    end
+
+    context "when the title is present" do
+      it "returns the title" do
+        activity = build(:activity)
+        expect(described_class.new(activity).display_title).to eql(activity.title)
+      end
+    end
+  end
 end

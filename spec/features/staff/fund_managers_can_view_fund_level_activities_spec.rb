@@ -14,13 +14,23 @@ RSpec.feature "Fund managers can view fund level activities" do
       authenticate!(user: create(:fund_manager, organisations: []))
     end
 
-    scenario "the user will see them on the organisation show page" do
+    scenario "the user will see activities on the organisation show page" do
       activity = create(:activity, organisation: organisation)
       visit organisations_path
       click_link organisation.name
 
       expect(page).to have_content(I18n.t("page_content.organisation.funds"))
       expect(page).to have_content activity.title
+    end
+
+    context "when the activity is partially complete and doesn't have a title" do
+      scenario "it to show a meaningful link to the activity" do
+        activity = create(:activity, :at_identifier_step, organisation: organisation, title: nil)
+
+        visit organisation_path(organisation)
+
+        expect(page).to have_content("Untitled (#{activity.id})")
+      end
     end
 
     scenario "can go back to the previous page" do
