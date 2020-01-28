@@ -1,4 +1,4 @@
-RSpec.feature "Fund managers can edit an activity" do
+RSpec.feature "Fund managers can edit a fund level activity" do
   include ActivityHelper
 
   let(:organisation) { create(:organisation, name: "UKSA") }
@@ -20,7 +20,7 @@ RSpec.feature "Fund managers can edit an activity" do
       fill_in_activity_form
 
       # TODO: On Edit we shouldn't show a message that says "successfully created"
-      expect(page).to have_content I18n.t("form.activity.create.success")
+      expect(page).to have_content I18n.t("form.fund.create.success")
     end
 
     context "when the activity only has an identifier (and is incomplete)" do

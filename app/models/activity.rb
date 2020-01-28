@@ -15,6 +15,10 @@ class Activity < ApplicationRecord
 
   belongs_to :organisation
 
+  enum level: {
+    fund: "fund",
+  }
+
   def identifier_step?
     %w[identifier complete].include?(wizard_status)
   end

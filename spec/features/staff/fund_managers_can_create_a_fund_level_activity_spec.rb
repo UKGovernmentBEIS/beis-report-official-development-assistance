@@ -1,4 +1,4 @@
-RSpec.feature "Fund managers can create an activity" do
+RSpec.feature "Fund managers can create a fund level activity" do
   let!(:organisation) { create(:organisation, name: "UKSA") }
 
   context "when the user is not logged in" do
@@ -16,11 +16,11 @@ RSpec.feature "Fund managers can create an activity" do
       visit dashboard_path
       click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on(I18n.t("page_content.organisation.button.create_fund"))
 
       fill_in_activity_form
 
-      expect(page).to have_content I18n.t("form.activity.create.success")
+      expect(page).to have_content I18n.t("form.fund.create.success")
     end
 
     scenario "the activity form has some defaults" do
@@ -28,7 +28,7 @@ RSpec.feature "Fund managers can create an activity" do
       activity_presenter = ActivityPresenter.new(activity)
       visit organisation_path(organisation)
 
-      click_on I18n.t("page_content.organisation.button.create_activity")
+      click_on I18n.t("page_content.organisation.button.create_fund")
 
       visit activity_step_path(activity, :country)
       expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.recipient_region
@@ -43,7 +43,7 @@ RSpec.feature "Fund managers can create an activity" do
     context "validations" do
       scenario "validation errors work as expected" do
         visit organisation_path(organisation)
-        click_on I18n.t("page_content.organisation.button.create_activity")
+        click_on I18n.t("page_content.organisation.button.create_fund")
 
         # Don't provide an identifier
         click_button I18n.t("form.activity.submit")
@@ -126,7 +126,7 @@ RSpec.feature "Fund managers can create an activity" do
         visit dashboard_path
         click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
         click_on(organisation.name)
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on(I18n.t("page_content.organisation.button.create_fund"))
         click_on(I18n.t("generic.link.back")) # Back to the activity show page
         click_on(I18n.t("generic.link.back")) # Back to the organisation page
 
@@ -143,7 +143,7 @@ RSpec.feature "Fund managers can create an activity" do
       click_link I18n.t("page_content.dashboard.button.manage_organisations")
       click_on(organisation.name)
 
-      expect(page).to have_no_content(I18n.t("page_content.organisation.button.create_activity"))
+      expect(page).to have_no_content(I18n.t("page_content.organisation.button.create_fund"))
     end
 
     scenario "shows the 'unauthorised' error message to the user" do

@@ -16,6 +16,7 @@ FactoryBot.define do
     finance { "110" }
     aid_type { "A01" }
     tied_status { "3" }
+    level { :fund }
 
     wizard_status { "tied_status" } # this is the final step, aka "complete"
 
