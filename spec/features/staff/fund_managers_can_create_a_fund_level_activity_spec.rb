@@ -56,7 +56,7 @@ RSpec.feature "Fund managers can create a fund level activity" do
         # Don't provide a title and description
         click_button I18n.t("form.activity.submit")
 
-        expect(find_field("Title").value).to eq "Untitled activity"
+        expect(page).to have_content "Title can't be blank"
         expect(page).to have_content "Description can't be blank"
 
         fill_in "activity[title]", with: Faker::Lorem.word
@@ -118,19 +118,6 @@ RSpec.feature "Fund managers can create a fund level activity" do
         select "Untied", from: "activity[tied_status]"
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content Activity.last.title
-      end
-    end
-
-    context "when the title isn't provided" do
-      scenario "shows the user a default activity title rather than a link with no title" do
-        visit dashboard_path
-        click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
-        click_on(organisation.name)
-        click_on(I18n.t("page_content.organisation.button.create_fund"))
-        click_on(I18n.t("generic.link.back")) # Back to the activity show page
-        click_on(I18n.t("generic.link.back")) # Back to the organisation page
-
-        expect(page).to have_content("Untitled activity")
       end
     end
   end

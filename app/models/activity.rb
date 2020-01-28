@@ -11,8 +11,6 @@ class Activity < ApplicationRecord
   validates_uniqueness_of :identifier
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
 
-  attribute :title, :string, default: "Untitled activity"
-
   belongs_to :organisation
 
   enum level: {
