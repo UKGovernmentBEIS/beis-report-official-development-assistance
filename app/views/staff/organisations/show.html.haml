@@ -42,5 +42,6 @@
       - if policy(Activity).index?
         %ul.govuk-list.govuk-list--bullet
           - @activities.each do |activity|
+
             %li
-              = link_to activity.title, organisation_activity_path(activity.organisation, activity)
+              = link_to activity.display_title, organisation_activity_path(activity.organisation, activity)

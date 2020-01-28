@@ -1,11 +1,6 @@
 require "rails_helper"
 
 RSpec.describe Activity, type: :model do
-  it "sets the default value of title" do
-    activity = Activity.new
-    expect(activity.title).to eq "Untitled activity"
-  end
-
   describe "validations" do
     describe "constraints" do
       it { should validate_uniqueness_of(:identifier) }
