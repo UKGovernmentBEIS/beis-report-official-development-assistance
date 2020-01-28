@@ -1,4 +1,4 @@
-RSpec.feature "Fund managers can view activities on an organisation page" do
+RSpec.feature "Fund managers can view fund level activities" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
@@ -19,7 +19,7 @@ RSpec.feature "Fund managers can view activities on an organisation page" do
       visit organisations_path
       click_link organisation.name
 
-      expect(page).to have_content(I18n.t("page_content.organisation.activities"))
+      expect(page).to have_content(I18n.t("page_content.organisation.funds"))
       expect(page).to have_content activity.title
     end
 
@@ -44,7 +44,7 @@ RSpec.feature "Fund managers can view activities on an organisation page" do
       visit organisations_path
       click_link organisation.name
 
-      expect(page).not_to have_content(I18n.t("page_content.organisation.activities"))
+      expect(page).not_to have_content(I18n.t("page_content.organisation.funds"))
       expect(page).not_to have_content activity.title
     end
   end
