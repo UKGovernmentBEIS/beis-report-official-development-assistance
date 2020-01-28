@@ -106,7 +106,6 @@ module FormHelpers
 
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("form.activity.create.success")
     expect(page).to have_content identifier
     expect(page).to have_content title
     expect(page).to have_content description
