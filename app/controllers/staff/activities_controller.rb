@@ -22,14 +22,7 @@ class Staff::ActivitiesController < Staff::BaseController
   end
 
   def create
-    @activity = Activity.new
-    @activity.organisation = Organisation.find(organisation_id)
-    authorize @activity
-
-    @activity.wizard_status = "identifier"
-    @activity.save(validate: false)
-
-    redirect_to activity_step_path(@activity.id, @activity.wizard_status)
+    raise NotImplementedError
   end
 
   def id

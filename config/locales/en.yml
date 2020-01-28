@@ -15,6 +15,9 @@ en:
       submit: Continue
       update:
         success: Activity successfully updated
+    fund:
+      create:
+        success: Fund successfully created
     organisation:
       create:
         success: Organisation successfully created
@@ -134,7 +137,7 @@ en:
     organisation:
       activities: Activities
       button:
-        create_activity: Create activity
+        create_fund: Create fund
         edit: Edit organisation
       default_currency:
         label: Default currency

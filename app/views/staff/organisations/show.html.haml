@@ -37,8 +37,8 @@
         %h2.govuk-heading-m
           = t("page_content.organisation.activities")
       - if policy(Activity).create?
-        = form_tag(organisation_activities_path(@organisation_presenter), method: "post") do
-          = submit_tag t("page_content.organisation.button.create_activity"), class: "govuk-button"
+        = form_tag(organisation_funds_path(@organisation_presenter), method: "post") do
+          = submit_tag t("page_content.organisation.button.create_fund"), class: "govuk-button"
       - if policy(Activity).index?
         %ul.govuk-list.govuk-list--bullet
           - @activities.each do |activity|

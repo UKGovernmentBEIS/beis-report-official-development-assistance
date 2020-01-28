@@ -46,7 +46,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def finish_wizard_path
-    flash[:notice] = I18n.t("form.activity.create.success")
+    flash[:notice] = I18n.t("form.#{@activity.level}.create.success")
     organisation_activity_path(@activity.organisation, @activity)
   end
 end
