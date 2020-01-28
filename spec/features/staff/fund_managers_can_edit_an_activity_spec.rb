@@ -18,6 +18,9 @@ RSpec.feature "Fund managers can edit an activity" do
 
       # This helper fills in the form from step 1
       fill_in_activity_form
+
+      # TODO: On Edit we shouldn't show a message that says "successfully created"
+      expect(page).to have_content I18n.t("form.activity.create.success")
     end
 
     context "when the activity only has an identifier (and is incomplete)" do
