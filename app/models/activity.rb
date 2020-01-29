@@ -15,6 +15,7 @@ class Activity < ApplicationRecord
 
   enum level: {
     fund: "fund",
+    programme: "programme",
   }
 
   def identifier_step?
