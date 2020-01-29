@@ -5,17 +5,17 @@ class Staff::TransactionsController < Staff::BaseController
   include DateHelper
 
   def new
-    @fund = Fund.find(fund_id)
+    @activity = Activity.find(activity_id)
     @transaction = Transaction.new
-    @transaction.fund = @fund
+    @transaction.activity = @activity
 
     authorize @transaction
   end
 
   def create
-    @fund = Fund.find(fund_id)
+    @activity = Activity.find(activity_id)
     @transaction = Transaction.new(transaction_params)
-    @transaction.fund = @fund
+    @transaction.activity = @activity
     authorize @transaction
 
     @transaction.assign_attributes(transaction_params)
@@ -26,7 +26,7 @@ class Staff::TransactionsController < Staff::BaseController
 
     if @transaction.save
       flash[:notice] = I18n.t("form.transaction.create.success")
-      redirect_to organisation_fund_path(@fund.organisation, @fund)
+      redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :new
     end
@@ -36,13 +36,13 @@ class Staff::TransactionsController < Staff::BaseController
     @transaction = Transaction.find(id)
     authorize @transaction
 
-    @fund = Fund.find(fund_id)
+    @activity = Activity.find(activity_id)
   end
 
   def update
     @transaction = Transaction.find(id)
-    @fund = Fund.find(fund_id)
-    @transaction.fund = @fund
+    @activity = Activity.find(activity_id)
+    @transaction.activity = @activity
     authorize @transaction
 
     @transaction.assign_attributes(transaction_params)
@@ -53,20 +53,10 @@ class Staff::TransactionsController < Staff::BaseController
 
     if @transaction.save
       flash[:notice] = I18n.t("form.transaction.update.success")
-      redirect_to organisation_fund_path(@fund.organisation, @fund)
+      redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :edit
     end
-  end
-
-  def show
-    @transaction = Transaction.find(id)
-    authorize @transaction
-
-    @activity = Activity.find_by(hierarchy_id: @transaction.fund)
-
-    @provider = Organisation.find(@transaction.provider_id)
-    @receiver = Organisation.find(@transaction.receiver_id)
   end
 
   private
@@ -108,8 +98,8 @@ class Staff::TransactionsController < Staff::BaseController
     end
   end
 
-  def fund_id
-    params[:fund_id]
+  def activity_id
+    params[:activity_id]
   end
 
   def id

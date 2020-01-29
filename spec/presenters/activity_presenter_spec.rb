@@ -3,8 +3,6 @@
 require "rails_helper"
 
 RSpec.describe ActivityPresenter do
-  let(:activity) { build(:activity) }
-
   describe "#aid_type" do
     context "when the aid_type exists" do
       it "returns the locale value for the code" do
@@ -22,7 +20,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity does not have an aid_type set" do
       it "returns nil" do
-        activity = build(:fund_activity, :at_identifier_step)
+        activity = build(:activity, :at_identifier_step)
         result = described_class.new(activity)
         expect(result.aid_type).to be_nil
       end
@@ -146,6 +144,22 @@ RSpec.describe ActivityPresenter do
     it "returns 'add' if the desired attribute is not present" do
       activity = build(:activity, title: nil)
       expect(described_class.new(activity).call_to_action(:title)).to eql("add")
+    end
+  end
+
+  describe "#display_title" do
+    context "when the title is nil" do
+      it "returns a default display_title" do
+        activity = create(:activity, :at_identifier_step, title: nil)
+        expect(described_class.new(activity).display_title).to eql("Untitled (#{activity.id})")
+      end
+    end
+
+    context "when the title is present" do
+      it "returns the title" do
+        activity = build(:activity)
+        expect(described_class.new(activity).display_title).to eql(activity.title)
+      end
     end
   end
 end

@@ -1,12 +1,20 @@
-=content_for :page_title_prefix, t("page_title.activity.show", name: @activity_presenter.title)
+=content_for :page_title_prefix, t("page_title.activity.show", name: @activity.title)
 
-= link_to t("generic.link.back"), hierarchy_path_for(activity: @activity_presenter), class: "govuk-back-link"
+= link_to t("generic.link.back"), organisation_path(@activity.organisation), class: "govuk-back-link"
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
-        = @activity_presenter.title
+        = @activity.title
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      = render partial: "staff/shared/activities/activity", locals: { activity_presenter: @activity_presenter }
+      = render partial: "staff/shared/activities/activity", locals: { activity_presenter: ActivityPresenter.new(@activity) }
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("page_content.activity.transactions")
+
+      = link_to(I18n.t("page_content.transactions.button.create"), new_activity_transaction_path(@activity), class: "govuk-button")
+      = render partial: '/staff/shared/transactions/table', locals: { transactions: @transaction_presenters }

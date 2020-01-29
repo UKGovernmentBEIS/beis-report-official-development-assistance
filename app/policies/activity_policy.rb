@@ -1,40 +1,30 @@
 class ActivityPolicy < ApplicationPolicy
   def index?
-    true
+    user.administrator? || user.fund_manager?
   end
 
   def show?
-    user.administrator? ||
-      fund? && user.fund_manager?
+    user.administrator? || user.fund_manager?
   end
 
   def create?
-    user.administrator? ||
-      fund? && user.fund_manager?
+    user.administrator? || user.fund_manager?
   end
 
   def update?
-    user.administrator? ||
-      fund? && user.fund_manager?
+    user.administrator? || user.fund_manager?
   end
 
   def destroy?
-    user.administrator? ||
-      fund? && user.fund_manager?
-  end
-
-  private def fund?
-    record.hierarchy.is_a?(Fund)
+    user.administrator? || user.fund_manager?
   end
 
   class Scope < Scope
     def resolve
-      if user.administrator?
+      if user.administrator? || user.fund_manager?
         scope.all
       else
-        organisations = user.organisation_ids
-        funds = Fund.where(organisation_id: organisations)
-        scope.where(hierarchy: funds)
+        scope.none
       end
     end
   end

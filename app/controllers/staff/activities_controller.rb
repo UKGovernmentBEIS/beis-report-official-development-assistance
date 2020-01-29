@@ -1,43 +1,35 @@
 # frozen_string_literal: true
 
 class Staff::ActivitiesController < Staff::BaseController
-  include ActivityHelper
+  include Secured
+
+  def index
+    @activities = policy_scope(Activity)
+  end
 
   def show
     @activity = Activity.find(id)
     authorize @activity
 
-    @activity_presenter = ActivityPresenter.new(@activity)
+    @transactions = policy_scope(Transaction).where(activity: @activity)
 
     respond_to do |format|
-      format.html
+      format.html do
+        @transaction_presenters = @transactions.map { |transaction| TransactionPresenter.new(transaction) }
+      end
       format.xml
     end
   end
 
   def create
-    @activity = Activity.new
-    @activity.hierarchy = hierarchy
-    authorize @activity
-
-    @activity.wizard_status = "identifier"
-    @activity.save(validate: false)
-
-    redirect_to url_for([@activity.hierarchy, @activity, :steps])
+    raise NotImplementedError
   end
-
-  private
 
   def id
     params[:id]
   end
 
-  def fund_id
-    params[:fund_id]
-  end
-
-  def hierarchy
-    # TODO: Add support for new hierarchies here and/or move to a service
-    @hierarchy = authorize Fund.find(fund_id)
+  def organisation_id
+    params[:organisation_id]
   end
 end

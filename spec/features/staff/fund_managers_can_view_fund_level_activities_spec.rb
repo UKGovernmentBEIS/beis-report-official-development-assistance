@@ -1,4 +1,4 @@
-RSpec.feature "Fund managers can view funds on an organisation page" do
+RSpec.feature "Fund managers can view fund level activities" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
@@ -14,18 +14,28 @@ RSpec.feature "Fund managers can view funds on an organisation page" do
       authenticate!(user: create(:fund_manager, organisations: []))
     end
 
-    scenario "the user will see them on the organisation show page" do
-      fund = create(:fund, organisation: organisation)
+    scenario "the user will see activities on the organisation show page" do
+      activity = create(:activity, organisation: organisation)
       visit organisations_path
       click_link organisation.name
 
       expect(page).to have_content(I18n.t("page_content.organisation.funds"))
-      expect(page).to have_content fund.name
+      expect(page).to have_content activity.title
+    end
+
+    context "when the activity is partially complete and doesn't have a title" do
+      scenario "it to show a meaningful link to the activity" do
+        activity = create(:activity, :at_identifier_step, organisation: organisation, title: nil)
+
+        visit organisation_path(organisation)
+
+        expect(page).to have_content("Untitled (#{activity.id})")
+      end
     end
 
     scenario "can go back to the previous page" do
-      fund = create(:fund, organisation: organisation)
-      visit organisation_fund_path(organisation, fund)
+      activity = create(:activity, organisation: organisation)
+      visit organisation_activity_path(organisation, activity)
 
       click_on I18n.t("generic.link.back")
 
@@ -39,13 +49,13 @@ RSpec.feature "Fund managers can view funds on an organisation page" do
     end
 
     scenario "the user will not see them on the show page for their organisation" do
-      fund = create(:fund, organisation: organisation)
+      activity = create(:activity, organisation: organisation)
 
       visit organisations_path
       click_link organisation.name
 
       expect(page).not_to have_content(I18n.t("page_content.organisation.funds"))
-      expect(page).not_to have_content fund.name
+      expect(page).not_to have_content activity.title
     end
   end
 end

@@ -1,29 +1,27 @@
 RSpec.feature "Users can view an activity" do
-  let(:fund) { create(:fund, organisation: organisation) }
   let(:organisation) { create(:organisation) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
-      activity = create(:activity, hierarchy: fund)
+      activity = create(:activity)
 
       page.set_rack_session(userinfo: nil)
 
-      visit fund_activity_path(fund, activity)
+      visit organisation_activity_path(organisation, activity)
       expect(current_path).to eq(root_path)
     end
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation])) }
+    before { authenticate!(user: create(:fund_manager, organisations: [organisation])) }
 
-    scenario "a fund activity can be viewed" do
-      activity = create(:activity, hierarchy: fund)
+    scenario "an activity can be viewed" do
+      activity = create(:activity, organisation: organisation)
 
       visit dashboard_path
       click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
-      click_on(fund.name)
-
+      click_on(activity.title)
       activity_presenter = ActivityPresenter.new(activity)
 
       expect(page).to have_content activity_presenter.identifier
@@ -37,14 +35,14 @@ RSpec.feature "Users can view an activity" do
     end
 
     scenario "can go back to the previous page" do
-      activity = create(:activity, hierarchy: fund)
+      activity = create(:activity, organisation: organisation)
 
-      visit fund_activity_path(fund, activity)
+      visit organisation_activity_path(organisation, activity)
 
       click_on I18n.t("generic.link.back")
 
       expect(page).to have_current_path(
-        organisation_fund_path(organisation, fund)
+        organisation_path(organisation)
       )
     end
   end
@@ -52,8 +50,10 @@ RSpec.feature "Users can view an activity" do
   context "when the user is a delivery_partner" do
     before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation])) }
 
-    scenario "the user cannot view the fund activity" do
-      visit organisation_fund_path(organisation, fund)
+    scenario "the user cannot view the activity" do
+      activity = create(:activity, organisation: organisation)
+
+      visit organisation_activity_path(organisation, activity)
 
       expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
     end

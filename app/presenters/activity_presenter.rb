@@ -39,4 +39,9 @@ class ActivityPresenter < SimpleDelegator
   def call_to_action(attribute)
     send(attribute).present? ? "edit" : "add"
   end
+
+  def display_title
+    return "Untitled (#{id})" if title.nil?
+    title
+  end
 end

@@ -6,17 +6,18 @@ en:
     activity:
       create:
         success: Activity successfully created
-      day: Day
-      month: Month
+      date:
+        day: Day
+        month: Month
+        year: Year
+      organisation:
+        hint: The organisation this activity is associated with
       submit: Continue
-      year: Year
+      update:
+        success: Activity successfully updated
     fund:
       create:
         success: Fund successfully created
-      organisation:
-        hint: The organisation this fund is associated with
-      update:
-        success: Fund successfully updated
     organisation:
       create:
         success: Organisation successfully created
@@ -79,9 +80,11 @@ en:
       welcome: "%{name}"
   page_content:
     activities:
+      button:
+        create: Create activity
       cta:
-        html: To create a new Activity, first choose the %{funds_link} you wish to create the Activity under
-      fund: Fund
+        html: To create a new Activity, first choose the %{organisations_link} you wish to create the Activity under
+      organisation: Organisation
     activity:
       actual_end_date:
         label: Actual end date
@@ -99,6 +102,8 @@ en:
         label: Flow
       identitfier:
         label: Identifier
+      organisation:
+        label: Organisation
       planned_end_date:
         label: Planned end date
       planned_start_date:
@@ -113,6 +118,7 @@ en:
         label: Tied status
       title:
         label: Title
+      transactions: Transactions
     dashboard:
       button:
         manage_organisations: Manage organisations
@@ -128,23 +134,6 @@ en:
       not_authorised:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
-    fund:
-      activity: Activity
-      button:
-        create_activity: Add %{activity} information
-        create_transaction: Create transaction
-        edit: Edit fund
-      name:
-        label: Name
-      organisation:
-        label: Organisation
-      transactions: Transactions
-    funds:
-      button:
-        create: Create fund
-      cta:
-        html: To create a new Fund, first choose the %{organisations_link} you wish to create the Fund under
-      organisation: Organisation
     organisation:
       button:
         create_fund: Create fund
@@ -173,8 +162,6 @@ en:
           link: you can make one now
   page_title:
     activity:
-      index: Activities
-      new: Create activity
       show: Activity %{name}
     activity_form:
       show:
@@ -193,11 +180,6 @@ en:
       auth0:
         failed: Sign in failed
       not_authorised: You are not authorised
-    fund:
-      edit: Edit fund
-      index: Funds
-      new: Create fund
-      show: Fund %{name}
     home: Home
     organisation:
       edit: Edit organisation

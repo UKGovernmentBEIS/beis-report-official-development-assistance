@@ -3,9 +3,9 @@ RSpec.feature "Users can create a transaction" do
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
-      fund = create(:fund, organisation: organisation)
+      activity = create(:activity, organisation: organisation)
       page.set_rack_session(userinfo: nil)
-      visit organisation_fund_path(organisation, fund)
+      visit organisation_activity_path(organisation, activity)
       expect(current_path).to eq(root_path)
     end
   end
@@ -13,14 +13,14 @@ RSpec.feature "Users can create a transaction" do
   context "when the user is a fund_manager" do
     before { authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation])) }
 
-    scenario "successfully creates a transaction on a fund" do
-      fund = create(:fund, organisation: organisation)
+    scenario "successfully creates a transaction on a activity" do
+      activity = create(:activity, organisation: organisation)
 
       visit dashboard_path
       click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
       click_on(organisation.name)
-      click_on(fund.name)
+      click_on(activity.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -30,13 +30,13 @@ RSpec.feature "Users can create a transaction" do
     end
 
     scenario "validations" do
-      fund = create(:fund, organisation: organisation)
+      activity = create(:activity, organisation: organisation)
 
       visit dashboard_path
       click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
       click_on(organisation.name)
-      click_on(fund.name)
+      click_on(activity.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))
       click_on(I18n.t("generic.button.submit"))
@@ -52,13 +52,13 @@ RSpec.feature "Users can create a transaction" do
 
     context "Value number validation" do
       scenario "Value must be between 1 and 99,999,999,999" do
-        fund = create(:fund, organisation: organisation)
+        activity = create(:activity, organisation: organisation)
 
         visit dashboard_path
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(activity.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -77,13 +77,13 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes a pound sign" do
-        fund = create(:fund, organisation: organisation)
+        activity = create(:activity, organisation: organisation)
 
         visit dashboard_path
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(activity.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -93,13 +93,13 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes alphabetical characters" do
-        fund = create(:fund, organisation: organisation)
+        activity = create(:activity, organisation: organisation)
 
         visit dashboard_path
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(activity.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -109,13 +109,13 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes decimal places" do
-        fund = create(:fund, organisation: organisation)
+        activity = create(:activity, organisation: organisation)
 
         visit dashboard_path
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(activity.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -125,13 +125,13 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes commas" do
-        fund = create(:fund, organisation: organisation)
+        activity = create(:activity, organisation: organisation)
 
         visit dashboard_path
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(activity.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -143,13 +143,13 @@ RSpec.feature "Users can create a transaction" do
 
     context "Date validation" do
       scenario "When the date is more than 25 years in the future" do
-        fund = create(:fund, organisation: organisation)
+        activity = create(:activity, organisation: organisation)
 
         visit dashboard_path
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(activity.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -159,13 +159,13 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the date is more than 10 years in the past" do
-        fund = create(:fund, organisation: organisation)
+        activity = create(:activity, organisation: organisation)
 
         visit dashboard_path
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(activity.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -175,13 +175,13 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the date is nil" do
-        fund = create(:fund, organisation: organisation)
+        activity = create(:activity, organisation: organisation)
 
         visit dashboard_path
         click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
         click_on(organisation.name)
-        click_on(fund.name)
+        click_on(activity.title)
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
@@ -197,10 +197,10 @@ RSpec.feature "Users can create a transaction" do
     context "when the user is a delivery_partner" do
       before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation])) }
 
-      scenario "cannot create an transaction that belongs to a fund activity" do
-        fund = create(:fund, organisation: organisation)
+      scenario "cannot create an transaction that belongs to an activity" do
+        activity = create(:activity, organisation: organisation)
 
-        visit new_fund_transaction_path(fund)
+        visit new_activity_transaction_path(activity)
 
         expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
       end

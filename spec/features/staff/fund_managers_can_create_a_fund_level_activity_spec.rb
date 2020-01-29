@@ -1,54 +1,49 @@
-RSpec.feature "Users can create an activity" do
-  let(:organisation) { create(:organisation, name: "UKSA") }
+RSpec.feature "Fund managers can create a fund level activity" do
+  let!(:organisation) { create(:organisation, name: "UKSA") }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
-      fund = create(:fund, organisation: organisation)
-      activity = create(:activity, hierarchy: fund)
       page.set_rack_session(userinfo: nil)
-      visit fund_activity_step_path(fund, activity, id: :identifier)
+      visit activity_step_path(double(Activity, id: "123"), :identifier)
       expect(current_path).to eq(root_path)
     end
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation])) }
+    before { authenticate!(user: create(:fund_manager, organisations: [])) }
 
-    scenario "successfully creates a fund activity with all optional information" do
-      fund = create(:fund, organisation: organisation)
-
+    scenario "successfully create a activity" do
       visit dashboard_path
-      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+      click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
-      click_on(fund.name)
-
-      click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
+      click_on(I18n.t("page_content.organisation.button.create_fund"))
 
       fill_in_activity_form
+
+      expect(page).to have_content I18n.t("form.fund.create.success")
     end
 
-    scenario "the activity form has some defaults for funds" do
-      fund = create(:fund, organisation: organisation)
-      visit organisation_fund_path(organisation, fund)
+    scenario "the activity form has some defaults" do
+      activity = create(:activity, organisation: organisation)
+      activity_presenter = ActivityPresenter.new(activity)
+      visit organisation_path(organisation)
 
-      click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
-      activity = Activity.last
+      click_on I18n.t("page_content.organisation.button.create_fund")
 
-      visit fund_activity_steps_path(fund_id: fund, activity_id: activity, id: :country)
-      expect(page.find("option[@selected = 'selected']").text).to eq("Developing countries, unspecified")
+      visit activity_step_path(activity, :country)
+      expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.recipient_region
 
-      visit fund_activity_steps_path(fund_id: fund, activity_id: activity, id: :flow)
-      expect(page.find("option[@selected = 'selected']").text).to eq("ODA")
+      visit activity_step_path(activity, :flow)
+      expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.flow
 
-      visit fund_activity_steps_path(fund_id: fund, activity_id: activity, id: :tied_status)
-      expect(page.find("option[@selected = 'selected']").text).to eq("Untied")
+      visit activity_step_path(activity, :tied_status)
+      expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.tied_status
     end
 
     context "validations" do
       scenario "validation errors work as expected" do
-        fund = create(:fund, organisation: organisation)
-        visit organisation_fund_path(organisation, fund)
-        click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
+        visit organisation_path(organisation)
+        click_on I18n.t("page_content.organisation.button.create_fund")
 
         # Don't provide an identifier
         click_button I18n.t("form.activity.submit")
@@ -60,6 +55,7 @@ RSpec.feature "Users can create an activity" do
 
         # Don't provide a title and description
         click_button I18n.t("form.activity.submit")
+
         expect(page).to have_content "Title can't be blank"
         expect(page).to have_content "Description can't be blank"
 
@@ -121,36 +117,29 @@ RSpec.feature "Users can create an activity" do
         # Tied status has a default and can't be set to blank so we skip
         select "Untied", from: "activity[tied_status]"
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content fund.name
+        expect(page).to have_content Activity.last.title
       end
-    end
-
-    scenario "can go back to the previous page" do
-      fund = create(:fund, organisation: organisation)
-      visit organisation_fund_path(organisation, fund)
-      click_on I18n.t("page_content.fund.button.create_activity", activity: "fund")
-
-      click_on I18n.t("generic.link.back")
-
-      expect(page).to have_current_path(organisation_fund_path(fund.id, organisation_id: organisation.id))
     end
   end
 
-  # TODO: When we come to create different types of activities for programmes etc
-  # These journeys will start off the same but may eventually diverge with different
-  # default form values etc. Bear this in mind when thinking about reuse.
   context "when the user is a delivery_partner" do
     before { authenticate!(user: build_stubbed(:delivery_partner, organisations: [organisation])) }
 
-    # Create and Edit flows use the same URL, protecting it tests both
-    # 'create?' and 'update?' actions in the ActivityPolicy
-    scenario "cannot create an activity that belongs to a fund" do
-      fund = create(:fund, organisation: organisation)
-      activity = create(:activity, hierarchy: fund)
+    scenario "hides the 'Create activity' button" do
+      visit dashboard_path
+      click_link I18n.t("page_content.dashboard.button.manage_organisations")
+      click_on(organisation.name)
 
-      visit fund_activity_step_path(fund, activity, id: :identifier)
+      expect(page).to have_no_content(I18n.t("page_content.organisation.button.create_fund"))
+    end
 
-      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
+    scenario "shows the 'unauthorised' error message to the user" do
+      another_organisations_activity = create(:activity)
+
+      visit activity_step_path(another_organisations_activity, :identifier)
+
+      expect(page).to have_content(I18n.t("pundit.default"))
+      expect(page).to have_http_status(:unauthorized)
     end
   end
 end

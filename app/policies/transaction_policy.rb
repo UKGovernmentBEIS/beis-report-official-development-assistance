@@ -5,26 +5,26 @@ class TransactionPolicy < ApplicationPolicy
 
   def show?
     user.administrator? ||
-      fund? && user.fund_manager?
+      activity? && user.fund_manager?
   end
 
   def create?
     user.administrator? ||
-      fund? && user.fund_manager?
+      activity? && user.fund_manager?
   end
 
   def update?
     user.administrator? ||
-      fund? && user.fund_manager?
+      activity? && user.fund_manager?
   end
 
   def destroy?
     user.administrator? ||
-      fund? && user.fund_manager?
+      activity? && user.fund_manager?
   end
 
-  private def fund?
-    record.fund_id.present?
+  private def activity?
+    record.activity_id.present?
   end
 
   class Scope < Scope
@@ -33,8 +33,8 @@ class TransactionPolicy < ApplicationPolicy
         scope.all
       else
         organisations = user.organisation_ids
-        funds = Fund.where(organisation_id: organisations)
-        scope.where(fund_id: funds)
+        activities = Activity.where(organisation_id: organisations)
+        scope.where(activity_id: activities)
       end
     end
   end

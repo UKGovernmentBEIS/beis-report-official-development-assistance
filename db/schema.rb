@@ -10,13 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_17_160336) do
+ActiveRecord::Schema.define(version: 2020_01_28_155455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "activities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "organisation_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "identifier"
     t.string "sector"
     t.string "title"
@@ -31,20 +34,10 @@ ActiveRecord::Schema.define(version: 2019_12_17_160336) do
     t.string "finance"
     t.string "aid_type"
     t.string "tied_status"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "hierarchy_type"
-    t.uuid "hierarchy_id"
     t.string "wizard_status"
-    t.index ["hierarchy_type", "hierarchy_id"], name: "index_activities_on_hierarchy_type_and_hierarchy_id"
-  end
-
-  create_table "funds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.uuid "organisation_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["organisation_id"], name: "index_funds_on_organisation_id"
+    t.string "level"
+    t.index ["level"], name: "index_activities_on_level"
+    t.index ["organisation_id"], name: "index_activities_on_organisation_id"
   end
 
   create_table "organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -71,12 +64,12 @@ ActiveRecord::Schema.define(version: 2019_12_17_160336) do
     t.decimal "value", precision: 13, scale: 2
     t.string "disbursement_channel"
     t.string "currency"
-    t.uuid "fund_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "provider_id"
     t.uuid "receiver_id"
-    t.index ["fund_id"], name: "index_transactions_on_fund_id"
+    t.uuid "activity_id"
+    t.index ["activity_id"], name: "index_transactions_on_activity_id"
     t.index ["provider_id"], name: "index_transactions_on_provider_id"
     t.index ["receiver_id"], name: "index_transactions_on_receiver_id"
   end

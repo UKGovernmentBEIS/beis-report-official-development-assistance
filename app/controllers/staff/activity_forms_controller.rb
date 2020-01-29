@@ -18,16 +18,8 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   steps(*FORM_STEPS)
 
-  def index
-    skip_policy_scope
-    authorize :activity, :index?
-
-    super
-  end
-
   def show
     @page_title = t("page_title.activity_form.show.#{step}")
-
     @activity = Activity.find(params[:activity_id])
     authorize @activity
 
@@ -36,7 +28,6 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def update
     @page_title = t("page_title.activity_form.show.#{step}")
-
     @activity = Activity.find(params[:activity_id])
     authorize @activity
 
@@ -55,7 +46,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def finish_wizard_path
-    flash[:notice] = I18n.t("form.activity.create.success")
-    hierarchy_path_for(activity: @activity)
+    flash[:notice] = I18n.t("form.#{@activity.level}.create.success")
+    organisation_activity_path(@activity.organisation, @activity)
   end
 end
