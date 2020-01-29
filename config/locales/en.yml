@@ -2,6 +2,9 @@
 en:
   app:
     title: Report Official Development Assistance
+  date:
+    formats:
+      default: "%-d %b %Y"
   form:
     activity:
       create:

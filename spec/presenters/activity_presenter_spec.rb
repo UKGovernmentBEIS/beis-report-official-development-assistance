@@ -63,6 +63,78 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#planned_start_date" do
+    context "when the planned start date exists" do
+      it "returns a human readable date" do
+        activity = build(:activity, planned_start_date: "2020-02-25")
+        result = described_class.new(activity).planned_start_date
+        expect(result).to eql("25 Feb 2020")
+      end
+    end
+
+    context "when the planned start date does not exist" do
+      it "returns nil" do
+        activity = build(:activity, planned_start_date: nil)
+        result = described_class.new(activity)
+        expect(result.planned_start_date).to be_nil
+      end
+    end
+  end
+
+  describe "#planned_end_date" do
+    context "when the planned end date exists" do
+      it "returns a human readable date" do
+        activity = build(:activity, planned_end_date: "2021-04-03")
+        result = described_class.new(activity).planned_end_date
+        expect(result).to eql("3 Apr 2021")
+      end
+    end
+
+    context "when the planned end date does not exist" do
+      it "returns nil" do
+        activity = build(:activity, planned_end_date: nil)
+        result = described_class.new(activity)
+        expect(result.planned_end_date).to be_nil
+      end
+    end
+  end
+
+  describe "#actual_start_date" do
+    context "when the actual start date exists" do
+      it "returns a human readable date" do
+        activity = build(:activity, actual_start_date: "2020-11-06")
+        result = described_class.new(activity).actual_start_date
+        expect(result).to eql("6 Nov 2020")
+      end
+    end
+
+    context "when the actual start date does not exist" do
+      it "returns nil" do
+        activity = build(:activity, actual_start_date: nil)
+        result = described_class.new(activity)
+        expect(result.actual_start_date).to be_nil
+      end
+    end
+  end
+
+  describe "#actual_end_date" do
+    context "when the actual end date exists" do
+      it "returns a human readable date" do
+        activity = build(:activity, actual_end_date: "2029-05-27")
+        result = described_class.new(activity).actual_end_date
+        expect(result).to eql("27 May 2029")
+      end
+    end
+
+    context "when the actual end date does not exist" do
+      it "returns nil" do
+        activity = build(:activity, actual_end_date: nil)
+        result = described_class.new(activity)
+        expect(result.actual_end_date).to be_nil
+      end
+    end
+  end
+
   describe "#recipient_region" do
     context "when the aid_type recipient_region" do
       it "returns the locale value for the code" do
