@@ -11,60 +11,101 @@ module FormHelpers
     planned_end_date_day: "1",
     planned_end_date_month: "1",
     planned_end_date_year: "2021",
+    actual_start_date_day: "2",
+    actual_start_date_month: "2",
+    actual_start_date_year: "2022",
+    actual_end_date_day: "2",
+    actual_end_date_month: "2",
+    actual_end_date_year: "2023",
     recipient_region: "Developing countries, unspecified",
     flow: "ODA",
     finance: "Standard grant",
     aid_type: "General budget support",
     tied_status: "Untied"
   )
+
     expect(page).to have_content I18n.t("page_title.activity_form.show.identifier")
+    expect(page).to have_content I18n.t("activerecord.attributes.activity.identifier")
+    expect(page).to have_content I18n.t("helpers.hint.activity.identifier")
     fill_in "activity[identifier]", with: identifier
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.purpose")
+    expect(page).to have_content I18n.t("activerecord.attributes.activity.title")
+    expect(page).to have_content I18n.t("activerecord.attributes.activity.description")
     fill_in "activity[title]", with: title
     fill_in "activity[description]", with: description
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.sector")
+    expect(page).to have_content I18n.t("activerecord.attributes.activity.sector")
+    expect(page).to have_content "Classify the purpose of this activity. Please provide the sector appropriate to you from this list."
     select sector, from: "activity[sector]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.status")
+    expect(page).to have_content I18n.t("activerecord.attributes.activity.status")
+    expect(page).to have_content "IATI activity status. See IATI for detailed descriptions."
+
     select status, from: "activity[status]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.dates")
+
+    expect(page).to have_content I18n.t("helpers.fieldset.activity.planned_start_date")
     fill_in "activity[planned_start_date(3i)]", with: planned_start_date_day
     fill_in "activity[planned_start_date(2i)]", with: planned_start_date_month
     fill_in "activity[planned_start_date(1i)]", with: planned_start_date_year
+
+    expect(page).to have_content I18n.t("helpers.fieldset.activity.planned_end_date")
     fill_in "activity[planned_end_date(3i)]", with: planned_end_date_day
     fill_in "activity[planned_end_date(2i)]", with: planned_end_date_month
     fill_in "activity[planned_end_date(1i)]", with: planned_end_date_year
+
+    expect(page).to have_content I18n.t("helpers.fieldset.activity.actual_start_date")
+    fill_in "activity[actual_start_date(3i)]", with: actual_start_date_day
+    fill_in "activity[actual_start_date(2i)]", with: actual_start_date_month
+    fill_in "activity[actual_start_date(1i)]", with: actual_start_date_year
+
+    expect(page).to have_content I18n.t("helpers.fieldset.activity.actual_end_date")
+    fill_in "activity[actual_end_date(3i)]", with: actual_end_date_day
+    fill_in "activity[actual_end_date(2i)]", with: actual_end_date_month
+    fill_in "activity[actual_end_date(1i)]", with: actual_end_date_year
+
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.country")
+    expect(page).to have_content I18n.t("activerecord.attributes.activity.recipient_region")
+    expect(page).to have_content "A supranational geopolitical region that will benefit from this activity. Find the region code from the IATI region list."
     select recipient_region, from: "activity[recipient_region]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
+    expect(page).to have_content I18n.t("activerecord.attributes.activity.flow")
+    expect(page).to have_content "IATI descriptions of each flow type can be found here."
     select flow, from: "activity[flow]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.finance")
+    expect(page).to have_content I18n.t("activerecord.attributes.activity.finance")
+    expect(page).to have_content I18n.t("helpers.hint.activity.finance")
     select finance, from: "activity[finance]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.aid_type")
+    expect(page).to have_content I18n.t("activerecord.attributes.activity.aid_type")
+    expect(page).to have_content "A code for the vocabulary aid-type classifications. IATI descriptions can be found here."
     select aid_type, from: "activity[aid_type]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.tied_status")
+    expect(page).to have_content I18n.t("activerecord.attributes.activity.tied_status")
+    expect(page).to have_content "See the IATI tied status page for descriptions."
+
     select tied_status, from: "activity[tied_status]"
 
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("form.activity.create.success")
     expect(page).to have_content identifier
     expect(page).to have_content title
     expect(page).to have_content description

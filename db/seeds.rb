@@ -24,6 +24,6 @@ if Rails.env.development?
   user.organisations << organisation
   user.save
 
-  fund_params = FactoryBot.build(:fund, name: "GCRF", organisation: organisation).attributes
-  Fund.find_or_create_by(fund_params)
+  activity_params = FactoryBot.build(:activity, title: "GCRF", organisation: organisation).attributes
+  Activity.find_or_create_by(activity_params)
 end

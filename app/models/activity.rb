@@ -1,5 +1,4 @@
 class Activity < ApplicationRecord
-  belongs_to :hierarchy, polymorphic: true
   validates :identifier, presence: true, if: :identifier_step?
   validates :title, :description, presence: true, if: :purpose_step?
   validates :sector, presence: true, if: :sector_step?
@@ -11,6 +10,12 @@ class Activity < ApplicationRecord
   validates :tied_status, presence: true, if: :tied_status_step?
   validates_uniqueness_of :identifier
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
+
+  belongs_to :organisation
+
+  enum level: {
+    fund: "fund",
+  }
 
   def identifier_step?
     %w[identifier complete].include?(wizard_status)
@@ -50,9 +55,5 @@ class Activity < ApplicationRecord
 
   def default_currency
     organisation.default_currency
-  end
-
-  def organisation
-    hierarchy.organisation
   end
 end

@@ -1,15 +1,11 @@
 require "rails_helper"
 
 RSpec.describe Activity, type: :model do
-  describe "relations" do
-    it { should belong_to(:hierarchy) }
-  end
-
-  describe "constraints" do
-    it { should validate_uniqueness_of(:identifier) }
-  end
-
   describe "validations" do
+    describe "constraints" do
+      it { should validate_uniqueness_of(:identifier) }
+    end
+
     context "when title is blank" do
       subject { build(:activity, title: nil, wizard_status: :purpose) }
       it { should validate_presence_of(:title) }
@@ -51,21 +47,21 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when planned_start_date is not blank" do
-      let(:fund) { build(:fund) }
+      let(:activity) { build(:activity) }
 
       it "does not allow a planned_start_date more than 10 years ago" do
-        activity = build(:activity, hierarchy: fund, planned_start_date: 11.years.ago)
+        activity = build(:activity, planned_start_date: 11.years.ago)
         expect(activity.valid?).to be_falsey
         expect(activity.errors[:planned_start_date]).to include "Date must be between 10 years ago and 25 years in the future"
       end
 
       it "does not allow a planned_start_date more than 25 years in the future" do
-        activity = build(:activity, hierarchy: fund, planned_start_date: 26.years.from_now)
+        activity = build(:activity, planned_start_date: 26.years.from_now)
         expect(activity.valid?).to be_falsey
       end
 
       it "allows a planned_start_date between 10 years ago and 25 years in the future" do
-        activity = build(:activity, hierarchy: fund, planned_start_date: Date.today)
+        activity = build(:activity, planned_start_date: Date.today)
         expect(activity.valid?).to be_truthy
       end
     end
@@ -105,5 +101,9 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:finance) }
       it { should validate_presence_of(:tied_status) }
     end
+  end
+
+  describe "relations" do
+    it { should belong_to(:organisation) }
   end
 end

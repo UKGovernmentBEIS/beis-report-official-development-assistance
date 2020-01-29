@@ -1,14 +1,13 @@
 # TODO: This data will eventually need to be public so that IATI can retrieve it
-RSpec.feature "Fund managers can view a fund as XML" do
-  context "when the user belongs to the organisation the fund is part of" do
+RSpec.feature "Fund managers can view an activity as XML" do
+  context "when the user belongs to the organisation the activity is part of" do
     it "returns an XML response" do
       organisation = create(:organisation)
-      fund = create(:fund, organisation: organisation)
-      activity = create(:activity, hierarchy: fund)
-      transaction = create(:transaction, fund: fund)
+      activity = create(:activity, organisation: organisation, identifier: "IND-ENT-IFIER")
+      transaction = create(:transaction, activity: activity)
       authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation]))
 
-      visit organisation_fund_path(organisation, fund, format: :xml)
+      visit organisation_activity_path(organisation, activity, format: :xml)
 
       xml = Nokogiri::XML::Document.parse(page.body)
 

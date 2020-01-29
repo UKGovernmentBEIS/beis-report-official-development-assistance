@@ -16,40 +16,56 @@ FactoryBot.define do
     finance { "110" }
     aid_type { "A01" }
     tied_status { "3" }
+    level { :fund }
 
     wizard_status { "tied_status" } # this is the final step, aka "complete"
 
-    factory :fund_activity do
-      association :hierarchy, factory: :fund
+    association :organisation, factory: :organisation
 
-      trait :at_identifier_step do
-        wizard_status { "identifier" }
-        title { nil }
-        description { nil }
-        sector { nil }
-        status { nil }
-        planned_start_date { nil }
-        planned_end_date { nil }
-        actual_start_date { nil }
-        actual_end_date { nil }
-        recipient_region { nil }
-        flow { nil }
-        finance { nil }
-        aid_type { nil }
-        tied_status { nil }
-      end
-
-      trait :at_country_step do
-        wizard_status { "country" }
-        flow { nil }
-        finance { nil }
-        aid_type { nil }
-        tied_status { nil }
-      end
-
-      trait :nil_wizard_status do
-        wizard_status { nil }
-      end
+    trait :at_purpose_step do
+      wizard_status { "identifier" }
+      title { nil }
+      description { nil }
+      sector { nil }
+      status { nil }
+      planned_start_date { nil }
+      planned_end_date { nil }
+      actual_start_date { nil }
+      actual_end_date { nil }
+      recipient_region { nil }
+      flow { nil }
+      finance { nil }
+      aid_type { nil }
+      tied_status { nil }
     end
+  end
+
+  trait :at_identifier_step do
+    wizard_status { "identifier" }
+    title { nil }
+    description { nil }
+    sector { nil }
+    status { nil }
+    planned_start_date { nil }
+    planned_end_date { nil }
+    actual_start_date { nil }
+    actual_end_date { nil }
+    recipient_region { nil }
+    flow { nil }
+    finance { nil }
+    aid_type { nil }
+    tied_status { nil }
+  end
+
+  trait :at_country_step do
+    wizard_status { "country" }
+    flow { nil }
+    finance { nil }
+    aid_type { nil }
+    tied_status { nil }
+  end
+
+  trait :nil_wizard_status do
+    wizard_status { nil }
   end
 end

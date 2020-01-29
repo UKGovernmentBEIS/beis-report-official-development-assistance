@@ -1,6 +1,5 @@
 class Transaction < ApplicationRecord
-  # TODO Make fund association polymorphic
-  belongs_to :fund
+  belongs_to :activity
   belongs_to :provider, foreign_key: :provider_id, class_name: "Organisation"
   belongs_to :receiver, foreign_key: :receiver_id, class_name: "Organisation"
   validates_presence_of :reference,
