@@ -1,6 +1,16 @@
 require "rails_helper"
 
 RSpec.describe Activity, type: :model do
+  describe "scopes" do
+    describe ".funds" do
+      it "only returns fund level activities" do
+        fund_activity = create(:activity, level: :fund)
+        _other_activiy = create(:activity, level: :programme)
+
+        expect(Activity.funds).to eq [fund_activity]
+      end
+    end
+  end
   describe "validations" do
     describe "constraints" do
       it { should validate_uniqueness_of(:identifier) }
