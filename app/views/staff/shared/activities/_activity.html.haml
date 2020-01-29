@@ -55,7 +55,7 @@
     %dt.govuk-summary-list__key
       = t("page_content.activity.planned_start_date.label")
     %dd.govuk-summary-list__value
-      = l(activity_presenter.planned_start_date)
+      = activity_presenter.planned_start_date
     %dd.govuk-summary-list__actions
       - if step_is_complete_or_next?(activity: activity_presenter, step: :dates)
         = link_to t("generic.link.#{activity_presenter.call_to_action(:planned_start_date)}"), activity_step_path(activity_presenter, :dates), class: "govuk-link"
@@ -65,7 +65,7 @@
     %dt.govuk-summary-list__key
       = t("page_content.activity.planned_end_date.label")
     %dd.govuk-summary-list__value
-      = l(activity_presenter.planned_end_date)
+      = activity_presenter.planned_end_date
     %dd.govuk-summary-list__actions
       - if step_is_complete_or_next?(activity: activity_presenter, step: :dates)
         = link_to t("generic.link.#{activity_presenter.call_to_action(:planned_start_date)}"), activity_step_path(activity_presenter, :dates), class: "govuk-link"
@@ -75,7 +75,7 @@
     %dt.govuk-summary-list__key
       = t("page_content.activity.actual_start_date.label")
     %dd.govuk-summary-list__value
-      = l(activity_presenter.actual_start_date)
+      = activity_presenter.actual_start_date
     %dd.govuk-summary-list__actions
       - if step_is_complete_or_next?(activity: activity_presenter, step: :dates)
         = link_to t("generic.link.#{activity_presenter.call_to_action(:planned_start_date)}"), activity_step_path(activity_presenter, :dates), class: "govuk-link"
@@ -85,7 +85,7 @@
     %dt.govuk-summary-list__key
       = t("page_content.activity.actual_end_date.label")
     %dd.govuk-summary-list__value
-      = l(activity_presenter.actual_end_date)
+      = activity_presenter.actual_end_date
     %dd.govuk-summary-list__actions
       - if step_is_complete_or_next?(activity: activity_presenter, step: :dates)
         = link_to t("generic.link.#{activity_presenter.call_to_action(:planned_start_date)}"), activity_step_path(activity_presenter, :dates), class: "govuk-link"
