@@ -9,7 +9,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
 
     it "localises dates as expected" do
-      expect(helper.l(Date.today)).to eq(Date.today.strftime("%Y-%m-%d"))
+      expect(helper.l(Date.today)).to eq(Date.today.strftime("%-d %b %Y"))
     end
   end
 
