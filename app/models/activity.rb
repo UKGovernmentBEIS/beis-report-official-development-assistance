@@ -18,6 +18,8 @@ class Activity < ApplicationRecord
     programme: "programme",
   }
 
+  scope :funds, -> { where(level: :fund) }
+
   def identifier_step?
     %w[identifier complete].include?(wizard_status)
   end
