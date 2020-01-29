@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :organisations, except: [:destroy] do
       resources :activities, except: [:destroy]
       resources :funds, only: [:create]
+      resources :programmes, only: [:create]
     end
 
     concern :transactionable do
