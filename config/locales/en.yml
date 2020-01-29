@@ -21,6 +21,9 @@ en:
     fund:
       create:
         success: Fund successfully created
+    programme:
+      create:
+        success: Programme successfully created
     organisation:
       create:
         success: Organisation successfully created
@@ -143,6 +146,7 @@ en:
     organisation:
       button:
         create_fund: Create fund
+        create_programme: Create programme
         edit: Edit organisation
       default_currency:
         label: Default currency
@@ -151,6 +155,7 @@ en:
         label: Language code
       name:
         label: Name
+      programmes: Programmes
       type:
         label: Type
     organisations:
