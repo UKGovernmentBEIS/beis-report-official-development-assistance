@@ -21,9 +21,6 @@ en:
     fund:
       create:
         success: Fund successfully created
-    programme:
-      create:
-        success: Programme successfully created
     organisation:
       create:
         success: Organisation successfully created
@@ -39,6 +36,9 @@ en:
         label: Organisation type
       update:
         success: Organisation successfully updated
+    programme:
+      create:
+        success: Programme successfully created
     transaction:
       create:
         success: Transaction successfully created

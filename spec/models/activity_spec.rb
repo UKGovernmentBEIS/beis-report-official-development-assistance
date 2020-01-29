@@ -10,7 +10,17 @@ RSpec.describe Activity, type: :model do
         expect(Activity.funds).to eq [fund_activity]
       end
     end
+
+    describe ".programmes" do
+      it "only returns programme level activities" do
+        programme_activity = create(:activity, level: :programme)
+        _other_activiy = create(:activity, level: :fund)
+
+        expect(Activity.programmes).to eq [programme_activity]
+      end
+    end
   end
+
   describe "validations" do
     describe "constraints" do
       it { should validate_uniqueness_of(:identifier) }
