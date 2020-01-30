@@ -44,7 +44,7 @@ RSpec.describe "Users can create a budget" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.programme.button.create_budget"))
+        click_on(I18n.t("page_content.budgets.button.create"))
 
         click_button I18n.t("generic.button.submit")
 
