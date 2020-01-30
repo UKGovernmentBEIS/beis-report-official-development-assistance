@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_155455) do
     t.string "default_currency"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "service_owner", default: false
   end
 
   create_table "transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
