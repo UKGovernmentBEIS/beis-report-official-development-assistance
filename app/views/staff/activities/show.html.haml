@@ -12,6 +12,20 @@
       = render partial: "staff/shared/activities/activity", locals: { activity_presenter: ActivityPresenter.new(@activity) }
 
   .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      - if policy(Activity).index?
+        %h2.govuk-heading-m
+          = t("page_content.organisation.programmes")
+      - if policy(Activity).create?
+        = form_tag(organisation_fund_programmes_path(@activity.organisation, @activity), method: "post") do
+          = submit_tag t("page_content.organisation.button.create_programme"), class: "govuk-button"
+      - if @activities.present?
+        %ul.govuk-list.govuk-list--bullet
+          - @activities.each do |activity|
+            %li
+              = link_to activity.title, organisation_activity_path(activity.organisation, activity)
+
+  .govuk-grid-row
     .govuk-grid-column-full
       %h2.govuk-heading-m
         = t("page_content.activity.transactions")
