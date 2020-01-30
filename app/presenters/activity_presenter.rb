@@ -16,6 +16,26 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.status.#{super}")
   end
 
+  def planned_start_date
+    return if super.blank?
+    I18n.l(super)
+  end
+
+  def planned_end_date
+    return if super.blank?
+    I18n.l(super)
+  end
+
+  def actual_start_date
+    return if super.blank?
+    I18n.l(super)
+  end
+
+  def actual_end_date
+    return if super.blank?
+    I18n.l(super)
+  end
+
   def recipient_region
     return if super.blank?
     I18n.t("activity.recipient_region.#{super}")
