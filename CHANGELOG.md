@@ -33,3 +33,4 @@
 - Users land on their organisation#show page when they log in, instead of a "dashboard"
 - Fund manager can add a programme level activity to a fund level activity
 - Fund manager can view a fund level activity's programme activities
+- Fund managers can create Budgets
