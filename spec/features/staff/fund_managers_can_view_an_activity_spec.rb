@@ -10,12 +10,12 @@ RSpec.feature "Fund managers can view an activity" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager, organisation: organisation)) }
+    before { authenticate!(user: create(:fund_manager, organisation: organisation)) }
 
     scenario "allows the activity to be viewed" do
       existing_activity = create(:activity, organisation: organisation)
 
-      visit dashboard_path
+      visit organisation_path(organisation)
       click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
       click_on(organisation.name)
 
@@ -40,9 +40,7 @@ RSpec.feature "Fund managers can view an activity" do
     scenario "the activity cannot be viewed" do
       existing_activity = create(:activity, organisation: organisation)
 
-      visit dashboard_path
-      click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
-      click_on(organisation.name)
+      visit organisation_path(organisation)
 
       expect(page).not_to have_content(I18n.t("page_content.organisation.activities"))
       expect(page).not_to have_content(existing_activity.title)

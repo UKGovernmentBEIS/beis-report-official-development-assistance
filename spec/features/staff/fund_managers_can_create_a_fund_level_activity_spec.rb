@@ -10,12 +10,11 @@ RSpec.feature "Fund managers can create a fund level activity" do
   end
 
   context "when the user is a fund_manager" do
-    before { authenticate!(user: build_stubbed(:fund_manager, organisation: organisation)) }
+    let(:fund_manager) { create(:fund_manager, organisation: organisation) }
+    before { authenticate!(user: fund_manager) }
 
     scenario "successfully create a activity" do
-      visit dashboard_path
-      click_link(I18n.t("page_content.dashboard.button.manage_organisations"))
-      click_on(organisation.name)
+      visit organisation_path(organisation)
       click_on(I18n.t("page_content.organisation.button.create_fund"))
 
       fill_in_activity_form
@@ -123,12 +122,11 @@ RSpec.feature "Fund managers can create a fund level activity" do
   end
 
   context "when the user is a delivery_partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation)) }
+    let(:delivery_partner) { create(:delivery_partner, organisation: organisation) }
+    before { authenticate!(user: delivery_partner) }
 
     scenario "hides the 'Create activity' button" do
-      visit dashboard_path
-      click_link I18n.t("page_content.dashboard.button.manage_organisations")
-      click_on(organisation.name)
+      visit organisation_path(organisation)
 
       expect(page).to have_no_content(I18n.t("page_content.organisation.button.create_fund"))
     end

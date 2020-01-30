@@ -7,7 +7,7 @@ RSpec.feature "Users can sign in with Auth0" do
       uid: user.identifier, name: user.name, email: user.email
     )
 
-    visit dashboard_path
+    visit root_path
     expect(page).to have_content(I18n.t("page_title.welcome"))
 
     within ".app-header__user-links" do
@@ -15,7 +15,7 @@ RSpec.feature "Users can sign in with Auth0" do
       click_on I18n.t("generic.link.sign_in")
     end
 
-    expect(page).to have_content(I18n.t("page_title.dashboard"))
+    expect(page).to have_content(user.organisation.name)
     expect(page).to have_content(user.name)
     expect(page).to have_content(I18n.t("generic.link.sign_out"))
   end
@@ -34,9 +34,27 @@ RSpec.feature "Users can sign in with Auth0" do
       click_on I18n.t("generic.link.sign_in")
     end
 
-    expect(page).to have_content(I18n.t("page_title.dashboard"))
+    expect(page).to have_content(user.organisation.name)
     expect(page).to have_content(user.name)
     expect(page).to have_content(I18n.t("generic.link.sign_out"))
+  end
+
+  scenario "any user lands on their organisation page" do
+    user = create(:administrator)
+
+    mock_successful_authentication(
+      uid: user.identifier, name: user.name, email: user.email
+    )
+
+    visit root_path
+    expect(page).to have_content(I18n.t("page_title.welcome"))
+
+    within ".app-header__user-links" do
+      expect(page).to have_content(I18n.t("generic.link.sign_in"))
+      click_on I18n.t("generic.link.sign_in")
+    end
+
+    expect(page).to have_content(user.organisation.name)
   end
 
   scenario "protected pages cannot be visited unless signed in" do

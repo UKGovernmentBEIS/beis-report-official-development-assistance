@@ -1,6 +1,6 @@
 class OrganisationPolicy < ApplicationPolicy
   def index?
-    true
+    user.administrator? || user.fund_manager?
   end
 
   def show?

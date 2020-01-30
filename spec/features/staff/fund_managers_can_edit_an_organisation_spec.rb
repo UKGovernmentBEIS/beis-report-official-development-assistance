@@ -1,27 +1,28 @@
 RSpec.feature "Fund managers can edit organisations" do
-  let!(:organisation) { create(:organisation) }
+  let!(:beis_organisation) { create(:organisation) }
+  let!(:another_organisation) { create(:organisation) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
-      visit edit_organisation_path(organisation)
+      visit edit_organisation_path(beis_organisation)
       expect(current_path).to eq(root_path)
     end
   end
 
-  context "when the user is allowed to edit an organisation" do
+  context "when the fund manager is allowed to edit an organisation" do
     scenario "successfully editing an organisation" do
-      authenticate!(user: build_stubbed(:fund_manager))
+      authenticate!(user: create(:fund_manager, organisation: beis_organisation))
 
       successfully_edit_an_organisation
     end
 
     scenario "presence validation works as expected" do
-      authenticate!(user: build_stubbed(:fund_manager))
+      authenticate!(user: create(:fund_manager, organisation: beis_organisation))
 
-      visit dashboard_path
+      visit organisation_path(beis_organisation)
       click_link I18n.t("page_content.dashboard.button.manage_organisations")
-      click_link organisation.name
+      click_link another_organisation.name
       click_link I18n.t("page_content.organisation.button.edit")
 
       expect(page).to have_content(I18n.t("page_title.organisation.edit"))
@@ -34,10 +35,12 @@ RSpec.feature "Fund managers can edit organisations" do
   end
 
   context "when the user is a delivery partner" do
-    scenario "successfully editing an organisation" do
-      authenticate!(user: create(:delivery_partner, organisation: organisation))
+    scenario "cannot edit an organisation" do
+      authenticate!(user: create(:delivery_partner, organisation: another_organisation))
 
-      successfully_edit_an_organisation
+      visit organisation_path(another_organisation)
+
+      expect(page).to_not have_content(I18n.t("page_content.organisation.button.edit"))
     end
 
     context "and does not belong to the organisation" do
@@ -46,11 +49,9 @@ RSpec.feature "Fund managers can edit organisations" do
         second_organisation = create(:organisation)
         authenticate!(user: create(:delivery_partner, organisation: first_organisation))
 
-        visit dashboard_path
+        visit organisation_path(second_organisation)
 
-        click_link I18n.t("page_content.dashboard.button.manage_organisations")
-        expect(page).to have_content(first_organisation.name)
-        expect(page).to have_no_content(second_organisation.name)
+        expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
       end
 
       scenario "shows the 'unauthorised' error message to the user" do
@@ -68,9 +69,11 @@ RSpec.feature "Fund managers can edit organisations" do
   end
 
   def successfully_edit_an_organisation
-    visit dashboard_path
+    visit organisation_path(beis_organisation)
+
     click_link I18n.t("page_content.dashboard.button.manage_organisations")
-    click_link organisation.name
+
+    click_link another_organisation.name
     click_link I18n.t("page_content.organisation.button.edit")
 
     expect(page).to have_content(I18n.t("page_title.organisation.edit"))

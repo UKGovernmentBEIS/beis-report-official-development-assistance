@@ -1,6 +1,7 @@
 RSpec.configure do |config|
   if Bullet.enable?
     config.before(:each) do
+      Bullet.add_whitelist type: :unused_eager_loading, class_name: "User", association: :organisation
       Bullet.start_request
     end
 
