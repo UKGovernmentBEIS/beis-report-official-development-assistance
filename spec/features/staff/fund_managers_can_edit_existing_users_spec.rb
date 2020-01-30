@@ -2,11 +2,13 @@ require "rails_helper"
 
 RSpec.feature "Fund managers can edit users" do
   before do
-    authenticate!(user: build_stubbed(:fund_manager))
     stub_auth0_token_request
   end
 
   scenario "the details of the user can be updated" do
+    user = create(:fund_manager)
+    authenticate!(user: user)
+
     target_user = create(:administrator, name: "Old Name", email: "old@example.com")
 
     updated_name = "New Name"
@@ -19,14 +21,16 @@ RSpec.feature "Fund managers can edit users" do
     )
 
     # Navigate from the landing page
-    visit dashboard_path
+    visit organisation_path(user.organisation)
+
     click_on(I18n.t("page_content.dashboard.button.manage_users"))
 
     # Navigate to the users page
     expect(page).to have_content(I18n.t("page_title.users.index"))
 
-    # Click on edit button
-    click_on(I18n.t("generic.link.edit"))
+    # Find the target user and click on edit button
+
+    find("tr", text: target_user.name).click_link("Edit")
 
     # Fill out the form
     fill_in "user[name]", with: updated_name
@@ -41,7 +45,7 @@ RSpec.feature "Fund managers can edit users" do
   end
 
   context "when the user is a delivery partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner)) }
+    before { authenticate!(user: create(:delivery_partner)) }
     scenario "the user cannot be edited" do
       target_user = create(:administrator, name: "Old Name", email: "old@example.com")
 

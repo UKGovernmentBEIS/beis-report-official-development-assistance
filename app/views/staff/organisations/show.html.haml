@@ -1,16 +1,19 @@
 =content_for :page_title_prefix, t("page_title.organisation.show", name: @organisation_presenter.name)
 
-= link_to t("generic.link.back"), organisations_path, class: "govuk-back-link"
+= organisation_page_back_link(current_user, params)
+
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
-    .govuk-grid-column-two-thirds
+    .govuk-grid-column-full
       %h1.govuk-heading-xl
         = t("page_title.organisation.show", name: @organisation_presenter.name)
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h2.govuk-heading-m Details
-      = link_to t("page_content.organisation.button.edit"), edit_organisation_path(@organisation_presenter), class: "govuk-button"
+
+      - if policy(Organisation).update?
+        = link_to t("page_content.organisation.button.edit"), edit_organisation_path(@organisation_presenter), class: "govuk-button"
       %dl.govuk-summary-list
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
@@ -33,6 +36,21 @@
           %dd.govuk-summary-list__value
             = t("generic.default_currency.#{@organisation_presenter.default_currency}")
 
+    .govuk-grid-column-one-third
+      - if policy(User).index?
+        %h3.govuk-heading-m
+          = t("page_content.dashboard.header.manage_users")
+        = link_to t("page_content.dashboard.button.manage_users"), users_path, class: "govuk-button"
+
+      - if policy(Organisation).index?
+        %h3.govuk-heading-m
+          = t("page_content.dashboard.header.manage_organisations")
+        = link_to t("page_content.dashboard.button.manage_organisations"), organisations_path, class: "govuk-button"
+
+
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
       - if policy(Activity).index?
         %h2.govuk-heading-m
           = t("page_content.organisation.funds")

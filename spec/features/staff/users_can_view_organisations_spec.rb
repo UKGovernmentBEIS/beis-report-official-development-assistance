@@ -19,50 +19,36 @@ RSpec.feature "Users can view organisations" do
     end
 
     scenario "can go back to the previous page" do
-      authenticate!(user: create(:fund_manager))
+      user_fund_manager = create(:fund_manager)
+
+      authenticate!(user: user_fund_manager)
 
       visit organisations_path
 
       click_on I18n.t("generic.link.back")
 
-      expect(page).to have_current_path(dashboard_path)
+      expect(page).to have_current_path(organisation_path(user_fund_manager.organisation))
     end
   end
 
   context "when the user is a delivery partner" do
-    scenario "organisation index page" do
+    scenario "they cannot visit organisation index page" do
       organisation = create(:organisation)
       authenticate!(user: create(:delivery_partner, organisation: organisation))
 
       visit organisations_path
 
-      expect(page).to have_content(I18n.t("page_title.organisation.index"))
-      expect(page).to have_content organisation.name
+      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
     end
 
-    scenario "can go back to the previous page" do
-      organisation = create(:organisation)
-      authenticate!(user: create(:delivery_partner, organisation: organisation))
+    scenario "cannot see the organisation they don't belong to" do
+      organisation_they_belong_to = create(:organisation)
+      another_organisation = create(:organisation)
+      authenticate!(user: create(:delivery_partner, organisation: organisation_they_belong_to))
 
-      visit organisations_path
+      visit organisation_path(another_organisation)
 
-      click_on I18n.t("generic.link.back")
-
-      expect(page).to have_current_path(dashboard_path)
-    end
-
-    context "when the user is a delivery partner" do
-      scenario "cannot see the organisation" do
-        organisation_they_belong_to = create(:organisation)
-        another_organisation = create(:organisation)
-        authenticate!(user: create(:delivery_partner, organisation: organisation_they_belong_to))
-
-        visit organisations_path
-
-        expect(page).to have_content(I18n.t("page_title.organisation.index"))
-        expect(page).to have_content organisation_they_belong_to.name
-        expect(page).not_to have_content another_organisation.name
-      end
+      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
     end
   end
 end
