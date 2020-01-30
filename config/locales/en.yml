@@ -30,6 +30,8 @@ en:
         label: Period start date
       status:
         label: Status
+      value:
+        label: Value
     fund:
       create:
         success: Fund successfully created
@@ -148,6 +150,9 @@ en:
       status:
         committed: Committed
         indicative: Indicative
+    budgets:
+      button:
+        create: Create budget
     dashboard:
       button:
         manage_organisations: Manage organisations
