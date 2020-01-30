@@ -11,7 +11,7 @@ RSpec.feature "Fund managers can view fund level activities" do
 
   context "when the user is a fund_manager" do
     before do
-      authenticate!(user: create(:fund_manager, organisations: []))
+      authenticate!(user: create(:fund_manager))
     end
 
     scenario "the user will see activities on the organisation show page" do
@@ -45,7 +45,7 @@ RSpec.feature "Fund managers can view fund level activities" do
 
   context "when the user is a delivery_partner" do
     before do
-      authenticate!(user: create(:delivery_partner, organisations: [organisation]))
+      authenticate!(user: create(:delivery_partner, organisation: organisation))
     end
 
     scenario "the user will not see them on the show page for their organisation" do

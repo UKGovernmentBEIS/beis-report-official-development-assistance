@@ -81,5 +81,21 @@ module GOVUKDesignSystemFormBuilder
         end
       end
     end
+
+    module Radios
+      class CollectionRadioButton < GOVUKDesignSystemFormBuilder::Base
+        def field_id(link_errors: false)
+          if link_errors && has_errors?
+            build_id(
+              "field-error",
+              include_value: false,
+              attribute_name: translated_attribute_name(attribute_name: @attribute_name)
+            )
+          else
+            build_id("field")
+          end
+        end
+      end
+    end
   end
 end

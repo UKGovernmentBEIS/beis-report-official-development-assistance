@@ -10,7 +10,7 @@ RSpec.feature "Users can view organisations" do
   context "when the user is a fund manager" do
     scenario "organisation index page" do
       organisation = create(:organisation)
-      authenticate!(user: create(:fund_manager, organisations: []))
+      authenticate!(user: create(:fund_manager))
 
       visit organisations_path
 
@@ -19,7 +19,7 @@ RSpec.feature "Users can view organisations" do
     end
 
     scenario "can go back to the previous page" do
-      authenticate!(user: create(:fund_manager, organisations: []))
+      authenticate!(user: create(:fund_manager))
 
       visit organisations_path
 
@@ -32,7 +32,7 @@ RSpec.feature "Users can view organisations" do
   context "when the user is a delivery partner" do
     scenario "organisation index page" do
       organisation = create(:organisation)
-      authenticate!(user: create(:delivery_partner, organisations: [organisation]))
+      authenticate!(user: create(:delivery_partner, organisation: organisation))
 
       visit organisations_path
 
@@ -42,7 +42,7 @@ RSpec.feature "Users can view organisations" do
 
     scenario "can go back to the previous page" do
       organisation = create(:organisation)
-      authenticate!(user: create(:delivery_partner, organisations: [organisation]))
+      authenticate!(user: create(:delivery_partner, organisation: organisation))
 
       visit organisations_path
 
@@ -51,15 +51,17 @@ RSpec.feature "Users can view organisations" do
       expect(page).to have_current_path(dashboard_path)
     end
 
-    context "when the delivery partner is not associated with the organisation" do
+    context "when the user is a delivery partner" do
       scenario "cannot see the organisation" do
-        organisation = create(:organisation)
-        authenticate!(user: create(:delivery_partner, organisations: []))
+        organisation_they_belong_to = create(:organisation)
+        another_organisation = create(:organisation)
+        authenticate!(user: create(:delivery_partner, organisation: organisation_they_belong_to))
 
         visit organisations_path
 
         expect(page).to have_content(I18n.t("page_title.organisation.index"))
-        expect(page).not_to have_content organisation.name
+        expect(page).to have_content organisation_they_belong_to.name
+        expect(page).not_to have_content another_organisation.name
       end
     end
   end
