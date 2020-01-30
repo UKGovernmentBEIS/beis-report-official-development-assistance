@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_28_155455) do
+ActiveRecord::Schema.define(version: 2020_01_30_144115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(version: 2020_01_28_155455) do
     t.string "tied_status"
     t.string "wizard_status"
     t.string "level"
+    t.uuid "activity_id"
+    t.index ["activity_id"], name: "index_activities_on_activity_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
   end
@@ -81,4 +83,5 @@ ActiveRecord::Schema.define(version: 2020_01_28_155455) do
     t.index ["role"], name: "index_users_on_role"
   end
 
+  add_foreign_key "activities", "activities"
 end
