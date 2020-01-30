@@ -34,6 +34,33 @@ RSpec.feature "Users can view an activity" do
       expect(page).to have_content activity_presenter.flow
     end
 
+    scenario "a fund activity has human readable date format" do
+      travel_to Time.zone.local(2020, 1, 29) do
+        activity = create(:activity, planned_start_date: Date.new(2020, 2, 3),
+                                     planned_end_date: Date.new(2024, 6, 22),
+                                     actual_start_date: Date.new(2020, 4, 3),
+                                     actual_end_date: Date.new(2024, 8, 22))
+
+        visit organisation_activity_path(organisation, activity)
+
+        within(".planned_start_date") do
+          expect(page).to have_content("3 Feb 2020")
+        end
+
+        within(".planned_end_date") do
+          expect(page).to have_content("22 Jun 2024")
+        end
+
+        within(".actual_start_date") do
+          expect(page).to have_content("3 Apr 2020")
+        end
+
+        within(".actual_end_date") do
+          expect(page).to have_content("22 Aug 2024")
+        end
+      end
+    end
+
     scenario "can go back to the previous page" do
       activity = create(:activity, organisation: organisation)
 
