@@ -40,8 +40,8 @@ RSpec.feature "Fund managers can create organisations" do
     end
   end
 
-  context "when the user does not belong to an organisation" do
-    let(:user) { create(:delivery_partner, organisations: []) }
+  context "when the user is a delivery_partner" do
+    let(:user) { create(:delivery_partner) }
 
     before do
       authenticate!(user: user)

@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_and_belongs_to_many :organisations
+  belongs_to :organisation
   validates_presence_of :name, :email
 
   enum role: {
@@ -9,6 +9,10 @@ class User < ApplicationRecord
   }
 
   attribute :role, :string, default: "delivery_partner"
+
+  FORM_FIELD_TRANSLATIONS = {
+    organisation_id: :organisation,
+  }.freeze
 
   def role_name
     I18n.t("activerecord.attributes.user.roles.#{role}")

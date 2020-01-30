@@ -5,7 +5,7 @@ RSpec.feature "Fund managers can view an activity as XML" do
       organisation = create(:organisation)
       activity = create(:activity, organisation: organisation, identifier: "IND-ENT-IFIER")
       transaction = create(:transaction, activity: activity)
-      authenticate!(user: build_stubbed(:fund_manager, organisations: [organisation]))
+      authenticate!(user: build_stubbed(:fund_manager, organisation: organisation))
 
       visit organisation_activity_path(organisation, activity, format: :xml)
 
