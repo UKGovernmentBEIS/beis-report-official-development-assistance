@@ -105,5 +105,7 @@ RSpec.describe Activity, type: :model do
 
   describe "relations" do
     it { should belong_to(:organisation) }
+    it { should belong_to(:activity).optional }
+    it { should have_many(:activities).with_foreign_key("activity_id") }
   end
 end
