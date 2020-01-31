@@ -70,4 +70,9 @@ class Activity < ApplicationRecord
   def is_programme_level?
     level == "programme"
   end
+
+  def parent_activity
+    return if activity_id.nil?
+    Activity.find(activity_id)
+  end
 end

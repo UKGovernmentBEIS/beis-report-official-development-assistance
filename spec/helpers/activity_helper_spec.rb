@@ -3,6 +3,25 @@ require "rails_helper"
 RSpec.describe ActivityHelper, type: :helper do
   let(:organisation) { create(:organisation) }
 
+  describe "#activity_back_path" do
+    context "when the activity is a fund level" do
+      it "returns the organistian path" do
+        fund = create(:activity, level: :fund)
+        expect(activity_back_path(fund)).to eq organisation_path(fund.organisation)
+      end
+    end
+
+    context "when the activity is a programme level" do
+      it "returns the fund path" do
+        fund_activity = create(:activity, level: :fund)
+        programme_activity = create(:activity, level: :programme)
+        fund_activity.activities << programme_activity
+
+        expect(activity_back_path(programme_activity)).to eq organisation_activity_path(fund_activity.organisation, fund_activity)
+      end
+    end
+  end
+
   describe "#step_is_complete_or_next?" do
     context "when the activity has passed the identification step" do
       it "returns true for the purpose fields" do
