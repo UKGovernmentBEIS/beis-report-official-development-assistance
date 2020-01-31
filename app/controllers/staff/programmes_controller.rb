@@ -4,6 +4,8 @@ class Staff::ProgrammesController < Staff::ActivitiesController
   def create
     @activity = Activity.new
     @activity.organisation = Organisation.find(organisation_id)
+    fund = Activity.find(fund_id)
+    fund.activities << @activity
     authorize @activity
 
     @activity.wizard_status = "identifier"
