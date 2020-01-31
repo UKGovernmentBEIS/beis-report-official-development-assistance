@@ -10,6 +10,7 @@ RSpec.feature "Fund managers can create programme level activities" do
       fund = create(:activity, level: :fund, organisation: organisation)
 
       visit organisation_path(organisation)
+      click_on fund.title
       click_on(I18n.t("page_content.organisation.button.create_programme"))
 
       fill_in_activity_form

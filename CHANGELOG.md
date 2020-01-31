@@ -31,4 +31,5 @@
 - User email addresses must be valid emails
 - Users are only associated with one organisation
 - Users land on their organisation#show page when they log in, instead of a "dashboard"
-- Fund manager can add a programme level activity
+- Fund manager can add a programme level activity to a fund level activity
+- Fund manager can view a fund level activity's programme activities

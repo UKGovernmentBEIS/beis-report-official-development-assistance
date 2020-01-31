@@ -62,4 +62,12 @@ class Activity < ApplicationRecord
   def default_currency
     organisation.default_currency
   end
+
+  def is_fund_level?
+    level == "fund"
+  end
+
+  def is_programme_level?
+    level == "programme"
+  end
 end

@@ -123,9 +123,40 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "relations" do
+  describe "associations" do
     it { should belong_to(:organisation) }
     it { should belong_to(:activity).optional }
     it { should have_many(:activities).with_foreign_key("activity_id") }
+  end
+
+  describe "#is_fund_level?" do
+    it "returns true when the activity is at the fund level" do
+      activity = Activity.new(level: :fund)
+      expect(activity.is_fund_level?).to eq true
+
+      activity = Activity.new(level: :programme)
+      expect(activity.is_fund_level?).to eq false
+    end
+  end
+
+  describe "#is_programme_level?" do
+    it "returns true when the activity is at the programme level" do
+      activity = Activity.new(level: :programme)
+      expect(activity.is_programme_level?).to eq true
+
+      activity = Activity.new(level: :fund)
+      expect(activity.is_programme_level?).to eq false
+    end
+  end
+
+  describe "#parent_activity" do
+    it "returns the parent activity or nil if there is not one" do
+      fund_activity = create(:activity, level: :fund)
+      programme_activity = create(:activity, level: :programme)
+      fund_activity.activities << programme_activity
+
+      expect(programme_activity.parent_activity).to eql fund_activity
+      expect(fund_activity.parent_activity).to be_nil
+    end
   end
 end
