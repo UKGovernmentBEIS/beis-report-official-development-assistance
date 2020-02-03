@@ -4,6 +4,11 @@ class TransactionPresenter < SimpleDelegator
     I18n.t("transaction.transaction_type.#{super}")
   end
 
+  def date
+    return if super.blank?
+    I18n.l(super)
+  end
+
   def currency
     return if super.blank?
     I18n.t("generic.default_currency.#{super.downcase}")

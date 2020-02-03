@@ -116,19 +116,15 @@ module FormHelpers
     expect(page).to have_content finance
     expect(page).to have_content aid_type
     expect(page).to have_content tied_status
-    expect(page).to have_content I18n.l(
-      date(
-        year: planned_start_date_year,
-        month: planned_start_date_month,
-        day: planned_start_date_day
-      )
+    expect(page).to have_content localise_date_from_input_fields(
+      year: planned_start_date_year,
+      month: planned_start_date_month,
+      day: planned_start_date_day
     )
-    expect(page).to have_content I18n.l(
-      date(
-        year: planned_end_date_year,
-        month: planned_end_date_month,
-        day: planned_end_date_day
-      )
+    expect(page).to have_content localise_date_from_input_fields(
+      year: planned_end_date_year,
+      month: planned_end_date_month,
+      day: planned_end_date_day
     )
   end
 
@@ -163,7 +159,11 @@ module FormHelpers
         expect(page).to have_content(reference)
         expect(page).to have_content(description)
         expect(page).to have_content(transaction_type)
-        expect(page).to have_content(date(year: date_year, month: date_month, day: date_day))
+        expect(page).to have_content localise_date_from_input_fields(
+          year: date_year,
+          month: date_month,
+          day: date_day
+        )
         expect(page).to have_content(value)
         expect(page).to have_content(disbursement_channel)
         expect(page).to have_content(currency)
@@ -173,7 +173,7 @@ module FormHelpers
     end
   end
 
-  def date(year:, month:, day:)
-    Date.parse("#{year}-#{month}-#{day}")
+  def localise_date_from_input_fields(year:, month:, day:)
+    I18n.l(Date.parse("#{year}-#{month}-#{day}"))
   end
 end

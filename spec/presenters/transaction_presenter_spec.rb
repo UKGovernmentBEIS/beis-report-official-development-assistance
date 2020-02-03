@@ -9,6 +9,13 @@ RSpec.describe TransactionPresenter do
     end
   end
 
+  describe "#date" do
+    it "returns a human readable date" do
+      transaction.date = "2020-06-25"
+      expect(described_class.new(transaction).date).to eq("25 Jun 2020")
+    end
+  end
+
   describe "#currency" do
     it "returns the I18n string for the currency" do
       expect(described_class.new(transaction).currency).to eq("Pound Sterling")
