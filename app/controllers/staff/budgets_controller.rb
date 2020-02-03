@@ -8,6 +8,11 @@ class Staff::BudgetsController < Staff::BaseController
     @budget.activity = @activity
 
     authorize @budget
+
+    unless @activity.is_programme_level?
+      flash[:warning] = I18n.t("page_title.errors.budget.not_possible")
+      redirect_to organisation_activity_path(@activity.organisation, @activity)
+    end
   end
 
   def create

@@ -11,7 +11,12 @@ RSpec.describe "Users can create a budget" do
   end
 
   context "on a programme" do
-    let!(:activity) { create(:activity, organisation: organisation) }
+    let!(:fund_activity) { create(:activity, organisation: organisation) }
+    let!(:programme_activity) do
+      create(:programme_activity,
+        activity: fund_activity,
+        organisation: organisation)
+    end
 
     context "as a fund manager" do
       let(:fund_manager) { create(:fund_manager, organisation: organisation) }
@@ -20,8 +25,8 @@ RSpec.describe "Users can create a budget" do
 
       scenario "successfully creates a budget" do
         visit organisation_path(organisation)
-
-        click_on(activity.title)
+        click_on(fund_activity.title)
+        click_on(programme_activity.title)
 
         click_on(I18n.t("page_content.budgets.button.create"))
 
@@ -42,7 +47,8 @@ RSpec.describe "Users can create a budget" do
       scenario "sees validation errors for missing attributes" do
         visit organisation_path(organisation)
 
-        click_on(activity.title)
+        click_on(fund_activity.title)
+        click_on(programme_activity.title)
 
         click_on(I18n.t("page_content.budgets.button.create"))
 
@@ -63,7 +69,35 @@ RSpec.describe "Users can create a budget" do
       before { authenticate!(user: delivery_partner) }
 
       scenario "cannot create a budget on a programme" do
-        visit new_activity_budget_path(activity)
+        visit new_activity_budget_path(programme_activity)
+
+        expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
+      end
+    end
+  end
+
+  context "on a fund" do
+    context "as a fund manager" do
+      let(:fund_manager) { create(:fund_manager, organisation: organisation) }
+
+      before { authenticate!(user: fund_manager) }
+
+      scenario "cannot create a budget on a fund" do
+        fund_activity = create(:fund_activity, organisation: organisation)
+        visit new_activity_budget_path(fund_activity)
+
+        expect(page).to have_content(I18n.t("page_title.errors.budget.not_possible"))
+      end
+    end
+
+    context "as a delivery partner" do
+      let(:delivery_partner) { create(:delivery_partner, organisation: organisation) }
+
+      before { authenticate!(user: delivery_partner) }
+
+      scenario "cannot create a budget on a fund" do
+        fund_activity = create(:fund_activity, organisation: organisation)
+        visit new_activity_budget_path(fund_activity)
 
         expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
       end
