@@ -19,7 +19,7 @@ RSpec.feature "Users can view an organisation" do
       scenario "can see their own organisation page" do
         visit organisation_path(organisation)
 
-        expect(page).to have_content(I18n.t("page_title.organisation.show", name: organisation.name))
+        expect(page).to have_content(organisation.name)
       end
 
       scenario "does not see a back link on their organisation page" do
@@ -37,7 +37,7 @@ RSpec.feature "Users can view an organisation" do
         click_link I18n.t("page_content.dashboard.button.manage_organisations")
         click_link other_organisation.name
 
-        expect(page).to have_content(I18n.t("page_title.organisation.show", name: other_organisation.name))
+        expect(page).to have_content(other_organisation.name)
       end
 
       scenario "can go back to the previous page" do
@@ -62,7 +62,7 @@ RSpec.feature "Users can view an organisation" do
     scenario "can see their organisation page" do
       visit organisation_path(organisation)
 
-      expect(page).to have_content(I18n.t("page_title.organisation.show", name: organisation.name))
+      expect(page).to have_content(organisation.name)
     end
 
     scenario "does not see a back link on their organisation home page" do
