@@ -35,6 +35,8 @@ en:
     fund:
       create:
         success: Fund successfully created
+      update:
+        success: Fund successfully updated
     organisation:
       create:
         success: Organisation successfully created
