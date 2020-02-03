@@ -22,12 +22,18 @@ FactoryBot.define do
 
     association :organisation, factory: :organisation
 
-    factory :programme_activity do
-      level { :programme }
-    end
-
     factory :fund_activity do
       level { :fund }
+      funding_organisation_name { "HM Treasury" }
+      funding_organisation_reference { "GB-GOV-2" }
+      funding_organisation_type { "10" }
+    end
+
+    factory :programme_activity do
+      level { :programme }
+      funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
+      funding_organisation_reference { "GB-GOV-13" }
+      funding_organisation_type { "10" }
     end
   end
 
