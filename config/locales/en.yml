@@ -18,6 +18,20 @@ en:
       submit: Continue
       update:
         success: Activity successfully updated
+      year: Year
+    budget:
+      budget_type:
+        label: Budget type
+      create:
+        success: Budget successfully created
+      period_end_date:
+        label: Period end date
+      period_start_date:
+        label: Period start date
+      status:
+        label: Status
+      value:
+        label: Value
     fund:
       create:
         success: Fund successfully created
@@ -101,6 +115,7 @@ en:
         label: Actual start date
       aid_type:
         label: Aid type
+      budgets: Budgets
       button:
         create: Create activity
       description:
@@ -128,6 +143,16 @@ en:
       title:
         label: Title
       transactions: Transactions
+    budget:
+      budget_type:
+        original: Original
+        updated: Updated
+      status:
+        committed: Committed
+        indicative: Indicative
+    budgets:
+      button:
+        create: Create budget
     dashboard:
       button:
         manage_organisations: Manage organisations
@@ -186,9 +211,13 @@ en:
         sector: Sector
         status: Status
         tied_status: Tied status
+    budget:
+      new: Create budget
     errors:
       auth0:
         failed: Sign in failed
+      budget:
+        not_possible: It is not possible to create a budget on this activity type
       not_authorised: You are not authorised
     home: Home
     organisation:
