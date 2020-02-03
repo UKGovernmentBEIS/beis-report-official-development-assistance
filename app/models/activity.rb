@@ -11,11 +11,17 @@ class Activity < ApplicationRecord
   validates_uniqueness_of :identifier
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
 
+  belongs_to :activity, optional: true
+  has_many :activities, foreign_key: "activity_id"
   belongs_to :organisation
 
   enum level: {
     fund: "fund",
+    programme: "programme",
   }
+
+  scope :funds, -> { where(level: :fund) }
+  scope :programmes, -> { where(level: :programme) }
 
   def identifier_step?
     %w[identifier complete].include?(wizard_status)
@@ -55,5 +61,18 @@ class Activity < ApplicationRecord
 
   def default_currency
     organisation.default_currency
+  end
+
+  def is_fund_level?
+    level == "fund"
+  end
+
+  def is_programme_level?
+    level == "programme"
+  end
+
+  def parent_activity
+    return if activity_id.nil?
+    Activity.find(activity_id)
   end
 end

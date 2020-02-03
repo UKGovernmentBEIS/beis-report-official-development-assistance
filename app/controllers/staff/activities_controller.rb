@@ -11,6 +11,8 @@ class Staff::ActivitiesController < Staff::BaseController
     @activity = Activity.find(id)
     authorize @activity
 
+    @activities = @activity.activities.map { |activity| ActivityPresenter.new(activity) }
+
     @transactions = policy_scope(Transaction).where(activity: @activity)
 
     respond_to do |format|
@@ -31,5 +33,9 @@ class Staff::ActivitiesController < Staff::BaseController
 
   def organisation_id
     params[:organisation_id]
+  end
+
+  def fund_id
+    params[:fund_id]
   end
 end
