@@ -216,6 +216,8 @@ en:
     errors:
       auth0:
         failed: Sign in failed
+      budget:
+        not_possible: It is not possible to create a budget on this activity type
       not_authorised: You are not authorised
     home: Home
     organisation:

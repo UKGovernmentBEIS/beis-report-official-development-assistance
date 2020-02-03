@@ -4,24 +4,46 @@ RSpec.feature "Users can view budgets on an activity page" do
   end
 
   let(:organisation) { create(:organisation) }
-  let(:activity) { create(:activity, organisation: organisation) }
 
-  context "when the user is a fund manager" do
-    let(:user) { create(:fund_manager, organisation: organisation) }
+  context "when the activity is fund_level" do
+    context "when the user is a fund manager" do
+      let(:user) { create(:fund_manager, organisation: organisation) }
 
-    scenario "budget information is shown on the page" do
-      budget = create(:budget, activity: activity)
-      budget_presenter = BudgetPresenter.new(budget)
+      scenario "budget information is not shown on the page" do
+        fund_activity = create(:fund_activity, organisation: organisation)
+        _budget = create(:budget)
 
-      visit organisations_path
-      click_link organisation.name
-      click_link activity.title
+        visit organisations_path
+        click_link organisation.name
+        click_link fund_activity.title
 
-      expect(page).to have_content(budget_presenter.budget_type)
-      expect(page).to have_content(budget_presenter.status)
-      expect(page).to have_content(budget_presenter.period_start_date)
-      expect(page).to have_content(budget_presenter.period_end_date)
-      expect(page).to have_content(budget_presenter.value)
+        expect(page).to_not have_content(I18n.t("page_content.activity.budgets"))
+      end
+    end
+  end
+
+  context "when the activity is programme level" do
+    let(:fund_activity) { create(:fund_activity, organisation: organisation) }
+    let(:programme_activity) { create(:programme_activity, activity: fund_activity, organisation: organisation) }
+
+    context "when the user is a fund manager" do
+      let(:user) { create(:fund_manager, organisation: organisation) }
+
+      scenario "budget information is shown on the page" do
+        budget = create(:budget, activity: programme_activity)
+        budget_presenter = BudgetPresenter.new(budget)
+
+        visit organisations_path
+        click_link organisation.name
+        click_link fund_activity.title
+        click_link programme_activity.title
+
+        expect(page).to have_content(budget_presenter.budget_type)
+        expect(page).to have_content(budget_presenter.status)
+        expect(page).to have_content(budget_presenter.period_start_date)
+        expect(page).to have_content(budget_presenter.period_end_date)
+        expect(page).to have_content(budget_presenter.value)
+      end
     end
   end
 end
