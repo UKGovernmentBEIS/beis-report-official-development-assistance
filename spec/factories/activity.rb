@@ -22,6 +22,14 @@ FactoryBot.define do
 
     association :organisation, factory: :organisation
 
+    factory :programme_activity do
+      level { :programme }
+    end
+
+    factory :fund_activity do
+      level { :fund }
+    end
+
     trait :at_purpose_step do
       wizard_status { "identifier" }
       title { nil }
