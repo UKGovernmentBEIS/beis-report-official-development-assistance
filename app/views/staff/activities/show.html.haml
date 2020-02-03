@@ -30,3 +30,12 @@
 
       = link_to(I18n.t("page_content.transactions.button.create"), new_activity_transaction_path(@activity), class: "govuk-button")
       = render partial: '/staff/shared/transactions/table', locals: { transactions: @transaction_presenters }
+
+  - if @activity.is_programme_level?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        %h2.govuk-heading-m
+          = t("page_content.activity.budgets")
+
+        = link_to(I18n.t("page_content.budgets.button.create"), new_activity_budget_path(@activity), class: "govuk-button")
+        = render partial: '/staff/shared/budgets/table', locals: { budgets: @budget_presenters }

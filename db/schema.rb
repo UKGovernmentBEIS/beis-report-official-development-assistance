@@ -42,6 +42,16 @@ ActiveRecord::Schema.define(version: 2020_01_30_144115) do
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
   end
 
+  create_table "budgets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "activity_id"
+    t.string "budget_type"
+    t.string "status"
+    t.date "period_start_date"
+    t.date "period_end_date"
+    t.decimal "value", precision: 13, scale: 2
+    t.index ["activity_id"], name: "index_budgets_on_activity_id"
+  end
+
   create_table "organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "organisation_type"

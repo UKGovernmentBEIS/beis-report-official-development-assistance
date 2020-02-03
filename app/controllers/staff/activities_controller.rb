@@ -14,10 +14,12 @@ class Staff::ActivitiesController < Staff::BaseController
     @activities = @activity.activities.map { |activity| ActivityPresenter.new(activity) }
 
     @transactions = policy_scope(Transaction).where(activity: @activity)
+    @budgets = policy_scope(Budget).where(activity: @activity)
 
     respond_to do |format|
       format.html do
         @transaction_presenters = @transactions.map { |transaction| TransactionPresenter.new(transaction) }
+        @budget_presenters = @budgets.map { |budget| BudgetPresenter.new(budget) }
       end
       format.xml
     end
