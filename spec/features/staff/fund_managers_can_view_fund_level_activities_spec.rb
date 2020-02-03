@@ -41,7 +41,7 @@ RSpec.feature "Fund managers can view fund level activities" do
 
     context "when the activity is partially complete and doesn't have a title" do
       scenario "it to show a meaningful link to the activity" do
-        activity = create(:activity, :at_identifier_step, organisation: organisation, title: nil)
+        activity = create(:activity, :at_purpose_step, organisation: organisation, title: nil)
 
         visit organisation_path(organisation)
 

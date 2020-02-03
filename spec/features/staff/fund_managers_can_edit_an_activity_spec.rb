@@ -6,23 +6,6 @@ RSpec.feature "Fund managers can edit a fund level activity" do
   context "when the user is a fund_manager" do
     before { authenticate!(user: create(:fund_manager, organisation: organisation)) }
 
-    scenario "clicking edit starts the ActivityForm journey from that step" do
-      activity = create(:activity, organisation: organisation)
-
-      visit organisation_activity_path(activity.organisation, activity)
-
-      # Click the first edit link that opens the form on step 1
-      within(".identifier") do
-        click_on(I18n.t("generic.link.edit"))
-      end
-
-      # This helper fills in the form from step 1
-      fill_in_activity_form
-
-      # TODO: On Edit we shouldn't show a message that says "successfully created"
-      expect(page).to have_content I18n.t("form.fund.create.success")
-    end
-
     context "when the activity only has an identifier (and is incomplete)" do
       it "shows edit link on the identifier, and add link on only the next step" do
         activity = create(:activity, :at_purpose_step, organisation: organisation)
@@ -45,12 +28,47 @@ RSpec.feature "Fund managers can edit a fund level activity" do
     end
 
     context "when the activity is complete" do
+      it "editing and saving a step returns the user to the activity page" do
+        activity = create(:activity, organisation: organisation)
+        identifier = "AB-CDE-1234"
+        visit organisation_activity_path(activity.organisation, activity)
+
+        within(".identifier") do
+          click_on(I18n.t("generic.link.edit"))
+        end
+
+        fill_in "activity[identifier]", with: identifier
+        click_button I18n.t("form.activity.submit")
+
+        expect(page).to have_content I18n.t("form.fund.update.success")
+        expect(page.current_path).to eq organisation_activity_path(activity.organisation, activity)
+      end
+
       it "all edit links are available to take the user to the right step" do
         activity = create(:activity, organisation: organisation)
 
         visit organisation_activity_path(activity.organisation, activity)
 
         assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
+      end
+    end
+
+    context "when the activity is incomplete" do
+      it "editing and saving a step goes to the next step in the form" do
+        activity = create(:activity, :at_country_step, organisation: organisation)
+        recipient_region = "Oceania, regional"
+
+        visit organisation_activity_path(activity.organisation, activity)
+
+        within(".recipient_region") do
+          click_on(I18n.t("generic.link.edit"))
+        end
+
+        select recipient_region, from: "activity[recipient_region]"
+        click_button I18n.t("form.activity.submit")
+
+        expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
+        expect(page).not_to have_content activity.title
       end
     end
 
