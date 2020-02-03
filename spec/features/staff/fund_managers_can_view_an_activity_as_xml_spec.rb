@@ -1,22 +1,52 @@
 # TODO: This data will eventually need to be public so that IATI can retrieve it
 RSpec.feature "Fund managers can view an activity as XML" do
   context "when the user belongs to the organisation the activity is part of" do
-    it "returns an XML response" do
-      organisation = create(:organisation)
-      activity = create(:activity, organisation: organisation, identifier: "IND-ENT-IFIER")
-      transaction = create(:transaction, activity: activity)
-      authenticate!(user: create(:fund_manager, organisation: organisation))
+    let(:organisation) { create(:organisation) }
 
-      visit organisation_activity_path(organisation, activity, format: :xml)
+    before { authenticate!(user: create(:fund_manager, organisation: organisation)) }
 
-      xml = Nokogiri::XML::Document.parse(page.body)
+    context "when the activity is a fund activity" do
+      it "returns an XML response" do
+        activity = create(:fund_activity, organisation: organisation, identifier: "IND-ENT-IFIER")
+        transaction = create(:transaction, activity: activity)
 
-      # The activity XML is present
-      expect(xml.at("iati-activity/@default-currency").text).to eq(activity.default_currency)
-      expect(xml.at("iati-activity/iati-identifier").text).to eq(activity.identifier)
+        visit organisation_activity_path(organisation, activity, format: :xml)
 
-      # The transaction XML is present
-      expect(xml.at("iati-activity/transaction/@ref").text).to eq(transaction.reference)
+        xml = Nokogiri::XML::Document.parse(page.body)
+
+        # The activity XML is present
+        expect(xml.at("iati-activity/@default-currency").text).to eq(activity.default_currency)
+        expect(xml.at("iati-activity/iati-identifier").text).to eq(activity.identifier)
+
+        # The funding organisation XML is present
+        expect(xml.at("iati-activity/participating-org/@ref").text).to eq(activity.funding_organisation_reference)
+        expect(xml.at("iati-activity/participating-org/@type").text).to eq(activity.funding_organisation_type)
+        expect(xml.at("iati-activity/participating-org/narrative").text).to eq(activity.funding_organisation_name)
+        expect(xml.at("iati-activity/participating-org/@role").text).to eq("1")
+
+        # The transaction XML is present
+        expect(xml.at("iati-activity/transaction/@ref").text).to eq(transaction.reference)
+      end
+    end
+
+    context "when the activity is a programme activity" do
+      it "returns an XML response" do
+        activity = create(:programme_activity, organisation: organisation, identifier: "IND-ENT-IFIER")
+
+        visit organisation_activity_path(organisation, activity, format: :xml)
+
+        xml = Nokogiri::XML::Document.parse(page.body)
+
+        # The activity XML is present
+        expect(xml.at("iati-activity/@default-currency").text).to eq(activity.default_currency)
+        expect(xml.at("iati-activity/iati-identifier").text).to eq(activity.identifier)
+
+        # The funding organisation XML is present
+        expect(xml.at("iati-activity/participating-org/@ref").text).to eq(activity.funding_organisation_reference)
+        expect(xml.at("iati-activity/participating-org/@type").text).to eq(activity.funding_organisation_type)
+        expect(xml.at("iati-activity/participating-org/narrative").text).to eq(activity.funding_organisation_name)
+        expect(xml.at("iati-activity/participating-org/@role").text).to eq("1")
+      end
     end
   end
 end
