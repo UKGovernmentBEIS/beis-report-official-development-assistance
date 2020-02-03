@@ -1,6 +1,6 @@
 =content_for :page_title_prefix, t("page_title.activity.show", name: @activity.title)
 
-= link_to t("generic.link.back"), organisation_path(@activity.organisation), class: "govuk-back-link"
+= link_to t("generic.link.back"), activity_back_path(@activity), class: "govuk-back-link"
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
@@ -10,6 +10,18 @@
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       = render partial: "staff/shared/activities/activity", locals: { activity_presenter: ActivityPresenter.new(@activity) }
+
+  - if @activity.is_fund_level?
+    .govuk-grid-row
+      .govuk-grid-column-two-thirds
+        %h2.govuk-heading-m
+          = t("page_content.organisation.programmes")
+        = form_tag(organisation_fund_programmes_path(@activity.organisation, @activity), method: "post") do
+          = submit_tag t("page_content.organisation.button.create_programme"), class: "govuk-button"
+        %ul.govuk-list.govuk-list--bullet
+          - @activities.each do |activity|
+            %li
+              = link_to activity.display_title, organisation_activity_path(activity.organisation, activity)
 
   .govuk-grid-row
     .govuk-grid-column-full
