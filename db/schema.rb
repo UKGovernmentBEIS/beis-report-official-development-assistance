@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_03_140136) do
+ActiveRecord::Schema.define(version: 2020_02_04_115513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -40,6 +40,9 @@ ActiveRecord::Schema.define(version: 2020_02_03_140136) do
     t.string "funding_organisation_name"
     t.string "funding_organisation_reference"
     t.string "funding_organisation_type"
+    t.string "accountable_organisation_name"
+    t.string "accountable_organisation_reference"
+    t.string "accountable_organisation_type"
     t.index ["activity_id"], name: "index_activities_on_activity_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
