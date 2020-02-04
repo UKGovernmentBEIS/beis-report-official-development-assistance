@@ -32,8 +32,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     authorize @activity
 
     @activity.assign_attributes(activity_params)
-    @activity.wizard_status = step
-    @activity.save
+    update_wizard_status
+
     render_wizard @activity
   end
 
@@ -46,7 +46,19 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def finish_wizard_path
-    flash[:notice] = I18n.t("form.#{@activity.level}.create.success")
+    flash[:notice] ||= I18n.t("form.#{@activity.level}.create.success")
+    @activity.update(wizard_status: "complete")
     organisation_activity_path(@activity.organisation, @activity)
+  end
+
+  def update_wizard_status
+    return if @activity.invalid?
+
+    if @activity.wizard_complete?
+      flash[:notice] ||= I18n.t("form.#{@activity.level}.update.success")
+      jump_to Wicked::FINISH_STEP
+    else
+      @activity.wizard_status = step
+    end
   end
 end

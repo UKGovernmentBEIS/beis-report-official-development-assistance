@@ -18,7 +18,7 @@ FactoryBot.define do
     tied_status { "3" }
     level { :fund }
 
-    wizard_status { "tied_status" } # this is the final step, aka "complete"
+    wizard_status { "complete" } # wizard is complete
 
     association :organisation, factory: :organisation
 
@@ -29,26 +29,27 @@ FactoryBot.define do
     factory :fund_activity do
       level { :fund }
     end
-
-    trait :at_purpose_step do
-      wizard_status { "identifier" }
-      title { nil }
-      description { nil }
-      sector { nil }
-      status { nil }
-      planned_start_date { nil }
-      planned_end_date { nil }
-      actual_start_date { nil }
-      actual_end_date { nil }
-      recipient_region { nil }
-      flow { nil }
-      finance { nil }
-      aid_type { nil }
-      tied_status { nil }
-    end
   end
 
   trait :at_identifier_step do
+    identifier { nil }
+    wizard_status { "identifier" }
+    title { nil }
+    description { nil }
+    sector { nil }
+    status { nil }
+    planned_start_date { nil }
+    planned_end_date { nil }
+    actual_start_date { nil }
+    actual_end_date { nil }
+    recipient_region { nil }
+    flow { nil }
+    finance { nil }
+    aid_type { nil }
+    tied_status { nil }
+  end
+
+  trait :at_purpose_step do
     wizard_status { "identifier" }
     title { nil }
     description { nil }
