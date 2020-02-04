@@ -159,4 +159,24 @@ RSpec.describe Activity, type: :model do
       expect(fund_activity.parent_activity).to be_nil
     end
   end
+
+  describe "#wizard_complete?" do
+    it "is true if the wizard has been completed" do
+      activity = build(:activity, wizard_status: :complete)
+
+      expect(activity.wizard_complete?).to be_truthy
+    end
+
+    it "is false if the wizard is in progress" do
+      activity = build(:activity, wizard_status: :purpose)
+
+      expect(activity.wizard_complete?).to be_falsey
+    end
+
+    it "is false if the wizard is not started" do
+      activity = build(:activity, wizard_status: nil)
+
+      expect(activity.wizard_complete?).to be_falsey
+    end
+  end
 end

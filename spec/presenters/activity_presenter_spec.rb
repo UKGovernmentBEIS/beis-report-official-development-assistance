@@ -222,7 +222,7 @@ RSpec.describe ActivityPresenter do
   describe "#display_title" do
     context "when the title is nil" do
       it "returns a default display_title" do
-        activity = create(:activity, :at_identifier_step, title: nil)
+        activity = create(:activity, :at_purpose_step, title: nil)
         expect(described_class.new(activity).display_title).to eql("Untitled (#{activity.id})")
       end
     end
