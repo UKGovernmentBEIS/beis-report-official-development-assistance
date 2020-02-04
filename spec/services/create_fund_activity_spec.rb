@@ -1,0 +1,27 @@
+require "rails_helper"
+
+RSpec.describe CreateFundActivity do
+  let(:organisation) { create(:organisation) }
+
+  describe "#call" do
+    let(:result) { described_class.new(organisation_id: organisation.id).call }
+
+    it "sets the Organisation" do
+      expect(result.organisation).to eq(organisation)
+    end
+
+    it "sets the initial wizard_status" do
+      expect(result.wizard_status).to eq("identifier")
+    end
+
+    it "sets the activity level to 'fund'" do
+      expect(result.level).to eq("fund")
+    end
+
+    it "sets the funding organisation details" do
+      expect(result.funding_organisation_name).to eq("HM Treasury")
+      expect(result.funding_organisation_reference).to eq("GB-GOV-2")
+      expect(result.funding_organisation_type).to eq("10")
+    end
+  end
+end
