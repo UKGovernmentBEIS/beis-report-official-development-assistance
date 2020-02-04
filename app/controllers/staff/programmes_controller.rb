@@ -2,15 +2,8 @@
 
 class Staff::ProgrammesController < Staff::ActivitiesController
   def create
-    @activity = Activity.new
-    @activity.organisation = Organisation.find(organisation_id)
-    fund = Activity.find(fund_id)
-    fund.activities << @activity
+    @activity = CreateProgrammeActivity.new(organisation_id: organisation_id, fund_id: fund_id).call
     authorize @activity
-
-    @activity.wizard_status = "identifier"
-    @activity.level = :programme
-    @activity.save(validate: false)
 
     redirect_to activity_step_path(@activity.id, @activity.wizard_status)
   end

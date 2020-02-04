@@ -34,3 +34,4 @@
 - Fund manager can add a programme level activity to a fund level activity
 - Fund manager can view a fund level activity's programme activities
 - Fund managers can create Budgets
+- Fund and Programme activities store funding organisation details
