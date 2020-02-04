@@ -39,6 +39,20 @@ RSpec.feature "Fund managers can create a fund level activity" do
       expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.tied_status
     end
 
+    scenario "the activity has the appropriate funding organisation defaults" do
+      identifier = "a-fund-has-a-funding-organisation"
+
+      visit organisation_path(organisation)
+      click_on(I18n.t("page_content.organisation.button.create_fund"))
+
+      fill_in_activity_form(identifier: identifier)
+
+      activity = Activity.find_by(identifier: identifier)
+      expect(activity.funding_organisation_name).to eq("HM Treasury")
+      expect(activity.funding_organisation_reference).to eq("GB-GOV-2")
+      expect(activity.funding_organisation_type).to eq("10")
+    end
+
     context "validations" do
       scenario "validation errors work as expected" do
         visit organisation_path(organisation)
