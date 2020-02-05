@@ -11,9 +11,15 @@ class CreateFundActivity
 
     activity.wizard_status = "identifier"
     activity.level = :fund
+
     activity.funding_organisation_name = "HM Treasury"
     activity.funding_organisation_reference = "GB-GOV-2"
     activity.funding_organisation_type = "10"
+
+    activity.accountable_organisation_name = "Department for Business, Energy and Industrial Strategy"
+    activity.accountable_organisation_reference = "GB-GOV-13"
+    activity.accountable_organisation_type = "10"
+
     activity.save(validate: false)
     activity
   end
