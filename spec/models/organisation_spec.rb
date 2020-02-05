@@ -6,6 +6,9 @@ RSpec.describe Organisation, type: :model do
     it { should validate_presence_of(:organisation_type) }
     it { should validate_presence_of(:language_code) }
     it { should validate_presence_of(:default_currency) }
+    it { should validate_presence_of(:iati_reference) }
+
+    it { should validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
   end
 
   describe "associations" do

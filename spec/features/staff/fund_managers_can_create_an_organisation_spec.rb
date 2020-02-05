@@ -21,10 +21,12 @@ RSpec.feature "Fund managers can create organisations" do
 
       expect(page).to have_content(I18n.t("page_title.organisation.new"))
       fill_in "organisation[name]", with: "My New Organisation"
+      fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
       select "Government", from: "organisation[organisation_type]"
       select "Czech", from: "organisation[language_code]"
       select "Zloty", from: "organisation[default_currency]"
       click_button I18n.t("generic.button.submit")
+
       expect(page).to have_content I18n.t("form.organisation.create.success")
     end
 
