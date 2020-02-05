@@ -23,5 +23,11 @@ RSpec.describe CreateFundActivity do
       expect(result.funding_organisation_reference).to eq("GB-GOV-2")
       expect(result.funding_organisation_type).to eq("10")
     end
+
+    it "sets the accountable organisation details" do
+      expect(result.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
+      expect(result.accountable_organisation_reference).to eq("GB-GOV-13")
+      expect(result.accountable_organisation_type).to eq("10")
+    end
   end
 end

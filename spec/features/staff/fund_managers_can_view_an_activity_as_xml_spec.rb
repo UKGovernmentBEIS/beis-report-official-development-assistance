@@ -19,10 +19,14 @@ RSpec.feature "Fund managers can view an activity as XML" do
         expect(xml.at("iati-activity/iati-identifier").text).to eq(activity.identifier)
 
         # The funding organisation XML is present
-        expect(xml.at("iati-activity/participating-org/@ref").text).to eq(activity.funding_organisation_reference)
-        expect(xml.at("iati-activity/participating-org/@type").text).to eq(activity.funding_organisation_type)
-        expect(xml.at("iati-activity/participating-org/narrative").text).to eq(activity.funding_organisation_name)
-        expect(xml.at("iati-activity/participating-org/@role").text).to eq("1")
+        expect(xml.at("iati-activity/participating-org[@role = '1']/@ref").text).to eq(activity.funding_organisation_reference)
+        expect(xml.at("iati-activity/participating-org[@role = '1']/@type").text).to eq(activity.funding_organisation_type)
+        expect(xml.at("iati-activity/participating-org[@role = '1']/narrative").text).to eq(activity.funding_organisation_name)
+
+        # The accountable organisation XML is present
+        expect(xml.at("iati-activity/participating-org[@role = '2']/@ref").text).to eq(activity.accountable_organisation_reference)
+        expect(xml.at("iati-activity/participating-org[@role = '2']/@type").text).to eq(activity.accountable_organisation_type)
+        expect(xml.at("iati-activity/participating-org[@role = '2']/narrative").text).to eq(activity.accountable_organisation_name)
 
         # The transaction XML is present
         expect(xml.at("iati-activity/transaction/@ref").text).to eq(transaction.reference)
@@ -42,10 +46,14 @@ RSpec.feature "Fund managers can view an activity as XML" do
         expect(xml.at("iati-activity/iati-identifier").text).to eq(activity.identifier)
 
         # The funding organisation XML is present
-        expect(xml.at("iati-activity/participating-org/@ref").text).to eq(activity.funding_organisation_reference)
-        expect(xml.at("iati-activity/participating-org/@type").text).to eq(activity.funding_organisation_type)
-        expect(xml.at("iati-activity/participating-org/narrative").text).to eq(activity.funding_organisation_name)
-        expect(xml.at("iati-activity/participating-org/@role").text).to eq("1")
+        expect(xml.at("iati-activity/participating-org[@role = '1']/@ref").text).to eq(activity.funding_organisation_reference)
+        expect(xml.at("iati-activity/participating-org[@role = '1']/@type").text).to eq(activity.funding_organisation_type)
+        expect(xml.at("iati-activity/participating-org[@role = '1']/narrative").text).to eq(activity.funding_organisation_name)
+
+        # The accountable organisation XML is present
+        expect(xml.at("iati-activity/participating-org[@role = '2']/@ref").text).to eq(activity.accountable_organisation_reference)
+        expect(xml.at("iati-activity/participating-org[@role = '2']/@type").text).to eq(activity.accountable_organisation_type)
+        expect(xml.at("iati-activity/participating-org[@role = '2']/narrative").text).to eq(activity.accountable_organisation_name)
       end
     end
   end

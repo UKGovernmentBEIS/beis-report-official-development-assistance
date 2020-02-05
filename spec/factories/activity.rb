@@ -27,6 +27,9 @@ FactoryBot.define do
       funding_organisation_name { "HM Treasury" }
       funding_organisation_reference { "GB-GOV-2" }
       funding_organisation_type { "10" }
+      accountable_organisation_name { "Department for Business, Energy and Industrial Strategy" }
+      accountable_organisation_reference { "GB-GOV-13" }
+      accountable_organisation_type { "10" }
     end
 
     factory :programme_activity do
@@ -34,6 +37,9 @@ FactoryBot.define do
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
       funding_organisation_type { "10" }
+      accountable_organisation_name { "Department for Business, Energy and Industrial Strategy" }
+      accountable_organisation_reference { "GB-GOV-13" }
+      accountable_organisation_type { "10" }
     end
   end
 
