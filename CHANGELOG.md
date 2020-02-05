@@ -36,3 +36,4 @@
 - Fund managers can create Budgets
 - Fund and Programme activities store funding organisation details
 - Fund and Programme activities store accountable organisation details
+- Fund activities store extending organisation details
