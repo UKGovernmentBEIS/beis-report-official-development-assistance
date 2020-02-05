@@ -78,6 +78,7 @@ RSpec.feature "Fund managers can edit organisations" do
 
     expect(page).to have_content(I18n.t("page_title.organisation.edit"))
     fill_in "organisation[name]", with: "My New Organisation"
+    fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
     select "Government", from: "organisation[organisation_type]"
     select "Czech", from: "organisation[language_code]"
     select "Zloty", from: "organisation[default_currency]"

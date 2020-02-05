@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 2020_02_05_105914) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "service_owner", default: false
+    t.string "iati_reference"
   end
 
   create_table "transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
