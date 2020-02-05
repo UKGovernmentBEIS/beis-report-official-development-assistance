@@ -30,6 +30,9 @@ FactoryBot.define do
       accountable_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       accountable_organisation_reference { "GB-GOV-13" }
       accountable_organisation_type { "10" }
+      extending_organisation_name { "Department for Business, Energy and Industrial Strategy" }
+      extending_organisation_reference { "GB-GOV-13" }
+      extending_organisation_type { "10" }
     end
 
     factory :programme_activity do

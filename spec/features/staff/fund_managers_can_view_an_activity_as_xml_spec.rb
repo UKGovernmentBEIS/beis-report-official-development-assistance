@@ -28,6 +28,11 @@ RSpec.feature "Fund managers can view an activity as XML" do
         expect(xml.at("iati-activity/participating-org[@role = '2']/@type").text).to eq(activity.accountable_organisation_type)
         expect(xml.at("iati-activity/participating-org[@role = '2']/narrative").text).to eq(activity.accountable_organisation_name)
 
+        # The extending organisation XML is present
+        expect(xml.at("iati-activity/participating-org[@role = '3']/@ref").text).to eq(activity.extending_organisation_reference)
+        expect(xml.at("iati-activity/participating-org[@role = '3']/@type").text).to eq(activity.extending_organisation_type)
+        expect(xml.at("iati-activity/participating-org[@role = '3']/narrative").text).to eq(activity.extending_organisation_name)
+
         # The transaction XML is present
         expect(xml.at("iati-activity/transaction/@ref").text).to eq(transaction.reference)
       end
