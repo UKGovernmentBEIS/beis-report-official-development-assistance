@@ -22,6 +22,11 @@
             = @organisation_presenter.name
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
+            = t("page_content.organisation.iati_reference.label")
+          %dd.govuk-summary-list__value
+            = @organisation_presenter.iati_reference
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
             = t("page_content.organisation.type.label")
           %dd.govuk-summary-list__value
             = t("organisation.organisation_type.#{@organisation_presenter.organisation_type}")
