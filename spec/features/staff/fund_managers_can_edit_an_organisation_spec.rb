@@ -26,7 +26,7 @@ RSpec.feature "Fund managers can edit organisations" do
       click_link I18n.t("page_content.organisation.button.edit")
 
       expect(page).to have_content(I18n.t("page_title.organisation.edit"))
-      fill_in "organisation[name]", with: "My New Organisation"
+      fill_in "organisation[name]", with: ""
 
       click_button I18n.t("generic.button.submit")
       expect(page).to_not have_content I18n.t("form.organisation.update.success")
