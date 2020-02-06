@@ -179,4 +179,46 @@ RSpec.describe Activity, type: :model do
       expect(activity.wizard_complete?).to be_falsey
     end
   end
+
+  describe "#has_funding_organisation?" do
+    it "returns true if all funding_organisation fields are present" do
+      activity = build(:fund_activity)
+
+      expect(activity.has_funding_organisation?).to be true
+    end
+
+    it "returns false if all funding_organisation fields are not present" do
+      activity = build(:activity)
+
+      expect(activity.has_funding_organisation?).to be false
+    end
+  end
+
+  describe "#has_accountable_organisation?" do
+    it "returns true if all accountable_organisation fields are present" do
+      activity = build(:fund_activity)
+
+      expect(activity.has_accountable_organisation?).to be true
+    end
+  end
+
+  it "returns false if all accountable_organisation fields are not present" do
+    activity = build(:activity)
+
+    expect(activity.has_accountable_organisation?).to be false
+  end
+
+  describe "#has_extending_organisation?" do
+    it "returns true if all extending_organisation fields are present" do
+      activity = build(:fund_activity)
+
+      expect(activity.has_extending_organisation?).to be true
+    end
+  end
+
+  it "returns false if all extending_organisation fields are not present" do
+    activity = build(:activity)
+
+    expect(activity.has_extending_organisation?).to be false
+  end
 end

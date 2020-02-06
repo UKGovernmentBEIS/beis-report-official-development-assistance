@@ -79,4 +79,22 @@ class Activity < ApplicationRecord
     return if activity_id.nil?
     Activity.find(activity_id)
   end
+
+  def has_funding_organisation?
+    funding_organisation_reference.present? &&
+      funding_organisation_name.present? &&
+      funding_organisation_type.present?
+  end
+
+  def has_accountable_organisation?
+    accountable_organisation_reference.present? &&
+      accountable_organisation_name.present? &&
+      accountable_organisation_type.present?
+  end
+
+  def has_extending_organisation?
+    extending_organisation_reference.present? &&
+      extending_organisation_name.present? &&
+      extending_organisation_type.present?
+  end
 end
