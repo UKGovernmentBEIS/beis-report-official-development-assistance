@@ -24,4 +24,18 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(subject).to eql "govuk-header__navigation-item govuk-header__navigation-item--active"
     end
   end
+
+  describe "#a11y_action_link" do
+    it "gives action links more context available to a screen reader" do
+      span = content_tag :span, "Pear", class: "govuk-visually-hidden"
+      accessible_action_link = link_to("Edit #{raw(span)}".html_safe, "pear.com", class: "govuk-link")
+      expect(helper.a11y_action_link("Edit", "pear.com", "Pear")).to eql accessible_action_link
+    end
+
+    context "when there is no context as a third argument" do
+      it "creates the link and doesn't include the span" do
+        expect(helper.a11y_action_link("Edit", "pear.com", "")).to eql(link_to("Edit", "pear.com", class: "govuk-link"))
+      end
+    end
+  end
 end
