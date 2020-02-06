@@ -1,2 +1,3 @@
 !!! XML
-= render partial: "staff/shared/xml/activity", locals: { activity: @activity, transactions: @transactions }
+%iati-activities{"version" => "#{IATI_VERSION.gsub('_', '.')}"}
+  = render partial: "staff/shared/xml/activity", locals: { activity: @activity, transactions: @transactions }
