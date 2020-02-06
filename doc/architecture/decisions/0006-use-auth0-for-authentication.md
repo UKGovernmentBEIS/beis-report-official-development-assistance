@@ -4,7 +4,7 @@ Date: 2019-10-28
 
 ## Status
 
-Accepted
+Superceded by [16. Disable Auth0's requirement for Javascript during the authentication journey](0016-disable-auth0-s-requirement-for-javascript-during-the-authentication-journey.md)
 
 ## Context
 
