@@ -67,6 +67,20 @@ RSpec.feature "Fund managers can create a fund level activity" do
       expect(activity.accountable_organisation_type).to eq("10")
     end
 
+    scenario "the activity has the appropriate extending organisation defaults" do
+      identifier = "a-fund-has-an-extending-organisation"
+
+      visit organisation_path(organisation)
+      click_on(I18n.t("page_content.organisation.button.create_fund"))
+
+      fill_in_activity_form(identifier: identifier)
+
+      activity = Activity.find_by(identifier: identifier)
+      expect(activity.extending_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
+      expect(activity.extending_organisation_reference).to eq("GB-GOV-13")
+      expect(activity.extending_organisation_type).to eq("10")
+    end
+
     context "validations" do
       scenario "validation errors work as expected" do
         visit organisation_path(organisation)
