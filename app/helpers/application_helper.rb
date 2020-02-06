@@ -10,4 +10,13 @@ module ApplicationHelper
     classes << "govuk-header__navigation-item--active" if current_page?(path)
     classes.join(" ")
   end
+
+  def a11y_action_link(text, href, context = "")
+    if context.blank?
+      link_to(text, href, class: "govuk-link")
+    else
+      span = content_tag :span, context, class: "govuk-visually-hidden"
+      link_to("#{text} #{raw(span)}".html_safe, href, class: "govuk-link")
+    end
+  end
 end
