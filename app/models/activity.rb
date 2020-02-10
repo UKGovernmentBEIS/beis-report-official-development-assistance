@@ -94,8 +94,6 @@ class Activity < ApplicationRecord
   end
 
   def has_extending_organisation?
-    extending_organisation_reference.present? &&
-      extending_organisation_name.present? &&
-      extending_organisation_type.present?
+    extending_organisation.present?
   end
 end

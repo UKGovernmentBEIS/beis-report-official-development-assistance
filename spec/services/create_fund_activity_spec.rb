@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe CreateFundActivity do
-  let(:organisation) { create(:organisation) }
+  let(:organisation) { create(:beis_organisation) }
 
   describe "#call" do
     let(:result) { described_class.new(organisation_id: organisation.id).call }
@@ -28,6 +28,10 @@ RSpec.describe CreateFundActivity do
       expect(result.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
       expect(result.accountable_organisation_reference).to eq("GB-GOV-13")
       expect(result.accountable_organisation_type).to eq("10")
+    end
+
+    it "sets the extending organisation to BEIS" do
+      expect(result.extending_organisation).to eql organisation
     end
   end
 end

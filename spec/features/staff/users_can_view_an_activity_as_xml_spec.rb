@@ -3,12 +3,14 @@ RSpec.feature "Users can download an activity as XML" do
     authenticate!(user: user)
   end
 
-  let(:organisation) { create(:organisation) }
+  let(:organisation) { create(:beis_organisation) }
+  let(:delivery_partner) { create(:organisation) }
   let(:activity) do
     create(:activity,
       planned_start_date: Date.today,
       planned_end_date: Date.tomorrow,
-      organisation: organisation)
+      organisation: organisation,
+      extending_organisation: delivery_partner)
   end
   let(:user) { create(:administrator, organisation: organisation) }
 
