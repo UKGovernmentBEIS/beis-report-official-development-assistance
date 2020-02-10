@@ -127,6 +127,7 @@ RSpec.describe Activity, type: :model do
     it { should belong_to(:organisation) }
     it { should belong_to(:activity).optional }
     it { should have_many(:activities).with_foreign_key("activity_id") }
+    it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
   end
 
   describe "#is_fund_level?" do
