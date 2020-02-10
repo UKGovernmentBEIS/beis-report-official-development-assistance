@@ -35,4 +35,4 @@
           %td.govuk-table__cell= transaction.provider.name
           %td.govuk-table__cell= transaction.receiver.name
           %td.govuk-table__cell
-            = link_to(I18n.t('generic.link.edit'), edit_activity_transaction_path(transaction.activity, transaction), class: 'govuk-link')
+            = a11y_action_link(I18n.t('generic.link.edit'), edit_activity_transaction_path(transaction.activity, transaction))
