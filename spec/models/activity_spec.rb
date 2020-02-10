@@ -19,6 +19,15 @@ RSpec.describe Activity, type: :model do
         expect(Activity.programmes).to eq [programme_activity]
       end
     end
+
+    describe ".projects" do
+      it "only returns project level activities" do
+        project_activity = create(:activity, level: :project)
+        _other_activity = create(:activity, level: :programme)
+
+        expect(Activity.projects).to eq [project_activity]
+      end
+    end
   end
 
   describe "validations" do

@@ -43,6 +43,16 @@ FactoryBot.define do
       accountable_organisation_reference { "GB-GOV-13" }
       accountable_organisation_type { "10" }
     end
+
+    factory :project_activity do
+      level { :project }
+      funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
+      funding_organisation_reference { "GB-GOV-13" }
+      funding_organisation_type { "10" }
+      accountable_organisation_name { "Department for Business, Energy and Industrial Strategy" }
+      accountable_organisation_reference { "GB-GOV-13" }
+      accountable_organisation_type { "10" }
+    end
   end
 
   trait :at_identifier_step do

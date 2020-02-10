@@ -11,8 +11,11 @@ Rails.application.routes.draw do
     resources :users
     resources :organisations, except: [:destroy] do
       resources :activities, except: [:destroy]
+      # TODO this hierarchy is too deep, make it shallower
       resources :funds, only: [:create] do
-        resources :programmes, only: [:create]
+        resources :programmes, only: [:create] do
+          resources :projects, only: [:create]
+        end
       end
     end
 
