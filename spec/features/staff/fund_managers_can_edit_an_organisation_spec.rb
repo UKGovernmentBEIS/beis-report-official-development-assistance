@@ -1,5 +1,5 @@
 RSpec.feature "Fund managers can edit organisations" do
-  let!(:beis_organisation) { create(:organisation) }
+  let!(:beis_organisation) { create(:beis_organisation) }
   let!(:another_organisation) { create(:organisation) }
 
   context "when the user is not logged in" do
