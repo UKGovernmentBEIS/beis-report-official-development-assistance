@@ -6,4 +6,5 @@ class Organisation < ApplicationRecord
   validates :iati_reference, uniqueness: {case_sensitive: false}, presence: true
 
   scope :sorted_by_name, -> { order(name: :asc) }
+  scope :delivery_partners, -> { sorted_by_name.where(service_owner: false) }
 end

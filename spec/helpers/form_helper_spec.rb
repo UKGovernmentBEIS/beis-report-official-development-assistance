@@ -7,4 +7,14 @@ RSpec.describe FormHelper, type: :helper do
       helper.list_of_organisations
     end
   end
+
+  describe "#list_of_delivery_partners" do
+    it "asks for a list of organisations that are not `service_owner`" do
+      delivery_partner = build_stubbed(:organisation, service_owner: false)
+      allow(Organisation).to receive(:delivery_partners).and_return([delivery_partner])
+
+      expect(Organisation).to receive(:delivery_partners)
+      helper.list_of_delivery_partners
+    end
+  end
 end
