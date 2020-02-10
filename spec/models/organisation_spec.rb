@@ -62,9 +62,9 @@ RSpec.describe Organisation, type: :model do
   end
 
   describe ".delivery_partners" do
-    it "should contain only organisations that are not `service_owner`" do
-      beis_organisation = create(:organisation, name: "BEIS", service_owner: true)
-      delivery_partner_organisation = create(:organisation, name: "Delivery partner", service_owner: false)
+    it "should contain only organisations that are not BEIS" do
+      beis_organisation = create(:beis_organisation)
+      delivery_partner_organisation = create(:delivery_partner_organisation)
       delivery_partners = Organisation.delivery_partners
 
       expect(delivery_partners).to include(delivery_partner_organisation)

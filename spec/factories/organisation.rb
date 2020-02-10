@@ -7,5 +7,16 @@ FactoryBot.define do
     organisation_type { "10" }
     default_currency { "GBP" }
     language_code { "en" }
+
+    factory :delivery_partner_organisation do
+      iati_reference
+      service_owner { false }
+    end
+
+    factory :beis_organisation do
+      name { "Department for Business, Energy and Industrial Strategy" }
+      service_owner { true }
+      iati_reference
+    end
   end
 end

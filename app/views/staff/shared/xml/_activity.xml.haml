@@ -13,8 +13,8 @@
     %participating-org{"ref" => activity.accountable_organisation_reference, "type" => activity.accountable_organisation_type, "role" => 2}
       %narrative= activity.accountable_organisation_name
   - if activity.has_extending_organisation?
-    %participating-org{"ref" => activity.extending_organisation_reference, "type" => activity.extending_organisation_type, "role" => 3}
-      %narrative= activity.extending_organisation_name
+    %participating-org{"ref" => activity.extending_organisation.iati_reference, "type" => activity.extending_organisation.organisation_type, "role" => 3}
+      %narrative= activity.extending_organisation.name
   %activity-status{code: "#{activity.status}"}/
   %activity-date{"iso-date" => "#{activity.planned_start_date}", type: "1"}/
   %activity-date{"iso-date" => "#{activity.planned_end_date}", type: "2"}/

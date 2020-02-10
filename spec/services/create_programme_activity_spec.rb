@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe CreateProgrammeActivity do
-  let(:organisation) { create(:organisation) }
+  let(:organisation) { create(:beis_organisation) }
   let(:fund) { create(:fund_activity) }
 
   describe "#call" do
