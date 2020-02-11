@@ -29,6 +29,8 @@ class Staff::ActivitiesController < Staff::BaseController
     raise NotImplementedError
   end
 
+  private
+
   def id
     params[:id]
   end

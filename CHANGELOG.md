@@ -38,3 +38,4 @@
 - Fund and Programme activities store accountable organisation details
 - Fund activities store extending organisation details
 - Sign in button works when JS is disabled
+- Fund managers can set and change the extending organisation

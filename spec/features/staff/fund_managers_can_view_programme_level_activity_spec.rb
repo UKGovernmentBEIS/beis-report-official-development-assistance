@@ -19,6 +19,11 @@ RSpec.feature "Fund managers can view programe level activites" do
       expect(page).not_to have_button I18n.t("page_content.organisation.button.create_programme")
     end
 
+    it "shows the choose extending organisation button" do
+      visit organisation_activity_path(programme.organisation, programme)
+      expect(page).to have_link I18n.t("page_content.organisation.button.choose_extending_organisation")
+    end
+
     it "shows the create transaction button" do
       visit organisation_activity_path(programme.organisation, programme)
 
