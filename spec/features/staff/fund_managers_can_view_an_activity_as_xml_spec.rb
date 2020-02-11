@@ -10,6 +10,11 @@ RSpec.feature "Fund managers can view an activity as XML" do
       let!(:transaction) { create(:transaction, activity: activity) }
       let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
+      it "contains a top-level activities element with the IATI version" do
+        visit organisation_activity_path(organisation, activity, format: :xml)
+        expect(xml.at("iati-activities/@version").text).to eq(IATI_VERSION.tr("_", "."))
+      end
+
       it "contains the activity XML" do
         visit organisation_activity_path(organisation, activity, format: :xml)
         expect(xml.at("iati-activity/@default-currency").text).to eq(activity.default_currency)
@@ -23,7 +28,7 @@ RSpec.feature "Fund managers can view an activity as XML" do
         expect(xml.at("iati-activity/participating-org[@role = '1']/narrative").text).to eq(activity.funding_organisation_name)
       end
 
-      it "contains the accountable organisatino XML" do
+      it "contains the accountable organisation XML" do
         visit organisation_activity_path(organisation, activity, format: :xml)
         expect(xml.at("iati-activity/participating-org[@role = '2']/@ref").text).to eq(activity.accountable_organisation_reference)
         expect(xml.at("iati-activity/participating-org[@role = '2']/@type").text).to eq(activity.accountable_organisation_type)

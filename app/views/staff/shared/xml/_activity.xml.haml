@@ -1,28 +1,31 @@
-%iati-activity{"default-currency" => "#{activity.default_currency}"}
+%iati-activity{"default-currency" => "#{activity.default_currency}", "xml:lang" => activity.organisation.language_code }
   %iati-identifier= activity.identifier
-  %reporting-org
+  %reporting-org{"type" => activity.organisation.organisation_type, "ref" => "" }
     %narrative= activity.organisation.name
   %title
     %narrative= activity.title
   %description{type: "1"}
     %narrative= activity.description
-  %activity-status{code: "#{activity.status}"}
-  %activity-date{"iso-date" => "#{activity.planned_start_date}", type: "1"}
-  %activity-date{"iso-date" => "#{activity.planned_end_date}", type: "2"}
-  %activity-date{"iso-date" => "#{activity.actual_start_date}", type: "3"}
-  %activity-date{"iso-date" => "#{activity.actual_end_date}", type: "4"}
-  %recipient-region{"code" => "#{activity.recipient_region}"}
-  %sector{"vocabulary" => "1", "code" => "#{activity.sector}"}
-  %default-flow-type{"code" => "#{activity.flow}"}
-  %default-finance-type{"code" => "#{activity.finance}"}
-  %default-aid-type{"code" => "#{activity.aid_type}"}
-  %default-tied-status{"code" => "#{activity.tied_status}"}
-  %participating-org{"ref" => activity.funding_organisation_reference, "type" => activity.funding_organisation_type, "role" => 1}
-    %narrative= activity.funding_organisation_name
-  %participating-org{"ref" => activity.accountable_organisation_reference, "type" => activity.accountable_organisation_type, "role" => 2}
-    %narrative= activity.accountable_organisation_name
-  %participating-org{"ref" => activity.extending_organisation_reference, "type" => activity.extending_organisation_type, "role" => 3}
-    %narrative= activity.extending_organisation_name
+  - if activity.has_funding_organisation?
+    %participating-org{"ref" => activity.funding_organisation_reference, "type" => activity.funding_organisation_type, "role" => 1}
+      %narrative= activity.funding_organisation_name
+  - if activity.has_accountable_organisation?
+    %participating-org{"ref" => activity.accountable_organisation_reference, "type" => activity.accountable_organisation_type, "role" => 2}
+      %narrative= activity.accountable_organisation_name
+  - if activity.has_extending_organisation?
+    %participating-org{"ref" => activity.extending_organisation_reference, "type" => activity.extending_organisation_type, "role" => 3}
+      %narrative= activity.extending_organisation_name
+  %activity-status{code: "#{activity.status}"}/
+  %activity-date{"iso-date" => "#{activity.planned_start_date}", type: "1"}/
+  %activity-date{"iso-date" => "#{activity.planned_end_date}", type: "2"}/
+  %activity-date{"iso-date" => "#{activity.actual_start_date}", type: "3"}/
+  %activity-date{"iso-date" => "#{activity.actual_end_date}", type: "4"}/
+  %recipient-region{"code" => "#{activity.recipient_region}"}/
+  %sector{"vocabulary" => "1", "code" => "#{activity.sector}"}/
+  %default-flow-type{"code" => "#{activity.flow}"}/
+  %default-finance-type{"code" => "#{activity.finance}"}/
+  %default-aid-type{"code" => "#{activity.aid_type}"}/
+  %default-tied-status{"code" => "#{activity.tied_status}"}/
   - if transactions
     - transactions.each do |transaction|
       = render partial: "staff/shared/xml/transaction", locals: { transaction: transaction }
