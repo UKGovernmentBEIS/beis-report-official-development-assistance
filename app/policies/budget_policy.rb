@@ -24,7 +24,7 @@ class BudgetPolicy < ApplicationPolicy
       if user.administrator? || user.fund_manager?
         scope.all
       else
-        []
+        scope.none
       end
     end
   end

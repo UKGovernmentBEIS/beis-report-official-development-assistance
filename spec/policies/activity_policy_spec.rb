@@ -42,17 +42,44 @@ RSpec.describe ActivityPolicy do
       described_class::Scope.new(user, Activity.all).resolve
     end
 
-    it { is_expected.to forbid_action(:index) }
-    it { is_expected.to forbid_action(:show) }
-    it { is_expected.to forbid_new_and_create_actions }
-    it { is_expected.to forbid_edit_and_update_actions }
+    it { is_expected.to permit_action(:index) }
     it { is_expected.to forbid_action(:destroy) }
 
     context "with activities from my own organisation" do
       let(:user) { create(:delivery_partner, organisation: organisation) }
+      let(:project) { create(:project_activity, organisation: organisation) }
+      let(:programme) { create(:programme_activity, organisation: organisation) }
 
-      it "does not include activity in resolved scope" do
-        expect(resolved_scope).not_to include(activity)
+      context "with a fund activity" do
+        it { is_expected.to permit_action(:show) }
+        it { is_expected.to forbid_new_and_create_actions }
+        it { is_expected.to forbid_edit_and_update_actions }
+      end
+
+      context "with a programme activity" do
+        let(:activity) { programme }
+        it { is_expected.to permit_action(:show) }
+        it { is_expected.to forbid_new_and_create_actions }
+        it { is_expected.to forbid_edit_and_update_actions }
+      end
+
+      context "with a project activity" do
+        let(:activity) { project }
+        it { is_expected.to permit_action(:show) }
+        it { is_expected.to permit_new_and_create_actions }
+        it { is_expected.to permit_edit_and_update_actions }
+      end
+
+      it "includes fund activities in resolved scope" do
+        expect(resolved_scope).to include(activity)
+      end
+
+      it "includes project activities in resolved scope" do
+        expect(resolved_scope).to include(project)
+      end
+
+      it "includes programme activities in resolved scope" do
+        expect(resolved_scope).to include(programme)
       end
     end
 
