@@ -55,6 +55,8 @@ en:
     programme:
       create:
         success: Programme successfully created
+      update:
+        success: Programme successfully updated
     transaction:
       create:
         success: Transaction successfully created
