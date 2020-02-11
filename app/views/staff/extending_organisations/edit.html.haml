@@ -1,0 +1,17 @@
+= content_for :page_title_prefix, t("page_title.activity.show", name: @activity.title)
+
+= link_to t("generic.link.back"), organisation_activity_path(@activity.organisation, @activity), class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = @activity.title
+
+      = form_with model: @activity, url: activity_extending_organisation_path(@activity) do |f|
+        = f.govuk_error_summary
+        = f.hidden_field :extending_organisation_id, value: nil
+        = f.govuk_collection_radio_buttons :extending_organisation_id,
+          list_of_delivery_partners,
+          :id,
+          :name
+        = f.govuk_submit t("generic.button.submit")

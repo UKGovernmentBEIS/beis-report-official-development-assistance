@@ -10,6 +10,7 @@ class Activity < ApplicationRecord
   validates :tied_status, presence: true, if: :tied_status_step?
   validates_uniqueness_of :identifier
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
+  validates :extending_organisation_id, presence: true, on: :update_extending_organisation
 
   belongs_to :activity, optional: true
   has_many :activities, foreign_key: "activity_id"

@@ -121,6 +121,11 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:finance) }
       it { should validate_presence_of(:tied_status) }
     end
+
+    context "when saving in the update_extending_organisation context" do
+      subject { build(:activity) }
+      it { should validate_presence_of(:extending_organisation_id).on(:update_extending_organisation) }
+    end
   end
 
   describe "associations" do
