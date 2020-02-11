@@ -75,14 +75,60 @@ RSpec.feature "Users can view an activity" do
   end
 
   context "when the user is a delivery_partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation)) }
+    before { authenticate!(user: create(:delivery_partner, organisation: organisation)) }
 
-    scenario "the user cannot view the activity" do
-      activity = create(:activity, organisation: organisation)
+    context "when the activity is a fund" do
+      scenario "the user can view the activity" do
+        activity = create(:fund_activity, organisation: organisation)
 
-      visit organisation_activity_path(organisation, activity)
+        visit organisation_activity_path(organisation, activity)
 
-      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
+        expect(page).to have_content(activity.title)
+      end
+
+      scenario "the user cannot edit the activity" do
+        activity = create(:fund_activity, organisation: organisation)
+
+        visit organisation_activity_path(organisation, activity)
+
+        expect(page).to_not have_content(I18n.t("generic.link.edit"))
+      end
+    end
+
+    context "when the activity is a programme" do
+      scenario "the user can view the activity" do
+        activity = create(:programme_activity, organisation: organisation)
+
+        visit organisation_activity_path(organisation, activity)
+
+        expect(page).to have_content(activity.title)
+      end
+
+      scenario "the user cannot edit the activity" do
+        activity = create(:programme_activity, organisation: organisation)
+
+        visit organisation_activity_path(organisation, activity)
+
+        expect(page).to_not have_content(I18n.t("generic.link.edit"))
+      end
+    end
+
+    context "when the activity is a project" do
+      scenario "the user can view the activity" do
+        activity = create(:project_activity, organisation: organisation)
+
+        visit organisation_activity_path(organisation, activity)
+
+        expect(page).to have_content(activity.title)
+      end
+
+      scenario "the user can edit the activity" do
+        activity = create(:project_activity, organisation: organisation)
+
+        visit organisation_activity_path(organisation, activity)
+
+        expect(page).to have_content(I18n.t("generic.link.edit"))
+      end
     end
   end
 end

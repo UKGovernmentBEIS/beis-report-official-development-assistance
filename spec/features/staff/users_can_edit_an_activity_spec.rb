@@ -1,4 +1,4 @@
-RSpec.feature "Fund managers can edit a fund level activity" do
+RSpec.feature "Users can edit an activity" do
   include ActivityHelper
 
   let(:organisation) { create(:organisation, name: "UKSA") }
@@ -93,6 +93,42 @@ RSpec.feature "Fund managers can edit a fund level activity" do
         within(".title") do
           expect(page).to have_content(I18n.t("generic.link.add"))
         end
+      end
+    end
+  end
+
+  context "when the user is a delivery partner" do
+    before { authenticate!(user: create(:delivery_partner, organisation: organisation)) }
+
+    context "when the activity is a fund activity" do
+      scenario "the user cannot edit the fund" do
+        activity = create(:fund_activity, organisation: organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+
+        expect(page).to_not have_content(I18n.t("generic.link.edit"))
+      end
+    end
+
+    context "when the activity is a programme activity" do
+      scenario "the user cannot edit the programme" do
+        activity = create(:programme_activity, organisation: organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+
+        expect(page).to_not have_content(I18n.t("generic.link.edit"))
+      end
+    end
+
+    context "when the activity is a project activity" do
+      scenario "the user can edit the project" do
+        activity = create(:project_activity, organisation: organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+
+        expect(page).to have_content(I18n.t("generic.link.edit"))
+
+        assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
       end
     end
   end

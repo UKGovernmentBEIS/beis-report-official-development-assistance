@@ -16,8 +16,9 @@
       .govuk-grid-column-two-thirds
         %h2.govuk-heading-m
           = t("page_content.organisation.programmes")
-        = form_tag(organisation_fund_programmes_path(@activity.organisation, @activity), method: "post") do
-          = submit_tag t("page_content.organisation.button.create_programme"), class: "govuk-button"
+        - if current_user.administrator? || current_user.fund_manager?
+          = form_tag(organisation_fund_programmes_path(@activity.organisation, @activity), method: "post") do
+            = submit_tag t("page_content.organisation.button.create_programme"), class: "govuk-button"
         %ul.govuk-list.govuk-list--bullet
           - @activities.each do |activity|
             %li
@@ -40,14 +41,29 @@
       %h2.govuk-heading-m
         = t("page_content.activity.transactions")
 
-      = link_to(I18n.t("page_content.transactions.button.create"), new_activity_transaction_path(@activity), class: "govuk-button")
-      = render partial: '/staff/shared/transactions/table', locals: { transactions: @transaction_presenters }
+        = link_to(I18n.t("page_content.transactions.button.create"), new_activity_transaction_path(@activity), class: "govuk-button")
+        = render partial: '/staff/shared/transactions/table', locals: { transactions: @transaction_presenters }
 
   - if @activity.is_programme_level?
+    - if current_user.administrator? || current_user.fund_manager?
+      .govuk-grid-row
+        .govuk-grid-column-full
+          %h2.govuk-heading-m
+            = t("page_content.activity.budgets")
+
+          = link_to(I18n.t("page_content.budgets.button.create"), new_activity_budget_path(@activity), class: "govuk-button")
+          = render partial: '/staff/shared/budgets/table', locals: { budgets: @budget_presenters }
+
     .govuk-grid-row
       .govuk-grid-column-full
         %h2.govuk-heading-m
-          = t("page_content.activity.budgets")
+          = t("page_content.activity.projects")
 
-        = link_to(I18n.t("page_content.budgets.button.create"), new_activity_budget_path(@activity), class: "govuk-button")
-        = render partial: '/staff/shared/budgets/table', locals: { budgets: @budget_presenters }
+        = form_tag(organisation_fund_programme_projects_path(@activity.organisation, @activity.activity, @activity), method: "post") do
+          = submit_tag t("page_content.organisation.button.create_project"), class: "govuk-button"
+
+        %ul.govuk-list.govuk-list--bullet
+          - @activities.each do |activity|
+            %li
+              = link_to activity.display_title, organisation_activity_path(activity.organisation, activity)
+              
