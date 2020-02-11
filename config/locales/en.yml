@@ -127,6 +127,10 @@ en:
         create: Create activity
       description:
         label: Description
+      extending_organisation:
+        button:
+          edit: Choose extending organisation
+        heading: Extending organisation
       finance:
         label: Finance
       flow:
@@ -177,6 +181,7 @@ en:
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
     organisation:
       button:
+        choose_extending_organisation: Choose extending organisation
         create_fund: Create fund
         create_programme: Create programme
         edit: Edit organisation

@@ -12,7 +12,7 @@ class ActivityPolicy < ApplicationPolicy
   end
 
   def update?
-    user.administrator? || user.fund_manager?
+    create?
   end
 
   def destroy?
