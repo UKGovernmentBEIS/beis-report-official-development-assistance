@@ -1,6 +1,6 @@
 %iati-activity{"default-currency" => "#{activity.default_currency}", "xml:lang" => activity.organisation.language_code }
   %iati-identifier= activity.identifier
-  %reporting-org{"type" => activity.organisation.organisation_type, "ref" => "" }
+  %reporting-org{"type" => activity.organisation.organisation_type, "ref" => activity.organisation.iati_reference }
     %narrative= activity.organisation.name
   %title
     %narrative= activity.title
