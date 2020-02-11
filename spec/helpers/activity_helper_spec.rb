@@ -20,6 +20,18 @@ RSpec.describe ActivityHelper, type: :helper do
         expect(activity_back_path(programme_activity)).to eq organisation_activity_path(fund_activity.organisation, fund_activity)
       end
     end
+
+    context "when the activity is a project level" do
+      it "returns the programme path" do
+        fund_activity = create(:activity, level: :fund)
+        programme_activity = create(:activity, level: :programme)
+        project_activity = create(:activity, level: :project)
+        fund_activity.activities << programme_activity
+        programme_activity.activities << project_activity
+
+        expect(activity_back_path(project_activity)).to eq organisation_activity_path(programme_activity.organisation, programme_activity)
+      end
+    end
   end
 
   describe "#step_is_complete_or_next?" do
