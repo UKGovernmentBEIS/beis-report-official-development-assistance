@@ -1,4 +1,4 @@
-- if current_user.administrator? || current_user.fund_manager?
+- if policy(@activity).update?
   .govuk-grid-row
     .govuk-grid-column-full
       %h2.govuk-heading-m

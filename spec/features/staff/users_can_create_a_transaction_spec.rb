@@ -195,18 +195,43 @@ RSpec.feature "Users can create a transaction" do
       end
     end
 
-    # TODO: When we come to create transactions for different types of activity
-    # for projects and programmes etc, we will want to test that users who are
-    # deliver partners can create transactions for project activities too.
     context "when the user is a delivery_partner" do
-      before { authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation)) }
+      before { authenticate!(user: create(:delivery_partner, organisation: organisation)) }
 
-      scenario "cannot create an transaction that belongs to an activity" do
-        activity = create(:activity, organisation: organisation)
+      scenario "cannot create an transaction that belongs to a fund activity" do
+        fund_activity = create(:fund_activity, organisation: organisation)
+        visit organisation_path(organisation)
+        click_on fund_activity.title
 
-        visit new_activity_transaction_path(activity)
+        expect(page).to_not have_content(I18n.t("page_content.transactions.button.create"))
+      end
 
-        expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
+      scenario "cannot create an transaction that belongs to a programme activity" do
+        fund_activity = create(:fund_activity, organisation: organisation)
+        programme_activity = create(:programme_activity, activity: fund_activity, organisation: organisation)
+
+        visit organisation_path(organisation)
+        click_on fund_activity.title
+        click_on programme_activity.title
+
+        expect(page).to_not have_content(I18n.t("page_content.transactions.button.create"))
+      end
+
+      scenario "can create an transaction that belongs to a project activity" do
+        fund_activity = create(:fund_activity, organisation: organisation)
+        programme_activity = create(:programme_activity, activity: fund_activity, organisation: organisation)
+        project_activity = create(:project_activity, activity: programme_activity, organisation: organisation)
+
+        visit organisation_path(organisation)
+        click_on fund_activity.title
+        click_on programme_activity.title
+        click_on project_activity.title
+
+        click_on(I18n.t("page_content.transactions.button.create"))
+
+        fill_in_transaction_form
+
+        expect(page).to have_content(I18n.t("form.transaction.create.success"))
       end
     end
   end
