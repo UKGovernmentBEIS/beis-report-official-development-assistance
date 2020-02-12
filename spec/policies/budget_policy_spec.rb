@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe BudgetPolicy do
-  let(:activity) { create(:activity) }
+  let(:organisation) { create(:organisation) }
+  let(:activity) { create(:activity, organisation: organisation) }
   let(:budget) { create(:budget, activity: activity) }
   subject { described_class.new(user, budget) }
 
@@ -44,9 +45,23 @@ RSpec.describe BudgetPolicy do
     it { is_expected.to forbid_edit_and_update_actions }
     it { is_expected.to forbid_action(:destroy) }
 
-    it "does not include include budget in resolved scope" do
+    it "does not include budget in resolved scope" do
       resolved_scope = described_class::Scope.new(user, Budget.all).resolve
       expect(resolved_scope).not_to include(budget)
+    end
+
+    context "for project level activities in the user's organisation" do
+      let(:user) { create(:delivery_partner, organisation: organisation) }
+      let(:activity) { create(:project_activity, organisation: organisation) }
+
+      it { is_expected.to permit_action(:show) }
+      it { is_expected.to permit_new_and_create_actions }
+      it { is_expected.to permit_edit_and_update_actions }
+
+      it "includes budget in resolved scope" do
+        resolved_scope = described_class::Scope.new(user, Budget.all).resolve
+        expect(resolved_scope).to include(budget)
+      end
     end
   end
 end

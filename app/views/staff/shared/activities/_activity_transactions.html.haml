@@ -1,0 +1,8 @@
+- if current_user.administrator? || current_user.fund_manager?
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("page_content.activity.transactions")
+
+      = link_to(I18n.t("page_content.transactions.button.create"), new_activity_transaction_path(activity), class: "govuk-button")
+      = render partial: '/staff/shared/transactions/table', locals: { transactions: transactions }

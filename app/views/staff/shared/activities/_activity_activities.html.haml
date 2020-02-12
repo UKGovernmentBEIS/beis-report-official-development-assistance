@@ -1,0 +1,37 @@
+- if activity.is_fund_level?
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("page_content.organisation.programmes")
+      - if current_user.administrator? || current_user.fund_manager?
+        = form_tag(organisation_fund_programmes_path(activity.organisation, activity), method: "post") do
+          = submit_tag t("page_content.organisation.button.create_programme"), class: "govuk-button"
+      %ul.govuk-list.govuk-list--bullet
+        - activities.each do |sub_activity|
+          %li
+            = link_to sub_activity.display_title, organisation_activity_path(sub_activity.organisation, sub_activity)
+
+- if activity.is_programme_level?
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("page_content.activity.extending_organisation.heading")
+
+      - if @activity.extending_organisation.present?
+        %p.govuk-body
+          = @activity.extending_organisation.name
+
+      = link_to(I18n.t("page_content.activity.extending_organisation.button.edit"), edit_activity_extending_organisation_path(@activity), class: "govuk-button")
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("page_content.activity.projects")
+
+      = form_tag(organisation_fund_programme_projects_path(activity.organisation, activity.activity, activity), method: "post") do
+        = submit_tag t("page_content.organisation.button.create_project"), class: "govuk-button"
+
+      %ul.govuk-list.govuk-list--bullet
+        - activities.each do |sub_activity|
+          %li
+            = link_to sub_activity.display_title, organisation_activity_path(sub_activity.organisation, sub_activity)

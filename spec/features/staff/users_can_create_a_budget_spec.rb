@@ -69,9 +69,12 @@ RSpec.describe "Users can create a budget" do
       before { authenticate!(user: delivery_partner) }
 
       scenario "cannot create a budget on a programme" do
-        visit new_activity_budget_path(programme_activity)
+        visit organisation_path(organisation)
 
-        expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
+        click_on(fund_activity.title)
+        click_on(programme_activity.title)
+
+        expect(page).to_not have_content(I18n.t("page_content.budgets.button.create"))
       end
     end
   end
@@ -97,9 +100,11 @@ RSpec.describe "Users can create a budget" do
 
       scenario "cannot create a budget on a fund" do
         fund_activity = create(:fund_activity, organisation: organisation)
-        visit new_activity_budget_path(fund_activity)
+        visit organisation_path(organisation)
 
-        expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
+        click_on(fund_activity.title)
+
+        expect(page).to_not have_content(I18n.t("page_content.budgets.button.create"))
       end
     end
   end
