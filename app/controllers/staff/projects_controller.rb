@@ -2,7 +2,7 @@
 
 class Staff::ProjectsController < Staff::ActivitiesController
   def create
-    @activity = CreateProjectActivity.new(organisation_id: organisation_id, programme_id: programme_id).call
+    @activity = CreateProjectActivity.new(organisation_id: organisation_id, programme_id: programme_id, user: current_user).call
     authorize @activity
 
     redirect_to activity_step_path(@activity.id, @activity.wizard_status)
