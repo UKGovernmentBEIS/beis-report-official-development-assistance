@@ -20,9 +20,7 @@ class CreateFundActivity
     activity.accountable_organisation_reference = "GB-GOV-13"
     activity.accountable_organisation_type = "10"
 
-    activity.extending_organisation_name = "Department for Business, Energy and Industrial Strategy"
-    activity.extending_organisation_reference = "GB-GOV-13"
-    activity.extending_organisation_type = "10"
+    activity.extending_organisation = Organisation.find_by!(service_owner: true)
 
     activity.save(validate: false)
     activity

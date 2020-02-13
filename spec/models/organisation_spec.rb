@@ -6,6 +6,9 @@ RSpec.describe Organisation, type: :model do
     it { should validate_presence_of(:organisation_type) }
     it { should validate_presence_of(:language_code) }
     it { should validate_presence_of(:default_currency) }
+    it { should validate_presence_of(:iati_reference) }
+
+    it { should validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
   end
 
   describe "associations" do
@@ -55,6 +58,17 @@ RSpec.describe Organisation, type: :model do
       expect(result.first).to eq(a_organisation)
       expect(result.second).to eq(b_organisation)
       expect(result.third).to eq(c_organisation)
+    end
+  end
+
+  describe ".delivery_partners" do
+    it "should contain only organisations that are not BEIS" do
+      beis_organisation = create(:beis_organisation)
+      delivery_partner_organisation = create(:delivery_partner_organisation)
+      delivery_partners = Organisation.delivery_partners
+
+      expect(delivery_partners).to include(delivery_partner_organisation)
+      expect(delivery_partners).not_to include(beis_organisation)
     end
   end
 end

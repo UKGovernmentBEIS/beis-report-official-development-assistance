@@ -1,5 +1,6 @@
 RSpec.feature "Fund managers can create a fund level activity" do
   let!(:organisation) { create(:organisation, name: "UKSA") }
+  let!(:beis) { create(:beis_organisation) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
@@ -10,7 +11,7 @@ RSpec.feature "Fund managers can create a fund level activity" do
   end
 
   context "when the user is a fund_manager" do
-    let(:fund_manager) { create(:fund_manager, organisation: organisation) }
+    let(:fund_manager) { create(:fund_manager, organisation: beis) }
     before { authenticate!(user: fund_manager) }
 
     scenario "successfully create a activity" do
@@ -76,9 +77,7 @@ RSpec.feature "Fund managers can create a fund level activity" do
       fill_in_activity_form(identifier: identifier)
 
       activity = Activity.find_by(identifier: identifier)
-      expect(activity.extending_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
-      expect(activity.extending_organisation_reference).to eq("GB-GOV-13")
-      expect(activity.extending_organisation_type).to eq("10")
+      expect(activity.extending_organisation).to eql beis
     end
 
     context "validations" do

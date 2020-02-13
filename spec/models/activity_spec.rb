@@ -121,12 +121,18 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:finance) }
       it { should validate_presence_of(:tied_status) }
     end
+
+    context "when saving in the update_extending_organisation context" do
+      subject { build(:activity) }
+      it { should validate_presence_of(:extending_organisation_id).on(:update_extending_organisation) }
+    end
   end
 
   describe "associations" do
     it { should belong_to(:organisation) }
     it { should belong_to(:activity).optional }
     it { should have_many(:activities).with_foreign_key("activity_id") }
+    it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
   end
 
   describe "#is_fund_level?" do

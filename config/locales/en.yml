@@ -43,6 +43,9 @@ en:
       default_currency:
         hint: Default currency for all financial values in this activity report
         label: Default currency
+      iati_reference:
+        hint:
+          html: Machine-readable identification string for the organisation. <a href="https://reference.iatistandard.org/organisation-identifiers/" target="_blank" class="govuk-link">See IATI for detailed documentation.</a>
       language_code:
         hint: Default language of text in this organisation
         label: Language code
@@ -124,6 +127,10 @@ en:
         create: Create activity
       description:
         label: Description
+      extending_organisation:
+        button:
+          edit: Choose extending organisation
+        heading: Extending organisation
       finance:
         label: Finance
       flow:
@@ -174,12 +181,15 @@ en:
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
     organisation:
       button:
+        choose_extending_organisation: Choose extending organisation
         create_fund: Create fund
         create_programme: Create programme
         edit: Edit organisation
       default_currency:
         label: Default currency
       funds: Funds
+      iati_reference:
+        label: IATI reference
       language_code:
         label: Language code
       name:

@@ -10,10 +10,12 @@ class Activity < ApplicationRecord
   validates :tied_status, presence: true, if: :tied_status_step?
   validates_uniqueness_of :identifier
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
+  validates :extending_organisation_id, presence: true, on: :update_extending_organisation
 
   belongs_to :activity, optional: true
   has_many :activities, foreign_key: "activity_id"
   belongs_to :organisation
+  belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
 
   enum level: {
     fund: "fund",
@@ -93,8 +95,6 @@ class Activity < ApplicationRecord
   end
 
   def has_extending_organisation?
-    extending_organisation_reference.present? &&
-      extending_organisation_name.present? &&
-      extending_organisation_type.present?
+    extending_organisation.present?
   end
 end

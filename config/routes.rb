@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
     resources :activities, only: [], concerns: [:transactionable, :budgetable] do
       resources :steps, controller: "activity_forms"
+      resources :extending_organisations, only: [:edit, :update]
     end
   end
 
