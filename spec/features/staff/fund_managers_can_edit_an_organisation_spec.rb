@@ -1,5 +1,5 @@
 RSpec.feature "Fund managers can edit organisations" do
-  let!(:beis_organisation) { create(:organisation) }
+  let!(:beis_organisation) { create(:beis_organisation) }
   let!(:another_organisation) { create(:organisation) }
 
   context "when the user is not logged in" do
@@ -26,7 +26,7 @@ RSpec.feature "Fund managers can edit organisations" do
       click_link I18n.t("page_content.organisation.button.edit")
 
       expect(page).to have_content(I18n.t("page_title.organisation.edit"))
-      fill_in "organisation[name]", with: "My New Organisation"
+      fill_in "organisation[name]", with: ""
 
       click_button I18n.t("generic.button.submit")
       expect(page).to_not have_content I18n.t("form.organisation.update.success")
@@ -78,6 +78,7 @@ RSpec.feature "Fund managers can edit organisations" do
 
     expect(page).to have_content(I18n.t("page_title.organisation.edit"))
     fill_in "organisation[name]", with: "My New Organisation"
+    fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
     select "Government", from: "organisation[organisation_type]"
     select "Czech", from: "organisation[language_code]"
     select "Zloty", from: "organisation[default_currency]"

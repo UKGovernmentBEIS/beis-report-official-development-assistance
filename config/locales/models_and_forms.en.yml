@@ -27,6 +27,7 @@ en:
         value: Value
       organisation:
         default_currency: Default currency
+        iati_reference: IATI reference
         language_code: Language code
         name: Name
         organisation_type: Organisation type

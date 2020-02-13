@@ -3,12 +3,14 @@ RSpec.feature "Users can download an activity as XML" do
     authenticate!(user: user)
   end
 
-  let(:organisation) { create(:organisation) }
+  let(:organisation) { create(:beis_organisation) }
+  let(:delivery_partner) { create(:organisation) }
   let(:activity) do
     create(:activity,
       planned_start_date: Date.today,
       planned_end_date: Date.tomorrow,
-      organisation: organisation)
+      organisation: organisation,
+      extending_organisation: delivery_partner)
   end
   let(:user) { create(:administrator, organisation: organisation) }
 
@@ -27,6 +29,8 @@ RSpec.feature "Users can download an activity as XML" do
       xml = Nokogiri::XML::Document.parse(page.body)
 
       expect(xml.at("iati-identifier").text).to eq(activity.identifier)
+      expect(xml.at("reporting-org/@ref").text).to eq(activity.organisation.iati_reference)
+      expect(xml.at("reporting-org/@type").text).to eq(activity.organisation.organisation_type)
       expect(xml.at("reporting-org/narrative").text).to eq(organisation.name)
       expect(xml.at("title/narrative").text).to eq(activity.title)
       expect(xml.at("description/narrative").text).to eq(activity.description)
