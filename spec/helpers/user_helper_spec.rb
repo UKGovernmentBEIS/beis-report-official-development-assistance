@@ -4,9 +4,9 @@ require "rails_helper"
 
 RSpec.describe UserHelper, type: :helper do
   describe "#organisation_check_box_options" do
-    it "returns an array of all organisations" do
-      first_organisation = create(:organisation)
-      second_organisation = create(:organisation)
+    it "returns an array of all organisations in alphabetical order" do
+      first_organisation = create(:organisation, name: "A Organisation")
+      second_organisation = create(:organisation, name: "Z Organisation")
 
       expect(helper.organisation_check_box_options)
         .to match([
