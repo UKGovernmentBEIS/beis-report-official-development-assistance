@@ -26,6 +26,9 @@
                      yaml_to_objects(entity: "organisation", type: "organisation_type"),
                      :code,
                      :name
+= f.govuk_text_field :providing_organisation_reference,
+                      label: { text: t("form.transaction.providing_organisation_reference.label") },
+                      hint_text: t("form.transaction.providing_organisation_reference.hint").html_safe
 
 %h2.govuk-heading-m= t("form.transaction.receiving_organisation.title")
 %span.govuk-hint= t("form.transaction.receiving_organisation.hint")
@@ -34,5 +37,9 @@
                      yaml_to_objects(entity: "organisation", type: "organisation_type"),
                      :code,
                      :name
+= f.govuk_text_field :receiving_organisation_reference,
+                     label: { text: t("form.transaction.receiving_organisation_reference.label") },
+                     hint_text: t("form.transaction.receiving_organisation_reference.hint").html_safe
+
 
 = f.govuk_submit t("generic.button.submit")
