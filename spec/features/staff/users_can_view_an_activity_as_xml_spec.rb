@@ -60,8 +60,10 @@ RSpec.feature "Users can download an activity as XML" do
       expect(xml.at("value").text).to eq(transaction.value.to_s)
       expect(xml.at("transaction/description/narrative").text).to eq(transaction.description)
       expect(xml.at("provider-org/@type").text).to eq(transaction.providing_organisation_type)
+      expect(xml.at("provider-org/@ref").text).to eq(transaction.providing_organisation_reference)
       expect(xml.at("provider-org/narrative").text).to eq(transaction.providing_organisation_name)
       expect(xml.at("receiver-org/@type").text).to eq(transaction.receiving_organisation_type)
+      expect(xml.at("receiver-org/@ref").text).to eq(transaction.receiving_organisation_reference)
       expect(xml.at("receiver-org/narrative").text).to eq(transaction.receiving_organisation_name)
       expect(xml.at("disbursement-channel/@code").text).to eq(transaction.disbursement_channel)
     end
