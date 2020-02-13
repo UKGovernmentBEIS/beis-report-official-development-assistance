@@ -35,7 +35,7 @@ RSpec.feature "Users can view transactions on an activity page" do
     expect(page).to have_content(transaction_presenter.currency)
     expect(page).to have_content(transaction_presenter.value)
     expect(page).to have_content(transaction_presenter.disbursement_channel)
-    expect(page).to have_content(transaction_presenter.receiver.name)
-    expect(page).to have_content(transaction_presenter.provider.name)
+    expect(page).to have_content(transaction_presenter.providing_organisation_name)
+    expect(page).to have_content(transaction_presenter.receiving_organisation_name)
   end
 end

@@ -4,8 +4,8 @@
   %value{"currency" => transaction.currency, "value-date" => transaction.date}=transaction.value
   %description
     %narrative=transaction.description
-  %provider-org{"provider-activity-id" => "", "type" => transaction.provider.organisation_type, "ref" => ""}
-    %narrative=transaction.provider.name
-  %receiver-org{"receiver-activity-id" => "", "type" => transaction.receiver.organisation_type, "ref" => ""}
-    %narrative=transaction.receiver.name
+  %provider-org{"provider-activity-id" => "", "type" => transaction.providing_organisation_type, "ref" => ""}
+    %narrative=transaction.providing_organisation_name
+  %receiver-org{"receiver-activity-id" => "", "type" => transaction.receiving_organisation_type, "ref" => ""}
+    %narrative=transaction.receiving_organisation_name
   %disbursement-channel{"code" => transaction.disbursement_channel}

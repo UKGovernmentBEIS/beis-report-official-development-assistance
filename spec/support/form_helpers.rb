@@ -138,8 +138,8 @@ module FormHelpers
     value: "1000.01",
     disbursement_channel: "Money is disbursed through central Ministry of Finance or Treasury",
     currency: "Pound Sterling",
-    provider_organisation: Organisation.first,
-    receiver_organisation: Organisation.first)
+    providing_organisation: OpenStruct.new(name: "Example provider", type: "Government"),
+    receiving_organisation: OpenStruct.new(name: "Example receiver", type: "Private Sector"))
     fill_in "transaction[reference]", with: reference
     fill_in "transaction[description]", with: description
     select transaction_type, from: "transaction[transaction_type]"
@@ -149,8 +149,12 @@ module FormHelpers
     fill_in "transaction[value]", with: value
     select disbursement_channel, from: "transaction[disbursement_channel]"
     select currency, from: "transaction[currency]"
-    select provider_organisation.name, from: "transaction[provider_id]"
-    select receiver_organisation.name, from: "transaction[receiver_id]"
+
+    fill_in "transaction[providing_organisation_name]", with: providing_organisation.name
+    select providing_organisation.type, from: "transaction[providing_organisation_type]"
+
+    fill_in "transaction[receiving_organisation_name]", with: receiving_organisation.name
+    select receiving_organisation.type, from: "transaction[receiving_organisation_type]"
 
     click_on(I18n.t("generic.button.submit"))
 
@@ -167,8 +171,8 @@ module FormHelpers
         expect(page).to have_content(value)
         expect(page).to have_content(disbursement_channel)
         expect(page).to have_content(currency)
-        expect(page).to have_content(provider_organisation.name)
-        expect(page).to have_content(receiver_organisation.name)
+        expect(page).to have_content(providing_organisation.name)
+        expect(page).to have_content(receiving_organisation.name)
       end
     end
   end

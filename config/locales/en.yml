@@ -72,10 +72,12 @@ en:
       disbursement_channel:
         hint: The channel through which the funds will flow for this transaction.
         label: Disbursement channel
-      provider:
-        hint: The organisation where this transaction is coming from
-      receiver:
-        hint: The organisation receiving the money from this transaction
+      providing_organisation:
+        hint: The organisation where this transaction is coming from.
+        title: Providing organisation
+      receiving_organisation:
+        hint: The organisation receiving the money from this transaction.
+        title: Receiving organisation
       reference:
         hint: This reference should link this activity back to the finance system.
       transaction_type:
@@ -203,6 +205,10 @@ en:
     transactions:
       button:
         create: Create transaction
+      table:
+        headers:
+          providing_organisation: Provider
+          receiving_organisation: Receiver
     users:
       button:
         create: Create user
