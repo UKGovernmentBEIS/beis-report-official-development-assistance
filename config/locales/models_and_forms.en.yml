@@ -36,8 +36,10 @@ en:
         date: Date
         description: Description
         disbursement_channel: Disbursement channel
-        provider_id: Providing organisation
-        receiver_id: Receiving organisation
+        providing_organisation_name: Providing organisation name
+        providing_organisation_type: Providing organisation type
+        receiving_organisation_name: Receiving organisation name
+        receiving_organisation_type: Receiving organisation type
         reference: Reference
         transaction_type: Transaction type
         value: Value
