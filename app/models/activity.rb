@@ -16,6 +16,7 @@ class Activity < ApplicationRecord
   has_many :activities, foreign_key: "activity_id"
   belongs_to :organisation
   belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
+  has_many :implementing_organisations
 
   enum level: {
     fund: "fund",

@@ -133,6 +133,7 @@ RSpec.describe Activity, type: :model do
     it { should belong_to(:activity).optional }
     it { should have_many(:activities).with_foreign_key("activity_id") }
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
+    it { should have_many(:implementing_organisations) }
   end
 
   describe "#parent_activity" do
