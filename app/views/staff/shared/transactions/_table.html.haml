@@ -3,23 +3,23 @@
     %thead.govuk-table__head
       %tr.govuk-table__row
         %th.govuk-table__header
-          =t("activerecord.attributes.transaction.reference")
+          = t("activerecord.attributes.transaction.reference")
         %th.govuk-table__header
-          =t("activerecord.attributes.transaction.description")
+          = t("activerecord.attributes.transaction.description")
         %th.govuk-table__header
-          =t("activerecord.attributes.transaction.transaction_type")
+          = t("activerecord.attributes.transaction.transaction_type")
         %th.govuk-table__header
-          =t("activerecord.attributes.transaction.date")
+          = t("activerecord.attributes.transaction.date")
         %th.govuk-table__header
-          =t("activerecord.attributes.transaction.currency")
+          = t("activerecord.attributes.transaction.currency")
         %th.govuk-table__header
-          =t("activerecord.attributes.transaction.value")
+          = t("activerecord.attributes.transaction.value")
         %th.govuk-table__header
-          =t("activerecord.attributes.transaction.disbursement_channel")
+          = t("activerecord.attributes.transaction.disbursement_channel")
         %th.govuk-table__header
-          =t("activerecord.attributes.transaction.provider_id")
+          = t("page_content.transactions.table.headers.providing_organisation")
         %th.govuk-table__header
-          =t("activerecord.attributes.transaction.receiver_id")
+          = t("page_content.transactions.table.headers.receiving_organisation")
         %th.govuk-table__header
 
     %tbody.govuk-table__body
@@ -32,7 +32,7 @@
           %td.govuk-table__cell= transaction.currency
           %td.govuk-table__cell= transaction.value
           %td.govuk-table__cell= transaction.disbursement_channel
-          %td.govuk-table__cell= transaction.provider.name
-          %td.govuk-table__cell= transaction.receiver.name
+          %td.govuk-table__cell= transaction.providing_organisation_name
+          %td.govuk-table__cell= transaction.receiving_organisation_name
           %td.govuk-table__cell
             = a11y_action_link(I18n.t('generic.link.edit'), edit_activity_transaction_path(transaction.activity, transaction))
