@@ -71,8 +71,10 @@ class Staff::TransactionsController < Staff::BaseController
       :value,
       :disbursement_channel,
       :providing_organisation_name,
+      :providing_organisation_reference,
       :providing_organisation_type,
       :receiving_organisation_name,
+      :receiving_organisation_reference,
       :receiving_organisation_type
     )
   end
