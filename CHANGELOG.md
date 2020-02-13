@@ -39,3 +39,4 @@
 - Fund activities store extending organisation details
 - Sign in button works when JS is disabled
 - Fund managers can set and change the extending organisation
+- Date inputs in forms for creating activity, transaction and a budget have a hint text
