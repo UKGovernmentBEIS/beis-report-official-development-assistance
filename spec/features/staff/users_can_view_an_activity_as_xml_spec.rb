@@ -92,7 +92,7 @@ RSpec.feature "Users can view an activity as XML" do
           expect(xml.at("iati-activity/budget/period-start/@iso-date").text).to eq(budget.period_start_date.strftime("%Y-%m-%d"))
           expect(xml.at("iati-activity/budget/period-end/@iso-date").text).to eq(budget.period_end_date.strftime("%Y-%m-%d"))
         end
-     end
+      end
     end
   end
 end
