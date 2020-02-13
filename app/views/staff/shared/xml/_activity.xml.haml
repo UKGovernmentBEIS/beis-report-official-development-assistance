@@ -26,6 +26,10 @@
   %default-finance-type{"code" => "#{activity.finance}"}/
   %default-aid-type{"code" => "#{activity.aid_type}"}/
   %default-tied-status{"code" => "#{activity.tied_status}"}/
+  - if budgets
+    - budgets.each do |budget|
+      = render partial: "staff/shared/xml/budget", locals: { budget: budget }
   - if transactions
     - transactions.each do |transaction|
       = render partial: "staff/shared/xml/transaction", locals: { transaction: transaction }
+
