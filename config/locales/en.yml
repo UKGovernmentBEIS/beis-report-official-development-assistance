@@ -234,6 +234,8 @@ en:
           link: you can make one now
   page_title:
     activity:
+      implementing_organisation:
+        new: Add a new implementing organisation
       show: Activity %{name}
     activity_form:
       show:
