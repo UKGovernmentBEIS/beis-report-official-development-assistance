@@ -87,12 +87,16 @@ en:
         role: Role
     hint:
       activity:
+        actual_end_date: For example, 2 12 2020
+        actual_start_date: For example, 11 4 2020
         aid_type:
           html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidTypeVocabulary/' target='_blank'>IATI descriptions can be found here.</a>
         finance: DAC/CRS transaction classification used to distinguish financial instruments, e.g. grants or loans.
         flow:
           html: "<a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>IATI descriptions of each flow type can be found here.</a>"
         identifier: Reference to link this to your internal systems so it can be found again later.
+        planned_end_date: For example, 28 11 2020
+        planned_start_date: For example, 27 3 2020
         recipient_region:
           html: A supranational geopolitical region that will benefit from this activity. <a href='http://reference.iatistandard.org/203/codelists/Region/' target='_blank'>Find the region code from the IATI region list.</a>
         sector:
@@ -102,3 +106,8 @@ en:
         tied_status:
           html: "<a href='http://reference.iatistandard.org/203/codelists/TiedStatus/' target='_blank'>See the IATI tied status page for descriptions.</a>"
         title: A short, human-readable title that contains a meaningful summary of the activity.
+      budget:
+        period_end_date: For example, 12 3 2021
+        period_start_date: For example, 11 3 2020
+      transaction:
+        date: For example, 27 3 2020
