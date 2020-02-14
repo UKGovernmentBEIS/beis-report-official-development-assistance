@@ -76,13 +76,13 @@ en:
         hint: The organisation where this transaction is coming from.
         title: Providing organisation
       providing_organisation_reference:
-        hint: <a href="http://org-id.guide/" target="_blank" class="govuk-link">Organisation references can be found using this service</a>
+        hint: For example, GB-GOV-13. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service</a>.
         label: IATI Reference (optional)
       receiving_organisation:
         hint: The organisation receiving the money from this transaction.
         title: Receiving organisation
       receiving_organisation_reference:
-        hint: <a href="http://org-id.guide/" target="_blank" class="govuk-link">Organisation references can be found using this service</a>
+        hint: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service</a>.
         label: IATI Reference (optional)
       reference:
         hint: This reference should link this activity back to the finance system.
