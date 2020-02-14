@@ -19,8 +19,6 @@ class Staff::TransactionsController < Staff::BaseController
     authorize @transaction
 
     @transaction.assign_attributes(transaction_params)
-    @transaction.provider = provider
-    @transaction.receiver = receiver
     @transaction.value = monetary_value
     @transaction.date = format_date(date)
 
@@ -46,8 +44,6 @@ class Staff::TransactionsController < Staff::BaseController
     authorize @transaction
 
     @transaction.assign_attributes(transaction_params)
-    @transaction.provider = provider
-    @transaction.receiver = receiver
     @transaction.value = monetary_value
     @transaction.date = format_date(date)
 
@@ -74,21 +70,13 @@ class Staff::TransactionsController < Staff::BaseController
       :currency,
       :value,
       :disbursement_channel,
+      :providing_organisation_name,
+      :providing_organisation_reference,
+      :providing_organisation_type,
+      :receiving_organisation_name,
+      :receiving_organisation_reference,
+      :receiving_organisation_type
     )
-  end
-
-  def provider
-    @provider ||= begin
-      provider_id = params.require(:transaction)[:provider_id]
-      Organisation.find(provider_id) if provider_id.present?
-    end
-  end
-
-  def receiver
-    @receiver ||= begin
-      receiver_id = params.require(:transaction)[:receiver_id]
-      Organisation.find(receiver_id) if receiver_id.present?
-    end
   end
 
   def monetary_value
