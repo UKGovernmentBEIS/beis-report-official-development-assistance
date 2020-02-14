@@ -28,7 +28,7 @@
   %default-tied-status{"code" => activity.tied_status}/
   - if budgets
     - budgets.each do |budget|
-      = render partial: "staff/shared/xml/budget", locals: { budget: budget }
+      = render partial: "staff/shared/xml/budget", locals: { budget: BudgetXmlPresenter.new(budget) }
   - if transactions
     - transactions.each do |transaction|
       = render partial: "staff/shared/xml/transaction", locals: { transaction: transaction }
