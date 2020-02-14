@@ -25,6 +25,10 @@ en:
           indicative: Indicative - A non-binding estimate for the described budget
           one: Status
         value: Value
+      implementing_organisation:
+        name: Organisation name
+        organisation_type: Organisation type
+        reference: IATI refrence (optional)
       organisation:
         default_currency: Default currency
         iati_reference: IATI reference
@@ -112,5 +116,8 @@ en:
       budget:
         period_end_date: For example, 12 3 2021
         period_start_date: For example, 11 3 2020
+      implementing_organisation:
+        reference:
+          html: <a href="http://org-id.guide/" target="_blank" class="govuk-link">Organisation references can be found using this service</a>
       transaction:
         date: For example, 27 3 2020

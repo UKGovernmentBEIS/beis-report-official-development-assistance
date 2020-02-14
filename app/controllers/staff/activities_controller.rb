@@ -20,6 +20,7 @@ class Staff::ActivitiesController < Staff::BaseController
       format.html do
         @transaction_presenters = @transactions.map { |transaction| TransactionPresenter.new(transaction) }
         @budget_presenters = @budgets.map { |budget| BudgetPresenter.new(budget) }
+        @implementing_organisation_presenters = @activity.implementing_organisations.map { |implementing_organisation| ImplementingOrganisationPresenter.new(implementing_organisation) }
       end
       format.xml
     end
