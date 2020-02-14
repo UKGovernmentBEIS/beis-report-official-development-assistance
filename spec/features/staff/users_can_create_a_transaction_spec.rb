@@ -48,6 +48,10 @@ RSpec.feature "Users can create a transaction" do
       expect(page).to have_content("Date can't be blank")
       expect(page).to have_content("Value must be between 1 and 99,999,999,999.00")
       expect(page).to have_content("Disbursement channel can't be blank")
+      expect(page).to have_content("Providing organisation name can't be blank")
+      expect(page).to have_content("Providing organisation type can't be blank")
+      expect(page).to have_content("Receiving organisation name can't be blank")
+      expect(page).to have_content("Receiving organisation type can't be blank")
     end
 
     context "Value number validation" do
