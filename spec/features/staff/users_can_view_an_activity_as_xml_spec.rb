@@ -51,8 +51,8 @@ RSpec.feature "Users can view an activity as XML" do
         it "contains the budget XML" do
           budget = create(:budget, activity: activity)
           visit organisation_activity_path(organisation, activity, format: :xml)
-          expect(xml.at("iati-activity/budget/@type").text).to eq(budget.budget_type)
-          expect(xml.at("iati-activity/budget/@status").text).to eq(budget.status)
+          expect(xml.at("iati-activity/budget/@type").text).to eq("1")
+          expect(xml.at("iati-activity/budget/@status").text).to eq("1")
           expect(xml.at("iati-activity/budget/value").text).to eq(budget.value.to_s)
           expect(xml.at("iati-activity/budget/period-start/@iso-date").text).to eq(budget.period_start_date.strftime("%Y-%m-%d"))
           expect(xml.at("iati-activity/budget/period-end/@iso-date").text).to eq(budget.period_end_date.strftime("%Y-%m-%d"))
@@ -86,8 +86,8 @@ RSpec.feature "Users can view an activity as XML" do
         it "contains the budget XML" do
           budget = create(:budget, activity: activity)
           visit organisation_activity_path(organisation, activity, format: :xml)
-          expect(xml.at("iati-activity/budget/@type").text).to eq(budget.budget_type)
-          expect(xml.at("iati-activity/budget/@status").text).to eq(budget.status)
+          expect(xml.at("iati-activity/budget/@type").text).to eq("1")
+          expect(xml.at("iati-activity/budget/@status").text).to eq("1")
           expect(xml.at("iati-activity/budget/value").text).to eq(budget.value.to_s)
           expect(xml.at("iati-activity/budget/period-start/@iso-date").text).to eq(budget.period_start_date.strftime("%Y-%m-%d"))
           expect(xml.at("iati-activity/budget/period-end/@iso-date").text).to eq(budget.period_end_date.strftime("%Y-%m-%d"))
