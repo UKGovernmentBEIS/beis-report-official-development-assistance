@@ -7,7 +7,7 @@ RSpec.describe Activity, type: :model do
         fund_activity = create(:activity, level: :fund)
         _other_activiy = create(:activity, level: :programme)
 
-        expect(Activity.funds).to eq [fund_activity]
+        expect(Activity.fund).to eq [fund_activity]
       end
     end
 
@@ -16,7 +16,7 @@ RSpec.describe Activity, type: :model do
         programme_activity = create(:activity, level: :programme)
         _other_activiy = create(:activity, level: :fund)
 
-        expect(Activity.programmes).to eq [programme_activity]
+        expect(Activity.programme).to eq [programme_activity]
       end
     end
 
@@ -25,7 +25,7 @@ RSpec.describe Activity, type: :model do
         project_activity = create(:activity, level: :project)
         _other_activity = create(:activity, level: :programme)
 
-        expect(Activity.projects).to eq [project_activity]
+        expect(Activity.project).to eq [project_activity]
       end
     end
   end

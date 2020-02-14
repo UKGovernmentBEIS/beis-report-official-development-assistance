@@ -23,10 +23,6 @@ class Activity < ApplicationRecord
     project: "project",
   }
 
-  scope :funds, -> { where(level: :fund) }
-  scope :programmes, -> { where(level: :programme) }
-  scope :projects, -> { where(level: :project) }
-
   def identifier_step?
     wizard_status == "identifier" || wizard_complete?
   end

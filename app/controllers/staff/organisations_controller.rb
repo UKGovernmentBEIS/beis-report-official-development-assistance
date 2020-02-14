@@ -11,7 +11,7 @@ class Staff::OrganisationsController < Staff::BaseController
     authorize organisation
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
-    activities = policy_scope(Activity.funds).includes(:organisation).where(organisation: organisation)
+    activities = policy_scope(Activity.fund).includes(:organisation).where(organisation: organisation)
     @activities = activities.map { |activity| ActivityPresenter.new(activity) }
   end
 
