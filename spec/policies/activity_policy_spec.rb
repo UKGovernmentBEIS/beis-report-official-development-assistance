@@ -26,9 +26,26 @@ RSpec.describe ActivityPolicy do
 
     it { is_expected.to permit_action(:index) }
     it { is_expected.to permit_action(:show) }
-    it { is_expected.to permit_new_and_create_actions }
-    it { is_expected.to permit_edit_and_update_actions }
     it { is_expected.to permit_action(:destroy) }
+
+    context "with a fund activity" do
+      it { is_expected.to permit_new_and_create_actions }
+      it { is_expected.to permit_edit_and_update_actions }
+    end
+
+    context "with a programme activity" do
+      let(:activity) { create(:programme_activity, organisation: organisation) }
+
+      it { is_expected.to permit_new_and_create_actions }
+      it { is_expected.to permit_edit_and_update_actions }
+    end
+
+    context "with a project activity" do
+      let(:activity) { create(:project_activity, organisation: organisation) }
+
+      it { is_expected.to forbid_new_and_create_actions }
+      it { is_expected.to forbid_edit_and_update_actions }
+    end
 
     it "includes activity in resolved scope" do
       resolved_scope = described_class::Scope.new(user, Activity.all).resolve
