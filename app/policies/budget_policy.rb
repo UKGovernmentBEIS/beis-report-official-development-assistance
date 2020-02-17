@@ -4,24 +4,24 @@ class BudgetPolicy < ApplicationPolicy
   end
 
   def show?
-    user.administrator? || user.fund_manager?
+    user.administrator?
   end
 
   def create?
-    user.administrator? || user.fund_manager?
+    user.administrator?
   end
 
   def update?
-    user.administrator? || user.fund_manager?
+    user.administrator?
   end
 
   def destroy?
-    user.administrator? || user.fund_manager?
+    user.administrator?
   end
 
   class Scope < Scope
     def resolve
-      if user.administrator? || user.fund_manager?
+      if user.administrator?
         scope.all
       else
         []

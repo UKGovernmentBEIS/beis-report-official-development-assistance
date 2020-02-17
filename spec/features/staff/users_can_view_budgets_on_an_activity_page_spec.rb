@@ -7,7 +7,7 @@ RSpec.feature "Users can view budgets on an activity page" do
 
   context "when the activity is fund_level" do
     context "when the user is a fund manager" do
-      let(:user) { create(:fund_manager, organisation: organisation) }
+      let(:user) { create(:administrator, organisation: organisation) }
 
       scenario "budget information is not shown on the page" do
         fund_activity = create(:fund_activity, organisation: organisation)
@@ -27,7 +27,7 @@ RSpec.feature "Users can view budgets on an activity page" do
     let(:programme_activity) { create(:programme_activity, activity: fund_activity, organisation: organisation) }
 
     context "when the user is a fund manager" do
-      let(:user) { create(:fund_manager, organisation: organisation) }
+      let(:user) { create(:administrator, organisation: organisation) }
 
       scenario "budget information is shown on the page" do
         budget = create(:budget, activity: programme_activity)

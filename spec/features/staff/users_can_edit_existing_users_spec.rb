@@ -1,12 +1,10 @@
-require "rails_helper"
-
-RSpec.feature "Fund managers can edit users" do
+RSpec.feature "Users can edit other users" do
   before do
     stub_auth0_token_request
   end
 
   scenario "the details of the user can be updated" do
-    user = create(:fund_manager)
+    user = create(:administrator)
     authenticate!(user: user)
 
     target_user = create(:administrator, name: "Old Name", email: "old@example.com")
@@ -42,16 +40,5 @@ RSpec.feature "Fund managers can edit users" do
     # Verify the user was updated
     expect(page).to have_content(updated_name)
     expect(page).to have_content(updated_email)
-  end
-
-  context "when the user is a delivery partner" do
-    before { authenticate!(user: create(:delivery_partner)) }
-    scenario "the user cannot be edited" do
-      target_user = create(:administrator, name: "Old Name", email: "old@example.com")
-
-      visit user_path(target_user)
-
-      expect(page).not_to have_content(I18n.t("generic.link.edit"))
-    end
   end
 end

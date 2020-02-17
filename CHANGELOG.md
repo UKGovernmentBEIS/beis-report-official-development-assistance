@@ -44,4 +44,4 @@
 - Users can report project level activities
 - Users can add budgets to project level activities
 - Users can view Budgets in the Activity XML
-
+- Consolidate all user roles into 'administrator', removing 'fund_manager' and 'delivery_partner'. All users can temporarily do anything

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "Editing a user" do
-  let!(:user) { create(:delivery_partner, organisation: create(:organisation)) }
+  let!(:user) { create(:administrator, organisation: create(:organisation)) }
 
   before do
     stub_auth0_token_request
@@ -18,9 +18,9 @@ RSpec.feature "Editing a user" do
 
     find("tr", text: user.name).click_link("Edit")
 
-    choose "Fund manager"
+    choose "Administrator"
     click_on "Submit"
 
-    expect(user.reload.role).to eql "fund_manager"
+    expect(user.reload.role).to eql("administrator")
   end
 end
