@@ -45,6 +45,8 @@ en:
     implementing_organisation:
       create:
         success: Implementing organisation successfully created
+      update:
+        success: Implementing organisation successfully updated
     organisation:
       create:
         success: Organisation successfully created
@@ -242,6 +244,7 @@ en:
   page_title:
     activity:
       implementing_organisation:
+        edit: Edit implemening organisation
         new: Add a new implementing organisation
       show: Activity %{name}
     activity_form:
