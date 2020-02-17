@@ -1,13 +1,4 @@
 RSpec.feature "Users can edit a transaction" do
-  before do
-    authenticate!(user: user)
-  end
-
-  let(:organisation) { create(:organisation) }
-  let!(:activity) { create(:activity, organisation: organisation) }
-  let!(:transaction) { create(:transaction, activity: activity) }
-  let(:user) { create(:administrator, organisation: organisation) }
-
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
@@ -16,44 +7,51 @@ RSpec.feature "Users can edit a transaction" do
     end
   end
 
-  scenario "going back to the previous page" do
-    visit organisation_path(organisation)
+  context "when the user belongs to BEIS" do
+    before { authenticate!(user: user) }
+    let(:user) { create(:beis_user) }
+    let!(:activity) { create(:fund_activity, organisation: user.organisation) }
+    let!(:transaction) { create(:transaction, activity: activity) }
 
-    click_on(activity.title)
+    scenario "editing a transaction on a fund" do
+      visit organisation_path(user.organisation)
 
-    expect(page).to have_content(transaction.reference)
+      click_on(activity.title)
 
-    within("##{transaction.id}") do
-      click_on(I18n.t("generic.link.edit"))
+      expect(page).to have_content(transaction.reference)
+
+      within("##{transaction.id}") do
+        click_on(I18n.t("generic.link.edit"))
+      end
+
+      fill_in_transaction_form(
+        reference: "new-transaction-reference",
+        description: "This money will be buying some books for students",
+        transaction_type: "Expenditure",
+        date_day: "1",
+        date_month: "1",
+        date_year: "2021",
+        value: "2000.51",
+        disbursement_channel: "Aid in kind: Donors manage funds themselves",
+        currency: "US Dollar"
+      )
+
+      expect(page).to have_content(I18n.t("form.transaction.update.success"))
     end
-    click_on(I18n.t("generic.link.back"))
 
-    expect(page).to have_content(activity.title)
-  end
+    scenario "going back to the previous page" do
+      visit organisation_path(user.organisation)
 
-  scenario "editing a transaction" do
-    visit organisation_path(organisation)
+      click_on(activity.title)
 
-    click_on(activity.title)
+      expect(page).to have_content(transaction.reference)
 
-    expect(page).to have_content(transaction.reference)
+      within("##{transaction.id}") do
+        click_on(I18n.t("generic.link.edit"))
+      end
+      click_on(I18n.t("generic.link.back"))
 
-    within("##{transaction.id}") do
-      click_on(I18n.t("generic.link.edit"))
+      expect(page).to have_content(activity.title)
     end
-
-    fill_in_transaction_form(
-      reference: "new-transaction-reference",
-      description: "This money will be buying some books for students",
-      transaction_type: "Expenditure",
-      date_day: "1",
-      date_month: "1",
-      date_year: "2021",
-      value: "2000.51",
-      disbursement_channel: "Aid in kind: Donors manage funds themselves",
-      currency: "US Dollar"
-    )
-
-    expect(page).to have_content(I18n.t("form.transaction.update.success"))
   end
 end
