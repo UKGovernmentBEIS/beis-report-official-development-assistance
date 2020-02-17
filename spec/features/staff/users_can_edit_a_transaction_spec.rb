@@ -18,8 +18,7 @@ RSpec.feature "Users can edit a transaction" do
 
   scenario "going back to the previous page" do
     visit organisation_path(organisation)
-    click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
-    click_on(organisation.name)
+
     click_on(activity.title)
 
     expect(page).to have_content(transaction.reference)
@@ -34,8 +33,7 @@ RSpec.feature "Users can edit a transaction" do
 
   scenario "editing a transaction" do
     visit organisation_path(organisation)
-    click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
-    click_on(organisation.name)
+
     click_on(activity.title)
 
     expect(page).to have_content(transaction.reference)

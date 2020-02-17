@@ -8,22 +8,21 @@ RSpec.feature "Users can view an organisation" do
     end
   end
 
-  context "when the user is a fund manager" do
-    let(:organisation) { create(:organisation) }
-
+  context "when the user belongs to BEIS" do
+    let(:user) { create(:beis_user) }
     before do
-      authenticate!(user: create(:administrator, organisation: organisation))
+      authenticate!(user: user)
     end
 
     context "viewing their own organisation" do
       scenario "can see their own organisation page" do
-        visit organisation_path(organisation)
+        visit organisation_path(user.organisation)
 
-        expect(page).to have_content(organisation.name)
+        expect(page).to have_content(user.organisation.name)
       end
 
       scenario "does not see a back link on their organisation page" do
-        visit organisation_path(organisation)
+        visit organisation_path(user.organisation)
 
         expect(page).to_not have_content(I18n.t("generic.link.back"))
       end
@@ -33,7 +32,7 @@ RSpec.feature "Users can view an organisation" do
       let!(:other_organisation) { create(:organisation) }
 
       scenario "can see the other organisation's page" do
-        visit organisation_path(organisation)
+        visit organisation_path(user.organisation)
         click_link I18n.t("page_content.dashboard.button.manage_organisations")
         click_link other_organisation.name
 
@@ -41,7 +40,7 @@ RSpec.feature "Users can view an organisation" do
       end
 
       scenario "can go back to the previous page" do
-        visit organisation_path(organisation)
+        visit organisation_path(user.organisation)
         click_link I18n.t("page_content.dashboard.button.manage_organisations")
         click_link other_organisation.name
 
@@ -52,7 +51,7 @@ RSpec.feature "Users can view an organisation" do
     end
   end
 
-  context "when the user is a delivery_partner" do
+  context "when the user does not belong to BEIS" do
     let(:organisation) { create(:organisation) }
 
     before do

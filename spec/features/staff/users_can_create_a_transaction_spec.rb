@@ -12,13 +12,11 @@ RSpec.feature "Users can create a transaction" do
 
   before { authenticate!(user: create(:administrator, organisation: organisation)) }
 
-  scenario "successfully creates a transaction on a activity" do
+  scenario "successfully creates a transaction on an activity" do
     activity = create(:activity, organisation: organisation)
 
     visit organisation_path(organisation)
-    click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
-    click_on(organisation.name)
     click_on(activity.title)
 
     click_on(I18n.t("page_content.transactions.button.create"))
@@ -32,9 +30,7 @@ RSpec.feature "Users can create a transaction" do
     activity = create(:activity, organisation: organisation)
 
     visit organisation_path(organisation)
-    click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
-    click_on(organisation.name)
     click_on(activity.title)
 
     click_on(I18n.t("page_content.transactions.button.create"))
@@ -58,9 +54,7 @@ RSpec.feature "Users can create a transaction" do
       activity = create(:activity, organisation: organisation)
 
       visit organisation_path(organisation)
-      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
-      click_on(organisation.name)
       click_on(activity.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))
@@ -83,9 +77,7 @@ RSpec.feature "Users can create a transaction" do
       activity = create(:activity, organisation: organisation)
 
       visit organisation_path(organisation)
-      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
-      click_on(organisation.name)
       click_on(activity.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))
@@ -99,9 +91,7 @@ RSpec.feature "Users can create a transaction" do
       activity = create(:activity, organisation: organisation)
 
       visit organisation_path(organisation)
-      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
-      click_on(organisation.name)
       click_on(activity.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))
@@ -115,9 +105,7 @@ RSpec.feature "Users can create a transaction" do
       activity = create(:activity, organisation: organisation)
 
       visit organisation_path(organisation)
-      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
-      click_on(organisation.name)
       click_on(activity.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))
@@ -131,9 +119,7 @@ RSpec.feature "Users can create a transaction" do
       activity = create(:activity, organisation: organisation)
 
       visit organisation_path(organisation)
-      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
-      click_on(organisation.name)
       click_on(activity.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))
@@ -149,9 +135,7 @@ RSpec.feature "Users can create a transaction" do
       activity = create(:activity, organisation: organisation)
 
       visit organisation_path(organisation)
-      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
-      click_on(organisation.name)
       click_on(activity.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))
@@ -165,9 +149,7 @@ RSpec.feature "Users can create a transaction" do
       activity = create(:activity, organisation: organisation)
 
       visit organisation_path(organisation)
-      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
-      click_on(organisation.name)
       click_on(activity.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))
@@ -181,9 +163,7 @@ RSpec.feature "Users can create a transaction" do
       activity = create(:activity, organisation: organisation)
 
       visit organisation_path(organisation)
-      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
 
-      click_on(organisation.name)
       click_on(activity.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))

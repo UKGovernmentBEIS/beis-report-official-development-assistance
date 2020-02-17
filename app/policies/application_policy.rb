@@ -50,4 +50,8 @@ class ApplicationPolicy
       scope.all
     end
   end
+
+  protected def beis_user?
+    user.organisation.service_owner?
+  end
 end
