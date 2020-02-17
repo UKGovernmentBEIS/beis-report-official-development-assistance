@@ -4,7 +4,7 @@ RSpec.feature "Users can view an activity as XML" do
     let(:organisation) { create(:organisation) }
 
     context "when the user is a fund manager" do
-      before { authenticate!(user: create(:fund_manager, organisation: organisation)) }
+      before { authenticate!(user: create(:administrator, organisation: organisation)) }
 
       context "when the activity is a fund activity" do
         let(:activity) { create(:fund_activity, organisation: organisation, identifier: "IND-ENT-IFIER") }
