@@ -1,15 +1,15 @@
 RSpec.feature "Users can create a programme activity" do
-  let(:organisation) { create(:organisation, name: "BEIS") }
+  let(:user) { create(:beis_user) }
 
   context "when signed in" do
     before do
-      authenticate!(user: create(:administrator, organisation: organisation))
+      authenticate!(user: user)
     end
 
     scenario "successfully create an activity" do
-      fund = create(:activity, level: :fund, organisation: organisation)
+      fund = create(:activity, level: :fund, organisation: user.organisation)
 
-      visit organisation_path(organisation)
+      visit organisation_path(user.organisation)
       click_on fund.title
       click_on(I18n.t("page_content.organisation.button.create_programme"))
 
@@ -19,10 +19,10 @@ RSpec.feature "Users can create a programme activity" do
     end
 
     scenario "the activity has the appropriate funding organisation defaults" do
-      fund = create(:activity, level: :fund, organisation: organisation)
+      fund = create(:activity, level: :fund, organisation: user.organisation)
       identifier = "a-programme-has-a-funding-organisation"
 
-      visit organisation_path(organisation)
+      visit organisation_path(user.organisation)
       click_on fund.title
       click_on(I18n.t("page_content.organisation.button.create_programme"))
 
@@ -35,10 +35,10 @@ RSpec.feature "Users can create a programme activity" do
     end
 
     scenario "the activity has the appropriate accountable organisation defaults" do
-      fund = create(:activity, level: :fund, organisation: organisation)
+      fund = create(:activity, level: :fund, organisation: user.organisation)
       identifier = "a-fund-has-an-accountable-organisation"
 
-      visit organisation_path(organisation)
+      visit organisation_path(user.organisation)
       click_on fund.title
       click_on(I18n.t("page_content.organisation.button.create_programme"))
 
