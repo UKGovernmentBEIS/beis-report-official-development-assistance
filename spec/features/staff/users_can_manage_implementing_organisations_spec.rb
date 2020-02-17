@@ -28,6 +28,28 @@ RSpec.feature "Users can manage the implementing organisations" do
       expect(page).to have_content other_public_sector_organisation.name
       expect(page).to have_content other_public_sector_organisation.reference
     end
+
+    scenario "they can edit an implementing organisation" do
+      other_public_sector_organisation = ImplementingOrganisation.new(name: "Other public sector organisation", organisation_type: "70", reference: "GB-COH-123456")
+      project.implementing_organisations << other_public_sector_organisation
+
+      visit organisation_activity_path(project.organisation, project)
+
+      expect(page).to have_content other_public_sector_organisation.name
+      expect(page).to have_content other_public_sector_organisation.reference
+
+      within "##{other_public_sector_organisation.id}" do
+        click_on "Edit"
+      end
+
+      expect(find_field(I18n.t("activerecord.attributes.implementing_organisation.name")).value).to eq other_public_sector_organisation.name
+
+      fill_in I18n.t("activerecord.attributes.implementing_organisation.name"), with: "It is a charity"
+      click_on I18n.t("generic.button.submit")
+
+      expect(page).to have_content I18n.t("form.implementing_organisation.update.success")
+      expect(page).to have_content "It is a charity"
+    end
   end
 
   context "when they are signed in as a BEIS user" do
@@ -44,6 +66,15 @@ RSpec.feature "Users can manage the implementing organisations" do
 
       expect(page).to have_content other_public_sector_organisation.name
       expect(page).to have_content other_public_sector_organisation.reference
+    end
+
+    scenario "they cannot edit implementing organisations" do
+      other_public_sector_organisation = ImplementingOrganisation.new(name: "Other public sector organisation", organisation_type: "70", reference: "GB-COH-123456")
+      project.implementing_organisations << other_public_sector_organisation
+
+      visit organisation_activity_path(project.organisation, project)
+
+      expect(page).not_to have_link I18n.t("generic.link.edit"), href: edit_activity_implementing_organisation_path(project, other_public_sector_organisation)
     end
 
     scenario "they cannot add implementing organisations" do
