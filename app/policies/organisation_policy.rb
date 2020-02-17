@@ -1,22 +1,22 @@
 class OrganisationPolicy < ApplicationPolicy
   def index?
-    user.administrator? || user.fund_manager?
+    user.administrator?
   end
 
   def show?
-    user.administrator? || user.fund_manager? || associated_user?
+    user.administrator? || associated_user?
   end
 
   def create?
-    user.administrator? || user.fund_manager?
+    user.administrator?
   end
 
   def update?
-    user.administrator? || user.fund_manager? || associated_user?
+    user.administrator? || associated_user?
   end
 
   def destroy?
-    user.administrator? || user.fund_manager?
+    user.administrator?
   end
 
   private def associated_user?
@@ -25,7 +25,7 @@ class OrganisationPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user.administrator? || user.fund_manager?
+      if user.administrator?
         scope.all
       else
         scope.where(id: user.organisation_id)

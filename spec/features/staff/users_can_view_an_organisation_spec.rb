@@ -12,7 +12,7 @@ RSpec.feature "Users can view an organisation" do
     let(:organisation) { create(:organisation) }
 
     before do
-      authenticate!(user: create(:fund_manager, organisation: organisation))
+      authenticate!(user: create(:administrator, organisation: organisation))
     end
 
     context "viewing their own organisation" do
@@ -56,7 +56,7 @@ RSpec.feature "Users can view an organisation" do
     let(:organisation) { create(:organisation) }
 
     before do
-      authenticate!(user: create(:delivery_partner, organisation: organisation))
+      authenticate!(user: create(:administrator, organisation: organisation))
     end
 
     scenario "can see their organisation page" do

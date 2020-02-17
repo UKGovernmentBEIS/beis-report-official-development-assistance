@@ -1,10 +1,10 @@
-RSpec.feature "Fund managers can view programe level activites" do
+RSpec.feature "Users can view programe level activites" do
   let(:programme) { create(:activity, level: :programme) }
   let(:fund_activity) { create(:activity, level: :fund) }
 
   context "when signed in" do
     before do
-      authenticate!(user: create(:fund_manager))
+      authenticate!(user: create(:administrator))
       fund_activity.activities << programme
     end
 

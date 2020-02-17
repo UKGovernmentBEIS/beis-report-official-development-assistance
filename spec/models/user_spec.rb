@@ -13,9 +13,9 @@ RSpec.describe User, type: :model do
 
   describe "#role_name" do
     it "returns the human readable role name of the user" do
-      user = User.new(role: :fund_manager)
+      user = described_class.new(role: :administrator)
 
-      expect(user.role_name).to eql "Fund manager"
+      expect(user.role_name).to eql "Administrator"
     end
   end
 end
