@@ -1,21 +1,27 @@
 class UserPolicy < ApplicationPolicy
   def index?
-    user.administrator?
+    beis_user?
   end
 
   def show?
-    user.administrator?
+    beis_user?
   end
 
   def create?
-    user.administrator?
+    beis_user?
   end
 
   def update?
-    user.administrator?
+    beis_user?
   end
 
   def destroy?
-    user.administrator?
+    beis_user?
+  end
+
+  private
+
+  def beis_user?
+    user.organisation.service_owner?
   end
 end
