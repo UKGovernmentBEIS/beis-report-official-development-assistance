@@ -12,8 +12,8 @@ RSpec.feature "Users can view transactions on an activity page" do
     transaction = create(:transaction, activity: activity)
     other_transaction = create(:transaction, activity: other_activity)
 
-    visit organisations_path
-    click_link organisation.name
+    visit organisation_path(organisation)
+
     click_link activity.title
 
     expect(page).to have_content(transaction.reference)
@@ -24,8 +24,8 @@ RSpec.feature "Users can view transactions on an activity page" do
     transaction = create(:transaction, activity: activity)
     transaction_presenter = TransactionPresenter.new(transaction)
 
-    visit organisations_path
-    click_link organisation.name
+    visit organisation_path(organisation)
+
     click_link activity.title
 
     expect(page).to have_content(transaction_presenter.reference)
