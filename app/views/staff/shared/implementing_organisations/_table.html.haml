@@ -7,6 +7,7 @@
         =t("activerecord.attributes.implementing_organisation.organisation_type")
       %th.govuk-table__header
         =t("activerecord.attributes.implementing_organisation.reference")
+      %th.govuk-table__header
 
   %tbody.govuk-table__body
     - implementing_organisations.each do |organisation|
@@ -14,3 +15,6 @@
         %td.govuk-table__cell= organisation.name
         %td.govuk-table__cell= organisation.organisation_type
         %td.govuk-table__cell= organisation.reference
+        %td.govuk-table__cell
+          - if policy(:project).edit?
+            = link_to t("generic.link.edit"), edit_activity_implementing_organisation_path(@activity, organisation), class: "govuk-link govuk-link--no-visited-state"

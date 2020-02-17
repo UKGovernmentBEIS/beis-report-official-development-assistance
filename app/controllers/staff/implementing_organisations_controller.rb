@@ -6,6 +6,12 @@ class Staff::ImplementingOrganisationsController < Staff::BaseController
     @implementing_organisation = ImplementingOrganisation.new
   end
 
+  def edit
+    @activity = Activity.find(params[:activity_id])
+    authorize @activity
+    @implementing_organisation = ImplementingOrganisation.find(params[:id])
+  end
+
   def create
     @activity = Activity.find(params[:activity_id])
     authorize @activity
@@ -18,6 +24,22 @@ class Staff::ImplementingOrganisationsController < Staff::BaseController
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :new
+    end
+  end
+
+  def update
+    @activity = Activity.find(params[:activity_id])
+    authorize @activity
+    @implementing_organisation = ImplementingOrganisation.find(params[:id])
+
+    @implementing_organisation.assign_attributes(implementing_organisation_params)
+
+    if @implementing_organisation.valid?
+      @implementing_organisation.save!
+      flash[:notice] = I18n.t("form.implementing_organisation.update.success")
+      redirect_to organisation_activity_path(@activity.organisation, @activity)
+    else
+      render :edit
     end
   end
 
