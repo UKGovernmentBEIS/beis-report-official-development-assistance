@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "Users can can view other users" do
+RSpec.feature "BEIS users can can view other users" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       page.set_rack_session(userinfo: nil)
@@ -9,7 +9,7 @@ RSpec.feature "Users can can view other users" do
     end
   end
 
-  let(:user) { create(:administrator) }
+  let(:user) { create(:beis_user) }
 
   before do
     authenticate!(user: user)
