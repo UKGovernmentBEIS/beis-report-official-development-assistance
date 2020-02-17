@@ -18,10 +18,4 @@ class UserPolicy < ApplicationPolicy
   def destroy?
     beis_user?
   end
-
-  private
-
-  def beis_user?
-    user.organisation.service_owner?
-  end
 end

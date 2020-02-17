@@ -18,8 +18,7 @@ RSpec.feature "Users can view an activity" do
     activity = create(:activity, organisation: organisation)
 
     visit organisation_path(organisation)
-    click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
-    click_on(organisation.name)
+
     click_on(activity.title)
     activity_presenter = ActivityPresenter.new(activity)
 

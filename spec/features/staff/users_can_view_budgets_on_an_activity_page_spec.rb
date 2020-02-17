@@ -13,8 +13,8 @@ RSpec.feature "Users can view budgets on an activity page" do
         fund_activity = create(:fund_activity, organisation: organisation)
         _budget = create(:budget)
 
-        visit organisations_path
-        click_link organisation.name
+        visit organisation_path(organisation)
+
         click_link fund_activity.title
 
         expect(page).to_not have_content(I18n.t("page_content.activity.budgets"))
@@ -33,8 +33,8 @@ RSpec.feature "Users can view budgets on an activity page" do
         budget = create(:budget, activity: programme_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
-        visit organisations_path
-        click_link organisation.name
+        visit organisation_path(organisation)
+
         click_link fund_activity.title
         click_link programme_activity.title
 
