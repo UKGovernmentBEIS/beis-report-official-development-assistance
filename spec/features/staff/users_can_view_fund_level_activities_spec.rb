@@ -9,28 +9,22 @@ RSpec.feature "Users can view fund level activities" do
   end
 
   let(:user) { create(:beis_user) }
-  let!(:fund_activity) { create(:activity, level: :fund, organisation: user.organisation) }
 
   before do
     authenticate!(user: user)
   end
 
-  scenario "the user will see fund level activities on the organisation show page" do
-    visit organisations_path
-
-    click_link user.organisation.name
-
-    expect(page).to have_content(I18n.t("page_content.organisation.funds"))
-    expect(page).to have_content fund_activity.title
-  end
-
   scenario "can view a fund level activity" do
-    visit organisation_activity_path(fund_activity.organisation, fund_activity)
+    fund_activity = create(:activity, level: :fund, organisation: user.organisation)
 
-    expect(page).to have_content fund_activity.title
+    visit organisation_path(user.organisation)
+    click_on fund_activity.title
+
+    page_displays_an_activity(activity_presenter: ActivityPresenter.new(fund_activity))
   end
 
   scenario "can view and create programme level activities" do
+    fund_activity = create(:activity, level: :fund, organisation: user.organisation)
     programme_activity = create(:activity, level: :programme)
     fund_activity.activities << programme_activity
     activity_presenter = ActivityPresenter.new(programme_activity)

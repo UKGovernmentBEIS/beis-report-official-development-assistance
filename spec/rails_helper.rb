@@ -38,6 +38,7 @@ RSpec.configure do |config|
   config.include Auth0Helpers
   config.include EmailHelpers
   config.include FormHelpers
+  config.include ActivityHelpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
