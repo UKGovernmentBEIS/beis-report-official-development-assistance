@@ -18,4 +18,22 @@ RSpec.describe User, type: :model do
       expect(user.role_name).to eql "Administrator"
     end
   end
+
+  describe "#service_owner?" do
+    context "when the user organisation is a service owner" do
+      it "returns true" do
+        organisation = build_stubbed(:organisation, service_owner: true)
+        result = described_class.new(organisation: organisation).service_owner?
+        expect(result).to be true
+      end
+    end
+
+    context "when the user organisation is NOT a service owner" do
+      it "returns false" do
+        organisation = build_stubbed(:organisation, service_owner: false)
+        result = described_class.new(organisation: organisation).service_owner?
+        expect(result).to be false
+      end
+    end
+  end
 end
