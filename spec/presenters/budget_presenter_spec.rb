@@ -21,7 +21,7 @@ RSpec.describe BudgetPresenter do
     end
   end
 
-  describe "#period_start_date" do
+  describe "#period_end_date" do
     it "returns the localised date for the period_end_date" do
       expect(described_class.new(budget).period_end_date).to eq("1 Jan 2021")
     end
