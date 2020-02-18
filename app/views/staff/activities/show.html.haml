@@ -23,7 +23,7 @@
             %li
               = link_to activity.display_title, organisation_activity_path(activity.organisation, activity)
 
-  - if @activity.is_programme_level?
+  - if @activity.is_programme_level? && policy(:programme).create?
     .govuk-grid-row
       .govuk-grid-column-full
         %h2.govuk-heading-m
