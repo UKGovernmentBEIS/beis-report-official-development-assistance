@@ -46,3 +46,4 @@
 - Users can view Budgets in the Activity XML
 - Consolidate all user roles into 'administrator', removing 'fund_manager' and 'delivery_partner'. All users can temporarily do anything
 - Users who belong to delivery partners see a list of programmes on their organisation page
+- Users are authorised based on the organisations they belong to
