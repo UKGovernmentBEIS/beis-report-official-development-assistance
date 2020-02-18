@@ -65,6 +65,17 @@
 
       - if policy(:fund).index?
         %ul.govuk-list.govuk-list--bullet
-          - @activities.each do |activity|
+          - @fund_activities.each do |activity|
             %li
               = link_to activity.display_title, organisation_activity_path(activity.organisation, activity)
+
+      - unless current_user.organisation.service_owner?
+        - if policy(:programme).index?
+          %h2.govuk-heading-m
+            = t("page_content.organisation.programmes")
+
+        - if policy(:programme).index?
+          %ul.govuk-list.govuk-list--bullet
+            - @programme_activities.each do |activity|
+              %li
+                = link_to activity.display_title, organisation_activity_path(activity.organisation, activity)
