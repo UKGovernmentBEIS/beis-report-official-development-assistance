@@ -1,31 +1,20 @@
 class BudgetPolicy < ApplicationPolicy
-  def index?
+  def show?
     true
   end
 
-  def show?
-    user.administrator?
-  end
-
   def create?
-    user.administrator?
+    true
   end
 
   def update?
-    user.administrator?
-  end
-
-  def destroy?
-    user.administrator?
+    true
   end
 
   class Scope < Scope
     def resolve
-      if user.administrator?
-        scope.all
-      else
-        []
-      end
+      activities = Activity.where(organisation_id: user.organisation)
+      scope.where(activity_id: activities)
     end
   end
 end
