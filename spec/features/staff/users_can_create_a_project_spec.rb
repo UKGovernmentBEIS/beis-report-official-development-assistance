@@ -14,6 +14,7 @@ RSpec.feature "Users can create a project" do
         visit organisation_activity_path(programme.organisation, programme)
 
         expect(page).to have_content programme.title
+        
         click_on(I18n.t("page_content.organisation.button.create_project"))
 
         fill_in_activity_form
