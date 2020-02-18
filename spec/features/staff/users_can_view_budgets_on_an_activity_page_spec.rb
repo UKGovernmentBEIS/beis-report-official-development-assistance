@@ -7,7 +7,7 @@ RSpec.feature "Users can view budgets on an activity page" do
     context "when the user belongs to BEIS" do
       let(:user) { create(:beis_user) }
 
-      scenario "budget information is not shown on the page" do
+      scenario "budget information is shown on the page" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         _budget = create(:budget)
 
