@@ -1,10 +1,10 @@
-RSpec.feature "Fund managers can edit a fund level activity" do
+RSpec.feature "Users can edit an activity" do
   include ActivityHelper
 
-  let(:organisation) { create(:organisation, name: "UKSA") }
+  let(:organisation) { create(:delivery_partner_organisation) }
 
-  context "when the user is a fund_manager" do
-    before { authenticate!(user: create(:fund_manager, organisation: organisation)) }
+  context "when the user is an administrator" do
+    before { authenticate!(user: create(:administrator, organisation: organisation)) }
 
     context "when the activity only has an identifier (and is incomplete)" do
       it "shows edit link on the identifier, and add link on only the next step" do
