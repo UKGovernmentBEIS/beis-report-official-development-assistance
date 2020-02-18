@@ -20,7 +20,8 @@ class Activity < ApplicationRecord
   enum level: {
     fund: "fund",
     programme: "programme",
-  }
+    project: "project",
+  }, _prefix: :is, _suffix: :level
 
   scope :funds, -> { where(level: :fund) }
   scope :programmes, -> { where(level: :programme) }
@@ -67,14 +68,6 @@ class Activity < ApplicationRecord
 
   def default_currency
     organisation.default_currency
-  end
-
-  def is_fund_level?
-    level == "fund"
-  end
-
-  def is_programme_level?
-    level == "programme"
   end
 
   def parent_activity

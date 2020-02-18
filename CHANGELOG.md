@@ -41,3 +41,5 @@
 - Fund managers can set and change the extending organisation
 - Date inputs in forms for creating activity, transaction and a budget have a hint text
 - Transaction provider and receiver IATI references are exposed in the XML if present
+- Users can report project level activities
+- Users can add budgets to project level activities
