@@ -12,7 +12,9 @@ Rails.application.routes.draw do
     resources :organisations, except: [:destroy] do
       resources :activities, except: [:destroy]
       resources :funds, only: [:create] do
-        resources :programmes, only: [:create]
+        resources :programmes, only: [:create] do
+          resources :projects, only: [:create]
+        end
       end
     end
 
