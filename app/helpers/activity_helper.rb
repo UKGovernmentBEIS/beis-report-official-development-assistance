@@ -11,8 +11,11 @@ module ActivityHelper
     presenter_position <= activity_position + 1
   end
 
-  def activity_back_path(activity)
-    return organisation_path(activity.organisation) if activity.fund?
-    return organisation_activity_path(activity.parent_activity.organisation, activity.parent_activity) if activity.programme?
+  def activity_back_path(current_user:, activity:)
+    if activity.programme? && current_user.service_owner?
+      return organisation_activity_path(activity.parent_activity.organisation, activity.parent_activity)
+    end
+
+    organisation_path(current_user.organisation)
   end
 end

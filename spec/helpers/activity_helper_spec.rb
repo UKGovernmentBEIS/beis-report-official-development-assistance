@@ -6,18 +6,35 @@ RSpec.describe ActivityHelper, type: :helper do
   describe "#activity_back_path" do
     context "when the activity is a fund level" do
       it "returns the organistian path" do
-        fund = create(:activity, level: :fund)
-        expect(activity_back_path(fund)).to eq organisation_path(fund.organisation)
+        user = create(:beis_user)
+        fund = create(:fund_activity)
+
+        result = activity_back_path(current_user: user, activity: fund)
+
+        expect(result).to eq organisation_path(user.organisation)
       end
     end
 
     context "when the activity is a programme level" do
-      it "returns the fund path" do
-        fund_activity = create(:activity, level: :fund)
-        programme_activity = create(:activity, level: :programme)
-        fund_activity.activities << programme_activity
+      context "when the user is a BEIS user" do
+        it "returns the fund path" do
+          user = create(:beis_user)
+          programme_activity = create(:programme_activity)
 
-        expect(activity_back_path(programme_activity)).to eq organisation_activity_path(fund_activity.organisation, fund_activity)
+          result = activity_back_path(current_user: user, activity: programme_activity)
+          expect(result).to eq organisation_activity_path(programme_activity.activity.organisation, programme_activity.activity)
+        end
+      end
+
+      context "when the user is NOT a BEIS user" do
+        it "returns the organisation path" do
+          user = create(:delivery_partner_user)
+          programme_activity = create(:programme_activity)
+
+          result = activity_back_path(current_user: user, activity: programme_activity)
+
+          expect(result).to eq organisation_path(user.organisation)
+        end
       end
     end
   end
