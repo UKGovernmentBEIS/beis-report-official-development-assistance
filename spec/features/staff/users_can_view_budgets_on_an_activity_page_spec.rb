@@ -15,7 +15,7 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         click_link fund_activity.title
 
-        expect(page).to_not have_content(I18n.t("page_content.activity.budgets"))
+        expect(page).to have_content(I18n.t("page_content.activity.budgets"))
       end
     end
   end

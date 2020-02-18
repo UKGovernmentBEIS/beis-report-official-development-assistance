@@ -1,0 +1,10 @@
+.govuk-grid-row
+  .govuk-grid-column-full
+    %h2.govuk-heading-m
+      = t("page_content.activity.extending_organisation.heading")
+
+    -if activity.extending_organisation.present?
+      %p.govuk-body
+        = activity.extending_organisation.name
+
+    = link_to(I18n.t("page_content.activity.extending_organisation.button.edit"), edit_activity_extending_organisation_path(activity), class: "govuk-button")

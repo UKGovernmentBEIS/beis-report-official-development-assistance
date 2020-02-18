@@ -135,36 +135,6 @@ RSpec.describe Activity, type: :model do
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
   end
 
-  describe "#is_fund_level?" do
-    it "returns true when the activity is at the fund level" do
-      activity = Activity.new(level: :fund)
-      expect(activity.is_fund_level?).to eq true
-
-      activity = Activity.new(level: :programme)
-      expect(activity.is_fund_level?).to eq false
-    end
-  end
-
-  describe "#is_programme_level?" do
-    it "returns true when the activity is at the programme level" do
-      activity = Activity.new(level: :programme)
-      expect(activity.is_programme_level?).to eq true
-
-      activity = Activity.new(level: :fund)
-      expect(activity.is_programme_level?).to eq false
-    end
-  end
-
-  describe "#is_project_level?" do
-    it "returns true when the activity is at the project level" do
-      activity = Activity.new(level: :project)
-      expect(activity.is_project_level?).to eq true
-
-      activity = Activity.new(level: :fund)
-      expect(activity.is_project_level?).to eq false
-    end
-  end
-
   describe "#parent_activity" do
     it "returns the parent activity or nil if there is not one" do
       fund_activity = create(:activity, level: :fund)

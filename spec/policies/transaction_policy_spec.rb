@@ -10,7 +10,7 @@ RSpec.describe TransactionPolicy do
     let!(:transaction) { create(:transaction, activity: activity) }
 
     context "as an administrator" do
-      let(:user) { build_stubbed(:administrator) }
+      let(:user) { build_stubbed(:administrator, organisation: organisation) }
 
       it { is_expected.to permit_action(:index) }
       it { is_expected.to permit_action(:show) }

@@ -12,7 +12,7 @@ module ActivityHelper
   end
 
   def activity_back_path(activity)
-    return organisation_path(activity.organisation) if activity.is_fund_level?
+    return organisation_path(activity.organisation) if activity.fund?
     organisation_activity_path(activity.parent_activity.organisation, activity.parent_activity)
   end
 end
