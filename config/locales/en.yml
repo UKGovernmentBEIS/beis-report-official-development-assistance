@@ -5,6 +5,7 @@ en:
   date:
     formats:
       default: "%-d %b %Y"
+      iati: "%Y-%m-%d"
   form:
     activity:
       create:
