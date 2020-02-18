@@ -60,6 +60,9 @@ en:
         success: Programme successfully created
       update:
         success: Programme successfully updated
+    project:
+      create:
+        success: Project successfully created
     transaction:
       create:
         success: Transaction successfully created
@@ -151,6 +154,7 @@ en:
         label: Planned end date
       planned_start_date:
         label: Planned start date
+      projects: Projects
       recipient_region:
         label: Recipient region
       sector:
@@ -192,6 +196,7 @@ en:
         choose_extending_organisation: Choose extending organisation
         create_fund: Create fund
         create_programme: Create programme
+        create_project: Create project
         edit: Edit organisation
       default_currency:
         label: Default currency
