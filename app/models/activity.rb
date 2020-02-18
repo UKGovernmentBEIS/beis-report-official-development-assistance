@@ -21,7 +21,7 @@ class Activity < ApplicationRecord
     fund: "fund",
     programme: "programme",
     project: "project",
-  }, _prefix: :is, _suffix: :level
+  }
 
   scope :funds, -> { where(level: :fund) }
   scope :programmes, -> { where(level: :programme) }

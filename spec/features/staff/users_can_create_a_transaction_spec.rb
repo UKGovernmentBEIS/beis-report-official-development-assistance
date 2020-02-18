@@ -1,7 +1,7 @@
 RSpec.feature "Users can create a transaction" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
-      activity = create(:activity)
+      activity = create(:fund_activity)
       page.set_rack_session(userinfo: nil)
       visit organisation_activity_path(activity.organisation, activity)
       expect(current_path).to eq(root_path)
@@ -13,7 +13,7 @@ RSpec.feature "Users can create a transaction" do
     let(:user) { create(:beis_user) }
 
     scenario "successfully creates a transaction on an activity" do
-      activity = create(:activity, organisation: user.organisation)
+      activity = create(:fund_activity, organisation: user.organisation)
 
       visit organisation_path(user.organisation)
 
@@ -27,7 +27,7 @@ RSpec.feature "Users can create a transaction" do
     end
 
     scenario "validations" do
-      activity = create(:activity, organisation: user.organisation)
+      activity = create(:fund_activity, organisation: user.organisation)
 
       visit organisation_path(user.organisation)
 
@@ -51,7 +51,7 @@ RSpec.feature "Users can create a transaction" do
 
     context "Value number validation" do
       scenario "Value must be between 1 and 99,999,999,999" do
-        activity = create(:activity, organisation: user.organisation)
+        activity = create(:fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
 
@@ -74,7 +74,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes a pound sign" do
-        activity = create(:activity, organisation: user.organisation)
+        activity = create(:fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
 
@@ -88,7 +88,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes alphabetical characters" do
-        activity = create(:activity, organisation: user.organisation)
+        activity = create(:fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
 
@@ -102,7 +102,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes decimal places" do
-        activity = create(:activity, organisation: user.organisation)
+        activity = create(:fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
 
@@ -116,7 +116,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes commas" do
-        activity = create(:activity, organisation: user.organisation)
+        activity = create(:fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
 
@@ -132,7 +132,7 @@ RSpec.feature "Users can create a transaction" do
 
     context "Date validation" do
       scenario "When the date is more than 25 years in the future" do
-        activity = create(:activity, organisation: user.organisation)
+        activity = create(:fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
 
@@ -146,7 +146,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the date is more than 10 years in the past" do
-        activity = create(:activity, organisation: user.organisation)
+        activity = create(:fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
 
@@ -160,7 +160,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the date is nil" do
-        activity = create(:activity, organisation: user.organisation)
+        activity = create(:fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
 
@@ -172,6 +172,22 @@ RSpec.feature "Users can create a transaction" do
 
         expect(page).to_not have_content "Date must be between 10 years ago and 25 years in the future"
       end
+    end
+  end
+
+  context "when the user does NOT belong to BEIS" do
+    before { authenticate!(user: user) }
+    let(:user) { create(:delivery_partner_user) }
+
+    scenario "they cannot create transactions on a programme" do
+      fund_activity = create(:fund_activity, organisation: user.organisation)
+      programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
+
+      visit organisation_path(user.organisation)
+      click_on(programme_activity.title)
+
+      expect(page).not_to have_content(I18n.t("page_content.activity.transactions"))
+      expect(page).not_to have_content(I18n.t("page_content.transactions.button.create"))
     end
   end
 end

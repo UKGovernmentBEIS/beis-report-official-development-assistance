@@ -1,15 +1,13 @@
 RSpec.feature "Users can view a project" do
-  let(:delivery_partner) { create(:delivery_partner_organisation) }
-  let(:beis) { create(:beis_organisation) }
-
-  context "when an signed in as an administrator" do
-    before { authenticate!(user: create(:administrator, organisation: beis)) }
+  context "when the user does NOT belong to BEIS" do
+    let(:user) { create(:delivery_partner_user) }
+    before { authenticate!(user: user) }
 
     scenario "can view a project" do
-      fund = create(:fund_activity, organisation: beis)
-      programme = create(:programme_activity, organisation: beis)
+      fund = create(:fund_activity)
+      programme = create(:programme_activity)
       fund.activities << programme
-      project = create(:project_activity, organisation: delivery_partner)
+      project = create(:project_activity, organisation: user.organisation)
       programme.activities << project
 
       visit organisation_activity_path(project.organisation, project)
@@ -19,10 +17,10 @@ RSpec.feature "Users can view a project" do
 
     context "when viewing a programme" do
       scenario "links to the programmes projects" do
-        fund = create(:fund_activity, organisation: beis)
-        programme = create(:programme_activity, organisation: beis)
+        fund = create(:fund_activity)
+        programme = create(:programme_activity)
         fund.activities << programme
-        project = create(:project_activity, organisation: delivery_partner)
+        project = create(:project_activity, organisation: user.organisation)
         programme.activities << project
 
         visit organisation_activity_path(programme.organisation, programme)
