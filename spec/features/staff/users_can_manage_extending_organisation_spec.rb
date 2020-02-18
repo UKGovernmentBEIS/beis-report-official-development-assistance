@@ -1,8 +1,7 @@
 RSpec.feature "Users can manage the extending organisation" do
-  let(:beis) { create(:beis_organisation) }
-
-  context "when they are a fund manager" do
-    before { authenticate!(user: create(:administrator, organisation: beis)) }
+  context "when the user belongs to BEIS" do
+    let(:user) { create(:beis_user) }
+    before { authenticate!(user: user) }
 
     context "and the activity is a programme" do
       let(:fund) { create(:fund_activity) }
@@ -44,6 +43,20 @@ RSpec.feature "Users can manage the extending organisation" do
 
         expect(page).to have_content "Error: Extending organisation can't be blank"
       end
+    end
+  end
+
+  context "when the user does NOT belong to BEIS" do
+    let(:user) { create(:delivery_partner_user) }
+    before { authenticate!(user: user) }
+
+    scenario "they cannot set the extending organisation" do
+      fund = create(:fund_activity)
+      programme = create(:programme_activity, activity_id: fund.id)
+
+      visit organisation_activity_path(programme.organisation, programme)
+
+      expect(page).not_to have_content(I18n.t("page_content.activity.extending_organisation.button.edit"))
     end
   end
 end
