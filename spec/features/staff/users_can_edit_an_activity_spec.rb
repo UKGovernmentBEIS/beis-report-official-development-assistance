@@ -95,6 +95,22 @@ RSpec.feature "Users can edit an activity" do
       end
     end
   end
+
+  context "when the activity is a programme" do
+    context "when the user is NOT a BEIS user" do
+      let(:user) { create(:delivery_partner_user) }
+      before { authenticate!(user: user) }
+
+      scenario "the user should not be shown edit/add actions" do
+        activity = create(:programme_activity, :at_purpose_step, organisation: user.organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+
+        expect(page).not_to have_content("Edit")
+        expect(page).not_to have_content("Add")
+      end
+    end
+  end
 end
 
 def assert_all_edit_links_go_to_the_correct_form_step(activity:)
