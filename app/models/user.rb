@@ -16,4 +16,8 @@ class User < ApplicationRecord
   def role_name
     I18n.t("activerecord.attributes.user.roles.#{role}")
   end
+
+  def service_owner?
+    organisation.service_owner?
+  end
 end
