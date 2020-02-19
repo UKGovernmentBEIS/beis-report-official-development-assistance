@@ -3,12 +3,12 @@ require "rails_helper"
 RSpec.describe CreateProjectActivity do
   let(:beis) { create(:beis_organisation) }
   let(:delivery_partner_organisation) { create(:delivery_partner_organisation) }
-  let(:delivery_partner_user) { create(:delivery_partner, organisation: delivery_partner_organisation) }
+  let(:user) { create(:administrator, organisation: delivery_partner_organisation) }
   let(:programme) { create(:programme_activity, organisation: beis) }
 
   describe "#call" do
     let(:result) {
-      described_class.new(user: delivery_partner_user, organisation_id: beis.id, programme_id: programme.id).call
+      described_class.new(user: user, organisation_id: beis.id, programme_id: programme.id).call
     }
 
     it "sets the Organisation to that of the parent programme i.e. BEIS" do
