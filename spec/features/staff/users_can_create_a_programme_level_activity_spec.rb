@@ -1,9 +1,9 @@
-RSpec.feature "Fund managers can create programme level activities" do
+RSpec.feature "Users can create a programme activity" do
   let(:organisation) { create(:organisation, name: "BEIS") }
 
   context "when signed in" do
     before do
-      authenticate!(user: create(:fund_manager, organisation: organisation))
+      authenticate!(user: create(:administrator, organisation: organisation))
     end
 
     scenario "successfully create an activity" do

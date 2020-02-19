@@ -5,22 +5,22 @@ class TransactionPolicy < ApplicationPolicy
 
   def show?
     user.administrator? ||
-      activity? && user.fund_manager?
+      activity?
   end
 
   def create?
     user.administrator? ||
-      activity? && user.fund_manager?
+      activity?
   end
 
   def update?
     user.administrator? ||
-      activity? && user.fund_manager?
+      activity?
   end
 
   def destroy?
     user.administrator? ||
-      activity? && user.fund_manager?
+      activity?
   end
 
   private def activity?

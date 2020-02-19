@@ -1,14 +1,14 @@
 class ActivityPolicy < ApplicationPolicy
   def index?
-    user.administrator? || user.fund_manager?
+    user.administrator?
   end
 
   def show?
-    user.administrator? || user.fund_manager?
+    user.administrator?
   end
 
   def create?
-    user.administrator? || user.fund_manager?
+    user.administrator?
   end
 
   def update?
@@ -16,12 +16,12 @@ class ActivityPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.administrator? || user.fund_manager?
+    user.administrator?
   end
 
   class Scope < Scope
     def resolve
-      if user.administrator? || user.fund_manager?
+      if user.administrator?
         scope.all
       else
         scope.none

@@ -12,77 +12,63 @@ RSpec.feature "Users can view an activity" do
     end
   end
 
-  context "when the user is a fund_manager" do
-    before { authenticate!(user: create(:fund_manager, organisation: organisation)) }
+  before { authenticate!(user: create(:administrator, organisation: organisation)) }
 
-    scenario "an activity can be viewed" do
-      activity = create(:activity, organisation: organisation)
+  scenario "an activity can be viewed" do
+    activity = create(:activity, organisation: organisation)
 
-      visit organisation_path(organisation)
-      click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
-      click_on(organisation.name)
-      click_on(activity.title)
-      activity_presenter = ActivityPresenter.new(activity)
+    visit organisation_path(organisation)
+    click_on(I18n.t("page_content.dashboard.button.manage_organisations"))
+    click_on(organisation.name)
+    click_on(activity.title)
+    activity_presenter = ActivityPresenter.new(activity)
 
-      expect(page).to have_content activity_presenter.identifier
-      expect(page).to have_content activity_presenter.sector
-      expect(page).to have_content activity_presenter.title
-      expect(page).to have_content activity_presenter.description
-      expect(page).to have_content activity_presenter.planned_start_date
-      expect(page).to have_content activity_presenter.planned_end_date
-      expect(page).to have_content activity_presenter.recipient_region
-      expect(page).to have_content activity_presenter.flow
-    end
+    expect(page).to have_content activity_presenter.identifier
+    expect(page).to have_content activity_presenter.sector
+    expect(page).to have_content activity_presenter.title
+    expect(page).to have_content activity_presenter.description
+    expect(page).to have_content activity_presenter.planned_start_date
+    expect(page).to have_content activity_presenter.planned_end_date
+    expect(page).to have_content activity_presenter.recipient_region
+    expect(page).to have_content activity_presenter.flow
+  end
 
-    scenario "a fund activity has human readable date format" do
-      travel_to Time.zone.local(2020, 1, 29) do
-        activity = create(:activity, planned_start_date: Date.new(2020, 2, 3),
-                                     planned_end_date: Date.new(2024, 6, 22),
-                                     actual_start_date: Date.new(2020, 4, 3),
-                                     actual_end_date: Date.new(2024, 8, 22))
-
-        visit organisation_activity_path(organisation, activity)
-
-        within(".planned_start_date") do
-          expect(page).to have_content("3 Feb 2020")
-        end
-
-        within(".planned_end_date") do
-          expect(page).to have_content("22 Jun 2024")
-        end
-
-        within(".actual_start_date") do
-          expect(page).to have_content("3 Apr 2020")
-        end
-
-        within(".actual_end_date") do
-          expect(page).to have_content("22 Aug 2024")
-        end
-      end
-    end
-
-    scenario "can go back to the previous page" do
-      activity = create(:activity, organisation: organisation)
+  scenario "a fund activity has human readable date format" do
+    travel_to Time.zone.local(2020, 1, 29) do
+      activity = create(:activity, planned_start_date: Date.new(2020, 2, 3),
+                                   planned_end_date: Date.new(2024, 6, 22),
+                                   actual_start_date: Date.new(2020, 4, 3),
+                                   actual_end_date: Date.new(2024, 8, 22))
 
       visit organisation_activity_path(organisation, activity)
 
-      click_on I18n.t("generic.link.back")
+      within(".planned_start_date") do
+        expect(page).to have_content("3 Feb 2020")
+      end
 
-      expect(page).to have_current_path(
-        organisation_path(organisation)
-      )
+      within(".planned_end_date") do
+        expect(page).to have_content("22 Jun 2024")
+      end
+
+      within(".actual_start_date") do
+        expect(page).to have_content("3 Apr 2020")
+      end
+
+      within(".actual_end_date") do
+        expect(page).to have_content("22 Aug 2024")
+      end
     end
   end
 
-  context "when the user is a delivery_partner" do
-    before { authenticate!(user: build_stubbed(:delivery_partner, organisation: organisation)) }
+  scenario "can go back to the previous page" do
+    activity = create(:activity, organisation: organisation)
 
-    scenario "the user cannot view the activity" do
-      activity = create(:activity, organisation: organisation)
+    visit organisation_activity_path(organisation, activity)
 
-      visit organisation_activity_path(organisation, activity)
+    click_on I18n.t("generic.link.back")
 
-      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
-    end
+    expect(page).to have_current_path(
+      organisation_path(organisation)
+    )
   end
 end

@@ -2,7 +2,7 @@ RSpec.feature "Users can manage the extending organisation" do
   let(:beis) { create(:beis_organisation) }
 
   context "when they are a fund manager" do
-    before { authenticate!(user: create(:fund_manager, organisation: beis)) }
+    before { authenticate!(user: create(:administrator, organisation: beis)) }
 
     context "and the activity is a programme" do
       let(:fund) { create(:fund_activity) }
