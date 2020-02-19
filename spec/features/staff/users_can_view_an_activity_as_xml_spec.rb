@@ -1,10 +1,11 @@
 # TODO: This data will eventually need to be public so that IATI can retrieve it
 RSpec.feature "Users can view an activity as XML" do
   context "when the user belongs to the organisation the activity is part of" do
-    let(:organisation) { create(:organisation) }
+    let(:user) { create(:beis_user) }
+    let(:organisation) { user.organisation }
 
-    context "when the user is a fund manager" do
-      before { authenticate!(user: create(:administrator, organisation: organisation)) }
+    context "when the user belongs to BEIS" do
+      before { authenticate!(user: user) }
 
       context "when the activity is a fund activity" do
         let(:activity) { create(:fund_activity, organisation: organisation, identifier: "IND-ENT-IFIER") }
