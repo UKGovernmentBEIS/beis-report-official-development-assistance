@@ -54,4 +54,8 @@ class ApplicationPolicy
   protected def beis_user?
     user.organisation.service_owner?
   end
+
+  protected def delivery_partner_user?
+    !beis_user?
+  end
 end

@@ -78,4 +78,4 @@
           %ul.govuk-list.govuk-list--bullet
             - @programme_activities.each do |activity|
               %li
-                = link_to activity.display_title, organisation_activity_path(activity.organisation, activity)
+                = link_to activity.display_title, organisation_activity_path(current_user.organisation, activity)
