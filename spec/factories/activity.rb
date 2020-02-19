@@ -57,6 +57,16 @@ FactoryBot.define do
       accountable_organisation_type { "10" }
 
       association :extending_organisation, factory: :beis_organisation
+
+      factory :project_activity_with_implementing_organisations do
+        transient do
+          implementing_organisations_count { 3 }
+        end
+
+        after(:create) do |project_activity, evaluator|
+          create_list(:implementing_organisation, evaluator.implementing_organisations_count, activity: project_activity)
+        end
+      end
     end
   end
 
