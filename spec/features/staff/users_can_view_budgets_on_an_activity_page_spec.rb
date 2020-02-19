@@ -9,13 +9,18 @@ RSpec.feature "Users can view budgets on an activity page" do
 
       scenario "budget information is shown on the page" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
-        _budget = create(:budget)
+        budget = create(:budget, activity: fund_activity)
+        budget_presenter = BudgetPresenter.new(budget)
 
         visit organisation_path(user.organisation)
 
         click_link fund_activity.title
 
-        expect(page).to have_content(I18n.t("page_content.activity.budgets"))
+        expect(page).to have_content(budget_presenter.budget_type)
+        expect(page).to have_content(budget_presenter.status)
+        expect(page).to have_content(budget_presenter.period_start_date)
+        expect(page).to have_content(budget_presenter.period_end_date)
+        expect(page).to have_content(budget_presenter.value)
       end
     end
   end
