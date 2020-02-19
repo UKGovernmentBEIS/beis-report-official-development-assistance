@@ -8,11 +8,11 @@ RSpec.describe CreateProjectActivity do
 
   describe "#call" do
     let(:result) {
-      described_class.new(user: user, organisation_id: beis.id, programme_id: programme.id).call
+      described_class.new(user: user, organisation_id: user.organisation.id, programme_id: programme.id).call
     }
 
-    it "sets the Organisation to that of the parent programme i.e. BEIS" do
-      expect(result.organisation).to eq beis
+    it "sets the Organisation to that of users organisation" do
+      expect(result.organisation).to eq delivery_partner_organisation
     end
 
     it "sets the parent Activity to the fund" do
