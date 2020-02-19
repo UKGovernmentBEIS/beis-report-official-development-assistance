@@ -1,17 +1,20 @@
 class ActivityPolicy < ApplicationPolicy
   def show?
     record.fund? && beis_user? ||
-      record.programme?
+      record.programme? ||
+      record.project?
   end
 
   def create?
     record.fund? && beis_user? ||
-      record.programme? && beis_user?
+      record.programme? && beis_user? ||
+      record.project? && delivery_partner_user?
   end
 
   def update?
     record.fund? && beis_user? ||
-      record.programme? && beis_user?
+      record.programme? && beis_user? ||
+      record.project? && delivery_partner_user?
   end
 
   def destroy?

@@ -2,7 +2,7 @@
   .govuk-grid-column-two-thirds
     %h2.govuk-heading-m
       = t("page_content.organisation.programmes")
-    = form_tag(organisation_fund_programmes_path(activity.organisation, activity), method: "post") do
+    = form_tag(organisation_fund_programmes_path(current_user.organisation, activity), method: "post") do
       = submit_tag t("page_content.organisation.button.create_programme"), class: "govuk-button"
     %ul.govuk-list.govuk-list--bullet
       - activities.each do |activity|
