@@ -6,7 +6,7 @@ RSpec.describe "Users can create a budget" do
 
     context "when the activity is a fund" do
       scenario "successfully creates a budget" do
-        fund_activity = create(:activity, organisation: user.organisation)
+        fund_activity = create(:fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
         click_on(fund_activity.title)
