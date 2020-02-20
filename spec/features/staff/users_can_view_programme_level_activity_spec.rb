@@ -1,40 +1,44 @@
-RSpec.feature "Users can view programe level activites" do
-  let(:programme) { create(:activity, level: :programme) }
-  let(:fund_activity) { create(:activity, level: :fund) }
-
-  context "when signed in" do
-    before do
-      authenticate!(user: create(:administrator))
-      fund_activity.activities << programme
-    end
+RSpec.feature "Users can view programme level activites" do
+  context "when the user belongs to BEIS" do
+    let(:user) { create(:beis_user) }
 
     it "shows the programme level activity" do
-      visit organisation_activity_path(programme.organisation, programme)
-      expect(page).to have_content programme.title
-    end
+      authenticate!(user: user)
 
-    it "does not show a create programme button" do
-      visit organisation_activity_path(programme.organisation, programme)
+      fund_activity = create(:fund_activity, organisation: user.organisation)
+      programme_activity = create(:programme_activity,
+        organisation: user.organisation,
+        activity: fund_activity)
 
-      expect(page).not_to have_button I18n.t("page_content.organisation.button.create_programme")
-    end
+      visit organisation_path(user.organisation)
 
-    it "shows the choose extending organisation button" do
-      visit organisation_activity_path(programme.organisation, programme)
-      expect(page).to have_link I18n.t("page_content.organisation.button.choose_extending_organisation")
-    end
+      expect(page).to have_content I18n.t("page_content.organisation.funds")
+      expect(page).not_to have_content I18n.t("page_content.organisation.programmes")
 
-    it "shows the create transaction button" do
-      visit organisation_activity_path(programme.organisation, programme)
+      click_on fund_activity.title
+      click_on programme_activity.title
 
-      expect(page).to have_link I18n.t("page_content.transactions.button.create")
+      page_displays_an_activity(activity_presenter: ActivityPresenter.new(programme_activity))
     end
   end
 
-  context "when signed out" do
-    it "redirects to the root path" do
-      visit organisation_activity_path(programme.organisation, programme)
-      expect(current_path).to eq root_path
+  context "when the user does NOT belong to BEIS" do
+    let(:user) { create(:delivery_partner_user) }
+
+    it "shows the programme level activity" do
+      authenticate!(user: user)
+
+      fund_activity = create(:fund_activity, organisation: user.organisation)
+      programme_activity = create(:programme_activity,
+        organisation: user.organisation,
+        activity: fund_activity)
+
+      visit organisation_path(user.organisation)
+      expect(page).not_to have_content I18n.t("page_content.organisation.funds")
+      expect(page).to have_content I18n.t("page_content.organisation.programmes")
+      click_on programme_activity.title
+
+      page_displays_an_activity(activity_presenter: ActivityPresenter.new(programme_activity))
     end
   end
 end

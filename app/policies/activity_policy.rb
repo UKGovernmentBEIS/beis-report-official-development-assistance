@@ -1,22 +1,24 @@
 class ActivityPolicy < ApplicationPolicy
-  def index?
-    user.administrator?
-  end
-
   def show?
-    user.administrator?
+    record.fund? && beis_user? ||
+      record.programme? ||
+      record.project?
   end
 
   def create?
-    user.administrator?
+    record.fund? && beis_user? ||
+      record.programme? && beis_user? ||
+      record.project? && delivery_partner_user?
   end
 
   def update?
-    create?
+    record.fund? && beis_user? ||
+      record.programme? && beis_user? ||
+      record.project? && delivery_partner_user?
   end
 
   def destroy?
-    user.administrator?
+    false
   end
 
   class Scope < Scope

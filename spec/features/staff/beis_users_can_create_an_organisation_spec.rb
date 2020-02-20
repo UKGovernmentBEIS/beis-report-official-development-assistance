@@ -1,5 +1,5 @@
-RSpec.feature "Users can create organisations" do
-  let(:user) { create(:administrator) }
+RSpec.feature "BEIS users can create organisations" do
+  let(:user) { create(:beis_user) }
 
   before do
     authenticate!(user: user)
@@ -40,5 +40,14 @@ RSpec.feature "Users can create organisations" do
     click_button I18n.t("generic.button.submit")
     expect(page).to_not have_content I18n.t("form.organisation.create.success")
     expect(page).to have_content "can't be blank"
+  end
+
+  context "when the user does not belongs to BEIS" do
+    let(:user) { create(:delivery_partner_user) }
+
+    it "does not show them the manage user button" do
+      visit organisation_path(user.organisation)
+      expect(page).not_to have_content(I18n.t("page_content.dashboard.button.manage_organisations"))
+    end
   end
 end

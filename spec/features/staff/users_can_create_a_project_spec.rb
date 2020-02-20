@@ -1,19 +1,18 @@
 RSpec.feature "Users can create a project" do
-  let(:beis) { create(:beis_organisation) }
-  let(:delivery_partner) { create(:delivery_partner_organisation) }
+  let(:beis) { create(:delivery_partner_organisation) }
 
-  context "when an administrator" do
-    before { authenticate!(user: create(:administrator, organisation: delivery_partner)) }
+  context "when the user does NOT belong to BEIS" do
+    let(:user) { create(:delivery_partner_user) }
+    before { authenticate!(user: user) }
 
     context "when viewing a programme" do
       scenario "a new project can be added to the programme" do
-        fund = create(:fund_activity, organisation: beis)
-        programme = create(:programme_activity, organisation: beis)
-        fund.activities << programme
+        programme = create(:programme_activity)
 
-        visit organisation_activity_path(programme.organisation, programme)
+        visit organisation_path(user.organisation)
 
-        expect(page).to have_content programme.title
+        click_on(programme.title)
+
         click_on(I18n.t("page_content.organisation.button.create_project"))
 
         fill_in_activity_form
@@ -23,7 +22,7 @@ RSpec.feature "Users can create a project" do
 
         project = programme.activities.last
 
-        expect(project.organisation).to eq beis
+        expect(project.organisation).to eq user.organisation
       end
     end
   end
