@@ -35,6 +35,7 @@ FactoryBot.define do
     end
 
     factory :programme_activity do
+      activity factory: :fund_activity
       level { :programme }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }

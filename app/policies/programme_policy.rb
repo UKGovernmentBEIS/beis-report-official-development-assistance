@@ -1,10 +1,10 @@
-class UserPolicy < ApplicationPolicy
+class ProgrammePolicy < ApplicationPolicy
   def index?
-    beis_user?
+    true
   end
 
   def show?
-    beis_user?
+    true
   end
 
   def create?
@@ -17,5 +17,11 @@ class UserPolicy < ApplicationPolicy
 
   def destroy?
     beis_user?
+  end
+
+  class Scope < Scope
+    def resolve
+      scope.all
+    end
   end
 end

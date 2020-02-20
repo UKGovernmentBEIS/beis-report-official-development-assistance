@@ -1,22 +1,22 @@
 class OrganisationPolicy < ApplicationPolicy
   def index?
-    user.administrator?
+    beis_user?
   end
 
   def show?
-    user.administrator? || associated_user?
+    beis_user? || associated_user?
   end
 
   def create?
-    user.administrator?
+    beis_user?
   end
 
   def update?
-    user.administrator? || associated_user?
+    beis_user? || associated_user?
   end
 
   def destroy?
-    user.administrator?
+    beis_user?
   end
 
   private def associated_user?

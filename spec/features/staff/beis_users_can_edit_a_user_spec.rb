@@ -1,10 +1,14 @@
-RSpec.feature "Users can edit other users" do
+require "rails_helper"
+
+RSpec.feature "BEIS users can editing other users" do
+  let!(:user) { create(:administrator, organisation: create(:organisation)) }
+
   before do
     stub_auth0_token_request
   end
 
   scenario "the details of the user can be updated" do
-    user = create(:administrator)
+    user = create(:beis_user)
     authenticate!(user: user)
 
     target_user = create(:administrator, name: "Old Name", email: "old@example.com")
@@ -40,5 +44,22 @@ RSpec.feature "Users can edit other users" do
     # Verify the user was updated
     expect(page).to have_content(updated_name)
     expect(page).to have_content(updated_email)
+  end
+
+  scenario "the role can be changed" do
+    administrator_user = create(:beis_user)
+    authenticate!(user: administrator_user)
+
+    visit organisation_path(administrator_user.organisation)
+    click_on "Manage users"
+
+    expect(page).to have_content(user.name)
+
+    find("tr", text: user.name).click_link("Edit")
+
+    choose "Administrator"
+    click_on "Submit"
+
+    expect(user.reload.role).to eql("administrator")
   end
 end

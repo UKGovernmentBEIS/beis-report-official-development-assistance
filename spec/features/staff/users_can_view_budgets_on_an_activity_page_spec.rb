@@ -3,38 +3,36 @@ RSpec.feature "Users can view budgets on an activity page" do
     authenticate!(user: user)
   end
 
-  let(:organisation) { create(:organisation) }
-
   context "when the activity is fund_level" do
-    context "when the user is a fund manager" do
-      let(:user) { create(:administrator, organisation: organisation) }
+    context "when the user belongs to BEIS" do
+      let(:user) { create(:beis_user) }
 
-      scenario "budget information is not shown on the page" do
-        fund_activity = create(:fund_activity, organisation: organisation)
+      scenario "budget information is shown on the page" do
+        fund_activity = create(:fund_activity, organisation: user.organisation)
         _budget = create(:budget)
 
-        visit organisations_path
-        click_link organisation.name
+        visit organisation_path(user.organisation)
+
         click_link fund_activity.title
 
-        expect(page).to_not have_content(I18n.t("page_content.activity.budgets"))
+        expect(page).to have_content(I18n.t("page_content.activity.budgets"))
       end
     end
   end
 
   context "when the activity is programme level" do
-    let(:fund_activity) { create(:fund_activity, organisation: organisation) }
-    let(:programme_activity) { create(:programme_activity, activity: fund_activity, organisation: organisation) }
-
-    context "when the user is a fund manager" do
-      let(:user) { create(:administrator, organisation: organisation) }
+    context "when the user belongs to BEIS" do
+      let(:user) { create(:beis_user) }
 
       scenario "budget information is shown on the page" do
+        fund_activity = create(:fund_activity, organisation: user.organisation)
+        programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
+
         budget = create(:budget, activity: programme_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
-        visit organisations_path
-        click_link organisation.name
+        visit organisation_path(user.organisation)
+
         click_link fund_activity.title
         click_link programme_activity.title
 

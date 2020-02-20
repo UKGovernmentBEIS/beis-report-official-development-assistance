@@ -2,13 +2,20 @@ RSpec.describe "Users can create a budget" do
   before { authenticate!(user: user) }
 
   context "when signed in as BEIS user" do
-    let(:user) { create(:administrator) }
+    let(:user) { create(:beis_user) }
 
-    context "on a fund level activity" do
-      scenario "cannot create a budget on a fund" do
-        fund_activity = create(:fund_activity, organisation: user.organisation)
-        visit new_activity_budget_path(fund_activity)
-        expect(page).to have_content(I18n.t("page_title.errors.budget.not_possible"))
+    context "when the activity is a fund" do
+      scenario "successfully creates a budget" do
+        fund_activity = create(:activity, organisation: user.organisation)
+
+        visit organisation_path(user.organisation)
+        click_on(fund_activity.title)
+
+        click_on(I18n.t("page_content.budgets.button.create"))
+
+        fill_in_and_submit_budget_form
+
+        expect(page).to have_content(I18n.t("form.budget.create.success"))
       end
     end
 
@@ -49,16 +56,32 @@ RSpec.describe "Users can create a budget" do
         expect(page).to have_content("Value is not included in the list")
       end
     end
+  end
+
+  context "when the user does NOT belong to BEIS" do
+    let(:user) { create(:delivery_partner_user) }
+
+    context "on a programme level activity" do
+      scenario "they cannot create budgets" do
+        fund_activity = create(:fund_activity, organisation: user.organisation)
+        programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
+
+        visit organisation_path(user.organisation)
+        click_on(programme_activity.title)
+
+        expect(page).not_to have_content(I18n.t("page_content.activity.budgets"))
+        expect(page).not_to have_content(I18n.t("page_content.budgets.button.create"))
+      end
+    end
 
     context "on a project level activity" do
       scenario "successfully creates a budget" do
-        fund_activity = create(:fund_activity, organisation: user.organisation)
-        programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
+        fund_activity = create(:fund_activity)
+        programme_activity = create(:programme_activity, activity: fund_activity)
         project_activity = create(:project_activity, activity: programme_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
 
-        click_on(fund_activity.title)
         click_on(programme_activity.title)
         click_on(project_activity.title)
 
