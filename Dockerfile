@@ -52,6 +52,9 @@ COPY . $INSTALL_PATH
 
 RUN RAILS_ENV=$RAILS_ENV SECRET_KEY_BASE="super secret" bundle exec rake assets:precompile --quiet
 
+# create tmp/pids
+RUN mkdir -p tmp/pids
+
 # db setup
 COPY ./docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
