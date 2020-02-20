@@ -28,7 +28,37 @@ class Staff::BudgetsController < Staff::BaseController
     end
   end
 
+  def edit
+    @budget = Budget.find(id)
+    authorize @budget
+
+    @activity = Activity.find(activity_id)
+  end
+
+  def update
+    @budget = Budget.find(id)
+    @activity = Activity.find(activity_id)
+    @budget.activity = @activity
+    authorize @budget
+
+    @budget.assign_attributes(budget_params)
+    @budget.value = monetary_value
+    @budget.period_start_date = format_date(period_start_date)
+    @budget.period_end_date = format_date(period_end_date)
+
+    if @budget.save
+      flash[:notice] = I18n.t("form.budget.update.success")
+      redirect_to organisation_activity_path(@activity.organisation, @activity)
+    else
+      render :edit
+    end
+  end
+
   private
+
+  def id
+    params[:id]
+  end
 
   def activity_id
     params[:activity_id]
