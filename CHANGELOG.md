@@ -48,4 +48,6 @@
 - Users who belong to delivery partners see a list of programmes on their organisation page
 - Users are authorised based on the organisations they belong to
 - Users can add budgets to activities at all levels
+- Users can edit a budget
+
 
