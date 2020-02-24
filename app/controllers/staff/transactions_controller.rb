@@ -37,13 +37,13 @@ class Staff::TransactionsController < Staff::BaseController
 
   def update
     @transaction = Transaction.find(id)
-    @activity = Activity.find(activity_id)
-    @transaction = BuildTransaction.new(transaction: @transaction)
-      .call(attributes: transaction_params)
-
     authorize @transaction
 
-    if @transaction.save
+    @activity = Activity.find(activity_id)
+    result = UpdateTransaction.new(transaction: @transaction)
+      .call(attributes: transaction_params)
+
+    if result.success?
       flash[:notice] = I18n.t("form.transaction.update.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
