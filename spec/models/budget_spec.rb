@@ -11,6 +11,7 @@ RSpec.describe Budget do
     it { should validate_presence_of(:period_start_date) }
     it { should validate_presence_of(:period_end_date) }
     it { should validate_presence_of(:value) }
+    it { should validate_presence_of(:currency) }
   end
 
   context "value must be between 1 and 99,999,999,999.00 (100 billion minus one)" do

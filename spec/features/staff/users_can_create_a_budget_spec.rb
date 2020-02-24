@@ -103,6 +103,7 @@ RSpec.describe "Users can create a budget" do
     fill_in "budget[period_end_date(3i)]", with: "01"
     fill_in "budget[period_end_date(2i)]", with: "01"
     fill_in "budget[period_end_date(1i)]", with: "2021"
+    select "Pound Sterling", from: "budget[currency]"
     fill_in "budget[value]", with: "1000.00"
     click_button I18n.t("generic.button.submit")
   end

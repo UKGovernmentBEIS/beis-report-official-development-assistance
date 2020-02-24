@@ -5,6 +5,7 @@ FactoryBot.define do
     period_start_date { Date.today }
     period_end_date { Date.tomorrow }
     value { 110.01 }
+    currency { "gbp" }
     association :activity
   end
 end
