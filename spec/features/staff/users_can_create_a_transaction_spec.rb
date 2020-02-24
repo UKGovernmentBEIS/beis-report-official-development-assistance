@@ -131,7 +131,7 @@ RSpec.feature "Users can create a transaction" do
     end
 
     context "Date validation" do
-      scenario "When the date is more than 25 years in the future" do
+      scenario "When the date is in the future" do
         activity = create(:fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
@@ -142,10 +142,10 @@ RSpec.feature "Users can create a transaction" do
 
         fill_in_transaction_form(date_day: 0o1, date_month: 0o1, date_year: 2100, expectations: false)
 
-        expect(page).to have_content "Date must be between 10 years ago and 25 years in the future"
+        expect(page).to have_content "Date must not be in the future"
       end
 
-      scenario "When the date is more than 10 years in the past" do
+      scenario "When the date is in the past" do
         activity = create(:fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
@@ -156,7 +156,8 @@ RSpec.feature "Users can create a transaction" do
 
         fill_in_transaction_form(date_day: 0o1, date_month: 0o1, date_year: 1900, expectations: false)
 
-        expect(page).to have_content "Date must be between 10 years ago and 25 years in the future"
+        expect(page).to_not have_content "Date must not be in the future"
+        expect(page).to have_content I18n.t("form.transaction.create.success")
       end
 
       scenario "When the date is nil" do
@@ -170,7 +171,7 @@ RSpec.feature "Users can create a transaction" do
 
         fill_in_transaction_form(date_day: "", date_month: "", date_year: "", expectations: false)
 
-        expect(page).to_not have_content "Date must be between 10 years ago and 25 years in the future"
+        expect(page).to have_content "Date can't be blank"
       end
     end
   end
