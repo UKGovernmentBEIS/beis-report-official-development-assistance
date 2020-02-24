@@ -31,6 +31,8 @@ en:
         label: Period start date
       status:
         label: Status
+      update:
+        success: Budget successfully updated
       value:
         label: Value
     fund:
@@ -244,6 +246,7 @@ en:
         status: Status
         tied_status: Tied status
     budget:
+      edit: Edit budget
       new: Create budget
     errors:
       auth0:
