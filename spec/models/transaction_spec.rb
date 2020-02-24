@@ -39,20 +39,19 @@ RSpec.describe Transaction, type: :model do
     end
   end
 
-  context "date must be between 10 years ago and 25 years from now" do
-    it "does not allow a date more than 10 years ago" do
-      transaction = build(:transaction, activity: activity, date: 11.years.ago)
-      expect(transaction.valid?).to be_falsey
-      expect(transaction.errors[:date]).to include "Date must be between 10 years ago and 25 years in the future"
+  context "date must not be in the future" do
+    it "allows a date in the past" do
+      transaction = build(:transaction, activity: activity, date: 1.year.ago)
+      expect(transaction.valid?).to be true
     end
 
-    it "does not allow a date more than 25 years in the future" do
-      transaction = build(:transaction, activity: activity, date: 26.years.from_now)
-      expect(transaction.valid?).to be_falsey
-      expect(transaction.errors[:date]).to include "Date must be between 10 years ago and 25 years in the future"
+    it "does not allow a date in the future" do
+      transaction = build(:transaction, activity: activity, date: 1.year.from_now)
+      expect(transaction.valid?).to be false
+      expect(transaction.errors[:date]).to include "Date must not be in the future"
     end
 
-    it "allows a date between 10 years ago and 25 years in the future" do
+    it "allows today's date" do
       transaction = build(:transaction, activity: activity, date: Date.today)
       expect(transaction.valid?).to be true
     end

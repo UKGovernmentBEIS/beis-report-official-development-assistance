@@ -71,6 +71,7 @@ en:
           attributes:
             date:
               between: Date must be between %{min} years ago and %{max} years in the future
+              not_in_future: Date must not be in the future
             value:
               inclusion: Value must be between 1 and 99,999,999,999.00
         user:
