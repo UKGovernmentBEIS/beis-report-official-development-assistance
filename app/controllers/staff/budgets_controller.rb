@@ -11,19 +11,16 @@ class Staff::BudgetsController < Staff::BaseController
   end
 
   def create
+    authorize :budget, :create?
+
     @activity = Activity.find(activity_id)
-    @budget = Budget.new(budget_params)
-    @budget.activity = @activity
-    authorize @budget
+    result = CreateBudget.new(activity: @activity).call(attributes: budget_params)
 
-    @budget.value = monetary_value
-    @budget.period_start_date = format_date(period_start_date)
-    @budget.period_end_date = format_date(period_end_date)
-
-    if @budget.save
+    if result.success?
       flash[:notice] = I18n.t("form.budget.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
+      @budget = result.object
       render :new
     end
   end
@@ -65,8 +62,15 @@ class Staff::BudgetsController < Staff::BaseController
   end
 
   def budget_params
-    params.require(:budget).permit(:budget_type, :status, :value, :currency)
-  end
+    params.require(:budget).permit(
+      :budget_type,
+      :status,
+      :value,
+      :period_start_date,
+      :period_end_date,
+      :currency
+    )
+   end
 
   def monetary_value
     @monetary_value ||= begin
