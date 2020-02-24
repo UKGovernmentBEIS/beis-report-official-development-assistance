@@ -65,7 +65,7 @@ class Staff::BudgetsController < Staff::BaseController
   end
 
   def budget_params
-    params.require(:budget).permit(:budget_type, :status, :value)
+    params.require(:budget).permit(:budget_type, :status, :value, :currency)
   end
 
   def monetary_value

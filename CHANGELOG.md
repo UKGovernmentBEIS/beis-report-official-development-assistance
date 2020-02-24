@@ -49,5 +49,5 @@
 - Users are authorised based on the organisations they belong to
 - Users can add budgets to activities at all levels
 - Users can edit a budget
-
+- Users can add currency information to budgets and see the currency in the budget XML
 

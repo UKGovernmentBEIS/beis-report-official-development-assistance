@@ -11,6 +11,8 @@
         %th.govuk-table__header
           =t("form.budget.period_end_date.label")
         %th.govuk-table__header
+          =t("form.budget.currency.label")
+        %th.govuk-table__header
           =t("form.budget.value.label")
         %th.govuk-table__header
 
@@ -21,6 +23,7 @@
           %td.govuk-table__cell= budget.status
           %td.govuk-table__cell= budget.period_start_date
           %td.govuk-table__cell= budget.period_end_date
+          %td.govuk-table__cell= budget.currency
           %td.govuk-table__cell= budget.value
           %td.govuk-table__cell
             = a11y_action_link(I18n.t('generic.link.edit'), edit_activity_budget_path(budget.activity, budget))
