@@ -126,7 +126,7 @@ RSpec.feature "Users can create a transaction" do
 
         fill_in_transaction_form(value: "123,000,000", expectations: false)
 
-        expect(page).to have_content "123000000"
+        expect(page).to have_content "£123,000,000"
       end
     end
 
