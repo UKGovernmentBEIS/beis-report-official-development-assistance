@@ -22,4 +22,9 @@ class BudgetPresenter < SimpleDelegator
   def value
     ActionController::Base.helpers.number_to_currency(super, unit: "£")
   end
+
+  def currency
+    return if super.blank?
+    I18n.t("generic.default_currency.#{super.downcase}")
+  end
 end

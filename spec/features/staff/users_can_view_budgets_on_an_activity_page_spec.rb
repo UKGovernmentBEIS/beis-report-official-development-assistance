@@ -20,6 +20,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         expect(page).to have_content(budget_presenter.status)
         expect(page).to have_content(budget_presenter.period_start_date)
         expect(page).to have_content(budget_presenter.period_end_date)
+        expect(page).to have_content(budget_presenter.currency)
         expect(page).to have_content(budget_presenter.value)
       end
     end
@@ -45,6 +46,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         expect(page).to have_content(budget_presenter.status)
         expect(page).to have_content(budget_presenter.period_start_date)
         expect(page).to have_content(budget_presenter.period_end_date)
+        expect(page).to have_content(budget_presenter.currency)
         expect(page).to have_content(budget_presenter.value)
       end
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_13_161657) do
+ActiveRecord::Schema.define(version: 2020_02_24_141519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 2020_02_13_161657) do
     t.date "period_start_date"
     t.date "period_end_date"
     t.decimal "value", precision: 13, scale: 2
+    t.string "currency"
     t.index ["activity_id"], name: "index_budgets_on_activity_id"
   end
 
