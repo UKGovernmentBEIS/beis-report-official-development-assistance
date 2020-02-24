@@ -25,6 +25,8 @@ en:
         label: Budget type
       create:
         success: Budget successfully created
+      currency:
+        label: Currency
       period_end_date:
         label: Period end date
       period_start_date:

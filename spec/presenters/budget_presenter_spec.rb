@@ -32,4 +32,10 @@ RSpec.describe BudgetPresenter do
       expect(described_class.new(budget).value).to eq("£20.00")
     end
   end
+
+  describe "#currency" do
+    it "returns the I18n string for the currency" do
+      expect(described_class.new(budget).currency).to eq("Pound Sterling")
+    end
+  end
 end
