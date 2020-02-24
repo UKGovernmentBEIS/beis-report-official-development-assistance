@@ -13,6 +13,10 @@
           legend: { text: t("form.budget.period_start_date.label"), size: "s" }
 = f.govuk_date_field :period_end_date,
           legend: { text: t("form.budget.period_end_date.label"), size: "s" }
+= f.govuk_collection_select :currency,
+                               currency_select_options,
+                               :code,
+                               :name
 = f.govuk_text_field :value
 
 = f.govuk_submit t("generic.button.submit")
