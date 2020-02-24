@@ -22,4 +22,18 @@ RSpec.describe Result do
       expect(result).to eq false
     end
   end
+
+  describe "#object" do
+    it "returns an object when set" do
+      object = double
+      result = described_class.new(true, object).object
+      expect(result).to eq object
+    end
+
+    it "returns nil when not set" do
+      _object = double
+      result = described_class.new(true).object
+      expect(result).to eq nil
+    end
+  end
 end
