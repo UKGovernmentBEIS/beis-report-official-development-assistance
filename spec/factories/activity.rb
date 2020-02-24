@@ -5,7 +5,7 @@ FactoryBot.define do
     title { Faker::Lorem.sentence }
     identifier
     description { Faker::Lorem.paragraph }
-    sector { "99" }
+    sector { "11110" }
     status { "2" }
     planned_start_date { Date.today }
     planned_end_date { Date.tomorrow }
