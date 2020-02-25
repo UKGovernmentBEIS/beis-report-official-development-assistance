@@ -170,7 +170,7 @@ module FormHelpers
           month: date_month,
           day: date_day
         )
-        expect(page).to have_content(value)
+        expect(page).to have_content(ActionController::Base.helpers.number_to_currency(value, unit: "£"))
         expect(page).to have_content(disbursement_channel)
         expect(page).to have_content(currency)
         expect(page).to have_content(providing_organisation.name)
