@@ -4,7 +4,7 @@ FactoryBot.define do
     status { "indicative" }
     period_start_date { Date.today }
     period_end_date { Date.tomorrow }
-    value { 110.01 }
+    value { BigDecimal("110.01") }
     currency { "gbp" }
     association :activity
   end
