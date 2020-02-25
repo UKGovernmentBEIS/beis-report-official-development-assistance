@@ -19,6 +19,9 @@ FactoryBot.define do
     wizard_status { "complete" } # wizard is complete
 
     association :organisation, factory: :organisation
+    before(:create) do |activity|
+      activity.reporting_organisation_reference = activity.organisation.iati_reference
+    end
 
     factory :fund_activity do
       level { :fund }
