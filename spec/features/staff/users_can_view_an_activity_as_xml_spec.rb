@@ -20,6 +20,13 @@ RSpec.feature "Users can view an activity as XML" do
 
         it_behaves_like "valid activity XML"
       end
+
+      context "when the activity is a project activity" do
+        let(:activity) { create(:project_activity_with_implementing_organisations, organisation: organisation) }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it_behaves_like "valid activity XML"
+      end
     end
   end
 end

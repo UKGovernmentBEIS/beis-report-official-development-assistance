@@ -15,6 +15,10 @@
   - if activity.has_extending_organisation?
     %participating-org{"ref" => activity.extending_organisation.iati_reference, "type" => activity.extending_organisation.organisation_type, "role" => 3}
       %narrative= activity.extending_organisation.name
+  - if activity.has_implementing_organisations?
+    - activity.implementing_organisations.each do |organisation|
+      %participating-org{"ref" => organisation.reference, "type" => organisation.organisation_type, "role" => 4}
+        %narrative= organisation.name
   %activity-status{"code" => activity.status}/
   %activity-date{"iso-date" => activity.planned_start_date, type: "1"}/
   %activity-date{"iso-date" => activity.actual_start_date, type: "2"}/
@@ -32,4 +36,3 @@
   - if transactions
     - transactions.each do |transaction|
       = render partial: "staff/shared/xml/transaction", locals: { transaction: transaction }
-

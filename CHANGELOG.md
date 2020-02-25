@@ -50,4 +50,6 @@
 - Users can add budgets to activities at all levels
 - Users can edit a budget
 - Users can add currency information to budgets and see the currency in the budget XML
-
+- Users can report an activities implementing organisation
+- Users can edit a reported implementing organisation
+- Users can view implementing organisations in the Activity XML
