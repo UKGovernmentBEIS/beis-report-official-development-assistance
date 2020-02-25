@@ -18,4 +18,9 @@ class TransactionPresenter < SimpleDelegator
     return if super.blank?
     I18n.t("transaction.disbursement_channel.#{super}")
   end
+
+  def value
+    return if super.blank?
+    ActionController::Base.helpers.number_to_currency(super, unit: "£")
+  end
 end

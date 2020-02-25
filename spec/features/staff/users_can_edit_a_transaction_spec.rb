@@ -30,7 +30,7 @@ RSpec.feature "Users can edit a transaction" do
         transaction_type: "Expenditure",
         date_day: "1",
         date_month: "1",
-        date_year: "2021",
+        date_year: "2020",
         value: "2000.51",
         disbursement_channel: "Aid in kind: Donors manage funds themselves",
         currency: "US Dollar"

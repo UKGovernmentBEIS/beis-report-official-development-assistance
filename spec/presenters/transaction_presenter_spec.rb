@@ -27,4 +27,10 @@ RSpec.describe TransactionPresenter do
       expect(described_class.new(transaction).disbursement_channel).to eq("Money is disbursed through central Ministry of Finance or Treasury")
     end
   end
+
+  describe "#value" do
+    it "returns the value to two decimal places with a currency symbol" do
+      expect(described_class.new(transaction).value).to eq("£110.01")
+    end
+  end
 end
