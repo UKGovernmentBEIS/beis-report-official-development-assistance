@@ -13,16 +13,14 @@ class Staff::TransactionsController < Staff::BaseController
   end
 
   def create
+    authorize :transaction, :create?
+
     @activity = Activity.find(activity_id)
-    @transaction = Transaction.new(transaction_params)
-    @transaction.activity = @activity
-    authorize @transaction
+    result = CreateTransaction.new(activity: @activity)
+      .call(attributes: transaction_params)
+    @transaction = result.object
 
-    @transaction.assign_attributes(transaction_params)
-    @transaction.value = monetary_value
-    @transaction.date = format_date(date)
-
-    if @transaction.save
+    if result.success?
       flash[:notice] = I18n.t("form.transaction.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
@@ -39,15 +37,13 @@ class Staff::TransactionsController < Staff::BaseController
 
   def update
     @transaction = Transaction.find(id)
-    @activity = Activity.find(activity_id)
-    @transaction.activity = @activity
     authorize @transaction
 
-    @transaction.assign_attributes(transaction_params)
-    @transaction.value = monetary_value
-    @transaction.date = format_date(date)
+    @activity = Activity.find(activity_id)
+    result = UpdateTransaction.new(transaction: @transaction)
+      .call(attributes: transaction_params)
 
-    if @transaction.save
+    if result.success?
       flash[:notice] = I18n.t("form.transaction.update.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
@@ -57,17 +53,13 @@ class Staff::TransactionsController < Staff::BaseController
 
   private
 
-  def date
-    date_fields = params.require(:transaction).permit("date(3i)", "date(2i)", "date(1i)")
-    {day: date_fields["date(3i)"], month: date_fields["date(2i)"], year: date_fields["date(1i)"]}
-  end
-
   def transaction_params
     params.require(:transaction).permit(
       :reference,
       :description,
       :transaction_type,
       :currency,
+      :date,
       :value,
       :disbursement_channel,
       :providing_organisation_name,
@@ -77,13 +69,6 @@ class Staff::TransactionsController < Staff::BaseController
       :receiving_organisation_reference,
       :receiving_organisation_type
     )
-  end
-
-  def monetary_value
-    @monetary_value ||= begin
-      string_value = params.require(:transaction).permit(:value)
-      Monetize.parse(string_value).to_f
-    end
   end
 
   def activity_id
