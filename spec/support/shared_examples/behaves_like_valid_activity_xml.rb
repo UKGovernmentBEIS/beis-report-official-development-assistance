@@ -5,9 +5,12 @@ RSpec.shared_examples "valid activity XML" do
   end
 
   it "contains the activity XML" do
+    iati_activity_identifier = "#{activity.reporting_organisation_reference}-#{activity.identifier}"
+
     visit organisation_activity_path(organisation, activity, format: :xml)
+
     expect(xml.at("iati-activity/@default-currency").text).to eq(activity.default_currency)
-    expect(xml.at("iati-activity/iati-identifier").text).to eq(activity.identifier)
+    expect(xml.at("iati-activity/iati-identifier").text).to eq(iati_activity_identifier)
   end
 
   it "contains the funding organisation XML" do
