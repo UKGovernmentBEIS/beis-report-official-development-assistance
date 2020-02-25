@@ -42,6 +42,11 @@ en:
         success: Fund successfully created
       update:
         success: Fund successfully updated
+    implementing_organisation:
+      create:
+        success: Implementing organisation successfully created
+      update:
+        success: Implementing organisation successfully updated
     organisation:
       create:
         success: Organisation successfully created
@@ -153,6 +158,10 @@ en:
         label: Flow
       identitfier:
         label: Identifier
+      implementing_organisation:
+        button:
+          new: Add implementing organisation
+        heading: Implementing organisations
       organisation:
         label: Organisation
       planned_end_date:
@@ -234,6 +243,9 @@ en:
           link: you can make one now
   page_title:
     activity:
+      implementing_organisation:
+        edit: Edit implemening organisation
+        new: Add a new implementing organisation
       show: Activity %{name}
     activity_form:
       show:

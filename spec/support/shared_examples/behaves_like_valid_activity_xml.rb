@@ -31,6 +31,21 @@ RSpec.shared_examples "valid activity XML" do
     expect(xml.at("iati-activity/participating-org[@role = '3']/narrative").text).to eq(activity.extending_organisation.name)
   end
 
+  it "contains the implementing organisations XML" do
+    visit organisation_activity_path(organisation, activity, format: :xml)
+
+    implementing_organisations_xml = xml.xpath("iati-activity/participating-org[@role = '4']")
+    implementing_organisation_refs = activity.implementing_organisations.pluck(:reference)
+    implementing_organisation_types = activity.implementing_organisations.pluck(:organisation_type)
+    implementing_organisation_names = activity.implementing_organisations.pluck(:name)
+
+    implementing_organisations_xml.each do |organisation_xml|
+      expect(implementing_organisation_refs).to include(organisation_xml.at("@ref").text)
+      expect(implementing_organisation_types).to include(organisation_xml.at("@type").text)
+      expect(implementing_organisation_names).to include(organisation_xml.at("narrative").text)
+    end
+  end
+
   it "contains the transaction XML" do
     transaction = create(:transaction, activity: activity)
     visit organisation_activity_path(organisation, activity, format: :xml)
