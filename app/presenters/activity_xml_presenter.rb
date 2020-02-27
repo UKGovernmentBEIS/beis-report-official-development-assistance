@@ -2,6 +2,8 @@
 
 class ActivityXmlPresenter < SimpleDelegator
   def iati_identifier
-    "#{reporting_organisation_reference}-#{identifier}"
+    parent_activities.each_with_object([reporting_organisation_reference]) { |parent, parent_identifiers|
+      parent_identifiers << parent.identifier
+    }.push(identifier).join("-")
   end
 end

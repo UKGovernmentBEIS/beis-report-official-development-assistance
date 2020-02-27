@@ -9,6 +9,7 @@ RSpec.feature "Users can view an activity as XML" do
 
       context "when the activity is a fund activity" do
         let(:activity) { create(:fund_activity, organisation: organisation, identifier: "IND-ENT-IFIER") }
+        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
@@ -16,6 +17,7 @@ RSpec.feature "Users can view an activity as XML" do
 
       context "when the activity is a programme activity" do
         let(:activity) { create(:programme_activity, organisation: organisation, identifier: "IND-ENT-IFIER") }
+        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
@@ -23,6 +25,7 @@ RSpec.feature "Users can view an activity as XML" do
 
       context "when the activity is a project activity" do
         let(:activity) { create(:project_activity_with_implementing_organisations, organisation: organisation) }
+        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
