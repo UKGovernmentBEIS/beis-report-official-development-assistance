@@ -9,6 +9,7 @@ class Activity < ApplicationRecord
   validates :aid_type, presence: true, if: :aid_type_step?
   validates :tied_status, presence: true, if: :tied_status_step?
   validates_uniqueness_of :identifier
+  validates :planned_start_date, :planned_end_date, presence: true, if: :dates_step?
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
   validates :extending_organisation_id, presence: true, on: :update_extending_organisation
 
@@ -41,6 +42,10 @@ class Activity < ApplicationRecord
 
   private def status_step?
     wizard_status == "status" || wizard_complete?
+  end
+
+  private def dates_step?
+    wizard_status == "dates" || wizard_complete?
   end
 
   private def country_step?
