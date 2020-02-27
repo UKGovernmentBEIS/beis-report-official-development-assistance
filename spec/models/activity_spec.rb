@@ -41,6 +41,12 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:sector) }
     end
 
+    context "when planned dates are blank" do
+      subject { build(:activity, planned_start_date: nil, planned_end_date: nil, wizard_status: :dates) }
+      it { should validate_presence_of(:planned_start_date) }
+      it { should validate_presence_of(:planned_end_date) }
+    end
+
     context "when status is blank" do
       subject { build(:activity, status: nil, wizard_status: :status) }
       it { should validate_presence_of(:status) }
@@ -48,12 +54,12 @@ RSpec.describe Activity, type: :model do
 
     context "when planned_start_date is blank" do
       subject { build(:activity, planned_start_date: nil, wizard_status: :dates) }
-      it { should_not validate_presence_of(:planned_start_date) }
+      it { should validate_presence_of(:planned_start_date) }
     end
 
     context "when planned_end_date is blank" do
       subject { build(:activity, planned_end_date: nil, wizard_status: :dates) }
-      it { should_not validate_presence_of(:planned_end_date) }
+      it { should validate_presence_of(:planned_end_date) }
     end
 
     context "when actual_start_date is blank" do
@@ -112,8 +118,8 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:description) }
       it { should validate_presence_of(:sector) }
       it { should validate_presence_of(:status) }
-      it { should_not validate_presence_of(:planned_start_date) }
-      it { should_not validate_presence_of(:planned_end_date) }
+      it { should validate_presence_of(:planned_start_date) }
+      it { should validate_presence_of(:planned_end_date) }
       it { should_not validate_presence_of(:actual_start_date) }
       it { should_not validate_presence_of(:actual_end_date) }
       it { should validate_presence_of(:recipient_region) }
