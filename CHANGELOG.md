@@ -53,3 +53,4 @@
 - Users can report an activities implementing organisation
 - Users can edit a reported implementing organisation
 - Users can view implementing organisations in the Activity XML
+- Planned start and end dates are mandatory
