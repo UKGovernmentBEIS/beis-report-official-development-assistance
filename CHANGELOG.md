@@ -56,3 +56,4 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 - Activity XML includes 'iati-identifier' which is includes the reporting organisation
+- Activity XML includes 'iati-identifier' with an identifier that consists of all present levels of hierarchy: fund and/or programme
