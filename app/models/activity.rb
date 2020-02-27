@@ -27,39 +27,39 @@ class Activity < ApplicationRecord
   scope :funds, -> { where(level: :fund) }
   scope :programmes, -> { where(level: :programme) }
 
-  def identifier_step?
+  private def identifier_step?
     wizard_status == "identifier" || wizard_complete?
   end
 
-  def purpose_step?
+  private def purpose_step?
     wizard_status == "purpose" || wizard_complete?
   end
 
-  def sector_step?
+  private def sector_step?
     wizard_status == "sector" || wizard_complete?
   end
 
-  def status_step?
+  private def status_step?
     wizard_status == "status" || wizard_complete?
   end
 
-  def country_step?
+  private def country_step?
     wizard_status == "country" || wizard_complete?
   end
 
-  def flow_step?
+  private def flow_step?
     wizard_status == "flow" || wizard_complete?
   end
 
-  def finance_step?
+  private def finance_step?
     wizard_status == "finance" || wizard_complete?
   end
 
-  def aid_type_step?
+  private def aid_type_step?
     wizard_status == "aid_type" || wizard_complete?
   end
 
-  def tied_status_step?
+  private def tied_status_step?
     wizard_status == "tied_status" || wizard_complete?
   end
 
