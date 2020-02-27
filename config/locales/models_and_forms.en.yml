@@ -85,8 +85,8 @@ en:
   helpers:
     fieldset:
       activity:
-        actual_end_date: Actual end date
-        actual_start_date: Actual start date
+        actual_end_date: Actual end date (optional)
+        actual_start_date: Actual start date (optional)
         planned_end_date: Planned end date
         planned_start_date: Planned start date
       user:
