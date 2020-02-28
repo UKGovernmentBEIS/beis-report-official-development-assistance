@@ -39,6 +39,7 @@ gem "omniauth-auth0", "~> 2.2"
 gem "omniauth-rails_csrf_protection", "~> 0.1"
 
 group :development, :test do
+  gem "brakeman"
   gem "bullet"
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails"
