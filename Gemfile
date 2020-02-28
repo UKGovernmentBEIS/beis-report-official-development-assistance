@@ -28,7 +28,7 @@ gem "sass-rails", "~> 6.0"
 # TODO: currently GPaaS only provides redis 3.2.
 # when redis 4 or above is available use
 # gem "sidekiq", "< 7"
-gem "sidekiq", "5.2.7"
+gem "sidekiq", "6.0.5"
 gem "turbolinks", "~> 5"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "uglifier", ">= 1.3.0"
