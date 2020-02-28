@@ -9,4 +9,7 @@ Rails.application.config.session_store :redis_store,
     db: 1,
     namespace: "roda:session",
   },
-  expire_after: 12.hours
+  expire_after: 12.hours,
+  threadsafe: true,
+  signed: true,
+  secure: true

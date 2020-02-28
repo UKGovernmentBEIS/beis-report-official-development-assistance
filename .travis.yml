@@ -12,12 +12,14 @@ jobs:
     script: |
       docker network create test
       docker run -d --name pg --network test -p 5432:5432 postgres:11.6
+      docker run -d --name redis --network test -p 6379:6379 redis:4.0.14
       docker run -d \
         --name test-container \
         --network test \
         -e RAILS_ENV=test \
         -e DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL=true \
         -e DATABASE_URL=postgres://postgres@pg:5432/roda_test \
+        -e REDIS_URL=redis://redis:6379 \
         -e TRAVIS="$TRAVIS" \
         -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" \
         -e TRAVIS_BRANCH="$TRAVIS_BRANCH" \
