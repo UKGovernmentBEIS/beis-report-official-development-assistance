@@ -9,8 +9,8 @@ FactoryBot.define do
     status { "2" }
     planned_start_date { Date.today }
     planned_end_date { Date.tomorrow }
-    actual_start_date { Date.today }
-    actual_end_date { Date.tomorrow }
+    actual_start_date { Date.yesterday }
+    actual_end_date { Date.today }
     recipient_region { "489" }
     flow { "10" }
     finance { "110" }
