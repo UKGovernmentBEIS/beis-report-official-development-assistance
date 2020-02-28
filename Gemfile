@@ -22,6 +22,8 @@ gem "pundit"
 gem "rollbar"
 gem "rails", "~> 6.0.2"
 gem "redis"
+gem "redis-rails"
+gem "redis-store"
 gem "redis-namespace"
 gem "sassc", "~> 2.0.1" # Downgrade to fix https://github.com/sass/sassc-ruby/issues/133
 gem "sass-rails", "~> 6.0"
