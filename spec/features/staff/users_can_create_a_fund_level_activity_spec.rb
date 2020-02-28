@@ -135,6 +135,10 @@ RSpec.feature "Users can create a fund level activity" do
         # Region has a default and can't be set to blank so we skip
         select "Developing countries, unspecified", from: "activity[recipient_region]"
         click_button I18n.t("form.activity.submit")
+        expect(page).to have_content I18n.t("page_title.activity_form.show.country")
+
+        select "Chile", from: "activity[recipient_country]"
+        click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
 
         # Flow has a default and can't be set to blank so we skip

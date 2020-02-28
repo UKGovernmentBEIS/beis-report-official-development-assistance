@@ -10,6 +10,7 @@ FactoryBot.define do
     actual_start_date { Date.yesterday }
     actual_end_date { Date.today }
     recipient_region { "489" }
+    recipient_country { "CL" }
     flow { "10" }
     finance { "110" }
     aid_type { "A01" }
@@ -84,6 +85,7 @@ FactoryBot.define do
     actual_start_date { nil }
     actual_end_date { nil }
     recipient_region { nil }
+    recipient_country { nil }
     flow { nil }
     finance { nil }
     aid_type { nil }
@@ -101,6 +103,7 @@ FactoryBot.define do
     actual_start_date { nil }
     actual_end_date { nil }
     recipient_region { nil }
+    recipient_country { nil }
     flow { nil }
     finance { nil }
     aid_type { nil }
@@ -109,6 +112,7 @@ FactoryBot.define do
 
   trait :at_region_step do
     wizard_status { "region" }
+    recipient_country { nil }
     flow { nil }
     finance { nil }
     aid_type { nil }

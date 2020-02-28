@@ -131,6 +131,11 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:recipient_region) }
     end
 
+    context "when recipient_country is blank" do
+      subject { build(:activity, recipient_country: nil, wizard_status: :country) }
+      it { should validate_presence_of(:recipient_country) }
+    end
+
     context "when flow is blank" do
       subject { build(:activity, flow: nil, wizard_status: :flow) }
       it { should validate_presence_of(:flow) }
