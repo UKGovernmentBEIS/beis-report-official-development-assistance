@@ -59,8 +59,10 @@ en:
           attributes:
             actual_end_date:
               between: Date must be between %{min} years ago and %{max} years in the future
+              not_in_future: Actual end date must not be in the future
             actual_start_date:
               between: Date must be between %{min} years ago and %{max} years in the future
+              not_in_future: Actual start date must not be in the future
             planned_end_date:
               between: Date must be between %{min} years ago and %{max} years in the future
             planned_start_date:
