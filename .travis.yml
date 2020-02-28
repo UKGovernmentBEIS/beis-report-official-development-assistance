@@ -29,6 +29,7 @@ jobs:
         app/test /bin/bash -c "tail -f /dev/null"
       docker exec test-container rake db:setup
       docker exec test-container rake
+      docker exec test-container bundle exec brakeman
 deploy:
 - provider: heroku
   api_key:
