@@ -107,8 +107,8 @@ FactoryBot.define do
     tied_status { nil }
   end
 
-  trait :at_country_step do
-    wizard_status { "country" }
+  trait :at_region_step do
+    wizard_status { "region" }
     flow { nil }
     finance { nil }
     aid_type { nil }

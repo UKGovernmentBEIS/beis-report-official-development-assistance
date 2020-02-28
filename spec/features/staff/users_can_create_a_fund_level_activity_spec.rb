@@ -27,7 +27,7 @@ RSpec.feature "Users can create a fund level activity" do
 
       click_on I18n.t("page_content.organisation.button.create_fund")
 
-      visit activity_step_path(activity, :country)
+      visit activity_step_path(activity, :region)
       expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.recipient_region
 
       visit activity_step_path(activity, :flow)

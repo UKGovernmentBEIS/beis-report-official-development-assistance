@@ -262,7 +262,6 @@ en:
     activity_form:
       show:
         aid_type: Aid type
-        country: Country
         dates: Dates
         finance: Finance
         flow: Flow

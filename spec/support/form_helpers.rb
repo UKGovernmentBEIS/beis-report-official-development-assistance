@@ -77,6 +77,7 @@ module FormHelpers
 
     click_button I18n.t("form.activity.submit")
 
+    expect(page).to have_content I18n.t("page_title.activity_form.show.region")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.recipient_region")
     expect(page).to have_content "A supranational geopolitical region that will benefit from this activity. Find the region code from the IATI region list."
     select recipient_region, from: "activity[recipient_region]"

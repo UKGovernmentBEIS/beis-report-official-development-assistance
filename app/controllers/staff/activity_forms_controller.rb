@@ -9,7 +9,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :sector,
     :status,
     :dates,
-    :country,
+    :region,
     :flow,
     :finance,
     :aid_type,

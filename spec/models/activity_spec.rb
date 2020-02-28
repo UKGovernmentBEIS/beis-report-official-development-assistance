@@ -127,7 +127,7 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when recipient_region is blank" do
-      subject { build(:activity, recipient_region: nil, wizard_status: :country) }
+      subject { build(:activity, recipient_region: nil, wizard_status: :region) }
       it { should validate_presence_of(:recipient_region) }
     end
 
