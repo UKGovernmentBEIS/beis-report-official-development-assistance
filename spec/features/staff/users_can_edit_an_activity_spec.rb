@@ -1,9 +1,10 @@
 RSpec.feature "Users can edit an activity" do
   include ActivityHelper
 
+  before { authenticate!(user: user) }
+
   context "when the activity is a fund" do
     let(:user) { create(:beis_user) }
-    before { authenticate!(user: user) }
 
     context "when the activity only has an identifier (and is incomplete)" do
       it "shows edit link on the identifier, and add link on only the next step" do
@@ -97,9 +98,25 @@ RSpec.feature "Users can edit an activity" do
   end
 
   context "when the activity is a programme" do
+    context "when the user is a BEIS user" do
+      let(:user) { create(:beis_user) }
+
+      it "shows an update success message" do
+        activity = create(:programme_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+
+        within(".title") do
+          click_on(I18n.t("generic.link.edit"))
+        end
+
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content(I18n.t("form.programme.update.success"))
+      end
+    end
+
     context "when the user is NOT a BEIS user" do
       let(:user) { create(:delivery_partner_user) }
-      before { authenticate!(user: user) }
 
       scenario "the user should not be shown edit/add actions" do
         activity = create(:programme_activity, :at_purpose_step, organisation: user.organisation)
@@ -108,6 +125,25 @@ RSpec.feature "Users can edit an activity" do
 
         expect(page).not_to have_content("Edit")
         expect(page).not_to have_content("Add")
+      end
+    end
+  end
+
+  context "when the activity is a project" do
+    context "when the user is a delivery_partner_user" do
+      let(:user) { create(:delivery_partner_user) }
+
+      it "shows an update success message" do
+        activity = create(:project_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+
+        within(".title") do
+          click_on(I18n.t("generic.link.edit"))
+        end
+
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content(I18n.t("form.project.update.success"))
       end
     end
   end

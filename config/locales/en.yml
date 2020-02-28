@@ -73,6 +73,8 @@ en:
     project:
       create:
         success: Project successfully created
+      update:
+        success: Project successfully updated
     transaction:
       create:
         success: Transaction successfully created
