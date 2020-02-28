@@ -55,7 +55,7 @@ RSpec.feature "Users can edit an activity" do
 
     context "when the activity is incomplete" do
       it "editing and saving a step goes to the next step in the form" do
-        activity = create(:fund_activity, :at_country_step, organisation: user.organisation)
+        activity = create(:fund_activity, :at_region_step, organisation: user.organisation)
         recipient_region = "Oceania, regional"
 
         visit organisation_activity_path(activity.organisation, activity)
@@ -225,7 +225,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   within(".recipient_region") do
     click_on(I18n.t("generic.link.edit"))
     expect(page).to have_current_path(
-      activity_step_path(activity, :country)
+      activity_step_path(activity, :region)
     )
   end
   click_on(I18n.t("generic.link.back"))
