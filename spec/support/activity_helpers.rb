@@ -10,6 +10,7 @@ module ActivityHelpers
     expect(page).to have_content activity_presenter.actual_start_date
     expect(page).to have_content activity_presenter.actual_end_date
     expect(page).to have_content activity_presenter.recipient_region
+    expect(page).to have_content activity_presenter.recipient_country
     expect(page).to have_content activity_presenter.flow
     expect(page).to have_content activity_presenter.finance
     expect(page).to have_content activity_presenter.aid_type

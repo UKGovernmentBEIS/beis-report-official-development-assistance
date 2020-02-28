@@ -4,6 +4,7 @@ class Activity < ApplicationRecord
   validates :sector, presence: true, if: :sector_step?
   validates :status, presence: true, if: :status_step?
   validates :recipient_region, presence: true, if: :region_step?
+  validates :recipient_country, presence: true, if: :country_step?
   validates :flow, presence: true, if: :flow_step?
   validates :finance, presence: true, if: :finance_step?
   validates :aid_type, presence: true, if: :aid_type_step?
@@ -51,6 +52,10 @@ class Activity < ApplicationRecord
 
   def region_step?
     wizard_status == "region" || wizard_complete?
+  end
+
+  def country_step?
+    wizard_status == "country" || wizard_complete?
   end
 
   private def flow_step?

@@ -41,6 +41,11 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.recipient_region.#{super}")
   end
 
+  def recipient_country
+    return if super.blank?
+    I18n.t("activity.recipient_country.#{super}")
+  end
+
   def flow
     return if super.blank?
     I18n.t("activity.flow.#{super}")

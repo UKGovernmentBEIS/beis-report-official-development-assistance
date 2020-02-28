@@ -98,6 +98,15 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :region)
         = a11y_action_link(t("generic.link.#{activity_presenter.call_to_action(:recipient_region)}"), activity_step_path(activity_presenter, :region), t("page_content.activity.recipient_region.label"))
 
+  .govuk-summary-list__row.recipient_country
+    %dt.govuk-summary-list__key
+      = t("page_content.activity.recipient_country.label")
+    %dd.govuk-summary-list__value
+      = activity_presenter.recipient_country
+    %dd.govuk-summary-list__actions
+      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :country)
+        = a11y_action_link(t("generic.link.#{activity_presenter.call_to_action(:recipient_country)}"), activity_step_path(activity_presenter, :country), t("page_content.activity.recipient_country.label"))
+
   .govuk-summary-list__row.flow
     %dt.govuk-summary-list__key
       = t("page_content.activity.flow.label")
