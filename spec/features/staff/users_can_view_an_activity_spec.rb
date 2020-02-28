@@ -36,8 +36,8 @@ RSpec.feature "Users can view an activity" do
       travel_to Time.zone.local(2020, 1, 29) do
         activity = create(:activity, planned_start_date: Date.new(2020, 2, 3),
                                      planned_end_date: Date.new(2024, 6, 22),
-                                     actual_start_date: Date.new(2020, 4, 3),
-                                     actual_end_date: Date.new(2024, 8, 22))
+                                     actual_start_date: Date.new(2020, 1, 2),
+                                     actual_end_date: Date.new(2020, 1, 29))
 
         visit organisation_activity_path(user.organisation, activity)
 
@@ -50,11 +50,11 @@ RSpec.feature "Users can view an activity" do
         end
 
         within(".actual_start_date") do
-          expect(page).to have_content("3 Apr 2020")
+          expect(page).to have_content("2 Jan 2020")
         end
 
         within(".actual_end_date") do
-          expect(page).to have_content("22 Aug 2024")
+          expect(page).to have_content("29 Jan 2020")
         end
       end
     end
