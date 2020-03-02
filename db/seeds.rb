@@ -8,22 +8,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-# Generic development user
 if Rails.env.development?
-  organisation_params = FactoryBot.build(
-    :organisation, name: "Department for Business, Energy & Industrial Strategy"
-  ).attributes
-  organisation = Organisation.find_or_create_by(organisation_params)
-
-  user = User.find_or_initialize_by(
-    name: "Generic development user",
-    email: "roda@dxw.com",
-    identifier: "auth0|5dc53e4b85758e0e95b062f0",
-    role: :administrator
-  )
-  user.organisation = organisation
-  user.save
-
-  activity_params = FactoryBot.build(:activity, title: "GCRF", organisation: organisation).attributes
-  Activity.find_or_create_by(activity_params)
+  load File.join(Rails.root, "db", "seeds", "organisations.rb")
+  load File.join(Rails.root, "db", "seeds", "users.rb")
+  load File.join(Rails.root, "db", "seeds", "activity.rb")
 end
