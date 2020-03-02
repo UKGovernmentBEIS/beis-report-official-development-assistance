@@ -24,7 +24,6 @@ module FormHelpers
     tied_status: "Untied"
   )
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.identifier")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.identifier")
     expect(page).to have_content I18n.t("helpers.hint.activity.identifier")
     fill_in "activity[identifier]", with: identifier
@@ -37,13 +36,11 @@ module FormHelpers
     fill_in "activity[description]", with: description
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.sector")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.sector")
     expect(page).to have_content "Classify the purpose of this activity. Please provide the sector appropriate to you from this list."
     select sector, from: "activity[sector]"
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.status")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.status")
     expect(page).to have_content "IATI activity status. See IATI for detailed descriptions."
 
@@ -74,31 +71,26 @@ module FormHelpers
 
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.country")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.recipient_region")
     expect(page).to have_content "A supranational geopolitical region that will benefit from this activity. Find the region code from the IATI region list."
     select recipient_region, from: "activity[recipient_region]"
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.flow")
     expect(page).to have_content "IATI descriptions of each flow type can be found here."
     select flow, from: "activity[flow]"
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.finance")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.finance")
     expect(page).to have_content I18n.t("helpers.hint.activity.finance")
     select finance, from: "activity[finance]"
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.aid_type")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.aid_type")
     expect(page).to have_content "A code for the vocabulary aid-type classifications. IATI descriptions can be found here."
     select aid_type, from: "activity[aid_type]"
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.tied_status")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.tied_status")
     expect(page).to have_content "See the IATI tied status page for descriptions."
 
