@@ -256,6 +256,7 @@ en:
         flow: Flow
         identifier: Your unique identifier
         purpose: Purpose of activity
+        region: Recipient region
         sector: Sector
         status: Status
         tied_status: Tied status
