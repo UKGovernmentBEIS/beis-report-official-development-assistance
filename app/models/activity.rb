@@ -9,7 +9,9 @@ class Activity < ApplicationRecord
   validates :aid_type, presence: true, if: :aid_type_step?
   validates :tied_status, presence: true, if: :tied_status_step?
   validates_uniqueness_of :identifier
+  validates :planned_start_date, :planned_end_date, presence: true, if: :dates_step?
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
+  validates :actual_start_date, :actual_end_date, date_not_in_future: true
   validates :extending_organisation_id, presence: true, on: :update_extending_organisation
 
   belongs_to :activity, optional: true
@@ -27,39 +29,43 @@ class Activity < ApplicationRecord
   scope :funds, -> { where(level: :fund) }
   scope :programmes, -> { where(level: :programme) }
 
-  def identifier_step?
+  private def identifier_step?
     wizard_status == "identifier" || wizard_complete?
   end
 
-  def purpose_step?
+  private def purpose_step?
     wizard_status == "purpose" || wizard_complete?
   end
 
-  def sector_step?
+  private def sector_step?
     wizard_status == "sector" || wizard_complete?
   end
 
-  def status_step?
+  private def status_step?
     wizard_status == "status" || wizard_complete?
   end
 
-  def country_step?
+  private def dates_step?
+    wizard_status == "dates" || wizard_complete?
+  end
+
+  private def country_step?
     wizard_status == "country" || wizard_complete?
   end
 
-  def flow_step?
+  private def flow_step?
     wizard_status == "flow" || wizard_complete?
   end
 
-  def finance_step?
+  private def finance_step?
     wizard_status == "finance" || wizard_complete?
   end
 
-  def aid_type_step?
+  private def aid_type_step?
     wizard_status == "aid_type" || wizard_complete?
   end
 
-  def tied_status_step?
+  private def tied_status_step?
     wizard_status == "tied_status" || wizard_complete?
   end
 
