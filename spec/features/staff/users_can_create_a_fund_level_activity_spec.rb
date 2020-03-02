@@ -121,7 +121,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         # Dates are not mandatory so we can move through this step
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content I18n.t("page_title.activity_form.show.country")
+        expect(page).to have_content I18n.t("page_title.activity_form.show.region")
 
         # Region has a default and can't be set to blank so we skip
         select "Developing countries, unspecified", from: "activity[recipient_region]"
