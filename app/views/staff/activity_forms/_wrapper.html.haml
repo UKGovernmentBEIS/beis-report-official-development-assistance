@@ -4,7 +4,6 @@
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %h1.govuk-heading-xl= @page_title
 
       = form_for @activity, url: wizard_path do |f|
         = yield f

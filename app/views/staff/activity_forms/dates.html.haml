@@ -1,4 +1,6 @@
 = render layout: "wrapper" do |f|
+  %h1.govuk-heading-xl= @page_title
+
   = f.govuk_date_field :planned_start_date
   = f.govuk_date_field :planned_end_date
   = f.govuk_date_field :actual_start_date
