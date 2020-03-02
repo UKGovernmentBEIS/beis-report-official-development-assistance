@@ -1,3 +1,5 @@
 = render layout: "wrapper" do |f|
+  %h1.govuk-heading-xl= @page_title
+
   = f.govuk_text_field :title
   = f.govuk_text_area :description, rows: 5
