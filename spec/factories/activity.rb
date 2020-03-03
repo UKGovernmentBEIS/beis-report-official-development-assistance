@@ -1,9 +1,7 @@
 FactoryBot.define do
-  sequence(:identifier) { |n| "GB-GOV-13-GCRF-#{n}" }
-
   factory :activity do
     title { Faker::Lorem.sentence }
-    identifier
+    identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
     description { Faker::Lorem.paragraph }
     sector { "11110" }
     status { "2" }
@@ -21,6 +19,9 @@ FactoryBot.define do
     wizard_status { "complete" } # wizard is complete
 
     association :organisation, factory: :organisation
+    before(:create) do |activity|
+      activity.reporting_organisation_reference = activity.organisation.iati_reference
+    end
 
     factory :fund_activity do
       level { :fund }
@@ -48,6 +49,7 @@ FactoryBot.define do
     end
 
     factory :project_activity do
+      activity factory: :programme_activity
       level { :project }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
