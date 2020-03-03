@@ -36,3 +36,8 @@
             = t("user.identifier")
           %dd.govuk-summary-list__value
             = @user.identifier
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("user.active.label")
+          %dd.govuk-summary-list__value
+            = t("user.active.#{@user.active}")

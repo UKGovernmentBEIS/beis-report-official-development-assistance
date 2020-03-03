@@ -15,5 +15,9 @@ FactoryBot.define do
     factory :delivery_partner_user do
       organisation factory: :delivery_partner_organisation
     end
+
+    factory :inactive_user do
+      active { false }
+    end
   end
 end

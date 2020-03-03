@@ -22,4 +22,11 @@
         = t("page_content.users.new.no_organisations.cta")
         = link_to t("page_content.users.new.no_organisations.link"), new_organisation_path
 
+  = f.govuk_collection_radio_buttons :active,
+      user_active_options,
+      :id,
+      :name,
+      legend: { tag: :h2 , text: t("form.user.active.label")},
+      hint_text: t("form.user.active.hint")
+
   = f.govuk_submit t("form.user.submit")
