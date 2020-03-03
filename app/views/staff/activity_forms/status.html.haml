@@ -1,2 +1,2 @@
 = render layout: "wrapper" do |f|
-  = f.govuk_collection_select :status, yaml_to_objects(entity: "activity", type: "status"), :code, :name, label: { tag: 'h1', size: 'xl' }
+  = f.govuk_collection_select :status, yaml_to_objects(entity: "activity", type: "status"), :code, :name, label: { tag: 'h1', size: 'xl' }, hint_text: I18n.t("helpers.hint.activity.status", level: f.object.level)

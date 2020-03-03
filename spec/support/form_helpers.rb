@@ -42,7 +42,6 @@ module FormHelpers
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("activerecord.attributes.activity.status")
-    expect(page).to have_content "IATI activity status. See IATI for detailed descriptions."
 
     select status, from: "activity[status]"
     click_button I18n.t("form.activity.submit")
