@@ -100,4 +100,23 @@ RSpec.feature "Users can sign in with Auth0" do
       expect(page).to have_content(I18n.t("page_content.errors.auth0.failed.prompt"))
     end
   end
+
+  context "when the user has been deactivated" do
+    scenario "the user cannot log in and sees an informative message" do
+      user = create(:delivery_partner_user, active: false, identifier: "deactivated-user")
+      mock_successful_authentication(
+        uid: "deactivated-user", name: user.name, email: user.email
+      )
+
+      visit dashboard_path
+
+      within ".app-header__user-links" do
+        expect(page).to have_content(I18n.t("generic.link.sign_in"))
+        click_on I18n.t("generic.link.sign_in")
+      end
+
+      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
+      expect(page).to have_content(I18n.t("page_content.errors.not_authorised.explanation"))
+    end
+  end
 end
