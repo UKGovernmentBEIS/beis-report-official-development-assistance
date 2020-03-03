@@ -22,7 +22,9 @@ class Staff::ActivitiesController < Staff::BaseController
         @budget_presenters = @budgets.map { |budget| BudgetPresenter.new(budget) }
         @implementing_organisation_presenters = @activity.implementing_organisations.map { |implementing_organisation| ImplementingOrganisationPresenter.new(implementing_organisation) }
       end
-      format.xml
+      format.xml do |format|
+        @activity_xml_presenter = ActivityXmlPresenter.new(@activity)
+      end
     end
   end
 
