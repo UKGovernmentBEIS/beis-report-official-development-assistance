@@ -38,6 +38,8 @@ jobs:
       terraform init terraform
       terraform fmt  -diff -check -recursive terraform
       terraform validate terraform
+      echo "==== linting our shell scripts ===="
+      bash -c 'shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}'
 deploy:
 - provider: heroku
   api_key:
