@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased changes
+## [release-1] - 2020-03-04
 
 - Add Google Tag Manager in place of templated Google Analytics code
 - Ensure missing I18n strings cause tests to fail
@@ -57,3 +57,7 @@
 - Actual start and end dates must not be in the future
 - Activity XML includes 'iati-identifier' which is includes the reporting organisation
 - Activity XML includes 'iati-identifier' with an identifier that consists of all present levels of hierarchy: fund and/or programme
+
+## Unreleased changes
+
+<!-- [release-1]: https://github.com/dxw/DataSubmissionService/compare/release-1...release-0 (There is no meaningful comparison for the first release)-->
