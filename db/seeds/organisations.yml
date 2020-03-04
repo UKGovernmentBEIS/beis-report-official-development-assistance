@@ -1,0 +1,32 @@
+- name: Department for Business, Energy and Industrial Strategy
+  reference: GB-GOV-13
+  type: 10
+  service_owner: true
+- name: UK Space Agency
+  reference: GB-GOV-EA31
+  type: 10
+  service_owner: false
+- name: Met Office
+  reference: GB-GOV-EA46
+  type: 10
+  service_owner: false
+- name: British Council
+  reference: GB-GOV-OT313
+  type: 10
+  service_owner: false
+- name: Academy of Medical Sciences
+  reference: GB-COH-03520281
+  type: 22
+  service_owner: false
+- name: Royal Society
+  reference: GB-COH-RC000519
+  type: 22
+  service_owner: false
+- name: British Academy
+  reference: GB-COH-RC000053
+  type: 22
+  service_owner: false
+- name: Royal Academy of Engineering
+  reference: GB-COH-RC000519
+  type: 22
+  service_owner: false
