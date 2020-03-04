@@ -30,39 +30,3 @@
   reference: GB-COH-RC000519
   type: 22
   service_owner: false
-- name: UK Research & Innovation
-  reference: GB
-  type: 90
-  service_owner: false
-- name: Biotechnology and Biological Sciences Research Council
-  reference: GB- -PB317
-  type: 0
-  service_owner: false
-- name: Medical Research Council
-  reference: GB- -PB132
-  type: 0
-  service_owner: false
-- name: Science and Technology Facilities Council
-  reference: GB- -PB135
-  type: 0
-  service_owner: false
-- name: Arts and Humanities Research Council
-  reference: GB- -PB123
-  type: 0
-  service_owner: false
-- name: Economic and Social Research Council
-  reference: GB- -PB129
-  type: 0
-  service_owner: false
-- name: Engineering and Physical Sciences Research Council
-  reference: GB- -PB130
-  type: 0
-  service_owner: false
-- name: Natural Environment Research Council
-  reference: GB- -PB133
-  type: 0
-  service_owner: false
-- name: Research England
-  reference: GB- -
-  type: 0
-  service_owner: false
