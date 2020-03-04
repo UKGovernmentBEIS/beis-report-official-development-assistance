@@ -62,4 +62,33 @@ RSpec.feature "BEIS users can editing other users" do
 
     expect(user.reload.role).to eql("administrator")
   end
+
+  scenario "an active user can be deactivated" do
+    administrator_user = create(:beis_user)
+    authenticate!(user: administrator_user)
+
+    visit organisation_path(administrator_user.organisation)
+    click_on "Manage users"
+    find("tr", text: user.name).click_link("Edit")
+
+    choose I18n.t("form.user.active.inactive")
+    click_on I18n.t("generic.button.submit")
+
+    expect(user.reload.active).to be false
+  end
+
+  scenario "an inactive user can be reactivated" do
+    administrator_user = create(:beis_user)
+    user = create(:inactive_user)
+    authenticate!(user: administrator_user)
+
+    visit organisation_path(administrator_user.organisation)
+    click_on "Manage users"
+    find("tr", text: user.name).click_link("Edit")
+
+    choose I18n.t("form.user.active.active")
+    click_on I18n.t("generic.button.submit")
+
+    expect(user.reload.active).to be true
+  end
 end

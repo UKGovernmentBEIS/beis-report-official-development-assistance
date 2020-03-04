@@ -105,6 +105,13 @@ en:
       update:
         success: Transaction sucessfully updated
     user:
+      active:
+        active: Activate
+        'false': 'No'
+        hint: Is this user activated or deactivated? Deactivated users cannot log in.
+        inactive: Deactivate
+        label: Activate user
+        'true': 'Yes'
       create:
         failed: The service is experiencing issues creating new users and the team has been alerted to the problem.
         success: User successfully created
@@ -286,6 +293,7 @@ en:
     formats:
       default: "%Y-%m-%d"
   user:
+    active: Active?
     email: Email address
     identifier: Auth0 identifier
     name: Full name
