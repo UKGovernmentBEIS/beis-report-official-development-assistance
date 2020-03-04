@@ -5,7 +5,7 @@ class Auth0Controller < ApplicationController
     session[:userinfo] = request.env["omniauth.auth"]
 
     # Redirect to the URL you want after successful auth
-    if current_user.organisation
+    if current_user.active && current_user.organisation
       redirect_to organisation_path(current_user.organisation)
     else
       render "pages/errors/not_authorised",
