@@ -10,6 +10,8 @@ class Budget < ApplicationRecord
   validates :value, inclusion: 1..99_999_999_999.00
   validates :period_start_date, :period_end_date, date_within_boundaries: true
 
+  validates_with BudgetDatesValidator, if: -> { period_start_date.present? && period_end_date.present? }
+
   BUDGET_TYPES = {original: "original", updated: "updated"}
   STATUSES = {indicative: "indicative", committed: "committed"}
 end
