@@ -21,7 +21,7 @@
     = render partial: "staff/shared/activities/transactions", locals: { activity: @activity, transaction_presenters: @transaction_presenters }
     = render partial: "staff/shared/activities/budgets", locals: { activity: @activity, budget_presenters: @budget_presenters }
 
-  - if @activity.programme? && policy(:project).create?
+  - if @activity.programme?
     = render partial: "staff/shared/activities/projects", locals: { activity: @activity, activities: @activities }
 
   - if @activity.project? && policy(:project).create?
