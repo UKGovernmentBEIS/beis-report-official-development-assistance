@@ -80,19 +80,21 @@ To manage sensitive environment variables:
 
 ## Release process
 
-[Our release process is documented locally](/doc/deployment-process.md). 
+[Our release process is documented locally](/doc/deployment-process.md).
 
 ## Access
 
 ### Staging
 
-The app is currently hosted on Heroku: [https://beis-roda-staging.herokuapp.com/](https://beis-roda-staging.herokuapp.com/)
+The app is currently hosted on GPaaS: [https://beis-roda-staging.london.cloudapps.digital](https://beis-roda-staging.london.cloudapps.digital)
 
 The `develop` branch is deployed to staging after a successful build via Travis CI.
 
 ### Production
 
-TBC
+The app is currently hosted on GPaaS: [https://beis-roda-prod.london.cloudapps.digital](https://beis-roda-prod.london.cloudapps.digital)
+
+The `master` branch is deployed to production after a successful build via Travis CI.
 
 ## Source
 
