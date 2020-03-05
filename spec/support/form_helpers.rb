@@ -19,7 +19,6 @@ module FormHelpers
     actual_end_date_year: "2020",
     geography: "recipient_region",
     recipient_region: "Developing countries, unspecified",
-    recipient_country: "Chile",
     flow: "ODA",
     finance: "Standard grant",
     aid_type: "General budget support",
@@ -85,13 +84,7 @@ module FormHelpers
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.region")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.recipient_region")
-    expect(page).to have_content "A supranational geopolitical region that will benefit from this activity. Find the region code from the IATI region list."
     select recipient_region, from: "activity[recipient_region]"
-    click_button I18n.t("form.activity.submit")
-
-    expect(page).to have_content I18n.t("page_title.activity_form.show.country")
-    expect(page).to have_content I18n.t("activerecord.attributes.activity.recipient_country")
-    select recipient_country, from: "activity[recipient_country]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
@@ -123,7 +116,6 @@ module FormHelpers
     expect(page).to have_content sector
     expect(page).to have_content status
     expect(page).to have_content recipient_region
-    expect(page).to have_content recipient_country
     expect(page).to have_content flow
     expect(page).to have_content finance
     expect(page).to have_content aid_type

@@ -61,11 +61,11 @@ class Activity < ApplicationRecord
   end
 
   def region_step?
-    wizard_status == "region" || wizard_complete?
+    wizard_status == "region"
   end
 
   def country_step?
-    wizard_status == "country" || wizard_complete?
+    wizard_status == "country"
   end
 
   private def flow_step?

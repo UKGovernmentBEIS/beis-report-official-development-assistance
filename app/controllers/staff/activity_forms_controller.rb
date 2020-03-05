@@ -25,6 +25,13 @@ class Staff::ActivityFormsController < Staff::BaseController
     @activity = Activity.find(params[:activity_id])
     authorize @activity
 
+    case step
+    when :region
+      skip_step if @activity.recipient_country?
+    when :country
+      skip_step if @activity.recipient_region?
+    end
+
     render_wizard
   end
 

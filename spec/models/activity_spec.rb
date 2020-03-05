@@ -131,14 +131,20 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:geography) }
     end
 
-    context "when recipient_region is blank" do
-      subject { build(:activity, wizard_status: :region) }
-      it { should validate_presence_of(:recipient_region) }
+    context "when geography is recipient_region" do
+      context "and recipient_region and recipient_contry are blank" do
+        subject { build(:activity, wizard_status: :region) }
+        it { should validate_presence_of(:recipient_region) }
+        it { should_not validate_presence_of(:recipient_country) }
+      end
     end
 
-    context "when recipient_country is blank" do
-      subject { build(:activity, wizard_status: :country) }
-      it { should validate_presence_of(:recipient_country) }
+    context "when geography is recipient_country" do
+      context "and recipient_region and recipient_country are blank" do
+        subject { build(:activity, geography: :recipient_country, wizard_status: :country) }
+        it { should validate_presence_of(:recipient_country) }
+        it { should_not validate_presence_of(:recipient_region) }
+      end
     end
 
     context "when flow is blank" do
