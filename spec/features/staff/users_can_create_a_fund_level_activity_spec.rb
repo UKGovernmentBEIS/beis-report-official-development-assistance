@@ -130,12 +130,21 @@ RSpec.feature "Users can create a fund level activity" do
         fill_in "activity[planned_end_date(2i)]", with: 12
         fill_in "activity[planned_end_date(1i)]", with: 2010
         click_button I18n.t("form.activity.submit")
+        expect(page).to have_content I18n.t("page_title.activity_form.show.geography")
+
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "can't be blank"
+
+        choose "Region"
+        click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.region")
 
-        # Region has a default and can't be set to blank so we skip
-        select "Developing countries, unspecified", from: "activity[recipient_region]"
+        # region has the default value already selected
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.country")
+
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "can't be blank"
 
         select "Chile", from: "activity[recipient_country]"
         click_button I18n.t("form.activity.submit")

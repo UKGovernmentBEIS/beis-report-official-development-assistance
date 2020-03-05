@@ -17,6 +17,7 @@ module FormHelpers
     actual_end_date_day: "1",
     actual_end_date_month: "2",
     actual_end_date_year: "2020",
+    geography: "recipient_region",
     recipient_region: "Developing countries, unspecified",
     recipient_country: "Chile",
     flow: "ODA",
@@ -76,6 +77,10 @@ module FormHelpers
     fill_in "activity[actual_end_date(2i)]", with: actual_end_date_month
     fill_in "activity[actual_end_date(1i)]", with: actual_end_date_year
 
+    click_button I18n.t("form.activity.submit")
+
+    expect(page).to have_content I18n.t("page_title.activity_form.show.geography")
+    choose "Region"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.region")

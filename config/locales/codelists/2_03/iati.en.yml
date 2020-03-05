@@ -91,6 +91,9 @@ en:
       '37': Other Private flows at market terms
       '40': Non flow
       '50': Other flows
+    geography:
+      recipient_country: Country
+      recipient_region: Region
     recipient_country:
       AD: Andorra
       AE: United Arab Emirates (the)

@@ -222,6 +222,14 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   end
   click_on(I18n.t("generic.link.back"))
 
+  within(".geography") do
+    click_on(I18n.t("generic.link.edit"))
+    expect(page).to have_current_path(
+      activity_step_path(activity, :geography)
+    )
+  end
+  click_on(I18n.t("generic.link.back"))
+
   within(".recipient_region") do
     click_on(I18n.t("generic.link.edit"))
     expect(page).to have_current_path(

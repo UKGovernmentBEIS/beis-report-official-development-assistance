@@ -9,6 +9,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :sector,
     :status,
     :dates,
+    :geography,
     :region,
     :country,
     :flow,
@@ -43,7 +44,8 @@ class Staff::ActivityFormsController < Staff::BaseController
   def activity_params
     params.require(:activity).permit(:identifier, :sector, :title, :description, :status,
       :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date,
-      :recipient_region, :recipient_country, :flow, :finance, :aid_type, :tied_status)
+      :geography, :recipient_region, :recipient_country, :flow, :finance,
+      :aid_type, :tied_status)
   end
 
   def finish_wizard_path
