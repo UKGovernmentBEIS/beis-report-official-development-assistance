@@ -30,6 +30,14 @@ jobs:
       docker exec test-container rake db:setup
       docker exec test-container rake
       docker exec test-container bundle exec brakeman
+      echo "==== testing terrafrom ===="
+      git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+      export PATH="$HOME/.tfenv/bin:$PATH"
+      tfenv install
+      bash -c "$(curl -fsSL https://raw.github.com/cloudfoundry-community/terraform-provider-cf/master/bin/install.sh)"
+      terraform init terraform
+      terraform fmt  -diff -check -recursive terraform
+      terraform validate terraform
 deploy:
 - provider: heroku
   api_key:
