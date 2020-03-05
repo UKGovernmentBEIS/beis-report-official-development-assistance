@@ -59,3 +59,4 @@
 - Activity XML includes 'iati-identifier' with an identifier that consists of all present levels of hierarchy: fund and/or programme
 - BEIS users (administrators) can mark other users as active or inactive
 - Budget start and end dates are validated according to IATI standard
+- BEIS users can view projects (read-only) and download them as XML via a button

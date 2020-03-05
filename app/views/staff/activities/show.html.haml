@@ -30,3 +30,5 @@
 
   - if @activity.project?
     = render partial: "staff/shared/activities/implementing_organisations", locals: { activity: @activity, implementing_organisation_presenters: @implementing_organisation_presenters }
+    - if policy(:project).download?
+      = link_to t("generic.button.download_as_xml"), organisation_activity_path(@activity.organisation, @activity, format: :xml), class: "govuk-button"
