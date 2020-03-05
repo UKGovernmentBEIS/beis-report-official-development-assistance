@@ -89,6 +89,15 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :dates)
         = a11y_action_link(t("generic.link.#{activity_presenter.call_to_action(:planned_start_date)}"), activity_step_path(activity_presenter, :dates), t("page_content.activity.actual_end_date.label"))
 
+  .govuk-summary-list__row.geography
+    %dt.govuk-summary-list__key
+      = t("page_content.activity.geography.label")
+    %dd.govuk-summary-list__value
+      = activity_presenter.geography
+    %dd.govuk-summary-list__actions
+      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :geography)
+        = a11y_action_link(t("generic.link.#{activity_presenter.call_to_action(:geography)}"), activity_step_path(activity_presenter, :geography), t("page_content.activity.geography.label"))
+
   .govuk-summary-list__row.recipient_region
     %dt.govuk-summary-list__key
       = t("page_content.activity.recipient_region.label")

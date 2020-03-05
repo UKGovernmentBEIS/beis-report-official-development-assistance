@@ -126,13 +126,18 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when geography is blank" do
+      subject { build(:activity, wizard_status: :geography) }
+      it { should validate_presence_of(:geography) }
+    end
+
     context "when recipient_region is blank" do
-      subject { build(:activity, recipient_region: nil, wizard_status: :region) }
+      subject { build(:activity, wizard_status: :region) }
       it { should validate_presence_of(:recipient_region) }
     end
 
     context "when recipient_country is blank" do
-      subject { build(:activity, recipient_country: nil, wizard_status: :country) }
+      subject { build(:activity, wizard_status: :country) }
       it { should validate_presence_of(:recipient_country) }
     end
 
@@ -161,7 +166,7 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:planned_end_date) }
       it { should_not validate_presence_of(:actual_start_date) }
       it { should_not validate_presence_of(:actual_end_date) }
-      it { should validate_presence_of(:recipient_region) }
+      it { should validate_presence_of(:geography) }
       it { should validate_presence_of(:flow) }
       it { should validate_presence_of(:finance) }
       it { should validate_presence_of(:tied_status) }

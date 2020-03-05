@@ -168,6 +168,8 @@ en:
         label: Finance
       flow:
         label: Flow
+      geography:
+        label: Benefitting recipient geography
       identitfier:
         label: Identifier
       implementing_organisation:
@@ -269,6 +271,7 @@ en:
         dates: Dates
         finance: Finance
         flow: Flow
+        geography: Will the benefitting recipient be a region or country?
         identifier: Your unique identifier
         purpose: Purpose
         purpose_level: Purpose of %{level}
