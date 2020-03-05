@@ -11,7 +11,7 @@ FactoryBot.define do
     actual_end_date { Date.today }
     geography { :recipient_region }
     recipient_region { "489" }
-    recipient_country { "CL" }
+    recipient_country { nil }
     flow { "10" }
     finance { "110" }
     aid_type { "A01" }
