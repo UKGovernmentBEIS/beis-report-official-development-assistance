@@ -5,7 +5,7 @@ set -eu
 
 # create a tag from travis variables
 # this will be the docker tag that gets deployed
-TAG=$TRAVIS_BUILD-$TRAVIS_COMMIT
+TAG="${TRAVIS_BUILD_NUMBER}-${TRAVIS_COMMIT}"
 
 # set env vars depending on which branch we are on
 # TF_VAR_variable_name gets passed to `terraform`
