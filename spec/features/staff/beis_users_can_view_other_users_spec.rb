@@ -26,6 +26,7 @@ RSpec.feature "BEIS users can can view other users" do
     expect(page).to have_content(I18n.t("page_title.users.index"))
     expect(page).to have_content(another_user.name)
     expect(page).to have_content(another_user.email)
+    expect(page).to have_content(another_user.organisation.name)
     expect(page).to have_content(I18n.t("form.user.active.true"))
 
     # Navigate to the individual user page
