@@ -98,3 +98,4 @@ config/master.key
 
 docker-compose.env
 *.tfvars
+terraform/.terraform/*
