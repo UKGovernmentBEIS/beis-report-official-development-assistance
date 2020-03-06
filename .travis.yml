@@ -10,6 +10,7 @@ jobs:
     env:
     - RAILS_ENV=test
     script: |
+      set -eu
       docker network create test
       docker run -d --name pg --network test -p 5432:5432 postgres:11.6
       docker run -d \
@@ -39,6 +40,7 @@ jobs:
       terraform validate terraform
       echo "==== linting our shell scripts ===="
       bash -c 'shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}'
+      set +eu
 deploy:
 - provider: heroku
   api_key:
