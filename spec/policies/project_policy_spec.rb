@@ -14,6 +14,7 @@ RSpec.describe ProjectPolicy do
     it { is_expected.to forbid_new_and_create_actions }
     it { is_expected.to forbid_edit_and_update_actions }
     it { is_expected.to forbid_action(:destroy) }
+    it { is_expected.to permit_action(:download) }
 
     it "includes activity in resolved scope" do
       resolved_scope = described_class::Scope.new(user, Activity.all).resolve
@@ -29,6 +30,7 @@ RSpec.describe ProjectPolicy do
     it { is_expected.to permit_new_and_create_actions }
     it { is_expected.to permit_edit_and_update_actions }
     it { is_expected.to forbid_action(:destroy) }
+    it { is_expected.to forbid_action(:download) }
 
     it "includes activity in resolved scope" do
       resolved_scope = described_class::Scope.new(user, Activity.all).resolve
