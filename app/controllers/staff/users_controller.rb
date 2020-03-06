@@ -27,7 +27,7 @@ class Staff::UsersController < Staff::BaseController
         flash.now[:notice] = I18n.t("form.user.create.success")
         redirect_to user_path(@user.reload.id)
       else
-        flash.now[:error] = I18n.t("form.user.create.failed")
+        flash.now[:error] = I18n.t("form.user.create.failed", error: result.error_message)
         render :new
       end
     else
