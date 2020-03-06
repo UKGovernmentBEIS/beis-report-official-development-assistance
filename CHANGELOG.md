@@ -63,5 +63,7 @@
 - BEIS users (administrators) can mark other users as active or inactive
 - Budget start and end dates are validated according to IATI standard
 - BEIS users can view projects (read-only) and download them as XML via a button
+- Codelist dropdowns do not contain values which have been marked as "status: withdrawn" by IATI
+
 
 <!-- [release-1]: https://github.com/dxw/DataSubmissionService/compare/release-1...release-0 (There is no meaningful comparison for the first release)-->
