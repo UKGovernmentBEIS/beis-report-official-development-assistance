@@ -97,3 +97,4 @@ config/master.key
 /node_modules
 
 docker-compose.env
+*.tfvars
