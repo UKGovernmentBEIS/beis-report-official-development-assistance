@@ -52,3 +52,18 @@ variable "domain" {
   type        = string
   description = "Domain used in email links"
 }
+
+variable "google_tag_manager_container_id" {
+  type        = string
+  description = "Google Tag Manager container identifier"
+}
+
+variable "google_tag_manager_environment_auth" {
+  type        = string
+  description = "Google Tag Manager authentication variable"
+}
+
+variable "google_tag_manager_environment_preview" {
+  type        = string
+  description = "Google Tag Manager preview identifier"
+}
