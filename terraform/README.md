@@ -1,4 +1,4 @@
-#Terraform Deployment
+# Terraform Deployment
 
 We use terraform to create the spaces and services needed by the application and to deploy the application itself.
 
@@ -35,4 +35,3 @@ We should avoid manual deployments but the following instructions will allow you
    if using a tfvars file you will need to provide it with `-var-file`
 - `terraform apply` to deploy
    if using a tfvars file you will need to provide it with `-var-file`
-
