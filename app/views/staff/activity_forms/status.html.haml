@@ -1,2 +1,3 @@
 = render layout: "wrapper" do |f|
-  = f.govuk_collection_select :status, yaml_to_objects(entity: "activity", type: "status"), :code, :name, label: { tag: 'h1', size: 'xl' }
+  = f.hidden_field :status, value: nil
+  = f.govuk_collection_radio_buttons :status, yaml_to_status_objects(entity: "activity", type: "status"), :code, :name, :description, legend: { tag: 'h1', size: 'xl', text: "Status" }, hint_text: I18n.t("helpers.hint.activity.status", level: f.object.level)

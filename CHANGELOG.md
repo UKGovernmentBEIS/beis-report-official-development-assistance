@@ -55,6 +55,7 @@
 - Users can view implementing organisations in the Activity XML
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
+- Activity status is now shown as radio buttons with hints
 - Activity XML includes 'iati-identifier' which is includes the reporting organisation
 - Activity XML includes 'iati-identifier' with an identifier that consists of all present levels of hierarchy: fund and/or programme
 - BEIS users (administrators) can mark other users as active or inactive

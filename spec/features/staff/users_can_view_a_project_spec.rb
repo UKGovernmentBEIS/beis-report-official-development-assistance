@@ -15,6 +15,13 @@ RSpec.feature "Users can view a project" do
       expect(page).to have_content project.title
     end
 
+    scenario "when viewing the status the hint text has the correct level" do
+      project = create(:project_activity)
+      visit activity_step_path(project, :status)
+
+      expect(page).to have_content I18n.t("helpers.hint.activity.status", level: project.level)
+    end
+
     context "when viewing a programme" do
       scenario "links to the programmes projects" do
         fund = create(:fund_activity)

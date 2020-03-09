@@ -112,8 +112,7 @@ en:
           html: A supranational geopolitical region that will benefit from this activity. <a href='http://reference.iatistandard.org/203/codelists/Region/' target='_blank'>Find the region code from the IATI region list.</a>
         sector:
           html: Classify the purpose of this activity. <a href='http://reference.iatistandard.org/203/codelists/Sector/' target='_blank'>Please provide the sector appropriate to you from this list</a>.
-        status:
-          html: IATI activity status. <a href="http://reference.iatistandard.org/203/codelists/ActivityStatus/" target="_blank">See IATI for detailed descriptions.</a>
+        status: This is the stage your %{level} is currently at
         tied_status:
           html: "<a href='http://reference.iatistandard.org/203/codelists/TiedStatus/' target='_blank'>See the IATI tied status page for descriptions.</a>"
         title: A short, human-readable title that contains a meaningful summary of the activity.
