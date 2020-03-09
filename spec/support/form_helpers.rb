@@ -4,7 +4,7 @@ module FormHelpers
     title: "My Aid Activity",
     description: Faker::Lorem.paragraph,
     sector: "Education policy and administrative management",
-    status: "Implementation",
+    status: "2",
     planned_start_date_day: "1",
     planned_start_date_month: "1",
     planned_start_date_year: "2020",
@@ -42,8 +42,14 @@ module FormHelpers
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("activerecord.attributes.activity.status")
+    expect(page).to have_content "The activity is being scoped or planned"
+    expect(page).to have_content "The activity is currently being implemented"
+    expect(page).to have_content "Physical activity is complete or the final disbursement has been made"
+    expect(page).to have_content "Physical activity is complete or the final disbursement has been made, but the activity remains open pending financial sign off or M&E"
+    expect(page).to have_content "The activity has been cancelled"
+    expect(page).to have_content "The activity has been temporarily suspended"
 
-    select status, from: "activity[status]"
+    choose("activity[status]", option: status)
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.dates")
