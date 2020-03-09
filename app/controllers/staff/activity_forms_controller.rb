@@ -1,6 +1,5 @@
 class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
-  include DateHelper
   include ActivityHelper
 
   FORM_STEPS = [
