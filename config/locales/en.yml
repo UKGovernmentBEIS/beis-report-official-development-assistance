@@ -115,7 +115,7 @@ en:
         label: Activate user
         'true': 'Yes'
       create:
-        failed: The service is experiencing issues creating new users and the team has been alerted to the problem.
+        failed: 'The service failed to create the new user. The error received was: %{error}'
         success: User successfully created
       organisation:
         hint: What organisation does this user belong to?
@@ -129,6 +129,8 @@ en:
       download_as_xml: Download as XML
       menu: Menu
       submit: Submit
+    error:
+      unknown: Unknown error
     link:
       add: Add
       back: Back
