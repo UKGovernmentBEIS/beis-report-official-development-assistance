@@ -5,7 +5,11 @@ module CodelistHelper
     data = load_yaml(entity: entity, type: type)
     return [] if data.empty?
 
-    objects = data.collect { |item| OpenStruct.new(name: item["name"], code: item["code"]) }.sort_by(&:name)
+    objects = data.collect { |item|
+      next if item["status"] == "withdrawn"
+      OpenStruct.new(name: item["name"], code: item["code"])
+    }.compact.sort_by(&:name)
+
     if with_empty_item
       empty_item = OpenStruct.new(name: "", code: "")
       objects.unshift(empty_item)

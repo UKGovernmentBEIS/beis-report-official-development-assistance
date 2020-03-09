@@ -62,13 +62,25 @@ RSpec.describe CreateUser do
 
       it "logs a failure message" do
         expect(Rails.logger).to receive(:error)
-          .with("Error adding user #{user.email} to Auth0 during CreateUser with .")
+          .with("Error adding user #{user.email} to Auth0 during CreateUser with: The user already exists.")
         described_class.new(user: user, organisation: build_stubbed(:organisation)).call
       end
 
       it "does not email the user" do
         expect(SendWelcomeEmail).not_to receive(:new)
         described_class.new(user: user, organisation: build_stubbed(:organisation)).call
+      end
+
+      context "when Auth0 returns an unparseable error message" do
+        before do
+          stub_auth0_create_user_request_failure(email: user.email, body: "something unparseable")
+        end
+
+        it "logs a generic failure message" do
+          expect(Rails.logger).to receive(:error)
+            .with("Error adding user #{user.email} to Auth0 during CreateUser with: Unknown error")
+          described_class.new(user: user, organisation: build_stubbed(:organisation)).call
+        end
       end
     end
   end

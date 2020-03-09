@@ -80,31 +80,21 @@ To manage sensitive environment variables:
 
 ## Release process
 
-Releases are documented in the [CHANGELOG](CHANGELOG.md) following the [Keep a changelog](https://keepachangelog.com/en/1.0.0/) format.
-
-When a new release is deployed to production (process TBC), a new second-level heading should be created in CHANGELOG.md with the release number and details of what has changed in this release.
-
-The heading should link to a Github URL at the bottom of the file, which shows the differences between the current release and the previous one. For example:
-
-```
-## [release-1]
-- A change
-- Another change
-
-[release-1]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-0...release-1
-```
+[Our release process is documented locally](/doc/deployment-process.md).
 
 ## Access
 
 ### Staging
 
-The app is currently hosted on Heroku: [https://beis-roda-staging.herokuapp.com/](https://beis-roda-staging.herokuapp.com/)
+The app is currently hosted on GPaaS: [https://beis-roda-staging.london.cloudapps.digital](https://beis-roda-staging.london.cloudapps.digital)
 
 The `develop` branch is deployed to staging after a successful build via Travis CI.
 
 ### Production
 
-TBC
+The app is currently hosted on GPaaS: [https://beis-roda-prod.london.cloudapps.digital](https://beis-roda-prod.london.cloudapps.digital)
+
+The `master` branch is deployed to production after a successful build via Travis CI.
 
 ## Source
 

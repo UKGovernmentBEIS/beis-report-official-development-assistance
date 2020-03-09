@@ -15,6 +15,10 @@ RSpec.describe CreateProjectActivity do
       expect(result.organisation).to eq delivery_partner_organisation
     end
 
+    it "saves the reporting organisation reference" do
+      expect(result.reporting_organisation_reference).to eq(delivery_partner_organisation.iati_reference)
+    end
+
     it "sets the parent Activity to the fund" do
       expect(result.activity).to eq(programme)
     end

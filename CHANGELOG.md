@@ -56,3 +56,9 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 - Activity status is now shown as radio buttons with hints
+- Activity XML includes 'iati-identifier' which is includes the reporting organisation
+- Activity XML includes 'iati-identifier' with an identifier that consists of all present levels of hierarchy: fund and/or programme
+- BEIS users (administrators) can mark other users as active or inactive
+- Budget start and end dates are validated according to IATI standard
+- BEIS users can view projects (read-only) and download them as XML via a button
+- Codelist dropdowns do not contain values which have been marked as "status: withdrawn" by IATI

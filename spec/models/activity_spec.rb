@@ -187,6 +187,39 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#parent_activities" do
+    context "when the activity is a fund" do
+      it "returns an empty array" do
+        result = build(:fund_activity).parent_activities
+        expect(result).to eq([])
+      end
+    end
+
+    context "when the activity is a programme" do
+      it "returns the fund" do
+        programme = create(:programme_activity)
+        fund = programme.activity
+
+        result = programme.parent_activities
+
+        expect(result.first.id).to eq(fund.id)
+      end
+    end
+
+    context "when the activity is a project" do
+      it "returns the fund and then the programme" do
+        project = create(:project_activity)
+        programme = project.activity
+        fund = programme.activity
+
+        result = project.parent_activities
+
+        expect(result.first.id).to eq(fund.id)
+        expect(result.second.id).to eq(programme.id)
+      end
+    end
+  end
+
   describe "#wizard_complete?" do
     it "is true if the wizard has been completed" do
       activity = build(:activity, wizard_status: :complete)
