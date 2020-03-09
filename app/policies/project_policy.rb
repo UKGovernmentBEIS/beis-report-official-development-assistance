@@ -19,6 +19,10 @@ class ProjectPolicy < ApplicationPolicy
     false
   end
 
+  def download?
+    beis_user?
+  end
+
   class Scope < Scope
     def resolve
       scope.all

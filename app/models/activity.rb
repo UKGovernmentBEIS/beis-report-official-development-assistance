@@ -101,4 +101,10 @@ class Activity < ApplicationRecord
   def has_implementing_organisations?
     implementing_organisations.any?
   end
+
+  def parent_activities
+    return [activity] if programme?
+    return [activity.activity, activity] if project?
+    []
+  end
 end

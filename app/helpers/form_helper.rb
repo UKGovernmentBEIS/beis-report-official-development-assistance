@@ -25,4 +25,11 @@ module FormHelper
       Budget::STATUSES.map { |id, name| OpenStruct.new(id: id, name: I18n.t("activerecord.attributes.budget.status.#{name}")) }
     end
   end
+
+  def user_active_options
+    [
+      OpenStruct.new(id: "true", name: t("form.user.active.active")),
+      OpenStruct.new(id: "false", name: t("form.user.active.inactive")),
+    ]
+  end
 end

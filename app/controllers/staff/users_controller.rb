@@ -1,7 +1,7 @@
 class Staff::UsersController < Staff::BaseController
   def index
     authorize :user, :index?
-    @users = policy_scope(User)
+    @users = policy_scope(User).includes(:organisation).order("organisations.name")
   end
 
   def show
@@ -17,6 +17,7 @@ class Staff::UsersController < Staff::BaseController
 
   def create
     @user = User.new(user_params)
+    @user.active = params[:user][:active]
     authorize @user
     @organisations = policy_scope(Organisation)
 
@@ -26,7 +27,7 @@ class Staff::UsersController < Staff::BaseController
         flash.now[:notice] = I18n.t("form.user.create.success")
         redirect_to user_path(@user.reload.id)
       else
-        flash.now[:error] = I18n.t("form.user.create.failed")
+        flash.now[:error] = I18n.t("form.user.create.failed", error: result.error_message)
         render :new
       end
     else
@@ -46,6 +47,7 @@ class Staff::UsersController < Staff::BaseController
     @organisations = policy_scope(Organisation)
 
     @user.assign_attributes(user_params)
+    @user.active = params[:user][:active]
 
     if @user.valid?
       result = UpdateUser.new(user: @user, organisation: organisation).call

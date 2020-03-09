@@ -71,8 +71,10 @@ en:
           attributes:
             period_end_date:
               between: Date must be between %{min} years ago and %{max} years in the future
+              within_365_days_of_start_date: The period end date must be no more than 365 days after the period start date
             period_start_date:
               between: Date must be between %{min} years ago and %{max} years in the future
+              not_after_end_date: The period start date cannot be after the period end date
         transaction:
           attributes:
             date:
@@ -115,7 +117,7 @@ en:
           html: "<a href='http://reference.iatistandard.org/203/codelists/TiedStatus/' target='_blank'>See the IATI tied status page for descriptions.</a>"
         title: A short, human-readable title that contains a meaningful summary of the activity.
       budget:
-        period_end_date: For example, 12 3 2021
+        period_end_date: Period end date must not be more than one year after the period start date. For example, 11 3 2021
         period_start_date: For example, 11 3 2020
       implementing_organisation:
         reference:
