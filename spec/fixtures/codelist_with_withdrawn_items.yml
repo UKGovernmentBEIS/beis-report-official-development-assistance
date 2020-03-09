@@ -1,0 +1,22 @@
+---
+data:
+  - code: '11111'
+    category: '151'
+    name: Withdrawn code 1
+    description: Some fake data for a withdrawn code
+    status: withdrawn
+  - code: '22222'
+    category: '151'
+    name: Withdrawn code 2
+    description: Some fake data for a withdrawn code
+    status: withdrawn
+  - code: '33333'
+    category: '151'
+    name: Withdrawn code 3
+    description: Some fake data for a withdrawn code
+    status: withdrawn
+  - code: '44444'
+    category: '151'
+    name: Active code
+    description: Some fake data for an active code
+    status: active

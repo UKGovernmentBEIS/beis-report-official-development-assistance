@@ -48,6 +48,35 @@ RSpec.describe CodelistHelper, type: :helper do
           with_empty_item: false
         ).last).to eq(OpenStruct.new(name: "Zloty", code: "PLN"))
       end
+
+      context "when there are three 'withdrawn' items and one 'active' item" do
+        let(:fake_yaml) { YAML.safe_load(File.read("#{Rails.root}/spec/fixtures/codelist_with_withdrawn_items.yml")) }
+        before do
+          allow(helper).to receive(:load_yaml).and_return(fake_yaml["data"])
+        end
+
+        it "only adds the 'active' item to the final list" do
+          list = helper.yaml_to_objects(
+            entity: "activity",
+            type: "sector",
+            with_empty_item: false
+          )
+
+          expect(list.count).to eq(1)
+          expect(list.first.name).to eq("Active code")
+        end
+      end
+
+      it "does not add any duplicate-named items to the list" do
+        list = helper.yaml_to_objects(
+          entity: "activity",
+          type: "sector",
+          with_empty_item: false
+        )
+        grouped_by_name = list.group_by { |item| item["name"] }
+        duplicate_groups = grouped_by_name.values.select { |a| a.size > 1 }.flatten
+        expect(duplicate_groups.count).to eql(0)
+      end
     end
 
     describe "#currency_select_options" do
