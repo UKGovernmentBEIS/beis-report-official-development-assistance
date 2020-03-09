@@ -114,7 +114,7 @@ RSpec.feature "Users can create a fund level activity" do
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content "Status can't be blank"
 
-        select "Implementation", from: "activity[status]"
+        choose("activity[status]", option: "2")
         click_button I18n.t("form.activity.submit")
 
         expect(page).to have_content I18n.t("page_title.activity_form.show.dates")

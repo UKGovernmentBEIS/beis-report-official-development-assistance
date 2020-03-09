@@ -20,6 +20,14 @@ RSpec.feature "Users can view programme level activites" do
 
       page_displays_an_activity(activity_presenter: ActivityPresenter.new(programme_activity))
     end
+
+    scenario "when viewing the status the hint text has the correct level" do
+      authenticate!(user: user)
+      programme = create(:programme_activity)
+      visit activity_step_path(programme, :status)
+
+      expect(page).to have_content I18n.t("helpers.hint.activity.status", level: programme.level)
+    end
   end
 
   context "when the user does NOT belong to BEIS" do
