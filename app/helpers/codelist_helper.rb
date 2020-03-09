@@ -13,6 +13,13 @@ module CodelistHelper
     objects
   end
 
+  def yaml_to_status_objects(entity:, type:)
+    data = load_yaml(entity: entity, type: type)
+    return [] if data.empty?
+
+    data.collect { |item| OpenStruct.new(name: item["name"], code: item["code"], description: item["description"]) }.sort_by(&:code)
+  end
+
   def currency_select_options
     objects = yaml_to_objects(entity: "generic", type: "default_currency", with_empty_item: false)
     objects.unshift(OpenStruct.new(name: "Pound Sterling", code: "GBP")).uniq
