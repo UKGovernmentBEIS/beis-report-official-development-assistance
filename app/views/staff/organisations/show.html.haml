@@ -12,14 +12,7 @@
     .govuk-grid-column-two-thirds
       %h2.govuk-heading-m Details
 
-      - if policy(Organisation).update?
-        = link_to t("page_content.organisation.button.edit"), edit_organisation_path(@organisation_presenter), class: "govuk-button"
       %dl.govuk-summary-list
-        .govuk-summary-list__row
-          %dt.govuk-summary-list__key
-            = t("page_content.organisation.name.label")
-          %dd.govuk-summary-list__value
-            = @organisation_presenter.name
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
             = t("page_content.organisation.iati_reference.label")
