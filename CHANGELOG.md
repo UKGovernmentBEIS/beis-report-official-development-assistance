@@ -62,3 +62,4 @@
 - Budget start and end dates are validated according to IATI standard
 - BEIS users can view projects (read-only) and download them as XML via a button
 - Codelist dropdowns do not contain values which have been marked as "status: withdrawn" by IATI
+- Redis version increased from 3.x to 4.x now that GPaaS supports it
