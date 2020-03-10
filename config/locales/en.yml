@@ -267,7 +267,8 @@ en:
         finance: Finance
         flow: Flow
         identifier: Your unique identifier
-        purpose: Purpose of activity
+        purpose: Purpose
+        purpose_level: Purpose of %{level}
         region: Recipient region
         sector: Sector
         status: Status
