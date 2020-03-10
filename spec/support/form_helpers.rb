@@ -21,7 +21,8 @@ module FormHelpers
     flow: "ODA",
     finance: "Standard grant",
     aid_type: "General budget support",
-    tied_status: "Untied"
+    tied_status: "Untied",
+    level: "fund"
   )
 
     expect(page).to have_content I18n.t("activerecord.attributes.activity.identifier")
@@ -29,7 +30,7 @@ module FormHelpers
     fill_in "activity[identifier]", with: identifier
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.purpose")
+    expect(page).to have_content I18n.t("page_title.activity_form.show.purpose_level", level: level)
     expect(page).to have_content I18n.t("activerecord.attributes.activity.title")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.description")
     fill_in "activity[title]", with: title

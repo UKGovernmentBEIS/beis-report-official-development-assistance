@@ -15,7 +15,7 @@ RSpec.feature "Users can create a project" do
 
         click_on(I18n.t("page_content.organisation.button.create_project"))
 
-        fill_in_activity_form
+        fill_in_activity_form(level: "project")
 
         expect(page).to have_content I18n.t("form.project.create.success")
         expect(programme.activities.count).to eq 1

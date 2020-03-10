@@ -15,7 +15,7 @@ RSpec.feature "Users can create a fund level activity" do
       visit organisation_path(user.organisation)
       click_on(I18n.t("page_content.organisation.button.create_fund"))
 
-      fill_in_activity_form
+      fill_in_activity_form(level: "fund")
 
       expect(page).to have_content I18n.t("form.fund.create.success")
     end
@@ -88,7 +88,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         fill_in "activity[identifier]", with: "foo"
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content I18n.t("page_title.activity_form.show.purpose")
+        expect(page).to have_content "Purpose of fund"
 
         # Don't provide a title and description
         click_button I18n.t("form.activity.submit")

@@ -13,7 +13,7 @@ RSpec.feature "Users can create a programme activity" do
       click_on fund.title
       click_on(I18n.t("page_content.organisation.button.create_programme"))
 
-      fill_in_activity_form
+      fill_in_activity_form(level: "programme")
 
       expect(page).to have_content I18n.t("form.programme.create.success")
     end
@@ -26,7 +26,7 @@ RSpec.feature "Users can create a programme activity" do
       click_on fund.title
       click_on(I18n.t("page_content.organisation.button.create_programme"))
 
-      fill_in_activity_form(identifier: identifier)
+      fill_in_activity_form(identifier: identifier, level: "programme")
 
       activity = Activity.find_by(identifier: identifier)
       expect(activity.funding_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
@@ -42,7 +42,7 @@ RSpec.feature "Users can create a programme activity" do
       click_on fund.title
       click_on(I18n.t("page_content.organisation.button.create_programme"))
 
-      fill_in_activity_form(identifier: identifier)
+      fill_in_activity_form(identifier: identifier, level: "programme")
 
       activity = Activity.find_by(identifier: identifier)
       expect(activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
