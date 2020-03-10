@@ -14,7 +14,7 @@ data "cloudfoundry_service" "redis" {
 resource "cloudfoundry_service_instance" "beis-roda-redis" {
   name         = "beis-roda-${var.environment}-redis"
   space        = cloudfoundry_space.space.id
-  service_plan = data.cloudfoundry_service.redis.service_plans["tiny-ha-3_2"]
+  service_plan = data.cloudfoundry_service.redis.service_plans["tiny-ha-4_x"]
   timeouts {
     create = "2h"
     delete = "2h"
