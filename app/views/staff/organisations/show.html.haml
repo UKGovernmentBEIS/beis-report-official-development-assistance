@@ -41,17 +41,6 @@
           %dd.govuk-summary-list__value
             = t("generic.default_currency.#{@organisation_presenter.default_currency}")
 
-    .govuk-grid-column-one-third
-      - if policy(User).index?
-        %h3.govuk-heading-m
-          = t("page_content.dashboard.header.manage_users")
-        = link_to t("page_content.dashboard.button.manage_users"), users_path, class: "govuk-button"
-
-      - if policy(Organisation).index?
-        %h3.govuk-heading-m
-          = t("page_content.dashboard.header.manage_organisations")
-        = link_to t("page_content.dashboard.button.manage_organisations"), organisations_path, class: "govuk-button"
-
   .govuk-grid-row
     .govuk-grid-column-two-thirds
 

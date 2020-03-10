@@ -20,7 +20,7 @@ RSpec.feature "Users can edit organisations" do
     authenticate!(user: create(:administrator, organisation: beis_organisation))
 
     visit organisation_path(beis_organisation)
-    click_link I18n.t("page_content.dashboard.button.manage_organisations")
+    click_link I18n.t("page_title.organisation.index")
     click_link another_organisation.name
     click_link I18n.t("page_content.organisation.button.edit")
 
@@ -35,7 +35,7 @@ RSpec.feature "Users can edit organisations" do
   def successfully_edit_an_organisation
     visit organisation_path(beis_organisation)
 
-    click_link I18n.t("page_content.dashboard.button.manage_organisations")
+    click_link I18n.t("page_title.organisation.index")
 
     click_link another_organisation.name
     click_link I18n.t("page_content.organisation.button.edit")

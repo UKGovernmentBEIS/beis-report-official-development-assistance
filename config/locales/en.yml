@@ -207,13 +207,6 @@ en:
     budgets:
       button:
         create: Create budget
-    dashboard:
-      button:
-        manage_organisations: Manage organisations
-        manage_users: Manage users
-      header:
-        manage_organisations: Organisations
-        manage_users: Users
     errors:
       auth0:
         failed:
