@@ -42,18 +42,6 @@ jobs:
       bash -c 'shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}'
       set +eu
 deploy:
-- provider: heroku
-  api_key:
-    secure: JwMXOsBBJl72mQ/o9YY/NEPF+WiRSN3hfZ7OT7MUAJSZuLxp5NLWdz4zVdrwUs8f2kfa6a1RpsWkl9CeY/eMB+8H7pIMBGivadfc9dA9TGQmhf1VdyOC6K79erHcc28CEHiO3DUIQVlzhSzpjNDEI/exlOVFt6wodcLBBLAtemlwiLHz5EKeUpMVuUX/wMHy5DDV+wYimbfA88R+nzwXHk6gXmeVM43BY3EDeIucItLf+ZONWuJxny72wd1bT4yoxqFy5ABNXK1YFzaT40wgWyR+OhdSYjXt/2h3dddhQ0/G5zAhAs+kLq74t9cTu2KVB/XMncDzKdlHr/0bmYPMqXxfhqbuzM8svMipLyuBej/NrK3ehUtfEiBsEMjzGfUmm3xZUx8QOAWpViwPl2Nl47DecAHjKTgqbqzjGy3HpwSNGR8wr3Vkz+U+iVaIcN6Az3HEnoBE7GugUPNRdnqPgefXuz6fTFpTGVKQiM8I0nkrG4K1+Csq0ZYunuaM69wMQE4gTnZUgWFLjtCEUnH7OlRPOi5dtdBtFBPPpEVHRhP9ZS/o3mAHHIi+mK9w+UCc8Yaoz5SS1q5c+m7D94Q3L9a6eVmSn92idg0V9E3og7RkObEdYg5hMcciz8gGIk6ONDweUEzGzhSDIXWiDg8BxUHaRwnphy29dI/Lfiluj5w=
-  on:
-    branch: develop
-  app: beis-roda-staging
-- provider: heroku
-  api_key:
-    secure: JwMXOsBBJl72mQ/o9YY/NEPF+WiRSN3hfZ7OT7MUAJSZuLxp5NLWdz4zVdrwUs8f2kfa6a1RpsWkl9CeY/eMB+8H7pIMBGivadfc9dA9TGQmhf1VdyOC6K79erHcc28CEHiO3DUIQVlzhSzpjNDEI/exlOVFt6wodcLBBLAtemlwiLHz5EKeUpMVuUX/wMHy5DDV+wYimbfA88R+nzwXHk6gXmeVM43BY3EDeIucItLf+ZONWuJxny72wd1bT4yoxqFy5ABNXK1YFzaT40wgWyR+OhdSYjXt/2h3dddhQ0/G5zAhAs+kLq74t9cTu2KVB/XMncDzKdlHr/0bmYPMqXxfhqbuzM8svMipLyuBej/NrK3ehUtfEiBsEMjzGfUmm3xZUx8QOAWpViwPl2Nl47DecAHjKTgqbqzjGy3HpwSNGR8wr3Vkz+U+iVaIcN6Az3HEnoBE7GugUPNRdnqPgefXuz6fTFpTGVKQiM8I0nkrG4K1+Csq0ZYunuaM69wMQE4gTnZUgWFLjtCEUnH7OlRPOi5dtdBtFBPPpEVHRhP9ZS/o3mAHHIi+mK9w+UCc8Yaoz5SS1q5c+m7D94Q3L9a6eVmSn92idg0V9E3og7RkObEdYg5hMcciz8gGIk6ONDweUEzGzhSDIXWiDg8BxUHaRwnphy29dI/Lfiluj5w=
-  on:
-    branch: master
-  app: beis-roda-production
 - provider: script
   script: bash travis-docker-push.sh
   on:
