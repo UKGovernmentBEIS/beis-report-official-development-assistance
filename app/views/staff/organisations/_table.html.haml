@@ -1,0 +1,20 @@
+
+%table.govuk-table.organisations
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header
+        =t("activerecord.attributes.organisation.name")
+      %th.govuk-table__header
+        =t("activerecord.attributes.organisation.iati_reference")
+      %th.govuk-table__header
+
+  %tbody.govuk-table__body
+    - organisations.each do |organisation|
+      %tr.govuk-table__row{id: organisation.id}
+        %td.govuk-table__cell= organisation.name
+        %td.govuk-table__cell= organisation.iati_reference
+        %td.govuk-table__cell
+          - if policy(organisation).show?
+            = a11y_action_link(t("generic.link.show"), organisation_path(organisation), organisation.name)
+          - if policy(organisation).edit?
+            = a11y_action_link(t("generic.link.edit"), edit_organisation_path(organisation), organisation.name)

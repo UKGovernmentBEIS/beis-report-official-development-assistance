@@ -20,15 +20,5 @@ RSpec.feature "BEIS users can view other organisations" do
       expect(page).to have_content(user.organisation.name)
       expect(page).to have_content(another_organisation.name)
     end
-
-    scenario "can go back to the previous page" do
-      authenticate!(user: user)
-
-      visit organisations_path
-
-      click_on I18n.t("generic.link.back")
-
-      expect(page).to have_current_path(organisation_path(user.organisation))
-    end
   end
 end

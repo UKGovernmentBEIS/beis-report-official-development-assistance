@@ -76,5 +76,6 @@
 - Budgets are ordered by `period_start_date`, newest first
 - Remove transaction description from the transaction display table, to improve the activity page UI
 - Organisation and User management links are in the site header navigation
+- Organisations are managed from the /organisation page
 
 [release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1
