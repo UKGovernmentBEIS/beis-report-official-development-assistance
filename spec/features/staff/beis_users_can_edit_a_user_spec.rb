@@ -25,7 +25,7 @@ RSpec.feature "BEIS users can editing other users" do
     # Navigate from the landing page
     visit organisation_path(user.organisation)
 
-    click_on(I18n.t("page_content.dashboard.button.manage_users"))
+    click_on(I18n.t("page_title.users.index"))
 
     # Navigate to the users page
     expect(page).to have_content(I18n.t("page_title.users.index"))
@@ -51,7 +51,7 @@ RSpec.feature "BEIS users can editing other users" do
     authenticate!(user: administrator_user)
 
     visit organisation_path(administrator_user.organisation)
-    click_on "Manage users"
+    click_on I18n.t("page_title.users.index")
 
     expect(page).to have_content(user.name)
 
@@ -68,7 +68,7 @@ RSpec.feature "BEIS users can editing other users" do
     authenticate!(user: administrator_user)
 
     visit organisation_path(administrator_user.organisation)
-    click_on "Manage users"
+    click_on I18n.t("page_title.users.index")
     find("tr", text: user.name).click_link("Edit")
 
     choose I18n.t("form.user.active.inactive")
@@ -83,7 +83,7 @@ RSpec.feature "BEIS users can editing other users" do
     authenticate!(user: administrator_user)
 
     visit organisation_path(administrator_user.organisation)
-    click_on "Manage users"
+    click_on I18n.t("page_title.users.index")
     find("tr", text: user.name).click_link("Edit")
 
     choose I18n.t("form.user.active.active")

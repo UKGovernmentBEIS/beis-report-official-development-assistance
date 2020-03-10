@@ -75,5 +75,6 @@
 - Transactions are ordered by `date`, newest first
 - Budgets are ordered by `period_start_date`, newest first
 - Remove transaction description from the transaction display table, to improve the activity page UI
+- Organisation and User management links are in the site header navigation
 
 [release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1
