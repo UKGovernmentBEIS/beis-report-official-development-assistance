@@ -65,6 +65,6 @@
 - BEIS users can view projects (read-only) and download them as XML via a button
 - Codelist dropdowns do not contain values which have been marked as "status: withdrawn" by IATI
 - Activity status is now shown as radio buttons with hints
-
+- Redis version increased from 3.x to 4.x now that GPaaS supports it
 
 <!-- [release-1]: https://github.com/dxw/DataSubmissionService/compare/release-1...release-0 (There is no meaningful comparison for the first release)-->

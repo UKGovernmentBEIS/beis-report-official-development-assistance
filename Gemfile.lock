@@ -459,7 +459,7 @@ DEPENDENCIES
   rack_session_access
   rails (~> 6.0.2)
   rails_layout
-  redis
+  redis (~> 4.0)
   redis-namespace
   rollbar
   rspec-rails
@@ -467,7 +467,7 @@ DEPENDENCIES
   sassc (~> 2.0.1)
   selenium-webdriver
   shoulda-matchers
-  sidekiq (= 5.2.7)
+  sidekiq (~> 5.2)
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
