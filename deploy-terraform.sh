@@ -59,11 +59,7 @@ fi
 export PATH="$HOME/.tfenv/bin:$PATH"
 tfenv install
 
-# install the cloudfoundry provider if it isnt already
-if [ ! -e ~/.terraform.d/plugins/darwin_amd64/terraform-provider-cloudfoundry ]
-then
-bash -c "$(curl -fsSL https://raw.github.com/cloudfoundry-community/terraform-provider-cf/master/bin/install.sh)"
-fi
+/bin/bash install-terraform-provider-for-cf.sh
 
 # CF_PASSWORD, CF_USER, AWS_SECRET_ACCESS_KEY and AWS_ACCESS_KEY_ID
 # must be set for the following commands to run

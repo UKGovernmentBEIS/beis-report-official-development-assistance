@@ -1,3 +1,4 @@
+os: linux
 language: minimal
 services:
 - docker
@@ -10,7 +11,16 @@ jobs:
     env:
     - RAILS_ENV=test
     script: |
-      set -eu
+      set -e
+      echo "==== testing terrafrom ===="
+      git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+      export PATH="$HOME/.tfenv/bin:$PATH"
+      tfenv install
+      /bin/bash install-terraform-provider-for-cf.sh
+      terraform init terraform
+      terraform fmt  -diff -check -recursive terraform
+      terraform validate terraform
+      echo "==== linting our shell scripts ===="
       docker network create test
       docker run -d --name pg --network test -p 5432:5432 postgres:11.6
       docker run -d \
@@ -30,15 +40,6 @@ jobs:
         app/test /bin/bash -c "tail -f /dev/null"
       docker exec test-container rake
       docker exec test-container bundle exec brakeman
-      echo "==== testing terrafrom ===="
-      git clone https://github.com/tfutils/tfenv.git ~/.tfenv
-      export PATH="$HOME/.tfenv/bin:$PATH"
-      tfenv install
-      bash -c "$(curl -fsSL https://raw.github.com/cloudfoundry-community/terraform-provider-cf/master/bin/install.sh)"
-      terraform init terraform
-      terraform fmt  -diff -check -recursive terraform
-      terraform validate terraform
-      echo "==== linting our shell scripts ===="
       bash -c 'shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}'
       set +eu
 deploy:
