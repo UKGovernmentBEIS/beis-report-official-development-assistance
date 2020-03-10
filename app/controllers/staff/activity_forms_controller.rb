@@ -30,9 +30,14 @@ class Staff::ActivityFormsController < Staff::BaseController
     @activity = Activity.find(params[:activity_id])
     authorize @activity
 
-    @activity.assign_attributes(activity_params)
-    update_wizard_status
+    begin
+      @activity.assign_attributes(activity_params)
+    rescue ActiveRecord::MultiparameterAssignmentErrors
+      flash[:error] = I18n.t("activerecord.errors.models.activity.attributes.generic_date.invalid")
+      return render_wizard
+    end
 
+    update_wizard_status
     render_wizard @activity
   end
 

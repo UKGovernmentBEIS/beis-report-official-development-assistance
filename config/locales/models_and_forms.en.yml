@@ -63,6 +63,8 @@ en:
             actual_start_date:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_in_future: Actual start date must not be in the future
+            generic_date:
+              invalid: One or more of the entered dates is invalid
             planned_end_date:
               between: Date must be between %{min} years ago and %{max} years in the future
             planned_start_date:

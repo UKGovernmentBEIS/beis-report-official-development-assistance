@@ -119,9 +119,20 @@ RSpec.feature "Users can create a fund level activity" do
 
         expect(page).to have_content I18n.t("page_title.activity_form.show.dates")
 
+        # Don't provide dates
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content "Planned start date can't be blank"
         expect(page).to have_content "Planned end date can't be blank"
+
+        # Dates cannot contain 0
+        fill_in "activity[planned_start_date(3i)]", with: 1
+        fill_in "activity[planned_start_date(2i)]", with: 0
+        fill_in "activity[planned_start_date(1i)]", with: 2010
+        fill_in "activity[planned_end_date(3i)]", with: 0
+        fill_in "activity[planned_end_date(2i)]", with: 12
+        fill_in "activity[planned_end_date(1i)]", with: 2010
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "One or more of the entered dates is invalid"
 
         fill_in "activity[planned_start_date(3i)]", with: 1
         fill_in "activity[planned_start_date(2i)]", with: 12
