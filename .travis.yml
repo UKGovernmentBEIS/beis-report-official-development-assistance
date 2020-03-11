@@ -31,13 +31,15 @@ jobs:
       docker exec test-container rake
       docker exec test-container bundle exec brakeman
       echo "==== testing terrafrom ===="
+      cd terraform
       git clone https://github.com/tfutils/tfenv.git ~/.tfenv
       export PATH="$HOME/.tfenv/bin:$PATH"
       tfenv install
-      ./install-terraform-provider-for-cf.sh
-      terraform init terraform
-      terraform fmt  -diff -check -recursive terraform
-      terraform validate terraform
+      ../install-terraform-provider-for-cf.sh
+      terraform init
+      terraform fmt  -diff -check -recursive
+      terraform validate
+      cd ..
       echo "==== linting our shell scripts ===="
       bash -c 'shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}'
       set +eu
