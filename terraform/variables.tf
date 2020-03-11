@@ -67,3 +67,9 @@ variable "google_tag_manager_environment_preview" {
   type        = string
   description = "Google Tag Manager preview identifier"
 }
+
+variable "rollbar_disabled" {
+  type        = string
+  description = "Flag to turn off rollbar reporting"
+  default     = "false"
+}
