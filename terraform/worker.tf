@@ -25,5 +25,6 @@ resource "cloudfoundry_app" "beis-roda-worker" {
     "NOTIFY_WELCOME_EMAIL_TEMPLATE" = var.notify_welcome_email_template
     "ROLLBAR_ENV"                   = "paas-${var.environment}"
     "ROLLBAR_ACCESS_TOKEN"          = var.rollbar_access_token
+    "ROLLBAR_DISABLED"              = var.rollbar_disabled
   }
 }
