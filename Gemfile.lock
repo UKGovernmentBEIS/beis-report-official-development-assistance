@@ -132,7 +132,7 @@ GEM
       railties (>= 4.2.0)
     faker (2.10.2)
       i18n (>= 1.6, < 2)
-    faraday (0.17.0)
+    faraday (1.0.0)
       multipart-post (>= 1.2, < 3)
     ffi (1.11.3)
     globalid (0.4.2)
@@ -219,7 +219,7 @@ GEM
       mini_portile2 (~> 2.4.0)
     notifications-ruby-client (5.1.2)
       jwt (>= 1.5, < 3)
-    oauth2 (1.4.2)
+    oauth2 (1.4.4)
       faraday (>= 0.8, < 2.0)
       jwt (>= 1.0, < 3.0)
       multi_json (~> 1.3)
@@ -228,7 +228,7 @@ GEM
     omniauth (1.9.1)
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
-    omniauth-auth0 (2.2.0)
+    omniauth-auth0 (2.3.0)
       omniauth-oauth2 (~> 1.5)
     omniauth-oauth2 (1.6.0)
       oauth2 (~> 1.1)
@@ -448,7 +448,7 @@ DEPENDENCIES
   mini_racer
   mock_redis
   monetize
-  omniauth-auth0 (~> 2.2)
+  omniauth-auth0 (~> 2.3)
   omniauth-rails_csrf_protection (~> 0.1)
   parser (~> 2.6.3.0)
   pg
