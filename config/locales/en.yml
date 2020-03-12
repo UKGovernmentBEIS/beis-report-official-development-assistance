@@ -168,6 +168,8 @@ en:
         label: Finance
       flow:
         label: Flow
+      geography:
+        label: Benefitting recipient geography
       identitfier:
         label: Identifier
       implementing_organisation:
@@ -181,6 +183,9 @@ en:
       planned_start_date:
         label: Planned start date
       projects: Projects
+      recipient_country:
+        default_selection_value: Select a recipient country
+        label: Recipient country
       recipient_region:
         label: Recipient region
       sector:
@@ -262,10 +267,11 @@ en:
     activity_form:
       show:
         aid_type: Aid type
-        country: Country
+        country: Recipient country
         dates: Dates
         finance: Finance
         flow: Flow
+        geography: Will the benefitting recipient be a region or country?
         identifier: Your unique identifier
         purpose: Purpose
         purpose_level: Purpose of %{level}

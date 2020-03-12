@@ -27,7 +27,7 @@ RSpec.feature "Users can create a fund level activity" do
 
       click_on I18n.t("page_content.organisation.button.create_fund")
 
-      visit activity_step_path(activity, :country)
+      visit activity_step_path(activity, :region)
       expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.recipient_region
 
       visit activity_step_path(activity, :flow)
@@ -130,11 +130,18 @@ RSpec.feature "Users can create a fund level activity" do
         fill_in "activity[planned_end_date(2i)]", with: 12
         fill_in "activity[planned_end_date(1i)]", with: 2010
         click_button I18n.t("form.activity.submit")
+        expect(page).to have_content I18n.t("page_title.activity_form.show.geography")
+
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "can't be blank"
+
+        choose "Region"
+        click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.region")
 
-        # Region has a default and can't be set to blank so we skip
-        select "Developing countries, unspecified", from: "activity[recipient_region]"
+        # region has the default value already selected
         click_button I18n.t("form.activity.submit")
+
         expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
 
         # Flow has a default and can't be set to blank so we skip

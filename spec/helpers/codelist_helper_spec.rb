@@ -122,6 +122,13 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
+    describe "#country_select_options" do
+      it "returns an array of country objects with '' as the first (default) option" do
+        expect(helper.country_select_options.first)
+          .to eq(OpenStruct.new(name: I18n.t("page_content.activity.recipient_country.default_selection_value"), code: ""))
+      end
+    end
+
     describe "#flow_select_options" do
       it "returns an array of flow objects with 10 as the first (default) option" do
         expect(helper.flow_select_options.first)

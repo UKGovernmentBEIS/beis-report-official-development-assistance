@@ -34,6 +34,11 @@ module CodelistHelper
     objects.unshift(OpenStruct.new(name: "Developing countries, unspecified", code: "998")).uniq
   end
 
+  def country_select_options
+    objects = yaml_to_objects(entity: "activity", type: "recipient_country", with_empty_item: false)
+    objects.unshift(OpenStruct.new(name: t("page_content.activity.recipient_country.default_selection_value"), code: "")).uniq
+  end
+
   def flow_select_options
     objects = yaml_to_objects(entity: "activity", type: "flow", with_empty_item: false)
     objects.unshift(OpenStruct.new(name: "ODA", code: "10")).uniq

@@ -8,6 +8,7 @@ en:
         finance: Finance
         flow: Flow
         identifier: Your unique identifier
+        recipient_country: Recipient country
         recipient_region: Recipient region
         sector: Sector
         status: Status
@@ -109,7 +110,7 @@ en:
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
         recipient_region:
-          html: A supranational geopolitical region that will benefit from this activity. <a href='http://reference.iatistandard.org/203/codelists/Region/' target='_blank'>Find the region code from the IATI region list.</a>
+          html: A supranational geopolitical region that will benefit from this activity.
         sector:
           html: Classify the purpose of this activity. <a href='http://reference.iatistandard.org/203/codelists/Sector/' target='_blank'>Please provide the sector appropriate to you from this list</a>.
         status: This is the stage your %{level} is currently at
