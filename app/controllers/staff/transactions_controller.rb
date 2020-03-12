@@ -2,7 +2,6 @@
 
 class Staff::TransactionsController < Staff::BaseController
   include Secured
-  include DateHelper
 
   def new
     @activity = Activity.find(activity_id)
