@@ -32,7 +32,7 @@ gem "uglifier", ">= 1.3.0"
 gem "wicked"
 
 # Authentication
-gem "omniauth-auth0", "~> 2.2"
+gem "omniauth-auth0", "~> 2.3"
 gem "omniauth-rails_csrf_protection", "~> 0.1"
 
 group :development, :test do
