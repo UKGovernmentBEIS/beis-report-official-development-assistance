@@ -27,6 +27,9 @@ then
   export TF_VAR_rollbar_access_token="$ROLLBAR_ACCESS_TOKEN"
   export TF_VAR_domain="$PROD_DOMAIN"
   export TF_VAR_papertrail_destination="$PROD_PAPERTRAIL_DESTINATION"
+  export TF_VAR_google_tag_manager_container_id="$PROD_GOOGLE_TAG_MANAGER_CONTAINER_ID"
+  export TF_VAR_google_tag_manager_environment_auth="$PROD_GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH"
+  export TF_VAR_google_tag_manager_environment_preview="$PROD_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW"
 elif [ "$TRAVIS_BRANCH" = develop ]
 then
   echo "creating staging env vars for terraform"
@@ -41,6 +44,9 @@ then
   export TF_VAR_rollbar_access_token="$ROLLBAR_ACCESS_TOKEN"
   export TF_VAR_domain="$STAGING_DOMAIN"
   export TF_VAR_papertrail_destination="$STAGING_PAPERTRAIL_DESTINATION"
+  export TF_VAR_google_tag_manager_container_id="$STAGING_GOOGLE_TAG_MANAGER_CONTAINER_ID"
+  export TF_VAR_google_tag_manager_environment_auth="$STAGING_GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH"
+  export TF_VAR_google_tag_manager_environment_preview="$STAGING_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW"
 else
   # we dont want to deploy anywhere else but staging or production
   echo "Not Deploying: we only deploy to staging and production"
