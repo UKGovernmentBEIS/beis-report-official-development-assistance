@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased changes
+## [release-1] - 2020-03-04
 
 - Add Google Tag Manager in place of templated Google Analytics code
 - Ensure missing I18n strings cause tests to fail
@@ -55,6 +55,9 @@
 - Users can view implementing organisations in the Activity XML
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
+
+## Unreleased changes
+
 - Activity status is now shown as radio buttons with hints
 - Activity XML includes 'iati-identifier' which is includes the reporting organisation
 - Activity XML includes 'iati-identifier' with an identifier that consists of all present levels of hierarchy: fund and/or programme
@@ -63,3 +66,5 @@
 - BEIS users can view projects (read-only) and download them as XML via a button
 - Codelist dropdowns do not contain values which have been marked as "status: withdrawn" by IATI
 - Redis version increased from 3.x to 4.x now that GPaaS supports it
+
+<!-- [release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1 -->
