@@ -21,5 +21,10 @@ RSpec.describe DateHelper, type: :helper do
       params = {day: "40", month: "13", year: "2020"}
       expect(helper.format_date(params)).to eq(nil)
     end
+
+    it "returns nil when given a zero parameter" do
+      params = {day: "40", month: "0", year: "2020"}
+      expect(helper.format_date(params)).to eq(nil)
+    end
   end
 end
