@@ -40,13 +40,39 @@ class Staff::ActivityFormsController < Staff::BaseController
     @activity = Activity.find(params[:activity_id])
     authorize @activity
 
-    @activity.assign_attributes(activity_params)
+    update_activity_dates
+    update_activity_attributes_except_dates
+
     update_wizard_status
 
     render_wizard @activity
   end
 
   private
+
+  def date_field_params_regex
+    # This regex will match the three date params from `date_field`;
+    # e.g. actual_start_date(2i) actual_start_date(1i) actual_start_date(3i)
+    /^(planned|actual)_(start|end)_date\([1-3]i\)$/
+  end
+
+  def update_activity_attributes_except_dates
+    activity_params_except_dates = activity_params.reject { |param| param.match(date_field_params_regex) }
+    @activity.assign_attributes(activity_params_except_dates)
+  end
+
+  def update_activity_dates
+    activity_date_params = activity_params.select { |param| param.match(date_field_params_regex) }
+    return if activity_date_params.empty?
+    @activity.update(planned_start_date: format_date(date_params("planned_start_date")))
+    @activity.update(planned_end_date: format_date(date_params("planned_end_date")))
+    @activity.update(actual_start_date: format_date(date_params("actual_start_date")))
+    @activity.update(actual_end_date: format_date(date_params("actual_end_date")))
+  end
+
+  def date_params(date_type_string)
+    {day: activity_params["#{date_type_string}(3i)"], month: activity_params["#{date_type_string}(2i)"], year: activity_params["#{date_type_string}(1i)"]}
+  end
 
   def activity_params
     params.require(:activity).permit(:identifier, :sector, :title, :description, :status,
