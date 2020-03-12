@@ -3,7 +3,9 @@ class Activity < ApplicationRecord
   validates :title, :description, presence: true, if: :purpose_step?
   validates :sector, presence: true, if: :sector_step?
   validates :status, presence: true, if: :status_step?
-  validates :recipient_region, presence: true, if: :country_step?
+  validates :geography, presence: true, if: :geography_step?
+  validates :recipient_region, presence: true, if: :region_step?
+  validates :recipient_country, presence: true, if: :country_step?
   validates :flow, presence: true, if: :flow_step?
   validates :finance, presence: true, if: :finance_step?
   validates :aid_type, presence: true, if: :aid_type_step?
@@ -24,6 +26,11 @@ class Activity < ApplicationRecord
     fund: "fund",
     programme: "programme",
     project: "project",
+  }
+
+  enum geography: {
+    recipient_region: "Recipient region",
+    recipient_country: "Recipient country",
   }
 
   scope :funds, -> { where(level: :fund) }
@@ -49,8 +56,16 @@ class Activity < ApplicationRecord
     wizard_status == "dates" || wizard_complete?
   end
 
-  private def country_step?
-    wizard_status == "country" || wizard_complete?
+  def geography_step?
+    wizard_status == "geography" || wizard_complete?
+  end
+
+  def region_step?
+    wizard_status == "region"
+  end
+
+  def country_step?
+    wizard_status == "country"
   end
 
   private def flow_step?

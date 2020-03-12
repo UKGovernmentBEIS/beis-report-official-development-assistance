@@ -9,7 +9,9 @@ FactoryBot.define do
     planned_end_date { Date.tomorrow }
     actual_start_date { Date.yesterday }
     actual_end_date { Date.today }
+    geography { :recipient_region }
     recipient_region { "489" }
+    recipient_country { nil }
     flow { "10" }
     finance { "110" }
     aid_type { "A01" }
@@ -83,7 +85,9 @@ FactoryBot.define do
     planned_end_date { nil }
     actual_start_date { nil }
     actual_end_date { nil }
+    geography { nil }
     recipient_region { nil }
+    recipient_country { nil }
     flow { nil }
     finance { nil }
     aid_type { nil }
@@ -100,15 +104,28 @@ FactoryBot.define do
     planned_end_date { nil }
     actual_start_date { nil }
     actual_end_date { nil }
+    geography { nil }
     recipient_region { nil }
+    recipient_country { nil }
     flow { nil }
     finance { nil }
     aid_type { nil }
     tied_status { nil }
   end
 
-  trait :at_country_step do
-    wizard_status { "country" }
+  trait :at_region_step do
+    wizard_status { "region" }
+    recipient_country { nil }
+    flow { nil }
+    finance { nil }
+    aid_type { nil }
+    tied_status { nil }
+  end
+
+  trait :at_geography_step do
+    wizard_status { "geography" }
+    recipient_region { nil }
+    recipient_country { nil }
     flow { nil }
     finance { nil }
     aid_type { nil }

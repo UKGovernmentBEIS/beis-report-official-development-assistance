@@ -17,6 +17,7 @@ module FormHelpers
     actual_end_date_day: "1",
     actual_end_date_month: "2",
     actual_end_date_year: "2020",
+    geography: "recipient_region",
     recipient_region: "Developing countries, unspecified",
     flow: "ODA",
     finance: "Standard grant",
@@ -77,11 +78,16 @@ module FormHelpers
 
     click_button I18n.t("form.activity.submit")
 
+    expect(page).to have_content I18n.t("page_title.activity_form.show.geography")
+    choose "Region"
+    click_button I18n.t("form.activity.submit")
+
+    expect(page).to have_content I18n.t("page_title.activity_form.show.region")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.recipient_region")
-    expect(page).to have_content "A supranational geopolitical region that will benefit from this activity. Find the region code from the IATI region list."
     select recipient_region, from: "activity[recipient_region]"
     click_button I18n.t("form.activity.submit")
 
+    expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.flow")
     expect(page).to have_content "IATI descriptions of each flow type can be found here."
     select flow, from: "activity[flow]"

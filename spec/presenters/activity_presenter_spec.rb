@@ -153,6 +153,24 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#recipient_country" do
+    context "when there is a recipient_country" do
+      it "returns the locale value for the code" do
+        activity = build(:activity, recipient_country: "CL")
+        result = described_class.new(activity).recipient_country
+        expect(result).to eq I18n.t("activity.recipient_country.#{activity.recipient_country}")
+      end
+    end
+
+    context "when the activity does not have a recipient_country set" do
+      it "returns nil" do
+        activity = build(:activity, recipient_country: nil)
+        result = described_class.new(activity)
+        expect(result.recipient_country).to be_nil
+      end
+    end
+  end
+
   describe "#flow" do
     context "when flow aid_type exists" do
       it "returns the locale value for the code" do

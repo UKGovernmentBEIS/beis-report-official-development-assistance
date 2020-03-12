@@ -7,6 +7,41 @@ RSpec.feature "Users can view an activity as XML" do
     context "when the user belongs to BEIS" do
       before { authenticate!(user: user) }
 
+      context "when the activity has recipient_region geography" do
+        let(:activity) {
+          create(:fund_activity,
+            organisation: organisation,
+            identifier: "IND-ENT-IFIER",
+            geography: :recipient_region,
+            recipient_region: "489")
+        }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it "contains the recipient region code and fixed vocabulary code of 1" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.at("iati-activity/recipient-region/@code").text).to eq(activity.recipient_region)
+          expect(xml.at("iati-activity/recipient-region/@vocabulary").text).to eq("1")
+        end
+      end
+
+      context "when the activity has recipient_country geography" do
+        let(:activity) {
+          create(:fund_activity,
+            organisation: organisation,
+            identifier: "IND-ENT-IFIER",
+            geography: :recipient_country,
+            recipient_country: "CL")
+        }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it "contains the recipient country code and fixed vocabulary code of 1" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.at("iati-activity/recipient-country/@code").text).to eq(activity.recipient_country)
+        end
+      end
+
       context "when the activity is a fund activity" do
         let(:activity) { create(:fund_activity, organisation: organisation, identifier: "IND-ENT-IFIER") }
         let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
