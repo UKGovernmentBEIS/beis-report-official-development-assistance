@@ -1,6 +1,7 @@
 class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
   include ActivityHelper
+  include DateHelper
 
   FORM_STEPS = [
     :identifier,
@@ -30,18 +31,40 @@ class Staff::ActivityFormsController < Staff::BaseController
     @activity = Activity.find(params[:activity_id])
     authorize @activity
 
-    begin
-      @activity.assign_attributes(activity_params)
-    rescue ActiveRecord::MultiparameterAssignmentErrors
-      flash[:error] = I18n.t("activerecord.errors.models.activity.attributes.generic_date.invalid")
-      return render_wizard
-    end
+    # Update activity dates, after checking they are valid via format_date
+    update_activity_dates
+    # Update all attributes except dates
+    @activity.assign_attributes(activity_params.select { |param| param.match(/^((?!date).)*$/) })
 
     update_wizard_status
     render_wizard @activity
   end
 
   private
+
+  def update_activity_dates
+    return if activity_params.select { |param| param.match(/(.*)date(.*)/) }.empty?
+    @activity.update(planned_start_date: format_date(planned_start_date_params))
+    @activity.update(planned_end_date: format_date(planned_end_date_params))
+    @activity.update(actual_start_date: format_date(actual_start_date_params))
+    @activity.update(actual_end_date: format_date(actual_end_date_params))
+  end
+
+  def planned_start_date_params
+    {day: activity_params["planned_start_date(3i)"], month: activity_params["planned_start_date(2i)"], year: activity_params["planned_start_date(1i)"]}
+  end
+
+  def planned_end_date_params
+    {day: activity_params["planned_end_date(3i)"], month: activity_params["planned_end_date(2i)"], year: activity_params["planned_end_date(1i)"]}
+  end
+
+  def actual_start_date_params
+    {day: activity_params["actual_start_date(3i)"], month: activity_params["actual_start_date(2i)"], year: activity_params["actual_start_date(1i)"]}
+  end
+
+  def actual_end_date_params
+    {day: activity_params["actual_end_date(3i)"], month: activity_params["actual_end_date(2i)"], year: activity_params["actual_end_date(1i)"]}
+  end
 
   def activity_params
     params.require(:activity).permit(:identifier, :sector, :title, :description, :status,
