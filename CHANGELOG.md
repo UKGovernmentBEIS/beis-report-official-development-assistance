@@ -56,7 +56,7 @@
 - Planned start and end dates are mandatory
 - Actual start and end dates must not be in the future
 
-## Unreleased changes
+## [release-2] - 2020-03-12
 
 - Activity status is now shown as radio buttons with hints
 - Activity XML includes 'iati-identifier' which is includes the reporting organisation
@@ -67,4 +67,6 @@
 - Codelist dropdowns do not contain values which have been marked as "status: withdrawn" by IATI
 - Redis version increased from 3.x to 4.x now that GPaaS supports it
 
-<!-- [release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1 -->
+## Unreleased changes
+
+[release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1
