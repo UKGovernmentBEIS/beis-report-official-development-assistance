@@ -21,7 +21,11 @@ class ProgrammePolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      scope.all
+      if user.organisation.service_owner?
+        scope.all
+      else
+        scope.where(extending_organisation: user.organisation)
+      end
     end
   end
 end
