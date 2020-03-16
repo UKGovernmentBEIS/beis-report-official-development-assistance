@@ -22,7 +22,7 @@ module FormHelpers
     flow: "ODA",
     finance: "Standard grant",
     aid_type: "General budget support",
-    tied_status: "Untied",
+    tied_status: "5",
     level: "fund"
   )
 
@@ -104,9 +104,9 @@ module FormHelpers
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("activerecord.attributes.activity.tied_status")
-    expect(page).to have_content "See the IATI tied status page for descriptions."
+    expect(page).to have_content "This is the tied status of your #{level}"
 
-    select tied_status, from: "activity[tied_status]"
+    choose("activity[tied_status]", option: tied_status)
 
     click_button I18n.t("form.activity.submit")
 
@@ -119,7 +119,7 @@ module FormHelpers
     expect(page).to have_content flow
     expect(page).to have_content finance
     expect(page).to have_content aid_type
-    expect(page).to have_content tied_status
+    expect(page).to have_content I18n.t("activity.tied_status.#{tied_status}")
     expect(page).to have_content localise_date_from_input_fields(
       year: planned_start_date_year,
       month: planned_start_date_month,
