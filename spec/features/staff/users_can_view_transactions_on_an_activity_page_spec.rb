@@ -38,5 +38,17 @@ RSpec.feature "Users can view transactions on an activity page" do
       expect(page).to have_content(transaction_presenter.providing_organisation_name)
       expect(page).to have_content(transaction_presenter.receiving_organisation_name)
     end
+
+    scenario "the transactions are shown in date order, newest first" do
+      transaction_1 = create(:transaction, activity: activity, date: Date.today)
+      transaction_2 = create(:transaction, activity: activity, date: Date.yesterday)
+
+      visit organisation_path(user.organisation)
+
+      click_link activity.title
+
+      expect(page.find("table.transactions tbody tr:first-child")[:id]).to eq(transaction_1.id)
+      expect(page.find("table.transactions tbody tr:last-child")[:id]).to eq(transaction_2.id)
+    end
   end
 end
