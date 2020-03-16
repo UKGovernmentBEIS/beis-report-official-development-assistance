@@ -14,7 +14,7 @@ class Staff::ActivitiesController < Staff::BaseController
     @activities = @activity.activities.order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
 
     @transactions = policy_scope(Transaction).where(activity: @activity).order("date DESC")
-    @budgets = policy_scope(Budget).where(activity: @activity)
+    @budgets = policy_scope(Budget).where(activity: @activity).order("period_start_date DESC")
 
     respond_to do |format|
       format.html do
