@@ -5,8 +5,6 @@
         %th.govuk-table__header
           = t("activerecord.attributes.transaction.reference")
         %th.govuk-table__header
-          = t("activerecord.attributes.transaction.description")
-        %th.govuk-table__header
           = t("activerecord.attributes.transaction.transaction_type")
         %th.govuk-table__header
           = t("activerecord.attributes.transaction.date")
@@ -26,7 +24,6 @@
       - transactions.each do |transaction|
         %tr.govuk-table__row{id: transaction.id}
           %td.govuk-table__cell= transaction.reference
-          %td.govuk-table__cell= transaction.description
           %td.govuk-table__cell= transaction.transaction_type
           %td.govuk-table__cell= transaction.date
           %td.govuk-table__cell= transaction.currency
