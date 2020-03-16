@@ -2,6 +2,8 @@
   .govuk-grid-column-full
     %h2.govuk-heading-m
       = t("page_content.activity.extending_organisation.heading")
+    %p.govuk-hint
+      = t("page_content.activity.extending_organisation.hint")
 
     -if activity.extending_organisation.present?
       %p.govuk-body

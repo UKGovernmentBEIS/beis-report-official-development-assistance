@@ -79,5 +79,7 @@
 - Organisations are managed from the /organisation page
 - Organisation show page re-organised to show more information including funds,
   programmes and projects for the relevant users
+- Make it clearer that Programme should have an extending organisation in order
+  for delivery partners to report on the programme
 
 [release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1
