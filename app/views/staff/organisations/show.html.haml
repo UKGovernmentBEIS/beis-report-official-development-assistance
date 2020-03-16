@@ -8,9 +8,38 @@
       %h1.govuk-heading-xl
         = @organisation_presenter.name
 
+  - if policy(:fund).index? & @organisation_presenter.service_owner?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        %h2.govuk-heading-m
+          = t("page_content.organisation.funds")
+
+        - if policy(:fund).create?
+          = form_tag(organisation_funds_path(@organisation_presenter), method: "post") do
+            = submit_tag t("page_content.organisation.button.create_fund"), class: "govuk-button"
+
+        = render partial: "staff/shared/funds/table", locals: { funds: @fund_activities }
+
+  - if policy(:programme).index?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        %h2.govuk-heading-m
+          = t("page_content.organisation.programmes")
+
+        = render partial: "staff/shared/programmes/table", locals: { programmes: @programme_activities }
+
+  - if policy(:project).index?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        %h2.govuk-heading-m
+          = t("page_content.organisation.projects")
+
+        = render partial: "staff/shared/projects/table", locals: { projects: @project_activities }
+
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %h2.govuk-heading-m Details
+      %h2.govuk-heading-m
+        = t("page_content.organisation.details")
 
       %dl.govuk-summary-list
         .govuk-summary-list__row
@@ -34,30 +63,5 @@
           %dd.govuk-summary-list__value
             = t("generic.default_currency.#{@organisation_presenter.default_currency}")
 
-  .govuk-grid-row
-    .govuk-grid-column-two-thirds
-
-      - if policy(:fund).index?
-        %h2.govuk-heading-m
-          = t("page_content.organisation.funds")
-
-      - if policy(:fund).create?
-        = form_tag(organisation_funds_path(@organisation_presenter), method: "post") do
-          = submit_tag t("page_content.organisation.button.create_fund"), class: "govuk-button"
-
-      - if policy(:fund).index?
-        %ul.govuk-list.govuk-list--bullet.funds
-          - @fund_activities.each do |activity|
-            %li
-              = link_to activity.display_title, organisation_activity_path(activity.organisation, activity)
-
-      - unless current_user.organisation.service_owner?
-        - if policy(:programme).index?
-          %h2.govuk-heading-m
-            = t("page_content.organisation.programmes")
-
-        - if policy(:programme).index?
-          %ul.govuk-list.govuk-list--bullet.programmes
-            - @programme_activities.each do |activity|
-              %li
-                = link_to activity.display_title, organisation_activity_path(current_user.organisation, activity)
+      - if policy(:organisation).edit?
+        = link_to t("page_content.organisation.button.edit_details"), edit_organisation_path(@organisation_presenter), class: "govuk-button"

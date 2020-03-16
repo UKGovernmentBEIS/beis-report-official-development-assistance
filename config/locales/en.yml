@@ -222,8 +222,10 @@ en:
         create_programme: Create programme
         create_project: Create project
         edit: Edit organisation
+        edit_details: Edit details
       default_currency:
         label: Default currency
+      details: Organisation details
       funds: Funds
       iati_reference:
         label: IATI reference
@@ -232,8 +234,10 @@ en:
       name:
         label: Name
       programmes: Programmes
+      projects: Projects
       type:
         label: Type
+    organisation_details: Organisation details
     organisations:
       button:
         create: Create organisation

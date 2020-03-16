@@ -11,11 +11,15 @@ class Staff::OrganisationsController < Staff::BaseController
     authorize organisation
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
+
     fund_activities = policy_scope(Activity.funds).includes(:organisation).where(organisation: organisation).order("created_at ASC")
     @fund_activities = fund_activities.map { |activity| ActivityPresenter.new(activity) }
 
-    programme_activities = policy_scope(Activity.programmes).order("created_at ASC")
+    programme_activities = policy_scope(Activity.programme, policy_scope_class: ProgrammePolicy::Scope).includes(:organisation).order("created_at ASC")
     @programme_activities = programme_activities.map { |activity| ActivityPresenter.new(activity) }
+
+    project_activites = policy_scope(Activity.project, policy_scope_class: ProjectPolicy::Scope).includes(:organisation).order("created_at ASC")
+    @project_activities = project_activites.map { |activity| ActivityPresenter.new(activity) }
   end
 
   def new
