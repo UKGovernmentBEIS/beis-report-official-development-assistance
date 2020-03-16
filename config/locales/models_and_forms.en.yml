@@ -114,8 +114,7 @@ en:
         sector:
           html: Classify the purpose of this activity. <a href='http://reference.iatistandard.org/203/codelists/Sector/' target='_blank'>Please provide the sector appropriate to you from this list</a>.
         status: This is the stage your %{level} is currently at
-        tied_status:
-          html: "<a href='http://reference.iatistandard.org/203/codelists/TiedStatus/' target='_blank'>See the IATI tied status page for descriptions.</a>"
+        tied_status: This is the tied status of your %{level}
         title: A short, human-readable title that contains a meaningful summary of the activity.
       budget:
         period_end_date: Period end date must not be more than one year after the period start date. For example, 11 3 2021

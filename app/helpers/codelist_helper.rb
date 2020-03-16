@@ -17,7 +17,7 @@ module CodelistHelper
     objects
   end
 
-  def yaml_to_status_objects(entity:, type:)
+  def yaml_to_objects_with_description(entity:, type:)
     data = load_yaml(entity: entity, type: type)
     return [] if data.empty?
 
