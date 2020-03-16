@@ -164,6 +164,7 @@ en:
         button:
           edit: Choose extending organisation
         heading: Extending organisation
+        hint: The extending organisation will be able to create and report project information against this programme
       finance:
         label: Finance
       flow:
