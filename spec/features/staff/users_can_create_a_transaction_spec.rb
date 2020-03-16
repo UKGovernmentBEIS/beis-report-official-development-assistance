@@ -182,7 +182,10 @@ RSpec.feature "Users can create a transaction" do
 
     scenario "they cannot create transactions on a programme" do
       fund_activity = create(:fund_activity, organisation: user.organisation)
-      programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
+      programme_activity = create(:programme_activity,
+        activity: fund_activity,
+        organisation: user.organisation,
+        extending_organisation: user.organisation)
 
       visit organisation_path(user.organisation)
       click_on(programme_activity.title)

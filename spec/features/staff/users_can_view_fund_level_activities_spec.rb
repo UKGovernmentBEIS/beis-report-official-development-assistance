@@ -43,10 +43,9 @@ RSpec.feature "Users can view fund level activities" do
 
   context "when the activity is partially complete and doesn't have a title" do
     scenario "it to show a meaningful link to the activity" do
-      activity = create(:activity, :at_purpose_step, organisation: user.organisation, title: nil)
+      activity = create(:fund_activity, :at_purpose_step, organisation: user.organisation, title: nil)
 
       visit organisation_path(user.organisation)
-
       expect(page).to have_content("Untitled (#{activity.id})")
     end
   end
