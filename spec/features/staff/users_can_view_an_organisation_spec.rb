@@ -41,8 +41,8 @@ RSpec.feature "Users can view an organisation" do
 
         visit organisation_path(user.organisation)
 
-        expect(page.find("ul.funds li:first-child")).to have_content(fund_1.title)
-        expect(page.find("ul.funds li:last-child")).to have_content(fund_2.title)
+        expect(page.find("table.funds  tbody tr:first-child")[:id]).to have_content(fund_1.id)
+        expect(page.find("table.funds  tbody tr:last-child")[:id]).to have_content(fund_2.id)
       end
     end
 
@@ -93,7 +93,9 @@ RSpec.feature "Users can view an organisation" do
     end
 
     scenario "can see a list of programme activities" do
-      programme = create(:programme_activity, organisation: organisation)
+      programme = create(:programme_activity,
+        organisation: organisation,
+        extending_organisation: organisation)
 
       visit organisation_path(organisation)
 
@@ -101,13 +103,19 @@ RSpec.feature "Users can view an organisation" do
     end
 
     scenario "programme activities are ordered by created_at (oldest first)" do
-      programme_1 = create(:programme_activity, organisation: organisation, created_at: Date.yesterday)
-      programme_2 = create(:programme_activity, organisation: organisation, created_at: Date.today)
+      programme_1 = create(:programme_activity,
+        organisation: organisation,
+        created_at: Date.yesterday,
+        extending_organisation: organisation)
+      programme_2 = create(:programme_activity,
+        organisation: organisation,
+        created_at: Date.today,
+        extending_organisation: organisation)
 
       visit organisation_path(organisation)
 
-      expect(page.find("ul.programmes li:first-child")).to have_content(programme_1.title)
-      expect(page.find("ul.programmes li:last-child")).to have_content(programme_2.title)
+      expect(page.find("table.programmes  tbody tr:first-child")[:id]).to have_content(programme_1.id)
+      expect(page.find("table.programmes  tbody tr:last-child")[:id]).to have_content(programme_2.id)
     end
   end
 end

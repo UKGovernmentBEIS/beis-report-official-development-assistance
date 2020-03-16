@@ -77,5 +77,7 @@
 - Remove transaction description from the transaction display table, to improve the activity page UI
 - Organisation and User management links are in the site header navigation
 - Organisations are managed from the /organisation page
+- Organisation show page re-organised to show more information including funds,
+  programmes and projects for the relevant users
 
 [release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1
