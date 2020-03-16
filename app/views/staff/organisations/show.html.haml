@@ -64,7 +64,7 @@
           = submit_tag t("page_content.organisation.button.create_fund"), class: "govuk-button"
 
       - if policy(:fund).index?
-        %ul.govuk-list.govuk-list--bullet
+        %ul.govuk-list.govuk-list--bullet.funds
           - @fund_activities.each do |activity|
             %li
               = link_to activity.display_title, organisation_activity_path(activity.organisation, activity)
@@ -75,7 +75,7 @@
             = t("page_content.organisation.programmes")
 
         - if policy(:programme).index?
-          %ul.govuk-list.govuk-list--bullet
+          %ul.govuk-list.govuk-list--bullet.programmes
             - @programme_activities.each do |activity|
               %li
                 = link_to activity.display_title, organisation_activity_path(current_user.organisation, activity)
