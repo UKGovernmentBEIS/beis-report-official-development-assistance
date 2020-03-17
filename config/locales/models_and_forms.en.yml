@@ -8,6 +8,10 @@ en:
         finance: Finance
         flow: Flow
         identifier: Your unique identifier
+        programme:
+          fund: Fund
+        project:
+          programme: Programme
         recipient_country: Recipient country
         recipient_region: Recipient region
         sector: Sector

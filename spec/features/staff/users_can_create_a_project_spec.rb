@@ -7,7 +7,7 @@ RSpec.feature "Users can create a project" do
 
     context "when viewing a programme" do
       scenario "a new project can be added to the programme" do
-        programme = create(:programme_activity)
+        programme = create(:programme_activity, extending_organisation: user.organisation)
 
         visit organisation_path(user.organisation)
 
