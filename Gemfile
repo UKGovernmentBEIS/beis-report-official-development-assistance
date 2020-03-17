@@ -23,6 +23,8 @@ gem "rollbar"
 gem "rails", "~> 6.0.2"
 gem "redis", "~> 4.0"
 gem "redis-namespace"
+gem "redis-actionpack"
+gem "redis-store"
 gem "sassc", "~> 2.0.1" # Downgrade to fix https://github.com/sass/sassc-ruby/issues/133
 gem "sass-rails", "~> 6.0"
 gem "sidekiq", "~> 5.2"
