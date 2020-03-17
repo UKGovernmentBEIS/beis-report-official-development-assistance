@@ -44,9 +44,9 @@ module CodelistHelper
     objects.unshift(OpenStruct.new(name: "ODA", code: "10")).uniq
   end
 
-  def tied_status_select_options
-    objects = yaml_to_objects(entity: "activity", type: "tied_status", with_empty_item: false)
-    objects.unshift(OpenStruct.new(name: "Untied", code: "5")).uniq
+  def tied_status_radio_options
+    objects = yaml_to_objects_with_description(entity: "activity", type: "tied_status")
+    objects.sort_by! { |item| item.code }.reverse
   end
 
   def load_yaml(entity:, type:)
