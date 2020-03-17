@@ -14,7 +14,7 @@ en:
           programme: Programme
         recipient_country: Recipient country
         recipient_region: Recipient region
-        sector: Sector
+        sector: The focus of your programme or project
         status: Status
         tied_status: Tied status
         title: Title
@@ -116,7 +116,7 @@ en:
         recipient_region:
           html: A supranational geopolitical region that will benefit from this activity.
         sector:
-          html: Classify the purpose of this activity. <a href='http://reference.iatistandard.org/203/codelists/Sector/' target='_blank'>Please provide the sector appropriate to you from this list</a>.
+          html: What area of the economy or society is your project helping? For example, research, education or SME development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank'>CRS purpose codes.</a>.
         status: This is the stage your %{level} is currently at
         tied_status: This is the tied status of your %{level}
         title: A short, human-readable title that contains a meaningful summary of the activity.

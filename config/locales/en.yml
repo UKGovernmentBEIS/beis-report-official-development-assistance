@@ -16,6 +16,9 @@ en:
         year: Year
       organisation:
         hint: The organisation this activity is associated with
+      step:
+        page_title:
+          sector: Purpose code
       submit: Continue
       update:
         success: Activity successfully updated
@@ -190,7 +193,7 @@ en:
       recipient_region:
         label: Recipient region
       sector:
-        label: Sector
+        label: The focus of your programme or project
       status:
         label: Status
       tied_status:

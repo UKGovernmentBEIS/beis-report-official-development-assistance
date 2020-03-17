@@ -39,7 +39,8 @@ module FormHelpers
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("activerecord.attributes.activity.sector")
-    expect(page).to have_content "Classify the purpose of this activity. Please provide the sector appropriate to you from this list."
+    expect(page).to have_content "The focus of your programme or project"
+    expect(page).to have_content "What area of the economy or society is your project helping? For example, research, education or SME development. Choose one of the CRS purpose codes"
     select sector, from: "activity[sector]"
     click_button I18n.t("form.activity.submit")
 
