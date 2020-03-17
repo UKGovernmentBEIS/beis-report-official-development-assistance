@@ -167,7 +167,6 @@ module FormHelpers
     if expectations
       within ".transactions" do
         expect(page).to have_content(reference)
-        expect(page).to have_content(description)
         expect(page).to have_content(transaction_type)
         expect(page).to have_content localise_date_from_input_fields(
           year: date_year,
