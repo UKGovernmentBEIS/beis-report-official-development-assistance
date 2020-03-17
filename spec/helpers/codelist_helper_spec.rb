@@ -135,5 +135,12 @@ RSpec.describe CodelistHelper, type: :helper do
           .to eq(OpenStruct.new(name: "ODA", code: "10"))
       end
     end
+
+    describe "#tied_status_radio_options" do
+      it "returns an array of tied_status objects with Untied (5) first in the list" do
+        expect(helper.tied_status_radio_options.first.name)
+          .to eq("Untied")
+      end
+    end
   end
 end

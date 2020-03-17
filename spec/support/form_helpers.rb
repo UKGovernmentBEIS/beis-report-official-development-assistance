@@ -105,6 +105,7 @@ module FormHelpers
 
     expect(page).to have_content I18n.t("activerecord.attributes.activity.tied_status")
     expect(page).to have_content "This is the tied status of your #{level}"
+    expect(page.find("div.govuk-radios div.govuk-radios__item:first-child input")[:value]).to eq("5")
 
     choose("activity[tied_status]", option: tied_status)
 
