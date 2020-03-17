@@ -71,4 +71,8 @@
 
 ## Unreleased changes
 
+- Activities are ordered by `created_at` date, oldest first
+- Transactions are ordered by `date`, newest first
+- Budgets are ordered by `period_start_date`, newest first
+
 [release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1
