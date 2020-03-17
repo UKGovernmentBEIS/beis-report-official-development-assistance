@@ -9,6 +9,10 @@ Rollbar.configure do |config|
     config.enabled = false
   end
 
+  if ENV.fetch("ROLLBAR_DISABLED", nil).eql?("true")
+    config.enabled = false
+  end
+
   # By default, Rollbar will try to call the `current_user` controller method
   # to fetch the logged-in user object, and then call that object's `id`
   # method to fetch this property. To customize:
