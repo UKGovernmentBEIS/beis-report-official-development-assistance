@@ -24,6 +24,7 @@ resource "cloudfoundry_app" "beis-roda-app" {
     "NOTIFY_WELCOME_EMAIL_TEMPLATE"          = var.notify_welcome_email_template
     "ROLLBAR_ENV"                            = "paas-${var.environment}"
     "ROLLBAR_ACCESS_TOKEN"                   = var.rollbar_access_token
+    "ROLLBAR_DISABLED"                       = var.rollbar_disabled
     "GOOGLE_TAG_MANAGER_CONTAINER_ID"        = var.google_tag_manager_container_id
     "GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH"    = var.google_tag_manager_environment_auth
     "GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW" = var.google_tag_manager_environment_preview
