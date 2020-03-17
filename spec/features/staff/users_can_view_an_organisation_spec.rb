@@ -2,7 +2,6 @@ RSpec.feature "Users can view an organisation" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       organisation = create(:organisation)
-      page.set_rack_session(userinfo: nil)
       visit organisation_path(organisation)
       expect(current_path).to eq(root_path)
     end

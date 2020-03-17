@@ -2,7 +2,6 @@ RSpec.feature "Users can create a transaction" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       activity = create(:fund_activity)
-      page.set_rack_session(userinfo: nil)
       visit organisation_activity_path(activity.organisation, activity)
       expect(current_path).to eq(root_path)
     end
