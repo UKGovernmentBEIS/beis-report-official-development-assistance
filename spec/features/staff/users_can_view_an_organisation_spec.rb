@@ -26,6 +26,24 @@ RSpec.feature "Users can view an organisation" do
 
         expect(page).to_not have_content(I18n.t("generic.link.back"))
       end
+
+      scenario "can see a list of fund activities" do
+        fund = create(:fund_activity, organisation: user.organisation)
+
+        visit organisation_path(user.organisation)
+
+        expect(page).to have_content(fund.title)
+      end
+
+      scenario "fund activities are ordered by created_at (oldest first)" do
+        fund_1 = create(:fund_activity, organisation: user.organisation, created_at: Date.yesterday)
+        fund_2 = create(:fund_activity, organisation: user.organisation, created_at: Date.today)
+
+        visit organisation_path(user.organisation)
+
+        expect(page.find("ul.funds li:first-child")).to have_content(fund_1.title)
+        expect(page.find("ul.funds li:last-child")).to have_content(fund_2.title)
+      end
     end
 
     context "viewing another organisation" do
@@ -68,6 +86,24 @@ RSpec.feature "Users can view an organisation" do
       visit organisation_path(organisation)
 
       expect(page).to_not have_content(I18n.t("generic.link.back"))
+    end
+
+    scenario "can see a list of programme activities" do
+      programme = create(:programme_activity, organisation: organisation)
+
+      visit organisation_path(organisation)
+
+      expect(page).to have_content(programme.title)
+    end
+
+    scenario "programme activities are ordered by created_at (oldest first)" do
+      programme_1 = create(:programme_activity, organisation: organisation, created_at: Date.yesterday)
+      programme_2 = create(:programme_activity, organisation: organisation, created_at: Date.today)
+
+      visit organisation_path(organisation)
+
+      expect(page.find("ul.programmes li:first-child")).to have_content(programme_1.title)
+      expect(page.find("ul.programmes li:last-child")).to have_content(programme_2.title)
     end
   end
 end

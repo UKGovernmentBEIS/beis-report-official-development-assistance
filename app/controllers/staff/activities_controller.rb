@@ -11,10 +11,10 @@ class Staff::ActivitiesController < Staff::BaseController
     @activity = Activity.find(id)
     authorize @activity
 
-    @activities = @activity.activities.map { |activity| ActivityPresenter.new(activity) }
+    @activities = @activity.activities.order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
 
-    @transactions = policy_scope(Transaction).where(activity: @activity)
-    @budgets = policy_scope(Budget).where(activity: @activity)
+    @transactions = policy_scope(Transaction).where(activity: @activity).order("date DESC")
+    @budgets = policy_scope(Budget).where(activity: @activity).order("period_start_date DESC")
 
     respond_to do |format|
       format.html do
