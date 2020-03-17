@@ -29,7 +29,6 @@ RSpec.feature "Users can view transactions on an activity page" do
       click_link activity.title
 
       expect(page).to have_content(transaction_presenter.reference)
-      expect(page).to have_content(transaction_presenter.description)
       expect(page).to have_content(transaction_presenter.transaction_type)
       expect(page).to have_content(transaction_presenter.date)
       expect(page).to have_content(transaction_presenter.currency)
