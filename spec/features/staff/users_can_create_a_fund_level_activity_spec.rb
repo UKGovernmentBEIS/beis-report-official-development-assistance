@@ -1,7 +1,6 @@
 RSpec.feature "Users can create a fund level activity" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
-      page.set_rack_session(userinfo: nil)
       visit activity_step_path(double(Activity, id: "123"), :identifier)
       expect(current_path).to eq(root_path)
     end
