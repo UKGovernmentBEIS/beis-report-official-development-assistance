@@ -75,5 +75,6 @@
 - Transactions are ordered by `date`, newest first
 - Budgets are ordered by `period_start_date`, newest first
 - Remove transaction description from the transaction display table, to improve the activity page UI
+- Store session data server-side to fix cookie overflow errors
 
 [release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1
