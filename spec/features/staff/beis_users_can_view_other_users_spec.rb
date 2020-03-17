@@ -20,7 +20,7 @@ RSpec.feature "BEIS users can can view other users" do
 
     # Navigate from the landing page
     visit organisation_path(user.organisation)
-    click_on(I18n.t("page_content.dashboard.button.manage_users"))
+    click_on(I18n.t("page_title.users.index"))
 
     # Navigate to the users page
     expect(page).to have_content(I18n.t("page_title.users.index"))
@@ -50,7 +50,7 @@ RSpec.feature "BEIS users can can view other users" do
 
     # Navigate from the landing page
     visit organisation_path(user.organisation)
-    click_on(I18n.t("page_content.dashboard.button.manage_users"))
+    click_on(I18n.t("page_title.users.index"))
 
     expected_array = [
       a1_user.organisation.name,
@@ -68,7 +68,7 @@ RSpec.feature "BEIS users can can view other users" do
 
     # Navigate from the landing page
     visit organisation_path(user.organisation)
-    click_on(I18n.t("page_content.dashboard.button.manage_users"))
+    click_on(I18n.t("page_title.users.index"))
 
     # The details include whether the user is active
     expect(page).to have_content(I18n.t("form.user.active.false"))

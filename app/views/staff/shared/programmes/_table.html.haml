@@ -1,0 +1,18 @@
+%table.govuk-table.programmes
+  %caption.govuk-table__caption.govuk-visually-hidden
+    = t("page_content.organisation.programmes")
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header
+        =t("activerecord.attributes.activity.title")
+      %th.govuk-table__header
+        = t("page_content.activity.identitfier.label")
+      %th.govuk-table__header
+        =t("activerecord.attributes.activity.programme.fund")
+
+  %tbody.govuk-table__body
+    - programmes.each do |programme|
+      %tr.govuk-table__row{id: programme.id}
+        %td.govuk-table__cell= link_to programme.display_title, organisation_activity_path(programme.organisation, programme), class: "govuk-link govuk-link--no-visited-state"
+        %td.govuk-table__cell= programme.identifier
+        %td.govuk-table__cell= programme.parent_activity.title

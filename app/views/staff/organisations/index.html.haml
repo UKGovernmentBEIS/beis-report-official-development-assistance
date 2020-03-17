@@ -1,9 +1,8 @@
 =content_for :page_title_prefix, t("page_title.organisation.index")
 
-= link_to t("generic.link.back"), organisation_path(current_user.organisation), class: "govuk-back-link"
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
-    .govuk-grid-column-two-thirds
+    .govuk-grid-column-full
       %h1.govuk-heading-xl
         = t("page_title.organisation.index")
 
@@ -11,7 +10,4 @@
         = link_to(I18n.t("page_content.organisations.button.create"), new_organisation_path, class: "govuk-button")
 
       - if @organisations
-        %ul.govuk-list.govuk-list--bullet
-          - @organisations.each do |organisation|
-            %li
-              = link_to organisation.name, organisation_path(organisation.id)
+        = render partial: "staff/organisations/table", locals: { organisations: @organisations }

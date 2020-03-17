@@ -15,7 +15,7 @@ RSpec.feature "BEIS users can create organisations" do
 
   scenario "successfully creating an organisation" do
     visit organisation_path(user.organisation)
-    click_link I18n.t("page_content.dashboard.button.manage_organisations")
+    click_link I18n.t("page_title.organisation.index")
     click_link I18n.t("page_content.organisations.button.create")
 
     expect(page).to have_content(I18n.t("page_title.organisation.new"))
@@ -31,7 +31,7 @@ RSpec.feature "BEIS users can create organisations" do
 
   scenario "presence validation works as expected" do
     visit organisation_path(user.organisation)
-    click_link I18n.t("page_content.dashboard.button.manage_organisations")
+    click_link I18n.t("page_title.organisation.index")
     click_link I18n.t("page_content.organisations.button.create")
 
     expect(page).to have_content(I18n.t("page_title.organisation.new"))

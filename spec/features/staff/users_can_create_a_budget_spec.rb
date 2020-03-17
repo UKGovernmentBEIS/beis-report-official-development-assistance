@@ -64,7 +64,10 @@ RSpec.describe "Users can create a budget" do
     context "on a programme level activity" do
       scenario "they cannot create budgets" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
-        programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
+        programme_activity = create(:programme_activity,
+          activity: fund_activity,
+          organisation: user.organisation,
+          extending_organisation: user.organisation)
 
         visit organisation_path(user.organisation)
         click_on(programme_activity.title)
@@ -77,8 +80,12 @@ RSpec.describe "Users can create a budget" do
     context "on a project level activity" do
       scenario "successfully creates a budget" do
         fund_activity = create(:fund_activity)
-        programme_activity = create(:programme_activity, activity: fund_activity)
-        project_activity = create(:project_activity, activity: programme_activity, organisation: user.organisation)
+        programme_activity = create(:programme_activity,
+          activity: fund_activity,
+          extending_organisation: user.organisation)
+        project_activity = create(:project_activity,
+          activity: programme_activity,
+          organisation: user.organisation)
 
         visit organisation_path(user.organisation)
 

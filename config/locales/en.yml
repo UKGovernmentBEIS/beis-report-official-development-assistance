@@ -164,6 +164,7 @@ en:
         button:
           edit: Choose extending organisation
         heading: Extending organisation
+        hint: The extending organisation will be able to create and report project information against this programme
       finance:
         label: Finance
       flow:
@@ -207,13 +208,6 @@ en:
     budgets:
       button:
         create: Create budget
-    dashboard:
-      button:
-        manage_organisations: Manage organisations
-        manage_users: Manage users
-      header:
-        manage_organisations: Organisations
-        manage_users: Users
     errors:
       auth0:
         failed:
@@ -229,8 +223,10 @@ en:
         create_programme: Create programme
         create_project: Create project
         edit: Edit organisation
+        edit_details: Edit details
       default_currency:
         label: Default currency
+      details: Organisation details
       funds: Funds
       iati_reference:
         label: IATI reference
@@ -239,8 +235,10 @@ en:
       name:
         label: Name
       programmes: Programmes
+      projects: Projects
       type:
         label: Type
+    organisation_details: Organisation details
     organisations:
       button:
         create: Create organisation
