@@ -1,0 +1,4 @@
+my_first_job:
+  cron: "0 0 0 1 * ? *"
+  class: "SessionTrimJob"
+  queue: session_trim

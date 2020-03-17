@@ -130,6 +130,8 @@ GEM
       railties (>= 3.2, < 6.1)
     erubi (1.9.0)
     erubis (2.7.0)
+    et-orbi (1.2.3)
+      tzinfo
     execjs (2.7.0)
     factory_bot (5.1.1)
       activesupport (>= 4.2.0)
@@ -141,6 +143,9 @@ GEM
     faraday (1.0.0)
       multipart-post (>= 1.2, < 3)
     ffi (1.11.3)
+    fugit (1.3.3)
+      et-orbi (~> 1.1, >= 1.1.8)
+      raabro (~> 1.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     haml (5.1.2)
@@ -258,14 +263,12 @@ GEM
       activesupport (>= 3.0.0)
     pundit-matchers (1.6.0)
       rspec-rails (>= 3.0.0)
+    raabro (1.1.6)
     rack (2.0.9)
     rack-protection (2.0.8.1)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
-    rack_session_access (0.2.0)
-      builder (>= 2.0.0)
-      rack (>= 1.0.0)
     rails (6.0.2.1)
       actioncable (= 6.0.2.1)
       actionmailbox (= 6.0.2.1)
@@ -363,6 +366,9 @@ GEM
       rack (< 2.1.0)
       rack-protection (>= 1.5.0)
       redis (>= 3.3.5, < 5)
+    sidekiq-cron (1.1.0)
+      fugit (~> 1.1)
+      sidekiq (>= 4.2.1)
     simplecov (0.16.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -463,7 +469,6 @@ DEPENDENCIES
   puma (~> 4.3)
   pundit
   pundit-matchers (~> 1.6.0)
-  rack_session_access
   rails (~> 6.0.2)
   rails_layout
   redis (~> 4.0)
@@ -475,6 +480,7 @@ DEPENDENCIES
   selenium-webdriver
   shoulda-matchers
   sidekiq (~> 5.2)
+  sidekiq-cron (~> 1.1)
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
