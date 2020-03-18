@@ -23,6 +23,10 @@ module AuthenticationHelpers
   end
 
   def stub_authenticated_session(uid: "123456789", name: "Alex", email: "alex@example.com")
-    page.set_rack_session(userinfo: {uid: uid, info: {name: name, email: email}})
+    mock_successful_authentication(uid: uid, name: name, email: email)
+    visit root_path
+    within(".govuk-header") do
+      click_on I18n.t("generic.link.sign_in")
+    end
   end
 end
