@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe "signing out of Auth0", type: :request do
   scenario "success" do
+    allow(ENV).to receive(:[]).with("BULLET_DEBUG").and_return("false")
     allow(ENV).to receive(:[]).with("AUTH0_CLIENT_ID").and_return("123456")
     allow(ENV).to receive(:[]).with("AUTH0_DOMAIN").and_return("test.auth0")
     mock_successful_authentication

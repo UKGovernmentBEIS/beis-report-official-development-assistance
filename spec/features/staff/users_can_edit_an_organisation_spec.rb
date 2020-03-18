@@ -4,7 +4,6 @@ RSpec.feature "Users can edit organisations" do
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
-      page.set_rack_session(userinfo: nil)
       visit edit_organisation_path(beis_organisation)
       expect(current_path).to eq(root_path)
     end
