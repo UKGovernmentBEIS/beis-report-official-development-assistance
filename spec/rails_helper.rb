@@ -83,6 +83,10 @@ RSpec.configure do |config|
   config.after(:each) do |example|
     ActionMailer::Base.deliveries.clear
   end
+
+  config.before(:each, type: :request) do
+    host! "test.local"
+  end
 end
 
 Shoulda::Matchers.configure do |config|
