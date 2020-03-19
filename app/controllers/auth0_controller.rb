@@ -15,7 +15,12 @@ class Auth0Controller < ApplicationController
   end
 
   def failure
-    # show a failure page or redirect to an error page
-    @error_message = request.params["message"]
+    message = request.params["message"]
+    @error_message = t message.to_sym,
+      scope: "page_content.errors.auth0.error_messages",
+      raise: true
+  rescue I18n::MissingTranslationData
+    Rollbar.log(:info, "Unknown response from Auth0", message)
+    @error_message = t("page_content.errors.auth0.error_messages.generic")
   end
 end
