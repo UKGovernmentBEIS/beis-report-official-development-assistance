@@ -100,7 +100,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         # Don't provide a sector
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content "The focus of your programme or project can't be blank"
+        expect(page).to have_content I18n.t("page_title.activity_form.show.sector")
 
         select "Education policy and administrative management", from: "activity[sector]"
         click_button I18n.t("form.activity.submit")

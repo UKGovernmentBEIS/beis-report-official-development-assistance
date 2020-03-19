@@ -1,4 +1,4 @@
 = render layout: "wrapper" do |f|
   %h1.govuk-heading-xl= t("form.activity.step.page_title.sector")
 
-  = f.govuk_collection_select :sector, yaml_to_objects(entity: "activity", type: "sector"), :code, :name, label: { size: 'm' }
+  = f.govuk_collection_select :sector, yaml_to_objects_with_description(entity: "activity", type: "sector"), :code, :name, label: { size: 'm', text: I18n.t("activerecord.attributes.activity.sector", level: f.object.level)  }, hint_text: t("helpers.hint.activity.sector.html", level: f.object.level)

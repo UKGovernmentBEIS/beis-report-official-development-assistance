@@ -38,9 +38,8 @@ module FormHelpers
     fill_in "activity[description]", with: description
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("activerecord.attributes.activity.sector")
-    expect(page).to have_content "The focus of your programme or project"
-    expect(page).to have_content "What area of the economy or society is your project helping? For example, research, education or SME development. Choose one of the CRS purpose codes"
+    expect(page).to have_content I18n.t("page_title.activity_form.show.sector")
+    expect(page).to have_content "The focus of your #{level}"
     select sector, from: "activity[sector]"
     click_button I18n.t("form.activity.submit")
 

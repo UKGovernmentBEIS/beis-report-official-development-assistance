@@ -193,7 +193,7 @@ en:
       recipient_region:
         label: Recipient region
       sector:
-        label: The focus of your programme or project
+        label: The focus of your %{level}
       status:
         label: Status
       tied_status:
@@ -277,7 +277,7 @@ en:
         purpose: Purpose
         purpose_level: Purpose of %{level}
         region: Recipient region
-        sector: Sector
+        sector: Purpose code
         status: Status
         tied_status: Tied status
     budget:
