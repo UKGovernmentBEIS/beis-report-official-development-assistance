@@ -82,12 +82,12 @@ RSpec.feature "Users can sign in with Auth0" do
     end
   end
 
-  context "when there was a problem and Auth0 redirects to /failure" do
+  context "when there was a known error message and the user is redirected to /auth/failure" do
     before(:each) do
       OmniAuth.config.mock_auth[:auth0] = :invalid_credentials
     end
 
-    it "the user is shown what the error message so they can try to correct the problem themselves" do
+    it "displays the error message so they can try to correct the problem themselves" do
       visit dashboard_path
 
       within ".app-header__user-links" do
@@ -96,8 +96,26 @@ RSpec.feature "Users can sign in with Auth0" do
       end
 
       expect(page).to have_content(I18n.t("page_content.errors.auth0.failed.explanation"))
-      expect(page).to have_content("invalid_credentials")
+      expect(page).to have_content(I18n.t("page_content.errors.auth0.error_messages.invalid_credentials"))
       expect(page).to have_content(I18n.t("page_content.errors.auth0.failed.prompt"))
+    end
+  end
+
+  context "when there was an unknown error message and the user is redirected to /auth/failure" do
+    before(:each) do
+      OmniAuth.config.mock_auth[:auth0] = :unknown_failure
+    end
+
+    it "displays a generic error message and logs to Rollbar" do
+      allow(Rollbar).to receive(:log)
+
+      visit root_path
+
+      click_button I18n.t("generic.link.sign_in")
+
+      expect(page).not_to have_content("unknown_failure")
+      expect(page).to have_content(I18n.t("page_content.errors.auth0.error_messages.generic"))
+      expect(Rollbar).to have_received(:log).with(:info, "Unknown response from Auth0", "unknown_failure")
     end
   end
 
