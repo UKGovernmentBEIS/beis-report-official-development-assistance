@@ -169,7 +169,7 @@ RSpec.feature "Users can create a fund level activity" do
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content "Aid type can't be blank"
 
-        select "General budget support", from: "activity[aid_type]"
+        choose("activity[aid_type]", option: "A01")
         click_button I18n.t("form.activity.submit")
 
         expect(page).to have_content I18n.t("page_title.activity_form.show.tied_status")
