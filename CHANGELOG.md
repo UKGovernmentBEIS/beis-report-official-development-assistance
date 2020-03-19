@@ -82,6 +82,6 @@
 - Make it clearer that Programme should have an extending organisation in order
   for delivery partners to report on the programme
 - fix cookie error by switching session storage to Redis
-
+- Activity aid type is now selected by radio button, not a dropdown select box  
 
 [release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1
