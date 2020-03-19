@@ -83,5 +83,6 @@
   for delivery partners to report on the programme
 - fix cookie error by switching session storage to Redis
 - Activity aid type is now selected by radio button, not a dropdown select box  
+- Iterate the form content for the sector field by renaming it to "focus area"
 
 [release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1

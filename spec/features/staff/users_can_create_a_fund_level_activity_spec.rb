@@ -39,7 +39,7 @@ RSpec.feature "Users can create a fund level activity" do
       visit organisation_path(user.organisation)
       click_on(I18n.t("page_content.organisation.button.create_fund"))
 
-      fill_in_activity_form(identifier: identifier)
+      fill_in_activity_form(identifier: identifier, level: "fund")
 
       activity = Activity.find_by(identifier: identifier)
       expect(activity.funding_organisation_name).to eq("HM Treasury")
@@ -53,7 +53,7 @@ RSpec.feature "Users can create a fund level activity" do
       visit organisation_path(user.organisation)
       click_on(I18n.t("page_content.organisation.button.create_fund"))
 
-      fill_in_activity_form(identifier: identifier)
+      fill_in_activity_form(identifier: identifier, level: "fund")
 
       activity = Activity.find_by(identifier: identifier)
       expect(activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
@@ -67,7 +67,7 @@ RSpec.feature "Users can create a fund level activity" do
       visit organisation_path(user.organisation)
       click_on(I18n.t("page_content.organisation.button.create_fund"))
 
-      fill_in_activity_form(identifier: identifier)
+      fill_in_activity_form(identifier: identifier, level: "fund")
 
       activity = Activity.find_by(identifier: identifier)
       expect(activity.extending_organisation).to eql(user.organisation)
@@ -96,11 +96,11 @@ RSpec.feature "Users can create a fund level activity" do
         fill_in "activity[description]", with: Faker::Lorem.paragraph
         click_button I18n.t("form.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.sector")
+        expect(page).to have_content I18n.t("page_title.activity_form.show.sector", level: "fund")
 
         # Don't provide a sector
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content "Sector can't be blank"
+        expect(page).to have_content I18n.t("page_title.activity_form.show.sector", level: "fund")
 
         select "Education policy and administrative management", from: "activity[sector]"
         click_button I18n.t("form.activity.submit")
