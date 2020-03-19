@@ -190,7 +190,7 @@ en:
       recipient_region:
         label: Recipient region
       sector:
-        label: Sector
+        label: Focus area
       status:
         label: Status
       tied_status:
@@ -277,7 +277,7 @@ en:
         purpose: Purpose
         purpose_level: Purpose of %{level}
         region: Recipient region
-        sector: Sector
+        sector: What is the focus area for this %{level}
         status: Status
         tied_status: Tied status
     budget:
