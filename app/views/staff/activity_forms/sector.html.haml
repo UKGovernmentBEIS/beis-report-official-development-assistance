@@ -1,2 +1,7 @@
 = render layout: "wrapper" do |f|
-  = f.govuk_collection_select :sector, yaml_to_objects(entity: "activity", type: "sector"), :code, :name, label: { tag: 'h1', size: 'xl' }
+  = f.govuk_collection_select :sector,
+    yaml_to_objects(entity: "activity", type: "sector", with_empty_item: true),
+    :code,
+    :name,
+    label: { tag: 'h1', size: 'xl', text:  I18n.t("page_title.activity_form.show.sector", level: f.object.level) },
+    hint_text: t("helpers.hint.activity.sector.html", level: f.object.level)
