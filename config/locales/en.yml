@@ -210,6 +210,9 @@ en:
         create: Create budget
     errors:
       auth0:
+        error_messages:
+          generic: There was a problem signing you in.
+          invalid_credentials: Invalid credentials
         failed:
           explanation: Your request to sign in failed
           prompt: Try signing in again and if you continue to have this issue please contact support.
