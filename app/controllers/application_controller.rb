@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Auth
+  include Ip
 
   def sign_out
     reset_session
@@ -21,5 +22,10 @@ class ApplicationController < ActionController::Base
 
   def to_query(hash)
     hash.map { |k, v| "#{k}=#{CGI.escape(v)}" unless v.nil? }.reject(&:nil?).join("&")
+  end
+
+  def append_info_to_payload(payload)
+    super
+    payload[:remote_ip] = request_ip
   end
 end
