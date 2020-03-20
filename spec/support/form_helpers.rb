@@ -23,7 +23,7 @@ module FormHelpers
     finance: "Standard grant",
     aid_type: "A01",
     tied_status: "5",
-    level: "fund"
+    level:
   )
 
     expect(page).to have_content I18n.t("activerecord.attributes.activity.identifier")
@@ -38,8 +38,12 @@ module FormHelpers
     fill_in "activity[description]", with: description
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("activerecord.attributes.activity.sector")
-    expect(page).to have_content "Classify the purpose of this activity. Please provide the sector appropriate to you from this list."
+    expect(page).to have_content I18n.t("page_title.activity_form.show.sector", level: level)
+    expect(page).to have_content(
+      ActionView::Base.full_sanitizer.sanitize(
+        I18n.t("helpers.hint.activity.sector.html", level: level)
+      )
+    )
     select sector, from: "activity[sector]"
     click_button I18n.t("form.activity.submit")
 

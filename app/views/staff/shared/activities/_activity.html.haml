@@ -36,7 +36,7 @@
 
   .govuk-summary-list__row.sector
     %dt.govuk-summary-list__key
-      = t("page_content.activity.sector.label")
+      = t("page_content.activity.sector.label", level: activity_presenter.level)
     %dd.govuk-summary-list__value
       = activity_presenter.sector
     %dd.govuk-summary-list__actions
