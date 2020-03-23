@@ -12,7 +12,15 @@ FactoryBot.define do
 
     factory :beis_organisation do
       name { "Department for Business, Energy and Industrial Strategy" }
+      iati_reference { "GB-GOV-13" }
       service_owner { true }
+      initialize_with do
+        Organisation.find_or_create_by(
+          name: name,
+          iati_reference: iati_reference,
+          service_owner: service_owner
+        )
+      end
     end
   end
 end
