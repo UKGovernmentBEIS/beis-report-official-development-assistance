@@ -1,0 +1,9 @@
+.activity-page {
+  .activity-details {
+    .govuk-summary-list__actions {
+      @include govuk-media-query($from: desktop) {
+        width: 10%;
+      }
+    }
+  }
+}
