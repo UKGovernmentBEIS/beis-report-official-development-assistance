@@ -17,6 +17,8 @@
     = javascript_include_tag 'application'
     = csrf_meta_tags
   %body{class: 'govuk-template__body app-body-class'}
+    %script
+      document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
     = render partial: 'shared/google_tag_manager_body'
     %a.govuk-skip-link{href: "#main-content"} Skip to main content
     %header.govuk-header{"data-module": "govuk-header", role: "banner"}
