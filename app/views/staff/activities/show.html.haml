@@ -3,12 +3,12 @@
 = link_to t("generic.link.back"), activity_back_path(current_user: current_user, activity: @activity), class: "govuk-back-link"
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
-    .govuk-grid-column-two-thirds
+    .govuk-grid-column-full
       %h1.govuk-heading-xl
         = @activity.title
 
-  .govuk-grid-row
-    .govuk-grid-column-two-thirds
+  .govuk-grid-row.activity-page
+    .govuk-grid-column-full
       = render partial: "staff/shared/activities/activity", locals: { activity_presenter: ActivityPresenter.new(@activity) }
 
   - if @activity.fund? && policy(:fund).create?
