@@ -1,6 +1,13 @@
 require "rails_helper"
 
 RSpec.describe Activity, type: :model do
+  describe "#finance" do
+    it "always returns Standard Grant, code '110'" do
+      activity = Activity.new
+      expect(activity.finance).to eq "110"
+    end
+  end
+
   describe "scopes" do
     describe ".funds" do
       it "only returns fund level activities" do
