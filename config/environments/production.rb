@@ -118,4 +118,10 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
   config.require_master_key = false
+
+  # See https://github.com/rails/rails/issues/29893
+  # This whitelists the hosts the application can trust when using `url_for` and related helpers
+  config.hosts = [
+    ENV["DOMAIN"],
+  ]
 end
