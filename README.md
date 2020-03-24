@@ -44,6 +44,19 @@ This service enables the Department for Business, Energy and Industrial Strategy
 
 ## Running the tests
 
+You will need to install Firefox and
+[Geckodriver](https://github.com/mozilla/geckodriver) to run the entire test
+suite, this can be achieved with Homebrew on Mac OS:
+
+1. Install Firefox `brew cask install firefox`
+
+1. Install Geckodriver `brew install geckodriver`
+
+If you don't want to run the JavaScript specs, you can skip the Firefox and
+Geckodriver install, but you must exclude the JavaScript tests with:
+
+`bundle exec rspec --tag "~js"`
+
 To run all the tests, and linters we use `rake`:
 
 ```
