@@ -121,7 +121,7 @@ Rails.application.configure do
 
   # See https://github.com/rails/rails/issues/29893
   # This whitelists the hosts the application can trust when using `url_for` and related helpers
-  config.hosts = [
-    ENV["DOMAIN"],
-  ]
+  hosts = []
+  hosts << URI(ENV["DOMAIN"])&.host if ENV["DOMAIN"].present?
+  config.hosts = hosts.compact
 end
