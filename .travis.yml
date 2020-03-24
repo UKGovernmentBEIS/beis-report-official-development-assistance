@@ -2,7 +2,7 @@ language: minimal
 services:
 - docker
 before_install:
-- docker build . --build-arg RAILS_ENV=test -t app/test
+- docker build . --target test --build-arg RAILS_ENV=test -t app/test
 jobs:
   include:
   - stage: Test
