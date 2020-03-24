@@ -7,4 +7,8 @@ class Organisation < ApplicationRecord
 
   scope :sorted_by_name, -> { order(name: :asc) }
   scope :delivery_partners, -> { sorted_by_name.where(service_owner: false) }
+
+  def is_government_organisation?
+    %w[10 11].include?(organisation_type)
+  end
 end

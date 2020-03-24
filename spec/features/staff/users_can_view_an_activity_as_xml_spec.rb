@@ -48,6 +48,14 @@ RSpec.feature "Users can view an activity as XML" do
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
+
+        it "sets BEIS as the reporting org" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.at("iati-activity/reporting-org/@type").text).to eq("10")
+          expect(xml.at("iati-activity/reporting-org/@ref").text).to eq("GB-GOV-13")
+          expect(xml.at("iati-activity/reporting-org/narrative").text).to eq("Department for Business, Energy and Industrial Strategy")
+        end
       end
 
       context "when the activity is a programme activity" do
@@ -56,6 +64,14 @@ RSpec.feature "Users can view an activity as XML" do
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
+
+        it "sets BEIS as the reporting org" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.at("iati-activity/reporting-org/@type").text).to eq("10")
+          expect(xml.at("iati-activity/reporting-org/@ref").text).to eq("GB-GOV-13")
+          expect(xml.at("iati-activity/reporting-org/narrative").text).to eq("Department for Business, Energy and Industrial Strategy")
+        end
       end
 
       context "when the activity is a project activity" do
@@ -64,6 +80,30 @@ RSpec.feature "Users can view an activity as XML" do
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
+
+        context "when the delivery partner is a governmental organisation" do
+          let(:organisation) { create(:organisation, name: "UKSA", organisation_type: 10) }
+
+          it "sets BEIS as the reporting org" do
+            visit organisation_activity_path(organisation, activity, format: :xml)
+
+            expect(xml.at("iati-activity/reporting-org/@type").text).to eq("10")
+            expect(xml.at("iati-activity/reporting-org/@ref").text).to eq("GB-GOV-13")
+            expect(xml.at("iati-activity/reporting-org/narrative").text).to eq("Department for Business, Energy and Industrial Strategy")
+          end
+        end
+
+        context "when the delivery partner isa non-governmental organisation" do
+          let(:organisation) { create(:organisation, name: "AMS", organisation_type: 15) }
+
+          it "sets itself as the reporting org" do
+            visit organisation_activity_path(organisation, activity, format: :xml)
+
+            expect(xml.at("iati-activity/reporting-org/@type").text).to eq(organisation.organisation_type)
+            expect(xml.at("iati-activity/reporting-org/@ref").text).to eq(organisation.iati_reference)
+            expect(xml.at("iati-activity/reporting-org/narrative").text).to eq(organisation.name)
+          end
+        end
       end
 
       context "when the activity has budgets" do
