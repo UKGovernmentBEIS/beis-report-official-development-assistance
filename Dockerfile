@@ -1,5 +1,6 @@
-# Install dependencies into a seperate and isolated Docker stage
-# that is thrown away apart from any subsequent COPY commands
+# ------------------------------------------------------------------------------
+# dependency stage
+# ------------------------------------------------------------------------------
 FROM mkenney/npm:latest AS dependencies
 ENV INSTALL_PATH /deps
 RUN mkdir -p $INSTALL_PATH
@@ -8,6 +9,10 @@ COPY package.json ./package.json
 COPY package-lock.json ./package-lock.json
 RUN npm set progress=false && npm config set depth 0
 RUN npm install --save govuk-frontend
+
+# ------------------------------------------------------------------------------
+# release stage
+# ------------------------------------------------------------------------------
 
 FROM ruby:2.6.3 as release
 MAINTAINER dxw <rails@dxw.com>
@@ -63,3 +68,21 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 EXPOSE 3000
 
 CMD ["bundle", "exec", "puma"]
+
+# ------------------------------------------------------------------------------
+# test stage
+# ------------------------------------------------------------------------------
+
+FROM release as test
+
+RUN apt-get install -yy firefox-esr
+
+ARG gecko_driver_version=0.26.0
+
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v$gecko_driver_version/geckodriver-v$gecko_driver_version-linux64.tar.gz
+RUN tar -xvzf  geckodriver-v$gecko_driver_version-linux64.tar.gz
+RUN rm geckodriver-v$gecko_driver_version-linux64.tar.gz
+RUN chmod +x geckodriver
+RUN mv geckodriver* /usr/local/bin
+
+CMD [ "bundle", "exec", "rake, default" ]
