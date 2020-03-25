@@ -8,6 +8,13 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#tied_status" do
+    it "always returns Untied, code '5'" do
+      activity = Activity.new
+      expect(activity.tied_status).to eq "5"
+    end
+  end
+
   describe "scopes" do
     describe ".funds" do
       it "only returns fund level activities" do
