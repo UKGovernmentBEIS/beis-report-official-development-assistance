@@ -17,8 +17,12 @@ class BudgetPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      activities = Activity.where(organisation_id: user.organisation)
-      scope.where(activity_id: activities)
+      if user.organisation.service_owner?
+        scope.all
+      else
+        activities = Activity.where(organisation_id: user.organisation)
+        scope.where(activity_id: activities)
+      end
     end
   end
 end
