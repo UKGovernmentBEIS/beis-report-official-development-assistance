@@ -86,5 +86,6 @@
 - Iterate the form content for the sector field by renaming it to "focus area"
 - Enable host whitelisting (Rails 6 feature) to mitigate poisoned host header attacks
 - Anonymize user's IP addresses before logging them outside the application, by removing the last octet of the address. Also use Rollbar's built-in IP address anonymizer.
+- BEIS users can view Transactions & Budgets on a project, but not create or edit them
 
 [release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1
