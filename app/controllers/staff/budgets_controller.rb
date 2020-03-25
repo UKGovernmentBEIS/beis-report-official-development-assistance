@@ -10,9 +10,9 @@ class Staff::BudgetsController < Staff::BaseController
   end
 
   def create
-    authorize :budget, :create?
-
     @activity = Activity.find(activity_id)
+    authorize @activity
+
     result = CreateBudget.new(activity: @activity).call(attributes: budget_params)
 
     if result.success?

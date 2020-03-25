@@ -26,4 +26,5 @@
           %td.govuk-table__cell= budget.currency
           %td.govuk-table__cell= budget.value
           %td.govuk-table__cell
-            = a11y_action_link(I18n.t('generic.link.edit'), edit_activity_budget_path(budget.activity_id, budget))
+            - if policy(budget).create?
+              = a11y_action_link(I18n.t('generic.link.edit'), edit_activity_budget_path(budget.activity_id, budget))
