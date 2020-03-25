@@ -4,11 +4,15 @@ class BudgetPolicy < ApplicationPolicy
   end
 
   def create?
-    true
+    Pundit.policy!(user, record.activity).create?
   end
 
   def update?
-    true
+    Pundit.policy!(user, record.activity).update?
+  end
+
+  def destroy?
+    Pundit.policy!(user, record.activity).destroy?
   end
 
   class Scope < Scope

@@ -12,9 +12,9 @@ class Staff::TransactionsController < Staff::BaseController
   end
 
   def create
-    authorize :transaction, :create?
-
     @activity = Activity.find(activity_id)
+    authorize @activity
+
     result = CreateTransaction.new(activity: @activity)
       .call(attributes: transaction_params)
     @transaction = result.object
