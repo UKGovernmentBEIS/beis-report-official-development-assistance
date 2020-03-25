@@ -32,4 +32,5 @@
           %td.govuk-table__cell= transaction.providing_organisation_name
           %td.govuk-table__cell= transaction.receiving_organisation_name
           %td.govuk-table__cell
-            = a11y_action_link(I18n.t('generic.link.edit'), edit_activity_transaction_path(transaction.activity_id, transaction))
+            - if policy(transaction).create?
+              = a11y_action_link(I18n.t('generic.link.edit'), edit_activity_transaction_path(transaction.activity_id, transaction))

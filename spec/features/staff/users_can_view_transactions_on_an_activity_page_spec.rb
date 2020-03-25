@@ -5,49 +5,93 @@ RSpec.feature "Users can view transactions on an activity page" do
 
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
-    let(:activity) { create(:fund_activity, organisation: user.organisation) }
-    let(:other_activity) { create(:fund_activity, organisation: user.organisation) }
 
-    scenario "only transactions belonging to this fund activity are shown on the Activity#show page" do
-      transaction = create(:transaction, activity: activity)
-      other_transaction = create(:transaction, activity: other_activity)
+    context "when the activity is a fund" do
+      let(:activity) { create(:fund_activity, organisation: user.organisation) }
+      let(:other_activity) { create(:fund_activity, organisation: user.organisation) }
 
-      visit organisation_path(user.organisation)
+      scenario "only transactions belonging to this fund activity are shown on the Activity#show page" do
+        transaction = create(:transaction, activity: activity)
+        other_transaction = create(:transaction, activity: other_activity)
 
-      click_link activity.title
+        visit organisation_path(user.organisation)
 
-      expect(page).to have_content(transaction.reference)
-      expect(page).to_not have_content(other_transaction.reference)
+        click_link activity.title
+
+        expect(page).to have_content(transaction.reference)
+        expect(page).to_not have_content(other_transaction.reference)
+      end
+
+      scenario "transaction information is shown on the page" do
+        transaction = create(:transaction, activity: activity)
+        transaction_presenter = TransactionPresenter.new(transaction)
+
+        visit organisation_path(user.organisation)
+
+        click_link activity.title
+
+        expect(page).to have_content(transaction_presenter.reference)
+        expect(page).to have_content(transaction_presenter.transaction_type)
+        expect(page).to have_content(transaction_presenter.date)
+        expect(page).to have_content(transaction_presenter.currency)
+        expect(page).to have_content(transaction_presenter.value)
+        expect(page).to have_content(transaction_presenter.disbursement_channel)
+        expect(page).to have_content(transaction_presenter.providing_organisation_name)
+        expect(page).to have_content(transaction_presenter.receiving_organisation_name)
+      end
+
+      scenario "the transactions are shown in date order, newest first" do
+        transaction_1 = create(:transaction, activity: activity, date: Date.today)
+        transaction_2 = create(:transaction, activity: activity, date: Date.yesterday)
+
+        visit organisation_path(user.organisation)
+
+        click_link activity.title
+
+        expect(page.find("table.transactions tbody tr:first-child")[:id]).to eq(transaction_1.id)
+        expect(page.find("table.transactions tbody tr:last-child")[:id]).to eq(transaction_2.id)
+      end
     end
 
-    scenario "transaction information is shown on the page" do
-      transaction = create(:transaction, activity: activity)
-      transaction_presenter = TransactionPresenter.new(transaction)
+    context "when the activity is a project" do
+      let(:fund_activity) { create(:fund_activity, organisation: user.organisation) }
+      let(:programme_activity) { create(:programme_activity, activity: fund_activity, organisation: user.organisation) }
+      let(:project_activity) { create(:project_activity, activity: programme_activity, organisation: user.organisation) }
 
-      visit organisation_path(user.organisation)
+      scenario "transaction information is shown on the page" do
+        transaction = create(:transaction, activity: project_activity)
+        transaction_presenter = TransactionPresenter.new(transaction)
 
-      click_link activity.title
+        visit organisation_path(user.organisation)
 
-      expect(page).to have_content(transaction_presenter.reference)
-      expect(page).to have_content(transaction_presenter.transaction_type)
-      expect(page).to have_content(transaction_presenter.date)
-      expect(page).to have_content(transaction_presenter.currency)
-      expect(page).to have_content(transaction_presenter.value)
-      expect(page).to have_content(transaction_presenter.disbursement_channel)
-      expect(page).to have_content(transaction_presenter.providing_organisation_name)
-      expect(page).to have_content(transaction_presenter.receiving_organisation_name)
-    end
+        click_link fund_activity.title
+        click_link programme_activity.title
+        click_link project_activity.title
 
-    scenario "the transactions are shown in date order, newest first" do
-      transaction_1 = create(:transaction, activity: activity, date: Date.today)
-      transaction_2 = create(:transaction, activity: activity, date: Date.yesterday)
+        expect(page).to have_content(transaction_presenter.reference)
+        expect(page).to have_content(transaction_presenter.transaction_type)
+        expect(page).to have_content(transaction_presenter.date)
+        expect(page).to have_content(transaction_presenter.currency)
+        expect(page).to have_content(transaction_presenter.value)
+        expect(page).to have_content(transaction_presenter.disbursement_channel)
+        expect(page).to have_content(transaction_presenter.providing_organisation_name)
+        expect(page).to have_content(transaction_presenter.receiving_organisation_name)
+      end
 
-      visit organisation_path(user.organisation)
+      scenario "transactions cannot be created or edited by a BEIS user" do
+        transaction = create(:transaction, activity: project_activity)
 
-      click_link activity.title
+        visit organisation_path(user.organisation)
 
-      expect(page.find("table.transactions tbody tr:first-child")[:id]).to eq(transaction_1.id)
-      expect(page.find("table.transactions tbody tr:last-child")[:id]).to eq(transaction_2.id)
+        click_link fund_activity.title
+        click_link programme_activity.title
+        click_link project_activity.title
+
+        expect(page).to_not have_content(I18n.t("page_content.transactions.button.create"))
+        within("tr##{transaction.id}") do
+          expect(page).not_to have_content(I18n.t("generic.link.edit"))
+        end
+      end
     end
   end
 end
