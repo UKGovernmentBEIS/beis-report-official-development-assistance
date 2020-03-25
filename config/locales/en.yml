@@ -191,8 +191,6 @@ en:
         label: Focus area
       status:
         label: Status
-      tied_status:
-        label: Tied status
       title:
         label: Title
       transactions: Transactions
@@ -278,7 +276,6 @@ en:
         region: Recipient region
         sector: What is the focus area for this %{level}
         status: Status
-        tied_status: Tied status
     budget:
       edit: Edit budget
       new: Create budget
