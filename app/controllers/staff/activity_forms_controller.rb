@@ -15,7 +15,6 @@ class Staff::ActivityFormsController < Staff::BaseController
     :country,
     :flow,
     :aid_type,
-    :tied_status,
   ]
 
   steps(*FORM_STEPS)
@@ -80,7 +79,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(:identifier, :sector, :title, :description, :status,
       :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date,
       :geography, :recipient_region, :recipient_country, :flow,
-      :aid_type, :tied_status)
+      :aid_type)
   end
 
   def finish_wizard_path
