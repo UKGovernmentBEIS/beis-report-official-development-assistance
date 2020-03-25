@@ -169,6 +169,7 @@ GEM
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
+    ipaddr (1.2.2)
     jaro_winkler (1.5.4)
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
@@ -446,6 +447,7 @@ DEPENDENCIES
   high_voltage
   html2haml
   i18n-tasks (~> 0.9.31)
+  ipaddr
   jbuilder (~> 2.10)
   jquery-rails
   launchy

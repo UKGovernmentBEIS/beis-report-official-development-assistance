@@ -13,6 +13,9 @@ Rollbar.configure do |config|
     config.enabled = false
   end
 
+  # Anonymize user IP addresses when logging, for privacy
+  config.anonymize_user_ip = true
+
   # By default, Rollbar will try to call the `current_user` controller method
   # to fetch the logged-in user object, and then call that object's `id`
   # method to fetch this property. To customize:
