@@ -65,6 +65,36 @@ RSpec.feature "Users can view an activity as XML" do
 
         it_behaves_like "valid activity XML"
       end
+
+      context "when the activity has budgets" do
+        let(:activity) { create(:project_activity, organisation: organisation) }
+        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it "only includes budgets which belong to the activity" do
+          _budget = create(:budget, activity: activity)
+          _other_budget = create(:budget, activity: create(:activity))
+
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.xpath("//iati-activity/budget").count).to eq(1)
+        end
+      end
+
+      context "when the activity has transactions" do
+        let(:activity) { create(:project_activity, organisation: organisation) }
+        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it "only includes transactions which belong to the activity" do
+          _transaction = create(:transaction, activity: activity)
+          _other_transaction = create(:transaction, activity: create(:activity))
+
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.xpath("//iati-activity/transaction").count).to eq(1)
+        end
+      end
     end
   end
 end
