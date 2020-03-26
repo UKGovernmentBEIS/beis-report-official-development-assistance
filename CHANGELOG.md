@@ -82,10 +82,11 @@
 - Make it clearer that Programme should have an extending organisation in order
   for delivery partners to report on the programme
 - fix cookie error by switching session storage to Redis
-- Activity aid type is now selected by radio button, not a dropdown select box  
+- Activity aid type is now selected by radio button, not a dropdown select box
 - Iterate the form content for the sector field by renaming it to "focus area"
 - Enable host whitelisting (Rails 6 feature) to mitigate poisoned host header attacks
 - Anonymize user's IP addresses before logging them outside the application, by removing the last octet of the address. Also use Rollbar's built-in IP address anonymizer.
 - BEIS users can view Transactions & Budgets on a project, but not create or edit them
+- Country list for recipient countries when creating an activity has been reduced to only those ODA uses as recipients.
 
 [release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1
