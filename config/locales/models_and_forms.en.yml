@@ -80,6 +80,10 @@ en:
             period_start_date:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_after_end_date: The period start date cannot be after the period end date
+        organisation:
+          attributes:
+            iati_reference:
+              format: Identifiers must start with a country code and company type separated by a dash, eg. GB-GOV-13
         transaction:
           attributes:
             date:
