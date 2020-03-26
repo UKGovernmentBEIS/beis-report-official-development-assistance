@@ -10,6 +10,6 @@
 
 if Rails.env.development?
   load File.join(Rails.root, "db", "seeds", "organisations.rb")
-  load File.join(Rails.root, "db", "seeds", "users.rb")
+  load File.join(Rails.root, "db", "seeds", "development_users.rb")
   load File.join(Rails.root, "db", "seeds", "activity.rb")
 end
