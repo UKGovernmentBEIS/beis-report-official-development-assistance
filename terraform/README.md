@@ -54,4 +54,4 @@ We should avoid manual deployments but the following instructions will allow you
    if using a tfvars file you will need to provide it with `-var-file`
 - `terraform apply` to deploy
    if using a tfvars file you will need to provide it with `-var-file`
-- If changes are not applied you can run `terraform restage <app>`
+- If changes are not applied you can run `cf restage <app>`
