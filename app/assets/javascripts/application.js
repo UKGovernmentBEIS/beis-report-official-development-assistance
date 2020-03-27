@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery3
+//= require accessible-autocomplete/dist/accessible-autocomplete.min.js
 //= require rails-ujs
 //= require turbolinks
 //= require govuk-frontend/govuk/all
