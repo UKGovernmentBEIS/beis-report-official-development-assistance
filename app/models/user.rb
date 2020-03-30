@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  include PublicActivity::Model
+  tracked owner: proc { |controller, _model| controller.current_user }
+
   belongs_to :organisation
   validates_presence_of :name, :email
   validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}
