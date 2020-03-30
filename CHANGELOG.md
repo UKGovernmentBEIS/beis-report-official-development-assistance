@@ -95,6 +95,8 @@
 - Activity to Activity association renamed `child_activities` (from `activities`) to avoid an association name clash with the `public_activity` gem
 - When creating an activity the Finance step has been defaulted to `Standard grant` and omitted from the user journey
 - When creating an activity, the `Tied status` step has been removed from the user journey and it has now a default value of `Untied`, code "5"
+- Progressively enhance the country select element into a combo box when
+  Javascript is available
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...HEAD
 [release-3]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-2...release-3
