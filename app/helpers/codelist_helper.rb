@@ -36,7 +36,7 @@ module CodelistHelper
 
   def country_select_options
     objects = yaml_to_objects(entity: "activity", type: "recipient_country", with_empty_item: false)
-    objects.unshift(OpenStruct.new(name: t("page_content.activity.recipient_country.default_selection_value"), code: "")).uniq
+    objects.unshift(OpenStruct.new(name: I18n.t("page_content.activity.recipient_country.default_selection_value"), code: "")).uniq
   end
 
   def flow_select_options
