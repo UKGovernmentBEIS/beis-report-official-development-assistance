@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe CreateProjectActivity do
   let(:beis) { create(:beis_organisation) }
-  let(:delivery_partner_organisation) { create(:delivery_partner_organisation) }
+  let(:delivery_partner_organisation) { create(:delivery_partner_organisation, organisation_type: 10) }
   let(:user) { create(:administrator, organisation: delivery_partner_organisation) }
   let(:programme) { create(:programme_activity, organisation: beis) }
 
@@ -15,8 +15,18 @@ RSpec.describe CreateProjectActivity do
       expect(result.organisation).to eq delivery_partner_organisation
     end
 
-    it "saves the reporting organisation reference" do
-      expect(result.reporting_organisation.iati_reference).to eq(delivery_partner_organisation.iati_reference)
+    context "when the organisation is a Government organisation" do
+      it "uses the service owner as the reporting organisation" do
+        expect(result.reporting_organisation.iati_reference).to eq(beis.iati_reference)
+      end
+    end
+
+    context "when the organisation is a non-governmental organisation" do
+      let(:delivery_partner_organisation) { create(:delivery_partner_organisation, organisation_type: 21) }
+
+      it "saves the reporting organisation" do
+        expect(result.reporting_organisation.iati_reference).to eq(delivery_partner_organisation.iati_reference)
+      end
     end
 
     it "sets the parent Activity to the fund" do
