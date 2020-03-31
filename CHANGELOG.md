@@ -99,6 +99,7 @@
   Javascript is available
 - Add privacy policy to site
 - Empty optional dates for `actual start date` and `actual end date` are not included on the activity XML
+- Reporting org in the IATI XML is always BEIS for funds, programmes and projects created by governmental organisations, and the activity's organisation if it is a non-governmental organisation
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...HEAD
 [release-3]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-2...release-3

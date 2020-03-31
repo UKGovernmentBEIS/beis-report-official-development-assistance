@@ -9,7 +9,7 @@ class CreateProgrammeActivity
   def call
     activity = Activity.new
     activity.organisation = Organisation.find(organisation_id)
-    activity.reporting_organisation_reference = activity.organisation.iati_reference
+    activity.reporting_organisation = activity.organisation
 
     fund = Activity.find(fund_id)
     fund.child_activities << activity

@@ -13,7 +13,7 @@ class CreateProjectActivity
 
     activity = Activity.new
     activity.organisation = reporting_organisation
-    activity.reporting_organisation_reference = reporting_organisation.iati_reference
+    activity.reporting_organisation = reporting_organisation
 
     programme = Activity.find(programme_id)
     programme.child_activities << activity

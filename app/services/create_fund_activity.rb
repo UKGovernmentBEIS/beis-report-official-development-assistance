@@ -8,7 +8,7 @@ class CreateFundActivity
   def call
     activity = Activity.new
     activity.organisation = Organisation.find(organisation_id)
-    activity.reporting_organisation_reference = activity.organisation.iati_reference
+    activity.reporting_organisation = activity.organisation
 
     activity.wizard_status = "blank"
     activity.level = :fund

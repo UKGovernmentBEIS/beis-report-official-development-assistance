@@ -6,7 +6,7 @@ RSpec.describe ActivityXmlPresenter do
   describe "#iati_identifier" do
     context "when the activity is a fund" do
       it "returns a composite identifier formed with the reporting organisation" do
-        fund = build(:fund_activity, identifier: "GCRF-1", reporting_organisation_reference: "GB-GOV-13")
+        fund = build(:fund_activity, identifier: "GCRF-1", reporting_organisation: create(:beis_organisation))
         expect(described_class.new(fund).iati_identifier).to eql("GB-GOV-13-GCRF-1")
       end
     end
@@ -28,7 +28,7 @@ RSpec.describe ActivityXmlPresenter do
       context "when the reporting organisation is a government organisation" do
         it "returns an identifier with the reporting organisation, fund, programme and project" do
           government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
-          project = create(:project_activity, organisation: government_organisation)
+          project = create(:project_activity, organisation: government_organisation, reporting_organisation: government_organisation)
           programme = project.activity
           fund = programme.activity
 
