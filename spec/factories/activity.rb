@@ -19,9 +19,7 @@ FactoryBot.define do
     wizard_status { "complete" } # wizard is complete
 
     association :organisation, factory: :organisation
-    before(:create) do |activity|
-      activity.reporting_organisation_reference = activity.organisation.iati_reference
-    end
+    association :reporting_organisation, factory: :beis_organisation
 
     factory :fund_activity do
       level { :fund }
@@ -33,6 +31,7 @@ FactoryBot.define do
       accountable_organisation_type { "10" }
 
       association :extending_organisation, factory: :beis_organisation
+      association :reporting_organisation, factory: :beis_organisation
     end
 
     factory :programme_activity do
@@ -46,6 +45,7 @@ FactoryBot.define do
       accountable_organisation_type { "10" }
 
       association :extending_organisation, factory: :beis_organisation
+      association :reporting_organisation, factory: :beis_organisation
     end
 
     factory :project_activity do
@@ -59,6 +59,7 @@ FactoryBot.define do
       accountable_organisation_type { "10" }
 
       association :extending_organisation, factory: :beis_organisation
+      association :reporting_organisation, factory: :delivery_partner_organisation
 
       factory :project_activity_with_implementing_organisations do
         transient do
