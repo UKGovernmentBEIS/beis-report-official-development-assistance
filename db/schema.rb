@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_30_145039) do
-
+ActiveRecord::Schema.define(version: 2020_03_31_085103) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -32,7 +31,6 @@ ActiveRecord::Schema.define(version: 2020_03_30_145039) do
     t.string "recipient_region"
     t.string "flow"
     t.string "aid_type"
-    t.string "tied_status"
     t.string "wizard_status"
     t.string "level"
     t.uuid "activity_id"
