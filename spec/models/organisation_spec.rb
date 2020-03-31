@@ -105,4 +105,21 @@ RSpec.describe Organisation, type: :model do
       expect(delivery_partners).not_to include(beis_organisation)
     end
   end
+
+  describe "#is_government?" do
+    it "should be true for a Government organisation_type" do
+      organisation = create(:organisation, organisation_type: 10)
+      expect(organisation.is_government?).to eq true
+    end
+
+    it "should be true for a Government organisation_type" do
+      organisation = create(:organisation, organisation_type: 11)
+      expect(organisation.is_government?).to eq true
+    end
+
+    it "should be false for an NGO organisation_type" do
+      organisation = create(:organisation, organisation_type: 21)
+      expect(organisation.is_government?).to eq false
+    end
+  end
 end
