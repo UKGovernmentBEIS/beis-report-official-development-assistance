@@ -13,7 +13,13 @@ class CreateProjectActivity
 
     activity = Activity.new
     activity.organisation = reporting_organisation
-    activity.reporting_organisation = reporting_organisation
+
+    if reporting_organisation.is_government?
+      service_owner = Organisation.find_by(service_owner: true)
+      activity.reporting_organisation = service_owner
+    else
+      activity.reporting_organisation = reporting_organisation
+    end
 
     programme = Activity.find(programme_id)
     programme.child_activities << activity
