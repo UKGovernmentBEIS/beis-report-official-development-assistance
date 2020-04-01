@@ -33,7 +33,7 @@ en:
       implementing_organisation:
         name: Organisation name
         organisation_type: Organisation type
-        reference: IATI refrence (optional)
+        reference: IATI reference (optional)
       organisation:
         default_currency: Default currency
         iati_reference: IATI reference
