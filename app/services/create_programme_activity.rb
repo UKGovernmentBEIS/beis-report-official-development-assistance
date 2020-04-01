@@ -17,15 +17,19 @@ class CreateProgrammeActivity
     activity.wizard_status = "blank"
     activity.level = :programme
 
-    activity.funding_organisation_name = "Department for Business, Energy and Industrial Strategy"
-    activity.funding_organisation_reference = "GB-GOV-13"
-    activity.funding_organisation_type = "10"
+    activity.funding_organisation_name = service_owner.name
+    activity.funding_organisation_reference = service_owner.iati_reference
+    activity.funding_organisation_type = service_owner.organisation_type
 
-    activity.accountable_organisation_name = "Department for Business, Energy and Industrial Strategy"
-    activity.accountable_organisation_reference = "GB-GOV-13"
-    activity.accountable_organisation_type = "10"
+    activity.accountable_organisation_name = service_owner.name
+    activity.accountable_organisation_reference = service_owner.iati_reference
+    activity.accountable_organisation_type = service_owner.organisation_type
 
     activity.save(validate: false)
     activity
+  end
+
+  def service_owner
+    Organisation.find_by_service_owner(true)
   end
 end

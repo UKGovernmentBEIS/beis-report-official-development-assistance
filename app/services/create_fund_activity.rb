@@ -9,6 +9,7 @@ class CreateFundActivity
     activity = Activity.new
     activity.organisation = Organisation.find(organisation_id)
     activity.reporting_organisation = activity.organisation
+    activity.extending_organisation = service_owner
 
     activity.wizard_status = "blank"
     activity.level = :fund
@@ -21,9 +22,13 @@ class CreateFundActivity
     activity.accountable_organisation_reference = "GB-GOV-13"
     activity.accountable_organisation_type = "10"
 
-    activity.extending_organisation = Organisation.find_by!(service_owner: true)
-
     activity.save(validate: false)
     activity
+  end
+
+  private
+
+  def service_owner
+    Organisation.find_by_service_owner(true)
   end
 end
