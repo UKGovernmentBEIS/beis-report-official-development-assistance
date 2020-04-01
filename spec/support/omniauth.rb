@@ -1,5 +1,9 @@
 OmniAuth.config.test_mode = true
 
+OmniAuth.config.on_failure = proc { |env|
+  OmniAuth::FailureEndpoint.new(env).redirect_to_failure
+}
+
 RSpec.configure do |config|
   # Teardown mocked SSO
   config.after(:each) do |_example|
