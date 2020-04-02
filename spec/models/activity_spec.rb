@@ -29,7 +29,14 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "validations" do
-    describe "constraints" do
+    context "when identifier is blank" do
+      subject { build(:activity, identifier: nil, wizard_status: :identifier) }
+      it { should validate_presence_of(:identifier) }
+    end
+
+    context "when identifier is not unique" do
+      before(:each) { create(:activity, identifier: "GB-GOV-13", wizard_status: :identifier) }
+      subject { build(:activity, identifier: "GB-GOV-13", wizard_status: :identifier) }
       it { should validate_uniqueness_of(:identifier) }
     end
 
@@ -182,6 +189,14 @@ RSpec.describe Activity, type: :model do
     context "when saving in the update_extending_organisation context" do
       subject { build(:activity) }
       it { should validate_presence_of(:extending_organisation_id).on(:update_extending_organisation) }
+    end
+
+    context "when the wizard status is blank" do
+      it "allows updates to be made to other fields set on creation" do
+        blank_activity = create(:activity, funding_organisation_name: "old", wizard_status: :blank)
+        blank_activity.funding_organisation_name = "new"
+        expect(blank_activity.valid?).to eq(true)
+      end
     end
   end
 

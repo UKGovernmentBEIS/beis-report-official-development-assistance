@@ -10,7 +10,7 @@ class CreateFundActivity
     activity.organisation = Organisation.find(organisation_id)
     activity.reporting_organisation_reference = activity.organisation.iati_reference
 
-    activity.wizard_status = "identifier"
+    activity.wizard_status = "blank"
     activity.level = :fund
 
     activity.funding_organisation_name = "HM Treasury"
