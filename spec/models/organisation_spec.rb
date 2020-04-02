@@ -9,6 +9,40 @@ RSpec.describe Organisation, type: :model do
     it { should validate_presence_of(:iati_reference) }
 
     it { should validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
+
+    describe "#iati_reference" do
+      it "returns true if it does matches a known structure XX-XXX-" do
+        organisation = build(:organisation, iati_reference: "GB-GOV-13")
+        result = organisation.valid?
+        expect(result).to eq(true)
+      end
+
+      it "returns true if it does match an unexpected value of the same XX-XXX- structure" do
+        organisation = build(:organisation, iati_reference: "GB-COH-1234567asdfghj")
+        result = organisation.valid?
+        expect(result).to eq(true)
+      end
+
+      it "returns true if the country code is 3 characters long" do
+        organisation = build(:organisation, iati_reference: "CZH-COH-111")
+        result = organisation.valid?
+        expect(result).to eq(true)
+      end
+
+      it "returns false if it doesn't match the structure XX-XXX-" do
+        organisation = build(:organisation, iati_reference: "1234")
+        result = organisation.valid?
+        expect(result).to eq(false)
+      end
+
+      it "returns an error message if it is invalid" do
+        organisation = build(:organisation, iati_reference: "1234")
+        organisation.valid?
+        expect(organisation.errors.messages[:iati_reference]).to include(
+          I18n.t("activerecord.errors.models.organisation.attributes.iati_reference.format")
+        )
+      end
+    end
   end
 
   describe "associations" do
