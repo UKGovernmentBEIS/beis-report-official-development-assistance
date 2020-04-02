@@ -89,6 +89,7 @@
 - BEIS users can view Transactions & Budgets on a project, but not create or edit them
 - Country list for recipient countries when creating an activity has been reduced to only those ODA uses as recipients.
 - Add feedback form link to phase banner
+- Activity to Activity association renamed `child_activities` (from `activities`) to avoid an association name clash with the `public_activity` gem
 
 ## [unreleased]
 

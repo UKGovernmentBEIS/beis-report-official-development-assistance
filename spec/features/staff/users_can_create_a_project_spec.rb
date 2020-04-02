@@ -18,9 +18,9 @@ RSpec.feature "Users can create a project" do
         fill_in_activity_form(level: "project")
 
         expect(page).to have_content I18n.t("form.project.create.success")
-        expect(programme.activities.count).to eq 1
+        expect(programme.child_activities.count).to eq 1
 
-        project = programme.activities.last
+        project = programme.child_activities.last
 
         expect(project.organisation).to eq user.organisation
       end
