@@ -17,7 +17,7 @@ class Activity < ApplicationRecord
   validates :extending_organisation_id, presence: true, on: :update_extending_organisation
 
   belongs_to :activity, optional: true
-  has_many :activities, foreign_key: "activity_id"
+  has_many :child_activities, foreign_key: "activity_id", class_name: "Activity"
   belongs_to :organisation
   belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
   has_many :implementing_organisations
