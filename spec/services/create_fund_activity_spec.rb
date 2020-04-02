@@ -15,7 +15,7 @@ RSpec.describe CreateFundActivity do
     end
 
     it "sets the initial wizard_status" do
-      expect(result.wizard_status).to eq("identifier")
+      expect(result.wizard_status).to eq("blank")
     end
 
     it "sets the activity level to 'fund'" do
