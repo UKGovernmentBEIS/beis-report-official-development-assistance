@@ -187,7 +187,7 @@ RSpec.describe Activity, type: :model do
   describe "associations" do
     it { should belong_to(:organisation) }
     it { should belong_to(:activity).optional }
-    it { should have_many(:activities).with_foreign_key("activity_id") }
+    it { should have_many(:child_activities).with_foreign_key("activity_id") }
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
     it { should have_many(:implementing_organisations) }
   end
@@ -196,7 +196,7 @@ RSpec.describe Activity, type: :model do
     it "returns the parent activity or nil if there is not one" do
       fund_activity = create(:activity, level: :fund)
       programme_activity = create(:activity, level: :programme)
-      fund_activity.activities << programme_activity
+      fund_activity.child_activities << programme_activity
 
       expect(programme_activity.parent_activity).to eql fund_activity
       expect(fund_activity.parent_activity).to be_nil

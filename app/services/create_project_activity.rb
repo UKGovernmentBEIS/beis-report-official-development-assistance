@@ -16,7 +16,7 @@ class CreateProjectActivity
     activity.reporting_organisation_reference = reporting_organisation.iati_reference
 
     programme = Activity.find(programme_id)
-    programme.activities << activity
+    programme.child_activities << activity
 
     activity.wizard_status = "identifier"
     activity.level = :project
