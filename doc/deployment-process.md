@@ -17,7 +17,7 @@ The heading should link to a Github URL at the bottom of the file, which shows t
 - A change
 - Another change
 
-[release-1]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-0...release-1
+[release-1]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-1...release-0
 ```
 
 ### Steps
@@ -28,12 +28,15 @@ The heading should link to a Github URL at the bottom of the file, which shows t
       document the changes in this release in a bullet point form
       add a link to the diff at the bottom of the file
     * Document the changes in the commit message as well
-    * Create a tag for the release in the format release-X
-    * git push --follow-tags <your-branch-name>
+    * Push the changes up to Github `git push -u origin release-x`
     * Create a pull request to merge that release into **develop** with content from the CHANGELOG.md
     * Get that pull request reviewed and approved
 1. Review and merge the release pull request
     The pull request should be reviewed to confirm that the changes in the release are safe to ship and that CHANGELOG.md accurately reflects the changes included in the release.
+1. Update your local develop branch and tag the merge commit on develop `git tag release-X [merge-commit-for-release]`
+1. Push the tag to Github `git push origin refs/tags/release-X` (we need the
+   refs otherwise git will not know if you mean the tag or the branch as they
+   have the same name)
 1. Confirm the release candidate and perform any prerequisites
     * Confirm the release with any relevant people (product owner, delivery manager, etc)
     * Think about any dependencies that also need considering: dependent parts of the service that also need updating; environment variables that need changing/adding; third-party services that need to be set up/updated
