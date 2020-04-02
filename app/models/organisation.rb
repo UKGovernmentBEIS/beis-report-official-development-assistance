@@ -3,7 +3,10 @@ class Organisation < ApplicationRecord
   has_many :funds
 
   validates_presence_of :name, :organisation_type, :language_code, :default_currency
-  validates :iati_reference, uniqueness: {case_sensitive: false}, presence: true
+  validates :iati_reference,
+    uniqueness: {case_sensitive: false},
+    presence: true,
+    format: {with: /\A[a-zA-Z]{2,}-[a-zA-Z]{3}-.+\z/, message: I18n.t("activerecord.errors.models.organisation.attributes.iati_reference.format")}
 
   scope :sorted_by_name, -> { order(name: :asc) }
   scope :delivery_partners, -> { sorted_by_name.where(service_owner: false) }
