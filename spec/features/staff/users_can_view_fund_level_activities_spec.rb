@@ -32,7 +32,7 @@ RSpec.feature "Users can view fund level activities" do
     scenario "can view and create programme level activities" do
       fund_activity = create(:activity, level: :fund, organisation: user.organisation)
       programme_activity = create(:activity, level: :programme)
-      fund_activity.activities << programme_activity
+      fund_activity.child_activities << programme_activity
       activity_presenter = ActivityPresenter.new(programme_activity)
       visit organisation_activity_path(fund_activity.organisation, fund_activity)
 

@@ -6,9 +6,9 @@ RSpec.feature "Users can view a project" do
     scenario "can view a project" do
       fund = create(:fund_activity)
       programme = create(:programme_activity)
-      fund.activities << programme
+      fund.child_activities << programme
       project = create(:project_activity, organisation: user.organisation)
-      programme.activities << project
+      programme.child_activities << project
 
       visit organisation_activity_path(project.organisation, project)
 
@@ -26,9 +26,9 @@ RSpec.feature "Users can view a project" do
       scenario "links to the programmes projects" do
         fund = create(:fund_activity)
         programme = create(:programme_activity)
-        fund.activities << programme
+        fund.child_activities << programme
         project = create(:project_activity, organisation: user.organisation)
-        programme.activities << project
+        programme.child_activities << project
 
         visit organisation_activity_path(programme.organisation, programme)
 
@@ -65,9 +65,9 @@ RSpec.feature "Users can view a project" do
     scenario "can download a project as XML" do
       fund = create(:fund_activity)
       programme = create(:programme_activity)
-      fund.activities << programme
+      fund.child_activities << programme
       project = create(:project_activity, organisation: user.organisation)
-      programme.activities << project
+      programme.child_activities << project
       project_presenter = ActivityXmlPresenter.new(project)
 
       visit organisation_activity_path(project.organisation, project)

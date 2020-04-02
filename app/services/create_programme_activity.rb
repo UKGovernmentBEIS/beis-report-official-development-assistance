@@ -12,7 +12,7 @@ class CreateProgrammeActivity
     activity.reporting_organisation_reference = activity.organisation.iati_reference
 
     fund = Activity.find(fund_id)
-    fund.activities << activity
+    fund.child_activities << activity
 
     activity.wizard_status = "identifier"
     activity.level = :programme
