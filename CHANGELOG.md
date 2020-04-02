@@ -69,7 +69,7 @@
 - Users can report either recipient_country or recipient_region data which is
   include in the xml
 
-## Unreleased changes
+## [release-3] - 2020-04-02
 
 - Activities are ordered by `created_at` date, oldest first
 - Transactions are ordered by `date`, newest first
@@ -90,4 +90,9 @@
 - Country list for recipient countries when creating an activity has been reduced to only those ODA uses as recipients.
 - Add feedback form link to phase banner
 
-[release-2]: https://github.com/dxw/DataSubmissionService/compare/release-2...release-1
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...HEAD
+[release-3]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-2...release-3
+[release-2]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-1...release-2
+
