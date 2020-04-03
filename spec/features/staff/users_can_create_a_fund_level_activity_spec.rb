@@ -154,15 +154,6 @@ RSpec.feature "Users can create a fund level activity" do
         # Flow has a default and can't be set to blank so we skip
         select "ODA", from: "activity[flow]"
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content I18n.t("page_title.activity_form.show.finance")
-
-        # Don't select a finance
-        click_button I18n.t("form.activity.submit")
-        expect(page).to have_content "Finance can't be blank"
-
-        select "Standard grant", from: "activity[finance]"
-        click_button I18n.t("form.activity.submit")
-
         expect(page).to have_content I18n.t("page_title.activity_form.show.aid_type")
 
         # Don't select an aid type
