@@ -173,11 +173,6 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:flow) }
     end
 
-    context "when tied_status is blank" do
-      subject { build(:activity, tied_status: nil, wizard_status: :tied_status) }
-      it { should validate_presence_of(:tied_status) }
-    end
-
     context "when the wizard_status is complete" do
       subject { build(:activity, wizard_status: "complete") }
       it { should validate_presence_of(:title) }
@@ -190,7 +185,6 @@ RSpec.describe Activity, type: :model do
       it { should_not validate_presence_of(:actual_end_date) }
       it { should validate_presence_of(:geography) }
       it { should validate_presence_of(:flow) }
-      it { should validate_presence_of(:tied_status) }
     end
 
     context "when saving in the update_extending_organisation context" do
