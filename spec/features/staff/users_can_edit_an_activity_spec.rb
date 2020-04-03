@@ -253,12 +253,4 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("generic.link.back"))
-
-  within(".tied_status") do
-    click_on(I18n.t("generic.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :tied_status)
-    )
-  end
-  click_on(I18n.t("generic.link.back"))
 end

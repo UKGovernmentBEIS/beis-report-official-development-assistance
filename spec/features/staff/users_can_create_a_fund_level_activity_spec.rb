@@ -162,12 +162,6 @@ RSpec.feature "Users can create a fund level activity" do
 
         choose("activity[aid_type]", option: "A01")
         click_button I18n.t("form.activity.submit")
-
-        expect(page).to have_content I18n.t("page_title.activity_form.show.tied_status")
-
-        # Tied status has a default and can't be set to blank so we skip
-        choose("activity[tied_status]", option: "5")
-        click_button I18n.t("form.activity.submit")
         expect(page).to have_content Activity.last.title
       end
     end
