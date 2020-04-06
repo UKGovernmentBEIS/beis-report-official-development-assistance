@@ -20,7 +20,6 @@ module FormHelpers
     geography: "recipient_region",
     recipient_region: "Developing countries, unspecified",
     flow: "ODA",
-    finance: "Standard grant",
     aid_type: "A01",
     tied_status: "5",
     level:
@@ -97,11 +96,6 @@ module FormHelpers
     select flow, from: "activity[flow]"
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("activerecord.attributes.activity.finance")
-    expect(page).to have_content I18n.t("helpers.hint.activity.finance")
-    select finance, from: "activity[finance]"
-    click_button I18n.t("form.activity.submit")
-
     expect(page).to have_content I18n.t("activerecord.attributes.activity.aid_type")
     expect(page).to have_content "A code for the vocabulary aid-type classifications. IATI descriptions can be found here."
     choose("activity[aid_type]", option: aid_type)
@@ -122,7 +116,6 @@ module FormHelpers
     expect(page).to have_content status
     expect(page).to have_content recipient_region
     expect(page).to have_content flow
-    expect(page).to have_content finance
     expect(page).to have_content I18n.t("activity.aid_type.#{aid_type.downcase}")
     expect(page).to have_content I18n.t("activity.tied_status.#{tied_status}")
     expect(page).to have_content localise_date_from_input_fields(

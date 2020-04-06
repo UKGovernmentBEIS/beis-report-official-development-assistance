@@ -1,4 +1,6 @@
 class Activity < ApplicationRecord
+  STANDARD_GRANT_FINANCE_CODE = "110"
+
   validates :identifier, presence: true, if: :identifier_step?
   validates :title, :description, presence: true, if: :purpose_step?
   validates :sector, presence: true, if: :sector_step?
@@ -7,7 +9,6 @@ class Activity < ApplicationRecord
   validates :recipient_region, presence: true, if: :region_step?
   validates :recipient_country, presence: true, if: :country_step?
   validates :flow, presence: true, if: :flow_step?
-  validates :finance, presence: true, if: :finance_step?
   validates :aid_type, presence: true, if: :aid_type_step?
   validates :tied_status, presence: true, if: :tied_status_step?
   validates_uniqueness_of :identifier
@@ -35,6 +36,10 @@ class Activity < ApplicationRecord
 
   scope :funds, -> { where(level: :fund) }
   scope :programmes, -> { where(level: :programme) }
+
+  def finance
+    STANDARD_GRANT_FINANCE_CODE
+  end
 
   private def identifier_step?
     wizard_status == "identifier" || wizard_complete?
@@ -70,10 +75,6 @@ class Activity < ApplicationRecord
 
   private def flow_step?
     wizard_status == "flow" || wizard_complete?
-  end
-
-  private def finance_step?
-    wizard_status == "finance" || wizard_complete?
   end
 
   private def aid_type_step?

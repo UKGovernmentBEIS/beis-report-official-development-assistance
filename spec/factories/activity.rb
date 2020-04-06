@@ -13,7 +13,6 @@ FactoryBot.define do
     recipient_region { "489" }
     recipient_country { nil }
     flow { "10" }
-    finance { "110" }
     aid_type { "A01" }
     tied_status { "3" }
     level { :fund }
@@ -89,7 +88,6 @@ FactoryBot.define do
     recipient_region { nil }
     recipient_country { nil }
     flow { nil }
-    finance { nil }
     aid_type { nil }
     tied_status { nil }
   end
@@ -108,7 +106,6 @@ FactoryBot.define do
     recipient_region { nil }
     recipient_country { nil }
     flow { nil }
-    finance { nil }
     aid_type { nil }
     tied_status { nil }
   end
@@ -117,7 +114,6 @@ FactoryBot.define do
     wizard_status { "region" }
     recipient_country { nil }
     flow { nil }
-    finance { nil }
     aid_type { nil }
     tied_status { nil }
   end
@@ -127,7 +123,6 @@ FactoryBot.define do
     recipient_region { nil }
     recipient_country { nil }
     flow { nil }
-    finance { nil }
     aid_type { nil }
     tied_status { nil }
   end
