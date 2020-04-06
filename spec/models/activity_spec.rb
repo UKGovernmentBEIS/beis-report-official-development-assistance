@@ -1,6 +1,13 @@
 require "rails_helper"
 
 RSpec.describe Activity, type: :model do
+  describe "#finance" do
+    it "always returns Standard Grant, code '110'" do
+      activity = Activity.new
+      expect(activity.finance).to eq "110"
+    end
+  end
+
   describe "scopes" do
     describe ".funds" do
       it "only returns fund level activities" do
@@ -152,11 +159,6 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:flow) }
     end
 
-    context "when finance is blank" do
-      subject { build(:activity, finance: nil, wizard_status: :finance) }
-      it { should validate_presence_of(:finance) }
-    end
-
     context "when tied_status is blank" do
       subject { build(:activity, tied_status: nil, wizard_status: :tied_status) }
       it { should validate_presence_of(:tied_status) }
@@ -174,7 +176,6 @@ RSpec.describe Activity, type: :model do
       it { should_not validate_presence_of(:actual_end_date) }
       it { should validate_presence_of(:geography) }
       it { should validate_presence_of(:flow) }
-      it { should validate_presence_of(:finance) }
       it { should validate_presence_of(:tied_status) }
     end
 

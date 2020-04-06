@@ -189,24 +189,6 @@ RSpec.describe ActivityPresenter do
     end
   end
 
-  describe "#finance" do
-    context "when the finance exists" do
-      it "returns the locale value for the code" do
-        activity = build(:activity, finance: "111")
-        result = described_class.new(activity).finance
-        expect(result).to eql("Subsidies to national private investors")
-      end
-    end
-
-    context "when the activity does not have a finance set" do
-      it "returns nil" do
-        activity = build(:activity, finance: nil)
-        result = described_class.new(activity)
-        expect(result.finance).to be_nil
-      end
-    end
-  end
-
   describe "#tied_status" do
     context "when the tied_status exists" do
       it "returns the locale value for the code" do

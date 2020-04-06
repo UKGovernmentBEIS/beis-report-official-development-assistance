@@ -127,15 +127,6 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :flow)
         = a11y_action_link(t("generic.link.#{activity_presenter.call_to_action(:flow)}"), activity_step_path(activity_presenter, :flow), t("page_content.activity.flow.label"))
 
-  .govuk-summary-list__row.finance
-    %dt.govuk-summary-list__key
-      = t("page_content.activity.finance.label")
-    %dd.govuk-summary-list__value
-      = activity_presenter.finance
-    %dd.govuk-summary-list__actions
-      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :finance)
-        = a11y_action_link(t("generic.link.#{activity_presenter.call_to_action(:finance)}"), activity_step_path(activity_presenter, :finance), t("page_content.activity.finance.label"))
-
   .govuk-summary-list__row.aid_type
     %dt.govuk-summary-list__key
       = t("page_content.activity.aid_type.label")

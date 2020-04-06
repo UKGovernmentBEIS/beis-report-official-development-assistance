@@ -93,7 +93,8 @@
 
 ## [unreleased]
 
+- When creating an activity the Finance step has been defaulted to `Standard grant` and omitted from the user journey
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...HEAD
 [release-3]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-2...release-3
 [release-2]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-1...release-2
-

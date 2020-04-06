@@ -165,8 +165,6 @@ en:
           edit: Choose extending organisation
         heading: Extending organisation
         hint: The extending organisation will be able to create and report project information against this programme
-      finance:
-        label: Finance
       flow:
         label: Flow
       geography:
@@ -272,7 +270,6 @@ en:
         aid_type: Aid type
         country: Recipient country
         dates: Dates
-        finance: Finance
         flow: Flow
         geography: Will the benefitting recipient be a region or country?
         identifier: Your unique identifier
