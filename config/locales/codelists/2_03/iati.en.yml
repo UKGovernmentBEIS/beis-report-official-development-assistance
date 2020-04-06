@@ -620,10 +620,6 @@ en:
       '4': Post-completion
       '5': Cancelled
       '6': Suspended
-    tied_status:
-      '3': Partially tied
-      '4': Tied
-      '5': Untied
   generic:
     default_currency:
       aed: UAE Dirham

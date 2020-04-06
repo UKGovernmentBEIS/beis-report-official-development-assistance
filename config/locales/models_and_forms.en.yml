@@ -15,7 +15,6 @@ en:
         recipient_region: Recipient region
         sector: Focus area
         status: Status
-        tied_status: Tied status
         title: Title
       budget:
         budget_type:
@@ -120,7 +119,6 @@ en:
         sector:
           html: What area of the economy or society is your %{level} helping? For example, research, education or SME development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes.</a>
         status: This is the stage your %{level} is currently at
-        tied_status: This is the tied status of your %{level}
         title: A short, human-readable title that contains a meaningful summary of the activity.
       budget:
         period_end_date: Period end date must not be more than one year after the period start date. For example, 11 3 2021
