@@ -28,7 +28,7 @@ jobs:
         -e COVERALLS_SERVICE_NAME=travis-ci \
         -e COVERALLS_REPO_TOKEN="$COVERALLS_REPO_TOKEN" \
         -e CI=true \
-        --env-file .env.example \
+        --env-file .env.test \
         app/test /bin/bash -c "tail -f /dev/null"
       docker exec test-container rake
       docker exec test-container bundle exec brakeman
