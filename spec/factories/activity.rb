@@ -14,7 +14,6 @@ FactoryBot.define do
     recipient_country { nil }
     flow { "10" }
     aid_type { "A01" }
-    tied_status { "3" }
     level { :fund }
 
     wizard_status { "complete" } # wizard is complete
@@ -89,7 +88,6 @@ FactoryBot.define do
     recipient_country { nil }
     flow { nil }
     aid_type { nil }
-    tied_status { nil }
   end
 
   trait :at_purpose_step do
@@ -107,7 +105,6 @@ FactoryBot.define do
     recipient_country { nil }
     flow { nil }
     aid_type { nil }
-    tied_status { nil }
   end
 
   trait :at_region_step do
@@ -115,7 +112,6 @@ FactoryBot.define do
     recipient_country { nil }
     flow { nil }
     aid_type { nil }
-    tied_status { nil }
   end
 
   trait :at_geography_step do
@@ -124,7 +120,6 @@ FactoryBot.define do
     recipient_country { nil }
     flow { nil }
     aid_type { nil }
-    tied_status { nil }
   end
 
   trait :nil_wizard_status do

@@ -189,24 +189,6 @@ RSpec.describe ActivityPresenter do
     end
   end
 
-  describe "#tied_status" do
-    context "when the tied_status exists" do
-      it "returns the locale value for the code" do
-        activity = build(:activity, tied_status: "3")
-        result = described_class.new(activity).tied_status
-        expect(result).to eql("Partially tied")
-      end
-    end
-
-    context "when the activity does not have a tied_status set" do
-      it "returns nil" do
-        activity = build(:activity, tied_status: nil)
-        result = described_class.new(activity)
-        expect(result.tied_status).to be_nil
-      end
-    end
-  end
-
   describe "#call_to_action" do
     it "returns 'edit' if the desired attribute is present" do
       activity = build(:activity, title: "My title")

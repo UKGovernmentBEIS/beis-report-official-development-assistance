@@ -12,6 +12,5 @@ module ActivityHelpers
     expect(page).to have_content activity_presenter.recipient_region
     expect(page).to have_content activity_presenter.flow
     expect(page).to have_content activity_presenter.aid_type
-    expect(page).to have_content activity_presenter.tied_status
   end
 end

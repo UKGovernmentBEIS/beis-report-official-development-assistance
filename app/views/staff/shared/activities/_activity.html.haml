@@ -135,12 +135,3 @@
     %dd.govuk-summary-list__actions
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :aid_type)
         = a11y_action_link(t("generic.link.#{activity_presenter.call_to_action(:aid_type)}"), activity_step_path(activity_presenter, :aid_type), t("page_content.activity.aid_type.label"))
-
-  .govuk-summary-list__row.tied_status
-    %dt.govuk-summary-list__key
-      = t("page_content.activity.tied_status.label")
-    %dd.govuk-summary-list__value
-      = activity_presenter.tied_status
-    %dd.govuk-summary-list__actions
-      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :tied_status)
-        = a11y_action_link(t("generic.link.#{activity_presenter.call_to_action(:tied_status)}"), activity_step_path(activity_presenter, :tied_status), t("page_content.activity.tied_status.label"))

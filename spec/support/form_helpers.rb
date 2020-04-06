@@ -21,7 +21,6 @@ module FormHelpers
     recipient_region: "Developing countries, unspecified",
     flow: "ODA",
     aid_type: "A01",
-    tied_status: "5",
     level:
   )
 
@@ -101,14 +100,6 @@ module FormHelpers
     choose("activity[aid_type]", option: aid_type)
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("activerecord.attributes.activity.tied_status")
-    expect(page).to have_content "This is the tied status of your #{level}"
-    expect(page.find("div.govuk-radios div.govuk-radios__item:first-child input")[:value]).to eq("5")
-
-    choose("activity[tied_status]", option: tied_status)
-
-    click_button I18n.t("form.activity.submit")
-
     expect(page).to have_content identifier
     expect(page).to have_content title
     expect(page).to have_content description
@@ -117,7 +108,6 @@ module FormHelpers
     expect(page).to have_content recipient_region
     expect(page).to have_content flow
     expect(page).to have_content I18n.t("activity.aid_type.#{aid_type.downcase}")
-    expect(page).to have_content I18n.t("activity.tied_status.#{tied_status}")
     expect(page).to have_content localise_date_from_input_fields(
       year: planned_start_date_year,
       month: planned_start_date_month,

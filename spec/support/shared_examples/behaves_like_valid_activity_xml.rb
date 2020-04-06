@@ -53,6 +53,12 @@ RSpec.shared_examples "valid activity XML" do
     expect(xml.at("iati-activity/default-finance-type/@code").text).to eq("110")
   end
 
+  it "contains the default value for Tied Status" do
+    visit organisation_activity_path(organisation, activity, format: :xml)
+
+    expect(xml.at("iati-activity/default-tied-status/@code").text).to eq("5")
+  end
+
   it "contains the transaction XML" do
     transaction = create(:transaction, activity: activity)
     visit organisation_activity_path(organisation, activity, format: :xml)

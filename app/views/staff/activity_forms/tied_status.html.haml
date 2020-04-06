@@ -1,3 +1,0 @@
-= render layout: "wrapper" do |f|
-  = f.hidden_field :tied_status
-  = f.govuk_collection_radio_buttons :tied_status, tied_status_radio_options, :code, :name, :description, legend: { tag: 'h1', size: 'xl', text: I18n.t("activerecord.attributes.activity.tied_status") }, hint_text: I18n.t("helpers.hint.activity.tied_status", level: f.object.level)

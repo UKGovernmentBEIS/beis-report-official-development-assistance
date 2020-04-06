@@ -1,5 +1,6 @@
 class Activity < ApplicationRecord
   STANDARD_GRANT_FINANCE_CODE = "110"
+  UNTIED_TIED_STATUS_CODE = "5"
 
   validates :identifier, presence: true, if: :identifier_step?
   validates_uniqueness_of :identifier, if: :identifier_step?
@@ -11,7 +12,7 @@ class Activity < ApplicationRecord
   validates :recipient_country, presence: true, if: :country_step?
   validates :flow, presence: true, if: :flow_step?
   validates :aid_type, presence: true, if: :aid_type_step?
-  validates :tied_status, presence: true, if: :tied_status_step?
+  validates_uniqueness_of :identifier
   validates :planned_start_date, :planned_end_date, presence: true, if: :dates_step?
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
   validates :actual_start_date, :actual_end_date, date_not_in_future: true
@@ -39,6 +40,10 @@ class Activity < ApplicationRecord
 
   def finance
     STANDARD_GRANT_FINANCE_CODE
+  end
+
+  def tied_status
+    UNTIED_TIED_STATUS_CODE
   end
 
   private def identifier_step?
@@ -79,10 +84,6 @@ class Activity < ApplicationRecord
 
   private def aid_type_step?
     wizard_status == "aid_type" || wizard_complete?
-  end
-
-  private def tied_status_step?
-    wizard_status == "tied_status" || wizard_complete?
   end
 
   def wizard_complete?
