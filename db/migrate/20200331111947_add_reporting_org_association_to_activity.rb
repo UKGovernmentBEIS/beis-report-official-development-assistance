@@ -12,7 +12,7 @@ class AddReportingOrgAssociationToActivity < ActiveRecord::Migration[6.0]
         else
           organisation
         end
-        activity.save(validate: false)
+        activity.save!
       end
     end
 
@@ -27,7 +27,7 @@ class AddReportingOrgAssociationToActivity < ActiveRecord::Migration[6.0]
 
       activities.each do |activity|
         activity.reporting_organisation_reference = activity.reporting_organisation.iati_reference
-        activity.save(validate: false)
+        activity.save!
       end
     end
 
