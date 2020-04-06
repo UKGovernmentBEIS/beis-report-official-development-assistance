@@ -4,6 +4,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   include ActivityHelper
 
   FORM_STEPS = [
+    :blank,
     :identifier,
     :purpose,
     :sector,
@@ -25,6 +26,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     authorize @activity
 
     case step
+    when :blank
+      skip_step
     when :region
       skip_step if @activity.recipient_country?
     when :country
