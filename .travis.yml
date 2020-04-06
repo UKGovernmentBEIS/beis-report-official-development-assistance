@@ -2,7 +2,7 @@ language: minimal
 services:
 - docker
 before_install:
-- docker build . --build-arg RAILS_ENV=test -t app/test
+- docker build . --target test --build-arg RAILS_ENV=test -t app/test
 jobs:
   include:
   - stage: Test
@@ -30,7 +30,7 @@ jobs:
         -e CI=true \
         --env-file .env.test \
         app/test /bin/bash -c "tail -f /dev/null"
-      docker exec test-container rake
+      docker exec test-container bundle exec rake
       docker exec test-container bundle exec brakeman
       echo "==== testing terrafrom ===="
       cd terraform

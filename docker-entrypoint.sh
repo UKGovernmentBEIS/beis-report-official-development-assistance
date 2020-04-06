@@ -6,7 +6,7 @@ echo "Starting docker entrypoint…"
 setup_database()
 {
   echo "Preparing database…"
-  rake db:prepare
+  bundle exec rake db:prepare
   echo "Finished database setup."
 }
 
