@@ -6,7 +6,7 @@ RSpec.describe CreateBudget do
   describe "#call" do
     it "sets the activity as the one this budget belongs to" do
       result = described_class.new(activity: activity).call
-      expect(result.object.activity).to eq(activity)
+      expect(result.object.parent_activity).to eq(activity)
     end
 
     it "returns a successful result" do

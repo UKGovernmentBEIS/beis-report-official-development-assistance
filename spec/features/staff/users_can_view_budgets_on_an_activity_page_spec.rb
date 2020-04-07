@@ -9,7 +9,7 @@ RSpec.feature "Users can view budgets on an activity page" do
     context "when the activity is fund_level" do
       scenario "budget information is shown on the page" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
-        budget = create(:budget, activity: fund_activity)
+        budget = create(:budget, parent_activity: fund_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
         visit organisation_path(user.organisation)
@@ -21,9 +21,9 @@ RSpec.feature "Users can view budgets on an activity page" do
 
       scenario "budgets are shown in period date order, newest first" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
-        budget_1 = create(:budget, activity: fund_activity, period_start_date: Date.today, period_end_date: Date.tomorrow)
-        budget_2 = create(:budget, activity: fund_activity, period_start_date: 1.year.ago, period_end_date: Date.yesterday)
-        budget_3 = create(:budget, activity: fund_activity, period_start_date: 2.years.ago, period_end_date: 1.year.ago)
+        budget_1 = create(:budget, parent_activity: fund_activity, period_start_date: Date.today, period_end_date: Date.tomorrow)
+        budget_2 = create(:budget, parent_activity: fund_activity, period_start_date: 1.year.ago, period_end_date: Date.yesterday)
+        budget_3 = create(:budget, parent_activity: fund_activity, period_start_date: 2.years.ago, period_end_date: 1.year.ago)
 
         visit organisation_path(user.organisation)
 
@@ -39,7 +39,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
 
-        budget = create(:budget, activity: programme_activity)
+        budget = create(:budget, parent_activity: programme_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
         visit organisation_path(user.organisation)
@@ -57,7 +57,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
         project_activity = create(:project_activity, activity: programme_activity, organisation: user.organisation)
 
-        budget = create(:budget, activity: project_activity)
+        budget = create(:budget, parent_activity: project_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
         visit organisation_path(user.organisation)
@@ -74,7 +74,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
         project_activity = create(:project_activity, activity: programme_activity, organisation: user.organisation)
 
-        budget = create(:budget, activity: project_activity)
+        budget = create(:budget, parent_activity: project_activity)
 
         visit organisation_path(user.organisation)
 

@@ -14,12 +14,12 @@ class Staff::ActivitiesController < Staff::BaseController
     @activities = @activity.child_activities.order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
 
     @transactions = policy_scope(Transaction).where(activity: @activity).order("date DESC")
-    @budgets = policy_scope(Budget).where(activity: @activity).order("period_start_date DESC")
+    @budgets = policy_scope(Budget).where(parent_activity: @activity).order("period_start_date DESC")
 
     respond_to do |format|
       format.html do
         @transaction_presenters = @transactions.includes(:activity).map { |transaction| TransactionPresenter.new(transaction) }
-        @budget_presenters = @budgets.includes(:activity).map { |budget| BudgetPresenter.new(budget) }
+        @budget_presenters = @budgets.includes(:parent_activity).map { |budget| BudgetPresenter.new(budget) }
         @implementing_organisation_presenters = @activity.implementing_organisations.map { |implementing_organisation| ImplementingOrganisationPresenter.new(implementing_organisation) }
       end
       format.xml do |_format|

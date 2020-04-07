@@ -4,8 +4,8 @@ RSpec.describe BudgetPolicy do
   let(:user) { create(:administrator) }
   let(:activity) { create(:activity, organisation: user.organisation) }
   let(:other_activity) { create(:activity, organisation: create(:organisation)) }
-  let(:budget) { create(:budget, activity: activity) }
-  let!(:other_budget) { create(:budget, activity: other_activity) }
+  let(:budget) { create(:budget, parent_activity: activity) }
+  let!(:other_budget) { create(:budget, parent_activity: other_activity) }
 
   subject { described_class.new(user, budget) }
 
