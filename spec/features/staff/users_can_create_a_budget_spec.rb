@@ -25,7 +25,7 @@ RSpec.describe "Users can create a budget" do
         programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
-        click_on(programme_activity.activity.title)
+        click_on(programme_activity.parent_activity.title)
         click_on(programme_activity.title)
 
         click_on(I18n.t("page_content.budgets.button.create"))
@@ -41,7 +41,7 @@ RSpec.describe "Users can create a budget" do
 
         visit organisation_path(user.organisation)
 
-        click_on(programme_activity.activity.title)
+        click_on(programme_activity.parent_activity.title)
         click_on(programme_activity.title)
 
         click_on(I18n.t("page_content.budgets.button.create"))

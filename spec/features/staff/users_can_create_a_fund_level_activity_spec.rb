@@ -165,6 +165,19 @@ RSpec.feature "Users can create a fund level activity" do
         expect(page).to have_content Activity.last.title
       end
     end
+
+    scenario "fund creation is tracked with public_activity" do
+      PublicActivity.with_tracking do
+        visit organisation_path(user.organisation)
+        click_on(I18n.t("page_content.organisation.button.create_fund"))
+
+        fill_in_activity_form(level: "fund")
+
+        auditable_events = PublicActivity::Activity.all
+        expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.update")
+        expect(auditable_events.first.owner_id).to eq user.id
+      end
+    end
   end
 
   context "when the user does NOT belong to BEIS" do

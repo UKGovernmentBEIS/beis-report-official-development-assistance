@@ -49,5 +49,22 @@ RSpec.feature "Users can create a programme activity" do
       expect(activity.accountable_organisation_reference).to eq("GB-GOV-13")
       expect(activity.accountable_organisation_type).to eq("10")
     end
+
+    scenario "programme creation is tracked with public_activity" do
+      fund = create(:activity, level: :fund, organisation: user.organisation)
+
+      PublicActivity.with_tracking do
+        visit organisation_path(user.organisation)
+        click_on fund.title
+        click_on(I18n.t("page_content.organisation.button.create_programme"))
+
+        fill_in_activity_form(identifier: "my-unique-identifier", level: "programme")
+
+        programme = Activity.find_by(identifier: "my-unique-identifier")
+        auditable_events = PublicActivity::Activity.where(trackable_id: programme.id)
+        expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.update")
+        expect(auditable_events.first.owner_id).to eq user.id
+      end
+    end
   end
 end
