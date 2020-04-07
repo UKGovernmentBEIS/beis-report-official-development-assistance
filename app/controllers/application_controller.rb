@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   include Auth
   include Ip
-  include PublicActivity::StoreController
 
   def sign_out
     reset_session
