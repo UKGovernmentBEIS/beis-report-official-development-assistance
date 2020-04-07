@@ -72,14 +72,14 @@ ActiveRecord::Schema.define(version: 2020_04_08_173214) do
   end
 
   create_table "budgets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "activity_id"
     t.string "budget_type"
     t.string "status"
     t.date "period_start_date"
     t.date "period_end_date"
     t.decimal "value", precision: 13, scale: 2
     t.string "currency"
-    t.index ["activity_id"], name: "index_budgets_on_activity_id"
+    t.uuid "parent_activity_id"
+    t.index ["parent_activity_id"], name: "index_budgets_on_parent_activity_id"
   end
 
   create_table "implementing_organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -142,7 +142,7 @@ ActiveRecord::Schema.define(version: 2020_04_08_173214) do
   add_foreign_key "activities", "organisations", column: "extending_organisation_id"
   add_foreign_key "activities", "organisations", column: "reporting_organisation_id"
   add_foreign_key "activities", "organisations", on_delete: :restrict
-  add_foreign_key "budgets", "activities", on_delete: :cascade
   add_foreign_key "transactions", "activities", on_delete: :cascade
+  add_foreign_key "budgets", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "users", "organisations", on_delete: :restrict
 end

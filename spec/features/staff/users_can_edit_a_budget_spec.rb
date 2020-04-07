@@ -7,7 +7,7 @@ RSpec.describe "Users can edit a budget" do
     scenario "a budget can be successfully edited" do
       fund_activity = create(:fund_activity, organisation: user.organisation)
       programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
-      budget = create(:budget, activity: programme_activity, budget_type: "original", value: "10")
+      budget = create(:budget, parent_activity: programme_activity, budget_type: "original", value: "10")
 
       visit organisation_activity_path(user.organisation, programme_activity)
       within("##{budget.id}") do
@@ -26,7 +26,7 @@ RSpec.describe "Users can edit a budget" do
     scenario "validation errors work as expected" do
       fund_activity = create(:fund_activity, organisation: user.organisation)
       programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
-      budget = create(:budget, activity: programme_activity, value: "10")
+      budget = create(:budget, parent_activity: programme_activity, value: "10")
 
       visit organisation_activity_path(user.organisation, programme_activity)
       within("##{budget.id}") do

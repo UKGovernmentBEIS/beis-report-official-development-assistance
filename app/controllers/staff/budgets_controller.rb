@@ -4,7 +4,7 @@ class Staff::BudgetsController < Staff::BaseController
   def new
     @activity = Activity.find(activity_id)
     @budget = Budget.new
-    @budget.activity = @activity
+    @budget.parent_activity = @activity
 
     authorize @budget
   end

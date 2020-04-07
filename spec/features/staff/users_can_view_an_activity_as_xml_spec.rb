@@ -92,8 +92,8 @@ RSpec.feature "Users can view an activity as XML" do
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it "only includes budgets which belong to the activity" do
-          _budget = create(:budget, activity: activity)
-          _other_budget = create(:budget, activity: create(:activity))
+          _budget = create(:budget, parent_activity: activity)
+          _other_budget = create(:budget, parent_activity: create(:activity))
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
