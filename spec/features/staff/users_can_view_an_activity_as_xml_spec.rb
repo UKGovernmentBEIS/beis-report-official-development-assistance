@@ -42,6 +42,26 @@ RSpec.feature "Users can view an activity as XML" do
         end
       end
 
+      context "when the activity does not have actual dates (optional dates)" do
+        let(:activity) {
+          create(:fund_activity,
+            organisation: organisation,
+            identifier: "IND-ENT-IFIER",
+            actual_start_date: nil,
+            actual_end_date: nil)
+        }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it "does not include empty optional dates" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+          optional_start_date = xml.at("iati-activity/activity-date[@type = '2']")
+          optional_end_date = xml.at("iati-activity/activity-date[@type = '4']")
+
+          expect(optional_start_date).to be_nil
+          expect(optional_end_date).to be_nil
+        end
+      end
+
       context "when the activity is a fund activity" do
         let(:activity) { create(:fund_activity, organisation: organisation, identifier: "IND-ENT-IFIER") }
         let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
