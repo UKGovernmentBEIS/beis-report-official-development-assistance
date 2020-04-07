@@ -21,9 +21,11 @@
         %narrative= organisation.name
   %activity-status{"code" => activity.status}/
   %activity-date{"iso-date" => activity.planned_start_date, type: "1"}/
-  %activity-date{"iso-date" => activity.actual_start_date, type: "2"}/
+  - if activity.actual_start_date?
+    %activity-date{"iso-date" => activity.actual_start_date, type: "2"}/
   %activity-date{"iso-date" => activity.planned_end_date, type: "3"}/
-  %activity-date{"iso-date" => activity.actual_end_date, type: "4"}/
+  - if activity.actual_end_date?
+    %activity-date{"iso-date" => activity.actual_end_date, type: "4"}/
   - if activity.recipient_region?
     %recipient-region{"code" => activity.recipient_region, vocabulary: "1"}/
   - if activity.recipient_country?
