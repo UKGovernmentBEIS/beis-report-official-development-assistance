@@ -14,6 +14,7 @@ Rails.application.config.assets.precompile += %w[
   govuk-frontend/all.js
   govuk-frontend/all.scss
 ]
+
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.

@@ -11,7 +11,7 @@ en:
           fund: Fund
         project:
           programme: Programme
-        recipient_country: Recipient country
+        recipient_country: Country
         recipient_region: Recipient region
         sector: Focus area
         status: Status
@@ -114,6 +114,7 @@ en:
         identifier: Reference to link this to your internal systems so it can be found again later.
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
+        recipient_country: A country that will benefit from this activity
         recipient_region:
           html: A supranational geopolitical region that will benefit from this activity.
         sector:
