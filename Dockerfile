@@ -2,12 +2,21 @@
 # base
 # ------------------------------------------------------------------------------
 FROM ruby:2.6.3 AS base
-MAINTAINER dxw <rails@dxw.com>
+LABEL maintainer="rails@dxw.com"
 
 RUN apt-get update && apt-get install -qq -y \
   build-essential \
   libpq-dev \
+  firefox-esr \
   --fix-missing --no-install-recommends
+
+ARG gecko_driver_version=0.26.0
+
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v$gecko_driver_version/geckodriver-v$gecko_driver_version-linux64.tar.gz
+RUN tar -xvzf  geckodriver-v$gecko_driver_version-linux64.tar.gz
+RUN rm geckodriver-v$gecko_driver_version-linux64.tar.gz
+RUN chmod +x geckodriver
+RUN mv geckodriver* /usr/local/bin
 
 ENV APP_HOME /app
 ENV DEPS_HOME /deps
@@ -39,17 +48,11 @@ RUN gem install bundler
 
 RUN bundle config set frozen 'true'
 
-# Configure bundler for the environment
-RUN if [ ${RAILS_ENV} = "production" ]; then \
-  bundle config set without 'development test'; \
-  elif [ ${RAILS_ENV} = "test" ]; then \
-  bundle config set without 'development'; \
-  else \
-  bundle config set without 'test'; \
-  fi
-
+# Configure bundler for both test and production
+RUN bundle config set without 'development'
+RUN bundle config set deployment 'true'
 RUN bundle config
-RUN bundle install --retry 3 --jobs 4
+RUN bundle install --retry 3 --jobs 2
 # end
 
 # Install JavaScript dependencies
@@ -90,19 +93,3 @@ EXPOSE 3000
 
 CMD ["bundle", "exec", "puma"]
 
-# ------------------------------------------------------------------------------
-# test
-# ------------------------------------------------------------------------------
-FROM web as test
-
-RUN apt-get install -qq -y firefox-esr
-
-ARG gecko_driver_version=0.26.0
-
-RUN wget https://github.com/mozilla/geckodriver/releases/download/v$gecko_driver_version/geckodriver-v$gecko_driver_version-linux64.tar.gz
-RUN tar -xvzf  geckodriver-v$gecko_driver_version-linux64.tar.gz
-RUN rm geckodriver-v$gecko_driver_version-linux64.tar.gz
-RUN chmod +x geckodriver
-RUN mv geckodriver* /usr/local/bin
-
-CMD [ "bundle", "exec", "rake, default" ]
