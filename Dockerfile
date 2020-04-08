@@ -95,7 +95,7 @@ CMD ["bundle", "exec", "puma"]
 # ------------------------------------------------------------------------------
 FROM web as test
 
-RUN apt-get install -qq -y firefox-esr
+RUN apt-get update && apt-get install --fix-missing -qq -y firefox-esr
 
 ARG gecko_driver_version=0.26.0
 

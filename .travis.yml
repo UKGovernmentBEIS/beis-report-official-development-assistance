@@ -1,37 +1,20 @@
 language: minimal
 services:
 - docker
-before_install:
-- docker build . --target test --build-arg RAILS_ENV=test -t app/test
 jobs:
   include:
   - stage: Test
-    name: Build and test the current version of the application using Docker
-    env:
-    - RAILS_ENV=test
+    name: Build and test the current version of the application using Docker compose
     script: |
-      set -eu
-      docker network create test
-      docker run -d --name pg --network test -p 5432:5432 postgres:11.6
-      docker run -d --name redis --network test -p 6379:6379 redis:4.0.14
-      docker run -d \
-        --name test-container \
-        --network test \
-        -e RAILS_ENV=test \
-        -e DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL=true \
-        -e DATABASE_URL=postgres://postgres@pg:5432/roda_test \
-        -e REDIS_URL=redis://redis:6379 \
-        -e TRAVIS="$TRAVIS" \
-        -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" \
-        -e TRAVIS_BRANCH="$TRAVIS_BRANCH" \
-        -e TRAVIS_PULL_REQUEST="$TRAVIS_PULL_REQUEST" \
-        -e COVERALLS_SERVICE_NAME=travis-ci \
-        -e COVERALLS_REPO_TOKEN="$COVERALLS_REPO_TOKEN" \
-        -e CI=true \
-        --env-file .env.test \
-        app/test /bin/bash -c "tail -f /dev/null"
-      docker exec test-container bundle exec rake
-      docker exec test-container bundle exec brakeman
+      echo "==== build image ===="
+      TAG="${TRAVIS_BUILD_NUMBER}-${TRAVIS_COMMIT}"
+      docker build --target test -t "thedxw/beis-report-official-development-assistance:$TAG" .
+      echo "==== testing app ====" 
+      docker-compose -f docker-compose.ci.yml up --detach
+      docker exec test-container /bin/bash -c "./wait-for-it.sh redis:6379 --strict -- bundle exec rails db:prepare"
+      docker exec test-container /bin/bash -c "bundle exec standardrb"
+      docker exec test-container /bin/bash -c "bundle exec rspec"
+      docker exec test-container /bin/bash -c "bundle exec brakeman"
       echo "==== testing terrafrom ===="
       cd terraform
       git clone https://github.com/tfutils/tfenv.git ~/.tfenv
