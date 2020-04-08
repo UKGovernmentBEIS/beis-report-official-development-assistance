@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   scope module: "public" do
     get "health_check" => "base#health_check"
     root to: "visitors#index"
+
+    get "privacy-policy" => "privacy_policy#index"
   end
 
   scope module: "staff" do

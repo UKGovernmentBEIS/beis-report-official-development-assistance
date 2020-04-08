@@ -1,0 +1,5 @@
+address.govuk-body {
+  @include govuk-font($size: 19, $weight: normal);
+  margin-bottom: govuk-spacing(4);
+  font-style: normal;
+}
