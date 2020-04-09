@@ -11,7 +11,7 @@ RSpec.describe CreateFundActivity do
     end
 
     it "saves the reporting organisation reference" do
-      expect(result.reporting_organisation_reference).to eq(organisation.iati_reference)
+      expect(result.reporting_organisation.iati_reference).to eq(organisation.iati_reference)
     end
 
     it "sets the initial wizard_status" do

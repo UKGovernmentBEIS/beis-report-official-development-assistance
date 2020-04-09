@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_31_085103) do
+ActiveRecord::Schema.define(version: 2020_03_31_111947) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -41,13 +42,14 @@ ActiveRecord::Schema.define(version: 2020_03_31_085103) do
     t.string "accountable_organisation_reference"
     t.string "accountable_organisation_type"
     t.uuid "extending_organisation_id"
-    t.string "reporting_organisation_reference"
     t.string "recipient_country"
     t.string "geography"
+    t.uuid "reporting_organisation_id"
     t.index ["activity_id"], name: "index_activities_on_activity_id"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
+    t.index ["reporting_organisation_id"], name: "index_activities_on_reporting_organisation_id"
   end
 
   create_table "budgets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -119,4 +121,5 @@ ActiveRecord::Schema.define(version: 2020_03_31_085103) do
 
   add_foreign_key "activities", "activities"
   add_foreign_key "activities", "organisations", column: "extending_organisation_id"
+  add_foreign_key "activities", "organisations", column: "reporting_organisation_id"
 end
