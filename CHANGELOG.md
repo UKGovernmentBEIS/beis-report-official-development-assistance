@@ -98,6 +98,7 @@
 - Progressively enhance the country select element into a combo box when
   Javascript is available
 - Add privacy policy to site
+- Empty optional dates for `actual start date` and `actual end date` are not included on the activity XML
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...HEAD
 [release-3]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-2...release-3
