@@ -128,4 +128,5 @@ en:
         reference:
           html: <a href="http://org-id.guide/" target="_blank" class="govuk-link">Organisation references can be found using this service</a>
       transaction:
-        date: For example, 27 3 2020
+        date: The date the transaction was made. If you're reporting quarterly data, select the last day of the quarter. For example, 31 12 2020
+        description: For example, Quarter one spend on the Early Career Research Network project.
