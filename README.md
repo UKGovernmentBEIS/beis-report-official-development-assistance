@@ -95,6 +95,22 @@ To manage sensitive environment variables:
 
 [Our release process is documented locally](/doc/deployment-process.md).
 
+## Migrations
+
+### Schema
+
+We use conventional Rails migrations to make changes to the schema. This includes setting or changing relevant data.
+
+Schema migrations are applied automatically on deployment via the docker-entrypoint.sh.
+
+### Data / One-off tasks
+
+We use the [data-migrate](https://github.com/ilyakatz/data-migrate) gem to make changes to data that do not require schema changes.
+
+This can be useful if we need to fix missing data fields or improve the quality of data. For example upcasing all values of a certain field at the same time as adding in validation for the same.
+
+Data migrations are applied automatically on deployment via the docker-entrypoint.sh.
+
 ## Access
 
 ### Staging
