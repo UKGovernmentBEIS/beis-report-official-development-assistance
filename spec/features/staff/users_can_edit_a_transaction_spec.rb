@@ -10,7 +10,7 @@ RSpec.feature "Users can edit a transaction" do
     before { authenticate!(user: user) }
     let(:user) { create(:beis_user) }
     let!(:activity) { create(:fund_activity, organisation: user.organisation) }
-    let!(:transaction) { create(:transaction, activity: activity) }
+    let!(:transaction) { create(:transaction, parent_activity: activity) }
 
     scenario "editing a transaction on a fund" do
       visit organisation_path(user.organisation)

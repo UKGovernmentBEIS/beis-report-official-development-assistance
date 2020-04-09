@@ -2,10 +2,10 @@ require "rails_helper"
 
 RSpec.describe TransactionPolicy do
   let(:user) { create(:administrator) }
-  let(:transaction) { create(:transaction, activity: activity) }
+  let(:transaction) { create(:transaction, parent_activity: activity) }
   let(:activity) { create(:activity, organisation: user.organisation) }
   let(:other_activity) { create(:activity, organisation: create(:organisation)) }
-  let!(:other_transaction) { create(:transaction, activity: other_activity) }
+  let!(:other_transaction) { create(:transaction, parent_activity: other_activity) }
 
   context "as a BEIS user" do
     let(:user) { create(:beis_user) }
