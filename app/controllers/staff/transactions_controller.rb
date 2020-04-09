@@ -6,7 +6,7 @@ class Staff::TransactionsController < Staff::BaseController
   def new
     @activity = Activity.find(activity_id)
     @transaction = Transaction.new
-    @transaction.activity = @activity
+    @transaction.parent_activity = @activity
 
     authorize @transaction
   end

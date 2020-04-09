@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_08_173214) do
+ActiveRecord::Schema.define(version: 2020_04_09_133152) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -114,14 +114,14 @@ ActiveRecord::Schema.define(version: 2020_04_08_173214) do
     t.string "currency"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "activity_id"
     t.string "providing_organisation_name"
     t.string "providing_organisation_type"
     t.string "receiving_organisation_name"
     t.string "receiving_organisation_type"
     t.string "providing_organisation_reference"
     t.string "receiving_organisation_reference"
-    t.index ["activity_id"], name: "index_transactions_on_activity_id"
+    t.uuid "parent_activity_id"
+    t.index ["parent_activity_id"], name: "index_transactions_on_parent_activity_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -142,7 +142,7 @@ ActiveRecord::Schema.define(version: 2020_04_08_173214) do
   add_foreign_key "activities", "organisations", column: "extending_organisation_id"
   add_foreign_key "activities", "organisations", column: "reporting_organisation_id"
   add_foreign_key "activities", "organisations", on_delete: :restrict
-  add_foreign_key "transactions", "activities", on_delete: :cascade
   add_foreign_key "budgets", "activities", column: "parent_activity_id", on_delete: :cascade
+  add_foreign_key "transactions", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "users", "organisations", on_delete: :restrict
 end

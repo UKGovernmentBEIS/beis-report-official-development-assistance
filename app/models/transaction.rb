@@ -1,5 +1,8 @@
 class Transaction < ApplicationRecord
-  belongs_to :activity
+  include PublicActivity::Model
+  tracked owner: proc { |controller, _model| controller.current_user }
+
+  belongs_to :parent_activity, class_name: "Activity"
   validates_presence_of :reference,
     :description,
     :transaction_type,

@@ -11,8 +11,8 @@ RSpec.feature "Users can view transactions on an activity page" do
       let(:other_activity) { create(:fund_activity, organisation: user.organisation) }
 
       scenario "only transactions belonging to this fund activity are shown on the Activity#show page" do
-        transaction = create(:transaction, activity: activity)
-        other_transaction = create(:transaction, activity: other_activity)
+        transaction = create(:transaction, parent_activity: activity)
+        other_transaction = create(:transaction, parent_activity: other_activity)
 
         visit organisation_path(user.organisation)
 
@@ -23,7 +23,7 @@ RSpec.feature "Users can view transactions on an activity page" do
       end
 
       scenario "transaction information is shown on the page" do
-        transaction = create(:transaction, activity: activity)
+        transaction = create(:transaction, parent_activity: activity)
         transaction_presenter = TransactionPresenter.new(transaction)
 
         visit organisation_path(user.organisation)
@@ -41,8 +41,8 @@ RSpec.feature "Users can view transactions on an activity page" do
       end
 
       scenario "the transactions are shown in date order, newest first" do
-        transaction_1 = create(:transaction, activity: activity, date: Date.today)
-        transaction_2 = create(:transaction, activity: activity, date: Date.yesterday)
+        transaction_1 = create(:transaction, parent_activity: activity, date: Date.today)
+        transaction_2 = create(:transaction, parent_activity: activity, date: Date.yesterday)
 
         visit organisation_path(user.organisation)
 
@@ -59,7 +59,7 @@ RSpec.feature "Users can view transactions on an activity page" do
       let(:project_activity) { create(:project_activity, activity: programme_activity, organisation: user.organisation) }
 
       scenario "transaction information is shown on the page" do
-        transaction = create(:transaction, activity: project_activity)
+        transaction = create(:transaction, parent_activity: project_activity)
         transaction_presenter = TransactionPresenter.new(transaction)
 
         visit organisation_path(user.organisation)
@@ -79,7 +79,7 @@ RSpec.feature "Users can view transactions on an activity page" do
       end
 
       scenario "transactions cannot be created or edited by a BEIS user" do
-        transaction = create(:transaction, activity: project_activity)
+        transaction = create(:transaction, parent_activity: project_activity)
 
         visit organisation_path(user.organisation)
 
