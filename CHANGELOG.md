@@ -90,7 +90,7 @@
 - Country list for recipient countries when creating an activity has been reduced to only those ODA uses as recipients.
 - Add feedback form link to phase banner
 
-## [unreleased]
+## [release-4] - 2020-04-09
 
 - When creating an activity the Finance step has been defaulted to `Standard grant` and omitted from the user journey
 - When creating an activity, the `Tied status` step has been removed from the user journey and it has now a default value of `Untied`, code "5"
@@ -100,6 +100,9 @@
 - Empty optional dates for `actual start date` and `actual end date` are not included on the activity XML
 - Reporting org in the IATI XML is always BEIS for funds, programmes and projects created by governmental organisations, and the activity's organisation if it is a non-governmental organisation
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...HEAD
+[release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
 [release-3]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-2...release-3
 [release-2]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-1...release-2
