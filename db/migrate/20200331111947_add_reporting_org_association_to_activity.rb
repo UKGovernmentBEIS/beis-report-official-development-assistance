@@ -5,7 +5,7 @@ class AddReportingOrgAssociationToActivity < ActiveRecord::Migration[6.0]
     ActiveRecord::Base.transaction do
       service_owner = Organisation.find_by_service_owner(true)
 
-      Activity.all.each do |activity|
+      Activity.where.not(wizard_status: :blank).each do |activity|
         organisation = activity.organisation
         activity.reporting_organisation = if organisation.is_government?
           service_owner
@@ -23,7 +23,7 @@ class AddReportingOrgAssociationToActivity < ActiveRecord::Migration[6.0]
     add_column :activities, :reporting_organisation_reference, :string
 
     ActiveRecord::Base.transaction do
-      activities = Activity.where.not(reporting_organisation_id: nil)
+      activities = Activity.where.not(reporting_organisation_id: nil, wizard_status: :blank)
 
       activities.each do |activity|
         activity.reporting_organisation_reference = activity.reporting_organisation.iati_reference
