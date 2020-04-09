@@ -24,7 +24,7 @@ You must have have been given 'Space developer' access to the intended space, fo
     ```
 3. Navigate to the application
     ```
-    $ cd /srv/beis-roda
+    $ cd /app
     ```
 4. Run the intended commands
     ```
