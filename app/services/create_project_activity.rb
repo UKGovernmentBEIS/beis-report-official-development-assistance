@@ -8,12 +8,10 @@ class CreateProjectActivity
   end
 
   def call
-    service_owner = Organisation.find_by(service_owner: true)
-    reporting_organisation = Organisation.find(organisation_id)
-
     activity = Activity.new
-    activity.organisation = reporting_organisation
-    activity.reporting_organisation_reference = reporting_organisation.iati_reference
+    activity.organisation = creating_organisation
+    activity.reporting_organisation = reporting_organisation
+    activity.extending_organisation = creating_organisation
 
     programme = Activity.find(programme_id)
     programme.child_activities << activity
@@ -29,8 +27,21 @@ class CreateProjectActivity
     activity.accountable_organisation_reference = service_owner.iati_reference
     activity.accountable_organisation_type = service_owner.organisation_type
 
-    activity.extending_organisation = reporting_organisation
     activity.save(validate: false)
     activity
+  end
+
+  private
+
+  def service_owner
+    Organisation.find_by_service_owner(true)
+  end
+
+  def creating_organisation
+    Organisation.find(organisation_id)
+  end
+
+  def reporting_organisation
+    creating_organisation.is_government? ? service_owner : creating_organisation
   end
 end

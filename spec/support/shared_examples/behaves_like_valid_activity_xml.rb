@@ -11,6 +11,13 @@ RSpec.shared_examples "valid activity XML" do
     expect(xml.at("iati-activity/iati-identifier").text).to eq(activity_presenter.iati_identifier)
   end
 
+  it "contains the reporting organisation XML" do
+    visit organisation_activity_path(organisation, activity, format: :xml)
+    expect(xml.at("iati-activity/reporting-org/@ref").text).to eq(activity_presenter.reporting_organisation.iati_reference)
+    expect(xml.at("iati-activity/reporting-org/@type").text).to eq(activity_presenter.reporting_organisation.organisation_type)
+    expect(xml.at("iati-activity/reporting-org/narrative").text).to eq(activity_presenter.reporting_organisation.name)
+  end
+
   it "contains the funding organisation XML" do
     visit organisation_activity_path(organisation, activity, format: :xml)
     expect(xml.at("iati-activity/participating-org[@role = '1']/@ref").text).to eq(activity_presenter.funding_organisation_reference)
