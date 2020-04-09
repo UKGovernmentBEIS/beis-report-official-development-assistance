@@ -99,6 +99,7 @@
 - Add privacy policy to site
 - Empty optional dates for `actual start date` and `actual end date` are not included on the activity XML
 - Reporting org in the IATI XML is always BEIS for funds, programmes and projects created by governmental organisations, and the activity's organisation if it is a non-governmental organisation
+- User actions are tracked on Activities, Budgets, Transactions and Users.
 
 ## [unreleased]
 
