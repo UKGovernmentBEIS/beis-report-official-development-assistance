@@ -99,3 +99,6 @@ config/master.key
 docker-compose.env
 *.tfvars
 terraform/.terraform/*
+
+# debug
+.byebug_history

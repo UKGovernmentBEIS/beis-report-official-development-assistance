@@ -1,6 +1,5 @@
 class User < ApplicationRecord
-  include PublicActivity::Model
-  tracked owner: proc { |controller, _model| controller.current_user }
+  include PublicActivity::Common
 
   belongs_to :organisation
   validates_presence_of :name, :email

@@ -14,12 +14,13 @@ class Staff::BudgetsController < Staff::BaseController
     authorize @activity
 
     result = CreateBudget.new(activity: @activity).call(attributes: budget_params)
+    @budget = result.object
 
     if result.success?
+      @budget.create_activity key: "budget.create", owner: current_user
       flash[:notice] = I18n.t("form.budget.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
-      @budget = result.object
       render :new
     end
   end
@@ -40,6 +41,7 @@ class Staff::BudgetsController < Staff::BaseController
       .call(attributes: budget_params)
 
     if result.success?
+      @budget.create_activity key: "budget.update", owner: current_user
       flash[:notice] = I18n.t("form.budget.update.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else

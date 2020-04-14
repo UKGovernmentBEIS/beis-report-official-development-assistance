@@ -1,6 +1,5 @@
 class Activity < ApplicationRecord
-  include PublicActivity::Model
-  tracked owner: proc { |controller, _model| controller.current_user }
+  include PublicActivity::Common
 
   STANDARD_GRANT_FINANCE_CODE = "110"
   UNTIED_TIED_STATUS_CODE = "5"
