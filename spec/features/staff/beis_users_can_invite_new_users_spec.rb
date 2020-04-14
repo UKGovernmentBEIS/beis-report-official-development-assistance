@@ -53,8 +53,8 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
           create_user(organisation, new_user_name, new_user_email)
           auditable_events = PublicActivity::Activity.all
-          expect(auditable_events.map { |event| event.key }).to include("user.create", "user.update")
-          expect(auditable_events.first.owner_id).to eq user.id
+          expect(auditable_events.map { |event| event.key }).to include("user.create")
+          expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
         end
       end
 
