@@ -60,10 +60,11 @@ RSpec.feature "Users can create a programme activity" do
 
         fill_in_activity_form(identifier: "my-unique-identifier", level: "programme")
 
+        auditable_events = PublicActivity::Activity.all
         programme = Activity.find_by(identifier: "my-unique-identifier")
-        auditable_events = PublicActivity::Activity.where(trackable_id: programme.id)
-        expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.update")
+        expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.flow", "activity.create.aid_type")
         expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
+        expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [programme.id]
       end
     end
   end

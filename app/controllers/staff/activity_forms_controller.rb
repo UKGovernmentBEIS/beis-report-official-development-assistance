@@ -43,6 +43,7 @@ class Staff::ActivityFormsController < Staff::BaseController
 
     update_activity_dates
     update_activity_attributes_except_dates
+    record_auditable_activity
 
     update_wizard_status
 
@@ -52,6 +53,11 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   private
+
+  def record_auditable_activity
+    action = @activity.wizard_complete? ? "update" : "create"
+    @activity.create_activity key: "activity.#{action}.#{step}", owner: current_user
+  end
 
   def date_field_params_regex
     # This regex will match the three date params from `date_field`;

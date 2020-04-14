@@ -51,6 +51,26 @@ RSpec.feature "Users can edit an activity" do
 
         assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
       end
+
+      it "tracks activity updates with public_activity" do
+        activity = create(:fund_activity, organisation: user.organisation)
+        identifier = "AB-CDE-1234"
+        PublicActivity.with_tracking do
+          visit organisation_activity_path(activity.organisation, activity)
+
+          within(".identifier") do
+            click_on(I18n.t("generic.link.edit"))
+          end
+
+          fill_in "activity[identifier]", with: identifier
+          click_button I18n.t("form.activity.submit")
+
+          auditable_events = PublicActivity::Activity.where(trackable_id: activity.id)
+          expect(auditable_events.map { |event| event.key }).to include("activity.update.identifier")
+          expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
+          expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [activity.id]
+        end
+      end
     end
 
     context "when the activity is incomplete" do

@@ -24,6 +24,26 @@ RSpec.feature "Users can create a project" do
 
         expect(project.organisation).to eq user.organisation
       end
+
+      scenario "project creation is tracked with public_activity" do
+        programme = create(:programme_activity, extending_organisation: user.organisation)
+
+        PublicActivity.with_tracking do
+          visit organisation_path(user.organisation)
+
+          click_on(programme.title)
+
+          click_on(I18n.t("page_content.organisation.button.create_project"))
+
+          fill_in_activity_form(level: "project", identifier: "my-unique-identifier")
+
+          auditable_events = PublicActivity::Activity.all
+          project = Activity.find_by(identifier: "my-unique-identifier")
+          expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.flow", "activity.create.aid_type")
+          expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
+          expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [project.id]
+        end
+      end
     end
   end
 end

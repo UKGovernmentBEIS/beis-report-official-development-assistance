@@ -171,11 +171,13 @@ RSpec.feature "Users can create a fund level activity" do
         visit organisation_path(user.organisation)
         click_on(I18n.t("page_content.organisation.button.create_fund"))
 
-        fill_in_activity_form(level: "fund")
+        fill_in_activity_form(level: "fund", identifier: "my-unique-identifier")
 
         auditable_events = PublicActivity::Activity.all
-        expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.update")
-        expect(auditable_events.first.owner_id).to eq user.id
+        fund = Activity.find_by(identifier: "my-unique-identifier")
+        expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.flow", "activity.create.aid_type")
+        expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
+        expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [fund.id]
       end
     end
   end
