@@ -24,6 +24,16 @@ module CodelistHelper
     data.collect { |item| OpenStruct.new(name: item["name"], code: item["code"], description: item["description"]) }.sort_by(&:code)
   end
 
+  def yaml_to_objects_with_categories(entity:, type:)
+    data = load_yaml(entity: entity, type: type)
+    return [] if data.empty?
+
+    data.collect { |item|
+      next if item["status"] == "withdrawn"
+      OpenStruct.new(name: item["name"], code: item["code"], category: item["category"])
+    }.compact.sort_by(&:name)
+  end
+
   def currency_select_options
     objects = yaml_to_objects(entity: "generic", type: "default_currency", with_empty_item: false)
     objects.unshift(OpenStruct.new(name: "Pound Sterling", code: "GBP")).uniq
@@ -42,6 +52,15 @@ module CodelistHelper
   def flow_select_options
     objects = yaml_to_objects(entity: "activity", type: "flow", with_empty_item: false)
     objects.unshift(OpenStruct.new(name: "ODA", code: "10")).uniq
+  end
+
+  def sector_radio_options(category: nil)
+    options = yaml_to_objects_with_categories(entity: "activity", type: "sector")
+    if category.present?
+      options.filter { |sector| sector.category == category.to_s }
+    else
+      options
+    end
   end
 
   def load_yaml(entity:, type:)

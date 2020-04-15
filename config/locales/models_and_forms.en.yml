@@ -100,6 +100,8 @@ en:
         actual_start_date: Actual start date (optional)
         planned_end_date: Planned end date
         planned_start_date: Planned start date
+        sector:
+          html: What area of the economy or society is your %{level} helping? For example, research, education or SME development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes.</a>
       user:
         organisation_ids: Organisations
         role: Role
@@ -117,8 +119,6 @@ en:
         recipient_country: A country that will benefit from this activity
         recipient_region:
           html: A supranational geopolitical region that will benefit from this activity.
-        sector:
-          html: For example, research, education or small and medium enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>Common reporting standard (CRS) purpose codes (Opens in new window).</a>
         status: This is the stage your %{level} is currently at
         title: A short, human-readable title that contains a meaningful summary of the activity.
       budget:

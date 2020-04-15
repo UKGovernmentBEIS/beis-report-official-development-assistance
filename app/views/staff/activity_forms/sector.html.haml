@@ -1,7 +1,9 @@
 = render layout: "wrapper" do |f|
-  = f.govuk_collection_select :sector,
-    yaml_to_objects(entity: "activity", type: "sector", with_empty_item: true),
+  = f.govuk_error_summary
+  = f.hidden_field :sector, value: nil
+  = f.govuk_collection_radio_buttons :sector,
+    sector_radio_options,
     :code,
     :name,
-    label: { tag: 'h1', size: 'xl', text:  I18n.t("page_title.activity_form.show.sector", level: f.object.level) },
-    hint_text: t("helpers.hint.activity.sector.html", level: f.object.level)
+    legend: { tag: "h1", size: "xl", text: t("page_title.activity_form.show.sector", level: f.object.level) },
+    hint_text: t("helpers.fieldset.activity.sector.html", level: f.object.level)

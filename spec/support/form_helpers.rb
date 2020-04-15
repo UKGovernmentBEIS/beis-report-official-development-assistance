@@ -39,10 +39,10 @@ module FormHelpers
     expect(page).to have_content I18n.t("page_title.activity_form.show.sector", level: level)
     expect(page).to have_content(
       ActionView::Base.full_sanitizer.sanitize(
-        I18n.t("helpers.hint.activity.sector.html", level: level)
+        I18n.t("helpers.fieldset.activity.sector.html", level: level)
       )
     )
-    select sector, from: "activity[sector]"
+    choose sector
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("activerecord.attributes.activity.status")
