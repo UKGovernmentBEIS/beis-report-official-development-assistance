@@ -613,6 +613,51 @@ en:
       '93018': Refugees/asylum seekers in donor countries - administrative costs
       '99810': Sectors not specified
       '99820': Promotion of development awareness (non-sector allocable)
+    sector_category:
+      '111': Education, Level Unspecified
+      '112': Basic Education
+      '113': Secondary Education
+      '114': Post-Secondary Education
+      '121': Health, General
+      '122': Basic Health
+      '123': Non-communicable diseases (NCDs)
+      '130': Population Policies/Programmes & Reproductive Health
+      '140': Water Supply & Sanitation
+      '151': Government & Civil Society-general
+      '152': Conflict, Peace & Security
+      '160': Other Social Infrastructure & Services
+      '210': Transport & Storage
+      '220': Communications
+      '230': ENERGY GENERATION AND SUPPLY
+      '231': Energy Policy
+      '232': Energy generation, renewable sources
+      '233': Energy generation, non-renewable sources
+      '234': Hybrid energy plants
+      '235': Nuclear energy plants
+      '236': Energy distribution
+      '240': Banking & Financial Services
+      '250': Business & Other Services
+      '311': Agriculture
+      '312': Forestry
+      '313': Fishing
+      '321': Industry
+      '322': Mineral Resources & Mining
+      '323': Construction
+      '331': Trade Policies & Regulations
+      '332': Tourism
+      '410': General Environment Protection
+      '430': Other Multisector
+      '510': General Budget Support
+      '520': Developmental Food Aid/Food Security Assistance
+      '530': Other Commodity Assistance
+      '600': Action Relating to Debt
+      '720': Emergency Response
+      '730': Reconstruction Relief & Rehabilitation
+      '740': Disaster Prevention & Preparedness
+      '910': Administrative Costs of Donors
+      '920': SUPPORT TO NON- GOVERNMENTAL ORGANISATIONS (NGOs)
+      '930': Refugees in Donor Countries
+      '998': Unallocated / Unspecified
     status:
       '1': Pipeline/identification
       '2': Implementation
