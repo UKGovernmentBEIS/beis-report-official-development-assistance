@@ -135,5 +135,23 @@ RSpec.describe CodelistHelper, type: :helper do
           .to eq(OpenStruct.new(name: "ODA", code: "10"))
       end
     end
+
+    describe "#sector_radio_options" do
+      it "returns all sectors when no category is passed" do
+        options = helper.sector_radio_options
+
+        expect(options.length).to eq 283
+        expect(options).to include OpenStruct.new(name: "Women's equality organisations and institutions", code: "15170", category: "151")
+        expect(options).to include OpenStruct.new(name: "Action relating to debt", code: "60010", category: "600")
+      end
+
+      it "returns only the sectors from the category when one is passed" do
+        options = helper.sector_radio_options(category: 112)
+
+        expect(options.length).to eq 6
+        expect(options).to include OpenStruct.new(name: "Basic life skills for youth", code: "11231", category: "112")
+        expect(options).to include OpenStruct.new(name: "School feeding", code: "11250", category: "112")
+      end
+    end
   end
 end
