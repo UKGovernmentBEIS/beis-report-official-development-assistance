@@ -6,7 +6,7 @@ class RenameTransactionActivityIdToParentActivityId < ActiveRecord::Migration[6.
 
     ActiveRecord::Base.transaction do
       Transaction.all.each do |transaction|
-        transaction.parent_activity = transaction.activity
+        transaction.parent_activity_id = transaction.activity_id
         transaction.save!
       end
     end
@@ -21,7 +21,7 @@ class RenameTransactionActivityIdToParentActivityId < ActiveRecord::Migration[6.
 
     ActiveRecord::Base.transaction do
       Transaction.all.each do |transaction|
-        transaction.activity = transaction.parent_activity
+        transaction.activity_id = transaction.parent_activity_id
         transaction.save!
       end
     end
