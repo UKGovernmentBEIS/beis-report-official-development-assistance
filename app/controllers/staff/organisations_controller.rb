@@ -12,14 +12,19 @@ class Staff::OrganisationsController < Staff::BaseController
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
 
-    fund_activities = policy_scope(Activity.funds).includes(:organisation).where(organisation: organisation).order("created_at ASC")
+    if organisation.service_owner
+      fund_activities = policy_scope(Activity.funds, policy_scope_class: FundPolicy::Scope).includes(:organisation).order("created_at ASC")
+      programme_activities = policy_scope(Activity.programme, policy_scope_class: ProgrammePolicy::Scope).includes(:organisation).order("created_at ASC")
+      project_activities = policy_scope(Activity.project, policy_scope_class: ProjectPolicy::Scope).includes(:organisation).order("created_at ASC")
+    else
+      fund_activities = policy_scope(Activity.funds, policy_scope_class: FundPolicy::Scope).includes(:organisation).where(organisation: organisation).order("created_at ASC")
+      programme_activities = policy_scope(Activity.programme, policy_scope_class: ProgrammePolicy::Scope).includes(:organisation).where(extending_organisation: organisation).order("created_at ASC")
+      project_activities = policy_scope(Activity.project, policy_scope_class: ProjectPolicy::Scope).includes(:organisation).where(organisation: organisation).order("created_at ASC")
+    end
+
     @fund_activities = fund_activities.map { |activity| ActivityPresenter.new(activity) }
-
-    programme_activities = policy_scope(Activity.programme, policy_scope_class: ProgrammePolicy::Scope).includes(:organisation).order("created_at ASC")
     @programme_activities = programme_activities.map { |activity| ActivityPresenter.new(activity) }
-
-    project_activites = policy_scope(Activity.project, policy_scope_class: ProjectPolicy::Scope).includes(:organisation).order("created_at ASC")
-    @project_activities = project_activites.map { |activity| ActivityPresenter.new(activity) }
+    @project_activities = project_activities.map { |activity| ActivityPresenter.new(activity) }
   end
 
   def new
