@@ -22,7 +22,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
       let(:user) { create(:beis_user) }
 
       scenario "a new user can be created" do
-        first_organisation = create(:organisation)
+        organisation = create(:organisation)
         second_organisation = create(:organisation)
         new_user_name = "Foo Bar"
         new_user_email = "email@example.com"
@@ -33,27 +33,29 @@ RSpec.feature "BEIS users can invite new users to the service" do
           auth0_identifier: auth0_identifier
         )
 
-        # Navigate from the landing page
-        visit organisation_path(user.organisation)
-        click_on(I18n.t("page_title.users.index"))
+        create_user(organisation, new_user_name, new_user_email)
 
-        # Navigate to the users page
-        expect(page).to have_content(I18n.t("page_title.users.index"))
-
-        # Create a new user
-        click_on(I18n.t("page_content.users.button.create"))
-
-        # Fill out the form
-        expect(page).to have_content(I18n.t("page_title.users.new"))
-        fill_in "user[name]", with: new_user_name
-        fill_in "user[email]", with: new_user_email
-        choose first_organisation.name
-
-        # Submit the form
-        click_button I18n.t("generic.button.submit")
-
-        expect(page).to have_content(first_organisation.name)
+        expect(page).to have_content(organisation.name)
         expect(page).not_to have_content(second_organisation.name)
+      end
+
+      scenario "user creation is tracked with public_activity" do
+        PublicActivity.with_tracking do
+          organisation = create(:organisation)
+          new_user_name = "Foo Bar"
+          new_user_email = "email@example.com"
+          auth0_identifier = "auth0|00991122"
+
+          stub_auth0_create_user_request(
+            email: new_user_email,
+            auth0_identifier: auth0_identifier
+          )
+
+          create_user(organisation, new_user_name, new_user_email)
+          auditable_events = PublicActivity::Activity.all
+          expect(auditable_events.map { |event| event.key }).to include("user.create")
+          expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
+        end
       end
 
       context "when the name and email are not provided" do
@@ -129,5 +131,26 @@ RSpec.feature "BEIS users can invite new users to the service" do
         expect(page).not_to have_content(I18n.t("page_content.dashboard.button.manage_users"))
       end
     end
+  end
+
+  def create_user(organisation, new_user_name, new_user_email)
+    # Navigate from the landing page
+    visit organisation_path(organisation)
+    click_on(I18n.t("page_title.users.index"))
+
+    # Navigate to the users page
+    expect(page).to have_content(I18n.t("page_title.users.index"))
+
+    # Create a new user
+    click_on(I18n.t("page_content.users.button.create"))
+
+    # Fill out the form
+    expect(page).to have_content(I18n.t("page_title.users.new"))
+    fill_in "user[name]", with: new_user_name
+    fill_in "user[email]", with: new_user_email
+    choose organisation.name
+
+    # Submit the form
+    click_button I18n.t("generic.button.submit")
   end
 end

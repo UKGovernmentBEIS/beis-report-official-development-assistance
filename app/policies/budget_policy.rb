@@ -4,15 +4,15 @@ class BudgetPolicy < ApplicationPolicy
   end
 
   def create?
-    Pundit.policy!(user, record.activity).create?
+    Pundit.policy!(user, record.parent_activity).create?
   end
 
   def update?
-    Pundit.policy!(user, record.activity).update?
+    Pundit.policy!(user, record.parent_activity).update?
   end
 
   def destroy?
-    Pundit.policy!(user, record.activity).destroy?
+    Pundit.policy!(user, record.parent_activity).destroy?
   end
 
   class Scope < Scope
@@ -21,7 +21,7 @@ class BudgetPolicy < ApplicationPolicy
         scope.all
       else
         activities = Activity.where(organisation_id: user.organisation)
-        scope.where(activity_id: activities)
+        scope.where(parent_activity_id: activities)
       end
     end
   end

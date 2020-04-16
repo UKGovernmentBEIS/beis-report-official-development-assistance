@@ -1,8 +1,10 @@
 class Staff::ProjectsController < Staff::ActivitiesController
   def create
-    @activity = CreateProjectActivity.new(user: current_user, organisation_id: params["organisation_id"], programme_id: params["programme_id"]).call
-    authorize @activity
+    @project = CreateProjectActivity.new(user: current_user, organisation_id: params["organisation_id"], programme_id: params["programme_id"]).call
+    authorize @project
 
-    redirect_to activity_step_path(@activity.id, @activity.wizard_status)
+    @project.create_activity key: "activity.create", owner: current_user
+
+    redirect_to activity_step_path(@project.id, @project.wizard_status)
   end
 end

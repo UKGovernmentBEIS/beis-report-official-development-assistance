@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Budget do
   describe "relations" do
-    it { should belong_to(:activity) }
+    it { should belong_to(:parent_activity) }
   end
 
   describe "validations" do

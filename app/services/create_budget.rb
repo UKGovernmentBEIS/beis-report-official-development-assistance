@@ -7,7 +7,7 @@ class CreateBudget
 
   def call(attributes: {})
     budget = Budget.new
-    budget.activity = activity
+    budget.parent_activity = activity
     budget.assign_attributes(attributes)
     budget.value = sanitize_monetary_string(value: attributes[:value])
 

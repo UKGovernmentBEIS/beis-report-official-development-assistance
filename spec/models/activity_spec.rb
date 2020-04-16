@@ -232,10 +232,9 @@ RSpec.describe Activity, type: :model do
     context "when the activity is a programme" do
       it "returns the fund" do
         programme = create(:programme_activity)
-        fund = programme.activity
+        fund = programme.parent_activity
 
         result = programme.parent_activities
-
         expect(result.first.id).to eq(fund.id)
       end
     end
@@ -243,8 +242,8 @@ RSpec.describe Activity, type: :model do
     context "when the activity is a project" do
       it "returns the fund and then the programme" do
         project = create(:project_activity)
-        programme = project.activity
-        fund = programme.activity
+        programme = project.parent_activity
+        fund = programme.parent_activity
 
         result = project.parent_activities
 

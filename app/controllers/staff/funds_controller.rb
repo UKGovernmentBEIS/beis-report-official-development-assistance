@@ -2,9 +2,11 @@
 
 class Staff::FundsController < Staff::ActivitiesController
   def create
-    @activity = CreateFundActivity.new(organisation_id: organisation_id).call
-    authorize @activity
+    @fund = CreateFundActivity.new(organisation_id: organisation_id).call
+    authorize @fund
 
-    redirect_to activity_step_path(@activity.id, @activity.wizard_status)
+    @fund.create_activity key: "activity.create", owner: current_user
+
+    redirect_to activity_step_path(@fund.id, @fund.wizard_status)
   end
 end

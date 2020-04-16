@@ -1,5 +1,7 @@
 class Budget < ApplicationRecord
-  belongs_to :activity
+  include PublicActivity::Common
+
+  belongs_to :parent_activity, class_name: "Activity"
 
   validates_presence_of :budget_type,
     :status,

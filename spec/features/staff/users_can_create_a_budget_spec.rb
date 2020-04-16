@@ -17,6 +17,25 @@ RSpec.describe "Users can create a budget" do
 
         expect(page).to have_content(I18n.t("form.budget.create.success"))
       end
+
+      scenario "budget creation is tracked with public_activity" do
+        fund_activity = create(:fund_activity, organisation: user.organisation)
+
+        PublicActivity.with_tracking do
+          visit organisation_path(user.organisation)
+          click_on(fund_activity.title)
+
+          click_on(I18n.t("page_content.budgets.button.create"))
+
+          fill_in_and_submit_budget_form
+
+          budget = Budget.last
+          auditable_event = PublicActivity::Activity.last
+          expect(auditable_event.key).to eq "budget.create"
+          expect(auditable_event.owner_id).to eq user.id
+          expect(auditable_event.trackable_id).to eq budget.id
+        end
+      end
     end
 
     context "on a programme level activity" do
@@ -25,7 +44,7 @@ RSpec.describe "Users can create a budget" do
         programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
-        click_on(programme_activity.activity.title)
+        click_on(programme_activity.parent_activity.title)
         click_on(programme_activity.title)
 
         click_on(I18n.t("page_content.budgets.button.create"))
@@ -41,7 +60,7 @@ RSpec.describe "Users can create a budget" do
 
         visit organisation_path(user.organisation)
 
-        click_on(programme_activity.activity.title)
+        click_on(programme_activity.parent_activity.title)
         click_on(programme_activity.title)
 
         click_on(I18n.t("page_content.budgets.button.create"))

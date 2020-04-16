@@ -7,7 +7,7 @@ RSpec.describe "Users can edit a budget" do
     scenario "a budget can be successfully edited" do
       fund_activity = create(:fund_activity, organisation: user.organisation)
       programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
-      budget = create(:budget, activity: programme_activity, budget_type: "original", value: "10")
+      budget = create(:budget, parent_activity: programme_activity, budget_type: "original", value: "10")
 
       visit organisation_activity_path(user.organisation, programme_activity)
       within("##{budget.id}") do
@@ -23,10 +23,32 @@ RSpec.describe "Users can edit a budget" do
       expect(page).to have_content("Updated")
     end
 
+    scenario "budget update is tracked with public_activity" do
+      fund_activity = create(:fund_activity, organisation: user.organisation)
+      programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
+      budget = create(:budget, parent_activity: programme_activity, budget_type: "original", value: "10")
+
+      PublicActivity.with_tracking do
+        visit organisation_activity_path(user.organisation, programme_activity)
+        within("##{budget.id}") do
+          click_on I18n.t("generic.link.edit")
+        end
+
+        fill_in "budget[value]", with: "20"
+        choose("budget[budget_type]", option: "updated")
+        click_on I18n.t("generic.button.submit")
+
+        budget = Budget.last
+        auditable_event = PublicActivity::Activity.find_by(trackable_id: budget.id)
+        expect(auditable_event.key).to eq "budget.update"
+        expect(auditable_event.owner_id).to eq user.id
+      end
+    end
+
     scenario "validation errors work as expected" do
       fund_activity = create(:fund_activity, organisation: user.organisation)
       programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
-      budget = create(:budget, activity: programme_activity, value: "10")
+      budget = create(:budget, parent_activity: programme_activity, value: "10")
 
       visit organisation_activity_path(user.organisation, programme_activity)
       within("##{budget.id}") do

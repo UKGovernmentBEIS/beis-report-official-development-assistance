@@ -25,6 +25,26 @@ RSpec.feature "Users can create a transaction" do
       expect(page).to have_content(I18n.t("form.transaction.create.success"))
     end
 
+    scenario "transaction creation is tracked with public_activity" do
+      activity = create(:fund_activity, organisation: user.organisation)
+
+      PublicActivity.with_tracking do
+        visit organisation_path(user.organisation)
+
+        click_on(activity.title)
+
+        click_on(I18n.t("page_content.transactions.button.create"))
+
+        fill_in_transaction_form
+
+        transaction = Transaction.last
+        auditable_event = PublicActivity::Activity.last
+        expect(auditable_event.key).to eq "transaction.create"
+        expect(auditable_event.owner_id).to eq user.id
+        expect(auditable_event.trackable_id).to eq transaction.id
+      end
+    end
+
     scenario "validations" do
       activity = create(:fund_activity, organisation: user.organisation)
 

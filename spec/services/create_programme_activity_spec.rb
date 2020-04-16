@@ -16,7 +16,7 @@ RSpec.describe CreateProgrammeActivity do
     end
 
     it "sets the parent Activity to the fund" do
-      expect(result.activity).to eq(fund)
+      expect(result.parent_activity).to eq(fund)
     end
 
     it "sets the initial wizard_status" do
