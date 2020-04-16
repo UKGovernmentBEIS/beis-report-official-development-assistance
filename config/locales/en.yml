@@ -83,7 +83,7 @@ en:
       date:
         label: Transaction date
       description:
-        hint: For example, Quarter one spend on the Early Career Research Network project.
+        hint: For example, 2020 quarter one spend on the Early Career Research Network project.
         label: Describe the transaction
       disbursement_channel:
         hint: The channel through which the funds will flow for this transaction.
