@@ -91,4 +91,36 @@ RSpec.feature "BEIS users can editing other users" do
 
     expect(user.reload.active).to be true
   end
+
+  scenario "user update is tracked with public_activity" do
+    administrator_user = create(:beis_user)
+    authenticate!(user: administrator_user)
+    target_user = create(:administrator, name: "Old Name", email: "old@example.com")
+
+    updated_name = "New Name"
+    updated_email = "new@example.com"
+
+    stub_auth0_update_user_request(
+      auth0_identifier: target_user.identifier,
+      email: updated_email,
+      name: updated_name
+    )
+
+    PublicActivity.with_tracking do
+      visit organisation_path(user.organisation)
+
+      click_on(I18n.t("page_title.users.index"))
+
+      find("tr", text: target_user.name).click_link("Edit")
+
+      fill_in "user[name]", with: updated_name
+      fill_in "user[email]", with: updated_email
+
+      click_button I18n.t("form.user.submit")
+
+      auditable_event = PublicActivity::Activity.find_by(trackable_id: target_user.id)
+      expect(auditable_event.key).to eq "user.update"
+      expect(auditable_event.owner_id).to eq administrator_user.id
+    end
+  end
 end

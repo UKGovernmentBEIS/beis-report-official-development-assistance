@@ -1,4 +1,6 @@
 class Activity < ApplicationRecord
+  include PublicActivity::Common
+
   STANDARD_GRANT_FINANCE_CODE = "110"
   UNTIED_TIED_STATUS_CODE = "5"
 
@@ -121,8 +123,8 @@ class Activity < ApplicationRecord
   end
 
   def parent_activities
-    return [activity] if programme?
-    return [activity.activity, activity] if project?
+    return [parent_activity] if programme?
+    return [parent_activity.parent_activity, parent_activity] if project?
     []
   end
 end

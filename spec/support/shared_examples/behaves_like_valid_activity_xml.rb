@@ -67,13 +67,13 @@ RSpec.shared_examples "valid activity XML" do
   end
 
   it "contains the transaction XML" do
-    transaction = create(:transaction, activity: activity)
+    transaction = create(:transaction, parent_activity: activity)
     visit organisation_activity_path(organisation, activity, format: :xml)
     expect(xml.at("iati-activity/transaction/@ref").text).to eq(transaction.reference)
   end
 
   it "contains the budget XML" do
-    budget = create(:budget, activity: activity)
+    budget = create(:budget, parent_activity: activity)
     visit organisation_activity_path(organisation, activity, format: :xml)
     expect(xml.at("iati-activity/budget/@type").text).to eq("1")
     expect(xml.at("iati-activity/budget/@status").text).to eq("1")

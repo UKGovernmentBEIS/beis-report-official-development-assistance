@@ -8,7 +8,7 @@ class CreateTransaction
   def call(attributes: {})
     transaction = Transaction.new
 
-    transaction.activity = activity
+    transaction.parent_activity = activity
     transaction.assign_attributes(attributes)
     transaction.value = sanitize_monetary_string(value: attributes[:value])
 

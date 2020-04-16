@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include PublicActivity::Common
+
   belongs_to :organisation
   validates_presence_of :name, :email
   validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}

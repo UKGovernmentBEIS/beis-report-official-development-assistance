@@ -46,6 +46,8 @@ class Staff::ActivityFormsController < Staff::BaseController
 
     update_wizard_status
 
+    @activity.create_activity key: "activity.update", owner: current_user
+
     render_wizard @activity
   end
 
