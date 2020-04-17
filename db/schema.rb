@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2020_05_07_151949) do
     t.string "geography"
     t.uuid "reporting_organisation_id"
     t.string "previous_identifier"
+    t.string "sector_category"
     t.boolean "ingested", default: false
     t.index ["activity_id"], name: "index_activities_on_activity_id"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
