@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ActivityPresenter < SimpleDelegator
+  include CodelistHelper
+
   def aid_type
     return if super.blank?
     I18n.t("activity.aid_type.#{super.downcase}")

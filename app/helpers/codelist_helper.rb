@@ -54,6 +54,10 @@ module CodelistHelper
     objects.unshift(OpenStruct.new(name: "ODA", code: "10")).uniq
   end
 
+  def sector_category_radio_options
+    yaml_to_objects(entity: "activity", type: "sector_category", with_empty_item: false)
+  end
+
   def sector_radio_options(category: nil)
     options = yaml_to_objects_with_categories(entity: "activity", type: "sector")
     if category.present?

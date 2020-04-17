@@ -21,7 +21,7 @@ RSpec.feature "Users can edit an activity" do
           expect(page).to have_content(I18n.t("generic.link.add"))
         end
 
-        within(".sector") do
+        within(".sector_category") do
           expect(page).to_not have_content(I18n.t("generic.link.add"))
         end
       end

@@ -3,7 +3,8 @@ module FormHelpers
     identifier: "A-Unique-Identifier",
     title: "My Aid Activity",
     description: Faker::Lorem.paragraph,
-    sector: "Education policy and administrative management",
+    sector_category: "Basic Education",
+    sector: "Primary education",
     status: "2",
     planned_start_date_day: "1",
     planned_start_date_month: "1",
@@ -36,12 +37,17 @@ module FormHelpers
     fill_in "activity[description]", with: description
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.sector", level: level)
+    expect(page).to have_content I18n.t("page_title.activity_form.show.sector_category", level: level)
     expect(page).to have_content(
       ActionView::Base.full_sanitizer.sanitize(
-        I18n.t("helpers.fieldset.activity.sector.html", level: level)
+        I18n.t("helpers.fieldset.activity.sector_category.html", level: level)
       )
     )
+    choose sector_category
+    click_button I18n.t("form.activity.submit")
+
+    expect(page).to have_content I18n.t("page_title.activity_form.show.sector", sector_category: sector_category, level: level)
+
     choose sector
     click_button I18n.t("form.activity.submit")
 

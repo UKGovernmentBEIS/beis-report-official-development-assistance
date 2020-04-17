@@ -3,6 +3,7 @@ FactoryBot.define do
     title { Faker::Lorem.sentence }
     identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
     description { Faker::Lorem.paragraph }
+    sector_category { "111" }
     sector { "11110" }
     status { "2" }
     planned_start_date { Date.today }
@@ -78,6 +79,7 @@ FactoryBot.define do
     wizard_status { "identifier" }
     title { nil }
     description { nil }
+    sector_category { nil }
     sector { nil }
     status { nil }
     planned_start_date { nil }

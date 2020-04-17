@@ -1,5 +1,6 @@
 class Activity < ApplicationRecord
   include PublicActivity::Common
+  include CodelistHelper
 
   STANDARD_GRANT_FINANCE_CODE = "110"
   UNTIED_TIED_STATUS_CODE = "5"
@@ -7,6 +8,7 @@ class Activity < ApplicationRecord
   validates :identifier, presence: true, if: :identifier_step?
   validates_uniqueness_of :identifier, if: :identifier_step?
   validates :title, :description, presence: true, if: :purpose_step?
+  validates :sector_category, presence: true, if: :sector_category_step?
   validates :sector, presence: true, if: :sector_step?
   validates :status, presence: true, if: :status_step?
   validates :geography, presence: true, if: :geography_step?
@@ -49,12 +51,24 @@ class Activity < ApplicationRecord
     UNTIED_TIED_STATUS_CODE
   end
 
+  def sector_category_name
+    return if sector_category.blank?
+
+    sector_categories = yaml_to_objects(entity: "activity", type: "sector_category", with_empty_item: false)
+    sector_category_name = sector_categories.find { |category| category.code == sector_category }
+    sector_category_name.name
+  end
+
   private def identifier_step?
     wizard_status == "identifier" || wizard_complete?
   end
 
   private def purpose_step?
     wizard_status == "purpose" || wizard_complete?
+  end
+
+  private def sector_category_step?
+    wizard_status == "sector_category"
   end
 
   private def sector_step?

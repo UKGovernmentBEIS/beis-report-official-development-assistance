@@ -14,6 +14,7 @@ en:
         recipient_country: Country
         recipient_region: Recipient region
         sector: Focus area
+        sector_category: Focus area category
         status: Status
         title: Title
       budget:
@@ -100,7 +101,7 @@ en:
         actual_start_date: Actual start date (optional)
         planned_end_date: Planned end date
         planned_start_date: Planned start date
-        sector:
+        sector_category:
           html: What area of the economy or society is your %{level} helping? For example, research, education or SME development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes.</a>
       user:
         organisation_ids: Organisations

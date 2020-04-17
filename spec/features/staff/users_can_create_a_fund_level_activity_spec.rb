@@ -96,13 +96,22 @@ RSpec.feature "Users can create a fund level activity" do
         fill_in "activity[description]", with: Faker::Lorem.paragraph
         click_button I18n.t("form.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.sector", level: "fund")
+        expect(page).to have_content I18n.t("page_title.activity_form.show.sector_category", level: "fund")
+
+        # Don't provide a sector category
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content "can't be blank"
+
+        choose "Basic Education"
+        click_button I18n.t("form.activity.submit")
+
+        expect(page).to have_content I18n.t("page_title.activity_form.show.sector", sector_category: "Basic Education", level: "fund")
 
         # Don't provide a sector
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content I18n.t("page_title.activity_form.show.sector", level: "fund")
+        expect(page).to have_content "can't be blank"
 
-        choose "Education policy and administrative management"
+        choose "Primary education"
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content I18n.t("page_title.activity_form.show.status")
 

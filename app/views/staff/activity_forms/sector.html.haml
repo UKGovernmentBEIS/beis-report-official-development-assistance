@@ -2,8 +2,7 @@
   = f.govuk_error_summary
   = f.hidden_field :sector, value: nil
   = f.govuk_collection_radio_buttons :sector,
-    sector_radio_options,
+    sector_radio_options(category: @activity.sector_category),
     :code,
     :name,
-    legend: { tag: "h1", size: "xl", text: t("page_title.activity_form.show.sector", level: f.object.level) },
-    hint_text: t("helpers.fieldset.activity.sector.html", level: f.object.level)
+    legend: { tag: "h1", size: "xl", text: t("page_title.activity_form.show.sector", sector_category: @activity.sector_category_name, level: f.object.level) }

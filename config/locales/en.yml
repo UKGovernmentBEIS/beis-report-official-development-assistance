@@ -191,6 +191,8 @@ en:
         label: Recipient region
       sector:
         label: Focus area
+      sector_category:
+        label: Focus area category
       status:
         label: Status
       title:
@@ -288,7 +290,8 @@ en:
         purpose: Purpose
         purpose_level: Purpose of %{level}
         region: Recipient region
-        sector: What area of the economy or society is your %{level} helping?
+        sector: Which %{sector_category} sector is the focus area for this %{level}
+        sector_category: What is the focus area category for this %{level}
         status: Status
     budget:
       edit: Edit budget

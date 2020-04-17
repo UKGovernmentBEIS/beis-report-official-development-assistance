@@ -7,6 +7,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :blank,
     :identifier,
     :purpose,
+    :sector_category,
     :sector,
     :status,
     :dates,
@@ -82,7 +83,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def activity_params
-    params.require(:activity).permit(:identifier, :sector, :title, :description, :status,
+    params.require(:activity).permit(:identifier, :sector_category, :sector, :title, :description, :status,
       :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date,
       :geography, :recipient_region, :recipient_country, :flow,
       :aid_type)

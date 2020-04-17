@@ -57,6 +57,11 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:description) }
     end
 
+    context "when sector category is blank" do
+      subject { build(:activity, sector_category: nil, wizard_status: :sector_category) }
+      it { should validate_presence_of(:sector_category) }
+    end
+
     context "when sector is blank" do
       subject { build(:activity, sector: nil, wizard_status: :sector) }
       it { should validate_presence_of(:sector) }
@@ -320,6 +325,22 @@ RSpec.describe Activity, type: :model do
       activity = create(:project_activity_with_implementing_organisations)
 
       expect(activity.has_implementing_organisations?).to be true
+    end
+  end
+
+  describe "#sector_category_name" do
+    context "when the sector category exists" do
+      it "returns the locale value for the code" do
+        activity = build(:activity, sector_category: "112")
+        expect(activity.sector_category_name).to eql("Basic Education")
+      end
+    end
+
+    context "when the activity does not have a sector category set" do
+      it "returns nil" do
+        activity = build(:activity, sector_category: nil)
+        expect(activity.sector_category_name).to be_nil
+      end
     end
   end
 end

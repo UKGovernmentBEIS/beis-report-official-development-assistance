@@ -1,0 +1,9 @@
+= render layout: "wrapper" do |f|
+  = f.govuk_error_summary
+  = f.hidden_field :sector_category, value: nil
+  = f.govuk_collection_radio_buttons :sector_category,
+    sector_category_radio_options,
+    :code,
+    :name,
+    legend: { tag: "h1", size: "xl", text: t("page_title.activity_form.show.sector_category", level: f.object.level) },
+    hint_text: t("helpers.fieldset.activity.sector_category.html", level: f.object.level)
