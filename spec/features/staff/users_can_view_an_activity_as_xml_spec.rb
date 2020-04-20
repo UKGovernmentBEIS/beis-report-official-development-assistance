@@ -7,6 +7,30 @@ RSpec.feature "Users can view an activity as XML" do
     context "when the user belongs to BEIS" do
       before { authenticate!(user: user) }
 
+      context "when the activity has a previous activity identifier" do
+        let(:activity) {
+          create(:fund_activity,
+            organisation: organisation,
+            identifier: "IND-ENT-IFIER",
+            previous_identifier: "PREV-IND-ENT-IFIER")
+        }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it "shows the previous identifier as the actvitiy identifier" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.at("iati-activity/iati-identifier").text).to eq(activity.previous_identifier)
+        end
+
+        it "shows the activity identifier as the other identifier" do
+          iati_identifier = ActivityXmlPresenter.new(activity).iati_identifier
+
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.at("iati-activity/other-identifier/@ref").text).to eq(iati_identifier)
+        end
+      end
+
       context "when the activity has recipient_region geography" do
         let(:activity) {
           create(:fund_activity,
