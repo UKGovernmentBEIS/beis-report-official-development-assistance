@@ -26,20 +26,26 @@ RSpec.feature "BEIS users can create organisations" do
       click_button I18n.t("generic.button.submit")
     end
 
-    scenario "successfully creating an organisation" do
-      visit organisation_path(user.organisation)
-      click_link I18n.t("page_title.organisation.index")
-      click_link I18n.t("page_content.organisations.button.create")
+    scenario "organisation creation is tracked with public_activity" do
+      PublicActivity.with_tracking do
+        visit organisation_path(user.organisation)
+        click_link I18n.t("page_title.organisation.index")
+        click_link I18n.t("page_content.organisations.button.create")
 
-      expect(page).to have_content(I18n.t("page_title.organisation.new"))
-      fill_in "organisation[name]", with: "My New Organisation"
-      fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
-      select "Government", from: "organisation[organisation_type]"
-      select "Czech", from: "organisation[language_code]"
-      select "Zloty", from: "organisation[default_currency]"
-      click_button I18n.t("generic.button.submit")
+        expect(page).to have_content(I18n.t("page_title.organisation.new"))
+        fill_in "organisation[name]", with: "My New Organisation"
+        fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
+        select "Government", from: "organisation[organisation_type]"
+        select "Swedish", from: "organisation[language_code]"
+        select "US Dollar", from: "organisation[default_currency]"
+        click_button I18n.t("generic.button.submit")
 
-      expect(page).to have_content I18n.t("form.organisation.create.success")
+        organisation = Organisation.find_by(name: "My New Organisation")
+        auditable_event = PublicActivity::Activity.find_by(trackable_id: organisation.id)
+        expect(auditable_event.key).to eq "organisation.create"
+        expect(auditable_event.owner_id).to eq user.id
+        expect(auditable_event.trackable_id).to eq organisation.id
+      end
     end
 
     scenario "presence validation works as expected" do
