@@ -72,7 +72,7 @@ RSpec.feature "Users can view an organisation" do
       end
 
       scenario "does not see activities which belong to a different organisation" do
-        other_programme = create(:programme_activity, organisation: create(:organisation))
+        other_programme = create(:programme_activity, extending_organisation: create(:organisation))
         other_project = create(:project_activity, organisation: create(:organisation))
 
         visit organisation_path(user.organisation)
