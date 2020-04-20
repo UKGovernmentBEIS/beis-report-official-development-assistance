@@ -1,4 +1,6 @@
 class Organisation < ApplicationRecord
+  include PublicActivity::Common
+
   has_many :users
   has_many :funds
 
