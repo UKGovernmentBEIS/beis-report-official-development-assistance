@@ -15,6 +15,21 @@ RSpec.feature "Users can edit organisations" do
     successfully_edit_an_organisation
   end
 
+  scenario "organisation update is tracked by public_activity" do
+    user = create(:administrator, organisation: beis_organisation)
+    authenticate!(user: user)
+
+    PublicActivity.with_tracking do
+      successfully_edit_an_organisation(organisation_name: "My Edited Organisation")
+
+      organisation = Organisation.find_by(name: "My Edited Organisation")
+      auditable_event = PublicActivity::Activity.find_by(trackable_id: organisation.id)
+      expect(auditable_event.key).to eq "organisation.update"
+      expect(auditable_event.owner_id).to eq user.id
+      expect(auditable_event.trackable_id).to eq organisation.id
+    end
+  end
+
   scenario "presence validation works as expected" do
     authenticate!(user: create(:administrator, organisation: beis_organisation))
 
@@ -32,7 +47,7 @@ RSpec.feature "Users can edit organisations" do
     expect(page).to have_content "can't be blank"
   end
 
-  def successfully_edit_an_organisation
+  def successfully_edit_an_organisation(organisation_name: "My New Organisation")
     visit organisation_path(beis_organisation)
 
     click_link I18n.t("page_title.organisation.index")
@@ -42,7 +57,7 @@ RSpec.feature "Users can edit organisations" do
     end
 
     expect(page).to have_content(I18n.t("page_title.organisation.edit"))
-    fill_in "organisation[name]", with: "My New Organisation"
+    fill_in "organisation[name]", with: organisation_name
     fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
     select "Government", from: "organisation[organisation_type]"
     select "Czech", from: "organisation[language_code]"
