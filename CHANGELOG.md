@@ -99,13 +99,14 @@
 - Add privacy policy to site
 - Empty optional dates for `actual start date` and `actual end date` are not included on the activity XML
 - Reporting org in the IATI XML is always BEIS for funds, programmes and projects created by governmental organisations, and the activity's organisation if it is a non-governmental organisation
-- User actions are tracked on Activities, Budgets, Transactions and Users.
 
 ## [unreleased]
 
+- User actions are tracked on Activities, Budgets, Transactions and Users.
 - Activities that have an identifier already can use it as the iati-identifier
   in the xml output
 - User actions are tracked on Organisations.  
+- Individual Activity update steps are tracked on create & update
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...HEAD
 [release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
