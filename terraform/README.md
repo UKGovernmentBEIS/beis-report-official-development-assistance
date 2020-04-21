@@ -13,14 +13,15 @@ Deploys will happen automatically from travis
 We should avoid manual deployments but the following instructions will allow you to do one.
 
 ### Setup
-- go to the application /terraform directory
-- install terraform (use `tfenv`)
+- go to the application `/terraform` directory
+- install [tfenv](https://github.com/tfutils/tfenv)
+- install Terraform version `0.12.x` using `tfenv`, use `tfenv list-remote` to see available versions. Our Terrafiles are not backwards-compatible with Terraform `0.11.x`
 - install the latest [cloundfoundry provider](https://github.com/cloudfoundry-community/terraform-provider-cf/wiki#installations)
 
 ### Deployment
 - checkout the correct branch
-  - develop for staging or other testing environments
-  - master for production
+  - `develop` for staging or other testing environments
+  - `master` for production
 - export environment variables for AWS credentials
   These can be found in the RODA 1password vault
   Your local `~/.aws/credentials` should include the values for `aws_access_key` and `aws_secret_access_key`
