@@ -248,6 +248,13 @@ en:
     organisations:
       button:
         create: Create organisation
+    start_page:
+      introduction: This service is for reporting BEIS research and innovation ODA.
+      use_this_page_to: 'Use this service to:'
+      uses:
+      - add and manage information about funds and related activities
+      - report actual and forecast spend on activities
+      - see a summary of your ODA activity
     transactions:
       button:
         create: Create transaction
@@ -303,7 +310,7 @@ en:
       index: Users
       new: Create user
       show: User
-    welcome: Report Official Development Assistance
+    welcome: Report your official development assistance (ODA)
   time:
     formats:
       default: "%Y-%m-%d"
