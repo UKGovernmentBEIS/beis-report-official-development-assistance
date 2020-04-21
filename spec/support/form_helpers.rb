@@ -91,12 +91,12 @@ module FormHelpers
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.flow")
-    expect(page).to have_content "IATI descriptions of each flow type can be found here."
+    expect(page).to have_content "IATI descriptions of each flow type can be found here (Opens in new window)."
     select flow, from: "activity[flow]"
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("activerecord.attributes.activity.aid_type")
-    expect(page).to have_content "A code for the vocabulary aid-type classifications. IATI descriptions can be found here."
+    expect(page).to have_content "A code for the vocabulary aid-type classifications. IATI descriptions can be found here (Opens in new window)."
     choose("activity[aid_type]", option: aid_type)
     click_button I18n.t("form.activity.submit")
 

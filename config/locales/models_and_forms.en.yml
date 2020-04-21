@@ -108,9 +108,9 @@ en:
         actual_end_date: For example, 2 2 2020
         actual_start_date: For example, 11 1 2020
         aid_type:
-          html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidType/' target='_blank'>IATI descriptions can be found here.</a>
+          html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidType/' target='_blank'>IATI descriptions can be found here (Opens in new window).</a>
         flow:
-          html: "<a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>IATI descriptions of each flow type can be found here.</a>"
+          html: "<a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>IATI descriptions of each flow type can be found here (Opens in new window).</a>"
         identifier: Reference to link this to your internal systems so it can be found again later.
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
@@ -118,7 +118,7 @@ en:
         recipient_region:
           html: A supranational geopolitical region that will benefit from this activity.
         sector:
-          html: What area of the economy or society is your %{level} helping? For example, research, education or SME development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes.</a>
+          html: What area of the economy or society is your %{level} helping? For example, research, education or SME development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes (Opens in new window).</a>
         status: This is the stage your %{level} is currently at
         title: A short, human-readable title that contains a meaningful summary of the activity.
       budget:
@@ -126,7 +126,7 @@ en:
         period_start_date: For example, 11 3 2020
       implementing_organisation:
         reference:
-          html: <a href="http://org-id.guide/" target="_blank" class="govuk-link">Organisation references can be found using this service</a>
+          html: <a href="http://org-id.guide/" target="_blank" class="govuk-link">Organisation references can be found using this service (Opens in new window)</a>
       transaction:
         date: The date the transaction was made. If you're reporting quarterly data, select the last day of the quarter. For example, 31 12 2020
         description: For example, Quarter one spend on the Early Career Research Network project.
