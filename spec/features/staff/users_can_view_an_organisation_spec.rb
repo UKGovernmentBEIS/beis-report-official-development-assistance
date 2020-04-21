@@ -57,6 +57,34 @@ RSpec.feature "Users can view an organisation" do
         expect(page).to have_content(other_organisation.name)
       end
 
+      scenario "sees activities which belong to this organisation" do
+        programme = create(:programme_activity, extending_organisation: other_organisation)
+        project = create(:project_activity, organisation: other_organisation)
+
+        visit organisation_path(user.organisation)
+        click_link I18n.t("page_title.organisation.index")
+        within("##{other_organisation.id}") do
+          click_link I18n.t("generic.link.show")
+        end
+
+        expect(page).to have_content(programme.title)
+        expect(page).to have_content(project.title)
+      end
+
+      scenario "does not see activities which belong to a different organisation" do
+        other_programme = create(:programme_activity, extending_organisation: create(:organisation))
+        other_project = create(:project_activity, organisation: create(:organisation))
+
+        visit organisation_path(user.organisation)
+        click_link I18n.t("page_title.organisation.index")
+        within("##{other_organisation.id}") do
+          click_link I18n.t("generic.link.show")
+        end
+
+        expect(page).to_not have_content(other_programme.title)
+        expect(page).to_not have_content(other_project.title)
+      end
+
       scenario "can go back to the previous page" do
         visit organisation_path(user.organisation)
         click_link I18n.t("page_title.organisation.index")

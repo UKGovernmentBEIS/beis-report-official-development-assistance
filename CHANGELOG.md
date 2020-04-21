@@ -109,6 +109,7 @@
 - Individual Activity update steps are tracked on create & update
 - Content added to start page
 - Links that open in a new window now have a message informing the user of this.
+- BEIS users only see an organisation's activities on that organisation's show page (bug)
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...HEAD
 [release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
