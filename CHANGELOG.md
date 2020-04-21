@@ -105,9 +105,10 @@
 - User actions are tracked on Activities, Budgets, Transactions and Users.
 - Activities that have an identifier already can use it as the iati-identifier
   in the xml output
-- User actions are tracked on Organisations.  
+- User actions are tracked on Organisations.
 - Individual Activity update steps are tracked on create & update
 - Content added to start page
+- Links that open in a new window now have a message informing the user of this.
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...HEAD
 [release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
