@@ -6,6 +6,17 @@
       %h1.govuk-heading-xl
         = t("page_title.welcome")
 
+      %p.govuk-body
+        = t("page_content.start_page.introduction")
+
+      %p.govuk-body
+        = t("page_content.start_page.use_this_page_to")
+
+      %ul.govuk-list.govuk-list--bullet
+        - t("page_content.start_page.uses").each do |use|
+          %li
+            = use
+
       = button_to '/auth/auth0', class: 'govuk-button', role: 'button', draggable: 'false' do
         = t("generic.link.sign_in")
         %svg.govuk-button__start-icon{ xmlns: "http://www.w3.org/2000/svg", width: "17.5", height: "19", viewBox: "0 0 33 40", role: "presentation", focusable: "false" }

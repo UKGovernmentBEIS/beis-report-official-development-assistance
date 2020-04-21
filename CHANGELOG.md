@@ -107,6 +107,7 @@
   in the xml output
 - User actions are tracked on Organisations.  
 - Individual Activity update steps are tracked on create & update
+- Content added to start page
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...HEAD
 [release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
