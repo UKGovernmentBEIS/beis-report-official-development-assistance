@@ -12,14 +12,13 @@ class Staff::OrganisationsController < Staff::BaseController
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
 
-    fund_activities = policy_scope(Activity.funds).includes(:organisation).where(organisation: organisation).order("created_at ASC")
+    fund_activities = FindFundActivities.new(organisation: organisation, current_user: current_user).call
+    programme_activities = FindProgrammeActivities.new(organisation: organisation, current_user: current_user).call
+    project_activities = FindProjectActivities.new(organisation: organisation, current_user: current_user).call
+
     @fund_activities = fund_activities.map { |activity| ActivityPresenter.new(activity) }
-
-    programme_activities = policy_scope(Activity.programme, policy_scope_class: ProgrammePolicy::Scope).includes(:organisation).order("created_at ASC")
     @programme_activities = programme_activities.map { |activity| ActivityPresenter.new(activity) }
-
-    project_activites = policy_scope(Activity.project, policy_scope_class: ProjectPolicy::Scope).includes(:organisation).order("created_at ASC")
-    @project_activities = project_activites.map { |activity| ActivityPresenter.new(activity) }
+    @project_activities = project_activities.map { |activity| ActivityPresenter.new(activity) }
   end
 
   def new
