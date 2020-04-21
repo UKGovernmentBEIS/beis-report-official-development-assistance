@@ -27,4 +27,4 @@
           %td.govuk-table__cell= budget.value
           %td.govuk-table__cell
             - if policy(budget).create?
-              = a11y_action_link(I18n.t('generic.link.edit'), edit_activity_budget_path(budget.parent_activity_id, budget))
+              = a11y_action_link(I18n.t('generic.link.edit'), edit_activity_budget_path(budget.parent_activity_id, budget), t("page_content.budgets.edit_noun"))

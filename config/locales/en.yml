@@ -206,6 +206,7 @@ en:
     budgets:
       button:
         create: Create budget
+      edit_noun: budget
     errors:
       auth0:
         error_messages:
@@ -258,6 +259,7 @@ en:
     transactions:
       button:
         create: Add a transaction
+      edit_noun: transaction %{reference}
       table:
         headers:
           providing_organisation: Provider
