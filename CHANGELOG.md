@@ -110,6 +110,7 @@
 - Content added to start page
 - Links that open in a new window now have a message informing the user of this.
 - BEIS users only see an organisation's activities on that organisation's show page (bug)
+- XML file for projects now shows the identifiers for the parent activities.
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...HEAD
 [release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
