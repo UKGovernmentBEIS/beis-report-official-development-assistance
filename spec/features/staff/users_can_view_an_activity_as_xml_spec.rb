@@ -102,6 +102,21 @@ RSpec.feature "Users can view an activity as XML" do
         it_behaves_like "valid activity XML"
       end
 
+      context "when the activity is a project" do
+        let(:activity) { create(:project_activity) }
+        let(:fund) { create(:fund_activity) }
+        let(:programme) { create(:programme_activity) }
+        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it "includes its parent activity in the related-activity field" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.xpath("//iati-activity/related-activity").count).to eq(2)
+          expect(xml.at("iati-activity/related-activity/@type").text).to eq("1")
+        end
+      end
+
       context "when the activity is a project activity" do
         let(:activity) { create(:project_activity_with_implementing_organisations, organisation: organisation) }
         let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
