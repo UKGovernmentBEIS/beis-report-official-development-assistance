@@ -55,7 +55,7 @@ en:
         label: Default currency
       iati_reference:
         hint:
-          html: Machine-readable identification string for the organisation. <a href="https://reference.iatistandard.org/organisation-identifiers/" target="_blank" class="govuk-link">See IATI for detailed documentation (Opens in new window).</a>
+          html: Machine-readable identification string for the organisation. <a href="https://reference.iatistandard.org/organisation-identifiers/" target="_blank" class="govuk-link">See International Aid Transparency Initiative (IATI) for detailed documentation (Opens in new window).</a>
       language_code:
         hint: Default language of text in this organisation
         label: Language code
@@ -93,7 +93,7 @@ en:
         title: Providing organisation
       providing_organisation_reference:
         hint: For example, GB-GOV-13. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
-        label: IATI Reference (optional)
+        label: International Aid Transparency Initiative (IATI) Reference (optional)
       receiving_organisation:
         hint: The organisation receiving the money from this transaction.
         title: Receiving organisation
@@ -235,7 +235,7 @@ en:
       details: Organisation details
       funds: Funds
       iati_reference:
-        label: IATI reference
+        label: International Aid Transparency Initiative (IATI) reference
       language_code:
         label: Language code
       name:
@@ -257,7 +257,7 @@ en:
       - see a summary of your ODA activity
     transactions:
       button:
-        create: Create transaction
+        create: Add a transaction
       table:
         headers:
           providing_organisation: Provider
@@ -286,7 +286,7 @@ en:
         purpose: Purpose
         purpose_level: Purpose of %{level}
         region: Recipient region
-        sector: What is the focus area for this %{level}
+        sector: What area of the economy or society is your %{level} helping?
         status: Status
     budget:
       edit: Edit budget
