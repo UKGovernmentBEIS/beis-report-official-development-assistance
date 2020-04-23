@@ -81,7 +81,7 @@ en:
       currency:
         label: Currency
       date:
-        label: Transaction date
+        label: Date transaction was made
       description:
         hint: For example, 2020 quarter one spend on the Early Career Research Network project.
         label: Describe the transaction
