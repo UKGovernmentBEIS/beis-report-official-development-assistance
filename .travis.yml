@@ -3,19 +3,28 @@ services:
 - docker
 jobs:
   include:
-  - stage: Test
-    name: Build and test the current version of the application using Docker compose
+  - stage: Build
+    name: Build the current docker image
     script: |
-      echo "==== build image ===="
       TAG="${TRAVIS_BUILD_NUMBER}-${TRAVIS_COMMIT}"
       docker build --target test -t "thedxw/beis-report-official-development-assistance:$TAG" .
-      echo "==== testing app ====" 
+  - stage: Set up
+    name: Set up the environment with Docker Compose using the same docker image
+    script: |
+      docker images
       docker-compose -f docker-compose.ci.yml up --detach
-      docker exec test-container /bin/bash -c "./wait-for-it.sh redis:6379 --strict -- bundle exec rails db:prepare"
-      docker exec test-container /bin/bash -c "bundle exec standardrb"
-      docker exec test-container /bin/bash -c "bundle exec rspec"
+  - stage: Test application
+    name: Test the application
+    script: |
+      docker exec test-container /bin/bash -c "bundle exec rake"
       docker exec test-container /bin/bash -c "bundle exec brakeman"
-      echo "==== testing terrafrom ===="
+  - stage: Lint our shell scripts
+    name: Linting our shell scripts
+    script: |
+      bash -c 'shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}'
+  - stage: Test terraform
+    name: Test the terraform
+    script: |
       cd terraform
       git clone https://github.com/tfutils/tfenv.git ~/.tfenv
       export PATH="$HOME/.tfenv/bin:$PATH"
@@ -25,8 +34,6 @@ jobs:
       terraform fmt  -diff -check -recursive
       terraform validate
       cd ..
-      echo "==== linting our shell scripts ===="
-      bash -c 'shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}'
       set +eu
 deploy:
 - provider: script

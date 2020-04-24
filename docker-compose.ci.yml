@@ -1,16 +1,12 @@
 version: "3.7"
 services:
-  test:
-    build:
-      context: .
-      target: test
-      args:
-        RAILS_ENV: test
+  web:
+    image: thedxw/beis-report-official-development-assistance
     container_name: test-container
     entrypoint: /bin/bash -c "tail -f /dev/null"
     depends_on:
-      - db
       - redis
+      - db
     environment:
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: 'true'
       DATABASE_URL: postgres://postgres:password@db:5432/roda_test
@@ -30,5 +26,7 @@ services:
     image: postgres
     environment:
       POSTGRES_PASSWORD: password
+    restart: alway
   redis:
     image: redis
+    restart: always
