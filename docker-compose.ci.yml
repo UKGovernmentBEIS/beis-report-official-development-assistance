@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   web:
-    image: thedxw/beis-report-official-development-assistance
+    image: thedxw/beis-report-official-development-assistance:test
     container_name: test-container
     entrypoint: /bin/bash -c "tail -f /dev/null"
     depends_on:

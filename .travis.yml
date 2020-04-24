@@ -1,21 +1,31 @@
 language: minimal
 services:
 - docker
+cache:
+  directories:
+  - docker
 jobs:
   include:
   - stage: Build
     name: Build the current docker image
     script: |
       TAG="${TRAVIS_BUILD_NUMBER}-${TRAVIS_COMMIT}"
-      docker build --target test -t "thedxw/beis-report-official-development-assistance:$TAG" .
-  - stage: Set up
+      docker build \
+        --target web \
+        --tag "thedxw/beis-report-official-development-assistance:$TAG" .
+
+      docker build \
+        --target test \
+        --cache-from "thedxw/beis-report-official-development-assistance:$TAG" \
+        --tag "thedxw/beis-report-official-development-assistance:test" .
+        
+      docker save "thedxw/beis-report-official-development-assistance:test" > docker/test-image.tar
+  - stage: Test the application
     name: Set up the environment with Docker Compose using the same docker image
     script: |
+      docker load docker/test-image.tar
       docker images
       docker-compose -f docker-compose.ci.yml up --detach
-  - stage: Test application
-    name: Test the application
-    script: |
       docker exec test-container /bin/bash -c "bundle exec rake"
       docker exec test-container /bin/bash -c "bundle exec brakeman"
   - stage: Lint our shell scripts
