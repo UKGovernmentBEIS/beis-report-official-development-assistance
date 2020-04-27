@@ -5,7 +5,7 @@ RSpec.feature "Users can manage Sectors" do
 
     context "with a new activity" do
       scenario "they can provide the sector category" do
-        activity = create(:activity, :at_identifier_step, identifier: "GCRF")
+        activity = create(:activity, :at_identifier_step, identifier: "GCRF", organisation: user.organisation)
         visit activity_step_path(activity, :sector_category)
         choose "Basic Education"
         click_button I18n.t("form.activity.submit")
@@ -18,7 +18,7 @@ RSpec.feature "Users can manage Sectors" do
     context "with an existing activity" do
       let(:activity) { create(:activity, organisation: user.organisation) }
 
-      scenario "they can edit the sector category" do
+      scenario "when editing the sector category it resets the sector value, redirects to the sector step and then the summary" do
         visit organisation_activity_path(user.organisation, activity)
         within ".sector_category" do
           click_on "Edit"
@@ -29,27 +29,33 @@ RSpec.feature "Users can manage Sectors" do
         choose "Basic Education"
         click_button I18n.t("form.activity.submit")
 
+        expect(page).to have_current_path(activity_step_path(activity, :sector, editing_until: :sector))
+        expect(activity.reload.sector).to be_nil
+
+        choose "School feeding"
+        click_button I18n.t("form.activity.submit")
+
         expect(page).to have_current_path(organisation_activity_path(user.organisation, activity))
-        within ".sector_category" do
-          expect(page).to have_content "Basic Education"
-        end
       end
 
-      scenario "they can edit the sector" do
+      scenario "when editing the sector it resets the sector value, redirects to sector category step followed by sector and then the summary" do
         visit organisation_activity_path(user.organisation, activity)
         within ".sector" do
           click_on "Edit"
         end
 
-        expect(page).to have_current_path(activity_step_path(activity, :sector))
+        expect(page).to have_current_path(activity_step_path(activity, :sector_category))
 
-        choose "Teacher training"
+        choose "Basic Education"
+        click_button I18n.t("form.activity.submit")
+
+        expect(page).to have_current_path(activity_step_path(activity, :sector, editing_until: :sector))
+        expect(activity.reload.sector).to be_nil
+
+        choose "School feeding"
         click_button I18n.t("form.activity.submit")
 
         expect(page).to have_current_path(organisation_activity_path(user.organisation, activity))
-        within ".sector" do
-          expect(page).to have_content "Teacher training"
-        end
       end
     end
   end

@@ -182,7 +182,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   within(".sector") do
     click_on(I18n.t("generic.link.edit"))
     expect(page).to have_current_path(
-      activity_step_path(activity, :sector)
+      activity_step_path(activity, :sector_category)
     )
   end
   click_on(I18n.t("generic.link.back"))

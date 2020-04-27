@@ -34,6 +34,7 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.recipient_region?
     end
 
+    @activity.update(wizard_status: "complete") if params["editing_until"] == step.to_s
     render_wizard
   end
 
@@ -45,6 +46,10 @@ class Staff::ActivityFormsController < Staff::BaseController
     update_activity_dates
     update_activity_attributes_except_dates
     record_auditable_activity
+
+    if @activity.wizard_complete?
+      reset_sector_answer if step == :sector_category
+    end
 
     update_wizard_status
 
@@ -104,5 +109,10 @@ class Staff::ActivityFormsController < Staff::BaseController
     else
       @activity.wizard_status = step
     end
+  end
+
+  def reset_sector_answer
+    @activity.update(sector: nil, wizard_status: "editing")
+    jump_to(:sector, editing_until: :sector)
   end
 end

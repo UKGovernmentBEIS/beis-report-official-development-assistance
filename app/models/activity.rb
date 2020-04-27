@@ -72,7 +72,7 @@ class Activity < ApplicationRecord
   end
 
   private def sector_step?
-    wizard_status == "sector" || wizard_complete?
+    wizard_status == "sector"
   end
 
   private def status_step?

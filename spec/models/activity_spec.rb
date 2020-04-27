@@ -182,7 +182,6 @@ RSpec.describe Activity, type: :model do
       subject { build(:activity, wizard_status: "complete") }
       it { should validate_presence_of(:title) }
       it { should validate_presence_of(:description) }
-      it { should validate_presence_of(:sector) }
       it { should validate_presence_of(:status) }
       it { should validate_presence_of(:planned_start_date) }
       it { should validate_presence_of(:planned_end_date) }
