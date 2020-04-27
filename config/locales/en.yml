@@ -100,9 +100,6 @@ en:
       receiving_organisation_reference:
         hint: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
         label: IATI Reference (optional)
-      reference:
-        hint: This reference should link this activity back to the finance system.
-        label: Add your own reference to track this transaction
       transaction_type:
         hint: The type of the transaction (e.g. commitment, disbursement, expenditure, etc.).
         label: Type
@@ -259,7 +256,7 @@ en:
     transactions:
       button:
         create: Add a transaction
-      edit_noun: transaction %{reference}
+      edit_noun: transaction
       table:
         headers:
           providing_organisation: Provider

@@ -1,8 +1,5 @@
 FactoryBot.define do
-  sequence(:reference) { |n| "transaction-#{n}" }
-
   factory :transaction do
-    reference
     description { Faker::Lorem.paragraph }
     transaction_type { "1" }
     date { Date.today }

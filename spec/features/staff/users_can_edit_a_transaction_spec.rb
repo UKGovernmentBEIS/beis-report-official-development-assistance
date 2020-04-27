@@ -17,14 +17,13 @@ RSpec.feature "Users can edit a transaction" do
 
       click_on(activity.title)
 
-      expect(page).to have_content(transaction.reference)
+      expect(page).to have_content(transaction.value)
 
       within("##{transaction.id}") do
         click_on(I18n.t("generic.link.edit"))
       end
 
       fill_in_transaction_form(
-        reference: "new-transaction-reference",
         description: "This money will be buying some books for students",
         transaction_type: "Expenditure",
         date_day: "1",
@@ -44,14 +43,13 @@ RSpec.feature "Users can edit a transaction" do
 
         click_on(activity.title)
 
-        expect(page).to have_content(transaction.reference)
+        expect(page).to have_content(transaction.value)
 
         within("##{transaction.id}") do
           click_on(I18n.t("generic.link.edit"))
         end
 
         fill_in_transaction_form(
-          reference: "new-transaction-reference",
           description: "This money will be buying some books for students",
           transaction_type: "Expenditure",
           date_day: "1",
@@ -73,7 +71,7 @@ RSpec.feature "Users can edit a transaction" do
 
       click_on(activity.title)
 
-      expect(page).to have_content(transaction.reference)
+      expect(page).to have_content(transaction.value)
 
       within("##{transaction.id}") do
         click_on(I18n.t("generic.link.edit"))

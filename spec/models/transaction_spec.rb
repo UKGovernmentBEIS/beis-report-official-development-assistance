@@ -4,7 +4,6 @@ RSpec.describe Transaction, type: :model do
   let(:activity) { build(:activity) }
 
   describe "validations" do
-    it { should validate_presence_of(:reference) }
     it { should validate_presence_of(:description) }
     it { should validate_presence_of(:transaction_type) }
     it { should validate_presence_of(:date) }

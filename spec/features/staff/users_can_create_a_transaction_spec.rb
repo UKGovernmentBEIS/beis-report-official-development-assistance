@@ -56,7 +56,6 @@ RSpec.feature "Users can create a transaction" do
       click_on(I18n.t("generic.button.submit"))
 
       expect(page).to_not have_content(I18n.t("form.transaction.create.success"))
-      expect(page).to have_content("Reference can't be blank")
       expect(page).to have_content("Description can't be blank")
       expect(page).to have_content("Transaction type can't be blank")
       expect(page).to have_content("Date can't be blank")
@@ -78,7 +77,6 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
-        fill_in "transaction[reference]", with: "123"
         fill_in "transaction[description]", with: "This money will be purchasing a new school roof"
         select "Outgoing Pledge", from: "transaction[transaction_type]"
         fill_in "transaction[date(3i)]", with: "1"
