@@ -47,7 +47,6 @@ en:
         providing_organisation_type: Providing organisation type
         receiving_organisation_name: Receiving organisation name
         receiving_organisation_type: Receiving organisation type
-        reference: Reference
         transaction_type: Transaction type
         value: Value
       user:
