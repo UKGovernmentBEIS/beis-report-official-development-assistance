@@ -31,6 +31,7 @@ class Activity < ApplicationRecord
     fund: "fund",
     programme: "programme",
     project: "project",
+    third_party_project: "third_party_project",
   }
 
   enum geography: {
@@ -125,6 +126,7 @@ class Activity < ApplicationRecord
   def parent_activities
     return [parent_activity] if programme?
     return [parent_activity.parent_activity, parent_activity] if project?
+    return [parent_activity.parent_activity.parent_activity, parent_activity.parent_activity, parent_activity] if third_party_project?
     []
   end
 end
