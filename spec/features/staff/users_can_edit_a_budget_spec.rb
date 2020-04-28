@@ -1,15 +1,36 @@
 RSpec.describe "Users can edit a budget" do
   before { authenticate!(user: user) }
 
-  context "when signed in as BEIS user" do
+  context "when signed in beis user" do
     let(:user) { create(:beis_user) }
 
     scenario "a budget can be successfully edited" do
-      fund_activity = create(:fund_activity, organisation: user.organisation)
-      programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
-      budget = create(:budget, parent_activity: programme_activity, budget_type: "original", value: "10")
+      activity = create(:programme_activity, organisation: user.organisation)
+      budget = create(:budget, parent_activity: activity, budget_type: "original", value: "10")
 
-      visit organisation_activity_path(user.organisation, programme_activity)
+      visit organisation_activity_path(user.organisation, activity)
+      within("##{budget.id}") do
+        click_on I18n.t("generic.link.edit")
+      end
+
+      fill_in "budget[value]", with: "20"
+      choose("budget[budget_type]", option: "updated")
+      click_on I18n.t("generic.button.submit")
+
+      expect(page).to have_content(I18n.t("form.budget.update.success"))
+      expect(page).to have_content("20.00")
+      expect(page).to have_content("Updated")
+    end
+  end
+
+  context "when signed in as delivery partner user" do
+    let(:user) { create(:delivery_partner_user) }
+
+    scenario "a budget can be successfully edited" do
+      activity = create(:project_activity, organisation: user.organisation)
+      budget = create(:budget, parent_activity: activity, budget_type: "original", value: "10")
+
+      visit organisation_activity_path(user.organisation, activity)
       within("##{budget.id}") do
         click_on I18n.t("generic.link.edit")
       end
@@ -24,12 +45,11 @@ RSpec.describe "Users can edit a budget" do
     end
 
     scenario "budget update is tracked with public_activity" do
-      fund_activity = create(:fund_activity, organisation: user.organisation)
-      programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
-      budget = create(:budget, parent_activity: programme_activity, budget_type: "original", value: "10")
+      activity = create(:project_activity, organisation: user.organisation)
+      budget = create(:budget, parent_activity: activity, budget_type: "original", value: "10")
 
       PublicActivity.with_tracking do
-        visit organisation_activity_path(user.organisation, programme_activity)
+        visit organisation_activity_path(user.organisation, activity)
         within("##{budget.id}") do
           click_on I18n.t("generic.link.edit")
         end
@@ -46,11 +66,10 @@ RSpec.describe "Users can edit a budget" do
     end
 
     scenario "validation errors work as expected" do
-      fund_activity = create(:fund_activity, organisation: user.organisation)
-      programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
-      budget = create(:budget, parent_activity: programme_activity, value: "10")
+      activity = create(:project_activity, organisation: user.organisation)
+      budget = create(:budget, parent_activity: activity, budget_type: "original", value: "10")
 
-      visit organisation_activity_path(user.organisation, programme_activity)
+      visit organisation_activity_path(user.organisation, activity)
       within("##{budget.id}") do
         click_on I18n.t("generic.link.edit")
       end
