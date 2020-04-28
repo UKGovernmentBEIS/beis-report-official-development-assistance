@@ -34,15 +34,6 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :purpose)
         = a11y_action_link(I18n.t("generic.link.#{activity_presenter.call_to_action(:description)}"), activity_step_path(activity_presenter, :purpose), I18n.t("page_content.activity.description.label").downcase)
 
-  .govuk-summary-list__row.sector_category
-    %dt.govuk-summary-list__key
-      = t("page_content.activity.sector_category.label", level: activity_presenter.level)
-    %dd.govuk-summary-list__value
-      = activity_presenter.sector_category_name
-    %dd.govuk-summary-list__actions
-      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :sector_category)
-        = a11y_action_link(t("generic.link.#{activity_presenter.call_to_action(:sector_category)}"), activity_step_path(activity_presenter, :sector_category), t("page_content.activity.sector_category.label"))
-
   .govuk-summary-list__row.sector
     %dt.govuk-summary-list__key
       = t("page_content.activity.sector.label", level: activity_presenter.level)

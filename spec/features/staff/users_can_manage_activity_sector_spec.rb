@@ -20,7 +20,7 @@ RSpec.feature "Users can manage Sectors" do
 
       scenario "when editing the sector category it resets the sector value, redirects to the sector step and then the summary" do
         visit organisation_activity_path(user.organisation, activity)
-        within ".sector_category" do
+        within ".sector" do
           click_on "Edit"
         end
 
