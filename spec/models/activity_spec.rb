@@ -251,6 +251,21 @@ RSpec.describe Activity, type: :model do
         expect(result.second.id).to eq(programme.id)
       end
     end
+
+    context "when the activity is a third party project" do
+      it "returns the fund and then the programme and then the project" do
+        third_party_project = create(:third_party_project_activity)
+        project = third_party_project.parent_activity
+        programme = project.parent_activity
+        fund = programme.parent_activity
+
+        result = third_party_project.parent_activities
+
+        expect(result.first.id).to eq(fund.id)
+        expect(result.second.id).to eq(programme.id)
+        expect(result.third.id).to eq(project.id)
+      end
+    end
   end
 
   describe "#wizard_complete?" do
