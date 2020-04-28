@@ -34,6 +34,7 @@ class IngestIatiActivities
         add_geography(legacy_activity: legacy_activity, new_activity: new_activity)
         add_transactions(legacy_activity: legacy_activity, new_activity: new_activity)
 
+        new_activity.ingested = true
         # Set the status to invoke validations
         new_activity.wizard_status = :complete
         new_activity.save
