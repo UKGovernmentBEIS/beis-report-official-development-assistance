@@ -21,8 +21,8 @@ class Staff::ActivityFormsController < Staff::BaseController
   steps(*FORM_STEPS)
 
   def show
-    @page_title = t("page_title.activity_form.show.#{step}")
     @activity = Activity.find(params[:activity_id])
+    @page_title = t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}"))
     authorize @activity
 
     case step
