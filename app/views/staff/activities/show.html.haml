@@ -25,6 +25,7 @@
     = render partial: "staff/shared/activities/projects", locals: { activity: @activity, activities: @activities }
 
   - if @activity.project?
+    = render partial: "staff/shared/activities/third_party_projects", locals: { activity: @activity, activities: @activities }
     = render partial: "staff/shared/activities/transactions", locals: { activity: @activity, transaction_presenters: @transaction_presenters }
     = render partial: "staff/shared/activities/budgets", locals: { activity: @activity, budget_presenters: @budget_presenters }
 
