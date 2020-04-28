@@ -13,8 +13,15 @@ RSpec.describe IngestIatiActivities do
       expect { service_object.call }.to change { Activity.project.count }.by(36)
     end
 
-    it "adds a new ingested flag to the activity" do
+    it "adds a new ingested flag to the activity so the team can distinguish old from new" do
+      _beis = create(:beis_organisation)
+      uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+      legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/single_activity.xml")
 
+      described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+      new_activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+      expect(new_activity.ingested).to eq(true)
     end
 
     it "add a project with the correct parent activities" do
