@@ -11,15 +11,15 @@ RSpec.feature "Users can view transactions on an activity page" do
       let(:other_activity) { create(:fund_activity, organisation: user.organisation) }
 
       scenario "only transactions belonging to this fund activity are shown on the Activity#show page" do
-        transaction = create(:transaction, parent_activity: activity)
-        other_transaction = create(:transaction, parent_activity: other_activity)
+        transaction = create(:transaction, parent_activity: activity, value: "100")
+        other_transaction = create(:transaction, parent_activity: other_activity, value: "200")
 
         visit organisation_path(user.organisation)
 
         click_link activity.title
 
-        expect(page).to have_content(transaction.reference)
-        expect(page).to_not have_content(other_transaction.reference)
+        expect(page).to have_content(transaction.value)
+        expect(page).to_not have_content(other_transaction.value)
       end
 
       scenario "transaction information is shown on the page" do
@@ -30,7 +30,6 @@ RSpec.feature "Users can view transactions on an activity page" do
 
         click_link activity.title
 
-        expect(page).to have_content(transaction_presenter.reference)
         expect(page).to have_content(transaction_presenter.transaction_type)
         expect(page).to have_content(transaction_presenter.date)
         expect(page).to have_content(transaction_presenter.currency)
@@ -68,7 +67,6 @@ RSpec.feature "Users can view transactions on an activity page" do
         click_link programme_activity.title
         click_link project_activity.title
 
-        expect(page).to have_content(transaction_presenter.reference)
         expect(page).to have_content(transaction_presenter.transaction_type)
         expect(page).to have_content(transaction_presenter.date)
         expect(page).to have_content(transaction_presenter.currency)

@@ -25,11 +25,11 @@ RSpec.describe UpdateTransaction do
 
     context "when attributes are passed in" do
       it "sets the attributes passed in as transaction attributes" do
-        attributes = ActionController::Parameters.new(reference: "foo").permit!
+        attributes = ActionController::Parameters.new(description: "foo").permit!
 
         result = described_class.new(transaction: transaction).call(attributes: attributes)
 
-        expect(result.object.reference).to eq("foo")
+        expect(result.object.description).to eq("foo")
       end
 
       subject { described_class.new(transaction: transaction) }
