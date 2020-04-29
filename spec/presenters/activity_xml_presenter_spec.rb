@@ -37,5 +37,20 @@ RSpec.describe ActivityXmlPresenter do
         end
       end
     end
+
+    context "when the activity is a third-party project" do
+      context "when the reporting organisation is a government organisation" do
+        it "returns an identifier with the reporting organisation, fund, programme, project and third-party project" do
+          government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
+          third_party_project = create(:third_party_project_activity, organisation: government_organisation, reporting_organisation: government_organisation)
+          project = third_party_project.parent_activity
+          programme = project.parent_activity
+          fund = programme.parent_activity
+
+          expect(described_class.new(third_party_project).iati_identifier)
+            .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}-#{project.identifier}-#{third_party_project.identifier}")
+        end
+      end
+    end
   end
 end
