@@ -10,6 +10,7 @@ feature "Organisation show page" do
       extending_organisation: delivery_partner_user.organisation)
   end
   let!(:project) { create(:project_activity, activity: programme, organisation: delivery_partner_user.organisation) }
+  let!(:third_party_project) { create(:third_party_project_activity, activity: project, organisation: delivery_partner_user.organisation) }
   let!(:another_programme) { create(:programme_activity) }
   let!(:another_project) { create(:project_activity) }
 
@@ -57,6 +58,14 @@ feature "Organisation show page" do
           expect(page).to have_link another_project.title, href: organisation_activity_path(another_project.organisation, another_project)
           expect(page).to have_content another_project.identifier
           expect(page).to have_content another_project.parent_activity.title
+        end
+      end
+
+      scenario "they see a list of all third-party projects" do
+        within("##{third_party_project.id}") do
+          expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
+          expect(page).to have_content third_party_project.identifier
+          expect(page).to have_content third_party_project.parent_activity.title
         end
       end
 
@@ -122,8 +131,23 @@ feature "Organisation show page" do
       expect(page.find("table.projects  tbody tr:first-child")[:id]).to have_content(yet_another_project.id)
       expect(page.find("table.projects  tbody tr:last-child")[:id]).to have_content(project.id)
     end
+
     scenario "they do not see projects that they are not the reporting organisation of" do
       expect(page).not_to have_content another_project.identifier
+    end
+
+    scenario "they see a list of all their third-party projects" do
+      within("##{third_party_project.id}") do
+        expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
+        expect(page).to have_content third_party_project.identifier
+        expect(page).to have_content third_party_project.parent_activity.title
+      end
+    end
+
+    scenario "they do not see third-party projects that belong to another organisation" do
+      other_third_party_project = create(:third_party_project_activity, organisation: create(:delivery_partner_organisation))
+
+      expect(page).to_not have_content(other_third_party_project.title)
     end
 
     scenario "they do not see the edit detials button" do
