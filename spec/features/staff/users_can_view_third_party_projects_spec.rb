@@ -18,6 +18,14 @@ RSpec.feature "Users can view a third-party project" do
 
       expect(page).to have_content I18n.t("helpers.hint.activity.status", level: third_party_project.level)
     end
+
+    scenario "cannot download a project as XML" do
+      third_party_project = create(:third_party_project_activity)
+
+      visit organisation_activity_path(third_party_project.organisation, third_party_project)
+
+      expect(page).to_not have_content I18n.t("generic.button.download_as_xml")
+    end
   end
 
   context "when the user belongs to BEIS" do
@@ -31,6 +39,23 @@ RSpec.feature "Users can view a third-party project" do
 
       expect(page).to have_content third_party_project.title
       expect(page).to_not have_content I18n.t("page_content.organisation.button.create_third_party_project")
+    end
+
+    scenario "can download a third-party project as XML" do
+      third_party_project = create(:third_party_project_activity)
+      project_presenter = ActivityXmlPresenter.new(third_party_project)
+
+      visit organisation_activity_path(third_party_project.organisation, third_party_project)
+
+      expect(page).to have_content I18n.t("generic.button.download_as_xml")
+
+      click_on I18n.t("generic.button.download_as_xml")
+
+      expect(page.response_headers["Content-Type"]).to include("application/xml")
+
+      header = page.response_headers["Content-Disposition"]
+      expect(header).to match(/^attachment/)
+      expect(header).to match(/filename=\"#{project_presenter.iati_identifier}.xml\"$/)
     end
   end
 end
