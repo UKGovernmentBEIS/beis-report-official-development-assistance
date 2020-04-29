@@ -3,8 +3,6 @@
     %thead.govuk-table__head
       %tr.govuk-table__row
         %th.govuk-table__header
-          = t("activerecord.attributes.transaction.reference")
-        %th.govuk-table__header
           = t("activerecord.attributes.transaction.transaction_type")
         %th.govuk-table__header
           = t("activerecord.attributes.transaction.date")
@@ -23,7 +21,6 @@
     %tbody.govuk-table__body
       - transactions.each do |transaction|
         %tr.govuk-table__row{id: transaction.id}
-          %td.govuk-table__cell= transaction.reference
           %td.govuk-table__cell= transaction.transaction_type
           %td.govuk-table__cell= transaction.date
           %td.govuk-table__cell= transaction.currency
@@ -33,4 +30,4 @@
           %td.govuk-table__cell= transaction.receiving_organisation_name
           %td.govuk-table__cell
             - if policy(transaction).create?
-              = a11y_action_link(I18n.t('generic.link.edit'), edit_activity_transaction_path(transaction.parent_activity_id, transaction), t("page_content.transactions.edit_noun", reference: transaction.reference))
+              = a11y_action_link(I18n.t('generic.link.edit'), edit_activity_transaction_path(transaction.parent_activity_id, transaction), t("page_content.transactions.edit_noun"))

@@ -121,7 +121,6 @@ module FormHelpers
   end
 
   def fill_in_transaction_form(expectations: true,
-    reference: "123",
     description: "This money will be purchasing a new school roof",
     transaction_type: "Outgoing Pledge",
     date_year: "2020",
@@ -132,7 +131,6 @@ module FormHelpers
     currency: "Pound Sterling",
     providing_organisation: OpenStruct.new(name: "Example provider", reference: "GB-GOV-1", type: "Government"),
     receiving_organisation: OpenStruct.new(name: "Example receiver", reference: "GB-COH-123", type: "Private Sector"))
-    fill_in "transaction[reference]", with: reference
     fill_in "transaction[description]", with: description
     select transaction_type, from: "transaction[transaction_type]"
     fill_in "transaction[date(3i)]", with: date_day
@@ -154,7 +152,6 @@ module FormHelpers
 
     if expectations
       within ".transactions" do
-        expect(page).to have_content(reference)
         expect(page).to have_content(transaction_type)
         expect(page).to have_content localise_date_from_input_fields(
           year: date_year,

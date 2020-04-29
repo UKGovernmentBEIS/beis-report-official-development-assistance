@@ -2,8 +2,7 @@ class Transaction < ApplicationRecord
   include PublicActivity::Common
 
   belongs_to :parent_activity, class_name: "Activity"
-  validates_presence_of :reference,
-    :description,
+  validates_presence_of :description,
     :transaction_type,
     :date,
     :currency,
