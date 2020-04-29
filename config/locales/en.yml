@@ -179,6 +179,11 @@ en:
         button:
           new: Add implementing organisation
         heading: Implementing organisations
+      level:
+        fund: fund
+        programme: programme
+        project: project
+        third_party_project: third-party project
       organisation:
         label: Organisation
       planned_end_date:

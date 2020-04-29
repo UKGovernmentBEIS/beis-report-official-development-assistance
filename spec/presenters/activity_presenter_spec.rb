@@ -216,4 +216,12 @@ RSpec.describe ActivityPresenter do
       end
     end
   end
+
+  describe "#level" do
+    it "returns the Activity level without any underscores" do
+      activity = build(:third_party_project_activity)
+
+      expect(described_class.new(activity).level).to eql("third-party project")
+    end
+  end
 end
