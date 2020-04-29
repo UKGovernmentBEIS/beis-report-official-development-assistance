@@ -252,6 +252,7 @@ en:
         label: Name
       programmes: Programmes
       projects: Projects
+      third_party_projects: Third-party projects
       type:
         label: Type
     organisation_details: Organisation details
