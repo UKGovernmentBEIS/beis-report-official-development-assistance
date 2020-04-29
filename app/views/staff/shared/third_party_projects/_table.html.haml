@@ -1,0 +1,19 @@
+- unless third_party_projects.empty?
+  %table.govuk-table.third-party-projects
+    %caption.govuk-table__caption.govuk-visually-hidden
+      = t("page_content.organisation.third_party_projects")
+    %thead.govuk-table__head
+      %tr.govuk-table__row
+        %th.govuk-table__header
+          =t("activerecord.attributes.activity.title")
+        %th.govuk-table__header
+          = t("page_content.activity.identitfier.label")
+        %th.govuk-table__header
+          =t("activerecord.attributes.activity.project.programme")
+
+    %tbody.govuk-table__body
+      - third_party_projects.each do |project|
+        %tr.govuk-table__row{id: project.id}
+          %td.govuk-table__cell= link_to project.display_title, organisation_activity_path(project.organisation, project), class: "govuk-link govuk-link--no-visited-state"
+          %td.govuk-table__cell= project.identifier
+          %td.govuk-table__cell= project.parent_activity.title

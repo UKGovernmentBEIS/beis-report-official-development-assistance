@@ -9,7 +9,7 @@ class ActivityPolicy < ApplicationPolicy
   def create?
     record.fund? && beis_user? ||
       record.programme? && beis_user? ||
-        (record.project? || record.third_party_project?) && delivery_partner_user?
+      (record.project? || record.third_party_project?) && delivery_partner_user?
   end
 
   def update?
