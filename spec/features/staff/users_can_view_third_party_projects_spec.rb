@@ -26,6 +26,19 @@ RSpec.feature "Users can view a third-party project" do
 
       expect(page).to_not have_content I18n.t("generic.button.download_as_xml")
     end
+
+    scenario "can view and add budgets and transactions on a third-party project" do
+      third_party_project = create(:third_party_project_activity, organisation: user.organisation)
+      budget = create(:budget, parent_activity: third_party_project)
+      transaction = create(:transaction, parent_activity: third_party_project)
+
+      visit organisation_activity_path(third_party_project.organisation, third_party_project)
+
+      expect(page).to have_content(budget.value)
+      expect(page).to have_content(transaction.value)
+      expect(page).to have_content(I18n.t("page_content.budgets.button.create"))
+      expect(page).to have_content(I18n.t("page_content.transactions.button.create"))
+    end
   end
 
   context "when the user belongs to BEIS" do
