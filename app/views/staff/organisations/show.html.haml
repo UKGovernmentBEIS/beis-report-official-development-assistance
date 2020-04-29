@@ -36,6 +36,14 @@
 
         = render partial: "staff/shared/projects/table", locals: { projects: @project_activities }
 
+  - if policy(:third_party_project).index?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        %h2.govuk-heading-m
+          = t("page_content.organisation.third_party_projects")
+
+        = render partial: "staff/shared/third_party_projects/table", locals: { third_party_projects: @third_party_project_activities }
+
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h2.govuk-heading-m
