@@ -16,7 +16,7 @@ RSpec.feature "Users can view a third-party project" do
       third_party_project = create(:third_party_project_activity)
       visit activity_step_path(third_party_project, :status)
 
-      expect(page).to have_content I18n.t("helpers.hint.activity.status", level: third_party_project.level)
+      expect(page).to have_content I18n.t("helpers.hint.activity.status", level: I18n.t("page_content.activity.level.#{third_party_project.level}"))
     end
 
     scenario "cannot download a project as XML" do

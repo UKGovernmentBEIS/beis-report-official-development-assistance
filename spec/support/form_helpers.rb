@@ -29,14 +29,14 @@ module FormHelpers
     fill_in "activity[identifier]", with: identifier
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.purpose_level", level: level)
+    expect(page).to have_content I18n.t("page_title.activity_form.show.purpose_level", level: I18n.t("page_content.activity.level.#{level}"))
     expect(page).to have_content I18n.t("activerecord.attributes.activity.title")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.description")
     fill_in "activity[title]", with: title
     fill_in "activity[description]", with: description
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.sector", level: level)
+    expect(page).to have_content I18n.t("page_title.activity_form.show.sector", level: I18n.t("page_content.activity.level.#{level}"))
     expect(page).to have_content(
       ActionView::Base.full_sanitizer.sanitize(
         I18n.t("helpers.hint.activity.sector.html", level: level)
