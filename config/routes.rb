@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     root to: "visitors#index"
 
     get "privacy-policy" => "privacy_policy#index"
+    get "cookie-statement" => "cookie_statement#index"
   end
 
   scope module: "staff" do

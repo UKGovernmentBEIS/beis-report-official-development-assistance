@@ -266,6 +266,7 @@ en:
       html: This is a new service – your <a href="https://docs.google.com/forms/d/e/1FAIpQLSfk9abTLRNZdB9tPdtoF_t_1z7q6uPQiZks8NfzGeqg-8UQtQ/viewform" class="govuk-link">feedback</a> will help us to improve it.
     generic:
       link:
+        cookie_statement: Cookies
         privacy_policy: Privacy policy
     organisation:
       button:
@@ -353,6 +354,31 @@ en:
     budget:
       edit: Edit budget
       new: Create budget
+    cookie_statement:
+      gathering_feedback:
+        paragraph:
+        - We use Google Forms software to collect information about what you thought of the RODA service. We do this to help make sure the site is meeting the needs of its users and to help us make improvements.
+        - For more information on Google‘s cookies, please see the <a href="https://policies.google.com/technologies/cookies?hl=en-UK" class="govuk-link">Google Privacy and Terms</a> site.
+        title: Gathering your feedback
+      introduction: Report official development assistance (RODA) puts small files (known as 'cookies') onto your computer to collect information about how you browse the site and allow the site to operate. Find out more about the cookies we use, what they're for and when they expire.
+      strictly_necessary_cookies:
+        paragraph: These cookies do not store your personal data but are required for the service to operate.
+        table: <table class="govuk-table"> <thead class="govuk-table__head"> <tr class="govuk-table__row"> <th scope="col" class="govuk-table__header">Name</th> <th scope="col" class="govuk-table__header">Purpose</th> <th scope="col" class="govuk-table__header">Expires</th> </tr> </thead> <tbody class="govuk-table__body"> <tr class="govuk-table__row"> <td class="govuk-table__cell">_roda_session</td> <td class="govuk-table__cell">Identifies your session in RODA</td> <td class="govuk-table__cell">When you close your browser or 24 hours</td> </tr> </tbody> </table>
+        title: Strictly necessary cookies
+      title: Details about cookies on Report official development assistance
+      website_use:
+        google_analytics:
+          table: <table class="govuk-table"> <thead class="govuk-table__head"> <tr class="govuk-table__row"> <th scope="col" class="govuk-table__header">Name</th> <th scope="col" class="govuk-table__header">Purpose</th> <th scope="col" class="govuk-table__header">Expires</th> </tr> </thead> <tbody class="govuk-table__body"> <tr class="govuk-table__row"> <td class="govuk-table__cell">_ga</td> <td class="govuk-table__cell">These help us count how many people visit RODA by tracking if you’ve visited before</td> <td class="govuk-table__cell">2 years</td> </tr> <tr class="govuk-table__row"> <td class="govuk-table__cell">_gid</td> <td class="govuk-table__cell">These help us count how many people visit RODA by tracking if you’ve visited before</td> <td class="govuk-table__cell">24 hours</td> </tr> <tr class="govuk-table__row"> <td class="govuk-table__cell">_gat_UA-151431879-2</td> <td class="govuk-table__cell">Used to  control the number of requests RODA makes to Google Analytics</td> <td class="govuk-table__cell">1 minute</td> </tr> </tbody> </table>
+          title: 'Google Analytics sets the following cookies:'
+        list:
+        - how you got to the site
+        - the pages you visit on RODA and how long you spend on them
+        - what you click on while you’re visiting the site
+        paragraph:
+        - We use Google Analytics software to collect anonymised information about how you use RODA. We do this to help make sure the site is meeting the needs of its users and to help us make improvements to the site.
+        - We do not allow Google to use or share the data about how you use this site.
+        - 'Google Analytics stores information about:'
+        title: Cookies that measure website use
     errors:
       auth0:
         failed: Sign in failed
