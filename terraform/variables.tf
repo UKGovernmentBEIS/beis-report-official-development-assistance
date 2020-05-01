@@ -43,6 +43,16 @@ variable "rollbar_access_token" {
   description = "Rollbar access token"
 }
 
+variable "skylight_access_token" {
+  type        = string
+  description = "Skylight access token"
+}
+
+variable "skylight_env" {
+  type        = string
+  description = "Skylight environment name"
+}
+
 variable "docker_image" {
   type        = string
   description = "docker image to use"

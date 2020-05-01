@@ -59,5 +59,7 @@ module Roda
       api_key: ENV["NOTIFY_KEY"],
     }
     config.action_mailer.default_url_options = {host: ENV["DOMAIN"]}
+
+    config.skylight.environments += ["pentest", "staging"]
   end
 end
