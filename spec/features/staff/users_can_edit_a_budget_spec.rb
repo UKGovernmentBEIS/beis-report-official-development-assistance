@@ -14,7 +14,7 @@ RSpec.describe "Users can edit a budget" do
       end
 
       fill_in "budget[value]", with: "20"
-      choose("budget[budget_type]", option: "updated")
+      choose("budget[budget_type]", option: "2")
       click_on I18n.t("generic.button.submit")
 
       expect(page).to have_content(I18n.t("form.budget.update.success"))
@@ -36,7 +36,7 @@ RSpec.describe "Users can edit a budget" do
       end
 
       fill_in "budget[value]", with: "20"
-      choose("budget[budget_type]", option: "updated")
+      choose("budget[budget_type]", option: "2")
       click_on I18n.t("generic.button.submit")
 
       expect(page).to have_content(I18n.t("form.budget.update.success"))
@@ -55,7 +55,7 @@ RSpec.describe "Users can edit a budget" do
         end
 
         fill_in "budget[value]", with: "20"
-        choose("budget[budget_type]", option: "updated")
+        choose("budget[budget_type]", option: "2")
         click_on I18n.t("generic.button.submit")
 
         budget = Budget.last
@@ -67,7 +67,7 @@ RSpec.describe "Users can edit a budget" do
 
     scenario "validation errors work as expected" do
       activity = create(:project_activity, organisation: user.organisation)
-      budget = create(:budget, parent_activity: activity, budget_type: "original", value: "10")
+      budget = create(:budget, parent_activity: activity, budget_type: "1", value: "10")
 
       visit organisation_activity_path(user.organisation, activity)
       within("##{budget.id}") do

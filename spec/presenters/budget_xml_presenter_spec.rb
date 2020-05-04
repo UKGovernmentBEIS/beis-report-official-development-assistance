@@ -35,38 +35,6 @@ RSpec.describe BudgetXmlPresenter do
     end
   end
 
-  describe "#budget_type" do
-    context "when the budget_type is blank" do
-      it "returns nil" do
-        budget = build(:budget, budget_type: "")
-        expect(described_class.new(budget).budget_type).to be_nil
-      end
-    end
-
-    context "when the budget_type exists" do
-      it "returns the type in IATI format" do
-        budget = build(:budget, budget_type: "original")
-        expect(described_class.new(budget).budget_type).to eq(1)
-      end
-    end
-  end
-
-  describe "#status" do
-    context "when the status is blank" do
-      it "returns nil" do
-        budget = build(:budget, status: "")
-        expect(described_class.new(budget).status).to be_nil
-      end
-    end
-
-    context "when the status exists" do
-      it "returns the status in IATI format" do
-        budget = build(:budget, status: "indicative")
-        expect(described_class.new(budget).budget_type).to eq(1)
-      end
-    end
-  end
-
   describe "#value" do
     it "returns the value as a string" do
       budget = build(:budget, value: 21.01)
