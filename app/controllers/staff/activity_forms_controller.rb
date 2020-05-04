@@ -47,7 +47,7 @@ class Staff::ActivityFormsController < Staff::BaseController
 
     update_wizard_status
 
-    render_wizard @activity
+    render_wizard @activity, context: :"#{step}_step"
   end
 
   private
