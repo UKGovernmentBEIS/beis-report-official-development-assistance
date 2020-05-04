@@ -4,18 +4,30 @@ class Activity < ApplicationRecord
   STANDARD_GRANT_FINANCE_CODE = "110"
   UNTIED_TIED_STATUS_CODE = "5"
 
-  validates :identifier, presence: true, if: :identifier_step?
-  validates_uniqueness_of :identifier, if: :identifier_step?
-  validates :title, :description, presence: true, if: :purpose_step?
-  validates :sector, presence: true, if: :sector_step?
-  validates :status, presence: true, if: :status_step?
-  validates :geography, presence: true, if: :geography_step?
-  validates :recipient_region, presence: true, if: :region_step?
-  validates :recipient_country, presence: true, if: :country_step?
-  validates :flow, presence: true, if: :flow_step?
-  validates :aid_type, presence: true, if: :aid_type_step?
+  VALIDATION_STEPS = [
+    :identifier_step,
+    :purpose_step,
+    :sector_step,
+    :status_step,
+    :geography_step,
+    :region_step,
+    :country_step,
+    :flow_step,
+    :aid_type,
+  ]
+
+  validates :identifier, presence: true, on: :identifier_step
+  validates :title, :description, presence: true, on: :purpose_step
+  validates :sector, presence: true, on: :sector_step
+  validates :status, presence: true, on: :status_step
+  validates :geography, presence: true, on: :geography_step
+  validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
+  validates :recipient_country, presence: true, on: :country_step, if: :recipient_country?
+  validates :flow, presence: true, on: :flow_step
+  validates :aid_type, presence: true, on: :aid_type_step
+
   validates_uniqueness_of :identifier
-  validates :planned_start_date, :planned_end_date, presence: true, if: :dates_step?
+  validates :planned_start_date, :planned_end_date, presence: true, on: :dates_step
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
   validates :actual_start_date, :actual_end_date, date_not_in_future: true
   validates :extending_organisation_id, presence: true, on: :update_extending_organisation
@@ -42,52 +54,21 @@ class Activity < ApplicationRecord
   scope :funds, -> { where(level: :fund) }
   scope :programmes, -> { where(level: :programme) }
 
+  def valid?(context = nil)
+    context = VALIDATION_STEPS if context.nil? && final?
+    super(context)
+  end
+
+  def final?
+    wizard_complete?
+  end
+
   def finance
     STANDARD_GRANT_FINANCE_CODE
   end
 
   def tied_status
     UNTIED_TIED_STATUS_CODE
-  end
-
-  private def identifier_step?
-    wizard_status == "identifier" || wizard_complete?
-  end
-
-  private def purpose_step?
-    wizard_status == "purpose" || wizard_complete?
-  end
-
-  private def sector_step?
-    wizard_status == "sector" || wizard_complete?
-  end
-
-  private def status_step?
-    wizard_status == "status" || wizard_complete?
-  end
-
-  private def dates_step?
-    wizard_status == "dates" || wizard_complete?
-  end
-
-  def geography_step?
-    wizard_status == "geography" || wizard_complete?
-  end
-
-  def region_step?
-    wizard_status == "region"
-  end
-
-  def country_step?
-    wizard_status == "country"
-  end
-
-  private def flow_step?
-    wizard_status == "flow" || wizard_complete?
-  end
-
-  private def aid_type_step?
-    wizard_status == "aid_type" || wizard_complete?
   end
 
   def wizard_complete?
