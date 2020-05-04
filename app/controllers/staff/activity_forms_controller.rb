@@ -45,6 +45,10 @@ class Staff::ActivityFormsController < Staff::BaseController
     update_activity_attributes_except_dates
     record_auditable_activity
 
+    if @activity.wizard_complete?
+      reset_geography_dependent_answers if step == :geography
+    end
+
     update_wizard_status
 
     render_wizard @activity, context: :"#{step}_step"
@@ -103,5 +107,9 @@ class Staff::ActivityFormsController < Staff::BaseController
     else
       @activity.wizard_status = step
     end
+  end
+
+  def reset_geography_dependent_answers
+    @activity.update(recipient_region: nil, recipient_country: nil)
   end
 end
