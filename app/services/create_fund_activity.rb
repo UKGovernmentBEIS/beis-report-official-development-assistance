@@ -22,7 +22,7 @@ class CreateFundActivity
     activity.accountable_organisation_reference = "GB-GOV-13"
     activity.accountable_organisation_type = "10"
 
-    activity.save(validate: false)
+    activity.save!
     activity
   end
 

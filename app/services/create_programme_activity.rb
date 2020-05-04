@@ -25,7 +25,7 @@ class CreateProgrammeActivity
     activity.accountable_organisation_reference = service_owner.iati_reference
     activity.accountable_organisation_type = service_owner.organisation_type
 
-    activity.save(validate: false)
+    activity.save!
     activity
   end
 

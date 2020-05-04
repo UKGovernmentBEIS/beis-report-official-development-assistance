@@ -26,7 +26,7 @@ class Activity < ApplicationRecord
   validates :flow, presence: true, on: :flow_step
   validates :aid_type, presence: true, on: :aid_type_step
 
-  validates_uniqueness_of :identifier
+  validates_uniqueness_of :identifier, allow_nil: true
   validates :planned_start_date, :planned_end_date, presence: true, on: :dates_step
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
   validates :actual_start_date, :actual_end_date, date_not_in_future: true
