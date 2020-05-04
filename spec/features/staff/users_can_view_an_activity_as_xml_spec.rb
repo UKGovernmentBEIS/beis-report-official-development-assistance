@@ -138,6 +138,16 @@ RSpec.feature "Users can view an activity as XML" do
 
           expect(xml.xpath("//iati-activity/budget").count).to eq(1)
         end
+
+        it "has the correct budget XML" do
+          _budget = create(:budget, parent_activity: activity)
+
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.xpath("//iati-activity/budget/@type").text).to eq("1")
+          expect(xml.xpath("//iati-activity/budget/@status").text).to eq("1")
+          expect(xml.xpath("//iati-activity/budget/value").text).to eq("110.01")
+        end
       end
 
       context "when the activity has transactions" do
@@ -152,6 +162,15 @@ RSpec.feature "Users can view an activity as XML" do
           visit organisation_activity_path(organisation, activity, format: :xml)
 
           expect(xml.xpath("//iati-activity/transaction").count).to eq(1)
+        end
+
+        it "has the correct transaction XML" do
+          _transaction = create(:transaction, parent_activity: activity)
+
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.xpath("//iati-activity/transaction/transaction-type/@code").text).to eq("1")
+          expect(xml.xpath("//iati-activity/transaction/value").text).to eq("110.01")
         end
       end
     end

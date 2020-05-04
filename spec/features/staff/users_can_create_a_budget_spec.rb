@@ -121,8 +121,8 @@ RSpec.describe "Users can create a budget" do
   end
 
   def fill_in_and_submit_budget_form
-    choose("budget[budget_type]", option: "original")
-    choose("budget[status]", option: "indicative")
+    choose("budget[budget_type]", option: "1")
+    choose("budget[status]", option: "1")
     fill_in "budget[period_start_date(3i)]", with: "01"
     fill_in "budget[period_start_date(2i)]", with: "01"
     fill_in "budget[period_start_date(1i)]", with: "2020"
