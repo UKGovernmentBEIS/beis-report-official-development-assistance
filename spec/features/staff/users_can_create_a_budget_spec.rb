@@ -81,7 +81,7 @@ RSpec.describe "Users can create a budget" do
     let(:user) { create(:delivery_partner_user) }
 
     context "on a programme level activity" do
-      scenario "they cannot create budgets" do
+      scenario "they can view but not create budgets" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity,
           activity: fund_activity,
@@ -91,7 +91,7 @@ RSpec.describe "Users can create a budget" do
         visit organisation_path(user.organisation)
         click_on(programme_activity.title)
 
-        expect(page).not_to have_content(I18n.t("page_content.activity.budgets"))
+        expect(page).to have_content(I18n.t("page_content.activity.budgets"))
         expect(page).not_to have_content(I18n.t("page_content.budgets.button.create"))
       end
     end
