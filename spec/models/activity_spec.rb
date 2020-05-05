@@ -38,12 +38,12 @@ RSpec.describe Activity, type: :model do
   describe "validations" do
     context "overall activity state" do
       context "when the activity form is a draft" do
-        subject { build(:activity, :at_identifier_step, wizard_status: "blank") }
+        subject { build(:activity, :at_identifier_step, form_state: "blank") }
         it { should be_valid }
       end
 
       context "when the activity form is final" do
-        subject { build(:activity, :at_identifier_step, wizard_status: "complete") }
+        subject { build(:activity, :at_identifier_step, form_state: "complete") }
         it { should be_invalid }
       end
     end
@@ -213,9 +213,9 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:extending_organisation_id).on(:update_extending_organisation) }
     end
 
-    context "when the wizard status is blank" do
+    context "when the form state is blank" do
       it "allows updates to be made to other fields set on creation" do
-        blank_activity = create(:activity, funding_organisation_name: "old", wizard_status: :blank)
+        blank_activity = create(:activity, funding_organisation_name: "old", form_state: :blank)
         blank_activity.funding_organisation_name = "new"
         expect(blank_activity.valid?).to eq(true)
       end
@@ -291,19 +291,19 @@ RSpec.describe Activity, type: :model do
 
   describe "#wizard_complete?" do
     it "is true if the wizard has been completed" do
-      activity = build(:activity, wizard_status: :complete)
+      activity = build(:activity, form_state: :complete)
 
       expect(activity.wizard_complete?).to be_truthy
     end
 
     it "is false if the wizard is in progress" do
-      activity = build(:activity, wizard_status: :purpose)
+      activity = build(:activity, form_state: :purpose)
 
       expect(activity.wizard_complete?).to be_falsey
     end
 
     it "is false if the wizard is not started" do
-      activity = build(:activity, wizard_status: nil)
+      activity = build(:activity, form_state: nil)
 
       expect(activity.wizard_complete?).to be_falsey
     end

@@ -95,7 +95,7 @@ RSpec.feature "Users can edit an activity" do
 
     context "when a title attribute is present" do
       it "the call to action is 'Edit'" do
-        activity = create(:fund_activity, organisation: user.organisation, wizard_status: :sector)
+        activity = create(:fund_activity, organisation: user.organisation, form_state: :sector)
 
         visit organisation_activity_path(activity.organisation, activity)
 

@@ -7,6 +7,6 @@ class Staff::ProgrammesController < Staff::ActivitiesController
 
     @programme.create_activity key: "activity.create", owner: current_user
 
-    redirect_to activity_step_path(@programme.id, @programme.wizard_status)
+    redirect_to activity_step_path(@programme.id, @programme.form_state)
   end
 end

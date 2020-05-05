@@ -14,8 +14,8 @@ RSpec.describe CreateFundActivity do
       expect(result.reporting_organisation.iati_reference).to eq(organisation.iati_reference)
     end
 
-    it "sets the initial wizard_status" do
-      expect(result.wizard_status).to eq("blank")
+    it "sets the initial form_state" do
+      expect(result.form_state).to eq("blank")
     end
 
     it "sets the activity level to 'fund'" do

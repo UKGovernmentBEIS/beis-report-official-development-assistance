@@ -72,7 +72,7 @@ class Activity < ApplicationRecord
   end
 
   def wizard_complete?
-    wizard_status == "complete"
+    form_state == "complete"
   end
 
   def default_currency
