@@ -15,7 +15,9 @@ Rails.application.routes.draw do
       resources :activities, except: [:destroy]
       resources :funds, only: [:create] do
         resources :programmes, only: [:create] do
-          resources :projects, only: [:create]
+          resources :projects, only: [:create] do
+            resources :third_party_projects, only: [:create]
+          end
         end
       end
     end

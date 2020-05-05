@@ -75,6 +75,11 @@ en:
         success: Project successfully created
       update:
         success: Project successfully updated
+    third_party_project:
+      create:
+        success: Third-party project successfully created
+      update:
+        success: Third-party project successfully updated
     transaction:
       create:
         success: Transaction successfully created
@@ -174,6 +179,11 @@ en:
         button:
           new: Add implementing organisation
         heading: Implementing organisations
+      level:
+        fund: fund
+        programme: programme
+        project: project
+        third_party_project: third-party project
       organisation:
         label: Organisation
       planned_end_date:
@@ -190,6 +200,7 @@ en:
         label: Focus area
       status:
         label: Status
+      third_party_projects: Third-party projects
       title:
         label: Title
       transactions: Transactions
@@ -226,6 +237,7 @@ en:
         create_fund: Create fund
         create_programme: Create programme
         create_project: Create project
+        create_third_party_project: Create third-party project
         edit: Edit organisation
         edit_details: Edit details
       default_currency:
@@ -240,6 +252,7 @@ en:
         label: Name
       programmes: Programmes
       projects: Projects
+      third_party_projects: Third-party projects
       type:
         label: Type
     organisation_details: Organisation details

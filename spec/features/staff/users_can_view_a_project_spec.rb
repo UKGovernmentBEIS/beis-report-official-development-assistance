@@ -15,6 +15,15 @@ RSpec.feature "Users can view a project" do
       expect(page).to have_content project.title
     end
 
+    scenario "can see a list of third-party projects on the project view" do
+      project = create(:project_activity, organisation: user.organisation)
+      third_party_project = create(:third_party_project_activity, activity: project)
+
+      visit organisation_activity_path(project.organisation, project)
+
+      expect(page).to have_content third_party_project.title
+    end
+
     scenario "when viewing the status the hint text has the correct level" do
       project = create(:project_activity)
       visit activity_step_path(project, :status)
