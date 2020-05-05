@@ -33,6 +33,7 @@ class IngestIatiActivities
         add_dates(legacy_activity: legacy_activity, new_activity: new_activity)
         add_geography(legacy_activity: legacy_activity, new_activity: new_activity)
         add_transactions(legacy_activity: legacy_activity, new_activity: new_activity)
+        add_budgets(legacy_activity: legacy_activity, new_activity: new_activity)
 
         new_activity.ingested = true
         # Set the status to invoke validations
@@ -135,6 +136,30 @@ class IngestIatiActivities
       )
 
       transaction.save!
+    end
+  end
+
+  private def add_budgets(legacy_activity:, new_activity:)
+    budget_elements = legacy_activity.elements.select { |element| element.name.eql?("budget") }
+    budget_elements.each do |budget_element|
+      status = budget_element.attributes["status"].value
+      budget_type = budget_element.attributes["type"].value
+      period_start_date = budget_element.children.detect { |child| child.name.eql?("period-start") }.attributes["iso-date"].value
+      period_end_date = budget_element.children.detect { |child| child.name.eql?("period-end") }.attributes["iso-date"].value
+      value = budget_element.children.detect { |child| child.name.eql?("value") }.children.text
+      currency = budget_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"].value
+
+      budget = Budget.new(
+        status: status,
+        budget_type: budget_type,
+        period_start_date: period_start_date,
+        period_end_date: period_end_date,
+        value: value,
+        currency: currency,
+        parent_activity: new_activity
+      )
+
+      budget.save!
     end
   end
 
