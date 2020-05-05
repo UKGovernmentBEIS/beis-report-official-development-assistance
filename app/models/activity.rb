@@ -55,12 +55,12 @@ class Activity < ApplicationRecord
   scope :programmes, -> { where(level: :programme) }
 
   def valid?(context = nil)
-    context = VALIDATION_STEPS if context.nil? && final?
+    context = VALIDATION_STEPS if context.nil? && form_steps_completed?
     super(context)
   end
 
-  def final?
-    wizard_complete?
+  def form_steps_completed?
+    form_state == "complete"
   end
 
   def finance
@@ -69,10 +69,6 @@ class Activity < ApplicationRecord
 
   def tied_status
     UNTIED_TIED_STATUS_CODE
-  end
-
-  def wizard_complete?
-    form_state == "complete"
   end
 
   def default_currency
