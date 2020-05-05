@@ -64,4 +64,9 @@ class ActivityPresenter < SimpleDelegator
     return "Untitled (#{id})" if title.nil?
     title
   end
+
+  def level
+    return if super.blank?
+    I18n.t("page_content.activity.level.#{super}")
+  end
 end

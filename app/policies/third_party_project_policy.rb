@@ -1,0 +1,2 @@
+class ThirdPartyProjectPolicy < ProjectPolicy
+end

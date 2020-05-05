@@ -3,5 +3,5 @@
     yaml_to_objects(entity: "activity", type: "sector", with_empty_item: true),
     :code,
     :name,
-    label: { tag: 'h1', size: 'xl', text:  I18n.t("page_title.activity_form.show.sector", level: f.object.level) },
+    label: { tag: 'h1', size: 'xl', text:  I18n.t("page_title.activity_form.show.sector", level: t("page_content.activity.level.#{f.object.level}")) },
     hint_text: t("helpers.hint.activity.sector.html", level: f.object.level)

@@ -168,6 +168,25 @@ RSpec.feature "Users can edit an activity" do
       end
     end
   end
+
+  context "when the activity is a third-party project" do
+    context "when the user is a delivery_partner_user" do
+      let(:user) { create(:delivery_partner_user) }
+
+      it "shows an update success message" do
+        activity = create(:third_party_project_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+
+        within(".title") do
+          click_on(I18n.t("generic.link.edit"))
+        end
+
+        click_button I18n.t("form.activity.submit")
+        expect(page).to have_content(I18n.t("form.third_party_project.update.success"))
+      end
+    end
+  end
 end
 
 def assert_all_edit_links_go_to_the_correct_form_step(activity:)

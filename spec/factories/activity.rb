@@ -71,6 +71,20 @@ FactoryBot.define do
         end
       end
     end
+
+    factory :third_party_project_activity do
+      activity factory: :project_activity
+      level { :third_party_project }
+      funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
+      funding_organisation_reference { "GB-GOV-13" }
+      funding_organisation_type { "10" }
+      accountable_organisation_name { "Department for Business, Energy and Industrial Strategy" }
+      accountable_organisation_reference { "GB-GOV-13" }
+      accountable_organisation_type { "10" }
+
+      association :extending_organisation, factory: :delivery_partner_organisation
+      association :reporting_organisation, factory: :beis_organisation
+    end
   end
 
   trait :at_identifier_step do
