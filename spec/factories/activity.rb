@@ -16,7 +16,7 @@ FactoryBot.define do
     aid_type { "A01" }
     level { :fund }
 
-    wizard_status { "complete" } # wizard is complete
+    form_state { "complete" }
 
     association :organisation, factory: :organisation
     association :reporting_organisation, factory: :beis_organisation
@@ -89,7 +89,7 @@ FactoryBot.define do
 
   trait :at_identifier_step do
     identifier { nil }
-    wizard_status { "identifier" }
+    form_state { "identifier" }
     title { nil }
     description { nil }
     sector { nil }
@@ -106,7 +106,7 @@ FactoryBot.define do
   end
 
   trait :at_purpose_step do
-    wizard_status { "identifier" }
+    form_state { "identifier" }
     title { nil }
     description { nil }
     sector { nil }
@@ -123,21 +123,21 @@ FactoryBot.define do
   end
 
   trait :at_region_step do
-    wizard_status { "region" }
+    form_state { "region" }
     recipient_country { nil }
     flow { nil }
     aid_type { nil }
   end
 
   trait :at_geography_step do
-    wizard_status { "geography" }
+    form_state { "geography" }
     recipient_region { nil }
     recipient_country { nil }
     flow { nil }
     aid_type { nil }
   end
 
-  trait :nil_wizard_status do
-    wizard_status { nil }
+  trait :nil_form_state do
+    form_state { nil }
   end
 end

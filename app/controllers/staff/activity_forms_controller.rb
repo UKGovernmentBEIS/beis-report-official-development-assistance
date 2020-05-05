@@ -49,7 +49,7 @@ class Staff::ActivityFormsController < Staff::BaseController
       reset_geography_dependent_answers if step == :geography
     end
 
-    update_wizard_status
+    update_form_state
 
     render_wizard @activity, context: :"#{step}_step"
   end
@@ -94,18 +94,18 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def finish_wizard_path
     flash[:notice] ||= I18n.t("form.#{@activity.level}.create.success")
-    @activity.update(wizard_status: "complete")
+    @activity.update(form_state: "complete")
     organisation_activity_path(@activity.organisation, @activity)
   end
 
-  def update_wizard_status
+  def update_form_state
     return if @activity.invalid?
 
     if @activity.wizard_complete?
       flash[:notice] ||= I18n.t("form.#{@activity.level}.update.success")
       jump_to Wicked::FINISH_STEP
     else
-      @activity.wizard_status = step
+      @activity.form_state = step
     end
   end
 

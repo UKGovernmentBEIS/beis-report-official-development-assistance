@@ -16,7 +16,7 @@ class CreateProjectActivity
     programme = Activity.find(programme_id)
     programme.child_activities << activity
 
-    activity.wizard_status = "blank"
+    activity.form_state = "blank"
     activity.level = :project
 
     activity.funding_organisation_name = service_owner.name

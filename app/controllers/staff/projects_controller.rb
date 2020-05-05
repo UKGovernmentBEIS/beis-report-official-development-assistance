@@ -5,6 +5,6 @@ class Staff::ProjectsController < Staff::ActivitiesController
 
     @project.create_activity key: "activity.create", owner: current_user
 
-    redirect_to activity_step_path(@project.id, @project.wizard_status)
+    redirect_to activity_step_path(@project.id, @project.form_state)
   end
 end

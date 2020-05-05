@@ -7,6 +7,6 @@ class Staff::FundsController < Staff::ActivitiesController
 
     @fund.create_activity key: "activity.create", owner: current_user
 
-    redirect_to activity_step_path(@fund.id, @fund.wizard_status)
+    redirect_to activity_step_path(@fund.id, @fund.form_state)
   end
 end
