@@ -19,9 +19,9 @@
   - if @activity.programme? && policy(:programme).create?
     = render partial: "staff/shared/activities/extending_organisation", locals: { activity: @activity }
     = render partial: "staff/shared/activities/transactions", locals: { activity: @activity, transaction_presenters: @transaction_presenters }
-    = render partial: "staff/shared/activities/budgets", locals: { activity: @activity, budget_presenters: @budget_presenters }
 
   - if @activity.programme?
+    = render partial: "staff/shared/activities/budgets", locals: { activity: @activity, budget_presenters: @budget_presenters }
     = render partial: "staff/shared/activities/projects", locals: { activity: @activity, activities: @activities }
 
   - if @activity.project?

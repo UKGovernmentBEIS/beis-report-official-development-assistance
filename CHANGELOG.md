@@ -115,6 +115,7 @@
 - Remove `reference` from Transactions
 - Add level D activities (third-party projects)
 - Store Budget status and type as numbers, not words
+- Delivery partner users can view budgets on Level B activities (but not edit or create them)
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...HEAD
 [release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
