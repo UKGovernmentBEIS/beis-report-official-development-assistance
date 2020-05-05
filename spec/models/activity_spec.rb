@@ -289,23 +289,23 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#wizard_complete?" do
-    it "is true if the wizard has been completed" do
+  describe "#form_stpes_completed?" do
+    it "is true when a user has completed all of the form steps" do
       activity = build(:activity, form_state: :complete)
 
-      expect(activity.wizard_complete?).to be_truthy
+      expect(activity.form_steps_completed?).to be_truthy
     end
 
-    it "is false if the wizard is in progress" do
+    it "is false when a user is still completing one of the form steps" do
       activity = build(:activity, form_state: :purpose)
 
-      expect(activity.wizard_complete?).to be_falsey
+      expect(activity.form_steps_completed?).to be_falsey
     end
 
-    it "is false if the wizard is not started" do
+    it "is false when the form_stat is nil " do
       activity = build(:activity, form_state: nil)
 
-      expect(activity.wizard_complete?).to be_falsey
+      expect(activity.form_steps_completed?).to be_falsey
     end
   end
 

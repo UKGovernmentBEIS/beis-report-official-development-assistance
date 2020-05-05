@@ -3,7 +3,7 @@ module ActivityHelper
     steps = Staff::ActivityFormsController::FORM_STEPS
 
     return false if activity.form_state.nil?
-    return true if activity.wizard_complete?
+    return true if activity.form_steps_completed?
 
     presenter_position = steps.index(step.to_sym)
     activity_position = steps.index(activity.form_state.to_sym)
