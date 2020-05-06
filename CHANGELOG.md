@@ -114,6 +114,7 @@
 - Fix descriptive labels on action links
 - Remove `reference` from Transactions
 - Add level D activities (third-party projects)
+- Store Budget status and type as numbers, not words
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...HEAD
 [release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
