@@ -127,9 +127,8 @@ RSpec.describe IngestIatiActivities do
       ).not_to be_nil
 
       expect(
-        # Trailing whitespace is deliberate and required until we can sanitise the strings
-        transactions.find_by(description: "Initial proof of concept testing os remote live teaching ")
-      ).not_to be_nil
+        transactions.find_by(description: "Initial proof of concept testing os remote live teaching")
+      ).to_not be_nil
     end
 
     it "creates budgets" do
@@ -180,6 +179,20 @@ RSpec.describe IngestIatiActivities do
         expect(transactions.count).to eq(11)
         transaction_without_description = transactions.find_by(value: "151340.27") # There are no remaining better identifiers
         expect(transaction_without_description.description).to eql("Unknown description")
+      end
+    end
+
+    context "when a description has escaped characters and extra whitespace" do
+      it "normalizes the text" do
+        _beis = create(:beis_organisation)
+        uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_escaped_characters.xml")
+
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021")
+
+        expect(activity.description).to eql("Both Ethiopia and Kenya are flood & drought prone with significant mortality & economic losses attributed to these events in each country.")
       end
     end
   end
