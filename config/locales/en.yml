@@ -206,11 +206,11 @@ en:
       transactions: Transactions
     budget:
       budget_type:
-        original: Original
-        updated: Updated
+        '1': Original
+        '2': Updated
       status:
-        committed: Committed
-        indicative: Indicative
+        '1': Indicative
+        '2': Committed
     budgets:
       button:
         create: Create budget

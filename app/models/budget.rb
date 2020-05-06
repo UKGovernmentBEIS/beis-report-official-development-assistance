@@ -14,6 +14,6 @@ class Budget < ApplicationRecord
 
   validates_with BudgetDatesValidator, if: -> { period_start_date.present? && period_end_date.present? }
 
-  BUDGET_TYPES = {original: "original", updated: "updated"}
-  STATUSES = {indicative: "indicative", committed: "committed"}
+  BUDGET_TYPES = {"1": "original", "2": "updated"}
+  STATUSES = {"1": "indicative", "2": "committed"}
 end
