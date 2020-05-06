@@ -90,6 +90,73 @@ RSpec.feature "Users can view budgets on an activity page" do
     end
   end
 
+  context "when the user is a delivery partner" do
+    let(:user) { create(:delivery_partner_user) }
+
+    context "when the activity is programme level" do
+      scenario "budget information is shown on the page" do
+        programme_activity = create(:programme_activity, extending_organisation: user.organisation, organisation: user.organisation)
+
+        budget = create(:budget, parent_activity: programme_activity)
+        budget_presenter = BudgetPresenter.new(budget)
+
+        visit organisation_path(user.organisation)
+
+        click_link programme_activity.title
+
+        budget_information_is_shown_on_page(budget_presenter)
+      end
+
+      scenario "budget information cannot be edited" do
+        programme_activity = create(:programme_activity, extending_organisation: user.organisation, organisation: user.organisation)
+
+        budget = create(:budget, parent_activity: programme_activity)
+
+        visit organisation_path(user.organisation)
+
+        click_link programme_activity.title
+
+        within "##{budget.id}" do
+          expect(page).to_not have_content I18n.t("generic.link.edit")
+        end
+      end
+    end
+
+    context "when the activity is project level" do
+      scenario "budget information is shown on the page" do
+        programme_activity = create(:programme_activity, extending_organisation: user.organisation, organisation: user.organisation)
+        project_activity = create(:project_activity, activity: programme_activity, organisation: user.organisation)
+
+        budget = create(:budget, parent_activity: project_activity)
+        budget_presenter = BudgetPresenter.new(budget)
+
+        visit organisation_path(user.organisation)
+
+        click_link programme_activity.title
+        click_link project_activity.title
+
+        budget_information_is_shown_on_page(budget_presenter)
+      end
+
+      scenario "a delivery partner can edit/create a budget" do
+        programme_activity = create(:programme_activity, extending_organisation: user.organisation, organisation: user.organisation)
+        project_activity = create(:project_activity, activity: programme_activity, organisation: user.organisation)
+
+        budget = create(:budget, parent_activity: project_activity)
+
+        visit organisation_path(user.organisation)
+
+        click_link programme_activity.title
+        click_link project_activity.title
+
+        expect(page).to have_content(I18n.t("page_content.budgets.button.create"))
+        within("tr##{budget.id}") do
+          expect(page).to have_content(I18n.t("generic.link.edit"))
+        end
+      end
+    end
+  end
+
   def budget_information_is_shown_on_page(budget_presenter)
     expect(page).to have_content(budget_presenter.budget_type)
     expect(page).to have_content(budget_presenter.status)
