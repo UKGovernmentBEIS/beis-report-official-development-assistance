@@ -23,8 +23,10 @@ class IngestIatiActivities
 
         add_participating_organisation(delivery_partner: delivery_partner, new_activity: new_activity, legacy_activity: legacy_activity)
 
-        new_activity.title = legacy_activity.elements[2].children.detect { |child| child.name.eql?("narrative") }.children.text if legacy_activity.elements[2].name.eql?("title")
-        new_activity.description = legacy_activity.elements[3].children.detect { |child| child.name.eql?("narrative") }.children.text if legacy_activity.elements[3].name.eql?("description")
+        title = legacy_activity.elements[2].children.detect { |child| child.name.eql?("narrative") }.children.text if legacy_activity.elements[2].name.eql?("title")
+        new_activity.title = normalize_string(title)
+        description = legacy_activity.elements[3].children.detect { |child| child.name.eql?("narrative") }.children.text if legacy_activity.elements[3].name.eql?("description")
+        new_activity.description = normalize_string(description)
         new_activity.status = legacy_activity.elements.detect { |element| element.name.eql?("activity-status") }.attributes["code"].value
         new_activity.sector = legacy_activity.elements.detect { |element| element.name.eql?("sector") }.attributes["code"].value
         new_activity.flow = legacy_activity.elements.detect { |element| element.name.eql?("default-flow-type") }.attributes["code"].value
@@ -120,7 +122,7 @@ class IngestIatiActivities
       receiving_organisation_reference = transaction_element.children.detect { |child| child.name.eql?("receiver-org") }.attributes["ref"].try(value, nil)
 
       transaction = Transaction.new(
-        description: description,
+        description: normalize_string(description),
         transaction_type: transaction_type,
         currency: currency,
         date: date,
@@ -195,5 +197,9 @@ class IngestIatiActivities
 
   private def service_owner_organisation
     @service_owner_organisation ||= Organisation.find_by(service_owner: true)
+  end
+
+  private def normalize_string(string)
+    CGI.unescape(string).strip
   end
 end
