@@ -53,6 +53,12 @@ variable "skylight_env" {
   description = "Skylight environment name"
 }
 
+variable "skylight_enable_sidekiq" {
+  type        = string
+  description = "Use Skylight to monitor Sidekiq, true/false"
+  default     = "false"
+}
+
 variable "docker_image" {
   type        = string
   description = "docker image to use"

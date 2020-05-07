@@ -61,5 +61,6 @@ module Roda
     config.action_mailer.default_url_options = {host: ENV["DOMAIN"]}
 
     config.skylight.environments += ["pentest", "staging"]
+    config.skylight.probes << "active_job"
   end
 end
