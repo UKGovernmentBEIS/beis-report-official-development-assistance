@@ -39,7 +39,7 @@ class IngestIatiActivities
 
         new_activity.ingested = true
         # Set the status to invoke validations
-        new_activity.wizard_status = :complete
+        new_activity.form_state = :complete
         new_activity.save
       end
     end
@@ -54,14 +54,14 @@ class IngestIatiActivities
     if fund.nil?
       puts "Could not find associated fund for: #{new_activity.previous_identifier} with `identifier`: #{programme_identifier}. Creating one." unless Rails.env.test?
       fund = CreateFundActivity.new(organisation_id: service_owner_organisation.id).call
-      fund.update!(identifier: fund_identifier, wizard_status: :identifier)
+      fund.update!(identifier: fund_identifier, form_state: :identifier)
     end
 
     programme = Activity.programmes.find_by(identifier: programme_identifier)
     if programme.nil?
       puts "Could not find associated programme for: #{new_activity.previous_identifier} with `identifier`: #{programme_identifier}. Creating one." unless Rails.env.test?
       programme = CreateProgrammeActivity.new(organisation_id: service_owner_organisation.id, fund_id: fund.id).call
-      programme.update!(identifier: programme_identifier, wizard_status: :identifier)
+      programme.update!(identifier: programme_identifier, form_state: :identifier)
     end
 
     programme
