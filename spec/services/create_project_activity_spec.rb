@@ -41,8 +41,8 @@ RSpec.describe CreateProjectActivity do
       expect(result.parent_activities.last).to eq(programme)
     end
 
-    it "sets the initial wizard_status" do
-      expect(result.wizard_status).to eq("blank")
+    it "sets the initial form_state" do
+      expect(result.form_state).to eq("blank")
     end
 
     it "sets the Activity level to 'project'" do

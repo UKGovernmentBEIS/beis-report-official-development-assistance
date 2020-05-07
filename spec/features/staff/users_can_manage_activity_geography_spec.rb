@@ -58,14 +58,17 @@ RSpec.feature "Users can provide the geography for an activity" do
         choose "Country"
         click_button I18n.t("form.activity.submit")
 
+        select "Uganda", from: "activity[recipient_country]"
+        click_button I18n.t("form.activity.submit")
+
         expect(page).to have_current_path(activity_path)
         within(".recipient_country") do
-          expect(page).to have_content "Add"
+          expect(page).to have_content "Uganda"
         end
       end
 
       scenario "they can change the geography from country to region" do
-        activity = create(:activity, geography: :recipient_country, recipient_region: nil)
+        activity = create(:activity, geography: :recipient_country, recipient_region: nil, recipient_country: "AG")
         activity_path = organisation_activity_path(activity.organisation, activity)
 
         visit activity_path
@@ -77,10 +80,12 @@ RSpec.feature "Users can provide the geography for an activity" do
 
         choose "Region"
         click_button I18n.t("form.activity.submit")
+        select "Developing countries, unspecified", from: "activity[recipient_region]"
+        click_button I18n.t("form.activity.submit")
 
         expect(page).to have_current_path(activity_path)
         within(".recipient_region") do
-          expect(page).to have_content "Add"
+          expect(page).to have_content "Developing countries, unspecified"
         end
       end
     end
