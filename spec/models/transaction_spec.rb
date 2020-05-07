@@ -23,8 +23,13 @@ RSpec.describe Transaction, type: :model do
         expect(transaction.valid?).to be true
       end
 
-      it "does not allow a value of less than 1" do
-        transaction = build(:transaction, parent_activity: activity, value: -1)
+      it "allows the minimum possible value" do
+        transaction = build(:transaction, parent_activity: activity, value: 0.01)
+        expect(transaction.valid?).to be true
+      end
+
+      it "does not allow a value of less than 0.01" do
+        transaction = build(:transaction, parent_activity: activity, value: 0)
         expect(transaction.valid?).to be false
       end
 
