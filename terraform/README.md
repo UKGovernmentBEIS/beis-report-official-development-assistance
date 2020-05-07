@@ -44,6 +44,8 @@ We should avoid manual deployments but the following instructions will allow you
   notify_welcome_email_template= "[REDACTED]"
   rollbar_access_token= "[REDACTED]"
   secret_key_base= "[REDACTED]"
+  skylight_access_token= "[REDACTED]"
+  skylight_env= "[REDACTED]"
   papertrail_destination= "logs2.papertrailapp.com:[REDACTED]"
   docker_image= "1486-9932ccf922b37f544430af4584443736cf50eb5b"
   ```

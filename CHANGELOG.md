@@ -121,6 +121,7 @@
 ## [unreleased]
 
 - Transaction and budget values are validated down to 0.01
+- Add Skylight application performance monitoring
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...HEAD
 [release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
