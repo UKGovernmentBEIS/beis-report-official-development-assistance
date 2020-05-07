@@ -1,5 +1,5 @@
 .govuk-grid-row
-  .govuk-grid-full-width-column
+  .govuk-grid-column-full
     %h2.govuk-heading-m
       = t("page_content.organisation.programmes")
     = form_tag(organisation_fund_programmes_path(current_user.organisation, activity), method: "post") do
