@@ -49,7 +49,7 @@ RSpec.feature "Users can provide the geography for an activity" do
         activity_path = organisation_activity_path(activity.organisation, activity)
 
         visit activity_path
-        within(".geography") do
+        within(".recipient_region") do
           click_on "Edit"
         end
 
@@ -62,6 +62,7 @@ RSpec.feature "Users can provide the geography for an activity" do
         click_button I18n.t("form.activity.submit")
 
         expect(page).to have_current_path(activity_path)
+        expect(page).not_to have_content I18n.t("page_content.activity.recipient_region.label")
         within(".recipient_country") do
           expect(page).to have_content "Uganda"
         end
@@ -72,7 +73,7 @@ RSpec.feature "Users can provide the geography for an activity" do
         activity_path = organisation_activity_path(activity.organisation, activity)
 
         visit activity_path
-        within(".geography") do
+        within(".recipient_country") do
           click_on "Edit"
         end
 
@@ -84,6 +85,7 @@ RSpec.feature "Users can provide the geography for an activity" do
         click_button I18n.t("form.activity.submit")
 
         expect(page).to have_current_path(activity_path)
+        expect(page).not_to have_content I18n.t("page_content.activity.recipient_country.label")
         within(".recipient_region") do
           expect(page).to have_content "Developing countries, unspecified"
         end
