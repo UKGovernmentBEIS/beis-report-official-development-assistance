@@ -100,7 +100,7 @@
 - Empty optional dates for `actual start date` and `actual end date` are not included on the activity XML
 - Reporting org in the IATI XML is always BEIS for funds, programmes and projects created by governmental organisations, and the activity's organisation if it is a non-governmental organisation
 
-## [unreleased]
+## [release-5] - 2020-05-07
 
 - User actions are tracked on Activities, Budgets, Transactions and Users.
 - Activities that have an identifier already can use it as the iati-identifier
@@ -114,12 +114,14 @@
 - Fix descriptive labels on action links
 - Remove `reference` from Transactions
 - Add level D activities (third-party projects)
-<<<<<<< HEAD
 - Store Budget status and type as numbers, not words
 - Delivery partner users can view budgets on Level B activities (but not edit or create them)
 - Show a funds programmes in a table 
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...HEAD
+[release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
 [release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
 [release-3]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-2...release-3
 [release-2]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-1...release-2
