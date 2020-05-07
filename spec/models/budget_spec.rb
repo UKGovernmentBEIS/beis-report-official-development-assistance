@@ -14,14 +14,19 @@ RSpec.describe Budget do
     it { should validate_presence_of(:currency) }
   end
 
-  context "value must be between 1 and 99,999,999,999.00 (100 billion minus one)" do
+  context "value must be between 0.01 and 99,999,999,999.00 (100 billion minus one)" do
     it "allows the maximum possible value" do
       budget = build(:budget, value: 99_999_999_999.00)
       expect(budget).to be_valid
     end
 
-    it "does not allow a value of less than 1" do
-      budget = build(:budget, value: -1)
+    it "allows the minimum possible value" do
+      budget = build(:budget, value: 0.01)
+      expect(budget).to be_valid
+    end
+
+    it "does not allow a value of less than 0.01" do
+      budget = build(:budget, value: 0)
       expect(budget).to_not be_valid
     end
 
