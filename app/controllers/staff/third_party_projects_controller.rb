@@ -5,6 +5,6 @@ class Staff::ThirdPartyProjectsController < Staff::ActivitiesController
 
     @third_party_project.create_activity key: "activity.create", owner: current_user
 
-    redirect_to activity_step_path(@third_party_project.id, @third_party_project.wizard_status)
+    redirect_to activity_step_path(@third_party_project.id, @third_party_project.form_state)
   end
 end

@@ -11,7 +11,7 @@ class CreateFundActivity
     activity.reporting_organisation = activity.organisation
     activity.extending_organisation = service_owner
 
-    activity.wizard_status = "blank"
+    activity.form_state = "blank"
     activity.level = :fund
 
     activity.funding_organisation_name = "HM Treasury"
@@ -22,7 +22,7 @@ class CreateFundActivity
     activity.accountable_organisation_reference = "GB-GOV-13"
     activity.accountable_organisation_type = "10"
 
-    activity.save(validate: false)
+    activity.save!
     activity
   end
 

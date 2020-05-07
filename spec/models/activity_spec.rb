@@ -36,61 +36,92 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "validations" do
+    context "overall activity state" do
+      context "when the activity form is a draft" do
+        subject { build(:activity, :at_identifier_step, form_state: "blank") }
+        it { should be_valid }
+      end
+
+      context "when the activity form is final" do
+        subject { build(:activity, :at_identifier_step, form_state: "complete") }
+        it { should be_invalid }
+      end
+    end
+
     context "when identifier is blank" do
-      subject { build(:activity, identifier: nil, wizard_status: :identifier) }
-      it { should validate_presence_of(:identifier) }
+      subject(:activity) { build(:activity, identifier: nil) }
+      it "it should not be valid" do
+        expect(activity.valid?(:identifier_step)).to be_falsey
+      end
     end
 
     context "when identifier is not unique" do
-      before(:each) { create(:activity, identifier: "GB-GOV-13", wizard_status: :identifier) }
-      subject { build(:activity, identifier: "GB-GOV-13", wizard_status: :identifier) }
+      before(:each) { create(:activity, identifier: "GB-GOV-13") }
+      subject { build(:activity, identifier: "GB-GOV-13") }
       it { should validate_uniqueness_of(:identifier) }
     end
 
     context "when title is blank" do
-      subject { build(:activity, title: nil, wizard_status: :purpose) }
-      it { should validate_presence_of(:title) }
+      subject(:activity) { build(:activity, title: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:purpose_step)).to be_falsey
+      end
     end
 
     context "when description is blank" do
-      subject { build(:activity, description: nil, wizard_status: :purpose) }
-      it { should validate_presence_of(:description) }
+      subject(:activity) { build(:activity, description: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:purpose_step)).to be_falsey
+      end
     end
 
     context "when sector is blank" do
-      subject { build(:activity, sector: nil, wizard_status: :sector) }
-      it { should validate_presence_of(:sector) }
+      subject(:activity) { build(:activity, sector: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:sector_step)).to be_falsey
+      end
     end
 
     context "when planned dates are blank" do
-      subject { build(:activity, planned_start_date: nil, planned_end_date: nil, wizard_status: :dates) }
-      it { should validate_presence_of(:planned_start_date) }
-      it { should validate_presence_of(:planned_end_date) }
+      subject(:activity) { build(:activity, planned_start_date: nil, planned_end_date: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:dates_step)).to be_falsey
+      end
     end
 
     context "when status is blank" do
-      subject { build(:activity, status: nil, wizard_status: :status) }
-      it { should validate_presence_of(:status) }
+      subject(:activity) { build(:activity, status: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:status_step)).to be_falsey
+      end
     end
 
     context "when planned_start_date is blank" do
-      subject { build(:activity, planned_start_date: nil, wizard_status: :dates) }
-      it { should validate_presence_of(:planned_start_date) }
+      subject(:activity) { build(:activity, planned_start_date: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:dates_step)).to be_falsey
+      end
     end
 
     context "when planned_end_date is blank" do
-      subject { build(:activity, planned_end_date: nil, wizard_status: :dates) }
-      it { should validate_presence_of(:planned_end_date) }
+      subject(:activity) { build(:activity, planned_end_date: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:dates_step)).to be_falsey
+      end
     end
 
     context "when actual_start_date is blank" do
-      subject { build(:activity, actual_start_date: nil, wizard_status: :dates) }
-      it { should_not validate_presence_of(:actual_start_date) }
+      subject(:activity) { build(:activity, actual_start_date: nil) }
+      it "should be valid" do
+        expect(activity.valid?(:dates_step)).to be_truthy
+      end
     end
 
     context "when actual_end_date is blank" do
-      subject { build(:activity, actual_end_date: nil, wizard_status: :dates) }
-      it { should_not validate_presence_of(:actual_end_date) }
+      subject(:activity) { build(:activity, actual_end_date: nil) }
+      it "should be valid" do
+        expect(activity.valid?(:dates_step)).to be_truthy
+      end
     end
 
     context "when planned_start_date is not blank" do
@@ -148,43 +179,33 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when geography is blank" do
-      subject { build(:activity, wizard_status: :geography) }
-      it { should validate_presence_of(:geography) }
+      subject(:activity) { build(:activity, geography: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:geography_step)).to be_falsey
+      end
     end
 
     context "when geography is recipient_region" do
       context "and recipient_region and recipient_contry are blank" do
-        subject { build(:activity, wizard_status: :region) }
-        it { should validate_presence_of(:recipient_region) }
-        it { should_not validate_presence_of(:recipient_country) }
+        subject { build(:activity) }
+        it { should validate_presence_of(:recipient_region).on(:region_step) }
+        it { should_not validate_presence_of(:recipient_country).on(:country_step) }
       end
     end
 
     context "when geography is recipient_country" do
       context "and recipient_region and recipient_country are blank" do
-        subject { build(:activity, geography: :recipient_country, wizard_status: :country) }
-        it { should validate_presence_of(:recipient_country) }
-        it { should_not validate_presence_of(:recipient_region) }
+        subject { build(:activity, geography: :recipient_country) }
+        it { should validate_presence_of(:recipient_country).on(:country_step) }
+        it { should_not validate_presence_of(:recipient_region).on(:region_step) }
       end
     end
 
     context "when flow is blank" do
-      subject { build(:activity, flow: nil, wizard_status: :flow) }
-      it { should validate_presence_of(:flow) }
-    end
-
-    context "when the wizard_status is complete" do
-      subject { build(:activity, wizard_status: "complete") }
-      it { should validate_presence_of(:title) }
-      it { should validate_presence_of(:description) }
-      it { should validate_presence_of(:sector) }
-      it { should validate_presence_of(:status) }
-      it { should validate_presence_of(:planned_start_date) }
-      it { should validate_presence_of(:planned_end_date) }
-      it { should_not validate_presence_of(:actual_start_date) }
-      it { should_not validate_presence_of(:actual_end_date) }
-      it { should validate_presence_of(:geography) }
-      it { should validate_presence_of(:flow) }
+      subject(:activity) { build(:activity, flow: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:flow_step)).to be_falsey
+      end
     end
 
     context "when saving in the update_extending_organisation context" do
@@ -192,9 +213,9 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:extending_organisation_id).on(:update_extending_organisation) }
     end
 
-    context "when the wizard status is blank" do
+    context "when the form state is blank" do
       it "allows updates to be made to other fields set on creation" do
-        blank_activity = create(:activity, funding_organisation_name: "old", wizard_status: :blank)
+        blank_activity = create(:activity, funding_organisation_name: "old", form_state: :blank)
         blank_activity.funding_organisation_name = "new"
         expect(blank_activity.valid?).to eq(true)
       end
@@ -268,23 +289,23 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#wizard_complete?" do
-    it "is true if the wizard has been completed" do
-      activity = build(:activity, wizard_status: :complete)
+  describe "#form_stpes_completed?" do
+    it "is true when a user has completed all of the form steps" do
+      activity = build(:activity, form_state: :complete)
 
-      expect(activity.wizard_complete?).to be_truthy
+      expect(activity.form_steps_completed?).to be_truthy
     end
 
-    it "is false if the wizard is in progress" do
-      activity = build(:activity, wizard_status: :purpose)
+    it "is false when a user is still completing one of the form steps" do
+      activity = build(:activity, form_state: :purpose)
 
-      expect(activity.wizard_complete?).to be_falsey
+      expect(activity.form_steps_completed?).to be_falsey
     end
 
-    it "is false if the wizard is not started" do
-      activity = build(:activity, wizard_status: nil)
+    it "is false when the form_stat is nil " do
+      activity = build(:activity, form_state: nil)
 
-      expect(activity.wizard_complete?).to be_falsey
+      expect(activity.form_steps_completed?).to be_falsey
     end
   end
 

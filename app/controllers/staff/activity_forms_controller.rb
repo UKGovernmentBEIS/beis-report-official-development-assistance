@@ -45,15 +45,19 @@ class Staff::ActivityFormsController < Staff::BaseController
     update_activity_attributes_except_dates
     record_auditable_activity
 
-    update_wizard_status
+    if @activity.form_steps_completed?
+      reset_geography_dependent_answers if step == :geography
+    end
 
-    render_wizard @activity
+    update_form_state
+
+    render_wizard @activity, context: :"#{step}_step"
   end
 
   private
 
   def record_auditable_activity
-    action = @activity.wizard_complete? ? "update" : "create"
+    action = @activity.form_steps_completed? ? "update" : "create"
     @activity.create_activity key: "activity.#{action}.#{step}", owner: current_user
   end
 
@@ -90,18 +94,22 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def finish_wizard_path
     flash[:notice] ||= I18n.t("form.#{@activity.level}.create.success")
-    @activity.update(wizard_status: "complete")
+    @activity.update(form_state: "complete")
     organisation_activity_path(@activity.organisation, @activity)
   end
 
-  def update_wizard_status
+  def update_form_state
     return if @activity.invalid?
 
-    if @activity.wizard_complete?
+    if @activity.form_steps_completed?
       flash[:notice] ||= I18n.t("form.#{@activity.level}.update.success")
       jump_to Wicked::FINISH_STEP
     else
-      @activity.wizard_status = step
+      @activity.form_state = step
     end
+  end
+
+  def reset_geography_dependent_answers
+    @activity.update(recipient_region: nil, recipient_country: nil)
   end
 end
