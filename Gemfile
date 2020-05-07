@@ -4,7 +4,7 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "2.6.3"
 
-gem "auth0", "~> 4.10"
+gem "auth0", "~> 4.11"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "coffee-rails", "~> 5.0"
 gem "data_migrate"
