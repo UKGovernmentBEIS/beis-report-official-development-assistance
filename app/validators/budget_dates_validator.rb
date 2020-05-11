@@ -1,5 +1,6 @@
 class BudgetDatesValidator < ActiveModel::Validator
   def validate(record)
+    return if record.ingested?
     unless dates_not_more_than_365_days_apart?(record.period_start_date, record.period_end_date)
       record.errors.add :period_end_date,
         I18n.t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")

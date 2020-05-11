@@ -123,6 +123,7 @@
 - Transaction and budget values are validated down to 0.01
 - Add Skylight application performance monitoring
 - No longer show the geography response on the activity summary and when changing country or region the flow includes the geography question
+- Add concept of `ingested` to budgets, and skip validation on ingested budgets. This is in preparation for ingesting legacy data from IATI.
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...HEAD
 [release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
