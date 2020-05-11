@@ -59,7 +59,7 @@ RSpec.feature "Users can create a transaction" do
       expect(page).to have_content("Description can't be blank")
       expect(page).to have_content("Transaction type can't be blank")
       expect(page).to have_content("Date can't be blank")
-      expect(page).to have_content("Value must be between 1 and 99,999,999,999.00")
+      expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.inclusion")
       expect(page).to have_content("Providing organisation name can't be blank")
       expect(page).to have_content("Providing organisation type can't be blank")
       expect(page).to have_content("Receiving organisation name can't be blank")
@@ -100,7 +100,7 @@ RSpec.feature "Users can create a transaction" do
         select "Pound Sterling", from: "transaction[currency]"
         click_on(I18n.t("generic.button.submit"))
 
-        expect(page).to have_content("Value must be between 1 and 99,999,999,999.00")
+        expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.inclusion")
       end
 
       scenario "When the value includes a pound sign" do
