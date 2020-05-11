@@ -6,6 +6,7 @@ FactoryBot.define do
     period_end_date { Date.tomorrow }
     value { BigDecimal("110.01") }
     currency { "gbp" }
+    ingested { false }
     association :parent_activity, factory: :activity
   end
 end
