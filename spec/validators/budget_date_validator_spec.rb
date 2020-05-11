@@ -72,4 +72,16 @@ RSpec.describe BudgetDatesValidator do
       expect(subject.errors.messages[:period_end_date]).to include I18n.t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")
     end
   end
+
+  context "when the budget is ingested" do
+    context "when the dates are more than 365 days apart" do
+      it "is valid (skips validation)" do
+        subject.ingested = true
+        subject.period_start_date = Date.today
+        subject.period_end_date = subject.period_start_date + 366.days
+
+        expect(subject).to be_valid
+      end
+    end
+  end
 end
