@@ -158,7 +158,8 @@ class IngestIatiActivities
         period_end_date: period_end_date,
         value: value,
         currency: currency,
-        parent_activity: new_activity
+        parent_activity: new_activity,
+        ingested: true
       )
 
       budget.save!

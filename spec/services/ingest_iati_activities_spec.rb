@@ -131,7 +131,7 @@ RSpec.describe IngestIatiActivities do
       ).to_not be_nil
     end
 
-    it "creates budgets" do
+    it "creates budgets and marks them as ingested" do
       _beis = create(:beis_organisation)
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_budget.xml")
