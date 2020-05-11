@@ -72,7 +72,7 @@ RSpec.describe "Users can create a budget" do
         expect(page).to have_content("Status can't be blank")
         expect(page).to have_content("Period start date can't be blank")
         expect(page).to have_content("Period end date can't be blank")
-        expect(page).to have_content("Value is not included in the list")
+        expect(page).to have_content I18n.t("activerecord.errors.models.budget.attributes.value.inclusion")
       end
     end
   end
