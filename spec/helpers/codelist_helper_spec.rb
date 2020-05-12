@@ -151,6 +151,18 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.length).to eq 6
         expect(options).to include OpenStruct.new(name: "Basic life skills for youth", code: "11231", category: "112")
         expect(options).to include OpenStruct.new(name: "School feeding", code: "11250", category: "112")
+        expect(options).not_to include OpenStruct.new(name: "Immediate post-emergency reconstruction and rehabilitation", code: "73010", category: "730")
+      end
+    end
+
+    describe "#all_sectors" do
+      it "returns all the sectors including those that are withdrawn" do
+        sectors = helper.all_sectors
+        active_sector = OpenStruct.new(name: "Basic life skills for youth", code: "11231", category: "112")
+        withdrawn_sector = OpenStruct.new(name: "Disaster prevention and preparedness", code: "74010", category: "740")
+
+        expect(sectors).to include active_sector
+        expect(sectors).to include withdrawn_sector
       end
     end
   end

@@ -24,12 +24,12 @@ module CodelistHelper
     data.collect { |item| OpenStruct.new(name: item["name"], code: item["code"], description: item["description"]) }.sort_by(&:code)
   end
 
-  def yaml_to_objects_with_categories(entity:, type:)
+  def yaml_to_objects_with_categories(entity:, type:, include_withdrawn: false)
     data = load_yaml(entity: entity, type: type)
     return [] if data.empty?
 
     data.collect { |item|
-      next if item["status"] == "withdrawn"
+      next if item["status"] == "withdrawn" && include_withdrawn == false
       OpenStruct.new(name: item["name"], code: item["code"], category: item["category"])
     }.compact.sort_by(&:name)
   end
@@ -65,6 +65,10 @@ module CodelistHelper
     else
       options
     end
+  end
+
+  def all_sectors
+    yaml_to_objects_with_categories(entity: "activity", type: "sector", include_withdrawn: true)
   end
 
   def load_yaml(entity:, type:)
