@@ -1,5 +1,6 @@
 class Activity < ApplicationRecord
   include PublicActivity::Common
+  include CodelistHelper
 
   STANDARD_GRANT_FINANCE_CODE = "110"
   UNTIED_TIED_STATUS_CODE = "5"
@@ -7,6 +8,7 @@ class Activity < ApplicationRecord
   VALIDATION_STEPS = [
     :identifier_step,
     :purpose_step,
+    :sector_category_step,
     :sector_step,
     :status_step,
     :geography_step,
@@ -18,6 +20,7 @@ class Activity < ApplicationRecord
 
   validates :identifier, presence: true, on: :identifier_step
   validates :title, :description, presence: true, on: :purpose_step
+  validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
   validates :status, presence: true, on: :status_step
   validates :geography, presence: true, on: :geography_step
