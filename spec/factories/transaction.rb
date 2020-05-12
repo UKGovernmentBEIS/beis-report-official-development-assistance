@@ -6,6 +6,7 @@ FactoryBot.define do
     value { BigDecimal("110.01") }
     disbursement_channel { "1" }
     currency { "gbp" }
+    ingested { false }
 
     # Government organisation
     providing_organisation_name { "Department for Business, Energy & Industrial Strategy" }
