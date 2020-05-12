@@ -1,6 +1,8 @@
 require "nokogiri"
 
 class IngestIatiActivities
+  include CodelistHelper
+
   attr_accessor :file_io, :delivery_partner
 
   def initialize(delivery_partner:, file_io:)
@@ -28,7 +30,10 @@ class IngestIatiActivities
         description = legacy_activity.elements[3].children.detect { |child| child.name.eql?("narrative") }.children.text if legacy_activity.elements[3].name.eql?("description")
         new_activity.description = normalize_string(description)
         new_activity.status = legacy_activity.elements.detect { |element| element.name.eql?("activity-status") }.attributes["code"].value
-        new_activity.sector = legacy_activity.elements.detect { |element| element.name.eql?("sector") }.attributes["code"].value
+
+        sector = legacy_activity.elements.detect { |element| element.name.eql?("sector") }.attributes["code"].value
+        new_activity.sector_category = sector_category_code(sector_code: sector)
+        new_activity.sector = sector
         new_activity.flow = legacy_activity.elements.detect { |element| element.name.eql?("default-flow-type") }.attributes["code"].value
         new_activity.aid_type = legacy_activity.elements.detect { |element| element.name.eql?("default-aid-type") }.attributes["code"].value
 
@@ -164,6 +169,13 @@ class IngestIatiActivities
 
       budget.save!
     end
+  end
+
+  private def sector_category_code(sector_code:)
+    sectors = all_sectors
+    sector = sectors.find { |s| s.code == sector_code }
+    return if sector.nil?
+    sector.category
   end
 
   private def add_geography(legacy_activity:, new_activity:)

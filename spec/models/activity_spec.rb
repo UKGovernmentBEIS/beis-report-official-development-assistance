@@ -75,6 +75,13 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when sector category is blank" do
+      subject(:activity) { build(:activity, sector_category: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:sector_category_step)).to be_falsey
+      end
+    end
+
     context "when sector is blank" do
       subject(:activity) { build(:activity, sector: nil) }
       it "should not be valid" do
