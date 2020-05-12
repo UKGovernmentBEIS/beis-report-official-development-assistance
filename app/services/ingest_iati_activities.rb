@@ -139,7 +139,8 @@ class IngestIatiActivities
         providing_organisation_reference: providing_organisation_reference,
         receiving_organisation_name: receiving_organisation_name,
         receiving_organisation_type: "0",
-        receiving_organisation_reference: receiving_organisation_reference
+        receiving_organisation_reference: receiving_organisation_reference,
+        ingested: true
       )
 
       transaction.save!
