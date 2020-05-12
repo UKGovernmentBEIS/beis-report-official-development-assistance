@@ -47,7 +47,7 @@ deploy:
   script: bash travis-docker-push.sh
   on:
     all_branches: true
-    condition: "$TRAVIS_BRANCH =~ ^(develop|master)$"
+    condition: "$TRAVIS_BRANCH =~ ^(develop|master|hotfix)"
 - provider: script
   script: bash deploy-terraform.sh
   on:
