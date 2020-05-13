@@ -109,6 +109,25 @@ ActiveRecord::Schema.define(version: 2020_05_12_152258) do
     t.index ["iati_reference"], name: "index_organisations_on_iati_reference", unique: true
   end
 
+  create_table "planned_disbursements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "planned_disbursement_type"
+    t.date "period_start_date"
+    t.date "period_end_date"
+    t.decimal "value", precision: 13, scale: 2
+    t.string "currency"
+    t.string "providing_organisation_name"
+    t.string "providing_organisation_type"
+    t.string "providing_organisation_reference"
+    t.string "receiving_organisation_name"
+    t.string "receiving_organisation_type"
+    t.string "receiving_organisation_reference"
+    t.boolean "ingested", default: false
+    t.uuid "parent_activity_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["parent_activity_id"], name: "index_planned_disbursements_on_parent_activity_id"
+  end
+
   create_table "transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "description"
     t.string "transaction_type"
