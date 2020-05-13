@@ -4,6 +4,13 @@ class Auth0Controller < ApplicationController
     # and the IdP
     session[:userinfo] = request.env["omniauth.auth"]
 
+    # DEBUG: Is the session set correctly on the auth0 callback? Is it ready to
+    # read straight away or is there a delay?
+    if Rails.env.production?
+      Rails.logger.info("* Auth0 callback contained the following id: #{request.env.dig("omniauth.auth", "uid")}")
+      Rails.logger.info("** Auth0 callback has been received. The session has an auth0 id of #{session.dig(:userinfo, :uid)}")
+    end
+
     # Redirect to the URL you want after successful auth
     if current_user.active && current_user.organisation
       redirect_to organisation_path(current_user.organisation)
