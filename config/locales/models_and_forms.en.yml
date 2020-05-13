@@ -43,7 +43,7 @@ en:
         currency: Currency
         date: Date
         description: Description
-        disbursement_channel: Disbursement channel
+        disbursement_channel: Disbursement channel (optional)
         providing_organisation_name: Providing organisation name
         providing_organisation_type: Providing organisation type
         receiving_organisation_name: Receiving organisation name

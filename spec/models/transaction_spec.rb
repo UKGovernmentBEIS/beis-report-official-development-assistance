@@ -9,7 +9,7 @@ RSpec.describe Transaction, type: :model do
     it { should validate_presence_of(:date) }
     it { should validate_presence_of(:currency) }
     it { should validate_presence_of(:value) }
-    it { should validate_presence_of(:disbursement_channel) }
+    it { should_not validate_presence_of(:disbursement_channel) }
     it { should validate_presence_of(:providing_organisation_name) }
     it { should validate_presence_of(:providing_organisation_type) }
     it { should validate_presence_of(:receiving_organisation_name) }
