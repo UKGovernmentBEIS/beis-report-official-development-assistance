@@ -116,7 +116,7 @@
 - Add level D activities (third-party projects)
 - Store Budget status and type as numbers, not words
 - Delivery partner users can view budgets on Level B activities (but not edit or create them)
-- Show a funds programmes in a table 
+- Show a funds programmes in a table
 
 ## [unreleased]
 
@@ -127,6 +127,7 @@
 - Sector questions asks for a category and uses radio buttons
 - Add concept of `ingested` to transactions
 - Transaction disbursement channel is no longer mandatory
+- IATI ingest tool now saves the original XML for each activity to enable future tasks to copy across additional fields
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...HEAD
 [release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
