@@ -122,6 +122,7 @@
 
 - Transaction and budget values are validated down to 0.01
 - Add Skylight application performance monitoring
+- Script to ingest legacy IATI data
 - No longer show the geography response on the activity summary and when changing country or region the flow includes the geography question
 - Add concept of `ingested` to budgets, and skip validation on ingested budgets. This is in preparation for ingesting legacy data from IATI.
 - Sector questions asks for a category and uses radio buttons
