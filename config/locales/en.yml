@@ -65,6 +65,34 @@ en:
         label: Organisation type
       update:
         success: Organisation successfully updated
+    planned_disbursement:
+      create:
+        success: Planned disbursement successfully created
+      currency:
+        label: Currency
+      period_end_date:
+        hint: The timeframe between the start date and the end date should not normally exceed 3 calendar months
+        label: End date
+      period_start_date:
+        hint: The start date should define when the actual transfer of funds will take place, if a specific date is known. If the specific payment date is not known, the period in which the transfer is due to take place should be described by using both start date and end date
+        label: Start date
+      planned_disbursement_type:
+        hint: Whether this is an original plan (prepared when the original commitment was made) or has subsequently been revised
+        label: Budget type
+      providing_organisation:
+        hint: The organisation where this planned disbursement is coming from.
+        title: Providing organisation
+      providing_organisation_reference:
+        hint: For example, GB-GOV-13. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
+        label: International Aid Transparency Initiative (IATI) Reference (optional)
+      receiving_organisation:
+        hint: The organisation receiving the money from this transaction.
+        title: Receiving organisation
+      receiving_organisation_reference:
+        hint: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
+        label: IATI Reference (optional)
+      value:
+        label: Value
     programme:
       create:
         success: Programme successfully created
@@ -186,6 +214,7 @@ en:
         third_party_project: third-party project
       organisation:
         label: Organisation
+      planned_disbursements: Planned disbursements
       planned_end_date:
         label: Planned end date
       planned_start_date:
@@ -261,6 +290,9 @@ en:
     organisations:
       button:
         create: Create organisation
+    planned_disbursements:
+      button:
+        create: Add planned disbursement
     start_page:
       introduction: This service is for reporting BEIS research and innovation ODA.
       use_this_page_to: 'Use this service to:'
@@ -316,6 +348,8 @@ en:
       index: Organisations
       new: Create a new organisation
       show: Organisation %{name}
+    planned_disbursement:
+      new: Add a planned disbursement
     privacy_policy: Privacy policy
     transaction:
       edit: Edit transaction

@@ -129,6 +129,7 @@
 - Add concept of `ingested` to transactions
 - Transaction disbursement channel is no longer mandatory
 - IATI ingest tool now saves the original XML for each activity to enable future tasks to copy across additional fields
+- User can add a planned disbursement to projects and third-party projects
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...HEAD
 [release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
