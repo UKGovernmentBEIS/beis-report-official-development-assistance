@@ -7,7 +7,6 @@ class Transaction < ApplicationRecord
     :date,
     :currency,
     :value,
-    :disbursement_channel,
     :providing_organisation_name,
     :providing_organisation_type,
     :receiving_organisation_name,

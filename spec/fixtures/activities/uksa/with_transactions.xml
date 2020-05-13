@@ -96,6 +96,7 @@
       <receiver-org>
         <narrative>Avanti Communications</narrative>
       </receiver-org>
+      <disbursement-channel code="1"/>
     </transaction>
     <transaction>
       <transaction-type code="3"/>
