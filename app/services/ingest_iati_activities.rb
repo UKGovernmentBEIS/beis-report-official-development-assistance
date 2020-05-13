@@ -42,7 +42,9 @@ class IngestIatiActivities
         add_transactions(legacy_activity: legacy_activity, new_activity: new_activity)
         add_budgets(legacy_activity: legacy_activity, new_activity: new_activity)
 
+        new_activity.legacy_iati_xml = legacy_activity.to_xml.squish
         new_activity.ingested = true
+
         # Set the status to invoke validations
         new_activity.form_state = :complete
         new_activity.save
