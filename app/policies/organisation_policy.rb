@@ -19,6 +19,10 @@ class OrganisationPolicy < ApplicationPolicy
     beis_user?
   end
 
+  def download?
+    beis_user?
+  end
+
   private def associated_user?
     user.organisation.eql?(record)
   end
