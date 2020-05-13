@@ -20,6 +20,18 @@ module FormHelper
     end
   end
 
+  def list_of_planned_disbursement_budget_types
+    @list_of_planned_disbursement_budget_types ||= begin
+      PlannedDisbursement::PLANNED_DISBURSEMENT_BUDGET_TYPES.map do |id, name|
+        OpenStruct.new(
+          id: id,
+          name: I18n.t("activerecord.attributes.planned_disbursement.planned_disbursement_type.#{name}.name"),
+          description: I18n.t("activerecord.attributes.planned_disbursement.planned_disbursement_type.#{name}.description")
+        )
+      end
+    end
+  end
+
   def list_of_budget_statuses
     @list_of_budget_statuses ||= begin
       Budget::STATUSES.map { |id, name| OpenStruct.new(id: id, name: I18n.t("activerecord.attributes.budget.status.#{name}")) }

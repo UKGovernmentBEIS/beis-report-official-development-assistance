@@ -1,4 +1,6 @@
 class PlannedDisbursement < ApplicationRecord
+  PLANNED_DISBURSEMENT_BUDGET_TYPES = {"1": "original", "2": "revised"}
+
   belongs_to :parent_activity, class_name: "Activity"
 
   validates_presence_of :planned_disbursement_type,
@@ -10,4 +12,5 @@ class PlannedDisbursement < ApplicationRecord
     :receiving_organisation_name,
     :receiving_organisation_type
   validates :value, inclusion: {in: 0.01..99_999_999_999.00}
+  validates_with EndDateNotBeforeStartDateValidator, if: -> { period_start_date.present? && period_end_date.present? }
 end
