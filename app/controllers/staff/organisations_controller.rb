@@ -25,10 +25,13 @@ class Staff::OrganisationsController < Staff::BaseController
         @third_party_project_activities = third_party_project_activities.map { |activity| ActivityPresenter.new(activity) }
       end
       format.xml do
-        @project_activities = if third_party_project_activities.present?
+        @activities = case level
+        when "project"
+          project_activities.map { |activity| ActivityXmlPresenter.new(activity) }
+        when "third_party_project"
           third_party_project_activities.map { |activity| ActivityXmlPresenter.new(activity) }
         else
-          project_activities.map { |activity| ActivityXmlPresenter.new(activity) }
+          []
         end
         response.headers["Content-Disposition"] = "attachment; filename=\"#{organisation.iati_reference}.xml\""
       end
@@ -83,5 +86,9 @@ class Staff::OrganisationsController < Staff::BaseController
 
   def organisation_params
     params.require(:organisation).permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference)
+  end
+
+  def level
+    params[:level]
   end
 end
