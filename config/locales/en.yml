@@ -81,12 +81,14 @@ en:
         label: Budget type
       providing_organisation:
         hint: The organisation where this planned disbursement is coming from.
+        label: Provider
         title: Providing organisation
       providing_organisation_reference:
         hint: For example, GB-GOV-13. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
         label: International Aid Transparency Initiative (IATI) Reference (optional)
       receiving_organisation:
         hint: The organisation receiving the money from this transaction.
+        label: Receiver
         title: Receiving organisation
       receiving_organisation_reference:
         hint: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
@@ -244,7 +246,7 @@ en:
         '2': Committed
     budgets:
       button:
-        create: Create budget
+        create: Add budget
       edit_noun: budget
     errors:
       auth0:
@@ -293,6 +295,9 @@ en:
     planned_disbursements:
       button:
         create: Add planned disbursement
+      planned_disbursement_type:
+        '1': Original
+        '2': Revised
     start_page:
       introduction: This service is for reporting BEIS research and innovation ODA.
       use_this_page_to: 'Use this service to:'
