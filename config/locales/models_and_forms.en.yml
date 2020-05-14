@@ -78,6 +78,8 @@ en:
             period_start_date:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_after_end_date: The period start date cannot be after the period end date
+            value:
+              inclusion: Value must be between 0.01 and 99,999,999,999.00
         organisation:
           attributes:
             iati_reference:
@@ -88,7 +90,7 @@ en:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_in_future: Date must not be in the future
             value:
-              inclusion: Value must be between 1 and 99,999,999,999.00
+              inclusion: Value must be between 0.01 and 99,999,999,999.00
         user:
           attributes:
             organisation_ids:
