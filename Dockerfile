@@ -76,7 +76,11 @@ COPY . ${APP_HOME}
 RUN cp -R $DEPS_HOME/node_modules $APP_HOME/node_modules
 RUN cp -R $DEPS_HOME/node_modules/govuk-frontend/govuk/assets $APP_HOME/app/assets
 
-RUN RAILS_ENV=$RAILS_ENV SECRET_KEY_BASE="super secret" bundle exec rake assets:precompile --quiet
+RUN \
+  RAILS_ENV=$RAILS_ENV \
+  SECRET_KEY_BASE="super secret" \
+  REDIS_URL="redis://build.local:6379" \
+  bundle exec rake assets:precompile --quiet
 
 # create tmp/pids
 RUN mkdir -p tmp/pids
