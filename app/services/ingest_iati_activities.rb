@@ -114,6 +114,9 @@ class IngestIatiActivities
       date = transaction_element.children.detect { |child| child.name.eql?("value") }.attributes["value-date"].value
       value = transaction_element.children.detect { |child| child.name.eql?("value") }.children.text
       transaction_type = transaction_element.children.detect { |child| child.name.eql?("transaction-type") }.attributes["code"].value
+      disbursement_channel = if transaction_element.children.detect { |child| child.name.eql?("disbursement-channel") }.present?
+        transaction_element.children.detect { |child| child.name.eql?("disbursement-channel") }.attributes["code"].value
+      end
 
       description = if transaction_element.children.detect { |child| child.name.eql?("description") }.present?
         transaction_element.children.detect { |child| child.name.eql?("description") }.children.detect { |child| child.name.eql?("narrative") }.text
@@ -133,7 +136,7 @@ class IngestIatiActivities
         date: date,
         value: value,
         parent_activity: new_activity,
-        disbursement_channel: "1", # guess as it's not returned,
+        disbursement_channel: disbursement_channel,
         providing_organisation_name: providing_organisation_name,
         providing_organisation_type: "10",
         providing_organisation_reference: providing_organisation_reference,

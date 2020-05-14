@@ -103,7 +103,7 @@ RSpec.describe IngestIatiActivities do
       transaction = transactions.find_by(description: "50 schools identified for satellite instalation")
       expect(transaction.description).to eql("50 schools identified for satellite instalation")
       expect(transaction.date).to eql(Date.new(2016, 12, 16))
-      expect(transaction.disbursement_channel).to eql("1")
+      expect(transaction.disbursement_channel).to eq("1")
       expect(transaction.currency).to eql("GBP")
       expect(transaction.transaction_type).to eql("3")
       expect(transaction.value.to_s).to eql("647264.0")
@@ -113,6 +113,7 @@ RSpec.describe IngestIatiActivities do
       expect(transaction.receiving_organisation_name).to eql("Avanti Communications")
       expect(transaction.receiving_organisation_reference).to eql(nil)
       expect(transaction.receiving_organisation_type).to eql("0")
+      expect(transaction.ingested).to be true
 
       expect(
         transactions.find_by(description: "50 schools connected with satellite internet")
@@ -130,7 +131,9 @@ RSpec.describe IngestIatiActivities do
         transactions.find_by(description: "Initial proof of concept testing os remote live teaching")
       ).to_not be_nil
 
-      expect(transaction.ingested).to be true
+      expect(
+        transactions.find_by(description: "Initial proof of concept testing os remote live teaching").disbursement_channel
+      ).to be_nil
     end
 
     it "creates budgets and marks them as ingested" do
