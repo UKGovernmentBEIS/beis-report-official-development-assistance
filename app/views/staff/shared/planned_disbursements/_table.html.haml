@@ -1,0 +1,29 @@
+- unless planned_disbursements.empty?
+  %table.govuk-table.planned-disbursements
+    %thead.govuk-table__head
+      %tr.govuk-table__row
+        %th.govuk-table__header
+          =t("form.planned_disbursement.planned_disbursement_type.label")
+        %th.govuk-table__header
+          =t("form.planned_disbursement.period_start_date.label")
+        %th.govuk-table__header
+          =t("form.planned_disbursement.period_end_date.label")
+        %th.govuk-table__header
+          =t("form.planned_disbursement.currency.label")
+        %th.govuk-table__header
+          =t("form.planned_disbursement.value.label")
+        %th.govuk-table__header
+          =t("form.planned_disbursement.providing_organisation.label")
+        %th.govuk-table__header
+          =t("form.planned_disbursement.receiving_organisation.label")
+
+    %tbody.govuk-table__body
+      - planned_disbursements.each do |planned_disbursement|
+        %tr.govuk-table__row{id: planned_disbursement.id}
+          %td.govuk-table__cell= planned_disbursement.planned_disbursement_type
+          %td.govuk-table__cell= planned_disbursement.period_start_date
+          %td.govuk-table__cell= planned_disbursement.period_end_date
+          %td.govuk-table__cell= planned_disbursement.currency
+          %td.govuk-table__cell= planned_disbursement.value
+          %td.govuk-table__cell= planned_disbursement.providing_organisation_name
+          %td.govuk-table__cell= planned_disbursement.receiving_organisation_name
