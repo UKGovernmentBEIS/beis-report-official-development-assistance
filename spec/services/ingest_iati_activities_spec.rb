@@ -88,7 +88,7 @@ RSpec.describe IngestIatiActivities do
       expect(activity.aid_type).to eql("C01")
     end
 
-    it "creates transactions" do
+    it "creates transactions and marks them as ingested" do
       _beis = create(:beis_organisation)
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_transactions.xml")
@@ -129,6 +129,8 @@ RSpec.describe IngestIatiActivities do
       expect(
         transactions.find_by(description: "Initial proof of concept testing os remote live teaching")
       ).to_not be_nil
+
+      expect(transaction.ingested).to be true
     end
 
     it "creates budgets and marks them as ingested" do
