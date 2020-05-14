@@ -125,6 +125,7 @@
 - No longer show the geography response on the activity summary and when changing country or region the flow includes the geography question
 - Add concept of `ingested` to budgets, and skip validation on ingested budgets. This is in preparation for ingesting legacy data from IATI.
 - Sector questions asks for a category and uses radio buttons
+- Add concept of `ingested` to transactions
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...HEAD
 [release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
