@@ -279,6 +279,13 @@ en:
       default_currency:
         label: Default currency
       details: Organisation details
+      download:
+        explanation: Download all activities for this organisation
+        projects:
+          explanation: Download all project (level C) activities for this organisation as XML
+        third-party-projects:
+          explanation: Download all third-party project (level D) activities for this organisation as XML
+        title: Download as XML
       funds: Funds
       iati_reference:
         label: International Aid Transparency Initiative (IATI) reference
