@@ -8,4 +8,5 @@
     %narrative=transaction.providing_organisation_name
   %receiver-org{"receiver-activity-id" => "", "type" => transaction.receiving_organisation_type, "ref" => transaction.receiving_organisation_reference}
     %narrative=transaction.receiving_organisation_name
-  %disbursement-channel{"code" => transaction.disbursement_channel}
+  - if transaction.disbursement_channel.present?
+    %disbursement-channel{"code" => transaction.disbursement_channel}
