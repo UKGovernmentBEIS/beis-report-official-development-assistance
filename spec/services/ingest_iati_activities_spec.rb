@@ -155,6 +155,23 @@ RSpec.describe IngestIatiActivities do
       expect(budgets.first.ingested).to be true
     end
 
+    # The first ingest will only take a subset of data. As RODA supports more
+    # fields, we will want to populate RODA with more historic data for each
+    # activity. Having the source directly linked to our copy of each activity
+    # will make that operation less risky.
+    it "attaches the contents of original XML file to the activity" do
+      _beis = create(:beis_organisation)
+      uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+      legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/single_activity.xml")
+
+      described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+      activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+      legacy_xml = File.read("#{Rails.root}/spec/fixtures/activities/uksa/individual_activity.xml")
+
+      expect(activity.legacy_iati_xml).to eql(legacy_xml.squish)
+    end
+
     context "when the activity has a country and a region" do
       it "sets the recipient region to the more granular country" do
         _beis = create(:beis_organisation)
