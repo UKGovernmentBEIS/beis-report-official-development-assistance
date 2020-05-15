@@ -16,6 +16,8 @@
           =t("form.planned_disbursement.providing_organisation.label")
         %th.govuk-table__header
           =t("form.planned_disbursement.receiving_organisation.label")
+        - if policy(@activity).edit?
+          %th.govuk-table__header
 
     %tbody.govuk-table__body
       - planned_disbursements.each do |planned_disbursement|
@@ -27,3 +29,6 @@
           %td.govuk-table__cell= planned_disbursement.value
           %td.govuk-table__cell= planned_disbursement.providing_organisation_name
           %td.govuk-table__cell= planned_disbursement.receiving_organisation_name
+          - if policy(planned_disbursement.parent_activity).edit?
+            %td.govuk-table__cell
+              = a11y_action_link(I18n.t('generic.link.edit'), edit_activity_planned_disbursement_path(planned_disbursement.parent_activity, planned_disbursement), t("form.planned_disbursement.edit_noun"))
