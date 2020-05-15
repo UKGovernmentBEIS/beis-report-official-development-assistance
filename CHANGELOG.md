@@ -116,17 +116,19 @@
 - Add level D activities (third-party projects)
 - Store Budget status and type as numbers, not words
 - Delivery partner users can view budgets on Level B activities (but not edit or create them)
-- Show a funds programmes in a table 
+- Show a funds programmes in a table
 
 ## [unreleased]
 
 - Transaction and budget values are validated down to 0.01
 - Add Skylight application performance monitoring
+- Script to ingest legacy IATI data
 - No longer show the geography response on the activity summary and when changing country or region the flow includes the geography question
 - Add concept of `ingested` to budgets, and skip validation on ingested budgets. This is in preparation for ingesting legacy data from IATI.
 - Sector questions asks for a category and uses radio buttons
 - Add concept of `ingested` to transactions
 - Transaction disbursement channel is no longer mandatory
+- IATI ingest tool now saves the original XML for each activity to enable future tasks to copy across additional fields
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...HEAD
 [release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
