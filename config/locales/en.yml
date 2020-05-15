@@ -301,7 +301,7 @@ en:
         purpose_level: Purpose of %{level}
         region: Recipient region
         sector: Which %{sector_category} sector is the focus area for this %{level}
-        sector_category: What is the focus area category for this %{level}
+        sector_category: What is the focus area category for this %{level}?
         status: Status
     budget:
       edit: Edit budget
