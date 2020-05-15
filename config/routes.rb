@@ -31,7 +31,7 @@ Rails.application.routes.draw do
     end
 
     concern :disbursement_plannable do
-      resources :planned_disbursements, only: [:new, :create]
+      resources :planned_disbursements, only: [:new, :create, :edit, :update]
     end
 
     resources :activities, only: [], concerns: [:transactionable, :budgetable, :disbursement_plannable] do

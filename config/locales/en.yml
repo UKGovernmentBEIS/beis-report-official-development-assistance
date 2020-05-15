@@ -70,6 +70,7 @@ en:
         success: Planned disbursement successfully created
       currency:
         label: Currency
+      edit_noun: planned disbursement
       period_end_date:
         hint: The timeframe between the start date and the end date should not normally exceed 3 calendar months
         label: End date
@@ -80,19 +81,21 @@ en:
         hint: Whether this is an original plan (prepared when the original commitment was made) or has subsequently been revised
         label: Budget type
       providing_organisation:
-        hint: The organisation where this planned disbursement is coming from.
+        hint: The organisation where this planned disbursement is coming from
         label: Provider
         title: Providing organisation
       providing_organisation_reference:
-        hint: For example, GB-GOV-13. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
+        hint: For example, GB-GOV-13. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
         label: International Aid Transparency Initiative (IATI) Reference (optional)
       receiving_organisation:
         hint: The organisation receiving the money from this transaction.
         label: Receiver
         title: Receiving organisation
       receiving_organisation_reference:
-        hint: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
+        hint: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
         label: IATI Reference (optional)
+      update:
+        success: Planned disbursement successfully updated
       value:
         label: Value
     programme:
@@ -354,6 +357,7 @@ en:
       new: Create a new organisation
       show: Organisation %{name}
     planned_disbursement:
+      edit: Edit planned disbursement
       new: Add a planned disbursement
     privacy_policy: Privacy policy
     transaction:

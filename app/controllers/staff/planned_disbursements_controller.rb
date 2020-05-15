@@ -24,6 +24,29 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
     end
   end
 
+  def edit
+    @planned_disbursement = PlannedDisbursement.find(params["id"])
+    authorize @planned_disbursement
+
+    @activity = @planned_disbursement.parent_activity
+  end
+
+  def update
+    @planned_disbursement = PlannedDisbursement.find(params["id"])
+    authorize @planned_disbursement
+
+    @activity = Activity.find(params["activity_id"])
+    result = UpdatePlannedDisbursement.new(planned_disbursement: @planned_disbursement)
+      .call(attributes: planned_disbursement_params)
+
+    if result.success?
+      flash[:notice] = I18n.t("form.planned_disbursement.update.success")
+      redirect_to organisation_activity_path(@activity.organisation, @activity)
+    else
+      render :edit
+    end
+  end
+
   private
 
   def planned_disbursement_params
