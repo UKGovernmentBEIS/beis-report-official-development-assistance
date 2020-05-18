@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_12_152258) do
+ActiveRecord::Schema.define(version: 2020_05_18_105959) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -167,6 +167,7 @@ ActiveRecord::Schema.define(version: 2020_05_12_152258) do
   add_foreign_key "activities", "organisations", column: "reporting_organisation_id"
   add_foreign_key "activities", "organisations", on_delete: :restrict
   add_foreign_key "budgets", "activities", column: "parent_activity_id", on_delete: :cascade
+  add_foreign_key "planned_disbursements", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "transactions", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "users", "organisations", on_delete: :restrict
 end
