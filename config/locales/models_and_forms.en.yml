@@ -112,7 +112,7 @@ en:
         actual_end_date: For example, 2 2 2020
         actual_start_date: For example, 11 1 2020
         aid_type:
-          html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window).</a>
+          html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)</a>
         flow:
           html: "<a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions of each flow type can be found here (Opens in new window).</a>"
         identifier: Reference to link this to your internal systems so it can be found again later.
