@@ -98,6 +98,8 @@ en:
               format: Identifiers must start with a country code and company type separated by a dash, eg. GB-GOV-13
         planned_disbursement:
           attributes:
+            planned_disbursement_type:
+              blank: Budget type can't be blank
             value:
               inclusion: Value must be between 0.01 and 99,999,999,999.00
         transaction:
