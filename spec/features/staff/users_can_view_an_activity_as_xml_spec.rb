@@ -217,6 +217,18 @@ RSpec.feature "Users can view an activity as XML" do
           expect(xml.xpath("//iati-activity/planned-disbursement/period-start/@iso-date").text).to eq planned_disbursement_presenter.period_start_date
           expect(xml.xpath("//iati-activity/planned-disbursement/period-end/@iso-date").text).to eq planned_disbursement_presenter.period_end_date
         end
+
+        context "when the planned disbursment receiving organisation type is 0" do
+          it "does not output attributes on the receiving organisation element" do
+            _planned_disbursement = create(:planned_disbursement, parent_activity: activity, receiving_organisation_type: "0")
+
+            visit organisation_activity_path(organisation, activity, format: :xml)
+
+            expect(xml.xpath("//iati-activity/planned-disbursement/receiver-org/@type")).to be_empty
+            expect(xml.xpath("//iati-activity/planned-disbursement/receiver-org/@ref")).to be_empty
+            expect(xml.xpath("//iati-activity/planned-disbursement/receiver-org/@receiver-activity-id")).to be_empty
+          end
+        end
       end
     end
   end
