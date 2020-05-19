@@ -118,7 +118,7 @@
 - Delivery partner users can view budgets on Level B activities (but not edit or create them)
 - Show a funds programmes in a table
 
-## [unreleased]
+## [release-6] - 2020-05-19
 
 - Transaction and budget values are validated down to 0.01
 - Add Skylight application performance monitoring
@@ -131,7 +131,10 @@
 - IATI ingest tool now saves the original XML for each activity to enable future tasks to copy across additional fields
 - User can add, view and edit planned disbursements to projects and third-party projects
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...HEAD
+[release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...HEAD
 [release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
 [release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
 [release-3]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-2...release-3
