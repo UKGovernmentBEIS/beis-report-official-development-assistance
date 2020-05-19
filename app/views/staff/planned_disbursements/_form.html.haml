@@ -1,0 +1,51 @@
+= f.govuk_error_summary
+
+= f.govuk_collection_radio_buttons :planned_disbursement_type,
+  list_of_planned_disbursement_budget_types,
+  :id,
+  :name,
+  :description,
+  legend: { tag: :h2, size: "s", text: t("form.planned_disbursement.planned_disbursement_type.label") },
+  hint_text: t("form.planned_disbursement.planned_disbursement_type.hint")
+
+= f.govuk_date_field :period_start_date,
+  legend: { text: t("form.planned_disbursement.period_start_date.label"), size: "s", tag: :h2 },
+    hint_text: t("form.planned_disbursement.period_start_date.hint")
+
+
+= f.govuk_date_field :period_end_date,
+  legend: { text: t("form.planned_disbursement.period_end_date.label"), size: "s", tag: :h2 },
+    hint_text: t("form.planned_disbursement.period_end_date.hint")
+
+= f.govuk_collection_select :currency,
+                               currency_select_options,
+                               :code,
+                               :name,
+          label: { text: t("form.planned_disbursement.currency.label"), size: "s", tag: :h2 }
+
+= f.govuk_text_field :value,
+          label: { text: t("form.planned_disbursement.value.label"), size: "s", tag: :h2 }
+
+%h2.govuk-heading-m= t("form.planned_disbursement.providing_organisation.title")
+%span.govuk-hint= t("form.planned_disbursement.providing_organisation.hint")
+= f.govuk_text_field :providing_organisation_name
+= f.govuk_collection_select :providing_organisation_type,
+                     yaml_to_objects(entity: "organisation", type: "organisation_type"),
+                     :code,
+                     :name
+= f.govuk_text_field :providing_organisation_reference,
+                      label: { text: t("form.planned_disbursement.providing_organisation_reference.label") },
+                      hint_text: t("form.planned_disbursement.providing_organisation_reference.hint").html_safe
+
+%h2.govuk-heading-m= t("form.planned_disbursement.receiving_organisation.title")
+%span.govuk-hint= t("form.planned_disbursement.receiving_organisation.hint")
+= f.govuk_text_field :receiving_organisation_name
+= f.govuk_collection_select :receiving_organisation_type,
+                     yaml_to_objects(entity: "organisation", type: "organisation_type"),
+                     :code,
+                     :name
+= f.govuk_text_field :receiving_organisation_reference,
+                     label: { text: t("form.planned_disbursement.receiving_organisation_reference.label") },
+                     hint_text: t("form.planned_disbursement.receiving_organisation_reference.hint").html_safe
+
+= f.govuk_submit t("generic.button.submit")
