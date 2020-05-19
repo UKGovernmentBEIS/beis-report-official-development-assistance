@@ -42,6 +42,9 @@
   - if budgets
     - budgets.each do |budget|
       = render partial: "staff/shared/xml/budget", locals: { budget: BudgetXmlPresenter.new(budget) }
+  -if planned_disbursements
+    - planned_disbursements.each do |planned_disbursement|
+      = render partial: "staff/shared/xml/planned_disbursement", locals: { planned_disbursement: PlannedDisbursementXmlPresenter.new(planned_disbursement) }
   - if transactions
     - transactions.each do |transaction|
       = render partial: "staff/shared/xml/transaction", locals: { transaction: transaction }
