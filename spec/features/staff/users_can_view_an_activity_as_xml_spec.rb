@@ -193,6 +193,31 @@ RSpec.feature "Users can view an activity as XML" do
           expect(xml.xpath("//iati-activity/transaction/value").text).to eq("110.01")
         end
       end
+
+      context "when the activity has planned disbursements" do
+        let(:activity) { create(:project_activity, organisation: organisation) }
+        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it "only includes planned disbursements which belong to the activity" do
+          _planned_disbursement = create(:planned_disbursement, parent_activity: activity)
+          _other_planned_disbursement = create(:planned_disbursement, parent_activity: create(:activity))
+
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.xpath("//iati-activity/planned-disbursement").count).to eq(1)
+        end
+
+        it "has the period end date when one is supplied" do
+          planned_disbursement = create(:planned_disbursement, parent_activity: activity, period_start_date: Date.today, period_end_date: Date.today + 3.months)
+          planned_disbursement_presenter = PlannedDisbursementXmlPresenter.new(planned_disbursement)
+
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.xpath("//iati-activity/planned-disbursement/period-start/@iso-date").text).to eq planned_disbursement_presenter.period_start_date
+          expect(xml.xpath("//iati-activity/planned-disbursement/period-end/@iso-date").text).to eq planned_disbursement_presenter.period_end_date
+        end
+      end
     end
   end
 end
