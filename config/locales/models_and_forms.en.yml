@@ -39,6 +39,18 @@ en:
         language_code: Language code
         name: Name
         organisation_type: Organisation type
+      planned_disbursement:
+        planned_disbursement_type:
+          original:
+            description: The original budget allocated to the activity
+            name: Original
+          revised:
+            description: The updated budget for an activity
+            name: Revised
+        providing_organisation_name: Providing organisation name
+        providing_organisation_type: Providing organisation type
+        receiving_organisation_name: Receiving organisation name
+        receiving_organisation_type: Receiving organisation type
       transaction:
         currency: Currency
         date: Date
@@ -84,6 +96,10 @@ en:
           attributes:
             iati_reference:
               format: Identifiers must start with a country code and company type separated by a dash, eg. GB-GOV-13
+        planned_disbursement:
+          attributes:
+            value:
+              inclusion: Value must be between 0.01 and 99,999,999,999.00
         transaction:
           attributes:
             date:
@@ -95,6 +111,8 @@ en:
           attributes:
             organisation_ids:
               blank: Select the organisation(s) this user belongs to
+      validators:
+        end_date_not_before_start_date: The end date cannot be before the start date
   helpers:
     fieldset:
       activity:
