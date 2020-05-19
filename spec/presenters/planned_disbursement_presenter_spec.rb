@@ -4,7 +4,7 @@ RSpec.describe PlannedDisbursementPresenter do
   let(:planned_disbursement) { build_stubbed(:planned_disbursement) }
 
   describe "#planned_disbursement_type" do
-    it "returns the I18n string for the b#planned_disbursement_type" do
+    it "returns the I18n string for the planned_disbursement_type" do
       expect(described_class.new(planned_disbursement).planned_disbursement_type).to eq("Original")
     end
   end
