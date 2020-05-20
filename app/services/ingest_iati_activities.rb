@@ -1,4 +1,5 @@
 require "nokogiri"
+require "legacy_activity"
 
 class IngestIatiActivities
   include CodelistHelper
@@ -13,9 +14,10 @@ class IngestIatiActivities
   def call
     doc = Nokogiri::XML(file_io, nil, "UTF-8")
 
-    legacy_activities = doc.xpath("//iati-activity")
+    legacy_activity_nodes = doc.xpath("//iati-activity")
+    legacy_activity_nodes.each do |legacy_activity_node|
+      legacy_activity = LegacyActivity.new(activity_node_set: legacy_activity_node)
 
-    legacy_activities.each do |legacy_activity|
       ActiveRecord::Base.transaction do
         new_activity = Activity.new(level: :project, organisation: delivery_partner)
         add_identifiers(legacy_activity: legacy_activity, new_activity: new_activity)
