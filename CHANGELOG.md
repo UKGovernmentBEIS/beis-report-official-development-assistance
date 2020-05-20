@@ -133,14 +133,15 @@
 - BEIS users can download all of an Organisation's project (or third-party project) activities as XML from the organisation show page
 
 ## [unreleased]
-- Ingest tool no longer creates programmes but is instructed to look for existing records
 
+- Ingest tool no longer creates programmes but is instructed to look for existing records
 - If an activity has a recipient_country set, the recipient_region is inferred from the recipient_country
 - Planned disbursements are exported in the IATI XML
 - The new planned disbursement form pre-fills the providing organisation details
 - Add cookie policy
 - Planned disbursement dates are validated within boundaries
 - Ingest tool creates or updates existing projects if they match on the IATI identifier
+- Ingest tool will try to set more meaningful identifiers for projects
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...HEAD
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6
