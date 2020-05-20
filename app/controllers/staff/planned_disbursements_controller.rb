@@ -5,6 +5,7 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
     @activity = Activity.find(params["activity_id"])
     @planned_disbursement = PlannedDisbursement.new
     @planned_disbursement.parent_activity = @activity
+    pre_fill_providing_organisation
 
     authorize @planned_disbursement
   end
@@ -63,5 +64,11 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
       :receiving_organisation_type,
       :receiving_organisation_reference
     )
+  end
+
+  def pre_fill_providing_organisation
+    @planned_disbursement.providing_organisation_name = @activity.providing_organisation.name
+    @planned_disbursement.providing_organisation_type = @activity.providing_organisation.organisation_type
+    @planned_disbursement.providing_organisation_reference = @activity.providing_organisation.iati_reference
   end
 end
