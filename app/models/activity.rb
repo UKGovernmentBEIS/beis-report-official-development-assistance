@@ -109,4 +109,10 @@ class Activity < ApplicationRecord
     return [parent_activity.parent_activity.parent_activity, parent_activity.parent_activity, parent_activity] if third_party_project?
     []
   end
+
+  def providing_organisation
+    return nil if fund? || programme?
+    return Organisation.find_by(service_owner: true) if organisation.is_government? || project?
+    organisation
+  end
 end

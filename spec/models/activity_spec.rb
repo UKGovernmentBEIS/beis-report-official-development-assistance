@@ -365,4 +365,59 @@ RSpec.describe Activity, type: :model do
       expect(activity.has_implementing_organisations?).to be true
     end
   end
+
+  describe "#providing_organisation" do
+    context "when the activity is a fund or a programme" do
+      it "returns nil" do
+        fund = build(:fund_activity)
+        expect(fund.providing_organisation).to be_nil
+
+        programme = build(:programme_activity)
+        expect(programme.providing_organisation).to be_nil
+      end
+    end
+
+    context "when the activity is a project" do
+      context "when the activity organisation is a government type" do
+        it "returns BEIS" do
+          beis = create(:beis_organisation)
+          government_delivery_partner = build(:delivery_partner_organisation, organisation_type: "10")
+
+          project = build(:project_activity, organisation: government_delivery_partner)
+          expect(project.providing_organisation).to eql beis
+        end
+      end
+
+      context "when the activity organisation is a non-government type" do
+        it "returns BEIS" do
+          beis = create(:beis_organisation)
+          non_government_delivery_partner = create(:delivery_partner_organisation, organisation_type: "22")
+
+          project = build(:project_activity, organisation: non_government_delivery_partner)
+          expect(project.providing_organisation).to eql beis
+        end
+      end
+    end
+
+    context "when the activity is a third-party project" do
+      context "when the activity organisation is a government type" do
+        it "returns BEIS" do
+          beis = create(:beis_organisation)
+          government_delivery_partner = build(:delivery_partner_organisation, organisation_type: "10")
+
+          project = build(:project_activity, organisation: government_delivery_partner)
+          expect(project.providing_organisation).to eql beis
+        end
+      end
+
+      context "when the activity organisation is a non-government type" do
+        it "returns the activity organisation i.e the delivery partner" do
+          non_government_delivery_partner = create(:delivery_partner_organisation, organisation_type: "22")
+
+          third_party_project = build(:third_party_project_activity, organisation: non_government_delivery_partner)
+          expect(third_party_project.providing_organisation).to eql non_government_delivery_partner
+        end
+      end
+    end
+  end
 end
