@@ -1,3 +1,5 @@
+require "#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.rb"
+
 class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
   include DateHelper
@@ -71,6 +73,7 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def update_activity_attributes_except_dates
     activity_params_except_dates = activity_params.reject { |param| param.match(date_field_params_regex) }
+    update_activity_recipient_region
     @activity.assign_attributes(activity_params_except_dates)
   end
 
@@ -113,5 +116,12 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def reset_geography_dependent_answers
     @activity.update(recipient_region: nil, recipient_country: nil)
+  end
+
+  def update_activity_recipient_region
+    return unless activity_params[:recipient_country].present?
+
+    country = activity_params[:recipient_country]
+    @activity.update(recipient_region: REGION_CODES[country])
   end
 end

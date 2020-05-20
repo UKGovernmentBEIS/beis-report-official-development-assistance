@@ -16,6 +16,12 @@ RSpec.feature "Users can choose a recipient country" do
       scenario "countries are choosen from a select box" do
         expect(page).to have_select(I18n.t("page_title.activity_form.show.country"))
       end
+
+      scenario "choosing a recipient country sets a recipient region associated to that country" do
+        select "Botswana"
+        click_button I18n.t("form.activity.submit")
+        expect(activity.reload.recipient_region).to eq("289") # South of Sahara
+      end
     end
 
     context "with JavaScript enabled", js: true do
@@ -69,6 +75,13 @@ RSpec.feature "Users can choose a recipient country" do
         within(".recipient_country") do
           expect(page).to have_content "Saint Lucia"
         end
+      end
+
+      scenario "choosing a recipient country sets a recipient region associated to that country" do
+        fill_in "Country", with: "saint"
+        find("li.autocomplete__option", text: "Saint Lucia").click
+        click_button I18n.t("form.activity.submit")
+        expect(activity.reload.recipient_region).to eq("380") # West Indies
       end
     end
   end
