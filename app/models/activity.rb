@@ -42,6 +42,10 @@ class Activity < ApplicationRecord
   has_many :implementing_organisations
   belongs_to :reporting_organisation, foreign_key: "reporting_organisation_id", class_name: "Organisation"
 
+  has_many :budgets, foreign_key: "parent_activity_id"
+  has_many :transactions, foreign_key: "parent_activity_id"
+  has_many :planned_disbursements, foreign_key: "parent_activity_id"
+
   enum level: {
     fund: "fund",
     programme: "programme",
