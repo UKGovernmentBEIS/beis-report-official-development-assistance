@@ -17,33 +17,37 @@ class IngestIatiActivities
     legacy_activity_nodes = doc.xpath("//iati-activity")
     legacy_activity_nodes.each do |legacy_activity_node|
       legacy_activity = LegacyActivity.new(activity_node_set: legacy_activity_node, delivery_partner: delivery_partner)
+      existing_activity = Activity.find_by(previous_identifier: legacy_activity.identifier)
 
       ActiveRecord::Base.transaction do
-        new_activity = Activity.find_or_create_by(identifier: legacy_activity.identifier, level: :project, organisation: delivery_partner)
-        add_identifiers(legacy_activity: legacy_activity, new_activity: new_activity)
+        roda_activity = if existing_activity.present?
+          existing_activity
+        else
+          new_activity = Activity.new(identifier: legacy_activity.identifier, level: :project, organisation: delivery_partner)
+          add_identifiers(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_participating_organisation(delivery_partner: delivery_partner, new_activity: new_activity, legacy_activity: legacy_activity)
+          add_title(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_description(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_status(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_sector(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_flow(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_aid_type(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_dates(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_geography(legacy_activity: legacy_activity, new_activity: new_activity)
 
-        new_activity.activity = legacy_activity.find_parent_programme
+          new_activity.form_state = :complete
+          new_activity
+        end
 
-        add_participating_organisation(delivery_partner: delivery_partner, new_activity: new_activity, legacy_activity: legacy_activity)
+        add_transactions(legacy_activity: legacy_activity, roda_activity: roda_activity)
+        add_budgets(legacy_activity: legacy_activity, roda_activity: roda_activity)
+        add_planned_disbursements(legacy_activity: legacy_activity, roda_activity: roda_activity)
 
-        add_title(legacy_activity: legacy_activity, new_activity: new_activity)
-        add_description(legacy_activity: legacy_activity, new_activity: new_activity)
-        add_status(legacy_activity: legacy_activity, new_activity: new_activity)
-        add_sector(legacy_activity: legacy_activity, new_activity: new_activity)
-        add_flow(legacy_activity: legacy_activity, new_activity: new_activity)
-        add_aid_type(legacy_activity: legacy_activity, new_activity: new_activity)
-        add_dates(legacy_activity: legacy_activity, new_activity: new_activity)
-        add_geography(legacy_activity: legacy_activity, new_activity: new_activity)
-        add_transactions(legacy_activity: legacy_activity, new_activity: new_activity)
-        add_budgets(legacy_activity: legacy_activity, new_activity: new_activity)
-        add_planned_disbursements(legacy_activity: legacy_activity, new_activity: new_activity)
+        roda_activity.activity = legacy_activity.find_parent_programme
+        roda_activity.legacy_iati_xml = legacy_activity.to_xml.squish
+        roda_activity.ingested = true
 
-        new_activity.legacy_iati_xml = legacy_activity.to_xml.squish
-        new_activity.ingested = true
-
-        # Set the status to invoke validations
-        new_activity.form_state = :complete
-        new_activity.save
+        roda_activity.save
       end
     end
   end
@@ -111,7 +115,7 @@ class IngestIatiActivities
     end
   end
 
-  private def add_transactions(legacy_activity:, new_activity:)
+  private def add_transactions(legacy_activity:, roda_activity:)
     transaction_elements = legacy_activity.elements.select { |element| element.name.eql?("transaction") }
     transaction_elements.each do |transaction_element|
       currency = transaction_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"].value
@@ -139,7 +143,7 @@ class IngestIatiActivities
         currency: currency,
         date: date,
         value: value,
-        parent_activity: new_activity,
+        parent_activity: roda_activity,
         disbursement_channel: disbursement_channel,
         providing_organisation_name: providing_organisation_name,
         providing_organisation_type: "10",
@@ -154,7 +158,7 @@ class IngestIatiActivities
     end
   end
 
-  private def add_budgets(legacy_activity:, new_activity:)
+  private def add_budgets(legacy_activity:, roda_activity:)
     budget_elements = legacy_activity.elements.select { |element| element.name.eql?("budget") }
     budget_elements.each do |budget_element|
       status = budget_element.attributes["status"].value
@@ -171,7 +175,7 @@ class IngestIatiActivities
         period_end_date: period_end_date,
         value: value,
         currency: currency,
-        parent_activity: new_activity,
+        parent_activity: roda_activity,
         ingested: true
       )
 
@@ -179,7 +183,7 @@ class IngestIatiActivities
     end
   end
 
-  private def add_planned_disbursements(legacy_activity:, new_activity:)
+  private def add_planned_disbursements(legacy_activity:, roda_activity:)
     planned_disbursement_elements = legacy_activity.elements.select { |element| element.name.eql?("planned-disbursement") }
     planned_disbursement_elements.each do |planned_disbursement_element|
       planned_disbursement_type = planned_disbursement_element.attributes["type"].value
@@ -204,7 +208,7 @@ class IngestIatiActivities
         period_end_date: period_end_date,
         value: value,
         currency: currency,
-        parent_activity: new_activity,
+        parent_activity: roda_activity,
         providing_organisation_name: providing_organisation_name,
         providing_organisation_type: providing_organisation_type,
         providing_organisation_reference: providing_organisation_reference,

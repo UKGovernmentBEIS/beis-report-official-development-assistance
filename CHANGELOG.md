@@ -140,6 +140,7 @@
 - The new planned disbursement form pre-fills the providing organisation details
 - Add cookie policy
 - Planned disbursement dates are validated within boundaries
+- Ingest tool creates or updates existing projects if they match on the IATI identifier
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...HEAD
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6

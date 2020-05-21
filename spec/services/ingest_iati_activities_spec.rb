@@ -274,5 +274,41 @@ RSpec.describe IngestIatiActivities do
         expect(activity.description).to eql("Both Ethiopia and Kenya are flood & drought prone with significant mortality & economic losses attributed to these events in each country.")
       end
     end
+
+    context "when an activity with the IATI identifier already exists" do
+      it "updates the activity rather then creating a new record" do
+        uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+        existing_project = create(:project_activity,
+          previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021",
+          organisation: uksa)
+
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_transactions.xml")
+
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+        existing_project.reload
+
+        expect(existing_project.ingested).to eq(true)
+        expect(existing_project.legacy_iati_xml).not_to be_blank
+        expect(existing_project.transactions.count).to eql(5)
+      end
+
+      context "when the form is partially completed" do
+        it "does not change the form step" do
+          uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+          existing_project = create(:project_activity,
+            :at_geography_step,
+            previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021",
+            organisation: uksa)
+          legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_transactions.xml")
+
+          described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+          existing_project.reload
+
+          expect(existing_project.reload.form_state).not_to eql(:complete)
+        end
+      end
+    end
   end
 end
