@@ -134,6 +134,8 @@
 ## [unreleased]
 
 - If an activity has a recipient_country set, the recipient_region is inferred from the recipient_country
+- Planned disbursements are exported in the IATI XML
+- The new planned disbursement form pre-fills the providing organisation details
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...HEAD
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6
