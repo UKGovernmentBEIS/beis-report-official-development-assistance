@@ -26,18 +26,12 @@ class IngestIatiActivities
 
         add_participating_organisation(delivery_partner: delivery_partner, new_activity: new_activity, legacy_activity: legacy_activity)
 
-        title = legacy_activity.elements[2].children.detect { |child| child.name.eql?("narrative") }.children.text if legacy_activity.elements[2].name.eql?("title")
-        new_activity.title = normalize_string(title)
-        description = legacy_activity.elements[3].children.detect { |child| child.name.eql?("narrative") }.children.text if legacy_activity.elements[3].name.eql?("description")
-        new_activity.description = normalize_string(description)
-        new_activity.status = legacy_activity.elements.detect { |element| element.name.eql?("activity-status") }.attributes["code"].value
-
-        sector = legacy_activity.elements.detect { |element| element.name.eql?("sector") }.attributes["code"].value
-        new_activity.sector_category = sector_category_code(sector_code: sector)
-        new_activity.sector = sector
-        new_activity.flow = legacy_activity.elements.detect { |element| element.name.eql?("default-flow-type") }.attributes["code"].value
-        new_activity.aid_type = legacy_activity.elements.detect { |element| element.name.eql?("default-aid-type") }.attributes["code"].value
-
+        add_title(legacy_activity: legacy_activity, new_activity: new_activity)
+        add_description(legacy_activity: legacy_activity, new_activity: new_activity)
+        add_status(legacy_activity: legacy_activity, new_activity: new_activity)
+        add_sector(legacy_activity: legacy_activity, new_activity: new_activity)
+        add_flow(legacy_activity: legacy_activity, new_activity: new_activity)
+        add_aid_type(legacy_activity: legacy_activity, new_activity: new_activity)
         add_dates(legacy_activity: legacy_activity, new_activity: new_activity)
         add_geography(legacy_activity: legacy_activity, new_activity: new_activity)
         add_transactions(legacy_activity: legacy_activity, new_activity: new_activity)
@@ -52,6 +46,34 @@ class IngestIatiActivities
         new_activity.save
       end
     end
+  end
+
+  private def add_title(legacy_activity:, new_activity:)
+    title = legacy_activity.elements[2].children.detect { |child| child.name.eql?("narrative") }.children.text if legacy_activity.elements[2].name.eql?("title")
+    new_activity.title = normalize_string(title)
+  end
+
+  private def add_description(legacy_activity:, new_activity:)
+    description = legacy_activity.elements[3].children.detect { |child| child.name.eql?("narrative") }.children.text if legacy_activity.elements[3].name.eql?("description")
+    new_activity.description = normalize_string(description)
+  end
+
+  private def add_status(legacy_activity:, new_activity:)
+    new_activity.status = legacy_activity.elements.detect { |element| element.name.eql?("activity-status") }.attributes["code"].value
+  end
+
+  private def add_sector(legacy_activity:, new_activity:)
+    sector = legacy_activity.elements.detect { |element| element.name.eql?("sector") }.attributes["code"].value
+    new_activity.sector_category = sector_category_code(sector_code: sector)
+    new_activity.sector = sector
+  end
+
+  private def add_flow(legacy_activity:, new_activity:)
+    new_activity.flow = legacy_activity.elements.detect { |element| element.name.eql?("default-flow-type") }.attributes["code"].value
+  end
+
+  private def add_aid_type(legacy_activity:, new_activity:)
+    new_activity.aid_type = legacy_activity.elements.detect { |element| element.name.eql?("default-aid-type") }.attributes["code"].value
   end
 
   private def add_participating_organisation(delivery_partner:, new_activity:, legacy_activity:)
