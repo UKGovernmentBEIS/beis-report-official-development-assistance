@@ -31,8 +31,7 @@
   %activity-date{"iso-date" => activity.planned_end_date, type: "3"}/
   - if activity.actual_end_date?
     %activity-date{"iso-date" => activity.actual_end_date, type: "4"}/
-  - if activity.recipient_region?
-    %recipient-region{"code" => activity.recipient_region, vocabulary: "1"}/
+  %recipient-region{"code" => activity.recipient_region, vocabulary: "1"}/
   - if activity.recipient_country?
     %recipient-country{"code" => activity.recipient_country}/
   %sector{"vocabulary" => "1", "code" => activity.sector}/

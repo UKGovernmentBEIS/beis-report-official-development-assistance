@@ -25,6 +25,20 @@ RSpec.feature "Users can provide the geography for an activity" do
         expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
         expect(page).to have_current_path(activity_step_path(activity, :flow))
       end
+
+      scenario "the region gets set in the background according to the selected country" do
+        visit activity_step_path(activity, :geography)
+        choose "Country"
+        click_button I18n.t("form.activity.submit")
+
+        expect(page).to have_content I18n.t("page_title.activity_form.show.country")
+        expect(page).to have_current_path(activity_step_path(activity, :country))
+
+        select "Uganda"
+        click_button I18n.t("form.activity.submit")
+
+        expect(activity.reload.recipient_region).to eq("289") # South of Sahara
+      end
     end
 
     context "when they choose region geography" do
