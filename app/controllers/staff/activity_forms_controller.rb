@@ -1,5 +1,3 @@
-require "#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.rb"
-
 class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
   include DateHelper
@@ -122,6 +120,13 @@ class Staff::ActivityFormsController < Staff::BaseController
     return unless activity_params[:recipient_country].present?
 
     country = activity_params[:recipient_country]
-    @activity.update(recipient_region: REGION_CODES[country])
+    region = country_to_region_mapping.find { |pair| pair["country"] == country }["region"]
+
+    @activity.update(recipient_region: region)
+  end
+
+  def country_to_region_mapping
+    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.yml"))
+    yaml["data"]
   end
 end
