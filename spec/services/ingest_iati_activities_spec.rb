@@ -155,6 +155,76 @@ RSpec.describe IngestIatiActivities do
       expect(budgets.first.ingested).to be true
     end
 
+    context "when there is a planned disbursement" do
+      let!(:beis) { create(:beis_organisation) }
+      let(:uksa) { create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31") }
+
+      let(:activity) { Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-029") }
+      let(:planned_disbursements) { PlannedDisbursement.where(parent_activity: activity) }
+
+      it "creates valid planned disbursement and marks it as ingested" do
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
+
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+        expect(planned_disbursements.count).to eql(1)
+
+        ingested_planned_disbursement = planned_disbursements.first
+
+        expect(ingested_planned_disbursement).to be_valid
+        expect(ingested_planned_disbursement.planned_disbursement_type).to eql("1")
+        expect(ingested_planned_disbursement.period_start_date).to eq "2019-07-01".to_date
+        expect(ingested_planned_disbursement.period_end_date).to eq "2020-04-30".to_date
+        expect(ingested_planned_disbursement.value).to eq "983052".to_i
+        expect(ingested_planned_disbursement.currency).to eq "GBP"
+        expect(ingested_planned_disbursement.providing_organisation_name).to eql("UK - Department for Business, Energy and Industrial Strategy")
+        expect(ingested_planned_disbursement.providing_organisation_reference).to eql("GB-GOV-13")
+        expect(ingested_planned_disbursement.receiving_organisation_name).to eql("Airbus")
+        expect(ingested_planned_disbursement.receiving_organisation_reference).to eql(nil)
+        expect(ingested_planned_disbursement.ingested).to be true
+      end
+
+      describe "provider orgnaisation type" do
+        it "returns a default of 10 when there is no attribute" do
+          legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
+
+          described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+          ingested_planned_disbursement = planned_disbursements.first
+
+          expect(ingested_planned_disbursement.providing_organisation_type).to eql("10")
+        end
+
+        it "returns the value when there is an attribute" do
+          legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/fake_with_complete_planned_disbursement.xml")
+
+          described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+          ingested_planned_disbursement = planned_disbursements.first
+
+          expect(ingested_planned_disbursement.providing_organisation_type).to eql("15")
+        end
+      end
+
+      describe "receiving  orgnaisation type" do
+        it "returns a default of 0 when there is no attribute" do
+          legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
+          described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+          ingested_planned_disbursement = planned_disbursements.first
+
+          expect(ingested_planned_disbursement.receiving_organisation_type).to eql("0")
+        end
+
+        it "returns the value when there is an attribute" do
+          legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/fake_with_complete_planned_disbursement.xml")
+          described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+          ingested_planned_disbursement = planned_disbursements.first
+
+          expect(ingested_planned_disbursement.receiving_organisation_type).to eql("21")
+        end
+      end
+    end
+
     # The first ingest will only take a subset of data. As RODA supports more
     # fields, we will want to populate RODA with more historic data for each
     # activity. Having the source directly linked to our copy of each activity

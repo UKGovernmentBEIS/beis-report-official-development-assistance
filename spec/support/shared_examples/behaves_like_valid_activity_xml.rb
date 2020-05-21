@@ -82,4 +82,28 @@ RSpec.shared_examples "valid activity XML" do
     expect(xml.at("iati-activity/budget/period-start/@iso-date").text).to eq(budget.period_start_date.strftime("%Y-%m-%d"))
     expect(xml.at("iati-activity/budget/period-end/@iso-date").text).to eq(budget.period_end_date.strftime("%Y-%m-%d"))
   end
+
+  it "contains the planned disbursement XML" do
+    planned_disbursement = create(:planned_disbursement, parent_activity: activity)
+    planned_disbursement_presenter = PlannedDisbursementXmlPresenter.new(planned_disbursement)
+
+    visit organisation_activity_path(organisation, activity, format: :xml)
+
+    expect(xml.xpath("//iati-activity/planned-disbursement/@type").text).to eq planned_disbursement_presenter.planned_disbursement_type
+    expect(xml.xpath("//iati-activity/planned-disbursement/period-start/@iso-date").text).to eq planned_disbursement_presenter.period_start_date
+
+    expect(xml.xpath("//iati-activity/planned-disbursement/value").text).to eq planned_disbursement_presenter.value
+    expect(xml.xpath("//iati-activity/planned-disbursement/value/@currency").text).to eq planned_disbursement_presenter.currency
+    expect(xml.xpath("//iati-activity/planned-disbursement/value/@value-date").text).to eq planned_disbursement_presenter.period_start_date
+
+    expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/@type").text).to eq planned_disbursement_presenter.providing_organisation_type
+    expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/@provider-activity-id").text).to eq ""
+    expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/@ref").text).to eq planned_disbursement_presenter.providing_organisation_reference
+    expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/narrative").text).to eq planned_disbursement_presenter.providing_organisation_name
+
+    expect(xml.xpath("//iati-activity/planned-disbursement/receiver-org/@type").text).to eq planned_disbursement_presenter.receiving_organisation_type
+    expect(xml.xpath("//iati-activity/planned-disbursement/receiver-org/@provider-activity-id").text).to eq ""
+    expect(xml.xpath("//iati-activity/planned-disbursement/receiver-org/@ref").text).to eq planned_disbursement_presenter.receiving_organisation_reference
+    expect(xml.xpath("//iati-activity/planned-disbursement/receiver-org/narrative").text).to eq planned_disbursement_presenter.receiving_organisation_name
+  end
 end

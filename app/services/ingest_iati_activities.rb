@@ -41,6 +41,7 @@ class IngestIatiActivities
         add_geography(legacy_activity: legacy_activity, new_activity: new_activity)
         add_transactions(legacy_activity: legacy_activity, new_activity: new_activity)
         add_budgets(legacy_activity: legacy_activity, new_activity: new_activity)
+        add_planned_disbursements(legacy_activity: legacy_activity, new_activity: new_activity)
 
         new_activity.legacy_iati_xml = legacy_activity.to_xml.squish
         new_activity.ingested = true
@@ -175,6 +176,54 @@ class IngestIatiActivities
 
       budget.save!
     end
+  end
+
+  private def add_planned_disbursements(legacy_activity:, new_activity:)
+    planned_disbursement_elements = legacy_activity.elements.select { |element| element.name.eql?("planned-disbursement") }
+    planned_disbursement_elements.each do |planned_disbursement_element|
+      planned_disbursement_type = planned_disbursement_element.attributes["type"].value
+      value = planned_disbursement_element.children.detect { |child| child.name.eql?("value") }.children.text
+      currency = planned_disbursement_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"].value
+      period_start_date = planned_disbursement_element.children.detect { |child| child.name.eql?("period-start") }.attributes["iso-date"].value
+      period_end_date = planned_disbursement_element.children.detect { |child| child.name.eql?("period-end") }.attributes["iso-date"].value
+
+      providing_organisation = planned_disbursement_element.children.detect { |child| child.name.eql?("provider-org") }
+      providing_organisation_name = providing_organisation.children.detect { |child| child.name.eql?("narrative") }.text
+      providing_organisation_type = providing_organisation_type(attribute: providing_organisation.attributes["type"])
+      providing_organisation_reference = providing_organisation.attributes["ref"].try(:value)
+
+      receiving_organisation = planned_disbursement_element.children.detect { |child| child.name.eql?("receiver-org") }
+      receiving_organisation_name = receiving_organisation.children.detect { |child| child.name.eql?("narrative") }.text
+      receiving_organisation_reference = receiving_organisation.attributes["ref"].try(:value)
+      receiving_organisation_type = receiving_organisation_type(attribute: receiving_organisation.attributes["type"])
+
+      planned_disbursement = PlannedDisbursement.new(
+        planned_disbursement_type: planned_disbursement_type,
+        period_start_date: period_start_date,
+        period_end_date: period_end_date,
+        value: value,
+        currency: currency,
+        parent_activity: new_activity,
+        providing_organisation_name: providing_organisation_name,
+        providing_organisation_type: providing_organisation_type,
+        providing_organisation_reference: providing_organisation_reference,
+        receiving_organisation_name: receiving_organisation_name,
+        receiving_organisation_type: receiving_organisation_type,
+        receiving_organisation_reference: receiving_organisation_reference,
+        ingested: true
+      )
+      planned_disbursement.save!
+    end
+  end
+
+  private def providing_organisation_type(attribute:)
+    return "10" if attribute.nil?
+    attribute.value
+  end
+
+  private def receiving_organisation_type(attribute:)
+    return "0" if attribute.nil?
+    attribute.value
   end
 
   private def sector_category_code(sector_code:)
