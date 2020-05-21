@@ -17,10 +17,25 @@ class Staff::OrganisationsController < Staff::BaseController
     project_activities = FindProjectActivities.new(organisation: organisation, current_user: current_user).call
     third_party_project_activities = FindThirdPartyProjectActivities.new(organisation: organisation, current_user: current_user).call
 
-    @fund_activities = fund_activities.map { |activity| ActivityPresenter.new(activity) }
-    @programme_activities = programme_activities.map { |activity| ActivityPresenter.new(activity) }
-    @project_activities = project_activities.map { |activity| ActivityPresenter.new(activity) }
-    @third_party_project_activities = third_party_project_activities.map { |activity| ActivityPresenter.new(activity) }
+    respond_to do |format|
+      format.html do
+        @fund_activities = fund_activities.map { |activity| ActivityPresenter.new(activity) }
+        @programme_activities = programme_activities.map { |activity| ActivityPresenter.new(activity) }
+        @project_activities = project_activities.map { |activity| ActivityPresenter.new(activity) }
+        @third_party_project_activities = third_party_project_activities.map { |activity| ActivityPresenter.new(activity) }
+      end
+      format.xml do
+        @activities = case level
+        when "project"
+          project_activities.map { |activity| ActivityXmlPresenter.new(activity) }
+        when "third_party_project"
+          third_party_project_activities.map { |activity| ActivityXmlPresenter.new(activity) }
+        else
+          []
+        end
+        response.headers["Content-Disposition"] = "attachment; filename=\"#{organisation.iati_reference}.xml\""
+      end
+    end
   end
 
   def new
@@ -71,5 +86,9 @@ class Staff::OrganisationsController < Staff::BaseController
 
   def organisation_params
     params.require(:organisation).permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference)
+  end
+
+  def level
+    params[:level]
   end
 end

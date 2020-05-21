@@ -130,6 +130,7 @@
 - Transaction disbursement channel is no longer mandatory
 - IATI ingest tool now saves the original XML for each activity to enable future tasks to copy across additional fields
 - User can add, view and edit planned disbursements to projects and third-party projects
+- BEIS users can download all of an Organisation's project (or third-party project) activities as XML from the organisation show page
 
 ## [unreleased]
 
