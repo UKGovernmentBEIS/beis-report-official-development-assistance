@@ -66,6 +66,26 @@ RSpec.feature "Users can view an activity as XML" do
         end
       end
 
+      context "when the activity has both recipient_country and recipient_region geography" do
+        let(:activity) {
+          create(:fund_activity,
+            organisation: organisation,
+            identifier: "IND-ENT-IFIER",
+            geography: :recipient_country,
+            recipient_country: "CL",
+            recipient_region: "489")
+        }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it "contains the recipient region code and recipient country code" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.at("iati-activity/recipient-country/@code").text).to eq(activity.recipient_country)
+          expect(xml.at("iati-activity/recipient-region/@code").text).to eq(activity.recipient_region)
+          expect(xml.at("iati-activity/recipient-region/@vocabulary").text).to eq("1")
+        end
+      end
+
       context "when the activity does not have actual dates (optional dates)" do
         let(:activity) {
           create(:fund_activity,
