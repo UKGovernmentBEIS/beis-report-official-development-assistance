@@ -13,4 +13,11 @@ class LegacyActivity
   def to_xml
     activity_node_set.to_xml
   end
+
+  def identifier
+    identifier_element = elements.detect { |element| element.name.eql?("iati-identifier") }
+    return nil unless identifier_element.present?
+
+    identifier_element.children.text
+  end
 end
