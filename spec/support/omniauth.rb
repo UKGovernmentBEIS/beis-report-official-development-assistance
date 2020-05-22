@@ -5,6 +5,8 @@ OmniAuth.config.on_failure = proc { |env|
 }
 
 RSpec.configure do |config|
+  OmniAuth.config.logger = Logger.new("/dev/null")
+
   # Teardown mocked SSO
   config.after(:each) do |_example|
     OmniAuth.config.mock_auth[:auth0] = nil
