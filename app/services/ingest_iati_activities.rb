@@ -19,6 +19,8 @@ class IngestIatiActivities
       legacy_activity = LegacyActivity.new(activity_node_set: legacy_activity_node, delivery_partner: delivery_partner)
       existing_activity = Activity.find_by(previous_identifier: legacy_activity.identifier)
 
+      next if existing_activity&.ingested?
+
       ActiveRecord::Base.transaction do
         roda_activity = if existing_activity.present?
           existing_activity
