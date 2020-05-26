@@ -40,13 +40,7 @@ en:
         name: Name
         organisation_type: Organisation type
       planned_disbursement:
-        planned_disbursement_type:
-          original:
-            description: The original budget allocated to the activity
-            name: Original
-          revised:
-            description: The updated budget for an activity
-            name: Revised
+        planned_disbursement_type: Budget type
         providing_organisation_name: Providing organisation name
         providing_organisation_type: Providing organisation type
         receiving_organisation_name: Receiving organisation name
@@ -98,6 +92,10 @@ en:
               format: Identifiers must start with a country code and company type separated by a dash, eg. GB-GOV-13
         planned_disbursement:
           attributes:
+            period_end_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+            period_start_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
             planned_disbursement_type:
               blank: Budget type can't be blank
             value:

@@ -22,8 +22,8 @@ RSpec.describe FormHelper, type: :helper do
     it "builds a list of budget types for a planned disbursement" do
       budget_types = helper.list_of_planned_disbursement_budget_types
 
-      expect(budget_types[0].name).to eq I18n.t("activerecord.attributes.planned_disbursement.planned_disbursement_type.original.name")
-      expect(budget_types[0].description).to eq I18n.t("activerecord.attributes.planned_disbursement.planned_disbursement_type.original.description")
+      expect(budget_types[0].name).to eq I18n.t("form.planned_disbursement.planned_disbursement_type.original.name")
+      expect(budget_types[0].description).to eq I18n.t("form.planned_disbursement.planned_disbursement_type.original.description")
     end
   end
 end

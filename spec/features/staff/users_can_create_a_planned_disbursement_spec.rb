@@ -15,7 +15,7 @@ RSpec.describe "Users can create a planned disbursement" do
 
       expect(page).to have_content I18n.t("page_title.planned_disbursement.new")
 
-      choose I18n.t("activerecord.attributes.planned_disbursement.planned_disbursement_type.original.name")
+      choose I18n.t("form.planned_disbursement.planned_disbursement_type.original.name")
       fill_in "planned_disbursement[period_start_date(3i)]", with: "01"
       fill_in "planned_disbursement[period_start_date(2i)]", with: "01"
       fill_in "planned_disbursement[period_start_date(1i)]", with: "2020"
