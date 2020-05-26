@@ -9,7 +9,7 @@ RSpec.feature "Users can view the privacy policy" do
     end
   end
 
-  scenario "thei linked privacy policy page can be viewed" do
+  scenario "the linked privacy policy page can be viewed" do
     visit root_path
     click_on I18n.t("page_content.generic.link.privacy_policy")
 
