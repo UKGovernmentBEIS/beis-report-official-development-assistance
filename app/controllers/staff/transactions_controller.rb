@@ -7,6 +7,7 @@ class Staff::TransactionsController < Staff::BaseController
     @activity = Activity.find(activity_id)
     @transaction = Transaction.new
     @transaction.parent_activity = @activity
+    pre_fill_providing_organisation
 
     authorize @transaction
   end
@@ -78,5 +79,11 @@ class Staff::TransactionsController < Staff::BaseController
 
   def id
     params[:id]
+  end
+
+  private def pre_fill_providing_organisation
+    @transaction.providing_organisation_name = @activity.providing_organisation.name
+    @transaction.providing_organisation_type = @activity.providing_organisation.organisation_type
+    @transaction.providing_organisation_reference = @activity.providing_organisation.iati_reference
   end
 end

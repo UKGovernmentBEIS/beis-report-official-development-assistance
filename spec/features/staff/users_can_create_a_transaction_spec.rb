@@ -60,8 +60,6 @@ RSpec.feature "Users can create a transaction" do
       expect(page).to have_content("Transaction type can't be blank")
       expect(page).to have_content("Date can't be blank")
       expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.inclusion")
-      expect(page).to have_content("Providing organisation name can't be blank")
-      expect(page).to have_content("Providing organisation type can't be blank")
       expect(page).to have_content("Receiving organisation name can't be blank")
       expect(page).to have_content("Receiving organisation type can't be blank")
     end
@@ -206,7 +204,7 @@ RSpec.feature "Users can create a transaction" do
     end
   end
 
-  context "when the user does NOT belong to BEIS" do
+  context "when they are a government delivery partner organisation user" do
     before { authenticate!(user: user) }
     let(:user) { create(:delivery_partner_user) }
 
@@ -222,6 +220,39 @@ RSpec.feature "Users can create a transaction" do
 
       expect(page).not_to have_content(I18n.t("page_content.activity.transactions"))
       expect(page).not_to have_content(I18n.t("page_content.transactions.button.create"))
+    end
+
+    context "and the activity is a third-party project" do
+      scenario "the providing organisation details are pre-filled with BEIS information" do
+        beis = create(:beis_organisation)
+        third_party_project = create(:third_party_project_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(user.organisation, third_party_project)
+        click_on "Add a transaction"
+
+        expect(page).to have_field I18n.t("activerecord.attributes.transaction.providing_organisation_name"), with: beis.name
+        expect(page).to have_field I18n.t("activerecord.attributes.transaction.providing_organisation_type"), with: beis.organisation_type
+        expect(page).to have_field I18n.t("form.transaction.providing_organisation_reference.label"), with: beis.iati_reference
+      end
+    end
+  end
+
+  context "when they are a non-government delivery partner organisation user" do
+    before { authenticate!(user: user) }
+    let(:non_government_organisation) { create(:delivery_partner_organisation, organisation_type: "22") }
+    let(:user) { create(:delivery_partner_user, organisation: non_government_organisation) }
+
+    context "and the activity is a third-party project" do
+      scenario "the providing organisation details are pre-filled with the delivery organisation information" do
+        third_party_project = create(:third_party_project_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(user.organisation, third_party_project)
+        click_on "Add a transaction"
+
+        expect(page).to have_field I18n.t("activerecord.attributes.transaction.providing_organisation_name"), with: non_government_organisation.name
+        expect(page).to have_field I18n.t("activerecord.attributes.transaction.providing_organisation_type"), with: non_government_organisation.organisation_type
+        expect(page).to have_field I18n.t("form.transaction.providing_organisation_reference.label"), with: non_government_organisation.iati_reference
+      end
     end
   end
 end
