@@ -346,17 +346,17 @@ en:
     activity_form:
       show:
         aid_type: Aid type
-        country: Country
-        dates: Dates
-        flow: Flow
+        country: What country will benefit from this activity?
+        dates: What are the start and end dates for the fund?
+        flow: What is the flow type?
         geography: Will the benefitting recipient be a region or country?
-        identifier: Your unique identifier
+        identifier: Enter a unique identifier
         purpose: Purpose
-        purpose_level: Purpose of %{level}
-        region: Recipient region
+        purpose_level: What is the purpose of the %{level}?
+        region: What region will benefit from this activity?
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
-        status: Status
+        status: What is ths status of the fund?
     budget:
       edit: Edit budget
       new: Create budget
