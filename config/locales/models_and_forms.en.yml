@@ -134,15 +134,11 @@ en:
         aid_type:
           html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)</a>
         flow:
-          html: "<a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions of each flow type can be found here (Opens in new window).</a>"
-        identifier: Reference to link this to your internal systems so it can be found again later.
+          html: "Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions</a> of each flow type (opens in new window)"
+        identifier: This could be the reference you use in your internal systems
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
-        recipient_country: A country that will benefit from this activity
-        recipient_region:
-          html: A supranational geopolitical region that will benefit from this activity.
-        status: This is the stage your %{level} is currently at
-        title: A short, human-readable title that contains a meaningful summary of the activity.
+        title: A short title that explains the fund's activity
       budget:
         period_end_date: Period end date must not be more than one year after the period start date. For example, 11 3 2021
         period_start_date: For example, 11 3 2020
