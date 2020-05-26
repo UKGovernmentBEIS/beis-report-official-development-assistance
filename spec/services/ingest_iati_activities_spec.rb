@@ -310,5 +310,24 @@ RSpec.describe IngestIatiActivities do
         end
       end
     end
+
+    context "when an activity has already been ingested" do
+      it "skip it making no changes to the database" do
+        uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+        _existing_project = create(:project_activity,
+          previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021",
+          organisation: uksa,
+          ingested: true)
+
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_transactions.xml")
+
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+        expect_any_instance_of(Activity).not_to receive(:save!)
+        expect_any_instance_of(Transaction).not_to receive(:save!)
+        expect_any_instance_of(Budget).not_to receive(:save!)
+        expect_any_instance_of(PlannedDisbursement).not_to receive(:save!)
+      end
+    end
   end
 end
