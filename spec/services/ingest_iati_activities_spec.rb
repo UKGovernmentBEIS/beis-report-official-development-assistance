@@ -2,9 +2,11 @@ require "rails_helper"
 require "nokogiri"
 
 RSpec.describe IngestIatiActivities do
+  let(:beis) { create(:beis_organisation) }
+  let!(:existing_programme) { create(:programme_activity, identifier: "GCRF-INTPART", organisation: beis) }
+
   describe "#call" do
     it "creates 36 new projects" do
-      _beis = create(:beis_organisation)
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
 
@@ -14,7 +16,6 @@ RSpec.describe IngestIatiActivities do
     end
 
     it "adds a new ingested flag to the activity so the team can distinguish old from new" do
-      _beis = create(:beis_organisation)
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/single_activity.xml")
 
@@ -24,7 +25,7 @@ RSpec.describe IngestIatiActivities do
       expect(new_activity.ingested).to eq(true)
     end
 
-    it "add a project with the correct parent activities" do
+    it "associates the project with a programme" do
       beis = create(:beis_organisation)
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/single_activity.xml")
@@ -32,15 +33,7 @@ RSpec.describe IngestIatiActivities do
       described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
 
       activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
-
-      # Expect a connection to the right programme
-      expect(activity.parent_activity).not_to be_nil
-      expect(activity.parent_activity.identifier).to eql("UKSA_NS_UKSA")
-      expect(activity.parent_activity.organisation).to eql(beis)
-
-      # Expect a connection to the right fund
-      expect(activity.parent_activity.parent_activity).not_to be_nil
-      expect(activity.parent_activity.parent_activity.identifier).to eq("GCRF")
+      expect(activity.parent_activity).to eq(existing_programme)
       expect(activity.parent_activity.organisation).to eql(beis)
     end
 
@@ -89,7 +82,6 @@ RSpec.describe IngestIatiActivities do
     end
 
     it "creates transactions and marks them as ingested" do
-      _beis = create(:beis_organisation)
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_transactions.xml")
 
@@ -137,7 +129,6 @@ RSpec.describe IngestIatiActivities do
     end
 
     it "creates budgets and marks them as ingested" do
-      _beis = create(:beis_organisation)
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_budget.xml")
 
@@ -230,7 +221,6 @@ RSpec.describe IngestIatiActivities do
     # activity. Having the source directly linked to our copy of each activity
     # will make that operation less risky.
     it "attaches the contents of original XML file to the activity" do
-      _beis = create(:beis_organisation)
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/single_activity.xml")
 
@@ -244,7 +234,6 @@ RSpec.describe IngestIatiActivities do
 
     context "when the activity has a country and a region" do
       it "sets the recipient region to the more granular country" do
-        _beis = create(:beis_organisation)
         uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_country.xml")
 
@@ -259,7 +248,6 @@ RSpec.describe IngestIatiActivities do
 
     context "when a transaction has no description" do
       it "set a placeholder description" do
-        _beis = create(:beis_organisation)
         uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_missing_transaction_description.xml")
 
@@ -276,7 +264,6 @@ RSpec.describe IngestIatiActivities do
 
     context "when a description has escaped characters and extra whitespace" do
       it "normalizes the text" do
-        _beis = create(:beis_organisation)
         uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_escaped_characters.xml")
 

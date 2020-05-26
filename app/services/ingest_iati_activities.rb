@@ -1,4 +1,5 @@
 require "nokogiri"
+require "legacy_activity"
 
 class IngestIatiActivities
   include CodelistHelper
@@ -13,15 +14,15 @@ class IngestIatiActivities
   def call
     doc = Nokogiri::XML(file_io, nil, "UTF-8")
 
-    legacy_activities = doc.xpath("//iati-activity")
+    legacy_activity_nodes = doc.xpath("//iati-activity")
+    legacy_activity_nodes.each do |legacy_activity_node|
+      legacy_activity = LegacyActivity.new(activity_node_set: legacy_activity_node, delivery_partner: delivery_partner)
 
-    legacy_activities.each do |legacy_activity|
       ActiveRecord::Base.transaction do
-        new_activity = Activity.new(level: :project, organisation: delivery_partner)
+        new_activity = Activity.find_or_create_by(identifier: legacy_activity.identifier, level: :project, organisation: delivery_partner)
         add_identifiers(legacy_activity: legacy_activity, new_activity: new_activity)
 
-        parent_activity = find_or_create_parent_activities(delivery_partner: delivery_partner, new_activity: new_activity)
-        new_activity.activity = parent_activity
+        new_activity.activity = legacy_activity.find_parent_programme
 
         add_participating_organisation(delivery_partner: delivery_partner, new_activity: new_activity, legacy_activity: legacy_activity)
 
@@ -51,28 +52,6 @@ class IngestIatiActivities
         new_activity.save
       end
     end
-  end
-
-  private def find_or_create_parent_activities(delivery_partner:, new_activity:)
-    identifiers = new_activity.previous_identifier.split("-")
-    fund_identifier = identifiers.fourth
-    programme_identifier = identifiers.fifth
-
-    fund = Activity.funds.find_by(identifier: fund_identifier)
-    if fund.nil?
-      puts "Could not find associated fund for: #{new_activity.previous_identifier} with `identifier`: #{programme_identifier}. Creating one." unless Rails.env.test?
-      fund = CreateFundActivity.new(organisation_id: service_owner_organisation.id).call
-      fund.update!(identifier: fund_identifier, form_state: :identifier)
-    end
-
-    programme = Activity.programmes.find_by(identifier: programme_identifier)
-    if programme.nil?
-      puts "Could not find associated programme for: #{new_activity.previous_identifier} with `identifier`: #{programme_identifier}. Creating one." unless Rails.env.test?
-      programme = CreateProgrammeActivity.new(organisation_id: service_owner_organisation.id, fund_id: fund.id).call
-      programme.update!(identifier: programme_identifier, form_state: :identifier)
-    end
-
-    programme
   end
 
   private def add_participating_organisation(delivery_partner:, new_activity:, legacy_activity:)
