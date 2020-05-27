@@ -142,6 +142,7 @@
 - Planned disbursement dates are validated within boundaries
 - Ingest tool creates or updates existing projects if they match on the IATI identifier
 - Ingest tool will try to set more meaningful identifiers for projects
+- The providing organisation is pre-filled in for new transactions
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...HEAD
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6

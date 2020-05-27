@@ -371,12 +371,13 @@ RSpec.describe Activity, type: :model do
 
   describe "#providing_organisation" do
     context "when the activity is a fund or a programme" do
-      it "returns nil" do
+      it "returns BEIS" do
+        beis = create(:beis_organisation)
         fund = build(:fund_activity)
-        expect(fund.providing_organisation).to be_nil
+        expect(fund.providing_organisation).to eql beis
 
         programme = build(:programme_activity)
-        expect(programme.providing_organisation).to be_nil
+        expect(programme.providing_organisation).to eql beis
       end
     end
 
