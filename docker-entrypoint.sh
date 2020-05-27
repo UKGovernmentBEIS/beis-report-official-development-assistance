@@ -12,9 +12,14 @@ setup_database()
 
 run_data_migrations()
 {
-  echo "Running data migrations…"
-  bundle exec rake data:migrate
-  echo "Finished running data migrations."
+  if [ "$DATA_MIGRATE" == "false" ];
+  then
+    echo "Skipping data migrations"
+  else
+    echo "Running data migrations…"
+    bundle exec rake data:migrate
+    echo "Finished running data migrations."
+  fi
 }
 
 if [ -z ${DATABASE_URL+x} ]; then echo "Skipping database setup"; else setup_database; fi
