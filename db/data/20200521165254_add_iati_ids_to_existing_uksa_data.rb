@@ -65,7 +65,7 @@ class AddIatiIdsToExistingUksaData < ActiveRecord::Migration[6.0]
       "GB-GOV-13-GCRF-UKSA_FJ_SB_VU_UKSA-43",
       "GB-GOV-13-GCRF-UKSA_CI_UKSA-047",
     ]
-    updated_activities = Activity.where(updated_activity_ids)
+    updated_activities = Activity.where(previous_identifier: updated_activity_ids)
     updated_activities.update(previous_identifier: nil)
   end
 end
