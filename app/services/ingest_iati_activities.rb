@@ -266,8 +266,8 @@ class IngestIatiActivities
   end
 
   private def add_identifiers(legacy_activity:, new_activity:)
-    new_activity.identifier = SecureRandom.uuid
     new_activity.previous_identifier = legacy_activity.elements.detect { |element| element.name.eql?("iati-identifier") }.children.text
+    new_activity.identifier = legacy_activity.infer_internal_identifier
   end
 
   private def service_owner_organisation
