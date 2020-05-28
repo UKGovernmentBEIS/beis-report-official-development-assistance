@@ -1,5 +1,5 @@
 %nav
-  %ul{class: 'govuk-header__navigation', aria: { label: "Top Level Navigation"}}
+  %ul{id: 'navigation', class: 'govuk-header__navigation', aria: { label: "Top Level Navigation"}}
     -if defined?(current_user) && current_user.active?
 
       %li{ class: navigation_item_class(organisation_path(current_user.organisation)) }
