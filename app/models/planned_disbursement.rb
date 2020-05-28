@@ -1,4 +1,5 @@
 class PlannedDisbursement < ApplicationRecord
+  include PublicActivity::Common
   PLANNED_DISBURSEMENT_BUDGET_TYPES = {"1": "original", "2": "revised"}
 
   belongs_to :parent_activity, class_name: "Activity"
