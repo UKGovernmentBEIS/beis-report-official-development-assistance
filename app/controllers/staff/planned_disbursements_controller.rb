@@ -18,6 +18,7 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
     @planned_disbursement = result.object
 
     if result.success?
+      @planned_disbursement.create_activity key: "planned_disbursement.create", owner: current_user
       flash[:notice] = I18n.t("form.planned_disbursement.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
@@ -41,6 +42,7 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
       .call(attributes: planned_disbursement_params)
 
     if result.success?
+      @planned_disbursement.create_activity key: "planned_disbursement.update", owner: current_user
       flash[:notice] = I18n.t("form.planned_disbursement.update.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
