@@ -13,3 +13,14 @@
       - if policy(User).index?
         %li{ class: navigation_item_class(users_path) }
           = link_to t("page_title.users.index"), users_path, class: "govuk-header__link"
+
+      - if authenticated?
+        %li{ class: navigation_item_class(users_path) }
+          %a{ href: sign_out_path, class: 'govuk-header__link' }
+            = t("generic.link.sign_out")
+
+      - else
+        %li{ class: navigation_item_class(users_path) }
+          .govuk-header__content.app-header__user-links.app-visitor
+            %a.govuk-header__link{ data: { method: "post" }, href: "/auth/auth0" }
+              = t('generic.link.sign_in')
