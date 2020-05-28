@@ -10,13 +10,10 @@ RSpec.feature "Users can sign in with Auth0" do
     visit root_path
     expect(page).to have_content(I18n.t("page_title.welcome"))
 
-    within ".app-header__user-links" do
-      expect(page).to have_content(I18n.t("generic.link.sign_in"))
-      click_on I18n.t("generic.link.sign_in")
-    end
+    expect(page).to have_content(I18n.t("generic.link.sign_in"))
+    click_on I18n.t("generic.link.sign_in")
 
     expect(page).to have_content(user.organisation.name)
-    expect(page).to have_content(user.name)
     expect(page).to have_content(I18n.t("generic.link.sign_out"))
   end
 
@@ -29,13 +26,10 @@ RSpec.feature "Users can sign in with Auth0" do
     visit dashboard_path
     expect(page).to have_content(I18n.t("page_title.welcome"))
 
-    within ".app-visitor-welcome" do
-      expect(page).to have_content(I18n.t("generic.link.sign_in"))
-      click_on I18n.t("generic.link.sign_in")
-    end
+    expect(page).to have_content(I18n.t("generic.link.sign_in"))
+    click_on I18n.t("generic.link.sign_in")
 
     expect(page).to have_content(user.organisation.name)
-    expect(page).to have_content(user.name)
     expect(page).to have_content(I18n.t("generic.link.sign_out"))
   end
 
@@ -49,10 +43,8 @@ RSpec.feature "Users can sign in with Auth0" do
     visit root_path
     expect(page).to have_content(I18n.t("page_title.welcome"))
 
-    within ".app-header__user-links" do
-      expect(page).to have_content(I18n.t("generic.link.sign_in"))
-      click_on I18n.t("generic.link.sign_in")
-    end
+    expect(page).to have_content(I18n.t("generic.link.sign_in"))
+    click_on I18n.t("generic.link.sign_in")
 
     expect(page).to have_content(user.organisation.name)
   end
@@ -72,10 +64,8 @@ RSpec.feature "Users can sign in with Auth0" do
 
       visit dashboard_path
 
-      within ".app-header__user-links" do
-        expect(page).to have_content(I18n.t("generic.link.sign_in"))
-        click_on I18n.t("generic.link.sign_in")
-      end
+      expect(page).to have_content(I18n.t("generic.link.sign_in"))
+      click_on I18n.t("generic.link.sign_in")
 
       expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
       expect(page).to have_content(I18n.t("page_content.errors.not_authorised.explanation"))
@@ -90,10 +80,8 @@ RSpec.feature "Users can sign in with Auth0" do
     it "displays the error message so they can try to correct the problem themselves" do
       visit dashboard_path
 
-      within ".app-header__user-links" do
-        expect(page).to have_content(I18n.t("generic.link.sign_in"))
-        click_on I18n.t("generic.link.sign_in")
-      end
+      expect(page).to have_content(I18n.t("generic.link.sign_in"))
+      click_on I18n.t("generic.link.sign_in")
 
       expect(page).to have_content(I18n.t("page_content.errors.auth0.failed.explanation"))
       expect(page).to have_content(I18n.t("page_content.errors.auth0.error_messages.invalid_credentials"))
@@ -128,10 +116,8 @@ RSpec.feature "Users can sign in with Auth0" do
 
       visit dashboard_path
 
-      within ".app-header__user-links" do
-        expect(page).to have_content(I18n.t("generic.link.sign_in"))
-        click_on I18n.t("generic.link.sign_in")
-      end
+      expect(page).to have_content(I18n.t("generic.link.sign_in"))
+      click_on I18n.t("generic.link.sign_in")
 
       expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
       expect(page).to have_content(I18n.t("page_content.errors.not_authorised.explanation"))
