@@ -5,7 +5,19 @@ RSpec.feature "Users can view an organisation as XML" do
   context "when the user belongs to BEIS" do
     before { authenticate!(user: user) }
 
-    context "when the user is viewing any organisation show page" do
+    context "when the user is viewing the BEIS organisation show page" do
+      scenario "they cannot download the organisation's projects as XML" do
+        beis = user.organisation
+        _project = create(:project_activity, organisation: beis)
+
+        visit organisation_path(beis)
+
+        expect(page).to have_content(beis.name)
+        expect(page).to_not have_content(I18n.t("generic.button.download_as_xml"))
+      end
+    end
+
+    context "when the user is viewing any other organisation show page" do
       context "whe organisation has projects" do
         scenario "they can download the organisation's projects as XML" do
           _project = create(:project_activity, organisation: organisation)
