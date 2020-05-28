@@ -129,10 +129,8 @@ en:
       activity:
         actual_end_date: For example, 2 2 2020
         actual_start_date: For example, 11 1 2020
-        aid_type:
-          html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)</a>
-        flow:
-          html: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions</a> of each flow type (opens in new window)
+        aid_type_html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)</a>
+        flow_html: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions</a> of each flow type (opens in new window)
         identifier: This could be the reference you use in your internal systems
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
