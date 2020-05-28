@@ -20,6 +20,7 @@ class OrganisationPolicy < ApplicationPolicy
   end
 
   def download?
+    return false if record.service_owner?
     beis_user?
   end
 
