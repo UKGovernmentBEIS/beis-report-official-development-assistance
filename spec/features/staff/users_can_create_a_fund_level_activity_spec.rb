@@ -112,7 +112,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         fill_in "activity[identifier]", with: "foo"
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content "Purpose of fund"
+        expect(page).to have_content I18n.t("page_title.activity_form.show.purpose_level", level: "fund")
 
         # Don't provide a title and description
         click_button I18n.t("form.activity.submit")
@@ -141,7 +141,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         choose "Primary education"
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content I18n.t("page_title.activity_form.show.status")
+        expect(page).to have_content I18n.t("activerecord.attributes.activity.status")
 
         # Don't provide a status
         click_button I18n.t("form.activity.submit")
@@ -186,7 +186,7 @@ RSpec.feature "Users can create a fund level activity" do
         # region has the default value already selected
         click_button I18n.t("form.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
+        expect(page).to have_content I18n.t("activerecord.attributes.activity.flow")
 
         # Flow has a default and can't be set to blank so we skip
         select "ODA", from: "activity[flow]"

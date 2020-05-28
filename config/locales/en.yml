@@ -353,7 +353,7 @@ en:
         identifier: Enter a unique identifier
         purpose: Purpose
         purpose_level: What is the purpose of the %{level}?
-        region: What region will benefit from this activity?
+        region: Recipient region
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
         status: What is ths status of the fund?

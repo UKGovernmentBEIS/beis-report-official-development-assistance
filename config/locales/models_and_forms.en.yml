@@ -120,6 +120,8 @@ en:
         actual_start_date: Actual start date (optional)
         planned_end_date: Planned end date
         planned_start_date: Planned start date
+        recipient_country: What country will benefit from this activity?
+        recipient_region: What region will benefit from this activity?
         sector_category:
           html: What area of the economy or society is your %{level} helping? For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
       user:
@@ -134,6 +136,7 @@ en:
         identifier: This could be the reference you use in your internal systems
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
+        recipient_region: What region will benefit from this activity?
         status: This is the stage your %{level} is currently at
         title: A short title that explains the fund's activity
       budget:

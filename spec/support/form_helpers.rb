@@ -95,7 +95,6 @@ module FormHelpers
     select recipient_region, from: "activity[recipient_region]"
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.flow")
     expect(page).to have_content "International Aid Transparency Initiative (IATI) descriptions of each flow type (opens in new window)"
     select flow, from: "activity[flow]"
