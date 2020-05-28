@@ -7,7 +7,7 @@ ruby "2.6.3"
 gem "auth0", "~> 4.11"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "data_migrate"
-gem "govuk_design_system_formbuilder", github: "dxw/govuk_design_system_formbuilder", branch: "i18n"
+gem "govuk_design_system_formbuilder", "~> 1.1.10"
 gem "haml-rails"
 gem "high_voltage"
 gem "ipaddr"

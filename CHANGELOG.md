@@ -144,6 +144,7 @@
 - Ingest tool will try to set more meaningful identifiers for projects
 - The providing organisation is pre-filled in for new transactions
 - No longer lint the automatic schema changes made by the data_migrate gem
+- Switched to the latest form builder gem version from our fork
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...HEAD
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6
