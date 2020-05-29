@@ -121,7 +121,7 @@ class IngestIatiActivities
     transaction_elements = legacy_activity.elements.select { |element| element.name.eql?("transaction") }
     transaction_elements.each do |transaction_element|
       currency = transaction_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"].value
-      date = transaction_element.children.detect { |child| child.name.eql?("value") }.attributes["value-date"].value
+      date = transaction_element.children.detect { |child| child.name.eql?("transaction-date") }.attributes["iso-date"].value
       value = transaction_element.children.detect { |child| child.name.eql?("value") }.children.text
       transaction_type = transaction_element.children.detect { |child| child.name.eql?("transaction-type") }.attributes["code"].value
       disbursement_channel = if transaction_element.children.detect { |child| child.name.eql?("disbursement-channel") }.present?
