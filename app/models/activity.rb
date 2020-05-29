@@ -18,6 +18,8 @@ class Activity < ApplicationRecord
     :aid_type,
   ]
 
+  strip_attributes only: [:identifier]
+
   validates :identifier, presence: true, on: :identifier_step
   validates :title, :description, presence: true, on: :purpose_step
   validates :sector_category, presence: true, on: :sector_category_step
