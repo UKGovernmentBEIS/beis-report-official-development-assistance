@@ -1,6 +1,7 @@
 class Organisation < ApplicationRecord
   include PublicActivity::Common
 
+  strip_attributes only: [:iati_reference]
   has_many :users
   has_many :funds
 

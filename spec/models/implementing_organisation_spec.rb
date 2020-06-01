@@ -6,6 +6,10 @@ RSpec.describe ImplementingOrganisation, type: :model do
     it { should validate_presence_of(:organisation_type) }
   end
 
+  describe "sanitation" do
+    it { should strip_attribute(:reference) }
+  end
+
   describe "associations" do
     it { should belong_to(:activity) }
   end

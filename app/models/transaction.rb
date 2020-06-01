@@ -1,6 +1,8 @@
 class Transaction < ApplicationRecord
   include PublicActivity::Common
 
+  strip_attributes only: [:providing_organisation_reference, :receiving_organisation_reference]
+
   belongs_to :parent_activity, class_name: "Activity"
   validates_presence_of :description,
     :transaction_type,
