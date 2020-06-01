@@ -18,6 +18,11 @@ RSpec.describe PlannedDisbursement, type: :model do
     end
   end
 
+  describe "sanitation" do
+    it { should strip_attribute(:providing_organisation_reference) }
+    it { should strip_attribute(:receiving_organisation_reference) }
+  end
+
   describe "validations" do
     context "when the planned_disbursement_type is blank" do
       it "displays the appropriate error message" do

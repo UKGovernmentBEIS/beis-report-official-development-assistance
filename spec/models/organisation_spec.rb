@@ -10,6 +10,10 @@ RSpec.describe Organisation, type: :model do
 
     it { should validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
 
+    describe "sanitation" do
+      it { should strip_attribute(:iati_reference) }
+    end
+
     describe "#iati_reference" do
       it "returns true if it does matches a known structure XX-XXX-" do
         organisation = build(:organisation, iati_reference: "GB-GOV-13")

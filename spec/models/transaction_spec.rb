@@ -16,6 +16,11 @@ RSpec.describe Transaction, type: :model do
     it { should validate_presence_of(:receiving_organisation_type) }
   end
 
+  describe "sanitation" do
+    it { should strip_attribute(:providing_organisation_reference) }
+    it { should strip_attribute(:receiving_organisation_reference) }
+  end
+
   describe "#value" do
     context "value must be between 1 and 99,999,999,999.00 (100 billion minus one)" do
       it "allows the maximum possible value" do

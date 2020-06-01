@@ -149,8 +149,9 @@
 - User role hint text is shown
 
 ## [unreleased]
-- The IATI identifier on an activity is stripped of leading and trailing
-  whitespace
+- The IATI identifier on an activity, transaction, planned disbursement,
+  organisation and implementing organisation  is stripped of leading and
+  trailing whitespace
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...HEAD
 [release-7]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...release-7
