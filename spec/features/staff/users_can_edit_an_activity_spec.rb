@@ -89,7 +89,7 @@ RSpec.feature "Users can edit an activity" do
         select recipient_region, from: "activity[recipient_region]"
         click_button I18n.t("form.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
+        expect(page).to have_content I18n.t("helpers.fieldset.activity.flow")
         expect(page).not_to have_content activity.title
       end
     end

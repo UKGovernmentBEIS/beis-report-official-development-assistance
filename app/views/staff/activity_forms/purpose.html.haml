@@ -1,5 +1,5 @@
 = render layout: "wrapper" do |f|
-  %h1.govuk-heading-xl= t("page_title.activity_form.show.purpose_level", level: t("page_content.activity.level.#{f.object.level}"))
+  %h1.govuk-heading-xl= t("helpers.fieldset.activity.purpose", level: t("page_content.activity.level.#{f.object.level}"))
 
   = f.govuk_text_field :title
   = f.govuk_text_area :description, rows: 5

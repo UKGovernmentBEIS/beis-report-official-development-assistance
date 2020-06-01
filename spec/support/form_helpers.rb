@@ -25,12 +25,12 @@ module FormHelpers
     level:
   )
 
-    expect(page).to have_content I18n.t("activerecord.attributes.activity.identifier")
+    expect(page).to have_content I18n.t("helpers.fieldset.activity.identifier")
     expect(page).to have_content I18n.t("helpers.hint.activity.identifier")
     fill_in "activity[identifier]", with: identifier
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.purpose_level", level: I18n.t("page_content.activity.level.#{level}"))
+    expect(page).to have_content I18n.t("helpers.fieldset.activity.purpose", level: I18n.t("page_content.activity.level.#{level}"))
     expect(page).to have_content I18n.t("activerecord.attributes.activity.title")
     expect(page).to have_content I18n.t("activerecord.attributes.activity.description")
     fill_in "activity[title]", with: title
@@ -51,7 +51,7 @@ module FormHelpers
     choose sector
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("activerecord.attributes.activity.status")
+    expect(page).to have_content I18n.t("helpers.fieldset.activity.status", level: I18n.t("page_content.activity.level.#{level}"))
     expect(page).to have_content "The activity is being scoped or planned"
     expect(page).to have_content "The activity is currently being implemented"
     expect(page).to have_content "Physical activity is complete or the final disbursement has been made"
@@ -62,7 +62,7 @@ module FormHelpers
     choose("activity[status]", option: status)
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.dates")
+    expect(page).to have_content I18n.t("helpers.fieldset.activity.dates", level: I18n.t("page_content.activity.level.#{level}"))
 
     expect(page).to have_content I18n.t("helpers.fieldset.activity.planned_start_date")
     fill_in "activity[planned_start_date(3i)]", with: planned_start_date_day
@@ -90,13 +90,11 @@ module FormHelpers
     choose "Region"
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.region")
-    expect(page).to have_content I18n.t("activerecord.attributes.activity.recipient_region")
+    expect(page).to have_content I18n.t("helpers.fieldset.activity.recipient_region")
     select recipient_region, from: "activity[recipient_region]"
     click_button I18n.t("form.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
-    expect(page).to have_content I18n.t("activerecord.attributes.activity.flow")
+    expect(page).to have_content I18n.t("helpers.fieldset.activity.flow")
     expect(page).to have_content "International Aid Transparency Initiative (IATI) descriptions of each flow type (opens in new window)"
     select flow, from: "activity[flow]"
     click_button I18n.t("form.activity.submit")

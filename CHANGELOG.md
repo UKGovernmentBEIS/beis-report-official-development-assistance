@@ -150,6 +150,8 @@
 
 ## [unreleased]
 
+- Improve content on "Create Activity" form steps
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...HEAD
 [release-7]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...release-7
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6

@@ -1,5 +1,5 @@
 = render layout: "wrapper" do |f|
-  %h1.govuk-heading-xl= @page_title
+  %h1.govuk-heading-xl= I18n.t("helpers.fieldset.activity.dates", level: t("page_content.activity.level.#{f.object.level}"))
 
   = f.govuk_date_field :planned_start_date
   = f.govuk_date_field :planned_end_date

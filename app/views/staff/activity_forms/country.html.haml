@@ -4,6 +4,6 @@
     :code,
     :name,
     options: { selected: f.object.recipient_country || country_select_options.first.code},
-    label: { size: "xl", tag: "h1" }
+    label: { size: "xl", tag: "h1", text: I18n.t("helpers.fieldset.activity.recipient_country") }
   %script
     accessibleAutocomplete.enhanceSelectElement({ defaultValue: "", selectElement: document.getElementsByTagName("select")[0], showAllValues: true})

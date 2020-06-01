@@ -16,13 +16,13 @@ RSpec.feature "Users can provide the geography for an activity" do
         choose "Country"
         click_button I18n.t("form.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.country")
+        expect(page).to have_content I18n.t("helpers.fieldset.activity.recipient_country")
         expect(page).to have_current_path(activity_step_path(activity, :country))
 
         select "Uganda"
         click_button I18n.t("form.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
+        expect(page).to have_content I18n.t("helpers.fieldset.activity.flow")
         expect(page).to have_current_path(activity_step_path(activity, :flow))
       end
 
@@ -31,7 +31,7 @@ RSpec.feature "Users can provide the geography for an activity" do
         choose "Country"
         click_button I18n.t("form.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.country")
+        expect(page).to have_content I18n.t("helpers.fieldset.activity.recipient_country")
         expect(page).to have_current_path(activity_step_path(activity, :country))
 
         select "Uganda"
@@ -47,12 +47,12 @@ RSpec.feature "Users can provide the geography for an activity" do
         choose "Region"
         click_button I18n.t("form.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.region")
+        expect(page).to have_content I18n.t("helpers.fieldset.activity.recipient_region")
 
         select "Developing countries, unspecified", from: "activity[recipient_region]"
         click_button I18n.t("form.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
+        expect(page).to have_content I18n.t("helpers.fieldset.activity.flow")
         expect(page).to have_current_path(activity_step_path(activity, :flow))
       end
     end

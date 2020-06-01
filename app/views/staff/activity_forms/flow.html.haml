@@ -1,2 +1,2 @@
 = render layout: "wrapper" do |f|
-  = f.govuk_collection_select :flow, flow_select_options, :code, :name, options: { selected: f.object.flow || flow_select_options.first.code }, label: { tag: 'h1', size: 'xl' }, hint_text: I18n.t("helpers.hint.activity.flow_html").html_safe
+  = f.govuk_collection_select :flow, flow_select_options, :code, :name, options: { selected: f.object.flow || flow_select_options.first.code }, label: { tag: 'h1', size: 'xl', text: I18n.t("helpers.fieldset.activity.flow") }, hint_text: I18n.t("helpers.hint.activity.flow_html").html_safe

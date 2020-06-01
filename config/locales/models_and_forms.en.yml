@@ -118,10 +118,17 @@ en:
       activity:
         actual_end_date: Actual end date (optional)
         actual_start_date: Actual start date (optional)
+        dates: What are the start and end dates for this %{level}?
+        flow: What is the flow type?
+        identifier: Enter a unique identifier
         planned_end_date: Planned end date
         planned_start_date: Planned start date
+        purpose: What is the purpose of the %{level}?
+        recipient_country: What country will benefit from this activity?
+        recipient_region: What region will benefit from this activity?
         sector_category:
           html: What area of the economy or society is your %{level} helping? For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
+        status: What is the status of the %{level}?
       user:
         organisation_ids: Organisations
         role: Role

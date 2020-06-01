@@ -112,7 +112,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         fill_in "activity[identifier]", with: "foo"
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content "Purpose of fund"
+        expect(page).to have_content I18n.t("helpers.fieldset.activity.purpose", level: "fund")
 
         # Don't provide a title and description
         click_button I18n.t("form.activity.submit")
@@ -141,7 +141,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         choose "Primary education"
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content I18n.t("page_title.activity_form.show.status")
+        expect(page).to have_content I18n.t("helpers.fieldset.activity.status", level: "fund")
 
         # Don't provide a status
         click_button I18n.t("form.activity.submit")
@@ -150,7 +150,7 @@ RSpec.feature "Users can create a fund level activity" do
         choose("activity[status]", option: "2")
         click_button I18n.t("form.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.dates")
+        expect(page).to have_content I18n.t("helpers.fieldset.activity.dates", level: "fund")
 
         click_button I18n.t("form.activity.submit")
         expect(page).to have_content "Planned start date can't be blank"
@@ -181,12 +181,12 @@ RSpec.feature "Users can create a fund level activity" do
 
         choose "Region"
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content I18n.t("page_title.activity_form.show.region")
+        expect(page).to have_content I18n.t("helpers.fieldset.activity.recipient_region")
 
         # region has the default value already selected
         click_button I18n.t("form.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
+        expect(page).to have_content I18n.t("helpers.fieldset.activity.flow")
 
         # Flow has a default and can't be set to blank so we skip
         select "ODA", from: "activity[flow]"
