@@ -132,7 +132,7 @@
 - User can add, view and edit planned disbursements to projects and third-party projects
 - BEIS users can download all of an Organisation's project (or third-party project) activities as XML from the organisation show page
 
-## [unreleased]
+## [release-7] - 2020-06-01
 
 - Ingest tool no longer creates programmes but is instructed to look for existing records
 - If an activity has a recipient_country set, the recipient_region is inferred from the recipient_country
@@ -148,7 +148,10 @@
 - Planned disbursement create and update actions are recorded
 - User role hint text is shown
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...HEAD
+[release-7]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...release-5
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6
 [release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
 [release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
