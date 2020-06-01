@@ -145,3 +145,5 @@ en:
       transaction:
         date: If you're reporting quarterly data, select the last day of the quarter. For example, 31 12 2020
         description: For example, Quarter one spend on the Early Career Research Network project.
+      user:
+        role: Choose a role for this user.
