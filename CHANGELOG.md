@@ -146,6 +146,7 @@
 - No longer lint the automatic schema changes made by the data_migrate gem
 - Switched to the latest form builder gem version from our fork
 - Planned disbursement create and update actions are recorded
+- User role hint text is shown
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...HEAD
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6
