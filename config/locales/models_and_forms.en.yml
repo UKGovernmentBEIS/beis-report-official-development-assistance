@@ -140,8 +140,7 @@ en:
         period_end_date: Period end date must not be more than one year after the period start date. For example, 11 3 2021
         period_start_date: For example, 11 3 2020
       implementing_organisation:
-        reference:
-          html: <a href="http://org-id.guide/" target="_blank" class="govuk-link">Organisation references can be found using this service (Opens in new window)</a>
+        reference_html: <a href="http://org-id.guide/" target="_blank" class="govuk-link">Organisation references can be found using this service (Opens in new window)</a>
       transaction:
         date: If you're reporting quarterly data, select the last day of the quarter. For example, 31 12 2020
         description: For example, Quarter one spend on the Early Career Research Network project.
