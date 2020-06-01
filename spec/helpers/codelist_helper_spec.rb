@@ -89,7 +89,7 @@ RSpec.describe CodelistHelper, type: :helper do
           .to include(
             OpenStruct.new(name: "Pipeline/identification", code: "1", description: "The activity is being scoped or planned"),
             OpenStruct.new(name: "Implementation", code: "2", description: "The activity is currently being implemented"),
-            OpenStruct.new(name: "Completion", code: "3", description: "Physical activity is complete or the final disbursement has been made."),
+            OpenStruct.new(name: "Completion", code: "3", description: "Physical activity is complete or the final disbursement has been made"),
             OpenStruct.new(name: "Post-completion", code: "4", description: "Physical activity is complete or the final disbursement has been made, but the activity remains open pending financial sign off or M&E"),
             OpenStruct.new(name: "Cancelled", code: "5", description: "The activity has been cancelled"),
             OpenStruct.new(name: "Suspended", code: "6", description: "The activity has been temporarily suspended")
