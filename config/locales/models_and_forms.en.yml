@@ -129,6 +129,7 @@ en:
         sector_category:
           html: What area of the economy or society is your %{level} helping? For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
         status: What is the status of the %{level}?
+        title: "%{level} name"
       user:
         organisation_ids: Organisations
         role: Role

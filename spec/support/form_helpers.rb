@@ -31,7 +31,7 @@ module FormHelpers
     click_button I18n.t("form.activity.submit")
 
     expect(page).to have_content I18n.t("helpers.fieldset.activity.purpose", level: I18n.t("page_content.activity.level.#{level}"))
-    expect(page).to have_content I18n.t("activerecord.attributes.activity.title")
+    expect(page).to have_content I18n.t("helpers.fieldset.activity.title", level: I18n.t("page_content.activity.level.#{level}").titlecase)
     expect(page).to have_content I18n.t("activerecord.attributes.activity.description")
     fill_in "activity[title]", with: title
     fill_in "activity[description]", with: description
