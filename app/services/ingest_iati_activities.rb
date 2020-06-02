@@ -49,7 +49,7 @@ class IngestIatiActivities
         roda_activity.legacy_iati_xml = legacy_activity.to_xml.squish
         roda_activity.ingested = true
 
-        roda_activity.save
+        roda_activity.save!
       end
     end
   end
