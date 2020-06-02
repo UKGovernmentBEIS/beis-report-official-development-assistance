@@ -33,32 +33,18 @@
               GOV.UK
 
         - if authenticated?
-          .govuk-header__content.app-header__service
-          - if current_user.organisation
+          .govuk-header__content
             %a.govuk-header__link.govuk-header__link--service-name{ href: organisation_path(current_user.organisation) }
               = t('app.title')
-          - else
-            %span.govuk-header__link.govuk-header__link--service-name
-              = t('app.title')
-          .govuk-header__content.app-header__user-links
-            %span
-              = t('header.show.welcome', name: current_user.name)
-            %a{ href: sign_out_path, class: 'govuk-header__link' }
-              = t("generic.link.sign_out")
 
-          .govuk-header__content.app-header__navigation
-            %button{type:'button', class:'govuk-header__menu-button govuk-js-header-toggle', aria: {controls: 'navigation'}, aria: {label: 'Show or hide Top Level Navigation'}}
+            %button{type:'button', class:'govuk-header__menu-button govuk-js-header-toggle', aria: {label: 'Show or hide Top Level Navigation', controls: 'navigation'}}
               = t("generic.button.menu")
 
             = render partial: "shared/navigation"
         - else
-          .govuk-header__content.app-header__service
+          .govuk-header__content
             %a.govuk-header__link.govuk-header__link--service-name{href: "/"}
               = t('app.title')
-
-          .govuk-header__content.app-header__user-links.app-visitor
-            %a.govuk-header__link{ data: { method: "post" }, href: "/auth/auth0" }
-              = t('generic.link.sign_in')
 
     .govuk-width-container
       .govuk-phase-banner
