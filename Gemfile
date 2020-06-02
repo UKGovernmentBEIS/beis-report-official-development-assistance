@@ -33,6 +33,7 @@ gem "skylight"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "uglifier", ">= 1.3.0"
 gem "wicked"
+gem "strip_attributes"
 
 # Authentication
 gem "omniauth-auth0", "~> 2.3"

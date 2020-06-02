@@ -5,5 +5,7 @@ FactoryBot.define do
     name { Faker::Company.name }
     reference
     organisation_type { "10" }
+
+    association :activity, factory: :project_activity
   end
 end

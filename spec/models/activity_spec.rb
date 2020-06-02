@@ -35,6 +35,10 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "sanitisation" do
+    it { should strip_attribute(:identifier) }
+  end
+
   describe "validations" do
     context "overall activity state" do
       context "when the activity form is a draft" do

@@ -2,6 +2,8 @@ class PlannedDisbursement < ApplicationRecord
   include PublicActivity::Common
   PLANNED_DISBURSEMENT_BUDGET_TYPES = {"1": "original", "2": "revised"}
 
+  strip_attributes only: [:providing_organisation_reference, :receiving_organisation_reference]
+
   belongs_to :parent_activity, class_name: "Activity"
 
   validates_presence_of :planned_disbursement_type,
