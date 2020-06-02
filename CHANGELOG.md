@@ -155,6 +155,9 @@
   organisation and implementing organisation  is stripped of leading and
   trailing whitespace
 - Header navigation follows GOVUK frontend pattern
+- Infer a transaction's and planned disbursement's `receiving-org type` from its 
+  parent activity's `implementing organisation`, if the `receiving-org type` on the 
+  element is missing
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...HEAD
 [release-7]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...release-7
