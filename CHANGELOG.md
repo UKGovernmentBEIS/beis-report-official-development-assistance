@@ -147,6 +147,8 @@
 - Switched to the latest form builder gem version from our fork
 - Planned disbursement create and update actions are recorded
 - User role hint text is shown
+- Transaction dates are validated to be no more than 10 years ago and 25 years
+  in the future
 
 ## [unreleased]
 - The IATI identifier on an activity, transaction, planned disbursement,
