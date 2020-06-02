@@ -49,6 +49,7 @@ RSpec.describe Transaction, type: :model do
       end
     end
   end
+
   describe "#date" do
     context "date must not be in the future" do
       it "allows a date in the past" do
@@ -70,6 +71,13 @@ RSpec.describe Transaction, type: :model do
       it "allows a nil date" do
         transaction = build(:transaction, parent_activity: activity, date: Date.today)
         expect(transaction.valid?).to be true
+      end
+    end
+
+    context "when the value is more than 10 years in the past" do
+      it "is not valid" do
+        transaction = build(:transaction, date: 10.years.ago)
+        expect(transaction).to be_invalid
       end
     end
   end

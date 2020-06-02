@@ -14,5 +14,5 @@ class Transaction < ApplicationRecord
     :receiving_organisation_name,
     :receiving_organisation_type
   validates :value, inclusion: 0.01..99_999_999_999.00
-  validates :date, date_not_in_future: true
+  validates :date, date_not_in_future: true, date_within_boundaries: true
 end

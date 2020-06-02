@@ -182,7 +182,7 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(I18n.t("page_content.transactions.button.create"))
 
-        fill_in_transaction_form(date_day: 0o1, date_month: 0o1, date_year: 1900, expectations: false)
+        fill_in_transaction_form(date_day: 0o1, date_month: 0o1, date_year: 2.years.ago, expectations: false)
 
         expect(page).to_not have_content "Date must not be in the future"
         expect(page).to have_content I18n.t("form.transaction.create.success")
