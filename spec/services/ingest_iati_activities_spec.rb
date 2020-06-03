@@ -115,7 +115,7 @@ RSpec.describe IngestIatiActivities do
       expect(transaction.providing_organisation_type).to eql("10")
       expect(transaction.receiving_organisation_name).to eql("Avanti Communications")
       expect(transaction.receiving_organisation_reference).to eql(nil)
-      expect(transaction.receiving_organisation_type).to eql("0")
+      expect(transaction.receiving_organisation_type).to eql("70")
       expect(transaction.ingested).to be true
 
       expect(
@@ -186,7 +186,7 @@ RSpec.describe IngestIatiActivities do
         expect(ingested_planned_disbursement.ingested).to be true
       end
 
-      describe "provider orgnaisation type" do
+      describe "provider organisation type" do
         it "returns a default of 10 when there is no attribute" do
           legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
 
@@ -206,16 +206,7 @@ RSpec.describe IngestIatiActivities do
         end
       end
 
-      describe "receiving  orgnaisation type" do
-        it "returns a default of 0 when there is no attribute" do
-          legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
-          described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
-
-          ingested_planned_disbursement = planned_disbursements.first
-
-          expect(ingested_planned_disbursement.receiving_organisation_type).to eql("0")
-        end
-
+      describe "receiving organisation type" do
         it "returns the value when there is an attribute" do
           legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/fake_with_complete_planned_disbursement.xml")
           described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
@@ -223,6 +214,32 @@ RSpec.describe IngestIatiActivities do
           ingested_planned_disbursement = planned_disbursements.first
 
           expect(ingested_planned_disbursement.receiving_organisation_type).to eql("21")
+        end
+
+        it "returns the parent activity's implementing organisation type if there is no attribute" do
+          legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/fake_with_transaction.xml")
+          described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+          activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-029")
+          transaction = Transaction.where(parent_activity: activity).first
+
+          expect(transaction.receiving_organisation_type).to eql("80")
+        end
+
+        it "returns 0 if there is no attribute and the activity does not have an implementing organisation" do
+          uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+          existing_project = create(:project_activity,
+            previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021",
+            organisation: uksa)
+
+          legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_transactions.xml")
+
+          described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+          existing_project.reload
+
+          transaction = existing_project.transactions.first
+          expect(transaction.receiving_organisation_type).to eql("0")
         end
       end
     end
