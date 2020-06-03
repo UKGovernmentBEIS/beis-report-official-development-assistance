@@ -12,6 +12,8 @@ setup_database()
 
 run_data_migrations()
 {
+  echo "Loading schema (pentest hotfix)…"
+  bundle exec rake db:schema:load
   echo "Running data migrations…"
   bundle exec rake data:migrate
   echo "Finished running data migrations."
