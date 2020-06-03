@@ -136,8 +136,11 @@ class IngestIatiActivities
 
       providing_organisation_name = transaction_element.children.detect { |child| child.name.eql?("provider-org") }.children.detect { |child| child.name.eql?("narrative") }.text
       providing_organisation_reference = transaction_element.children.detect { |child| child.name.eql?("provider-org") }.attributes["ref"].value
-      receiving_organisation_name = transaction_element.children.detect { |child| child.name.eql?("receiver-org") }.children.detect { |child| child.name.eql?("narrative") }.text
-      receiving_organisation_reference = transaction_element.children.detect { |child| child.name.eql?("receiver-org") }.attributes["ref"].try(value, nil)
+
+      receiving_organisation = transaction_element.children.detect { |child| child.name.eql?("receiver-org") }
+      receiving_organisation_name = receiving_organisation.children.detect { |child| child.name.eql?("narrative") }.text
+      receiving_organisation_reference = receiving_organisation.attributes["ref"].try(:value)
+      receiving_organisation_type = receiving_organisation_type(attribute: receiving_organisation.attributes["type"], implementing_organisation: roda_activity.implementing_organisations.first)
 
       transaction = Transaction.new(
         description: normalize_string(description),
@@ -151,7 +154,7 @@ class IngestIatiActivities
         providing_organisation_type: "10",
         providing_organisation_reference: providing_organisation_reference,
         receiving_organisation_name: receiving_organisation_name,
-        receiving_organisation_type: "0",
+        receiving_organisation_type: receiving_organisation_type,
         receiving_organisation_reference: receiving_organisation_reference,
         ingested: true
       )
@@ -202,7 +205,7 @@ class IngestIatiActivities
       receiving_organisation = planned_disbursement_element.children.detect { |child| child.name.eql?("receiver-org") }
       receiving_organisation_name = receiving_organisation.children.detect { |child| child.name.eql?("narrative") }.text
       receiving_organisation_reference = receiving_organisation.attributes["ref"].try(:value)
-      receiving_organisation_type = receiving_organisation_type(attribute: receiving_organisation.attributes["type"])
+      receiving_organisation_type = receiving_organisation_type(attribute: receiving_organisation.attributes["type"], implementing_organisation: roda_activity.implementing_organisations.first)
 
       planned_disbursement = PlannedDisbursement.new(
         planned_disbursement_type: planned_disbursement_type,
@@ -228,9 +231,10 @@ class IngestIatiActivities
     attribute.value
   end
 
-  private def receiving_organisation_type(attribute:)
-    return "0" if attribute.nil?
-    attribute.value
+  private def receiving_organisation_type(attribute:, implementing_organisation:)
+    return attribute.value unless attribute.nil?
+    return implementing_organisation.organisation_type if implementing_organisation
+    "0"
   end
 
   private def sector_category_code(sector_code:)
