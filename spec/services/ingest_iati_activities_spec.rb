@@ -357,5 +357,16 @@ RSpec.describe IngestIatiActivities do
         expect_any_instance_of(PlannedDisbursement).not_to receive(:save!)
       end
     end
+
+    context "when an activity is invalid" do
+      it "raises an error loudly so the team are aware a record didn't save and can review the data" do
+        uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/invalid_activity.xml")
+
+        service = described_class.new(delivery_partner: uksa, file_io: legacy_activities)
+
+        expect { service.call }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
   end
 end
