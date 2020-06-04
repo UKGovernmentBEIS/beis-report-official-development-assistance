@@ -8,7 +8,7 @@ RSpec.feature "Users can sign in with Auth0" do
     )
 
     visit root_path
-    expect(page).to have_content(I18n.t("page_title.welcome"))
+    expect(page).to have_content(I18n.t("start_page.title"))
 
     expect(page).to have_content(I18n.t("generic.link.sign_in"))
     click_on I18n.t("generic.link.sign_in")
@@ -24,7 +24,7 @@ RSpec.feature "Users can sign in with Auth0" do
     )
 
     visit dashboard_path
-    expect(page).to have_content(I18n.t("page_title.welcome"))
+    expect(page).to have_content(I18n.t("start_page.title"))
 
     expect(page).to have_content(I18n.t("generic.link.sign_in"))
     click_on I18n.t("generic.link.sign_in")
@@ -41,7 +41,7 @@ RSpec.feature "Users can sign in with Auth0" do
     )
 
     visit root_path
-    expect(page).to have_content(I18n.t("page_title.welcome"))
+    expect(page).to have_content(I18n.t("start_page.title"))
 
     expect(page).to have_content(I18n.t("generic.link.sign_in"))
     click_on I18n.t("generic.link.sign_in")
@@ -52,7 +52,7 @@ RSpec.feature "Users can sign in with Auth0" do
   scenario "protected pages cannot be visited unless signed in" do
     visit dashboard_path
 
-    expect(page).to have_content(I18n.t("page_title.welcome"))
+    expect(page).to have_content(I18n.t("start_page.title"))
   end
 
   context "when the Auth0 identifier does not match a user record" do

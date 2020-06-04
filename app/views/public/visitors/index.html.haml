@@ -1,19 +1,19 @@
-=content_for :page_title_prefix, t("page_title.home")
+=content_for :page_title_prefix, t("start_page.document_title")
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds.app-visitor-welcome
       %h1.govuk-heading-xl
-        = t("page_title.welcome")
+        = t("start_page.title")
 
       %p.govuk-body
-        = t("page_content.start_page.introduction")
+        = t("start_page.introduction")
 
       %p.govuk-body
-        = t("page_content.start_page.use_this_page_to")
+        = t("start_page.use_this_page_to")
 
       %ul.govuk-list.govuk-list--bullet
-        - t("page_content.start_page.uses").each do |use|
+        - t("start_page.uses").each do |use|
           %li
             = use
 
