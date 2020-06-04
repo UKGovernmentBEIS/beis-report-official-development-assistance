@@ -20,7 +20,7 @@ RSpec.feature "Users can edit a transaction" do
       expect(page).to have_content(transaction.value)
 
       within("##{transaction.id}") do
-        click_on(I18n.t("generic.link.edit"))
+        click_on(I18n.t("default.link.edit"))
       end
 
       fill_in_transaction_form(
@@ -46,7 +46,7 @@ RSpec.feature "Users can edit a transaction" do
         expect(page).to have_content(transaction.value)
 
         within("##{transaction.id}") do
-          click_on(I18n.t("generic.link.edit"))
+          click_on(I18n.t("default.link.edit"))
         end
 
         fill_in_transaction_form(
@@ -74,7 +74,7 @@ RSpec.feature "Users can edit a transaction" do
       expect(page).to have_content(transaction.value)
 
       within("##{transaction.id}") do
-        click_on(I18n.t("generic.link.edit"))
+        click_on(I18n.t("default.link.edit"))
       end
       click_on(I18n.t("default.link.back"))
 

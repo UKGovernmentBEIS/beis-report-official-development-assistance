@@ -36,7 +36,7 @@ RSpec.feature "Users can edit organisations" do
     visit organisation_path(beis_organisation)
     click_link I18n.t("page_title.organisation.index")
     within("##{another_organisation.id}") do
-      click_link I18n.t("generic.link.edit")
+      click_link I18n.t("default.link.edit")
     end
 
     expect(page).to have_content(I18n.t("page_title.organisation.edit"))
@@ -53,7 +53,7 @@ RSpec.feature "Users can edit organisations" do
     click_link I18n.t("page_title.organisation.index")
 
     within("##{another_organisation.id}") do
-      click_link I18n.t("generic.link.edit")
+      click_link I18n.t("default.link.edit")
     end
 
     expect(page).to have_content(I18n.t("page_title.organisation.edit"))

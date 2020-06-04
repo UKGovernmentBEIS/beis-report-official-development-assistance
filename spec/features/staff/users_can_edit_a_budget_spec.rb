@@ -10,7 +10,7 @@ RSpec.describe "Users can edit a budget" do
 
       visit organisation_activity_path(user.organisation, activity)
       within("##{budget.id}") do
-        click_on I18n.t("generic.link.edit")
+        click_on I18n.t("default.link.edit")
       end
 
       fill_in "budget[value]", with: "20"
@@ -32,7 +32,7 @@ RSpec.describe "Users can edit a budget" do
 
       visit organisation_activity_path(user.organisation, activity)
       within("##{budget.id}") do
-        click_on I18n.t("generic.link.edit")
+        click_on I18n.t("default.link.edit")
       end
 
       fill_in "budget[value]", with: "20"
@@ -51,7 +51,7 @@ RSpec.describe "Users can edit a budget" do
       PublicActivity.with_tracking do
         visit organisation_activity_path(user.organisation, activity)
         within("##{budget.id}") do
-          click_on I18n.t("generic.link.edit")
+          click_on I18n.t("default.link.edit")
         end
 
         fill_in "budget[value]", with: "20"
@@ -71,7 +71,7 @@ RSpec.describe "Users can edit a budget" do
 
       visit organisation_activity_path(user.organisation, activity)
       within("##{budget.id}") do
-        click_on I18n.t("generic.link.edit")
+        click_on I18n.t("default.link.edit")
       end
 
       fill_in "budget[value]", with: ""

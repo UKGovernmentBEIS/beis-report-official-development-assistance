@@ -74,7 +74,7 @@ RSpec.feature "Users can manage the implementing organisations" do
 
       visit organisation_activity_path(project.organisation, project)
 
-      expect(page).not_to have_link I18n.t("generic.link.edit"), href: edit_activity_implementing_organisation_path(project, other_public_sector_organisation)
+      expect(page).not_to have_link I18n.t("default.link.edit"), href: edit_activity_implementing_organisation_path(project, other_public_sector_organisation)
     end
 
     scenario "they cannot add implementing organisations" do

@@ -31,7 +31,7 @@ RSpec.describe "Users can edit a planned disbursement" do
         visit organisation_path(user.organisation)
         click_on(project.title)
         within("##{planned_disbursement.id}") do
-          click_on(I18n.t("generic.link.edit"))
+          click_on(I18n.t("default.link.edit"))
         end
 
         fill_in_planned_disbursement_form(value: "2000.51")
