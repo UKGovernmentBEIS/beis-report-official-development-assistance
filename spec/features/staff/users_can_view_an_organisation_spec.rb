@@ -52,7 +52,7 @@ RSpec.feature "Users can view an organisation" do
         visit organisation_path(user.organisation)
         click_link I18n.t("page_title.organisation.index")
         within("##{other_organisation.id}") do
-          click_link I18n.t("generic.link.show")
+          click_link I18n.t("default.link.show")
         end
         expect(page).to have_content(other_organisation.name)
       end
@@ -64,7 +64,7 @@ RSpec.feature "Users can view an organisation" do
         visit organisation_path(user.organisation)
         click_link I18n.t("page_title.organisation.index")
         within("##{other_organisation.id}") do
-          click_link I18n.t("generic.link.show")
+          click_link I18n.t("default.link.show")
         end
 
         expect(page).to have_content(programme.title)
@@ -78,7 +78,7 @@ RSpec.feature "Users can view an organisation" do
         visit organisation_path(user.organisation)
         click_link I18n.t("page_title.organisation.index")
         within("##{other_organisation.id}") do
-          click_link I18n.t("generic.link.show")
+          click_link I18n.t("default.link.show")
         end
 
         expect(page).to_not have_content(other_programme.title)
@@ -90,7 +90,7 @@ RSpec.feature "Users can view an organisation" do
         click_link I18n.t("page_title.organisation.index")
 
         within("##{other_organisation.id}") do
-          click_link I18n.t("generic.link.show")
+          click_link I18n.t("default.link.show")
         end
         expect(page).to have_content(other_organisation.name)
         click_on I18n.t("default.link.back")
