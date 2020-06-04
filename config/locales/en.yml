@@ -1,11 +1,6 @@
 ---
 en:
   form:
-    programme:
-      create:
-        success: Programme successfully created
-      update:
-        success: Programme successfully updated
     project:
       create:
         success: Project successfully created
