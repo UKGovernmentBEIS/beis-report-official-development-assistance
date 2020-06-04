@@ -59,7 +59,7 @@ RSpec.feature "Users can create a transaction" do
       expect(page).to have_content("Description can't be blank")
       expect(page).to have_content("Transaction type can't be blank")
       expect(page).to have_content("Date can't be blank")
-      expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.inclusion")
+      expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.other_than")
       expect(page).to have_content("Receiving organisation name can't be blank")
       expect(page).to have_content("Receiving organisation type can't be blank")
     end
@@ -79,7 +79,7 @@ RSpec.feature "Users can create a transaction" do
     end
 
     context "Value number validation" do
-      scenario "Value must be between 1 and 99,999,999,999" do
+      scenario "Value must be maximum 99,999,999,999" do
         activity = create(:fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
@@ -98,7 +98,53 @@ RSpec.feature "Users can create a transaction" do
         select "Pound Sterling", from: "transaction[currency]"
         click_on(I18n.t("default.button.submit"))
 
-        expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.inclusion")
+        expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.less_than_or_equal_to")
+      end
+
+      scenario "Value cannot be 0" do
+        activity = create(:fund_activity, organisation: user.organisation)
+
+        visit organisation_path(user.organisation)
+
+        click_on(activity.title)
+
+        click_on(I18n.t("page_content.transactions.button.create"))
+
+        fill_in "transaction[description]", with: "This money will be purchasing a new school roof"
+        select "Outgoing Pledge", from: "transaction[transaction_type]"
+        fill_in "transaction[date(3i)]", with: "1"
+        fill_in "transaction[date(2i)]", with: "1"
+        fill_in "transaction[date(1i)]", with: "2020"
+        fill_in "transaction[value]", with: "0"
+        select "Money is disbursed through central Ministry of Finance or Treasury", from: "transaction[disbursement_channel]"
+        select "Pound Sterling", from: "transaction[currency]"
+        click_on(I18n.t("default.button.submit"))
+
+        expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.other_than")
+      end
+
+      scenario "Value can be negative" do
+        activity = create(:fund_activity, organisation: user.organisation)
+
+        visit organisation_path(user.organisation)
+
+        click_on(activity.title)
+
+        click_on(I18n.t("page_content.transactions.button.create"))
+
+        fill_in "transaction[description]", with: "This money will be purchasing a new school roof"
+        select "Outgoing Pledge", from: "transaction[transaction_type]"
+        fill_in "transaction[date(3i)]", with: "1"
+        fill_in "transaction[date(2i)]", with: "1"
+        fill_in "transaction[date(1i)]", with: "2020"
+        fill_in "transaction[value]", with: "-500000"
+        select "Money is disbursed through central Ministry of Finance or Treasury", from: "transaction[disbursement_channel]"
+        select "Pound Sterling", from: "transaction[currency]"
+        fill_in "transaction[receiving_organisation_name]", with: "Company"
+        select "Government", from: "transaction[receiving_organisation_type]"
+        click_on(I18n.t("default.button.submit"))
+
+        expect(page).to have_content I18n.t("form.transaction.create.success")
       end
 
       scenario "When the value includes a pound sign" do
