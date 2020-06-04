@@ -29,7 +29,7 @@ RSpec.feature "Users can view the static pages" do
       visit root_path
       click_on I18n.t("footer.link.cookie_statement")
 
-      expect(page).to have_content I18n.t("page_title.cookie_statement.title")
+      expect(page).to have_content I18n.t("cookie_statement.title")
     end
   end
 
@@ -43,7 +43,7 @@ RSpec.feature "Users can view the static pages" do
 
       visit cookie_statement_path
 
-      expect(page).to have_content I18n.t("page_title.cookie_statement.title")
+      expect(page).to have_content I18n.t("cookie_statement.title")
     end
   end
 end
