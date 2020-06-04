@@ -309,13 +309,6 @@ en:
       planned_disbursement_type:
         '1': Original
         '2': Revised
-    start_page:
-      introduction: This service is for reporting BEIS research and innovation ODA.
-      use_this_page_to: 'Use this service to:'
-      uses:
-      - add and manage information about funds and related activities
-      - report actual and forecast spend on activities
-      - see a summary of your ODA activity
     transactions:
       button:
         create: Add a transaction
@@ -401,7 +394,6 @@ en:
       index: Users
       new: Create user
       show: User
-    welcome: Report your official development assistance (ODA)
   user:
     active: Active?
     email: Email address
