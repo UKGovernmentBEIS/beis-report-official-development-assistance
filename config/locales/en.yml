@@ -1,11 +1,6 @@
 ---
 en:
   form:
-    project:
-      create:
-        success: Project successfully created
-      update:
-        success: Project successfully updated
     third_party_project:
       create:
         success: Third-party project successfully created
