@@ -3,7 +3,7 @@ module OrganisationHelper
     if current_user_on_home_page?(current_user, params)
       nil
     else
-      link_to t("generic.link.back"), organisations_path, class: "govuk-back-link"
+      link_to t("default.link.back"), organisations_path, class: "govuk-back-link"
     end
   end
 

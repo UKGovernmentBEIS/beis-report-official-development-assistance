@@ -76,7 +76,7 @@ RSpec.feature "Users can edit a transaction" do
       within("##{transaction.id}") do
         click_on(I18n.t("generic.link.edit"))
       end
-      click_on(I18n.t("generic.link.back"))
+      click_on(I18n.t("default.link.back"))
 
       expect(page).to have_content(activity.title)
     end

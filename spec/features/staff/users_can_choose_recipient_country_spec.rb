@@ -59,7 +59,7 @@ RSpec.feature "Users can choose a recipient country" do
         fill_in "Country", with: "Saint Lucia"
         find("li.autocomplete__option", text: "Saint Lucia").click
         click_button I18n.t("form.activity.submit")
-        click_on I18n.t("generic.link.back")
+        click_on I18n.t("default.link.back")
 
         within(".recipient_country") do
           expect(page).to have_content "Saint Lucia"
@@ -70,7 +70,7 @@ RSpec.feature "Users can choose a recipient country" do
         fill_in "Country", with: "saint"
         find("li.autocomplete__option", text: "Saint Lucia").click
         click_button I18n.t("form.activity.submit")
-        click_on I18n.t("generic.link.back")
+        click_on I18n.t("default.link.back")
 
         within(".recipient_country") do
           expect(page).to have_content "Saint Lucia"

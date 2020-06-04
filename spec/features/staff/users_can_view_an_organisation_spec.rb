@@ -23,7 +23,7 @@ RSpec.feature "Users can view an organisation" do
       scenario "does not see a back link on their organisation page" do
         visit organisation_path(user.organisation)
 
-        expect(page).to_not have_content(I18n.t("generic.link.back"))
+        expect(page).to_not have_content(I18n.t("default.link.back"))
       end
 
       scenario "can see a list of fund activities" do
@@ -93,7 +93,7 @@ RSpec.feature "Users can view an organisation" do
           click_link I18n.t("generic.link.show")
         end
         expect(page).to have_content(other_organisation.name)
-        click_on I18n.t("generic.link.back")
+        click_on I18n.t("default.link.back")
 
         expect(page).to have_current_path(organisations_path)
       end
@@ -116,7 +116,7 @@ RSpec.feature "Users can view an organisation" do
     scenario "does not see a back link on their organisation home page" do
       visit organisation_path(organisation)
 
-      expect(page).to_not have_content(I18n.t("generic.link.back"))
+      expect(page).to_not have_content(I18n.t("default.link.back"))
     end
 
     scenario "can see a list of programme activities" do

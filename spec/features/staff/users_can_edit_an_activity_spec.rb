@@ -197,7 +197,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :identifier)
     )
   end
-  click_on(I18n.t("generic.link.back"))
+  click_on(I18n.t("default.link.back"))
 
   within(".sector") do
     click_on(I18n.t("generic.link.edit"))
@@ -205,7 +205,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :sector_category)
     )
   end
-  click_on(I18n.t("generic.link.back"))
+  click_on(I18n.t("default.link.back"))
 
   within(".title") do
     click_on(I18n.t("generic.link.edit"))
@@ -213,7 +213,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :purpose)
     )
   end
-  click_on(I18n.t("generic.link.back"))
+  click_on(I18n.t("default.link.back"))
 
   within(".description") do
     click_on(I18n.t("generic.link.edit"))
@@ -221,7 +221,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :purpose)
     )
   end
-  click_on(I18n.t("generic.link.back"))
+  click_on(I18n.t("default.link.back"))
 
   within(".status") do
     click_on(I18n.t("generic.link.edit"))
@@ -229,7 +229,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :status)
     )
   end
-  click_on(I18n.t("generic.link.back"))
+  click_on(I18n.t("default.link.back"))
 
   within(".planned_start_date") do
     click_on(I18n.t("generic.link.edit"))
@@ -237,7 +237,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :dates)
     )
   end
-  click_on(I18n.t("generic.link.back"))
+  click_on(I18n.t("default.link.back"))
 
   within(".planned_end_date") do
     click_on(I18n.t("generic.link.edit"))
@@ -245,7 +245,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :dates)
     )
   end
-  click_on(I18n.t("generic.link.back"))
+  click_on(I18n.t("default.link.back"))
 
   within(".actual_start_date") do
     click_on(I18n.t("generic.link.edit"))
@@ -253,7 +253,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :dates)
     )
   end
-  click_on(I18n.t("generic.link.back"))
+  click_on(I18n.t("default.link.back"))
 
   within(".actual_end_date") do
     click_on(I18n.t("generic.link.edit"))
@@ -261,7 +261,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :dates)
     )
   end
-  click_on(I18n.t("generic.link.back"))
+  click_on(I18n.t("default.link.back"))
 
   within(".recipient_region") do
     click_on(I18n.t("generic.link.edit"))
@@ -269,7 +269,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :geography)
     )
   end
-  click_on(I18n.t("generic.link.back"))
+  click_on(I18n.t("default.link.back"))
 
   within(".flow") do
     click_on(I18n.t("generic.link.edit"))
@@ -277,7 +277,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :flow)
     )
   end
-  click_on(I18n.t("generic.link.back"))
+  click_on(I18n.t("default.link.back"))
 
   within(".aid_type") do
     click_on(I18n.t("generic.link.edit"))
@@ -285,5 +285,5 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :aid_type)
     )
   end
-  click_on(I18n.t("generic.link.back"))
+  click_on(I18n.t("default.link.back"))
 end
