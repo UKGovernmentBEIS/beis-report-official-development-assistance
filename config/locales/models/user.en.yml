@@ -1,0 +1,21 @@
+---
+en:
+  form:
+    user:
+      active:
+        active: Activate
+        'false': 'No'
+        hint: Is this user activated or deactivated? Deactivated users cannot log in.
+        inactive: Deactivate
+        label: Activate user
+        'true': 'Yes'
+      create:
+        failed: 'The service failed to create the new user. The error received was: %{error}'
+        success: User successfully created
+      organisation:
+        hint: What organisation does this user belong to?
+        label: Choose an organisation
+      submit: Submit
+      update:
+        failed: The service is experiencing issues updating users and the team has been alerted to the problem.
+        success: User successfully updated
