@@ -163,7 +163,6 @@ en:
         success: User successfully updated
   generic:
     button:
-      download_as_xml: Download as XML
       menu: Menu
       submit: Submit
     error:
