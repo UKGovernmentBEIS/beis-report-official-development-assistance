@@ -15,7 +15,7 @@ RSpec.describe "Users can edit a budget" do
 
       fill_in "budget[value]", with: "20"
       choose("budget[budget_type]", option: "2")
-      click_on I18n.t("generic.button.submit")
+      click_on I18n.t("default.button.submit")
 
       expect(page).to have_content(I18n.t("form.budget.update.success"))
       expect(page).to have_content("20.00")
@@ -37,7 +37,7 @@ RSpec.describe "Users can edit a budget" do
 
       fill_in "budget[value]", with: "20"
       choose("budget[budget_type]", option: "2")
-      click_on I18n.t("generic.button.submit")
+      click_on I18n.t("default.button.submit")
 
       expect(page).to have_content(I18n.t("form.budget.update.success"))
       expect(page).to have_content("20.00")
@@ -56,7 +56,7 @@ RSpec.describe "Users can edit a budget" do
 
         fill_in "budget[value]", with: "20"
         choose("budget[budget_type]", option: "2")
-        click_on I18n.t("generic.button.submit")
+        click_on I18n.t("default.button.submit")
 
         budget = Budget.last
         auditable_event = PublicActivity::Activity.find_by(trackable_id: budget.id)
@@ -78,7 +78,7 @@ RSpec.describe "Users can edit a budget" do
       fill_in "budget[period_start_date(3i)]", with: ""
       fill_in "budget[period_start_date(2i)]", with: ""
       fill_in "budget[period_start_date(1i)]", with: ""
-      click_on I18n.t("generic.button.submit")
+      click_on I18n.t("default.button.submit")
 
       expect(page).to have_content("There is a problem")
       expect(page).to have_content("can't be blank")

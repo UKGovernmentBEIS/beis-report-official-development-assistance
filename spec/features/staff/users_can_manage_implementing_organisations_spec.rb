@@ -20,7 +20,7 @@ RSpec.feature "Users can manage the implementing organisations" do
       fill_in I18n.t("activerecord.attributes.implementing_organisation.name"), with: other_public_sector_organisation.name
       select("Other Public Sector", from: I18n.t("activerecord.attributes.implementing_organisation.organisation_type"))
       fill_in I18n.t("activerecord.attributes.implementing_organisation.reference"), with: other_public_sector_organisation.reference
-      click_on I18n.t("generic.button.submit")
+      click_on I18n.t("default.button.submit")
 
       expect(current_path).to eq organisation_activity_path(project.organisation, project)
       expect(page).to have_content I18n.t("form.implementing_organisation.create.success")
@@ -45,7 +45,7 @@ RSpec.feature "Users can manage the implementing organisations" do
       expect(find_field(I18n.t("activerecord.attributes.implementing_organisation.name")).value).to eq other_public_sector_organisation.name
 
       fill_in I18n.t("activerecord.attributes.implementing_organisation.name"), with: "It is a charity"
-      click_on I18n.t("generic.button.submit")
+      click_on I18n.t("default.button.submit")
 
       expect(page).to have_content I18n.t("form.implementing_organisation.update.success")
       expect(page).to have_content "It is a charity"

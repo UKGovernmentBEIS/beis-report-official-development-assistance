@@ -162,9 +162,6 @@ en:
         failed: The service is experiencing issues updating users and the team has been alerted to the problem.
         success: User successfully updated
   generic:
-    button:
-      menu: Menu
-      submit: Submit
     error:
       unknown: Unknown error
     link:

@@ -23,7 +23,7 @@ RSpec.feature "BEIS users can create organisations" do
       select "Government", from: "organisation[organisation_type]"
       select "Czech", from: "organisation[language_code]"
       select "Zloty", from: "organisation[default_currency]"
-      click_button I18n.t("generic.button.submit")
+      click_button I18n.t("default.button.submit")
     end
 
     scenario "organisation creation is tracked with public_activity" do
@@ -38,7 +38,7 @@ RSpec.feature "BEIS users can create organisations" do
         select "Government", from: "organisation[organisation_type]"
         select "Swedish", from: "organisation[language_code]"
         select "US Dollar", from: "organisation[default_currency]"
-        click_button I18n.t("generic.button.submit")
+        click_button I18n.t("default.button.submit")
 
         organisation = Organisation.find_by(name: "My New Organisation")
         auditable_event = PublicActivity::Activity.find_by(trackable_id: organisation.id)
@@ -56,7 +56,7 @@ RSpec.feature "BEIS users can create organisations" do
       expect(page).to have_content(I18n.t("page_title.organisation.new"))
       fill_in "organisation[name]", with: "My New Organisation"
 
-      click_button I18n.t("generic.button.submit")
+      click_button I18n.t("default.button.submit")
       expect(page).to_not have_content I18n.t("form.organisation.create.success")
       expect(page).to have_content "can't be blank"
     end

@@ -66,7 +66,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
           fill_in "user[name]", with: "" # deliberately omit a value
           fill_in "user[email]", with: "" # deliberately omit a value
 
-          click_button I18n.t("generic.button.submit")
+          click_button I18n.t("default.button.submit")
 
           expect(page).to have_content("Name can't be blank")
           expect(page).to have_content("Email can't be blank")
@@ -89,7 +89,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
             choose organisation.name
 
             expect {
-              click_button I18n.t("generic.button.submit")
+              click_button I18n.t("default.button.submit")
             }.not_to change { User.count }
 
             expect(page).to have_content(I18n.t("form.user.create.failed", error: "The user already exists."))
@@ -107,7 +107,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
             fill_in "user[email]", with: "tom"
             choose organisation.name
 
-            click_button I18n.t("generic.button.submit")
+            click_button I18n.t("default.button.submit")
 
             expect(page).to have_content("Email is invalid")
             expect(page).not_to have_content(I18n.t("form.user.create.failed"))
@@ -151,6 +151,6 @@ RSpec.feature "BEIS users can invite new users to the service" do
     choose organisation.name
 
     # Submit the form
-    click_button I18n.t("generic.button.submit")
+    click_button I18n.t("default.button.submit")
   end
 end
