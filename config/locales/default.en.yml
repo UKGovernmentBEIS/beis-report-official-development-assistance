@@ -1,0 +1,11 @@
+---
+en:
+  app:
+    title: Report your official development assistance
+  date:
+    formats:
+      default: "%-d %b %Y"
+      iati: "%Y-%m-%d"
+  time:
+    formats:
+      default: "%Y-%m-%d"

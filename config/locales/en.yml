@@ -1,11 +1,5 @@
 ---
 en:
-  app:
-    title: Report your official development assistance
-  date:
-    formats:
-      default: "%-d %b %Y"
-      iati: "%Y-%m-%d"
   form:
     activity:
       create:
@@ -408,9 +402,6 @@ en:
       new: Create user
       show: User
     welcome: Report your official development assistance (ODA)
-  time:
-    formats:
-      default: "%Y-%m-%d"
   user:
     active: Active?
     email: Email address
