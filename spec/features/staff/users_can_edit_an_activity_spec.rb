@@ -14,7 +14,7 @@ RSpec.feature "Users can edit an activity" do
 
         # Click the first edit link that opens the form on step 1
         within(".identifier") do
-          expect(page).to have_content(I18n.t("generic.link.edit"))
+          expect(page).to have_content(I18n.t("default.link.edit"))
         end
 
         within(".title") do
@@ -34,7 +34,7 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_path(activity.organisation, activity)
 
         within(".identifier") do
-          click_on(I18n.t("generic.link.edit"))
+          click_on(I18n.t("default.link.edit"))
         end
 
         fill_in "activity[identifier]", with: identifier
@@ -59,7 +59,7 @@ RSpec.feature "Users can edit an activity" do
           visit organisation_activity_path(activity.organisation, activity)
 
           within(".identifier") do
-            click_on(I18n.t("generic.link.edit"))
+            click_on(I18n.t("default.link.edit"))
           end
 
           fill_in "activity[identifier]", with: identifier
@@ -82,7 +82,7 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_path(activity.organisation, activity)
 
         within(".recipient_region") do
-          click_on(I18n.t("generic.link.edit"))
+          click_on(I18n.t("default.link.edit"))
         end
         choose "Region"
         click_button I18n.t("form.activity.submit")
@@ -101,7 +101,7 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_path(activity.organisation, activity)
 
         within(".title") do
-          expect(page).to have_content(I18n.t("generic.link.edit"))
+          expect(page).to have_content(I18n.t("default.link.edit"))
         end
       end
     end
@@ -129,7 +129,7 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_path(activity.organisation, activity)
 
         within(".title") do
-          click_on(I18n.t("generic.link.edit"))
+          click_on(I18n.t("default.link.edit"))
         end
 
         click_button I18n.t("form.activity.submit")
@@ -161,7 +161,7 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_path(activity.organisation, activity)
 
         within(".title") do
-          click_on(I18n.t("generic.link.edit"))
+          click_on(I18n.t("default.link.edit"))
         end
 
         click_button I18n.t("form.activity.submit")
@@ -180,7 +180,7 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_path(activity.organisation, activity)
 
         within(".title") do
-          click_on(I18n.t("generic.link.edit"))
+          click_on(I18n.t("default.link.edit"))
         end
 
         click_button I18n.t("form.activity.submit")
@@ -192,7 +192,7 @@ end
 
 def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   within(".identifier") do
-    click_on I18n.t("generic.link.edit")
+    click_on I18n.t("default.link.edit")
     expect(page).to have_current_path(
       activity_step_path(activity, :identifier)
     )
@@ -200,7 +200,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(I18n.t("default.link.back"))
 
   within(".sector") do
-    click_on(I18n.t("generic.link.edit"))
+    click_on(I18n.t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :sector_category)
     )
@@ -208,7 +208,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(I18n.t("default.link.back"))
 
   within(".title") do
-    click_on(I18n.t("generic.link.edit"))
+    click_on(I18n.t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :purpose)
     )
@@ -216,7 +216,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(I18n.t("default.link.back"))
 
   within(".description") do
-    click_on(I18n.t("generic.link.edit"))
+    click_on(I18n.t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :purpose)
     )
@@ -224,7 +224,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(I18n.t("default.link.back"))
 
   within(".status") do
-    click_on(I18n.t("generic.link.edit"))
+    click_on(I18n.t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :status)
     )
@@ -232,7 +232,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(I18n.t("default.link.back"))
 
   within(".planned_start_date") do
-    click_on(I18n.t("generic.link.edit"))
+    click_on(I18n.t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :dates)
     )
@@ -240,7 +240,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(I18n.t("default.link.back"))
 
   within(".planned_end_date") do
-    click_on(I18n.t("generic.link.edit"))
+    click_on(I18n.t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :dates)
     )
@@ -248,7 +248,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(I18n.t("default.link.back"))
 
   within(".actual_start_date") do
-    click_on(I18n.t("generic.link.edit"))
+    click_on(I18n.t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :dates)
     )
@@ -256,7 +256,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(I18n.t("default.link.back"))
 
   within(".actual_end_date") do
-    click_on(I18n.t("generic.link.edit"))
+    click_on(I18n.t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :dates)
     )
@@ -264,7 +264,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(I18n.t("default.link.back"))
 
   within(".recipient_region") do
-    click_on(I18n.t("generic.link.edit"))
+    click_on(I18n.t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :geography)
     )
@@ -272,7 +272,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(I18n.t("default.link.back"))
 
   within(".flow") do
-    click_on(I18n.t("generic.link.edit"))
+    click_on(I18n.t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :flow)
     )
@@ -280,7 +280,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(I18n.t("default.link.back"))
 
   within(".aid_type") do
-    click_on(I18n.t("generic.link.edit"))
+    click_on(I18n.t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :aid_type)
     )

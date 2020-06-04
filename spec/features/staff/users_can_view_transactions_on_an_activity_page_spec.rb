@@ -87,7 +87,7 @@ RSpec.feature "Users can view transactions on an activity page" do
 
         expect(page).to_not have_content(I18n.t("page_content.transactions.button.create"))
         within("tr##{transaction.id}") do
-          expect(page).not_to have_content(I18n.t("generic.link.edit"))
+          expect(page).not_to have_content(I18n.t("default.link.edit"))
         end
       end
     end

@@ -17,4 +17,4 @@
         %td.govuk-table__cell= organisation.reference
         %td.govuk-table__cell
           - if policy(:project).edit?
-            = link_to t("generic.link.edit"), edit_activity_implementing_organisation_path(@activity, organisation), class: "govuk-link govuk-link--no-visited-state"
+            = link_to t("default.link.edit"), edit_activity_implementing_organisation_path(@activity, organisation), class: "govuk-link govuk-link--no-visited-state"

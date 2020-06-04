@@ -84,7 +84,7 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         expect(page).to_not have_content(I18n.t("page_content.budgets.button.create"))
         within("tr##{budget.id}") do
-          expect(page).not_to have_content(I18n.t("generic.link.edit"))
+          expect(page).not_to have_content(I18n.t("default.link.edit"))
         end
       end
     end
@@ -117,7 +117,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         click_link programme_activity.title
 
         within "##{budget.id}" do
-          expect(page).to_not have_content I18n.t("generic.link.edit")
+          expect(page).to_not have_content I18n.t("default.link.edit")
         end
       end
     end
@@ -151,7 +151,7 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         expect(page).to have_content(I18n.t("page_content.budgets.button.create"))
         within("tr##{budget.id}") do
-          expect(page).to have_content(I18n.t("generic.link.edit"))
+          expect(page).to have_content(I18n.t("default.link.edit"))
         end
       end
     end
