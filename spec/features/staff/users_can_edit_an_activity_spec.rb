@@ -18,11 +18,11 @@ RSpec.feature "Users can edit an activity" do
         end
 
         within(".title") do
-          expect(page).to have_content(I18n.t("generic.link.add"))
+          expect(page).to have_content(I18n.t("default.link.add"))
         end
 
         within(".sector") do
-          expect(page).to_not have_content(I18n.t("generic.link.add"))
+          expect(page).to_not have_content(I18n.t("default.link.add"))
         end
       end
     end
@@ -113,7 +113,7 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_path(activity.organisation, activity)
 
         within(".title") do
-          expect(page).to have_content(I18n.t("generic.link.add"))
+          expect(page).to have_content(I18n.t("default.link.add"))
         end
       end
     end
