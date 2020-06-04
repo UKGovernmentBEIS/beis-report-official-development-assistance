@@ -46,7 +46,7 @@ module Roda
     # the framework and any gems in your application.
 
     # Add IATI locales (:en is the default locale)
-    config.i18n.load_path += Dir[Rails.root.join("config", "locales", "codelists", "**", "*.{rb,yml}")]
+    config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**", "*.{rb,yml}")]
     config.i18n.default_locale = :en
     config.i18n.enforce_available_locales = false
 
