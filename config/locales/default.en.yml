@@ -9,3 +9,6 @@ en:
   time:
     formats:
       default: "%Y-%m-%d"
+  default:
+    button:
+      download_as_xml: Download as XML
