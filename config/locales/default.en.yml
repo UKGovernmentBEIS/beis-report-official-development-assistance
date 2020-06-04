@@ -12,3 +12,4 @@ en:
   default:
     button:
       download_as_xml: Download as XML
+      menu: Menu
