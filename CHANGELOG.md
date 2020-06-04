@@ -150,7 +150,8 @@
 - Transaction dates are validated to be no more than 10 years ago and 25 years
   in the future
 
-## [unreleased]
+## [release-8] - 2020-06-04
+
 - The IATI identifier on an activity, transaction, planned disbursement,
   organisation and implementing organisation  is stripped of leading and
   trailing whitespace
@@ -159,10 +160,12 @@
   parent activity's `implementing organisation`, if the `receiving-org type` on the
   element is missing
 - Ingest tool fails loudly if any activity fails to be created
-
 - Ingest UKSA data from IATI
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-8...HEAD
+[release-8]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...release-8
 [release-7]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...release-7
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6
 [release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
