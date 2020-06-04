@@ -164,12 +164,6 @@ en:
   generic:
     error:
       unknown: Unknown error
-    link:
-      sign_in: Sign in
-      sign_out: Sign out
-  header:
-    show:
-      welcome: "%{name}"
   page_content:
     activities:
       button:
