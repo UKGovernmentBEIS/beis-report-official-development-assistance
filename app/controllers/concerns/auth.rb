@@ -8,7 +8,7 @@ module Auth
 
     rescue_from(UserNotAuthorised, Pundit::NotAuthorizedError) do |exception|
       error_message = if exception.respond_to?(:policy)
-        t("#{exception.policy.class.to_s.underscore}.#{exception.query}", scope: "pundit", default: :default)
+        t("#{exception.policy.class.to_s.underscore}.#{exception.query}", scope: "not_authorised", default: :default)
       else
         t("page_content.errors.not_authorised.explanation")
       end
