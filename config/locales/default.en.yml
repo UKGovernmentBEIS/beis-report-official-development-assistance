@@ -19,3 +19,5 @@ en:
       back: Back
       edit: Edit
       show: Show
+    error:
+      unknown: Unknown error

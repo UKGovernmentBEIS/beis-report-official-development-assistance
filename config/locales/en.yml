@@ -161,9 +161,6 @@ en:
       update:
         failed: The service is experiencing issues updating users and the team has been alerted to the problem.
         success: User successfully updated
-  generic:
-    error:
-      unknown: Unknown error
   page_content:
     activities:
       button:
