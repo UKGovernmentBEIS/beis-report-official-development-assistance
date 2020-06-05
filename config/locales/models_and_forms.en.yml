@@ -1,26 +1,6 @@
 ---
 en:
   activerecord:
-    attributes:
-      user:
-        organisation_ids: Organisations
-        roles:
-          administrator: Administrator
-          delivery_partner: Delivery partner
-          fund_manager: Fund manager
     errors:
-      models:
-        user:
-          attributes:
-            organisation_ids:
-              blank: Select the organisation(s) this user belongs to
       validators:
         end_date_not_before_start_date: The end date cannot be before the start date
-  helpers:
-    fieldset:
-      user:
-        organisation_ids: Organisations
-        role: Role
-    hint:
-      user:
-        role: Choose a role for this user.

@@ -40,3 +40,25 @@ en:
       index: Users
       new: Create user
       show: User
+  activerecord:
+    attributes:
+      user:
+        organisation_ids: Organisations
+        roles:
+          administrator: Administrator
+          delivery_partner: Delivery partner
+          fund_manager: Fund manager
+    errors:
+      models:
+        user:
+          attributes:
+            organisation_ids:
+              blank: Select the organisation(s) this user belongs to
+  helpers:
+    fieldset:
+      user:
+        organisation_ids: Organisations
+        role: Role
+    hint:
+      user:
+        role: Choose a role for this user.
