@@ -57,10 +57,3 @@ en:
       index: Users
       new: Create user
       show: User
-  user:
-    active: Active?
-    email: Email address
-    identifier: Auth0 identifier
-    name: Full name
-    organisation: Organisation
-    role: Role

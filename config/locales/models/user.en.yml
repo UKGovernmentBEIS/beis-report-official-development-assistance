@@ -1,5 +1,12 @@
 ---
 en:
+  user:
+    active: Active?
+    email: Email address
+    identifier: Auth0 identifier
+    name: Full name
+    organisation: Organisation
+    role: Role
   form:
     user:
       active:
