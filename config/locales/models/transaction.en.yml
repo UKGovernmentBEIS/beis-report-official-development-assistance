@@ -40,3 +40,7 @@ en:
         headers:
           providing_organisation: Provider
           receiving_organisation: Receiver
+  page_title:
+    transaction:
+      edit: Edit transaction
+      new: Add a transaction

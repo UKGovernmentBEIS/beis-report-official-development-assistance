@@ -30,3 +30,7 @@ en:
       status:
         '1': Indicative
         '2': Committed
+  page_title:
+    budget:
+      edit: Edit budget
+      new: Create budget

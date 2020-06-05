@@ -34,3 +34,9 @@ en:
         no_organisations:
           cta: There are no organisations yet,
           link: you can make one now
+  page_title:
+    users:
+      edit: Edit user
+      index: Users
+      new: Create user
+      show: User
