@@ -18,3 +18,15 @@ en:
         success: Budget successfully updated
       value:
         label: Value
+  page_content:
+    budgets:
+      button:
+        create: Add budget
+      edit_noun: budget
+    budget:
+      budget_type:
+        '1': Original
+        '2': Updated
+      status:
+        '1': Indicative
+        '2': Committed

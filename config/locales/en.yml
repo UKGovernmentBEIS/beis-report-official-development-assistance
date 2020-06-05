@@ -1,10 +1,6 @@
 ---
 en:
   page_content:
-    budgets:
-      button:
-        create: Add budget
-      edit_noun: budget
     errors:
       auth0:
         error_messages:
