@@ -13,7 +13,7 @@ RSpec.feature "Users can manage the extending organisation" do
 
         click_on I18n.t("page_content.activity.extending_organisation.button.edit")
         choose delivery_partner.name
-        click_on I18n.t("generic.button.submit")
+        click_on I18n.t("default.button.submit")
 
         expect(page).to have_content("success")
         expect(page).to have_content delivery_partner.name
@@ -30,7 +30,7 @@ RSpec.feature "Users can manage the extending organisation" do
         expect(page).to have_checked_field delivery_partner.name
 
         choose another_delivery_partner.name
-        click_on I18n.t("generic.button.submit")
+        click_on I18n.t("default.button.submit")
 
         expect(page).to have_content("success")
         expect(page).to have_content another_delivery_partner.name
@@ -39,7 +39,7 @@ RSpec.feature "Users can manage the extending organisation" do
       scenario "not selecting an extending organisation results in an error" do
         visit organisation_activity_path(programme.organisation, programme)
         click_on I18n.t("page_content.activity.extending_organisation.button.edit")
-        click_on I18n.t("generic.button.submit")
+        click_on I18n.t("default.button.submit")
 
         expect(page).to have_content "Error: Extending organisation can't be blank"
       end

@@ -55,7 +55,7 @@ RSpec.feature "Users can view fund level activities" do
 
       visit organisation_activity_path(user.organisation, activity)
 
-      click_on I18n.t("generic.link.back")
+      click_on I18n.t("default.link.back")
 
       expect(page).to have_current_path(organisation_path(user.organisation))
     end

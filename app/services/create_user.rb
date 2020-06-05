@@ -30,7 +30,7 @@ class CreateUser
     begin
       message = JSON.parse(result.message)["message"]
     rescue JSON::ParserError
-      message = I18n.t("generic.error.unknown")
+      message = I18n.t("default.error.unknown")
     end
     message
   end

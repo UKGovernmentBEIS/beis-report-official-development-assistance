@@ -1,33 +1,33 @@
-= content_for :page_title_prefix, t("page_title.cookie_statement.title")
+= content_for :page_title_prefix, t("cookie_statement.title")
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full.app-visitor-welcome
       %h1.govuk-heading-xl
-        = t("page_title.cookie_statement.title")
+        = t("cookie_statement.title")
       %p.govuk-body
-        = t("page_title.cookie_statement.introduction")
+        = t("cookie_statement.introduction")
       %h2.govuk-heading-m
-        = t("page_title.cookie_statement.website_use.title")
-      - t("page_title.cookie_statement.website_use.paragraph").each do |paragraph|
+        = t("cookie_statement.website_use.title")
+      - t("cookie_statement.website_use.paragraph").each do |paragraph|
         %p.govuk-body
           = paragraph
       %ul.govuk-list.govuk-list--bullet
-        - t("page_title.cookie_statement.website_use.list").each do |item|
+        - t("cookie_statement.website_use.list").each do |item|
           %li
             = item
       %p.govuk-body
-        = t("page_title.cookie_statement.website_use.google_analytics.title")
-      = t("page_title.cookie_statement.website_use.google_analytics.table").html_safe
+        = t("cookie_statement.website_use.google_analytics.title")
+      = t("cookie_statement.website_use.google_analytics.table").html_safe
 
       %h2.govuk-heading-m
-        = t("page_title.cookie_statement.strictly_necessary_cookies.title")
+        = t("cookie_statement.strictly_necessary_cookies.title")
       %p.govuk-body
-        = t("page_title.cookie_statement.strictly_necessary_cookies.paragraph")
-        = t("page_title.cookie_statement.strictly_necessary_cookies.table").html_safe
+        = t("cookie_statement.strictly_necessary_cookies.paragraph")
+        = t("cookie_statement.strictly_necessary_cookies.table").html_safe
       %h2.govuk-heading-m
-        = t("page_title.cookie_statement.gathering_feedback.title")
-      - t("page_title.cookie_statement.gathering_feedback.paragraph").each do |paragraph|
+        = t("cookie_statement.gathering_feedback.title")
+      - t("cookie_statement.gathering_feedback.paragraph").each do |paragraph|
         %p.govuk-body
           = paragraph.html_safe
       %p.govuk-body.published-dates

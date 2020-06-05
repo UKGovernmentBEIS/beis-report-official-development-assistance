@@ -30,7 +30,7 @@ feature "Home page" do
 
     scenario "they are shown the start page" do
       visit root_path
-      expect(page).to have_button(I18n.t("generic.link.sign_in"))
+      expect(page).to have_button(I18n.t("header.link.sign_in"))
     end
   end
 end

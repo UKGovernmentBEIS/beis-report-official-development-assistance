@@ -1,0 +1,23 @@
+---
+en:
+  app:
+    title: Report your official development assistance
+  date:
+    formats:
+      default: "%-d %b %Y"
+      iati: "%Y-%m-%d"
+  time:
+    formats:
+      default: "%Y-%m-%d"
+  default:
+    button:
+      download_as_xml: Download as XML
+      menu: Menu
+      submit: Submit
+    link:
+      add: Add
+      back: Back
+      edit: Edit
+      show: Show
+    error:
+      unknown: Unknown error

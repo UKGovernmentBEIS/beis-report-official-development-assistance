@@ -86,7 +86,7 @@ RSpec.feature "BEIS users can can view other users" do
 
       visit user_path(another_user)
 
-      click_on I18n.t("generic.link.back")
+      click_on I18n.t("default.link.back")
 
       expect(page).to have_current_path(users_path)
     end
