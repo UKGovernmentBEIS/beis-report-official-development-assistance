@@ -78,8 +78,13 @@ RUN cp -R $DEPS_HOME/node_modules/govuk-frontend/govuk/assets $APP_HOME/app/asse
 
 RUN \
   RAILS_ENV=$RAILS_ENV \
+  DOMAIN="stand-in.local" \
   SECRET_KEY_BASE="super secret" \
-  REDIS_URL="redis://build.local:6379" \
+  DATABASE_URL="postgres://stand-in:5432" \
+  REDIS_URL="redis://stand-in.local:6379" \
+  AUTH0_CLIENT_ID="stand-in" \
+  AUTH0_CLIENT_SECRET="stand-in" \
+  AUTH0_DOMAIN="stand-in.local" \
   bundle exec rake assets:precompile --quiet
 
 # create tmp/pids
