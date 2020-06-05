@@ -31,3 +31,12 @@ en:
         label: Type
       update:
         success: Transaction sucessfully updated
+  page_content:
+    transactions:
+      button:
+        create: Add a transaction
+      edit_noun: transaction
+      table:
+        headers:
+          providing_organisation: Provider
+          receiving_organisation: Receiver
