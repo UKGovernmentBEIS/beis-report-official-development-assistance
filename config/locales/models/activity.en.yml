@@ -96,3 +96,56 @@ en:
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
         status: Status
+  activerecord:
+    attributes:
+      activity:
+        aid_type: Aid type
+        description: Description
+        flow: Flow
+        identifier: Your unique identifier
+        programme:
+          fund: Fund
+        project:
+          programme: Programme
+        recipient_country: Country
+        recipient_region: Recipient region
+        sector: Focus area
+        sector_category: Focus area category
+        status: Status
+        title: Title
+    errors:
+      models:
+        activity:
+          attributes:
+            actual_end_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+              not_in_future: Actual end date must not be in the future
+            dates: Enter an actual start date or a planned start date for the activity
+            actual_start_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+              not_in_future: Actual start date must not be in the future
+            planned_end_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+            planned_start_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+  helpers:
+    fieldset:
+      activity:
+        actual_end_date: Actual end date (optional)
+        actual_start_date: Actual start date
+        planned_start_date: Planned start date
+        planned_end_date: Planned end date (optional)
+        sector_category:
+          html: What area of the economy or society is your %{level} helping? For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
+    hint:
+      activity:
+        actual_end_date: For example, 2 2 2020
+        actual_start_date: For example, 11 1 2020
+        aid_type_html: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)</a>
+        flow_html: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions</a> of each flow type (opens in new window)
+        identifier: This could be the reference you use in your internal systems
+        planned_end_date: For example, 28 11 2020
+        planned_start_date: For example, 27 3 2020
+        status: This is the stage your %{level} is currently at
+        title: A short title that explains the fund's activity
+
