@@ -32,7 +32,8 @@ class Activity < ApplicationRecord
   validates :aid_type, presence: true, on: :aid_type_step
 
   validates_uniqueness_of :identifier, allow_nil: true
-  validates :planned_start_date, :planned_end_date, presence: true, on: :dates_step
+  validates :planned_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.actual_start_date.present? }
+  validates :actual_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.planned_start_date.present? }
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
   validates :actual_start_date, :actual_end_date, date_not_in_future: true
   validates :extending_organisation_id, presence: true, on: :update_extending_organisation
