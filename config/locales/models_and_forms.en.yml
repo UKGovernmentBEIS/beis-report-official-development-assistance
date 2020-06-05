@@ -2,12 +2,6 @@
 en:
   activerecord:
     attributes:
-      organisation:
-        default_currency: Default currency
-        iati_reference: International Aid Transparency Initiative (IATI) reference
-        language_code: Language code
-        name: Name
-        organisation_type: Organisation type
       planned_disbursement:
         planned_disbursement_type: Budget type
         providing_organisation_name: Providing organisation name
@@ -33,10 +27,6 @@ en:
           fund_manager: Fund manager
     errors:
       models:
-        organisation:
-          attributes:
-            iati_reference:
-              format: Identifiers must start with a country code and company type separated by a dash, eg. GB-GOV-13
         planned_disbursement:
           attributes:
             period_end_date:
