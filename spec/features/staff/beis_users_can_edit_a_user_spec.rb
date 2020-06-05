@@ -72,7 +72,7 @@ RSpec.feature "BEIS users can editing other users" do
     find("tr", text: user.name).click_link("Edit")
 
     choose I18n.t("form.user.active.inactive")
-    click_on I18n.t("generic.button.submit")
+    click_on I18n.t("default.button.submit")
 
     expect(user.reload.active).to be false
   end
@@ -87,7 +87,7 @@ RSpec.feature "BEIS users can editing other users" do
     find("tr", text: user.name).click_link("Edit")
 
     choose I18n.t("form.user.active.active")
-    click_on I18n.t("generic.button.submit")
+    click_on I18n.t("default.button.submit")
 
     expect(user.reload.active).to be true
   end

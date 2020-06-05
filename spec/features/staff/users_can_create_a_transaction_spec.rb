@@ -53,7 +53,7 @@ RSpec.feature "Users can create a transaction" do
       click_on(activity.title)
 
       click_on(I18n.t("page_content.transactions.button.create"))
-      click_on(I18n.t("generic.button.submit"))
+      click_on(I18n.t("default.button.submit"))
 
       expect(page).to_not have_content(I18n.t("form.transaction.create.success"))
       expect(page).to have_content("Description can't be blank")
@@ -73,7 +73,7 @@ RSpec.feature "Users can create a transaction" do
 
       click_on(I18n.t("page_content.transactions.button.create"))
       expect(page).to have_content("Disbursement channel (optional)")
-      click_on(I18n.t("generic.button.submit"))
+      click_on(I18n.t("default.button.submit"))
 
       expect(page).to_not have_content("Disbursement channel can't be blank")
     end
@@ -96,7 +96,7 @@ RSpec.feature "Users can create a transaction" do
         fill_in "transaction[value]", with: "100000000000"
         select "Money is disbursed through central Ministry of Finance or Treasury", from: "transaction[disbursement_channel]"
         select "Pound Sterling", from: "transaction[currency]"
-        click_on(I18n.t("generic.button.submit"))
+        click_on(I18n.t("default.button.submit"))
 
         expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.inclusion")
       end

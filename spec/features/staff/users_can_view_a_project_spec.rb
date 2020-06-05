@@ -54,7 +54,7 @@ RSpec.feature "Users can view a project" do
 
       visit organisation_activity_path(project.organisation, project)
 
-      expect(page).to_not have_content I18n.t("generic.button.download_as_xml")
+      expect(page).to_not have_content I18n.t("default.button.download_as_xml")
     end
   end
 
@@ -81,9 +81,9 @@ RSpec.feature "Users can view a project" do
 
       visit organisation_activity_path(project.organisation, project)
 
-      expect(page).to have_content I18n.t("generic.button.download_as_xml")
+      expect(page).to have_content I18n.t("default.button.download_as_xml")
 
-      click_on I18n.t("generic.button.download_as_xml")
+      click_on I18n.t("default.button.download_as_xml")
 
       expect(page.response_headers["Content-Type"]).to include("application/xml")
 

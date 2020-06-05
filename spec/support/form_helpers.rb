@@ -154,7 +154,7 @@ module FormHelpers
     select receiving_organisation.type, from: "transaction[receiving_organisation_type]"
     fill_in "transaction[receiving_organisation_reference]", with: receiving_organisation.reference
 
-    click_on(I18n.t("generic.button.submit"))
+    click_on(I18n.t("default.button.submit"))
 
     if expectations
       within ".transactions" do
@@ -200,7 +200,7 @@ module FormHelpers
     select receiving_organisation.type, from: "planned_disbursement[receiving_organisation_type]"
     fill_in "planned_disbursement[receiving_organisation_reference]", with: receiving_organisation.reference
 
-    click_on(I18n.t("generic.button.submit"))
+    click_on(I18n.t("default.button.submit"))
   end
 
   def localise_date_from_input_fields(year:, month:, day:)

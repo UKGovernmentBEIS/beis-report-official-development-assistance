@@ -24,7 +24,7 @@ RSpec.feature "Users can view a third-party project" do
 
       visit organisation_activity_path(third_party_project.organisation, third_party_project)
 
-      expect(page).to_not have_content I18n.t("generic.button.download_as_xml")
+      expect(page).to_not have_content I18n.t("default.button.download_as_xml")
     end
 
     scenario "can view and add budgets and transactions on a third-party project" do
@@ -60,9 +60,9 @@ RSpec.feature "Users can view a third-party project" do
 
       visit organisation_activity_path(third_party_project.organisation, third_party_project)
 
-      expect(page).to have_content I18n.t("generic.button.download_as_xml")
+      expect(page).to have_content I18n.t("default.button.download_as_xml")
 
-      click_on I18n.t("generic.button.download_as_xml")
+      click_on I18n.t("default.button.download_as_xml")
 
       expect(page.response_headers["Content-Type"]).to include("application/xml")
 

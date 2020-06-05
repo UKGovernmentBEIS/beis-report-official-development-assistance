@@ -36,13 +36,13 @@ RSpec.feature "Users can edit organisations" do
     visit organisation_path(beis_organisation)
     click_link I18n.t("page_title.organisation.index")
     within("##{another_organisation.id}") do
-      click_link I18n.t("generic.link.edit")
+      click_link I18n.t("default.link.edit")
     end
 
     expect(page).to have_content(I18n.t("page_title.organisation.edit"))
     fill_in "organisation[name]", with: ""
 
-    click_button I18n.t("generic.button.submit")
+    click_button I18n.t("default.button.submit")
     expect(page).to_not have_content I18n.t("form.organisation.update.success")
     expect(page).to have_content "can't be blank"
   end
@@ -53,7 +53,7 @@ RSpec.feature "Users can edit organisations" do
     click_link I18n.t("page_title.organisation.index")
 
     within("##{another_organisation.id}") do
-      click_link I18n.t("generic.link.edit")
+      click_link I18n.t("default.link.edit")
     end
 
     expect(page).to have_content(I18n.t("page_title.organisation.edit"))
@@ -62,7 +62,7 @@ RSpec.feature "Users can edit organisations" do
     select "Government", from: "organisation[organisation_type]"
     select "Czech", from: "organisation[language_code]"
     select "Zloty", from: "organisation[default_currency]"
-    click_button I18n.t("generic.button.submit")
+    click_button I18n.t("default.button.submit")
     expect(page).to have_content I18n.t("form.organisation.update.success")
   end
 end
