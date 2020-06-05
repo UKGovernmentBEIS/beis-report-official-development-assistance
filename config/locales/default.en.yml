@@ -55,3 +55,5 @@ en:
         wrong_length:
           one: "%{attribute} is the wrong length (should be 1 character)"
           other: "%{attribute} is the wrong length (should be %{count} characters)"
+      validators:
+        end_date_not_before_start_date: The end date cannot be before the start date

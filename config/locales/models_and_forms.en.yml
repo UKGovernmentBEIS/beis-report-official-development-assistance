@@ -1,6 +1,0 @@
----
-en:
-  activerecord:
-    errors:
-      validators:
-        end_date_not_before_start_date: The end date cannot be before the start date
