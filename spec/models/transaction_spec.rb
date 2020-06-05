@@ -22,18 +22,18 @@ RSpec.describe Transaction, type: :model do
   end
 
   describe "#value" do
-    context "value must be between 1 and 99,999,999,999.00 (100 billion minus one)" do
+    context "value must be a maximum of 99,999,999,999.00 (100 billion minus one)" do
       it "allows the maximum possible value" do
         transaction = build(:transaction, parent_activity: activity, value: 99_999_999_999.00)
         expect(transaction.valid?).to be true
       end
 
-      it "allows the minimum possible value" do
+      it "allows one penny" do
         transaction = build(:transaction, parent_activity: activity, value: 0.01)
         expect(transaction.valid?).to be true
       end
 
-      it "does not allow a value of less than 0.01" do
+      it "does not allow a value of 0" do
         transaction = build(:transaction, parent_activity: activity, value: 0)
         expect(transaction.valid?).to be false
       end
@@ -45,6 +45,11 @@ RSpec.describe Transaction, type: :model do
 
       it "allows a value between 1 and 99,999,999,999.00" do
         transaction = build(:transaction, parent_activity: activity, value: 500_000.00)
+        expect(transaction.valid?).to be true
+      end
+
+      it "allows a negative value" do
+        transaction = build(:transaction, parent_activity: activity, value: -500_000.00)
         expect(transaction.valid?).to be true
       end
     end
