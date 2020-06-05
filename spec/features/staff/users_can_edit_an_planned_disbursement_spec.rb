@@ -19,7 +19,7 @@ RSpec.describe "Users can edit a planned disbursement" do
       fill_in "Receiving organisation", with: "An Organisation"
       click_button "Submit"
 
-      expect(page).to have_content I18n.t("form.planned_disbursement.update.success")
+      expect(page).to have_content I18n.t("action.planned_disbursement.update.success")
       expect(page).to have_content "An Organisation"
     end
 

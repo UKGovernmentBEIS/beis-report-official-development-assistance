@@ -1,6 +1,6 @@
 ---
 en:
-  form:
+  action:
     programme:
       create:
         success: Programme successfully created

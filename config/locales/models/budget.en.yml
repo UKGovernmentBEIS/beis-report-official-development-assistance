@@ -1,11 +1,15 @@
 ---
 en:
+  action:
+    budget:
+      create:
+        success: Budget successfully created
+      update:
+        success: Budget successfully updated
   form:
     budget:
       budget_type:
         label: Budget type
-      create:
-        success: Budget successfully created
       currency:
         label: Currency
       period_end_date:
@@ -14,8 +18,6 @@ en:
         label: Period start date
       status:
         label: Status
-      update:
-        success: Budget successfully updated
       value:
         label: Value
   page_content:

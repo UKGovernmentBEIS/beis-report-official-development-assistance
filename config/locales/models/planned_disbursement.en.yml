@@ -1,9 +1,13 @@
 ---
 en:
-  form:
+  action:
     planned_disbursement:
       create:
         success: Planned disbursement successfully created
+      update:
+        success: Planned disbursement successfully updated
+  form:
+    planned_disbursement:
       currency:
         label: Currency
       edit_noun: planned disbursement
@@ -36,8 +40,6 @@ en:
       receiving_organisation_reference:
         hint: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
         label: IATI Reference (optional)
-      update:
-        success: Planned disbursement successfully updated
       value:
         label: Value
   page_content:

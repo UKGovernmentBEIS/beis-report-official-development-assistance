@@ -1,9 +1,13 @@
 ---
 en:
-  form:
+  action:
     transaction:
       create:
         success: Transaction successfully created
+      update:
+        success: Transaction sucessfully updated
+  form:
+    transaction:
       currency:
         label: Currency
       date:
@@ -29,8 +33,6 @@ en:
       transaction_type:
         hint: The type of the transaction (e.g. commitment, disbursement, expenditure, etc.).
         label: Type
-      update:
-        success: Transaction sucessfully updated
   page_content:
     transactions:
       button:

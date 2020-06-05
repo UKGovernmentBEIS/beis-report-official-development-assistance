@@ -18,7 +18,7 @@ class Staff::BudgetsController < Staff::BaseController
 
     if result.success?
       @budget.create_activity key: "budget.create", owner: current_user
-      flash[:notice] = I18n.t("form.budget.create.success")
+      flash[:notice] = I18n.t("action.budget.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :new
@@ -42,7 +42,7 @@ class Staff::BudgetsController < Staff::BaseController
 
     if result.success?
       @budget.create_activity key: "budget.update", owner: current_user
-      flash[:notice] = I18n.t("form.budget.update.success")
+      flash[:notice] = I18n.t("action.budget.update.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :edit

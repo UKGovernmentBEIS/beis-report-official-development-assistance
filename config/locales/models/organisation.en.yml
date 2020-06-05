@@ -1,9 +1,13 @@
 ---
 en:
-  form:
+  action:
     organisation:
       create:
         success: Organisation successfully created
+      update:
+        success: Organisation successfully updated
+  form:
+    organisation:
       default_currency:
         hint: Default currency for all financial values in this activity report
         label: Default currency
@@ -17,8 +21,6 @@ en:
         label: Name
       organisation_type:
         label: Organisation type
-      update:
-        success: Organisation successfully updated
   page_content:
     organisation_details: Organisation details
     organisations:

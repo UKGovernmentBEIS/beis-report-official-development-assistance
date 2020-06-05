@@ -2,8 +2,6 @@
 en:
   form:
     activity:
-      create:
-        success: Activity successfully created
       date:
         day: Day
         month: Month
@@ -11,8 +9,6 @@ en:
       organisation:
         hint: The organisation this activity is associated with
       submit: Continue
-      update:
-        success: Activity successfully updated
       year: Year
   page_content:
     activities:
