@@ -19,3 +19,11 @@ en:
       update:
         failed: The service is experiencing issues updating users and the team has been alerted to the problem.
         success: User successfully updated
+  page_content:
+    users:
+      button:
+        create: Create user
+      new:
+        no_organisations:
+          cta: There are no organisations yet,
+          link: you can make one now
