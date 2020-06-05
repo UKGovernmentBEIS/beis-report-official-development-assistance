@@ -12,41 +12,6 @@ en:
       not_authorised:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
-    organisation:
-      button:
-        choose_extending_organisation: Choose extending organisation
-        create_fund: Create fund
-        create_programme: Create programme
-        create_project: Create project
-        create_third_party_project: Create third-party project
-        edit: Edit organisation
-        edit_details: Edit details
-      default_currency:
-        label: Default currency
-      details: Organisation details
-      download:
-        explanation: Download all activities for this organisation
-        projects:
-          explanation: Download all project (level C) activities for this organisation as XML
-        third-party-projects:
-          explanation: Download all third-party project (level D) activities for this organisation as XML
-        title: Download as XML
-      funds: Funds
-      iati_reference:
-        label: International Aid Transparency Initiative (IATI) reference
-      language_code:
-        label: Language code
-      name:
-        label: Name
-      programmes: Programmes
-      projects: Projects
-      third_party_projects: Third-party projects
-      type:
-        label: Type
-    organisation_details: Organisation details
-    organisations:
-      button:
-        create: Create organisation
     planned_disbursements:
       button:
         create: Add planned disbursement
