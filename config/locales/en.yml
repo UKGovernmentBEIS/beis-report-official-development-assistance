@@ -12,12 +12,6 @@ en:
       not_authorised:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
-    planned_disbursements:
-      button:
-        create: Add planned disbursement
-      planned_disbursement_type:
-        '1': Original
-        '2': Revised
     users:
       button:
         create: Create user
