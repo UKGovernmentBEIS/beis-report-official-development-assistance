@@ -12,13 +12,6 @@ en:
       not_authorised:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
-    users:
-      button:
-        create: Create user
-      new:
-        no_organisations:
-          cta: There are no organisations yet,
-          link: you can make one now
   page_title:
     activity:
       implementing_organisation:
