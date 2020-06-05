@@ -18,14 +18,6 @@ en:
       planned_disbursement_type:
         '1': Original
         '2': Revised
-    transactions:
-      button:
-        create: Add a transaction
-      edit_noun: transaction
-      table:
-        headers:
-          providing_organisation: Provider
-          receiving_organisation: Receiver
     users:
       button:
         create: Create user
