@@ -6,7 +6,7 @@ RSpec.describe IngestIatiActivities do
   let!(:existing_programme) { create(:programme_activity, identifier: "GCRF-INTPART", organisation: beis) }
 
   describe "#call" do
-    it "creates 36 new projects" do
+    it "creates 36 new projects for UKSA" do
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
 
@@ -367,6 +367,23 @@ RSpec.describe IngestIatiActivities do
 
         expect { service.call }.to raise_error(ActiveRecord::RecordInvalid)
       end
+    end
+  end
+
+  context "AMS Newton fund activities" do
+    it "handles activities without an `actual_start_date` (`activity-date` type 2)" do
+      ams = create(:organisation, name: "Academy of Medical Sciences", iati_reference: "GB-COH-03520281")
+      legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/ams/newt/fake_activity_with_dates.xml")
+      programme = create(:programme_activity, organisation: ams)
+      # Temporary fix until we have the actual programme-project mappings
+      allow_any_instance_of(LegacyActivity).to receive(:find_parent_programme).and_return(programme)
+
+      service_object = described_class.new(delivery_partner: ams, file_io: legacy_activities)
+
+      expect { service_object.call }.to change { Activity.project.count }.by(1)
+      project = Activity.project.find_by(previous_identifier: "GB-GOV-13-NEWT-AMS_ZAF_NAF0012")
+      expect(project.planned_start_date).to eq("2020-07-01".to_date)
+      expect(project.planned_end_date).to eq("2020-09-30".to_date)
     end
   end
 end
