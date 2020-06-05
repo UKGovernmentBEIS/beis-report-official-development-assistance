@@ -1,0 +1,9 @@
+---
+en:
+  page_content:
+    planned_disbursements:
+      button:
+        create: Add planned disbursement
+      planned_disbursement_type:
+        '1': Original
+        '2': Revised
