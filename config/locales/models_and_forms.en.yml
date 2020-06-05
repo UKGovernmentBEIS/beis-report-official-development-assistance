@@ -2,10 +2,6 @@
 en:
   activerecord:
     attributes:
-      implementing_organisation:
-        name: Organisation name
-        organisation_type: Organisation type
-        reference: International Aid Transparency Initiative (IATI) reference (optional)
       organisation:
         default_currency: Default currency
         iati_reference: International Aid Transparency Initiative (IATI) reference
@@ -71,8 +67,6 @@ en:
         organisation_ids: Organisations
         role: Role
     hint:
-      implementing_organisation:
-        reference_html: <a href="http://org-id.guide/" target="_blank" class="govuk-link">Organisation references can be found using this service (Opens in new window)</a>
       transaction:
         date: If you're reporting quarterly data, select the last day of the quarter. For example, 31 12 2020
         description: For example, Quarter one spend on the Early Career Research Network project.
