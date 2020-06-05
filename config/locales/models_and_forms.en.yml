@@ -2,17 +2,6 @@
 en:
   activerecord:
     attributes:
-      transaction:
-        currency: Currency
-        date: Date
-        description: Description
-        disbursement_channel: Disbursement channel (optional)
-        providing_organisation_name: Providing organisation name
-        providing_organisation_type: Providing organisation type
-        receiving_organisation_name: Receiving organisation name
-        receiving_organisation_type: Receiving organisation type
-        transaction_type: Transaction type
-        value: Value
       user:
         organisation_ids: Organisations
         roles:
@@ -21,14 +10,6 @@ en:
           fund_manager: Fund manager
     errors:
       models:
-        transaction:
-          attributes:
-            date:
-              between: Date must be between %{min} years ago and %{max} years in the future
-              not_in_future: Date must not be in the future
-            value:
-              less_than_or_equal_to: Value must be less than or equal to 99,999,999,999.00
-              other_than: Value must not be zero
         user:
           attributes:
             organisation_ids:
@@ -41,8 +22,5 @@ en:
         organisation_ids: Organisations
         role: Role
     hint:
-      transaction:
-        date: If you're reporting quarterly data, select the last day of the quarter. For example, 31 12 2020
-        description: For example, Quarter one spend on the Early Career Research Network project.
       user:
         role: Choose a role for this user.
