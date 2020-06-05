@@ -12,4 +12,8 @@ en:
       not_authorised:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
-
+  page_title:
+    errors:
+      auth0:
+        failed: Sign in failed
+      not_authorised: You are not authorised

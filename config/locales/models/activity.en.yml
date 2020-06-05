@@ -76,3 +76,23 @@ en:
       title:
         label: Title
       transactions: Transactions
+  page_title:
+    activity:
+      implementing_organisation:
+        edit: Edit implemening organisation
+        new: Add a new implementing organisation
+      show: Activity %{name}
+    activity_form:
+      show:
+        aid_type: Aid type
+        country: Country
+        dates: Dates
+        flow: Flow
+        geography: Will the benefitting recipient be a region or country?
+        identifier: Your unique identifier
+        purpose: Purpose
+        purpose_level: Purpose of %{level}
+        region: Recipient region
+        sector: Which %{sector_category} sector is the focus area for this %{level}
+        sector_category: What is the focus area category for this %{level}?
+        status: Status
