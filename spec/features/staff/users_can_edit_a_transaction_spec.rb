@@ -34,7 +34,7 @@ RSpec.feature "Users can edit a transaction" do
         currency: "US Dollar"
       )
 
-      expect(page).to have_content(I18n.t("form.transaction.update.success"))
+      expect(page).to have_content(I18n.t("action.transaction.update.success"))
     end
 
     scenario "transaction update is tracked with public_activity" do

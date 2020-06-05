@@ -1,6 +1,6 @@
 ---
 en:
-  form:
+  action:
     project:
       create:
         success: Project successfully created

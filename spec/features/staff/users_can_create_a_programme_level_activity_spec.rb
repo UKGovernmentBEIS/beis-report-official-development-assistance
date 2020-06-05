@@ -15,7 +15,7 @@ RSpec.feature "Users can create a programme activity" do
 
       fill_in_activity_form(level: "programme")
 
-      expect(page).to have_content I18n.t("form.programme.create.success")
+      expect(page).to have_content I18n.t("action.programme.create.success")
     end
 
     scenario "the activity has the appropriate funding organisation defaults" do

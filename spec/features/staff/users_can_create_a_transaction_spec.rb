@@ -22,7 +22,7 @@ RSpec.feature "Users can create a transaction" do
 
       fill_in_transaction_form
 
-      expect(page).to have_content(I18n.t("form.transaction.create.success"))
+      expect(page).to have_content(I18n.t("action.transaction.create.success"))
     end
 
     scenario "transaction creation is tracked with public_activity" do
@@ -55,7 +55,7 @@ RSpec.feature "Users can create a transaction" do
       click_on(I18n.t("page_content.transactions.button.create"))
       click_on(I18n.t("default.button.submit"))
 
-      expect(page).to_not have_content(I18n.t("form.transaction.create.success"))
+      expect(page).to_not have_content(I18n.t("action.transaction.create.success"))
       expect(page).to have_content("Description can't be blank")
       expect(page).to have_content("Transaction type can't be blank")
       expect(page).to have_content("Date can't be blank")
@@ -144,7 +144,7 @@ RSpec.feature "Users can create a transaction" do
         select "Government", from: "transaction[receiving_organisation_type]"
         click_on(I18n.t("default.button.submit"))
 
-        expect(page).to have_content I18n.t("form.transaction.create.success")
+        expect(page).to have_content I18n.t("action.transaction.create.success")
       end
 
       scenario "When the value includes a pound sign" do
@@ -231,7 +231,7 @@ RSpec.feature "Users can create a transaction" do
         fill_in_transaction_form(date_day: 0o1, date_month: 0o1, date_year: 2.years.ago, expectations: false)
 
         expect(page).to_not have_content "Date must not be in the future"
-        expect(page).to have_content I18n.t("form.transaction.create.success")
+        expect(page).to have_content I18n.t("action.transaction.create.success")
       end
 
       scenario "When the date is nil" do

@@ -15,7 +15,7 @@ RSpec.describe "Users can create a budget" do
 
         fill_in_and_submit_budget_form
 
-        expect(page).to have_content(I18n.t("form.budget.create.success"))
+        expect(page).to have_content(I18n.t("action.budget.create.success"))
       end
 
       scenario "budget creation is tracked with public_activity" do
@@ -51,7 +51,7 @@ RSpec.describe "Users can create a budget" do
 
         fill_in_and_submit_budget_form
 
-        expect(page).to have_content(I18n.t("form.budget.create.success"))
+        expect(page).to have_content(I18n.t("action.budget.create.success"))
       end
 
       scenario "sees validation errors for missing attributes" do
@@ -115,7 +115,7 @@ RSpec.describe "Users can create a budget" do
 
         fill_in_and_submit_budget_form
 
-        expect(page).to have_content(I18n.t("form.budget.create.success"))
+        expect(page).to have_content(I18n.t("action.budget.create.success"))
       end
     end
   end

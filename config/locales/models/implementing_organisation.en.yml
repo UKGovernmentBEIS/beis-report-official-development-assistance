@@ -1,6 +1,6 @@
 ---
 en:
-  form:
+  action:
     implementing_organisation:
       create:
         success: Implementing organisation successfully created

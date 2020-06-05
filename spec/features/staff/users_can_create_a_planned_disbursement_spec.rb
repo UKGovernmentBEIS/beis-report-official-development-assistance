@@ -31,7 +31,7 @@ RSpec.describe "Users can create a planned disbursement" do
       click_button I18n.t("default.button.submit")
 
       expect(page).to have_current_path organisation_activity_path(user.organisation, project)
-      expect(page).to have_content I18n.t("form.planned_disbursement.create.success")
+      expect(page).to have_content I18n.t("action.planned_disbursement.create.success")
     end
 
     scenario "the action is recorded with public_activity" do

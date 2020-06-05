@@ -92,7 +92,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
               click_button I18n.t("default.button.submit")
             }.not_to change { User.count }
 
-            expect(page).to have_content(I18n.t("form.user.create.failed", error: "The user already exists."))
+            expect(page).to have_content(I18n.t("action.user.create.failed", error: "The user already exists."))
           end
         end
 
