@@ -1,30 +1,27 @@
 language: minimal
 services:
 - docker
-cache:
-  directories:
-  - docker
 jobs:
   include:
   - stage: Build
-    name: Build the current docker image
+    name: Build a production candidate image
     script: |
       TAG="${TRAVIS_BUILD_NUMBER}-${TRAVIS_COMMIT}"
       docker build \
         --target web \
         --tag "thedxw/beis-report-official-development-assistance:$TAG" .
-
+  - stage: Test the application
+    name: Use Docker and Docker Compose to perform automated application tests
+    script: |
+    # Build a new test image that builds on top of the production candidate for
+    # closer parity.
       docker build \
         --target test \
         --cache-from "thedxw/beis-report-official-development-assistance:$TAG" \
         --tag "thedxw/beis-report-official-development-assistance:test" .
-        
-      docker save "thedxw/beis-report-official-development-assistance:test" > docker/test-image.tar
-  - stage: Test the application
-    name: Set up the environment with Docker Compose using the same docker image
-    script: |
-      docker load docker/test-image.tar
-      docker images
+
+    # Use Docker Compose to set up the test environment, including dependencies
+    # like Redis that take time to start.
       docker-compose -f docker-compose.ci.yml up --detach
       docker exec test-container /bin/bash -c "bundle exec rake"
       docker exec test-container /bin/bash -c "bundle exec brakeman"
