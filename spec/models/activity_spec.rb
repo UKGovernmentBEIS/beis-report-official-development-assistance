@@ -93,8 +93,8 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when planned dates are blank" do
-      subject(:activity) { build(:activity, planned_start_date: nil, planned_end_date: nil) }
+    context "when planned start and actual start dates are blank" do
+      subject(:activity) { build(:activity, planned_start_date: nil, actual_start_date: nil) }
       it "should not be valid" do
         expect(activity.valid?(:dates_step)).to be_falsey
       end
@@ -107,17 +107,24 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when planned_start_date is blank" do
+    context "when planned_start_date is blank but actual_start_date is not nil" do
       subject(:activity) { build(:activity, planned_start_date: nil) }
-      it "should not be valid" do
-        expect(activity.valid?(:dates_step)).to be_falsey
+      it "should be valid" do
+        expect(activity.valid?(:dates_step)).to be_truthy
+      end
+    end
+
+    context "when actual_start_date is blank but planned_start_date is not nil" do
+      subject(:activity) { build(:activity, actual_start_date: nil) }
+      it "should be valid" do
+        expect(activity.valid?(:dates_step)).to be_truthy
       end
     end
 
     context "when planned_end_date is blank" do
       subject(:activity) { build(:activity, planned_end_date: nil) }
-      it "should not be valid" do
-        expect(activity.valid?(:dates_step)).to be_falsey
+      it "should be valid" do
+        expect(activity.valid?(:dates_step)).to be_truthy
       end
     end
 
