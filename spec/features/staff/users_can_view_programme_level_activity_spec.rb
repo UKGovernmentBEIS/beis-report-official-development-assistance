@@ -24,7 +24,7 @@ RSpec.feature "Users can view programme level activites" do
       programme = create(:programme_activity)
       visit activity_step_path(programme, :status)
 
-      expect(page).to have_content I18n.t("helpers.hint.activity.status", level: programme.level)
+      expect(page).to have_content I18n.t("form.hint.activity.status", level: programme.level)
     end
   end
 
