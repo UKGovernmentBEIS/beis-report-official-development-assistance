@@ -1,0 +1,32 @@
+---
+en:
+  form:
+    budget:
+      budget_type:
+        label: Budget type
+      create:
+        success: Budget successfully created
+      currency:
+        label: Currency
+      period_end_date:
+        label: Period end date
+      period_start_date:
+        label: Period start date
+      status:
+        label: Status
+      update:
+        success: Budget successfully updated
+      value:
+        label: Value
+  page_content:
+    budgets:
+      button:
+        create: Add budget
+      edit_noun: budget
+    budget:
+      budget_type:
+        '1': Original
+        '2': Updated
+      status:
+        '1': Indicative
+        '2': Committed

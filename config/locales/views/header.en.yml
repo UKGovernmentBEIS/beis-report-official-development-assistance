@@ -4,3 +4,5 @@ en:
     link:
       sign_in: Sign in
       sign_out: Sign out
+    feedback:
+      html: This is a new service – your <a href="https://docs.google.com/forms/d/e/1FAIpQLSfk9abTLRNZdB9tPdtoF_t_1z7q6uPQiZks8NfzGeqg-8UQtQ/viewform" class="govuk-link">feedback</a> will help us to improve it.

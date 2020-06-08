@@ -1,0 +1,8 @@
+---
+en:
+  form:
+    project:
+      create:
+        success: Project successfully created
+      update:
+        success: Project successfully updated

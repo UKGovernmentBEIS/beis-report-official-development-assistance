@@ -1,0 +1,8 @@
+---
+en:
+  form:
+    fund:
+      create:
+        success: Fund successfully created
+      update:
+        success: Fund successfully updated
