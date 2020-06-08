@@ -1,0 +1,57 @@
+---
+en:
+  form:
+    organisation:
+      create:
+        success: Organisation successfully created
+      default_currency:
+        hint: Default currency for all financial values in this activity report
+        label: Default currency
+      iati_reference:
+        hint:
+          html: Machine-readable identification string for the organisation. <a href="https://reference.iatistandard.org/organisation-identifiers/" target="_blank" class="govuk-link">See International Aid Transparency Initiative (IATI) for detailed documentation (Opens in new window).</a>
+      language_code:
+        hint: Default language of text in this organisation
+        label: Language code
+      name:
+        label: Name
+      organisation_type:
+        label: Organisation type
+      update:
+        success: Organisation successfully updated
+  page_content:
+    organisation_details: Organisation details
+    organisations:
+      button:
+        create: Create organisation
+    organisation:
+      button:
+        choose_extending_organisation: Choose extending organisation
+        create_fund: Create fund
+        create_programme: Create programme
+        create_project: Create project
+        create_third_party_project: Create third-party project
+        edit: Edit organisation
+        edit_details: Edit details
+      default_currency:
+        label: Default currency
+      details: Organisation details
+      download:
+        explanation: Download all activities for this organisation
+        projects:
+          explanation: Download all project (level C) activities for this organisation as XML
+        third-party-projects:
+          explanation: Download all third-party project (level D) activities for this organisation as XML
+        title: Download as XML
+      funds: Funds
+      iati_reference:
+        label: International Aid Transparency Initiative (IATI) reference
+      language_code:
+        label: Language code
+      name:
+        label: Name
+      programmes: Programmes
+      projects: Projects
+      third_party_projects: Third-party projects
+      type:
+        label: Type
