@@ -9,25 +9,25 @@ RSpec.feature "Users can choose a recipient country" do
     before do
       visit activity_step_path(activity, :geography)
       choose "Country"
-      click_button I18n.t("form.activity.submit")
+      click_button I18n.t("form.button.activity.submit")
     end
 
     context "with JavaScript disabled" do
       scenario "countries are choosen from a select box" do
-        expect(page).to have_select(I18n.t("page_title.activity_form.show.country"))
+        expect(page).to have_select(I18n.t("form.label.activity.recipient_country"))
       end
 
       scenario "choosing a recipient country sets a recipient region associated to that country" do
         select "Botswana"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(activity.reload.recipient_region).to eq("289") # South of Sahara
       end
     end
 
     context "with JavaScript enabled", js: true do
       scenario "countries are choosen from an autocomplete" do
-        expect(page).not_to have_select(I18n.t("page_title.activity_form.show.country"))
-        expect(page).to have_field(I18n.t("page_title.activity_form.show.country"))
+        expect(page).not_to have_select(I18n.t("form.label.activity.recipient_country"))
+        expect(page).to have_field(I18n.t("form.label.activity.recipient_country"))
         expect(page).to have_css("input.autocomplete__input")
       end
 
@@ -58,7 +58,7 @@ RSpec.feature "Users can choose a recipient country" do
       scenario "typing a complete country name, clicking it in the list and clicking continue saves the country" do
         fill_in "Country", with: "Saint Lucia"
         find("li.autocomplete__option", text: "Saint Lucia").click
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         click_on I18n.t("default.link.back")
 
         within(".recipient_country") do
@@ -69,7 +69,7 @@ RSpec.feature "Users can choose a recipient country" do
       scenario "typing a partial match, clicking on the complete match and clicking continue saves the country " do
         fill_in "Country", with: "saint"
         find("li.autocomplete__option", text: "Saint Lucia").click
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         click_on I18n.t("default.link.back")
 
         within(".recipient_country") do
@@ -80,7 +80,7 @@ RSpec.feature "Users can choose a recipient country" do
       scenario "choosing a recipient country sets a recipient region associated to that country" do
         fill_in "Country", with: "saint"
         find("li.autocomplete__option", text: "Saint Lucia").click
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(activity.reload.recipient_region).to eq("380") # West Indies
       end
     end

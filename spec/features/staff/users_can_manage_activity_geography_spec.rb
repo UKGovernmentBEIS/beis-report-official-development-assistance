@@ -6,36 +6,36 @@ RSpec.feature "Users can provide the geography for an activity" do
 
     scenario "they are asked to choose the geography" do
       visit activity_step_path(activity, :geography)
-      expect(page).to have_content I18n.t("page_title.activity_form.show.geography")
-      expect(page).to have_button I18n.t("form.activity.submit")
+      expect(page).to have_content I18n.t("form.legend.activity.geography")
+      expect(page).to have_button I18n.t("form.button.activity.submit")
     end
 
     context "when they choose country geography" do
       scenario "they skip the region step and go straight to the country step" do
         visit activity_step_path(activity, :geography)
         choose "Country"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.country")
+        expect(page).to have_content I18n.t("form.label.activity.recipient_country")
         expect(page).to have_current_path(activity_step_path(activity, :country))
 
         select "Uganda"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
+        expect(page).to have_content I18n.t("form.label.activity.flow")
         expect(page).to have_current_path(activity_step_path(activity, :flow))
       end
 
       scenario "the region gets set in the background according to the selected country" do
         visit activity_step_path(activity, :geography)
         choose "Country"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.country")
+        expect(page).to have_content I18n.t("form.label.activity.recipient_country")
         expect(page).to have_current_path(activity_step_path(activity, :country))
 
         select "Uganda"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
         expect(activity.reload.recipient_region).to eq("289") # South of Sahara
       end
@@ -45,14 +45,14 @@ RSpec.feature "Users can provide the geography for an activity" do
       scenario "they go to the region step and skip the country step" do
         visit activity_step_path(activity, :geography)
         choose "Region"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.region")
+        expect(page).to have_content I18n.t("form.label.activity.recipient_region")
 
         select "Developing countries, unspecified", from: "activity[recipient_region]"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
+        expect(page).to have_content I18n.t("form.label.activity.flow")
         expect(page).to have_current_path(activity_step_path(activity, :flow))
       end
     end
@@ -67,16 +67,16 @@ RSpec.feature "Users can provide the geography for an activity" do
           click_on "Edit"
         end
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.geography")
+        expect(page).to have_content I18n.t("form.legend.activity.geography")
 
         choose "Country"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
         select "Uganda", from: "activity[recipient_country]"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
         expect(page).to have_current_path(activity_path)
-        expect(page).not_to have_content I18n.t("page_content.activity.recipient_region.label")
+        expect(page).not_to have_content I18n.t("summary.label.activity.recipient_region")
         within(".recipient_country") do
           expect(page).to have_content "Uganda"
         end
@@ -91,15 +91,15 @@ RSpec.feature "Users can provide the geography for an activity" do
           click_on "Edit"
         end
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.geography")
+        expect(page).to have_content I18n.t("form.legend.activity.geography")
 
         choose "Region"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         select "Developing countries, unspecified", from: "activity[recipient_region]"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
         expect(page).to have_current_path(activity_path)
-        expect(page).not_to have_content I18n.t("page_content.activity.recipient_country.label")
+        expect(page).not_to have_content I18n.t("summary.label.activity.recipient_country")
         within(".recipient_region") do
           expect(page).to have_content "Developing countries, unspecified"
         end

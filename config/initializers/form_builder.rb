@@ -7,8 +7,9 @@ Rails.application.config.action_view.form_with_generates_remote_forms = false
 
 module GOVUKDesignSystemFormBuilder
   GOVUKDesignSystemFormBuilder.configure do |conf|
-    conf.localisation_schema_label = %i[activerecord attributes]
-    conf.localisation_schema_legend = %i[helpers fieldset]
+    conf.localisation_schema_label = %i[form label]
+    conf.localisation_schema_legend = %i[form legend]
+    conf.localisation_schema_hint = %i[form hint]
   end
   class Base
     def has_errors?

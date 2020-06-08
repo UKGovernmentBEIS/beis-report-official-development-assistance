@@ -95,9 +95,9 @@ RSpec.feature "Users can create a fund level activity" do
         click_on(I18n.t("page_content.organisation.button.create_fund"))
 
         fill_in "activity[identifier]", with: identifier
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
-        expect(page).to have_content "Your unique identifier has already been taken"
+        expect(page).to have_content "has already been taken"
       end
     end
 
@@ -107,52 +107,52 @@ RSpec.feature "Users can create a fund level activity" do
         click_on I18n.t("page_content.organisation.button.create_fund")
 
         # Don't provide an identifier
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content "can't be blank"
 
         fill_in "activity[identifier]", with: "foo"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content "Purpose of fund"
 
         # Don't provide a title and description
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
         expect(page).to have_content "Title can't be blank"
         expect(page).to have_content "Description can't be blank"
 
         fill_in "activity[title]", with: Faker::Lorem.word
         fill_in "activity[description]", with: Faker::Lorem.paragraph
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.sector_category", level: "fund")
+        expect(page).to have_content I18n.t("form.legend.activity.sector_category", level: "fund")
 
         # Don't provide a sector category
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content "can't be blank"
 
         choose "Basic Education"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.sector", sector_category: "Basic Education", level: "fund")
+        expect(page).to have_content I18n.t("form.legend.activity.sector", sector_category: "Basic Education", level: "fund")
 
         # Don't provide a sector
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content "can't be blank"
 
         choose "Primary education"
-        click_button I18n.t("form.activity.submit")
-        expect(page).to have_content I18n.t("page_title.activity_form.show.status")
+        click_button I18n.t("form.button.activity.submit")
+        expect(page).to have_content I18n.t("form.legend.activity.status")
 
         # Don't provide a status
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content "Status can't be blank"
 
         choose("activity[status]", option: "2")
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
         expect(page).to have_content I18n.t("page_title.activity_form.show.dates")
 
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.dates")
 
         # Dates cannot contain only a zero
@@ -162,7 +162,8 @@ RSpec.feature "Users can create a fund level activity" do
         fill_in "activity[planned_end_date(3i)]", with: 0
         fill_in "activity[planned_end_date(2i)]", with: 12
         fill_in "activity[planned_end_date(1i)]", with: 2010
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
+
         expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.dates")
 
         fill_in "activity[planned_start_date(3i)]", with: 1
@@ -171,32 +172,32 @@ RSpec.feature "Users can create a fund level activity" do
         fill_in "activity[planned_end_date(3i)]", with: 1
         fill_in "activity[planned_end_date(2i)]", with: 12
         fill_in "activity[planned_end_date(1i)]", with: 2010
-        click_button I18n.t("form.activity.submit")
-        expect(page).to have_content I18n.t("page_title.activity_form.show.geography")
+        click_button I18n.t("form.button.activity.submit")
+        expect(page).to have_content I18n.t("form.legend.activity.geography")
 
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content "can't be blank"
 
         choose "Region"
-        click_button I18n.t("form.activity.submit")
-        expect(page).to have_content I18n.t("page_title.activity_form.show.region")
+        click_button I18n.t("form.button.activity.submit")
+        expect(page).to have_content I18n.t("form.label.activity.recipient_region")
 
         # region has the default value already selected
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
+        expect(page).to have_content I18n.t("form.label.activity.flow")
 
         # Flow has a default and can't be set to blank so we skip
         select "ODA", from: "activity[flow]"
-        click_button I18n.t("form.activity.submit")
-        expect(page).to have_content I18n.t("page_title.activity_form.show.aid_type")
+        click_button I18n.t("form.button.activity.submit")
+        expect(page).to have_content I18n.t("form.legend.activity.aid_type")
 
         # Don't select an aid type
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content "Aid type can't be blank"
 
         choose("activity[aid_type]", option: "A01")
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content Activity.last.title
       end
     end
