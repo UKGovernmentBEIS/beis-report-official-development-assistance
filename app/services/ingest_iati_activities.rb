@@ -260,13 +260,13 @@ class IngestIatiActivities
 
   private def add_dates(legacy_activity:, new_activity:)
     planned_start_date_element = legacy_activity.elements.detect { |element| element.name.eql?("activity-date") && element.attributes["type"].value.eql?("1") }
-    new_activity.planned_start_date = planned_start_date_element.attributes["iso-date"].value || nil
+    new_activity.planned_start_date = planned_start_date_element ? planned_start_date_element.attributes["iso-date"].value : nil
     actual_start_date_element = legacy_activity.elements.detect { |element| element.name.eql?("activity-date") && element.attributes["type"].value.eql?("2") }
-    new_activity.actual_start_date = actual_start_date_element.attributes["iso-date"].value || nil
+    new_activity.actual_start_date = actual_start_date_element ? actual_start_date_element.attributes["iso-date"].value : nil
     planned_end_date_element = legacy_activity.elements.detect { |element| element.name.eql?("activity-date") && element.attributes["type"].value.eql?("3") }
-    new_activity.planned_end_date = planned_end_date_element.attributes["iso-date"].value || nil if planned_end_date_element
+    new_activity.planned_end_date = planned_end_date_element ? planned_end_date_element.attributes["iso-date"].value : nil
     actual_end_date_element = legacy_activity.elements.detect { |element| element.name.eql?("activity-date") && element.attributes["type"].value.eql?("4") }
-    new_activity.actual_end_date = actual_end_date_element.attributes["iso-date"].value || nil if actual_end_date_element
+    new_activity.actual_end_date = actual_end_date_element ? actual_end_date_element.attributes["iso-date"].value : nil
   end
 
   private def add_identifiers(legacy_activity:, new_activity:)
