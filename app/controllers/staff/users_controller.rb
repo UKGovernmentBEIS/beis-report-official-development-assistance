@@ -25,10 +25,10 @@ class Staff::UsersController < Staff::BaseController
       result = CreateUser.new(user: @user, organisation: organisation).call
       if result.success?
         @user.create_activity key: "user.create", owner: current_user
-        flash.now[:notice] = I18n.t("form.user.create.success")
+        flash.now[:notice] = I18n.t("action.user.create.success")
         redirect_to user_path(@user.reload.id)
       else
-        flash.now[:error] = I18n.t("form.user.create.failed", error: result.error_message)
+        flash.now[:error] = I18n.t("action.user.create.failed", error: result.error_message)
         render :new
       end
     else
@@ -55,10 +55,10 @@ class Staff::UsersController < Staff::BaseController
 
       if result.success?
         @user.create_activity key: "user.update", owner: current_user
-        flash.now[:notice] = I18n.t("form.user.update.success")
+        flash.now[:notice] = I18n.t("action.user.update.success")
         redirect_to user_path(@user)
       else
-        flash.now[:error] = I18n.t("form.user.update.failed")
+        flash.now[:error] = I18n.t("action.user.update.failed")
         render :edit
       end
     else

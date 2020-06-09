@@ -11,7 +11,6 @@ RSpec.feature "Users can edit organisations" do
 
   scenario "successfully editing an organisation" do
     authenticate!(user: create(:administrator, organisation: beis_organisation))
-
     successfully_edit_an_organisation
   end
 
@@ -43,7 +42,7 @@ RSpec.feature "Users can edit organisations" do
     fill_in "organisation[name]", with: ""
 
     click_button I18n.t("default.button.submit")
-    expect(page).to_not have_content I18n.t("form.organisation.update.success")
+    expect(page).to_not have_content I18n.t("organisation.action.update.success")
     expect(page).to have_content "can't be blank"
   end
 
@@ -63,6 +62,6 @@ RSpec.feature "Users can edit organisations" do
     select "Czech", from: "organisation[language_code]"
     select "Zloty", from: "organisation[default_currency]"
     click_button I18n.t("default.button.submit")
-    expect(page).to have_content I18n.t("form.organisation.update.success")
+    expect(page).to have_content I18n.t("action.organisation.update.success")
   end
 end

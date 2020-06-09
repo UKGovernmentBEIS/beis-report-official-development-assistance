@@ -17,7 +17,7 @@ RSpec.describe "Users can edit a budget" do
       choose("budget[budget_type]", option: "2")
       click_on I18n.t("default.button.submit")
 
-      expect(page).to have_content(I18n.t("form.budget.update.success"))
+      expect(page).to have_content(I18n.t("action.budget.update.success"))
       expect(page).to have_content("20.00")
       expect(page).to have_content("Updated")
     end
@@ -39,7 +39,7 @@ RSpec.describe "Users can edit a budget" do
       choose("budget[budget_type]", option: "2")
       click_on I18n.t("default.button.submit")
 
-      expect(page).to have_content(I18n.t("form.budget.update.success"))
+      expect(page).to have_content(I18n.t("action.budget.update.success"))
       expect(page).to have_content("20.00")
       expect(page).to have_content("Updated")
     end

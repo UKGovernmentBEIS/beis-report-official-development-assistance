@@ -1,9 +1,13 @@
 ---
 en:
-  form:
+  action:
     planned_disbursement:
       create:
         success: Planned disbursement successfully created
+      update:
+        success: Planned disbursement successfully updated
+  form:
+    planned_disbursement:
       currency:
         label: Currency
       edit_noun: planned disbursement
@@ -36,8 +40,6 @@ en:
       receiving_organisation_reference:
         hint: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
         label: IATI Reference (optional)
-      update:
-        success: Planned disbursement successfully updated
       value:
         label: Value
   page_content:
@@ -47,3 +49,27 @@ en:
       planned_disbursement_type:
         '1': Original
         '2': Revised
+  page_title:
+    planned_disbursement:
+      edit: Edit planned disbursement
+      new: Add a planned disbursement
+  activerecord:
+    attributes:
+      planned_disbursement:
+        planned_disbursement_type: Budget type
+        providing_organisation_name: Providing organisation name
+        providing_organisation_type: Providing organisation type
+        receiving_organisation_name: Receiving organisation name
+        receiving_organisation_type: Receiving organisation type
+    errors:
+      models:
+        planned_disbursement:
+          attributes:
+            period_end_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+            period_start_date:
+              between: Date must be between %{min} years ago and %{max} years in the future
+            planned_disbursement_type:
+              blank: Budget type can't be blank
+            value:
+              inclusion: Value must be between 0.01 and 99,999,999,999.00

@@ -14,7 +14,7 @@ class Staff::ExtendingOrganisationsController < Staff::BaseController
 
     if @activity.valid?(:update_extending_organisation)
       @activity.save
-      flash[:notice] = I18n.t("form.activity.update.success")
+      flash[:notice] = I18n.t("action.#{@activity.level}.update.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :edit

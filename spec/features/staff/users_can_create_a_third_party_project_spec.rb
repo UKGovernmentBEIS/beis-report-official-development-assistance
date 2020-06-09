@@ -15,7 +15,7 @@ RSpec.feature "Users can create a project" do
 
         fill_in_activity_form(level: "third_party_project")
 
-        expect(page).to have_content I18n.t("form.third_party_project.create.success")
+        expect(page).to have_content I18n.t("action.third_party_project.create.success")
         expect(project.child_activities.count).to eq 1
 
         third_party_project = project.child_activities.last

@@ -1,6 +1,6 @@
 ---
 en:
-  form:
+  action:
     fund:
       create:
         success: Fund successfully created
