@@ -15,7 +15,7 @@ RSpec.describe "Users can create a planned disbursement" do
 
       expect(page).to have_content I18n.t("page_title.planned_disbursement.new")
 
-      choose I18n.t("form.planned_disbursement.planned_disbursement_type.original.name")
+      choose I18n.t("form.label.planned_disbursement.planned_disbursement_type_options.original.name")
       fill_in "planned_disbursement[period_start_date(3i)]", with: "01"
       fill_in "planned_disbursement[period_start_date(2i)]", with: "01"
       fill_in "planned_disbursement[period_start_date(1i)]", with: "2020"
@@ -66,9 +66,9 @@ RSpec.describe "Users can create a planned disbursement" do
           click_on project.title
           click_on I18n.t("page_content.planned_disbursements.button.create")
 
-          expect(page).to have_field(I18n.t("activerecord.attributes.planned_disbursement.providing_organisation_name"), with: beis.name)
-          expect(page).to have_field(I18n.t("activerecord.attributes.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
-          expect(page).to have_field(I18n.t("form.planned_disbursement.providing_organisation_reference.label"), with: beis.iati_reference)
+          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
+          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
+          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_reference"), with: beis.iati_reference)
         end
       end
 
@@ -83,9 +83,9 @@ RSpec.describe "Users can create a planned disbursement" do
           click_on project.title
           click_on I18n.t("page_content.planned_disbursements.button.create")
 
-          expect(page).to have_field(I18n.t("activerecord.attributes.planned_disbursement.providing_organisation_name"), with: beis.name)
-          expect(page).to have_field(I18n.t("activerecord.attributes.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
-          expect(page).to have_field(I18n.t("form.planned_disbursement.providing_organisation_reference.label"), with: beis.iati_reference)
+          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
+          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
+          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_reference"), with: beis.iati_reference)
         end
       end
     end
@@ -102,9 +102,9 @@ RSpec.describe "Users can create a planned disbursement" do
           click_on project.title
           click_on I18n.t("page_content.planned_disbursements.button.create")
 
-          expect(page).to have_field(I18n.t("activerecord.attributes.planned_disbursement.providing_organisation_name"), with: beis.name)
-          expect(page).to have_field(I18n.t("activerecord.attributes.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
-          expect(page).to have_field(I18n.t("form.planned_disbursement.providing_organisation_reference.label"), with: beis.iati_reference)
+          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
+          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
+          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_reference"), with: beis.iati_reference)
         end
       end
       context "and the activity is a third-party project" do
@@ -117,9 +117,9 @@ RSpec.describe "Users can create a planned disbursement" do
           click_on project.title
           click_on I18n.t("page_content.planned_disbursements.button.create")
 
-          expect(page).to have_field(I18n.t("activerecord.attributes.planned_disbursement.providing_organisation_name"), with: non_government_devlivery_partner.name)
-          expect(page).to have_field(I18n.t("activerecord.attributes.planned_disbursement.providing_organisation_type"), with: non_government_devlivery_partner.organisation_type)
-          expect(page).to have_field(I18n.t("form.planned_disbursement.providing_organisation_reference.label"), with: non_government_devlivery_partner.iati_reference)
+          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_name"), with: non_government_devlivery_partner.name)
+          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_type"), with: non_government_devlivery_partner.organisation_type)
+          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_reference"), with: non_government_devlivery_partner.iati_reference)
         end
       end
     end
