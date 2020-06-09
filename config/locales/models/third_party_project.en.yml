@@ -1,6 +1,6 @@
 ---
 en:
-  form:
+  action:
     third_party_project:
       create:
         success: Third-party project successfully created

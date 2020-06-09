@@ -22,7 +22,7 @@ class Staff::TransactionsController < Staff::BaseController
 
     if result.success?
       @transaction.create_activity key: "transaction.create", owner: current_user
-      flash[:notice] = I18n.t("form.transaction.create.success")
+      flash[:notice] = I18n.t("action.transaction.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :new
@@ -46,7 +46,7 @@ class Staff::TransactionsController < Staff::BaseController
 
     if result.success?
       @transaction.create_activity key: "transaction.update", owner: current_user
-      flash[:notice] = I18n.t("form.transaction.update.success")
+      flash[:notice] = I18n.t("action.transaction.update.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :edit

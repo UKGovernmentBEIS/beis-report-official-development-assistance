@@ -40,7 +40,7 @@ RSpec.feature "Users can edit an activity" do
         fill_in "activity[identifier]", with: identifier
         click_button I18n.t("form.activity.submit")
 
-        expect(page).to have_content I18n.t("form.fund.update.success")
+        expect(page).to have_content I18n.t("action.fund.update.success")
         expect(page.current_path).to eq organisation_activity_path(activity.organisation, activity)
       end
 
@@ -133,7 +133,7 @@ RSpec.feature "Users can edit an activity" do
         end
 
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content(I18n.t("form.programme.update.success"))
+        expect(page).to have_content(I18n.t("action.programme.update.success"))
       end
     end
 
@@ -165,7 +165,7 @@ RSpec.feature "Users can edit an activity" do
         end
 
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content(I18n.t("form.project.update.success"))
+        expect(page).to have_content(I18n.t("action.project.update.success"))
       end
     end
   end
@@ -184,7 +184,7 @@ RSpec.feature "Users can edit an activity" do
         end
 
         click_button I18n.t("form.activity.submit")
-        expect(page).to have_content(I18n.t("form.third_party_project.update.success"))
+        expect(page).to have_content(I18n.t("action.third_party_project.update.success"))
       end
     end
   end

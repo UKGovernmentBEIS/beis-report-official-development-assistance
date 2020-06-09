@@ -16,7 +16,7 @@ RSpec.feature "Users can create a fund level activity" do
 
       fill_in_activity_form(level: "fund")
 
-      expect(page).to have_content I18n.t("form.fund.create.success")
+      expect(page).to have_content I18n.t("action.fund.create.success")
     end
 
     scenario "the activity form has some defaults" do
@@ -83,7 +83,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         fill_in_activity_form(level: "fund")
 
-        expect(page).to have_content I18n.t("form.fund.create.success")
+        expect(page).to have_content I18n.t("action.fund.create.success")
       end
     end
 
