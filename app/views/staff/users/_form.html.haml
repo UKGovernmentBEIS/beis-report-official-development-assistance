@@ -14,8 +14,7 @@
         @organisations,
         :id,
         :name,
-        legend: { tag: :h2 , text: t('form.user.organisation.label')},
-        hint_text: t("form.user.organisation.hint")
+        legend: { tag: :h2 }
   - else
     .govuk-inset-text
       = succeed "." do
@@ -26,7 +25,6 @@
       user_active_options,
       :id,
       :name,
-      legend: { tag: :h2 , text: t("form.user.active.label")},
-      hint_text: t("form.user.active.hint")
+      legend: { tag: :h2 }
 
-  = f.govuk_submit t("form.user.submit")
+  = f.govuk_submit t("form.button.user.submit")
