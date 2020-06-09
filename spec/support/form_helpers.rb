@@ -62,7 +62,7 @@ module FormHelpers
     choose("activity[status]", option: status)
     click_button I18n.t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.dates")
+    expect(page).to have_content I18n.t("page_title.activity_form.show.dates", level: I18n.t("page_content.activity.level.#{level}"))
 
     expect(page).to have_content I18n.t("form.legend.activity.planned_start_date")
     fill_in "activity[planned_start_date(3i)]", with: planned_start_date_day

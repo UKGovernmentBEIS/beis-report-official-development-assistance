@@ -32,7 +32,7 @@ RSpec.feature "Users can choose a recipient country" do
       end
 
       scenario "typing a partial match displays all the matching countries" do
-        fill_in "Country", with: "saint"
+        fill_in I18n.t("form.label.activity.recipient_country"), with: "saint"
 
         expect(page).to have_selector "li.autocomplete__option", text: "Saint Lucia", visible: true
         expect(page).to have_selector "li.autocomplete__option", text: "Saint Vincent and the Grenadines", visible: true
@@ -50,13 +50,13 @@ RSpec.feature "Users can choose a recipient country" do
       end
 
       scenario "typing a known country displays that country in the list of countries" do
-        fill_in "Country", with: "afghanistan"
+        fill_in I18n.t("form.label.activity.recipient_country"), with: "afghanistan"
 
         expect(page).to have_selector "li.autocomplete__option", text: "Afghanistan", visible: true
       end
 
       scenario "typing a complete country name, clicking it in the list and clicking continue saves the country" do
-        fill_in "Country", with: "Saint Lucia"
+        fill_in I18n.t("form.label.activity.recipient_country"), with: "Saint Lucia"
         find("li.autocomplete__option", text: "Saint Lucia").click
         click_button I18n.t("form.button.activity.submit")
         click_on I18n.t("default.link.back")
@@ -67,7 +67,7 @@ RSpec.feature "Users can choose a recipient country" do
       end
 
       scenario "typing a partial match, clicking on the complete match and clicking continue saves the country " do
-        fill_in "Country", with: "saint"
+        fill_in I18n.t("form.label.activity.recipient_country"), with: "saint"
         find("li.autocomplete__option", text: "Saint Lucia").click
         click_button I18n.t("form.button.activity.submit")
         click_on I18n.t("default.link.back")
@@ -78,7 +78,7 @@ RSpec.feature "Users can choose a recipient country" do
       end
 
       scenario "choosing a recipient country sets a recipient region associated to that country" do
-        fill_in "Country", with: "saint"
+        fill_in I18n.t("form.label.activity.recipient_country"), with: "saint"
         find("li.autocomplete__option", text: "Saint Lucia").click
         click_button I18n.t("form.button.activity.submit")
         expect(activity.reload.recipient_region).to eq("380") # West Indies
