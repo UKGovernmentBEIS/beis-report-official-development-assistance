@@ -6,13 +6,18 @@ en:
         success: Implementing organisation successfully created
       update:
         success: Implementing organisation successfully updated
-  activerecord:
-    attributes:
+  form:
+    label:
       implementing_organisation:
         name: Organisation name
         organisation_type: Organisation type
         reference: International Aid Transparency Initiative (IATI) reference (optional)
-  helpers:
     hint:
       implementing_organisation:
         reference_html: <a href="http://org-id.guide/" target="_blank" class="govuk-link">Organisation references can be found using this service (Opens in new window)</a>
+  table:
+    header:
+      implementing_organisation:
+        name: Name
+        organisation_type: Organisation type
+        reference: International Aid Transparency Initiative (IATI) reference

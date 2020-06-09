@@ -13,13 +13,13 @@ RSpec.feature "Users can manage the implementing organisations" do
       expect(page).to have_content I18n.t("page_content.activity.implementing_organisation.button.new")
       click_on I18n.t("page_content.activity.implementing_organisation.button.new")
 
-      expect(page).to have_field I18n.t("activerecord.attributes.implementing_organisation.name")
-      expect(page).to have_select I18n.t("activerecord.attributes.implementing_organisation.organisation_type")
-      expect(page).to have_field I18n.t("activerecord.attributes.implementing_organisation.reference")
+      expect(page).to have_field I18n.t("form.label.implementing_organisation.name")
+      expect(page).to have_select I18n.t("form.label.implementing_organisation.organisation_type")
+      expect(page).to have_field I18n.t("form.label.implementing_organisation.reference")
 
-      fill_in I18n.t("activerecord.attributes.implementing_organisation.name"), with: other_public_sector_organisation.name
-      select("Other Public Sector", from: I18n.t("activerecord.attributes.implementing_organisation.organisation_type"))
-      fill_in I18n.t("activerecord.attributes.implementing_organisation.reference"), with: other_public_sector_organisation.reference
+      fill_in I18n.t("form.label.implementing_organisation.name"), with: other_public_sector_organisation.name
+      select("Other Public Sector", from: I18n.t("form.label.implementing_organisation.organisation_type"))
+      fill_in I18n.t("form.label.implementing_organisation.reference"), with: other_public_sector_organisation.reference
       click_on I18n.t("default.button.submit")
 
       expect(current_path).to eq organisation_activity_path(project.organisation, project)
@@ -42,9 +42,9 @@ RSpec.feature "Users can manage the implementing organisations" do
         click_on "Edit"
       end
 
-      expect(find_field(I18n.t("activerecord.attributes.implementing_organisation.name")).value).to eq other_public_sector_organisation.name
+      expect(find_field(I18n.t("form.label.implementing_organisation.name")).value).to eq other_public_sector_organisation.name
 
-      fill_in I18n.t("activerecord.attributes.implementing_organisation.name"), with: "It is a charity"
+      fill_in I18n.t("form.label.implementing_organisation.name"), with: "It is a charity"
       click_on I18n.t("default.button.submit")
 
       expect(page).to have_content I18n.t("action.implementing_organisation.update.success")
