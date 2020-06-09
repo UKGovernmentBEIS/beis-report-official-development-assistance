@@ -6,8 +6,6 @@ en:
         submit: Continue
     label:
       activity:
-        country: Country
-        dates: Dates
         flow: Flow
         geography_options:
           recipient_region: Region
@@ -17,8 +15,8 @@ en:
         actual_end_date: Actual end date
         actual_start_date: Actual start date
         description: Description
-        recipient_country: Country
-        recipient_region: Region
+        recipient_country: What country will benefit from this activity?
+        recipient_region: What region will benefit from this activity?
         title: Title
         date:
           day: Day
@@ -118,14 +116,14 @@ en:
     activity_form:
       show:
         aid_type: Aid type
-        country: Country
-        dates: Dates
+        country: What country will benefit from this activity?
+        dates: What are the start and end dates for the %{level}?
         flow: Flow
         geography: Will the benefitting recipient be a region or country?
         identifier: Your unique identifier
         purpose: Purpose
         purpose_level: Purpose of %{level}
-        region: Recipient region
+        region: What region will benefit from this activity?
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
         status: Status
