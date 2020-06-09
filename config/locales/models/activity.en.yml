@@ -17,7 +17,7 @@ en:
         description: Description
         recipient_country: What country will benefit from this activity?
         recipient_region: What region will benefit from this activity?
-        title: Title
+        title: '%{level} title'
         date:
           day: Day
           month: Month
@@ -30,7 +30,7 @@ en:
         geography: Will the benefitting recipient be a region or country?
         planned_end_date: Planned end date
         planned_start_date: Planned start date
-        purpose: Purpose of %{level}
+        purpose: What is the purpose of the %{level}?
         sector: Which %{sector_category} sector is the focus area for this %{level}?
         sector_category: What is the focus area category for this %{level}?
         status: What is the the development status?
@@ -121,8 +121,7 @@ en:
         flow: Flow
         geography: Will the benefitting recipient be a region or country?
         identifier: Your unique identifier
-        purpose: Purpose
-        purpose_level: Purpose of %{level}
+        purpose: What is the purpose of the %{level}?
         region: What region will benefit from this activity?
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
