@@ -6,3 +6,9 @@ en:
         success: Programme successfully created
       update:
         success: Programme successfully updated
+  table:
+    header:
+      programme:
+        title: Title
+        identifier: Identifier
+        fund: Fund

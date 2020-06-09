@@ -6,3 +6,8 @@ en:
         success: Fund successfully created
       update:
         success: Fund successfully updated
+  table:
+    header:
+      fund:
+        title: Title
+        identifier: Identifier

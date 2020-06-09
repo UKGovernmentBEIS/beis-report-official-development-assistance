@@ -4,11 +4,11 @@
   %thead.govuk-table__head
     %tr.govuk-table__row
       %th.govuk-table__header
-        =t("activerecord.attributes.activity.title")
+        =t("table.header.programme.title")
       %th.govuk-table__header
-        = t("page_content.activity.identitfier.label")
+        = t("table.header.programme.identifier")
       %th.govuk-table__header
-        =t("activerecord.attributes.activity.programme.fund")
+        =t("table.header.programme.fund")
 
   %tbody.govuk-table__body
     - programmes.each do |programme|

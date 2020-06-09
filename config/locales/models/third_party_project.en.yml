@@ -6,3 +6,9 @@ en:
         success: Third-party project successfully created
       update:
         success: Third-party project successfully updated
+  table:
+    header:
+      third_party_project:
+        title: Title
+        identifier: Identifier
+        project: Project
