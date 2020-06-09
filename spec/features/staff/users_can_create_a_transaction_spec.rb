@@ -276,9 +276,9 @@ RSpec.feature "Users can create a transaction" do
         visit organisation_activity_path(user.organisation, third_party_project)
         click_on "Add a transaction"
 
-        expect(page).to have_field I18n.t("activerecord.attributes.transaction.providing_organisation_name"), with: beis.name
-        expect(page).to have_field I18n.t("activerecord.attributes.transaction.providing_organisation_type"), with: beis.organisation_type
-        expect(page).to have_field I18n.t("form.transaction.providing_organisation_reference.label"), with: beis.iati_reference
+        expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_name"), with: beis.name
+        expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_type"), with: beis.organisation_type
+        expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_reference"), with: beis.iati_reference
       end
     end
   end
@@ -295,9 +295,9 @@ RSpec.feature "Users can create a transaction" do
         visit organisation_activity_path(user.organisation, third_party_project)
         click_on "Add a transaction"
 
-        expect(page).to have_field I18n.t("activerecord.attributes.transaction.providing_organisation_name"), with: non_government_organisation.name
-        expect(page).to have_field I18n.t("activerecord.attributes.transaction.providing_organisation_type"), with: non_government_organisation.organisation_type
-        expect(page).to have_field I18n.t("form.transaction.providing_organisation_reference.label"), with: non_government_organisation.iati_reference
+        expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_name"), with: non_government_organisation.name
+        expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_type"), with: non_government_organisation.organisation_type
+        expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_reference"), with: non_government_organisation.iati_reference
       end
     end
   end
