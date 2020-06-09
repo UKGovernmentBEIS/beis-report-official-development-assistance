@@ -25,8 +25,8 @@ module FormHelper
       PlannedDisbursement::PLANNED_DISBURSEMENT_BUDGET_TYPES.map do |id, name|
         OpenStruct.new(
           id: id,
-          name: I18n.t("form.planned_disbursement.planned_disbursement_type.#{name}.name"),
-          description: I18n.t("form.planned_disbursement.planned_disbursement_type.#{name}.description")
+          name: I18n.t("form.label.planned_disbursement.planned_disbursement_type_options.#{name}.name"),
+          description: I18n.t("form.label.planned_disbursement.planned_disbursement_type_options.#{name}.description")
         )
       end
     end

@@ -3,19 +3,19 @@
     %thead.govuk-table__head
       %tr.govuk-table__row
         %th.govuk-table__header
-          =t("form.planned_disbursement.planned_disbursement_type.label")
+          =t("table.header.planned_disbursement.planned_disbursement_type")
         %th.govuk-table__header
-          =t("form.planned_disbursement.period_start_date.label")
+          =t("table.header.planned_disbursement.period_start_date")
         %th.govuk-table__header
-          =t("form.planned_disbursement.period_end_date.label")
+          =t("table.header.planned_disbursement.period_end_date")
         %th.govuk-table__header
-          =t("form.planned_disbursement.currency.label")
+          =t("table.header.planned_disbursement.currency")
         %th.govuk-table__header
-          =t("form.planned_disbursement.value.label")
+          =t("table.header.planned_disbursement.value")
         %th.govuk-table__header
-          =t("form.planned_disbursement.providing_organisation.label")
+          =t("table.header.planned_disbursement.providing_organisation")
         %th.govuk-table__header
-          =t("form.planned_disbursement.receiving_organisation.label")
+          =t("table.header.planned_disbursement.receiving_organisation")
         - if policy(@activity).edit?
           %th.govuk-table__header
 
@@ -31,4 +31,4 @@
           %td.govuk-table__cell= planned_disbursement.receiving_organisation_name
           - if policy(planned_disbursement.parent_activity).edit?
             %td.govuk-table__cell
-              = a11y_action_link(I18n.t('default.link.edit'), edit_activity_planned_disbursement_path(planned_disbursement.parent_activity, planned_disbursement), t("form.planned_disbursement.edit_noun"))
+              = a11y_action_link(I18n.t('default.link.edit'), edit_activity_planned_disbursement_path(planned_disbursement.parent_activity, planned_disbursement), t("table.body.planned_disbursement.edit_noun"))
