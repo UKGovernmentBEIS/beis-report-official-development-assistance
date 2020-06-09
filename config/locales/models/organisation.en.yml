@@ -7,20 +7,32 @@ en:
       update:
         success: Organisation successfully updated
   form:
-    organisation:
-      default_currency:
-        hint: Default currency for all financial values in this activity report
-        label: Default currency
-      iati_reference:
-        hint:
-          html: Machine-readable identification string for the organisation. <a href="https://reference.iatistandard.org/organisation-identifiers/" target="_blank" class="govuk-link">See International Aid Transparency Initiative (IATI) for detailed documentation (Opens in new window).</a>
-      language_code:
-        hint: Default language of text in this organisation
-        label: Language code
-      name:
-        label: Name
-      organisation_type:
-        label: Organisation type
+    label:
+      organisation:
+        name: Name
+        organisation_type: Organisation type
+        iati_reference: International Aid Transparency Initiative (IATI) reference
+        default_currency: Default currency
+        language_code: Language code
+    legend:
+      organisation:
+    hint:
+      organisation:
+        iati_reference_html: Machine-readable identification string for the organisation. <a href="https://reference.iatistandard.org/organisation-identifiers/" target="_blank" class="govuk-link">See International Aid Transparency Initiative (IATI) for detailed documentation (Opens in new window).</a>
+        default_currency: Default currency for all financial values in this activity report
+        language_code: Default language of text in this organisation
+  table:
+    header:
+      organisation:
+        name: Name
+        iati_reference: International Aid Transparency Initiative (IATI) reference
+  summary:
+    label:
+      organisation:
+        iati_reference: IATI reference
+        organisation_type: Organisation type
+        language_code: Language code
+        default_currency: Default currency
   page_content:
     organisation_details: Organisation details
     organisations:
@@ -35,8 +47,6 @@ en:
         create_third_party_project: Create third-party project
         edit: Edit organisation
         edit_details: Edit details
-      default_currency:
-        label: Default currency
       details: Organisation details
       download:
         explanation: Download all activities for this organisation
@@ -46,17 +56,9 @@ en:
           explanation: Download all third-party project (level D) activities for this organisation as XML
         title: Download as XML
       funds: Funds
-      iati_reference:
-        label: International Aid Transparency Initiative (IATI) reference
-      language_code:
-        label: Language code
-      name:
-        label: Name
       programmes: Programmes
       projects: Projects
       third_party_projects: Third-party projects
-      type:
-        label: Type
   page_title:
     organisation:
       edit: Edit organisation
@@ -64,13 +66,6 @@ en:
       new: Create a new organisation
       show: Organisation %{name}
   activerecord:
-    attributes:
-      organisation:
-        default_currency: Default currency
-        iati_reference: International Aid Transparency Initiative (IATI) reference
-        language_code: Language code
-        name: Name
-        organisation_type: Organisation type
     errors:
       models:
         organisation:
