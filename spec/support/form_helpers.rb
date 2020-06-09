@@ -31,7 +31,7 @@ module FormHelpers
     click_button I18n.t("form.button.activity.submit")
 
     expect(page).to have_content I18n.t("form.legend.activity.purpose", level: I18n.t("page_content.activity.level.#{level}"))
-    expect(page).to have_content I18n.t("form.label.activity.title")
+    expect(page).to have_content I18n.t("form.label.activity.title", level: I18n.t("page_content.activity.level.#{level}")).humanize
     expect(page).to have_content I18n.t("form.label.activity.description")
     fill_in "activity[title]", with: title
     fill_in "activity[description]", with: description
