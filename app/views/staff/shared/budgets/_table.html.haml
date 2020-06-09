@@ -3,17 +3,17 @@
     %thead.govuk-table__head
       %tr.govuk-table__row
         %th.govuk-table__header
-          =t("form.budget.budget_type.label")
+          =t("table.header.budget.budget_type")
         %th.govuk-table__header
-          =t("form.budget.status.label")
+          =t("table.header.budget.status")
         %th.govuk-table__header
-          =t("form.budget.period_start_date.label")
+          =t("table.header.budget.period_start_date")
         %th.govuk-table__header
-          =t("form.budget.period_end_date.label")
+          =t("table.header.budget.period_end_date")
         %th.govuk-table__header
-          =t("form.budget.currency.label")
+          =t("table.header.budget.currency")
         %th.govuk-table__header
-          =t("form.budget.value.label")
+          =t("table.header.budget.value")
         %th.govuk-table__header
 
     %tbody.govuk-table__body
@@ -27,4 +27,4 @@
           %td.govuk-table__cell= budget.value
           %td.govuk-table__cell
             - if policy(budget).create?
-              = a11y_action_link(I18n.t('default.link.edit'), edit_activity_budget_path(budget.parent_activity_id, budget), t("page_content.budgets.edit_noun"))
+              = a11y_action_link(I18n.t('default.link.edit'), edit_activity_budget_path(budget.parent_activity_id, budget), t("table.body.budget.edit_noun"))
