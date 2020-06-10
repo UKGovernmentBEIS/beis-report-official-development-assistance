@@ -30,14 +30,14 @@ module FormHelpers
     fill_in "activity[identifier]", with: identifier
     click_button I18n.t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.legend.activity.purpose", level: I18n.t("page_content.activity.level.#{level}"))
-    expect(page).to have_content I18n.t("form.label.activity.title", level: I18n.t("page_content.activity.level.#{level}")).humanize
+    expect(page).to have_content I18n.t("form.legend.activity.purpose", level: activity_level(level))
+    expect(page).to have_content I18n.t("form.label.activity.title", level: activity_level(level).humanize)
     expect(page).to have_content I18n.t("form.label.activity.description")
     fill_in "activity[title]", with: title
     fill_in "activity[description]", with: description
     click_button I18n.t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.legend.activity.sector_category", level: I18n.t("page_content.activity.level.#{level}"))
+    expect(page).to have_content I18n.t("form.legend.activity.sector_category", level: activity_level(level))
     expect(page).to have_content(
       ActionView::Base.full_sanitizer.sanitize(
         I18n.t("form.legend.activity.sector_category", level: I18n.t("page_content.activity.level.#{level}"))
@@ -46,12 +46,12 @@ module FormHelpers
     choose sector_category
     click_button I18n.t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.legend.activity.sector", sector_category: sector_category, level: I18n.t("page_content.activity.level.#{level}"))
+    expect(page).to have_content I18n.t("form.legend.activity.sector", sector_category: sector_category, level: activity_level(level))
 
     choose sector
     click_button I18n.t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.legend.activity.status", level: I18n.t("page_content.activity.level.#{level}"))
+    expect(page).to have_content I18n.t("form.legend.activity.status", level: activity_level(level))
     expect(page).to have_content "The activity is being scoped or planned"
     expect(page).to have_content "The activity is currently being implemented"
     expect(page).to have_content "Physical activity is complete or the final disbursement has been made"
@@ -62,7 +62,7 @@ module FormHelpers
     choose("activity[status]", option: status)
     click_button I18n.t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.dates", level: I18n.t("page_content.activity.level.#{level}"))
+    expect(page).to have_content I18n.t("page_title.activity_form.show.dates", level: activity_level(level))
 
     expect(page).to have_content I18n.t("form.legend.activity.planned_start_date")
     fill_in "activity[planned_start_date(3i)]", with: planned_start_date_day
@@ -203,5 +203,9 @@ module FormHelpers
 
   def localise_date_from_input_fields(year:, month:, day:)
     I18n.l(Date.parse("#{year}-#{month}-#{day}"))
+  end
+
+  private def activity_level(level)
+    I18n.t("page_content.activity.level.#{level}")
   end
 end
