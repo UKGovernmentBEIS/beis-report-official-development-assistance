@@ -1,7 +1,7 @@
 class PlannedDisbursementPresenter < SimpleDelegator
   def planned_disbursement_type
     return if super.blank?
-    I18n.t("page_content.planned_disbursements.planned_disbursement_type.#{super}")
+    I18n.t("table.body.planned_disbursement.planned_disbursement_type_options.#{super}")
   end
 
   def period_start_date

@@ -6,3 +6,9 @@ en:
         success: Project successfully created
       update:
         success: Project successfully updated
+  table:
+    header:
+      project:
+        title: Title
+        identifier: Identifier
+        programme: Programme
