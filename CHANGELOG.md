@@ -168,7 +168,8 @@
 - Amend Activity date validations - either `planned_start_date` *OR* `actual_start_date`
   must be present, in line with the IATI `activity-date` XML standard
 - Amend ingest service to successfully ingest Activities without an `activity-date` type
-  2 (`actual_start_date`)  
+  2 (`actual_start_date`) 
+- XML download does not contain any incomplete activities   
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-8...HEAD
 [release-8]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...release-8

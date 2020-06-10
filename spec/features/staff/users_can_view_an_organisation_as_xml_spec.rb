@@ -108,6 +108,15 @@ RSpec.feature "Users can view an organisation as XML" do
         expect(xml.xpath("/iati-activities/iati-activity/budget/value").text).to eq "2000.0"
         expect(xml.xpath("/iati-activities/iati-activity/transaction/value").text).to eq "100.0"
       end
+
+      scenario "the XML file does not contain incomplete activities" do
+        _project = create(:project_activity, :at_purpose_step, organisation: organisation)
+        visit organisation_path(organisation)
+        click_link I18n.t("default.button.download_as_xml")
+        xml = Nokogiri::XML::Document.parse(page.body)
+
+        expect(xml.xpath("/iati-activities/iati-activity").count).to eq(0)
+      end
     end
   end
 
