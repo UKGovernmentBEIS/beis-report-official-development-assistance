@@ -33,7 +33,7 @@ en:
         purpose: What is the purpose of the %{level}?
         sector: Which %{sector_category} sector is the focus area for this %{level}?
         sector_category: What is the focus area category for this %{level}?
-        status: What is the the development status?
+        status: What is the status of the %{level}?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
