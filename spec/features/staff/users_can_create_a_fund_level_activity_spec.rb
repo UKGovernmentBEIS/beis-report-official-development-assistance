@@ -112,7 +112,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         fill_in "activity[identifier]", with: "foo"
         click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content "Purpose of fund"
+        expect(page).to have_content I18n.t("form.legend.activity.purpose", level: "fund")
 
         # Don't provide a title and description
         click_button I18n.t("form.button.activity.submit")
@@ -141,7 +141,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         choose "Primary education"
         click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("form.legend.activity.status")
+        expect(page).to have_content I18n.t("form.legend.activity.status", level: "fund")
 
         # Don't provide a status
         click_button I18n.t("form.button.activity.submit")

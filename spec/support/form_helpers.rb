@@ -51,7 +51,7 @@ module FormHelpers
     choose sector
     click_button I18n.t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.legend.activity.status")
+    expect(page).to have_content I18n.t("form.legend.activity.status", level: I18n.t("page_content.activity.level.#{level}"))
     expect(page).to have_content "The activity is being scoped or planned"
     expect(page).to have_content "The activity is currently being implemented"
     expect(page).to have_content "Physical activity is complete or the final disbursement has been made"
