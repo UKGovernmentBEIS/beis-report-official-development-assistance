@@ -68,22 +68,22 @@
       %dl.govuk-summary-list
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
-            = t("page_content.organisation.iati_reference.label")
+            = t("summary.label.organisation.iati_reference")
           %dd.govuk-summary-list__value
             = @organisation_presenter.iati_reference
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
-            = t("page_content.organisation.type.label")
+            = t("summary.label.organisation.organisation_type")
           %dd.govuk-summary-list__value
             = t("organisation.organisation_type.#{@organisation_presenter.organisation_type}")
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
-            = t("page_content.organisation.language_code.label")
+            = t("summary.label.organisation.language_code")
           %dd.govuk-summary-list__value
             = t("organisation.language_code.#{@organisation_presenter.language_code}")
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
-            = t("page_content.organisation.default_currency.label")
+            = t("summary.label.organisation.default_currency")
           %dd.govuk-summary-list__value
             = t("generic.default_currency.#{@organisation_presenter.default_currency}")
 

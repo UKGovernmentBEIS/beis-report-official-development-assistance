@@ -39,7 +39,7 @@ RSpec.feature "BEIS users can editing other users" do
     fill_in "user[email]", with: updated_email
 
     # Submit the form
-    click_button I18n.t("form.user.submit")
+    click_button I18n.t("form.button.user.submit")
 
     # Verify the user was updated
     expect(page).to have_content(updated_name)
@@ -116,7 +116,7 @@ RSpec.feature "BEIS users can editing other users" do
       fill_in "user[name]", with: updated_name
       fill_in "user[email]", with: updated_email
 
-      click_button I18n.t("form.user.submit")
+      click_button I18n.t("form.button.user.submit")
 
       auditable_event = PublicActivity::Activity.find_by(trackable_id: target_user.id)
       expect(auditable_event.key).to eq "user.update"

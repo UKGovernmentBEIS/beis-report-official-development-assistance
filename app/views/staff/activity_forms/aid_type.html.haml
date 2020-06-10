@@ -1,3 +1,3 @@
 = render layout: "wrapper" do |f|
   = f.hidden_field :aid_type
-  = f.govuk_collection_radio_buttons :aid_type, yaml_to_objects_with_description(entity: "activity", type: "aid_type"), :code, :name, :description, legend: { tag: 'h1', size: 'xl', text: I18n.t("activerecord.attributes.activity.aid_type") }, hint_text: I18n.t("helpers.hint.activity.aid_type_html").html_safe
+  = f.govuk_collection_radio_buttons :aid_type, yaml_to_objects_with_description(entity: "activity", type: "aid_type"), :code, :name, :description, legend: { tag: 'h1', size: 'xl', text: I18n.t("form.legend.activity.aid_type") }, hint_text: I18n.t("form.hint.activity.aid_type").html_safe

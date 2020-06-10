@@ -8,26 +8,48 @@ en:
       update:
         failed: The service is experiencing issues updating users and the team has been alerted to the problem.
         success: User successfully updated
-  user:
-    active: Active?
-    email: Email address
-    identifier: Auth0 identifier
-    name: Full name
-    organisation: Organisation
-    role: Role
   form:
+    button:
+      user:
+        submit: Submit
+    label:
+      user:
+        email: Email address
+        identifier: Auth0 identifier
+        name: Full name
+    legend:
+      user:
+        active: Active?
+        organisation_id: Choose an organisation
+        role: Role
+    hint:
+      user:
+        active: Is this user activated or deactivated? Deactivated users cannot log in.
+        organisation_id: What organisation does this user belong to?
     user:
       active:
         active: Activate
         'false': 'No'
-        hint: Is this user activated or deactivated? Deactivated users cannot log in.
         inactive: Deactivate
         label: Activate user
         'true': 'Yes'
-      organisation:
-        hint: What organisation does this user belong to?
-        label: Choose an organisation
-      submit: Submit
+  table:
+    header:
+      user:
+        name: Full name
+        role: Role
+        email: Email address
+        organisation: Organisation
+        active: Active?
+  summary:
+    label:
+      user:
+        name: Full name
+        role: Role
+        email: Email address
+        identifier: Identifier
+        organisation: Organisation
+        active: Active?
   page_content:
     users:
       button:
@@ -56,11 +78,3 @@ en:
           attributes:
             organisation_ids:
               blank: Select the organisation(s) this user belongs to
-  helpers:
-    fieldset:
-      user:
-        organisation_ids: Organisations
-        role: Role
-    hint:
-      user:
-        role: Choose a role for this user.

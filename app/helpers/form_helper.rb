@@ -16,7 +16,7 @@ module FormHelper
 
   def list_of_budget_types
     @list_of_budget_types ||= begin
-      Budget::BUDGET_TYPES.map { |id, name| OpenStruct.new(id: id, name: I18n.t("activerecord.attributes.budget.budget_type.#{name}")) }
+      Budget::BUDGET_TYPES.map { |id, name| OpenStruct.new(id: id, name: I18n.t("form.label.budget.budget_type_options.#{name}")) }
     end
   end
 
@@ -25,8 +25,8 @@ module FormHelper
       PlannedDisbursement::PLANNED_DISBURSEMENT_BUDGET_TYPES.map do |id, name|
         OpenStruct.new(
           id: id,
-          name: I18n.t("form.planned_disbursement.planned_disbursement_type.#{name}.name"),
-          description: I18n.t("form.planned_disbursement.planned_disbursement_type.#{name}.description")
+          name: I18n.t("form.label.planned_disbursement.planned_disbursement_type_options.#{name}.name"),
+          description: I18n.t("form.label.planned_disbursement.planned_disbursement_type_options.#{name}.description")
         )
       end
     end
@@ -34,7 +34,7 @@ module FormHelper
 
   def list_of_budget_statuses
     @list_of_budget_statuses ||= begin
-      Budget::STATUSES.map { |id, name| OpenStruct.new(id: id, name: I18n.t("activerecord.attributes.budget.status.#{name}")) }
+      Budget::STATUSES.map { |id, name| OpenStruct.new(id: id, name: I18n.t("form.label.budget.status_options.#{name}")) }
     end
   end
 

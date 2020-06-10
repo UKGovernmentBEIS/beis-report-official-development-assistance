@@ -13,31 +13,31 @@
       %dl.govuk-summary-list
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
-            = t("user.name")
+            = t("summary.label.user.name")
           %dd.govuk-summary-list__value
             = @user.name
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
-            = t("user.email")
+            = t("summary.label.user.email")
           %dd.govuk-summary-list__value
             = @user.email
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
-            = t("user.role")
+            = t("summary.label.user.role")
           %dd.govuk-summary-list__value
             = @user.role_name
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
-            = t("user.organisation")
+            = t("summary.label.user.organisation")
           %dd.govuk-summary-list__value
             = @user.organisation.name
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
-            = t("user.identifier")
+            = t("summary.label.user.identifier")
           %dd.govuk-summary-list__value
             = @user.identifier
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
-            = t("user.active")
+            = t("summary.label.user.active")
           %dd.govuk-summary-list__value
             = t("form.user.active.#{@user.active}")

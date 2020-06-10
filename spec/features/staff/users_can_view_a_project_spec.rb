@@ -28,7 +28,7 @@ RSpec.feature "Users can view a project" do
       project = create(:project_activity)
       visit activity_step_path(project, :status)
 
-      expect(page).to have_content I18n.t("helpers.hint.activity.status", level: project.level)
+      expect(page).to have_content I18n.t("form.hint.activity.status", level: project.level)
     end
 
     context "when viewing a programme" do

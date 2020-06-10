@@ -38,7 +38,7 @@ RSpec.feature "Users can edit an activity" do
         end
 
         fill_in "activity[identifier]", with: identifier
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
         expect(page).to have_content I18n.t("action.fund.update.success")
         expect(page.current_path).to eq organisation_activity_path(activity.organisation, activity)
@@ -63,7 +63,7 @@ RSpec.feature "Users can edit an activity" do
           end
 
           fill_in "activity[identifier]", with: identifier
-          click_button I18n.t("form.activity.submit")
+          click_button I18n.t("form.button.activity.submit")
 
           # grab the most recently created auditable_event
           auditable_events = PublicActivity::Activity.where(trackable_id: activity.id).order("created_at ASC")
@@ -85,11 +85,11 @@ RSpec.feature "Users can edit an activity" do
           click_on(I18n.t("default.link.edit"))
         end
         choose "Region"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         select recipient_region, from: "activity[recipient_region]"
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("page_title.activity_form.show.flow")
+        expect(page).to have_content I18n.t("form.label.activity.flow")
         expect(page).not_to have_content activity.title
       end
     end
@@ -132,7 +132,7 @@ RSpec.feature "Users can edit an activity" do
           click_on(I18n.t("default.link.edit"))
         end
 
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content(I18n.t("action.programme.update.success"))
       end
     end
@@ -164,7 +164,7 @@ RSpec.feature "Users can edit an activity" do
           click_on(I18n.t("default.link.edit"))
         end
 
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content(I18n.t("action.project.update.success"))
       end
     end
@@ -183,7 +183,7 @@ RSpec.feature "Users can edit an activity" do
           click_on(I18n.t("default.link.edit"))
         end
 
-        click_button I18n.t("form.activity.submit")
+        click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content(I18n.t("action.third_party_project.update.success"))
       end
     end

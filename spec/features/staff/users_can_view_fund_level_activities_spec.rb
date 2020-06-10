@@ -26,7 +26,7 @@ RSpec.feature "Users can view fund level activities" do
       fund = create(:fund_activity)
       visit activity_step_path(fund, :status)
 
-      expect(page).to have_content I18n.t("helpers.hint.activity.status", level: fund.level)
+      expect(page).to have_content I18n.t("form.hint.activity.status", level: fund.level)
     end
 
     scenario "can view and create programme level activities" do
