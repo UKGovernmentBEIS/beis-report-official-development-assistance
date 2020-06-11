@@ -3,14 +3,18 @@ feature "Organisation show page" do
   let(:beis_user) { create(:beis_user) }
 
   let(:fund) { create(:fund_activity, organisation: beis_user.organisation) }
+  let!(:incomplete_fund) { create(:fund_activity, :at_purpose_step, organisation: beis_user.organisation) }
   let(:programme) do
     create(:programme_activity,
       activity: fund,
       organisation: beis_user.organisation,
       extending_organisation: delivery_partner_user.organisation)
   end
-  let!(:project) { create(:project_activity, activity: programme, organisation: delivery_partner_user.organisation) }
+  let!(:incomplete_programme) { create(:programme_activity, :at_purpose_step, extending_organisation: delivery_partner_user.organisation) }
+  let!(:project) { create(:project_activity, activity: programme, organisation: delivery_partner_user.organisation, created_at: Date.today) }
+  let!(:incomplete_project) { create(:project_activity, :at_geography_step, activity: programme, organisation: delivery_partner_user.organisation, created_at: Date.yesterday) }
   let!(:third_party_project) { create(:third_party_project_activity, activity: project, organisation: delivery_partner_user.organisation) }
+  let!(:incomplete_third_party_project) { create(:third_party_project_activity, :at_region_step, activity: project, organisation: delivery_partner_user.organisation) }
   let!(:another_programme) { create(:programme_activity) }
   let!(:another_project) { create(:project_activity) }
 
@@ -26,6 +30,13 @@ feature "Organisation show page" do
           expect(page).to have_link fund.title, href: organisation_activity_path(fund.organisation, fund)
           expect(page).to have_content fund.title
           expect(page).to have_content fund.identifier
+        end
+      end
+
+      scenario "they see 'Incomplete' next to incomplete funds" do
+        within("##{incomplete_fund.id}") do
+          expect(page).to have_link incomplete_fund.title
+          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
         end
       end
 
@@ -47,6 +58,13 @@ feature "Organisation show page" do
         end
       end
 
+      scenario "they see 'Incomplete' next to incomplete programmes" do
+        within("##{incomplete_programme.id}") do
+          expect(page).to have_link incomplete_programme.title
+          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
+        end
+      end
+
       scenario "they see a list of all projects" do
         within("##{project.id}") do
           expect(page).to have_link project.title, href: organisation_activity_path(project.organisation, project)
@@ -61,11 +79,25 @@ feature "Organisation show page" do
         end
       end
 
+      scenario "they see 'Incomplete' next to incomplete projects" do
+        within("##{incomplete_project.id}") do
+          expect(page).to have_link incomplete_project.title
+          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
+        end
+      end
+
       scenario "they see a list of all third-party projects" do
         within("##{third_party_project.id}") do
           expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
           expect(page).to have_content third_party_project.identifier
           expect(page).to have_content third_party_project.parent_activity.title
+        end
+      end
+
+      scenario "they see 'Incomplete' next to incomplete third-party projects" do
+        within("##{incomplete_third_party_project.id}") do
+          expect(page).to have_link incomplete_third_party_project.title
+          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
         end
       end
 
@@ -124,7 +156,7 @@ feature "Organisation show page" do
     end
 
     scenario "the list of projects is ordered by created_at (oldest first)" do
-      yet_another_project = create(:project_activity, organisation: delivery_partner_user.organisation, created_at: Date.yesterday)
+      yet_another_project = create(:project_activity, organisation: delivery_partner_user.organisation, created_at: 2.days.ago)
 
       visit organisation_path(delivery_partner_user.organisation)
 

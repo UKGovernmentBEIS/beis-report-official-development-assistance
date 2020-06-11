@@ -21,6 +21,7 @@ en:
       show: Show
     error:
       unknown: Unknown error
+    warning: Warning
   activerecord:
     errors:
       format: "%{attribute} %{message}"
