@@ -60,6 +60,9 @@ en:
         button:
           create: Create activity
         description: Description
+        form_state:
+          complete: Complete
+          incomplete: Incomplete
         flow: Flow
         geography: Benefitting recipient geography
         identifier: Identifier
@@ -72,6 +75,7 @@ en:
         recipient_region: Recipient region
         sector: Focus area
         sector_category: Focus area category
+        stage: Stage
         status: Status
         third_party_projects: Third-party projects
         title: Title
