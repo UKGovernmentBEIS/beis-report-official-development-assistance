@@ -33,6 +33,15 @@ RSpec.describe Activity, type: :model do
         expect(Activity.programmes).to eq [programme_activity]
       end
     end
+
+    describe ".publishable_to_iati?" do
+      it "only returns activities with a `form_state` of :complete" do
+        complete_activity = create(:fund_activity)
+        _incomplete_activity = create(:fund_activity, :at_purpose_step)
+
+        expect(Activity.publishable_to_iati?).to eq [complete_activity]
+      end
+    end
   end
 
   describe "sanitisation" do
