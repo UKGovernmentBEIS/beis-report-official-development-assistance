@@ -4,7 +4,7 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "2.6.3"
 
-gem "auth0", "~> 4.11"
+gem "auth0", "~> 4.12"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "data_migrate"
 gem "govuk_design_system_formbuilder", "~> 1.2.0"
