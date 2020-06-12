@@ -122,10 +122,22 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
+    describe "#region_name_from_code" do
+      it "returns the name of the region from a code number" do
+        expect(helper.region_name_from_code("998")).to eq("Developing countries, unspecified")
+      end
+    end
+
     describe "#country_select_options" do
       it "returns an array of country objects with '' as the first (default) option" do
         expect(helper.country_select_options.first)
           .to eq(OpenStruct.new(name: I18n.t("page_content.activity.recipient_country.default_selection_value"), code: ""))
+      end
+    end
+
+    describe "#country_name_from_code" do
+      it "returns the name of the country from a code number" do
+        expect(helper.country_name_from_code("DZ")).to eq("Algeria")
       end
     end
 
