@@ -174,6 +174,7 @@
 - XML download does not contain any incomplete activities   
 - XML download contains a `narrative` element for region & country containing the region or country name
 - Ingest AMS GCRF data from IATI
+- When a programme has an extending organisation set, the same organisation is set as the implementing organisation 
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-8...HEAD
 [release-8]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...release-8
