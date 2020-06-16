@@ -49,6 +49,18 @@ module CodelistHelper
     objects.unshift(OpenStruct.new(name: I18n.t("page_content.activity.recipient_country.default_selection_value"), code: "")).uniq
   end
 
+  def region_name_from_code(code)
+    region = region_select_options.find { |option| option.code == code }
+    return "" unless region
+    region.name
+  end
+
+  def country_name_from_code(code)
+    country = country_select_options.find { |option| option.code == code }
+    return "" unless country
+    country.name
+  end
+
   def flow_select_options
     objects = yaml_to_objects(entity: "activity", type: "flow", with_empty_item: false)
     objects.unshift(OpenStruct.new(name: "ODA", code: "10")).uniq
