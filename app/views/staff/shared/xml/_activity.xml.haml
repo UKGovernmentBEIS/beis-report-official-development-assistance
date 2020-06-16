@@ -31,9 +31,11 @@
   %activity-date{"iso-date" => activity.planned_end_date, type: "3"}/
   - if activity.actual_end_date?
     %activity-date{"iso-date" => activity.actual_end_date, type: "4"}/
-  %recipient-region{"code" => activity.recipient_region, vocabulary: "1"}/
+  %recipient-region{"code" => activity.recipient_region, vocabulary: "1"}
+    %narrative= region_name_from_code(activity.recipient_region)
   - if activity.recipient_country?
-    %recipient-country{"code" => activity.recipient_country}/
+    %recipient-country{"code" => activity.recipient_country}
+      %narrative= country_name_from_code(activity.recipient_country)
   %sector{"vocabulary" => "1", "code" => activity.sector}/
   %default-flow-type{"code" => activity.flow}/
   %default-finance-type{"code" => activity.finance}/

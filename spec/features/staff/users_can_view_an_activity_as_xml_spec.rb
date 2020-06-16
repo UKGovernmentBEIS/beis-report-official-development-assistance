@@ -47,6 +47,12 @@ RSpec.feature "Users can view an activity as XML" do
           expect(xml.at("iati-activity/recipient-region/@code").text).to eq(activity.recipient_region)
           expect(xml.at("iati-activity/recipient-region/@vocabulary").text).to eq("1")
         end
+
+        it "contains the recipient region name as a narrative element" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.at("iati-activity/recipient-region/narrative").text).to eq("South America, regional")
+        end
       end
 
       context "when the activity has recipient_country geography" do
@@ -55,7 +61,7 @@ RSpec.feature "Users can view an activity as XML" do
             organisation: organisation,
             identifier: "IND-ENT-IFIER",
             geography: :recipient_country,
-            recipient_country: "CL")
+            recipient_country: "CV")
         }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
@@ -63,6 +69,12 @@ RSpec.feature "Users can view an activity as XML" do
           visit organisation_activity_path(organisation, activity, format: :xml)
 
           expect(xml.at("iati-activity/recipient-country/@code").text).to eq(activity.recipient_country)
+        end
+
+        it "contains the recipient country name as a narrative element" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.at("iati-activity/recipient-country/narrative").text).to eq("Cabo Verde")
         end
       end
 
