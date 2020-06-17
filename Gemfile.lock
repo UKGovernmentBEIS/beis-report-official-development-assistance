@@ -285,7 +285,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
-    redis (4.1.4)
+    redis (4.2.1)
     redis-actionpack (5.2.0)
       actionpack (>= 5, < 7)
       redis-rack (>= 2.1.0, < 3)
@@ -461,7 +461,7 @@ DEPENDENCIES
   pundit-matchers (~> 1.6.0)
   rails (~> 6.0.3)
   rails_layout
-  redis (~> 4.1)
+  redis (~> 4.2)
   redis-actionpack
   redis-namespace
   redis-store
