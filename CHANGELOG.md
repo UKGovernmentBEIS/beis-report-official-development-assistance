@@ -173,6 +173,7 @@
 - Flag incomplete activities in the activity table views
 - XML download does not contain any incomplete activities   
 - XML download contains a `narrative` element for region & country containing the region or country name
+- Ingest AMS GCRF data from IATI
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-8...HEAD
 [release-8]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...release-8
