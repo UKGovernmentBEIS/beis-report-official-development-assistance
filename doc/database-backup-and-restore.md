@@ -30,43 +30,43 @@ You will need to be a user of the services GPaaS account. You're OK if you can s
 1. Create a new backup of production
     ```
     cf target -s prod
-    cf services # to get the SERVICE_NAME of postgres
-    cf conduit SERVICE_NAME -- pg_dump --file PROD_DATA_FILE_NAME.sql
+    cf services # to get the POSTGRES_SERVICE_NAME of postgres
+    cf conduit POSTGRES_SERVICE_NAME -- pg_dump --file PROD_DATA_FILE_NAME.sql
     ```
 1. Create a backup of the database we are about to overwrite and keep this as a local file
     ```
     cf target -s staging
-    cf services # to get the SERVICE_NAME
-    cf conduit SERVICE_NAME -- pg_dump --file STAGING_DATA_FILE_NAME.sql
+    cf services # to get the POSTGRES_SERVICE_NAME
+    cf conduit POSTGRES_SERVICE_NAME -- pg_dump --file STAGING_DATA_FILE_NAME.sql
     ```
-1. Find the Database role name from the database dump. It should be of the form: `rdsbroker_<uuid>_manager`
+1. Databases are linked to the app and worker service so we must find and unlink them
     ```
-    grep -n rdsbroker PROD_DATA_FILE_NAME.sql
+    cf unbind-service beis-roda-staging POSTGRES_SERVICE_NAME
+    cf unbind-service beis-roda-staging-worker POSTGRES_SERVICE_NAME
     ```
-1. Connect to the target database with a PostgreSQL prompt
+1. Destroy the existing database (this may take 10 minutes)
     ```
-    cf target -s staging
-    cf services # to get the SERVICE_NAME for the destination postgres
-    cf conduit SERVICE_NAME -- psql
+    cf delete-service POSTGRES_SERVICE_NAME
     ```
-1. Wipe the target staging database. Inserting the role name from the PROD_DATA_FILE_NAME.sql
+1. Use Terraform to recreate it (this may take 10-20 minutes)
     ```
-    DROP DATABASE "roda-staging";
-    CREATE DATABASE "roda-staging";
-    CREATE ROLE "rdsbroker_<uuid>_manager" WITH SUPERUSER CREATEDB CREATEROLE;
+    terraform apply --var-file=staging.tfvars --var 'data_migrate=false'
     ```
-1. Add data to the target staging database
+1. Find the new database name
     ```
-    cf target -s staging
-    cf services # to get the DESTINATION_SERVICE_NAME for the destination postgres
-    cf conduit DESTINATION_SERVICE_NAME -- psql -d roda-staging < PROD_DATA_FILE_NAME.sql
+    cf conduit POSTGRES_SERVICE_NAME -- psql
+    \l
+    (It will start with "rdsbroker_")
     ```
-1. Ask Rake to prepare the database [using a rails console](/doc/console-access.md)
+1. Copy production data into the fresh database
     ```
-    rake db:prepare
+    cf conduit POSTGRES_SERVICE_NAME -- psql -d NEW_DATABASE_NAME < ../PROD_DATA_FILE_NAME.sql
     ```
-1. Seed the database with generic roda@dxw.com and roda+dp@dxw.com users to allow us to sign in. [Use a rails console](/doc/console-access.md) to add the generic users by copying the contents of the `db/seeds/staging_users.rb`
-1. Sign into the service to verify data is present
+1. Seed the environment with organisations and users using the appropriate seed files
+    ```
+    load File.join(Rails.root, "db", "seeds", "organisations.rb")
+    load File.join(Rails.root, "db", "seeds", "pentest_users.rb")
+    ```
 
 ### PaaS to local
 
@@ -78,8 +78,8 @@ In this example we will overwrite our local development database with the conten
     ```
     cf install-plugin conduit
     cf target -s prod
-    cf services # to get the SERVICE_NAME of postgres
-    cf conduit SERVICE_NAME -- pg_dump --file PROD_DATA_FILE_NAME.sql
+    cf services # to get the POSTGRES_SERVICE_NAME of postgres
+    cf conduit POSTGRES_SERVICE_NAME -- pg_dump --file PROD_DATA_FILE_NAME.sql
     ```
 1. Find the Database role name from the database dump. It should be of the form: `rdsbroker_<uuid>_manager`
     ```
