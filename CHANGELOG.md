@@ -162,7 +162,7 @@
 - Ingest tool fails loudly if any activity fails to be created
 - Ingest UKSA data from IATI
 
-## [unreleased]
+## [release-9] - 2020-06-18
 
 - Transactions can have a negative value (but not zero)
 - Amend Activity date validations - either `planned_start_date` *OR* `actual_start_date`
@@ -177,7 +177,10 @@
 - When a programme has an extending organisation set, the same organisation is set as the implementing organisation 
 - Use the `lograge` gem to reduce logging in production
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-8...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-9...HEAD
+[release-9]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-8...release-9
 [release-8]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...release-8
 [release-7]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...release-7
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6
