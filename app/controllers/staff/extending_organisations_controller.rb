@@ -13,6 +13,7 @@ class Staff::ExtendingOrganisationsController < Staff::BaseController
     @activity.assign_attributes(extending_organisation_id: extending_organisation_id)
 
     if @activity.valid?(:update_extending_organisation)
+      set_implementing_organisation
       @activity.save
       flash[:notice] = I18n.t("action.#{@activity.level}.update.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
@@ -22,6 +23,15 @@ class Staff::ExtendingOrganisationsController < Staff::BaseController
   end
 
   private
+
+  def set_implementing_organisation
+    extending_organisation = Organisation.find(extending_organisation_id)
+    implementing_organisation = ImplementingOrganisation.new(name: extending_organisation.name,
+                                                             organisation_type: extending_organisation.organisation_type,
+                                                             reference: extending_organisation.iati_reference,
+                                                             activity_id: activity_id)
+    implementing_organisation.save!
+  end
 
   def activity_id
     params[:activity_id]
