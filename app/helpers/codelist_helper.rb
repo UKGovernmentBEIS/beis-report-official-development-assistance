@@ -17,11 +17,16 @@ module CodelistHelper
     objects
   end
 
-  def yaml_to_objects_with_description(entity:, type:)
+  def yaml_to_objects_with_description(entity:, type:, code_displayed_in_name: false)
     data = load_yaml(entity: entity, type: type)
     return [] if data.empty?
 
-    data.collect { |item| OpenStruct.new(name: item["name"], code: item["code"], description: item["description"]) }.sort_by(&:code)
+    data = data.collect { |item|
+      name = code_displayed_in_name ? "#{item["name"]} (#{item["code"]})" : item["name"]
+      OpenStruct.new(name: name, code: item["code"], description: item["description"])
+    }
+
+    data.sort_by(&:code)
   end
 
   def yaml_to_objects_with_categories(entity:, type:, include_withdrawn: false)
@@ -81,6 +86,10 @@ module CodelistHelper
 
   def all_sectors
     yaml_to_objects_with_categories(entity: "activity", type: "sector", include_withdrawn: true)
+  end
+
+  def aid_type_radio_options
+    yaml_to_objects_with_description(entity: "activity", type: "aid_type", code_displayed_in_name: true)
   end
 
   def load_yaml(entity:, type:)
