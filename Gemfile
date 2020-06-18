@@ -75,3 +75,7 @@ group :test do
   gem "selenium-webdriver"
   gem "webmock", "~> 3.8"
 end
+
+group :production do
+  gem "lograge"
+end
