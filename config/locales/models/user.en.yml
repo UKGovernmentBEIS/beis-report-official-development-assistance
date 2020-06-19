@@ -31,7 +31,7 @@ en:
         active: Activate
         'false': 'No'
         inactive: Deactivate
-        label: Activate user
+        label: What is the user’s status?
         'true': 'Yes'
   table:
     header:
