@@ -20,12 +20,11 @@ en:
     legend:
       user:
         active: Active?
-        organisation_id: Choose an organisation
+        organisation_id: What organisation does this user belong to?
         role: Role
     hint:
       user:
         active: Is this user activated or deactivated? Deactivated users cannot log in.
-        organisation_id: What organisation does this user belong to?
     user:
       active:
         active: Activate
