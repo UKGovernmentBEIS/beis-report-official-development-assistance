@@ -20,7 +20,7 @@ en:
     legend:
       budget:
         budget_type: Budget type
-        status: Status
+        status: Budget status
         period_end_date: Period end date
         period_start_date: Period start date
     hint:
@@ -35,7 +35,7 @@ en:
         period_start_date: Start date
         period_end_date: End date
         currency: Currency
-        value: Value
+        value: Budget amount
     body:
       budget:
         edit_noun: budget
