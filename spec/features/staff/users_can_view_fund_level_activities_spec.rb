@@ -22,13 +22,6 @@ RSpec.feature "Users can view fund level activities" do
       page_displays_an_activity(activity_presenter: ActivityPresenter.new(fund_activity))
     end
 
-    scenario "when viewing the status the hint text has the correct level" do
-      fund = create(:fund_activity)
-      visit activity_step_path(fund, :status)
-
-      expect(page).to have_content I18n.t("form.hint.activity.status", level: fund.level)
-    end
-
     scenario "can view and create programme level activities" do
       fund_activity = create(:activity, level: :fund, organisation: user.organisation)
       programme_activity = create(:activity, level: :programme)
