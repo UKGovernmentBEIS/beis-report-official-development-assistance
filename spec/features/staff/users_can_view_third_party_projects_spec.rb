@@ -12,13 +12,6 @@ RSpec.feature "Users can view a third-party project" do
       expect(page).to have_content third_party_project.title
     end
 
-    scenario "when viewing the status the hint text has the correct level" do
-      third_party_project = create(:third_party_project_activity)
-      visit activity_step_path(third_party_project, :status)
-
-      expect(page).to have_content I18n.t("form.hint.activity.status", level: I18n.t("page_content.activity.level.#{third_party_project.level}"))
-    end
-
     scenario "cannot download a project as XML" do
       third_party_project = create(:third_party_project_activity)
 
