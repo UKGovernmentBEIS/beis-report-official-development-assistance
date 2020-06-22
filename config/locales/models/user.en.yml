@@ -19,12 +19,12 @@ en:
         name: Full name
     legend:
       user:
-        active: Active?
+        active: What is the user's status?
         organisation_id: What organisation does this user belong to?
         role: Role
     hint:
       user:
-        active: Is this user activated or deactivated? Deactivated users cannot log in.
+        active: Deactivated users cannot log in
     user:
       active:
         active: Activate
