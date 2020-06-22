@@ -35,7 +35,7 @@ en:
         purpose: Purpose of %{level}
         sector: Which %{sector_category} sector is the focus area for this %{level}?
         sector_category: What is the focus area category for this %{level}?
-        status: Status
+        status: What is the the development status?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
@@ -46,7 +46,6 @@ en:
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
         sector_category: What area of the economy or society is your %{level} helping? For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
-        status: This is the stage your %{level} is currently at
         title: A short title that explains the fund's activity
       organisation:
         hint: The organisation this activity is associated with
