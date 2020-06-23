@@ -35,9 +35,11 @@ RSpec.describe Activity, type: :model do
     end
 
     describe ".publishable_to_iati?" do
-      it "only returns activities with a `form_state` of :complete" do
+      it "only returns activities with a `form_state` of :complete and/or `publish_to_iati` of true" do
         complete_activity = create(:fund_activity)
         _incomplete_activity = create(:fund_activity, :at_purpose_step)
+        _complete_redacted_activity = create(:fund_activity, publish_to_iati: false)
+        _incomplete_redacted_activity = create(:fund_activity, :at_identifier_step, publish_to_iati: false)
 
         expect(Activity.publishable_to_iati?).to eq [complete_activity]
       end
