@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  web:
+    image: thedxw/beis-report-official-development-assistance:test
+    container_name: test-container
+    entrypoint: /bin/bash -c "tail -f /dev/null"
+    depends_on:
+      - redis
+      - db
+    environment:
+      DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: 'true'
+      DATABASE_URL: postgres://postgres:password@db:5432/roda_test
+      REDIS_URL: redis://redis:6379
+      DOMAIN: test.local
+      NOTIFY_KEY: abc
+      NOTIFY_WELCOME_EMAIL_TEMPLATE: 123
+      RAILS_ENV: test
+      TRAVIS: "$TRAVIS"
+      TRAVIS_JOB_ID: "$TRAVIS_JOB_ID"
+      TRAVIS_BRANCH: "$TRAVIS_BRANCH"
+      TRAVIS_PULL_REQUEST: "$TRAVIS_PULL_REQUEST"
+      COVERALLS_SERVICE_NAME: travis-ci
+      COVERALLS_REPO_TOKEN: "$COVERALLS_REPO_TOKEN"
+      CI: "true"
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+    restart: always
+  redis:
+    image: redis
+    restart: always

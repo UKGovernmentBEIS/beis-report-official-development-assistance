@@ -1,35 +1,36 @@
 language: minimal
 services:
 - docker
+cache:
+  directories:
+  - docker_images
 before_install:
-- docker build . --target test --build-arg RAILS_ENV=test -t app/test
+- docker load -i docker_images/images.tar || true
+before_cache:
+- docker save -o docker_images/images.tar $(docker images -a -q)
 jobs:
   include:
-  - stage: Test
-    name: Build and test the current version of the application using Docker
-    env:
-    - RAILS_ENV=test
+  - stage: Build
     script: |
-      set -eu
-      docker network create test
-      docker run -d --name pg --network test -p 5432:5432 postgres:11.6
-      docker run -d --name redis --network test -p 6379:6379 redis:4.0.14
-      docker run \
-        --network test \
-        -e RAILS_ENV=test \
-        -e DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL=true \
-        -e DATABASE_URL=postgres://postgres@pg:5432/roda_test \
-        -e REDIS_URL=redis://redis:6379 \
-        -e TRAVIS="$TRAVIS" \
-        -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" \
-        -e TRAVIS_BRANCH="$TRAVIS_BRANCH" \
-        -e TRAVIS_PULL_REQUEST="$TRAVIS_PULL_REQUEST" \
-        -e COVERALLS_SERVICE_NAME=travis-ci \
-        -e COVERALLS_REPO_TOKEN="$COVERALLS_REPO_TOKEN" \
-        -e CI=true \
-        --env-file .env.test \
-        app/test /bin/bash -c "set -eu; bundle exec rake; bundle exec brakeman"
-      echo "==== testing terrafrom ===="
+      TAG="${TRAVIS_BUILD_NUMBER}-${TRAVIS_COMMIT}"
+      docker build \
+        --target test \
+        --build-arg RAILS_ENV=test \
+        --cache-from "thedxw/beis-report-official-development-assistance:$TAG" \
+        --tag "thedxw/beis-report-official-development-assistance:test" .
+  - stage: Test the application
+    name: Use Docker and Docker Compose to perform automated application tests
+    script: |
+      docker-compose -f docker-compose.ci.yml up --detach
+      docker exec test-container /bin/bash -c "bundle exec rake"
+      docker exec test-container /bin/bash -c "bundle exec brakeman"
+  - stage: Lint our shell scripts
+    name: Linting our shell scripts
+    script: |
+      bash -c 'shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}'
+  - stage: Test terraform
+    name: Test the terraform
+    script: |
       cd terraform
       git clone https://github.com/tfutils/tfenv.git ~/.tfenv
       export PATH="$HOME/.tfenv/bin:$PATH"
@@ -39,8 +40,6 @@ jobs:
       terraform fmt  -diff -check -recursive
       terraform validate
       cd ..
-      echo "==== linting our shell scripts ===="
-      bash -c 'shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}'
       set +eu
 deploy:
 - provider: script
