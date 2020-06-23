@@ -177,5 +177,15 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(sectors).to include withdrawn_sector
       end
     end
+
+    describe "#aid_type_radio_options" do
+      it "returns the aid type with the code appended to the name" do
+        options = helper.aid_type_radio_options
+
+        expect(options.length).to eq 15
+        expect(options.first.name).to eq "General budget support (A01)"
+        expect(options.last.name).to eq "Refugees in donor countries (H02)"
+      end
+    end
   end
 end
