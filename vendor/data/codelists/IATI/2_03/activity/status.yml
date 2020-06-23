@@ -12,7 +12,7 @@ data:
     description: The activity is currently being implemented
   - code: '3'
     name: Completion
-    description: Physical activity is complete or the final disbursement has been made.
+    description: Physical activity is complete or the final disbursement has been made
   - code: '4'
     name: Post-completion
     description: Physical activity is complete or the final disbursement has been made,

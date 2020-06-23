@@ -6,9 +6,7 @@ en:
         submit: Continue
     label:
       activity:
-        country: Country
-        dates: Dates
-        flow: Flow
+        flow: What is the flow type?
         geography_options:
           recipient_region: Region
           recipient_country: Country
@@ -17,9 +15,9 @@ en:
         actual_end_date: Actual end date
         actual_start_date: Actual start date
         description: Description
-        recipient_country: Country
-        recipient_region: Region
-        title: Title
+        recipient_country: What country will benefit from this activity?
+        recipient_region: What region will benefit from this activity?
+        title: '%{level} title'
         date:
           day: Day
           month: Month
@@ -32,16 +30,16 @@ en:
         geography: Will the benefitting recipient be a region or country?
         planned_end_date: Planned end date
         planned_start_date: Planned start date
-        purpose: Purpose of %{level}
+        purpose: What is the purpose of the %{level}?
         sector: Which %{sector_category} sector is the focus area for this %{level}?
         sector_category: What is the focus area category for this %{level}?
-        status: What is the the development status?
+        status: What is the status of the %{level}?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
         actual_start_date: For example, 11 1 2020
         aid_type: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)</a>
-        flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions</a> of each flow type (opens in new window)
+        flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
         identifier: This could be the reference you use in your internal systems
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
@@ -118,14 +116,13 @@ en:
     activity_form:
       show:
         aid_type: Aid type
-        country: Country
-        dates: Dates
+        country: What country will benefit from this activity?
+        dates: What are the start and end dates for the %{level}?
         flow: Flow
         geography: Will the benefitting recipient be a region or country?
         identifier: Your unique identifier
-        purpose: Purpose
-        purpose_level: Purpose of %{level}
-        region: Recipient region
+        purpose: What is the purpose of the %{level}?
+        region: What region will benefit from this activity?
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
         status: Status
