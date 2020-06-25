@@ -40,7 +40,7 @@ en:
         transaction_type: Type
         date: Date
         currency: Currency
-        value: Value
+        value: Transaction amount
         disbursement_channel: Disbursement channel
         providing_organisation: Provide
         receiving_organisation: Receiver
