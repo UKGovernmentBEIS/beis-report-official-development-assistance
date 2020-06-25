@@ -199,7 +199,7 @@ GEM
     mini_racer (0.2.14)
       libv8 (> 7.3)
     minitest (5.14.1)
-    mock_redis (0.24.0)
+    mock_redis (0.25.0)
     monetize (1.9.4)
       money (~> 6.12)
     money (6.13.7)
