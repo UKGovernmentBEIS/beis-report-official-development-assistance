@@ -17,7 +17,7 @@
 
   .govuk-summary-list__row.title
     %dt.govuk-summary-list__key
-      = t("summary.label.activity.title")
+      = t("summary.label.activity.title", level: activity_presenter.level).capitalize
     %dd.govuk-summary-list__value
       = activity_presenter.title
     %dd.govuk-summary-list__actions
