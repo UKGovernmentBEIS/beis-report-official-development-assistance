@@ -18,6 +18,7 @@ $govuk-font-url-function: 'font-url';
 $govuk-image-url-function: 'image-url';
 $govuk-images-path: "govuk-frontend/govuk/assets/images/";
 $govuk-fonts-path: "govuk-frontend/govuk/assets/fonts/";
+$govuk-page-width: 1100px;
 
 @import "govuk-frontend/govuk/all";
 @import "partials/*";
