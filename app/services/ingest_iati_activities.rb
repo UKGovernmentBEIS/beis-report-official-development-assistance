@@ -15,6 +15,9 @@ class IngestIatiActivities
     doc = Nokogiri::XML(file_io, nil, "UTF-8")
 
     legacy_activity_nodes = doc.xpath("//iati-activity")
+
+    legacy_activity_nodes = legacy_activity_nodes.select { |node| node.xpath("@hierarchy=2") }
+
     legacy_activity_nodes.each do |legacy_activity_node|
       legacy_activity = LegacyActivity.new(activity_node_set: legacy_activity_node, delivery_partner: delivery_partner)
       existing_activity = Activity.find_by(previous_identifier: legacy_activity.identifier)

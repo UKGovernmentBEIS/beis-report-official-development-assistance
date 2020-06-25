@@ -6,13 +6,13 @@ RSpec.describe IngestIatiActivities do
   let!(:existing_programme) { create(:programme_activity, identifier: "GCRF-INTPART", organisation: beis) }
 
   describe "#call" do
-    it "creates 36 new projects for UKSA" do
+    it "creates 35 new projects for UKSA" do
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
 
       service_object = described_class.new(delivery_partner: uksa, file_io: legacy_activities)
 
-      expect { service_object.call }.to change { Activity.project.count }.by(36)
+      expect { service_object.call }.to change { Activity.project.count }.by(35)
     end
 
     it "derives a meaningful internal identifier" do
@@ -90,6 +90,16 @@ RSpec.describe IngestIatiActivities do
       expect(activity.sector).to eql("43082")
       expect(activity.flow).to eql("10")
       expect(activity.aid_type).to eql("C01")
+    end
+
+    it "ignores activities with the wrong IATI hierarchy level" do
+      rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
+      programme = create(:programme_activity, organisation: rs, identifier: "RS-Del-RS")
+      legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/rs/with_wrong_hierarchy_level.xml")
+
+      described_class.new(delivery_partner: rs, file_io: legacy_activities).call
+
+      expect(programme.child_activities).to be_empty
     end
 
     it "creates transactions and marks them as ingested" do
