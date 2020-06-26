@@ -38,6 +38,7 @@ class Activity < ApplicationRecord
   validates :actual_start_date, :actual_end_date, date_not_in_future: true
   validates :extending_organisation_id, presence: true, on: :update_extending_organisation
 
+  acts_as_tree
   belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"
 
   has_many :child_activities, foreign_key: "parent_id", class_name: "Activity"
@@ -88,8 +89,7 @@ class Activity < ApplicationRecord
   end
 
   def parent_activity
-    return if parent_id.nil?
-    Activity.find(parent_id)
+    parent
   end
 
   def has_funding_organisation?
@@ -113,10 +113,7 @@ class Activity < ApplicationRecord
   end
 
   def parent_activities
-    return [parent_activity] if programme?
-    return [parent_activity.parent_activity, parent_activity] if project?
-    return [parent_activity.parent_activity.parent_activity, parent_activity.parent_activity, parent_activity] if third_party_project?
-    []
+    ancestors.reverse
   end
 
   def providing_organisation
