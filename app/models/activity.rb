@@ -88,10 +88,6 @@ class Activity < ApplicationRecord
     organisation.default_currency
   end
 
-  def parent_activity
-    parent
-  end
-
   def has_funding_organisation?
     funding_organisation_reference.present? &&
       funding_organisation_name.present? &&

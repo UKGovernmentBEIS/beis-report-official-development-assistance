@@ -17,7 +17,7 @@
       %tr.govuk-table__row{id: programme.id}
         %td.govuk-table__cell= link_to programme.display_title, organisation_activity_path(programme.organisation, programme), class: "govuk-link govuk-link--no-visited-state"
         %td.govuk-table__cell= programme.identifier
-        %td.govuk-table__cell= programme.parent_activity.title
+        %td.govuk-table__cell= programme.parent.title
         %td.govuk-table__cell
           - if programme.form_steps_completed?
             %strong.govuk-tag.govuk-tag--green
