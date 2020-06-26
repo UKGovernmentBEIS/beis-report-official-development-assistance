@@ -176,6 +176,8 @@ class IngestIatiActivities
       value = budget_element.children.detect { |child| child.name.eql?("value") }.children.text
       currency = budget_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"].value
 
+      value = "0.01" if value.to_f.negative?
+
       budget = Budget.new(
         status: status,
         budget_type: budget_type,
