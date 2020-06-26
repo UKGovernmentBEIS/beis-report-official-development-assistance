@@ -6,15 +6,15 @@ feature "Organisation show page" do
   let!(:incomplete_fund) { create(:fund_activity, :at_purpose_step, organisation: beis_user.organisation) }
   let(:programme) do
     create(:programme_activity,
-      activity: fund,
+      parent: fund,
       organisation: beis_user.organisation,
       extending_organisation: delivery_partner_user.organisation)
   end
   let!(:incomplete_programme) { create(:programme_activity, :at_purpose_step, extending_organisation: delivery_partner_user.organisation) }
-  let!(:project) { create(:project_activity, activity: programme, organisation: delivery_partner_user.organisation, created_at: Date.today) }
-  let!(:incomplete_project) { create(:project_activity, :at_geography_step, activity: programme, organisation: delivery_partner_user.organisation, created_at: Date.yesterday) }
-  let!(:third_party_project) { create(:third_party_project_activity, activity: project, organisation: delivery_partner_user.organisation) }
-  let!(:incomplete_third_party_project) { create(:third_party_project_activity, :at_region_step, activity: project, organisation: delivery_partner_user.organisation) }
+  let!(:project) { create(:project_activity, parent: programme, organisation: delivery_partner_user.organisation, created_at: Date.today) }
+  let!(:incomplete_project) { create(:project_activity, :at_geography_step, parent: programme, organisation: delivery_partner_user.organisation, created_at: Date.yesterday) }
+  let!(:third_party_project) { create(:third_party_project_activity, parent: project, organisation: delivery_partner_user.organisation) }
+  let!(:incomplete_third_party_project) { create(:third_party_project_activity, :at_region_step, parent: project, organisation: delivery_partner_user.organisation) }
   let!(:another_programme) { create(:programme_activity) }
   let!(:another_project) { create(:project_activity) }
 
