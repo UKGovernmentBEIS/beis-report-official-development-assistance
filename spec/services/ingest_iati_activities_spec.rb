@@ -149,22 +149,39 @@ RSpec.describe IngestIatiActivities do
       ).to be_nil
     end
 
-    it "creates budgets and marks them as ingested" do
-      uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
-      legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_budget.xml")
+    context "ingesting budgets" do
+      it "creates budgets and marks them as ingested" do
+        uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_budget.xml")
 
-      described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
 
-      activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021")
-      budgets = Budget.where(parent_activity: activity)
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021")
+        budgets = Budget.where(parent_activity: activity)
 
-      expect(budgets.count).to eql(1)
-      expect(budgets.first.period_start_date).to eq "2016-11-01".to_date
-      expect(budgets.first.period_end_date).to eq "2019-10-31".to_date
-      expect(budgets.first.value).to eq "1868000".to_i
-      expect(budgets.first.budget_type).to eq "1"
-      expect(budgets.first.status).to eq "2"
-      expect(budgets.first.ingested).to be true
+        expect(budgets.count).to eql(1)
+        expect(budgets.first.period_start_date).to eq "2016-11-01".to_date
+        expect(budgets.first.period_end_date).to eq "2019-10-31".to_date
+        expect(budgets.first.value).to eq "1868000".to_i
+        expect(budgets.first.budget_type).to eq "1"
+        expect(budgets.first.status).to eq "2"
+        expect(budgets.first.ingested).to be true
+      end
+
+      it "sets negative budgets to a penny (0.01)" do
+        rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
+        create(:programme_activity, organisation: rs, identifier: "Brazil-Newton-Mob-RS")
+
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/rs/with_negative_budget.xml")
+
+        described_class.new(delivery_partner: rs, file_io: legacy_activities).call
+
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-NEWT-RS_BRA_797")
+        budgets = Budget.where(parent_activity: activity)
+
+        expect(budgets.first.value).to eq "0.01".to_f
+        expect(budgets.first.ingested).to be true
+      end
     end
 
     context "when there is a planned disbursement" do
