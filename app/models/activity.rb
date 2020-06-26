@@ -38,8 +38,9 @@ class Activity < ApplicationRecord
   validates :actual_start_date, :actual_end_date, date_not_in_future: true
   validates :extending_organisation_id, presence: true, on: :update_extending_organisation
 
-  belongs_to :activity, optional: true
-  has_many :child_activities, foreign_key: "activity_id", class_name: "Activity"
+  belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"
+
+  has_many :child_activities, foreign_key: "parent_id", class_name: "Activity"
   belongs_to :organisation
   belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
   has_many :implementing_organisations
@@ -87,8 +88,8 @@ class Activity < ApplicationRecord
   end
 
   def parent_activity
-    return if activity_id.nil?
-    Activity.find(activity_id)
+    return if parent_id.nil?
+    Activity.find(parent_id)
   end
 
   def has_funding_organisation?

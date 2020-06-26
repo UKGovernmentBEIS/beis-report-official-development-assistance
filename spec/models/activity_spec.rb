@@ -253,8 +253,8 @@ RSpec.describe Activity, type: :model do
 
   describe "associations" do
     it { should belong_to(:organisation) }
-    it { should belong_to(:activity).optional }
-    it { should have_many(:child_activities).with_foreign_key("activity_id") }
+    it { should belong_to(:parent).optional }
+    it { should have_many(:child_activities).with_foreign_key("parent_id") }
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
     it { should have_many(:implementing_organisations) }
     it { should belong_to(:reporting_organisation).with_foreign_key("reporting_organisation_id") }

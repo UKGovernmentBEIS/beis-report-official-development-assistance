@@ -11,7 +11,7 @@ delivery_partner = Organisation.find_by!(service_owner: false)
 first_programme_params = FactoryBot.build(:programme_activity,
   title: "International Partnerships",
   organisation: beis,
-  activity: fund,
+  parent: fund,
   extending_organisation: delivery_partner).attributes
 
 programme = Activity.find_or_create_by(first_programme_params)
@@ -19,7 +19,7 @@ programme = Activity.find_or_create_by(first_programme_params)
 second_programme_params = FactoryBot.build(:programme_activity,
   title: "Africa Catalyst Programme",
   organisation: beis,
-  activity: fund,
+  parent: fund,
   extending_organisation: delivery_partner).attributes
 
 Activity.find_or_create_by(second_programme_params)
@@ -27,7 +27,7 @@ Activity.find_or_create_by(second_programme_params)
 project_params = FactoryBot.build(:project_activity,
   title: "Airbus Flood and Drought",
   organisation: delivery_partner,
-  activity: programme,
+  parent: programme,
   extending_organisation: delivery_partner).attributes
 
 Activity.find_or_create_by(project_params)

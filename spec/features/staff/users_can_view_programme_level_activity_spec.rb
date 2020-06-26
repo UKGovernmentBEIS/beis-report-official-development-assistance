@@ -8,7 +8,7 @@ RSpec.feature "Users can view programme level activites" do
       fund_activity = create(:fund_activity, organisation: user.organisation)
       programme_activity = create(:programme_activity,
         organisation: user.organisation,
-        activity: fund_activity)
+        parent: fund_activity)
 
       visit organisation_path(user.organisation)
 
@@ -29,7 +29,7 @@ RSpec.feature "Users can view programme level activites" do
       fund_activity = create(:fund_activity, organisation: user.organisation)
       programme_activity = create(:programme_activity,
         organisation: user.organisation,
-        activity: fund_activity,
+        parent: fund_activity,
         extending_organisation: user.organisation)
 
       visit organisation_path(user.organisation)
