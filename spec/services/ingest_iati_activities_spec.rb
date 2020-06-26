@@ -271,6 +271,21 @@ RSpec.describe IngestIatiActivities do
       end
     end
 
+    describe "default aid type" do
+      it "leaves aid_type blank if there is no attribute" do
+        rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
+        create(:programme_activity, organisation: rs, identifier: "South Africa-Newton-Adv-RS")
+
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/rs/with_missing_default_aid_type.xml")
+
+        described_class.new(delivery_partner: rs, file_io: legacy_activities).call
+
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-NEWT-RS_ZAF_858")
+
+        expect(activity.aid_type).to be_empty
+      end
+    end
+
     # The first ingest will only take a subset of data. As RODA supports more
     # fields, we will want to populate RODA with more historic data for each
     # activity. Having the source directly linked to our copy of each activity

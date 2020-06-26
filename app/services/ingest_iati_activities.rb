@@ -82,7 +82,7 @@ class IngestIatiActivities
   end
 
   private def add_aid_type(legacy_activity:, new_activity:)
-    new_activity.aid_type = legacy_activity.elements.detect { |element| element.name.eql?("default-aid-type") }.attributes["code"].value
+    new_activity.aid_type = legacy_activity.elements.at_xpath("//default-aid-type/@code").to_s
   end
 
   private def add_participating_organisation(delivery_partner:, new_activity:, legacy_activity:)
