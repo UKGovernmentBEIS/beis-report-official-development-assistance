@@ -30,12 +30,12 @@ RSpec.describe CreateProjectActivity do
     end
 
     it "sets the parent Activity to the programme" do
-      expect(result.parent_activity).to eq(programme)
+      expect(result.parent).to eq(programme)
     end
 
     it "sets fund and programme to be parent activities of the project" do
-      fund = programme.parent_activity
-      programme = result.parent_activity
+      fund = programme.parent
+      programme = result.parent
 
       expect(result.parent_activities.first).to eq(fund)
       expect(result.parent_activities.last).to eq(programme)

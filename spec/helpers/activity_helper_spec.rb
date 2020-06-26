@@ -22,7 +22,7 @@ RSpec.describe ActivityHelper, type: :helper do
           programme_activity = create(:programme_activity)
 
           result = activity_back_path(current_user: user, activity: programme_activity)
-          expect(result).to eq organisation_activity_path(programme_activity.parent_activity.organisation, programme_activity.parent_activity)
+          expect(result).to eq organisation_activity_path(programme_activity.parent.organisation, programme_activity.parent)
         end
       end
 
