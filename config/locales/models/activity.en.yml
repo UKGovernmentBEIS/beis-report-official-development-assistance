@@ -120,7 +120,7 @@ en:
         dates: What are the start and end dates for the %{level}?
         flow: Flow
         geography: Will the benefitting recipient be a region or country?
-        identifier: Your unique identifier
+        identifier: Enter your unique identifier
         purpose: What is the purpose of the %{level}?
         region: What region will benefit from this activity?
         sector: Which %{sector_category} sector is the focus area for this %{level}
