@@ -7,6 +7,12 @@
       %h1.govuk-heading-xl
         = @activity.title
 
+  .govuk-grid-row
+    .govuk-grid-column-full
+      - if @activity.project? || @activity.third_party_project?
+        - if policy(:project).download? || policy(:third_party_project).download?
+          = link_to t("default.button.download_as_xml"), organisation_activity_path(@activity.organisation, @activity, format: :xml), class: "govuk-button"
+
   .govuk-grid-row.activity-page
     .govuk-grid-column-full
       = render partial: "staff/shared/activities/activity", locals: { activity_presenter: ActivityPresenter.new(@activity) }
@@ -32,6 +38,3 @@
     = render partial: "staff/shared/activities/implementing_organisations", locals: { activity: @activity, implementing_organisation_presenters: @implementing_organisation_presenters }
     = render partial: "staff/shared/activities/planned_disbursements", locals: { activity: @activity, planned_disbursements: @planned_disbursement_presenters }
     = render partial: "staff/shared/activities/transactions", locals: { activity: @activity, transaction_presenters: @transaction_presenters }
-
-    - if policy(:project).download? || policy(:third_party_project).download?
-      = link_to t("default.button.download_as_xml"), organisation_activity_path(@activity.organisation, @activity, format: :xml), class: "govuk-button"
