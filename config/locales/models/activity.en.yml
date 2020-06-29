@@ -1,5 +1,11 @@
 ---
 en:
+  document_title:
+    activity:
+      show: Activity %{name}
+      details: Activity %{name} — Details
+      financials: Activity %{name} — Financials
+      extending_organisation: Activity %{name} — Extending organisation
   form:
     button:
       activity:
@@ -107,12 +113,18 @@ en:
         default_selection_value: Select a recipient country
       third_party_projects: Third-party projects
       transactions: Transactions
+  tabs:
+    activity:
+      title: Contents
+      details: Details
+      financials: Financials
   page_title:
     activity:
       implementing_organisation:
         edit: Edit implemening organisation
         new: Add a new implementing organisation
-      show: Activity %{name}
+      details: Details
+      financials: Financials
     activity_form:
       show:
         aid_type: Aid type
