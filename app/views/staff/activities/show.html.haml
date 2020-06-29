@@ -1,4 +1,4 @@
-=content_for :page_title_prefix, t("page_title.activity.show", name: @activity.title)
+=content_for :page_title_prefix, t("document_title.activity.show", name: @activity.title)
 
 = link_to t("default.link.back"), activity_back_path(current_user: current_user, activity: @activity), class: "govuk-back-link"
 %main.govuk-main-wrapper#main-content{ role: "main" }

@@ -11,6 +11,25 @@ RSpec.feature "Users can view an activity" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
 
+    scenario "the activity financials can be viewed" do
+      activity = create(:activity, organisation: user.organisation)
+
+      visit organisation_activity_financials_path(activity.organisation, activity)
+      within ".govuk-tabs__list-item--selected" do
+        expect(page).to have_content "Financials"
+      end
+    end
+
+    scenario "the activity details can be viewed" do
+      activity = create(:activity, organisation: user.organisation)
+
+      visit organisation_activity_details_path(activity.organisation, activity)
+
+      within ".govuk-tabs__list-item--selected" do
+        expect(page).to have_content "Details"
+      end
+    end
+
     scenario "an activity can be viewed" do
       activity = create(:activity, organisation: user.organisation)
 

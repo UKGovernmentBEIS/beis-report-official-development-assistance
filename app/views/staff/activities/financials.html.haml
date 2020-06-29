@@ -1,0 +1,27 @@
+= content_for :page_title_prefix, t("document_title.activity.financials", name: @activity.title)
+
+= link_to t("default.link.back"), activity_back_path(current_user: current_user, activity: @activity), class: "govuk-back-link"
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        = @activity.title
+
+      .govuk-tabs
+        %h2.govuk-tabs__title
+          Contents
+
+        %ul.govuk-tabs__list
+          %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
+            = link_to "Financials",
+              organisation_activity_financials_path(@activity.organisation, @activity),
+              { class: "govuk-tabs__tab", role: "tab", tabindex: 0, aria: { controls: "financials", selected: true } }
+          %li.govuk-tabs__list-item
+            = link_to "Details",
+              organisation_activity_details_path(@activity.organisation, @activity),
+              { class: "govuk-tabs__tab", role: "tab", tabindex: -1, aria: { controls: "details", selected: false } }
+
+        .govuk-tabs__panel
+          %h2.govuk-heading-l
+            = t("page_title.activity.financials")
