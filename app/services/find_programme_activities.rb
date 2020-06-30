@@ -10,7 +10,7 @@ class FindProgrammeActivities
 
   def call
     programmes = policy_scope(Activity.programme, policy_scope_class: ProgrammePolicy::Scope)
-      .includes(:organisation)
+      .includes(:organisation, :parent)
       .order("created_at ASC")
     programmes = if organisation.service_owner
       programmes.all
