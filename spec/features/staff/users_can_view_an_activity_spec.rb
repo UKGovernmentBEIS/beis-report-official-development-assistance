@@ -13,11 +13,15 @@ RSpec.feature "Users can view an activity" do
 
     scenario "the activity financials can be viewed" do
       activity = create(:activity, organisation: user.organisation)
+      transaction = create(:transaction, parent_activity: activity)
+      budget = create(:budget, parent_activity: activity)
 
       visit organisation_activity_financials_path(activity.organisation, activity)
       within ".govuk-tabs__list-item--selected" do
         expect(page).to have_content "Financials"
       end
+      expect(page).to have_content transaction.value
+      expect(page).to have_content budget.value
     end
 
     scenario "the activity details can be viewed" do
@@ -28,6 +32,8 @@ RSpec.feature "Users can view an activity" do
       within ".govuk-tabs__list-item--selected" do
         expect(page).to have_content "Details"
       end
+      expect(page).to have_content activity.title
+      expect(page).to have_button I18n.t("page_content.organisation.button.create_programme")
     end
 
     scenario "an activity can be viewed" do

@@ -40,7 +40,7 @@ Rails.application.routes.draw do
 
     resources :activities, only: [], concerns: [:transactionable, :budgetable, :disbursement_plannable] do
       resources :steps, controller: "activity_forms"
-      resources :extending_organisations, only: [:edit, :update]
+      resource :extending_organisations, only: [:edit, :update]
       resources :implementing_organisations, only: [:new, :create, :edit, :update]
     end
   end

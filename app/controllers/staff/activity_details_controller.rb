@@ -7,6 +7,9 @@ class Staff::ActivityDetailsController < Staff::BaseController
     @activity = Activity.find(params[:activity_id])
     authorize @activity
 
+    @activities = @activity.child_activities.order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
+    @implementing_organisation_presenters = @activity.implementing_organisations.map { |implementing_organisation| ImplementingOrganisationPresenter.new(implementing_organisation) }
+
     render "staff/activities/details"
   end
 end
