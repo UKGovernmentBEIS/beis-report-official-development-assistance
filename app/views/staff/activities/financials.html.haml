@@ -33,3 +33,18 @@
         .govuk-tabs__panel
           %h2.govuk-heading-l
             = t("page_title.activity.financials")
+
+          - if @activity.fund? && policy(:fund).create?
+            = render partial: "staff/shared/activities/transactions", locals: { activity: @activity, transaction_presenters: @transaction_presenters }
+            = render partial: "staff/shared/activities/budgets", locals: { activity: @activity, budget_presenters: @budget_presenters }
+
+          - if @activity.programme? && policy(:programme).create?
+            = render partial: "staff/shared/activities/transactions", locals: { activity: @activity, transaction_presenters: @transaction_presenters }
+
+          - if @activity.programme?
+            = render partial: "staff/shared/activities/budgets", locals: { activity: @activity, budget_presenters: @budget_presenters }
+
+          - if @activity.project? || @activity.third_party_project?
+            = render partial: "staff/shared/activities/budgets", locals: { activity: @activity, budget_presenters: @budget_presenters }
+            = render partial: "staff/shared/activities/planned_disbursements", locals: { activity: @activity, planned_disbursements: @planned_disbursement_presenters }
+            = render partial: "staff/shared/activities/transactions", locals: { activity: @activity, transaction_presenters: @transaction_presenters }

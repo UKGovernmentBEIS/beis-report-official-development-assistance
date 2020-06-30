@@ -186,6 +186,7 @@
 - Remove 3 unwanted activities from production
 - Content changes to fields for transaction value and activity identifier
 - Increase the width of the application layout
+- Activity show content is show in tabs for financials and details
 
 ## [unreleased]
 
