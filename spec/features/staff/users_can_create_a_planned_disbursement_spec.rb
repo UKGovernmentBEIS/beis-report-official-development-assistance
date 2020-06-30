@@ -30,7 +30,7 @@ RSpec.describe "Users can create a planned disbursement" do
       select "Other Public Sector", from: "planned_disbursement[receiving_organisation_type]"
       click_button I18n.t("default.button.submit")
 
-      expect(page).to have_current_path organisation_activity_path(user.organisation, project)
+      expect(page).to have_current_path organisation_activity_financials_path(user.organisation, project)
       expect(page).to have_content I18n.t("action.planned_disbursement.create.success")
     end
 

@@ -42,6 +42,8 @@ RSpec.feature "Users can view an activity" do
       visit organisation_path(user.organisation)
 
       click_on(activity.title)
+      click_on I18n.t("tabs.activity.details")
+
       activity_presenter = ActivityPresenter.new(activity)
 
       expect(page).to have_content activity_presenter.identifier
@@ -62,6 +64,7 @@ RSpec.feature "Users can view an activity" do
                                      actual_end_date: Date.new(2020, 1, 29))
 
         visit organisation_activity_path(user.organisation, activity)
+        click_on I18n.t("tabs.activity.details")
 
         within(".planned_start_date") do
           expect(page).to have_content("3 Feb 2020")

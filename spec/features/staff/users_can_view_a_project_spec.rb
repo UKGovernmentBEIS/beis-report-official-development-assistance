@@ -19,7 +19,7 @@ RSpec.feature "Users can view a project" do
       project = create(:project_activity, organisation: user.organisation)
       third_party_project = create(:third_party_project_activity, activity: project)
 
-      visit organisation_activity_path(project.organisation, project)
+      visit organisation_activity_details_path(project.organisation, project)
 
       expect(page).to have_content third_party_project.title
     end
@@ -32,7 +32,7 @@ RSpec.feature "Users can view a project" do
         project = create(:project_activity, organisation: user.organisation)
         programme.child_activities << project
 
-        visit organisation_activity_path(programme.organisation, programme)
+        visit organisation_activity_details_path(programme.organisation, programme)
 
         expect(page).to have_content programme.title
 

@@ -19,7 +19,7 @@ RSpec.feature "Users can manage Sectors" do
       let(:activity) { create(:activity, organisation: user.organisation) }
 
       scenario "they can edit the sector by changing the sector category and sector and retruning to the summary" do
-        visit organisation_activity_path(user.organisation, activity)
+        visit organisation_activity_details_path(user.organisation, activity)
         within ".sector" do
           click_on "Edit"
         end
@@ -31,7 +31,7 @@ RSpec.feature "Users can manage Sectors" do
         choose "Early childhood education"
         click_button I18n.t("form.button.activity.submit")
 
-        expect(page).to have_current_path(organisation_activity_path(user.organisation, activity))
+        expect(page).to have_current_path(organisation_activity_details_path(user.organisation, activity))
         within ".sector" do
           expect(page).to have_content "Early childhood education"
         end
