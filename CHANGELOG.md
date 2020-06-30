@@ -168,21 +168,29 @@
 - Amend Activity date validations - either `planned_start_date` *OR* `actual_start_date`
   must be present, in line with the IATI `activity-date` XML standard
 - Amend ingest service to successfully ingest Activities without an `activity-date` type
-  2 (`actual_start_date`) 
+  2 (`actual_start_date`)
 - Ingest AMS Newton fund data from IATI   
 - Flag incomplete activities in the activity table views
 - XML download does not contain any incomplete activities   
 - XML download contains a `narrative` element for region & country containing the region or country name
 - Ingest AMS GCRF data from IATI
-- When a programme has an extending organisation set, the same organisation is set as the implementing organisation 
+- When a programme has an extending organisation set, the same organisation is set as the implementing organisation
 - Use the `lograge` gem to reduce logging in production
+
+## [release-10] - 2020-06-30
+
+- Users can see codes when selecting aid type
+- Content changes to activity status field
+- Content changes to activity title field
+- Content changes to activity purpose field
+- Remove 3 unwanted activities from production
+- Content changes to fields for transaction value and activity identifier
+- Increase the width of the application layout
 
 ## [unreleased]
 
-- Users can see codes when selecting aid type
-- Increase the width of the application layout
-
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-9...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...HEAD
+[release-10]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-9...release-10
 [release-9]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-8...release-9
 [release-8]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...release-8
 [release-7]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...release-7
