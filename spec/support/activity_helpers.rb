@@ -1,5 +1,6 @@
 module ActivityHelpers
   def page_displays_an_activity(activity_presenter:)
+    click_on I18n.t("tabs.activity.details")
     expect(page).to have_content activity_presenter.identifier
     expect(page).to have_content activity_presenter.title
     expect(page).to have_content activity_presenter.description

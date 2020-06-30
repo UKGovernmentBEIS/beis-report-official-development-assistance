@@ -10,6 +10,7 @@ RSpec.feature "Users can create a project" do
         visit organisation_path(user.organisation)
 
         click_on(project.title)
+        click_on I18n.t("tabs.activity.details")
 
         click_on(I18n.t("page_content.organisation.button.create_third_party_project"))
 
@@ -30,6 +31,7 @@ RSpec.feature "Users can create a project" do
           visit organisation_path(user.organisation)
 
           click_on(project.title)
+          click_on I18n.t("tabs.activity.details")
 
           click_on(I18n.t("page_content.organisation.button.create_third_party_project"))
 

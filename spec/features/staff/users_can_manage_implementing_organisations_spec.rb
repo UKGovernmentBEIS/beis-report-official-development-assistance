@@ -8,7 +8,7 @@ RSpec.feature "Users can manage the implementing organisations" do
     scenario "they can add an implementing organisation" do
       other_public_sector_organisation = ImplementingOrganisation.new(name: "Other public sector organisation", organisation_type: "10", reference: "GB-COH-123456")
 
-      visit organisation_activity_path(project.organisation, project)
+      visit organisation_activity_details_path(project.organisation, project)
 
       expect(page).to have_content I18n.t("page_content.activity.implementing_organisation.button.new")
       click_on I18n.t("page_content.activity.implementing_organisation.button.new")
@@ -22,7 +22,7 @@ RSpec.feature "Users can manage the implementing organisations" do
       fill_in I18n.t("form.label.implementing_organisation.reference"), with: other_public_sector_organisation.reference
       click_on I18n.t("default.button.submit")
 
-      expect(current_path).to eq organisation_activity_path(project.organisation, project)
+      expect(current_path).to eq organisation_activity_details_path(project.organisation, project)
       expect(page).to have_content I18n.t("action.implementing_organisation.create.success")
 
       expect(page).to have_content other_public_sector_organisation.name
@@ -33,7 +33,7 @@ RSpec.feature "Users can manage the implementing organisations" do
       other_public_sector_organisation = ImplementingOrganisation.new(name: "Other public sector organisation", organisation_type: "70", reference: "GB-COH-123456")
       project.implementing_organisations << other_public_sector_organisation
 
-      visit organisation_activity_path(project.organisation, project)
+      visit organisation_activity_details_path(project.organisation, project)
 
       expect(page).to have_content other_public_sector_organisation.name
       expect(page).to have_content other_public_sector_organisation.reference
@@ -62,7 +62,7 @@ RSpec.feature "Users can manage the implementing organisations" do
       other_public_sector_organisation = ImplementingOrganisation.new(name: "Other public sector organisation", organisation_type: "70", reference: "GB-COH-123456")
       project.implementing_organisations << other_public_sector_organisation
 
-      visit organisation_activity_path(project.organisation, project)
+      visit organisation_activity_details_path(project.organisation, project)
 
       expect(page).to have_content other_public_sector_organisation.name
       expect(page).to have_content other_public_sector_organisation.reference
