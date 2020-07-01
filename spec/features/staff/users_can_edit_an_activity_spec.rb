@@ -117,6 +117,14 @@ RSpec.feature "Users can edit an activity" do
         end
       end
     end
+
+    it "does not show the Publish to Iati field" do
+      activity = create(:fund_activity, organisation: user.organisation)
+
+      visit organisation_activity_path(activity.organisation, activity)
+
+      expect(page).to_not have_content(I18n.t("summary.label.activity.publish_to_iati.label"))
+    end
   end
 
   context "when the activity is a programme" do
@@ -135,6 +143,14 @@ RSpec.feature "Users can edit an activity" do
         click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content(I18n.t("action.programme.update.success"))
       end
+
+      it "does not show the Publish to Iati field" do
+        activity = create(:programme_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+
+        expect(page).to_not have_content(I18n.t("summary.label.activity.publish_to_iati.label"))
+      end
     end
 
     context "when the user is NOT a BEIS user" do
@@ -147,6 +163,14 @@ RSpec.feature "Users can edit an activity" do
 
         expect(page).not_to have_content("Edit")
         expect(page).not_to have_content("Add")
+      end
+
+      scenario "it does not show the Publish to Iati field" do
+        activity = create(:programme_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+
+        expect(page).to_not have_content(I18n.t("summary.label.activity.publish_to_iati.label"))
       end
     end
   end
@@ -167,6 +191,47 @@ RSpec.feature "Users can edit an activity" do
         click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content(I18n.t("action.project.update.success"))
       end
+
+      it "does not show the Publish to Iati field" do
+        activity = create(:project_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+
+        expect(page).to_not have_content(I18n.t("summary.label.activity.publish_to_iati.label"))
+      end
+    end
+
+    context "when the user is a BEIS user" do
+      let(:user) { create(:beis_user) }
+
+      it "shows the Publish to Iati field" do
+        activity = create(:project_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+        click_on I18n.t("tabs.activity.details")
+
+        expect(page).to have_content(I18n.t("summary.label.activity.publish_to_iati.label"))
+      end
+
+      it "allows the user to redact the activity from Iati" do
+        activity = create(:project_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+        click_on I18n.t("tabs.activity.details")
+
+        within ".publish_to_iati" do
+          click_on(I18n.t("default.link.edit"))
+        end
+
+        choose I18n.t("summary.label.activity.publish_to_iati.false")
+        click_button I18n.t("form.button.activity.submit")
+
+        click_on I18n.t("tabs.activity.details")
+
+        within ".publish_to_iati" do
+          expect(page).to have_content(I18n.t("summary.label.activity.publish_to_iati.false"))
+        end
+      end
     end
   end
 
@@ -185,6 +250,38 @@ RSpec.feature "Users can edit an activity" do
 
         click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content(I18n.t("action.third_party_project.update.success"))
+      end
+    end
+
+    context "when the user is a BEIS user" do
+      let(:user) { create(:beis_user) }
+
+      it "shows the Publish to Iati field" do
+        activity = create(:third_party_project_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+        click_on I18n.t("tabs.activity.details")
+
+        expect(page).to have_content(I18n.t("summary.label.activity.publish_to_iati.label"))
+      end
+
+      it "allows the user to redact the activity from Iati" do
+        activity = create(:third_party_project_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(activity.organisation, activity)
+        click_on I18n.t("tabs.activity.details")
+
+        within ".publish_to_iati" do
+          click_on(I18n.t("default.link.edit"))
+        end
+
+        choose I18n.t("summary.label.activity.publish_to_iati.false")
+        click_button I18n.t("form.button.activity.submit")
+
+        click_on I18n.t("tabs.activity.details")
+        within ".publish_to_iati" do
+          expect(page).to have_content(I18n.t("summary.label.activity.publish_to_iati.false"))
+        end
       end
     end
   end
