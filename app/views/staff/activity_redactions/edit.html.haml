@@ -1,0 +1,17 @@
+=content_for :page_title_prefix, t("document_title.activity.edit", name: @activity.title)
+
+= link_to t("default.link.back"), organisation_activity_path(@activity.organisation, @activity), class: "govuk-back-link"
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      = form_for @activity, url: activity_redaction_path(@activity) do |f|
+
+        = f.govuk_collection_radio_buttons :publish_to_iati,
+          [OpenStruct.new(id: true, name: I18n.t("summary.label.activity.publish_to_iati.true")),
+            OpenStruct.new(id: false, name: I18n.t("summary.label.activity.publish_to_iati.false"))],
+          :id,
+          :name,
+          legend: { text: I18n.t("form.label.activity.publish_to_iati") }
+
+        = f.govuk_submit t("form.button.activity.submit")

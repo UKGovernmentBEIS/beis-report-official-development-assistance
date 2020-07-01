@@ -2,6 +2,7 @@
 en:
   document_title:
     activity:
+      edit: Activity %{name} - Publish to IATI
       show: Activity %{name}
       details: Activity %{name} — Details
       financials: Activity %{name} — Financials
@@ -28,6 +29,7 @@ en:
           day: Day
           month: Month
           year: Year
+        publish_to_iati: Publish this activity to IATI?
     legend:
       activity:
         aid_type: Aid type
