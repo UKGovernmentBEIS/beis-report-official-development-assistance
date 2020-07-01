@@ -18,6 +18,10 @@ class ActivityPolicy < ApplicationPolicy
       (record.project? || record.third_party_project?) && delivery_partner_user?
   end
 
+  def redact_from_iati?
+    beis_user? && record.project? || record.third_party_project?
+  end
+
   def destroy?
     false
   end
