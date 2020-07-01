@@ -195,6 +195,7 @@
 - Activity show content is show in tabs for financials and details
 - Refactor how we can ask activities for their parents
 - Ingest BA Newton fund data from IATI
+- Add an activities page and navigation
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...HEAD
 [release-10]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-9...release-10

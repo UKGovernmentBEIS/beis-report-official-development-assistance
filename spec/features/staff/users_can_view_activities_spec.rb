@@ -1,4 +1,4 @@
-RSpec.feature "Users can view an activity" do
+RSpec.feature "Users can view activities" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
       activity = create(:activity)
@@ -7,12 +7,12 @@ RSpec.feature "Users can view an activity" do
     end
   end
 
-  context "when the user belongs to BEIS" do
-    let(:user) { create(:beis_user) }
+  context "when the user is signed in as a delivery partner" do
+    let(:user) { create(:delivery_partner_user) }
     before { authenticate!(user: user) }
 
     scenario "the activity financials can be viewed" do
-      activity = create(:activity, organisation: user.organisation)
+      activity = create(:project_activity, organisation: user.organisation)
       transaction = create(:transaction, parent_activity: activity)
       budget = create(:budget, parent_activity: activity)
 
@@ -25,7 +25,7 @@ RSpec.feature "Users can view an activity" do
     end
 
     scenario "the activity details can be viewed" do
-      activity = create(:activity, organisation: user.organisation)
+      activity = create(:project_activity, organisation: user.organisation)
 
       visit organisation_activity_details_path(activity.organisation, activity)
 
@@ -33,11 +33,42 @@ RSpec.feature "Users can view an activity" do
         expect(page).to have_content "Details"
       end
       expect(page).to have_content activity.title
-      expect(page).to have_button I18n.t("page_content.organisation.button.create_programme")
+      expect(page).to have_link I18n.t("page_content.activity.implementing_organisation.button.new")
+    end
+
+    scenario "all activities can be viewed" do
+      activities = create_list(:project_activity, 5, organisation: user.organisation)
+
+      visit organisation_activities_path(user.organisation)
+
+      expect(page).to have_content I18n.t("page_title.activity.index")
+
+      first_activity = activities.first
+      last_activity = activities.last
+
+      expect(page).to have_content first_activity.identifier
+
+      expect(page).to have_content last_activity.identifier
+    end
+
+    scenario "each activity levels parents are shown" do
+      level_c_activity = create(:project_activity, organisation: user.organisation)
+      level_d_activity = create(:third_party_project_activity, organisation: user.organisation)
+
+      visit organisation_activities_path(user.organisation)
+
+      expect(page).to have_content level_c_activity.identifier
+      expect(page).to have_content level_c_activity.parent_activities.first.title
+      expect(page).to have_content level_c_activity.parent_activities.second.title
+
+      expect(page).to have_content level_d_activity.identifier
+      expect(page).to have_content level_d_activity.parent_activities.first.title
+      expect(page).to have_content level_d_activity.parent_activities.second.title
+      expect(page).to have_content level_d_activity.parent_activities.third.title
     end
 
     scenario "an activity can be viewed" do
-      activity = create(:activity, organisation: user.organisation)
+      activity = create(:project_activity, organisation: user.organisation)
 
       visit organisation_path(user.organisation)
 
@@ -56,12 +87,12 @@ RSpec.feature "Users can view an activity" do
       expect(page).to have_content activity_presenter.flow
     end
 
-    scenario "a fund activity has human readable date format" do
+    scenario "activities have human readable date format" do
       travel_to Time.zone.local(2020, 1, 29) do
-        activity = create(:activity, planned_start_date: Date.new(2020, 2, 3),
-                                     planned_end_date: Date.new(2024, 6, 22),
-                                     actual_start_date: Date.new(2020, 1, 2),
-                                     actual_end_date: Date.new(2020, 1, 29))
+        activity = create(:project_activity, planned_start_date: Date.new(2020, 2, 3),
+                                             planned_end_date: Date.new(2024, 6, 22),
+                                             actual_start_date: Date.new(2020, 1, 2),
+                                             actual_end_date: Date.new(2020, 1, 29))
 
         visit organisation_activity_path(user.organisation, activity)
         click_on I18n.t("tabs.activity.details")
@@ -85,7 +116,7 @@ RSpec.feature "Users can view an activity" do
     end
 
     scenario "can go back to the previous page" do
-      activity = create(:activity, organisation: user.organisation)
+      activity = create(:project_activity, organisation: user.organisation)
 
       visit organisation_activity_path(user.organisation, activity)
 

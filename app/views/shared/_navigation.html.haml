@@ -6,6 +6,10 @@
         %a{ href: organisation_path(current_user.organisation), class: 'govuk-header__link' }
           = t("page_title.home")
 
+      - unless current_user.organisation.service_owner
+        %li{ class: navigation_item_class(organisation_activities_path(current_user.organisation)) }
+          = link_to t("page_title.activity.index"), organisation_activities_path(current_user.organisation), class: "govuk-header__link"
+
       - if policy(Organisation).index?
         %li{ class: navigation_item_class(organisations_path) }
           = link_to t("page_title.organisation.index"), organisations_path, class: "govuk-header__link"

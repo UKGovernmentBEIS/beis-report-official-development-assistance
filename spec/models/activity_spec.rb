@@ -44,6 +44,21 @@ RSpec.describe Activity, type: :model do
         expect(Activity.publishable_to_iati).to eq [complete_activity]
       end
     end
+
+    describe ".project_activities" do
+      it "only returns activities at level C and D i.e. Projects and Third party projects" do
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund)
+        project = create(:project_activity, parent: programme)
+        third_party_project = create(:third_party_project_activity, parent: project)
+
+        expect(Activity.project_activities).to include project
+        expect(Activity.project_activities).to include third_party_project
+
+        expect(Activity.project_activities).not_to include fund
+        expect(Activity.project_activities).not_to include programme
+      end
+    end
   end
 
   describe "sanitisation" do
