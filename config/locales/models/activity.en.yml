@@ -82,6 +82,10 @@ en:
         status: Status
         third_party_projects: Third-party projects
         title: '%{level} name'
+        publish_to_iati:
+          label: Publish to IATI?
+          'false': 'No'
+          'true': 'Yes'
   page_content:
     activities:
       button:
