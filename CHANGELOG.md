@@ -262,11 +262,11 @@
 - Calculate the variance between an Activity's transactions total for a date range, and
   that same Activity's planned disbursements total for a date range. Output this value
   to the Report CSV as "Variance"
-- Find the next four financial quarters after this report's financial quarter. Find the 
+- Find the next four financial quarters after this report's financial quarter. Find the
   forecasted totals (planned disbursement totals) for those four future quarters and output
   them to the report CSV
-- Submitted reports can be moved into the review state 
-- Reports in review can be moved into the awaiting changes state   
+- Submitted reports can be moved into the review state
+- Reports in review can be moved into the awaiting changes state
 - Transactions & Planned Disbursements cannot be edited if they are associated with an approved Report
 - BEIS users can move a Report into the approved state
 - `Call open date` and `Call close date` added to the create activity form, for levels C and D.
@@ -275,7 +275,8 @@
   `Add activity` now.
 - RODA Identifiers can be added to activities on creation and when updating
 - Reports in 'awaiting changes' can be submitted.
- - Forecasted and actual spend and variance is shown on the report show page
+- Forecasted and actual spend and variance is shown on the report show page
+- Ingest RS GCRF data from IATI
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...HEAD
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14
