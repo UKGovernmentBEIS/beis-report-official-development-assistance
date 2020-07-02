@@ -10,7 +10,7 @@ RSpec.feature "Users can edit an activity" do
       it "shows edit link on the identifier, and add link on only the next step" do
         activity = create(:fund_activity, :at_purpose_step, organisation: user.organisation)
 
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         # Click the first edit link that opens the form on step 1
         within(".identifier") do
@@ -28,10 +28,10 @@ RSpec.feature "Users can edit an activity" do
     end
 
     context "when the activity is complete" do
-      it "editing and saving a step returns the user to the activity page" do
+      it "editing and saving a step returns the user to the activity page details tab" do
         activity = create(:fund_activity, organisation: user.organisation)
         identifier = "AB-CDE-1234"
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".identifier") do
           click_on(I18n.t("default.link.edit"))
@@ -41,13 +41,13 @@ RSpec.feature "Users can edit an activity" do
         click_button I18n.t("form.button.activity.submit")
 
         expect(page).to have_content I18n.t("action.fund.update.success")
-        expect(page.current_path).to eq organisation_activity_path(activity.organisation, activity)
+        expect(page.current_path).to eq organisation_activity_details_path(activity.organisation, activity)
       end
 
       it "all edit links are available to take the user to the right step" do
         activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
       end
@@ -56,7 +56,7 @@ RSpec.feature "Users can edit an activity" do
         activity = create(:fund_activity, organisation: user.organisation)
         identifier = "AB-CDE-1234"
         PublicActivity.with_tracking do
-          visit organisation_activity_path(activity.organisation, activity)
+          visit organisation_activity_details_path(activity.organisation, activity)
 
           within(".identifier") do
             click_on(I18n.t("default.link.edit"))
@@ -79,7 +79,7 @@ RSpec.feature "Users can edit an activity" do
         activity = create(:fund_activity, :at_region_step, organisation: user.organisation)
         recipient_region = "Oceania, regional"
 
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".recipient_region") do
           click_on(I18n.t("default.link.edit"))
@@ -98,7 +98,7 @@ RSpec.feature "Users can edit an activity" do
       it "the call to action is 'Edit'" do
         activity = create(:fund_activity, organisation: user.organisation, form_state: :sector)
 
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".title") do
           expect(page).to have_content(I18n.t("default.link.edit"))
@@ -110,7 +110,7 @@ RSpec.feature "Users can edit an activity" do
       it "the call to action is 'Add'" do
         activity = create(:fund_activity, :at_purpose_step, organisation: user.organisation)
 
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".title") do
           expect(page).to have_content(I18n.t("default.link.add"))
@@ -126,7 +126,7 @@ RSpec.feature "Users can edit an activity" do
       it "shows an update success message" do
         activity = create(:programme_activity, organisation: user.organisation)
 
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".title") do
           click_on(I18n.t("default.link.edit"))
@@ -158,7 +158,7 @@ RSpec.feature "Users can edit an activity" do
       it "shows an update success message" do
         activity = create(:project_activity, organisation: user.organisation)
 
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".title") do
           click_on(I18n.t("default.link.edit"))
@@ -177,7 +177,7 @@ RSpec.feature "Users can edit an activity" do
       it "shows an update success message" do
         activity = create(:third_party_project_activity, organisation: user.organisation)
 
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".title") do
           click_on(I18n.t("default.link.edit"))
@@ -198,6 +198,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("default.link.back"))
+  click_on I18n.t("tabs.activity.details")
 
   within(".sector") do
     click_on(I18n.t("default.link.edit"))
@@ -206,6 +207,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("default.link.back"))
+  click_on I18n.t("tabs.activity.details")
 
   within(".title") do
     click_on(I18n.t("default.link.edit"))
@@ -214,6 +216,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("default.link.back"))
+  click_on I18n.t("tabs.activity.details")
 
   within(".description") do
     click_on(I18n.t("default.link.edit"))
@@ -222,6 +225,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("default.link.back"))
+  click_on I18n.t("tabs.activity.details")
 
   within(".status") do
     click_on(I18n.t("default.link.edit"))
@@ -230,6 +234,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("default.link.back"))
+  click_on I18n.t("tabs.activity.details")
 
   within(".planned_start_date") do
     click_on(I18n.t("default.link.edit"))
@@ -238,6 +243,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("default.link.back"))
+  click_on I18n.t("tabs.activity.details")
 
   within(".planned_end_date") do
     click_on(I18n.t("default.link.edit"))
@@ -246,6 +252,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("default.link.back"))
+  click_on I18n.t("tabs.activity.details")
 
   within(".actual_start_date") do
     click_on(I18n.t("default.link.edit"))
@@ -254,6 +261,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("default.link.back"))
+  click_on I18n.t("tabs.activity.details")
 
   within(".actual_end_date") do
     click_on(I18n.t("default.link.edit"))
@@ -262,6 +270,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("default.link.back"))
+  click_on I18n.t("tabs.activity.details")
 
   within(".recipient_region") do
     click_on(I18n.t("default.link.edit"))
@@ -270,6 +279,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("default.link.back"))
+  click_on I18n.t("tabs.activity.details")
 
   within(".flow") do
     click_on(I18n.t("default.link.edit"))
@@ -278,6 +288,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("default.link.back"))
+  click_on I18n.t("tabs.activity.details")
 
   within(".aid_type") do
     click_on(I18n.t("default.link.edit"))
@@ -286,4 +297,5 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     )
   end
   click_on(I18n.t("default.link.back"))
+  click_on I18n.t("tabs.activity.details")
 end

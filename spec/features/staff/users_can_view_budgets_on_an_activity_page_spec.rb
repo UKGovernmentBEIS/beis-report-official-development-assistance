@@ -45,6 +45,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         visit organisation_path(user.organisation)
 
         click_link fund_activity.title
+        click_on I18n.t("tabs.activity.details")
         click_link programme_activity.title
 
         budget_information_is_shown_on_page(budget_presenter)
@@ -63,7 +64,9 @@ RSpec.feature "Users can view budgets on an activity page" do
         visit organisation_path(user.organisation)
 
         click_link fund_activity.title
+        click_on I18n.t("tabs.activity.details")
         click_link programme_activity.title
+        click_on I18n.t("tabs.activity.details")
         click_link project_activity.title
 
         budget_information_is_shown_on_page(budget_presenter)
@@ -79,7 +82,9 @@ RSpec.feature "Users can view budgets on an activity page" do
         visit organisation_path(user.organisation)
 
         click_link fund_activity.title
+        click_on I18n.t("tabs.activity.details")
         click_link programme_activity.title
+        click_on I18n.t("tabs.activity.details")
         click_link project_activity.title
 
         expect(page).to_not have_content(I18n.t("page_content.budgets.button.create"))
@@ -133,6 +138,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         visit organisation_path(user.organisation)
 
         click_link programme_activity.title
+        click_on I18n.t("tabs.activity.details")
         click_link project_activity.title
 
         budget_information_is_shown_on_page(budget_presenter)
@@ -147,6 +153,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         visit organisation_path(user.organisation)
 
         click_link programme_activity.title
+        click_on I18n.t("tabs.activity.details")
         click_link project_activity.title
 
         expect(page).to have_content(I18n.t("page_content.budgets.button.create"))

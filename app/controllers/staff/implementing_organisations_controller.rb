@@ -21,7 +21,7 @@ class Staff::ImplementingOrganisationsController < Staff::BaseController
     if @implementing_organisation.valid?
       @implementing_organisation.save
       flash[:notice] = I18n.t("action.implementing_organisation.create.success")
-      redirect_to organisation_activity_path(@activity.organisation, @activity)
+      redirect_to organisation_activity_details_path(@activity.organisation, @activity)
     else
       render :new
     end
@@ -37,7 +37,7 @@ class Staff::ImplementingOrganisationsController < Staff::BaseController
     if @implementing_organisation.valid?
       @implementing_organisation.save!
       flash[:notice] = I18n.t("action.implementing_organisation.update.success")
-      redirect_to organisation_activity_path(@activity.organisation, @activity)
+      redirect_to organisation_activity_details_path(@activity.organisation, @activity)
     else
       render :edit
     end
