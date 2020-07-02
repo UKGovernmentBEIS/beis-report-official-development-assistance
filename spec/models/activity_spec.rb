@@ -41,7 +41,7 @@ RSpec.describe Activity, type: :model do
         _complete_redacted_activity = create(:fund_activity, publish_to_iati: false)
         _incomplete_redacted_activity = create(:fund_activity, :at_identifier_step, publish_to_iati: false)
 
-        expect(Activity.publishable_to_iati?).to eq [complete_activity]
+        expect(Activity.publishable_to_iati).to eq [complete_activity]
       end
     end
   end
