@@ -12,6 +12,9 @@
           =t("table.header.project.programme")
         %th.govuk-table__header
           =t("summary.label.activity.stage")
+        - if policy(:project).redact_from_iati?
+          %th.govuk-table__header
+            = t("summary.label.activity.publish_to_iati.label")
 
     %tbody.govuk-table__body
       - projects.each do |project|
@@ -26,3 +29,11 @@
             - else
               %strong.govuk-tag.govuk-tag--yellow
                 = t("summary.label.activity.form_state.incomplete")
+          - if policy(:project).redact_from_iati?
+            %td.govuk-table__cell
+              - if project.publish_to_iati?
+                %strong.govuk-tag.govuk-tag--green
+                  = t("summary.label.activity.publish_to_iati.true")
+              - else
+                %strong.govuk-tag.govuk-tag--red
+                  = t("summary.label.activity.publish_to_iati.false")

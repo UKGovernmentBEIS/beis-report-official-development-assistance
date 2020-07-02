@@ -16,6 +16,7 @@ FactoryBot.define do
     flow { "10" }
     aid_type { "A01" }
     level { :fund }
+    publish_to_iati { true }
 
     form_state { "complete" }
 

@@ -7,3 +7,7 @@
   color: govuk-shade(govuk-colour("green"), 20);
   background: govuk-tint(govuk-colour("green"), 80);
 }
+.govuk-tag--red {
+  color: govuk-shade(govuk-colour("red"), 30);
+  background: govuk-tint(govuk-colour("red"), 80);
+}
