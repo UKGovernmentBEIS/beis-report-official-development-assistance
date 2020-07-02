@@ -11,6 +11,8 @@ class Staff::ActivityRedactionsController < Staff::BaseController
     authorize @activity, :redact_from_iati?
 
     @activity.update(publish_to_iati: activity_params["publish_to_iati"])
+    @activity.child_activities.update(publish_to_iati: activity_params["publish_to_iati"])
+
     redirect_to organisation_activity_path(@activity.organisation, @activity)
   end
 
