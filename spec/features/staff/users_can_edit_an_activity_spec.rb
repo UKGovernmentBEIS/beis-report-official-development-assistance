@@ -232,6 +232,34 @@ RSpec.feature "Users can edit an activity" do
           expect(page).to have_content(I18n.t("summary.label.activity.publish_to_iati.false"))
         end
       end
+
+      it "also redacts any child third-party projects when a project is redacted" do
+        project_activity = create(:project_activity, organisation: user.organisation)
+        third_party_project_activity = create(:third_party_project_activity, activity: project_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(project_activity.organisation, project_activity)
+        click_on I18n.t("tabs.activity.details")
+
+        within ".publish_to_iati" do
+          click_on(I18n.t("default.link.edit"))
+        end
+
+        choose I18n.t("summary.label.activity.publish_to_iati.false")
+        click_button I18n.t("form.button.activity.submit")
+
+        click_on I18n.t("tabs.activity.details")
+
+        within ".publish_to_iati" do
+          expect(page).to have_content(I18n.t("summary.label.activity.publish_to_iati.false"))
+        end
+
+        visit organisation_activity_path(third_party_project_activity.organisation, third_party_project_activity)
+        click_on I18n.t("tabs.activity.details")
+
+        within ".publish_to_iati" do
+          expect(page).to have_content(I18n.t("summary.label.activity.publish_to_iati.false"))
+        end
+      end
     end
   end
 
