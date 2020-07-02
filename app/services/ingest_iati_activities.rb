@@ -15,6 +15,9 @@ class IngestIatiActivities
     doc = Nokogiri::XML(file_io, nil, "UTF-8")
 
     legacy_activity_nodes = doc.xpath("//iati-activity")
+
+    legacy_activity_nodes = legacy_activity_nodes.select { |node| node.xpath("@hierarchy=2") }
+
     legacy_activity_nodes.each do |legacy_activity_node|
       legacy_activity = LegacyActivity.new(activity_node_set: legacy_activity_node, delivery_partner: delivery_partner)
       existing_activity = Activity.find_by(previous_identifier: legacy_activity.identifier)
@@ -79,7 +82,7 @@ class IngestIatiActivities
   end
 
   private def add_aid_type(legacy_activity:, new_activity:)
-    new_activity.aid_type = legacy_activity.elements.detect { |element| element.name.eql?("default-aid-type") }.attributes["code"].value
+    new_activity.aid_type = legacy_activity.elements.at_xpath("//default-aid-type/@code").to_s
   end
 
   private def add_participating_organisation(delivery_partner:, new_activity:, legacy_activity:)
@@ -172,6 +175,8 @@ class IngestIatiActivities
       period_end_date = budget_element.children.detect { |child| child.name.eql?("period-end") }.attributes["iso-date"].value
       value = budget_element.children.detect { |child| child.name.eql?("value") }.children.text
       currency = budget_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"].value
+
+      value = "0.01" if value.to_f.negative?
 
       budget = Budget.new(
         status: status,
