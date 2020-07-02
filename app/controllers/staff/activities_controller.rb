@@ -19,10 +19,7 @@ class Staff::ActivitiesController < Staff::BaseController
 
     respond_to do |format|
       format.html do
-        @transaction_presenters = @transactions.includes(:parent_activity).map { |transaction| TransactionPresenter.new(transaction) }
-        @budget_presenters = @budgets.includes(:parent_activity).map { |budget| BudgetPresenter.new(budget) }
-        @planned_disbursement_presenters = @planned_disbursements.map { |planned_disbursement| PlannedDisbursementPresenter.new(planned_disbursement) }
-        @implementing_organisation_presenters = @activity.implementing_organisations.map { |implementing_organisation| ImplementingOrganisationPresenter.new(implementing_organisation) }
+        redirect_to organisation_activity_financials_path(@activity.organisation, @activity)
       end
       format.xml do |_format|
         @activity_xml_presenter = ActivityXmlPresenter.new(@activity)

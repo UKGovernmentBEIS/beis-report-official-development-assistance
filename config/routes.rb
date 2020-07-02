@@ -13,7 +13,10 @@ Rails.application.routes.draw do
     resource :dashboard, only: :show
     resources :users
     resources :organisations, except: [:destroy] do
-      resources :activities, except: [:destroy]
+      resources :activities, except: [:destroy] do
+        get "financials" => "activity_financials#show"
+        get "details" => "activity_details#show"
+      end
       resources :funds, only: [:create] do
         resources :programmes, only: [:create] do
           resources :projects, only: [:create] do
@@ -37,7 +40,7 @@ Rails.application.routes.draw do
 
     resources :activities, only: [], concerns: [:transactionable, :budgetable, :disbursement_plannable] do
       resources :steps, controller: "activity_forms"
-      resources :extending_organisations, only: [:edit, :update]
+      resource :extending_organisations, only: [:edit, :update]
       resources :implementing_organisations, only: [:new, :create, :edit, :update]
     end
   end

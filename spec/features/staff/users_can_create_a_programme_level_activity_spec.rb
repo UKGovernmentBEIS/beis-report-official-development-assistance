@@ -11,6 +11,7 @@ RSpec.feature "Users can create a programme activity" do
 
       visit organisation_path(user.organisation)
       click_on fund.title
+      click_on I18n.t("tabs.activity.details")
       click_on(I18n.t("page_content.organisation.button.create_programme"))
 
       fill_in_activity_form(level: "programme")
@@ -24,6 +25,7 @@ RSpec.feature "Users can create a programme activity" do
 
       visit organisation_path(user.organisation)
       click_on fund.title
+      click_on I18n.t("tabs.activity.details")
       click_on(I18n.t("page_content.organisation.button.create_programme"))
 
       fill_in_activity_form(identifier: identifier, level: "programme")
@@ -40,6 +42,7 @@ RSpec.feature "Users can create a programme activity" do
 
       visit organisation_path(user.organisation)
       click_on fund.title
+      click_on I18n.t("tabs.activity.details")
       click_on(I18n.t("page_content.organisation.button.create_programme"))
 
       fill_in_activity_form(identifier: identifier, level: "programme")
@@ -56,6 +59,7 @@ RSpec.feature "Users can create a programme activity" do
       PublicActivity.with_tracking do
         visit organisation_path(user.organisation)
         click_on fund.title
+        click_on I18n.t("tabs.activity.details")
         click_on(I18n.t("page_content.organisation.button.create_programme"))
 
         fill_in_activity_form(identifier: "my-unique-identifier", level: "programme")

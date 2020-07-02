@@ -60,7 +60,7 @@ RSpec.feature "Users can provide the geography for an activity" do
     context "with a completed activity" do
       scenario "they can change the geography from region to country" do
         activity = create(:activity, geography: :recipient_region, recipient_country: nil)
-        activity_path = organisation_activity_path(activity.organisation, activity)
+        activity_path = organisation_activity_details_path(activity.organisation, activity)
 
         visit activity_path
         within(".recipient_region") do
@@ -84,7 +84,7 @@ RSpec.feature "Users can provide the geography for an activity" do
 
       scenario "they can change the geography from country to region" do
         activity = create(:activity, geography: :recipient_country, recipient_region: nil, recipient_country: "AG")
-        activity_path = organisation_activity_path(activity.organisation, activity)
+        activity_path = organisation_activity_details_path(activity.organisation, activity)
 
         visit activity_path
         within(".recipient_country") do

@@ -11,12 +11,39 @@ RSpec.feature "Users can view an activity" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
 
+    scenario "the activity financials can be viewed" do
+      activity = create(:activity, organisation: user.organisation)
+      transaction = create(:transaction, parent_activity: activity)
+      budget = create(:budget, parent_activity: activity)
+
+      visit organisation_activity_financials_path(activity.organisation, activity)
+      within ".govuk-tabs__list-item--selected" do
+        expect(page).to have_content "Financials"
+      end
+      expect(page).to have_content transaction.value
+      expect(page).to have_content budget.value
+    end
+
+    scenario "the activity details can be viewed" do
+      activity = create(:activity, organisation: user.organisation)
+
+      visit organisation_activity_details_path(activity.organisation, activity)
+
+      within ".govuk-tabs__list-item--selected" do
+        expect(page).to have_content "Details"
+      end
+      expect(page).to have_content activity.title
+      expect(page).to have_button I18n.t("page_content.organisation.button.create_programme")
+    end
+
     scenario "an activity can be viewed" do
       activity = create(:activity, organisation: user.organisation)
 
       visit organisation_path(user.organisation)
 
       click_on(activity.title)
+      click_on I18n.t("tabs.activity.details")
+
       activity_presenter = ActivityPresenter.new(activity)
 
       expect(page).to have_content activity_presenter.identifier
@@ -37,6 +64,7 @@ RSpec.feature "Users can view an activity" do
                                      actual_end_date: Date.new(2020, 1, 29))
 
         visit organisation_activity_path(user.organisation, activity)
+        click_on I18n.t("tabs.activity.details")
 
         within(".planned_start_date") do
           expect(page).to have_content("3 Feb 2020")
