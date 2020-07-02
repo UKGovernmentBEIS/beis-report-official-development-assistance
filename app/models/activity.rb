@@ -63,7 +63,7 @@ class Activity < ApplicationRecord
 
   scope :funds, -> { where(level: :fund) }
   scope :programmes, -> { where(level: :programme) }
-  scope :publishable_to_iati?, -> { where(form_state: :complete, publish_to_iati: true) }
+  scope :publishable_to_iati, -> { where(form_state: :complete, publish_to_iati: true) }
 
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
