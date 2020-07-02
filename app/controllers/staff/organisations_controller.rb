@@ -27,9 +27,9 @@ class Staff::OrganisationsController < Staff::BaseController
       format.xml do
         @activities = case level
         when "project"
-          project_activities.publishable_to_iati?.map { |activity| ActivityXmlPresenter.new(activity) }
+          project_activities.publishable_to_iati.map { |activity| ActivityXmlPresenter.new(activity) }
         when "third_party_project"
-          third_party_project_activities.publishable_to_iati?.map { |activity| ActivityXmlPresenter.new(activity) }
+          third_party_project_activities.publishable_to_iati.map { |activity| ActivityXmlPresenter.new(activity) }
         else
           []
         end

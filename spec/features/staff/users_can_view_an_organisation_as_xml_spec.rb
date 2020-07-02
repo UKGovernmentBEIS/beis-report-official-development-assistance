@@ -40,6 +40,18 @@ RSpec.feature "Users can view an organisation as XML" do
           expect(xml.xpath("/iati-activities/iati-activity").count).to eq 1
           expect(xml.xpath("/iati-activities/iati-activity/title/narrative").text).to eq project.title
         end
+
+        scenario "the XML file does not contain projects which should not be published to IATI" do
+          _redacted_project = create(:project_activity, organisation: organisation, publish_to_iati: false)
+
+          visit organisation_path(organisation)
+          within ".download-projects" do
+            click_link I18n.t("default.button.download_as_xml")
+          end
+          xml = Nokogiri::XML::Document.parse(page.body)
+
+          expect(xml.xpath("/iati-activities/iati-activity").count).to eq(0)
+        end
       end
 
       context "the organisation has third-party projects" do
@@ -65,6 +77,18 @@ RSpec.feature "Users can view an organisation as XML" do
           expect(xml.xpath("/iati-activities/iati-activity").count).to eq 1
           expect(xml.xpath("/iati-activities/iati-activity/title/narrative").text).to eq third_party_project.title
           expect(xml.xpath("/iati-activities/iati-activity/title/narrative").text).to_not eq project.title
+        end
+
+        scenario "the XML file does not contain third-party projects which should not be published to IATI" do
+          _redacted_project = create(:third_party_project_activity, organisation: organisation, publish_to_iati: false)
+
+          visit organisation_path(organisation)
+          within ".download-third-party-projects" do
+            click_link I18n.t("default.button.download_as_xml")
+          end
+          xml = Nokogiri::XML::Document.parse(page.body)
+
+          expect(xml.xpath("/iati-activities/iati-activity").count).to eq(0)
         end
       end
 

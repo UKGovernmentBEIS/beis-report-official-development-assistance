@@ -191,6 +191,8 @@
 ## [unreleased]
 
 - Ingest RS Newton fund data from IATI
+- Allow BEIS users to redact activities from the IATI XML file, and to
+  easily see on the Organisation show page which Activities are redacted
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...HEAD
 [release-10]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-9...release-10

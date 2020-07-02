@@ -16,6 +16,7 @@ RSpec.describe ThirdPartyProjectPolicy do
     it { is_expected.to forbid_edit_and_update_actions }
     it { is_expected.to forbid_action(:destroy) }
     it { is_expected.to permit_action(:download) }
+    it { is_expected.to permit_action(:redact_from_iati) }
 
     it "includes all third party projects in the resolved scope" do
       resolved_scope = described_class::Scope.new(user, Activity.third_party_project).resolve
@@ -32,6 +33,7 @@ RSpec.describe ThirdPartyProjectPolicy do
     it { is_expected.to permit_edit_and_update_actions }
     it { is_expected.to forbid_action(:destroy) }
     it { is_expected.to forbid_action(:download) }
+    it { is_expected.to forbid_action(:redact_from_iati) }
 
     it "includes only projects that the users organisation is reporting the project in the resolved scope" do
       resolved_scope = described_class::Scope.new(user, Activity.third_party_project).resolve

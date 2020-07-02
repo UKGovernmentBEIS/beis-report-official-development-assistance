@@ -23,6 +23,10 @@ class ProjectPolicy < ApplicationPolicy
     beis_user?
   end
 
+  def redact_from_iati?
+    beis_user?
+  end
+
   class Scope < Scope
     def resolve
       if user.organisation.service_owner?
