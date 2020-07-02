@@ -6,13 +6,13 @@ RSpec.describe IngestIatiActivities do
   let!(:existing_programme) { create(:programme_activity, identifier: "GCRF-INTPART", organisation: beis) }
 
   describe "#call" do
-    it "creates 36 new projects for UKSA" do
+    it "creates 35 new projects for UKSA" do
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
 
       service_object = described_class.new(delivery_partner: uksa, file_io: legacy_activities)
 
-      expect { service_object.call }.to change { Activity.project.count }.by(36)
+      expect { service_object.call }.to change { Activity.project.count }.by(35)
     end
 
     it "derives a meaningful internal identifier" do
@@ -92,6 +92,16 @@ RSpec.describe IngestIatiActivities do
       expect(activity.aid_type).to eql("C01")
     end
 
+    it "ignores activities with the wrong IATI hierarchy level" do
+      rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
+      programme = create(:programme_activity, organisation: rs, identifier: "RS-Del-RS")
+      legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/rs/with_wrong_hierarchy_level.xml")
+
+      described_class.new(delivery_partner: rs, file_io: legacy_activities).call
+
+      expect(programme.child_activities).to be_empty
+    end
+
     it "creates transactions and marks them as ingested" do
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_transactions.xml")
@@ -139,22 +149,39 @@ RSpec.describe IngestIatiActivities do
       ).to be_nil
     end
 
-    it "creates budgets and marks them as ingested" do
-      uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
-      legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_budget.xml")
+    context "ingesting budgets" do
+      it "creates budgets and marks them as ingested" do
+        uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_budget.xml")
 
-      described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
 
-      activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021")
-      budgets = Budget.where(parent_activity: activity)
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021")
+        budgets = Budget.where(parent_activity: activity)
 
-      expect(budgets.count).to eql(1)
-      expect(budgets.first.period_start_date).to eq "2016-11-01".to_date
-      expect(budgets.first.period_end_date).to eq "2019-10-31".to_date
-      expect(budgets.first.value).to eq "1868000".to_i
-      expect(budgets.first.budget_type).to eq "1"
-      expect(budgets.first.status).to eq "2"
-      expect(budgets.first.ingested).to be true
+        expect(budgets.count).to eql(1)
+        expect(budgets.first.period_start_date).to eq "2016-11-01".to_date
+        expect(budgets.first.period_end_date).to eq "2019-10-31".to_date
+        expect(budgets.first.value).to eq "1868000".to_i
+        expect(budgets.first.budget_type).to eq "1"
+        expect(budgets.first.status).to eq "2"
+        expect(budgets.first.ingested).to be true
+      end
+
+      it "sets negative budgets to a penny (0.01)" do
+        rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
+        create(:programme_activity, organisation: rs, identifier: "Brazil-Newton-Mob-RS")
+
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/rs/with_negative_budget.xml")
+
+        described_class.new(delivery_partner: rs, file_io: legacy_activities).call
+
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-NEWT-RS_BRA_797")
+        budgets = Budget.where(parent_activity: activity)
+
+        expect(budgets.first.value).to eq "0.01".to_f
+        expect(budgets.first.ingested).to be true
+      end
     end
 
     context "when there is a planned disbursement" do
@@ -241,6 +268,21 @@ RSpec.describe IngestIatiActivities do
           transaction = existing_project.transactions.first
           expect(transaction.receiving_organisation_type).to eql("0")
         end
+      end
+    end
+
+    describe "default aid type" do
+      it "leaves aid_type blank if there is no attribute" do
+        rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
+        create(:programme_activity, organisation: rs, identifier: "South Africa-Newton-Adv-RS")
+
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/rs/with_missing_default_aid_type.xml")
+
+        described_class.new(delivery_partner: rs, file_io: legacy_activities).call
+
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-NEWT-RS_ZAF_858")
+
+        expect(activity.aid_type).to be_empty
       end
     end
 
