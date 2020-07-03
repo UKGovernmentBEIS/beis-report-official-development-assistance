@@ -6,15 +6,15 @@ feature "Organisation show page" do
   let!(:incomplete_fund) { create(:fund_activity, :at_purpose_step, organisation: beis_user.organisation) }
   let(:programme) do
     create(:programme_activity,
-      activity: fund,
+      parent: fund,
       organisation: beis_user.organisation,
       extending_organisation: delivery_partner_user.organisation)
   end
   let!(:incomplete_programme) { create(:programme_activity, :at_purpose_step, extending_organisation: delivery_partner_user.organisation) }
-  let!(:project) { create(:project_activity, activity: programme, organisation: delivery_partner_user.organisation, created_at: Date.today) }
-  let!(:incomplete_project) { create(:project_activity, :at_geography_step, activity: programme, organisation: delivery_partner_user.organisation, created_at: Date.yesterday) }
-  let!(:third_party_project) { create(:third_party_project_activity, activity: project, organisation: delivery_partner_user.organisation) }
-  let!(:incomplete_third_party_project) { create(:third_party_project_activity, :at_region_step, activity: project, organisation: delivery_partner_user.organisation) }
+  let!(:project) { create(:project_activity, parent: programme, organisation: delivery_partner_user.organisation, created_at: Date.today) }
+  let!(:incomplete_project) { create(:project_activity, :at_geography_step, parent: programme, organisation: delivery_partner_user.organisation, created_at: Date.yesterday) }
+  let!(:third_party_project) { create(:third_party_project_activity, parent: project, organisation: delivery_partner_user.organisation) }
+  let!(:incomplete_third_party_project) { create(:third_party_project_activity, :at_region_step, parent: project, organisation: delivery_partner_user.organisation) }
   let!(:another_programme) { create(:programme_activity) }
   let!(:another_project) { create(:project_activity) }
 
@@ -58,13 +58,13 @@ feature "Organisation show page" do
         within("##{programme.id}") do
           expect(page).to have_link programme.title, href: organisation_activity_path(programme.organisation, programme)
           expect(page).to have_content programme.identifier
-          expect(page).to have_content programme.parent_activity.title
+          expect(page).to have_content programme.parent.title
         end
 
         within("##{another_programme.id}") do
           expect(page).to have_link another_programme.title, href: organisation_activity_path(another_programme.organisation, another_programme)
           expect(page).to have_content another_programme.identifier
-          expect(page).to have_content another_programme.parent_activity.title
+          expect(page).to have_content another_programme.parent.title
         end
       end
 
@@ -89,13 +89,13 @@ feature "Organisation show page" do
         within("##{project.id}") do
           expect(page).to have_link project.title, href: organisation_activity_path(project.organisation, project)
           expect(page).to have_content project.identifier
-          expect(page).to have_content project.parent_activity.title
+          expect(page).to have_content project.parent.title
         end
 
         within("##{another_project.id}") do
           expect(page).to have_link another_project.title, href: organisation_activity_path(another_project.organisation, another_project)
           expect(page).to have_content another_project.identifier
-          expect(page).to have_content another_project.parent_activity.title
+          expect(page).to have_content another_project.parent.title
         end
       end
 
@@ -120,7 +120,7 @@ feature "Organisation show page" do
         within("##{third_party_project.id}") do
           expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
           expect(page).to have_content third_party_project.identifier
-          expect(page).to have_content third_party_project.parent_activity.title
+          expect(page).to have_content third_party_project.parent.title
         end
       end
 
@@ -179,7 +179,7 @@ feature "Organisation show page" do
       within("##{programme.id}") do
         expect(page).to have_link programme.title, href: organisation_activity_path(programme.organisation, programme)
         expect(page).to have_content programme.identifier
-        expect(page).to have_content programme.parent_activity.title
+        expect(page).to have_content programme.parent.title
       end
     end
 
@@ -201,7 +201,7 @@ feature "Organisation show page" do
       within("##{project.id}") do
         expect(page).to have_link project.title, href: organisation_activity_path(project.organisation, project)
         expect(page).to have_content project.identifier
-        expect(page).to have_content project.parent_activity.title
+        expect(page).to have_content project.parent.title
       end
     end
 
@@ -232,7 +232,7 @@ feature "Organisation show page" do
       within("##{third_party_project.id}") do
         expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
         expect(page).to have_content third_party_project.identifier
-        expect(page).to have_content third_party_project.parent_activity.title
+        expect(page).to have_content third_party_project.parent.title
       end
     end
 

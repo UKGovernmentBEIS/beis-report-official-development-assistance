@@ -44,8 +44,8 @@ RSpec.describe IngestIatiActivities do
       described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
 
       activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
-      expect(activity.parent_activity).to eq(existing_programme)
-      expect(activity.parent_activity.organisation).to eql(beis)
+      expect(activity.parent).to eq(existing_programme)
+      expect(activity.parent.organisation).to eql(beis)
     end
 
     it "adds an activity with all mandatory fields" do

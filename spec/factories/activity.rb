@@ -37,7 +37,7 @@ FactoryBot.define do
     end
 
     factory :programme_activity do
-      activity factory: :fund_activity
+      parent factory: :fund_activity
       level { :programme }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
@@ -51,7 +51,7 @@ FactoryBot.define do
     end
 
     factory :project_activity do
-      activity factory: :programme_activity
+      parent factory: :programme_activity
       level { :project }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
@@ -75,7 +75,7 @@ FactoryBot.define do
     end
 
     factory :third_party_project_activity do
-      activity factory: :project_activity
+      parent factory: :project_activity
       level { :third_party_project }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }

@@ -41,10 +41,10 @@ RSpec.describe "Users can create a budget" do
     context "on a programme level activity" do
       scenario "successfully creates a budget" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
-        programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
+        programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
-        click_on(programme_activity.parent_activity.title)
+        click_on(programme_activity.parent.title)
         click_on I18n.t("tabs.activity.details")
         click_on(programme_activity.title)
 
@@ -57,11 +57,11 @@ RSpec.describe "Users can create a budget" do
 
       scenario "sees validation errors for missing attributes" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
-        programme_activity = create(:programme_activity, activity: fund_activity, organisation: user.organisation)
+        programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
 
         visit organisation_path(user.organisation)
 
-        click_on(programme_activity.parent_activity.title)
+        click_on(programme_activity.parent.title)
         click_on I18n.t("tabs.activity.details")
         click_on(programme_activity.title)
 
@@ -86,7 +86,7 @@ RSpec.describe "Users can create a budget" do
       scenario "they can view but not create budgets" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity,
-          activity: fund_activity,
+          parent: fund_activity,
           organisation: user.organisation,
           extending_organisation: user.organisation)
 
@@ -102,10 +102,10 @@ RSpec.describe "Users can create a budget" do
       scenario "successfully creates a budget" do
         fund_activity = create(:fund_activity)
         programme_activity = create(:programme_activity,
-          activity: fund_activity,
+          parent: fund_activity,
           extending_organisation: user.organisation)
         project_activity = create(:project_activity,
-          activity: programme_activity,
+          parent: programme_activity,
           organisation: user.organisation)
 
         visit organisation_path(user.organisation)

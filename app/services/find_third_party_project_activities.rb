@@ -10,7 +10,7 @@ class FindThirdPartyProjectActivities
 
   def call
     third_party_projects = policy_scope(Activity.third_party_project, policy_scope_class: ThirdPartyProjectPolicy::Scope)
-      .includes(:organisation)
+      .includes(:organisation, :parent)
       .order("created_at ASC")
     third_party_projects = if organisation.service_owner
       third_party_projects.all

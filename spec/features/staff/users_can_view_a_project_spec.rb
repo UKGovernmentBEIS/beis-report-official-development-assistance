@@ -17,7 +17,7 @@ RSpec.feature "Users can view a project" do
 
     scenario "can see a list of third-party projects on the project view" do
       project = create(:project_activity, organisation: user.organisation)
-      third_party_project = create(:third_party_project_activity, activity: project)
+      third_party_project = create(:third_party_project_activity, parent: project)
 
       visit organisation_activity_details_path(project.organisation, project)
 

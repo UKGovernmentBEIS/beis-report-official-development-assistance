@@ -21,7 +21,7 @@
         %tr.govuk-table__row{id: project.id}
           %td.govuk-table__cell= link_to project.display_title, organisation_activity_path(project.organisation, project), class: "govuk-link govuk-link--no-visited-state"
           %td.govuk-table__cell= project.identifier
-          %td.govuk-table__cell= project.parent_activity.title
+          %td.govuk-table__cell= project.parent.title
           %td.govuk-table__cell
             - if project.form_steps_completed?
               %strong.govuk-tag.govuk-tag--green

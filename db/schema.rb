@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_23_132105) do
+ActiveRecord::Schema.define(version: 2020_06_26_100128) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -34,7 +34,6 @@ ActiveRecord::Schema.define(version: 2020_06_23_132105) do
     t.string "aid_type"
     t.string "form_state"
     t.string "level"
-    t.uuid "activity_id"
     t.string "funding_organisation_name"
     t.string "funding_organisation_reference"
     t.string "funding_organisation_type"
@@ -50,10 +49,11 @@ ActiveRecord::Schema.define(version: 2020_06_23_132105) do
     t.boolean "ingested", default: false
     t.string "legacy_iati_xml"
     t.boolean "publish_to_iati", default: true
-    t.index ["activity_id"], name: "index_activities_on_activity_id"
+    t.uuid "parent_id"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
+    t.index ["parent_id"], name: "index_activities_on_parent_id"
     t.index ["reporting_organisation_id"], name: "index_activities_on_reporting_organisation_id"
   end
 
@@ -163,7 +163,7 @@ ActiveRecord::Schema.define(version: 2020_06_23_132105) do
     t.index ["role"], name: "index_users_on_role"
   end
 
-  add_foreign_key "activities", "activities"
+  add_foreign_key "activities", "activities", column: "parent_id", on_delete: :restrict
   add_foreign_key "activities", "organisations", column: "extending_organisation_id"
   add_foreign_key "activities", "organisations", column: "reporting_organisation_id"
   add_foreign_key "activities", "organisations", on_delete: :restrict
