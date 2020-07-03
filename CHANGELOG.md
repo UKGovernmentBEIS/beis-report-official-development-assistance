@@ -186,13 +186,14 @@
 - Remove 3 unwanted activities from production
 - Content changes to fields for transaction value and activity identifier
 - Increase the width of the application layout
-- Activity show content is show in tabs for financials and details
 
 ## [unreleased]
 
 - Ingest RS Newton fund data from IATI
 - Allow BEIS users to redact activities from the IATI XML file, and to
   easily see on the Organisation show page which Activities are redacted
+- Activity show content is show in tabs for financials and details
+- Refactor how we can ask activities for their parents
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...HEAD
 [release-10]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-9...release-10

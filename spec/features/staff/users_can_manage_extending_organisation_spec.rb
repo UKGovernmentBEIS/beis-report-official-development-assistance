@@ -5,7 +5,7 @@ RSpec.feature "Users can manage the extending organisation" do
 
     context "and the activity is a programme" do
       let(:fund) { create(:fund_activity) }
-      let(:programme) { create(:programme_activity, activity_id: fund.id, extending_organisation: nil) }
+      let(:programme) { create(:programme_activity, parent_id: fund.id, extending_organisation: nil) }
 
       scenario "they can set the extending organisation" do
         delivery_partner = create(:delivery_partner_organisation)
@@ -88,7 +88,7 @@ RSpec.feature "Users can manage the extending organisation" do
 
     scenario "they cannot set the extending organisation" do
       fund = create(:fund_activity)
-      programme = create(:programme_activity, activity_id: fund.id)
+      programme = create(:programme_activity, parent_id: fund.id)
 
       visit organisation_activity_path(programme.organisation, programme)
 

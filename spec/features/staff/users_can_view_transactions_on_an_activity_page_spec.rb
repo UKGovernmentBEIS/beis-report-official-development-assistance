@@ -54,8 +54,8 @@ RSpec.feature "Users can view transactions on an activity page" do
 
     context "when the activity is a project" do
       let(:fund_activity) { create(:fund_activity, organisation: user.organisation) }
-      let(:programme_activity) { create(:programme_activity, activity: fund_activity, organisation: user.organisation) }
-      let(:project_activity) { create(:project_activity, activity: programme_activity, organisation: user.organisation) }
+      let(:programme_activity) { create(:programme_activity, parent: fund_activity, organisation: user.organisation) }
+      let(:project_activity) { create(:project_activity, parent: programme_activity, organisation: user.organisation) }
 
       scenario "transaction information is shown on the page" do
         transaction = create(:transaction, parent_activity: project_activity)

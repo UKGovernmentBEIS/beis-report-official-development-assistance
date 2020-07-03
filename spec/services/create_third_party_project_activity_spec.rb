@@ -30,13 +30,13 @@ RSpec.describe CreateThirdPartyProjectActivity do
     end
 
     it "sets the parent Activity to the project" do
-      expect(result.parent_activity).to eq(project)
+      expect(result.parent).to eq(project)
     end
 
     it "sets fund, programme & project to be parent activities of the third party project" do
-      programme = project.parent_activity
-      fund = programme.parent_activity
-      project = result.parent_activity
+      programme = project.parent
+      fund = programme.parent
+      project = result.parent
 
       expect(result.parent_activities.first).to eq(fund)
       expect(result.parent_activities.second).to eq(programme)

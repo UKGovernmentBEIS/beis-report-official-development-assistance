@@ -253,25 +253,14 @@ RSpec.describe Activity, type: :model do
 
   describe "associations" do
     it { should belong_to(:organisation) }
-    it { should belong_to(:activity).optional }
-    it { should have_many(:child_activities).with_foreign_key("activity_id") }
+    it { should belong_to(:parent).optional }
+    it { should have_many(:child_activities).with_foreign_key("parent_id") }
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
     it { should have_many(:implementing_organisations) }
     it { should belong_to(:reporting_organisation).with_foreign_key("reporting_organisation_id") }
     it { should have_many(:budgets) }
     it { should have_many(:transactions) }
     it { should have_many(:planned_disbursements) }
-  end
-
-  describe "#parent_activity" do
-    it "returns the parent activity or nil if there is not one" do
-      fund_activity = create(:activity, level: :fund)
-      programme_activity = create(:activity, level: :programme)
-      fund_activity.child_activities << programme_activity
-
-      expect(programme_activity.parent_activity).to eql fund_activity
-      expect(fund_activity.parent_activity).to be_nil
-    end
   end
 
   describe "#parent_activities" do
@@ -285,7 +274,7 @@ RSpec.describe Activity, type: :model do
     context "when the activity is a programme" do
       it "returns the fund" do
         programme = create(:programme_activity)
-        fund = programme.parent_activity
+        fund = programme.parent
 
         result = programme.parent_activities
         expect(result.first.id).to eq(fund.id)
@@ -295,8 +284,8 @@ RSpec.describe Activity, type: :model do
     context "when the activity is a project" do
       it "returns the fund and then the programme" do
         project = create(:project_activity)
-        programme = project.parent_activity
-        fund = programme.parent_activity
+        programme = project.parent
+        fund = programme.parent
 
         result = project.parent_activities
 
@@ -308,9 +297,9 @@ RSpec.describe Activity, type: :model do
     context "when the activity is a third party project" do
       it "returns the fund and then the programme and then the project" do
         third_party_project = create(:third_party_project_activity)
-        project = third_party_project.parent_activity
-        programme = project.parent_activity
-        fund = programme.parent_activity
+        project = third_party_project.parent
+        programme = project.parent
+        fund = programme.parent
 
         result = third_party_project.parent_activities
 

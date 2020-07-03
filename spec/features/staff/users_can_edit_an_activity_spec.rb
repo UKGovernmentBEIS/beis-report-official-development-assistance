@@ -235,7 +235,7 @@ RSpec.feature "Users can edit an activity" do
 
       it "also redacts any child third-party projects when a project is redacted" do
         project_activity = create(:project_activity, organisation: user.organisation)
-        third_party_project_activity = create(:third_party_project_activity, activity: project_activity, organisation: user.organisation)
+        third_party_project_activity = create(:third_party_project_activity, parent: project_activity, organisation: user.organisation)
 
         visit organisation_activity_path(project_activity.organisation, project_activity)
         click_on I18n.t("tabs.activity.details")

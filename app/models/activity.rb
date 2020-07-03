@@ -38,8 +38,10 @@ class Activity < ApplicationRecord
   validates :actual_start_date, :actual_end_date, date_not_in_future: true
   validates :extending_organisation_id, presence: true, on: :update_extending_organisation
 
-  belongs_to :activity, optional: true
-  has_many :child_activities, foreign_key: "activity_id", class_name: "Activity"
+  acts_as_tree
+  belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"
+
+  has_many :child_activities, foreign_key: "parent_id", class_name: "Activity"
   belongs_to :organisation
   belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
   has_many :implementing_organisations
@@ -86,11 +88,6 @@ class Activity < ApplicationRecord
     organisation.default_currency
   end
 
-  def parent_activity
-    return if activity_id.nil?
-    Activity.find(activity_id)
-  end
-
   def has_funding_organisation?
     funding_organisation_reference.present? &&
       funding_organisation_name.present? &&
@@ -112,10 +109,7 @@ class Activity < ApplicationRecord
   end
 
   def parent_activities
-    return [parent_activity] if programme?
-    return [parent_activity.parent_activity, parent_activity] if project?
-    return [parent_activity.parent_activity.parent_activity, parent_activity.parent_activity, parent_activity] if third_party_project?
-    []
+    ancestors.reverse
   end
 
   def providing_organisation

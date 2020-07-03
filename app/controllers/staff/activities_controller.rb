@@ -4,7 +4,7 @@ class Staff::ActivitiesController < Staff::BaseController
   include Secured
 
   def index
-    @activities = policy_scope(Activity)
+    @activities = policy_scope(Activity).includes(:parent)
   end
 
   def show

@@ -48,7 +48,7 @@ class IngestIatiActivities
         add_budgets(legacy_activity: legacy_activity, roda_activity: roda_activity)
         add_planned_disbursements(legacy_activity: legacy_activity, roda_activity: roda_activity)
 
-        roda_activity.activity = legacy_activity.find_parent_programme
+        roda_activity.parent = legacy_activity.find_parent_programme
         roda_activity.legacy_iati_xml = legacy_activity.to_xml.squish
         roda_activity.ingested = true
 

@@ -3,5 +3,5 @@
     %h2.govuk-heading-m
       = t("page_content.activity.third_party_projects")
     - if policy(:third_party_project).create?
-      = button_to t("page_content.organisation.button.create_third_party_project"), organisation_fund_programme_project_third_party_projects_path(current_user.organisation, activity.parent_activity.parent_activity, activity.parent_activity, activity), class: "govuk-button"
+      = button_to t("page_content.organisation.button.create_third_party_project"), organisation_fund_programme_project_third_party_projects_path(current_user.organisation, activity.parent.parent, activity.parent, activity), class: "govuk-button"
     = render partial: '/staff/shared/third_party_projects/table', locals: { third_party_projects: activities }
