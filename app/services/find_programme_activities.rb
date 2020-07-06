@@ -1,15 +1,16 @@
 class FindProgrammeActivities
   include Pundit
 
-  attr_accessor :organisation, :current_user
+  attr_accessor :organisation, :user
 
-  def initialize(organisation:, current_user:)
+  def initialize(organisation:, user:)
     @organisation = organisation
-    @current_user = current_user
+    @user = user
   end
 
   def call
-    programmes = policy_scope(Activity.programme, policy_scope_class: ProgrammePolicy::Scope)
+    programmes = ProgrammePolicy::Scope.new(user, Activity.programme)
+      .resolve
       .includes(:organisation, :parent)
       .order("created_at ASC")
     programmes = if organisation.service_owner

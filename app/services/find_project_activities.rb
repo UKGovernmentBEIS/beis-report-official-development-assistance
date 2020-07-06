@@ -1,15 +1,16 @@
 class FindProjectActivities
   include Pundit
 
-  attr_accessor :organisation, :current_user
+  attr_accessor :organisation, :user
 
-  def initialize(organisation:, current_user:)
+  def initialize(organisation:, user:)
     @organisation = organisation
-    @current_user = current_user
+    @user = user
   end
 
   def call
-    projects = policy_scope(Activity.project, policy_scope_class: ProjectPolicy::Scope)
+    projects = ProjectPolicy::Scope.new(user, Activity.project)
+      .resolve
       .includes(:organisation, :parent)
       .order("created_at ASC")
     projects = if organisation.service_owner
