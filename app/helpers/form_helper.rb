@@ -60,4 +60,14 @@ module FormHelper
         .call(eager_load_parent: false)
     end
   end
+
+  def create_activity_level_options(user:)
+    authorised_levels = Activity.levels.select { |level|
+      policy = Pundit.policy(user, level.to_sym)
+      policy.create? || policy.update?
+    }
+    authorised_levels.keys.map do |level|
+      OpenStruct.new(level: level, description: I18n.t("page_content.activity.level.#{level}").capitalize)
+    end
+  end
 end
