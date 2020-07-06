@@ -116,4 +116,11 @@ class Activity < ApplicationRecord
     return organisation if third_party_project? && !organisation.is_government?
     Organisation.find_by(service_owner: true)
   end
+
+  def parent_level
+    existing_level_index = Activity.levels.keys.index(level)
+    return nil if existing_level_index.zero?
+
+    Activity.levels.keys[existing_level_index - 1]
+  end
 end
