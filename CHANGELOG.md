@@ -169,9 +169,9 @@
   must be present, in line with the IATI `activity-date` XML standard
 - Amend ingest service to successfully ingest Activities without an `activity-date` type
   2 (`actual_start_date`)
-- Ingest AMS Newton fund data from IATI   
+- Ingest AMS Newton fund data from IATI
 - Flag incomplete activities in the activity table views
-- XML download does not contain any incomplete activities   
+- XML download does not contain any incomplete activities
 - XML download contains a `narrative` element for region & country containing the region or country name
 - Ingest AMS GCRF data from IATI
 - When a programme has an extending organisation set, the same organisation is set as the implementing organisation
@@ -187,7 +187,7 @@
 - Content changes to fields for transaction value and activity identifier
 - Increase the width of the application layout
 
-## [unreleased]
+## [release-11] - 2020-07-08
 
 - Ingest RS Newton fund data from IATI
 - Allow BEIS users to redact activities from the IATI XML file, and to
@@ -196,7 +196,10 @@
 - Refactor how we can ask activities for their parents
 - Ingest BA Newton fund data from IATI
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...HEAD
+[release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11
 [release-10]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-9...release-10
 [release-9]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-8...release-9
 [release-8]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...release-8
