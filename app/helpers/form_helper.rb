@@ -44,4 +44,20 @@ module FormHelper
       OpenStruct.new(id: "false", name: t("form.user.active.inactive")),
     ]
   end
+
+  def scoped_parent_activities(activity:, user:)
+    case activity.level.to_sym
+    when :fund
+      Activity.none
+    when :programme
+      FindFundActivities.new(organisation: activity.organisation, user: user)
+        .call
+    when :project
+      FindProgrammeActivities.new(organisation: activity.organisation, user: user)
+        .call(eager_load_parent: false)
+    when :third_party_project
+      FindProjectActivities.new(organisation: activity.organisation, user: user)
+        .call(eager_load_parent: false)
+    end
+  end
 end
