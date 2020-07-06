@@ -17,7 +17,7 @@ en:
         geography_options:
           recipient_region: Region
           recipient_country: Country
-        identifier: Your unique identifier
+        identifier: Enter your unique identifier
         region: Recipient region
         actual_end_date: Actual end date
         actual_start_date: Actual start date
