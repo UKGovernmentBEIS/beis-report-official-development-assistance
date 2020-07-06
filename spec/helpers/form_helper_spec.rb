@@ -63,4 +63,30 @@ RSpec.describe FormHelper, type: :helper do
       end
     end
   end
+
+  describe "#create_activity_level_options" do
+    context "when the user is a BEIS user" do
+      it "tells Pundit to return only the levels of activity a user can create or update" do
+        user = create(:beis_user)
+        result = helper.create_activity_level_options(user: user)
+        expect(result).to eq([
+          OpenStruct.new(level: "fund", description: "Fund"),
+          OpenStruct.new(level: "programme", description: "Programme"),
+        ])
+      end
+    end
+
+    context "when the user is a DP user" do
+      context "when the user is a BEIS user" do
+        it "tells Pundit to return only the levels of activity a user can create or update" do
+          user = create(:delivery_partner_user)
+          result = helper.create_activity_level_options(user: user)
+          expect(result).to eq([
+            OpenStruct.new(level: "project", description: "Project"),
+            OpenStruct.new(level: "third_party_project", description: "Third-party project"),
+          ])
+        end
+      end
+    end
+  end
 end
