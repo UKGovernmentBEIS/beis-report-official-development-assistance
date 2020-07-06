@@ -23,12 +23,12 @@ RSpec.describe FindProjectActivities do
         .with(:organisation, :parent)
         .and_call_original
 
-      described_class.new(organisation: service_owner, current_user: user).call
+      described_class.new(organisation: service_owner, user: user).call
     end
 
     context "when the organisation is the service owner" do
       it "returns all project activities" do
-        result = described_class.new(organisation: service_owner, current_user: user).call
+        result = described_class.new(organisation: service_owner, user: user).call
 
         expect(result).to match_array [organisation_project, other_project]
       end
@@ -36,7 +36,7 @@ RSpec.describe FindProjectActivities do
 
     context "when the organisation is not the service owner" do
       it "returns project activities for this organisation" do
-        result = described_class.new(organisation: other_organisation, current_user: user).call
+        result = described_class.new(organisation: other_organisation, user: user).call
 
         expect(result).to match_array [organisation_project]
       end

@@ -12,10 +12,10 @@ class Staff::OrganisationsController < Staff::BaseController
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
 
-    fund_activities = FindFundActivities.new(organisation: organisation, current_user: current_user).call
-    programme_activities = FindProgrammeActivities.new(organisation: organisation, current_user: current_user).call
-    project_activities = FindProjectActivities.new(organisation: organisation, current_user: current_user).call
-    third_party_project_activities = FindThirdPartyProjectActivities.new(organisation: organisation, current_user: current_user).call
+    fund_activities = FindFundActivities.new(organisation: organisation, user: current_user).call
+    programme_activities = FindProgrammeActivities.new(organisation: organisation, user: current_user).call
+    project_activities = FindProjectActivities.new(organisation: organisation, user: current_user).call
+    third_party_project_activities = FindThirdPartyProjectActivities.new(organisation: organisation, user: current_user).call
 
     respond_to do |format|
       format.html do
