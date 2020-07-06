@@ -26,4 +26,41 @@ RSpec.describe FormHelper, type: :helper do
       expect(budget_types[0].description).to eq I18n.t("form.label.planned_disbursement.planned_disbursement_type_options.original.description")
     end
   end
+
+  describe "#scoped_parent_activities" do
+    context "when the activity is a fund" do
+      it "returns an empty result" do
+        activity = build(:fund_activity)
+        result = helper.scoped_parent_activities(activity: activity, user: double(User))
+        expect(result).to eq(Activity.none)
+      end
+    end
+
+    context "when the activity is a programme" do
+      it "tells FindFundActivities to return the fund activities" do
+        activity = build(:programme_activity)
+        allow_any_instance_of(FindFundActivities).to receive(:call)
+        expect_any_instance_of(FindFundActivities).to receive(:call)
+        helper.scoped_parent_activities(activity: activity, user: double(User))
+      end
+    end
+
+    context "when the activity is a project" do
+      it "tells FindProgrammeActivities to return the programme activities" do
+        activity = build(:project_activity)
+        allow_any_instance_of(FindProgrammeActivities).to receive(:call)
+        expect_any_instance_of(FindProgrammeActivities).to receive(:call)
+        helper.scoped_parent_activities(activity: activity, user: double(User))
+      end
+    end
+
+    context "when the activity is a third-party project" do
+      it "tells FindProjectActivities to return the project activities" do
+        activity = build(:third_party_project_activity)
+        allow_any_instance_of(FindProjectActivities).to receive(:call)
+        expect_any_instance_of(FindProjectActivities).to receive(:call)
+        helper.scoped_parent_activities(activity: activity, user: double(User))
+      end
+    end
+  end
 end
