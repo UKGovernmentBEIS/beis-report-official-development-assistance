@@ -8,11 +8,15 @@ class FindProgrammeActivities
     @user = user
   end
 
-  def call
+  def call(eager_load_parent: true)
+    eager_load_associations = [:organisation]
+    eager_load_associations << :parent if eager_load_parent
+
     programmes = ProgrammePolicy::Scope.new(user, Activity.programme)
       .resolve
-      .includes(:organisation, :parent)
+      .includes(eager_load_associations)
       .order("created_at ASC")
+
     programmes = if organisation.service_owner
       programmes.all
     else

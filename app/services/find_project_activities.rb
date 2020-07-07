@@ -8,11 +8,15 @@ class FindProjectActivities
     @user = user
   end
 
-  def call
+  def call(eager_load_parent: true)
+    eager_load_associations = [:organisation]
+    eager_load_associations << :parent if eager_load_parent
+
     projects = ProjectPolicy::Scope.new(user, Activity.project)
       .resolve
-      .includes(:organisation, :parent)
+      .includes(eager_load_associations)
       .order("created_at ASC")
+
     projects = if organisation.service_owner
       projects.all
     else
