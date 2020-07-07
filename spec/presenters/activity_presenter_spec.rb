@@ -224,4 +224,21 @@ RSpec.describe ActivityPresenter do
       expect(described_class.new(activity).level).to eql("third-party project")
     end
   end
+
+  describe "#parent_title" do
+    context "when the activity has a parent" do
+      it "returns the title of the parent" do
+        fund = create(:fund_activity, title: "A parent title")
+        programme = create(:programme_activity, parent: fund)
+        expect(described_class.new(programme).parent_title).to eql("A parent title")
+      end
+    end
+
+    context "when the activity does NOT have a parent" do
+      it "returns nil" do
+        fund = create(:fund_activity, title: "No parent")
+        expect(described_class.new(fund).parent_title).to eql(nil)
+      end
+    end
+  end
 end
