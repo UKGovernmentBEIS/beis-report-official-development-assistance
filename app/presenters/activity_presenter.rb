@@ -71,4 +71,9 @@ class ActivityPresenter < SimpleDelegator
     return if super.blank?
     I18n.t("page_content.activity.level.#{super}")
   end
+
+  def parent_title
+    return if parent.blank?
+    parent.title
+  end
 end
