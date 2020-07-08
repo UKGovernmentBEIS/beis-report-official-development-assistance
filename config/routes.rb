@@ -13,8 +13,9 @@ Rails.application.routes.draw do
   scope module: "staff" do
     resource :dashboard, only: :show
     resources :users
+    resources :activities, only: [:index]
     resources :organisations, except: [:destroy] do
-      resources :activities, except: [:destroy] do
+      resources :activities, except: [:index, :destroy] do
         get "financials" => "activity_financials#show"
         get "details" => "activity_details#show"
       end
