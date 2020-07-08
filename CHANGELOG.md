@@ -195,11 +195,12 @@
 - Activity show content is show in tabs for financials and details
 - Refactor how we can ask activities for their parents
 - Ingest BA Newton fund data from IATI
-- add accessibility statement
 
 ## [unreleased]
 
 - Activity identifiers are unique among siblings
+- add accessibility statement
+- Move budgets to the top of the programme activity financials tab
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...HEAD
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11
