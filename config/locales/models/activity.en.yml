@@ -4,6 +4,7 @@ en:
     activity:
       edit: Activity %{name} - Publish to IATI
       show: Activity %{name}
+      index: Activities
       details: Activity %{name} — Details
       financials: Activity %{name} — Financials
       extending_organisation: Activity %{name} — Extending organisation
@@ -94,6 +95,20 @@ en:
           label: Publish to IATI?
           'false': 'No'
           'true': 'Yes'
+  table:
+    header:
+      activity:
+        identifier: Identifier
+        title: Name
+        level: Level
+    body:
+      activity:
+        level:
+          fund: Fund
+          programme: Programme
+          project: Project
+          third_party_project: Third-party project
+        view_activity: View
   page_content:
     activities:
       button:
@@ -132,6 +147,7 @@ en:
       financials: Financials
   page_title:
     activity:
+      index: Activities
       implementing_organisation:
         edit: Edit implemening organisation
         new: Add a new implementing organisation
