@@ -1,97 +1,98 @@
 require "rails_helper"
 
 RSpec.describe ActivityPolicy do
+  let(:user) { build_stubbed(:beis_user) }
   subject { described_class.new(user, activity) }
 
-  context "when the user belongs to BEIS" do
-    let(:user) { build_stubbed(:beis_user) }
+  describe "#show?" do
+    context "when the activity doesn't have a level yet" do
+      context "and the user belongs to the authoring organisation" do
+        let(:activity) { create(:activity, :blank_form_state, level: nil, organisation: user.organisation) }
+        it { is_expected.to permit_action(:show) }
+      end
 
-    context "when the activity is a fund" do
-      let(:activity) { create(:fund_activity, organisation: user.organisation) }
-
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to permit_new_and_create_actions }
-      it { is_expected.to permit_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
-
-      it "includes activity in resolved scope" do
-        resolved_scope = described_class::Scope.new(user, Activity.all).resolve
-        expect(resolved_scope).to include(activity)
+      context "and the user DOES NOT belong to the authoring organisation" do
+        let(:another_organisation) { create(:organisation) }
+        let(:activity) { create(:activity, :blank_form_state, level: nil, organisation: another_organisation) }
+        it { is_expected.to forbid_action(:show) }
       end
     end
 
-    context "when the activity is a programme" do
-      let(:activity) { create(:programme_activity, organisation: user.organisation) }
+    context "when the user is a BEIS user" do
+      let(:user) { build_stubbed(:beis_user) }
+      context "when the activity is a fund" do
+        let(:activity) { create(:fund_activity, organisation: user.organisation) }
+        it { is_expected.to permit_action(:show) }
+      end
 
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to permit_new_and_create_actions }
-      it { is_expected.to permit_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
+      context "when the activity is a programme" do
+        let(:activity) { create(:programme_activity, organisation: user.organisation) }
+        it { is_expected.to permit_action(:show) }
+      end
 
-      it "includes activity in resolved scope" do
-        resolved_scope = described_class::Scope.new(user, Activity.all).resolve
-        expect(resolved_scope).to include(activity)
+      context "when the activity is a project" do
+        let(:activity) { create(:project_activity, organisation: user.organisation) }
+        it { is_expected.to permit_action(:show) }
+      end
+
+      context "when the activity is a third_party_project" do
+        let(:activity) { create(:third_party_project_activity, organisation: user.organisation) }
+        it { is_expected.to permit_action(:show) }
       end
     end
 
-    context "when the activity is a project" do
-      let(:activity) { create(:project_activity) }
+    context "when the user is not a BEIS user" do
+      let(:user) { build_stubbed(:delivery_partner_user) }
+      context "when the activity is a fund" do
+        let(:activity) { create(:fund_activity, organisation: user.organisation) }
+        it { is_expected.to forbid_action(:show) }
+      end
 
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to forbid_new_and_create_actions }
-      it { is_expected.to forbid_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
+      context "when the activity is a programme" do
+        let(:activity) { create(:programme_activity, organisation: user.organisation) }
+        it { is_expected.to permit_action(:show) }
+      end
 
-      it "includes activity in resolved scope" do
-        resolved_scope = described_class::Scope.new(user, Activity.all).resolve
-        expect(resolved_scope).to include(activity)
+      context "when the activity is a project" do
+        let(:activity) { create(:project_activity, organisation: user.organisation) }
+        it { is_expected.to permit_action(:show) }
+      end
+
+      context "when the activity is a third_party_project" do
+        let(:activity) { create(:third_party_project_activity, organisation: user.organisation) }
+        it { is_expected.to permit_action(:show) }
       end
     end
   end
 
-  context "when the user does NOT belong to BEIS" do
-    let(:user) { build_stubbed(:delivery_partner_user) }
-
-    context "when the activity is a fund" do
-      let(:activity) { create(:fund_activity, organisation: user.organisation) }
-
-      it { is_expected.to forbid_action(:show) }
-      it { is_expected.to forbid_new_and_create_actions }
-      it { is_expected.to forbid_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
-
-      it "includes does not include the activity in resolved scope" do
-        resolved_scope = described_class::Scope.new(user, Activity.all).resolve
-        expect(resolved_scope).to be_empty
-      end
+  describe "#create?" do
+    context "when the user belongs to the authoring organisation" do
+      let(:activity) { create(:activity, organisation: user.organisation) }
+      it { is_expected.to permit_action(:create) }
     end
 
-    context "when the activity is a programme" do
-      let(:activity) { create(:programme_activity, organisation: user.organisation) }
+    context "when the user does NOT belong to the authoring organisation" do
+      let(:another_organisation) { create(:organisation) }
+      let(:activity) { create(:activity, organisation: another_organisation) }
+      it { is_expected.to forbid_action(:create) }
+    end
+  end
 
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to forbid_new_and_create_actions }
-      it { is_expected.to forbid_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
-
-      it "includes activity in resolved scope" do
-        resolved_scope = described_class::Scope.new(user, Activity.all).resolve
-        expect(resolved_scope).to include(activity)
-      end
+  describe "#update?" do
+    context "when the user belongs to the authoring organisation" do
+      let(:activity) { create(:activity, organisation: user.organisation) }
+      it { is_expected.to permit_action(:update) }
     end
 
-    context "when the activity is a project" do
-      let(:activity) { create(:project_activity) }
-
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to permit_new_and_create_actions }
-      it { is_expected.to permit_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
-
-      it "includes activity in resolved scope" do
-        resolved_scope = described_class::Scope.new(user, Activity.all).resolve
-        expect(resolved_scope).to include(activity)
-      end
+    context "when the user does NOT belong to the authoring organisation" do
+      let(:another_organisation) { create(:organisation) }
+      let(:activity) { create(:activity, organisation: another_organisation) }
+      it { is_expected.to forbid_action(:update) }
     end
+  end
+
+  describe "#destroy?" do
+    let(:activity) { create(:activity, organisation: user.organisation) }
+    it { is_expected.to forbid_action(:destroy) }
   end
 end

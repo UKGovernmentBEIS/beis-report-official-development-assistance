@@ -1,5 +1,9 @@
 class ActivityPolicy < ApplicationPolicy
   def show?
+    if record.level.blank?
+      return record.organisation == user.organisation
+    end
+
     record.fund? && beis_user? ||
       record.programme? ||
       record.project? ||
@@ -7,15 +11,11 @@ class ActivityPolicy < ApplicationPolicy
   end
 
   def create?
-    record.fund? && beis_user? ||
-      record.programme? && beis_user? ||
-      (record.project? || record.third_party_project?) && delivery_partner_user?
+    record.organisation == user.organisation
   end
 
   def update?
-    record.fund? && beis_user? ||
-      record.programme? && beis_user? ||
-      (record.project? || record.third_party_project?) && delivery_partner_user?
+    record.organisation == user.organisation
   end
 
   def redact_from_iati?
@@ -28,11 +28,7 @@ class ActivityPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user.administrator?
-        scope.all
-      else
-        scope.none
-      end
+      scope.all
     end
   end
 end

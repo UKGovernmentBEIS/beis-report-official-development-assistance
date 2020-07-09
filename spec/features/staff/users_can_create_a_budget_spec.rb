@@ -84,10 +84,9 @@ RSpec.describe "Users can create a budget" do
 
     context "on a programme level activity" do
       scenario "they can view but not create budgets" do
-        fund_activity = create(:fund_activity, organisation: user.organisation)
+        fund_activity = create(:fund_activity)
         programme_activity = create(:programme_activity,
           parent: fund_activity,
-          organisation: user.organisation,
           extending_organisation: user.organisation)
 
         visit organisation_path(user.organisation)

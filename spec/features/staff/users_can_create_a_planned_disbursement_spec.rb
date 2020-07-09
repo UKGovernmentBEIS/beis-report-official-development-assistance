@@ -131,7 +131,7 @@ RSpec.describe "Users can create a planned disbursement" do
     before { authenticate!(user: beis_user) }
 
     scenario "they cannot add a planned disbursement" do
-      project = create(:project_activity, organisation: beis_user.organisation)
+      project = create(:project_activity)
       visit organisation_path(beis_user.organisation)
       click_on project.title
 
