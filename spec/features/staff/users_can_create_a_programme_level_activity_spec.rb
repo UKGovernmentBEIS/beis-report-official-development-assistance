@@ -7,7 +7,7 @@ RSpec.feature "Users can create a programme activity" do
     end
 
     scenario "successfully create an activity" do
-      fund = create(:activity, level: :fund, organisation: user.organisation)
+      fund = create(:fund_activity, organisation: user.organisation)
 
       visit organisation_path(user.organisation)
       click_on fund.title

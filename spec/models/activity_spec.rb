@@ -18,19 +18,21 @@ RSpec.describe Activity, type: :model do
   describe "scopes" do
     describe ".funds" do
       it "only returns fund level activities" do
-        fund_activity = create(:activity, level: :fund)
-        _other_activiy = create(:activity, level: :programme)
+        fund_activity = create(:fund_activity)
+        other_activiy = create(:programme_activity)
 
-        expect(Activity.funds).to eq [fund_activity]
+        expect(Activity.funds).to include(fund_activity)
+        expect(Activity.funds).not_to include(other_activiy)
       end
     end
 
     describe ".programmes" do
       it "only returns programme level activities" do
-        programme_activity = create(:activity, level: :programme)
-        _other_activiy = create(:activity, level: :fund)
+        programme_activity = create(:programme_activity)
+        other_activiy = create(:fund_activity)
 
-        expect(Activity.programmes).to eq [programme_activity]
+        expect(Activity.programmes).to include(programme_activity)
+        expect(Activity.programmes).not_to include(other_activiy)
       end
     end
 
