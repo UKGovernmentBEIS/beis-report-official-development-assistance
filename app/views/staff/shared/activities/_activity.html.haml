@@ -6,6 +6,25 @@
       = activity_presenter.organisation.name
     %dd.govuk-summary-list__actions
 
+  .govuk-summary-list__row.level
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.level")
+    %dd.govuk-summary-list__value
+      = activity_presenter.level
+    %dd.govuk-summary-list__actions
+      - if policy(activity_presenter).update? && activity_presenter.level.blank?
+        = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :level), t("summary.label.activity.level").downcase)
+
+  - unless activity_presenter.fund?
+    .govuk-summary-list__row.parent
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.parent")
+      %dd.govuk-summary-list__value
+        = activity_presenter.parent_title
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && activity_presenter.level.present? && activity_presenter.parent.blank?
+          = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :parent), t("summary.label.activity.parent").downcase)
+
   .govuk-summary-list__row.identifier
     %dt.govuk-summary-list__key
       = t("summary.label.activity.identifier")

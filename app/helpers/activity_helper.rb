@@ -12,7 +12,7 @@ module ActivityHelper
   end
 
   def activity_back_path(current_user:, activity:)
-    if activity.programme? && current_user.service_owner?
+    if activity.parent.present? && activity.programme? && current_user.service_owner?
       return organisation_activity_path(activity.parent.organisation, activity.parent)
     end
 

@@ -51,7 +51,7 @@ feature "Organisation show page" do
       end
 
       scenario "they see a create fund button" do
-        expect(page).to have_button I18n.t("page_content.organisation.button.create_fund")
+        expect(page).to have_button I18n.t("page_content.organisation.button.create_activity")
       end
 
       scenario "they see a list of all programmes" do
@@ -155,7 +155,7 @@ feature "Organisation show page" do
       scenario "they do not see funds or the create fund button" do
         visit organisation_path(delivery_partner_user.organisation)
 
-        expect(page).not_to have_button I18n.t("page_content.organisation.button.create_fund")
+        expect(page).not_to have_button I18n.t("page_content.organisation.button.create_activity")
         expect(page).not_to have_content "Funds"
       end
     end
@@ -172,7 +172,7 @@ feature "Organisation show page" do
     end
 
     scenario "they do not see a create fund button" do
-      expect(page).not_to have_button I18n.t("page_content.organisation.button.create_fund")
+      expect(page).not_to have_button I18n.t("page_content.organisation.button.create_activity")
     end
 
     scenario "they see a list of all the programmes for which they are the extending organisation" do

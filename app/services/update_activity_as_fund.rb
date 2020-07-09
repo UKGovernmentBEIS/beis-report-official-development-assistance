@@ -1,17 +1,14 @@
-class CreateFundActivity
-  attr_accessor :organisation_id
+class UpdateActivityAsFund
+  attr_accessor :activity
 
-  def initialize(organisation_id:)
-    self.organisation_id = organisation_id
+  def initialize(activity:)
+    self.activity = activity
   end
 
   def call
-    activity = Activity.new
-    activity.organisation = Organisation.find(organisation_id)
-    activity.reporting_organisation = activity.organisation
     activity.extending_organisation = service_owner
 
-    activity.form_state = "blank"
+    activity.form_state = "parent"
     activity.level = :fund
 
     activity.funding_organisation_name = "HM Treasury"
@@ -22,7 +19,7 @@ class CreateFundActivity
     activity.accountable_organisation_reference = "GB-GOV-13"
     activity.accountable_organisation_type = "10"
 
-    activity.save!
+    activity.save(context: :parent_step)
     activity
   end
 

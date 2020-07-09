@@ -15,8 +15,8 @@
           = t("page_content.organisation.funds")
 
         - if policy(:fund).create?
-          = form_tag(organisation_funds_path(@organisation_presenter), method: "post") do
-            = submit_tag t("page_content.organisation.button.create_fund"), class: "govuk-button"
+          = form_tag(organisation_activities_path(@organisation_presenter), method: "post") do
+            = submit_tag t("page_content.organisation.button.create_activity"), class: "govuk-button"
 
         = render partial: "staff/shared/funds/table", locals: { funds: @fund_activities }
 
@@ -89,4 +89,3 @@
 
       - if policy(:organisation).edit?
         = link_to t("page_content.organisation.button.edit_details"), edit_organisation_path(@organisation_presenter), class: "govuk-button"
-
