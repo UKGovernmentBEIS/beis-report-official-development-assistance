@@ -195,6 +195,7 @@
 - Activity show content is show in tabs for financials and details
 - Refactor how we can ask activities for their parents
 - Ingest BA Newton fund data from IATI
+- add accessibility statement
 
 ## [unreleased]
 

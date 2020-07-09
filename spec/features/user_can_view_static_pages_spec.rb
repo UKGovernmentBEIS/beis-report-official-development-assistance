@@ -31,6 +31,21 @@ RSpec.feature "Users can view the static pages" do
 
       expect(page).to have_content I18n.t("cookie_statement.title")
     end
+
+    scenario "the footer contains a link to the accessibility statment" do
+      visit root_path
+
+      within("footer") do
+        expect(page).to have_link I18n.t("footer.link.accessibility_statement")
+      end
+    end
+
+    scenario "the linked accessibility statement page can be viewed" do
+      visit root_path
+      click_on I18n.t("footer.link.accessibility_statement")
+
+      expect(page).to have_content I18n.t("accessibility_statement.title")
+    end
   end
 
   context "when signed in" do
@@ -44,6 +59,10 @@ RSpec.feature "Users can view the static pages" do
       visit cookie_statement_path
 
       expect(page).to have_content I18n.t("cookie_statement.title")
+
+      visit accessibility_statement_path
+
+      expect(page).to have_content I18n.t("accessibility_statement.title")
     end
   end
 end

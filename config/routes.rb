@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
     get "privacy-policy" => "privacy_policy#index"
     get "cookie-statement" => "cookie_statement#index"
+    get "accessibility-statement" => "accessibility_statement#index"
   end
 
   scope module: "staff" do
