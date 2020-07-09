@@ -157,7 +157,7 @@ RSpec.feature "Users can edit an activity" do
       let(:user) { create(:delivery_partner_user) }
 
       scenario "the user should not be shown edit/add actions" do
-        activity = create(:programme_activity, :at_purpose_step, organisation: user.organisation)
+        activity = create(:programme_activity, :at_purpose_step)
 
         visit organisation_activity_path(activity.organisation, activity)
 
