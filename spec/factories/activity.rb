@@ -32,6 +32,7 @@ FactoryBot.define do
       accountable_organisation_reference { "GB-GOV-13" }
       accountable_organisation_type { "10" }
 
+      association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :beis_organisation
       association :reporting_organisation, factory: :beis_organisation
     end
@@ -46,6 +47,7 @@ FactoryBot.define do
       accountable_organisation_reference { "GB-GOV-13" }
       accountable_organisation_type { "10" }
 
+      association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :delivery_partner_organisation
       association :reporting_organisation, factory: :beis_organisation
     end
