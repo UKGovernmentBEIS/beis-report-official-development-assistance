@@ -70,10 +70,32 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when identifier is not unique" do
-      before(:each) { create(:activity, identifier: "GB-GOV-13") }
-      subject { build(:activity, identifier: "GB-GOV-13") }
-      it { should validate_uniqueness_of(:identifier) }
+    describe "#identifier" do
+      context "when an activity exists with the same identifier" do
+        context "shares the same parent" do
+          it "should be invalid" do
+            fund = create(:fund_activity)
+            create(:programme_activity, identifier: "GB-GOV-13-001", parent: fund)
+
+            new_programme_activity = build(:programme_activity, identifier: "GB-GOV-13-001", parent: fund)
+
+            expect(new_programme_activity).not_to be_valid
+          end
+        end
+
+        context "does NOT share the same parent" do
+          it "should be valid" do
+            create(:fund_activity) do |fund|
+              create(:programme_activity, identifier: "GB-GOV-13-001", parent: fund)
+            end
+
+            other_fund = create(:fund_activity)
+            new_programme_activity = build(:programme_activity, identifier: "GB-GOV-13-001", parent: other_fund)
+
+            expect(new_programme_activity).to be_valid
+          end
+        end
+      end
     end
 
     context "when title is blank" do
