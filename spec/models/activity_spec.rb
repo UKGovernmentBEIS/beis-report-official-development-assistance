@@ -65,9 +65,32 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when the level is blank" do
+      subject(:activity) { build(:activity, level: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:level_step)).to be_falsey
+      end
+    end
+
+    context "when the parent is blank" do
+      context "when the activity is a fund" do
+        subject(:activity) { build(:activity, :level_form_state, level: :fund) }
+        it "should be valid" do
+          expect(activity.valid?(:parent_step)).to be_truthy
+        end
+      end
+
+      context "when the activity is not a fund" do
+        subject(:activity) { build(:activity, :blank_form_state) }
+        it "should not be valid" do
+          expect(activity.valid?(:parent_step)).to be_falsey
+        end
+      end
+    end
+
     context "when identifier is blank" do
       subject(:activity) { build(:activity, identifier: nil) }
-      it "it should not be valid" do
+      it "should not be valid" do
         expect(activity.valid?(:identifier_step)).to be_falsey
       end
     end

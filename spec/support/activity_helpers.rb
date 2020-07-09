@@ -5,6 +5,14 @@ module ActivityHelpers
     expect(page).to have_content I18n.t("summary.label.activity.organisation")
     expect(page).to have_content activity_presenter.organisation.name
 
+    expect(page).to have_content I18n.t("summary.label.activity.level")
+    expect(page).to have_content activity_presenter.level
+
+    unless activity_presenter.fund?
+      expect(page).to have_content I18n.t("summary.label.activity.parent")
+      expect(page).to have_content activity_presenter.parent_title
+    end
+
     expect(page).to have_content I18n.t("summary.label.activity.identifier")
     expect(page).to have_content activity_presenter.identifier
 

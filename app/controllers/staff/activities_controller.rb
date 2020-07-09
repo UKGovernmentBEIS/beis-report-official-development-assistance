@@ -29,7 +29,13 @@ class Staff::ActivitiesController < Staff::BaseController
   end
 
   def create
-    raise NotImplementedError
+    @activity = CreateActivity.new(organisation_id: organisation_id).call
+
+    authorize @activity
+
+    @activity.create_activity key: "activity.create", owner: current_user
+
+    redirect_to activity_step_path(@activity.id, :blank)
   end
 
   private

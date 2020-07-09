@@ -6,6 +6,8 @@ class Activity < ApplicationRecord
   UNTIED_TIED_STATUS_CODE = "5"
 
   VALIDATION_STEPS = [
+    :level_step,
+    :parent_step,
     :identifier_step,
     :purpose_step,
     :sector_category_step,
@@ -20,6 +22,8 @@ class Activity < ApplicationRecord
 
   strip_attributes only: [:identifier]
 
+  validates :level, presence: true, on: :level_step
+  validates :parent, presence: true, on: :parent_step, unless: proc { |activity| activity.fund? }
   validates :identifier, presence: true, on: :identifier_step
   validates :title, :description, presence: true, on: :purpose_step
   validates :sector_category, presence: true, on: :sector_category_step

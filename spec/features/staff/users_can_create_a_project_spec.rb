@@ -14,9 +14,9 @@ RSpec.feature "Users can create a project" do
         click_on(programme.title)
         click_on I18n.t("tabs.activity.details")
 
-        click_on(I18n.t("page_content.organisation.button.create_project"))
+        click_on(I18n.t("page_content.organisation.button.create_activity"))
 
-        fill_in_activity_form(level: "project")
+        fill_in_activity_form(level: "project", parent: programme)
 
         expect(page).to have_content I18n.t("action.project.create.success")
         expect(programme.child_activities.count).to eq 1
@@ -35,9 +35,9 @@ RSpec.feature "Users can create a project" do
           click_on(programme.title)
           click_on I18n.t("tabs.activity.details")
 
-          click_on(I18n.t("page_content.organisation.button.create_project"))
+          click_on(I18n.t("page_content.organisation.button.create_activity"))
 
-          fill_in_activity_form(level: "project", identifier: "my-unique-identifier")
+          fill_in_activity_form(level: "project", identifier: "my-unique-identifier", parent: programme)
 
           project = Activity.find_by(identifier: "my-unique-identifier")
           auditable_events = PublicActivity::Activity.where(trackable_id: project.id)

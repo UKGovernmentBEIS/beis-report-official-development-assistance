@@ -18,13 +18,6 @@ Rails.application.routes.draw do
         get "financials" => "activity_financials#show"
         get "details" => "activity_details#show"
       end
-      resources :funds, only: [:create] do
-        resources :programmes, only: [:create] do
-          resources :projects, only: [:create] do
-            resources :third_party_projects, only: [:create]
-          end
-        end
-      end
     end
 
     concern :transactionable do

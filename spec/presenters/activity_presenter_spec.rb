@@ -217,14 +217,6 @@ RSpec.describe ActivityPresenter do
     end
   end
 
-  describe "#level" do
-    it "returns the Activity level without any underscores" do
-      activity = build(:third_party_project_activity)
-
-      expect(described_class.new(activity).level).to eql("third-party project")
-    end
-  end
-
   describe "#parent_title" do
     context "when the activity has a parent" do
       it "returns the title of the parent" do
@@ -238,6 +230,36 @@ RSpec.describe ActivityPresenter do
       it "returns nil" do
         fund = create(:fund_activity, title: "No parent")
         expect(described_class.new(fund).parent_title).to eql(nil)
+      end
+    end
+  end
+
+  describe "#level" do
+    context "when the activity is a fund" do
+      it "returns the titelized version of the string" do
+        fund = create(:fund_activity)
+        expect(described_class.new(fund).level).to eql("Fund")
+      end
+    end
+
+    context "when the activity is a programme" do
+      it "returns the titelized version of the string" do
+        programme = create(:programme_activity)
+        expect(described_class.new(programme).level).to eql("Programme")
+      end
+    end
+
+    context "when the activity is a project" do
+      it "returns the titelized version of the string" do
+        project = create(:project_activity)
+        expect(described_class.new(project).level).to eql("Project")
+      end
+    end
+
+    context "when the activity is a third_party_project" do
+      it "returns the titelized version of the string" do
+        third_party_project = create(:third_party_project_activity)
+        expect(described_class.new(third_party_project).level).to eql("Third-party project")
       end
     end
   end

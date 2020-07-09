@@ -74,11 +74,6 @@ class ActivityPresenter < SimpleDelegator
 
   def level
     return if super.blank?
-    case super
-    when "fund" then "Fund"
-    when "programme" then "Programme"
-    when "project" then "Project"
-    when "third_party_project" then "Third-party project"
-    end
+    I18n.t("page_content.activity.level.#{super}").capitalize
   end
 end

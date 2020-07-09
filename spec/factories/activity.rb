@@ -145,4 +145,64 @@ FactoryBot.define do
   trait :nil_form_state do
     form_state { nil }
   end
+
+  trait :blank_form_state do
+    form_state { "blank" }
+    title { nil }
+    description { nil }
+    sector { nil }
+    status { nil }
+    planned_start_date { nil }
+    planned_end_date { nil }
+    actual_start_date { nil }
+    actual_end_date { nil }
+    geography { nil }
+    recipient_region { nil }
+    recipient_country { nil }
+    flow { nil }
+    aid_type { nil }
+    extending_organisation_id { nil }
+    parent { nil }
+    level { nil }
+  end
+
+  trait :level_form_state do
+    form_state { "level" }
+    level { nil }
+    title { nil }
+    description { nil }
+    sector { nil }
+    status { nil }
+    planned_start_date { nil }
+    planned_end_date { nil }
+    actual_start_date { nil }
+    actual_end_date { nil }
+    geography { nil }
+    recipient_region { nil }
+    recipient_country { nil }
+    flow { nil }
+    aid_type { nil }
+    extending_organisation_id { nil }
+    parent { nil }
+  end
+
+  trait :parent_form_state do
+    form_state { "parent" }
+    level { "programme" }
+    title { nil }
+    description { nil }
+    sector { nil }
+    status { nil }
+    planned_start_date { nil }
+    planned_end_date { nil }
+    actual_start_date { nil }
+    actual_end_date { nil }
+    geography { nil }
+    recipient_region { nil }
+    recipient_country { nil }
+    flow { nil }
+    aid_type { nil }
+    extending_organisation_id { nil }
+    parent { nil }
+  end
 end
