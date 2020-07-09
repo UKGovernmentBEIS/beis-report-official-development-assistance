@@ -249,8 +249,9 @@
 - Scope the total transaction value for an Activity to a Report and that Report's date
   range, and call the result `actual_total_for_report_financial_quarter`. Add this
   value to the Report CSV.
-- Calculate the total of all Planned Disbursements in a Report's date range as 
+- Calculate the total of all Planned Disbursements in a Report's date range as
   `forecasted_total_for_report_financial_quarter` and output the value to the Report CSV
+- Ingest RAEng Newton fund data from IATI
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...HEAD
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13
