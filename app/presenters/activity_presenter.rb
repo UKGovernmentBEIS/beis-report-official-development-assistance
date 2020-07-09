@@ -67,13 +67,18 @@ class ActivityPresenter < SimpleDelegator
     title
   end
 
-  def level
-    return if super.blank?
-    I18n.t("page_content.activity.level.#{super}")
-  end
-
   def parent_title
     return if parent.blank?
     parent.title
+  end
+
+  def level
+    return if super.blank?
+    case super
+    when "fund" then "Fund"
+    when "programme" then "Programme"
+    when "project" then "Project"
+    when "third_party_project" then "Third-party project"
+    end
   end
 end
