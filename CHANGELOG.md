@@ -201,6 +201,7 @@
 - Activity identifiers are unique among siblings
 - add accessibility statement
 - Move budgets to the top of the programme activity financials tab
+- Activity XML includes only recipient-country OR recipient-region, not both
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...HEAD
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11

@@ -89,12 +89,11 @@ RSpec.feature "Users can view an activity as XML" do
         }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
-        it "contains the recipient region code and recipient country code" do
+        it "contains only the recipient country code" do
           visit organisation_activity_path(organisation, activity, format: :xml)
 
           expect(xml.at("iati-activity/recipient-country/@code").text).to eq(activity.recipient_country)
-          expect(xml.at("iati-activity/recipient-region/@code").text).to eq(activity.recipient_region)
-          expect(xml.at("iati-activity/recipient-region/@vocabulary").text).to eq("1")
+          expect(xml.at("iati-activity/recipient-region")).to be_nil
         end
       end
 
