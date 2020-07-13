@@ -204,6 +204,7 @@
 - Activity XML includes only recipient-country OR recipient-region, not both
 - Activity creation journey changed to ask for a level and parent
 - Add an activities page and navigation
+- Activities can be filtered to an organisation
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...HEAD
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11

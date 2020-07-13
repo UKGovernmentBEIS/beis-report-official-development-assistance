@@ -109,6 +109,11 @@ en:
           project: Project
           third_party_project: Third-party project
         view_activity: View
+  filters:
+    activity:
+      title: Filter activities
+      organisation: Organisation
+      submit: Apply filter
   page_content:
     activities:
       button:
