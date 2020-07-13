@@ -41,10 +41,7 @@ en:
     organisation:
       button:
         choose_extending_organisation: Choose extending organisation
-        create_fund: Create fund
-        create_programme: Create programme
-        create_project: Create project
-        create_third_party_project: Create third-party project
+        create_activity: Create activity
         edit: Edit organisation
         edit_details: Edit details
       details: Organisation details

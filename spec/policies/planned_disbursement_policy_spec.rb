@@ -1,129 +1,82 @@
 require "rails_helper"
 
 RSpec.describe PlannedDisbursementPolicy do
-  context "when the user is a beis user" do
-    let(:beis_user) { create(:beis_user) }
-    let(:delivery_partner_user) { create(:delivery_partner_user) }
+  let(:user) { create(:beis_user) }
+  let(:activity) { create(:project_activity, organisation: user.organisation) }
+  let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity) }
 
-    context "when the activity is a fund" do
-      let(:activity) { create(:fund_activity, organisation: beis_user.organisation) }
-      let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity) }
-      subject { described_class.new(beis_user, planned_disbursement) }
+  subject { described_class.new(user, planned_disbursement) }
 
-      it { is_expected.to permit_action(:index) }
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to forbid_new_and_create_actions }
-      it { is_expected.to forbid_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
+  describe "#create?" do
+    context "when the parent is a fund" do
+      let(:activity) { create(:fund_activity, organisation: user.organisation) }
+      it { is_expected.to forbid_action(:create) }
     end
 
-    context "when the activity is a programme" do
-      let(:activity) { create(:programme_activity, organisation: beis_user.organisation) }
-      let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity) }
-      subject { described_class.new(beis_user, planned_disbursement) }
-
-      it { is_expected.to permit_action(:index) }
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to forbid_new_and_create_actions }
-      it { is_expected.to forbid_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
+    context "when the parent is a programme" do
+      let(:activity) { create(:programme_activity, organisation: user.organisation) }
+      it { is_expected.to forbid_action(:create) }
     end
 
-    context "when the activity is a project" do
-      let(:activity) { create(:project_activity, organisation: delivery_partner_user.organisation) }
-      let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity) }
-      subject { described_class.new(beis_user, planned_disbursement) }
-
-      it { is_expected.to permit_action(:index) }
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to forbid_new_and_create_actions }
-      it { is_expected.to forbid_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
+    context "when the parent is a project" do
+      let(:activity) { create(:project_activity, organisation: user.organisation) }
+      it { is_expected.to permit_action(:create) }
     end
 
-    context "when the activity is a third-party project" do
-      let(:activity) { create(:third_party_project_activity, organisation: delivery_partner_user.organisation) }
-      let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity) }
-      subject { described_class.new(beis_user, planned_disbursement) }
-
-      it { is_expected.to permit_action(:index) }
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to forbid_new_and_create_actions }
-      it { is_expected.to forbid_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
+    context "when the parent is a third_party_project" do
+      let(:activity) { create(:third_party_project_activity, organisation: user.organisation) }
+      it { is_expected.to permit_action(:create) }
     end
 
-    it "includes all planned_disbursementis in the resolved scope" do
-      activity = create(:activity, organisation: beis_user.organisation)
-      planned_disbursement = create(:planned_disbursement, parent_activity: activity)
-      other_planned_disbursement = create(:planned_disbursement, parent_activity: create(:activity))
-      resolved_scope = described_class::Scope.new(beis_user, PlannedDisbursement.all).resolve
+    context "when the user belongs to the authoring organisation" do
+      let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity) }
+      it { is_expected.to permit_action(:create) }
+    end
 
-      expect(resolved_scope).to include(planned_disbursement)
-      expect(resolved_scope).to include(other_planned_disbursement)
+    context "when the user does NOT belong to the authoring organisation" do
+      let(:another_organisation) { create(:organisation) }
+      let(:activity) { create(:activity, organisation: another_organisation) }
+      let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity) }
+      it { is_expected.to forbid_action(:create) }
     end
   end
 
-  context "when the user is a delivery partner user" do
-    let(:delivery_partner_user) { create(:delivery_partner_user) }
-    let(:beis_user) { create(:beis_user) }
+  describe "#update?" do
+    context "when the parent is a fund" do
+      let(:activity) { create(:fund_activity, organisation: user.organisation) }
+      it { is_expected.to forbid_action(:update) }
+    end
 
-    context "when the activity is a fund" do
-      let(:activity) { create(:fund_activity, organisation: beis_user.organisation) }
+    context "when the parent is a programme" do
+      let(:activity) { create(:programme_activity, organisation: user.organisation) }
+      it { is_expected.to forbid_action(:update) }
+    end
+
+    context "when the parent is a project" do
+      let(:activity) { create(:project_activity, organisation: user.organisation) }
+      it { is_expected.to permit_action(:update) }
+    end
+
+    context "when the parent is a third_party_project" do
+      let(:activity) { create(:third_party_project_activity, organisation: user.organisation) }
+      it { is_expected.to permit_action(:update) }
+    end
+
+    context "when the user belongs to the authoring organisation" do
       let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity) }
-      subject { described_class.new(delivery_partner_user, planned_disbursement) }
-
-      it { is_expected.to permit_action(:index) }
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to forbid_new_and_create_actions }
-      it { is_expected.to forbid_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
+      it { is_expected.to permit_action(:update) }
     end
 
-    context "when the activity is a programme" do
-      let(:activity) { create(:programme_activity, organisation: beis_user.organisation) }
+    context "when the user does NOT belong to the authoring organisation" do
+      let(:another_organisation) { create(:organisation) }
+      let(:activity) { create(:activity, organisation: another_organisation) }
       let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity) }
-      subject { described_class.new(delivery_partner_user, planned_disbursement) }
-
-      it { is_expected.to permit_action(:index) }
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to forbid_new_and_create_actions }
-      it { is_expected.to forbid_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
+      it { is_expected.to forbid_action(:update) }
     end
+  end
 
-    context "when the activity is a project" do
-      let(:activity) { create(:project_activity, organisation: delivery_partner_user.organisation) }
-      let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity) }
-      subject { described_class.new(delivery_partner_user, planned_disbursement) }
-
-      it { is_expected.to permit_action(:index) }
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to permit_new_and_create_actions }
-      it { is_expected.to permit_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
-    end
-
-    context "when the activity is a third party project" do
-      let(:activity) { create(:third_party_project_activity, organisation: delivery_partner_user.organisation) }
-      let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity) }
-      subject { described_class.new(delivery_partner_user, planned_disbursement) }
-
-      it { is_expected.to permit_action(:index) }
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to permit_new_and_create_actions }
-      it { is_expected.to permit_edit_and_update_actions }
-      it { is_expected.to forbid_action(:destroy) }
-    end
-
-    it "includes only planned_disbursements that belong to the user's organisation in resolved scope" do
-      activity = create(:activity, organisation: delivery_partner_user.organisation)
-      planned_disbursement = create(:planned_disbursement, parent_activity: activity)
-      other_planned_disbursement = create(:planned_disbursement, parent_activity: create(:activity))
-      resolved_scope = described_class::Scope.new(delivery_partner_user, PlannedDisbursement.all).resolve
-
-      expect(resolved_scope).to include(planned_disbursement)
-      expect(resolved_scope).to_not include(other_planned_disbursement)
-    end
+  describe "#destroy?" do
+    let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity) }
+    it { is_expected.to forbid_action(:destroy) }
   end
 end

@@ -23,15 +23,15 @@ RSpec.feature "Users can view fund level activities" do
     end
 
     scenario "can view and create programme level activities" do
-      fund_activity = create(:activity, level: :fund, organisation: user.organisation)
-      programme_activity = create(:activity, level: :programme)
+      fund_activity = create(:fund_activity, organisation: user.organisation)
+      programme_activity = create(:programme_activity)
       fund_activity.child_activities << programme_activity
       activity_presenter = ActivityPresenter.new(programme_activity)
 
       visit organisation_activity_details_path(fund_activity.organisation, fund_activity)
 
       expect(page).to have_link activity_presenter.display_title
-      expect(page).to have_button I18n.t("page_content.organisation.button.create_programme")
+      expect(page).to have_button I18n.t("page_content.organisation.button.create_activity")
     end
 
     context "when the activity is partially complete and doesn't have a title" do

@@ -12,9 +12,9 @@ RSpec.feature "Users can create a project" do
         click_on(project.title)
         click_on I18n.t("tabs.activity.details")
 
-        click_on(I18n.t("page_content.organisation.button.create_third_party_project"))
+        click_on(I18n.t("page_content.organisation.button.create_activity"))
 
-        fill_in_activity_form(level: "third_party_project")
+        fill_in_activity_form(level: "third_party_project", parent: project)
 
         expect(page).to have_content I18n.t("action.third_party_project.create.success")
         expect(project.child_activities.count).to eq 1
@@ -33,9 +33,9 @@ RSpec.feature "Users can create a project" do
           click_on(project.title)
           click_on I18n.t("tabs.activity.details")
 
-          click_on(I18n.t("page_content.organisation.button.create_third_party_project"))
+          click_on(I18n.t("page_content.organisation.button.create_activity"))
 
-          fill_in_activity_form(level: "third_party_project", identifier: "my-unique-identifier")
+          fill_in_activity_form(level: "third_party_project", identifier: "my-unique-identifier", parent: project)
 
           third_party_project = Activity.find_by(identifier: "my-unique-identifier")
           auditable_events = PublicActivity::Activity.where(trackable_id: third_party_project.id)

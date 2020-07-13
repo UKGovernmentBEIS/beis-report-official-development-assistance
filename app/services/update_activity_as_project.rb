@@ -1,22 +1,22 @@
-class CreateProjectActivity
-  attr_accessor :user, :organisation_id, :programme_id
+class UpdateActivityAsProject
+  attr_accessor :activity, :parent_id
 
-  def initialize(user:, organisation_id:, programme_id:)
-    self.organisation_id = organisation_id
-    self.programme_id = programme_id
-    self.user = user
+  def initialize(activity:, parent_id:)
+    self.activity = activity
+    self.parent_id = parent_id
   end
 
   def call
-    activity = Activity.new
-    activity.organisation = creating_organisation
     activity.reporting_organisation = reporting_organisation
-    activity.extending_organisation = creating_organisation
+    activity.extending_organisation = activity.organisation
 
-    programme = Activity.find(programme_id)
-    programme.child_activities << activity
+    activity.parent = begin
+                        Activity.programme.find(parent_id)
+                      rescue ActiveRecord::RecordNotFound
+                        nil
+                      end
 
-    activity.form_state = "blank"
+    activity.form_state = "parent"
     activity.level = :project
 
     activity.funding_organisation_name = service_owner.name
@@ -27,7 +27,7 @@ class CreateProjectActivity
     activity.accountable_organisation_reference = service_owner.iati_reference
     activity.accountable_organisation_type = service_owner.organisation_type
 
-    activity.save!
+    activity.save(context: :parent_step)
     activity
   end
 
@@ -37,11 +37,7 @@ class CreateProjectActivity
     Organisation.find_by_service_owner(true)
   end
 
-  def creating_organisation
-    Organisation.find(organisation_id)
-  end
-
   def reporting_organisation
-    creating_organisation.is_government? ? service_owner : creating_organisation
+    activity.organisation.is_government? ? service_owner : activity.organisation
   end
 end

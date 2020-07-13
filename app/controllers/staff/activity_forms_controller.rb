@@ -5,6 +5,8 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   FORM_STEPS = [
     :blank,
+    :level,
+    :parent,
     :identifier,
     :purpose,
     :sector_category,
@@ -24,8 +26,9 @@ class Staff::ActivityFormsController < Staff::BaseController
     @activity = Activity.find(params[:activity_id])
     @page_title = t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}"))
     authorize @activity
-
     case step
+    when :parent
+      skip_step if @activity.fund?
     when :blank
       skip_step
     when :region
@@ -45,6 +48,17 @@ class Staff::ActivityFormsController < Staff::BaseController
     update_activity_dates
     update_activity_attributes_except_dates
     record_auditable_activity
+
+    @activity.update(level: level) if step == :level
+
+    UpdateActivityAsFund.new(activity: @activity).call if step == :level && @activity.fund?
+    if step == :parent
+      case @activity.level.to_sym
+      when :programme then UpdateActivityAsProgramme.new(activity: @activity, parent_id: parent_id).call
+      when :project then UpdateActivityAsProject.new(activity: @activity, parent_id: parent_id).call
+      when :third_party_project then UpdateActivityAsThirdPartyProject.new(activity: @activity, parent_id: parent_id).call
+      end
+    end
 
     if @activity.form_steps_completed?
       reset_geography_dependent_answers if step == :geography
@@ -95,6 +109,10 @@ class Staff::ActivityFormsController < Staff::BaseController
       :aid_type)
   end
 
+  def level
+    params.require(:activity).permit(:level)["level"]
+  end
+
   def finish_wizard_path
     flash[:notice] ||= I18n.t("action.#{@activity.level}.create.success")
     @activity.update(form_state: "complete")
@@ -128,5 +146,13 @@ class Staff::ActivityFormsController < Staff::BaseController
   def country_to_region_mapping
     yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.yml"))
     yaml["data"]
+  end
+
+  def parent_params
+    params.require(:activity).permit(:parent)
+  end
+
+  def parent_id
+    parent_params["parent"]
   end
 end

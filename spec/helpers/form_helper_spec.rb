@@ -26,4 +26,67 @@ RSpec.describe FormHelper, type: :helper do
       expect(budget_types[0].description).to eq I18n.t("form.label.planned_disbursement.planned_disbursement_type_options.original.description")
     end
   end
+
+  describe "#scoped_parent_activities" do
+    context "when the activity is a fund" do
+      it "returns an empty result" do
+        activity = build(:fund_activity)
+        result = helper.scoped_parent_activities(activity: activity, user: double(User))
+        expect(result).to eq(Activity.none)
+      end
+    end
+
+    context "when the activity is a programme" do
+      it "tells FindFundActivities to return the fund activities" do
+        activity = build(:programme_activity)
+        allow_any_instance_of(FindFundActivities).to receive(:call)
+        expect_any_instance_of(FindFundActivities).to receive(:call)
+        helper.scoped_parent_activities(activity: activity, user: double(User))
+      end
+    end
+
+    context "when the activity is a project" do
+      it "tells FindProgrammeActivities to return the programme activities" do
+        activity = build(:project_activity)
+        allow_any_instance_of(FindProgrammeActivities).to receive(:call)
+        expect_any_instance_of(FindProgrammeActivities).to receive(:call)
+        helper.scoped_parent_activities(activity: activity, user: double(User))
+      end
+    end
+
+    context "when the activity is a third-party project" do
+      it "tells FindProjectActivities to return the project activities" do
+        activity = build(:third_party_project_activity)
+        allow_any_instance_of(FindProjectActivities).to receive(:call)
+        expect_any_instance_of(FindProjectActivities).to receive(:call)
+        helper.scoped_parent_activities(activity: activity, user: double(User))
+      end
+    end
+  end
+
+  describe "#create_activity_level_options" do
+    context "when the user is a BEIS user" do
+      it "tells Pundit to return only the levels of activity a user can create or update" do
+        user = create(:beis_user)
+        result = helper.create_activity_level_options(user: user)
+        expect(result).to eq([
+          OpenStruct.new(level: "fund", description: "Fund"),
+          OpenStruct.new(level: "programme", description: "Programme"),
+        ])
+      end
+    end
+
+    context "when the user is a DP user" do
+      context "when the user is a BEIS user" do
+        it "tells Pundit to return only the levels of activity a user can create or update" do
+          user = create(:delivery_partner_user)
+          result = helper.create_activity_level_options(user: user)
+          expect(result).to eq([
+            OpenStruct.new(level: "project", description: "Project"),
+            OpenStruct.new(level: "third_party_project", description: "Third-party project"),
+          ])
+        end
+      end
+    end
+  end
 end

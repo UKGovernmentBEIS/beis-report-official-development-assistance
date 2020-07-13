@@ -3,5 +3,6 @@
     %h2.govuk-heading-m
       = t("page_content.activity.projects")
     - if policy(:project).create?
-      = button_to t("page_content.organisation.button.create_project"), organisation_fund_programme_projects_path(current_user.organisation, activity.parent, activity), class: "govuk-button"
+      = form_tag(organisation_activities_path(current_user.organisation), method: "post") do
+        = submit_tag t("page_content.organisation.button.create_activity"), class: "govuk-button"
     = render partial: '/staff/shared/projects/table', locals: { projects: activities }

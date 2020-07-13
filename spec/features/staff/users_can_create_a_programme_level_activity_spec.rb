@@ -6,15 +6,13 @@ RSpec.feature "Users can create a programme activity" do
       authenticate!(user: user)
     end
 
-    scenario "successfully create an activity" do
-      fund = create(:activity, level: :fund, organisation: user.organisation)
+    scenario "successfully creates a programme" do
+      fund = create(:fund_activity, organisation: user.organisation)
 
       visit organisation_path(user.organisation)
-      click_on fund.title
-      click_on I18n.t("tabs.activity.details")
-      click_on(I18n.t("page_content.organisation.button.create_programme"))
+      click_on(I18n.t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(level: "programme")
+      fill_in_activity_form(level: "programme", parent: fund)
 
       expect(page).to have_content I18n.t("action.programme.create.success")
     end
@@ -26,9 +24,9 @@ RSpec.feature "Users can create a programme activity" do
       visit organisation_path(user.organisation)
       click_on fund.title
       click_on I18n.t("tabs.activity.details")
-      click_on(I18n.t("page_content.organisation.button.create_programme"))
+      click_on(I18n.t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "programme")
+      fill_in_activity_form(identifier: identifier, level: "programme", parent: fund)
 
       activity = Activity.find_by(identifier: identifier)
       expect(activity.funding_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
@@ -43,9 +41,9 @@ RSpec.feature "Users can create a programme activity" do
       visit organisation_path(user.organisation)
       click_on fund.title
       click_on I18n.t("tabs.activity.details")
-      click_on(I18n.t("page_content.organisation.button.create_programme"))
+      click_on(I18n.t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "programme")
+      fill_in_activity_form(identifier: identifier, level: "programme", parent: fund)
 
       activity = Activity.find_by(identifier: identifier)
       expect(activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
@@ -60,9 +58,9 @@ RSpec.feature "Users can create a programme activity" do
         visit organisation_path(user.organisation)
         click_on fund.title
         click_on I18n.t("tabs.activity.details")
-        click_on(I18n.t("page_content.organisation.button.create_programme"))
+        click_on(I18n.t("page_content.organisation.button.create_activity"))
 
-        fill_in_activity_form(identifier: "my-unique-identifier", level: "programme")
+        fill_in_activity_form(identifier: "my-unique-identifier", level: "programme", parent: fund)
 
         programme = Activity.find_by(identifier: "my-unique-identifier")
         auditable_events = PublicActivity::Activity.where(trackable_id: programme.id)
