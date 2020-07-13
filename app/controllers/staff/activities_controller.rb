@@ -51,17 +51,12 @@ class Staff::ActivitiesController < Staff::BaseController
 
     return current_user.organisation.id unless Organisation.exists?(organisation_id)
     return current_user.organisation.id if organisation_id.blank?
-    return current_user.organisation.id if requested_organisation_is_not_current_users?(organisation_id) && current_user_is_not_service_owner?
+    return current_user.organisation.id if requested_organisation_is_not_current_users?(organisation_id) && current_user.delivery_partner?
     organisation_id
   end
 
   def requested_organisation_is_not_current_users?(requested_organisation_id)
     requested_organisation_id != current_user.organisation.id
-  end
-
-  def current_user_is_not_service_owner?
-    return false if current_user.organisation.service_owner?
-    true
   end
 
   def fund_id
