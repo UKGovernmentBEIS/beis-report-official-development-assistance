@@ -1,22 +1,22 @@
-class CreateThirdPartyProjectActivity
-  attr_accessor :user, :organisation_id, :project_id
+class UpdateActivityAsThirdPartyProject
+  attr_accessor :activity, :parent_id
 
-  def initialize(user:, organisation_id:, project_id:)
-    self.organisation_id = organisation_id
-    self.project_id = project_id
-    self.user = user
+  def initialize(activity:, parent_id:)
+    self.activity = activity
+    self.parent_id = parent_id
   end
 
   def call
-    activity = Activity.new
-    activity.organisation = creating_organisation
     activity.reporting_organisation = reporting_organisation
-    activity.extending_organisation = creating_organisation
+    activity.extending_organisation = activity.organisation
 
-    project = Activity.find(project_id)
-    project.child_activities << activity
+    activity.parent = begin
+                        Activity.project.find(parent_id)
+                      rescue ActiveRecord::RecordNotFound
+                        nil
+                      end
 
-    activity.form_state = "blank"
+    activity.form_state = "parent"
     activity.level = :third_party_project
 
     activity.funding_organisation_name = service_owner.name
@@ -27,7 +27,7 @@ class CreateThirdPartyProjectActivity
     activity.accountable_organisation_reference = service_owner.iati_reference
     activity.accountable_organisation_type = service_owner.organisation_type
 
-    activity.save(validate: false)
+    activity.save(context: :parent_step)
     activity
   end
 
@@ -37,11 +37,7 @@ class CreateThirdPartyProjectActivity
     Organisation.find_by_service_owner(true)
   end
 
-  def creating_organisation
-    Organisation.find(organisation_id)
-  end
-
   def reporting_organisation
-    creating_organisation.is_government? ? service_owner : creating_organisation
+    activity.organisation.is_government? ? service_owner : activity.organisation
   end
 end

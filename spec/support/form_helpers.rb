@@ -22,8 +22,21 @@ module FormHelpers
     recipient_region: "Developing countries, unspecified",
     flow: "ODA",
     aid_type: "A01",
-    level:
+    level:,
+    parent: nil
   )
+
+    expect(page).to have_content I18n.t("form.legend.activity.level")
+    expect(page).to have_content I18n.t("form.hint.activity.level")
+    choose I18n.t("page_content.activity.level.#{level}").capitalize
+    click_button I18n.t("form.button.activity.submit")
+
+    if parent.present?
+      expect(page).to have_content I18n.t("form.legend.activity.parent", parent_level: parent.level, level: I18n.t("page_content.activity.level.#{level}"))
+      expect(page).to have_content I18n.t("form.hint.activity.parent", parent_level: parent.level, level: I18n.t("page_content.activity.level.#{level}"))
+      choose parent.title
+      click_button I18n.t("form.button.activity.submit")
+    end
 
     expect(page).to have_content I18n.t("form.label.activity.identifier")
     expect(page).to have_content I18n.t("form.hint.activity.identifier")

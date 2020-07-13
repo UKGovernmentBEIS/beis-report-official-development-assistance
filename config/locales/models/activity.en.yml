@@ -36,6 +36,8 @@ en:
         actual_end_date: Actual end date (optional)
         actual_start_date: Actual start date (optional)
         geography: Will the benefitting recipient be a region or country?
+        level: Hierarchy level
+        parent: Select the parent activity
         planned_end_date: Planned end date
         planned_start_date: Planned start date
         purpose: What is the purpose of the %{level}?
@@ -53,6 +55,8 @@ en:
         planned_start_date: For example, 27 3 2020
         sector_category: What area of the economy or society is your %{level} helping? For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
         title: A short title that explains the purpose of the %{level}
+        level: Which level does this activity represent in the hierarchy?
+        parent: Which existing %{parent_level} will this new %{level} belong to?
       organisation:
         hint: The organisation this activity is associated with
   summary:
@@ -71,7 +75,9 @@ en:
         flow: Flow
         geography: Benefitting recipient geography
         identifier: Identifier
+        level: Hierarchy
         organisation: Organisation
+        parent: Belongs to
         planned_disbursements: Planned disbursements
         planned_end_date: Planned end date
         planned_start_date: Planned start date
@@ -139,6 +145,8 @@ en:
         flow: Flow
         geography: Will the benefitting recipient be a region or country?
         identifier: Enter your unique identifier
+        level: Hierarchy level
+        parent: Select the parent
         purpose: What is the purpose of the %{level}?
         region: What region will benefit from this activity?
         sector: Which %{sector_category} sector is the focus area for this %{level}

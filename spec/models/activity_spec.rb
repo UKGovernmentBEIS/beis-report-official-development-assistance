@@ -18,19 +18,21 @@ RSpec.describe Activity, type: :model do
   describe "scopes" do
     describe ".funds" do
       it "only returns fund level activities" do
-        fund_activity = create(:activity, level: :fund)
-        _other_activiy = create(:activity, level: :programme)
+        fund_activity = create(:fund_activity)
+        other_activiy = create(:programme_activity)
 
-        expect(Activity.funds).to eq [fund_activity]
+        expect(Activity.funds).to include(fund_activity)
+        expect(Activity.funds).not_to include(other_activiy)
       end
     end
 
     describe ".programmes" do
       it "only returns programme level activities" do
-        programme_activity = create(:activity, level: :programme)
-        _other_activiy = create(:activity, level: :fund)
+        programme_activity = create(:programme_activity)
+        other_activiy = create(:fund_activity)
 
-        expect(Activity.programmes).to eq [programme_activity]
+        expect(Activity.programmes).to include(programme_activity)
+        expect(Activity.programmes).not_to include(other_activiy)
       end
     end
 
@@ -63,9 +65,32 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when the level is blank" do
+      subject(:activity) { build(:activity, level: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:level_step)).to be_falsey
+      end
+    end
+
+    context "when the parent is blank" do
+      context "when the activity is a fund" do
+        subject(:activity) { build(:activity, :level_form_state, level: :fund) }
+        it "should be valid" do
+          expect(activity.valid?(:parent_step)).to be_truthy
+        end
+      end
+
+      context "when the activity is not a fund" do
+        subject(:activity) { build(:activity, :blank_form_state) }
+        it "should not be valid" do
+          expect(activity.valid?(:parent_step)).to be_falsey
+        end
+      end
+    end
+
     context "when identifier is blank" do
       subject(:activity) { build(:activity, identifier: nil) }
-      it "it should not be valid" do
+      it "should not be valid" do
         expect(activity.valid?(:identifier_step)).to be_falsey
       end
     end
@@ -454,6 +479,36 @@ RSpec.describe Activity, type: :model do
           third_party_project = build(:third_party_project_activity, organisation: non_government_delivery_partner)
           expect(third_party_project.providing_organisation).to eql non_government_delivery_partner
         end
+      end
+    end
+  end
+
+  describe "#parent_level" do
+    context "when the level is a fund" do
+      it "returns nil" do
+        result = described_class.new(level: :fund).parent_level
+        expect(result).to eql(nil)
+      end
+    end
+
+    context "when the level is a programme" do
+      it "returns a string for fund" do
+        result = described_class.new(level: :programme).parent_level
+        expect(result).to eql("fund")
+      end
+    end
+
+    context "when the level is a project" do
+      it "returns a string for programme" do
+        result = described_class.new(level: :project).parent_level
+        expect(result).to eql("programme")
+      end
+    end
+
+    context "when the level is a third-party project" do
+      it "returns a string for project" do
+        result = described_class.new(level: :third_party_project).parent_level
+        expect(result).to eql("project")
       end
     end
   end

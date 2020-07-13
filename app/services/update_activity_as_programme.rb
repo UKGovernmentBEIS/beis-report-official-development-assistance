@@ -1,20 +1,21 @@
-class CreateProgrammeActivity
-  attr_accessor :organisation_id, :fund_id
+class UpdateActivityAsProgramme
+  attr_accessor :activity, :parent_id
 
-  def initialize(organisation_id:, fund_id:)
-    self.organisation_id = organisation_id
-    self.fund_id = fund_id
+  def initialize(activity:, parent_id:)
+    self.activity = activity
+    self.parent_id = parent_id
   end
 
   def call
-    activity = Activity.new
-    activity.organisation = Organisation.find(organisation_id)
-    activity.reporting_organisation = activity.organisation
+    activity.extending_organisation = service_owner
 
-    fund = Activity.find(fund_id)
-    fund.child_activities << activity
+    activity.parent = begin
+                        Activity.fund.find(parent_id)
+                      rescue ActiveRecord::RecordNotFound
+                        nil
+                      end
 
-    activity.form_state = "blank"
+    activity.form_state = "parent"
     activity.level = :programme
 
     activity.funding_organisation_name = service_owner.name
@@ -25,7 +26,7 @@ class CreateProgrammeActivity
     activity.accountable_organisation_reference = service_owner.iati_reference
     activity.accountable_organisation_type = service_owner.organisation_type
 
-    activity.save!
+    activity.save(context: :parent_step)
     activity
   end
 

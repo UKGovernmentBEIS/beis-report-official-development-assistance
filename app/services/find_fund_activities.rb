@@ -1,15 +1,16 @@
 class FindFundActivities
   include Pundit
 
-  attr_accessor :organisation, :current_user
+  attr_accessor :organisation, :user
 
-  def initialize(organisation:, current_user:)
+  def initialize(organisation:, user:)
     @organisation = organisation
-    @current_user = current_user
+    @user = user
   end
 
   def call
-    funds = policy_scope(Activity.funds, policy_scope_class: FundPolicy::Scope)
+    funds = FundPolicy::Scope.new(user, Activity.fund)
+      .resolve
       .includes(:organisation)
       .order("created_at ASC")
     funds = if organisation.service_owner
