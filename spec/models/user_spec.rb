@@ -36,4 +36,22 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe "#delivery_partner?" do
+    context "when the user organisation is a service owner" do
+      it "returns false" do
+        organisation = build_stubbed(:organisation, service_owner: true)
+        result = described_class.new(organisation: organisation).delivery_partner?
+        expect(result).to be false
+      end
+    end
+
+    context "when the user organisation is NOT a service owner" do
+      it "returns true" do
+        organisation = build_stubbed(:organisation, service_owner: false)
+        result = described_class.new(organisation: organisation).delivery_partner?
+        expect(result).to be true
+      end
+    end
+  end
 end

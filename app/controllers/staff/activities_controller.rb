@@ -4,7 +4,9 @@ class Staff::ActivitiesController < Staff::BaseController
   include Secured
 
   def index
-    @activities = policy_scope(Activity).includes(:parent)
+    @activities = policy_scope(Activity.where(organisation: organisation_id))
+    authorize @activities
+    @activity_presenters = @activities.includes(:organisation).map { |activity| ActivityPresenter.new(activity) }
   end
 
   def show
@@ -45,7 +47,16 @@ class Staff::ActivitiesController < Staff::BaseController
   end
 
   def organisation_id
-    params[:organisation_id]
+    organisation_id = params.fetch(:organisation_id, current_user.organisation).to_s
+
+    return current_user.organisation.id unless Organisation.exists?(organisation_id)
+    return current_user.organisation.id if organisation_id.blank?
+    return current_user.organisation.id if requested_organisation_is_not_current_users?(organisation_id) && current_user.delivery_partner?
+    organisation_id
+  end
+
+  def requested_organisation_is_not_current_users?(requested_organisation_id)
+    requested_organisation_id != current_user.organisation.id
   end
 
   def fund_id
