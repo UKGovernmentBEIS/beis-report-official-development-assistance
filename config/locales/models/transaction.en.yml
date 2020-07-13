@@ -9,7 +9,7 @@ en:
   form:
     label:
       transaction:
-        curreny: Currency
+        currency: Currency
         description: Describe the transaction
         disbursement_channel: Disbursement channel (optional)
         providing_organisation_reference: International Aid Transparency Initiative (IATI) Reference (optional)
@@ -19,6 +19,7 @@ en:
         providing_organisation_type: Providing organisation type
         receiving_organisation_name: Receiving organisation name
         receiving_organisation_type: Receiving organisation type
+        value: Transaction amount
     legend:
       transaction:
         date: Date transaction was made
