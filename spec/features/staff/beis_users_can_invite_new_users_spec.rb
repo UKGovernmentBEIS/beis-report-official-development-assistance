@@ -114,13 +114,6 @@ RSpec.feature "BEIS users can invite new users to the service" do
           end
         end
       end
-
-      scenario "can go back to the previous page" do
-        visit new_user_path
-
-        click_on I18n.t("default.link.back")
-        expect(page).to have_current_path(users_path)
-      end
     end
 
     context "when the user does not belongs to BEIS" do

@@ -65,20 +65,5 @@ RSpec.feature "Users can edit a transaction" do
         expect(auditable_event.owner_id).to eq user.id
       end
     end
-
-    scenario "going back to the previous page" do
-      visit organisation_path(user.organisation)
-
-      click_on(activity.title)
-
-      expect(page).to have_content(transaction.value)
-
-      within("##{transaction.id}") do
-        click_on(I18n.t("default.link.edit"))
-      end
-      click_on(I18n.t("default.link.back"))
-
-      expect(page).to have_content(activity.title)
-    end
   end
 end

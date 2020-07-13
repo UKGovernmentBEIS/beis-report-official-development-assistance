@@ -169,17 +169,5 @@ RSpec.feature "Users can view activities" do
         end
       end
     end
-
-    scenario "can go back to the previous page" do
-      activity = create(:project_activity, organisation: user.organisation)
-
-      visit organisation_activity_path(user.organisation, activity)
-
-      click_on I18n.t("default.link.back")
-
-      expect(page).to have_current_path(
-        organisation_path(user.organisation)
-      )
-    end
   end
 end
