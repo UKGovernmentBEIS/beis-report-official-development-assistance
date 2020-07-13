@@ -22,4 +22,8 @@ class User < ApplicationRecord
   def service_owner?
     organisation.service_owner?
   end
+
+  def delivery_partner?
+    !service_owner?
+  end
 end
