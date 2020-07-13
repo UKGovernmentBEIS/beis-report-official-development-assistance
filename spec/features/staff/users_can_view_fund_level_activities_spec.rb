@@ -43,15 +43,5 @@ RSpec.feature "Users can view fund level activities" do
         expect(page).to have_content("Untitled (#{activity.id})")
       end
     end
-
-    scenario "can go back to the previous page" do
-      activity = create(:activity, organisation: user.organisation)
-
-      visit organisation_activity_path(user.organisation, activity)
-
-      click_on I18n.t("default.link.back")
-
-      expect(page).to have_current_path(organisation_path(user.organisation))
-    end
   end
 end
