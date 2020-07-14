@@ -65,6 +65,39 @@ RSpec.feature "Users can view activities" do
         expect(page).to have_content activity.identifier
       end
     end
+
+    context "when viewing a programme level activity" do
+      scenario "they see 'Incomplete' next to incomplete projects" do
+        incomplete_project = create(:project_activity, :at_geography_step)
+
+        visit activities_path
+        within("##{incomplete_project.parent.id}") do
+          click_on I18n.t("table.body.activity.view_activity")
+        end
+        click_on I18n.t("tabs.activity.details")
+
+        within("##{incomplete_project.id}") do
+          expect(page).to have_link incomplete_project.title
+          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
+        end
+      end
+
+      scenario "they see a Publish to Iati column & status against projects" do
+        project = create(:project_activity)
+
+        visit activities_path
+        within("##{project.parent.id}") do
+          click_on I18n.t("table.body.activity.view_activity")
+        end
+        click_on I18n.t("tabs.activity.details")
+
+        expect(page).to have_content I18n.t("summary.label.activity.publish_to_iati.label")
+
+        within("##{project.id}") do
+          expect(page).to have_content "Yes"
+        end
+      end
+    end
   end
 
   context "when the user is signed in as a delivery partner" do
@@ -97,7 +130,7 @@ RSpec.feature "Users can view activities" do
     end
 
     scenario "all activities can be viewed" do
-      activities = create_list(:project_activity, 5, organisation: user.organisation)
+      activities = create_list(:project_activity, 2, organisation: user.organisation)
 
       visit activities_path(organisation_id: user.organisation)
 
@@ -114,7 +147,7 @@ RSpec.feature "Users can view activities" do
     scenario "an activity can be viewed" do
       activity = create(:project_activity, organisation: user.organisation)
 
-      visit organisation_path(user.organisation)
+      visit activities_path
 
       click_on(activity.title)
       click_on I18n.t("tabs.activity.details")

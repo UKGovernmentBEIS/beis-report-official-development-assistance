@@ -7,7 +7,7 @@ RSpec.feature "Users can create a project" do
       scenario "a new third party project can be added to the project" do
         project = create(:project_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(project.title)
         click_on I18n.t("tabs.activity.details")
@@ -28,7 +28,7 @@ RSpec.feature "Users can create a project" do
         project = create(:project_activity, organisation: user.organisation)
 
         PublicActivity.with_tracking do
-          visit organisation_path(user.organisation)
+          visit activities_path
 
           click_on(project.title)
           click_on I18n.t("tabs.activity.details")

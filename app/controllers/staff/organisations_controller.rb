@@ -12,7 +12,7 @@ class Staff::OrganisationsController < Staff::BaseController
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
 
-    project_activities = FindProjectActivities.new(organisation: organisation, user: current_user).call
+    project_activities = FindProjectActivities.new(organisation: organisation, user: current_user).call(eager_load_parent: false)
     third_party_project_activities = FindThirdPartyProjectActivities.new(organisation: organisation, user: current_user).call
 
     respond_to do |format|
