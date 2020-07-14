@@ -13,7 +13,7 @@ RSpec.feature "Users can edit a transaction" do
     let!(:transaction) { create(:transaction, parent_activity: activity) }
 
     scenario "editing a transaction on a fund" do
-      visit organisation_path(user.organisation)
+      visit activities_path
 
       click_on(activity.title)
 
@@ -39,7 +39,7 @@ RSpec.feature "Users can edit a transaction" do
 
     scenario "transaction update is tracked with public_activity" do
       PublicActivity.with_tracking do
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -67,7 +67,7 @@ RSpec.feature "Users can edit a transaction" do
     end
 
     scenario "going back to the previous page" do
-      visit organisation_path(user.organisation)
+      visit activities_path
 
       click_on(activity.title)
 

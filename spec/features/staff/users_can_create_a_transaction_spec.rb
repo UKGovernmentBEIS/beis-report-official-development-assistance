@@ -14,7 +14,7 @@ RSpec.feature "Users can create a transaction" do
     scenario "successfully creates a transaction on an activity" do
       activity = create(:fund_activity, organisation: user.organisation)
 
-      visit organisation_path(user.organisation)
+      visit activities_path
 
       click_on(activity.title)
 
@@ -29,7 +29,7 @@ RSpec.feature "Users can create a transaction" do
       activity = create(:fund_activity, organisation: user.organisation)
 
       PublicActivity.with_tracking do
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -48,7 +48,7 @@ RSpec.feature "Users can create a transaction" do
     scenario "validations" do
       activity = create(:fund_activity, organisation: user.organisation)
 
-      visit organisation_path(user.organisation)
+      visit activities_path
 
       click_on(activity.title)
 
@@ -67,7 +67,7 @@ RSpec.feature "Users can create a transaction" do
     scenario "disbursement channel is optional" do
       activity = create(:fund_activity, organisation: user.organisation)
 
-      visit organisation_path(user.organisation)
+      visit activities_path
 
       click_on(activity.title)
 
@@ -82,7 +82,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "Value must be maximum 99,999,999,999" do
         activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -104,7 +104,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "Value cannot be 0" do
         activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -126,7 +126,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "Value can be negative" do
         activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -150,7 +150,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the value includes a pound sign" do
         activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -164,7 +164,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the value includes alphabetical characters" do
         activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -178,7 +178,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the value includes decimal places" do
         activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -192,7 +192,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the value includes commas" do
         activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -208,7 +208,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the date is in the future" do
         activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -222,7 +222,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the date is in the past" do
         activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -237,7 +237,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the date is nil" do
         activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -261,7 +261,7 @@ RSpec.feature "Users can create a transaction" do
         organisation: user.organisation,
         extending_organisation: user.organisation)
 
-      visit organisation_path(user.organisation)
+      visit activities_path
       click_on(programme_activity.title)
 
       expect(page).not_to have_content(I18n.t("page_content.activity.transactions"))

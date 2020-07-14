@@ -14,7 +14,7 @@ RSpec.feature "Users can view transactions on an activity page" do
         transaction = create(:transaction, parent_activity: activity, value: "100")
         other_transaction = create(:transaction, parent_activity: other_activity, value: "200")
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_link activity.title
 
@@ -26,7 +26,7 @@ RSpec.feature "Users can view transactions on an activity page" do
         transaction = create(:transaction, parent_activity: activity)
         transaction_presenter = TransactionPresenter.new(transaction)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_link activity.title
 
@@ -43,7 +43,7 @@ RSpec.feature "Users can view transactions on an activity page" do
         transaction_1 = create(:transaction, parent_activity: activity, date: Date.today)
         transaction_2 = create(:transaction, parent_activity: activity, date: Date.yesterday)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_link activity.title
 
@@ -62,7 +62,7 @@ RSpec.feature "Users can view transactions on an activity page" do
         transaction = create(:transaction, parent_activity: project_activity)
         transaction_presenter = TransactionPresenter.new(transaction)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_link fund_activity.title
         click_on I18n.t("tabs.activity.details")
@@ -82,7 +82,7 @@ RSpec.feature "Users can view transactions on an activity page" do
       scenario "transactions cannot be created or edited by a BEIS user" do
         transaction = create(:transaction, parent_activity: project_activity)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_link fund_activity.title
         click_on I18n.t("tabs.activity.details")

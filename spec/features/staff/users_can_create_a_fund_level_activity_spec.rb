@@ -11,7 +11,7 @@ RSpec.feature "Users can create a fund level activity" do
     before { authenticate!(user: user) }
 
     scenario "successfully create a activity" do
-      visit organisation_path(user.organisation)
+      visit activities_path
       click_on(I18n.t("page_content.organisation.button.create_activity"))
 
       fill_in_activity_form(level: "fund")
@@ -22,7 +22,7 @@ RSpec.feature "Users can create a fund level activity" do
     scenario "the activity form has some defaults" do
       activity = create(:fund_activity, organisation: user.organisation)
       activity_presenter = ActivityPresenter.new(activity)
-      visit organisation_path(user.organisation)
+      visit activities_path
 
       click_on I18n.t("page_content.organisation.button.create_activity")
 
@@ -36,7 +36,7 @@ RSpec.feature "Users can create a fund level activity" do
     scenario "the activity has the appropriate funding organisation defaults" do
       identifier = "a-fund-has-a-funding-organisation"
 
-      visit organisation_path(user.organisation)
+      visit activities_path
       click_on(I18n.t("page_content.organisation.button.create_activity"))
 
       fill_in_activity_form(identifier: identifier, level: "fund")
@@ -50,7 +50,7 @@ RSpec.feature "Users can create a fund level activity" do
     scenario "the activity has the appropriate accountable organisation defaults" do
       identifier = "a-fund-has-an-accountable-organisation"
 
-      visit organisation_path(user.organisation)
+      visit activities_path
       click_on(I18n.t("page_content.organisation.button.create_activity"))
 
       fill_in_activity_form(identifier: identifier, level: "fund")
@@ -64,7 +64,7 @@ RSpec.feature "Users can create a fund level activity" do
     scenario "the activity has the appropriate extending organisation defaults" do
       identifier = "a-fund-has-an-extending-organisation"
 
-      visit organisation_path(user.organisation)
+      visit activities_path
       click_on(I18n.t("page_content.organisation.button.create_activity"))
 
       fill_in_activity_form(identifier: identifier, level: "fund")
@@ -75,10 +75,10 @@ RSpec.feature "Users can create a fund level activity" do
 
     context "when there is an existing activity with a nil identifier" do
       scenario "successfully create a activity" do
-        visit organisation_path(user.organisation)
+        visit activities_path
         click_on(I18n.t("page_content.organisation.button.create_activity"))
 
-        visit organisation_path(user.organisation)
+        visit activities_path
         click_on(I18n.t("page_content.organisation.button.create_activity"))
 
         fill_in_activity_form(level: "fund")
@@ -107,7 +107,7 @@ RSpec.feature "Users can create a fund level activity" do
         parent = create(:fund_activity, organisation: user.organisation)
         identifier = "foo"
 
-        visit organisation_path(user.organisation)
+        visit activities_path
         click_on I18n.t("page_content.organisation.button.create_activity")
 
         # Don't provide a level
@@ -225,7 +225,7 @@ RSpec.feature "Users can create a fund level activity" do
 
     scenario "fund creation is tracked with public_activity" do
       PublicActivity.with_tracking do
-        visit organisation_path(user.organisation)
+        visit activities_path
         click_on(I18n.t("page_content.organisation.button.create_activity"))
 
         fill_in_activity_form(level: "fund", identifier: "my-unique-identifier")
@@ -236,24 +236,6 @@ RSpec.feature "Users can create a fund level activity" do
         expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
         expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [fund.id]
       end
-    end
-  end
-
-  context "when the user does NOT belong to BEIS" do
-    let(:user) { create(:delivery_partner_user) }
-    before { authenticate!(user: user) }
-
-    it "does not allow them to see funds" do
-      fund_activity = create(:fund_activity)
-
-      visit organisation_path(user.organisation)
-
-      expect(page).not_to have_content(fund_activity.title)
-    end
-
-    it "does not let them create a fund level activity" do
-      visit organisation_path(user.organisation)
-      expect(page).not_to have_button(I18n.t("page_content.organisation.button.create_activity"))
     end
   end
 end

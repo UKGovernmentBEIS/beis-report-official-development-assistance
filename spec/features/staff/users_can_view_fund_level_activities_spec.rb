@@ -7,7 +7,7 @@ RSpec.feature "Users can view fund level activities" do
     end
   end
 
-  context "when the user is authenticated" do
+  context "when the user is authenticated as a BEIS user" do
     let(:user) { create(:beis_user) }
     before do
       authenticate!(user: user)
@@ -16,8 +16,7 @@ RSpec.feature "Users can view fund level activities" do
     scenario "can view a fund level activity" do
       fund_activity = create(:activity, level: :fund, organisation: user.organisation)
 
-      visit organisation_path(user.organisation)
-      click_on fund_activity.title
+      visit organisation_activity_details_path(user.organisation, fund_activity)
 
       page_displays_an_activity(activity_presenter: ActivityPresenter.new(fund_activity))
     end
@@ -36,9 +35,9 @@ RSpec.feature "Users can view fund level activities" do
 
     context "when the activity is partially complete and doesn't have a title" do
       scenario "it to show a meaningful link to the activity" do
-        activity = create(:activity, :at_purpose_step, organisation: user.organisation, title: nil)
+        activity = create(:activity, :level_form_state, organisation: user.organisation, title: nil)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         expect(page).to have_content("Untitled (#{activity.id})")
       end

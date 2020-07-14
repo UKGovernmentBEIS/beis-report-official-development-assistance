@@ -39,7 +39,7 @@ RSpec.feature "Users can view an activity" do
     scenario "an activity can be viewed" do
       activity = create(:activity, organisation: user.organisation)
 
-      visit organisation_path(user.organisation)
+      visit activities_path
 
       click_on(activity.title)
       click_on I18n.t("tabs.activity.details")
