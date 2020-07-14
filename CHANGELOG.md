@@ -205,7 +205,8 @@
 - Activity creation journey changed to ask for a level and parent
 - Add an activities page and navigation
 - Activities can be filtered to an organisation
-- Fund, programme and project activities are no longer shown on the home page
+- Fund, programme, project and third-party project  activities are no longer
+  shown on the home page
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...HEAD
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11

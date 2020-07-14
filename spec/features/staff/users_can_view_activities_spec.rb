@@ -98,6 +98,46 @@ RSpec.feature "Users can view activities" do
         end
       end
     end
+
+    context "when viewing a project level acitivity details" do
+      scenario "they see a list of all the third-party projects" do
+        project = create(:project_activity)
+        third_party_project = create(:third_party_project_activity, parent: project)
+
+        visit activities_path
+        within("##{project.parent.id}") do
+          click_on I18n.t("table.body.activity.view_activity")
+        end
+        click_on I18n.t("tabs.activity.details")
+        click_on project.title
+        click_on I18n.t("tabs.activity.details")
+
+        within("##{third_party_project.id}") do
+          expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
+          expect(page).to have_content third_party_project.identifier
+          expect(page).to have_content third_party_project.parent.title
+        end
+      end
+
+      scenario "they do see a Publish to Iati column & status against third-party projects" do
+        project = create(:project_activity)
+        third_party_project = create(:third_party_project_activity, parent: project)
+
+        visit activities_path
+        within("##{project.parent.id}") do
+          click_on I18n.t("table.body.activity.view_activity")
+        end
+        click_on I18n.t("tabs.activity.details")
+        click_on project.title
+        click_on I18n.t("tabs.activity.details")
+
+        expect(page).to have_content I18n.t("summary.label.activity.publish_to_iati.label")
+
+        within("##{third_party_project.id}") do
+          expect(page).to have_content I18n.t("summary.label.activity.publish_to_iati.true")
+        end
+      end
+    end
   end
 
   context "when the user is signed in as a delivery partner" do
@@ -162,6 +202,23 @@ RSpec.feature "Users can view activities" do
       expect(page).to have_content activity_presenter.planned_end_date
       expect(page).to have_content activity_presenter.recipient_region
       expect(page).to have_content activity_presenter.flow
+    end
+
+    scenario "they see a list of all third-party projects" do
+      project = create(:project_activity, organisation: user.organisation)
+      third_party_project = create(:third_party_project_activity, organisation: user.organisation, parent: project)
+
+      visit activities_path
+      within("##{project.id}") do
+        click_on I18n.t("table.body.activity.view_activity")
+      end
+      click_on I18n.t("tabs.activity.details")
+
+      within("##{third_party_project.id}") do
+        expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
+        expect(page).to have_content third_party_project.identifier
+        expect(page).to have_content third_party_project.parent.title
+      end
     end
 
     context "when the organisation id query parameter is not the delivery_partners organisation id" do
