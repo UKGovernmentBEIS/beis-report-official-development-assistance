@@ -8,14 +8,6 @@
       %h1.govuk-heading-xl
         = @organisation_presenter.name
 
-  - if policy(:programme).index?
-    .govuk-grid-row
-      .govuk-grid-column-full
-        %h2.govuk-heading-m
-          = t("page_content.organisation.programmes")
-
-        = render partial: "staff/shared/programmes/table", locals: { programmes: @programme_activities }
-
   - if policy(:project).index?
     .govuk-grid-row
       .govuk-grid-column-full

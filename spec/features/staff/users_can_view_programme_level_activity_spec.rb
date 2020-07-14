@@ -10,9 +10,7 @@ RSpec.feature "Users can view programme level activites" do
         organisation: user.organisation,
         parent: fund_activity)
 
-      visit organisation_path(user.organisation)
-
-      expect(page).to have_content I18n.t("page_content.organisation.programmes")
+      visit activities_path
 
       click_on programme_activity.title
 
@@ -23,7 +21,7 @@ RSpec.feature "Users can view programme level activites" do
   context "when the user does NOT belong to BEIS" do
     let(:user) { create(:delivery_partner_user) }
 
-    it "shows the programme level activity" do
+    it "can view a programme if they have the uid" do
       authenticate!(user: user)
 
       fund_activity = create(:fund_activity, organisation: user.organisation)
@@ -32,10 +30,7 @@ RSpec.feature "Users can view programme level activites" do
         parent: fund_activity,
         extending_organisation: user.organisation)
 
-      visit organisation_path(user.organisation)
-      expect(page).not_to have_content I18n.t("page_content.organisation.funds")
-      expect(page).to have_content I18n.t("page_content.organisation.programmes")
-      click_on programme_activity.title
+      visit organisation_activity_path(user.organisation, programme_activity)
 
       page_displays_an_activity(activity_presenter: ActivityPresenter.new(programme_activity))
     end
