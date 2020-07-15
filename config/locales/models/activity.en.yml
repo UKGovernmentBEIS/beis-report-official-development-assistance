@@ -12,6 +12,9 @@ en:
     button:
       activity:
         submit: Continue
+    link:
+      activity:
+       back: Back to activity details
     label:
       activity:
         flow: What is the flow type?
