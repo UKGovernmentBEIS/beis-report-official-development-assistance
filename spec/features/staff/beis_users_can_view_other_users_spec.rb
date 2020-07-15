@@ -80,15 +80,5 @@ RSpec.feature "BEIS users can can view other users" do
 
       expect(page).to have_content(I18n.t("form.user.active.false"))
     end
-
-    scenario "can go back to the previous page" do
-      another_user = create(:administrator)
-
-      visit user_path(another_user)
-
-      click_on I18n.t("default.link.back")
-
-      expect(page).to have_current_path(users_path)
-    end
   end
 end
