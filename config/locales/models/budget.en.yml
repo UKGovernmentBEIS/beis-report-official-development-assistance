@@ -10,7 +10,7 @@ en:
     label:
       budget:
         currency: Currency
-        value: Value
+        value: Budget amount
         budget_type_options:
           original: The original budget allocated to the activity
           updated: The updated budget for an activity
