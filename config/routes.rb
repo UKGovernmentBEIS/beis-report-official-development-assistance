@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       resources :activities, except: [:index, :destroy] do
         get "financials" => "activity_financials#show"
         get "details" => "activity_details#show"
+        get "children" => "activity_children#show"
       end
     end
 

@@ -24,7 +24,19 @@ RSpec.feature "Users can view an activity" do
       expect(page).to have_content budget.value
     end
 
-    scenario "the activity details can be viewed" do
+    scenario "the activity child activities can be viewed in a tab" do
+      activity = create(:activity, organisation: user.organisation)
+
+      visit organisation_activity_children_path(activity.organisation, activity)
+
+      within ".govuk-tabs__list-item--selected" do
+        expect(page).to have_content "Child activities"
+      end
+      expect(page).to have_content activity.title
+      expect(page).to have_button I18n.t("page_content.organisation.button.create_activity")
+    end
+
+    scenario "the activity details tab can be viewed" do
       activity = create(:activity, organisation: user.organisation)
 
       visit organisation_activity_details_path(activity.organisation, activity)
@@ -32,18 +44,6 @@ RSpec.feature "Users can view an activity" do
       within ".govuk-tabs__list-item--selected" do
         expect(page).to have_content "Details"
       end
-      expect(page).to have_content activity.title
-      expect(page).to have_button I18n.t("page_content.organisation.button.create_activity")
-    end
-
-    scenario "an activity can be viewed" do
-      activity = create(:activity, organisation: user.organisation)
-
-      visit organisation_path(user.organisation)
-
-      click_on(activity.title)
-      click_on I18n.t("tabs.activity.details")
-
       activity_presenter = ActivityPresenter.new(activity)
 
       expect(page).to have_content activity_presenter.identifier
