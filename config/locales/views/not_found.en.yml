@@ -1,0 +1,9 @@
+---
+en:
+  page_content:
+    errors:
+      not_found:
+        explanation: Page not found. If you typed the web address, check it is correct. If you pasted the web address, check you copied the entire address.
+  page_title:
+    errors:
+      not_found: Page not found
