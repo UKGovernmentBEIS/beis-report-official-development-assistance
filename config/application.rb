@@ -62,5 +62,8 @@ module Roda
 
     config.skylight.environments += ["pentest", "staging"]
     config.skylight.probes << "active_job"
+
+    # serve dynamic error pages
+    config.exceptions_app = routes
   end
 end
