@@ -70,6 +70,7 @@ module FormHelper
       OpenStruct.new(
         level: level,
         name: I18n.t("page_content.activity.level.#{level}").capitalize,
+        description: I18n.t("form.hint.activity.level_step.#{level}")
       )
     end
   end
