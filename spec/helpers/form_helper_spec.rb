@@ -70,8 +70,16 @@ RSpec.describe FormHelper, type: :helper do
         user = create(:beis_user)
         result = helper.create_activity_level_options(user: user)
         expect(result).to eq([
-          OpenStruct.new(level: "fund", name: "Fund"),
-          OpenStruct.new(level: "programme", name: "Programme"),
+          OpenStruct.new(
+            level: "fund",
+            name: "Fund",
+            description: I18n.t("form.hint.activity.level_step.fund"),
+          ),
+          OpenStruct.new(
+            level: "programme",
+            name: "Programme",
+            description: I18n.t("form.hint.activity.level_step.programme"),
+          ),
         ])
       end
     end

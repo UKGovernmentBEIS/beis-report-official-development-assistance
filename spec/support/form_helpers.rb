@@ -28,6 +28,7 @@ module FormHelpers
 
     expect(page).to have_content I18n.t("form.legend.activity.level")
     expect(page).to have_content I18n.t("form.hint.activity.level")
+    expect(page).to have_content I18n.t("form.hint.activity.level_step.#{level}")
     choose I18n.t("page_content.activity.level.#{level}").capitalize
     click_button I18n.t("form.button.activity.submit")
 
