@@ -4,6 +4,7 @@ module ActivityHelper
 
     return false if activity.form_state.nil?
     return true if activity.form_steps_completed?
+    return true if activity.fund? && step == :identifier
 
     presenter_position = steps.index(step.to_sym)
     activity_position = steps.index(activity.form_state.to_sym)

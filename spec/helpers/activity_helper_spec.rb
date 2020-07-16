@@ -61,6 +61,16 @@ RSpec.describe ActivityHelper, type: :helper do
         end
       end
     end
+
+    context "when the activity is a fund" do
+      context "and is at the indetifer step i.e. the parent step has been skipped" do
+        it "returns true" do
+          activity = build(:activity, :level_form_state, level: :fund, parent: nil)
+
+          expect(helper.step_is_complete_or_next?(activity: activity, step: :identifier)).to be(true)
+        end
+      end
+    end
   end
 
   describe "#link_to_activity_parent" do
