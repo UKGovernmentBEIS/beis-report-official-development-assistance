@@ -4,6 +4,7 @@ class Staff::ActivitiesController < Staff::BaseController
   include Secured
 
   def index
+    @organisation_id = organisation_id
     @activities = policy_scope(Activity.where(organisation: organisation_id))
     authorize @activities
     @activity_presenters = @activities.includes(:organisation).map { |activity| ActivityPresenter.new(activity) }
