@@ -169,6 +169,7 @@ FactoryBot.define do
   trait :level_form_state do
     form_state { "level" }
     level { nil }
+    identifier { nil }
     title { nil }
     description { nil }
     sector { nil }
@@ -189,6 +190,7 @@ FactoryBot.define do
   trait :parent_form_state do
     form_state { "parent" }
     level { "programme" }
+    identifier { nil }
     title { nil }
     description { nil }
     sector { nil }
