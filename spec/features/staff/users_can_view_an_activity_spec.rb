@@ -56,6 +56,15 @@ RSpec.feature "Users can view an activity" do
       expect(page).to have_content activity_presenter.flow
     end
 
+    scenario "the activity links to the parent activity" do
+      activity = create(:programme_activity, organisation: user.organisation)
+      parent_activity = activity.parent
+
+      visit organisation_activity_details_path(activity.organisation, activity)
+
+      expect(page).to have_link parent_activity.title, href: organisation_activity_path(parent_activity.organisation, parent_activity)
+    end
+
     scenario "a fund activity has human readable date format" do
       travel_to Time.zone.local(2020, 1, 29) do
         activity = create(:activity, planned_start_date: Date.new(2020, 2, 3),
@@ -82,6 +91,21 @@ RSpec.feature "Users can view an activity" do
           expect(page).to have_content("29 Jan 2020")
         end
       end
+    end
+  end
+
+  context "when the user is signed in as a delivery partner" do
+    let(:user) { create(:delivery_partner_user) }
+    before { authenticate!(user: user) }
+
+    scenario "a programme activity does not link to its parent activity" do
+      activity = create(:programme_activity, organisation: user.organisation)
+      parent_activity = activity.parent
+
+      visit organisation_activity_details_path(activity.organisation, activity)
+
+      expect(page).not_to have_link parent_activity.title, href: organisation_activity_path(parent_activity.organisation, parent_activity)
+      expect(page).to have_content parent_activity.title
     end
   end
 end
