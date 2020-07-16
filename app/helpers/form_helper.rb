@@ -67,7 +67,10 @@ module FormHelper
       policy.create? || policy.update?
     }
     authorised_levels.keys.map do |level|
-      OpenStruct.new(level: level, description: I18n.t("page_content.activity.level.#{level}").capitalize)
+      OpenStruct.new(
+        level: level,
+        name: I18n.t("page_content.activity.level.#{level}").capitalize,
+      )
     end
   end
 end

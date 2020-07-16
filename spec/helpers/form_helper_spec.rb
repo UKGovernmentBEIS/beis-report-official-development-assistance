@@ -70,8 +70,8 @@ RSpec.describe FormHelper, type: :helper do
         user = create(:beis_user)
         result = helper.create_activity_level_options(user: user)
         expect(result).to eq([
-          OpenStruct.new(level: "fund", description: "Fund"),
-          OpenStruct.new(level: "programme", description: "Programme"),
+          OpenStruct.new(level: "fund", name: "Fund"),
+          OpenStruct.new(level: "programme", name: "Programme"),
         ])
       end
     end
@@ -82,8 +82,8 @@ RSpec.describe FormHelper, type: :helper do
           user = create(:delivery_partner_user)
           result = helper.create_activity_level_options(user: user)
           expect(result).to eq([
-            OpenStruct.new(level: "project", description: "Project"),
-            OpenStruct.new(level: "third_party_project", description: "Third-party project"),
+            OpenStruct.new(level: "project", name: "Project"),
+            OpenStruct.new(level: "third_party_project", name: "Third-party project"),
           ])
         end
       end
