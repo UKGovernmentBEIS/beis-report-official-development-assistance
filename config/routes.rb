@@ -45,4 +45,9 @@ Rails.application.routes.draw do
   get "auth/oauth2/callback" => "auth0#callback"
   get "auth/failure" => "auth0#failure"
   get "sign_out" => "application#sign_out"
+
+  # Errors
+  get "/404", to: "errors#not_found"
+  get "/422", to: "errors#unacceptable"
+  get "/500", to: "errors#internal_server_error"
 end
