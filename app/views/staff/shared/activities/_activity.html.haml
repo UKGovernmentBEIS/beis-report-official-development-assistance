@@ -20,7 +20,7 @@
       %dt.govuk-summary-list__key
         = t("summary.label.activity.parent")
       %dd.govuk-summary-list__value
-        = activity_presenter.parent_title
+        = link_to_activity_parent(parent: activity_presenter.parent, user: current_user)
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update? && activity_presenter.level.present? && activity_presenter.parent.blank?
           = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :parent), t("summary.label.activity.parent").downcase)
