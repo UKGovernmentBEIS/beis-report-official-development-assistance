@@ -22,16 +22,16 @@
           %li.govuk-tabs__list-item
             = link_to t("tabs.activity.financials"),
               organisation_activity_financials_path(@activity.organisation, @activity),
-              { class: "govuk-tabs__tab", role: "tab", tabindex: -1, aria: { controls: "financials", selected: true } }
+              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "financials", selected: true } }
           %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
             = link_to t("tabs.activity.details"),
               organisation_activity_details_path(@activity.organisation, @activity),
-              { class: "govuk-tabs__tab", role: "tab", tabindex: 0, aria: { controls: "details", selected: false } }
+              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "details", selected: false } }
           - unless @activity.third_party_project?
             %li.govuk-tabs__list-item
               = link_to t("tabs.activity.children"),
                 organisation_activity_children_path(@activity.organisation, @activity),
-                { class: "govuk-tabs__tab", role: "tab", tabindex: -1, aria: { controls: "children", selected: false } }
+                { class: "govuk-tabs__tab", role: "tab", aria: { controls: "children", selected: false } }
 
         .govuk-tabs__panel
           %h2.govuk-heading-l
