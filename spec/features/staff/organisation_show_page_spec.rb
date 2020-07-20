@@ -41,23 +41,6 @@ feature "Organisation show page" do
         end
       end
 
-      scenario "they see 'Incomplete' next to incomplete programmes" do
-        within("##{incomplete_programme.id}") do
-          expect(page).to have_link incomplete_programme.title
-          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
-        end
-      end
-
-      scenario "they do not see a Publish to Iati column & status against programmes" do
-        within(".programmes") do
-          expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
-        end
-
-        within("##{programme.id}") do
-          expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.yes")
-        end
-      end
-
       scenario "they see a list of all projects" do
         within("##{project.id}") do
           expect(page).to have_link project.title, href: organisation_activity_path(project.organisation, project)
