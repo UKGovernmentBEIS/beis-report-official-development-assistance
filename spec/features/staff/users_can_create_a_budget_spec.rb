@@ -8,7 +8,7 @@ RSpec.describe "Users can create a budget" do
       scenario "successfully creates a budget" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
         click_on(fund_activity.title)
 
         click_on(I18n.t("page_content.budgets.button.create"))
@@ -22,7 +22,7 @@ RSpec.describe "Users can create a budget" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
 
         PublicActivity.with_tracking do
-          visit organisation_path(user.organisation)
+          visit activities_path
           click_on(fund_activity.title)
 
           click_on(I18n.t("page_content.budgets.button.create"))
@@ -43,7 +43,7 @@ RSpec.describe "Users can create a budget" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
         click_on(programme_activity.parent.title)
         click_on I18n.t("tabs.activity.children")
         click_on(programme_activity.title)
@@ -59,7 +59,7 @@ RSpec.describe "Users can create a budget" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(programme_activity.parent.title)
         click_on I18n.t("tabs.activity.children")

@@ -8,18 +8,6 @@
       %h1.govuk-heading-xl
         = @organisation_presenter.name
 
-  - if policy(:fund).index? && @organisation_presenter.service_owner?
-    .govuk-grid-row
-      .govuk-grid-column-full
-        %h2.govuk-heading-m
-          = t("page_content.organisation.funds")
-
-        - if policy(:fund).create?
-          = form_tag(organisation_activities_path(@organisation_presenter), method: "post") do
-            = submit_tag t("page_content.organisation.button.create_activity"), class: "govuk-button"
-
-        = render partial: "staff/shared/funds/table", locals: { funds: @fund_activities }
-
   - if policy(:programme).index?
     .govuk-grid-row
       .govuk-grid-column-full
