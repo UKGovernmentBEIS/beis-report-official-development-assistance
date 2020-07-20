@@ -27,35 +27,6 @@ feature "Organisation show page" do
         visit organisation_path(beis_user.organisation)
       end
 
-      scenario "they see a list of all funds" do
-        within("##{fund.id}") do
-          expect(page).to have_link fund.title, href: organisation_activity_path(fund.organisation, fund)
-          expect(page).to have_content fund.title
-          expect(page).to have_content fund.identifier
-        end
-      end
-
-      scenario "they see 'Incomplete' next to incomplete funds" do
-        within("##{incomplete_fund.id}") do
-          expect(page).to have_link incomplete_fund.title
-          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
-        end
-      end
-
-      scenario "they do not see a Publish to Iati column & status against funds" do
-        within(".funds") do
-          expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
-        end
-
-        within("##{fund.id}") do
-          expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.yes")
-        end
-      end
-
-      scenario "they see a create fund button" do
-        expect(page).to have_button I18n.t("page_content.organisation.button.create_activity")
-      end
-
       scenario "they see a list of all programmes" do
         within("##{programme.id}") do
           expect(page).to have_link programme.title, href: organisation_activity_path(programme.organisation, programme)

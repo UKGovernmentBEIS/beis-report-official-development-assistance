@@ -9,7 +9,7 @@ RSpec.feature "Users can create a programme activity" do
     scenario "successfully creates a programme" do
       fund = create(:fund_activity, organisation: user.organisation)
 
-      visit organisation_path(user.organisation)
+      visit activities_path
       click_on(I18n.t("page_content.organisation.button.create_activity"))
 
       fill_in_activity_form(level: "programme", parent: fund)
@@ -21,7 +21,7 @@ RSpec.feature "Users can create a programme activity" do
       fund = create(:activity, level: :fund, organisation: user.organisation)
       identifier = "a-programme-has-a-funding-organisation"
 
-      visit organisation_path(user.organisation)
+      visit activities_path
       click_on fund.title
       click_on I18n.t("tabs.activity.children")
       click_on(I18n.t("page_content.organisation.button.create_activity"))
@@ -38,7 +38,7 @@ RSpec.feature "Users can create a programme activity" do
       fund = create(:activity, level: :fund, organisation: user.organisation)
       identifier = "a-fund-has-an-accountable-organisation"
 
-      visit organisation_path(user.organisation)
+      visit activities_path
       click_on fund.title
       click_on I18n.t("tabs.activity.children")
       click_on(I18n.t("page_content.organisation.button.create_activity"))
@@ -55,7 +55,7 @@ RSpec.feature "Users can create a programme activity" do
       fund = create(:activity, level: :fund, organisation: user.organisation)
 
       PublicActivity.with_tracking do
-        visit organisation_path(user.organisation)
+        visit activities_path
         click_on fund.title
         click_on I18n.t("tabs.activity.children")
         click_on(I18n.t("page_content.organisation.button.create_activity"))

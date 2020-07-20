@@ -25,24 +25,6 @@ RSpec.feature "Users can view an organisation" do
 
         expect(page).to_not have_content(I18n.t("default.link.back"))
       end
-
-      scenario "can see a list of fund activities" do
-        fund = create(:fund_activity, organisation: user.organisation)
-
-        visit organisation_path(user.organisation)
-
-        expect(page).to have_content(fund.title)
-      end
-
-      scenario "fund activities are ordered by created_at (oldest first)" do
-        fund_1 = create(:fund_activity, organisation: user.organisation, created_at: Date.yesterday)
-        fund_2 = create(:fund_activity, organisation: user.organisation, created_at: Date.today)
-
-        visit organisation_path(user.organisation)
-
-        expect(page.find("table.funds  tbody tr:first-child")[:id]).to have_content(fund_1.id)
-        expect(page.find("table.funds  tbody tr:last-child")[:id]).to have_content(fund_2.id)
-      end
     end
 
     context "viewing another organisation" do
