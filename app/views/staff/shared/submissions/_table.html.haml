@@ -1,0 +1,23 @@
+- unless submissions.empty?
+  %table.govuk-table.submissions
+    %caption.govuk-table__caption.govuk-visually-hidden
+      = t("page_content.submissions")
+    %thead.govuk-table__head
+      %tr.govuk-table__row
+        %th.govuk-table__header
+          =t("table.header.submission.description")
+        %th.govuk-table__header
+          =t("table.header.submission.fund")
+        %th.govuk-table__header
+          = t("table.header.submission.organisation")
+        %th.govuk-table__header
+          =t("table.header.submission.state")
+
+    %tbody.govuk-table__body
+      - submissions.each do |submission|
+        %tr.govuk-table__row{id: submission.id}
+          %td.govuk-table__cell= submission.description
+          %td.govuk-table__cell= submission.fund.title
+          %td.govuk-table__cell= submission.organisation.name
+          %td.govuk-table__cell= submission.state
+
