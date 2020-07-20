@@ -45,7 +45,7 @@ RSpec.describe "Users can create a budget" do
 
         visit organisation_path(user.organisation)
         click_on(programme_activity.parent.title)
-        click_on I18n.t("tabs.activity.details")
+        click_on I18n.t("tabs.activity.children")
         click_on(programme_activity.title)
 
         click_on(I18n.t("page_content.budgets.button.create"))
@@ -62,7 +62,7 @@ RSpec.describe "Users can create a budget" do
         visit organisation_path(user.organisation)
 
         click_on(programme_activity.parent.title)
-        click_on I18n.t("tabs.activity.details")
+        click_on I18n.t("tabs.activity.children")
         click_on(programme_activity.title)
 
         click_on(I18n.t("page_content.budgets.button.create"))
@@ -110,7 +110,7 @@ RSpec.describe "Users can create a budget" do
         visit organisation_path(user.organisation)
 
         click_on(programme_activity.title)
-        click_on I18n.t("tabs.activity.details")
+        click_on I18n.t("tabs.activity.children")
         click_on(project_activity.title)
 
         click_on(I18n.t("page_content.budgets.button.create"))

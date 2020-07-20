@@ -12,7 +12,7 @@ RSpec.feature "Users can create a project" do
         visit organisation_path(user.organisation)
 
         click_on(programme.title)
-        click_on I18n.t("tabs.activity.details")
+        click_on I18n.t("tabs.activity.children")
 
         click_on(I18n.t("page_content.organisation.button.create_activity"))
 
@@ -33,7 +33,7 @@ RSpec.feature "Users can create a project" do
           visit organisation_path(user.organisation)
 
           click_on(programme.title)
-          click_on I18n.t("tabs.activity.details")
+          click_on I18n.t("tabs.activity.children")
 
           click_on(I18n.t("page_content.organisation.button.create_activity"))
 

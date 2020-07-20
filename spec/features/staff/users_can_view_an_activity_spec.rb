@@ -24,7 +24,19 @@ RSpec.feature "Users can view an activity" do
       expect(page).to have_content budget.value
     end
 
-    scenario "the activity details can be viewed" do
+    scenario "the activity child activities can be viewed in a tab" do
+      activity = create(:activity, organisation: user.organisation)
+
+      visit organisation_activity_children_path(activity.organisation, activity)
+
+      within ".govuk-tabs__list-item--selected" do
+        expect(page).to have_content "Child activities"
+      end
+      expect(page).to have_content activity.title
+      expect(page).to have_button I18n.t("page_content.organisation.button.create_activity")
+    end
+
+    scenario "the activity details tab can be viewed" do
       activity = create(:activity, organisation: user.organisation)
 
       visit organisation_activity_details_path(activity.organisation, activity)
@@ -32,18 +44,6 @@ RSpec.feature "Users can view an activity" do
       within ".govuk-tabs__list-item--selected" do
         expect(page).to have_content "Details"
       end
-      expect(page).to have_content activity.title
-      expect(page).to have_button I18n.t("page_content.organisation.button.create_activity")
-    end
-
-    scenario "an activity can be viewed" do
-      activity = create(:activity, organisation: user.organisation)
-
-      visit organisation_path(user.organisation)
-
-      click_on(activity.title)
-      click_on I18n.t("tabs.activity.details")
-
       activity_presenter = ActivityPresenter.new(activity)
 
       expect(page).to have_content activity_presenter.identifier
@@ -54,6 +54,15 @@ RSpec.feature "Users can view an activity" do
       expect(page).to have_content activity_presenter.planned_end_date
       expect(page).to have_content activity_presenter.recipient_region
       expect(page).to have_content activity_presenter.flow
+    end
+
+    scenario "the activity links to the parent activity" do
+      activity = create(:programme_activity, organisation: user.organisation)
+      parent_activity = activity.parent
+
+      visit organisation_activity_details_path(activity.organisation, activity)
+
+      expect(page).to have_link parent_activity.title, href: organisation_activity_path(parent_activity.organisation, parent_activity)
     end
 
     scenario "a fund activity has human readable date format" do
@@ -82,6 +91,21 @@ RSpec.feature "Users can view an activity" do
           expect(page).to have_content("29 Jan 2020")
         end
       end
+    end
+  end
+
+  context "when the user is signed in as a delivery partner" do
+    let(:user) { create(:delivery_partner_user) }
+    before { authenticate!(user: user) }
+
+    scenario "a programme activity does not link to its parent activity" do
+      activity = create(:programme_activity, organisation: user.organisation)
+      parent_activity = activity.parent
+
+      visit organisation_activity_details_path(activity.organisation, activity)
+
+      expect(page).not_to have_link parent_activity.title, href: organisation_activity_path(parent_activity.organisation, parent_activity)
+      expect(page).to have_content parent_activity.title
     end
   end
 end

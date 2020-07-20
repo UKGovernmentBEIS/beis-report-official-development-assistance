@@ -65,9 +65,9 @@ RSpec.feature "Users can view transactions on an activity page" do
         visit organisation_path(user.organisation)
 
         click_link fund_activity.title
-        click_on I18n.t("tabs.activity.details")
+        click_on I18n.t("tabs.activity.children")
         click_link programme_activity.title
-        click_on I18n.t("tabs.activity.details")
+        click_on I18n.t("tabs.activity.children")
         click_link project_activity.title
 
         expect(page).to have_content(transaction_presenter.transaction_type)
@@ -85,9 +85,9 @@ RSpec.feature "Users can view transactions on an activity page" do
         visit organisation_path(user.organisation)
 
         click_link fund_activity.title
-        click_on I18n.t("tabs.activity.details")
+        click_on I18n.t("tabs.activity.children")
         click_link programme_activity.title
-        click_on I18n.t("tabs.activity.details")
+        click_on I18n.t("tabs.activity.children")
         click_link project_activity.title
 
         expect(page).to_not have_content(I18n.t("page_content.transactions.button.create"))
