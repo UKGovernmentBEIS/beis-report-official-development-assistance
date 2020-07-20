@@ -16,6 +16,7 @@ class Staff::OrganisationsController < Staff::BaseController
     programme_activities = FindProgrammeActivities.new(organisation: organisation, user: current_user).call
     project_activities = FindProjectActivities.new(organisation: organisation, user: current_user).call
     third_party_project_activities = FindThirdPartyProjectActivities.new(organisation: organisation, user: current_user).call
+    submissions = SubmissionPolicy::Scope.new(current_user, Submission).resolve.includes(:organisation, :fund)
 
     respond_to do |format|
       format.html do
@@ -23,6 +24,7 @@ class Staff::OrganisationsController < Staff::BaseController
         @programme_activities = programme_activities.map { |activity| ActivityPresenter.new(activity) }
         @project_activities = project_activities.map { |activity| ActivityPresenter.new(activity) }
         @third_party_project_activities = third_party_project_activities.map { |activity| ActivityPresenter.new(activity) }
+        @submissions = submissions.map { |submission| SubmissionPresenter.new(submission) }
       end
       format.xml do
         @activities = case level
