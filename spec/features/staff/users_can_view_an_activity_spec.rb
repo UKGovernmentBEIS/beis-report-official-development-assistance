@@ -21,6 +21,21 @@ RSpec.feature "Users can view an activity" do
         expect(page).to have_content programme.identifier
       end
 
+      scenario "the child programme activities are ordered by created_at (oldest first)" do
+        fund = create(:fund_activity)
+        programme_1 = create(:programme_activity,
+          created_at: Date.yesterday,
+          parent: fund)
+        programme_2 = create(:programme_activity,
+          created_at: Date.today,
+          parent: fund)
+
+        visit organisation_activity_children_path(fund.organisation, fund)
+
+        expect(page.find("table.programmes  tbody tr:first-child")[:id]).to have_content(programme_1.id)
+        expect(page.find("table.programmes  tbody tr:last-child")[:id]).to have_content(programme_2.id)
+      end
+
       scenario "they see 'Incomplete' next to incomplete programmes" do
         fund = create(:fund_activity)
         incomplete_programme = create(:programme_activity, :at_purpose_step, parent: fund)

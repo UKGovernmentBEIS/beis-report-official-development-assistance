@@ -89,8 +89,7 @@ RSpec.describe "Users can create a budget" do
           parent: fund_activity,
           extending_organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
-        click_on(programme_activity.title)
+        visit organisation_activity_path(user.organisation, programme_activity)
 
         expect(page).to have_content(I18n.t("page_content.activity.budgets"))
         expect(page).not_to have_content(I18n.t("page_content.budgets.button.create"))
@@ -107,10 +106,8 @@ RSpec.describe "Users can create a budget" do
           parent: programme_activity,
           organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
-        click_on(programme_activity.title)
-        click_on I18n.t("tabs.activity.children")
         click_on(project_activity.title)
 
         click_on(I18n.t("page_content.budgets.button.create"))

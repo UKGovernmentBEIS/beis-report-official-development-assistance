@@ -9,10 +9,7 @@ RSpec.feature "Users can create a project" do
       scenario "a new project can be added to the programme" do
         programme = create(:programme_activity, extending_organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
-
-        click_on(programme.title)
-        click_on I18n.t("tabs.activity.children")
+        visit organisation_activity_children_path(programme.organisation, programme)
 
         click_on(I18n.t("page_content.organisation.button.create_activity"))
 
@@ -30,11 +27,7 @@ RSpec.feature "Users can create a project" do
         programme = create(:programme_activity, extending_organisation: user.organisation)
 
         PublicActivity.with_tracking do
-          visit organisation_path(user.organisation)
-
-          click_on(programme.title)
-          click_on I18n.t("tabs.activity.children")
-
+          visit organisation_activity_children_path(programme.organisation, programme)
           click_on(I18n.t("page_content.organisation.button.create_activity"))
 
           fill_in_activity_form(level: "project", identifier: "my-unique-identifier", parent: programme)

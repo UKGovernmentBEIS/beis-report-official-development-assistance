@@ -7,7 +7,7 @@ class Staff::ActivityChildrenController < Staff::BaseController
     @activity = Activity.find(params[:activity_id])
     authorize @activity
 
-    @activities = @activity.child_activities.order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
+    @activities = @activity.child_activities.includes([:organisation, :parent]).order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
 
     render "staff/activities/children"
   end

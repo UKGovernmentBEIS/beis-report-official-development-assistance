@@ -261,8 +261,7 @@ RSpec.feature "Users can create a transaction" do
         organisation: user.organisation,
         extending_organisation: user.organisation)
 
-      visit organisation_path(user.organisation)
-      click_on(programme_activity.title)
+      visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
       expect(page).not_to have_content(I18n.t("page_content.activity.transactions"))
       expect(page).not_to have_content(I18n.t("page_content.transactions.button.create"))
