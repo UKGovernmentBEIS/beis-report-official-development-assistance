@@ -15,7 +15,7 @@
         %tr.govuk-table__row{ id: activity.id }
           %td.govuk-table__cell= activity.display_title
           %td.govuk-table__cell= activity.identifier
-          %td.govuk-table__cell= t("table.body.activity.level.#{activity.level}")
+          %td.govuk-table__cell= activity.level
           %td.govuk-table__cell
             = a11y_action_link t("table.body.activity.view_activity"),
               organisation_activity_path(activity.organisation, activity),

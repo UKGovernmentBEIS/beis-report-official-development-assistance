@@ -209,6 +209,8 @@
 - Replace generic Rails error pages with styled pages (404, 500 and 422)
 - Activities can be filtered to an organisation
 - Selecting an activity level now includes more explanation of the hierarchy
+- Activities show their child activities in a tab
+- Activities link to their parent activity in the details tab
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...HEAD
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11
