@@ -10,6 +10,44 @@ RSpec.feature "Users can view an activity" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
+    context "and the activity is a fund" do
+      scenario "the child programme activities can be viewed" do
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund)
+
+        visit organisation_activity_children_path(fund.organisation, fund)
+
+        expect(page).to have_content programme.title
+        expect(page).to have_content programme.identifier
+      end
+
+      scenario "they see 'Incomplete' next to incomplete programmes" do
+        fund = create(:fund_activity)
+        incomplete_programme = create(:programme_activity, :at_purpose_step, parent: fund)
+
+        visit organisation_activity_children_path(fund.organisation, fund)
+
+        within("##{incomplete_programme.id}") do
+          expect(page).to have_link incomplete_programme.title
+          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
+        end
+      end
+
+      scenario "they do not see a Publish to Iati column & status against programmes" do
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund)
+
+        visit organisation_activity_children_path(fund.organisation, fund)
+
+        within(".programmes") do
+          expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
+        end
+
+        within("##{programme.id}") do
+          expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.yes")
+        end
+      end
+    end
 
     scenario "the activity financials can be viewed" do
       activity = create(:activity, organisation: user.organisation)
