@@ -8,17 +8,11 @@
       %h1.govuk-heading-xl
         = @organisation_presenter.name
 
-  - if policy(:project).index?
-    .govuk-grid-row
-      .govuk-grid-column-full
-        %h2.govuk-heading-m
-          = t("page_content.organisation.projects")
-
-        = render partial: "staff/shared/projects/table", locals: { projects: @project_activities }
-
   - if policy(@organisation_presenter).download? && @project_activities.present?
     .govuk-grid-row
       .govuk-grid-column-full.download-projects
+        %h2.govuk-heading-m
+          = t("page_content.organisation.projects")
         %div.govuk-body
           = t("page_content.organisation.download.projects.explanation")
         = link_to t("default.button.download_as_xml"), organisation_path(@organisation_presenter, format: :xml, level: :project), class: "govuk-button"

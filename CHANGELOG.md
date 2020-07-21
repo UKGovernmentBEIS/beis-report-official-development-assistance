@@ -213,7 +213,7 @@
 - Activities link to their parent activity in the details tab
 - Add Submission model, tests and fixtures. Seed database with a Submission per 
   Organisation/Fund pair. Show a basic Submission table on the user's home page. 
-- Fund and programme activities are no longer shown on the home page
+- Fund, programme and project activities are no longer shown on the home page
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...HEAD
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11

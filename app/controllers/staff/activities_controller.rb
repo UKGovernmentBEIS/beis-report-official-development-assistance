@@ -7,7 +7,7 @@ class Staff::ActivitiesController < Staff::BaseController
     @organisation_id = organisation_id
     @activities = policy_scope(Activity.where(organisation: organisation_id))
     authorize @activities
-    @activity_presenters = @activities.includes(:organisation).map { |activity| ActivityPresenter.new(activity) }
+    @activity_presenters = @activities.includes(:organisation).order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
   end
 
   def show

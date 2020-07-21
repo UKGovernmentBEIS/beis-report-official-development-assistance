@@ -64,6 +64,57 @@ RSpec.feature "Users can view an activity" do
       end
     end
 
+    context "and the activity is a programme" do
+      scenario "they view a list of all child projects" do
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund)
+        project = create(:project_activity, parent: programme)
+        another_project = create(:project_activity, parent: programme)
+
+        visit organisation_activity_children_path(programme.organisation, programme)
+
+        within("##{project.id}") do
+          expect(page).to have_link project.title, href: organisation_activity_path(project.organisation, project)
+          expect(page).to have_content project.identifier
+          expect(page).to have_content project.parent.title
+        end
+
+        within("##{another_project.id}") do
+          expect(page).to have_link another_project.title, href: organisation_activity_path(another_project.organisation, another_project)
+          expect(page).to have_content another_project.identifier
+          expect(page).to have_content another_project.parent.title
+        end
+      end
+
+      scenario "they see 'Incomplete' next to incomplete projects" do
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund)
+        incomplete_project = create(:project_activity, :at_purpose_step, parent: programme)
+
+        visit organisation_activity_children_path(programme.organisation, programme)
+        within("##{incomplete_project.id}") do
+          expect(page).to have_link incomplete_project.title
+          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
+        end
+      end
+
+      scenario "they see a Publish to Iati column & status against projects" do
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund)
+        project = create(:project_activity, parent: programme)
+
+        visit organisation_activity_children_path(programme.organisation, programme)
+
+        within(".projects") do
+          expect(page).to have_content I18n.t("summary.label.activity.publish_to_iati.label")
+        end
+
+        within("##{project.id}") do
+          expect(page).to have_content "Yes"
+        end
+      end
+    end
+
     scenario "the activity financials can be viewed" do
       activity = create(:activity, organisation: user.organisation)
       transaction = create(:transaction, parent_activity: activity)
