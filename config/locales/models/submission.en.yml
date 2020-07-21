@@ -7,15 +7,38 @@ en:
         description: Reporting period
         organisation: Organisation
         fund: Level A
+        deadline: Deadline
   page_content:
     submissions: Submissions
   label:
     submission:
      state:
        inactive: Inactive
-  errors:
-    models:
+  form:
+    label:
       submission:
-        attributes:
-          fund: must be a fund-level Activity
-
+        description: Reporting period
+        fund: Level A
+        organisation: Organisation
+        state: State
+        deadline: Deadline
+    legend:
+      submission:
+        description: Reporting period
+        deadline: Deadline
+  page_title:
+    submission:
+      edit: Edit submission
+  action:
+    submission:
+      update:
+        success: Submission successfully updated
+  activerecord:
+    errors:
+      models:
+        submission:
+          attributes:
+            description:
+              blank: Reporting period can't be bank
+            fund:
+              level: Activity must be a fund-level Activity

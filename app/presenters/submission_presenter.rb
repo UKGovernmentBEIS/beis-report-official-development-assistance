@@ -5,4 +5,9 @@ class SubmissionPresenter < SimpleDelegator
     return if super.blank?
     I18n.t("label.submission.state.#{super.downcase}")
   end
+
+  def deadline
+    return if super.blank?
+    I18n.l(super)
+  end
 end

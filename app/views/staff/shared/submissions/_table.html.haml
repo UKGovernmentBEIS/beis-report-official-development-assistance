@@ -9,15 +9,22 @@
         %th.govuk-table__header
           =t("table.header.submission.fund")
         %th.govuk-table__header
+          =t("table.header.submission.deadline")
+        %th.govuk-table__header
           = t("table.header.submission.organisation")
         %th.govuk-table__header
           =t("table.header.submission.state")
+        %th.govuk-table__header
 
     %tbody.govuk-table__body
       - submissions.each do |submission|
         %tr.govuk-table__row{id: submission.id}
           %td.govuk-table__cell= submission.description
           %td.govuk-table__cell= submission.fund.title
+          %td.govuk-table__cell= submission.deadline
           %td.govuk-table__cell= submission.organisation.name
           %td.govuk-table__cell= submission.state
+          %td.govuk-table__cell
+            - if policy(:submission).edit?
+              = link_to I18n.t("default.link.edit"), edit_submission_path(submission), class: "govuk-link"
 
