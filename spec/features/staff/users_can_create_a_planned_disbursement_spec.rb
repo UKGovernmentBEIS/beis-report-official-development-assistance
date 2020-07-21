@@ -6,7 +6,7 @@ RSpec.describe "Users can create a planned disbursement" do
 
     scenario "they can add a planned disbursement" do
       project = create(:project_activity, organisation: user.organisation)
-      visit organisation_path(user.organisation)
+      visit activities_path
       click_on project.title
 
       expect(page).to have_content I18n.t("page_content.activity.planned_disbursements")
@@ -38,7 +38,7 @@ RSpec.describe "Users can create a planned disbursement" do
       activity = create(:project_activity, organisation: user.organisation)
 
       PublicActivity.with_tracking do
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_on(activity.title)
 
@@ -62,7 +62,7 @@ RSpec.describe "Users can create a planned disbursement" do
           user.update(organisation: government_devlivery_partner)
           project = create(:project_activity, organisation: user.organisation)
 
-          visit organisation_path(user.organisation)
+          visit activities_path
           click_on project.title
           click_on I18n.t("page_content.planned_disbursements.button.create")
 
@@ -79,8 +79,7 @@ RSpec.describe "Users can create a planned disbursement" do
           user.update(organisation: government_devlivery_partner)
           project = create(:third_party_project_activity, organisation: user.organisation)
 
-          visit organisation_path(user.organisation)
-          click_on project.title
+          visit organisation_activity_path(user.organisation, project)
           click_on I18n.t("page_content.planned_disbursements.button.create")
 
           expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
@@ -98,7 +97,7 @@ RSpec.describe "Users can create a planned disbursement" do
           user.update(organisation: government_devlivery_partner)
           project = create(:project_activity, organisation: user.organisation)
 
-          visit organisation_path(user.organisation)
+          visit activities_path
           click_on project.title
           click_on I18n.t("page_content.planned_disbursements.button.create")
 
@@ -113,8 +112,7 @@ RSpec.describe "Users can create a planned disbursement" do
           user.update(organisation: non_government_devlivery_partner)
           project = create(:third_party_project_activity, organisation: user.organisation)
 
-          visit organisation_path(user.organisation)
-          click_on project.title
+          visit organisation_activity_path(user.organisation, project)
           click_on I18n.t("page_content.planned_disbursements.button.create")
 
           expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_name"), with: non_government_devlivery_partner.name)
@@ -131,8 +129,14 @@ RSpec.describe "Users can create a planned disbursement" do
     before { authenticate!(user: beis_user) }
 
     scenario "they cannot add a planned disbursement" do
-      project = create(:project_activity)
-      visit organisation_path(beis_user.organisation)
+      programme = create(:programme_activity)
+      project = create(:project_activity, parent: programme)
+
+      visit activities_path
+      within "##{programme.id}" do
+        click_on I18n.t("table.body.activity.view_activity")
+      end
+      click_on I18n.t("tabs.activity.children")
       click_on project.title
 
       expect(page).not_to have_link I18n.t("page_content.planned_disbursements.button.create"), href: new_activity_planned_disbursement_path(project)

@@ -16,7 +16,7 @@ RSpec.feature "Users can view fund level activities" do
     scenario "can view a fund level activity" do
       fund_activity = create(:activity, level: :fund, organisation: user.organisation)
 
-      visit organisation_path(user.organisation)
+      visit activities_path
       click_on fund_activity.title
 
       page_displays_an_activity(activity_presenter: ActivityPresenter.new(fund_activity))
@@ -38,7 +38,7 @@ RSpec.feature "Users can view fund level activities" do
       scenario "it to show a meaningful link to the activity" do
         activity = create(:activity, :at_purpose_step, organisation: user.organisation, title: nil)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         expect(page).to have_content("Untitled (#{activity.id})")
       end
