@@ -1,0 +1,35 @@
+# frozen_string_literal: true
+
+class Staff::SubmissionsController < Staff::BaseController
+  include Secured
+
+  def edit
+    @submission = Submission.find(id)
+    authorize @submission
+  end
+
+  def update
+    @submission = Submission.find(id)
+    authorize @submission
+
+    @submission.assign_attributes(submission_params)
+    if @submission.valid?
+      @submission.save!
+      @submission.create_activity key: "submission.update", owner: current_user
+      flash[:notice] = I18n.t("action.submission.update.success")
+      redirect_to organisation_path(current_user.organisation)
+    else
+      render :edit
+    end
+  end
+
+  private
+
+  def id
+    params[:id]
+  end
+
+  def submission_params
+    params.require(:submission).permit(:deadline, :description)
+  end
+end

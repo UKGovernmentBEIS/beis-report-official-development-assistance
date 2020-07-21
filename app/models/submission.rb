@@ -15,7 +15,7 @@ class Submission < ApplicationRecord
   def activity_must_be_a_fund
     return unless fund.present?
     unless fund.fund?
-      errors.add(:fund, I18n.t("errors.models.submission.attributes.fund"))
+      errors.add(:fund, I18n.t("activerecord.errors.models.submission.attributes.fund.level"))
     end
   end
 end
