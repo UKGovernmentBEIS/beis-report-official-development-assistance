@@ -28,7 +28,7 @@ RSpec.describe "Users can edit a planned disbursement" do
         project = create(:project_activity, organisation: user.organisation)
         planned_disbursement = create(:planned_disbursement, parent_activity: project)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
         click_on(project.title)
         within("##{planned_disbursement.id}") do
           click_on(I18n.t("default.link.edit"))

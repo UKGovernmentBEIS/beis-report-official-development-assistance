@@ -12,7 +12,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         budget = create(:budget, parent_activity: fund_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_link fund_activity.title
 
@@ -25,7 +25,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         budget_2 = create(:budget, parent_activity: fund_activity, period_start_date: 1.year.ago, period_end_date: Date.yesterday)
         budget_3 = create(:budget, parent_activity: fund_activity, period_start_date: 2.years.ago, period_end_date: 1.year.ago)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_link fund_activity.title
         expect(page.find(:xpath, "//table[@class = 'govuk-table budgets']/tbody/tr[1]")[:id]).to eq(budget_1.id)
@@ -42,7 +42,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         budget = create(:budget, parent_activity: programme_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_link fund_activity.title
         click_on I18n.t("tabs.activity.children")
@@ -62,7 +62,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         budget = create(:budget, parent_activity: project_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_link fund_activity.title
         click_on I18n.t("tabs.activity.children")
@@ -80,7 +80,7 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         budget = create(:budget, parent_activity: project_activity)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_link fund_activity.title
         click_on I18n.t("tabs.activity.children")
@@ -102,12 +102,15 @@ RSpec.feature "Users can view budgets on an activity page" do
     context "when the activity is programme level" do
       scenario "budget information is shown on the page" do
         programme_activity = create(:programme_activity, extending_organisation: user.organisation)
-
+        project_activity = create(:project_activity, organisation: user.organisation, parent: programme_activity)
         budget = create(:budget, parent_activity: programme_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
-        visit organisation_path(user.organisation)
-
+        visit activities_path
+        within "##{project_activity.id}" do
+          click_link I18n.t("table.body.activity.view_activity")
+        end
+        click_link I18n.t("tabs.activity.details")
         click_link programme_activity.title
 
         budget_information_is_shown_on_page(budget_presenter)
@@ -118,9 +121,7 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         budget = create(:budget, parent_activity: programme_activity)
 
-        visit organisation_path(user.organisation)
-
-        click_link programme_activity.title
+        visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
         within "##{budget.id}" do
           expect(page).to_not have_content I18n.t("default.link.edit")
@@ -136,7 +137,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         budget = create(:budget, parent_activity: project_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_link programme_activity.title
         click_on I18n.t("tabs.activity.children")
@@ -151,7 +152,7 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         budget = create(:budget, parent_activity: project_activity)
 
-        visit organisation_path(user.organisation)
+        visit activities_path
 
         click_link programme_activity.title
         click_on I18n.t("tabs.activity.children")
