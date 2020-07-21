@@ -115,6 +115,46 @@ RSpec.feature "Users can view an activity" do
       end
     end
 
+    context "whent the activity is a project" do
+      scenario "they see a list of all their third-party projects" do
+        project = create(:project_activity)
+        third_party_project = create(:third_party_project_activity, parent: project)
+
+        visit organisation_activity_children_path(project.organisation, project)
+
+        within("##{third_party_project.id}") do
+          expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
+          expect(page).to have_content third_party_project.identifier
+          expect(page).to have_content third_party_project.parent.title
+        end
+      end
+
+      scenario "they see 'Incomplete' next to incomplete third-party projects" do
+        project = create(:project_activity)
+        incomplete_third_party_project = create(:project_activity, :at_identifier_step, parent: project)
+
+        visit organisation_activity_children_path(user.organisation, project)
+
+        within("##{incomplete_third_party_project.id}") do
+          expect(page).to have_link incomplete_third_party_project.title
+          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
+        end
+      end
+
+      scenario "they see a Publish to Iati column & status against third-party projects" do
+        project = create(:project_activity)
+        third_party_project = create(:third_party_project_activity, parent: project)
+
+        visit organisation_activity_children_path(project.organisation, project)
+
+        expect(page).to have_content I18n.t("summary.label.activity.publish_to_iati.label")
+
+        within("##{third_party_project.id}") do
+          expect(page).to have_content "Yes"
+        end
+      end
+    end
+
     scenario "the activity financials can be viewed" do
       activity = create(:activity, organisation: user.organisation)
       transaction = create(:transaction, parent_activity: activity)
@@ -210,6 +250,19 @@ RSpec.feature "Users can view an activity" do
 
       expect(page).not_to have_link parent_activity.title, href: organisation_activity_path(parent_activity.organisation, parent_activity)
       expect(page).to have_content parent_activity.title
+    end
+
+    scenario "they do not see a Publish to Iati column & status against third-party projects" do
+      project = create(:project_activity)
+      third_party_project = create(:third_party_project_activity, parent: project)
+
+      visit organisation_activity_children_path(project.organisation, project)
+
+      expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
+
+      within("##{third_party_project.id}") do
+        expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.yes")
+      end
     end
   end
 end
