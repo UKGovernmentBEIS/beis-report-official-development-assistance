@@ -17,9 +17,11 @@ feature "Organisation show page" do
   let!(:incomplete_third_party_project) { create(:third_party_project_activity, :at_region_step, parent: project, organisation: delivery_partner_user.organisation) }
   let!(:another_programme) { create(:programme_activity) }
   let!(:another_project) { create(:project_activity) }
+  let!(:submission) { create(:submission, organisation: delivery_partner_user.organisation) }
+  let!(:other_submission) { create(:submission, organisation: create(:organisation)) }
 
   context "when signed in as a BEIS user" do
-    context "when viewing the BEIS oganisation" do
+    context "when viewing the BEIS organisation" do
       before do
         authenticate!(user: beis_user)
         visit organisation_path(beis_user.organisation)
@@ -149,6 +151,17 @@ feature "Organisation show page" do
       scenario "they see a edit details button" do
         expect(page).to have_link I18n.t("page_content.organisation.button.edit_details"), href: edit_organisation_path(beis_user.organisation)
       end
+
+      scenario "they see all submissions" do
+        expect(page).to have_content "Submissions"
+
+        within(".submissions") do
+          expect(page).to have_content submission.organisation.name
+          expect(page).to have_content submission.description
+          expect(page).to have_content other_submission.organisation.name
+          expect(page).to have_content other_submission.description
+        end
+      end
     end
 
     context "when viewing a delivery partners organisation" do
@@ -254,6 +267,21 @@ feature "Organisation show page" do
 
     scenario "they do not see the edit detials button" do
       expect(page).not_to have_link I18n.t("page_content.organisation.button.edit_details"), href: edit_organisation_path(delivery_partner_user.organisation)
+    end
+
+    scenario "they see their own submissions" do
+      expect(page).to have_content "Submissions"
+      within(".submissions") do
+        expect(page).to have_content submission.organisation.name
+        expect(page).to have_content submission.description
+      end
+    end
+
+    scenario "they do not see submissions belonging to other organisations" do
+      within(".submissions") do
+        expect(page).to_not have_content other_submission.organisation.name
+        expect(page).to_not have_content other_submission.description
+      end
     end
   end
 end
