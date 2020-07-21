@@ -27,30 +27,6 @@ feature "Organisation show page" do
         visit organisation_path(beis_user.organisation)
       end
 
-      scenario "they see a list of all third-party projects" do
-        within("##{third_party_project.id}") do
-          expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
-          expect(page).to have_content third_party_project.identifier
-          expect(page).to have_content third_party_project.parent.title
-        end
-      end
-
-      scenario "they see 'Incomplete' next to incomplete third-party projects" do
-        within("##{incomplete_third_party_project.id}") do
-          expect(page).to have_link incomplete_third_party_project.title
-          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
-        end
-      end
-
-      scenario "they see a Publish to Iati column & status against third-party projects" do
-        within(".third-party-projects") do
-          expect(page).to have_content I18n.t("summary.label.activity.publish_to_iati.label")
-        end
-
-        within("##{third_party_project.id}") do
-          expect(page).to have_content "Yes"
-        end
-      end
       scenario "they see the organisation details" do
         expect(page).to have_content beis_user.organisation.name
         expect(page).to have_content beis_user.organisation.iati_reference
@@ -94,30 +70,6 @@ feature "Organisation show page" do
 
     scenario "they do not see a create fund button" do
       expect(page).not_to have_button I18n.t("page_content.organisation.button.create_activity")
-    end
-
-    scenario "they see a list of all their third-party projects" do
-      within("##{third_party_project.id}") do
-        expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
-        expect(page).to have_content third_party_project.identifier
-        expect(page).to have_content third_party_project.parent.title
-      end
-    end
-
-    scenario "they do not see a Publish to Iati column & status against third-party projects" do
-      within(".third-party-projects") do
-        expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
-      end
-
-      within("##{third_party_project.id}") do
-        expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.yes")
-      end
-    end
-
-    scenario "they do not see third-party projects that belong to another organisation" do
-      other_third_party_project = create(:third_party_project_activity, organisation: create(:delivery_partner_organisation))
-
-      expect(page).to_not have_content(other_third_party_project.title)
     end
 
     scenario "they do not see the edit detials button" do

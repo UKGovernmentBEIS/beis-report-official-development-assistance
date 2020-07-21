@@ -79,8 +79,7 @@ RSpec.describe "Users can create a planned disbursement" do
           user.update(organisation: government_devlivery_partner)
           project = create(:third_party_project_activity, organisation: user.organisation)
 
-          visit organisation_path(user.organisation)
-          click_on project.title
+          visit organisation_activity_path(user.organisation, project)
           click_on I18n.t("page_content.planned_disbursements.button.create")
 
           expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
@@ -113,8 +112,7 @@ RSpec.describe "Users can create a planned disbursement" do
           user.update(organisation: non_government_devlivery_partner)
           project = create(:third_party_project_activity, organisation: user.organisation)
 
-          visit organisation_path(user.organisation)
-          click_on project.title
+          visit organisation_activity_path(user.organisation, project)
           click_on I18n.t("page_content.planned_disbursements.button.create")
 
           expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_name"), with: non_government_devlivery_partner.name)

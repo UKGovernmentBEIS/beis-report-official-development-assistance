@@ -17,18 +17,11 @@
           = t("page_content.organisation.download.projects.explanation")
         = link_to t("default.button.download_as_xml"), organisation_path(@organisation_presenter, format: :xml, level: :project), class: "govuk-button"
 
-
-  - if policy(:third_party_project).index?
-    .govuk-grid-row
-      .govuk-grid-column-full
-        %h2.govuk-heading-m
-          = t("page_content.organisation.third_party_projects")
-
-        = render partial: "staff/shared/third_party_projects/table", locals: { third_party_projects: @third_party_project_activities }
-
   - if policy(@organisation_presenter).download? && @third_party_project_activities.present?
     .govuk-grid-row
       .govuk-grid-column-full.download-third-party-projects
+        %h2.govuk-heading-m
+          = t("page_content.organisation.third_party_projects")
         %div.govuk-body
           = t("page_content.organisation.download.third-party-projects.explanation")
         = link_to t("default.button.download_as_xml"), organisation_path(@organisation_presenter, format: :xml, level: :third_party_project), class: "govuk-button"
