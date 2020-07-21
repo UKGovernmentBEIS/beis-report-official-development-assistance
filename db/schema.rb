@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_26_100128) do
+ActiveRecord::Schema.define(version: 2020_07_16_130243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -127,6 +127,17 @@ ActiveRecord::Schema.define(version: 2020_06_26_100128) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["parent_activity_id"], name: "index_planned_disbursements_on_parent_activity_id"
+  end
+
+  create_table "submissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "state", default: 0, null: false
+    t.string "description"
+    t.uuid "fund_id"
+    t.uuid "organisation_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["fund_id"], name: "index_submissions_on_fund_id"
+    t.index ["organisation_id"], name: "index_submissions_on_organisation_id"
   end
 
   create_table "transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

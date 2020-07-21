@@ -1,0 +1,18 @@
+title,identifier,gcrf,newton_fund
+British Council,GB-GOV-OT313,false,true
+Met Office,GB-GOV-EA46,false,true
+UK Space Agency,GB-GOV-EA31,true,false
+Academy of Medical Sciences,GB-COH-03520281,true,true
+Royal Society,GB-COH-RC000519,true,true
+Royal Academy of Engineering,GB-CHC-293074,true,true
+British Academy,GB-COH-RC000053,true,true
+UKRI - Central,,true,true
+UKRI - ESRC,,true,true
+UKRI - EPSRC,,true,true
+UKRI - AHRC,,true,true
+UKRI - STFC,,true,true
+UKRI - BBSRC,,true,true
+UKRI - NERC,,true,true
+UKRI - MRC,,true,true
+UKRI - InnovateUK,,true,true
+UKRI - Research England,,true,false

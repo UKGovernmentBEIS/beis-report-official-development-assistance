@@ -1,0 +1,21 @@
+---
+en:
+  table:
+    header:
+      submission:
+        state: State
+        description: Reporting period
+        organisation: Organisation
+        fund: Level A
+  page_content:
+    submissions: Submissions
+  label:
+    submission:
+     state:
+       inactive: Inactive
+  errors:
+    models:
+      submission:
+        attributes:
+          fund: must be a fund-level Activity
+
