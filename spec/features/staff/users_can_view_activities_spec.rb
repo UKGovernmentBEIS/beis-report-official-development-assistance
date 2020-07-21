@@ -71,6 +71,44 @@ RSpec.feature "Users can view activities" do
     let(:user) { create(:delivery_partner_user) }
     before { authenticate!(user: user) }
 
+    scenario "they see a list of all their projects" do
+      project = create(:project_activity, organisation: user.organisation)
+
+      visit activities_path
+
+      within("##{project.id}") do
+        expect(page).to have_link project.title, href: organisation_activity_path(project.organisation, project)
+        expect(page).to have_content project.identifier
+      end
+    end
+
+    scenario "the list of projects is ordered by created_at (oldest first)" do
+      project = create(:project_activity, organisation: user.organisation)
+      another_project = create(:project_activity, organisation: user.organisation, created_at: 2.days.ago)
+
+      visit activities_path
+
+      expect(page.find("table tbody tr:first-child")[:id]).to have_content(another_project.id)
+      expect(page.find("table tbody tr:last-child")[:id]).to have_content(project.id)
+    end
+
+    scenario "they do not see a Publish to Iati column & status against projects" do
+      programme = create(:programme_activity)
+      project = create(:project_activity, organisation: user.organisation, parent: programme)
+
+      visit activities_path
+      click_on project.title
+      click_on I18n.t("tabs.activity.details")
+      click_on programme.title
+      click_on I18n.t("tabs.activity.children")
+
+      expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
+
+      within("##{project.id}") do
+        expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.yes")
+      end
+    end
+
     scenario "the activity financials can be viewed" do
       activity = create(:project_activity, organisation: user.organisation)
       transaction = create(:transaction, parent_activity: activity)
@@ -112,11 +150,14 @@ RSpec.feature "Users can view activities" do
     end
 
     scenario "an activity can be viewed" do
-      activity = create(:project_activity, organisation: user.organisation)
+      programme = create(:programme_activity, organisation: user.organisation)
+      activity = create(:project_activity, parent: programme)
 
-      visit organisation_path(user.organisation)
+      visit activities_path
 
-      click_on(activity.title)
+      click_on(programme.title)
+      click_on I18n.t("tabs.activity.children")
+      click_on activity.title
       click_on I18n.t("tabs.activity.details")
 
       activity_presenter = ActivityPresenter.new(activity)
