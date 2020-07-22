@@ -16,6 +16,7 @@ class Staff::SubmissionsController < Staff::BaseController
     if @submission.valid?
       @submission.save!
       @submission.create_activity key: "submission.update", owner: current_user
+      activate_submission
       flash[:notice] = I18n.t("action.submission.update.success")
       redirect_to organisation_path(current_user.organisation)
     else
@@ -31,5 +32,13 @@ class Staff::SubmissionsController < Staff::BaseController
 
   def submission_params
     params.require(:submission).permit(:deadline, :description)
+  end
+
+  def activate_submission
+    if @submission.deadline.present? && @submission.deadline > Date.today
+      @submission.state = :active
+      @submission.save!
+      @submission.create_activity key: "submission.activate", owner: current_user
+    end
   end
 end

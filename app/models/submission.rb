@@ -11,7 +11,7 @@ class Submission < ApplicationRecord
   validate :activity_must_be_a_fund
   validates :deadline, date_not_in_past: true
 
-  enum state: [:inactive]
+  enum state: [:inactive, :active]
 
   def activity_must_be_a_fund
     return unless fund.present?
