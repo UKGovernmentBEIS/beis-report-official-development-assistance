@@ -211,13 +211,14 @@
 - Selecting an activity level now includes more explanation of the hierarchy
 - Activities show their child activities in a tab
 - Activities link to their parent activity in the details tab
-- Add Submission model, tests and fixtures. Seed database with a Submission per 
-  Organisation/Fund pair. Show a basic Submission table on the user's home page. 
-- Fund, programme, project and third-party project activities are no longer 
+- Add Submission model, tests and fixtures. Seed database with a Submission per
+  Organisation/Fund pair. Show a basic Submission table on the user's home page.
+- Fund, programme, project and third-party project activities are no longer
   shown on the home page
 - Submission descriptions can be edited. A deadline attribute has also been added 
   to the Submission model; setting a deadline moves the Submission into the "active"
   state  
+- Migrate UKSA GCRF activities from Level C to Level D
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...HEAD
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11
