@@ -6,6 +6,28 @@ RSpec.feature "BEIS users can edit a submission" do
 
   context "Logged in as a BEIS user" do
     scenario "they can edit a Submission to set the deadline" do
+      user = create(:beis_user)
+      authenticate!(user: user)
+
+      visit organisation_path(user.organisation)
+
+      within "##{submission.id}" do
+        click_on I18n.t("default.link.edit")
+      end
+
+      fill_in "submission[deadline(3i)]", with: "31"
+      fill_in "submission[deadline(2i)]", with: "1"
+      fill_in "submission[deadline(1i)]", with: "2021"
+
+      click_on I18n.t("default.button.submit")
+
+      expect(page).to have_content I18n.t("action.submission.update.success")
+      within "##{submission.id}" do
+        expect(page).to have_content("31 Jan 2021")
+      end
+    end
+
+    scenario "editing a Submission creates a log in PublicActivity" do
       PublicActivity.with_tracking do
         user = create(:beis_user)
         authenticate!(user: user)
@@ -22,10 +44,6 @@ RSpec.feature "BEIS users can edit a submission" do
 
         click_on I18n.t("default.button.submit")
 
-        expect(page).to have_content I18n.t("action.submission.update.success")
-        within "##{submission.id}" do
-          expect(page).to have_content("31 Jan 2021")
-        end
         auditable_events = PublicActivity::Activity.where(trackable_id: submission.id)
         expect(auditable_events.map(&:key)).to include "submission.update"
         expect(auditable_events.first.owner_id).to eq user.id
@@ -50,6 +68,53 @@ RSpec.feature "BEIS users can edit a submission" do
 
       expect(page).to_not have_content I18n.t("action.submission.update.success")
       expect(page).to have_content I18n.t("activerecord.errors.models.submission.attributes.deadline.not_in_past")
+    end
+
+    scenario "setting a Submission's deadline changes its state to 'active'" do
+      user = create(:beis_user)
+      authenticate!(user: user)
+
+      visit organisation_path(user.organisation)
+
+      within "##{submission.id}" do
+        expect(page).to have_content I18n.t("label.submission.state.inactive")
+        click_on I18n.t("default.link.edit")
+      end
+
+      fill_in "submission[deadline(3i)]", with: "31"
+      fill_in "submission[deadline(2i)]", with: "1"
+      fill_in "submission[deadline(1i)]", with: "2021"
+
+      click_on I18n.t("default.button.submit")
+
+      expect(page).to have_content I18n.t("action.submission.update.success")
+      within "##{submission.id}" do
+        expect(page).to have_content I18n.t("label.submission.state.active")
+      end
+    end
+
+    scenario "setting a Submission's deadline logs an activity in PublicActivity" do
+      PublicActivity.with_tracking do
+        user = create(:beis_user)
+        authenticate!(user: user)
+
+        visit organisation_path(user.organisation)
+
+        within "##{submission.id}" do
+          expect(page).to have_content I18n.t("label.submission.state.inactive")
+          click_on I18n.t("default.link.edit")
+        end
+
+        fill_in "submission[deadline(3i)]", with: "31"
+        fill_in "submission[deadline(2i)]", with: "1"
+        fill_in "submission[deadline(1i)]", with: "2021"
+
+        click_on I18n.t("default.button.submit")
+
+        auditable_event = PublicActivity::Activity.find_by(trackable_id: submission.id)
+        expect(auditable_event.key).to eq "submission.activate"
+        expect(auditable_event.owner_id).to eq user.id
+      end
     end
 
     scenario "they can edit a Submission to change the description (Reporting Period)" do
