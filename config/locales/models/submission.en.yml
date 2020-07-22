@@ -42,3 +42,5 @@ en:
               blank: Reporting period can't be bank
             fund:
               level: Activity must be a fund-level Activity
+            deadline:
+              not_in_past: The deadline must be a date in the future

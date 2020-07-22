@@ -32,6 +32,26 @@ RSpec.feature "BEIS users can edit a submission" do
       end
     end
 
+    scenario "the deadline cannot be in the past" do
+      user = create(:beis_user)
+      authenticate!(user: user)
+
+      visit organisation_path(user.organisation)
+
+      within "##{submission.id}" do
+        click_on I18n.t("default.link.edit")
+      end
+
+      fill_in "submission[deadline(3i)]", with: "31"
+      fill_in "submission[deadline(2i)]", with: "1"
+      fill_in "submission[deadline(1i)]", with: "2001"
+
+      click_on I18n.t("default.button.submit")
+
+      expect(page).to_not have_content I18n.t("action.submission.update.success")
+      expect(page).to have_content I18n.t("activerecord.errors.models.submission.attributes.deadline.not_in_past")
+    end
+
     scenario "they can edit a Submission to change the description (Reporting Period)" do
       user = create(:beis_user)
       authenticate!(user: user)
