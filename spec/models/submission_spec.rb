@@ -26,4 +26,9 @@ RSpec.describe Submission, type: :model do
     new_submission = build(:submission, organisation: organisation, fund: fund)
     expect(new_submission).not_to be_valid
   end
+
+  it "does not allow a Deadline which is in the past" do
+    submission = build(:submission, deadline: Date.yesterday)
+    expect(submission).not_to be_valid
+  end
 end
