@@ -9,7 +9,7 @@ class Submission < ApplicationRecord
 
   validates_uniqueness_of :fund, scope: :organisation
   validate :activity_must_be_a_fund
-  validates :deadline, date_not_in_past: true
+  validates :deadline, date_not_in_past: true, date_within_boundaries: true
 
   enum state: [:inactive, :active]
 

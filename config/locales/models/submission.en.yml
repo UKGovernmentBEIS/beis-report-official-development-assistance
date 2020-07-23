@@ -45,3 +45,4 @@ en:
               level: Activity must be a fund-level Activity
             deadline:
               not_in_past: The deadline must be a date in the future
+              between: Date must be between %{min} years ago and %{max} years in the future
