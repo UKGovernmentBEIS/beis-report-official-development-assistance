@@ -215,6 +215,9 @@
   Organisation/Fund pair. Show a basic Submission table on the user's home page. 
 - Fund, programme, project and third-party project activities are no longer 
   shown on the home page
+- Submission descriptions can be edited. A deadline attribute has also been added 
+  to the Submission model; setting a deadline moves the Submission into the "active"
+  state  
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...HEAD
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11
