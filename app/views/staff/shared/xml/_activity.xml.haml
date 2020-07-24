@@ -2,7 +2,7 @@
   - if activity.previous_identifier?
     %iati-identifier= activity.previous_identifier
   - else
-    %iati-identifier= activity.iati_identifier
+    %iati-identifier= activity.transparency_identifier
   %reporting-org{"type" => activity.reporting_organisation.organisation_type, "ref" => activity.reporting_organisation.iati_reference }
     %narrative= activity.reporting_organisation.name
   %title
