@@ -207,4 +207,12 @@ FactoryBot.define do
     extending_organisation_id { nil }
     parent { nil }
   end
+
+  trait :with_transparency_identifier do
+    after(:create) do |activity|
+      parent_identifier = activity.parent.present? ? "#{activity.parent.identifier}-" : ""
+      activity.transparency_identifier = "#{parent_identifier}#{activity.identifier}"
+      activity.save
+    end
+  end
 end
