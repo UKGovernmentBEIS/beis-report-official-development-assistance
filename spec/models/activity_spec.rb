@@ -529,7 +529,7 @@ RSpec.describe Activity, type: :model do
           fund = programme.parent
 
           expect(programme.iati_identifier)
-              .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}")
+            .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}")
         end
       end
     end
@@ -543,7 +543,7 @@ RSpec.describe Activity, type: :model do
           fund = programme.parent
 
           expect(project.iati_identifier)
-              .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}-#{project.identifier}")
+            .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}-#{project.identifier}")
         end
       end
     end
@@ -558,7 +558,7 @@ RSpec.describe Activity, type: :model do
           fund = programme.parent
 
           expect(third_party_project.iati_identifier)
-              .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}-#{project.identifier}-#{third_party_project.identifier}")
+            .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}-#{project.identifier}-#{third_party_project.identifier}")
         end
       end
     end
