@@ -32,6 +32,13 @@
       = activity_presenter.identifier
     %dd.govuk-summary-list__actions
 
+  .govuk-summary-list__row.transparency-identifier
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.transparency_identifier")
+    %dd.govuk-summary-list__value
+      = activity_presenter.transparency_identifier
+    %dd.govuk-summary-list__actions
+
   .govuk-summary-list__row.title
     %dt.govuk-summary-list__key
       = t("summary.label.activity.title", level: activity_presenter.level).capitalize
