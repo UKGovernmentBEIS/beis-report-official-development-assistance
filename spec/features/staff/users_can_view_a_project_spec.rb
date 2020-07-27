@@ -68,9 +68,8 @@ RSpec.feature "Users can view a project" do
       fund = create(:fund_activity)
       programme = create(:programme_activity)
       fund.child_activities << programme
-      project = create(:project_activity, organisation: user.organisation)
+      project = create(:project_activity, organisation: user.organisation, transparency_identifier: "GB-GOV-13-PROJECT")
       programme.child_activities << project
-      project_presenter = ActivityXmlPresenter.new(project)
 
       visit organisation_activity_path(project.organisation, project)
 
@@ -82,7 +81,7 @@ RSpec.feature "Users can view a project" do
 
       header = page.response_headers["Content-Disposition"]
       expect(header).to match(/^attachment/)
-      expect(header).to match(/filename=\"#{project_presenter.iati_identifier}.xml\"$/)
+      expect(header).to match(/filename=\"#{project.transparency_identifier}.xml\"$/)
     end
   end
 end

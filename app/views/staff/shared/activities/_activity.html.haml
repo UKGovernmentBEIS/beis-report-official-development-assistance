@@ -31,8 +31,13 @@
     %dd.govuk-summary-list__value
       = activity_presenter.identifier
     %dd.govuk-summary-list__actions
-      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :identifier)
-        = a11y_action_link(t("default.link.edit"), activity_step_path(activity_presenter, :identifier), t("summary.label.activity.identifier").downcase)
+
+  .govuk-summary-list__row.transparency-identifier
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.transparency_identifier")
+    %dd.govuk-summary-list__value
+      = activity_presenter.transparency_identifier
+    %dd.govuk-summary-list__actions
 
   .govuk-summary-list__row.title
     %dt.govuk-summary-list__key
