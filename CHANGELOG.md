@@ -219,6 +219,8 @@
   to the Submission model; setting a deadline moves the Submission into the "active"
   state  
 - Migrate UKSA GCRF activities from Level C to Level D
+- Add new `transparency_identifier` field which will be the identifier used in the
+  IATI XML. This field is non-editable.
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...HEAD
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11
