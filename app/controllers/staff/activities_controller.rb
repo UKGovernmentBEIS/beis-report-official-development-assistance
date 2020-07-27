@@ -25,8 +25,7 @@ class Staff::ActivitiesController < Staff::BaseController
         redirect_to organisation_activity_financials_path(@activity.organisation, @activity)
       end
       format.xml do |_format|
-        @activity_xml_presenter = ActivityXmlPresenter.new(@activity)
-        response.headers["Content-Disposition"] = "attachment; filename=\"#{@activity_xml_presenter.iati_identifier}.xml\""
+        response.headers["Content-Disposition"] = "attachment; filename=\"#{@activity.transparency_identifier}.xml\""
       end
     end
   end

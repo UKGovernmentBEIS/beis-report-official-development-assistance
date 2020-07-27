@@ -58,6 +58,7 @@ class Staff::ActivityFormsController < Staff::BaseController
       end
     when :identifier
       @activity.assign_attributes(identifier: identifier)
+      add_transparency_identifier
     when :purpose
       @activity.assign_attributes(title: title, description: description)
     when :sector_category
@@ -196,5 +197,9 @@ class Staff::ActivityFormsController < Staff::BaseController
   def country_to_region_mapping
     yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.yml"))
     yaml["data"]
+  end
+
+  def add_transparency_identifier
+    @activity.update(transparency_identifier: @activity.iati_identifier)
   end
 end

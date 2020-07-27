@@ -51,6 +51,19 @@ RSpec.feature "Users can create a programme activity" do
       expect(activity.accountable_organisation_type).to eq("10")
     end
 
+    scenario "the activity saves its identifier as read-only `transparency_identifier`" do
+      fund = create(:activity, level: :fund, organisation: user.organisation)
+      identifier = "a-programme"
+
+      visit activities_path
+      click_on(I18n.t("page_content.organisation.button.create_activity"))
+
+      fill_in_activity_form(identifier: identifier, level: "programme", parent: fund)
+
+      activity = Activity.find_by(identifier: identifier)
+      expect(activity.transparency_identifier).to eql("GB-GOV-13-#{fund.identifier}-#{activity.identifier}")
+    end
+
     scenario "programme creation is tracked with public_activity" do
       fund = create(:activity, level: :fund, organisation: user.organisation)
 
