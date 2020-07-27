@@ -154,6 +154,16 @@ RSpec.feature "Users can edit an activity" do
           end
         end
 
+        it "does not show an edit link for the transparency identifier" do
+          activity = create(:fund_activity, organisation: user.organisation)
+
+          visit organisation_activity_details_path(activity.organisation, activity)
+
+          within(".transparency-identifier") do
+            expect(page).to_not have_content I18n.t("default.link.edit")
+          end
+        end
+
         it "tracks activity updates with public_activity" do
           activity = create(:fund_activity, organisation: user.organisation)
           new_title = "A new title"

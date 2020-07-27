@@ -104,6 +104,7 @@ en:
           label: Publish to IATI?
           'false': 'No'
           'true': 'Yes'
+        transparency_identifier: "Transparency identifier"
   table:
     header:
       activity:
