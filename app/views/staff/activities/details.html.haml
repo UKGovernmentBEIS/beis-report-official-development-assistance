@@ -1,6 +1,5 @@
 = content_for :page_title_prefix, t("document_title.activity.details", name: @activity.title)
 
-= link_to t("default.link.back"), activity_back_path(current_user: current_user, activity: @activity), class: "govuk-back-link"
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full
@@ -23,27 +22,25 @@
           %li.govuk-tabs__list-item
             = link_to t("tabs.activity.financials"),
               organisation_activity_financials_path(@activity.organisation, @activity),
-              { class: "govuk-tabs__tab", role: "tab", tabindex: 0, aria: { controls: "financials", selected: true } }
+              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "financials", selected: true } }
           %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
             = link_to t("tabs.activity.details"),
               organisation_activity_details_path(@activity.organisation, @activity),
-              { class: "govuk-tabs__tab", role: "tab", tabindex: -1, aria: { controls: "details", selected: false } }
+              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "details", selected: false } }
+          - unless @activity.third_party_project?
+            %li.govuk-tabs__list-item
+              = link_to t("tabs.activity.children"),
+                organisation_activity_children_path(@activity.organisation, @activity),
+                { class: "govuk-tabs__tab", role: "tab", aria: { controls: "children", selected: false } }
 
         .govuk-tabs__panel
           %h2.govuk-heading-l
             = t("page_title.activity.details")
 
           = render partial: "staff/shared/activities/activity", locals: { activity_presenter: ActivityPresenter.new(@activity) }
-          - if @activity.fund? && policy(:fund).create?
-            = render partial: "staff/shared/activities/programmes", locals: { activity: @activity, activities: @activities }
 
-          - if @activity.programme?
-            = render partial: "staff/shared/activities/projects", locals: { activity: @activity, activities: @activities }
           - if @activity.programme? && policy(:programme).create?
             = render partial: "staff/shared/activities/extending_organisation", locals: { activity: @activity }
-
-          - if @activity.project?
-            = render partial: "staff/shared/activities/third_party_projects", locals: { activity: @activity, activities: @activities }
 
           - if @activity.project? || @activity.third_party_project?
             = render partial: "staff/shared/activities/implementing_organisations", locals: { activity: @activity, implementing_organisation_presenters: @implementing_organisation_presenters }

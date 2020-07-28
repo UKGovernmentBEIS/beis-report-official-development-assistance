@@ -55,28 +55,12 @@ RSpec.feature "Users can choose a recipient country" do
         expect(page).to have_selector "li.autocomplete__option", text: "Afghanistan", visible: true
       end
 
-      scenario "typing a complete country name, clicking it in the list and clicking continue saves the country" do
-        fill_in I18n.t("form.label.activity.recipient_country"), with: "Saint Lucia"
-        find("li.autocomplete__option", text: "Saint Lucia").click
-        click_button I18n.t("form.button.activity.submit")
-        click_on I18n.t("default.link.back")
-        click_on I18n.t("tabs.activity.details")
-
-        within(".recipient_country") do
-          expect(page).to have_content "Saint Lucia"
-        end
-      end
-
       scenario "typing a partial match, clicking on the complete match and clicking continue saves the country " do
         fill_in I18n.t("form.label.activity.recipient_country"), with: "saint"
         find("li.autocomplete__option", text: "Saint Lucia").click
         click_button I18n.t("form.button.activity.submit")
-        click_on I18n.t("default.link.back")
-        click_on I18n.t("tabs.activity.details")
-
-        within(".recipient_country") do
-          expect(page).to have_content "Saint Lucia"
-        end
+        click_link I18n.t("default.link.back")
+        expect(page).to have_content "Saint Lucia"
       end
 
       scenario "choosing a recipient country sets a recipient region associated to that country" do

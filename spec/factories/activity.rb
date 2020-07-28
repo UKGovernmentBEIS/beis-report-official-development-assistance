@@ -32,6 +32,7 @@ FactoryBot.define do
       accountable_organisation_reference { "GB-GOV-13" }
       accountable_organisation_type { "10" }
 
+      association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :beis_organisation
       association :reporting_organisation, factory: :beis_organisation
     end
@@ -46,6 +47,7 @@ FactoryBot.define do
       accountable_organisation_reference { "GB-GOV-13" }
       accountable_organisation_type { "10" }
 
+      association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :delivery_partner_organisation
       association :reporting_organisation, factory: :beis_organisation
     end
@@ -142,5 +144,75 @@ FactoryBot.define do
 
   trait :nil_form_state do
     form_state { nil }
+  end
+
+  trait :blank_form_state do
+    form_state { "blank" }
+    title { nil }
+    description { nil }
+    sector { nil }
+    status { nil }
+    planned_start_date { nil }
+    planned_end_date { nil }
+    actual_start_date { nil }
+    actual_end_date { nil }
+    geography { nil }
+    recipient_region { nil }
+    recipient_country { nil }
+    flow { nil }
+    aid_type { nil }
+    extending_organisation_id { nil }
+    parent { nil }
+    level { nil }
+  end
+
+  trait :level_form_state do
+    form_state { "level" }
+    level { nil }
+    identifier { nil }
+    title { nil }
+    description { nil }
+    sector { nil }
+    status { nil }
+    planned_start_date { nil }
+    planned_end_date { nil }
+    actual_start_date { nil }
+    actual_end_date { nil }
+    geography { nil }
+    recipient_region { nil }
+    recipient_country { nil }
+    flow { nil }
+    aid_type { nil }
+    extending_organisation_id { nil }
+    parent { nil }
+  end
+
+  trait :parent_form_state do
+    form_state { "parent" }
+    level { "programme" }
+    identifier { nil }
+    title { nil }
+    description { nil }
+    sector { nil }
+    status { nil }
+    planned_start_date { nil }
+    planned_end_date { nil }
+    actual_start_date { nil }
+    actual_end_date { nil }
+    geography { nil }
+    recipient_region { nil }
+    recipient_country { nil }
+    flow { nil }
+    aid_type { nil }
+    extending_organisation_id { nil }
+    parent { nil }
+  end
+
+  trait :with_transparency_identifier do
+    after(:create) do |activity|
+      parent_identifier = activity.parent.present? ? "#{activity.parent.identifier}-" : ""
+      activity.transparency_identifier = "#{parent_identifier}#{activity.identifier}"
+      activity.save
+    end
   end
 end

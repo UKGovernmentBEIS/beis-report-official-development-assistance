@@ -44,12 +44,11 @@ RSpec.feature "Users can view a third-party project" do
       visit organisation_activity_path(third_party_project.organisation, third_party_project)
 
       expect(page).to have_content third_party_project.title
-      expect(page).to_not have_content I18n.t("page_content.organisation.button.create_third_party_project")
+      expect(page).to_not have_content I18n.t("page_content.organisation.button.create_activity")
     end
 
     scenario "can download a third-party project as XML" do
-      third_party_project = create(:third_party_project_activity)
-      project_presenter = ActivityXmlPresenter.new(third_party_project)
+      third_party_project = create(:third_party_project_activity, transparency_identifier: "GB-GOV-13-PROJECT")
 
       visit organisation_activity_path(third_party_project.organisation, third_party_project)
 
@@ -61,7 +60,7 @@ RSpec.feature "Users can view a third-party project" do
 
       header = page.response_headers["Content-Disposition"]
       expect(header).to match(/^attachment/)
-      expect(header).to match(/filename=\"#{project_presenter.iati_identifier}.xml\"$/)
+      expect(header).to match(/filename=\"#{third_party_project.transparency_identifier}.xml\"$/)
     end
   end
 end

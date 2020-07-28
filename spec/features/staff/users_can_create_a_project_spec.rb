@@ -9,14 +9,11 @@ RSpec.feature "Users can create a project" do
       scenario "a new project can be added to the programme" do
         programme = create(:programme_activity, extending_organisation: user.organisation)
 
-        visit organisation_path(user.organisation)
+        visit organisation_activity_children_path(programme.organisation, programme)
 
-        click_on(programme.title)
-        click_on I18n.t("tabs.activity.details")
+        click_on(I18n.t("page_content.organisation.button.create_activity"))
 
-        click_on(I18n.t("page_content.organisation.button.create_project"))
-
-        fill_in_activity_form(level: "project")
+        fill_in_activity_form(level: "project", parent: programme)
 
         expect(page).to have_content I18n.t("action.project.create.success")
         expect(programme.child_activities.count).to eq 1
@@ -26,18 +23,27 @@ RSpec.feature "Users can create a project" do
         expect(project.organisation).to eq user.organisation
       end
 
+      scenario "the activity saves its identifier as read-only `transparency_identifier`" do
+        programme = create(:programme_activity, extending_organisation: user.organisation)
+        identifier = "a-project"
+
+        visit activities_path
+        click_on(I18n.t("page_content.organisation.button.create_activity"))
+
+        fill_in_activity_form(identifier: identifier, level: "project", parent: programme)
+
+        activity = Activity.find_by(identifier: identifier)
+        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{programme.parent.identifier}-#{programme.identifier}-#{activity.identifier}")
+      end
+
       scenario "project creation is tracked with public_activity" do
         programme = create(:programme_activity, extending_organisation: user.organisation)
 
         PublicActivity.with_tracking do
-          visit organisation_path(user.organisation)
+          visit organisation_activity_children_path(programme.organisation, programme)
+          click_on(I18n.t("page_content.organisation.button.create_activity"))
 
-          click_on(programme.title)
-          click_on I18n.t("tabs.activity.details")
-
-          click_on(I18n.t("page_content.organisation.button.create_project"))
-
-          fill_in_activity_form(level: "project", identifier: "my-unique-identifier")
+          fill_in_activity_form(level: "project", identifier: "my-unique-identifier", parent: programme)
 
           project = Activity.find_by(identifier: "my-unique-identifier")
           auditable_events = PublicActivity::Activity.where(trackable_id: project.id)

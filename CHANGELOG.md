@@ -196,9 +196,36 @@
 - Refactor how we can ask activities for their parents
 - Ingest BA Newton fund data from IATI
 
+## [release-12] - 2020-07-28
+
+- Activity identifiers are unique among siblings
+- add accessibility statement
+- Move budgets to the top of the programme activity financials tab
+- Activity XML includes only recipient-country OR recipient-region, not both
+- Activity creation journey changed to ask for a level and parent
+- Add an activities page and navigation
+- Remove Back links, except on the Activity form
+- Refactor the activity update action
+- Replace generic Rails error pages with styled pages (404, 500 and 422)
+- Activities can be filtered to an organisation
+- Selecting an activity level now includes more explanation of the hierarchy
+- Activities show their child activities in a tab
+- Activities link to their parent activity in the details tab
+- Add Submission model, tests and fixtures. Seed database with a Submission per
+  Organisation/Fund pair. Show a basic Submission table on the user's home page.
+- Fund, programme, project and third-party project activities are no longer
+  shown on the home page
+- Submission descriptions can be edited. A deadline attribute has also been added 
+  to the Submission model; setting a deadline moves the Submission into the "active"
+  state  
+- Migrate UKSA GCRF activities from Level C to Level D
+- Add new `transparency_identifier` field which will be the identifier used in the
+  IATI XML. This field is non-editable.
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...HEAD
+[release-12]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...release-12
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11
 [release-10]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-9...release-10
 [release-9]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-8...release-9

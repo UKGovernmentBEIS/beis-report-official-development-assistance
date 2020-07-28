@@ -7,24 +7,21 @@ Rails.application.routes.draw do
 
     get "privacy-policy" => "privacy_policy#index"
     get "cookie-statement" => "cookie_statement#index"
+    get "accessibility-statement" => "accessibility_statement#index"
   end
 
   scope module: "staff" do
     resource :dashboard, only: :show
     resources :users
+    resources :activities, only: [:index]
     resources :organisations, except: [:destroy] do
-      resources :activities, except: [:destroy] do
+      resources :activities, except: [:index, :destroy] do
         get "financials" => "activity_financials#show"
         get "details" => "activity_details#show"
-      end
-      resources :funds, only: [:create] do
-        resources :programmes, only: [:create] do
-          resources :projects, only: [:create] do
-            resources :third_party_projects, only: [:create]
-          end
-        end
+        get "children" => "activity_children#show"
       end
     end
+    resources :submissions
 
     concern :transactionable do
       resources :transactions, only: [:new, :create, :show, :edit, :update]
@@ -50,4 +47,9 @@ Rails.application.routes.draw do
   get "auth/oauth2/callback" => "auth0#callback"
   get "auth/failure" => "auth0#failure"
   get "sign_out" => "application#sign_out"
+
+  # Errors
+  get "/404", to: "errors#not_found"
+  get "/422", to: "errors#unacceptable"
+  get "/500", to: "errors#internal_server_error"
 end

@@ -6,6 +6,8 @@ class Activity < ApplicationRecord
   UNTIED_TIED_STATUS_CODE = "5"
 
   VALIDATION_STEPS = [
+    :level_step,
+    :parent_step,
     :identifier_step,
     :purpose_step,
     :sector_category_step,
@@ -20,6 +22,8 @@ class Activity < ApplicationRecord
 
   strip_attributes only: [:identifier]
 
+  validates :level, presence: true, on: :level_step
+  validates :parent, presence: true, on: :parent_step, unless: proc { |activity| activity.fund? }
   validates :identifier, presence: true, on: :identifier_step
   validates :title, :description, presence: true, on: :purpose_step
   validates :sector_category, presence: true, on: :sector_category_step
@@ -31,7 +35,7 @@ class Activity < ApplicationRecord
   validates :flow, presence: true, on: :flow_step
   validates :aid_type, presence: true, on: :aid_type_step
 
-  validates_uniqueness_of :identifier, allow_nil: true
+  validates :identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :planned_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.actual_start_date.present? }
   validates :actual_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.planned_start_date.present? }
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
@@ -115,5 +119,18 @@ class Activity < ApplicationRecord
   def providing_organisation
     return organisation if third_party_project? && !organisation.is_government?
     Organisation.find_by(service_owner: true)
+  end
+
+  def parent_level
+    existing_level_index = Activity.levels.keys.index(level)
+    return nil if existing_level_index.zero?
+
+    Activity.levels.keys[existing_level_index - 1]
+  end
+
+  def iati_identifier
+    parent_activities.each_with_object([reporting_organisation.iati_reference]) { |parent, parent_identifiers|
+      parent_identifiers << parent.identifier
+    }.push(identifier).join("-")
   end
 end

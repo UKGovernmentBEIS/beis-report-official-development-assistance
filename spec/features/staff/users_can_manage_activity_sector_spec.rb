@@ -5,7 +5,7 @@ RSpec.feature "Users can manage Sectors" do
 
     context "with a new activity" do
       scenario "they can provide the sector category" do
-        activity = create(:activity, :at_identifier_step, identifier: "GCRF")
+        activity = create(:activity, :at_identifier_step, identifier: "GCRF", organisation: user.organisation)
         visit activity_step_path(activity, :sector_category)
         choose "Basic Education"
         click_button I18n.t("form.button.activity.submit")

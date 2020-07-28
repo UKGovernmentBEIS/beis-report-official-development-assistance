@@ -11,7 +11,7 @@ RSpec.describe FindFundActivities do
   describe "#call" do
     context "when the organisation is the service owner" do
       it "returns all fund activities" do
-        result = described_class.new(organisation: service_owner, current_user: user).call
+        result = described_class.new(organisation: service_owner, user: user).call
 
         expect(result).to match_array [organisation_fund, other_fund]
       end
@@ -19,7 +19,7 @@ RSpec.describe FindFundActivities do
 
     context "when the organisation is not the service owner" do
       it "returns fund activities for this organisation" do
-        result = described_class.new(organisation: other_organisation, current_user: user).call
+        result = described_class.new(organisation: other_organisation, user: user).call
 
         expect(result).to match_array [organisation_fund]
       end

@@ -10,6 +10,150 @@ RSpec.feature "Users can view an activity" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
+    context "and the activity is a fund" do
+      scenario "the child programme activities can be viewed" do
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund)
+
+        visit organisation_activity_children_path(fund.organisation, fund)
+
+        expect(page).to have_content programme.title
+        expect(page).to have_content programme.identifier
+      end
+
+      scenario "the child programme activities are ordered by created_at (oldest first)" do
+        fund = create(:fund_activity)
+        programme_1 = create(:programme_activity,
+          created_at: Date.yesterday,
+          parent: fund)
+        programme_2 = create(:programme_activity,
+          created_at: Date.today,
+          parent: fund)
+
+        visit organisation_activity_children_path(fund.organisation, fund)
+
+        expect(page.find("table.programmes  tbody tr:first-child")[:id]).to have_content(programme_1.id)
+        expect(page.find("table.programmes  tbody tr:last-child")[:id]).to have_content(programme_2.id)
+      end
+
+      scenario "they see 'Incomplete' next to incomplete programmes" do
+        fund = create(:fund_activity)
+        incomplete_programme = create(:programme_activity, :at_purpose_step, parent: fund)
+
+        visit organisation_activity_children_path(fund.organisation, fund)
+
+        within("##{incomplete_programme.id}") do
+          expect(page).to have_link incomplete_programme.title
+          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
+        end
+      end
+
+      scenario "they do not see a Publish to Iati column & status against programmes" do
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund)
+
+        visit organisation_activity_children_path(fund.organisation, fund)
+
+        within(".programmes") do
+          expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
+        end
+
+        within("##{programme.id}") do
+          expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.yes")
+        end
+      end
+    end
+
+    context "and the activity is a programme" do
+      scenario "they view a list of all child projects" do
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund)
+        project = create(:project_activity, parent: programme)
+        another_project = create(:project_activity, parent: programme)
+
+        visit organisation_activity_children_path(programme.organisation, programme)
+
+        within("##{project.id}") do
+          expect(page).to have_link project.title, href: organisation_activity_path(project.organisation, project)
+          expect(page).to have_content project.identifier
+          expect(page).to have_content project.parent.title
+        end
+
+        within("##{another_project.id}") do
+          expect(page).to have_link another_project.title, href: organisation_activity_path(another_project.organisation, another_project)
+          expect(page).to have_content another_project.identifier
+          expect(page).to have_content another_project.parent.title
+        end
+      end
+
+      scenario "they see 'Incomplete' next to incomplete projects" do
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund)
+        incomplete_project = create(:project_activity, :at_purpose_step, parent: programme)
+
+        visit organisation_activity_children_path(programme.organisation, programme)
+        within("##{incomplete_project.id}") do
+          expect(page).to have_link incomplete_project.title
+          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
+        end
+      end
+
+      scenario "they see a Publish to Iati column & status against projects" do
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund)
+        project = create(:project_activity, parent: programme)
+
+        visit organisation_activity_children_path(programme.organisation, programme)
+
+        within(".projects") do
+          expect(page).to have_content I18n.t("summary.label.activity.publish_to_iati.label")
+        end
+
+        within("##{project.id}") do
+          expect(page).to have_content "Yes"
+        end
+      end
+    end
+
+    context "whent the activity is a project" do
+      scenario "they see a list of all their third-party projects" do
+        project = create(:project_activity)
+        third_party_project = create(:third_party_project_activity, parent: project)
+
+        visit organisation_activity_children_path(project.organisation, project)
+
+        within("##{third_party_project.id}") do
+          expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
+          expect(page).to have_content third_party_project.identifier
+          expect(page).to have_content third_party_project.parent.title
+        end
+      end
+
+      scenario "they see 'Incomplete' next to incomplete third-party projects" do
+        project = create(:project_activity)
+        incomplete_third_party_project = create(:project_activity, :at_identifier_step, parent: project)
+
+        visit organisation_activity_children_path(user.organisation, project)
+
+        within("##{incomplete_third_party_project.id}") do
+          expect(page).to have_link incomplete_third_party_project.title
+          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
+        end
+      end
+
+      scenario "they see a Publish to Iati column & status against third-party projects" do
+        project = create(:project_activity)
+        third_party_project = create(:third_party_project_activity, parent: project)
+
+        visit organisation_activity_children_path(project.organisation, project)
+
+        expect(page).to have_content I18n.t("summary.label.activity.publish_to_iati.label")
+
+        within("##{third_party_project.id}") do
+          expect(page).to have_content "Yes"
+        end
+      end
+    end
 
     scenario "the activity financials can be viewed" do
       activity = create(:activity, organisation: user.organisation)
@@ -24,7 +168,19 @@ RSpec.feature "Users can view an activity" do
       expect(page).to have_content budget.value
     end
 
-    scenario "the activity details can be viewed" do
+    scenario "the activity child activities can be viewed in a tab" do
+      activity = create(:activity, organisation: user.organisation)
+
+      visit organisation_activity_children_path(activity.organisation, activity)
+
+      within ".govuk-tabs__list-item--selected" do
+        expect(page).to have_content "Child activities"
+      end
+      expect(page).to have_content activity.title
+      expect(page).to have_button I18n.t("page_content.organisation.button.create_activity")
+    end
+
+    scenario "the activity details tab can be viewed" do
       activity = create(:activity, organisation: user.organisation)
 
       visit organisation_activity_details_path(activity.organisation, activity)
@@ -32,18 +188,6 @@ RSpec.feature "Users can view an activity" do
       within ".govuk-tabs__list-item--selected" do
         expect(page).to have_content "Details"
       end
-      expect(page).to have_content activity.title
-      expect(page).to have_button I18n.t("page_content.organisation.button.create_programme")
-    end
-
-    scenario "an activity can be viewed" do
-      activity = create(:activity, organisation: user.organisation)
-
-      visit organisation_path(user.organisation)
-
-      click_on(activity.title)
-      click_on I18n.t("tabs.activity.details")
-
       activity_presenter = ActivityPresenter.new(activity)
 
       expect(page).to have_content activity_presenter.identifier
@@ -54,6 +198,15 @@ RSpec.feature "Users can view an activity" do
       expect(page).to have_content activity_presenter.planned_end_date
       expect(page).to have_content activity_presenter.recipient_region
       expect(page).to have_content activity_presenter.flow
+    end
+
+    scenario "the activity links to the parent activity" do
+      activity = create(:programme_activity, organisation: user.organisation)
+      parent_activity = activity.parent
+
+      visit organisation_activity_details_path(activity.organisation, activity)
+
+      expect(page).to have_link parent_activity.title, href: organisation_activity_path(parent_activity.organisation, parent_activity)
     end
 
     scenario "a fund activity has human readable date format" do
@@ -83,17 +236,33 @@ RSpec.feature "Users can view an activity" do
         end
       end
     end
+  end
 
-    scenario "can go back to the previous page" do
-      activity = create(:activity, organisation: user.organisation)
+  context "when the user is signed in as a delivery partner" do
+    let(:user) { create(:delivery_partner_user) }
+    before { authenticate!(user: user) }
 
-      visit organisation_activity_path(user.organisation, activity)
+    scenario "a programme activity does not link to its parent activity" do
+      activity = create(:programme_activity, organisation: user.organisation)
+      parent_activity = activity.parent
 
-      click_on I18n.t("default.link.back")
+      visit organisation_activity_details_path(activity.organisation, activity)
 
-      expect(page).to have_current_path(
-        organisation_path(user.organisation)
-      )
+      expect(page).not_to have_link parent_activity.title, href: organisation_activity_path(parent_activity.organisation, parent_activity)
+      expect(page).to have_content parent_activity.title
+    end
+
+    scenario "they do not see a Publish to Iati column & status against third-party projects" do
+      project = create(:project_activity)
+      third_party_project = create(:third_party_project_activity, parent: project)
+
+      visit organisation_activity_children_path(project.organisation, project)
+
+      expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
+
+      within("##{third_party_project.id}") do
+        expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.yes")
+      end
     end
   end
 end

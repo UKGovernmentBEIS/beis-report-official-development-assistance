@@ -3,42 +3,6 @@ require "rails_helper"
 RSpec.describe ActivityHelper, type: :helper do
   let(:organisation) { create(:organisation) }
 
-  describe "#activity_back_path" do
-    context "when the activity is a fund level" do
-      it "returns the organistian path" do
-        user = create(:beis_user)
-        fund = create(:fund_activity)
-
-        result = activity_back_path(current_user: user, activity: fund)
-
-        expect(result).to eq organisation_path(user.organisation)
-      end
-    end
-
-    context "when the activity is a programme level" do
-      context "when the user is a BEIS user" do
-        it "returns the fund path" do
-          user = create(:beis_user)
-          programme_activity = create(:programme_activity)
-
-          result = activity_back_path(current_user: user, activity: programme_activity)
-          expect(result).to eq organisation_activity_path(programme_activity.parent.organisation, programme_activity.parent)
-        end
-      end
-
-      context "when the user is NOT a BEIS user" do
-        it "returns the organisation path" do
-          user = create(:delivery_partner_user)
-          programme_activity = create(:programme_activity)
-
-          result = activity_back_path(current_user: user, activity: programme_activity)
-
-          expect(result).to eq organisation_path(user.organisation)
-        end
-      end
-    end
-  end
-
   describe "#step_is_complete_or_next?" do
     context "when the activity has passed the identification step" do
       it "returns true for the purpose fields" do
@@ -95,6 +59,47 @@ RSpec.describe ActivityHelper, type: :helper do
         all_steps.each do |step|
           expect(helper.step_is_complete_or_next?(activity: activity, step: step)).to be(true)
         end
+      end
+    end
+
+    context "when the activity is a fund" do
+      context "and is at the indetifer step i.e. the parent step has been skipped" do
+        it "returns true" do
+          activity = build(:activity, :level_form_state, level: :fund, parent: nil)
+
+          expect(helper.step_is_complete_or_next?(activity: activity, step: :identifier)).to be(true)
+        end
+      end
+    end
+  end
+
+  describe "#link_to_activity_parent" do
+    context "when there is no parent" do
+      it "returns nil" do
+        expect(helper.link_to_activity_parent(parent: nil, user: nil)).to be_nil
+      end
+    end
+
+    context "when the parent is a fund" do
+      context "and the user is delivery partner" do
+        it "returns the parent title without a link" do
+          parent_activity = create(:fund_activity)
+          _activity = create(:programme_activity, parent: parent_activity)
+          user = create(:delivery_partner_user)
+
+          expect(helper.link_to_activity_parent(parent: parent_activity, user: user)).to eql parent_activity.title
+        end
+      end
+    end
+
+    context "when there is a parent" do
+      it "returns a link to the parent" do
+        parent_activity = create(:fund_activity)
+        _activity = create(:programme_activity, parent: parent_activity)
+        user = create(:beis_user)
+
+        expect(helper.link_to_activity_parent(parent: parent_activity, user: user)).to include organisation_activity_path(parent_activity.organisation, parent_activity)
+        expect(helper.link_to_activity_parent(parent: parent_activity, user: user)).to include parent_activity.title
       end
     end
   end

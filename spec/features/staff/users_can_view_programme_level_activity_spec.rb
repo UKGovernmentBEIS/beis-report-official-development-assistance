@@ -10,10 +10,7 @@ RSpec.feature "Users can view programme level activites" do
         organisation: user.organisation,
         parent: fund_activity)
 
-      visit organisation_path(user.organisation)
-
-      expect(page).to have_content I18n.t("page_content.organisation.programmes")
-
+      visit activities_path
       click_on programme_activity.title
 
       page_displays_an_activity(activity_presenter: ActivityPresenter.new(programme_activity))
@@ -31,10 +28,9 @@ RSpec.feature "Users can view programme level activites" do
         organisation: user.organisation,
         parent: fund_activity,
         extending_organisation: user.organisation)
+      project = create(:project_activity, parent: programme_activity, organisation: user.organisation)
 
-      visit organisation_path(user.organisation)
-      expect(page).not_to have_content I18n.t("page_content.organisation.funds")
-      expect(page).to have_content I18n.t("page_content.organisation.programmes")
+      visit organisation_activity_details_path(user.organisation, project)
       click_on programme_activity.title
 
       page_displays_an_activity(activity_presenter: ActivityPresenter.new(programme_activity))

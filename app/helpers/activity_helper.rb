@@ -4,6 +4,7 @@ module ActivityHelper
 
     return false if activity.form_state.nil?
     return true if activity.form_steps_completed?
+    return true if activity.fund? && step == :identifier
 
     presenter_position = steps.index(step.to_sym)
     activity_position = steps.index(activity.form_state.to_sym)
@@ -11,11 +12,9 @@ module ActivityHelper
     presenter_position <= activity_position + 1
   end
 
-  def activity_back_path(current_user:, activity:)
-    if activity.programme? && current_user.service_owner?
-      return organisation_activity_path(activity.parent.organisation, activity.parent)
-    end
-
-    organisation_path(current_user.organisation)
+  def link_to_activity_parent(parent:, user:)
+    return if parent.nil?
+    return parent.title if parent.fund? && user.delivery_partner?
+    link_to parent.title, organisation_activity_path(parent.organisation, parent), {class: "govuk-link govuk-link--no-visited-state"}
   end
 end

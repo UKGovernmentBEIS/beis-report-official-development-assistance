@@ -12,18 +12,19 @@ RSpec.feature "Users can view an activity as XML" do
           create(:fund_activity,
             organisation: organisation,
             identifier: "IND-ENT-IFIER",
-            previous_identifier: "PREV-IND-ENT-IFIER")
+            previous_identifier: "PREV-IND-ENT-IFIER",
+            transparency_identifier: "GB-GOV-13-IND-ENT-IFIER")
         }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
-        it "shows the previous identifier as the actvitiy identifier" do
+        it "shows the previous identifier as the activity identifier" do
           visit organisation_activity_path(organisation, activity, format: :xml)
 
           expect(xml.at("iati-activity/iati-identifier").text).to eq(activity.previous_identifier)
         end
 
-        it "shows the activity identifier as the other identifier" do
-          iati_identifier = ActivityXmlPresenter.new(activity).iati_identifier
+        it "shows the activity transparency identifier as the other identifier" do
+          iati_identifier = activity.transparency_identifier
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
@@ -89,12 +90,11 @@ RSpec.feature "Users can view an activity as XML" do
         }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
-        it "contains the recipient region code and recipient country code" do
+        it "contains only the recipient country code" do
           visit organisation_activity_path(organisation, activity, format: :xml)
 
           expect(xml.at("iati-activity/recipient-country/@code").text).to eq(activity.recipient_country)
-          expect(xml.at("iati-activity/recipient-region/@code").text).to eq(activity.recipient_region)
-          expect(xml.at("iati-activity/recipient-region/@vocabulary").text).to eq("1")
+          expect(xml.at("iati-activity/recipient-region")).to be_nil
         end
       end
 
@@ -119,16 +119,14 @@ RSpec.feature "Users can view an activity as XML" do
       end
 
       context "when the activity is a fund activity" do
-        let(:activity) { create(:fund_activity, organisation: organisation, identifier: "IND-ENT-IFIER") }
-        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
+        let(:activity) { create(:fund_activity, :with_transparency_identifier, organisation: organisation, identifier: "IND-ENT-IFIER") }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
       end
 
       context "when the activity is a programme activity" do
-        let(:activity) { create(:programme_activity, organisation: organisation, identifier: "IND-ENT-IFIER") }
-        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
+        let(:activity) { create(:programme_activity, :with_transparency_identifier, organisation: organisation, identifier: "IND-ENT-IFIER") }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
@@ -138,7 +136,6 @@ RSpec.feature "Users can view an activity as XML" do
         let(:activity) { create(:project_activity) }
         let(:fund) { create(:fund_activity) }
         let(:programme) { create(:programme_activity) }
-        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it "includes its parent activity in the related-activity field" do
@@ -150,8 +147,7 @@ RSpec.feature "Users can view an activity as XML" do
       end
 
       context "when the activity is a project activity" do
-        let(:activity) { create(:project_activity_with_implementing_organisations, organisation: organisation) }
-        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
+        let(:activity) { create(:project_activity_with_implementing_organisations, :with_transparency_identifier, organisation: organisation) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
@@ -159,7 +155,6 @@ RSpec.feature "Users can view an activity as XML" do
 
       context "when the activity has budgets" do
         let(:activity) { create(:project_activity, organisation: organisation) }
-        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it "only includes budgets which belong to the activity" do
@@ -184,7 +179,6 @@ RSpec.feature "Users can view an activity as XML" do
 
       context "when the activity has transactions" do
         let(:activity) { create(:project_activity, organisation: organisation) }
-        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it "only includes transactions which belong to the activity" do
@@ -208,7 +202,6 @@ RSpec.feature "Users can view an activity as XML" do
 
       context "when the activity has planned disbursements" do
         let(:activity) { create(:project_activity, organisation: organisation) }
-        let(:activity_presenter) { ActivityXmlPresenter.new(activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it "only includes planned disbursements which belong to the activity" do

@@ -19,7 +19,7 @@ RSpec.feature "Users can view a project" do
       project = create(:project_activity, organisation: user.organisation)
       third_party_project = create(:third_party_project_activity, parent: project)
 
-      visit organisation_activity_details_path(project.organisation, project)
+      visit organisation_activity_children_path(project.organisation, project)
 
       expect(page).to have_content third_party_project.title
     end
@@ -32,7 +32,7 @@ RSpec.feature "Users can view a project" do
         project = create(:project_activity, organisation: user.organisation)
         programme.child_activities << project
 
-        visit organisation_activity_details_path(programme.organisation, programme)
+        visit organisation_activity_children_path(programme.organisation, programme)
 
         expect(page).to have_content programme.title
 
@@ -61,16 +61,15 @@ RSpec.feature "Users can view a project" do
       visit organisation_activity_path(project.organisation, project)
 
       expect(page).to have_content project.title
-      expect(page).to_not have_content I18n.t("page_content.organisation.button.create_project")
+      expect(page).to_not have_content I18n.t("page_content.organisation.button.create_activity")
     end
 
     scenario "can download a project as XML" do
       fund = create(:fund_activity)
       programme = create(:programme_activity)
       fund.child_activities << programme
-      project = create(:project_activity, organisation: user.organisation)
+      project = create(:project_activity, organisation: user.organisation, transparency_identifier: "GB-GOV-13-PROJECT")
       programme.child_activities << project
-      project_presenter = ActivityXmlPresenter.new(project)
 
       visit organisation_activity_path(project.organisation, project)
 
@@ -82,7 +81,7 @@ RSpec.feature "Users can view a project" do
 
       header = page.response_headers["Content-Disposition"]
       expect(header).to match(/^attachment/)
-      expect(header).to match(/filename=\"#{project_presenter.iati_identifier}.xml\"$/)
+      expect(header).to match(/filename=\"#{project.transparency_identifier}.xml\"$/)
     end
   end
 end

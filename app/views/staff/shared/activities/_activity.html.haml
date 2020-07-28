@@ -6,14 +6,38 @@
       = activity_presenter.organisation.name
     %dd.govuk-summary-list__actions
 
+  .govuk-summary-list__row.level
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.level")
+    %dd.govuk-summary-list__value
+      = activity_presenter.level
+    %dd.govuk-summary-list__actions
+      - if policy(activity_presenter).update? && activity_presenter.level.blank?
+        = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :level), t("summary.label.activity.level").downcase)
+
+  - unless activity_presenter.fund?
+    .govuk-summary-list__row.parent
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.parent")
+      %dd.govuk-summary-list__value
+        = link_to_activity_parent(parent: activity_presenter.parent, user: current_user)
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && activity_presenter.level.present? && activity_presenter.parent.blank?
+          = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :parent), t("summary.label.activity.parent").downcase)
+
   .govuk-summary-list__row.identifier
     %dt.govuk-summary-list__key
       = t("summary.label.activity.identifier")
     %dd.govuk-summary-list__value
       = activity_presenter.identifier
     %dd.govuk-summary-list__actions
-      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :identifier)
-        = a11y_action_link(t("default.link.edit"), activity_step_path(activity_presenter, :identifier), t("summary.label.activity.identifier").downcase)
+
+  .govuk-summary-list__row.transparency-identifier
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.transparency_identifier")
+    %dd.govuk-summary-list__value
+      = activity_presenter.transparency_identifier
+    %dd.govuk-summary-list__actions
 
   .govuk-summary-list__row.title
     %dt.govuk-summary-list__key

@@ -4,20 +4,25 @@ en:
     activity:
       edit: Activity %{name} - Publish to IATI
       show: Activity %{name}
+      index: Activities
       details: Activity %{name} — Details
       financials: Activity %{name} — Financials
+      children: Activity %{name} — Child activities
       extending_organisation: Activity %{name} — Extending organisation
   form:
     button:
       activity:
         submit: Continue
+    link:
+      activity:
+       back: Back to activity details
     label:
       activity:
         flow: What is the flow type?
         geography_options:
           recipient_region: Region
           recipient_country: Country
-        identifier: Your unique identifier
+        identifier: Enter your unique identifier
         region: Recipient region
         actual_end_date: Actual end date
         actual_start_date: Actual start date
@@ -36,11 +41,13 @@ en:
         actual_end_date: Actual end date (optional)
         actual_start_date: Actual start date (optional)
         geography: Will the benefitting recipient be a region or country?
+        level: Add new activity
+        parent: Select the parent activity
         planned_end_date: Planned end date
         planned_start_date: Planned start date
         purpose: What is the purpose of the %{level}?
         sector: Which %{sector_category} sector is the focus area for this %{level}?
-        sector_category: What is the focus area category for this %{level}?
+        sector_category: What area of the economy or society is the %{level} helping?
         status: What is the status of the %{level}?
     hint:
       activity:
@@ -48,11 +55,18 @@ en:
         actual_start_date: For example, 11 1 2020
         aid_type: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)</a>
         flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
-        identifier: This could be the reference you use in your internal systems
+        identifier: This could be the reference you use in your internal systems. This value cannot be edited once it is set
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
-        sector_category: What area of the economy or society is your %{level} helping? For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
+        sector_category: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
         title: A short title that explains the purpose of the %{level}
+        level: Select the type of activity
+        level_step:
+          fund: Total fund allocation to BEIS from the Treasury
+          programme: Breakdown of funds to delivery partners from BEIS. This is confirmed in the allocation letter or in the memorandum of understanding (MOU). For example, how a £50m fund will be allocated to different activities or spending
+          project: Records a set of activities of a delivery partner and details of how the money is forecast and/or spent. A delivery partner can record if it plans to award to third parties or a delivery partner could spend these funds on its own activities. For example, on workshops
+          third_party_project: How funding from delivery partners to third parties like universities and research institutes is forecast and spent. For example, spending on 10 research grants of £500k totalling £5m
+        parent: Which existing %{parent_level} will this new %{level} belong to?
       organisation:
         hint: The organisation this activity is associated with
   summary:
@@ -71,7 +85,9 @@ en:
         flow: Flow
         geography: Benefitting recipient geography
         identifier: Identifier
+        level: Level
         organisation: Organisation
+        parent: Parent activity
         planned_disbursements: Planned disbursements
         planned_end_date: Planned end date
         planned_start_date: Planned start date
@@ -88,6 +104,26 @@ en:
           label: Publish to IATI?
           'false': 'No'
           'true': 'Yes'
+        transparency_identifier: "Transparency identifier"
+  table:
+    header:
+      activity:
+        identifier: Identifier
+        title: Name
+        level: Level
+    body:
+      activity:
+        level:
+          fund: Fund
+          programme: Programme
+          project: Project
+          third_party_project: Third-party project
+        view_activity: View
+  filters:
+    activity:
+      title: Filter activities
+      organisation: Organisation
+      submit: Apply filter
   page_content:
     activities:
       button:
@@ -124,13 +160,16 @@ en:
       title: Contents
       details: Details
       financials: Financials
+      children: Child activities
   page_title:
     activity:
+      index: Activities
       implementing_organisation:
         edit: Edit implemening organisation
         new: Add a new implementing organisation
       details: Details
       financials: Financials
+      children: Child activities
     activity_form:
       show:
         aid_type: Aid type
@@ -139,6 +178,8 @@ en:
         flow: Flow
         geography: Will the benefitting recipient be a region or country?
         identifier: Enter your unique identifier
+        level: Hierarchy level
+        parent: Select the parent
         purpose: What is the purpose of the %{level}?
         region: What region will benefit from this activity?
         sector: Which %{sector_category} sector is the focus area for this %{level}
