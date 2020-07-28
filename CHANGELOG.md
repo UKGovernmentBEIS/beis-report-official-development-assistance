@@ -196,7 +196,7 @@
 - Refactor how we can ask activities for their parents
 - Ingest BA Newton fund data from IATI
 
-## [unreleased]
+## [release-12] - 2020-07-28
 
 - Activity identifiers are unique among siblings
 - add accessibility statement
@@ -222,7 +222,10 @@
 - Add new `transparency_identifier` field which will be the identifier used in the
   IATI XML. This field is non-editable.
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...HEAD
+[release-12]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...release-12
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11
 [release-10]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-9...release-10
 [release-9]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-8...release-9
