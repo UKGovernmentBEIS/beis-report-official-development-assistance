@@ -131,9 +131,9 @@ RSpec.feature "BEIS users can edit a submission" do
 
         click_on I18n.t("default.button.submit")
 
-        auditable_event = PublicActivity::Activity.find_by(trackable_id: submission.id)
-        expect(auditable_event.key).to eq "submission.activate"
-        expect(auditable_event.owner_id).to eq user.id
+        auditable_events = PublicActivity::Activity.where(trackable_id: submission.id)
+        expect(auditable_events.map(&:key)).to eq ["submission.update", "submission.activate"]
+        expect(auditable_events.map(&:owner_id).uniq).to eq [user.id]
       end
     end
 
