@@ -25,7 +25,12 @@ RSpec.describe Budget do
       expect(budget).to be_valid
     end
 
-    it "does not allow a value of less than 0.01" do
+    it "allows a value of less than 0" do
+      budget = build(:budget, value: -0.01)
+      expect(budget).to be_valid
+    end
+
+    it "does not allow a value of 0" do
       budget = build(:budget, value: 0)
       expect(budget).to_not be_valid
     end
