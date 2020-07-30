@@ -215,9 +215,9 @@
   Organisation/Fund pair. Show a basic Submission table on the user's home page.
 - Fund, programme, project and third-party project activities are no longer
   shown on the home page
-- Submission descriptions can be edited. A deadline attribute has also been added 
+- Submission descriptions can be edited. A deadline attribute has also been added
   to the Submission model; setting a deadline moves the Submission into the "active"
-  state  
+  state
 - Migrate UKSA GCRF activities from Level C to Level D
 - Add new `transparency_identifier` field which will be the identifier used in the
   IATI XML. This field is non-editable.
@@ -227,6 +227,7 @@
 - Allow budgets to have a negative value (but not zero)
 - Customise error messages according to the content review
 - Add a very basic Submission show page and CSV skeleton
+- Migrate AMS GCRF activities from Level C to Level D
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...HEAD
 [release-12]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...release-12
