@@ -6,6 +6,13 @@ class Staff::SubmissionsController < Staff::BaseController
   def show
     @submission = Submission.find(id)
     authorize @submission
+
+    respond_to do |format|
+      format.html
+      format.csv do
+        response.headers["Content-Disposition"] = "attachment; filename=\"#{ERB::Util.url_encode(@submission.description)}.csv\""
+      end
+    end
   end
 
   def edit

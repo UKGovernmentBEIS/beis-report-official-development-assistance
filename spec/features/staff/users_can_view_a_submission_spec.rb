@@ -36,9 +36,11 @@ RSpec.feature "Users can view a submission" do
   end
 
   context "as a delivery partner user" do
-    scenario "can view their own submission" do
+    before do
       authenticate!(user: delivery_partner_user)
+    end
 
+    scenario "can view their own submission" do
       visit organisation_path(delivery_partner_user.organisation)
 
       within "##{submission.id}" do
@@ -51,11 +53,25 @@ RSpec.feature "Users can view a submission" do
     scenario "cannot view a submission belonging to another delivery partner" do
       another_submission = create(:submission, organisation: create(:organisation))
 
-      authenticate!(user: delivery_partner_user)
-
       visit organisation_path(delivery_partner_user.organisation)
 
       expect(page).to_not have_content another_submission.description
+    end
+
+    scenario "can download a CSV of their own submission" do
+      visit organisation_path(delivery_partner_user.organisation)
+
+      within "##{submission.id}" do
+        click_on I18n.t("default.link.show")
+      end
+
+      click_on I18n.t("default.button.download_as_csv")
+
+      expect(page.response_headers["Content-Type"]).to include("text/csv")
+
+      header = page.response_headers["Content-Disposition"]
+      expect(header).to match(/^attachment/)
+      expect(header).to match(/filename=\"#{ERB::Util.url_encode(submission.description)}.csv\"$/)
     end
   end
 end
