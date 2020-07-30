@@ -168,7 +168,7 @@ RSpec.describe IngestIatiActivities do
         expect(budgets.first.ingested).to be true
       end
 
-      it "sets negative budgets to a penny (0.01)" do
+      it "allows negative budgets" do
         rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
         create(:programme_activity, organisation: rs, identifier: "Brazil-Newton-Mob-RS")
 
@@ -179,7 +179,7 @@ RSpec.describe IngestIatiActivities do
         activity = Activity.find_by(previous_identifier: "GB-GOV-13-NEWT-RS_BRA_797")
         budgets = Budget.where(parent_activity: activity)
 
-        expect(budgets.first.value).to eq "0.01".to_f
+        expect(budgets.first.value).to eq "-3920.71".to_f
         expect(budgets.first.ingested).to be true
       end
     end
