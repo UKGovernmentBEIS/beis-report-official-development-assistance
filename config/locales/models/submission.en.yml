@@ -30,6 +30,7 @@ en:
   page_title:
     submission:
       edit: Edit submission
+      show: View submission %{submission_name}
   action:
     submission:
       update:

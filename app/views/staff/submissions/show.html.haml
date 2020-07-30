@@ -1,0 +1,8 @@
+=content_for :page_title_prefix, t("page_title.submission.show", submission_name: @submission.description)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = @submission.description
+
