@@ -3,6 +3,11 @@
 class Staff::SubmissionsController < Staff::BaseController
   include Secured
 
+  def show
+    @submission = Submission.find(id)
+    authorize @submission
+  end
+
   def edit
     @submission = Submission.find(id)
     authorize @submission
