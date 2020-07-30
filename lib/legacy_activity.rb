@@ -1,6 +1,6 @@
 require "csv"
 
-class ProgrammeNotFoundForProject < StandardError; end
+class ParentNotFoundForActivity < StandardError; end
 class MissingMappingFileForOrganisation < StandardError; end
 class LegacyActivity
   attr_accessor :activity_node_set, :delivery_partner
@@ -32,14 +32,14 @@ class LegacyActivity
     internal_identifier
   end
 
-  def find_parent_programme
-    Activity.programmes.find_by!(identifier: programme_mapping[identifier])
+  def find_parent
+    Activity.programmes.find_by!(identifier: activity_to_parent_mapping[identifier])
   rescue ActiveRecord::RecordNotFound
-    raise ProgrammeNotFoundForProject.new(identifier)
+    raise ParentNotFoundForActivity.new(identifier)
   end
 
-  private def programme_mapping
-    @programme_mapping ||= begin
+  private def activity_to_parent_mapping
+    @activity_to_parent_mapping ||= begin
       rows = CSV.read("#{Rails.root}/vendor/data/iati_project_to_programme_mappings/#{delivery_partner.iati_reference}.csv", headers: [:project_id, :programme_id])
       rows_without_headers = rows[1..-1]
       rows_without_headers.each_with_object({}) { |row, hash| hash[row[:project_id]] = row[:programme_id] }

@@ -69,7 +69,7 @@ RSpec.describe LegacyActivity do
     end
   end
 
-  describe "#find_parent_programme" do
+  describe "#find_parent" do
     context "when the identifier matches to a programme" do
       it "returns the related programme" do
         existing_programme = create(:programme_activity, identifier: "GCRF-INTPART")
@@ -94,7 +94,7 @@ RSpec.describe LegacyActivity do
         activity_node_set = Nokogiri::XML(activity_xml, nil, "UTF-8").xpath("//iati-activity").first
 
         legacy_activity = described_class.new(activity_node_set: activity_node_set, delivery_partner: delivery_partner)
-        result = legacy_activity.find_parent_programme
+        result = legacy_activity.find_parent
 
         expect(result).to eq(existing_programme)
       end
@@ -123,7 +123,7 @@ RSpec.describe LegacyActivity do
 
         legacy_activity = described_class.new(activity_node_set: activity_node_set, delivery_partner: delivery_partner)
 
-        expect { legacy_activity.find_parent_programme }.to raise_error(ProgrammeNotFoundForProject, iati_identifier)
+        expect { legacy_activity.find_parent }.to raise_error(ParentNotFoundForActivity, iati_identifier)
       end
     end
 
@@ -149,7 +149,7 @@ RSpec.describe LegacyActivity do
 
         legacy_activity = described_class.new(activity_node_set: activity_node_set, delivery_partner: delivery_partner)
 
-        expect { legacy_activity.find_parent_programme }.to raise_error(MissingMappingFileForOrganisation, delivery_partner.iati_reference)
+        expect { legacy_activity.find_parent }.to raise_error(MissingMappingFileForOrganisation, delivery_partner.iati_reference)
       end
     end
   end
