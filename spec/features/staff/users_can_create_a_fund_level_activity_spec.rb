@@ -124,7 +124,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         # Don't provide a level
         click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content "can't be blank"
+        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.level.blank")
 
         choose "Programme"
         click_button I18n.t("form.button.activity.submit")
@@ -132,7 +132,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         # Don't provide a parent
         click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content "can't be blank"
+        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.parent.blank")
 
         choose parent.title
         click_button I18n.t("form.button.activity.submit")
@@ -140,7 +140,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         # Don't provide an identifier
         click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content "can't be blank"
+        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.identifier.blank")
 
         fill_in "activity[identifier]", with: identifier
         click_button I18n.t("form.button.activity.submit")
@@ -150,8 +150,8 @@ RSpec.feature "Users can create a fund level activity" do
         # Don't provide a title and description
         click_button I18n.t("form.button.activity.submit")
 
-        expect(page).to have_content "Title can't be blank"
-        expect(page).to have_content "Description can't be blank"
+        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.title.blank")
+        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.description.blank")
 
         fill_in "activity[title]", with: Faker::Lorem.word
         fill_in "activity[description]", with: Faker::Lorem.paragraph
@@ -161,7 +161,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         # Don't provide a sector category
         click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content "can't be blank"
+        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.sector_category.blank")
 
         choose "Basic Education"
         click_button I18n.t("form.button.activity.submit")
@@ -170,7 +170,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         # Don't provide a sector
         click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content "can't be blank"
+        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.sector.blank")
 
         choose "Primary education"
         click_button I18n.t("form.button.activity.submit")
@@ -178,7 +178,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         # Don't provide a status
         click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content "Status can't be blank"
+        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.status.blank")
 
         choose("activity[status]", option: "2")
         click_button I18n.t("form.button.activity.submit")
@@ -209,7 +209,7 @@ RSpec.feature "Users can create a fund level activity" do
         expect(page).to have_content I18n.t("form.legend.activity.geography")
 
         click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content "can't be blank"
+        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.geography.blank")
 
         choose "Region"
         click_button I18n.t("form.button.activity.submit")
@@ -227,7 +227,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         # Don't select an aid type
         click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content "Aid type can't be blank"
+        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.aid_type.blank")
 
         choose("activity[aid_type]", option: "A01")
         click_button I18n.t("form.button.activity.submit")

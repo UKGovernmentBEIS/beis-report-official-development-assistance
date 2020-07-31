@@ -56,12 +56,12 @@ RSpec.feature "Users can create a transaction" do
       click_on(I18n.t("default.button.submit"))
 
       expect(page).to_not have_content(I18n.t("action.transaction.create.success"))
-      expect(page).to have_content("Description can't be blank")
-      expect(page).to have_content("Transaction type can't be blank")
-      expect(page).to have_content("Date can't be blank")
+      expect(page).to have_content(I18n.t("activerecord.errors.models.transaction.attributes.description.blank"))
+      expect(page).to have_content(I18n.t("activerecord.errors.models.transaction.attributes.transaction_type.blank"))
+      expect(page).to have_content(I18n.t("activerecord.errors.models.transaction.attributes.date.blank"))
       expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.other_than")
-      expect(page).to have_content("Receiving organisation name can't be blank")
-      expect(page).to have_content("Receiving organisation type can't be blank")
+      expect(page).to have_content(I18n.t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
+      expect(page).to have_content(I18n.t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
     end
 
     scenario "disbursement channel is optional" do
@@ -245,7 +245,7 @@ RSpec.feature "Users can create a transaction" do
 
         fill_in_transaction_form(date_day: "", date_month: "", date_year: "", expectations: false)
 
-        expect(page).to have_content "Date can't be blank"
+        expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.date.blank")
       end
     end
   end

@@ -75,5 +75,9 @@ en:
       models:
         user:
           attributes:
-            organisation_ids:
-              blank: Select the organisation(s) this user belongs to
+            organisation:
+              required: Select the user's organisation
+            name:
+              blank: Enter a full name
+            email:
+              blank: Enter an email address
