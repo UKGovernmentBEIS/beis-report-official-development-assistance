@@ -81,7 +81,7 @@ RSpec.describe "Users can edit a budget" do
       click_on I18n.t("default.button.submit")
 
       expect(page).to have_content("There is a problem")
-      expect(page).to have_content("can't be blank")
+      expect(page).to have_content(I18n.t("activerecord.errors.models.budget.attributes.period_start_date.blank"))
     end
   end
 end

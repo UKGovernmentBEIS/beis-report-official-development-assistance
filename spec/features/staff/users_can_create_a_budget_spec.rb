@@ -70,10 +70,10 @@ RSpec.describe "Users can create a budget" do
         click_button I18n.t("default.button.submit")
 
         expect(page).to have_content("There is a problem")
-        expect(page).to have_content("Budget type can't be blank")
-        expect(page).to have_content("Status can't be blank")
-        expect(page).to have_content("Period start date can't be blank")
-        expect(page).to have_content("Period end date can't be blank")
+        expect(page).to have_content(I18n.t("activerecord.errors.models.budget.attributes.budget_type.blank"))
+        expect(page).to have_content(I18n.t("activerecord.errors.models.budget.attributes.status.blank"))
+        expect(page).to have_content(I18n.t("activerecord.errors.models.budget.attributes.period_start_date.blank"))
+        expect(page).to have_content(I18n.t("activerecord.errors.models.budget.attributes.period_end_date.blank"))
         expect(page).to have_content I18n.t("activerecord.errors.models.budget.attributes.value.other_than")
       end
 
