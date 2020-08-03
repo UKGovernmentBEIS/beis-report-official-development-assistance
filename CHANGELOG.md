@@ -225,6 +225,7 @@
 ## [unreleased]
 
 - Allow budgets to have a negative value (but not zero)
+- Customise error messages according to the content review
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...HEAD
 [release-12]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...release-12

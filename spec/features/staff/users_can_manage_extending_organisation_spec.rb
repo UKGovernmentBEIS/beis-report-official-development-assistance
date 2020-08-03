@@ -77,7 +77,7 @@ RSpec.feature "Users can manage the extending organisation" do
         click_on I18n.t("page_content.activity.extending_organisation.button.edit")
         click_on I18n.t("default.button.submit")
 
-        expect(page).to have_content "Error: Extending organisation can't be blank"
+        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.extending_organisation_id.blank")
       end
     end
   end

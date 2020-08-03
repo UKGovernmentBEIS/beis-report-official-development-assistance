@@ -62,9 +62,17 @@ en:
             period_end_date:
               between: Date must be between %{min} years ago and %{max} years in the future
               within_365_days_of_start_date: The period end date must be no more than 365 days after the period start date
+              blank: Enter an end date
             period_start_date:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_after_end_date: The period start date cannot be after the period end date
+              blank: Enter a start date
             value:
               less_than_or_equal_to: Value must not be more than 99,999,999,999.00
               other_than: Value must not be zero
+              blank: Enter a budget amount
+            budget_type:
+              blank: Enter a budget type
+            status:
+              blank: Enter a budget status
+
