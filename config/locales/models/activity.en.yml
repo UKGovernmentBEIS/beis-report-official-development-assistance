@@ -127,14 +127,14 @@ en:
   page_content:
     activities:
       button:
-        create: Create activity
+        create: Add activity
       cta:
         html: To create a new Activity, first choose the %{organisations_link} you wish to create the Activity under
       organisation: Organisation
     activity:
       budgets: Budgets
       button:
-        create: Create activity
+        create: Add activity
       extending_organisation:
         button:
           edit: Choose extending organisation
