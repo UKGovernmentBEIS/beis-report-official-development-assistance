@@ -27,4 +27,4 @@
           %td.govuk-table__cell
             - if policy(:submission).edit?
               = link_to I18n.t("default.link.edit"), edit_submission_path(submission), class: "govuk-link"
-
+            = link_to I18n.t("default.link.show"), submission_path(submission), class: "govuk-link"
