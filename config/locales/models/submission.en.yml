@@ -9,7 +9,9 @@ en:
         fund: Level A
         deadline: Deadline
   page_content:
-    submissions: Submissions
+    submissions:
+      title: Submissions
+      download_as_csv: Download Submission as a CSV
   label:
     submission:
      state:
@@ -30,6 +32,7 @@ en:
   page_title:
     submission:
       edit: Edit submission
+      show: View submission %{submission_name}
   action:
     submission:
       update:
