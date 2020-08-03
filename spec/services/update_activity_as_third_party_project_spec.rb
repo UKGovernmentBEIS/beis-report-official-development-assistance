@@ -57,7 +57,7 @@ RSpec.describe UpdateActivityAsThirdPartyProject do
       it "sets the parent to nil does not save the record" do
         result = described_class.new(activity: activity, parent_id: "an-id-that-does-not-exist").call
         expect(result.parent).to eq(nil)
-        expect(result.errors.messages).to include(parent: ["Parent can't be blank"])
+        expect(result.errors.messages).to include(parent: [I18n.t("activerecord.errors.models.activity.attributes.parent.blank")])
       end
     end
   end

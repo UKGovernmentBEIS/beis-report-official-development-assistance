@@ -205,3 +205,25 @@ en:
               between: Date must be between %{min} years ago and %{max} years in the future
             planned_start_date:
               between: Date must be between %{min} years ago and %{max} years in the future
+            level:
+              blank: Select the activity type
+            parent:
+              blank: Select a parent activity
+            identifier:
+              blank: Enter a unique identifier
+            title:
+              blank: Enter a title
+            description:
+              blank: Enter a description
+            sector_category:
+              blank: Select a category
+            sector:
+              blank: Select a focus area
+            status:
+              blank: Select a status
+            geography:
+              blank: Select a benefitting region or country
+            aid_type:
+              blank: Select the aid type
+            extending_organisation_id:
+              blank: Select an extending organisation
