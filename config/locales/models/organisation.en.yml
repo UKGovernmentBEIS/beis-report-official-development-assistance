@@ -37,7 +37,7 @@ en:
     organisation_details: Organisation details
     organisations:
       button:
-        create: Create organisation
+        create: Add organisation
     organisation:
       button:
         choose_extending_organisation: Choose extending organisation
