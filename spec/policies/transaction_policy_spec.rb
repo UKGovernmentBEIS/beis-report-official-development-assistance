@@ -33,6 +33,23 @@ RSpec.describe TransactionPolicy do
       let(:transaction) { create(:transaction, parent_activity: activity) }
       it { is_expected.to forbid_action(:update) }
     end
+
+    context "when the transaction is not associated to a submission" do
+      let(:transaction) { create(:transaction, parent_activity: activity, submission: nil) }
+      it { is_expected.to permit_action(:update) }
+    end
+
+    context "when the transaction is associated to an active submission" do
+      let(:submission) { create(:submission, :active, organisation: activity.organisation) }
+      let(:transaction) { create(:transaction, parent_activity: activity, submission: submission) }
+      it { is_expected.to permit_action(:update) }
+    end
+
+    context "when the transaction is associated to an inactive submission" do
+      let(:submission) { create(:submission, organisation: activity.organisation, fund: activity) }
+      let(:transaction) { create(:transaction, parent_activity: activity, submission: submission) }
+      it { is_expected.to forbid_action(:update) }
+    end
   end
 
   describe "#destroy?" do
