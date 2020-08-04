@@ -279,6 +279,21 @@ RSpec.feature "Users can create a transaction" do
         expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_type"), with: beis.organisation_type
         expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_reference"), with: beis.iati_reference
       end
+
+      scenario "the transaction is associated with the currently active submission" do
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund)
+        submission = create(:submission, :active, organisation: user.organisation, fund: fund)
+        project = create(:project_activity, organisation: user.organisation, parent: programme)
+
+        visit organisation_activity_path(user.organisation, project)
+        click_on "Add a transaction"
+
+        fill_in_transaction_form
+
+        transaction = Transaction.last
+        expect(transaction.submission).to eq(submission)
+      end
     end
   end
 

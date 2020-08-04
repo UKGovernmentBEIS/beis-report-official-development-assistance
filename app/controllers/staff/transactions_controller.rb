@@ -4,7 +4,7 @@ class Staff::TransactionsController < Staff::BaseController
   include Secured
 
   def new
-    @activity = Activity.find(activity_id)
+    @activity = activity
     @transaction = Transaction.new
     @transaction.parent_activity = @activity
     pre_fill_providing_organisation
@@ -13,7 +13,7 @@ class Staff::TransactionsController < Staff::BaseController
   end
 
   def create
-    @activity = Activity.find(activity_id)
+    @activity = activity
     authorize @activity
 
     result = CreateTransaction.new(activity: @activity)
@@ -22,6 +22,7 @@ class Staff::TransactionsController < Staff::BaseController
 
     if result.success?
       @transaction.create_activity key: "transaction.create", owner: current_user
+      associate_transaction_to_submission
       flash[:notice] = I18n.t("action.transaction.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
@@ -40,7 +41,7 @@ class Staff::TransactionsController < Staff::BaseController
     @transaction = Transaction.find(id)
     authorize @transaction
 
-    @activity = Activity.find(activity_id)
+    @activity = activity
     result = UpdateTransaction.new(transaction: @transaction)
       .call(attributes: transaction_params)
 
@@ -79,6 +80,17 @@ class Staff::TransactionsController < Staff::BaseController
 
   def id
     params[:id]
+  end
+
+  def activity
+    @activity ||= Activity.find(activity_id)
+  end
+
+  def associate_transaction_to_submission
+    organisation = activity.organisation
+    fund = activity.associated_fund
+    submission = Submission.active.find_by(organisation: organisation, fund: fund)
+    @transaction.update!(submission: submission) if submission
   end
 
   private def pre_fill_providing_organisation
