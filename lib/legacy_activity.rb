@@ -26,9 +26,9 @@ class LegacyActivity
 
   def infer_internal_identifier
     internal_identifier = identifier
-    internal_identifier.delete_prefix!("GB-GOV-13")
-    internal_identifier.delete_prefix!("-GCRF-")
-    internal_identifier.delete_prefix!("-NEWT-")
+    internal_identifier.delete_prefix!("GB-GOV-13-")
+    internal_identifier.delete_prefix!("GCRF-")
+    internal_identifier.delete_prefix!("NEWT-")
     internal_identifier
   end
 

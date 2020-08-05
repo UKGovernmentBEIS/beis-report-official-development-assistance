@@ -65,6 +65,16 @@ en:
             date:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_in_future: Date must not be in the future
+              blank: Enter a date the transaction was made
             value:
               less_than_or_equal_to: Value must be less than or equal to 99,999,999,999.00
               other_than: Value must not be zero
+              blank: Enter a transaction amount
+            transaction_type:
+              blank: Select a transaction type
+            description:
+              blank: Enter a description
+            receiving_organisation_name:
+              blank: Enter a receiving organisation name
+            receiving_organisation_type:
+              blank: Select the organisation type

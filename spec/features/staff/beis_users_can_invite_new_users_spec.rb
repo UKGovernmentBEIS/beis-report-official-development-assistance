@@ -68,8 +68,8 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
           click_button I18n.t("default.button.submit")
 
-          expect(page).to have_content("Name can't be blank")
-          expect(page).to have_content("Email can't be blank")
+          expect(page).to have_content(I18n.t("activerecord.errors.models.user.attributes.name.blank"))
+          expect(page).to have_content(I18n.t("activerecord.errors.models.user.attributes.email.blank"))
         end
       end
 
