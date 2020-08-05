@@ -43,7 +43,7 @@ RSpec.feature "Users can edit organisations" do
 
     click_button I18n.t("default.button.submit")
     expect(page).to_not have_content I18n.t("organisation.action.update.success")
-    expect(page).to have_content "can't be blank"
+    expect(page).to have_content I18n.t("activerecord.errors.models.organisation.attributes.name.blank")
   end
 
   def successfully_edit_an_organisation(organisation_name: "My New Organisation")
