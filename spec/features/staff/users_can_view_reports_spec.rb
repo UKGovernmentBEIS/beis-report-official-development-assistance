@@ -1,9 +1,7 @@
 RSpec.feature "Users can view reports" do
-  let(:beis_user) { create(:beis_user) }
-  let(:delivery_partner_user) { create(:delivery_partner_user) }
-  let!(:report) { create(:report, organisation: delivery_partner_user.organisation, deadline: nil, description: "Legacy report") }
-
   context "as a BEIS user" do
+    let(:beis_user) { create(:beis_user) }
+
     before do
       authenticate!(user: beis_user)
     end
@@ -37,7 +35,9 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "can view a report belonging to any delivery partner" do
-      visit organisation_path(beis_user.organisation)
+      report = create(:report, :active)
+
+      visit reports_path
 
       within "##{report.id}" do
         click_on I18n.t("default.link.show")
@@ -47,7 +47,9 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "can download a CSV of the report" do
-      visit organisation_path(beis_user.organisation)
+      report = create(:report, :active)
+
+      visit reports_path
 
       within "##{report.id}" do
         click_on I18n.t("default.link.show")
@@ -62,6 +64,8 @@ RSpec.feature "Users can view reports" do
   end
 
   context "as a delivery partner user" do
+    let(:delivery_partner_user) { create(:delivery_partner_user) }
+
     before do
       authenticate!(user: delivery_partner_user)
     end
@@ -79,7 +83,9 @@ RSpec.feature "Users can view reports" do
       end
 
       scenario "can view their own report" do
-        visit organisation_path(delivery_partner_user.organisation)
+        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+
+        visit reports_path
 
         within "##{report.id}" do
           click_on I18n.t("default.link.show")
@@ -99,13 +105,15 @@ RSpec.feature "Users can view reports" do
       scenario "cannot view a report belonging to another delivery partner" do
         another_report = create(:report, organisation: create(:organisation))
 
-        visit organisation_path(delivery_partner_user.organisation)
+        visit report_path(another_report)
 
-        expect(page).to_not have_content another_report.description
+        expect(page).to have_http_status(401)
       end
 
       scenario "can download a CSV of their own report" do
-        visit organisation_path(delivery_partner_user.organisation)
+        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+
+        visit reports_path
 
         within "##{report.id}" do
           click_on I18n.t("default.link.show")
