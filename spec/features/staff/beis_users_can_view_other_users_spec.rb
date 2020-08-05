@@ -31,7 +31,7 @@ RSpec.feature "BEIS users can can view other users" do
 
       # Navigate to the individual user page
       within(".users") do
-        find("tr", text: another_user.name).click_link("Show")
+        find("tr", text: another_user.name).click_link(I18n.t("default.link.show"))
       end
 
       expect(page).to have_content(I18n.t("page_title.users.show"))
@@ -75,7 +75,7 @@ RSpec.feature "BEIS users can can view other users" do
 
       # Navigate to the individual user page
       within(".users") do
-        find("tr", text: another_user.name).click_link("Show")
+        find("tr", text: another_user.name).click_link(I18n.t("default.link.show"))
       end
 
       expect(page).to have_content(I18n.t("form.user.active.false"))

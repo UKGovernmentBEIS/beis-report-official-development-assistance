@@ -6,6 +6,9 @@
         %a{ href: organisation_path(current_user.organisation), class: 'govuk-header__link' }
           = t("page_title.home")
 
+      %li{ class: navigation_item_class(reports_path) }
+        = link_to t("page_title.report.index"), reports_path, class: "govuk-header__link"
+
       %li{ class: navigation_item_class(activities_path(organisation_id: current_user.organisation_id)) }
         = link_to t("page_title.activity.index"), activities_path(organisation_id: current_user.organisation_id), class: "govuk-header__link"
 

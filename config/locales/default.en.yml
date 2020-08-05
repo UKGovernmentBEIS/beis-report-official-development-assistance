@@ -19,7 +19,8 @@ en:
       add: Add
       back: Back
       edit: Edit
-      show: Show
+      show: View
+      view: View
     error:
       unknown: Unknown error
     warning: Warning

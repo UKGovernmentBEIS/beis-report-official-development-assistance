@@ -1,6 +1,10 @@
 ---
 en:
   table:
+    title:
+      report:
+        active: Active reports
+        inactive: Inactive reports
     header:
       report:
         state: State
@@ -29,8 +33,12 @@ en:
       report:
         description: Reporting period
         deadline: Deadline
+  document_title:
+    report:
+      index: Reports
   page_title:
     report:
+      index: Reports
       edit: Edit report
       show: View report %{report_name}
   action:

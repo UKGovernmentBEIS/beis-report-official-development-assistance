@@ -6,6 +6,11 @@ class Staff::ReportsController < Staff::BaseController
   include Secured
   include ActionController::Live
 
+  def index
+    inactive_reports if current_user.service_owner?
+    current_user.service_owner? ? active_reports_with_organisations : active_reports
+  end
+
   def show
     @report = Report.find(id)
     authorize @report
@@ -36,7 +41,7 @@ class Staff::ReportsController < Staff::BaseController
       @report.create_activity key: "report.update", owner: current_user
       activate!
       flash[:notice] = I18n.t("action.report.update.success")
-      redirect_to organisation_path(current_user.organisation)
+      redirect_to reports_path
     else
       render :edit
     end
