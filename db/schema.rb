@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_03_141156) do
+ActiveRecord::Schema.define(version: 2020_08_05_121536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -89,6 +89,9 @@ ActiveRecord::Schema.define(version: 2020_08_03_141156) do
     t.index ["parent_activity_id"], name: "index_budgets_on_parent_activity_id"
   end
 
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
   create_table "implementing_organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "reference"
@@ -130,7 +133,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_141156) do
     t.index ["parent_activity_id"], name: "index_planned_disbursements_on_parent_activity_id"
   end
 
-  create_table "submissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "state", default: 0, null: false
     t.string "description"
     t.uuid "fund_id"
@@ -138,8 +141,8 @@ ActiveRecord::Schema.define(version: 2020_08_03_141156) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.date "deadline"
-    t.index ["fund_id"], name: "index_submissions_on_fund_id"
-    t.index ["organisation_id"], name: "index_submissions_on_organisation_id"
+    t.index ["fund_id"], name: "index_reports_on_fund_id"
+    t.index ["organisation_id"], name: "index_reports_on_organisation_id"
   end
 
   create_table "transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -159,9 +162,9 @@ ActiveRecord::Schema.define(version: 2020_08_03_141156) do
     t.string "receiving_organisation_reference"
     t.uuid "parent_activity_id"
     t.boolean "ingested", default: false
-    t.uuid "submission_id"
+    t.uuid "report_id"
     t.index ["parent_activity_id"], name: "index_transactions_on_parent_activity_id"
-    t.index ["submission_id"], name: "index_transactions_on_submission_id"
+    t.index ["report_id"], name: "index_transactions_on_report_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

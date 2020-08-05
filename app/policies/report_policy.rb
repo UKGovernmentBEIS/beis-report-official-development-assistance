@@ -1,4 +1,4 @@
-class SubmissionPolicy < ApplicationPolicy
+class ReportPolicy < ApplicationPolicy
   attr_reader :user, :record
 
   def index?

@@ -2,45 +2,45 @@
 en:
   table:
     header:
-      submission:
+      report:
         state: State
         description: Reporting period
         organisation: Organisation
         fund: Level A
         deadline: Deadline
   page_content:
-    submissions:
-      title: Submissions
-      download_as_csv: Download Submission as a CSV
+    reports:
+      title: Reports
+      download_as_csv: Download report as a CSV
   label:
-    submission:
+    report:
      state:
        inactive: Inactive
        active: Active
   form:
     label:
-      submission:
+      report:
         description: Reporting period
         fund: Level A
         organisation: Organisation
         state: State
         deadline: Deadline
     legend:
-      submission:
+      report:
         description: Reporting period
         deadline: Deadline
   page_title:
-    submission:
-      edit: Edit submission
-      show: View submission %{submission_name}
+    report:
+      edit: Edit report
+      show: View report %{report_name}
   action:
-    submission:
+    report:
       update:
-        success: Submission successfully updated
+        success: Report successfully updated
   activerecord:
     errors:
       models:
-        submission:
+        report:
           attributes:
             description:
               blank: Reporting period can't be bank

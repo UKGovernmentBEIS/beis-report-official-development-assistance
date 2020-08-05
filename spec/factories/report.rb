@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :submission do
+  factory :report do
     description { Faker::Lorem.paragraph }
     state { :inactive }
 

@@ -233,6 +233,7 @@
 
 - Associate Transactions to Submissions
 - Export Activity data in the Submission CSV
+- rename Submission to Report
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...HEAD
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13

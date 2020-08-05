@@ -1,11 +1,11 @@
 require "rails_helper"
 
-RSpec.describe SubmissionPolicy do
+RSpec.describe ReportPolicy do
   let(:organisation) { create(:delivery_partner_organisation) }
-  let(:submission) { create(:submission, organisation: organisation) }
-  let(:another_submission) { create(:submission, organisation: create(:organisation)) }
+  let(:report) { create(:report, organisation: organisation) }
+  let(:another_report) { create(:report, organisation: create(:organisation)) }
 
-  subject { described_class.new(user, submission) }
+  subject { described_class.new(user, report) }
 
   context "as a user that belongs to BEIS" do
     let(:user) { build_stubbed(:beis_user) }
@@ -17,9 +17,9 @@ RSpec.describe SubmissionPolicy do
     it { is_expected.to forbid_action(:destroy) }
     it { is_expected.to permit_action(:download) }
 
-    it "includes all submissions in the resolved scope" do
-      resolved_scope = described_class::Scope.new(user, Submission).resolve
-      expect(resolved_scope).to include submission, another_submission
+    it "includes all reports in the resolved scope" do
+      resolved_scope = described_class::Scope.new(user, Report).resolve
+      expect(resolved_scope).to include report, another_report
     end
   end
 
@@ -31,21 +31,21 @@ RSpec.describe SubmissionPolicy do
     it { is_expected.to forbid_new_and_create_actions }
     it { is_expected.to forbid_action(:destroy) }
 
-    context "when the submission belongs to the user's organisation" do
-      let(:submission) { create(:submission, organisation: user.organisation) }
+    context "when the report belongs to the user's organisation" do
+      let(:report) { create(:report, organisation: user.organisation) }
       it { is_expected.to permit_action(:download) }
       it { is_expected.to permit_action(:show) }
     end
 
-    context "when the submission does not belong to the user's organisation" do
-      let(:submission) { create(:submission, organisation: create(:organisation)) }
+    context "when the report does not belong to the user's organisation" do
+      let(:report) { create(:report, organisation: create(:organisation)) }
       it { is_expected.to forbid_action(:download) }
       it { is_expected.to forbid_action(:show) }
     end
 
-    it "includes only submissions that the users organisation is reporting in the resolved scope" do
-      resolved_scope = described_class::Scope.new(user, Submission).resolve
-      expect(resolved_scope).to contain_exactly submission
+    it "includes only reports that the users organisation is reporting in the resolved scope" do
+      resolved_scope = described_class::Scope.new(user, Report).resolve
+      expect(resolved_scope).to contain_exactly report
     end
   end
 end
