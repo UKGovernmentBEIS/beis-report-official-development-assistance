@@ -2,8 +2,9 @@ require "rails_helper"
 
 RSpec.describe ReportPolicy do
   let(:organisation) { create(:delivery_partner_organisation) }
-  let(:report) { create(:report, organisation: organisation) }
-  let(:another_report) { create(:report, organisation: create(:organisation)) }
+  let(:another_organistion) { create(:delivery_partner_organisation) }
+  let!(:report) { create(:report, organisation: organisation) }
+  let!(:another_report) { create(:report, organisation: another_organistion) }
 
   subject { described_class.new(user, report) }
 
@@ -46,6 +47,12 @@ RSpec.describe ReportPolicy do
     it "includes only reports that the users organisation is reporting in the resolved scope" do
       resolved_scope = described_class::Scope.new(user, Report).resolve
       expect(resolved_scope).to contain_exactly report
+    end
+
+    context "when the report does not belong to the delivery partner users organisation" do
+      let(:report) { create(:report, :active, organisation: another_organistion) }
+
+      it { is_expected.to forbid_action(:show) }
     end
   end
 end

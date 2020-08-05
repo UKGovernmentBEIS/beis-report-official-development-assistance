@@ -1,17 +1,15 @@
 require "rails_helper"
 
 RSpec.feature "BEIS users can edit a report" do
-  let(:delivery_partner_user) { create(:delivery_partner_user) }
-  let!(:report) { create(:report, organisation: delivery_partner_user.organisation, deadline: nil, description: "Legacy Report") }
-
   context "Logged in as a BEIS user" do
     let(:beis_user) { create(:beis_user) }
 
     scenario "they can edit a Report to set the deadline" do
-      authenticate!(user: beis_user)
+      user = create(:beis_user)
+      authenticate!(user: user)
       report = create(:report)
 
-      visit organisation_path(user.organisation)
+      visit reports_path
 
       within "##{report.id}" do
         click_on I18n.t("default.link.edit")
@@ -34,7 +32,7 @@ RSpec.feature "BEIS users can edit a report" do
         authenticate!(user: beis_user)
         report = create(:report)
 
-        visit organisation_path(user.organisation)
+        visit reports_path
 
         within "##{report.id}" do
           click_on I18n.t("default.link.edit")
@@ -56,7 +54,7 @@ RSpec.feature "BEIS users can edit a report" do
       authenticate!(user: beis_user)
       report = create(:report)
 
-      visit organisation_path(user.organisation)
+      visit reports_path
 
       within "##{report.id}" do
         click_on I18n.t("default.link.edit")
@@ -76,7 +74,7 @@ RSpec.feature "BEIS users can edit a report" do
       authenticate!(user: beis_user)
       report = create(:report)
 
-      visit organisation_path(user.organisation)
+      visit reports_path
 
       within "##{report.id}" do
         click_on I18n.t("default.link.edit")
@@ -96,10 +94,9 @@ RSpec.feature "BEIS users can edit a report" do
       authenticate!(user: beis_user)
       report = create(:report)
 
-      visit organisation_path(user.organisation)
+      visit reports_path
 
       within "##{report.id}" do
-        expect(page).to have_content I18n.t("label.report.state.inactive")
         click_on I18n.t("default.link.edit")
       end
 
@@ -110,9 +107,7 @@ RSpec.feature "BEIS users can edit a report" do
       click_on I18n.t("default.button.submit")
 
       expect(page).to have_content I18n.t("action.report.update.success")
-      within "##{report.id}" do
-        expect(page).to have_content I18n.t("label.report.state.active")
-      end
+      expect(report.reload.state).to eq "active"
     end
 
     scenario "setting a Report's deadline logs an activity in PublicActivity" do
@@ -120,10 +115,9 @@ RSpec.feature "BEIS users can edit a report" do
         authenticate!(user: beis_user)
         report = create(:report)
 
-        visit organisation_path(user.organisation)
+        visit reports_path
 
         within "##{report.id}" do
-          expect(page).to have_content I18n.t("label.report.state.inactive")
           click_on I18n.t("default.link.edit")
         end
 
@@ -143,7 +137,7 @@ RSpec.feature "BEIS users can edit a report" do
       authenticate!(user: beis_user)
       report = create(:report)
 
-      visit organisation_path(user.organisation)
+      visit reports_path
 
       within "##{report.id}" do
         click_on I18n.t("default.link.edit")
@@ -164,7 +158,7 @@ RSpec.feature "BEIS users can edit a report" do
       authenticate!(user: beis_user)
       report = create(:report)
 
-      visit organisation_path(user.organisation)
+      visit reports_path
 
       within "##{report.id}" do
         click_on I18n.t("default.link.edit")
@@ -180,10 +174,14 @@ RSpec.feature "BEIS users can edit a report" do
   end
 
   context "Logged in as a Delivery Partner user" do
+    let(:delivery_partner_user) { create(:delivery_partner_user) }
+
     scenario "they cannot edit a Report" do
+      report = create(:report, state: :active, organisation: delivery_partner_user.organisation)
+
       authenticate!(user: delivery_partner_user)
 
-      visit organisation_path(delivery_partner_user.organisation)
+      visit reports_path
 
       within "##{report.id}" do
         expect(page).to_not have_content(I18n.t("default.link.edit"))

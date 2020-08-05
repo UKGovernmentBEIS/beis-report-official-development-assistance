@@ -1,0 +1,134 @@
+RSpec.feature "Users can view reports" do
+  let(:beis_user) { create(:beis_user) }
+  let(:delivery_partner_user) { create(:delivery_partner_user) }
+  let!(:report) { create(:report, organisation: delivery_partner_user.organisation, deadline: nil, description: "Legacy report") }
+
+  context "as a BEIS user" do
+    before do
+      authenticate!(user: beis_user)
+    end
+
+    scenario "they can view all active reports for all organisations" do
+      first_report = create(:report, :active)
+      second_report = create(:report, :active)
+
+      visit reports_path
+
+      expect(page).to have_content I18n.t("page_title.report.index")
+      expect(page).to have_content first_report.description
+      expect(page).to have_content second_report.description
+    end
+
+    scenario "they see the name of the associated organisation in the table" do
+      report = create(:report)
+
+      visit reports_path
+
+      expect(page).to have_content report.organisation.name
+    end
+
+    scenario "they can view all inactive reports for all organisations" do
+      reports = create_list(:report, 2)
+      visit reports_path
+
+      expect(page).to have_content I18n.t("page_title.report.index")
+      expect(page).to have_content reports.first.description
+      expect(page).to have_content reports.last.description
+    end
+
+    scenario "can view a report belonging to any delivery partner" do
+      visit organisation_path(beis_user.organisation)
+
+      within "##{report.id}" do
+        click_on I18n.t("default.link.show")
+      end
+
+      expect(page).to have_content report.description
+    end
+
+    scenario "can download a CSV of the report" do
+      visit organisation_path(beis_user.organisation)
+
+      within "##{report.id}" do
+        click_on I18n.t("default.link.show")
+      end
+
+      click_on I18n.t("default.button.download_as_csv")
+
+      expect(page.response_headers["Content-Type"]).to include("text/csv")
+      header = page.response_headers["Content-Disposition"]
+      expect(header).to match(/#{report.description}/)
+    end
+  end
+
+  context "as a delivery partner user" do
+    before do
+      authenticate!(user: delivery_partner_user)
+    end
+
+    context "when there is an active report" do
+      scenario "they can view reports for their own organisation" do
+        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+        other_organisation_report = create(:report, :active)
+
+        visit reports_path
+
+        expect(page).to have_content I18n.t("page_title.report.index")
+        expect(page).to have_content report.description
+        expect(page).not_to have_content other_organisation_report.description
+      end
+
+      scenario "can view their own report" do
+        visit organisation_path(delivery_partner_user.organisation)
+
+        within "##{report.id}" do
+          click_on I18n.t("default.link.show")
+        end
+
+        expect(page).to have_content report.description
+      end
+
+      scenario "they do not see the name of the associated organisation" do
+        report = create(:report)
+
+        visit reports_path
+
+        expect(page).not_to have_content report.organisation.name
+      end
+
+      scenario "cannot view a report belonging to another delivery partner" do
+        another_report = create(:report, organisation: create(:organisation))
+
+        visit organisation_path(delivery_partner_user.organisation)
+
+        expect(page).to_not have_content another_report.description
+      end
+
+      scenario "can download a CSV of their own report" do
+        visit organisation_path(delivery_partner_user.organisation)
+
+        within "##{report.id}" do
+          click_on I18n.t("default.link.show")
+        end
+
+        click_on I18n.t("default.button.download_as_csv")
+
+        expect(page.response_headers["Content-Type"]).to include("text/csv")
+
+        expect(page.response_headers["Content-Type"]).to include("text/csv")
+        header = page.response_headers["Content-Disposition"]
+        expect(header).to match(/#{report.description}/)
+      end
+    end
+  end
+
+  context "when there are no active reports" do
+    scenario "they see no reports" do
+      report = create(:report, state: :inactive)
+
+      visit reports_path
+
+      expect(page).not_to have_content report.description
+    end
+  end
+end
