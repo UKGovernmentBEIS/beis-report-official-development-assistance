@@ -12,7 +12,7 @@ RSpec.feature "Users can create a transaction" do
     let(:user) { create(:beis_user) }
 
     scenario "successfully creates a transaction on an activity" do
-      activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+      activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
       visit activities_path
 
@@ -26,7 +26,7 @@ RSpec.feature "Users can create a transaction" do
     end
 
     scenario "transaction creation is tracked with public_activity" do
-      activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+      activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
       PublicActivity.with_tracking do
         visit activities_path
@@ -46,7 +46,7 @@ RSpec.feature "Users can create a transaction" do
     end
 
     scenario "validations" do
-      activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+      activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
       visit activities_path
 
@@ -65,7 +65,7 @@ RSpec.feature "Users can create a transaction" do
     end
 
     scenario "disbursement channel is optional" do
-      activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+      activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
       visit activities_path
 
@@ -80,7 +80,7 @@ RSpec.feature "Users can create a transaction" do
 
     context "Value number validation" do
       scenario "Value must be maximum 99,999,999,999" do
-        activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+        activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -102,7 +102,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "Value cannot be 0" do
-        activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+        activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -124,7 +124,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "Value can be negative" do
-        activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+        activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -148,7 +148,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes a pound sign" do
-        activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+        activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -162,7 +162,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes alphabetical characters" do
-        activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+        activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -176,7 +176,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes decimal places" do
-        activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+        activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -190,7 +190,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes commas" do
-        activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+        activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -206,7 +206,7 @@ RSpec.feature "Users can create a transaction" do
 
     context "Date validation" do
       scenario "When the date is in the future" do
-        activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+        activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -220,7 +220,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the date is in the past" do
-        activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+        activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -235,7 +235,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the date is nil" do
-        activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+        activity = create(:fund_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -255,7 +255,7 @@ RSpec.feature "Users can create a transaction" do
     let(:user) { create(:delivery_partner_user) }
 
     scenario "they cannot create transactions on a programme" do
-      fund_activity = create(:fund_activity, :with_submission, organisation: user.organisation)
+      fund_activity = create(:fund_activity, :with_report, organisation: user.organisation)
       programme_activity = create(:programme_activity,
         parent: fund_activity,
         organisation: user.organisation,
@@ -271,7 +271,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "the providing organisation details are pre-filled with BEIS information" do
         beis = create(:beis_organisation)
         third_party_project = create(:third_party_project_activity, organisation: user.organisation)
-        _submission = create(:submission, :active, organisation: user.organisation, fund: third_party_project.associated_fund)
+        _report = create(:report, :active, organisation: user.organisation, fund: third_party_project.associated_fund)
 
         visit organisation_activity_path(user.organisation, third_party_project)
         click_on "Add a transaction"
@@ -281,10 +281,10 @@ RSpec.feature "Users can create a transaction" do
         expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_reference"), with: beis.iati_reference
       end
 
-      scenario "the transaction is associated with the currently active submission" do
+      scenario "the transaction is associated with the currently active report" do
         fund = create(:fund_activity)
         programme = create(:programme_activity, parent: fund)
-        submission = create(:submission, :active, organisation: user.organisation, fund: fund)
+        report = create(:report, :active, organisation: user.organisation, fund: fund)
         project = create(:project_activity, organisation: user.organisation, parent: programme)
 
         visit organisation_activity_path(user.organisation, project)
@@ -293,7 +293,7 @@ RSpec.feature "Users can create a transaction" do
         fill_in_transaction_form
 
         transaction = Transaction.last
-        expect(transaction.submission).to eq(submission)
+        expect(transaction.report).to eq(report)
       end
     end
   end
@@ -306,7 +306,7 @@ RSpec.feature "Users can create a transaction" do
     context "and the activity is a third-party project" do
       scenario "the providing organisation details are pre-filled with the delivery organisation information" do
         third_party_project = create(:third_party_project_activity, organisation: user.organisation)
-        _submission = create(:submission, :active, organisation: user.organisation, fund: third_party_project.associated_fund)
+        _report = create(:report, :active, organisation: user.organisation, fund: third_party_project.associated_fund)
 
         visit organisation_activity_path(user.organisation, third_party_project)
         click_on "Add a transaction"

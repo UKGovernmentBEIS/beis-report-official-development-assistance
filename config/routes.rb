@@ -21,7 +21,7 @@ Rails.application.routes.draw do
         get "children" => "activity_children#show"
       end
     end
-    resources :submissions
+    resources :reports
 
     concern :transactionable do
       resources :transactions, only: [:new, :create, :show, :edit, :update]

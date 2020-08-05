@@ -18,6 +18,6 @@ FactoryBot.define do
     receiving_organisation_type { "70" }
 
     association :parent_activity, factory: :activity
-    association :submission
+    association :report
   end
 end

@@ -10,7 +10,7 @@ class CreateTransaction
 
     transaction.parent_activity = activity
     transaction.assign_attributes(attributes)
-    transaction.submission = submission(activity: activity)
+    transaction.report = report(activity: activity)
     transaction.value = sanitize_monetary_string(value: attributes[:value])
 
     result = if transaction.valid?
@@ -28,9 +28,9 @@ class CreateTransaction
     Monetize.parse(value)
   end
 
-  def submission(activity:)
+  def report(activity:)
     organisation = activity.organisation
     fund = activity.associated_fund
-    Submission.active.find_by(organisation: organisation, fund: fund)
+    Report.active.find_by(organisation: organisation, fund: fund)
   end
 end
