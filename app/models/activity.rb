@@ -116,6 +116,11 @@ class Activity < ApplicationRecord
     ancestors.reverse
   end
 
+  def associated_fund
+    return self if fund?
+    parent_activities.detect(&:fund?)
+  end
+
   def providing_organisation
     return organisation if third_party_project? && !organisation.is_government?
     Organisation.find_by(service_owner: true)
