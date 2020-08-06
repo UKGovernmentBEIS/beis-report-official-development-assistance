@@ -69,3 +69,12 @@ en:
           attributes:
             iati_reference:
               format: Identifiers must start with a country code and company type separated by a dash, eg. GB-GOV-13
+              blank: Enter an IATI reference
+            default_currency:
+              blank: Enter a default currency
+            name:
+              blank: Enter an organisation name
+            language_code:
+              blank: Enter a language code
+            organisation_type:
+              blank: Enter an organisation type
