@@ -17,7 +17,7 @@ RSpec.describe Transaction, type: :model do
   end
 
   describe "associations" do
-    it { should belong_to(:submission).optional }
+    it { should belong_to(:submission) }
   end
 
   describe "sanitation" do

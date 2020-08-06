@@ -22,7 +22,6 @@ class Staff::TransactionsController < Staff::BaseController
 
     if result.success?
       @transaction.create_activity key: "transaction.create", owner: current_user
-      associate_transaction_to_submission
       flash[:notice] = I18n.t("action.transaction.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
@@ -84,13 +83,6 @@ class Staff::TransactionsController < Staff::BaseController
 
   def activity
     @activity ||= Activity.find(activity_id)
-  end
-
-  def associate_transaction_to_submission
-    organisation = activity.organisation
-    fund = activity.associated_fund
-    submission = Submission.active.find_by(organisation: organisation, fund: fund)
-    @transaction.update!(submission: submission) if submission
   end
 
   private def pre_fill_providing_organisation
