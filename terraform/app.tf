@@ -5,6 +5,7 @@ resource "cloudfoundry_app" "beis-roda-app" {
   space                      = cloudfoundry_space.space.id
   instances                  = 2
   disk_quota                 = 3072
+  timeout                    = 120
   docker_image               = "thedxw/beis-report-official-development-assistance:${var.docker_image}"
   strategy                   = "blue-green-v2"
   health_check_http_endpoint = "/health_check"
