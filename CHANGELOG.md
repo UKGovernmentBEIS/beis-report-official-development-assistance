@@ -222,14 +222,17 @@
 - Add new `transparency_identifier` field which will be the identifier used in the
   IATI XML. This field is non-editable.
 
-## [unreleased]
+## [release-13] - 2020-08-05
 
 - Allow budgets to have a negative value (but not zero)
 - Customise error messages according to the content review
 - Add a very basic Submission show page and CSV skeleton
 - Migrate AMS GCRF activities from Level C to Level D
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...HEAD
+[release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13
 [release-12]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...release-12
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11
 [release-10]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-9...release-10

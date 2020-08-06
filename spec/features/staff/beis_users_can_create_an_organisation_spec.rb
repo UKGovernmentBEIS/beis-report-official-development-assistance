@@ -58,7 +58,7 @@ RSpec.feature "BEIS users can create organisations" do
 
       click_button I18n.t("default.button.submit")
       expect(page).to_not have_content I18n.t("action.organisation.create.success")
-      expect(page).to have_content "can't be blank"
+      expect(page).to have_content I18n.t("activerecord.errors.models.organisation.attributes.organisation_type.blank")
     end
 
     context "when the user does not belongs to BEIS" do
