@@ -30,8 +30,7 @@ RSpec.feature "Users can view a submission" do
       expect(page.response_headers["Content-Type"]).to include("text/csv")
 
       header = page.response_headers["Content-Disposition"]
-      expect(header).to match(/^attachment/)
-      expect(header).to match(/filename=\"#{ERB::Util.url_encode(submission.description)}.csv\"$/)
+      expect(header).to match(/#{submission.description}/)
     end
   end
 
@@ -70,8 +69,7 @@ RSpec.feature "Users can view a submission" do
       expect(page.response_headers["Content-Type"]).to include("text/csv")
 
       header = page.response_headers["Content-Disposition"]
-      expect(header).to match(/^attachment/)
-      expect(header).to match(/filename=\"#{ERB::Util.url_encode(submission.description)}.csv\"$/)
+      expect(header).to match(/#{submission.description}/)
     end
   end
 end
