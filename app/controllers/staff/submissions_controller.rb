@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "csv"
+
 class Staff::SubmissionsController < Staff::BaseController
   include Secured
 
@@ -10,7 +12,17 @@ class Staff::SubmissionsController < Staff::BaseController
     respond_to do |format|
       format.html
       format.csv do
-        response.headers["Content-Disposition"] = "attachment; filename=\"#{ERB::Util.url_encode(@submission.description)}.csv\""
+        fund = @submission.fund
+        @projects = Activity.project.where(organisation: @submission.organisation).select { |activity| activity.associated_fund == fund }
+        @third_party_projects = Activity.third_party_project.where(organisation: @submission.organisation).select { |activity| activity.associated_fund == fund }
+        csv = Activity::CSV_HEADERS.to_csv
+        @projects.each do |project|
+          csv << ExportActivityToCsv.new(activity: project).call
+        end
+        @third_party_projects.each do |project|
+          csv << ExportActivityToCsv.new(activity: project).call
+        end
+        send_data csv, {filename: "#{@submission.description}.csv", type: "text/csv"}
       end
     end
   end

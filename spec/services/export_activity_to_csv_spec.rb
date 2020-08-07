@@ -24,7 +24,7 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.recipient_country,
         activity_presenter.aid_type,
         activity_presenter.level,
-        "https://#{ENV["DOMAIN"]}#{Rails.application.routes.url_helpers.organisation_activity_details_path(activity_presenter.organisation, activity_presenter)}",
+        activity_presenter.link_to_roda,
       ].to_csv)
     end
   end

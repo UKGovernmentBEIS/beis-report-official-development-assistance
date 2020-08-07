@@ -1,7 +1,8 @@
 RSpec.feature "Users can view a submission" do
   let(:beis_user) { create(:beis_user) }
   let(:delivery_partner_user) { create(:delivery_partner_user) }
-  let!(:submission) { create(:submission, organisation: delivery_partner_user.organisation, deadline: nil, description: "Legacy Submission") }
+  let(:activity) { create(:project_activity, organisation: delivery_partner_user.organisation) }
+  let!(:submission) { create(:submission, organisation: delivery_partner_user.organisation, deadline: nil, description: "Legacy Submission", fund: activity.associated_fund) }
 
   context "as a BEIS user" do
     before do
@@ -31,6 +32,21 @@ RSpec.feature "Users can view a submission" do
 
       header = page.response_headers["Content-Disposition"]
       expect(header).to match(/#{submission.description}/)
+    end
+
+    scenario "the CSV download contains Activity data" do
+      activity_presenter = ExportActivityToCsv.new(activity: activity).call
+      visit organisation_path(beis_user.organisation)
+
+      within "##{submission.id}" do
+        click_on I18n.t("default.link.show")
+      end
+
+      click_on I18n.t("default.button.download_as_csv")
+
+      result = page.body
+
+      expect(result).to include activity_presenter
     end
   end
 
@@ -70,6 +86,21 @@ RSpec.feature "Users can view a submission" do
 
       header = page.response_headers["Content-Disposition"]
       expect(header).to match(/#{submission.description}/)
+    end
+
+    scenario "the CSV download contains Activity data" do
+      activity_presenter = ExportActivityToCsv.new(activity: activity).call
+      visit organisation_path(delivery_partner_user.organisation)
+
+      within "##{submission.id}" do
+        click_on I18n.t("default.link.show")
+      end
+
+      click_on I18n.t("default.button.download_as_csv")
+
+      result = page.body
+
+      expect(result).to include activity_presenter
     end
   end
 end
