@@ -47,7 +47,6 @@ group :development, :test do
   gem "dotenv-rails"
   gem "factory_bot_rails"
   gem "faker"
-  gem "mock_redis"
   gem "i18n-tasks", "~> 0.9.31"
   gem "rspec-rails"
   gem "standard"
@@ -70,6 +69,7 @@ group :test do
   gem "climate_control"
   gem "coveralls", require: false
   gem "database_cleaner"
+  gem "fakeredis", require: false
   gem "launchy"
   gem "pundit-matchers", "~> 1.6.0"
   gem "shoulda-matchers"
