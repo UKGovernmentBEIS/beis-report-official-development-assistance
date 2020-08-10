@@ -233,6 +233,7 @@
 
 - Associate Transactions to Submissions
 - Ingest creates new activities at a level below its parent
+- Ingest BA GCRF data from IATI
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...HEAD
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13
