@@ -121,6 +121,8 @@ GEM
       railties (>= 5.0.0)
     faker (2.13.0)
       i18n (>= 1.6, < 2)
+    fakeredis (0.8.0)
+      redis (~> 4.1)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.13.0)
@@ -201,7 +203,6 @@ GEM
     mini_racer (0.3.1)
       libv8 (~> 8.4.255)
     minitest (5.14.1)
-    mock_redis (0.25.0)
     monetize (1.9.4)
       money (~> 6.12)
     money (6.13.7)
@@ -449,6 +450,7 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   faker
+  fakeredis
   govuk_design_system_formbuilder (~> 1.2.6)
   haml-rails
   high_voltage
@@ -461,7 +463,6 @@ DEPENDENCIES
   lograge
   mail-notify
   mini_racer
-  mock_redis
   monetize
   omniauth-auth0 (~> 2.3)
   omniauth-rails_csrf_protection (~> 0.1)
