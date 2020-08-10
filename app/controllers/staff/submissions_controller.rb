@@ -4,6 +4,7 @@ require "csv"
 
 class Staff::SubmissionsController < Staff::BaseController
   include Secured
+  include ActionController::Live
 
   def show
     @submission = Submission.find(id)
@@ -15,14 +16,7 @@ class Staff::SubmissionsController < Staff::BaseController
         fund = @submission.fund
         @projects = Activity.project.where(organisation: @submission.organisation).select { |activity| activity.associated_fund == fund }
         @third_party_projects = Activity.third_party_project.where(organisation: @submission.organisation).select { |activity| activity.associated_fund == fund }
-        csv = Activity::CSV_HEADERS.to_csv
-        @projects.each do |project|
-          csv << ExportActivityToCsv.new(activity: project).call
-        end
-        @third_party_projects.each do |project|
-          csv << ExportActivityToCsv.new(activity: project).call
-        end
-        send_data csv, {filename: "#{@submission.description}.csv", type: "text/csv"}
+        send_csv
       end
     end
   end
@@ -64,5 +58,18 @@ class Staff::SubmissionsController < Staff::BaseController
       @submission.save!
       @submission.create_activity key: "submission.activate", owner: current_user
     end
+  end
+
+  def send_csv
+    response.headers["Content-Type"] = "text/csv"
+    response.headers["Content-Disposition"] = "attachment; filename=#{@submission.description}.csv"
+    response.stream.write Activity::CSV_HEADERS.to_csv
+    @projects.each do |project|
+      response.stream.write ExportActivityToCsv.new(activity: project).call
+    end
+    @third_party_projects.each do |project|
+      response.stream.write ExportActivityToCsv.new(activity: project).call
+    end
+    response.stream.close
   end
 end
