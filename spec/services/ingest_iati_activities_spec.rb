@@ -37,16 +37,39 @@ RSpec.describe IngestIatiActivities do
       expect(new_activity.ingested).to eq(true)
     end
 
-    it "associates the project with a programme" do
-      beis = create(:beis_organisation)
-      uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
-      legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/single_activity.xml")
+    context "chooses an appropriate level based on its parent" do
+      let!(:legacy_activities_xml) { File.read("#{Rails.root}/spec/fixtures/activities/uksa/single_activity.xml") }
+      let!(:uksa) { create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31") }
 
-      described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+      it "sets the level to programme when its parent is a fund" do
+        existing_activity.update!(level: :fund)
 
-      activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
-      expect(activity.parent).to eq(existing_activity)
-      expect(activity.parent.organisation).to eql(beis)
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities_xml).call
+
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+        expect(activity.parent).to eq(existing_activity)
+        expect(activity).to be_programme
+      end
+
+      it "sets the level to project when its parent is a programme" do
+        existing_activity.update!(level: :programme)
+
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities_xml).call
+
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+        expect(activity.parent).to eq(existing_activity)
+        expect(activity).to be_project
+      end
+
+      it "sets the level to third-party project when its parent is a project" do
+        existing_activity.update!(level: :project)
+
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities_xml).call
+
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+        expect(activity.parent).to eq(existing_activity)
+        expect(activity).to be_third_party_project
+      end
     end
 
     it "adds an activity with all mandatory fields" do
