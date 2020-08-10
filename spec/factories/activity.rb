@@ -35,6 +35,12 @@ FactoryBot.define do
       association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :beis_organisation
       association :reporting_organisation, factory: :beis_organisation
+
+      trait :with_submission do
+        after(:create) do |fund|
+          create(:submission, :active, fund: fund, organisation: fund.organisation)
+        end
+      end
     end
 
     factory :programme_activity do
