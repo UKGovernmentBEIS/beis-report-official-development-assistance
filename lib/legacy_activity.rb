@@ -33,7 +33,7 @@ class LegacyActivity
   end
 
   def find_parent
-    Activity.programmes.find_by!(identifier: activity_to_parent_mapping[identifier])
+    Activity.find_by!(identifier: activity_to_parent_mapping[identifier])
   rescue ActiveRecord::RecordNotFound
     raise ParentNotFoundForActivity.new(identifier)
   end
