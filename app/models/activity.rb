@@ -134,6 +134,13 @@ class Activity < ApplicationRecord
     Activity.levels.keys[existing_level_index - 1]
   end
 
+  def child_level
+    existing_level_index = Activity.levels.keys.index(level)
+    return nil if existing_level_index >= Activity.levels.size
+
+    Activity.levels.keys[existing_level_index + 1]
+  end
+
   def iati_identifier
     parent_activities.each_with_object([reporting_organisation.iati_reference]) { |parent, parent_identifiers|
       parent_identifiers << parent.identifier

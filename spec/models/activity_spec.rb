@@ -552,6 +552,36 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#child_level" do
+    context "when the level is a fund" do
+      it "returns a string for programme" do
+        result = described_class.new(level: :fund).child_level
+        expect(result).to eql("programme")
+      end
+    end
+
+    context "when the level is a programme" do
+      it "returns a string for project" do
+        result = described_class.new(level: :programme).child_level
+        expect(result).to eql("project")
+      end
+    end
+
+    context "when the level is a project" do
+      it "returns a string for a third-party project" do
+        result = described_class.new(level: :project).child_level
+        expect(result).to eql("third_party_project")
+      end
+    end
+
+    context "when the level is a third-party project" do
+      it "returns nil" do
+        result = described_class.new(level: :third_party_project).child_level
+        expect(result).to eql(nil)
+      end
+    end
+  end
+
   describe "#iati_identifier" do
     context "when the activity is a fund" do
       it "returns a composite identifier formed with the reporting organisation" do
