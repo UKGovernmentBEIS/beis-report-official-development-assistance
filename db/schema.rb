@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_24_140110) do
+ActiveRecord::Schema.define(version: 2020_08_03_141156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -159,7 +159,9 @@ ActiveRecord::Schema.define(version: 2020_07_24_140110) do
     t.string "receiving_organisation_reference"
     t.uuid "parent_activity_id"
     t.boolean "ingested", default: false
+    t.uuid "submission_id"
     t.index ["parent_activity_id"], name: "index_transactions_on_parent_activity_id"
+    t.index ["submission_id"], name: "index_transactions_on_submission_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

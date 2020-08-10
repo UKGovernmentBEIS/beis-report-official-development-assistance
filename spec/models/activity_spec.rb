@@ -357,6 +357,45 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#associated_fund" do
+    context "when the activity is a fund" do
+      it "returns itself" do
+        fund = create(:fund_activity)
+        expect(fund.associated_fund).to eq(fund)
+      end
+    end
+
+    context "when the activity is a programme" do
+      it "returns the parent fund" do
+        programme = create(:programme_activity)
+        fund = programme.parent
+
+        expect(programme.associated_fund).to eq(fund)
+      end
+    end
+
+    context "when the activity is a project" do
+      it "returns the ancestor fund" do
+        project = create(:project_activity)
+        programme = project.parent
+        fund = programme.parent
+
+        expect(project.associated_fund).to eq(fund)
+      end
+    end
+
+    context "when the activity is a third party project" do
+      it "returns the ancestor fund" do
+        third_party_project = create(:third_party_project_activity)
+        project = third_party_project.parent
+        programme = project.parent
+        fund = programme.parent
+
+        expect(third_party_project.associated_fund).to eq(fund)
+      end
+    end
+  end
+
   describe "#form_stpes_completed?" do
     it "is true when a user has completed all of the form steps" do
       activity = build(:activity, form_state: :complete)

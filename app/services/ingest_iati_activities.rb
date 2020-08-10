@@ -44,13 +44,13 @@ class IngestIatiActivities
           new_activity
         end
 
-        add_transactions(legacy_activity: legacy_activity, roda_activity: roda_activity)
-        add_budgets(legacy_activity: legacy_activity, roda_activity: roda_activity)
-        add_planned_disbursements(legacy_activity: legacy_activity, roda_activity: roda_activity)
-
         roda_activity.parent = legacy_activity.find_parent_programme
         roda_activity.legacy_iati_xml = legacy_activity.to_xml.squish
         roda_activity.ingested = true
+
+        add_transactions(legacy_activity: legacy_activity, roda_activity: roda_activity)
+        add_budgets(legacy_activity: legacy_activity, roda_activity: roda_activity)
+        add_planned_disbursements(legacy_activity: legacy_activity, roda_activity: roda_activity)
 
         roda_activity.save!
       end
@@ -145,6 +145,8 @@ class IngestIatiActivities
       receiving_organisation_reference = receiving_organisation.attributes["ref"].try(:value)
       receiving_organisation_type = receiving_organisation_type(attribute: receiving_organisation.attributes["type"], implementing_organisation: roda_activity.implementing_organisations.first)
 
+      submission = Submission.find_by(fund: roda_activity.associated_fund, organisation: roda_activity.organisation)
+
       transaction = Transaction.new(
         description: normalize_string(description),
         transaction_type: transaction_type,
@@ -159,7 +161,8 @@ class IngestIatiActivities
         receiving_organisation_name: receiving_organisation_name,
         receiving_organisation_type: receiving_organisation_type,
         receiving_organisation_reference: receiving_organisation_reference,
-        ingested: true
+        ingested: true,
+        submission: submission
       )
 
       transaction.save!

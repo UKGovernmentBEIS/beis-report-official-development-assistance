@@ -4,7 +4,7 @@ class Staff::TransactionsController < Staff::BaseController
   include Secured
 
   def new
-    @activity = Activity.find(activity_id)
+    @activity = activity
     @transaction = Transaction.new
     @transaction.parent_activity = @activity
     pre_fill_providing_organisation
@@ -13,7 +13,7 @@ class Staff::TransactionsController < Staff::BaseController
   end
 
   def create
-    @activity = Activity.find(activity_id)
+    @activity = activity
     authorize @activity
 
     result = CreateTransaction.new(activity: @activity)
@@ -40,7 +40,7 @@ class Staff::TransactionsController < Staff::BaseController
     @transaction = Transaction.find(id)
     authorize @transaction
 
-    @activity = Activity.find(activity_id)
+    @activity = activity
     result = UpdateTransaction.new(transaction: @transaction)
       .call(attributes: transaction_params)
 
@@ -79,6 +79,10 @@ class Staff::TransactionsController < Staff::BaseController
 
   def id
     params[:id]
+  end
+
+  def activity
+    @activity ||= Activity.find(activity_id)
   end
 
   private def pre_fill_providing_organisation
