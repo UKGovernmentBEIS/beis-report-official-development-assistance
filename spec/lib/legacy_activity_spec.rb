@@ -75,8 +75,8 @@ RSpec.describe LegacyActivity do
         existing_programme = create(:programme_activity, identifier: "GCRF-INTPART")
 
         fake_mapping = CSV::Table.new([
-          CSV::Row.new([:project_id, :programme_id], ["project_id", "programme_id"]),
-          CSV::Row.new([:project_id, :programme_id], ["GB-GOV-13-GCRF-UKSA_CO_UKSA-34", "GCRF-INTPART"]),
+          CSV::Row.new([:activity_id, :parent_id], ["activity_id", "parent_id"]),
+          CSV::Row.new([:activity_id, :parent_id], ["GB-GOV-13-GCRF-UKSA_CO_UKSA-34", "GCRF-INTPART"]),
         ])
         allow(CSV).to receive(:read).and_return(fake_mapping)
 
