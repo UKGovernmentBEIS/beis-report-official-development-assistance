@@ -27,7 +27,6 @@ RSpec.describe SubmissionPolicy do
     let(:user) { build_stubbed(:delivery_partner_user, organisation: organisation) }
 
     it { is_expected.to permit_action(:index) }
-    it { is_expected.to permit_action(:show) }
     it { is_expected.to forbid_new_and_create_actions }
     it { is_expected.to forbid_new_and_create_actions }
     it { is_expected.to forbid_action(:destroy) }
@@ -35,11 +34,13 @@ RSpec.describe SubmissionPolicy do
     context "when the submission belongs to the user's organisation" do
       let(:submission) { create(:submission, organisation: user.organisation) }
       it { is_expected.to permit_action(:download) }
+      it { is_expected.to permit_action(:show) }
     end
 
     context "when the submission does not belong to the user's organisation" do
       let(:submission) { create(:submission, organisation: create(:organisation)) }
       it { is_expected.to forbid_action(:download) }
+      it { is_expected.to forbid_action(:show) }
     end
 
     it "includes only submissions that the users organisation is reporting in the resolved scope" do

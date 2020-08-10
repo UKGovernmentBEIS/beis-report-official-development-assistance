@@ -6,7 +6,8 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    return true if beis_user?
+    record.organisation == user.organisation
   end
 
   def create?
