@@ -28,7 +28,7 @@ class IngestIatiActivities
         roda_activity = if existing_activity.present?
           existing_activity
         else
-          new_activity = Activity.new(identifier: legacy_activity.identifier, level: :project, organisation: delivery_partner)
+          new_activity = Activity.new(identifier: legacy_activity.identifier, organisation: delivery_partner)
           add_identifiers(legacy_activity: legacy_activity, new_activity: new_activity)
           add_participating_organisation(delivery_partner: delivery_partner, new_activity: new_activity, legacy_activity: legacy_activity)
           add_title(legacy_activity: legacy_activity, new_activity: new_activity)
@@ -44,7 +44,10 @@ class IngestIatiActivities
           new_activity
         end
 
-        roda_activity.parent = legacy_activity.find_parent
+        legacy_activity_parent = legacy_activity.find_parent
+        roda_activity.parent = legacy_activity_parent
+        roda_activity.level = legacy_activity_parent.child_level
+
         roda_activity.legacy_iati_xml = legacy_activity.to_xml.squish
         roda_activity.ingested = true
 
