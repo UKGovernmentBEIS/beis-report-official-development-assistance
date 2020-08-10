@@ -40,9 +40,9 @@ class LegacyActivity
 
   private def activity_to_parent_mapping
     @activity_to_parent_mapping ||= begin
-      rows = CSV.read("#{Rails.root}/vendor/data/iati_project_to_programme_mappings/#{delivery_partner.iati_reference}.csv", headers: [:project_id, :programme_id])
+      rows = CSV.read("#{Rails.root}/vendor/data/iati_activity_to_parent_mappings/#{delivery_partner.iati_reference}.csv", headers: [:activity_id, :parent_id])
       rows_without_headers = rows[1..-1]
-      rows_without_headers.each_with_object({}) { |row, hash| hash[row[:project_id]] = row[:programme_id] }
+      rows_without_headers.each_with_object({}) { |row, hash| hash[row[:activity_id]] = row[:parent_id] }
     end
   rescue Errno::ENOENT
     raise MissingMappingFileForOrganisation.new(delivery_partner.iati_reference)
