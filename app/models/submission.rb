@@ -6,6 +6,7 @@ class Submission < ApplicationRecord
 
   belongs_to :fund, -> { where(level: :fund) }, class_name: "Activity"
   belongs_to :organisation
+  has_many :transactions
 
   validates_uniqueness_of :fund, scope: :organisation
   validate :activity_must_be_a_fund
