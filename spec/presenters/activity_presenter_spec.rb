@@ -263,4 +263,11 @@ RSpec.describe ActivityPresenter do
       end
     end
   end
+
+  describe "#link_to_roda" do
+    it "returns the full URL to the activity in RODA" do
+      project = create(:project_activity)
+      expect(described_class.new(project).link_to_roda).to eq "http://test.local/organisations/#{project.organisation.id}/activities/#{project.id}/details"
+    end
+  end
 end
