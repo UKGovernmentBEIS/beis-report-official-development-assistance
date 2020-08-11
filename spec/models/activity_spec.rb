@@ -602,4 +602,14 @@ RSpec.describe Activity, type: :model do
       end
     end
   end
+
+  describe "#transactions_total" do
+    it "returns the total of all the activity's transactions" do
+      project = create(:project_activity)
+      _transaction_1 = create(:transaction, parent_activity: project, value: 100.20)
+      _transaction_2 = create(:transaction, parent_activity: project, value: 210)
+
+      expect(project.transactions_total).to eq(310.20)
+    end
+  end
 end

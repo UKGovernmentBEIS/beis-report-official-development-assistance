@@ -270,4 +270,15 @@ RSpec.describe ActivityPresenter do
       expect(described_class.new(project).link_to_roda).to eq "http://test.local/organisations/#{project.organisation.id}/activities/#{project.id}/details"
     end
   end
+
+  describe "#transactions_total" do
+    it "returns the transaction total as a formatted number with currency symbol" do
+      project = create(:project_activity)
+      _transaction_1 = create(:transaction, parent_activity: project, value: 100.20)
+      _transaction_2 = create(:transaction, parent_activity: project, value: 300)
+
+      expect(described_class.new(project).transactions_total)
+        .to eq "£400.20"
+    end
+  end
 end
