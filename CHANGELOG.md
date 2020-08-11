@@ -236,6 +236,7 @@
 - rename Submission to Report
 - reports can be managed in the reports section of the application
 - remove submission from the organisation page
+- Add `transactions_total` to Activity and add it to the Submission CSV per Activity
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...HEAD
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13
