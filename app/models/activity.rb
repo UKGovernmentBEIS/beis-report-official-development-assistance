@@ -139,4 +139,8 @@ class Activity < ApplicationRecord
       parent_identifiers << parent.identifier
     }.push(identifier).join("-")
   end
+
+  def transactions_total
+    transactions.sum(:value)
+  end
 end
