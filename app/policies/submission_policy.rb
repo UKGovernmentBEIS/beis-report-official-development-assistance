@@ -1,10 +1,13 @@
 class SubmissionPolicy < ApplicationPolicy
+  attr_reader :user, :record
+
   def index?
     true
   end
 
   def show?
-    true
+    return true if beis_user?
+    record.organisation == user.organisation
   end
 
   def create?
@@ -13,6 +16,11 @@ class SubmissionPolicy < ApplicationPolicy
 
   def update?
     beis_user?
+  end
+
+  def download?
+    return true if beis_user?
+    record.organisation == user.organisation
   end
 
   def destroy?

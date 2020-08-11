@@ -76,4 +76,8 @@ class ActivityPresenter < SimpleDelegator
     return if super.blank?
     I18n.t("page_content.activity.level.#{super}").capitalize
   end
+
+  def link_to_roda
+    Rails.application.routes.url_helpers.organisation_activity_details_url(organisation, self, host: ENV["DOMAIN"]).to_s
+  end
 end
