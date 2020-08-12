@@ -128,7 +128,7 @@ RSpec.feature "BEIS users can edit a report" do
         click_on I18n.t("default.button.submit")
 
         auditable_events = PublicActivity::Activity.where(trackable_id: report.id)
-        expect(auditable_events.map(&:key)).to eq ["report.update", "report.activate"]
+        expect(auditable_events.map(&:key)).to match_array ["report.update", "report.activate"]
         expect(auditable_events.map(&:owner_id).uniq).to eq [beis_user.id]
       end
     end

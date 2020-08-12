@@ -80,4 +80,9 @@ class ActivityPresenter < SimpleDelegator
   def link_to_roda
     Rails.application.routes.url_helpers.organisation_activity_details_url(organisation, self, host: ENV["DOMAIN"]).to_s
   end
+
+  def transactions_total
+    return if super.blank?
+    ActionController::Base.helpers.number_to_currency(super, unit: "£")
+  end
 end
