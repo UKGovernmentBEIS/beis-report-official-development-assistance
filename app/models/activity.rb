@@ -4,7 +4,7 @@ class Activity < ApplicationRecord
 
   STANDARD_GRANT_FINANCE_CODE = "110"
   UNTIED_TIED_STATUS_CODE = "5"
-  CSV_HEADERS = ["Identifier", "Transparency identifier", "Sector", "Title", "Description", "Status", "Planned start date", "Actual start date", "Planned end date", "Actual end date", "Recipient region", "Recipient country", "Aid type", "Level", "Link to activity in RODA"]
+  CSV_HEADERS = ["Identifier", "Transparency identifier", "Sector", "Title", "Description", "Status", "Planned start date", "Actual start date", "Planned end date", "Actual end date", "Recipient region", "Recipient country", "Aid type", "Level", "Actual", "Link to activity in RODA"]
 
   VALIDATION_STEPS = [
     :level_step,
@@ -138,5 +138,9 @@ class Activity < ApplicationRecord
     parent_activities.each_with_object([reporting_organisation.iati_reference]) { |parent, parent_identifiers|
       parent_identifiers << parent.identifier
     }.push(identifier).join("-")
+  end
+
+  def transactions_total
+    transactions.sum(:value)
   end
 end

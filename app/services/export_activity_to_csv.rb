@@ -24,6 +24,7 @@ class ExportActivityToCsv
       activity_presenter.recipient_country,
       activity_presenter.aid_type,
       activity_presenter.level,
+      activity_presenter.transactions_total,
       activity_presenter.link_to_roda,
     ].to_csv
   end
