@@ -8,7 +8,7 @@ RSpec.describe IngestIatiActivities do
   describe "#call" do
     it "creates 35 new projects for UKSA" do
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
-      _submission = create(:submission, :active, organisation: uksa, fund: existing_programme.associated_fund)
+      _report = create(:report, :active, organisation: uksa, fund: existing_programme.associated_fund)
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
 
       service_object = described_class.new(delivery_partner: uksa, file_io: legacy_activities)
@@ -105,7 +105,7 @@ RSpec.describe IngestIatiActivities do
 
     it "creates transactions and marks them as ingested" do
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
-      _submission = create(:submission, :active, organisation: uksa, fund: existing_programme.associated_fund)
+      _report = create(:report, :active, organisation: uksa, fund: existing_programme.associated_fund)
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_transactions.xml")
 
       described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
@@ -193,7 +193,7 @@ RSpec.describe IngestIatiActivities do
 
       let(:activity) { Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-029") }
       let(:planned_disbursements) { PlannedDisbursement.where(parent_activity: activity) }
-      let!(:submission) { create(:submission, :active, organisation: uksa, fund: existing_programme.associated_fund) }
+      let!(:report) { create(:report, :active, organisation: uksa, fund: existing_programme.associated_fund) }
 
       it "creates valid planned disbursement and marks it as ingested" do
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
@@ -322,7 +322,7 @@ RSpec.describe IngestIatiActivities do
     context "when a transaction has no description" do
       it "set a placeholder description" do
         uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
-        _submission = create(:submission, :active, organisation: uksa, fund: existing_programme.associated_fund)
+        _report = create(:report, :active, organisation: uksa, fund: existing_programme.associated_fund)
 
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_missing_transaction_description.xml")
 
@@ -353,7 +353,7 @@ RSpec.describe IngestIatiActivities do
     context "when an activity with the IATI identifier already exists" do
       it "updates the activity rather then creating a new record" do
         uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
-        _submission = create(:submission, :active, organisation: uksa, fund: existing_programme.associated_fund)
+        _report = create(:report, :active, organisation: uksa, fund: existing_programme.associated_fund)
         existing_project = create(:project_activity,
           previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021",
           organisation: uksa)
@@ -376,7 +376,7 @@ RSpec.describe IngestIatiActivities do
             :at_geography_step,
             previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021",
             organisation: uksa)
-          _submission = create(:submission, :active, organisation: uksa, fund: existing_programme.associated_fund)
+          _report = create(:report, :active, organisation: uksa, fund: existing_programme.associated_fund)
 
           legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_transactions.xml")
 
@@ -425,7 +425,7 @@ RSpec.describe IngestIatiActivities do
       ams = create(:organisation, name: "Academy of Medical Sciences", iati_reference: "GB-COH-03520281")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/ams/newt/fake_activity_with_dates.xml")
       programme = create(:programme_activity, organisation: ams)
-      _submission = create(:submission, :active, organisation: ams, fund: programme.associated_fund)
+      _report = create(:report, :active, organisation: ams, fund: programme.associated_fund)
       # Temporary fix until we have the actual programme-project mappings
       allow_any_instance_of(LegacyActivity).to receive(:find_parent_programme).and_return(programme)
 
