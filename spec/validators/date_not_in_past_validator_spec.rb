@@ -8,7 +8,7 @@ RSpec.describe DateNotInPastValidator do
       validates :deadline, date_not_in_past: true
 
       def self.name
-        "Submission"
+        "Report"
       end
     }.new
   end

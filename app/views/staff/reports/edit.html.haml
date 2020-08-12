@@ -1,10 +1,10 @@
-=content_for :page_title_prefix, t("page_title.submission.edit")
+=content_for :page_title_prefix, t("page_title.report.edit")
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
-        = t("page_title.submission.edit")
+        = t("page_title.report.edit")
 
-      = form_with model: @submission, url: submission_path(@submission) do |f|
+      = form_with model: @report, url: report_path(@report) do |f|
         = render partial: "form", locals: { f: f }
