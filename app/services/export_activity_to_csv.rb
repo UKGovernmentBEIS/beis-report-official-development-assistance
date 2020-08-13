@@ -3,7 +3,7 @@ require "csv"
 class ExportActivityToCsv
   attr_accessor :activity
 
-  def initialize(activity:)
+  def initialize(activity: nil)
     @activity = activity
   end
 
@@ -29,7 +29,8 @@ class ExportActivityToCsv
     ].to_csv
   end
 
-  def headers
+  def headers(report:)
+    report_financial_quarter = ReportPresenter.new(report).financial_quarter_and_year
     [
       "Identifier",
       "Transparency identifier",
@@ -45,7 +46,7 @@ class ExportActivityToCsv
       "Recipient country",
       "Aid type",
       "Level",
-      "Actuals",
+      report_financial_quarter ? report_financial_quarter + " actuals" : "Actuals",
       "Link to activity in RODA",
     ].to_csv
   end
