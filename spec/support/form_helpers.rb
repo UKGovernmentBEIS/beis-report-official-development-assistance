@@ -141,6 +141,11 @@ module FormHelpers
       month: planned_end_date_month,
       day: planned_end_date_day
     )
+
+    my_activity = Activity.find_by(identifier: identifier)
+    iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
+    expect(my_activity.status).not_to be_nil
+    expect(my_activity.status).to eq(iati_status)
   end
 
   def fill_in_transaction_form(expectations: true,
