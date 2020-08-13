@@ -216,6 +216,8 @@ class IngestIatiActivities
       receiving_organisation_reference = receiving_organisation.attributes["ref"].try(:value)
       receiving_organisation_type = receiving_organisation_type(attribute: receiving_organisation.attributes["type"], implementing_organisation: roda_activity.implementing_organisations.first)
 
+      report = Report.find_by(fund: roda_activity.associated_fund, organisation: roda_activity.organisation)
+
       planned_disbursement = PlannedDisbursement.new(
         planned_disbursement_type: planned_disbursement_type,
         period_start_date: period_start_date,
@@ -229,6 +231,7 @@ class IngestIatiActivities
         receiving_organisation_name: receiving_organisation_name,
         receiving_organisation_type: receiving_organisation_type,
         receiving_organisation_reference: receiving_organisation_reference,
+        report: report,
         ingested: true
       )
       planned_disbursement.save!

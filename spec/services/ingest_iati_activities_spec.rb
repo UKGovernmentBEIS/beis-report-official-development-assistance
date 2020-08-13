@@ -178,6 +178,7 @@ RSpec.describe IngestIatiActivities do
     context "ingesting budgets" do
       it "creates budgets and marks them as ingested" do
         uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+        _report = create(:report, :active, organisation: uksa, fund: existing_activity.associated_fund)
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_budget.xml")
 
         described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
@@ -363,6 +364,7 @@ RSpec.describe IngestIatiActivities do
     context "when a description has escaped characters and extra whitespace" do
       it "normalizes the text" do
         uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+        _report = create(:report, :active, organisation: uksa, fund: existing_activity.associated_fund)
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_escaped_characters.xml")
 
         described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
