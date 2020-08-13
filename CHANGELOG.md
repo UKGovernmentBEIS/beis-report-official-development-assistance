@@ -239,6 +239,7 @@
 - Add `transactions_total` to Activity and add it to the Submission CSV per Activity
 - Migrate AMS GCRF activities from Level C to Level B and update identifiers
 - Ingest creates new activities at a level below its parent
+- Reports store the relevant financial quarter
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...HEAD
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13
