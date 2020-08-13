@@ -47,7 +47,7 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "can download a CSV of the report" do
-      report = create(:report, :active)
+      report = create(:report, :active, description: "Legacy Report")
 
       visit reports_path
 
@@ -59,7 +59,7 @@ RSpec.feature "Users can view reports" do
 
       expect(page.response_headers["Content-Type"]).to include("text/csv")
       header = page.response_headers["Content-Disposition"]
-      expect(header).to match(/#{report.description}/)
+      expect(header).to match(/Legacy%20Report/)
     end
   end
 
@@ -111,7 +111,7 @@ RSpec.feature "Users can view reports" do
       end
 
       scenario "can download a CSV of their own report" do
-        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+        report = create(:report, :active, organisation: delivery_partner_user.organisation, description: "Legacy Report")
 
         visit reports_path
 
@@ -125,7 +125,7 @@ RSpec.feature "Users can view reports" do
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
         header = page.response_headers["Content-Disposition"]
-        expect(header).to match(/#{report.description}/)
+        expect(header).to match(/Legacy%20Report/)
       end
     end
   end
