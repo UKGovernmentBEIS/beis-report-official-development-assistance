@@ -5,7 +5,7 @@ RSpec.describe "Users can create a planned disbursement" do
     before { authenticate!(user: user) }
 
     scenario "they can add a planned disbursement" do
-      project = create(:project_activity, organisation: user.organisation)
+      project = create(:project_activity, :with_report, organisation: user.organisation)
       visit activities_path
       click_on project.title
 
@@ -35,7 +35,7 @@ RSpec.describe "Users can create a planned disbursement" do
     end
 
     scenario "the action is recorded with public_activity" do
-      activity = create(:project_activity, organisation: user.organisation)
+      activity = create(:project_activity, :with_report, organisation: user.organisation)
 
       PublicActivity.with_tracking do
         visit activities_path
@@ -52,6 +52,23 @@ RSpec.describe "Users can create a planned disbursement" do
         expect(auditable_event.owner_id).to eq user.id
         expect(auditable_event.trackable_id).to eq planned_disbursement.id
       end
+    end
+
+    scenario "the planned disbursement is associated with the currently active report" do
+      fund = create(:fund_activity)
+      programme = create(:programme_activity, parent: fund)
+      project = create(:project_activity, organisation: user.organisation, parent: programme)
+      report = create(:report, :active, fund: fund, organisation: project.organisation)
+
+      visit activities_path
+
+      click_on(project.title)
+      click_on(I18n.t("page_content.planned_disbursements.button.create"))
+
+      fill_in_planned_disbursement_form
+
+      planned_disbursement = PlannedDisbursement.last
+      expect(planned_disbursement.report).to eq(report)
     end
 
     context "when the delivery partner is a government organisation" do

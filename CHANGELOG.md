@@ -240,6 +240,7 @@
 - Migrate AMS GCRF activities from Level C to Level B and update identifiers
 - Ingest creates new activities at a level below its parent
 - Reports store the relevant financial quarter
+- Associate Planned Disbursements to Reports
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...HEAD
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13

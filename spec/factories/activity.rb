@@ -71,6 +71,13 @@ FactoryBot.define do
       association :extending_organisation, factory: :delivery_partner_organisation
       association :reporting_organisation, factory: :beis_organisation
 
+      trait :with_report do
+        after(:create) do |project|
+          fund = project.associated_fund
+          create(:report, :active, fund: fund, organisation: project.organisation)
+        end
+      end
+
       factory :project_activity_with_implementing_organisations do
         transient do
           implementing_organisations_count { 3 }
