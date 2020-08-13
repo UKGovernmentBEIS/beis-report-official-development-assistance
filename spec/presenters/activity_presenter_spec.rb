@@ -278,7 +278,7 @@ RSpec.describe ActivityPresenter do
       _transaction_2 = create(:transaction, parent_activity: project, value: 300)
 
       expect(described_class.new(project).transactions_total)
-        .to eq "£400.20"
+        .to eq "400.20"
     end
   end
 end
