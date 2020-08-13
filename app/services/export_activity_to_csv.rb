@@ -28,4 +28,25 @@ class ExportActivityToCsv
       activity_presenter.link_to_roda,
     ].to_csv
   end
+
+  def headers
+    [
+      "Identifier",
+      "Transparency identifier",
+      "Sector",
+      "Title",
+      "Description",
+      "Status",
+      "Planned start date",
+      "Actual start date",
+      "Planned end date",
+      "Actual end date",
+      "Recipient region",
+      "Recipient country",
+      "Aid type",
+      "Level",
+      "Actuals",
+      "Link to activity in RODA",
+    ].to_csv
+  end
 end
