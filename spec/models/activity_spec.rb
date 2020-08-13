@@ -576,8 +576,8 @@ RSpec.describe Activity, type: :model do
 
     context "when the level is a third-party project" do
       it "returns nil" do
-        result = described_class.new(level: :third_party_project).child_level
-        expect(result).to eql(nil)
+        expect { described_class.new(level: :third_party_project).child_level }
+          .to raise_error("no level below third_party_project")
       end
     end
   end
