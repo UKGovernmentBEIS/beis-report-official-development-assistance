@@ -45,6 +45,7 @@ en:
         parent: Select the parent activity
         planned_end_date: Planned end date
         planned_start_date: Planned start date
+        programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
         sector: Which %{sector_category} sector is the focus area for this %{level}?
         sector_category: What area of the economy or society is the %{level} helping?
@@ -91,6 +92,7 @@ en:
         planned_disbursements: Planned disbursements
         planned_end_date: Planned end date
         planned_start_date: Planned start date
+        programme_status: Activity status
         projects: Projects
         recipient_country: Recipient country
         recipient_region: Recipient region
@@ -180,6 +182,7 @@ en:
         identifier: Enter your unique identifier
         level: Hierarchy level
         parent: Select the parent
+        programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
         region: What region will benefit from this activity?
         sector: Which %{sector_category} sector is the focus area for this %{level}

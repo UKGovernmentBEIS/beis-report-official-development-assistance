@@ -11,7 +11,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :purpose,
     :sector_category,
     :sector,
-    :status,
+    :programme_status,
     :dates,
     :geography,
     :region,
@@ -128,8 +128,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(:description).fetch("description", nil)
   end
 
-  def status
-    params.require(:activity).permit(:status).fetch("status", nil)
+  def programme_status
+    params.require(:activity).permit(:programme_status).fetch("programme_status", nil)
   end
 
   def planned_start_date
