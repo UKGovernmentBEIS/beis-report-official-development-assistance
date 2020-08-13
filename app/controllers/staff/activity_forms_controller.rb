@@ -65,8 +65,9 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.assign_attributes(sector_category: sector_category, sector: nil)
     when :sector
       @activity.assign_attributes(sector: sector)
-    when :status
-      @activity.assign_attributes(status: status)
+    when :programme_status
+      iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
+      @activity.assign_attributes(programme_status: programme_status, status: iati_status)
     when :dates
       @activity.assign_attributes(
         planned_start_date: format_date(planned_start_date),
