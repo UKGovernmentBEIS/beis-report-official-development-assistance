@@ -128,17 +128,21 @@ class Activity < ApplicationRecord
   end
 
   def parent_level
-    existing_level_index = Activity.levels.keys.index(level)
-    return nil if existing_level_index.zero?
-
-    Activity.levels.keys[existing_level_index - 1]
+    case level
+    when "fund" then nil
+    when "programme" then "fund"
+    when "project" then "programme"
+    when "third_party_project" then "project"
+    end
   end
 
   def child_level
-    existing_level_index = Activity.levels.keys.index(level)
-    return nil if existing_level_index >= Activity.levels.size
-
-    Activity.levels.keys[existing_level_index + 1]
+    case level
+    when "fund" then "programme"
+    when "programme" then "project"
+    when "project" then "third_party_project"
+    when "third_party_project" then raise "no level below third_party_project"
+    end
   end
 
   def iati_identifier
