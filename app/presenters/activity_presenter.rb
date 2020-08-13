@@ -83,6 +83,6 @@ class ActivityPresenter < SimpleDelegator
 
   def transactions_total
     return if super.blank?
-    ActionController::Base.helpers.number_to_currency(super, unit: "£")
+    "%.2f" % super
   end
 end
