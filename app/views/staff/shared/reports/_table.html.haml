@@ -4,6 +4,8 @@
       = t("page_content.reports.title")
     %thead.govuk-table__head
       %tr.govuk-table__row
+        %th.govuk-table__header
+          =t("table.header.report.financial_quarter")
         - if current_user.service_owner?
           %th.govuk-table__header
             = t("table.header.report.organisation")
@@ -18,6 +20,7 @@
     %tbody.govuk-table__body
       - reports.each do |report|
         %tr.govuk-table__row{id: report.id}
+          %td.govuk-table__cell= report.financial_quarter_and_year
           - if current_user.service_owner?
             %td.govuk-table__cell= report.organisation.name
           %td.govuk-table__cell= report.description

@@ -25,6 +25,16 @@ RSpec.feature "Users can view reports" do
       expect(page).to have_content report.organisation.name
     end
 
+    scenario "they see the financial quarter the of the report" do
+      travel_to(Date.parse("1 Jan 2020")) do
+        _report = create(:report, :active)
+
+        visit reports_path
+
+        expect(page).to have_content "Q4 2019-2020"
+      end
+    end
+
     scenario "they can view all inactive reports for all organisations" do
       reports = create_list(:report, 2)
       visit reports_path
