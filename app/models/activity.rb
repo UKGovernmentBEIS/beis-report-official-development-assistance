@@ -4,7 +4,6 @@ class Activity < ApplicationRecord
 
   STANDARD_GRANT_FINANCE_CODE = "110"
   UNTIED_TIED_STATUS_CODE = "5"
-  CSV_HEADERS = ["Identifier", "Transparency identifier", "Sector", "Title", "Description", "Status", "Planned start date", "Actual start date", "Planned end date", "Actual end date", "Recipient region", "Recipient country", "Aid type", "Level", "Actual", "Link to activity in RODA"]
 
   VALIDATION_STEPS = [
     :level_step,
