@@ -6,7 +6,7 @@ RSpec.describe "Users can edit a planned disbursement" do
 
     scenario "they can edit a planned disbursement" do
       organisation = user.organisation
-      project = create(:project_activity, organisation: user.organisation)
+      project = create(:project_activity, :with_report, organisation: user.organisation)
       planned_disbursement = create(:planned_disbursement, parent_activity: project)
       visit organisation_activity_path(organisation, project)
 
@@ -25,7 +25,7 @@ RSpec.describe "Users can edit a planned disbursement" do
 
     scenario "the action is recorded with public_activity" do
       PublicActivity.with_tracking do
-        project = create(:project_activity, organisation: user.organisation)
+        project = create(:project_activity, :with_report, organisation: user.organisation)
         planned_disbursement = create(:planned_disbursement, parent_activity: project)
 
         visit activities_path
