@@ -7,8 +7,9 @@ en:
         inactive: Inactive reports
     header:
       report:
+        financial_quarter: Financial quarter
         state: State
-        description: Reporting period
+        description: Description
         organisation: Organisation
         fund: Level A
         deadline: Deadline

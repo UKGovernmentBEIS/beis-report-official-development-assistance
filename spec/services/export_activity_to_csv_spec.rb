@@ -29,4 +29,16 @@ RSpec.describe ExportActivityToCsv do
       ].to_csv)
     end
   end
+
+  describe "#headers" do
+    it "uses the current report financial quarter to generate the actuals total column " do
+      travel_to(Date.parse("1 April 2020")) do
+        report = Report.new
+
+        headers = ExportActivityToCsv.new.headers(report: report)
+
+        expect(headers).to include "Q1 2020-2021 actuals"
+      end
+    end
+  end
 end
