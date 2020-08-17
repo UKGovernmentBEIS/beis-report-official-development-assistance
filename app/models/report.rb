@@ -15,7 +15,7 @@ class Report < ApplicationRecord
   validate :activity_must_be_a_fund
   validates :deadline, date_not_in_past: true, date_within_boundaries: true
 
-  enum state: {inactive: "inactive", active: "active"}
+  enum state: {inactive: "inactive", active: "active", submitted: "submitted"}
 
   def initialize(attributes = nil)
     super(attributes)

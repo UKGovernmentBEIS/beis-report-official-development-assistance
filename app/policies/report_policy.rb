@@ -14,13 +14,22 @@ class ReportPolicy < ApplicationPolicy
     beis_user?
   end
 
-  def update?
+  def edit?
     beis_user?
+  end
+
+  def update?
+    beis_user? || delivery_partner_user?
   end
 
   def download?
     return true if beis_user?
     record.organisation == user.organisation
+  end
+
+  def submit?
+    return false if record.submitted?
+    delivery_partner_user? && record.organisation == user.organisation
   end
 
   def destroy?

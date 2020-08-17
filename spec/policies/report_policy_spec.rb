@@ -17,6 +17,7 @@ RSpec.describe ReportPolicy do
     it { is_expected.to permit_edit_and_update_actions }
     it { is_expected.to forbid_action(:destroy) }
     it { is_expected.to permit_action(:download) }
+    it { is_expected.to forbid_action(:submit) }
 
     it "includes all reports in the resolved scope" do
       resolved_scope = described_class::Scope.new(user, Report).resolve
@@ -36,12 +37,19 @@ RSpec.describe ReportPolicy do
       let(:report) { create(:report, organisation: user.organisation) }
       it { is_expected.to permit_action(:download) }
       it { is_expected.to permit_action(:show) }
+      it { is_expected.to permit_action(:submit) }
     end
 
     context "when the report does not belong to the user's organisation" do
       let(:report) { create(:report, organisation: create(:organisation)) }
       it { is_expected.to forbid_action(:download) }
       it { is_expected.to forbid_action(:show) }
+      it { is_expected.to forbid_action(:submit) }
+    end
+
+    context "when the report is already submitted" do
+      let(:report) { create(:report, state: :submitted, organisation: create(:organisation)) }
+      it { is_expected.to forbid_action(:submit) }
     end
 
     it "includes only reports that the users organisation is reporting in the resolved scope" do
