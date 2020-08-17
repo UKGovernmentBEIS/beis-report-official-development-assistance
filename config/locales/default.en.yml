@@ -14,7 +14,6 @@ en:
       download_as_xml: Download as XML
       menu: Menu
       submit: Submit
-      download_as_csv: Download as CSV
     link:
       add: Add
       back: Back

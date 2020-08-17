@@ -14,6 +14,7 @@ class Staff::ReportsController < Staff::BaseController
   def show
     @report = Report.find(id)
     authorize @report
+    @report_presenter = ReportPresenter.new(@report)
 
     respond_to do |format|
       format.html
@@ -86,7 +87,7 @@ class Staff::ReportsController < Staff::BaseController
   def send_csv
     response.headers["Content-Type"] = "text/csv"
     response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(@report.description)}.csv"
-    response.stream.write ExportActivityToCsv.new(activity: nil, report: @report).headers
+    response.stream.write ExportActivityToCsv.new(report: @report).headers
     @projects.each do |project|
       response.stream.write ExportActivityToCsv.new(activity: project, report: @report).call
     end
