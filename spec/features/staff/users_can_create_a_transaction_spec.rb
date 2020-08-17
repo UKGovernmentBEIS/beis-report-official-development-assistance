@@ -284,8 +284,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "the transaction is associated with the currently active report" do
         fund = create(:fund_activity)
         programme = create(:programme_activity, parent: fund)
-        report = create(:report, :active, organisation: user.organisation, fund: fund)
-        project = create(:project_activity, organisation: user.organisation, parent: programme)
+        project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
 
         visit organisation_activity_path(user.organisation, project)
         click_on "Add a transaction"
@@ -293,6 +292,7 @@ RSpec.feature "Users can create a transaction" do
         fill_in_transaction_form
 
         transaction = Transaction.last
+        report = Report.find_by(fund: fund, organisation: project.organisation)
         expect(transaction.report).to eq(report)
       end
     end

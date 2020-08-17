@@ -23,6 +23,13 @@ FactoryBot.define do
     association :organisation, factory: :organisation
     association :reporting_organisation, factory: :beis_organisation
 
+    trait :with_report do
+      after(:create) do |activity|
+        fund = activity.associated_fund
+        create(:report, :active, fund: fund, organisation: activity.organisation)
+      end
+    end
+
     factory :fund_activity do
       level { :fund }
       funding_organisation_name { "HM Treasury" }
@@ -35,12 +42,6 @@ FactoryBot.define do
       association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :beis_organisation
       association :reporting_organisation, factory: :beis_organisation
-
-      trait :with_report do
-        after(:create) do |fund|
-          create(:report, :active, fund: fund, organisation: fund.organisation)
-        end
-      end
     end
 
     factory :programme_activity do

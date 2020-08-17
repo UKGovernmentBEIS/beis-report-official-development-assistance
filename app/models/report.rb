@@ -9,6 +9,7 @@ class Report < ApplicationRecord
   belongs_to :fund, -> { where(level: :fund) }, class_name: "Activity"
   belongs_to :organisation
   has_many :transactions
+  has_many :planned_disbursements
 
   validates_uniqueness_of :fund, scope: :organisation
   validate :activity_must_be_a_fund

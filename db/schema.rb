@@ -130,7 +130,9 @@ ActiveRecord::Schema.define(version: 2020_08_14_134116) do
     t.uuid "parent_activity_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "report_id"
     t.index ["parent_activity_id"], name: "index_planned_disbursements_on_parent_activity_id"
+    t.index ["report_id"], name: "index_planned_disbursements_on_report_id"
   end
 
   create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
