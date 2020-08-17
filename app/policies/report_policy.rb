@@ -32,6 +32,10 @@ class ReportPolicy < ApplicationPolicy
     delivery_partner_user? && record.organisation == user.organisation
   end
 
+  def complete?
+    delivery_partner_user? && record.organisation == user.organisation
+  end
+
   def destroy?
     false
   end

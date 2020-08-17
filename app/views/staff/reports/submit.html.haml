@@ -1,0 +1,17 @@
+= content_for :page_title_prefix, t("page_title.report.submit", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.report.submit", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+
+      %p.govuk-body
+        By submitting this report you are:
+
+      %ul.govuk-list.govuk-list--bullet
+        %li
+          Consenting to BEIS publishing the contents of this report to third parties
+
+      = form_for @report_presenter, url: report_submit_path(@report_presenter) do |f|
+        = f.govuk_submit t("action.report.confirm.button")

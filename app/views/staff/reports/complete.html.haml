@@ -1,0 +1,14 @@
+= content_for :page_title_prefix, t("page_title.report.complete", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      .govuk-panel.govuk-panel--confirmation
+        %h1.govuk-panel__title
+          = t("action.report.submit.complete.title")
+
+        .govuk-panel__body
+          = t("action.report.submit.complete.body", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+
+      %h2.govuk-heading-m
+        What happens next

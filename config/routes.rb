@@ -23,7 +23,9 @@ Rails.application.routes.draw do
     end
 
     resources :reports, only: [:show, :edit, :update, :index] do
-      resource :submit, only: [:update, :show], controller: :reports_submit
+      resource :submit, only: [:update, :show], controller: :reports_submissions do
+        get "complete" => "reports_submissions#complete"
+      end
     end
 
     concern :transactionable do

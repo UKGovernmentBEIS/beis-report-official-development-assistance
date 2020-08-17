@@ -1,14 +1,15 @@
-=content_for :page_title_prefix, t("page_title.report.show", report_name: @report.description)
+=content_for :page_title_prefix, t("page_title.report.show",report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
-        = @report.description
+        = t("page_title.report.show", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
-  - if policy(@report).download?
     .govuk-grid-row
-      .govuk-grid-column-full.download-csv
-        %div.govuk-body
-          = t("page_content.reports.download_as_csv")
-        = link_to t("default.button.download_as_csv"), report_path(@report, format: :csv), class: "govuk-button"
+      .govuk-grid-column-full.page-actions
+        - if policy(@report_presenter).download?
+          = link_to t("action.report.download.button"), report_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
+
+        - if policy(@report_presenter).submit?
+          = link_to t("action.report.submit.button"), report_submit_path(@report_presenter), class: "govuk-button govuk-!-margin-left-4"

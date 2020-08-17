@@ -65,7 +65,7 @@ RSpec.feature "Users can view reports" do
         click_on I18n.t("default.link.show")
       end
 
-      click_on I18n.t("default.button.download_as_csv")
+      click_on I18n.t("action.report.download.button")
 
       expect(page.response_headers["Content-Type"]).to include("text/csv")
       header = page.response_headers["Content-Disposition"]
@@ -129,7 +129,7 @@ RSpec.feature "Users can view reports" do
           click_on I18n.t("default.link.show")
         end
 
-        click_on I18n.t("default.button.download_as_csv")
+        click_on I18n.t("action.report.download.button")
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
 

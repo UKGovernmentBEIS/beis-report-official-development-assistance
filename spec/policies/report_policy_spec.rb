@@ -38,6 +38,7 @@ RSpec.describe ReportPolicy do
       it { is_expected.to permit_action(:download) }
       it { is_expected.to permit_action(:show) }
       it { is_expected.to permit_action(:submit) }
+      it { is_expected.to permit_action(:complete) }
     end
 
     context "when the report does not belong to the user's organisation" do
@@ -45,6 +46,7 @@ RSpec.describe ReportPolicy do
       it { is_expected.to forbid_action(:download) }
       it { is_expected.to forbid_action(:show) }
       it { is_expected.to forbid_action(:submit) }
+      it { is_expected.to forbid_action(:complete) }
     end
 
     context "when the report is already submitted" do

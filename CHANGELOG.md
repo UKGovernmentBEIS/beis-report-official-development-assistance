@@ -241,10 +241,12 @@
 - Ingest creates new activities at a level below its parent
 - Reports store the relevant financial quarter
 - Associate Planned Disbursements to Reports
+<<<<<<< HEAD
 - Update extending organisation question content
 - `programme status` field added to activity form in exchange for old IATI status.
   Mapping `programme_status` to `IATI_status` included. Schema migration to replace
   `form_state` at `status` step for `programme_status` step
+- Reports can be submitted
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...HEAD
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13
