@@ -44,6 +44,14 @@ RSpec.feature "Users can view reports" do
       expect(page).to have_content reports.last.description
     end
 
+    scenario "they can view submitted reports for all organisations" do
+      reports = create_list(:report, 2)
+      visit reports_path
+
+      expect(page).to have_content reports.first.description
+      expect(page).to have_content reports.last.description
+    end
+
     scenario "can view a report belonging to any delivery partner" do
       report = create(:report, :active)
 
@@ -100,6 +108,14 @@ RSpec.feature "Users can view reports" do
         within "##{report.id}" do
           click_on I18n.t("default.link.show")
         end
+
+        expect(page).to have_content report.description
+      end
+
+      scenario "they can view their own submitted reports" do
+        report = create(:report, state: :submitted, organisation: delivery_partner_user.organisation)
+
+        visit reports_path
 
         expect(page).to have_content report.description
       end
