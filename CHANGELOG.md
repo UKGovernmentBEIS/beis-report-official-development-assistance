@@ -247,6 +247,7 @@
   Mapping `programme_status` to `IATI_status` included. Schema migration to replace
   `form_state` at `status` step for `programme_status` step
 - Reports can be submitted
+- Submitted reports are shown to users
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...HEAD
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13

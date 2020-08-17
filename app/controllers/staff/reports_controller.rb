@@ -9,6 +9,7 @@ class Staff::ReportsController < Staff::BaseController
   def index
     inactive_reports if current_user.service_owner?
     current_user.service_owner? ? active_reports_with_organisations : active_reports
+    current_user.service_owner? ? submitted_reports_with_organisations : submitted_reports
   end
 
   def show
@@ -83,6 +84,18 @@ class Staff::ReportsController < Staff::BaseController
     active_reports = policy_scope(Report.where(state: :active)).includes(:fund)
     authorize active_reports
     @active_report_presenters = active_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def submitted_reports_with_organisations
+    submitted_reports = policy_scope(Report.where(state: :submitted)).includes([:fund, :organisation])
+    authorize submitted_reports
+    @submitted_report_presenters = submitted_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def submitted_reports
+    submitted_reports = policy_scope(Report.where(state: :submitted)).includes(:fund)
+    authorize submitted_reports
+    @submitted_report_presenters = submitted_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def send_csv

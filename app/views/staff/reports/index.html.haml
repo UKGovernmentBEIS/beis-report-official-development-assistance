@@ -8,15 +8,22 @@
 
   .govuk-grid-row.activity-page
     .govuk-grid-column-full
-      %h2.govuk-heading-l
+      %h2.govuk-heading-m
         = t("table.title.report.active")
 
       = render partial: "staff/shared/reports/table", locals: { reports: @active_report_presenters }
 
+  .govuk-grid-row.activity-page
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("table.title.report.submitted")
+
+      = render partial: "staff/shared/reports/table_submitted", locals: { reports: @submitted_report_presenters }
+
   - if current_user.service_owner?
     .govuk-grid-row.activity-page
       .govuk-grid-column-full
-        %h2.govuk-heading-l
+        %h2.govuk-heading-m
           = t("table.title.report.inactive")
 
         = render partial: "staff/shared/reports/table", locals: { reports: @inactive_report_presenters }
