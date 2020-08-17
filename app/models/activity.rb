@@ -12,7 +12,7 @@ class Activity < ApplicationRecord
     :purpose_step,
     :sector_category_step,
     :sector_step,
-    :status_step,
+    :programme_status_step,
     :geography_step,
     :region_step,
     :country_step,
@@ -28,7 +28,7 @@ class Activity < ApplicationRecord
   validates :title, :description, presence: true, on: :purpose_step
   validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
-  validates :status, presence: true, on: :status_step
+  validates :programme_status, presence: true, on: :programme_status_step
   validates :geography, presence: true, on: :geography_step
   validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
   validates :recipient_country, presence: true, on: :country_step, if: :recipient_country?

@@ -11,7 +11,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :purpose,
     :sector_category,
     :sector,
-    :status,
+    :programme_status,
     :dates,
     :geography,
     :region,
@@ -65,8 +65,9 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.assign_attributes(sector_category: sector_category, sector: nil)
     when :sector
       @activity.assign_attributes(sector: sector)
-    when :status
-      @activity.assign_attributes(status: status)
+    when :programme_status
+      iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
+      @activity.assign_attributes(programme_status: programme_status, status: iati_status)
     when :dates
       @activity.assign_attributes(
         planned_start_date: format_date(planned_start_date),
@@ -128,8 +129,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(:description).fetch("description", nil)
   end
 
-  def status
-    params.require(:activity).permit(:status).fetch("status", nil)
+  def programme_status
+    params.require(:activity).permit(:programme_status).fetch("programme_status", nil)
   end
 
   def planned_start_date

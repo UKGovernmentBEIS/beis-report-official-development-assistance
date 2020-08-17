@@ -658,6 +658,18 @@ en:
       '920': SUPPORT TO NON- GOVERNMENTAL ORGANISATIONS (NGOs)
       '930': Refugees in Donor Countries
       '998': Unallocated / Unspecified
+    programme_status:
+      '01': Delivery
+      '02': Planned
+      '03': Agreement in place
+      '04': Call/Activity open
+      '05': Review
+      '06': Decided
+      '07': Spend in progress
+      '08': Finalisation
+      '09': Completed
+      '10': Stopped
+      '11': Cancelled
     status:
       '1': Pipeline/identification
       '2': Implementation
