@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_13_102824) do
+ActiveRecord::Schema.define(version: 2020_08_14_134116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 2020_08_13_102824) do
   end
 
   create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "state", default: 0, null: false
+    t.string "state", default: "inactive", null: false
     t.string "description"
     t.uuid "fund_id"
     t.uuid "organisation_id"
@@ -145,6 +145,7 @@ ActiveRecord::Schema.define(version: 2020_08_13_102824) do
     t.integer "financial_year"
     t.index ["fund_id"], name: "index_reports_on_fund_id"
     t.index ["organisation_id"], name: "index_reports_on_organisation_id"
+    t.index ["state"], name: "index_reports_on_state"
   end
 
   create_table "transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
