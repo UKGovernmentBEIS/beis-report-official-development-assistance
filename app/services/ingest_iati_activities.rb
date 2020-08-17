@@ -33,6 +33,7 @@ class IngestIatiActivities
           add_participating_organisation(delivery_partner: delivery_partner, new_activity: new_activity, legacy_activity: legacy_activity)
           add_title(legacy_activity: legacy_activity, new_activity: new_activity)
           add_description(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_programme_status(legacy_activity: legacy_activity, new_activity: new_activity)
           add_status(legacy_activity: legacy_activity, new_activity: new_activity)
           add_sector(legacy_activity: legacy_activity, new_activity: new_activity)
           add_flow(legacy_activity: legacy_activity, new_activity: new_activity)
@@ -68,6 +69,11 @@ class IngestIatiActivities
   private def add_description(legacy_activity:, new_activity:)
     description = legacy_activity.elements[3].children.detect { |child| child.name.eql?("narrative") }.children.text if legacy_activity.elements[3].name.eql?("description")
     new_activity.description = normalize_string(description)
+  end
+
+  private def add_programme_status(legacy_activity:, new_activity:)
+    # This will need to be replaced once we have a bi-directional mapping between programme_status and IATI status
+    new_activity.programme_status = "Replace me"
   end
 
   private def add_status(legacy_activity:, new_activity:)

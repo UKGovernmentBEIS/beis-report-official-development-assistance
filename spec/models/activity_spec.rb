@@ -158,10 +158,10 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when status is blank" do
-      subject(:activity) { build(:activity, status: nil) }
+    context "when programme status is blank" do
+      subject(:activity) { build(:activity, programme_status: nil) }
       it "should not be valid" do
-        expect(activity.valid?(:status_step)).to be_falsey
+        expect(activity.valid?(:programme_status_step)).to be_falsey
       end
     end
 

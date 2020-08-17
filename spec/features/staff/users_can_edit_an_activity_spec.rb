@@ -380,10 +380,10 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(I18n.t("default.link.back"))
   click_on I18n.t("tabs.activity.details")
 
-  within(".status") do
+  within(".programme_status") do
     click_on(I18n.t("default.link.edit"))
     expect(page).to have_current_path(
-      activity_step_path(activity, :status)
+      activity_step_path(activity, :programme_status)
     )
   end
   click_on(I18n.t("default.link.back"))

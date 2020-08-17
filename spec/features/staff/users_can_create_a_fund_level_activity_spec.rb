@@ -167,22 +167,20 @@ RSpec.feature "Users can create a fund level activity" do
         click_button I18n.t("form.button.activity.submit")
 
         expect(page).to have_content I18n.t("form.legend.activity.sector", sector_category: "Basic Education", level: "programme")
-
         # Don't provide a sector
         click_button I18n.t("form.button.activity.submit")
         expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.sector.blank")
 
         choose "Primary education"
         click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("form.legend.activity.status", level: "programme")
+        expect(page).to have_content I18n.t("form.legend.activity.programme_status", level: "programme")
 
-        # Don't provide a status
+        # Don't provide a programme status
         click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.status.blank")
+        expect(page).to have_content "can't be blank"
 
-        choose("activity[status]", option: "2")
+        choose("activity[programme_status]", option: "07")
         click_button I18n.t("form.button.activity.submit")
-
         expect(page).to have_content I18n.t("page_title.activity_form.show.dates", level: "programme")
 
         click_button I18n.t("form.button.activity.submit")

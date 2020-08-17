@@ -13,9 +13,9 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.sector.#{super}")
   end
 
-  def status
+  def programme_status
     return if super.blank?
-    I18n.t("activity.status.#{super}")
+    I18n.t("activity.programme_status.#{super}")
   end
 
   def planned_start_date

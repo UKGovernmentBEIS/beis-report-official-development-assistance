@@ -45,20 +45,20 @@ RSpec.describe ActivityPresenter do
     end
   end
 
-  describe "#status" do
-    context "when the status exists" do
+  describe "#programme_status" do
+    context "when the programme status exists" do
       it "returns the locale value for the code" do
-        activity = build(:activity, status: "2")
-        result = described_class.new(activity).status
-        expect(result).to eql("Implementation")
+        activity = build(:activity, programme_status: "07")
+        result = described_class.new(activity).programme_status
+        expect(result).to eql("Spend in progress")
       end
     end
 
-    context "when the activity does not have a status set" do
+    context "when the activity does not have a programme status set" do
       it "returns nil" do
-        activity = build(:activity, status: nil)
+        activity = build(:activity, programme_status: nil)
         result = described_class.new(activity)
-        expect(result.status).to be_nil
+        expect(result.programme_status).to be_nil
       end
     end
   end
