@@ -5,6 +5,7 @@ en:
       report:
         active: Active reports
         inactive: Inactive reports
+        submitted: Submitted reports
     header:
       report:
         financial_quarter: Financial quarter
