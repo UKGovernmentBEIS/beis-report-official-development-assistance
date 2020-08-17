@@ -8,7 +8,7 @@ en:
       details: Activity %{name} — Details
       financials: Activity %{name} — Financials
       children: Activity %{name} — Child activities
-      extending_organisation: Activity %{name} — Extending organisation
+      extending_organisation: What extending organisation should be added to %{name}?
   form:
     button:
       activity:
