@@ -12,15 +12,17 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def show
-    @report = Report.find(id)
-    authorize @report
+    report = Report.find(id)
+    authorize report
+
+    @report_presenter = ReportPresenter.new(report)
 
     respond_to do |format|
       format.html
       format.csv do
-        fund = @report.fund
-        @projects = Activity.project.where(organisation: @report.organisation).select { |activity| activity.associated_fund == fund }
-        @third_party_projects = Activity.third_party_project.where(organisation: @report.organisation).select { |activity| activity.associated_fund == fund }
+        fund = @report_presenter.fund
+        @projects = Activity.project.where(organisation: @report_presenter.organisation).select { |activity| activity.associated_fund == fund }
+        @third_party_projects = Activity.third_party_project.where(organisation: @report_presenter.organisation).select { |activity| activity.associated_fund == fund }
         send_csv
       end
     end
@@ -85,8 +87,8 @@ class Staff::ReportsController < Staff::BaseController
 
   def send_csv
     response.headers["Content-Type"] = "text/csv"
-    response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(@report.description)}.csv"
-    response.stream.write ExportActivityToCsv.new.headers(report: @report)
+    response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(@report_presenter.description)}.csv"
+    response.stream.write ExportActivityToCsv.new.headers(report: @report_presenter)
     @projects.each do |project|
       response.stream.write ExportActivityToCsv.new(activity: project).call
     end
