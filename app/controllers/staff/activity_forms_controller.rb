@@ -34,6 +34,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.fund?
     when :blank
       skip_step
+    when :programme_status
+      skip_step if @activity.fund?
     when :region
       skip_step if @activity.recipient_country?
     when :country
