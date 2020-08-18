@@ -19,6 +19,24 @@ RSpec.feature "Users can create a fund level activity" do
       expect(page).to have_content I18n.t("action.fund.create.success")
     end
 
+    scenario "a default value of 'Spend in progress' for programme status gets set" do
+      identifier = "a-fund-with-default-programme-status-of-spend-in-progress"
+      visit activities_path
+      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      fill_in_activity_form(identifier: identifier, level: "fund")
+      activity = Activity.find_by(identifier: identifier)
+      expect(activity.programme_status).to eq("07")
+    end
+
+    scenario "the iati status gets set based on the default programme status value" do
+      identifier = "a-fund-with-default-iati-status-of-implementation"
+      visit activities_path
+      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      fill_in_activity_form(identifier: identifier, level: "fund")
+      activity = Activity.find_by(identifier: identifier)
+      expect(activity.status).to eq("2")
+    end
+
     scenario "the activity form has some defaults" do
       activity = create(:fund_activity, organisation: user.organisation)
       activity_presenter = ActivityPresenter.new(activity)
