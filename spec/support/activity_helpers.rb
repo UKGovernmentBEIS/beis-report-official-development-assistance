@@ -25,8 +25,10 @@ module ActivityHelpers
     expect(page).to have_content I18n.t("summary.label.activity.sector", level: activity_presenter.level)
     expect(page).to have_content activity_presenter.sector
 
-    expect(page).to have_content I18n.t("summary.label.activity.programme_status")
-    expect(page).to have_content activity_presenter.programme_status
+    unless activity_presenter.fund?
+      expect(page).to have_content I18n.t("summary.label.activity.programme_status")
+      expect(page).to have_content activity_presenter.programme_status
+    end
 
     expect(page).to have_content I18n.t("summary.label.activity.planned_start_date")
     expect(page).to have_content activity_presenter.planned_start_date
