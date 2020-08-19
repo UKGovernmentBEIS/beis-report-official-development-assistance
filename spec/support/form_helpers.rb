@@ -65,21 +65,23 @@ module FormHelpers
     choose sector
     click_button I18n.t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.legend.activity.programme_status")
-    expect(page).to have_content "Delivery"
-    expect(page).to have_content "Planned"
-    expect(page).to have_content "Agreement in place"
-    expect(page).to have_content "Call/Activity open"
-    expect(page).to have_content "Review"
-    expect(page).to have_content "Decided"
-    expect(page).to have_content "Spend in progress"
-    expect(page).to have_content "Finalisation"
-    expect(page).to have_content "Completed"
-    expect(page).to have_content "Stopped"
-    expect(page).to have_content "Cancelled"
+    unless level == "fund"
+      expect(page).to have_content I18n.t("form.legend.activity.programme_status")
+      expect(page).to have_content "Delivery"
+      expect(page).to have_content "Planned"
+      expect(page).to have_content "Agreement in place"
+      expect(page).to have_content "Call/Activity open"
+      expect(page).to have_content "Review"
+      expect(page).to have_content "Decided"
+      expect(page).to have_content "Spend in progress"
+      expect(page).to have_content "Finalisation"
+      expect(page).to have_content "Completed"
+      expect(page).to have_content "Stopped"
+      expect(page).to have_content "Cancelled"
 
-    choose("activity[programme_status]", option: programme_status)
-    click_button I18n.t("form.button.activity.submit")
+      choose("activity[programme_status]", option: programme_status)
+      click_button I18n.t("form.button.activity.submit")
+    end
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.dates", level: activity_level(level))
 
@@ -127,7 +129,11 @@ module FormHelpers
     expect(page).to have_content title
     expect(page).to have_content description
     expect(page).to have_content sector
-    expect(page).to have_content I18n.t("activity.programme_status.#{programme_status}")
+    if level == "fund"
+      expect(page).not_to have_content I18n.t("activity.programme_status.#{programme_status}")
+    else
+      expect(page).to have_content I18n.t("activity.programme_status.#{programme_status}")
+    end
     expect(page).to have_content recipient_region
     expect(page).to have_content flow
     expect(page).to have_content I18n.t("activity.aid_type.#{aid_type.downcase}")
