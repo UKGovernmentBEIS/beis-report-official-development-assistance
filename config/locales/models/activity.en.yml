@@ -83,7 +83,7 @@ en:
         form_state:
           complete: Complete
           incomplete: Incomplete
-        flow: Flow
+        flow: Flow type
         geography: Benefitting recipient geography
         identifier: Identifier
         level: Level
@@ -96,7 +96,7 @@ en:
         projects: Projects
         recipient_country: Recipient country
         recipient_region: Recipient region
-        sector: Focus area
+        sector: Economic/societal area
         sector_category: Focus area category
         stage: Stage
         status: Status
