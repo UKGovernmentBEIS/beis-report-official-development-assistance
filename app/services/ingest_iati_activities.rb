@@ -33,8 +33,7 @@ class IngestIatiActivities
           add_participating_organisation(delivery_partner: delivery_partner, new_activity: new_activity, legacy_activity: legacy_activity)
           add_title(legacy_activity: legacy_activity, new_activity: new_activity)
           add_description(legacy_activity: legacy_activity, new_activity: new_activity)
-          add_programme_status(legacy_activity: legacy_activity, new_activity: new_activity)
-          add_status(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_statuses(legacy_activity: legacy_activity, new_activity: new_activity)
           add_sector(legacy_activity: legacy_activity, new_activity: new_activity)
           add_flow(legacy_activity: legacy_activity, new_activity: new_activity)
           add_aid_type(legacy_activity: legacy_activity, new_activity: new_activity)
@@ -71,13 +70,16 @@ class IngestIatiActivities
     new_activity.description = normalize_string(description)
   end
 
-  private def add_programme_status(legacy_activity:, new_activity:)
-    # This will need to be replaced once we have a bi-directional mapping between programme_status and IATI status
-    new_activity.programme_status = "Replace me"
-  end
+  private def add_statuses(legacy_activity:, new_activity:)
+    activity_status = legacy_activity.elements.at_xpath("//activity-status/@code")&.value
+    new_activity.status = activity_status
 
-  private def add_status(legacy_activity:, new_activity:)
-    new_activity.status = legacy_activity.elements.detect { |element| element.name.eql?("activity-status") }.attributes["code"].value
+    new_activity.programme_status = case activity_status
+    when "3" then "08"
+    when "4" then "09"
+    else
+      "Replace me"
+    end
   end
 
   private def add_sector(legacy_activity:, new_activity:)

@@ -101,6 +101,7 @@ RSpec.describe IngestIatiActivities do
       ])
 
       expect(activity.status).to eql("3")
+      expect(activity.programme_status).to eql("08")
 
       expect(activity.planned_start_date).to eql(Date.new(2017, 10, 1))
       expect(activity.planned_end_date).to eql(Date.new(2018, 1, 31))
@@ -114,6 +115,42 @@ RSpec.describe IngestIatiActivities do
       expect(activity.sector).to eql("43082")
       expect(activity.flow).to eql("10")
       expect(activity.aid_type).to eql("C01")
+    end
+
+    context "programme_status" do
+      let(:uksa) { create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31") }
+
+      context "when it can be inferred from the IATI status" do
+        it "is set to '08' for an IATI status of 3" do
+          legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/activity_with_iati_status_3.xml")
+
+          described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+          new_activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+          expect(new_activity.status).to eql "3"
+          expect(new_activity.programme_status).to eql "08"
+        end
+
+        it "is set to '09' for an IATI status of 4" do
+          legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/activity_with_iati_status_4.xml")
+
+          described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+          new_activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+          expect(new_activity.status).to eql "4"
+          expect(new_activity.programme_status).to eql "09"
+        end
+      end
+
+      it "is set to 'Replace me' when it can not be inferred from the IATI status" do
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/activity_with_iati_status_1.xml")
+
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+        new_activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+        expect(new_activity.status).to eql "1"
+        expect(new_activity.programme_status).to eql "Replace me"
+      end
     end
 
     it "ignores activities with the wrong IATI hierarchy level" do
