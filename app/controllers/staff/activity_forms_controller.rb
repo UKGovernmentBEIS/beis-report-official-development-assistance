@@ -3,6 +3,8 @@ class Staff::ActivityFormsController < Staff::BaseController
   include DateHelper
   include ActivityHelper
 
+  DEFAULT_PROGRAMME_STATUS_FOR_FUNDS = "07"
+
   FORM_STEPS = [
     :blank,
     :level,
@@ -32,6 +34,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.fund?
     when :blank
       skip_step
+    when :programme_status
+      skip_step if @activity.fund?
     when :region
       skip_step if @activity.recipient_country?
     when :country
@@ -45,6 +49,11 @@ class Staff::ActivityFormsController < Staff::BaseController
     @page_title = t("page_title.activity_form.show.#{step}")
     @activity = Activity.find(activity_id)
     authorize @activity
+
+    if @activity.fund?
+      iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(DEFAULT_PROGRAMME_STATUS_FOR_FUNDS)
+      @activity.assign_attributes(programme_status: DEFAULT_PROGRAMME_STATUS_FOR_FUNDS, status: iati_status)
+    end
 
     case step
     when :level
