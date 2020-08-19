@@ -636,10 +636,42 @@ RSpec.describe Activity, type: :model do
   describe "#transactions_total" do
     it "returns the total of all the activity's transactions" do
       project = create(:project_activity)
-      _transaction_1 = create(:transaction, parent_activity: project, value: 100.20)
-      _transaction_2 = create(:transaction, parent_activity: project, value: 210)
+      create(:transaction, parent_activity: project, value: 100.20)
+      create(:transaction, parent_activity: project, value: 210)
 
       expect(project.transactions_total).to eq(310.20)
+    end
+  end
+
+  describe "#actual_total_for_report_financial_quarter" do
+    it "returns the total of all the activity's transactions scoped to a report" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today)
+      create(:transaction, parent_activity: project, value: 50.00, report: report, date: Date.today)
+      create(:transaction, parent_activity: project, value: 210, report: report, date: Date.today - 4.months)
+
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(150.20)
+    end
+
+    it "does not include the totals for any transactions outside the report's date range" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today - 6.months)
+      create(:transaction, parent_activity: project, value: 210, report: report, date: Date.today - 4.months)
+
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(0)
+    end
+  end
+
+  describe "#actual_total_for_report_financial_quarter" do
+    it "returns the total of all the activity's transactions scoped to a report" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today)
+      create(:transaction, parent_activity: project, value: 210)
+
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(100.20)
     end
   end
 end

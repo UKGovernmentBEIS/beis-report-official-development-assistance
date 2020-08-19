@@ -272,13 +272,25 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#transactions_total" do
-    it "returns the transaction total as a formatted number with currency symbol" do
+    it "returns the transaction total as a formatted number" do
       project = create(:project_activity)
       _transaction_1 = create(:transaction, parent_activity: project, value: 100.20)
       _transaction_2 = create(:transaction, parent_activity: project, value: 300)
 
       expect(described_class.new(project).transactions_total)
         .to eq "400.20"
+    end
+  end
+
+  describe "#actual_total_for_report_financial_quarter" do
+    it "returns the transaction total scoped to report as a formatted number" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      _transaction_in_report_scope = create(:transaction, parent_activity: project, report: report, value: 100.20, date: Date.today)
+      _transaction_outside_report_scope = create(:transaction, parent_activity: project, report: report, value: 300, date: Date.today - 4.months)
+
+      expect(described_class.new(project).actual_total_for_report_financial_quarter(report: report))
+        .to eq "100.20"
     end
   end
 end
