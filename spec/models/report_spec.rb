@@ -108,7 +108,7 @@ RSpec.describe Report, type: :model do
       end
     end
 
-    context "when in the fouth quarter of the 2020-2021 financial year" do
+    context "when in the fourth quarter of the 2020-2021 financial year" do
       it "sets the financial year to 2020" do
         travel_to(Date.parse("1 February 2021")) do
           report = Report.new
