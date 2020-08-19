@@ -271,17 +271,6 @@ RSpec.describe ActivityPresenter do
     end
   end
 
-  describe "#transactions_total" do
-    it "returns the transaction total as a formatted number" do
-      project = create(:project_activity)
-      _transaction_1 = create(:transaction, parent_activity: project, value: 100.20)
-      _transaction_2 = create(:transaction, parent_activity: project, value: 300)
-
-      expect(described_class.new(project).transactions_total)
-        .to eq "400.20"
-    end
-  end
-
   describe "#actual_total_for_report_financial_quarter" do
     it "returns the transaction total scoped to report as a formatted number" do
       project = create(:project_activity, :with_report)
