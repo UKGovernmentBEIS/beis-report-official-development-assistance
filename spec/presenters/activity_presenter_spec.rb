@@ -293,4 +293,16 @@ RSpec.describe ActivityPresenter do
         .to eq "100.20"
     end
   end
+
+  describe "#forecasted_total_for_report_financial_quarter" do
+    it "returns the planned disbursement total per report as a formatted number" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      _disbursement_1 = create(:planned_disbursement, parent_activity: project, report: report, value: 200.20, period_start_date: Date.today)
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500.00)
+
+      expect(described_class.new(project).forecasted_total_for_report_financial_quarter(report: report))
+        .to eq "200.20"
+    end
+  end
 end

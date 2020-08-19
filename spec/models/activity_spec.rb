@@ -674,4 +674,31 @@ RSpec.describe Activity, type: :model do
       expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(100.20)
     end
   end
+
+  describe "#forecasted_total_for_report_financial_quarter" do
+    it "returns the total of all the activity's planned disbursements scoped to a report's financial quarter only" do
+      quarter_one_date = Date.parse("1 April 2019")
+      quarter_two_date = Date.parse("1 July 2019")
+
+      project = create(:project_activity)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: quarter_one_date)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: quarter_one_date)
+
+      create(:planned_disbursement, parent_activity: project, value: 2000.00, period_start_date: quarter_two_date)
+      create(:planned_disbursement, parent_activity: project, value: 2000.00, period_start_date: quarter_two_date)
+
+      report = create(:report, fund: project.associated_fund)
+      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(0)
+
+      travel_to(quarter_one_date) do
+        report = create(:report, fund: project.associated_fund)
+        expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(2000.00)
+      end
+
+      travel_to(quarter_two_date) do
+        report = create(:report, fund: project.associated_fund)
+        expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(4000.00)
+      end
+    end
+  end
 end

@@ -90,4 +90,9 @@ class ActivityPresenter < SimpleDelegator
     return if super.blank?
     "%.2f" % super
   end
+
+  def forecasted_total_for_report_financial_quarter(report:)
+    return if super.blank?
+    "%.2f" % super
+  end
 end
