@@ -78,7 +78,7 @@ en:
         aid_type: Aid type
         budgets: Budgets
         button:
-          create: Create activity
+          create: Add activity
         description: Description
         form_state:
           complete: Complete
