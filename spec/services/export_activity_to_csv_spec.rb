@@ -26,19 +26,30 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.aid_type,
         activity_presenter.level,
         activity_presenter.actual_total_for_report_financial_quarter(report: report),
+        activity_presenter.forecasted_total_for_report_financial_quarter(report: report),
         activity_presenter.link_to_roda,
       ].to_csv)
     end
   end
 
   describe "#headers" do
-    it "uses the current report financial quarter to generate the actuals total column " do
+    it "uses the current report financial quarter to generate the actuals total column" do
       travel_to(Date.parse("1 April 2020")) do
         report = Report.new
 
         headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
         expect(headers).to include "Q1 2020-2021 actuals"
+      end
+    end
+
+    it "uses the current report financial quarter to generate the forecast total column" do
+      travel_to(Date.parse("1 April 2020")) do
+        report = Report.new
+
+        headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
+
+        expect(headers).to include "Q1 2020-2021 forecast"
       end
     end
   end
