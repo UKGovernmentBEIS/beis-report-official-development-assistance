@@ -30,7 +30,7 @@ RSpec.feature "Users can submit a report" do
           click_on I18n.t("default.link.view")
         end
         click_link I18n.t("action.report.submit.button")
-        click_button I18n.t("action.report.confirm.button")
+        click_button I18n.t("action.report.submit.confirm.button")
 
         auditable_events = PublicActivity::Activity.all
         expect(auditable_events.last.key).to include("report.submitted")
