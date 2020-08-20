@@ -86,12 +86,12 @@ class Staff::ReportsController < Staff::BaseController
   def send_csv
     response.headers["Content-Type"] = "text/csv"
     response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(@report.description)}.csv"
-    response.stream.write ExportActivityToCsv.new.headers(report: @report)
+    response.stream.write ExportActivityToCsv.new(activity: nil, report: @report).headers
     @projects.each do |project|
-      response.stream.write ExportActivityToCsv.new(activity: project).call
+      response.stream.write ExportActivityToCsv.new(activity: project, report: @report).call
     end
     @third_party_projects.each do |project|
-      response.stream.write ExportActivityToCsv.new(activity: project).call
+      response.stream.write ExportActivityToCsv.new(activity: project, report: @report).call
     end
     response.stream.close
   end
