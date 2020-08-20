@@ -3,9 +3,9 @@ en:
   action:
     planned_disbursement:
       create:
-        success: Planned disbursement successfully created
+        success: Forecasted spend successfully created
       update:
-        success: Planned disbursement successfully updated
+        success: Forecasted spend successfully updated
   form:
     label:
       planned_disbursement:
@@ -24,7 +24,7 @@ en:
             name: Revised
         providing_organisation_reference: International Aid Transparency Initiative (IATI) Reference (optional)
         receiving_organisation_reference: IATI Reference (optional)
-        value: Value
+        value: Forecasted spend amount
     legend:
       planned_disbursement:
         period_end_date: End date
@@ -50,7 +50,7 @@ en:
         currency: Currency
         providing_organisation: Provider
         receiving_organisation: Receiver
-        value: Value
+        value: Forecasted spend amount
     body:
       planned_disbursement:
         planned_disbursement_type_options:
@@ -60,11 +60,11 @@ en:
   page_content:
     planned_disbursements:
       button:
-        create: Add planned disbursement
+        create: Add forecasted spend
   page_title:
     planned_disbursement:
-      edit: Edit planned disbursement
-      new: Add a planned disbursement
+      edit: Edit forecasted spend
+      new: Add forecasted spend
   activerecord:
     errors:
       models:
