@@ -39,24 +39,33 @@ en:
       index: Reports
   page_title:
     report:
+      activate:
+        confirm: Confirm activation of %{report_financial_quarter} %{report_description}
+        complete: Report activation complete
       index: Reports
       edit: Edit report
       show: "%{report_financial_quarter} %{report_description}"
-      submit: Confirm submission of %{report_financial_quarter} %{report_description}
-      complete: Submission complete
+      submit:
+        confirm: Confirm submission of %{report_financial_quarter} %{report_description}
+        complete: Submission complete
   action:
     report:
+      activate:
+        button: Activate report
+        confirm:
+          button: Confirm report activation
+        complete:
+          title: Report activation complete
+          body: "%{report_financial_quarter} %{report_description}"
       update:
         success: Report successfully updated
       submit:
         button: Submit report
-        failure: Report could not be submitted
-        success: Report submitted successfully
         complete:
           title: Submission complete
           body: "%{report_financial_quarter} %{report_description}"
-      confirm:
-        button: Confirm submission
+        confirm:
+          button: Confirm submission
       download:
         button: Download report as CSV file
   activerecord:
