@@ -12,7 +12,7 @@
         %h2.govuk-heading-m
           = t("table.title.report.inactive")
 
-        = render partial: "staff/shared/reports/table", locals: { reports: @inactive_report_presenters }
+        = render partial: "staff/shared/reports/table_inactive", locals: { reports: @inactive_report_presenters }
 
   .govuk-grid-row.activity-page
     .govuk-grid-column-full
