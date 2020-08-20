@@ -27,6 +27,7 @@ class ExportActivityToCsv
       activity_presenter.level,
       activity_presenter.actual_total_for_report_financial_quarter(report: report),
       activity_presenter.forecasted_total_for_report_financial_quarter(report: report),
+      activity_presenter.variance_for_report_financial_quarter(report: report),
       activity_presenter.link_to_roda,
     ].to_csv
   end
@@ -50,6 +51,7 @@ class ExportActivityToCsv
       "Level",
       report_financial_quarter ? report_financial_quarter + " actuals" : "Actuals",
       report_financial_quarter ? report_financial_quarter + " forecast" : "Forecast",
+      "Variance",
       "Link to activity in RODA",
     ].to_csv
   end

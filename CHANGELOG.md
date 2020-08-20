@@ -252,6 +252,9 @@
 - Calculate the total of all Planned Disbursements in a Report's date range as
   `forecasted_total_for_report_financial_quarter` and output the value to the Report CSV
 - Ingest RAEng Newton fund data from IATI
+- Calculate the variance between an Activity's transactions total for a date range, and
+  that same Activity's planned disbursements total for a date range. Output this value
+  to the Report CSV as "Variance"
 
 ## [unreleased]
 - Reports can be submitted
