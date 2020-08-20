@@ -81,7 +81,12 @@ class ActivityPresenter < SimpleDelegator
     Rails.application.routes.url_helpers.organisation_activity_details_url(organisation, self, host: ENV["DOMAIN"]).to_s
   end
 
-  def transactions_total
+  def actual_total_for_report_financial_quarter(report:)
+    return if super.blank?
+    "%.2f" % super
+  end
+
+  def forecasted_total_for_report_financial_quarter(report:)
     return if super.blank?
     "%.2f" % super
   end

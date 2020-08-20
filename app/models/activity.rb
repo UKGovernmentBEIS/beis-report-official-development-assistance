@@ -150,7 +150,11 @@ class Activity < ApplicationRecord
     }.push(identifier).join("-")
   end
 
-  def transactions_total
-    transactions.sum(:value)
+  def actual_total_for_report_financial_quarter(report:)
+    transactions.where(report: report, date: report.created_at.all_quarter).sum(:value)
+  end
+
+  def forecasted_total_for_report_financial_quarter(report:)
+    planned_disbursements.where(period_start_date: report.created_at.all_quarter).sum(:value)
   end
 end

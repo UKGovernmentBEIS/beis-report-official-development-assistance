@@ -633,13 +633,62 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#transactions_total" do
-    it "returns the total of all the activity's transactions" do
-      project = create(:project_activity)
-      _transaction_1 = create(:transaction, parent_activity: project, value: 100.20)
-      _transaction_2 = create(:transaction, parent_activity: project, value: 210)
+  describe "#actual_total_for_report_financial_quarter" do
+    it "returns the total of all the activity's transactions scoped to a report" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today)
+      create(:transaction, parent_activity: project, value: 50.00, report: report, date: Date.today)
+      create(:transaction, parent_activity: project, value: 210, report: report, date: Date.today - 4.months)
 
-      expect(project.transactions_total).to eq(310.20)
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(150.20)
+    end
+
+    it "does not include the totals for any transactions outside the report's date range" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today - 6.months)
+      create(:transaction, parent_activity: project, value: 210, report: report, date: Date.today - 4.months)
+
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(0)
+    end
+  end
+
+  describe "#actual_total_for_report_financial_quarter" do
+    it "returns the total of all the activity's transactions scoped to a report" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today)
+      create(:transaction, parent_activity: project, value: 210)
+
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(100.20)
+    end
+  end
+
+  describe "#forecasted_total_for_report_financial_quarter" do
+    it "returns the total of all the activity's planned disbursements scoped to a report's financial quarter only" do
+      quarter_one_date = Date.parse("1 April 2019")
+      quarter_two_date = Date.parse("1 July 2019")
+
+      project = create(:project_activity)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: quarter_one_date)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: quarter_one_date)
+
+      create(:planned_disbursement, parent_activity: project, value: 2000.00, period_start_date: quarter_two_date)
+      create(:planned_disbursement, parent_activity: project, value: 2000.00, period_start_date: quarter_two_date)
+
+      report = create(:report, fund: project.associated_fund)
+      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(0)
+
+      travel_to(quarter_one_date) do
+        report = create(:report, fund: project.associated_fund)
+        expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(2000.00)
+      end
+
+      travel_to(quarter_two_date) do
+        report = create(:report, fund: project.associated_fund)
+        expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(4000.00)
+      end
     end
   end
 end
