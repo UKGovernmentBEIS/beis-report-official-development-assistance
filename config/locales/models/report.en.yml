@@ -14,6 +14,11 @@ en:
         organisation: Organisation
         fund: Level A
         deadline: Deadline
+    body:
+      report:
+        action:
+          edit: Edit
+          activate: Activate
   page_content:
     reports:
       title: Reports
