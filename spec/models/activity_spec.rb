@@ -714,4 +714,17 @@ RSpec.describe Activity, type: :model do
       end
     end
   end
+
+  describe "#variance_for_report_financial_quarter" do
+    it "returns the variance between #actual_total_for_report_financial_quarter and #forecasted_total_for_report_financial_quarter" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      create(:transaction, parent_activity: project, value: 100, report: report, date: Date.today)
+      create(:transaction, parent_activity: project, value: 200, report: report, date: Date.today)
+      create(:planned_disbursement, parent_activity: project, value: 1500, report: report, period_start_date: Date.today)
+      create(:planned_disbursement, parent_activity: project, value: 500, report: report, period_start_date: Date.today)
+
+      expect(project.variance_for_report_financial_quarter(report: report)).to eq(-1700)
+    end
+  end
 end
