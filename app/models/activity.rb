@@ -12,6 +12,8 @@ class Activity < ApplicationRecord
     :purpose_step,
     :sector_category_step,
     :sector_step,
+    :call_present_step,
+    :call_dates_step,
     :programme_status_step,
     :geography_step,
     :region_step,
@@ -28,6 +30,7 @@ class Activity < ApplicationRecord
   validates :title, :description, presence: true, on: :purpose_step
   validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
+  validates :call_present, inclusion: {in: [true, false]}, on: :call_present_step, if: :requires_call_dates?
   validates :programme_status, presence: true, on: :programme_status_step
   validates :geography, presence: true, on: :geography_step
   validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
@@ -41,6 +44,8 @@ class Activity < ApplicationRecord
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
   validates :actual_start_date, :actual_end_date, date_not_in_future: true
   validates :extending_organisation_id, presence: true, on: :update_extending_organisation
+  validates :call_open_date, presence: true, on: :call_dates_step, if: :call_present?
+  validates :call_close_date, presence: true, on: :call_dates_step, if: :call_present?
 
   acts_as_tree
   belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"
@@ -156,5 +161,9 @@ class Activity < ApplicationRecord
 
   def forecasted_total_for_report_financial_quarter(report:)
     planned_disbursements.where(period_start_date: report.created_at.all_quarter).sum(:value)
+  end
+
+  def requires_call_dates?
+    !ingested? && (project? || third_party_project?)
   end
 end
