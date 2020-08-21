@@ -17,6 +17,9 @@ en:
       g01: Administrative costs not included elsewhere
       h01: Development awareness
       h02: Refugees in donor countries
+    call_present:
+      'true': 'Yes'
+      'false': 'No'
     flow:
       '10': ODA
       '20': OOF
