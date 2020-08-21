@@ -3,11 +3,12 @@ require "nokogiri"
 
 RSpec.describe IngestIatiActivities do
   let(:beis) { create(:beis_organisation) }
-  let!(:existing_programme) { create(:programme_activity, identifier: "GCRF-INTPART", organisation: beis) }
+  let!(:existing_activity) { create(:programme_activity, identifier: "GCRF-INTPART", organisation: beis) }
 
   describe "#call" do
     it "creates 35 new projects for UKSA" do
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+      _report = create(:report, :active, organisation: uksa, fund: existing_activity.associated_fund)
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
 
       service_object = described_class.new(delivery_partner: uksa, file_io: legacy_activities)
@@ -36,16 +37,39 @@ RSpec.describe IngestIatiActivities do
       expect(new_activity.ingested).to eq(true)
     end
 
-    it "associates the project with a programme" do
-      beis = create(:beis_organisation)
-      uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
-      legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/single_activity.xml")
+    context "chooses an appropriate level based on its parent" do
+      let!(:legacy_activities_xml) { File.read("#{Rails.root}/spec/fixtures/activities/uksa/single_activity.xml") }
+      let!(:uksa) { create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31") }
 
-      described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+      it "sets the level to programme when its parent is a fund" do
+        existing_activity.update!(level: :fund)
 
-      activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
-      expect(activity.parent).to eq(existing_programme)
-      expect(activity.parent.organisation).to eql(beis)
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities_xml).call
+
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+        expect(activity.parent).to eq(existing_activity)
+        expect(activity).to be_programme
+      end
+
+      it "sets the level to project when its parent is a programme" do
+        existing_activity.update!(level: :programme)
+
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities_xml).call
+
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+        expect(activity.parent).to eq(existing_activity)
+        expect(activity).to be_project
+      end
+
+      it "sets the level to third-party project when its parent is a project" do
+        existing_activity.update!(level: :project)
+
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities_xml).call
+
+        activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+        expect(activity.parent).to eq(existing_activity)
+        expect(activity).to be_third_party_project
+      end
     end
 
     it "adds an activity with all mandatory fields" do
@@ -77,6 +101,7 @@ RSpec.describe IngestIatiActivities do
       ])
 
       expect(activity.status).to eql("3")
+      expect(activity.programme_status).to eql("08")
 
       expect(activity.planned_start_date).to eql(Date.new(2017, 10, 1))
       expect(activity.planned_end_date).to eql(Date.new(2018, 1, 31))
@@ -92,6 +117,42 @@ RSpec.describe IngestIatiActivities do
       expect(activity.aid_type).to eql("C01")
     end
 
+    context "programme_status" do
+      let(:uksa) { create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31") }
+
+      context "when it can be inferred from the IATI status" do
+        it "is set to '08' for an IATI status of 3" do
+          legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/activity_with_iati_status_3.xml")
+
+          described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+          new_activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+          expect(new_activity.status).to eql "3"
+          expect(new_activity.programme_status).to eql "08"
+        end
+
+        it "is set to '09' for an IATI status of 4" do
+          legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/activity_with_iati_status_4.xml")
+
+          described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+          new_activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+          expect(new_activity.status).to eql "4"
+          expect(new_activity.programme_status).to eql "09"
+        end
+      end
+
+      it "is set to 'Replace me' when it can not be inferred from the IATI status" do
+        legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/activity_with_iati_status_1.xml")
+
+        described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
+
+        new_activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
+        expect(new_activity.status).to eql "1"
+        expect(new_activity.programme_status).to eql "Replace me"
+      end
+    end
+
     it "ignores activities with the wrong IATI hierarchy level" do
       rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
       programme = create(:programme_activity, organisation: rs, identifier: "RS-Del-RS")
@@ -104,11 +165,13 @@ RSpec.describe IngestIatiActivities do
 
     it "creates transactions and marks them as ingested" do
       uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+      _report = create(:report, :active, organisation: uksa, fund: existing_activity.associated_fund)
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_transactions.xml")
 
       described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
 
       activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021")
+
       transactions = Transaction.where(parent_activity: activity)
 
       expect(transactions.count).to eql(5)
@@ -152,6 +215,7 @@ RSpec.describe IngestIatiActivities do
     context "ingesting budgets" do
       it "creates budgets and marks them as ingested" do
         uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+        _report = create(:report, :active, organisation: uksa, fund: existing_activity.associated_fund)
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_budget.xml")
 
         described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
@@ -190,6 +254,7 @@ RSpec.describe IngestIatiActivities do
 
       let(:activity) { Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-029") }
       let(:planned_disbursements) { PlannedDisbursement.where(parent_activity: activity) }
+      let!(:report) { create(:report, :active, organisation: uksa, fund: existing_activity.associated_fund) }
 
       it "creates valid planned disbursement and marks it as ingested" do
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/real_and_complete_legacy_file.xml")
@@ -254,7 +319,6 @@ RSpec.describe IngestIatiActivities do
         end
 
         it "returns 0 if there is no attribute and the activity does not have an implementing organisation" do
-          uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
           existing_project = create(:project_activity,
             previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021",
             organisation: uksa)
@@ -319,6 +383,8 @@ RSpec.describe IngestIatiActivities do
     context "when a transaction has no description" do
       it "set a placeholder description" do
         uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+        _report = create(:report, :active, organisation: uksa, fund: existing_activity.associated_fund)
+
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_missing_transaction_description.xml")
 
         described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
@@ -335,6 +401,7 @@ RSpec.describe IngestIatiActivities do
     context "when a description has escaped characters and extra whitespace" do
       it "normalizes the text" do
         uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+        _report = create(:report, :active, organisation: uksa, fund: existing_activity.associated_fund)
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_escaped_characters.xml")
 
         described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
@@ -348,6 +415,7 @@ RSpec.describe IngestIatiActivities do
     context "when an activity with the IATI identifier already exists" do
       it "updates the activity rather then creating a new record" do
         uksa = create(:organisation, name: "UKSA", iati_reference: "GB-GOV-EA31")
+        _report = create(:report, :active, organisation: uksa, fund: existing_activity.associated_fund)
         existing_project = create(:project_activity,
           previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021",
           organisation: uksa)
@@ -370,6 +438,8 @@ RSpec.describe IngestIatiActivities do
             :at_geography_step,
             previous_identifier: "GB-GOV-13-GCRF-UKSA_TZ_UKSA-021",
             organisation: uksa)
+          _report = create(:report, :active, organisation: uksa, fund: existing_activity.associated_fund)
+
           legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/uksa/with_transactions.xml")
 
           described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
@@ -417,8 +487,9 @@ RSpec.describe IngestIatiActivities do
       ams = create(:organisation, name: "Academy of Medical Sciences", iati_reference: "GB-COH-03520281")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/ams/newt/fake_activity_with_dates.xml")
       programme = create(:programme_activity, organisation: ams)
+      _report = create(:report, :active, organisation: ams, fund: programme.associated_fund)
       # Temporary fix until we have the actual programme-project mappings
-      allow_any_instance_of(LegacyActivity).to receive(:find_parent_programme).and_return(programme)
+      allow_any_instance_of(LegacyActivity).to receive(:find_parent).and_return(programme)
 
       service_object = described_class.new(delivery_partner: ams, file_io: legacy_activities)
 

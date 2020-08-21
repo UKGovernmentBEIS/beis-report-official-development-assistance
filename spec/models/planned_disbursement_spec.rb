@@ -18,6 +18,10 @@ RSpec.describe PlannedDisbursement, type: :model do
     end
   end
 
+  describe "associations" do
+    it { should belong_to(:report) }
+  end
+
   describe "sanitation" do
     it { should strip_attribute(:providing_organisation_reference) }
     it { should strip_attribute(:receiving_organisation_reference) }

@@ -45,20 +45,20 @@ RSpec.describe ActivityPresenter do
     end
   end
 
-  describe "#status" do
-    context "when the status exists" do
+  describe "#programme_status" do
+    context "when the programme status exists" do
       it "returns the locale value for the code" do
-        activity = build(:activity, status: "2")
-        result = described_class.new(activity).status
-        expect(result).to eql("Implementation")
+        activity = build(:activity, programme_status: "07")
+        result = described_class.new(activity).programme_status
+        expect(result).to eql("Spend in progress")
       end
     end
 
-    context "when the activity does not have a status set" do
+    context "when the activity does not have a programme status set" do
       it "returns nil" do
-        activity = build(:activity, status: nil)
+        activity = build(:activity, programme_status: nil)
         result = described_class.new(activity)
-        expect(result.status).to be_nil
+        expect(result.programme_status).to be_nil
       end
     end
   end
@@ -261,6 +261,37 @@ RSpec.describe ActivityPresenter do
         third_party_project = create(:third_party_project_activity)
         expect(described_class.new(third_party_project).level).to eql("Third-party project")
       end
+    end
+  end
+
+  describe "#link_to_roda" do
+    it "returns the full URL to the activity in RODA" do
+      project = create(:project_activity)
+      expect(described_class.new(project).link_to_roda).to eq "http://test.local/organisations/#{project.organisation.id}/activities/#{project.id}/details"
+    end
+  end
+
+  describe "#actual_total_for_report_financial_quarter" do
+    it "returns the transaction total scoped to report as a formatted number" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      _transaction_in_report_scope = create(:transaction, parent_activity: project, report: report, value: 100.20, date: Date.today)
+      _transaction_outside_report_scope = create(:transaction, parent_activity: project, report: report, value: 300, date: Date.today - 4.months)
+
+      expect(described_class.new(project).actual_total_for_report_financial_quarter(report: report))
+        .to eq "100.20"
+    end
+  end
+
+  describe "#forecasted_total_for_report_financial_quarter" do
+    it "returns the planned disbursement total per report as a formatted number" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      _disbursement_1 = create(:planned_disbursement, parent_activity: project, report: report, value: 200.20, period_start_date: Date.today)
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500.00)
+
+      expect(described_class.new(project).forecasted_total_for_report_financial_quarter(report: report))
+        .to eq "200.20"
     end
   end
 end

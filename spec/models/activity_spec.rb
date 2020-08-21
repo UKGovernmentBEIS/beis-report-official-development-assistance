@@ -158,10 +158,10 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when status is blank" do
-      subject(:activity) { build(:activity, status: nil) }
+    context "when programme status is blank" do
+      subject(:activity) { build(:activity, programme_status: nil) }
       it "should not be valid" do
-        expect(activity.valid?(:status_step)).to be_falsey
+        expect(activity.valid?(:programme_status_step)).to be_falsey
       end
     end
 
@@ -357,6 +357,45 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#associated_fund" do
+    context "when the activity is a fund" do
+      it "returns itself" do
+        fund = create(:fund_activity)
+        expect(fund.associated_fund).to eq(fund)
+      end
+    end
+
+    context "when the activity is a programme" do
+      it "returns the parent fund" do
+        programme = create(:programme_activity)
+        fund = programme.parent
+
+        expect(programme.associated_fund).to eq(fund)
+      end
+    end
+
+    context "when the activity is a project" do
+      it "returns the ancestor fund" do
+        project = create(:project_activity)
+        programme = project.parent
+        fund = programme.parent
+
+        expect(project.associated_fund).to eq(fund)
+      end
+    end
+
+    context "when the activity is a third party project" do
+      it "returns the ancestor fund" do
+        third_party_project = create(:third_party_project_activity)
+        project = third_party_project.parent
+        programme = project.parent
+        fund = programme.parent
+
+        expect(third_party_project.associated_fund).to eq(fund)
+      end
+    end
+  end
+
   describe "#form_stpes_completed?" do
     it "is true when a user has completed all of the form steps" do
       activity = build(:activity, form_state: :complete)
@@ -513,6 +552,36 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#child_level" do
+    context "when the level is a fund" do
+      it "returns a string for programme" do
+        result = described_class.new(level: :fund).child_level
+        expect(result).to eql("programme")
+      end
+    end
+
+    context "when the level is a programme" do
+      it "returns a string for project" do
+        result = described_class.new(level: :programme).child_level
+        expect(result).to eql("project")
+      end
+    end
+
+    context "when the level is a project" do
+      it "returns a string for a third-party project" do
+        result = described_class.new(level: :project).child_level
+        expect(result).to eql("third_party_project")
+      end
+    end
+
+    context "when the level is a third-party project" do
+      it "returns nil" do
+        expect { described_class.new(level: :third_party_project).child_level }
+          .to raise_error("no level below third_party_project")
+      end
+    end
+  end
+
   describe "#iati_identifier" do
     context "when the activity is a fund" do
       it "returns a composite identifier formed with the reporting organisation" do
@@ -560,6 +629,65 @@ RSpec.describe Activity, type: :model do
           expect(third_party_project.iati_identifier)
             .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}-#{project.identifier}-#{third_party_project.identifier}")
         end
+      end
+    end
+  end
+
+  describe "#actual_total_for_report_financial_quarter" do
+    it "returns the total of all the activity's transactions scoped to a report" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today)
+      create(:transaction, parent_activity: project, value: 50.00, report: report, date: Date.today)
+      create(:transaction, parent_activity: project, value: 210, report: report, date: Date.today - 4.months)
+
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(150.20)
+    end
+
+    it "does not include the totals for any transactions outside the report's date range" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today - 6.months)
+      create(:transaction, parent_activity: project, value: 210, report: report, date: Date.today - 4.months)
+
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(0)
+    end
+  end
+
+  describe "#actual_total_for_report_financial_quarter" do
+    it "returns the total of all the activity's transactions scoped to a report" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today)
+      create(:transaction, parent_activity: project, value: 210)
+
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(100.20)
+    end
+  end
+
+  describe "#forecasted_total_for_report_financial_quarter" do
+    it "returns the total of all the activity's planned disbursements scoped to a report's financial quarter only" do
+      quarter_one_date = Date.parse("1 April 2019")
+      quarter_two_date = Date.parse("1 July 2019")
+
+      project = create(:project_activity)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: quarter_one_date)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: quarter_one_date)
+
+      create(:planned_disbursement, parent_activity: project, value: 2000.00, period_start_date: quarter_two_date)
+      create(:planned_disbursement, parent_activity: project, value: 2000.00, period_start_date: quarter_two_date)
+
+      report = create(:report, fund: project.associated_fund)
+      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(0)
+
+      travel_to(quarter_one_date) do
+        report = create(:report, fund: project.associated_fund)
+        expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(2000.00)
+      end
+
+      travel_to(quarter_two_date) do
+        report = create(:report, fund: project.associated_fund)
+        expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(4000.00)
       end
     end
   end

@@ -16,6 +16,10 @@ RSpec.describe Transaction, type: :model do
     it { should validate_presence_of(:receiving_organisation_type) }
   end
 
+  describe "associations" do
+    it { should belong_to(:report) }
+  end
+
   describe "sanitation" do
     it { should strip_attribute(:providing_organisation_reference) }
     it { should strip_attribute(:receiving_organisation_reference) }

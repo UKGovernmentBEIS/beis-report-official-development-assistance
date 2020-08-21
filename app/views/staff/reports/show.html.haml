@@ -1,0 +1,14 @@
+=content_for :page_title_prefix, t("page_title.report.show", report_name: @report.description)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = @report.description
+
+  - if policy(@report).download?
+    .govuk-grid-row
+      .govuk-grid-column-full.download-csv
+        %div.govuk-body
+          = t("page_content.reports.download_as_csv")
+        = link_to t("default.button.download_as_csv"), report_path(@report, format: :csv), class: "govuk-button"

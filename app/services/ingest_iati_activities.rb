@@ -28,12 +28,12 @@ class IngestIatiActivities
         roda_activity = if existing_activity.present?
           existing_activity
         else
-          new_activity = Activity.new(identifier: legacy_activity.identifier, level: :project, organisation: delivery_partner)
+          new_activity = Activity.new(identifier: legacy_activity.identifier, organisation: delivery_partner)
           add_identifiers(legacy_activity: legacy_activity, new_activity: new_activity)
           add_participating_organisation(delivery_partner: delivery_partner, new_activity: new_activity, legacy_activity: legacy_activity)
           add_title(legacy_activity: legacy_activity, new_activity: new_activity)
           add_description(legacy_activity: legacy_activity, new_activity: new_activity)
-          add_status(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_statuses(legacy_activity: legacy_activity, new_activity: new_activity)
           add_sector(legacy_activity: legacy_activity, new_activity: new_activity)
           add_flow(legacy_activity: legacy_activity, new_activity: new_activity)
           add_aid_type(legacy_activity: legacy_activity, new_activity: new_activity)
@@ -44,13 +44,16 @@ class IngestIatiActivities
           new_activity
         end
 
+        legacy_activity_parent = legacy_activity.find_parent
+        roda_activity.parent = legacy_activity_parent
+        roda_activity.level = legacy_activity_parent.child_level
+
+        roda_activity.legacy_iati_xml = legacy_activity.to_xml.squish
+        roda_activity.ingested = true
+
         add_transactions(legacy_activity: legacy_activity, roda_activity: roda_activity)
         add_budgets(legacy_activity: legacy_activity, roda_activity: roda_activity)
         add_planned_disbursements(legacy_activity: legacy_activity, roda_activity: roda_activity)
-
-        roda_activity.parent = legacy_activity.find_parent_programme
-        roda_activity.legacy_iati_xml = legacy_activity.to_xml.squish
-        roda_activity.ingested = true
 
         roda_activity.save!
       end
@@ -67,8 +70,16 @@ class IngestIatiActivities
     new_activity.description = normalize_string(description)
   end
 
-  private def add_status(legacy_activity:, new_activity:)
-    new_activity.status = legacy_activity.elements.detect { |element| element.name.eql?("activity-status") }.attributes["code"].value
+  private def add_statuses(legacy_activity:, new_activity:)
+    activity_status = legacy_activity.elements.at_xpath("//activity-status/@code")&.value
+    new_activity.status = activity_status
+
+    new_activity.programme_status = case activity_status
+    when "3" then "08"
+    when "4" then "09"
+    else
+      "Replace me"
+    end
   end
 
   private def add_sector(legacy_activity:, new_activity:)
@@ -145,6 +156,8 @@ class IngestIatiActivities
       receiving_organisation_reference = receiving_organisation.attributes["ref"].try(:value)
       receiving_organisation_type = receiving_organisation_type(attribute: receiving_organisation.attributes["type"], implementing_organisation: roda_activity.implementing_organisations.first)
 
+      report = Report.find_by(fund: roda_activity.associated_fund, organisation: roda_activity.organisation)
+
       transaction = Transaction.new(
         description: normalize_string(description),
         transaction_type: transaction_type,
@@ -159,7 +172,8 @@ class IngestIatiActivities
         receiving_organisation_name: receiving_organisation_name,
         receiving_organisation_type: receiving_organisation_type,
         receiving_organisation_reference: receiving_organisation_reference,
-        ingested: true
+        ingested: true,
+        report: report
       )
 
       transaction.save!
@@ -210,6 +224,8 @@ class IngestIatiActivities
       receiving_organisation_reference = receiving_organisation.attributes["ref"].try(:value)
       receiving_organisation_type = receiving_organisation_type(attribute: receiving_organisation.attributes["type"], implementing_organisation: roda_activity.implementing_organisations.first)
 
+      report = Report.find_by(fund: roda_activity.associated_fund, organisation: roda_activity.organisation)
+
       planned_disbursement = PlannedDisbursement.new(
         planned_disbursement_type: planned_disbursement_type,
         period_start_date: period_start_date,
@@ -223,6 +239,7 @@ class IngestIatiActivities
         receiving_organisation_name: receiving_organisation_name,
         receiving_organisation_type: receiving_organisation_type,
         receiving_organisation_reference: receiving_organisation_reference,
+        report: report,
         ingested: true
       )
       planned_disbursement.save!

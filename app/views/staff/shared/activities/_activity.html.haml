@@ -67,14 +67,15 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :sector)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:sector)}"), activity_step_path(activity_presenter, :sector_category), t("summary.label.activity.sector"))
 
-  .govuk-summary-list__row.status
-    %dt.govuk-summary-list__key
-      = t("summary.label.activity.status")
-    %dd.govuk-summary-list__value
-      = activity_presenter.status
-    %dd.govuk-summary-list__actions
-      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :status)
-        = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:status)}"), activity_step_path(activity_presenter, :status), t("summary.label.activity.status"))
+  - unless activity_presenter.fund?
+    .govuk-summary-list__row.programme_status
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.programme_status")
+      %dd.govuk-summary-list__value
+        = activity_presenter.programme_status
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :programme_status)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:programme_status)}"), activity_step_path(activity_presenter, :programme_status), t("summary.label.activity.programme_status"))
 
   .govuk-summary-list__row.planned_start_date
     %dt.govuk-summary-list__key

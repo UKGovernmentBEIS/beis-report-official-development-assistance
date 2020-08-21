@@ -21,22 +21,6 @@ feature "Organisation show page" do
         expect(page).to have_link I18n.t("page_content.organisation.button.edit_details"), href: edit_organisation_path(beis_user.organisation)
       end
 
-      scenario "they see all submissions" do
-        submission = create(:submission, organisation: delivery_partner_user.organisation)
-        other_submission = create(:submission, organisation: create(:organisation))
-
-        visit organisation_path(beis_user.organisation)
-
-        expect(page).to have_content "Submissions"
-
-        within(".submissions") do
-          expect(page).to have_content submission.organisation.name
-          expect(page).to have_content submission.description
-          expect(page).to have_content other_submission.organisation.name
-          expect(page).to have_content other_submission.description
-        end
-      end
-
       context "when viewing a delivery partners organisation" do
         scenario "they see a download xml button for project activties" do
           delivery_partner_organisation = create(:delivery_partner_organisation)
@@ -70,30 +54,6 @@ feature "Organisation show page" do
       visit organisation_path(delivery_partner_user.organisation)
 
       expect(page).not_to have_link I18n.t("page_content.organisation.button.edit_details"), href: edit_organisation_path(delivery_partner_user.organisation)
-    end
-
-    scenario "they see their own submissions" do
-      submission = create(:submission, organisation: delivery_partner_user.organisation)
-
-      visit organisation_path(delivery_partner_user.organisation)
-
-      expect(page).to have_content "Submissions"
-      within(".submissions") do
-        expect(page).to have_content submission.organisation.name
-        expect(page).to have_content submission.description
-      end
-    end
-
-    scenario "they do not see submissions belonging to other organisations" do
-      _submission = create(:submission, organisation: delivery_partner_user.organisation)
-      other_submission = create(:submission, organisation: create(:organisation))
-
-      visit organisation_path(delivery_partner_user.organisation)
-
-      within(".submissions") do
-        expect(page).to_not have_content other_submission.organisation.name
-        expect(page).to_not have_content other_submission.description
-      end
     end
   end
 end

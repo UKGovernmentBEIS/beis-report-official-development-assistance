@@ -13,9 +13,9 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.sector.#{super}")
   end
 
-  def status
+  def programme_status
     return if super.blank?
-    I18n.t("activity.status.#{super}")
+    I18n.t("activity.programme_status.#{super}")
   end
 
   def planned_start_date
@@ -75,5 +75,19 @@ class ActivityPresenter < SimpleDelegator
   def level
     return if super.blank?
     I18n.t("page_content.activity.level.#{super}").capitalize
+  end
+
+  def link_to_roda
+    Rails.application.routes.url_helpers.organisation_activity_details_url(organisation, self, host: ENV["DOMAIN"]).to_s
+  end
+
+  def actual_total_for_report_financial_quarter(report:)
+    return if super.blank?
+    "%.2f" % super
+  end
+
+  def forecasted_total_for_report_financial_quarter(report:)
+    return if super.blank?
+    "%.2f" % super
   end
 end

@@ -5,7 +5,7 @@ RSpec.describe "Users can create a planned disbursement" do
     before { authenticate!(user: user) }
 
     scenario "they can add a planned disbursement" do
-      project = create(:project_activity, organisation: user.organisation)
+      project = create(:project_activity, :with_report, organisation: user.organisation)
       visit activities_path
       click_on project.title
 
@@ -35,7 +35,7 @@ RSpec.describe "Users can create a planned disbursement" do
     end
 
     scenario "the action is recorded with public_activity" do
-      activity = create(:project_activity, organisation: user.organisation)
+      activity = create(:project_activity, :with_report, organisation: user.organisation)
 
       PublicActivity.with_tracking do
         visit activities_path
@@ -54,13 +54,30 @@ RSpec.describe "Users can create a planned disbursement" do
       end
     end
 
+    scenario "the planned disbursement is associated with the currently active report" do
+      fund = create(:fund_activity)
+      programme = create(:programme_activity, parent: fund)
+      project = create(:project_activity, organisation: user.organisation, parent: programme)
+      report = create(:report, :active, fund: fund, organisation: project.organisation)
+
+      visit activities_path
+
+      click_on(project.title)
+      click_on(I18n.t("page_content.planned_disbursements.button.create"))
+
+      fill_in_planned_disbursement_form
+
+      planned_disbursement = PlannedDisbursement.last
+      expect(planned_disbursement.report).to eq(report)
+    end
+
     context "when the delivery partner is a government organisation" do
       context "and the activity is a project" do
         it "pre fills the providing organisation details with those of BEIS" do
           beis = create(:beis_organisation)
-          government_devlivery_partner = create(:delivery_partner_organisation, organisation_type: "10")
-          user.update(organisation: government_devlivery_partner)
-          project = create(:project_activity, organisation: user.organisation)
+          government_delivery_partner = create(:delivery_partner_organisation, organisation_type: "10")
+          user.update(organisation: government_delivery_partner)
+          project = create(:project_activity, :with_report, organisation: user.organisation)
 
           visit activities_path
           click_on project.title
@@ -75,9 +92,9 @@ RSpec.describe "Users can create a planned disbursement" do
       context "and the activity is a third-party project" do
         it "pre fills the providing organisation details with those of BEIS" do
           beis = create(:beis_organisation)
-          government_devlivery_partner = create(:delivery_partner_organisation, organisation_type: "10")
-          user.update(organisation: government_devlivery_partner)
-          project = create(:third_party_project_activity, organisation: user.organisation)
+          government_delivery_partner = create(:delivery_partner_organisation, organisation_type: "10")
+          user.update(organisation: government_delivery_partner)
+          project = create(:third_party_project_activity, :with_report, organisation: user.organisation)
 
           visit organisation_activity_path(user.organisation, project)
           click_on I18n.t("page_content.planned_disbursements.button.create")
@@ -95,7 +112,7 @@ RSpec.describe "Users can create a planned disbursement" do
           beis = create(:beis_organisation)
           government_devlivery_partner = create(:delivery_partner_organisation, organisation_type: "10")
           user.update(organisation: government_devlivery_partner)
-          project = create(:project_activity, organisation: user.organisation)
+          project = create(:project_activity, :with_report, organisation: user.organisation)
 
           visit activities_path
           click_on project.title
@@ -107,10 +124,10 @@ RSpec.describe "Users can create a planned disbursement" do
         end
       end
       context "and the activity is a third-party project" do
-        it "pre fills the providing organisation detauls with those of the delivery partner" do
+        it "pre fills the providing organisation details with those of the delivery partner" do
           non_government_devlivery_partner = create(:delivery_partner_organisation, organisation_type: "22")
           user.update(organisation: non_government_devlivery_partner)
-          project = create(:third_party_project_activity, organisation: user.organisation)
+          project = create(:third_party_project_activity, :with_report, organisation: user.organisation)
 
           visit organisation_activity_path(user.organisation, project)
           click_on I18n.t("page_content.planned_disbursements.button.create")

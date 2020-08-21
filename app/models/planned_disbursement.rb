@@ -5,6 +5,7 @@ class PlannedDisbursement < ApplicationRecord
   strip_attributes only: [:providing_organisation_reference, :receiving_organisation_reference]
 
   belongs_to :parent_activity, class_name: "Activity"
+  belongs_to :report
 
   validates_presence_of :planned_disbursement_type,
     :period_start_date,

@@ -12,7 +12,7 @@ class Activity < ApplicationRecord
     :purpose_step,
     :sector_category_step,
     :sector_step,
-    :status_step,
+    :programme_status_step,
     :geography_step,
     :region_step,
     :country_step,
@@ -28,7 +28,7 @@ class Activity < ApplicationRecord
   validates :title, :description, presence: true, on: :purpose_step
   validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
-  validates :status, presence: true, on: :status_step
+  validates :programme_status, presence: true, on: :programme_status_step
   validates :geography, presence: true, on: :geography_step
   validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
   validates :recipient_country, presence: true, on: :country_step, if: :recipient_country?
@@ -116,21 +116,45 @@ class Activity < ApplicationRecord
     ancestors.reverse
   end
 
+  def associated_fund
+    return self if fund?
+    parent_activities.detect(&:fund?)
+  end
+
   def providing_organisation
     return organisation if third_party_project? && !organisation.is_government?
     Organisation.find_by(service_owner: true)
   end
 
   def parent_level
-    existing_level_index = Activity.levels.keys.index(level)
-    return nil if existing_level_index.zero?
+    case level
+    when "fund" then nil
+    when "programme" then "fund"
+    when "project" then "programme"
+    when "third_party_project" then "project"
+    end
+  end
 
-    Activity.levels.keys[existing_level_index - 1]
+  def child_level
+    case level
+    when "fund" then "programme"
+    when "programme" then "project"
+    when "project" then "third_party_project"
+    when "third_party_project" then raise "no level below third_party_project"
+    end
   end
 
   def iati_identifier
     parent_activities.each_with_object([reporting_organisation.iati_reference]) { |parent, parent_identifiers|
       parent_identifiers << parent.identifier
     }.push(identifier).join("-")
+  end
+
+  def actual_total_for_report_financial_quarter(report:)
+    transactions.where(report: report, date: report.created_at.all_quarter).sum(:value)
+  end
+
+  def forecasted_total_for_report_financial_quarter(report:)
+    planned_disbursements.where(period_start_date: report.created_at.all_quarter).sum(:value)
   end
 end

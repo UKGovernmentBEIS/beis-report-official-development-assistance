@@ -4,7 +4,7 @@
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
-        = @activity.title
+        = t("document_title.activity.extending_organisation", name: @activity.title)
 
       = form_with model: @activity, url: activity_extending_organisations_path(@activity.id, @activity.extending_organisation_id) do |f|
         = f.govuk_error_summary

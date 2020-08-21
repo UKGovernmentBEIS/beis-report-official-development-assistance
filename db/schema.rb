@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_24_140110) do
+ActiveRecord::Schema.define(version: 2020_08_19_081212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2020_07_24_140110) do
     t.boolean "publish_to_iati", default: true
     t.uuid "parent_id"
     t.string "transparency_identifier"
+    t.string "programme_status"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
@@ -87,6 +88,9 @@ ActiveRecord::Schema.define(version: 2020_07_24_140110) do
     t.uuid "parent_activity_id"
     t.boolean "ingested", default: false
     t.index ["parent_activity_id"], name: "index_budgets_on_parent_activity_id"
+  end
+
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
   end
 
   create_table "implementing_organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -127,19 +131,24 @@ ActiveRecord::Schema.define(version: 2020_07_24_140110) do
     t.uuid "parent_activity_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "report_id"
     t.index ["parent_activity_id"], name: "index_planned_disbursements_on_parent_activity_id"
+    t.index ["report_id"], name: "index_planned_disbursements_on_report_id"
   end
 
-  create_table "submissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "state", default: 0, null: false
+  create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "state", default: "inactive", null: false
     t.string "description"
     t.uuid "fund_id"
     t.uuid "organisation_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.date "deadline"
-    t.index ["fund_id"], name: "index_submissions_on_fund_id"
-    t.index ["organisation_id"], name: "index_submissions_on_organisation_id"
+    t.integer "financial_quarter"
+    t.integer "financial_year"
+    t.index ["fund_id"], name: "index_reports_on_fund_id"
+    t.index ["organisation_id"], name: "index_reports_on_organisation_id"
+    t.index ["state"], name: "index_reports_on_state"
   end
 
   create_table "transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -159,7 +168,9 @@ ActiveRecord::Schema.define(version: 2020_07_24_140110) do
     t.string "receiving_organisation_reference"
     t.uuid "parent_activity_id"
     t.boolean "ingested", default: false
+    t.uuid "report_id"
     t.index ["parent_activity_id"], name: "index_transactions_on_parent_activity_id"
+    t.index ["report_id"], name: "index_transactions_on_report_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

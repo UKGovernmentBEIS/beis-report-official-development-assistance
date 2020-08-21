@@ -5,7 +5,7 @@ module FormHelpers
     description: Faker::Lorem.paragraph,
     sector_category: "Basic Education",
     sector: "Primary education",
-    status: "2",
+    programme_status: "07",
     planned_start_date_day: "1",
     planned_start_date_month: "1",
     planned_start_date_year: "2020",
@@ -65,16 +65,23 @@ module FormHelpers
     choose sector
     click_button I18n.t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.legend.activity.status", level: activity_level(level))
-    expect(page).to have_content "The activity is being scoped or planned"
-    expect(page).to have_content "The activity is currently being implemented"
-    expect(page).to have_content "Physical activity is complete or the final disbursement has been made"
-    expect(page).to have_content "Physical activity is complete or the final disbursement has been made, but the activity remains open pending financial sign off or M&E"
-    expect(page).to have_content "The activity has been cancelled"
-    expect(page).to have_content "The activity has been temporarily suspended"
+    unless level == "fund"
+      expect(page).to have_content I18n.t("form.legend.activity.programme_status")
+      expect(page).to have_content "Delivery"
+      expect(page).to have_content "Planned"
+      expect(page).to have_content "Agreement in place"
+      expect(page).to have_content "Call/Activity open"
+      expect(page).to have_content "Review"
+      expect(page).to have_content "Decided"
+      expect(page).to have_content "Spend in progress"
+      expect(page).to have_content "Finalisation"
+      expect(page).to have_content "Completed"
+      expect(page).to have_content "Stopped"
+      expect(page).to have_content "Cancelled"
 
-    choose("activity[status]", option: status)
-    click_button I18n.t("form.button.activity.submit")
+      choose("activity[programme_status]", option: programme_status)
+      click_button I18n.t("form.button.activity.submit")
+    end
 
     expect(page).to have_content I18n.t("page_title.activity_form.show.dates", level: activity_level(level))
 
@@ -122,7 +129,11 @@ module FormHelpers
     expect(page).to have_content title
     expect(page).to have_content description
     expect(page).to have_content sector
-    expect(page).to have_content status
+    if level == "fund"
+      expect(page).not_to have_content I18n.t("activity.programme_status.#{programme_status}")
+    else
+      expect(page).to have_content I18n.t("activity.programme_status.#{programme_status}")
+    end
     expect(page).to have_content recipient_region
     expect(page).to have_content flow
     expect(page).to have_content I18n.t("activity.aid_type.#{aid_type.downcase}")
@@ -136,6 +147,11 @@ module FormHelpers
       month: planned_end_date_month,
       day: planned_end_date_day
     )
+
+    my_activity = Activity.find_by(identifier: identifier)
+    iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
+    expect(my_activity.status).not_to be_nil
+    expect(my_activity.status).to eq(iati_status)
   end
 
   def fill_in_transaction_form(expectations: true,
