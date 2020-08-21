@@ -229,7 +229,7 @@
 - Add a very basic Submission show page and CSV skeleton
 - Migrate AMS GCRF activities from Level C to Level D
 
-## [unreleased]
+## [release-14] - 2020-08-21
 
 - Associate Transactions to Submissions
 - Export Activity data in the Submission CSV
@@ -253,7 +253,10 @@
   `forecasted_total_for_report_financial_quarter` and output the value to the Report CSV
 - Ingest RAEng Newton fund data from IATI
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...HEAD
+[release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13
 [release-12]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...release-12
 [release-11]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-10...release-11
