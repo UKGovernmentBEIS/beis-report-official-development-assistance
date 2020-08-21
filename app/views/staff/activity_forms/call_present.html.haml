@@ -1,0 +1,5 @@
+= render layout: "wrapper" do |f|
+  = f.govuk_radio_buttons_fieldset(:call_present, legend: { text: t("form.legend.activity.call_present", level: t("page_content.activity.level.#{f.object.level}")), size: "xl", tag: "h1" }) do
+    = f.hidden_field :call_present, value: nil
+    = f.govuk_radio_button :call_present, :true, label: { text: t("form.label.activity.call_present.true") }
+    = f.govuk_radio_button :call_present, :false, label: { text: t("form.label.activity.call_present.false") }

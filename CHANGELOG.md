@@ -260,6 +260,9 @@
 - Inactive reports are shown in their own table on the reports page
 - Reports are no longer activated when the deadline is set
 
+- `Call open date` and `Call close date` added to the create activity form, for levels C and D.
+  This field is mandatory for new activities, but optional for activities marked as `ingested: true`
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...HEAD
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13

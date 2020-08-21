@@ -19,6 +19,9 @@ en:
     label:
       activity:
         flow: What is the flow type?
+        call_present:
+          'true': 'Yes'
+          'false': 'No'
         geography_options:
           recipient_region: Region
           recipient_country: Country
@@ -40,6 +43,9 @@ en:
         aid_type: Aid type
         actual_end_date: Actual end date (optional)
         actual_start_date: Actual start date (optional)
+        call_present: Is there a call for this %{level}?
+        call_open_date: Call open date
+        call_close_date: Call close date
         geography: Will the benefitting recipient be a region or country?
         level: Add new activity
         parent: Select the parent activity
@@ -55,6 +61,8 @@ en:
         actual_end_date: For example, 2 2 2020
         actual_start_date: For example, 11 1 2020
         aid_type: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)</a>
+        call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Programme Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
+        call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Programme Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
         flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
         identifier: This could be the reference you use in your internal systems. This value cannot be edited once it is set
         planned_end_date: For example, 28 11 2020
@@ -79,6 +87,9 @@ en:
         budgets: Budgets
         button:
           create: Add activity
+        call_present: Calls
+        call_open_date: Call open date
+        call_close_date: Call close date
         description: Description
         form_state:
           complete: Complete
@@ -175,6 +186,8 @@ en:
     activity_form:
       show:
         aid_type: Aid type
+        call_dates: What are the call open and close dates for this %{level}?
+        call_present: Is there a call for this %{level}?
         country: What country will benefit from this activity?
         dates: What are the start and end dates for the %{level}?
         flow: Flow

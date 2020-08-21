@@ -13,6 +13,21 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.sector.#{super}")
   end
 
+  def call_present
+    return if super.nil?
+    I18n.t("activity.call_present.#{super}")
+  end
+
+  def call_open_date
+    return if super.blank?
+    I18n.l(super)
+  end
+
+  def call_close_date
+    return if super.blank?
+    I18n.l(super)
+  end
+
   def programme_status
     return if super.blank?
     I18n.t("activity.programme_status.#{super}")
