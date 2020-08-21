@@ -44,6 +44,14 @@ RSpec.feature "Users can view reports" do
       expect(page).to have_content reports.last.description
     end
 
+    scenario "they can view submitted reports for all organisations" do
+      reports = create_list(:report, 2)
+      visit reports_path
+
+      expect(page).to have_content reports.first.description
+      expect(page).to have_content reports.last.description
+    end
+
     scenario "can view a report belonging to any delivery partner" do
       report = create(:report, :active)
 
@@ -65,7 +73,7 @@ RSpec.feature "Users can view reports" do
         click_on I18n.t("default.link.show")
       end
 
-      click_on I18n.t("default.button.download_as_csv")
+      click_on I18n.t("action.report.download.button")
 
       expect(page.response_headers["Content-Type"]).to include("text/csv")
       header = page.response_headers["Content-Disposition"]
@@ -104,6 +112,14 @@ RSpec.feature "Users can view reports" do
         expect(page).to have_content report.description
       end
 
+      scenario "they can view their own submitted reports" do
+        report = create(:report, state: :submitted, organisation: delivery_partner_user.organisation)
+
+        visit reports_path
+
+        expect(page).to have_content report.description
+      end
+
       scenario "they do not see the name of the associated organisation" do
         report = create(:report)
 
@@ -129,7 +145,7 @@ RSpec.feature "Users can view reports" do
           click_on I18n.t("default.link.show")
         end
 
-        click_on I18n.t("default.button.download_as_csv")
+        click_on I18n.t("action.report.download.button")
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
 
