@@ -89,7 +89,7 @@ en:
         level: Level
         organisation: Organisation
         parent: Parent activity
-        planned_disbursements: Planned disbursements
+        planned_disbursements: Forecasted spend
         planned_end_date: Planned end date
         planned_start_date: Planned start date
         programme_status: Activity status
@@ -151,7 +151,7 @@ en:
         programme: programme
         project: project
         third_party_project: third-party project
-      planned_disbursements: Planned disbursements
+      planned_disbursements: Forecasted spend
       projects: Projects
       recipient_country:
         default_selection_value: Select a recipient country
