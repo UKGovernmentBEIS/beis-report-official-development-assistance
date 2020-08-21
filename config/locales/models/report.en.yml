@@ -5,6 +5,7 @@ en:
       report:
         active: Active reports
         inactive: Inactive reports
+        submitted: Submitted reports
     header:
       report:
         financial_quarter: Financial quarter
@@ -16,7 +17,6 @@ en:
   page_content:
     reports:
       title: Reports
-      download_as_csv: Download report as a CSV
   label:
     report:
      state:
@@ -41,11 +41,24 @@ en:
     report:
       index: Reports
       edit: Edit report
-      show: View report %{report_name}
+      show: "%{report_financial_quarter} %{report_description}"
+      submit: Confirm submission of %{report_financial_quarter} %{report_description}
+      complete: Submission complete
   action:
     report:
       update:
         success: Report successfully updated
+      submit:
+        button: Submit report
+        failure: Report could not be submitted
+        success: Report submitted successfully
+        complete:
+          title: Submission complete
+          body: "%{report_financial_quarter} %{report_description}"
+      confirm:
+        button: Confirm submission
+      download:
+        button: Download report as CSV file
   activerecord:
     errors:
       models:

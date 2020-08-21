@@ -9,11 +9,13 @@ class Staff::ReportsController < Staff::BaseController
   def index
     inactive_reports if current_user.service_owner?
     current_user.service_owner? ? active_reports_with_organisations : active_reports
+    current_user.service_owner? ? submitted_reports_with_organisations : submitted_reports
   end
 
   def show
     @report = Report.find(id)
     authorize @report
+    @report_presenter = ReportPresenter.new(@report)
 
     respond_to do |format|
       format.html
@@ -83,10 +85,22 @@ class Staff::ReportsController < Staff::BaseController
     @active_report_presenters = active_reports.map { |report| ReportPresenter.new(report) }
   end
 
+  def submitted_reports_with_organisations
+    submitted_reports = policy_scope(Report.where(state: :submitted)).includes([:fund, :organisation])
+    authorize submitted_reports
+    @submitted_report_presenters = submitted_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def submitted_reports
+    submitted_reports = policy_scope(Report.where(state: :submitted)).includes(:fund)
+    authorize submitted_reports
+    @submitted_report_presenters = submitted_reports.map { |report| ReportPresenter.new(report) }
+  end
+
   def send_csv
     response.headers["Content-Type"] = "text/csv"
     response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(@report.description)}.csv"
-    response.stream.write ExportActivityToCsv.new(activity: nil, report: @report).headers
+    response.stream.write ExportActivityToCsv.new(report: @report).headers
     @projects.each do |project|
       response.stream.write ExportActivityToCsv.new(activity: project, report: @report).call
     end
