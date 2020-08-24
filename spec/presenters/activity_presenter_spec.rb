@@ -50,7 +50,6 @@ RSpec.describe ActivityPresenter do
       it "returns the locale value for this option" do
         activity = build(:project_activity, call_present: "true")
         result = described_class.new(activity)
-        p result.call_present
         expect(result.call_present).to eq("Yes")
       end
     end
