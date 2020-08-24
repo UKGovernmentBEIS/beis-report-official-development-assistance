@@ -37,7 +37,7 @@ RSpec.feature "Users can provide the geography for an activity" do
         select "Uganda"
         click_button t("form.button.activity.submit")
 
-        expect(activity.reload.recipient_region).to eq("289") # South of Sahara
+        expect(activity.reload.recipient_region).to eq("1027") # Eastern Africa
       end
     end
 
