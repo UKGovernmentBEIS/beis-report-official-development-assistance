@@ -7,10 +7,10 @@
       = form_for @activity, url: activity_redaction_path(@activity) do |f|
 
         = f.govuk_collection_radio_buttons :publish_to_iati,
-          [OpenStruct.new(id: true, name: I18n.t("summary.label.activity.publish_to_iati.true")),
-            OpenStruct.new(id: false, name: I18n.t("summary.label.activity.publish_to_iati.false"))],
+          [OpenStruct.new(id: true, name: t("summary.label.activity.publish_to_iati.true")),
+            OpenStruct.new(id: false, name: t("summary.label.activity.publish_to_iati.false"))],
           :id,
           :name,
-          legend: { text: I18n.t("form.label.activity.publish_to_iati") }
+          legend: { text: t("form.label.activity.publish_to_iati") }
 
         = f.govuk_submit t("form.button.activity.submit")
