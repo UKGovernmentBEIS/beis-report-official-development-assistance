@@ -9,7 +9,6 @@ class ExportActivityToCsv
   end
 
   def call
-    activity_presenter = ActivityPresenter.new(activity)
     [
       activity_presenter.identifier,
       activity_presenter.transparency_identifier,
@@ -29,12 +28,11 @@ class ExportActivityToCsv
       activity_presenter.forecasted_total_for_report_financial_quarter(report: report),
       activity_presenter.variance_for_report_financial_quarter(report: report),
       activity_presenter.link_to_roda,
-    ].to_csv
+    ].concat(next_four_quarter_forecasts).to_csv
   end
 
   def headers
     report_financial_quarter = ReportPresenter.new(report).financial_quarter_and_year
-    next_four_quarters = report.next_four_financial_quarters
     [
       "Identifier",
       "Transparency identifier",
@@ -54,6 +52,19 @@ class ExportActivityToCsv
       report_financial_quarter ? report_financial_quarter + " forecast" : "Forecast",
       "Variance",
       "Link to activity in RODA",
-    ].concat(next_four_quarters).to_csv
+    ].concat(report_presenter.next_four_financial_quarters).to_csv
+  end
+
+  def next_four_quarter_forecasts
+    quarter_date_ranges = report_presenter.quarters_to_date_ranges
+    quarter_date_ranges.map { |range| activity_presenter.forecasted_total_for_date_range(range: range) }
+  end
+
+  private def activity_presenter
+    @activity_presenter ||= ActivityPresenter.new(activity)
+  end
+
+  private def report_presenter
+    @report_presenter ||= ReportPresenter.new(report)
   end
 end

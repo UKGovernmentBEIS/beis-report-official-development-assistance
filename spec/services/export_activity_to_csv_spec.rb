@@ -8,7 +8,9 @@ RSpec.describe ExportActivityToCsv do
   describe "#call" do
     it "creates a CSV line representation of the Activity" do
       activity_presenter = ActivityPresenter.new(project)
-      result = ExportActivityToCsv.new(activity: project, report: report).call
+      export_service = ExportActivityToCsv.new(activity: project, report: report)
+      result = export_service.call
+      next_four_quarter_totals = export_service.next_four_quarter_forecasts
 
       expect(result).to eq([
         activity_presenter.identifier,
@@ -29,7 +31,17 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.forecasted_total_for_report_financial_quarter(report: report),
         activity_presenter.variance_for_report_financial_quarter(report: report),
         activity_presenter.link_to_roda,
-      ].to_csv)
+      ].concat(next_four_quarter_totals).to_csv)
+    end
+  end
+
+  describe "#next_four_quarter_forecasts" do
+    it "gets the forecasted total for the date ranges of the next four quarters" do
+      _disbursement_1 = create(:planned_disbursement, parent_activity: project, period_start_date: 3.months.from_now, value: 1000)
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, period_start_date: 9.months.from_now, value: 500)
+      totals = ExportActivityToCsv.new(activity: project, report: report).next_four_quarter_forecasts
+
+      expect(totals).to eq ["1000.00", "0.00", "500.00", "0.00"]
     end
   end
 
