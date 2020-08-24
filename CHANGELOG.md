@@ -252,9 +252,6 @@
 - Calculate the total of all Planned Disbursements in a Report's date range as
   `forecasted_total_for_report_financial_quarter` and output the value to the Report CSV
 - Ingest RAEng Newton fund data from IATI
-- Calculate the variance between an Activity's transactions total for a date range, and
-  that same Activity's planned disbursements total for a date range. Output this value
-  to the Report CSV as "Variance"
 
 ## [unreleased]
 - Reports can be submitted
@@ -262,6 +259,12 @@
 - Reports can be activated explicitly
 - Inactive reports are shown in their own table on the reports page
 - Reports are no longer activated when the deadline is set
+- Calculate the variance between an Activity's transactions total for a date range, and
+  that same Activity's planned disbursements total for a date range. Output this value
+  to the Report CSV as "Variance"
+- Find the next four financial quarters after this report's financial quarter. Find the 
+  forecasted totals (planned disbursement totals) for those four future quarters and output
+  them to the report CSV  
 
 - `Call open date` and `Call close date` added to the create activity form, for levels C and D.
   This field is mandatory for new activities, but optional for activities marked as `ingested: true`
