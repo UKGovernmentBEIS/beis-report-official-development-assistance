@@ -90,26 +90,6 @@ RSpec.feature "BEIS users can edit a report" do
       expect(page).to have_content I18n.t("activerecord.errors.models.report.attributes.deadline.between", min: 10, max: 25)
     end
 
-    scenario "setting a Report's deadline changes its state to 'active'" do
-      authenticate!(user: beis_user)
-      report = create(:report)
-
-      visit reports_path
-
-      within "##{report.id}" do
-        click_on I18n.t("default.link.edit")
-      end
-
-      fill_in "report[deadline(3i)]", with: "31"
-      fill_in "report[deadline(2i)]", with: "1"
-      fill_in "report[deadline(1i)]", with: "2021"
-
-      click_on I18n.t("default.button.submit")
-
-      expect(page).to have_content I18n.t("action.report.update.success")
-      expect(report.reload.state).to eq "active"
-    end
-
     scenario "setting a Report's deadline logs an activity in PublicActivity" do
       PublicActivity.with_tracking do
         authenticate!(user: beis_user)
@@ -128,7 +108,7 @@ RSpec.feature "BEIS users can edit a report" do
         click_on I18n.t("default.button.submit")
 
         auditable_events = PublicActivity::Activity.where(trackable_id: report.id)
-        expect(auditable_events.map(&:key)).to match_array ["report.update", "report.activate"]
+        expect(auditable_events.map(&:key)).to match_array ["report.update"]
         expect(auditable_events.map(&:owner_id).uniq).to eq [beis_user.id]
       end
     end
