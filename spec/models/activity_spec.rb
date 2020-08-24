@@ -296,6 +296,29 @@ RSpec.describe Activity, type: :model do
         expect(blank_activity.valid?).to eq(true)
       end
     end
+
+    context "when the activity is neither a fund nor a programme" do
+      context "when call_present is blank" do
+        subject(:activity) { build(:project_activity, call_present: nil) }
+        it "should not be valid" do
+          expect(activity.valid?(:call_present_step)).to be_falsey
+        end
+      end
+
+      context "when there is a call but any of the call dates are blank" do
+        subject(:activity) { build(:project_activity, call_present: true, call_open_date: Date.today, call_close_date: nil) }
+        it "should not be valid" do
+          expect(activity.valid?(:call_dates_step)).to be_falsey
+        end
+      end
+
+      context "when the activity is 'ingested:true'" do
+        subject(:activity) { build(:project_activity, ingested: true, call_present: nil) }
+        it "should not require the presence of 'call_present'" do
+          expect(activity.valid?(:call_present_step)).to be_truthy
+        end
+      end
+    end
   end
 
   describe "associations" do

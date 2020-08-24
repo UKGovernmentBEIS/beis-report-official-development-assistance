@@ -62,6 +62,9 @@ FactoryBot.define do
     factory :project_activity do
       parent factory: :programme_activity
       level { :project }
+      call_present { "true" }
+      call_open_date { Date.yesterday }
+      call_close_date { Date.tomorrow }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
       funding_organisation_type { "10" }
@@ -86,6 +89,9 @@ FactoryBot.define do
     factory :third_party_project_activity do
       parent factory: :project_activity
       level { :third_party_project }
+      call_present { "true" }
+      call_open_date { Date.yesterday }
+      call_close_date { Date.tomorrow }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
       funding_organisation_type { "10" }
@@ -105,6 +111,7 @@ FactoryBot.define do
     description { nil }
     sector_category { nil }
     sector { nil }
+    call_present { nil }
     programme_status { nil }
     planned_start_date { nil }
     planned_end_date { nil }
@@ -122,6 +129,7 @@ FactoryBot.define do
     title { nil }
     description { nil }
     sector { nil }
+    call_present { nil }
     programme_status { nil }
     planned_start_date { nil }
     planned_end_date { nil }
@@ -158,6 +166,7 @@ FactoryBot.define do
     title { nil }
     description { nil }
     sector { nil }
+    call_present { nil }
     programme_status { nil }
     planned_start_date { nil }
     planned_end_date { nil }
@@ -180,6 +189,7 @@ FactoryBot.define do
     title { nil }
     description { nil }
     sector { nil }
+    call_present { nil }
     programme_status { nil }
     planned_start_date { nil }
     planned_end_date { nil }

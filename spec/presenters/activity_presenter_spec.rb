@@ -45,6 +45,61 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#call_present" do
+    context "when there is a call" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, call_present: "true")
+        result = described_class.new(activity)
+        p result.call_present
+        expect(result.call_present).to eq("Yes")
+      end
+    end
+
+    context "when there is not a call" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, call_present: "false")
+        result = described_class.new(activity)
+        expect(result.call_present).to eq("No")
+      end
+    end
+  end
+
+  describe "#call_open_date" do
+    context "when the call open date exists" do
+      it "returns a human readable date" do
+        activity = build(:project_activity, call_open_date: "2020-02-20")
+        result = described_class.new(activity).call_open_date
+        expect(result).to eq("20 Feb 2020")
+      end
+    end
+
+    context "when the planned start date does not exist" do
+      it "returns nil" do
+        activity = build(:project_activity, call_open_date: nil)
+        result = described_class.new(activity)
+        expect(result.call_open_date).to be_nil
+      end
+    end
+  end
+
+  describe "#call_close_date" do
+    context "when the call close date exists" do
+      it "returns a human readable date" do
+        activity = build(:project_activity, call_close_date: "2020-06-23")
+        result = described_class.new(activity).call_close_date
+        expect(result).to eq("23 Jun 2020")
+      end
+    end
+
+    context "when the planned close date does not exist" do
+      it "returns nil" do
+        activity = build(:project_activity, call_close_date: nil)
+        result = described_class.new(activity)
+        expect(result.call_close_date).to be_nil
+      end
+    end
+  end
+
   describe "#programme_status" do
     context "when the programme status exists" do
       it "returns the locale value for the code" do

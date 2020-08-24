@@ -1,0 +1,5 @@
+= render layout: "wrapper" do |f|
+  %h1.govuk-heading-xl= @page_title
+
+  = f.govuk_date_field :call_open_date
+  = f.govuk_date_field :call_close_date
