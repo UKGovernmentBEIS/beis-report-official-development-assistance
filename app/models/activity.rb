@@ -156,11 +156,15 @@ class Activity < ApplicationRecord
   end
 
   def actual_total_for_report_financial_quarter(report:)
-    transactions.where(report: report, date: report.created_at.all_quarter).sum(:value)
+    @actual_total_for_report_financial_quarter ||= transactions.where(report: report, date: report.created_at.all_quarter).sum(:value)
   end
 
   def forecasted_total_for_report_financial_quarter(report:)
-    planned_disbursements.where(period_start_date: report.created_at.all_quarter).sum(:value)
+    @forecasted_total_for_report_financial_quarter ||= planned_disbursements.where(period_start_date: report.created_at.all_quarter).sum(:value)
+  end
+
+  def variance_for_report_financial_quarter(report:)
+    @variance_for_report_financial_quarter ||= actual_total_for_report_financial_quarter(report: report) - forecasted_total_for_report_financial_quarter(report: report)
   end
 
   def requires_call_dates?

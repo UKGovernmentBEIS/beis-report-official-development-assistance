@@ -348,4 +348,16 @@ RSpec.describe ActivityPresenter do
         .to eq "200.20"
     end
   end
+
+  describe "#variance_for_report_financial_quarter" do
+    it "returns the variance per report as a formatted number" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      _transaction = create(:transaction, parent_activity: project, report: report, value: 200, date: Date.today)
+      _disbursement = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: Date.today)
+
+      expect(described_class.new(project).variance_for_report_financial_quarter(report: report))
+        .to eq "-1300.00"
+    end
+  end
 end
