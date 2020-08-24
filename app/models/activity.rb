@@ -22,11 +22,11 @@ class Activity < ApplicationRecord
     :aid_type,
   ]
 
-  strip_attributes only: [:identifier]
+  strip_attributes only: [:delivery_partner_identifier]
 
   validates :level, presence: true, on: :level_step
   validates :parent, presence: true, on: :parent_step, unless: proc { |activity| activity.fund? }
-  validates :identifier, presence: true, on: :identifier_step
+  validates :delivery_partner_identifier, presence: true, on: :identifier_step
   validates :title, :description, presence: true, on: :purpose_step
   validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
@@ -38,7 +38,7 @@ class Activity < ApplicationRecord
   validates :flow, presence: true, on: :flow_step
   validates :aid_type, presence: true, on: :aid_type_step
 
-  validates :identifier, uniqueness: {scope: :parent_id}, allow_nil: true
+  validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :planned_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.actual_start_date.present? }
   validates :actual_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.planned_start_date.present? }
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
@@ -151,8 +151,8 @@ class Activity < ApplicationRecord
 
   def iati_identifier
     parent_activities.each_with_object([reporting_organisation.iati_reference]) { |parent, parent_identifiers|
-      parent_identifiers << parent.identifier
-    }.push(identifier).join("-")
+      parent_identifiers << parent.delivery_partner_identifier
+    }.push(delivery_partner_identifier).join("-")
   end
 
   def actual_total_for_report_financial_quarter(report:)

@@ -49,7 +49,7 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "sanitisation" do
-    it { should strip_attribute(:identifier) }
+    it { should strip_attribute(:delivery_partner_identifier) }
   end
 
   describe "validations" do
@@ -88,21 +88,21 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when identifier is blank" do
-      subject(:activity) { build(:activity, identifier: nil) }
+    context "when delivery_partner_identifier is blank" do
+      subject(:activity) { build(:activity, delivery_partner_identifier: nil) }
       it "should not be valid" do
         expect(activity.valid?(:identifier_step)).to be_falsey
       end
     end
 
-    describe "#identifier" do
-      context "when an activity exists with the same identifier" do
+    describe "#delivery_partner_identifier" do
+      context "when an activity exists with the same delivery_partner_identifier" do
         context "shares the same parent" do
           it "should be invalid" do
             fund = create(:fund_activity)
-            create(:programme_activity, identifier: "GB-GOV-13-001", parent: fund)
+            create(:programme_activity, delivery_partner_identifier: "GB-GOV-13-001", parent: fund)
 
-            new_programme_activity = build(:programme_activity, identifier: "GB-GOV-13-001", parent: fund)
+            new_programme_activity = build(:programme_activity, delivery_partner_identifier: "GB-GOV-13-001", parent: fund)
 
             expect(new_programme_activity).not_to be_valid
           end
@@ -111,11 +111,11 @@ RSpec.describe Activity, type: :model do
         context "does NOT share the same parent" do
           it "should be valid" do
             create(:fund_activity) do |fund|
-              create(:programme_activity, identifier: "GB-GOV-13-001", parent: fund)
+              create(:programme_activity, delivery_partner_identifier: "GB-GOV-13-001", parent: fund)
             end
 
             other_fund = create(:fund_activity)
-            new_programme_activity = build(:programme_activity, identifier: "GB-GOV-13-001", parent: other_fund)
+            new_programme_activity = build(:programme_activity, delivery_partner_identifier: "GB-GOV-13-001", parent: other_fund)
 
             expect(new_programme_activity).to be_valid
           end
@@ -607,42 +607,42 @@ RSpec.describe Activity, type: :model do
 
   describe "#iati_identifier" do
     context "when the activity is a fund" do
-      it "returns a composite identifier formed with the reporting organisation" do
-        fund = build(:fund_activity, identifier: "GCRF-1", reporting_organisation: create(:beis_organisation))
+      it "returns a composite delivery_partner_identifier formed with the reporting organisation" do
+        fund = build(:fund_activity, delivery_partner_identifier: "GCRF-1", reporting_organisation: create(:beis_organisation))
         expect(fund.iati_identifier).to eql("GB-GOV-13-GCRF-1")
       end
     end
 
     context "when the activity is a programme" do
       context "when the reporting organisation is a government organisation" do
-        it "returns an identifier with the reporting organisation, fund and programme" do
+        it "returns an delivery_partner_identifier with the reporting organisation, fund and programme" do
           government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
           programme = create(:programme_activity, organisation: government_organisation)
           fund = programme.parent
 
           expect(programme.iati_identifier)
-            .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}")
+            .to eql("GB-GOV-13-#{fund.delivery_partner_identifier}-#{programme.delivery_partner_identifier}")
         end
       end
     end
 
     context "when the activity is a project" do
       context "when the reporting organisation is a government organisation" do
-        it "returns an identifier with the reporting organisation, fund, programme and project" do
+        it "returns an delivery_partner_identifier with the reporting organisation, fund, programme and project" do
           government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
           project = create(:project_activity, organisation: government_organisation, reporting_organisation: government_organisation)
           programme = project.parent
           fund = programme.parent
 
           expect(project.iati_identifier)
-            .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}-#{project.identifier}")
+            .to eql("GB-GOV-13-#{fund.delivery_partner_identifier}-#{programme.delivery_partner_identifier}-#{project.delivery_partner_identifier}")
         end
       end
     end
 
     context "when the activity is a third-party project" do
       context "when the reporting organisation is a government organisation" do
-        it "returns an identifier with the reporting organisation, fund, programme, project and third-party project" do
+        it "returns an delivery_partner_identifier with the reporting organisation, fund, programme, project and third-party project" do
           government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
           third_party_project = create(:third_party_project_activity, organisation: government_organisation, reporting_organisation: government_organisation)
           project = third_party_project.parent
@@ -650,7 +650,7 @@ RSpec.describe Activity, type: :model do
           fund = programme.parent
 
           expect(third_party_project.iati_identifier)
-            .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}-#{project.identifier}-#{third_party_project.identifier}")
+            .to eql("GB-GOV-13-#{fund.delivery_partner_identifier}-#{programme.delivery_partner_identifier}-#{project.delivery_partner_identifier}-#{third_party_project.delivery_partner_identifier}")
         end
       end
     end

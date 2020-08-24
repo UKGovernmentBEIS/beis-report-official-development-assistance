@@ -23,8 +23,8 @@ RSpec.feature "Users can create a fund level activity" do
       identifier = "a-fund-with-default-programme-status-of-spend-in-progress"
       visit activities_path
       click_on(t("page_content.organisation.button.create_activity"))
-      fill_in_activity_form(identifier: identifier, level: "fund")
-      activity = Activity.find_by(identifier: identifier)
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
       expect(activity.programme_status).to eq("07")
     end
 
@@ -32,8 +32,8 @@ RSpec.feature "Users can create a fund level activity" do
       identifier = "a-fund-with-default-iati-status-of-implementation"
       visit activities_path
       click_on(t("page_content.organisation.button.create_activity"))
-      fill_in_activity_form(identifier: identifier, level: "fund")
-      activity = Activity.find_by(identifier: identifier)
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
       expect(activity.status).to eq("2")
     end
 
@@ -57,9 +57,9 @@ RSpec.feature "Users can create a fund level activity" do
       visit activities_path
       click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "fund")
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
 
-      activity = Activity.find_by(identifier: identifier)
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
       expect(activity.funding_organisation_name).to eq("HM Treasury")
       expect(activity.funding_organisation_reference).to eq("GB-GOV-2")
       expect(activity.funding_organisation_type).to eq("10")
@@ -71,9 +71,9 @@ RSpec.feature "Users can create a fund level activity" do
       visit activities_path
       click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "fund")
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
 
-      activity = Activity.find_by(identifier: identifier)
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
       expect(activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
       expect(activity.accountable_organisation_reference).to eq("GB-GOV-13")
       expect(activity.accountable_organisation_type).to eq("10")
@@ -85,9 +85,9 @@ RSpec.feature "Users can create a fund level activity" do
       visit activities_path
       click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "fund")
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
 
-      activity = Activity.find_by(identifier: identifier)
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
       expect(activity.extending_organisation).to eql(user.organisation)
     end
 
@@ -97,10 +97,10 @@ RSpec.feature "Users can create a fund level activity" do
       visit activities_path
       click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "fund")
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
 
-      activity = Activity.find_by(identifier: identifier)
-      expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.identifier}")
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
+      expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.delivery_partner_identifier}")
     end
 
     context "when there is an existing activity with a nil identifier" do
@@ -120,12 +120,12 @@ RSpec.feature "Users can create a fund level activity" do
     context "when there is an existing activity with the same identifier" do
       scenario "cannot use the duplicate identifier" do
         identifier = "A-non-unique-identifier"
-        _another_activity = create(:activity, identifier: identifier)
+        _another_activity = create(:activity, delivery_partner_identifier: identifier)
         new_activity = create(:activity, :blank_form_state, organisation: user.organisation)
 
         visit activity_step_path(new_activity, :identifier)
 
-        fill_in "activity[identifier]", with: identifier
+        fill_in "activity[delivery_partner_identifier]", with: identifier
         click_button t("form.button.activity.submit")
 
         expect(page).to have_content "has already been taken"
@@ -154,13 +154,13 @@ RSpec.feature "Users can create a fund level activity" do
 
         choose parent.title
         click_button t("form.button.activity.submit")
-        expect(page).to have_content t("form.label.activity.identifier")
+        expect(page).to have_content t("form.label.activity.delivery_partner_identifier")
 
         # Don't provide an identifier
         click_button t("form.button.activity.submit")
-        expect(page).to have_content t("activerecord.errors.models.activity.attributes.identifier.blank")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.delivery_partner_identifier.blank")
 
-        fill_in "activity[identifier]", with: identifier
+        fill_in "activity[delivery_partner_identifier]", with: identifier
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.purpose", level: "programme")
         expect(page).to have_content t("form.hint.activity.title", level: "programme")
@@ -247,7 +247,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         choose("activity[aid_type]", option: "A01")
         click_button t("form.button.activity.submit")
-        expect(page).to have_content Activity.find_by(identifier: identifier).title
+        expect(page).to have_content Activity.find_by(delivery_partner_identifier: identifier).title
       end
     end
 
@@ -256,9 +256,9 @@ RSpec.feature "Users can create a fund level activity" do
         visit activities_path
         click_on(t("page_content.organisation.button.create_activity"))
 
-        fill_in_activity_form(level: "fund", identifier: "my-unique-identifier")
+        fill_in_activity_form(level: "fund", delivery_partner_identifier: "my-unique-identifier")
 
-        fund = Activity.find_by(identifier: "my-unique-identifier")
+        fund = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
         auditable_events = PublicActivity::Activity.where(trackable_id: fund.id)
         expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.flow", "activity.create.aid_type")
         expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]

@@ -1,6 +1,6 @@
 module FormHelpers
   def fill_in_activity_form(
-    identifier: "A-Unique-Identifier",
+    delivery_partner_identifier: "A-Unique-Identifier",
     title: "My Aid Activity",
     description: Faker::Lorem.paragraph,
     sector_category: "Basic Education",
@@ -46,9 +46,9 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
-    expect(page).to have_content t("form.label.activity.identifier")
-    expect(page).to have_content t("form.hint.activity.identifier")
-    fill_in "activity[identifier]", with: identifier
+    expect(page).to have_content t("form.label.activity.delivery_partner_identifier")
+    expect(page).to have_content t("form.hint.activity.delivery_partner_identifier")
+    fill_in "activity[delivery_partner_identifier]", with: delivery_partner_identifier
     click_button t("form.button.activity.submit")
 
     expect(page).to have_content t("form.legend.activity.purpose", level: activity_level(level))
@@ -153,7 +153,7 @@ module FormHelpers
     choose("activity[aid_type]", option: aid_type)
     click_button t("form.button.activity.submit")
 
-    expect(page).to have_content identifier
+    expect(page).to have_content delivery_partner_identifier
     expect(page).to have_content title
     expect(page).to have_content description
     expect(page).to have_content sector
@@ -191,7 +191,7 @@ module FormHelpers
       )
     end
 
-    my_activity = Activity.find_by(identifier: identifier)
+    my_activity = Activity.find_by(delivery_partner_identifier: delivery_partner_identifier)
     iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
     expect(my_activity.status).not_to be_nil
     expect(my_activity.status).to eq(iati_status)

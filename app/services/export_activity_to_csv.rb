@@ -10,7 +10,7 @@ class ExportActivityToCsv
 
   def call
     [
-      activity_presenter.identifier,
+      activity_presenter.delivery_partner_identifier,
       activity_presenter.transparency_identifier,
       activity_presenter.sector,
       activity_presenter.title,

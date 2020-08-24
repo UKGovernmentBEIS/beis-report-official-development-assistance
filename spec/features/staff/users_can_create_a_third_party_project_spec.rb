@@ -35,10 +35,10 @@ RSpec.feature "Users can create a project" do
 
         click_on(t("page_content.organisation.button.create_activity"))
 
-        fill_in_activity_form(level: "third_party_project", identifier: identifier, parent: project)
+        fill_in_activity_form(level: "third_party_project", delivery_partner_identifier: identifier, parent: project)
 
-        activity = Activity.find_by(identifier: identifier)
-        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{project.parent.parent.identifier}-#{project.parent.identifier}-#{project.identifier}-#{activity.identifier}")
+        activity = Activity.find_by(delivery_partner_identifier: identifier)
+        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{project.parent.parent.delivery_partner_identifier}-#{project.parent.delivery_partner_identifier}-#{project.delivery_partner_identifier}-#{activity.delivery_partner_identifier}")
       end
 
       scenario "third party project creation is tracked with public_activity" do
@@ -52,9 +52,9 @@ RSpec.feature "Users can create a project" do
 
           click_on(t("page_content.organisation.button.create_activity"))
 
-          fill_in_activity_form(level: "third_party_project", identifier: "my-unique-identifier", parent: project)
+          fill_in_activity_form(level: "third_party_project", delivery_partner_identifier: "my-unique-identifier", parent: project)
 
-          third_party_project = Activity.find_by(identifier: "my-unique-identifier")
+          third_party_project = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
           auditable_events = PublicActivity::Activity.where(trackable_id: third_party_project.id)
           expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.flow", "activity.create.aid_type")
           expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
