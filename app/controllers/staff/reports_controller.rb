@@ -41,7 +41,6 @@ class Staff::ReportsController < Staff::BaseController
     if @report.valid?
       @report.save!
       @report.create_activity key: "report.update", owner: current_user
-      activate!
       flash[:notice] = I18n.t("action.report.update.success")
       redirect_to reports_path
     else
@@ -57,14 +56,6 @@ class Staff::ReportsController < Staff::BaseController
 
   def report_params
     params.require(:report).permit(:deadline, :description)
-  end
-
-  def activate!
-    if @report.deadline.present? && @report.deadline > Date.today
-      @report.state = :active
-      @report.save!
-      @report.create_activity key: "report.activate", owner: current_user
-    end
   end
 
   def inactive_reports

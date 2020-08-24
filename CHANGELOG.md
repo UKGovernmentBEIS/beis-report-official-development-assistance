@@ -256,6 +256,9 @@
 ## [unreleased]
 - Reports can be submitted
 - Submitted reports are shown to users
+- Reports can be activated explicitly
+- Inactive reports are shown in their own table on the reports page
+- Reports are no longer activated when the deadline is set
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...HEAD
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14
