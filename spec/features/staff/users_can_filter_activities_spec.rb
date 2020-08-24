@@ -21,13 +21,13 @@ RSpec.feature "Users can filter activities" do
       visit activities_path
 
       expect(page).to have_content programme.title
-      expect(page).to have_content programme.identifier
+      expect(page).to have_content programme.delivery_partner_identifier
 
       select delivery_partner_organisation.name, from: "organisation_id"
       click_on t("filters.activity.submit")
 
       expect(page).to have_content project.title
-      expect(page).to have_content project.identifier
+      expect(page).to have_content project.delivery_partner_identifier
     end
   end
 
