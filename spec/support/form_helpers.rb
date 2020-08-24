@@ -5,6 +5,13 @@ module FormHelpers
     description: Faker::Lorem.paragraph,
     sector_category: "Basic Education",
     sector: "Primary education",
+    call_present: "true",
+    call_open_date_day: "1",
+    call_open_date_month: "10",
+    call_open_date_year: "2019",
+    call_close_date_day: "31",
+    call_close_date_month: "12",
+    call_close_date_year: "2019",
     programme_status: "07",
     planned_start_date_day: "1",
     planned_start_date_month: "1",
@@ -64,6 +71,27 @@ module FormHelpers
 
     choose sector
     click_button I18n.t("form.button.activity.submit")
+
+    if level == "project" || level == "third_party_project"
+      expect(page).to have_content I18n.t("form.legend.activity.call_present", level: activity_level(level))
+      choose "Yes"
+      click_button I18n.t("form.button.activity.submit")
+      expect(page).to have_content I18n.t("page_title.activity_form.show.call_dates", level: activity_level(level))
+
+      expect(page).to have_content I18n.t("form.legend.activity.call_open_date")
+      fill_in "activity[call_open_date(3i)]", with: call_open_date_day
+      fill_in "activity[call_open_date(2i)]", with: call_open_date_month
+      fill_in "activity[call_open_date(1i)]", with: call_open_date_year
+
+      expect(page).to have_content I18n.t("form.legend.activity.call_close_date")
+      fill_in "activity[call_close_date(3i)]", with: call_close_date_day
+      fill_in "activity[call_close_date(2i)]", with: call_close_date_month
+      fill_in "activity[call_close_date(1i)]", with: call_close_date_year
+
+      click_button I18n.t("form.button.activity.submit")
+    else
+      call_present = nil
+    end
 
     unless level == "fund"
       expect(page).to have_content I18n.t("form.legend.activity.programme_status")
@@ -129,6 +157,9 @@ module FormHelpers
     expect(page).to have_content title
     expect(page).to have_content description
     expect(page).to have_content sector
+    if call_present == "true"
+      expect(page).to have_content I18n.t("activity.call_present.#{call_present}")
+    end
     if level == "fund"
       expect(page).not_to have_content I18n.t("activity.programme_status.#{programme_status}")
     else
@@ -147,6 +178,18 @@ module FormHelpers
       month: planned_end_date_month,
       day: planned_end_date_day
     )
+    if call_present == "true"
+      expect(page).to have_content localise_date_from_input_fields(
+        year: call_open_date_year,
+        month: call_open_date_month,
+        day: call_open_date_day
+      )
+      expect(page).to have_content localise_date_from_input_fields(
+        year: call_close_date_year,
+        month: call_close_date_month,
+        day: call_close_date_day
+      )
+    end
 
     my_activity = Activity.find_by(identifier: identifier)
     iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)

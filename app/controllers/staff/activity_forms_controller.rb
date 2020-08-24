@@ -13,6 +13,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     :purpose,
     :sector_category,
     :sector,
+    :call_present,
+    :call_dates,
     :programme_status,
     :dates,
     :geography,
@@ -36,6 +38,10 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step
     when :programme_status
       skip_step if @activity.fund?
+    when :call_present
+      skip_step unless @activity.requires_call_dates?
+    when :call_dates
+      skip_step unless @activity.call_present?
     when :region
       skip_step if @activity.recipient_country?
     when :country
@@ -74,6 +80,13 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.assign_attributes(sector_category: sector_category, sector: nil)
     when :sector
       @activity.assign_attributes(sector: sector)
+    when :call_present
+      @activity.assign_attributes(call_present: call_present)
+    when :call_dates
+      @activity.assign_attributes(
+        call_open_date: format_date(call_open_date),
+        call_close_date: format_date(call_close_date),
+      )
     when :programme_status
       iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
       @activity.assign_attributes(programme_status: programme_status, status: iati_status)
@@ -136,6 +149,20 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def description
     params.require(:activity).permit(:description).fetch("description", nil)
+  end
+
+  def call_present
+    params.require(:activity).permit(:call_present).fetch("call_present", nil)
+  end
+
+  def call_open_date
+    call_open_date = params.require(:activity).permit(:call_open_date)
+    {day: call_open_date["call_open_date(3i)"], month: call_open_date["call_open_date(2i)"], year: call_open_date["call_open_date(1i)"]}
+  end
+
+  def call_close_date
+    call_close_date = params.require(:activity).permit(:call_close_date)
+    {day: call_close_date["call_close_date(3i)"], month: call_close_date["call_close_date(2i)"], year: call_close_date["call_close_date(1i)"]}
   end
 
   def programme_status

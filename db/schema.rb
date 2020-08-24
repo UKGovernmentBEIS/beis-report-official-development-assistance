@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_19_081212) do
+ActiveRecord::Schema.define(version: 2020_08_19_131932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -52,6 +52,9 @@ ActiveRecord::Schema.define(version: 2020_08_19_081212) do
     t.uuid "parent_id"
     t.string "transparency_identifier"
     t.string "programme_status"
+    t.boolean "call_present"
+    t.date "call_open_date"
+    t.date "call_close_date"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
