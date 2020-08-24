@@ -210,7 +210,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def finish_wizard_path
-    flash[:notice] ||= I18n.t("action.#{@activity.level}.create.success")
+    flash[:notice] ||= t("action.#{@activity.level}.create.success")
     @activity.update(form_state: "complete")
     organisation_activity_details_path(@activity.organisation, @activity)
   end
@@ -219,7 +219,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     return if @activity.invalid?
 
     if @activity.form_steps_completed?
-      flash[:notice] ||= I18n.t("action.#{@activity.level}.update.success")
+      flash[:notice] ||= t("action.#{@activity.level}.update.success")
       jump_to Wicked::FINISH_STEP
     else
       @activity.form_state = step

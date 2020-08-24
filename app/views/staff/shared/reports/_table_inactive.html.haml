@@ -27,5 +27,5 @@
           %td.govuk-table__cell= report.fund.title
           %td.govuk-table__cell= report.deadline
           %td.govuk-table__cell
-            = link_to I18n.t("table.body.report.action.edit"), edit_report_path(report), class: "govuk-link govuk-!-margin-left-2"
-            = link_to I18n.t("table.body.report.action.activate"), edit_report_state_path(report), class: "govuk-link govuk-!-margin-left-2"
+            = link_to t("table.body.report.action.edit"), edit_report_path(report), class: "govuk-link govuk-!-margin-left-2"
+            = link_to t("table.body.report.action.activate"), edit_report_state_path(report), class: "govuk-link govuk-!-margin-left-2"

@@ -3,5 +3,5 @@
     %h2.govuk-heading-m
       = t("page_content.activity.transactions")
     - if policy(activity).create?
-      = link_to(I18n.t("page_content.transactions.button.create"), new_activity_transaction_path(activity), class: "govuk-button")
+      = link_to(t("page_content.transactions.button.create"), new_activity_transaction_path(activity), class: "govuk-button")
     = render partial: '/staff/shared/transactions/table', locals: { transactions: transaction_presenters }
