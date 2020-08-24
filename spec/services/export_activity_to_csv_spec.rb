@@ -27,6 +27,7 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.level,
         activity_presenter.actual_total_for_report_financial_quarter(report: report),
         activity_presenter.forecasted_total_for_report_financial_quarter(report: report),
+        activity_presenter.variance_for_report_financial_quarter(report: report),
         activity_presenter.link_to_roda,
       ].to_csv)
     end
