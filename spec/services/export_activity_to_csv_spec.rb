@@ -53,5 +53,15 @@ RSpec.describe ExportActivityToCsv do
         expect(headers).to include "Q1 2020-2021 forecast"
       end
     end
+
+    it "includes the next four financial quarters as headers" do
+      travel_to(Date.parse("1 April 2020")) do
+        report = Report.new
+
+        headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
+
+        expect(headers).to include ["Q2 2020", "Q3 2020", "Q4 2020", "Q1 2021"].to_csv
+      end
+    end
   end
 end

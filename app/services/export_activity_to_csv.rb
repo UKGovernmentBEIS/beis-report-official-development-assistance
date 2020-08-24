@@ -34,6 +34,7 @@ class ExportActivityToCsv
 
   def headers
     report_financial_quarter = ReportPresenter.new(report).financial_quarter_and_year
+    next_four_quarters = report.next_four_financial_quarters
     [
       "Identifier",
       "Transparency identifier",
@@ -53,6 +54,6 @@ class ExportActivityToCsv
       report_financial_quarter ? report_financial_quarter + " forecast" : "Forecast",
       "Variance",
       "Link to activity in RODA",
-    ].to_csv
+    ].concat(next_four_quarters).to_csv
   end
 end
