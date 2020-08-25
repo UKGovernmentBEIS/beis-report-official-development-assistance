@@ -268,6 +268,8 @@
 
 - `Call open date` and `Call close date` added to the create activity form, for levels C and D.
   This field is mandatory for new activities, but optional for activities marked as `ingested: true`
+- `Create activity` buttons that were not changed on previous PR, are changed to
+  `Add activity` now.
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...HEAD
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14

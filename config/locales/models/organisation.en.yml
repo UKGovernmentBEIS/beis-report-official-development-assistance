@@ -41,7 +41,7 @@ en:
     organisation:
       button:
         choose_extending_organisation: Choose extending organisation
-        create_activity: Create activity
+        create_activity: Add activity
         edit: Edit organisation
         edit_details: Edit details
       details: Organisation details
