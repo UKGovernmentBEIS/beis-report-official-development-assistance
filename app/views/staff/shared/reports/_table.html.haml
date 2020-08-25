@@ -28,5 +28,5 @@
           %td.govuk-table__cell= report.deadline
           %td.govuk-table__cell
             - if policy(:report).edit?
-              = link_to I18n.t("default.link.edit"), edit_report_path(report), class: "govuk-link"
-            = link_to I18n.t("default.link.view"), report_path(report), class: "govuk-link"
+              = link_to t("default.link.edit"), edit_report_path(report), class: "govuk-link"
+            = link_to t("default.link.view"), report_path(report), class: "govuk-link"

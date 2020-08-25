@@ -31,4 +31,4 @@
           %td.govuk-table__cell= planned_disbursement.receiving_organisation_name
           - if policy(planned_disbursement.parent_activity).edit?
             %td.govuk-table__cell
-              = a11y_action_link(I18n.t('default.link.edit'), edit_activity_planned_disbursement_path(planned_disbursement.parent_activity, planned_disbursement), t("table.body.planned_disbursement.edit_noun"))
+              = a11y_action_link(t('default.link.edit'), edit_activity_planned_disbursement_path(planned_disbursement.parent_activity, planned_disbursement), t("table.body.planned_disbursement.edit_noun"))

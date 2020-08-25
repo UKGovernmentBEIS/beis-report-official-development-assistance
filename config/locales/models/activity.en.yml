@@ -25,7 +25,7 @@ en:
         geography_options:
           recipient_region: Region
           recipient_country: Country
-        identifier: Enter your unique identifier
+        delivery_partner_identifier: Enter your unique identifier
         region: Recipient region
         actual_end_date: Actual end date
         actual_start_date: Actual start date
@@ -64,7 +64,7 @@ en:
         call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Programme Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
         call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Programme Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
         flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
-        identifier: This could be the reference you use in your internal systems. This value cannot be edited once it is set
+        delivery_partner_identifier: This could be the reference you use in your internal systems. This value cannot be edited once it is set
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
         sector_category: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
@@ -96,7 +96,7 @@ en:
           incomplete: Incomplete
         flow: Flow type
         geography: Benefitting recipient geography
-        identifier: Identifier
+        delivery_partner_identifier: Identifier
         level: Level
         organisation: Organisation
         parent: Parent activity
@@ -192,7 +192,7 @@ en:
         dates: What are the start and end dates for the %{level}?
         flow: Flow
         geography: Will the benefitting recipient be a region or country?
-        identifier: Enter your unique identifier
+        delivery_partner_identifier: Enter your unique identifier
         level: Hierarchy level
         parent: Select the parent
         programme_status: A description of the status of the activity
@@ -225,7 +225,7 @@ en:
               blank: Select the activity type
             parent:
               blank: Select a parent activity
-            identifier:
+            delivery_partner_identifier:
               blank: Enter a unique identifier
             title:
               blank: Enter a title

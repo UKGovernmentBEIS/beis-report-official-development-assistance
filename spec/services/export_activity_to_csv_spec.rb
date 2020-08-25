@@ -13,7 +13,7 @@ RSpec.describe ExportActivityToCsv do
       next_four_quarter_totals = export_service.next_four_quarter_forecasts
 
       expect(result).to eq([
-        activity_presenter.identifier,
+        activity_presenter.delivery_partner_identifier,
         activity_presenter.transparency_identifier,
         activity_presenter.sector,
         activity_presenter.title,

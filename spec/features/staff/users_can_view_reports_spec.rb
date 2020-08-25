@@ -12,7 +12,7 @@ RSpec.feature "Users can view reports" do
 
       visit reports_path
 
-      expect(page).to have_content I18n.t("page_title.report.index")
+      expect(page).to have_content t("page_title.report.index")
       expect(page).to have_content first_report.description
       expect(page).to have_content second_report.description
     end
@@ -39,7 +39,7 @@ RSpec.feature "Users can view reports" do
       reports = create_list(:report, 2)
       visit reports_path
 
-      expect(page).to have_content I18n.t("page_title.report.index")
+      expect(page).to have_content t("page_title.report.index")
       expect(page).to have_content reports.first.description
       expect(page).to have_content reports.last.description
     end
@@ -58,7 +58,7 @@ RSpec.feature "Users can view reports" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on I18n.t("default.link.show")
+        click_on t("default.link.show")
       end
 
       expect(page).to have_content report.description
@@ -70,10 +70,10 @@ RSpec.feature "Users can view reports" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on I18n.t("default.link.show")
+        click_on t("default.link.show")
       end
 
-      click_on I18n.t("action.report.download.button")
+      click_on t("action.report.download.button")
 
       expect(page.response_headers["Content-Type"]).to include("text/csv")
       header = page.response_headers["Content-Disposition"]
@@ -95,7 +95,7 @@ RSpec.feature "Users can view reports" do
 
         visit reports_path
 
-        expect(page).to have_content I18n.t("page_title.report.index")
+        expect(page).to have_content t("page_title.report.index")
         expect(page).to have_content report.description
         expect(page).not_to have_content other_organisation_report.description
       end
@@ -106,7 +106,7 @@ RSpec.feature "Users can view reports" do
         visit reports_path
 
         within "##{report.id}" do
-          click_on I18n.t("default.link.show")
+          click_on t("default.link.show")
         end
 
         expect(page).to have_content report.description
@@ -142,10 +142,10 @@ RSpec.feature "Users can view reports" do
         visit reports_path
 
         within "##{report.id}" do
-          click_on I18n.t("default.link.show")
+          click_on t("default.link.show")
         end
 
-        click_on I18n.t("action.report.download.button")
+        click_on t("action.report.download.button")
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
 

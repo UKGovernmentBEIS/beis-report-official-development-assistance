@@ -10,10 +10,10 @@ RSpec.feature "Users can manage the extending organisation" do
       scenario "they can set the extending organisation" do
         delivery_partner = create(:delivery_partner_organisation)
         visit organisation_activity_path(programme.organisation, programme)
-        click_on I18n.t("tabs.activity.details")
-        click_on I18n.t("page_content.activity.extending_organisation.button.edit")
+        click_on t("tabs.activity.details")
+        click_on t("page_content.activity.extending_organisation.button.edit")
         choose delivery_partner.name
-        click_on I18n.t("default.button.submit")
+        click_on t("default.button.submit")
 
         expect(page).to have_content("success")
         expect(page).to have_content delivery_partner.name
@@ -22,10 +22,10 @@ RSpec.feature "Users can manage the extending organisation" do
       scenario "when the extending organisation is set, the same organisation is set as the implementing organisation" do
         delivery_partner = create(:delivery_partner_organisation)
         visit organisation_activity_path(programme.organisation, programme)
-        click_on I18n.t("tabs.activity.details")
-        click_on I18n.t("page_content.activity.extending_organisation.button.edit")
+        click_on t("tabs.activity.details")
+        click_on t("page_content.activity.extending_organisation.button.edit")
         choose delivery_partner.name
-        click_on I18n.t("default.button.submit")
+        click_on t("default.button.submit")
 
         implementing_organisation = programme.reload.implementing_organisations.first
         expect(implementing_organisation.name).to eq(delivery_partner.name)
@@ -39,13 +39,13 @@ RSpec.feature "Users can manage the extending organisation" do
         another_delivery_partner = create(:delivery_partner_organisation)
 
         visit organisation_activity_path(programme.organisation, programme)
-        click_on I18n.t("tabs.activity.details")
-        click_on I18n.t("page_content.activity.extending_organisation.button.edit")
+        click_on t("tabs.activity.details")
+        click_on t("page_content.activity.extending_organisation.button.edit")
 
         expect(page).to have_checked_field delivery_partner.name
 
         choose another_delivery_partner.name
-        click_on I18n.t("default.button.submit")
+        click_on t("default.button.submit")
 
         expect(page).to have_content("success")
         expect(page).to have_content another_delivery_partner.name
@@ -57,13 +57,13 @@ RSpec.feature "Users can manage the extending organisation" do
         another_delivery_partner = create(:delivery_partner_organisation)
 
         visit organisation_activity_path(programme.organisation, programme)
-        click_on I18n.t("tabs.activity.details")
-        click_on I18n.t("page_content.activity.extending_organisation.button.edit")
+        click_on t("tabs.activity.details")
+        click_on t("page_content.activity.extending_organisation.button.edit")
 
         expect(page).to have_checked_field delivery_partner.name
 
         choose another_delivery_partner.name
-        click_on I18n.t("default.button.submit")
+        click_on t("default.button.submit")
 
         implementing_organisation = programme.reload.implementing_organisations.first
         expect(implementing_organisation.name).to eq(another_delivery_partner.name)
@@ -73,11 +73,11 @@ RSpec.feature "Users can manage the extending organisation" do
 
       scenario "not selecting an extending organisation results in an error" do
         visit organisation_activity_path(programme.organisation, programme)
-        click_on I18n.t("tabs.activity.details")
-        click_on I18n.t("page_content.activity.extending_organisation.button.edit")
-        click_on I18n.t("default.button.submit")
+        click_on t("tabs.activity.details")
+        click_on t("page_content.activity.extending_organisation.button.edit")
+        click_on t("default.button.submit")
 
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.extending_organisation_id.blank")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.extending_organisation_id.blank")
       end
     end
   end
@@ -92,7 +92,7 @@ RSpec.feature "Users can manage the extending organisation" do
 
       visit organisation_activity_path(programme.organisation, programme)
 
-      expect(page).not_to have_content(I18n.t("page_content.activity.extending_organisation.button.edit"))
+      expect(page).not_to have_content(t("page_content.activity.extending_organisation.button.edit"))
     end
   end
 end

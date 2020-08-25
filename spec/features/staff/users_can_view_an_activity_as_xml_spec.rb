@@ -11,7 +11,7 @@ RSpec.feature "Users can view an activity as XML" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
-            identifier: "IND-ENT-IFIER",
+            delivery_partner_identifier: "IND-ENT-IFIER",
             previous_identifier: "PREV-IND-ENT-IFIER",
             transparency_identifier: "GB-GOV-13-IND-ENT-IFIER")
         }
@@ -36,7 +36,7 @@ RSpec.feature "Users can view an activity as XML" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
-            identifier: "IND-ENT-IFIER",
+            delivery_partner_identifier: "IND-ENT-IFIER",
             geography: :recipient_region,
             recipient_region: "489")
         }
@@ -60,7 +60,7 @@ RSpec.feature "Users can view an activity as XML" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
-            identifier: "IND-ENT-IFIER",
+            delivery_partner_identifier: "IND-ENT-IFIER",
             geography: :recipient_country,
             recipient_country: "CV")
         }
@@ -83,7 +83,7 @@ RSpec.feature "Users can view an activity as XML" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
-            identifier: "IND-ENT-IFIER",
+            delivery_partner_identifier: "IND-ENT-IFIER",
             geography: :recipient_country,
             recipient_country: "CL",
             recipient_region: "489")
@@ -102,7 +102,7 @@ RSpec.feature "Users can view an activity as XML" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
-            identifier: "IND-ENT-IFIER",
+            delivery_partner_identifier: "IND-ENT-IFIER",
             actual_start_date: nil,
             actual_end_date: nil)
         }
@@ -119,14 +119,14 @@ RSpec.feature "Users can view an activity as XML" do
       end
 
       context "when the activity is a fund activity" do
-        let(:activity) { create(:fund_activity, :with_transparency_identifier, organisation: organisation, identifier: "IND-ENT-IFIER") }
+        let(:activity) { create(:fund_activity, :with_transparency_identifier, organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER") }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
       end
 
       context "when the activity is a programme activity" do
-        let(:activity) { create(:programme_activity, :with_transparency_identifier, organisation: organisation, identifier: "IND-ENT-IFIER") }
+        let(:activity) { create(:programme_activity, :with_transparency_identifier, organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER") }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"

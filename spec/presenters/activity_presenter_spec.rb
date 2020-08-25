@@ -212,7 +212,7 @@ RSpec.describe ActivityPresenter do
       it "returns the locale value for the code" do
         activity = build(:activity, recipient_country: "CL")
         result = described_class.new(activity).recipient_country
-        expect(result).to eq I18n.t("activity.recipient_country.#{activity.recipient_country}")
+        expect(result).to eq t("activity.recipient_country.#{activity.recipient_country}")
       end
     end
 

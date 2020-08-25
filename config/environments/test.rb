@@ -49,7 +49,7 @@ Rails.application.configure do
   config.active_support.deprecation = :stderr
 
   # Raises error for missing translations
-  # config.action_view.raise_on_missing_translations = true
+  config.action_view.raise_on_missing_translations = true
 
   # Set a css_compressor so sassc-rails does not overwrite the compressor
   # See https://github.com/DFE-Digital/dfe-teachers-payment-service/commit/74ec587cfbe9aa6d0df01a72e99d70ffe9024748
