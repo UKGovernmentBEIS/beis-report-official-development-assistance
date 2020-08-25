@@ -21,7 +21,7 @@ RSpec.feature "Users can edit a transaction" do
       expect(page).to have_content(transaction.value)
 
       within("##{transaction.id}") do
-        click_on(I18n.t("default.link.edit"))
+        click_on(t("default.link.edit"))
       end
 
       fill_in_transaction_form(
@@ -35,7 +35,7 @@ RSpec.feature "Users can edit a transaction" do
         currency: "US Dollar"
       )
 
-      expect(page).to have_content(I18n.t("action.transaction.update.success"))
+      expect(page).to have_content(t("action.transaction.update.success"))
     end
 
     scenario "transaction update is tracked with public_activity" do
@@ -47,7 +47,7 @@ RSpec.feature "Users can edit a transaction" do
         expect(page).to have_content(transaction.value)
 
         within("##{transaction.id}") do
-          click_on(I18n.t("default.link.edit"))
+          click_on(t("default.link.edit"))
         end
 
         fill_in_transaction_form(

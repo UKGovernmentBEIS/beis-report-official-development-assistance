@@ -10,20 +10,20 @@ RSpec.feature "Users can manage the implementing organisations" do
 
       visit organisation_activity_details_path(project.organisation, project)
 
-      expect(page).to have_content I18n.t("page_content.activity.implementing_organisation.button.new")
-      click_on I18n.t("page_content.activity.implementing_organisation.button.new")
+      expect(page).to have_content t("page_content.activity.implementing_organisation.button.new")
+      click_on t("page_content.activity.implementing_organisation.button.new")
 
-      expect(page).to have_field I18n.t("form.label.implementing_organisation.name")
-      expect(page).to have_select I18n.t("form.label.implementing_organisation.organisation_type")
-      expect(page).to have_field I18n.t("form.label.implementing_organisation.reference")
+      expect(page).to have_field t("form.label.implementing_organisation.name")
+      expect(page).to have_select t("form.label.implementing_organisation.organisation_type")
+      expect(page).to have_field t("form.label.implementing_organisation.reference")
 
-      fill_in I18n.t("form.label.implementing_organisation.name"), with: other_public_sector_organisation.name
-      select("Other Public Sector", from: I18n.t("form.label.implementing_organisation.organisation_type"))
-      fill_in I18n.t("form.label.implementing_organisation.reference"), with: other_public_sector_organisation.reference
-      click_on I18n.t("default.button.submit")
+      fill_in t("form.label.implementing_organisation.name"), with: other_public_sector_organisation.name
+      select("Other Public Sector", from: t("form.label.implementing_organisation.organisation_type"))
+      fill_in t("form.label.implementing_organisation.reference"), with: other_public_sector_organisation.reference
+      click_on t("default.button.submit")
 
       expect(current_path).to eq organisation_activity_details_path(project.organisation, project)
-      expect(page).to have_content I18n.t("action.implementing_organisation.create.success")
+      expect(page).to have_content t("action.implementing_organisation.create.success")
 
       expect(page).to have_content other_public_sector_organisation.name
       expect(page).to have_content other_public_sector_organisation.reference
@@ -42,12 +42,12 @@ RSpec.feature "Users can manage the implementing organisations" do
         click_on "Edit"
       end
 
-      expect(find_field(I18n.t("form.label.implementing_organisation.name")).value).to eq other_public_sector_organisation.name
+      expect(find_field(t("form.label.implementing_organisation.name")).value).to eq other_public_sector_organisation.name
 
-      fill_in I18n.t("form.label.implementing_organisation.name"), with: "It is a charity"
-      click_on I18n.t("default.button.submit")
+      fill_in t("form.label.implementing_organisation.name"), with: "It is a charity"
+      click_on t("default.button.submit")
 
-      expect(page).to have_content I18n.t("action.implementing_organisation.update.success")
+      expect(page).to have_content t("action.implementing_organisation.update.success")
       expect(page).to have_content "It is a charity"
     end
   end
@@ -74,13 +74,13 @@ RSpec.feature "Users can manage the implementing organisations" do
 
       visit organisation_activity_path(project.organisation, project)
 
-      expect(page).not_to have_link I18n.t("default.link.edit"), href: edit_activity_implementing_organisation_path(project, other_public_sector_organisation)
+      expect(page).not_to have_link t("default.link.edit"), href: edit_activity_implementing_organisation_path(project, other_public_sector_organisation)
     end
 
     scenario "they cannot add implementing organisations" do
       visit organisation_activity_path(project.organisation, project)
 
-      expect(page).not_to have_button I18n.t("page_content.activity.implementing_organisation.button.new")
+      expect(page).not_to have_button t("page_content.activity.implementing_organisation.button.new")
     end
   end
 end

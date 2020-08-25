@@ -8,13 +8,13 @@ RSpec.feature "Users can sign in with Auth0" do
     )
 
     visit root_path
-    expect(page).to have_content(I18n.t("start_page.title"))
+    expect(page).to have_content(t("start_page.title"))
 
-    expect(page).to have_content(I18n.t("header.link.sign_in"))
-    click_on I18n.t("header.link.sign_in")
+    expect(page).to have_content(t("header.link.sign_in"))
+    click_on t("header.link.sign_in")
 
     expect(page).to have_content(user.organisation.name)
-    expect(page).to have_content(I18n.t("header.link.sign_out"))
+    expect(page).to have_content(t("header.link.sign_out"))
   end
 
   scenario "successful sign in via button link" do
@@ -24,13 +24,13 @@ RSpec.feature "Users can sign in with Auth0" do
     )
 
     visit dashboard_path
-    expect(page).to have_content(I18n.t("start_page.title"))
+    expect(page).to have_content(t("start_page.title"))
 
-    expect(page).to have_content(I18n.t("header.link.sign_in"))
-    click_on I18n.t("header.link.sign_in")
+    expect(page).to have_content(t("header.link.sign_in"))
+    click_on t("header.link.sign_in")
 
     expect(page).to have_content(user.organisation.name)
-    expect(page).to have_content(I18n.t("header.link.sign_out"))
+    expect(page).to have_content(t("header.link.sign_out"))
   end
 
   scenario "any user lands on their organisation page" do
@@ -41,10 +41,10 @@ RSpec.feature "Users can sign in with Auth0" do
     )
 
     visit root_path
-    expect(page).to have_content(I18n.t("start_page.title"))
+    expect(page).to have_content(t("start_page.title"))
 
-    expect(page).to have_content(I18n.t("header.link.sign_in"))
-    click_on I18n.t("header.link.sign_in")
+    expect(page).to have_content(t("header.link.sign_in"))
+    click_on t("header.link.sign_in")
 
     expect(page).to have_content(user.organisation.name)
   end
@@ -52,7 +52,7 @@ RSpec.feature "Users can sign in with Auth0" do
   scenario "protected pages cannot be visited unless signed in" do
     visit dashboard_path
 
-    expect(page).to have_content(I18n.t("start_page.title"))
+    expect(page).to have_content(t("start_page.title"))
   end
 
   context "when the Auth0 identifier does not match a user record" do
@@ -64,11 +64,11 @@ RSpec.feature "Users can sign in with Auth0" do
 
       visit dashboard_path
 
-      expect(page).to have_content(I18n.t("header.link.sign_in"))
-      click_on I18n.t("header.link.sign_in")
+      expect(page).to have_content(t("header.link.sign_in"))
+      click_on t("header.link.sign_in")
 
-      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
-      expect(page).to have_content(I18n.t("page_content.errors.not_authorised.explanation"))
+      expect(page).to have_content(t("page_title.errors.not_authorised"))
+      expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))
     end
   end
 
@@ -80,12 +80,12 @@ RSpec.feature "Users can sign in with Auth0" do
     it "displays the error message so they can try to correct the problem themselves" do
       visit dashboard_path
 
-      expect(page).to have_content(I18n.t("header.link.sign_in"))
-      click_on I18n.t("header.link.sign_in")
+      expect(page).to have_content(t("header.link.sign_in"))
+      click_on t("header.link.sign_in")
 
-      expect(page).to have_content(I18n.t("page_content.errors.auth0.failed.explanation"))
-      expect(page).to have_content(I18n.t("page_content.errors.auth0.error_messages.invalid_credentials"))
-      expect(page).to have_content(I18n.t("page_content.errors.auth0.failed.prompt"))
+      expect(page).to have_content(t("page_content.errors.auth0.failed.explanation"))
+      expect(page).to have_content(t("page_content.errors.auth0.error_messages.invalid_credentials"))
+      expect(page).to have_content(t("page_content.errors.auth0.failed.prompt"))
     end
   end
 
@@ -99,10 +99,10 @@ RSpec.feature "Users can sign in with Auth0" do
 
       visit root_path
 
-      click_button I18n.t("header.link.sign_in")
+      click_button t("header.link.sign_in")
 
       expect(page).not_to have_content("unknown_failure")
-      expect(page).to have_content(I18n.t("page_content.errors.auth0.error_messages.generic"))
+      expect(page).to have_content(t("page_content.errors.auth0.error_messages.generic"))
       expect(Rollbar).to have_received(:log).with(:info, "Unknown response from Auth0", "unknown_failure")
     end
   end
@@ -116,11 +116,11 @@ RSpec.feature "Users can sign in with Auth0" do
 
       visit dashboard_path
 
-      expect(page).to have_content(I18n.t("header.link.sign_in"))
-      click_on I18n.t("header.link.sign_in")
+      expect(page).to have_content(t("header.link.sign_in"))
+      click_on t("header.link.sign_in")
 
-      expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
-      expect(page).to have_content(I18n.t("page_content.errors.not_authorised.explanation"))
+      expect(page).to have_content(t("page_title.errors.not_authorised"))
+      expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))
     end
   end
 end

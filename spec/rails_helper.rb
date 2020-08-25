@@ -41,6 +41,8 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
+  config.include ActionView::Helpers::TranslationHelper
+
   config.include AuthenticationHelpers
   config.include Auth0Helpers
   config.include EmailHelpers

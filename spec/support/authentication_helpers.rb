@@ -25,6 +25,6 @@ module AuthenticationHelpers
   def stub_authenticated_session(uid: "123456789", name: "Alex", email: "alex@example.com")
     mock_successful_authentication(uid: uid, name: name, email: email)
     visit root_path
-    click_on I18n.t("header.link.sign_in")
+    click_on t("header.link.sign_in")
   end
 end

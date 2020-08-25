@@ -11,12 +11,12 @@ RSpec.feature "Users can submit a report" do
       report_presenter = ReportPresenter.new(report)
 
       visit report_path(report)
-      click_link I18n.t("action.report.submit.button")
+      click_link t("action.report.submit.button")
 
       click_button "Confirm submission"
 
-      expect(page).to have_content I18n.t("action.report.submit.complete.title")
-      expect(page).to have_content I18n.t("action.report.submit.complete.title",
+      expect(page).to have_content t("action.report.submit.complete.title")
+      expect(page).to have_content t("action.report.submit.complete.title",
         report_description: report_presenter.description,
         report_financial_quater_and_year: report_presenter.financial_quarter_and_year)
       expect(report.reload.state).to eql "submitted"
@@ -27,10 +27,10 @@ RSpec.feature "Users can submit a report" do
       PublicActivity.with_tracking do
         visit reports_path
         within "##{report.id}" do
-          click_on I18n.t("default.link.view")
+          click_on t("default.link.view")
         end
-        click_link I18n.t("action.report.submit.button")
-        click_button I18n.t("action.report.submit.confirm.button")
+        click_link t("action.report.submit.button")
+        click_button t("action.report.submit.confirm.button")
 
         auditable_events = PublicActivity::Activity.all
         expect(auditable_events.last.key).to include("report.submitted")
@@ -44,7 +44,7 @@ RSpec.feature "Users can submit a report" do
 
       visit report_path(report)
 
-      expect(page).not_to have_link I18n.t("action.report.submit.button"), href: edit_report_state_path(report)
+      expect(page).not_to have_link t("action.report.submit.button"), href: edit_report_state_path(report)
 
       visit edit_report_state_path(report)
 
@@ -64,7 +64,7 @@ RSpec.feature "Users can submit a report" do
 
       visit report_path(report)
 
-      expect(page).not_to have_link I18n.t("action.report.submit.button"), href: edit_report_state_path(report)
+      expect(page).not_to have_link t("action.report.submit.button"), href: edit_report_state_path(report)
 
       visit edit_report_state_path(report)
 

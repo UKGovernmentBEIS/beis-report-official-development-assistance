@@ -43,7 +43,7 @@ RSpec.describe Organisation, type: :model do
         organisation = build(:organisation, iati_reference: "1234")
         organisation.valid?
         expect(organisation.errors.messages[:iati_reference]).to include(
-          I18n.t("activerecord.errors.models.organisation.attributes.iati_reference.format")
+          t("activerecord.errors.models.organisation.attributes.iati_reference.format")
         )
       end
     end

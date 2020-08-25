@@ -34,7 +34,7 @@ RSpec.describe BudgetDatesValidator do
       subject.period_end_date = Date.today
 
       subject.valid?
-      expect(subject.errors.messages[:period_start_date]).to include I18n.t("activerecord.errors.models.budget.attributes.period_start_date.not_after_end_date")
+      expect(subject.errors.messages[:period_start_date]).to include t("activerecord.errors.models.budget.attributes.period_start_date.not_after_end_date")
     end
   end
 
@@ -69,7 +69,7 @@ RSpec.describe BudgetDatesValidator do
       subject.period_end_date = subject.period_start_date + 366.days
 
       subject.valid?
-      expect(subject.errors.messages[:period_end_date]).to include I18n.t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")
+      expect(subject.errors.messages[:period_end_date]).to include t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")
     end
   end
 

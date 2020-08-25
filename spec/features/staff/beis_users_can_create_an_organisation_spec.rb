@@ -14,31 +14,31 @@ RSpec.feature "BEIS users can create organisations" do
 
     scenario "successfully creating an organisation" do
       visit organisation_path(user.organisation)
-      click_link I18n.t("page_title.organisation.index")
-      click_link I18n.t("page_content.organisations.button.create")
+      click_link t("page_title.organisation.index")
+      click_link t("page_content.organisations.button.create")
 
-      expect(page).to have_content(I18n.t("page_title.organisation.new"))
+      expect(page).to have_content(t("page_title.organisation.new"))
       fill_in "organisation[name]", with: "My New Organisation"
       fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
       select "Government", from: "organisation[organisation_type]"
       select "Czech", from: "organisation[language_code]"
       select "Zloty", from: "organisation[default_currency]"
-      click_button I18n.t("default.button.submit")
+      click_button t("default.button.submit")
     end
 
     scenario "organisation creation is tracked with public_activity" do
       PublicActivity.with_tracking do
         visit organisation_path(user.organisation)
-        click_link I18n.t("page_title.organisation.index")
-        click_link I18n.t("page_content.organisations.button.create")
+        click_link t("page_title.organisation.index")
+        click_link t("page_content.organisations.button.create")
 
-        expect(page).to have_content(I18n.t("page_title.organisation.new"))
+        expect(page).to have_content(t("page_title.organisation.new"))
         fill_in "organisation[name]", with: "My New Organisation"
         fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
         select "Government", from: "organisation[organisation_type]"
         select "Swedish", from: "organisation[language_code]"
         select "US Dollar", from: "organisation[default_currency]"
-        click_button I18n.t("default.button.submit")
+        click_button t("default.button.submit")
 
         organisation = Organisation.find_by(name: "My New Organisation")
         auditable_event = PublicActivity::Activity.find_by(trackable_id: organisation.id)
@@ -50,15 +50,15 @@ RSpec.feature "BEIS users can create organisations" do
 
     scenario "presence validation works as expected" do
       visit organisation_path(user.organisation)
-      click_link I18n.t("page_title.organisation.index")
-      click_link I18n.t("page_content.organisations.button.create")
+      click_link t("page_title.organisation.index")
+      click_link t("page_content.organisations.button.create")
 
-      expect(page).to have_content(I18n.t("page_title.organisation.new"))
+      expect(page).to have_content(t("page_title.organisation.new"))
       fill_in "organisation[name]", with: "My New Organisation"
 
-      click_button I18n.t("default.button.submit")
-      expect(page).to_not have_content I18n.t("action.organisation.create.success")
-      expect(page).to have_content I18n.t("activerecord.errors.models.organisation.attributes.organisation_type.blank")
+      click_button t("default.button.submit")
+      expect(page).to_not have_content t("action.organisation.create.success")
+      expect(page).to have_content t("activerecord.errors.models.organisation.attributes.organisation_type.blank")
     end
 
     context "when the user does not belongs to BEIS" do
@@ -66,7 +66,7 @@ RSpec.feature "BEIS users can create organisations" do
 
       it "does not show them the manage user button" do
         visit organisation_path(user.organisation)
-        expect(page).not_to have_content(I18n.t("page_title.organisation.index"))
+        expect(page).not_to have_content(t("page_title.organisation.index"))
       end
     end
   end

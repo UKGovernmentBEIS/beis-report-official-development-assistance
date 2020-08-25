@@ -11,11 +11,11 @@ RSpec.describe "Users can create a budget" do
         visit activities_path
         click_on(fund_activity.title)
 
-        click_on(I18n.t("page_content.budgets.button.create"))
+        click_on(t("page_content.budgets.button.create"))
 
         fill_in_and_submit_budget_form
 
-        expect(page).to have_content(I18n.t("action.budget.create.success"))
+        expect(page).to have_content(t("action.budget.create.success"))
       end
 
       scenario "budget creation is tracked with public_activity" do
@@ -25,7 +25,7 @@ RSpec.describe "Users can create a budget" do
           visit activities_path
           click_on(fund_activity.title)
 
-          click_on(I18n.t("page_content.budgets.button.create"))
+          click_on(t("page_content.budgets.button.create"))
 
           fill_in_and_submit_budget_form
 
@@ -45,14 +45,14 @@ RSpec.describe "Users can create a budget" do
 
         visit activities_path
         click_on(programme_activity.parent.title)
-        click_on I18n.t("tabs.activity.children")
+        click_on t("tabs.activity.children")
         click_on(programme_activity.title)
 
-        click_on(I18n.t("page_content.budgets.button.create"))
+        click_on(t("page_content.budgets.button.create"))
 
         fill_in_and_submit_budget_form
 
-        expect(page).to have_content(I18n.t("action.budget.create.success"))
+        expect(page).to have_content(t("action.budget.create.success"))
       end
 
       scenario "sees validation errors for missing attributes" do
@@ -62,19 +62,19 @@ RSpec.describe "Users can create a budget" do
         visit activities_path
 
         click_on(programme_activity.parent.title)
-        click_on I18n.t("tabs.activity.children")
+        click_on t("tabs.activity.children")
         click_on(programme_activity.title)
 
-        click_on(I18n.t("page_content.budgets.button.create"))
+        click_on(t("page_content.budgets.button.create"))
 
-        click_button I18n.t("default.button.submit")
+        click_button t("default.button.submit")
 
         expect(page).to have_content("There is a problem")
-        expect(page).to have_content(I18n.t("activerecord.errors.models.budget.attributes.budget_type.blank"))
-        expect(page).to have_content(I18n.t("activerecord.errors.models.budget.attributes.status.blank"))
-        expect(page).to have_content(I18n.t("activerecord.errors.models.budget.attributes.period_start_date.blank"))
-        expect(page).to have_content(I18n.t("activerecord.errors.models.budget.attributes.period_end_date.blank"))
-        expect(page).to have_content I18n.t("activerecord.errors.models.budget.attributes.value.other_than")
+        expect(page).to have_content(t("activerecord.errors.models.budget.attributes.budget_type.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.budget.attributes.status.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.budget.attributes.period_start_date.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.budget.attributes.period_end_date.blank"))
+        expect(page).to have_content t("activerecord.errors.models.budget.attributes.value.other_than")
       end
 
       scenario "sees validation error when the value is more than allowed" do
@@ -84,12 +84,12 @@ RSpec.describe "Users can create a budget" do
         visit activities_path
 
         click_on(programme_activity.parent.title)
-        click_on I18n.t("tabs.activity.children")
+        click_on t("tabs.activity.children")
         click_on(programme_activity.title)
 
-        click_on(I18n.t("page_content.budgets.button.create"))
+        click_on(t("page_content.budgets.button.create"))
 
-        click_button I18n.t("default.button.submit")
+        click_button t("default.button.submit")
 
         choose("budget[budget_type]", option: "1")
         choose("budget[status]", option: "1")
@@ -101,9 +101,9 @@ RSpec.describe "Users can create a budget" do
         fill_in "budget[period_end_date(1i)]", with: "2020"
         select "Pound Sterling", from: "budget[currency]"
         fill_in "budget[value]", with: "10000000000000.00"
-        click_button I18n.t("default.button.submit")
+        click_button t("default.button.submit")
 
-        expect(page).to have_content I18n.t("activerecord.errors.models.budget.attributes.value.less_than_or_equal_to")
+        expect(page).to have_content t("activerecord.errors.models.budget.attributes.value.less_than_or_equal_to")
       end
     end
   end
@@ -120,8 +120,8 @@ RSpec.describe "Users can create a budget" do
 
         visit organisation_activity_path(user.organisation, programme_activity)
 
-        expect(page).to have_content(I18n.t("page_content.activity.budgets"))
-        expect(page).not_to have_content(I18n.t("page_content.budgets.button.create"))
+        expect(page).to have_content(t("page_content.activity.budgets"))
+        expect(page).not_to have_content(t("page_content.budgets.button.create"))
       end
     end
 
@@ -139,11 +139,11 @@ RSpec.describe "Users can create a budget" do
 
         click_on(project_activity.title)
 
-        click_on(I18n.t("page_content.budgets.button.create"))
+        click_on(t("page_content.budgets.button.create"))
 
         fill_in_and_submit_budget_form
 
-        expect(page).to have_content(I18n.t("action.budget.create.success"))
+        expect(page).to have_content(t("action.budget.create.success"))
       end
     end
   end
@@ -159,6 +159,6 @@ RSpec.describe "Users can create a budget" do
     fill_in "budget[period_end_date(1i)]", with: "2020"
     select "Pound Sterling", from: "budget[currency]"
     fill_in "budget[value]", with: "1000.00"
-    click_button I18n.t("default.button.submit")
+    click_button t("default.button.submit")
   end
 end

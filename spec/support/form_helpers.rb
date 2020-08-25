@@ -33,68 +33,68 @@ module FormHelpers
     parent: nil
   )
 
-    expect(page).to have_content I18n.t("form.legend.activity.level")
-    expect(page).to have_content I18n.t("form.hint.activity.level")
-    expect(page).to have_content I18n.t("form.hint.activity.level_step.#{level}")
-    choose I18n.t("page_content.activity.level.#{level}").capitalize
-    click_button I18n.t("form.button.activity.submit")
+    expect(page).to have_content t("form.legend.activity.level")
+    expect(page).to have_content t("form.hint.activity.level")
+    expect(page).to have_content t("form.hint.activity.level_step.#{level}")
+    choose t("page_content.activity.level.#{level}").capitalize
+    click_button t("form.button.activity.submit")
 
     if parent.present?
-      expect(page).to have_content I18n.t("form.legend.activity.parent", parent_level: parent.level, level: I18n.t("page_content.activity.level.#{level}"))
-      expect(page).to have_content I18n.t("form.hint.activity.parent", parent_level: parent.level, level: I18n.t("page_content.activity.level.#{level}"))
+      expect(page).to have_content t("form.legend.activity.parent", parent_level: parent.level, level: t("page_content.activity.level.#{level}"))
+      expect(page).to have_content t("form.hint.activity.parent", parent_level: parent.level, level: t("page_content.activity.level.#{level}"))
       choose parent.title
-      click_button I18n.t("form.button.activity.submit")
+      click_button t("form.button.activity.submit")
     end
 
-    expect(page).to have_content I18n.t("form.label.activity.identifier")
-    expect(page).to have_content I18n.t("form.hint.activity.identifier")
+    expect(page).to have_content t("form.label.activity.identifier")
+    expect(page).to have_content t("form.hint.activity.identifier")
     fill_in "activity[identifier]", with: identifier
-    click_button I18n.t("form.button.activity.submit")
+    click_button t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.legend.activity.purpose", level: activity_level(level))
-    expect(page).to have_content I18n.t("form.label.activity.title", level: activity_level(level).humanize)
-    expect(page).to have_content I18n.t("form.label.activity.description")
+    expect(page).to have_content t("form.legend.activity.purpose", level: activity_level(level))
+    expect(page).to have_content t("form.label.activity.title", level: activity_level(level).humanize)
+    expect(page).to have_content t("form.label.activity.description")
     fill_in "activity[title]", with: title
     fill_in "activity[description]", with: description
-    click_button I18n.t("form.button.activity.submit")
+    click_button t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.legend.activity.sector_category", level: activity_level(level))
+    expect(page).to have_content t("form.legend.activity.sector_category", level: activity_level(level))
     expect(page).to have_content(
       ActionView::Base.full_sanitizer.sanitize(
-        I18n.t("form.legend.activity.sector_category", level: I18n.t("page_content.activity.level.#{level}"))
+        t("form.legend.activity.sector_category", level: t("page_content.activity.level.#{level}"))
       )
     )
     choose sector_category
-    click_button I18n.t("form.button.activity.submit")
+    click_button t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.legend.activity.sector", sector_category: sector_category, level: activity_level(level))
+    expect(page).to have_content t("form.legend.activity.sector", sector_category: sector_category, level: activity_level(level))
 
     choose sector
-    click_button I18n.t("form.button.activity.submit")
+    click_button t("form.button.activity.submit")
 
     if level == "project" || level == "third_party_project"
-      expect(page).to have_content I18n.t("form.legend.activity.call_present", level: activity_level(level))
+      expect(page).to have_content t("form.legend.activity.call_present", level: activity_level(level))
       choose "Yes"
-      click_button I18n.t("form.button.activity.submit")
-      expect(page).to have_content I18n.t("page_title.activity_form.show.call_dates", level: activity_level(level))
+      click_button t("form.button.activity.submit")
+      expect(page).to have_content t("page_title.activity_form.show.call_dates", level: activity_level(level))
 
-      expect(page).to have_content I18n.t("form.legend.activity.call_open_date")
+      expect(page).to have_content t("form.legend.activity.call_open_date")
       fill_in "activity[call_open_date(3i)]", with: call_open_date_day
       fill_in "activity[call_open_date(2i)]", with: call_open_date_month
       fill_in "activity[call_open_date(1i)]", with: call_open_date_year
 
-      expect(page).to have_content I18n.t("form.legend.activity.call_close_date")
+      expect(page).to have_content t("form.legend.activity.call_close_date")
       fill_in "activity[call_close_date(3i)]", with: call_close_date_day
       fill_in "activity[call_close_date(2i)]", with: call_close_date_month
       fill_in "activity[call_close_date(1i)]", with: call_close_date_year
 
-      click_button I18n.t("form.button.activity.submit")
+      click_button t("form.button.activity.submit")
     else
       call_present = nil
     end
 
     unless level == "fund"
-      expect(page).to have_content I18n.t("form.legend.activity.programme_status")
+      expect(page).to have_content t("form.legend.activity.programme_status")
       expect(page).to have_content "Delivery"
       expect(page).to have_content "Planned"
       expect(page).to have_content "Agreement in place"
@@ -108,66 +108,66 @@ module FormHelpers
       expect(page).to have_content "Cancelled"
 
       choose("activity[programme_status]", option: programme_status)
-      click_button I18n.t("form.button.activity.submit")
+      click_button t("form.button.activity.submit")
     end
 
-    expect(page).to have_content I18n.t("page_title.activity_form.show.dates", level: activity_level(level))
+    expect(page).to have_content t("page_title.activity_form.show.dates", level: activity_level(level))
 
-    expect(page).to have_content I18n.t("form.legend.activity.planned_start_date")
+    expect(page).to have_content t("form.legend.activity.planned_start_date")
     fill_in "activity[planned_start_date(3i)]", with: planned_start_date_day
     fill_in "activity[planned_start_date(2i)]", with: planned_start_date_month
     fill_in "activity[planned_start_date(1i)]", with: planned_start_date_year
 
-    expect(page).to have_content I18n.t("form.legend.activity.planned_end_date")
+    expect(page).to have_content t("form.legend.activity.planned_end_date")
     fill_in "activity[planned_end_date(3i)]", with: planned_end_date_day
     fill_in "activity[planned_end_date(2i)]", with: planned_end_date_month
     fill_in "activity[planned_end_date(1i)]", with: planned_end_date_year
 
-    expect(page).to have_content I18n.t("form.legend.activity.actual_start_date")
+    expect(page).to have_content t("form.legend.activity.actual_start_date")
     fill_in "activity[actual_start_date(3i)]", with: actual_start_date_day
     fill_in "activity[actual_start_date(2i)]", with: actual_start_date_month
     fill_in "activity[actual_start_date(1i)]", with: actual_start_date_year
 
-    expect(page).to have_content I18n.t("form.legend.activity.actual_end_date")
+    expect(page).to have_content t("form.legend.activity.actual_end_date")
     fill_in "activity[actual_end_date(3i)]", with: actual_end_date_day
     fill_in "activity[actual_end_date(2i)]", with: actual_end_date_month
     fill_in "activity[actual_end_date(1i)]", with: actual_end_date_year
 
-    click_button I18n.t("form.button.activity.submit")
+    click_button t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.legend.activity.geography")
+    expect(page).to have_content t("form.legend.activity.geography")
     choose "Region"
-    click_button I18n.t("form.button.activity.submit")
+    click_button t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.label.activity.recipient_region")
+    expect(page).to have_content t("form.label.activity.recipient_region")
     select recipient_region, from: "activity[recipient_region]"
-    click_button I18n.t("form.button.activity.submit")
+    click_button t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.label.activity.flow")
-    expect(page.html).to include I18n.t("form.hint.activity.flow")
+    expect(page).to have_content t("form.label.activity.flow")
+    expect(page.html).to include t("form.hint.activity.flow")
     select flow, from: "activity[flow]"
-    click_button I18n.t("form.button.activity.submit")
+    click_button t("form.button.activity.submit")
 
-    expect(page).to have_content I18n.t("form.legend.activity.aid_type")
+    expect(page).to have_content t("form.legend.activity.aid_type")
     expect(page).to have_content "A code for the vocabulary aid-type classifications. International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)"
     choose("activity[aid_type]", option: aid_type)
-    click_button I18n.t("form.button.activity.submit")
+    click_button t("form.button.activity.submit")
 
     expect(page).to have_content identifier
     expect(page).to have_content title
     expect(page).to have_content description
     expect(page).to have_content sector
     if call_present == "true"
-      expect(page).to have_content I18n.t("activity.call_present.#{call_present}")
+      expect(page).to have_content t("activity.call_present.#{call_present}")
     end
     if level == "fund"
-      expect(page).not_to have_content I18n.t("activity.programme_status.#{programme_status}")
+      expect(page).not_to have_content t("activity.programme_status.#{programme_status}")
     else
-      expect(page).to have_content I18n.t("activity.programme_status.#{programme_status}")
+      expect(page).to have_content t("activity.programme_status.#{programme_status}")
     end
     expect(page).to have_content recipient_region
     expect(page).to have_content flow
-    expect(page).to have_content I18n.t("activity.aid_type.#{aid_type.downcase}")
+    expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
     expect(page).to have_content localise_date_from_input_fields(
       year: planned_start_date_year,
       month: planned_start_date_month,
@@ -225,7 +225,7 @@ module FormHelpers
     select receiving_organisation.type, from: "transaction[receiving_organisation_type]"
     fill_in "transaction[receiving_organisation_reference]", with: receiving_organisation.reference
 
-    click_on(I18n.t("default.button.submit"))
+    click_on(t("default.button.submit"))
 
     if expectations
       within ".transactions" do
@@ -271,7 +271,7 @@ module FormHelpers
     select receiving_organisation.type, from: "planned_disbursement[receiving_organisation_type]"
     fill_in "planned_disbursement[receiving_organisation_reference]", with: receiving_organisation.reference
 
-    click_on(I18n.t("default.button.submit"))
+    click_on(t("default.button.submit"))
   end
 
   def localise_date_from_input_fields(year:, month:, day:)
@@ -279,6 +279,6 @@ module FormHelpers
   end
 
   private def activity_level(level)
-    I18n.t("page_content.activity.level.#{level}")
+    t("page_content.activity.level.#{level}")
   end
 end
