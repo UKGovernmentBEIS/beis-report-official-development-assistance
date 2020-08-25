@@ -83,7 +83,7 @@ RSpec.feature "Users can edit an activity" do
 
         visit organisation_activity_details_path(activity.organisation, activity)
 
-        expect(page).not_to have_content(I18n.t("summary.activity.parent"))
+        expect(page).not_to have_content(I18n.t("summary.label.activity.parent"))
       end
 
       it "does not show the Publish to Iati field" do

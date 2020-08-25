@@ -105,7 +105,7 @@ RSpec.feature "Users can view activities" do
       expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
 
       within("##{project.id}") do
-        expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.yes")
+        expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.true")
       end
     end
 
