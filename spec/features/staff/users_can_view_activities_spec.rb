@@ -16,7 +16,7 @@ RSpec.feature "Users can view activities" do
       another_activity = create(:project_activity)
 
       visit activities_path(organisation_id: user.organisation)
-      expect(page).to have_content I18n.t("page_title.activity.index")
+      expect(page).to have_content t("page_title.activity.index")
 
       first_activity = activities.first
       last_activity = activities.last
@@ -98,14 +98,14 @@ RSpec.feature "Users can view activities" do
 
       visit activities_path
       click_on project.title
-      click_on I18n.t("tabs.activity.details")
+      click_on t("tabs.activity.details")
       click_on programme.title
-      click_on I18n.t("tabs.activity.children")
+      click_on t("tabs.activity.children")
 
-      expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
+      expect(page).to_not have_content t("summary.label.activity.publish_to_iati.label")
 
       within("##{project.id}") do
-        expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.true")
+        expect(page).to_not have_content t("summary.label.activity.publish_to_iati.true")
       end
     end
 
@@ -131,7 +131,7 @@ RSpec.feature "Users can view activities" do
         expect(page).to have_content "Details"
       end
       expect(page).to have_content activity.title
-      expect(page).to have_link I18n.t("page_content.activity.implementing_organisation.button.new")
+      expect(page).to have_link t("page_content.activity.implementing_organisation.button.new")
     end
 
     scenario "all activities can be viewed" do
@@ -139,7 +139,7 @@ RSpec.feature "Users can view activities" do
 
       visit activities_path(organisation_id: user.organisation)
 
-      expect(page).to have_content I18n.t("page_title.activity.index")
+      expect(page).to have_content t("page_title.activity.index")
 
       first_activity = activities.first
       last_activity = activities.last
@@ -156,9 +156,9 @@ RSpec.feature "Users can view activities" do
       visit activities_path
 
       click_on(programme.title)
-      click_on I18n.t("tabs.activity.children")
+      click_on t("tabs.activity.children")
       click_on activity.title
-      click_on I18n.t("tabs.activity.details")
+      click_on t("tabs.activity.details")
 
       activity_presenter = ActivityPresenter.new(activity)
 
@@ -191,7 +191,7 @@ RSpec.feature "Users can view activities" do
                                              actual_end_date: Date.new(2020, 1, 29))
 
         visit organisation_activity_path(user.organisation, activity)
-        click_on I18n.t("tabs.activity.details")
+        click_on t("tabs.activity.details")
 
         within(".planned_start_date") do
           expect(page).to have_content("3 Feb 2020")

@@ -10,11 +10,11 @@ RSpec.feature "Users can create a programme activity" do
       fund = create(:fund_activity, organisation: user.organisation)
 
       visit activities_path
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on(t("page_content.organisation.button.create_activity"))
 
       fill_in_activity_form(level: "programme", parent: fund)
 
-      expect(page).to have_content I18n.t("action.programme.create.success")
+      expect(page).to have_content t("action.programme.create.success")
     end
 
     scenario "the activity has the appropriate funding organisation defaults" do
@@ -23,8 +23,8 @@ RSpec.feature "Users can create a programme activity" do
 
       visit activities_path
       click_on fund.title
-      click_on I18n.t("tabs.activity.children")
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on t("tabs.activity.children")
+      click_on(t("page_content.organisation.button.create_activity"))
 
       fill_in_activity_form(identifier: identifier, level: "programme", parent: fund)
 
@@ -40,8 +40,8 @@ RSpec.feature "Users can create a programme activity" do
 
       visit activities_path
       click_on fund.title
-      click_on I18n.t("tabs.activity.children")
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on t("tabs.activity.children")
+      click_on(t("page_content.organisation.button.create_activity"))
 
       fill_in_activity_form(identifier: identifier, level: "programme", parent: fund)
 
@@ -56,7 +56,7 @@ RSpec.feature "Users can create a programme activity" do
       identifier = "a-programme"
 
       visit activities_path
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on(t("page_content.organisation.button.create_activity"))
 
       fill_in_activity_form(identifier: identifier, level: "programme", parent: fund)
 
@@ -70,8 +70,8 @@ RSpec.feature "Users can create a programme activity" do
       PublicActivity.with_tracking do
         visit activities_path
         click_on fund.title
-        click_on I18n.t("tabs.activity.children")
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on t("tabs.activity.children")
+        click_on(t("page_content.organisation.button.create_activity"))
 
         fill_in_activity_form(identifier: "my-unique-identifier", level: "programme", parent: fund)
 

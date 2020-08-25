@@ -20,21 +20,21 @@ RSpec.feature "BEIS users can can view other users" do
 
       # Navigate from the landing page
       visit organisation_path(user.organisation)
-      click_on(I18n.t("page_title.users.index"))
+      click_on(t("page_title.users.index"))
 
       # Navigate to the users page
-      expect(page).to have_content(I18n.t("page_title.users.index"))
+      expect(page).to have_content(t("page_title.users.index"))
       expect(page).to have_content(another_user.name)
       expect(page).to have_content(another_user.email)
       expect(page).to have_content(another_user.organisation.name)
-      expect(page).to have_content(I18n.t("form.user.active.true"))
+      expect(page).to have_content(t("form.user.active.true"))
 
       # Navigate to the individual user page
       within(".users") do
-        find("tr", text: another_user.name).click_link(I18n.t("default.link.show"))
+        find("tr", text: another_user.name).click_link(t("default.link.show"))
       end
 
-      expect(page).to have_content(I18n.t("page_title.users.show"))
+      expect(page).to have_content(t("page_title.users.show"))
       expect(page).to have_content(another_user.name)
       expect(page).to have_content(another_user.email)
     end
@@ -50,7 +50,7 @@ RSpec.feature "BEIS users can can view other users" do
 
       # Navigate from the landing page
       visit organisation_path(user.organisation)
-      click_on(I18n.t("page_title.users.index"))
+      click_on(t("page_title.users.index"))
 
       expected_array = [
         a1_user.organisation.name,
@@ -68,17 +68,17 @@ RSpec.feature "BEIS users can can view other users" do
 
       # Navigate from the landing page
       visit organisation_path(user.organisation)
-      click_on(I18n.t("page_title.users.index"))
+      click_on(t("page_title.users.index"))
 
       # The details include whether the user is active
-      expect(page).to have_content(I18n.t("form.user.active.false"))
+      expect(page).to have_content(t("form.user.active.false"))
 
       # Navigate to the individual user page
       within(".users") do
-        find("tr", text: another_user.name).click_link(I18n.t("default.link.show"))
+        find("tr", text: another_user.name).click_link(t("default.link.show"))
       end
 
-      expect(page).to have_content(I18n.t("form.user.active.false"))
+      expect(page).to have_content(t("form.user.active.false"))
     end
   end
 end

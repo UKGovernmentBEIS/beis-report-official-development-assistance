@@ -10,13 +10,13 @@ RSpec.feature "Users can create a project" do
         visit activities_path
 
         click_on(project.title)
-        click_on I18n.t("tabs.activity.children")
+        click_on t("tabs.activity.children")
 
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on(t("page_content.organisation.button.create_activity"))
 
         fill_in_activity_form(level: "third_party_project", parent: project)
 
-        expect(page).to have_content I18n.t("action.third_party_project.create.success")
+        expect(page).to have_content t("action.third_party_project.create.success")
         expect(project.child_activities.count).to eq 1
 
         third_party_project = project.child_activities.last
@@ -31,9 +31,9 @@ RSpec.feature "Users can create a project" do
         visit activities_path
 
         click_on(project.title)
-        click_on I18n.t("tabs.activity.children")
+        click_on t("tabs.activity.children")
 
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on(t("page_content.organisation.button.create_activity"))
 
         fill_in_activity_form(level: "third_party_project", identifier: identifier, parent: project)
 
@@ -48,9 +48,9 @@ RSpec.feature "Users can create a project" do
           visit activities_path
 
           click_on(project.title)
-          click_on I18n.t("tabs.activity.children")
+          click_on t("tabs.activity.children")
 
-          click_on(I18n.t("page_content.organisation.button.create_activity"))
+          click_on(t("page_content.organisation.button.create_activity"))
 
           fill_in_activity_form(level: "third_party_project", identifier: "my-unique-identifier", parent: project)
 

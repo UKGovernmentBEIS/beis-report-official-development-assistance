@@ -12,16 +12,16 @@ RSpec.feature "BEIS users can edit a report" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on I18n.t("default.link.edit")
+        click_on t("default.link.edit")
       end
 
       fill_in "report[deadline(3i)]", with: "31"
       fill_in "report[deadline(2i)]", with: "1"
       fill_in "report[deadline(1i)]", with: "2021"
 
-      click_on I18n.t("default.button.submit")
+      click_on t("default.button.submit")
 
-      expect(page).to have_content I18n.t("action.report.update.success")
+      expect(page).to have_content t("action.report.update.success")
       within "##{report.id}" do
         expect(page).to have_content("31 Jan 2021")
       end
@@ -35,14 +35,14 @@ RSpec.feature "BEIS users can edit a report" do
         visit reports_path
 
         within "##{report.id}" do
-          click_on I18n.t("default.link.edit")
+          click_on t("default.link.edit")
         end
 
         fill_in "report[deadline(3i)]", with: "31"
         fill_in "report[deadline(2i)]", with: "1"
         fill_in "report[deadline(1i)]", with: "2021"
 
-        click_on I18n.t("default.button.submit")
+        click_on t("default.button.submit")
 
         auditable_events = PublicActivity::Activity.where(trackable_id: report.id)
         expect(auditable_events.map(&:key)).to include "report.update"
@@ -57,17 +57,17 @@ RSpec.feature "BEIS users can edit a report" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on I18n.t("default.link.edit")
+        click_on t("default.link.edit")
       end
 
       fill_in "report[deadline(3i)]", with: "31"
       fill_in "report[deadline(2i)]", with: "1"
       fill_in "report[deadline(1i)]", with: "2001"
 
-      click_on I18n.t("default.button.submit")
+      click_on t("default.button.submit")
 
-      expect(page).to_not have_content I18n.t("action.report.update.success")
-      expect(page).to have_content I18n.t("activerecord.errors.models.report.attributes.deadline.not_in_past")
+      expect(page).to_not have_content t("action.report.update.success")
+      expect(page).to have_content t("activerecord.errors.models.report.attributes.deadline.not_in_past")
     end
 
     scenario "the deadline cannot be very far in the future" do
@@ -77,17 +77,17 @@ RSpec.feature "BEIS users can edit a report" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on I18n.t("default.link.edit")
+        click_on t("default.link.edit")
       end
 
       fill_in "report[deadline(3i)]", with: "31"
       fill_in "report[deadline(2i)]", with: "1"
       fill_in "report[deadline(1i)]", with: "200020"
 
-      click_on I18n.t("default.button.submit")
+      click_on t("default.button.submit")
 
-      expect(page).to_not have_content I18n.t("action.report.update.success")
-      expect(page).to have_content I18n.t("activerecord.errors.models.report.attributes.deadline.between", min: 10, max: 25)
+      expect(page).to_not have_content t("action.report.update.success")
+      expect(page).to have_content t("activerecord.errors.models.report.attributes.deadline.between", min: 10, max: 25)
     end
 
     scenario "setting a Report's deadline logs an activity in PublicActivity" do
@@ -98,14 +98,14 @@ RSpec.feature "BEIS users can edit a report" do
         visit reports_path
 
         within "##{report.id}" do
-          click_on I18n.t("default.link.edit")
+          click_on t("default.link.edit")
         end
 
         fill_in "report[deadline(3i)]", with: "31"
         fill_in "report[deadline(2i)]", with: "1"
         fill_in "report[deadline(1i)]", with: "2021"
 
-        click_on I18n.t("default.button.submit")
+        click_on t("default.button.submit")
 
         auditable_events = PublicActivity::Activity.where(trackable_id: report.id)
         expect(auditable_events.map(&:key)).to match_array ["report.update"]
@@ -120,14 +120,14 @@ RSpec.feature "BEIS users can edit a report" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on I18n.t("default.link.edit")
+        click_on t("default.link.edit")
       end
 
       fill_in "report[description]", with: "Quarter 4 2020"
 
-      click_on I18n.t("default.button.submit")
+      click_on t("default.button.submit")
 
-      expect(page).to have_content I18n.t("action.report.update.success")
+      expect(page).to have_content t("action.report.update.success")
 
       within "##{report.id}" do
         expect(page).to have_content("Quarter 4 2020")
@@ -141,15 +141,15 @@ RSpec.feature "BEIS users can edit a report" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on I18n.t("default.link.edit")
+        click_on t("default.link.edit")
       end
 
       fill_in "report[description]", with: ""
 
-      click_on I18n.t("default.button.submit")
+      click_on t("default.button.submit")
 
-      expect(page).to_not have_content I18n.t("action.report.update.success")
-      expect(page).to have_content I18n.t("activerecord.errors.models.report.attributes.description.blank")
+      expect(page).to_not have_content t("action.report.update.success")
+      expect(page).to have_content t("activerecord.errors.models.report.attributes.description.blank")
     end
   end
 
@@ -164,7 +164,7 @@ RSpec.feature "BEIS users can edit a report" do
       visit reports_path
 
       within "##{report.id}" do
-        expect(page).to_not have_content(I18n.t("default.link.edit"))
+        expect(page).to_not have_content(t("default.link.edit"))
       end
     end
   end

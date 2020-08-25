@@ -11,11 +11,11 @@ RSpec.feature "Users can create a project" do
 
         visit organisation_activity_children_path(programme.organisation, programme)
 
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on(t("page_content.organisation.button.create_activity"))
 
         fill_in_activity_form(level: "project", parent: programme)
 
-        expect(page).to have_content I18n.t("action.project.create.success")
+        expect(page).to have_content t("action.project.create.success")
         expect(programme.child_activities.count).to eq 1
 
         project = programme.child_activities.last
@@ -28,7 +28,7 @@ RSpec.feature "Users can create a project" do
         identifier = "a-project"
 
         visit activities_path
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on(t("page_content.organisation.button.create_activity"))
 
         fill_in_activity_form(identifier: identifier, level: "project", parent: programme)
 
@@ -41,7 +41,7 @@ RSpec.feature "Users can create a project" do
 
         PublicActivity.with_tracking do
           visit organisation_activity_children_path(programme.organisation, programme)
-          click_on(I18n.t("page_content.organisation.button.create_activity"))
+          click_on(t("page_content.organisation.button.create_activity"))
 
           fill_in_activity_form(level: "project", identifier: "my-unique-identifier", parent: programme)
 

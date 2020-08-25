@@ -25,10 +25,10 @@ RSpec.feature "BEIS users can editing other users" do
     # Navigate from the landing page
     visit organisation_path(user.organisation)
 
-    click_on(I18n.t("page_title.users.index"))
+    click_on(t("page_title.users.index"))
 
     # Navigate to the users page
-    expect(page).to have_content(I18n.t("page_title.users.index"))
+    expect(page).to have_content(t("page_title.users.index"))
 
     # Find the target user and click on edit button
 
@@ -39,7 +39,7 @@ RSpec.feature "BEIS users can editing other users" do
     fill_in "user[email]", with: updated_email
 
     # Submit the form
-    click_button I18n.t("form.button.user.submit")
+    click_button t("form.button.user.submit")
 
     # Verify the user was updated
     expect(page).to have_content(updated_name)
@@ -51,7 +51,7 @@ RSpec.feature "BEIS users can editing other users" do
     authenticate!(user: administrator_user)
 
     visit organisation_path(administrator_user.organisation)
-    click_on I18n.t("page_title.users.index")
+    click_on t("page_title.users.index")
 
     expect(page).to have_content(user.name)
 
@@ -68,11 +68,11 @@ RSpec.feature "BEIS users can editing other users" do
     authenticate!(user: administrator_user)
 
     visit organisation_path(administrator_user.organisation)
-    click_on I18n.t("page_title.users.index")
+    click_on t("page_title.users.index")
     find("tr", text: user.name).click_link("Edit")
 
-    choose I18n.t("form.user.active.inactive")
-    click_on I18n.t("default.button.submit")
+    choose t("form.user.active.inactive")
+    click_on t("default.button.submit")
 
     expect(user.reload.active).to be false
   end
@@ -83,11 +83,11 @@ RSpec.feature "BEIS users can editing other users" do
     authenticate!(user: administrator_user)
 
     visit organisation_path(administrator_user.organisation)
-    click_on I18n.t("page_title.users.index")
+    click_on t("page_title.users.index")
     find("tr", text: user.name).click_link("Edit")
 
-    choose I18n.t("form.user.active.active")
-    click_on I18n.t("default.button.submit")
+    choose t("form.user.active.active")
+    click_on t("default.button.submit")
 
     expect(user.reload.active).to be true
   end
@@ -109,14 +109,14 @@ RSpec.feature "BEIS users can editing other users" do
     PublicActivity.with_tracking do
       visit organisation_path(user.organisation)
 
-      click_on(I18n.t("page_title.users.index"))
+      click_on(t("page_title.users.index"))
 
       find("tr", text: target_user.name).click_link("Edit")
 
       fill_in "user[name]", with: updated_name
       fill_in "user[email]", with: updated_email
 
-      click_button I18n.t("form.button.user.submit")
+      click_button t("form.button.user.submit")
 
       auditable_event = PublicActivity::Activity.find_by(trackable_id: target_user.id)
       expect(auditable_event.key).to eq "user.update"

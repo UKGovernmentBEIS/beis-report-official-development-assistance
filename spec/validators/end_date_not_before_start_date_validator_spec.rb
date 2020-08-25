@@ -34,7 +34,7 @@ RSpec.describe EndDateNotBeforeStartDateValidator do
       subject.period_end_date = Date.today
 
       subject.valid?
-      expect(subject.errors.messages[:period_end_date]).to include I18n.t("activerecord.errors.validators.end_date_not_before_start_date")
+      expect(subject.errors.messages[:period_end_date]).to include t("activerecord.errors.validators.end_date_not_before_start_date")
     end
   end
 end

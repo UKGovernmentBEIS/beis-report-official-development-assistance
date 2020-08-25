@@ -15,7 +15,7 @@ RSpec.feature "BEIS users can view other organisations" do
 
       visit organisations_path
 
-      expect(page).to have_content(I18n.t("page_title.organisation.index"))
+      expect(page).to have_content(t("page_title.organisation.index"))
       expect(page).to have_content(user.organisation.name)
       expect(page).to have_content(another_organisation.name)
     end

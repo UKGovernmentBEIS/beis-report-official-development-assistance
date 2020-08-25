@@ -9,7 +9,7 @@ RSpec.feature "Users can filter activities" do
         click_on "Activities"
       end
 
-      expect(page).to have_content I18n.t("filters.activity.title")
+      expect(page).to have_content t("filters.activity.title")
       expect(page).to have_select "organisation_id"
     end
 
@@ -24,7 +24,7 @@ RSpec.feature "Users can filter activities" do
       expect(page).to have_content programme.identifier
 
       select delivery_partner_organisation.name, from: "organisation_id"
-      click_on I18n.t("filters.activity.submit")
+      click_on t("filters.activity.submit")
 
       expect(page).to have_content project.title
       expect(page).to have_content project.identifier
@@ -41,7 +41,7 @@ RSpec.feature "Users can filter activities" do
         click_on "Activities"
       end
 
-      expect(page).not_to have_content I18n.t("filters.activity.title")
+      expect(page).not_to have_content t("filters.activity.title")
       expect(page).not_to have_select "organisation_id"
     end
   end

@@ -44,7 +44,7 @@ RSpec.feature "Users can view an activity" do
 
         within("##{incomplete_programme.id}") do
           expect(page).to have_link incomplete_programme.title
-          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
+          expect(page).to have_content t("summary.label.activity.form_state.incomplete")
         end
       end
 
@@ -55,11 +55,11 @@ RSpec.feature "Users can view an activity" do
         visit organisation_activity_children_path(fund.organisation, fund)
 
         within(".programmes") do
-          expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
+          expect(page).to_not have_content t("summary.label.activity.publish_to_iati.label")
         end
 
         within("##{programme.id}") do
-          expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.true")
+          expect(page).to_not have_content t("summary.label.activity.publish_to_iati.true")
         end
       end
     end
@@ -94,7 +94,7 @@ RSpec.feature "Users can view an activity" do
         visit organisation_activity_children_path(programme.organisation, programme)
         within("##{incomplete_project.id}") do
           expect(page).to have_link incomplete_project.title
-          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
+          expect(page).to have_content t("summary.label.activity.form_state.incomplete")
         end
       end
 
@@ -106,7 +106,7 @@ RSpec.feature "Users can view an activity" do
         visit organisation_activity_children_path(programme.organisation, programme)
 
         within(".projects") do
-          expect(page).to have_content I18n.t("summary.label.activity.publish_to_iati.label")
+          expect(page).to have_content t("summary.label.activity.publish_to_iati.label")
         end
 
         within("##{project.id}") do
@@ -137,7 +137,7 @@ RSpec.feature "Users can view an activity" do
 
         within("##{incomplete_third_party_project.id}") do
           expect(page).to have_link incomplete_third_party_project.title
-          expect(page).to have_content I18n.t("summary.label.activity.form_state.incomplete")
+          expect(page).to have_content t("summary.label.activity.form_state.incomplete")
         end
       end
 
@@ -147,7 +147,7 @@ RSpec.feature "Users can view an activity" do
 
         visit organisation_activity_children_path(project.organisation, project)
 
-        expect(page).to have_content I18n.t("summary.label.activity.publish_to_iati.label")
+        expect(page).to have_content t("summary.label.activity.publish_to_iati.label")
 
         within("##{third_party_project.id}") do
           expect(page).to have_content "Yes"
@@ -177,7 +177,7 @@ RSpec.feature "Users can view an activity" do
         expect(page).to have_content "Child activities"
       end
       expect(page).to have_content activity.title
-      expect(page).to have_button I18n.t("page_content.organisation.button.create_activity")
+      expect(page).to have_button t("page_content.organisation.button.create_activity")
     end
 
     scenario "the activity details tab can be viewed" do
@@ -217,7 +217,7 @@ RSpec.feature "Users can view an activity" do
                                      actual_end_date: Date.new(2020, 1, 29))
 
         visit organisation_activity_path(user.organisation, activity)
-        click_on I18n.t("tabs.activity.details")
+        click_on t("tabs.activity.details")
 
         within(".planned_start_date") do
           expect(page).to have_content("3 Feb 2020")
@@ -258,10 +258,10 @@ RSpec.feature "Users can view an activity" do
 
       visit organisation_activity_children_path(project.organisation, project)
 
-      expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
+      expect(page).to_not have_content t("summary.label.activity.publish_to_iati.label")
 
       within("##{third_party_project.id}") do
-        expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.true")
+        expect(page).to_not have_content t("summary.label.activity.publish_to_iati.true")
       end
     end
   end
