@@ -59,7 +59,7 @@ RSpec.feature "Users can view an activity" do
         end
 
         within("##{programme.id}") do
-          expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.yes")
+          expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.true")
         end
       end
     end
@@ -261,7 +261,7 @@ RSpec.feature "Users can view an activity" do
       expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
 
       within("##{third_party_project.id}") do
-        expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.yes")
+        expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.true")
       end
     end
   end

@@ -66,7 +66,7 @@ RSpec.feature "BEIS users can create organisations" do
 
       it "does not show them the manage user button" do
         visit organisation_path(user.organisation)
-        expect(page).not_to have_content(I18n.t("page_content.dashboard.button.manage_organisations"))
+        expect(page).not_to have_content(I18n.t("page_title.organisation.index"))
       end
     end
   end

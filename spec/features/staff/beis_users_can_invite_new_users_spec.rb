@@ -110,7 +110,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
             click_button I18n.t("default.button.submit")
 
             expect(page).to have_content("Email is invalid")
-            expect(page).not_to have_content(I18n.t("form.user.create.failed"))
+            expect(page).not_to have_content(I18n.t("action.user.create.failed"))
           end
         end
       end
@@ -121,7 +121,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
       it "does not show them the manage user button" do
         visit organisation_path(user.organisation)
-        expect(page).not_to have_content(I18n.t("page_content.dashboard.button.manage_users"))
+        expect(page).not_to have_content(I18n.t("page_title.users.index"))
       end
     end
   end
