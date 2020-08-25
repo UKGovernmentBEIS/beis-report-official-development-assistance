@@ -25,7 +25,7 @@ RSpec.describe Report, type: :model do
     programme = create(:programme_activity)
     report = build(:report, fund: programme)
     expect(report).not_to be_valid
-    expect(report.errors[:fund]).to include I18n.t("activerecord.errors.models.report.attributes.fund.level")
+    expect(report.errors[:fund]).to include t("activerecord.errors.models.report.attributes.fund.level")
   end
 
   it "does not allow more than one Report for the same Fund and Organisation combination" do

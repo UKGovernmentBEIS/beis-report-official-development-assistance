@@ -17,7 +17,7 @@ class Auth0Controller < ApplicationController
     else
       render "pages/errors/not_authorised",
         status: 401,
-        locals: {error_message: I18n.t("page_content.errors.not_authorised.explanation")}
+        locals: {error_message: t("page_content.errors.not_authorised.explanation")}
     end
   end
 

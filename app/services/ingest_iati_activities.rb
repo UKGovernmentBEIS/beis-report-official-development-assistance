@@ -20,7 +20,8 @@ class IngestIatiActivities
 
     legacy_activity_nodes.each do |legacy_activity_node|
       legacy_activity = LegacyActivity.new(activity_node_set: legacy_activity_node, delivery_partner: delivery_partner)
-      existing_activity = Activity.find_by(previous_identifier: legacy_activity.identifier)
+      legacy_identifier = legacy_activity.identifier
+      existing_activity = Activity.find_by(previous_identifier: legacy_identifier)
 
       next if existing_activity&.ingested?
 
@@ -28,7 +29,7 @@ class IngestIatiActivities
         roda_activity = if existing_activity.present?
           existing_activity
         else
-          new_activity = Activity.new(identifier: legacy_activity.identifier, organisation: delivery_partner)
+          new_activity = Activity.new(delivery_partner_identifier: legacy_identifier, organisation: delivery_partner)
           add_identifiers(legacy_activity: legacy_activity, new_activity: new_activity)
           add_participating_organisation(delivery_partner: delivery_partner, new_activity: new_activity, legacy_activity: legacy_activity)
           add_title(legacy_activity: legacy_activity, new_activity: new_activity)
@@ -291,7 +292,7 @@ class IngestIatiActivities
 
   private def add_identifiers(legacy_activity:, new_activity:)
     new_activity.previous_identifier = legacy_activity.elements.detect { |element| element.name.eql?("iati-identifier") }.children.text
-    new_activity.identifier = legacy_activity.infer_internal_identifier
+    new_activity.delivery_partner_identifier = legacy_activity.infer_internal_identifier
   end
 
   private def service_owner_organisation

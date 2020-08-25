@@ -72,7 +72,7 @@ class Staff::ActivityFormsController < Staff::BaseController
       when :third_party_project then UpdateActivityAsThirdPartyProject.new(activity: @activity, parent_id: parent_id).call
       end
     when :identifier
-      @activity.assign_attributes(identifier: identifier)
+      @activity.assign_attributes(delivery_partner_identifier: delivery_partner_identifier)
       add_transparency_identifier
     when :purpose
       @activity.assign_attributes(title: title, description: description)
@@ -131,8 +131,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(:parent).fetch("parent", nil)
   end
 
-  def identifier
-    params.require(:activity).permit(:identifier).fetch("identifier", nil)
+  def delivery_partner_identifier
+    params.require(:activity).permit(:delivery_partner_identifier).fetch("delivery_partner_identifier", nil)
   end
 
   def sector_category
@@ -210,7 +210,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def finish_wizard_path
-    flash[:notice] ||= I18n.t("action.#{@activity.level}.create.success")
+    flash[:notice] ||= t("action.#{@activity.level}.create.success")
     @activity.update(form_state: "complete")
     organisation_activity_details_path(@activity.organisation, @activity)
   end
@@ -219,7 +219,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     return if @activity.invalid?
 
     if @activity.form_steps_completed?
-      flash[:notice] ||= I18n.t("action.#{@activity.level}.update.success")
+      flash[:notice] ||= t("action.#{@activity.level}.update.success")
       jump_to Wicked::FINISH_STEP
     else
       @activity.form_state = step

@@ -9,13 +9,13 @@ RSpec.describe "Users can create a planned disbursement" do
       visit activities_path
       click_on project.title
 
-      expect(page).to have_content I18n.t("page_content.activity.planned_disbursements")
+      expect(page).to have_content t("page_content.activity.planned_disbursements")
 
-      click_on I18n.t("page_content.planned_disbursements.button.create")
+      click_on t("page_content.planned_disbursements.button.create")
 
-      expect(page).to have_content I18n.t("page_title.planned_disbursement.new")
+      expect(page).to have_content t("page_title.planned_disbursement.new")
 
-      choose I18n.t("form.label.planned_disbursement.planned_disbursement_type_options.original.name")
+      choose t("form.label.planned_disbursement.planned_disbursement_type_options.original.name")
       fill_in "planned_disbursement[period_start_date(3i)]", with: "01"
       fill_in "planned_disbursement[period_start_date(2i)]", with: "01"
       fill_in "planned_disbursement[period_start_date(1i)]", with: "2020"
@@ -28,10 +28,10 @@ RSpec.describe "Users can create a planned disbursement" do
       select "Government", from: "planned_disbursement[providing_organisation_type]"
       fill_in "planned_disbursement[receiving_organisation_name]", with: "another org"
       select "Other Public Sector", from: "planned_disbursement[receiving_organisation_type]"
-      click_button I18n.t("default.button.submit")
+      click_button t("default.button.submit")
 
       expect(page).to have_current_path organisation_activity_financials_path(user.organisation, project)
-      expect(page).to have_content I18n.t("action.planned_disbursement.create.success")
+      expect(page).to have_content t("action.planned_disbursement.create.success")
     end
 
     scenario "the action is recorded with public_activity" do
@@ -42,7 +42,7 @@ RSpec.describe "Users can create a planned disbursement" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.planned_disbursements.button.create"))
+        click_on(t("page_content.planned_disbursements.button.create"))
 
         fill_in_planned_disbursement_form
 
@@ -63,7 +63,7 @@ RSpec.describe "Users can create a planned disbursement" do
       visit activities_path
 
       click_on(project.title)
-      click_on(I18n.t("page_content.planned_disbursements.button.create"))
+      click_on(t("page_content.planned_disbursements.button.create"))
 
       fill_in_planned_disbursement_form
 
@@ -81,11 +81,11 @@ RSpec.describe "Users can create a planned disbursement" do
 
           visit activities_path
           click_on project.title
-          click_on I18n.t("page_content.planned_disbursements.button.create")
+          click_on t("page_content.planned_disbursements.button.create")
 
-          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
-          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
-          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_reference"), with: beis.iati_reference)
+          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
+          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
+          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_reference"), with: beis.iati_reference)
         end
       end
 
@@ -97,11 +97,11 @@ RSpec.describe "Users can create a planned disbursement" do
           project = create(:third_party_project_activity, :with_report, organisation: user.organisation)
 
           visit organisation_activity_path(user.organisation, project)
-          click_on I18n.t("page_content.planned_disbursements.button.create")
+          click_on t("page_content.planned_disbursements.button.create")
 
-          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
-          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
-          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_reference"), with: beis.iati_reference)
+          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
+          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
+          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_reference"), with: beis.iati_reference)
         end
       end
     end
@@ -116,11 +116,11 @@ RSpec.describe "Users can create a planned disbursement" do
 
           visit activities_path
           click_on project.title
-          click_on I18n.t("page_content.planned_disbursements.button.create")
+          click_on t("page_content.planned_disbursements.button.create")
 
-          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
-          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
-          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_reference"), with: beis.iati_reference)
+          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
+          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
+          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_reference"), with: beis.iati_reference)
         end
       end
       context "and the activity is a third-party project" do
@@ -130,11 +130,11 @@ RSpec.describe "Users can create a planned disbursement" do
           project = create(:third_party_project_activity, :with_report, organisation: user.organisation)
 
           visit organisation_activity_path(user.organisation, project)
-          click_on I18n.t("page_content.planned_disbursements.button.create")
+          click_on t("page_content.planned_disbursements.button.create")
 
-          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_name"), with: non_government_devlivery_partner.name)
-          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_type"), with: non_government_devlivery_partner.organisation_type)
-          expect(page).to have_field(I18n.t("form.label.planned_disbursement.providing_organisation_reference"), with: non_government_devlivery_partner.iati_reference)
+          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_name"), with: non_government_devlivery_partner.name)
+          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_type"), with: non_government_devlivery_partner.organisation_type)
+          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_reference"), with: non_government_devlivery_partner.iati_reference)
         end
       end
     end
@@ -151,16 +151,16 @@ RSpec.describe "Users can create a planned disbursement" do
 
       visit activities_path
       within "##{programme.id}" do
-        click_on I18n.t("table.body.activity.view_activity")
+        click_on t("table.body.activity.view_activity")
       end
-      click_on I18n.t("tabs.activity.children")
+      click_on t("tabs.activity.children")
       click_on project.title
 
-      expect(page).not_to have_link I18n.t("page_content.planned_disbursements.button.create"), href: new_activity_planned_disbursement_path(project)
+      expect(page).not_to have_link t("page_content.planned_disbursements.button.create"), href: new_activity_planned_disbursement_path(project)
 
       visit new_activity_planned_disbursement_path(project)
 
-      expect(page).to have_content I18n.t("page_title.errors.not_authorised")
+      expect(page).to have_content t("page_title.errors.not_authorised")
     end
   end
 end

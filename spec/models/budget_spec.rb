@@ -76,7 +76,7 @@ RSpec.describe Budget do
 
       budget.valid?
 
-      expect(budget.errors[:period_end_date]).not_to include I18n.t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")
+      expect(budget.errors[:period_end_date]).not_to include t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")
     end
   end
 
@@ -86,7 +86,7 @@ RSpec.describe Budget do
 
       budget.valid?
 
-      expect(budget.errors[:period_end_date]).to include I18n.t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")
+      expect(budget.errors[:period_end_date]).to include t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")
     end
   end
 end

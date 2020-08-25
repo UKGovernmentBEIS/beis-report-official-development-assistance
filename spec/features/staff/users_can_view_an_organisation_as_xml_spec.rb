@@ -13,7 +13,7 @@ RSpec.feature "Users can view an organisation as XML" do
         visit organisation_path(beis)
 
         expect(page).to have_content(beis.name)
-        expect(page).to_not have_content(I18n.t("default.button.download_as_xml"))
+        expect(page).to_not have_content(t("default.button.download_as_xml"))
       end
     end
 
@@ -25,7 +25,7 @@ RSpec.feature "Users can view an organisation as XML" do
           visit organisation_path(organisation)
 
           expect(page).to have_content(organisation.name)
-          expect(page).to have_content(I18n.t("default.button.download_as_xml"))
+          expect(page).to have_content(t("default.button.download_as_xml"))
         end
 
         scenario "the XML file contains an `iati-activity` element for the project activities in the organisation" do
@@ -33,7 +33,7 @@ RSpec.feature "Users can view an organisation as XML" do
 
           visit organisation_path(organisation)
           within ".download-projects" do
-            click_link I18n.t("default.button.download_as_xml")
+            click_link t("default.button.download_as_xml")
           end
           xml = Nokogiri::XML::Document.parse(page.body)
 
@@ -46,7 +46,7 @@ RSpec.feature "Users can view an organisation as XML" do
 
           visit organisation_path(organisation)
           within ".download-projects" do
-            click_link I18n.t("default.button.download_as_xml")
+            click_link t("default.button.download_as_xml")
           end
           xml = Nokogiri::XML::Document.parse(page.body)
 
@@ -61,7 +61,7 @@ RSpec.feature "Users can view an organisation as XML" do
           visit organisation_path(organisation)
 
           expect(page).to have_content(organisation.name)
-          expect(page).to have_content(I18n.t("default.button.download_as_xml"))
+          expect(page).to have_content(t("default.button.download_as_xml"))
         end
 
         scenario "the XML file contains an `iati-activity` element for the third-party project activity in the organisation" do
@@ -70,7 +70,7 @@ RSpec.feature "Users can view an organisation as XML" do
 
           visit organisation_path(organisation)
           within ".download-third-party-projects" do
-            click_link I18n.t("default.button.download_as_xml")
+            click_link t("default.button.download_as_xml")
           end
           xml = Nokogiri::XML::Document.parse(page.body)
 
@@ -84,7 +84,7 @@ RSpec.feature "Users can view an organisation as XML" do
 
           visit organisation_path(organisation)
           within ".download-third-party-projects" do
-            click_link I18n.t("default.button.download_as_xml")
+            click_link t("default.button.download_as_xml")
           end
           xml = Nokogiri::XML::Document.parse(page.body)
 
@@ -97,7 +97,7 @@ RSpec.feature "Users can view an organisation as XML" do
           visit organisation_path(organisation)
 
           expect(page).to have_content(organisation.name)
-          expect(page).to_not have_content(I18n.t("default.button.download_as_xml"))
+          expect(page).to_not have_content(t("default.button.download_as_xml"))
         end
       end
 
@@ -106,7 +106,7 @@ RSpec.feature "Users can view an organisation as XML" do
           visit organisation_path(organisation)
 
           expect(page).to have_content(organisation.name)
-          expect(page).to_not have_content(I18n.t("default.button.download_as_xml"))
+          expect(page).to_not have_content(t("default.button.download_as_xml"))
         end
       end
 
@@ -126,7 +126,7 @@ RSpec.feature "Users can view an organisation as XML" do
         _transaction = create(:transaction, parent_activity: project, value: 100)
 
         visit organisation_path(organisation)
-        click_link I18n.t("default.button.download_as_xml")
+        click_link t("default.button.download_as_xml")
         xml = Nokogiri::XML::Document.parse(page.body)
 
         expect(xml.xpath("/iati-activities/iati-activity/budget/value").text).to eq "2000.0"
@@ -136,7 +136,7 @@ RSpec.feature "Users can view an organisation as XML" do
       scenario "the XML file does not contain incomplete activities" do
         _project = create(:project_activity, :at_purpose_step, organisation: organisation)
         visit organisation_path(organisation)
-        click_link I18n.t("default.button.download_as_xml")
+        click_link t("default.button.download_as_xml")
         xml = Nokogiri::XML::Document.parse(page.body)
 
         expect(xml.xpath("/iati-activities/iati-activity").count).to eq(0)
@@ -158,7 +158,7 @@ RSpec.feature "Users can view an organisation as XML" do
         visit organisation_path(organisation)
 
         expect(page).to have_content(organisation.name)
-        expect(page).to_not have_content(I18n.t("default.button.download_as_xml"))
+        expect(page).to_not have_content(t("default.button.download_as_xml"))
       end
     end
 
@@ -168,7 +168,7 @@ RSpec.feature "Users can view an organisation as XML" do
       scenario "they cannot download the XML of the organisation" do
         visit organisation_path(organisation, format: :xml)
 
-        expect(page).to have_content(I18n.t("page_title.errors.not_authorised"))
+        expect(page).to have_content(t("page_title.errors.not_authorised"))
       end
     end
   end

@@ -72,7 +72,7 @@ RSpec.describe LegacyActivity do
   describe "#find_parent" do
     context "when the identifier matches to an activity" do
       it "returns the related activity" do
-        existing_programme = create(:programme_activity, identifier: "GCRF-INTPART")
+        existing_programme = create(:programme_activity, delivery_partner_identifier: "GCRF-INTPART")
 
         fake_mapping = CSV::Table.new([
           CSV::Row.new([:activity_id, :parent_id], ["activity_id", "parent_id"]),

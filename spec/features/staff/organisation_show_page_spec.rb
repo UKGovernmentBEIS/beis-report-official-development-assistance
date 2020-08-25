@@ -18,7 +18,7 @@ feature "Organisation show page" do
       scenario "they see a edit details button" do
         visit organisation_path(beis_user.organisation)
 
-        expect(page).to have_link I18n.t("page_content.organisation.button.edit_details"), href: edit_organisation_path(beis_user.organisation)
+        expect(page).to have_link t("page_content.organisation.button.edit_details"), href: edit_organisation_path(beis_user.organisation)
       end
 
       context "when viewing a delivery partners organisation" do
@@ -28,7 +28,7 @@ feature "Organisation show page" do
 
           visit organisation_path(delivery_partner_organisation)
 
-          expect(page).to have_link I18n.t("page_content.organisation.download.title"),
+          expect(page).to have_link t("page_content.organisation.download.title"),
             href: organisation_path(delivery_partner_organisation, format: :xml, level: :project)
         end
 
@@ -38,7 +38,7 @@ feature "Organisation show page" do
 
           visit organisation_path(delivery_partner_organisation)
 
-          expect(page).to have_link I18n.t("page_content.organisation.download.title"),
+          expect(page).to have_link t("page_content.organisation.download.title"),
             href: organisation_path(delivery_partner_organisation, format: :xml, level: :third_party_project)
         end
       end
@@ -53,7 +53,7 @@ feature "Organisation show page" do
     scenario "they do not see the edit detials button" do
       visit organisation_path(delivery_partner_user.organisation)
 
-      expect(page).not_to have_link I18n.t("page_content.organisation.button.edit_details"), href: edit_organisation_path(delivery_partner_user.organisation)
+      expect(page).not_to have_link t("page_content.organisation.button.edit_details"), href: edit_organisation_path(delivery_partner_user.organisation)
     end
   end
 end

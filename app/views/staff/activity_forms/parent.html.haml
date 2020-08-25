@@ -5,7 +5,7 @@
     scoped_parent_activities,
     :id,
     ->(activity){ ActivityPresenter.new(activity).display_title },
-    legend: { tag: 'h1', size: 'xl', text: I18n.t("form.legend.activity.parent", parent_level: f.object.parent_level, level: f.object.level) },
-    hint_text: I18n.t("form.hint.activity.parent",
+    legend: { tag: 'h1', size: 'xl', text: t("form.legend.activity.parent", parent_level: f.object.parent_level, level: f.object.level) },
+    hint_text: t("form.hint.activity.parent",
       parent_level: f.object.parent_level,
       level: I18n.t("page_content.activity.level.#{f.object.level}"))

@@ -62,14 +62,14 @@ RSpec.feature "BEIS users can invite new users to the service" do
         it "shows the user validation errors instead" do
           visit new_user_path
 
-          expect(page).to have_content(I18n.t("page_title.users.new"))
+          expect(page).to have_content(t("page_title.users.new"))
           fill_in "user[name]", with: "" # deliberately omit a value
           fill_in "user[email]", with: "" # deliberately omit a value
 
-          click_button I18n.t("default.button.submit")
+          click_button t("default.button.submit")
 
-          expect(page).to have_content(I18n.t("activerecord.errors.models.user.attributes.name.blank"))
-          expect(page).to have_content(I18n.t("activerecord.errors.models.user.attributes.email.blank"))
+          expect(page).to have_content(t("activerecord.errors.models.user.attributes.name.blank"))
+          expect(page).to have_content(t("activerecord.errors.models.user.attributes.email.blank"))
         end
       end
 
@@ -83,16 +83,16 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
             visit new_user_path
 
-            expect(page).to have_content(I18n.t("page_title.users.new"))
+            expect(page).to have_content(t("page_title.users.new"))
             fill_in "user[name]", with: "foo"
             fill_in "user[email]", with: new_email
             choose organisation.name
 
             expect {
-              click_button I18n.t("default.button.submit")
+              click_button t("default.button.submit")
             }.not_to change { User.count }
 
-            expect(page).to have_content(I18n.t("action.user.create.failed", error: "The user already exists."))
+            expect(page).to have_content(t("action.user.create.failed", error: "The user already exists."))
           end
         end
 
@@ -107,10 +107,10 @@ RSpec.feature "BEIS users can invite new users to the service" do
             fill_in "user[email]", with: "tom"
             choose organisation.name
 
-            click_button I18n.t("default.button.submit")
+            click_button t("default.button.submit")
 
             expect(page).to have_content("Email is invalid")
-            expect(page).not_to have_content(I18n.t("form.user.create.failed"))
+            expect(page).not_to have_content(t("action.user.create.failed"))
           end
         end
       end
@@ -121,7 +121,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
       it "does not show them the manage user button" do
         visit organisation_path(user.organisation)
-        expect(page).not_to have_content(I18n.t("page_content.dashboard.button.manage_users"))
+        expect(page).not_to have_content(t("page_title.users.index"))
       end
     end
   end
@@ -129,21 +129,21 @@ RSpec.feature "BEIS users can invite new users to the service" do
   def create_user(organisation, new_user_name, new_user_email)
     # Navigate from the landing page
     visit organisation_path(organisation)
-    click_on(I18n.t("page_title.users.index"))
+    click_on(t("page_title.users.index"))
 
     # Navigate to the users page
-    expect(page).to have_content(I18n.t("page_title.users.index"))
+    expect(page).to have_content(t("page_title.users.index"))
 
     # Create a new user
-    click_on(I18n.t("page_content.users.button.create"))
+    click_on(t("page_content.users.button.create"))
 
     # Fill out the form
-    expect(page).to have_content(I18n.t("page_title.users.new"))
+    expect(page).to have_content(t("page_title.users.new"))
     fill_in "user[name]", with: new_user_name
     fill_in "user[email]", with: new_user_email
     choose organisation.name
 
     # Submit the form
-    click_button I18n.t("default.button.submit")
+    click_button t("default.button.submit")
   end
 end

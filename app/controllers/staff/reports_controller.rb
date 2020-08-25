@@ -41,7 +41,7 @@ class Staff::ReportsController < Staff::BaseController
     if @report.valid?
       @report.save!
       @report.create_activity key: "report.update", owner: current_user
-      flash[:notice] = I18n.t("action.report.update.success")
+      flash[:notice] = t("action.report.update.success")
       redirect_to reports_path
     else
       render :edit

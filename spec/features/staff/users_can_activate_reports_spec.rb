@@ -10,8 +10,8 @@ RSpec.feature "Users can activate reports" do
       report = create(:report, state: :inactive)
 
       visit report_path(report)
-      click_link I18n.t("action.report.activate.button")
-      click_button I18n.t("action.report.activate.confirm.button")
+      click_link t("action.report.activate.button")
+      click_button t("action.report.activate.confirm.button")
 
       expect(page).to have_content "complete"
       expect(report.reload.state).to eql "active"
