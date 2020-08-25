@@ -37,6 +37,19 @@ class Report < ApplicationRecord
     end
   end
 
+  def next_four_financial_quarters
+    case current_financial_quarter
+    when 1
+      ["Q2 #{current_financial_year}", "Q3 #{current_financial_year}", "Q4 #{current_financial_year}", "Q1 #{current_financial_year + 1}"]
+    when 2
+      ["Q3 #{current_financial_year}", "Q4 #{current_financial_year}", "Q1 #{current_financial_year + 1}", "Q2 #{current_financial_year + 1}"]
+    when 3
+      ["Q4 #{current_financial_year}", "Q1 #{current_financial_year + 1}", "Q2 #{current_financial_year + 1}", "Q3 #{current_financial_year + 1}"]
+    when 4
+      ["Q1 #{current_financial_year + 1}", "Q2 #{current_financial_year + 1}", "Q3 #{current_financial_year + 1}", "Q4 #{current_financial_year + 1}"]
+    end
+  end
+
   private def current_financial_quarter
     case Date.today.month
     when 4, 5, 6

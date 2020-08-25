@@ -160,7 +160,7 @@ class Activity < ApplicationRecord
   end
 
   def forecasted_total_for_report_financial_quarter(report:)
-    @forecasted_total_for_report_financial_quarter ||= planned_disbursements.where(period_start_date: report.created_at.all_quarter).sum(:value)
+    @forecasted_total_for_report_financial_quarter ||= forecasted_total_for_date_range(range: report.created_at.all_quarter)
   end
 
   def variance_for_report_financial_quarter(report:)
@@ -169,5 +169,9 @@ class Activity < ApplicationRecord
 
   def requires_call_dates?
     !ingested? && (project? || third_party_project?)
+  end
+
+  def forecasted_total_for_date_range(range:)
+    planned_disbursements.where(period_start_date: range).sum(:value)
   end
 end
