@@ -28,6 +28,7 @@ class Activity < ApplicationRecord
   validates :level, presence: true, on: :level_step
   validates :parent, presence: true, on: :parent_step, unless: proc { |activity| activity.fund? }
   validates :delivery_partner_identifier, presence: true, on: :identifier_step
+  validates_with RodaIdentifierValidator, on: :roda_identifier_step
   validates :title, :description, presence: true, on: :purpose_step
   validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
@@ -40,6 +41,7 @@ class Activity < ApplicationRecord
   validates :aid_type, presence: true, on: :aid_type_step
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
+  validates :roda_identifier_compound, uniqueness: true, allow_nil: true
   validates :planned_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.actual_start_date.present? }
   validates :actual_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.planned_start_date.present? }
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true

@@ -1,7 +1,7 @@
 module FormHelpers
   def fill_in_activity_form(
     delivery_partner_identifier: "A-Unique-Identifier",
-    roda_identifier_fragment: "A-RODA-Identifier",
+    roda_identifier_fragment: "RODA-ID",
     title: "My Aid Activity",
     description: Faker::Lorem.paragraph,
     sector_category: "Basic Education",

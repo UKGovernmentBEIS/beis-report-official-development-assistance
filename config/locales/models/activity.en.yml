@@ -232,7 +232,11 @@ en:
             delivery_partner_identifier:
               blank: Enter a unique identifier
             roda_identifier_fragment:
-              blank: Enter a unique identifier
+              invalid_characters: Must contain only letters, digits, dashes, underscores and slashes
+              level_a_too_long: Fund identifiers must be at most %{limit} characters long
+              level_b_too_long: This programme's identifier must be at most %{limit} characters long
+              level_c_too_long: This project's identifier must be at most %{limit} characters long
+              level_d_too_long: This third-party project's identifier must be at most %{limit} characters long
             title:
               blank: Enter a title
             description:
