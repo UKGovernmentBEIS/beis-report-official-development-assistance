@@ -119,7 +119,7 @@ class Activity < ApplicationRecord
   end
 
   def parent_activities
-    ancestors.reverse
+    @parent_activities ||= ancestors.reverse
   end
 
   def associated_fund
@@ -156,9 +156,13 @@ class Activity < ApplicationRecord
     }.push(delivery_partner_identifier).join("-")
   end
 
+  def can_set_roda_identifier?
+    identifier_fragments = roda_identifier_fragment_chain
+    identifier_fragments[0..-2].all?(&:present?) && identifier_fragments.last.blank?
+  end
+
   def cache_roda_identifier
-    activity_chain = parent_activities + [self]
-    identifier_fragments = activity_chain.map(&:roda_identifier_fragment)
+    identifier_fragments = roda_identifier_fragment_chain
     return false unless identifier_fragments.all?(&:present?)
 
     compound = identifier_fragments[0..2].join("-")
@@ -172,6 +176,11 @@ class Activity < ApplicationRecord
     unless cache_roda_identifier
       raise TypeError, "Attempted to generate a RODA ID but some parent identifiers are blank"
     end
+  end
+
+  private def roda_identifier_fragment_chain
+    activity_chain = parent_activities + [self]
+    activity_chain.map(&:roda_identifier_fragment)
   end
 
   def actual_total_for_report_financial_quarter(report:)

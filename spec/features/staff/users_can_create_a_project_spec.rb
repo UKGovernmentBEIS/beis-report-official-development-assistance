@@ -23,6 +23,20 @@ RSpec.feature "Users can create a project" do
         expect(project.organisation).to eq user.organisation
       end
 
+      scenario "a new project can be added when the program has no RODA identifier" do
+        programme = create(:programme_activity, extending_organisation: user.organisation, roda_identifier_fragment: nil)
+
+        visit organisation_activity_children_path(programme.organisation, programme)
+        click_on(t("page_content.organisation.button.create_activity"))
+        fill_in_activity_form(level: "project", parent: programme)
+
+        expect(page).to have_content t("action.project.create.success")
+
+        expect(programme.child_activities.count).to eq 1
+        project = programme.child_activities.last
+        expect(project.organisation).to eq user.organisation
+      end
+
       scenario "the activity saves its identifier as read-only `transparency_identifier`" do
         programme = create(:programme_activity, extending_organisation: user.organisation)
         identifier = "a-project"

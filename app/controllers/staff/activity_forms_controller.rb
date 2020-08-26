@@ -35,6 +35,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     case step
     when :parent
       skip_step if @activity.fund?
+    when :roda_identifier
+      skip_step unless @activity.can_set_roda_identifier?
     when :blank
       skip_step
     when :programme_status
