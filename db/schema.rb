@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_21_155008) do
+ActiveRecord::Schema.define(version: 2020_08_26_090103) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -55,11 +55,14 @@ ActiveRecord::Schema.define(version: 2020_08_21_155008) do
     t.boolean "call_present"
     t.date "call_open_date"
     t.date "call_close_date"
+    t.string "roda_identifier_fragment"
+    t.string "roda_identifier_compound"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
     t.index ["parent_id"], name: "index_activities_on_parent_id"
     t.index ["reporting_organisation_id"], name: "index_activities_on_reporting_organisation_id"
+    t.index ["roda_identifier_compound"], name: "index_activities_on_roda_identifier_compound"
   end
 
   create_table "auditable_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
