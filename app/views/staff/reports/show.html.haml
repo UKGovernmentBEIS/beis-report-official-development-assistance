@@ -17,5 +17,8 @@
         - if policy(@report_presenter).review?
           = link_to t("action.report.in_review.button"), edit_report_state_path(@report_presenter), class: "govuk-button govuk-!-margin-left-4"
 
+        - if policy(@report_presenter).request_changes?
+          = link_to t("action.report.request_changes.button"), edit_report_state_path(@report_presenter, request_changes: true), class: "govuk-button govuk-!-margin-left-4"
+
         - if policy(@report_presenter).submit?
           = link_to t("action.report.submit.button"), edit_report_state_path(@report_presenter), class: "govuk-button govuk-!-margin-left-4"
