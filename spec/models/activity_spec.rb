@@ -656,6 +656,47 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#cache_roda_identifier!" do
+    let!(:fund) { create(:fund_activity, roda_identifier_fragment: "Level/A") }
+    let!(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "Level/B") }
+    let!(:project) { create(:project_activity, parent: programme, roda_identifier_fragment: "Level/C") }
+    let!(:third_party_project) { create(:third_party_project_activity, parent: project, roda_identifier_fragment: "Level/D") }
+
+    it "caches the compound RODA identifier on a project" do
+      project.cache_roda_identifier!
+      expect(project.roda_identifier_compound).to eq("Level/A-Level/B-Level/C")
+    end
+
+    it "caches the compound RODA identifier on a third-party project" do
+      third_party_project.cache_roda_identifier!
+      expect(third_party_project.roda_identifier_compound).to eq("Level/A-Level/B-Level/CLevel/D")
+    end
+
+    context "when the activity does not have a RODA identifier fragment" do
+      before { project.update!(roda_identifier_fragment: nil) }
+
+      it "raises an exception" do
+        expect { project.cache_roda_identifier! }.to raise_error(TypeError)
+      end
+    end
+
+    context "when the activity's parent does not have a RODA identifier fragment" do
+      before { programme.update!(roda_identifier_fragment: nil) }
+
+      it "raises an exception" do
+        expect { project.cache_roda_identifier! }.to raise_error(TypeError)
+      end
+    end
+
+    context "when the activity's grandparent does not have a RODA identifier fragment" do
+      before { fund.update!(roda_identifier_fragment: nil) }
+
+      it "raises an exception" do
+        expect { project.cache_roda_identifier! }.to raise_error(TypeError)
+      end
+    end
+  end
+
   describe "#actual_total_for_report_financial_quarter" do
     it "returns the total of all the activity's transactions scoped to a report" do
       project = create(:project_activity, :with_report)
