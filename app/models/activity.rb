@@ -155,6 +155,24 @@ class Activity < ApplicationRecord
     }.push(delivery_partner_identifier).join("-")
   end
 
+  def cache_roda_identifier
+    activity_chain = parent_activities + [self]
+    identifier_fragments = activity_chain.map(&:roda_identifier_fragment)
+    return false unless identifier_fragments.all?(&:present?)
+
+    compound = identifier_fragments[0..2].join("-")
+    compound << identifier_fragments[3] if identifier_fragments.size == 4
+
+    self.roda_identifier_compound = compound
+    true
+  end
+
+  def cache_roda_identifier!
+    unless cache_roda_identifier
+      raise TypeError, "Attempted to generate a RODA ID but some parent identifiers are blank"
+    end
+  end
+
   def actual_total_for_report_financial_quarter(report:)
     @actual_total_for_report_financial_quarter ||= transactions.where(report: report, date: report.created_at.all_quarter).sum(:value)
   end
