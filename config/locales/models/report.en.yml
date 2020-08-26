@@ -7,6 +7,7 @@ en:
         inactive: Inactive reports
         submitted: Submitted reports
         in_review: Reports in review
+        awaiting_changes: Reports awaiting changes
     header:
       report:
         financial_quarter: Financial quarter
@@ -58,6 +59,9 @@ en:
       in_review:
         confirm: Confirm you want to move %{report_financial_quarter} %{report_description} into review
         complete: The report is now in review
+      request_changes:
+        confirm: Confirm you want to request changes for %{report_financial_quarter} %{report_description}
+        complete: This report is now awaiting changes
   action:
     report:
       activate:
@@ -84,6 +88,12 @@ en:
         complete:
           title: This report is now in review
         button: Mark as in review
+      request_changes:
+        button: Request changes
+        confirm:
+          button: Confirm request
+        complete:
+          title: This report is now awaiting changes
   activerecord:
     errors:
       models:
