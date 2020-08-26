@@ -9,6 +9,7 @@ class Activity < ApplicationRecord
     :level_step,
     :parent_step,
     :identifier_step,
+    :roda_identifier_step,
     :purpose_step,
     :sector_category_step,
     :sector_step,
@@ -22,7 +23,7 @@ class Activity < ApplicationRecord
     :aid_type,
   ]
 
-  strip_attributes only: [:delivery_partner_identifier]
+  strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
 
   validates :level, presence: true, on: :level_step
   validates :parent, presence: true, on: :parent_step, unless: proc { |activity| activity.fund? }
