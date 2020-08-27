@@ -6,6 +6,7 @@ en:
         active: Active reports
         inactive: Inactive reports
         submitted: Submitted reports
+        in_review: Reports in review
     header:
       report:
         financial_quarter: Financial quarter
@@ -19,6 +20,7 @@ en:
         action:
           edit: Edit
           activate: Activate
+          in_review: Mark as in review
   page_content:
     reports:
       title: Reports
@@ -53,6 +55,9 @@ en:
       submit:
         confirm: Confirm submission of %{report_financial_quarter} %{report_description}
         complete: Submission complete
+      in_review:
+        confirm: Confirm you want to move %{report_financial_quarter} %{report_description} into review
+        complete: The report is now in review
   action:
     report:
       activate:
@@ -73,6 +78,12 @@ en:
           button: Confirm submission
       download:
         button: Download report as CSV file
+      in_review:
+        confirm:
+          button: Move into review
+        complete:
+          title: This report is now in review
+        button: Mark as in review
   activerecord:
     errors:
       models:

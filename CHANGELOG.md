@@ -264,7 +264,8 @@
   to the Report CSV as "Variance"
 - Find the next four financial quarters after this report's financial quarter. Find the 
   forecasted totals (planned disbursement totals) for those four future quarters and output
-  them to the report CSV  
+  them to the report CSV
+- Submitted reports can be moved into the review state    
 
 - `Call open date` and `Call close date` added to the create activity form, for levels C and D.
   This field is mandatory for new activities, but optional for activities marked as `ingested: true`

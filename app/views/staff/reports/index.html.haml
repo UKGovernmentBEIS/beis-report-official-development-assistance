@@ -28,4 +28,11 @@
 
       = render partial: "staff/shared/reports/table_submitted", locals: { reports: @submitted_report_presenters }
 
+  .govuk-grid-row.activity-page
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("table.title.report.in_review")
+
+      = render partial: "staff/shared/reports/table_in_review", locals: { reports: @in_review_report_presenters }
+
 
