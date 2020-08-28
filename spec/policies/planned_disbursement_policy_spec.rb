@@ -87,6 +87,13 @@ RSpec.describe PlannedDisbursementPolicy do
         it { is_expected.to forbid_action(:update) }
       end
     end
+
+    context "when the planned disbursement is associated to an approved report" do
+      let(:activity) { create(:project_activity, organisation: user.organisation) }
+      let(:report) { create(:report, :approved, organisation: activity.organisation, fund: activity.associated_fund) }
+      let(:planned_disbursement) { create(:planned_disbursement, parent_activity: activity, report: report) }
+      it { is_expected.to forbid_action(:update) }
+    end
   end
 
   describe "#destroy?" do
