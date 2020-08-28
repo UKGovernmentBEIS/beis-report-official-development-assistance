@@ -7,10 +7,11 @@ class Staff::ReportsController < Staff::BaseController
   include ActionController::Live
 
   def index
-    inactive_reports if current_user.service_owner?
-    current_user.service_owner? ? active_reports_with_organisations : active_reports
-    current_user.service_owner? ? submitted_reports_with_organisations : submitted_reports
-    current_user.service_owner? ? in_review_reports_with_organisations : in_review_reports
+    if current_user.service_owner?
+      reports_for_service_owner
+    else
+      reports_for_delivery_partner
+    end
   end
 
   def show
@@ -59,6 +60,21 @@ class Staff::ReportsController < Staff::BaseController
     params.require(:report).permit(:deadline, :description)
   end
 
+  def reports_for_service_owner
+    inactive_reports
+    active_reports_with_organisations
+    submitted_reports_with_organisations
+    in_review_reports_with_organisations
+    awaiting_changes_reports_with_organisations
+  end
+
+  def reports_for_delivery_partner
+    active_reports
+    submitted_reports
+    in_review_reports
+    awaiting_changes_reports
+  end
+
   def inactive_reports
     inactive_reports = policy_scope(Report.where(state: :inactive)).includes([:fund, :organisation])
     authorize inactive_reports
@@ -99,6 +115,18 @@ class Staff::ReportsController < Staff::BaseController
     in_review_reports = policy_scope(Report.where(state: :in_review)).includes(:fund)
     authorize in_review_reports
     @in_review_report_presenters = in_review_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def awaiting_changes_reports_with_organisations
+    awaiting_changes_reports = policy_scope(Report.where(state: :awaiting_changes)).includes([:fund, :organisation])
+    authorize awaiting_changes_reports
+    @awaiting_changes_report_presenters = awaiting_changes_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def awaiting_changes_reports
+    awaiting_changes_reports = policy_scope(Report.where(state: :awaiting_changes)).includes(:fund)
+    authorize awaiting_changes_reports
+    @awaiting_changes_report_presenters = awaiting_changes_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def send_csv

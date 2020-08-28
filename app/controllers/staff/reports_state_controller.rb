@@ -11,6 +11,8 @@ class Staff::ReportsStateController < Staff::BaseController
       confirm_submission
     when "submitted"
       confirm_in_review
+    when "in_review"
+      params[:request_changes] ? confirm_request_changes : confirm_approve
     else
       authorize report
       redirect_to report_path(report)
@@ -25,6 +27,8 @@ class Staff::ReportsStateController < Staff::BaseController
       change_report_state_to_submitted
     when "submitted"
       change_report_state_to_in_review
+    when "in_review"
+      params[:request_changes] ? change_report_state_to_awaiting_changes : change_report_state_to_approved
     else
       authorize report
       redirect_to report_path(report)
@@ -71,6 +75,26 @@ class Staff::ReportsStateController < Staff::BaseController
     report.create_activity key: "report.in_review", owner: current_user
     @report_presenter = ReportPresenter.new(report)
     render "staff/reports_state/review/complete"
+  end
+
+  private def confirm_request_changes
+    authorize report, :request_changes?
+    @report_presenter = ReportPresenter.new(report)
+    render "staff/reports_state/request_changes/confirm"
+  end
+
+  private def change_report_state_to_awaiting_changes
+    authorize report, :request_changes?
+    report.update!(state: :awaiting_changes)
+    report.create_activity key: "report.awaiting_changes", owner: current_user
+    @report_presenter = ReportPresenter.new(report)
+    render "staff/reports_state/request_changes/complete"
+  end
+
+  private def confirm_approve
+  end
+
+  private def change_report_state_to_approved
   end
 
   private def report
