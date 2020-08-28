@@ -267,6 +267,7 @@
   them to the report CSV
 - Submitted reports can be moved into the review state 
 - Reports in review can be moved into the awaiting changes state   
+- Transactions & Planned Disbursements cannot be edited if they are associated with an approved Report
 
 - `Call open date` and `Call close date` added to the create activity form, for levels C and D.
   This field is mandatory for new activities, but optional for activities marked as `ingested: true`

@@ -10,5 +10,10 @@ FactoryBot.define do
       state { :active }
       deadline { 1.year.from_now }
     end
+
+    trait :approved do
+      state { :approved }
+      deadline { 1.day.from_now }
+    end
   end
 end
