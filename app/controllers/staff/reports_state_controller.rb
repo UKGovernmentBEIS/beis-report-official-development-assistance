@@ -92,9 +92,17 @@ class Staff::ReportsStateController < Staff::BaseController
   end
 
   private def confirm_approve
+    authorize report, :approve?
+    @report_presenter = ReportPresenter.new(report)
+    render "staff/reports_state/approve/confirm"
   end
 
   private def change_report_state_to_approved
+    authorize report, :approve?
+    report.update!(state: :approved)
+    report.create_activity key: "report.approve", owner: current_user
+    @report_presenter = ReportPresenter.new(report)
+    render "staff/reports_state/approve/complete"
   end
 
   private def report

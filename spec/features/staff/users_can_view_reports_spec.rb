@@ -165,6 +165,17 @@ RSpec.feature "Users can view reports" do
         expect(page).to have_content report.description
       end
     end
+
+    context "when there are approved reports" do
+      scenario "they see their own reports which are approved" do
+        report = create(:report, organisation: delivery_partner_user.organisation, state: :approved)
+
+        visit reports_path
+
+        expect(page).to have_content t("table.title.report.approved")
+        expect(page).to have_content report.description
+      end
+    end
   end
 
   context "when there are no active reports" do
