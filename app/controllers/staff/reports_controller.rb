@@ -66,6 +66,7 @@ class Staff::ReportsController < Staff::BaseController
     submitted_reports_with_organisations
     in_review_reports_with_organisations
     awaiting_changes_reports_with_organisations
+    approved_reports_with_organisations
   end
 
   def reports_for_delivery_partner
@@ -73,6 +74,7 @@ class Staff::ReportsController < Staff::BaseController
     submitted_reports
     in_review_reports
     awaiting_changes_reports
+    approved_reports
   end
 
   def inactive_reports
@@ -127,6 +129,18 @@ class Staff::ReportsController < Staff::BaseController
     awaiting_changes_reports = policy_scope(Report.where(state: :awaiting_changes)).includes(:fund)
     authorize awaiting_changes_reports
     @awaiting_changes_report_presenters = awaiting_changes_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def approved_reports_with_organisations
+    approved_reports = policy_scope(Report.where(state: :approved)).includes([:fund, :organisation])
+    authorize approved_reports
+    @approved_report_presenters = approved_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def approved_reports
+    approved_reports = policy_scope(Report.where(state: :approved)).includes(:fund)
+    authorize approved_reports
+    @approved_report_presenters = approved_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def send_csv
