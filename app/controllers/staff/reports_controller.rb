@@ -17,14 +17,13 @@ class Staff::ReportsController < Staff::BaseController
   def show
     @report = Report.find(id)
     authorize @report
+
     @report_presenter = ReportPresenter.new(@report)
+    @report_activities = level_c_and_d_activities_for_report(report: @report)
 
     respond_to do |format|
       format.html
       format.csv do
-        fund = @report.fund
-        @projects = Activity.project.where(organisation: @report.organisation).select { |activity| activity.associated_fund == fund }
-        @third_party_projects = Activity.third_party_project.where(organisation: @report.organisation).select { |activity| activity.associated_fund == fund }
         send_csv
       end
     end
@@ -147,12 +146,14 @@ class Staff::ReportsController < Staff::BaseController
     response.headers["Content-Type"] = "text/csv"
     response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(@report.description)}.csv"
     response.stream.write ExportActivityToCsv.new(report: @report).headers
-    @projects.each do |project|
-      response.stream.write ExportActivityToCsv.new(activity: project, report: @report).call
-    end
-    @third_party_projects.each do |project|
-      response.stream.write ExportActivityToCsv.new(activity: project, report: @report).call
+    @report_activities.each do |activity|
+      response.stream.write ExportActivityToCsv.new(activity: activity, report: @report).call
     end
     response.stream.close
+  end
+
+  def level_c_and_d_activities_for_report(report:)
+    return [] if report.nil?
+    Activity.where(level: :project).or(Activity.where(level: :third_party_project)).where(organisation: report.organisation).select { |activity| activity.associated_fund == report.fund }
   end
 end
