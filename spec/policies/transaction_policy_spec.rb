@@ -60,6 +60,12 @@ RSpec.describe TransactionPolicy do
       let(:transaction) { create(:transaction, parent_activity: activity, report: report) }
       it { is_expected.to forbid_action(:update) }
     end
+
+    context "when the transaction is associated to an approved report" do
+      let(:report) { create(:report, :approved, organisation: activity.organisation, fund: activity) }
+      let(:transaction) { create(:transaction, parent_activity: activity, report: report) }
+      it { is_expected.to forbid_action(:update) }
+    end
   end
 
   describe "#destroy?" do

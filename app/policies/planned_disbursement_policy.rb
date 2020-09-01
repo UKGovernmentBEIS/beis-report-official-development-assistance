@@ -6,6 +6,7 @@ class PlannedDisbursementPolicy < ApplicationPolicy
 
   def update?
     return false if record.parent_activity.fund? || record.parent_activity.programme?
+    return false if associated_report&.approved?
     Pundit.policy!(user, record.parent_activity).update? && !!associated_report&.active?
   end
 

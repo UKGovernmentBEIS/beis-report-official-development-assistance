@@ -8,6 +8,7 @@ en:
         submitted: Submitted reports
         in_review: Reports in review
         awaiting_changes: Reports awaiting changes
+        approved: Approved reports
     header:
       report:
         financial_quarter: Financial quarter
@@ -62,6 +63,9 @@ en:
       request_changes:
         confirm: Confirm you want to request changes for %{report_financial_quarter} %{report_description}
         complete: This report is now awaiting changes
+      approve:
+        confirm: Confirm approval for %{report_financial_quarter} %{report_description}
+        complete: This report is approved
   action:
     report:
       activate:
@@ -94,6 +98,12 @@ en:
           button: Confirm request
         complete:
           title: This report is now awaiting changes
+      approve:
+        complete:
+          title: This report is now approved
+        button: Approve
+        confirm:
+          button: Confirm approval
   activerecord:
     errors:
       models:
