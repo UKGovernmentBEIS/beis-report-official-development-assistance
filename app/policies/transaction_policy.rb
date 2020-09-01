@@ -4,6 +4,7 @@ class TransactionPolicy < ApplicationPolicy
   end
 
   def update?
+    return false if associated_report&.approved?
     Pundit.policy!(user, record.parent_activity).update? && !!associated_report&.active?
   end
 
