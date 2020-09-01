@@ -112,6 +112,35 @@ RSpec.feature "Users can view reports" do
         expect(page).to have_content report.description
       end
 
+      scenario "the report shows the total forecasted and actual spend and the variance" do
+        quarter_one_2019 = Date.parse("2019-4-1")
+        quarter_two_2019 = Date.parse("2019-7-1")
+
+        activity = create(:project_activity, organisation: delivery_partner_user.organisation)
+
+        report = create(:report, :active, organisation: delivery_partner_user.organisation, fund: activity.associated_fund, financial_quarter: 1, financial_year: 2019, created_at: quarter_one_2019)
+        report_presenter = ReportPresenter.new(report)
+
+        _forecasted_value = create(:planned_disbursement, parent_activity: activity, period_start_date: quarter_one_2019, value: 1000)
+        _actual_value = create(:transaction, parent_activity: activity, report: report, date: quarter_one_2019, value: 1100)
+
+        travel_to quarter_two_2019 do
+          visit reports_path
+          within "##{report.id}" do
+            click_on t("default.link.show")
+          end
+
+          expect(page).to have_content t("table.header.activity.identifier")
+          expect(page).to have_content t("table.header.activity.forecasted_spend_for_quarter", financial_quarter_and_year: report_presenter.financial_quarter_and_year)
+          within "##{activity.id}" do
+            expect(page).to have_content "1000.00"
+            expect(page).to have_content "1100.00"
+            expect(page).to have_content "100.00"
+            expect(page).to have_link t("default.link.view"), href: organisation_activity_path(activity.organisation, activity)
+          end
+        end
+      end
+
       scenario "they can view their own submitted reports" do
         report = create(:report, state: :submitted, organisation: delivery_partner_user.organisation)
 
