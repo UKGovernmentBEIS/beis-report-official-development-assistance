@@ -22,7 +22,9 @@ class Staff::ReportsController < Staff::BaseController
     @report_activities = level_c_and_d_activities_for_report(report: @report)
 
     respond_to do |format|
-      format.html
+      format.html do
+        @activities = @report_activities.map { |activity| ActivityPresenter.new(activity) }
+      end
       format.csv do
         send_csv
       end
@@ -153,7 +155,7 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def level_c_and_d_activities_for_report(report:)
-    return [] if report.nil?
-    Activity.where(level: :project).or(Activity.where(level: :third_party_project)).where(organisation: report.organisation).select { |activity| activity.associated_fund == report.fund }
+    return Activity.none if report.nil?
+    Activity.where(level: [:project, :third_party_project], organisation: report.organisation).select { |activity| activity.associated_fund == report.fund }
   end
 end
