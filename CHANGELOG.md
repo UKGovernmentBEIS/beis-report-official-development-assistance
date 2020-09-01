@@ -278,6 +278,7 @@
 - Forecasted and actual spend and variance is shown on the report show page
 - Ingest RS GCRF data from IATI
 - Ingest BA GCRF data from IATI
+- Ingest RAEng GCRF data from IATI
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...HEAD
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14
