@@ -6,49 +6,69 @@ RSpec.feature "Users can submit a report" do
       authenticate!(user: delivery_partner_user)
     end
 
-    scenario "they can submit a report" do
-      report = create(:report, :active, organisation: delivery_partner_user.organisation)
-      report_presenter = ReportPresenter.new(report)
+    context "when the report is active" do
+      scenario "they can submit a report" do
+        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+        report_presenter = ReportPresenter.new(report)
 
-      visit report_path(report)
-      click_link t("action.report.submit.button")
-
-      click_button "Confirm submission"
-
-      expect(page).to have_content t("action.report.submit.complete.title")
-      expect(page).to have_content t("action.report.submit.complete.title",
-        report_description: report_presenter.description,
-        report_financial_quater_and_year: report_presenter.financial_quarter_and_year)
-      expect(report.reload.state).to eql "submitted"
-    end
-
-    scenario "a report submission is recorded in the audit log" do
-      report = create(:report, state: :active, organisation: delivery_partner_user.organisation)
-      PublicActivity.with_tracking do
-        visit reports_path
-        within "##{report.id}" do
-          click_on t("default.link.view")
-        end
+        visit report_path(report)
         click_link t("action.report.submit.button")
+
         click_button t("action.report.submit.confirm.button")
 
-        auditable_events = PublicActivity::Activity.all
-        expect(auditable_events.last.key).to include("report.submitted")
-        expect(auditable_events.last.owner_id).to include delivery_partner_user.id
-        expect(auditable_events.last.trackable_id).to include report.id
+        expect(page).to have_content t("action.report.submit.complete.title",
+          report_description: report_presenter.description,
+          report_financial_quater_and_year: report_presenter.financial_quarter_and_year)
+        expect(report.reload.state).to eql "submitted"
+      end
+
+      scenario "a report submission is recorded in the audit log" do
+        report = create(:report, state: :active, organisation: delivery_partner_user.organisation)
+        PublicActivity.with_tracking do
+          visit reports_path
+          within "##{report.id}" do
+            click_on t("default.link.view")
+          end
+          click_link t("action.report.submit.button")
+          click_button t("action.report.submit.confirm.button")
+
+          auditable_events = PublicActivity::Activity.all
+          expect(auditable_events.last.key).to include("report.submitted")
+          expect(auditable_events.last.owner_id).to include delivery_partner_user.id
+          expect(auditable_events.last.trackable_id).to include report.id
+        end
       end
     end
 
-    scenario "they cannot submit a submitted report" do
-      report = create(:report, state: :submitted, organisation: delivery_partner_user.organisation)
+    context "when the report is awaiting changes" do
+      scenario "they can submit a report" do
+        report = create(:report, :awaiting_changes, organisation: delivery_partner_user.organisation)
+        report_presenter = ReportPresenter.new(report)
 
-      visit report_path(report)
+        visit report_path(report)
+        click_link t("action.report.submit.button")
 
-      expect(page).not_to have_link t("action.report.submit.button"), href: edit_report_state_path(report)
+        click_button t("action.report.submit.confirm.button")
 
-      visit edit_report_state_path(report)
+        expect(page).to have_content t("action.report.submit.complete.title",
+          report_description: report_presenter.description,
+          report_financial_quater_and_year: report_presenter.financial_quarter_and_year)
+        expect(report.reload.state).to eql "submitted"
+      end
+    end
 
-      expect(page.status_code).to eql 401
+    context "when the report is submitted" do
+      scenario "they cannot submit a submitted report" do
+        report = create(:report, state: :submitted, organisation: delivery_partner_user.organisation)
+
+        visit report_path(report)
+
+        expect(page).not_to have_link t("action.report.submit.button"), href: edit_report_state_path(report)
+
+        visit edit_report_state_path(report)
+
+        expect(page.status_code).to eql 401
+      end
     end
   end
 
