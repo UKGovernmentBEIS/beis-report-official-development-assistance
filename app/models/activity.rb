@@ -180,6 +180,14 @@ class Activity < ApplicationRecord
     end
   end
 
+  def roda_identifier_compound=(roda_identifier)
+    if roda_identifier_compound.blank?
+      super
+    else
+      raise TypeError, "Activity #{id} already has a compound RODA identifier"
+    end
+  end
+
   private def roda_identifier_fragment_chain
     activity_chain = parent_activities + [self]
     activity_chain.map(&:roda_identifier_fragment)
