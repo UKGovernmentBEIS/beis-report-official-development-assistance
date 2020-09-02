@@ -9,6 +9,7 @@ class Activity < ApplicationRecord
     :level_step,
     :parent_step,
     :identifier_step,
+    :roda_identifier_step,
     :purpose_step,
     :sector_category_step,
     :sector_step,
@@ -22,11 +23,12 @@ class Activity < ApplicationRecord
     :aid_type,
   ]
 
-  strip_attributes only: [:delivery_partner_identifier]
+  strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
 
   validates :level, presence: true, on: :level_step
   validates :parent, presence: true, on: :parent_step, unless: proc { |activity| activity.fund? }
   validates :delivery_partner_identifier, presence: true, on: :identifier_step
+  validates_with RodaIdentifierValidator, on: :roda_identifier_step
   validates :title, :description, presence: true, on: :purpose_step
   validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
@@ -39,6 +41,7 @@ class Activity < ApplicationRecord
   validates :aid_type, presence: true, on: :aid_type_step
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
+  validates :roda_identifier_compound, uniqueness: true, allow_nil: true
   validates :planned_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.actual_start_date.present? }
   validates :actual_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.planned_start_date.present? }
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
@@ -118,7 +121,7 @@ class Activity < ApplicationRecord
   end
 
   def parent_activities
-    ancestors.reverse
+    @parent_activities ||= ancestors.reverse
   end
 
   def associated_fund
@@ -153,6 +156,41 @@ class Activity < ApplicationRecord
     parent_activities.each_with_object([reporting_organisation.iati_reference]) { |parent, parent_identifiers|
       parent_identifiers << parent.delivery_partner_identifier
     }.push(delivery_partner_identifier).join("-")
+  end
+
+  def can_set_roda_identifier?
+    identifier_fragments = roda_identifier_fragment_chain
+    identifier_fragments[0..-2].all?(&:present?) && identifier_fragments.last.blank?
+  end
+
+  def cache_roda_identifier
+    identifier_fragments = roda_identifier_fragment_chain
+    return false unless identifier_fragments.all?(&:present?)
+
+    compound = identifier_fragments[0..2].join("-")
+    compound << identifier_fragments[3] if identifier_fragments.size == 4
+
+    self.roda_identifier_compound = compound
+    true
+  end
+
+  def cache_roda_identifier!
+    unless cache_roda_identifier
+      raise TypeError, "Attempted to generate a RODA ID but some parent identifiers are blank"
+    end
+  end
+
+  def roda_identifier_compound=(roda_identifier)
+    if roda_identifier_compound.blank?
+      super
+    else
+      raise TypeError, "Activity #{id} already has a compound RODA identifier"
+    end
+  end
+
+  private def roda_identifier_fragment_chain
+    activity_chain = parent_activities + [self]
+    activity_chain.map(&:roda_identifier_fragment)
   end
 
   def actual_total_for_report_financial_quarter(report:)

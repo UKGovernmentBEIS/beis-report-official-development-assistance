@@ -10,6 +10,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :level,
     :parent,
     :identifier,
+    :roda_identifier,
     :purpose,
     :sector_category,
     :sector,
@@ -34,6 +35,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     case step
     when :parent
       skip_step if @activity.fund?
+    when :roda_identifier
+      skip_step unless @activity.can_set_roda_identifier?
     when :blank
       skip_step
     when :programme_status
@@ -74,6 +77,9 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :identifier
       @activity.assign_attributes(delivery_partner_identifier: delivery_partner_identifier)
       add_transparency_identifier
+    when :roda_identifier
+      @activity.assign_attributes(roda_identifier_fragment: roda_identifier_fragment)
+      @activity.cache_roda_identifier!
     when :purpose
       @activity.assign_attributes(title: title, description: description)
     when :sector_category
@@ -133,6 +139,10 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def delivery_partner_identifier
     params.require(:activity).permit(:delivery_partner_identifier).fetch("delivery_partner_identifier", nil)
+  end
+
+  def roda_identifier_fragment
+    params.require(:activity).permit(:roda_identifier_fragment).fetch("roda_identifier_fragment", nil)
   end
 
   def sector_category

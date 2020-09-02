@@ -2,6 +2,8 @@ FactoryBot.define do
   factory :activity do
     title { Faker::Lorem.sentence }
     delivery_partner_identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
+    roda_identifier_fragment { Faker::Alphanumeric.alpha(number: 5) }
+    roda_identifier_compound { nil }
     description { Faker::Lorem.paragraph }
     sector_category { "111" }
     sector { "11110" }
@@ -22,6 +24,10 @@ FactoryBot.define do
 
     association :organisation, factory: :organisation
     association :reporting_organisation, factory: :beis_organisation
+
+    before(:create) do |activity|
+      activity.cache_roda_identifier
+    end
 
     trait :with_report do
       after(:create) do |activity|
@@ -105,8 +111,29 @@ FactoryBot.define do
   end
 
   trait :at_identifier_step do
-    delivery_partner_identifier { nil }
     form_state { "identifier" }
+    delivery_partner_identifier { nil }
+    roda_identifier_fragment { nil }
+    title { nil }
+    description { nil }
+    sector_category { nil }
+    sector { nil }
+    call_present { nil }
+    programme_status { nil }
+    planned_start_date { nil }
+    planned_end_date { nil }
+    actual_start_date { nil }
+    actual_end_date { nil }
+    geography { nil }
+    recipient_region { nil }
+    recipient_country { nil }
+    flow { nil }
+    aid_type { nil }
+  end
+
+  trait :at_roda_identifier_step do
+    form_state { "roda_identifier" }
+    roda_identifier_fragment { nil }
     title { nil }
     description { nil }
     sector_category { nil }
@@ -125,7 +152,7 @@ FactoryBot.define do
   end
 
   trait :at_purpose_step do
-    form_state { "identifier" }
+    form_state { "purpose" }
     title { nil }
     description { nil }
     sector { nil }
