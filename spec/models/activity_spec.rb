@@ -854,6 +854,15 @@ RSpec.describe Activity, type: :model do
     let!(:project) { create(:project_activity, parent: programme, roda_identifier_fragment: "Level/C") }
     let!(:third_party_project) { create(:third_party_project_activity, parent: project, roda_identifier_fragment: "Level/D") }
 
+    before do
+      project.write_attribute(:roda_identifier_compound, nil)
+      third_party_project.write_attribute(:roda_identifier_compound, nil)
+    end
+
+    it "raises an exception if roda_identifier_compound is overwritten" do
+      expect { fund.cache_roda_identifier! }.to raise_error(TypeError, "Activity #{fund.id} already has a compound RODA identifier")
+    end
+
     it "caches the compound RODA identifier on a project" do
       project.cache_roda_identifier!
       expect(project.roda_identifier_compound).to eq("Level/A-Level/B-Level/C")
