@@ -68,6 +68,16 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.recipient_country.#{super}")
   end
 
+  def requires_additional_benefitting_countries
+    return if super.nil?
+    I18n.t("activity.requires_additional_benefitting_countries.#{super}")
+  end
+
+  def intended_beneficiaries
+    return if super.blank?
+    super.map { |item| I18n.t("activity.recipient_country.#{item}") }.to_sentence
+  end
+
   def flow
     return if super.blank?
     I18n.t("activity.flow.#{super}")

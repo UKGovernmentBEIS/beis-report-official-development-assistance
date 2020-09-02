@@ -22,8 +22,8 @@ RSpec.feature "Users can provide the geography for an activity" do
         select "Uganda"
         click_button t("form.button.activity.submit")
 
-        expect(page).to have_content t("form.label.activity.flow")
-        expect(page).to have_current_path(activity_step_path(activity, :flow))
+        expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
+        expect(page).to have_current_path(activity_step_path(activity, :requires_additional_benefitting_countries))
       end
 
       scenario "the region gets set in the background according to the selected country" do
@@ -52,8 +52,8 @@ RSpec.feature "Users can provide the geography for an activity" do
         select "Developing countries, unspecified", from: "activity[recipient_region]"
         click_button t("form.button.activity.submit")
 
-        expect(page).to have_content t("form.label.activity.flow")
-        expect(page).to have_current_path(activity_step_path(activity, :flow))
+        expect(page).to have_content t("form.label.activity.intended_beneficiaries")
+        expect(page).to have_current_path(activity_step_path(activity, :intended_beneficiaries))
       end
     end
 
