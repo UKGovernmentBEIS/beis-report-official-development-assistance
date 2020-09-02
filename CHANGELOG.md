@@ -274,6 +274,7 @@
 - `Create activity` buttons that were not changed on previous PR, are changed to
   `Add activity` now.
 - RODA Identifiers can be added to activities on creation and when updating
+- Reports in 'awaiting changes' can be submitted.
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...HEAD
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14

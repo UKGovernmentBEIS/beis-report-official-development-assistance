@@ -13,6 +13,8 @@ class Staff::ReportsStateController < Staff::BaseController
       confirm_in_review
     when "in_review"
       params[:request_changes] ? confirm_request_changes : confirm_approve
+    when "awaiting_changes"
+      confirm_submission
     else
       authorize report
       redirect_to report_path(report)
@@ -29,6 +31,8 @@ class Staff::ReportsStateController < Staff::BaseController
       change_report_state_to_in_review
     when "in_review"
       params[:request_changes] ? change_report_state_to_awaiting_changes : change_report_state_to_approved
+    when "awaiting_changes"
+      change_report_state_to_submitted
     else
       authorize report
       redirect_to report_path(report)
