@@ -225,6 +225,34 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#requires_additional_benefitting_countries" do
+    context "when requires_additional_benefitting_countries exists" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, requires_additional_benefitting_countries: "true")
+        result = described_class.new(activity)
+        expect(result.requires_additional_benefitting_countries).to eq("Yes")
+      end
+    end
+
+    context "when requires_additional_benefitting_countries is not required" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, requires_additional_benefitting_countries: "false")
+        result = described_class.new(activity)
+        expect(result.requires_additional_benefitting_countries).to eq("No")
+      end
+    end
+  end
+
+  describe "#intended_beneficiaries" do
+    context "when there are other benefitting countries" do
+      it "returns the locale value for the codes of the countries" do
+        activity = build(:activity, intended_beneficiaries: ["AR", "EC", "BR"])
+        result = described_class.new(activity).intended_beneficiaries
+        expect(result).to eql("Argentina, Ecuador, and Brazil")
+      end
+    end
+  end
+
   describe "#flow" do
     context "when flow aid_type exists" do
       it "returns the locale value for the code" do

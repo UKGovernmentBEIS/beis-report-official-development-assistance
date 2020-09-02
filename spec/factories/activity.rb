@@ -15,6 +15,8 @@ FactoryBot.define do
     geography { :recipient_region }
     recipient_region { "489" }
     recipient_country { nil }
+    requires_additional_benefitting_countries { true }
+    intended_beneficiaries { ["CU", "DM", "DO"] }
     flow { "10" }
     aid_type { "A01" }
     level { :fund }
@@ -147,6 +149,7 @@ FactoryBot.define do
     geography { nil }
     recipient_region { nil }
     recipient_country { nil }
+    intended_beneficiaries { nil }
     flow { nil }
     aid_type { nil }
   end
@@ -165,6 +168,7 @@ FactoryBot.define do
     geography { nil }
     recipient_region { nil }
     recipient_country { nil }
+    intended_beneficiaries { nil }
     flow { nil }
     aid_type { nil }
   end
@@ -172,6 +176,7 @@ FactoryBot.define do
   trait :at_region_step do
     form_state { "region" }
     recipient_country { nil }
+    intended_beneficiaries { nil }
     flow { nil }
     aid_type { nil }
   end
@@ -180,6 +185,7 @@ FactoryBot.define do
     form_state { "geography" }
     recipient_region { nil }
     recipient_country { nil }
+    intended_beneficiaries { nil }
     flow { nil }
     aid_type { nil }
   end
@@ -202,6 +208,7 @@ FactoryBot.define do
     geography { nil }
     recipient_region { nil }
     recipient_country { nil }
+    intended_beneficiaries { nil }
     flow { nil }
     aid_type { nil }
     extending_organisation_id { nil }
@@ -225,6 +232,7 @@ FactoryBot.define do
     geography { nil }
     recipient_region { nil }
     recipient_country { nil }
+    intended_beneficiaries { nil }
     flow { nil }
     aid_type { nil }
     extending_organisation_id { nil }
@@ -246,6 +254,7 @@ FactoryBot.define do
     geography { nil }
     recipient_region { nil }
     recipient_country { nil }
+    intended_beneficiaries { nil }
     flow { nil }
     aid_type { nil }
     extending_organisation_id { nil }

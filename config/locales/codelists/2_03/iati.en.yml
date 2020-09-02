@@ -682,6 +682,9 @@ en:
       '09': Completed
       '10': Stopped
       '11': Cancelled
+    requires_additional_benefitting_countries:
+      'true': 'Yes'
+      'false': 'No'
     status:
       '1': Pipeline/identification
       '2': Implementation

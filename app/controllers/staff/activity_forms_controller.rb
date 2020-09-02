@@ -21,6 +21,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     :geography,
     :region,
     :country,
+    :requires_additional_benefitting_countries,
+    :intended_beneficiaries,
     :flow,
     :aid_type,
   ]
@@ -49,6 +51,10 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.recipient_country?
     when :country
       skip_step if @activity.recipient_region?
+    when :requires_additional_benefitting_countries
+      skip_step if @activity.recipient_region?
+    when :intended_beneficiaries
+      skip_step unless @activity.requires_intended_beneficiaries?
     end
 
     render_wizard
@@ -109,6 +115,10 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :country
       inferred_region = country_to_region_mapping.find { |pair| pair["country"] == recipient_country }["region"]
       @activity.assign_attributes(recipient_region: inferred_region, recipient_country: recipient_country)
+    when :requires_additional_benefitting_countries
+      @activity.assign_attributes(requires_additional_benefitting_countries: requires_additional_benefitting_countries)
+    when :intended_beneficiaries
+      @activity.assign_attributes(intended_beneficiaries: intended_beneficiaries.drop(1))
     when :flow
       @activity.assign_attributes(flow: flow)
     when :aid_type
@@ -208,6 +218,14 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def recipient_country
     params.require(:activity).permit(:recipient_country).fetch("recipient_country", nil)
+  end
+
+  def requires_additional_benefitting_countries
+    params.require(:activity).permit(:requires_additional_benefitting_countries).fetch("requires_additional_benefitting_countries", nil)
+  end
+
+  def intended_beneficiaries
+    params.require(:activity).permit(intended_beneficiaries: []).fetch("intended_beneficiaries", [])
   end
 
   def flow

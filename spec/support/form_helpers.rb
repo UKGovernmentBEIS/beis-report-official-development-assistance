@@ -28,6 +28,7 @@ module FormHelpers
     actual_end_date_year: "2020",
     geography: "recipient_region",
     recipient_region: "Developing countries, unspecified",
+    intended_beneficiaries: "Haiti",
     flow: "ODA",
     aid_type: "A01",
     level:,
@@ -151,6 +152,16 @@ module FormHelpers
     select recipient_region, from: "activity[recipient_region]"
     click_button t("form.button.activity.submit")
 
+    if geography == "recipient_country"
+      expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
+      choose "Yes"
+      click_button t("form.button.activity.submit")
+    end
+
+    expect(page).to have_content t("form.label.activity.intended_beneficiaries")
+    check intended_beneficiaries
+    click_button t("form.button.activity.submit")
+
     expect(page).to have_content t("form.label.activity.flow")
     expect(page.html).to include t("form.hint.activity.flow")
     select flow, from: "activity[flow]"
@@ -174,6 +185,7 @@ module FormHelpers
       expect(page).to have_content t("activity.programme_status.#{programme_status}")
     end
     expect(page).to have_content recipient_region
+    expect(page).to have_content intended_beneficiaries
     expect(page).to have_content flow
     expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
     expect(page).to have_content localise_date_from_input_fields(

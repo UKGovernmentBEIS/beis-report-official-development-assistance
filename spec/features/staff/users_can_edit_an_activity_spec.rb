@@ -190,7 +190,7 @@ RSpec.feature "Users can edit an activity" do
           select recipient_region, from: "activity[recipient_region]"
           click_button t("form.button.activity.submit")
 
-          expect(page).to have_content t("form.label.activity.flow")
+          expect(page).to have_content t("form.label.activity.intended_beneficiaries")
           expect(page).not_to have_content activity.title
         end
 
@@ -472,6 +472,15 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     click_on(t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :geography)
+    )
+  end
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
+
+  within(".intended_beneficiaries") do
+    click_on(t("default.link.edit"))
+    expect(page).to have_current_path(
+      activity_step_path(activity, :intended_beneficiaries)
     )
   end
   click_on(t("default.link.back"))

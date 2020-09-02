@@ -243,6 +243,14 @@ RSpec.feature "Users can create a fund level activity" do
         # region has the default value already selected
         click_button t("form.button.activity.submit")
 
+        expect(page).to have_content t("form.label.activity.intended_beneficiaries")
+
+        # Don't select any intended beneficiaries
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.intended_beneficiaries.blank")
+
+        check "Haiti"
+        click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.label.activity.flow")
 
         # Flow has a default and can't be set to blank so we skip
