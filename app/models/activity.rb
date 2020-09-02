@@ -42,6 +42,7 @@ class Activity < ApplicationRecord
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier_compound, uniqueness: true, allow_nil: true
+  validates :transparency_identifier, uniqueness: true, allow_nil: true
   validates :planned_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.actual_start_date.present? }
   validates :actual_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.planned_start_date.present? }
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
