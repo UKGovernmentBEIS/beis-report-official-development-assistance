@@ -26,7 +26,7 @@ RSpec.feature "Users can create a project" do
 
       scenario "the activity saves its identifier as read-only `transparency_identifier`" do
         project = create(:project_activity, organisation: user.organisation)
-        identifier = "a-third-party-project"
+        identifier = "3rd-party-proj"
 
         visit activities_path
 
@@ -35,10 +35,10 @@ RSpec.feature "Users can create a project" do
 
         click_on(t("page_content.organisation.button.create_activity"))
 
-        fill_in_activity_form(level: "third_party_project", delivery_partner_identifier: identifier, parent: project)
+        fill_in_activity_form(level: "third_party_project", roda_identifier_fragment: identifier, parent: project)
 
-        activity = Activity.find_by(delivery_partner_identifier: identifier)
-        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{project.parent.parent.delivery_partner_identifier}-#{project.parent.delivery_partner_identifier}-#{project.delivery_partner_identifier}-#{activity.delivery_partner_identifier}")
+        activity = Activity.find_by(roda_identifier_fragment: identifier)
+        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{project.parent.parent.roda_identifier_fragment}-#{project.parent.roda_identifier_fragment}-#{project.roda_identifier_fragment}#{activity.roda_identifier_fragment}")
       end
 
       scenario "third party project creation is tracked with public_activity" do

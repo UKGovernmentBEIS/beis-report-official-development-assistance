@@ -153,12 +153,6 @@ class Activity < ApplicationRecord
     end
   end
 
-  def iati_identifier
-    parent_activities.each_with_object([reporting_organisation.iati_reference]) { |parent, parent_identifiers|
-      parent_identifiers << parent.delivery_partner_identifier
-    }.push(delivery_partner_identifier).join("-")
-  end
-
   def can_set_roda_identifier?
     identifier_fragments = roda_identifier_fragment_chain
     identifier_fragments[0..-2].all?(&:present?) && identifier_fragments.last.blank?
@@ -172,6 +166,12 @@ class Activity < ApplicationRecord
     compound << identifier_fragments[3] if identifier_fragments.size == 4
 
     self.roda_identifier_compound = compound
+
+    self.transparency_identifier ||= [
+      reporting_organisation.iati_reference,
+      compound.gsub(/[^a-z0-9-]+/i, "-"),
+    ].join("-")
+
     true
   end
 

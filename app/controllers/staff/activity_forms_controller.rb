@@ -76,7 +76,6 @@ class Staff::ActivityFormsController < Staff::BaseController
       end
     when :identifier
       @activity.assign_attributes(delivery_partner_identifier: delivery_partner_identifier)
-      add_transparency_identifier
     when :roda_identifier
       @activity.assign_attributes(roda_identifier_fragment: roda_identifier_fragment)
       @activity.cache_roda_identifier!
@@ -244,9 +243,5 @@ class Staff::ActivityFormsController < Staff::BaseController
   def country_to_region_mapping
     yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.yml"))
     yaml["data"]
-  end
-
-  def add_transparency_identifier
-    @activity.update(transparency_identifier: @activity.iati_identifier)
   end
 end
