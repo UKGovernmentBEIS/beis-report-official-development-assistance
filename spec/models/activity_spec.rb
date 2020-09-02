@@ -123,6 +123,162 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    describe "#roda_identifier_fragment" do
+      context "for a fund" do
+        let(:fund) { create(:fund_activity) }
+
+        it "is valid if blank" do
+          fund.roda_identifier_fragment = ""
+          expect(fund).to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid when containing certain punctuation" do
+          fund.roda_identifier_fragment = "A-A_A/A\\123"
+          expect(fund).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid when containing other punctuation" do
+          fund.roda_identifier_fragment = "A!A"
+          expect(fund).not_to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid up to 16 chars" do
+          fund.roda_identifier_fragment = "A" * 16
+          expect(fund).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid above 16 chars" do
+          fund.roda_identifier_fragment = "A" * 17
+          expect(fund).not_to be_valid(:roda_identifier_step)
+        end
+      end
+
+      context "for a programme" do
+        let(:fund) { create(:fund_activity) }
+        let(:programme) { create(:programme_activity, parent: fund) }
+
+        before do
+          fund.update!(roda_identifier_fragment: "A" * 6)
+        end
+
+        it "is valid if blank" do
+          programme.roda_identifier_fragment = ""
+          expect(programme).to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid when containing certain punctuation" do
+          programme.roda_identifier_fragment = "B-B_B/B\\123"
+          expect(programme).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid when containing other punctuation" do
+          programme.roda_identifier_fragment = "B!B"
+          expect(programme).not_to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid if 'A-B' is up to 18 chars" do
+          programme.roda_identifier_fragment = "B" * 11
+          expect(programme).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid if 'A-B' exceeds 18 chars" do
+          programme.roda_identifier_fragment = "B" * 12
+          expect(programme).not_to be_valid(:roda_identifier_step)
+        end
+
+        context "when there are other activities with similar identifiers" do
+          let!(:fund_a) { create(:fund_activity, roda_identifier_fragment: "AAA") }
+          let!(:programme_a) { create(:programme_activity, parent: fund_a, roda_identifier_fragment: "BBB-CCC") }
+
+          let!(:fund_b) { create(:fund_activity, roda_identifier_fragment: "AAA-BBB") }
+
+          it "is invalid if it has the same fragment identifier as a sibling activity" do
+            programme = build(:programme_activity, parent: fund_a, roda_identifier_fragment: "BBB-CCC")
+            programme.cache_roda_identifier!
+
+            expect(programme).not_to be_valid
+          end
+
+          it "is invalid if it has the same compound identifier as a cousin activity" do
+            programme = build(:programme_activity, parent: fund_b, roda_identifier_fragment: "CCC")
+            programme.cache_roda_identifier!
+
+            expect(programme).not_to be_valid
+          end
+
+          it "is valid if its identifier is different to all others" do
+            programme = build(:programme_activity, parent: fund_b, roda_identifier_fragment: "VALID")
+            programme.cache_roda_identifier!
+
+            expect(programme).to be_valid
+          end
+        end
+      end
+
+      context "for a project" do
+        let(:project) { create(:project_activity) }
+
+        it "is valid if blank" do
+          project.roda_identifier_fragment = ""
+          expect(project).to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid when containing certain punctuation" do
+          project.roda_identifier_fragment = "C-C_C/C\\123"
+          expect(project).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid when containing other punctuation" do
+          project.roda_identifier_fragment = "C!C"
+          expect(project).not_to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid up to 20 chars" do
+          project.roda_identifier_fragment = "C" * 20
+          expect(project).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid above 20 chars" do
+          project.roda_identifier_fragment = "C" * 21
+          expect(project).not_to be_valid(:roda_identifier_step)
+        end
+      end
+
+      context "for a third-party project" do
+        let(:project) { create(:project_activity) }
+        let(:third_party_project) { create(:third_party_project_activity, parent: project) }
+
+        before do
+          project.update!(roda_identifier_fragment: "C" * 10)
+        end
+
+        it "is valid if blank" do
+          third_party_project.roda_identifier_fragment = ""
+          expect(third_party_project).to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid when containing certain punctuation" do
+          third_party_project.roda_identifier_fragment = "D-D_D/D\\123"
+          expect(third_party_project).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid when containing other punctuation" do
+          third_party_project.roda_identifier_fragment = "D!D"
+          expect(third_party_project).not_to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid if 'CD' is up to 18 chars" do
+          third_party_project.roda_identifier_fragment = "D" * 11
+          expect(third_party_project).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid if 'CD' exceeds 18 chars" do
+          third_party_project.roda_identifier_fragment = "D" * 12
+          expect(third_party_project).not_to be_valid(:roda_identifier_step)
+        end
+      end
+    end
+
     context "when title is blank" do
       subject(:activity) { build(:activity, title: nil) }
       it "should not be valid" do
@@ -652,6 +808,92 @@ RSpec.describe Activity, type: :model do
           expect(third_party_project.iati_identifier)
             .to eql("GB-GOV-13-#{fund.delivery_partner_identifier}-#{programme.delivery_partner_identifier}-#{project.delivery_partner_identifier}-#{third_party_project.delivery_partner_identifier}")
         end
+      end
+    end
+  end
+
+  describe "#can_set_roda_identifier?" do
+    let!(:fund) { create(:fund_activity, roda_identifier_fragment: "Level/A") }
+    let!(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "Level/B") }
+    let!(:project) { create(:project_activity, parent: programme, roda_identifier_fragment: nil) }
+
+    context "for a top-level (fund) activity" do
+      it "is true when the activity does not have a RODA identifier" do
+        fund.roda_identifier_fragment = nil
+        expect(fund.can_set_roda_identifier?).to be(true)
+      end
+
+      it "is false when the activity already has a RODA identifier" do
+        expect(fund.can_set_roda_identifier?).to be(false)
+      end
+    end
+
+    it "is true when all parent identifiers are present" do
+      expect(project.can_set_roda_identifier?).to be(true)
+    end
+
+    it "is false if the activity has a RODA identifier" do
+      project.update!(roda_identifier_fragment: "Level/C")
+      expect(project.can_set_roda_identifier?).to be(false)
+    end
+
+    it "is false if the parent identifier is missing" do
+      programme.update!(roda_identifier_fragment: nil)
+      expect(project.can_set_roda_identifier?).to be(false)
+    end
+
+    it "is false if the grandparent identifier is missing" do
+      fund.update!(roda_identifier_fragment: nil)
+      expect(project.can_set_roda_identifier?).to be(false)
+    end
+  end
+
+  describe "#cache_roda_identifier!" do
+    let!(:fund) { create(:fund_activity, roda_identifier_fragment: "Level/A") }
+    let!(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "Level/B") }
+    let!(:project) { create(:project_activity, parent: programme, roda_identifier_fragment: "Level/C") }
+    let!(:third_party_project) { create(:third_party_project_activity, parent: project, roda_identifier_fragment: "Level/D") }
+
+    before do
+      project.write_attribute(:roda_identifier_compound, nil)
+      third_party_project.write_attribute(:roda_identifier_compound, nil)
+    end
+
+    it "raises an exception if roda_identifier_compound is overwritten" do
+      expect { fund.cache_roda_identifier! }.to raise_error(TypeError, "Activity #{fund.id} already has a compound RODA identifier")
+    end
+
+    it "caches the compound RODA identifier on a project" do
+      project.cache_roda_identifier!
+      expect(project.roda_identifier_compound).to eq("Level/A-Level/B-Level/C")
+    end
+
+    it "caches the compound RODA identifier on a third-party project" do
+      third_party_project.cache_roda_identifier!
+      expect(third_party_project.roda_identifier_compound).to eq("Level/A-Level/B-Level/CLevel/D")
+    end
+
+    context "when the activity does not have a RODA identifier fragment" do
+      before { project.update!(roda_identifier_fragment: nil) }
+
+      it "raises an exception" do
+        expect { project.cache_roda_identifier! }.to raise_error(TypeError)
+      end
+    end
+
+    context "when the activity's parent does not have a RODA identifier fragment" do
+      before { programme.update!(roda_identifier_fragment: nil) }
+
+      it "raises an exception" do
+        expect { project.cache_roda_identifier! }.to raise_error(TypeError)
+      end
+    end
+
+    context "when the activity's grandparent does not have a RODA identifier fragment" do
+      before { fund.update!(roda_identifier_fragment: nil) }
+
+      it "raises an exception" do
+        expect { project.cache_roda_identifier! }.to raise_error(TypeError)
       end
     end
   end

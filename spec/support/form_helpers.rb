@@ -1,6 +1,7 @@
 module FormHelpers
   def fill_in_activity_form(
     delivery_partner_identifier: "A-Unique-Identifier",
+    roda_identifier_fragment: "RODA-ID",
     title: "My Aid Activity",
     description: Faker::Lorem.paragraph,
     sector_category: "Basic Education",
@@ -50,6 +51,13 @@ module FormHelpers
     expect(page).to have_content t("form.hint.activity.delivery_partner_identifier")
     fill_in "activity[delivery_partner_identifier]", with: delivery_partner_identifier
     click_button t("form.button.activity.submit")
+
+    if parent.blank? || parent.roda_identifier_fragment.present?
+      expect(page).to have_content t("form.label.activity.roda_identifier_fragment")
+      expect(page).to have_content t("form.hint.activity.roda_identifier_fragment")
+      fill_in "activity[roda_identifier_fragment]", with: roda_identifier_fragment
+      click_button t("form.button.activity.submit")
+    end
 
     expect(page).to have_content t("form.legend.activity.purpose", level: activity_level(level))
     expect(page).to have_content t("form.label.activity.title", level: activity_level(level).humanize)

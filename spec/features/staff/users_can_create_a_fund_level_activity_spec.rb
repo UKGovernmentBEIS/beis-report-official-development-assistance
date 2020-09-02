@@ -162,6 +162,15 @@ RSpec.feature "Users can create a fund level activity" do
 
         fill_in "activity[delivery_partner_identifier]", with: identifier
         click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.label.activity.roda_identifier_fragment", level: "programme")
+
+        # Provide an invalid identifier
+        fill_in "activity[roda_identifier_fragment]", with: "!!!"
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.roda_identifier_fragment.invalid_characters")
+
+        fill_in "activity[roda_identifier_fragment]", with: identifier
+        click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.purpose", level: "programme")
         expect(page).to have_content t("form.hint.activity.title", level: "programme")
 

@@ -26,6 +26,7 @@ en:
           recipient_region: Region
           recipient_country: Country
         delivery_partner_identifier: Enter your unique identifier
+        roda_identifier_fragment: Enter a unique identifier for RODA
         region: Recipient region
         actual_end_date: Actual end date
         actual_start_date: Actual start date
@@ -65,6 +66,7 @@ en:
         call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Programme Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
         flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
         delivery_partner_identifier: This could be the reference you use in your internal systems. This value cannot be edited once it is set
+        roda_identifier_fragment: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
         sector_category: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
@@ -97,6 +99,7 @@ en:
         flow: Flow type
         geography: Benefitting recipient geography
         delivery_partner_identifier: Identifier
+        roda_identifier: RODA identifier
         level: Level
         organisation: Organisation
         parent: Parent activity
@@ -193,6 +196,7 @@ en:
         flow: Flow
         geography: Will the benefitting recipient be a region or country?
         delivery_partner_identifier: Enter your unique identifier
+        roda_identifier: Enter your unique RODA identifier
         level: Hierarchy level
         parent: Select the parent
         programme_status: A description of the status of the activity
@@ -227,6 +231,12 @@ en:
               blank: Select a parent activity
             delivery_partner_identifier:
               blank: Enter a unique identifier
+            roda_identifier_fragment:
+              invalid_characters: Must contain only letters, digits, dashes, underscores and slashes
+              level_a_too_long: Fund identifiers must be at most %{limit} characters long
+              level_b_too_long: This programme's identifier must be at most %{limit} characters long
+              level_c_too_long: This project's identifier must be at most %{limit} characters long
+              level_d_too_long: This third-party project's identifier must be at most %{limit} characters long
             title:
               blank: Enter a title
             description:
