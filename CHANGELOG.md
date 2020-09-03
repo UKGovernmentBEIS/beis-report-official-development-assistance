@@ -301,6 +301,7 @@
 - Update activity policy to account for the report state
 
 ## [unreleased]
+- New reports are created when the prior is approved
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...HEAD
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16
