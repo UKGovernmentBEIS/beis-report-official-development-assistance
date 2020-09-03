@@ -6,5 +6,6 @@
       %h1.govuk-heading-xl
         = t("page_title.report.edit")
 
-      = form_with model: @report, url: report_path(@report) do |f|
+
+      = form_with model: @report_presenter, url: report_path(@report_presenter) do |f|
         = render partial: "form", locals: { f: f }
