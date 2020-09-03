@@ -253,7 +253,8 @@
   `forecasted_total_for_report_financial_quarter` and output the value to the Report CSV
 - Ingest RAEng Newton fund data from IATI
 
-## [unreleased]
+## [release-15] - 2020-09-03
+
 - Reports can be submitted
 - Submitted reports are shown to users
 - Reports can be activated explicitly
@@ -282,7 +283,10 @@
 - Transparency Identifiers are set based on RODA Identifiers
 - Delivery Partner Identifiers can be edited
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...HEAD
+[release-15]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...release-15
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13
 [release-12]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...release-12
