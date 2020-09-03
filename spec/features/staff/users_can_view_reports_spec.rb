@@ -79,6 +79,14 @@ RSpec.feature "Users can view reports" do
       header = page.response_headers["Content-Disposition"]
       expect(header).to match(/Legacy%20Report/)
     end
+
+    context "when there are no reports in a given state" do
+      scenario "an empty state is shown" do
+        visit reports_path
+
+        expect(page).to have_content t("table.body.report.no_reports")
+      end
+    end
   end
 
   context "as a delivery partner user" do
