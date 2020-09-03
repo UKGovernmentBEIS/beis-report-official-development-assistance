@@ -79,6 +79,7 @@ en:
         complete:
           title: Report activation complete
           body: "%{report_financial_quarter} %{report_description}"
+        failure: Report could not be activated
       update:
         success: Report successfully updated
       submit:
