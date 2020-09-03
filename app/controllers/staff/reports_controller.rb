@@ -32,18 +32,22 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def edit
-    @report = Report.find(id)
-    authorize @report
+    report = Report.find(id)
+    authorize report
+
+    @report_presenter = ReportPresenter.new(report)
   end
 
   def update
-    @report = Report.find(id)
-    authorize @report
+    report = Report.find(id)
+    authorize report
 
-    @report.assign_attributes(report_params)
-    if @report.valid?
-      @report.save!
-      @report.create_activity key: "report.update", owner: current_user
+    @report_presenter = ReportPresenter.new(report)
+
+    report.assign_attributes(report_params)
+    if report.valid?
+      report.save!
+      report.create_activity key: "report.update", owner: current_user
       flash[:notice] = t("action.report.update.success")
       redirect_to reports_path
     else

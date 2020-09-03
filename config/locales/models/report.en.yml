@@ -36,11 +36,13 @@ en:
   form:
     label:
       report:
-        description: Reporting period
+        description: Report description
         fund: Level A
         organisation: Organisation
         state: State
         deadline: Deadline
+        level_a_activity: Level A
+        financial_quarter_and_year: Financial quarter
     legend:
       report:
         description: Reporting period
