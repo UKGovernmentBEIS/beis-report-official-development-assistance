@@ -135,7 +135,7 @@ class IngestIatiActivities
   private def add_transactions(legacy_activity:, roda_activity:)
     transaction_elements = legacy_activity.elements.select { |element| element.name.eql?("transaction") }
     transaction_elements.each do |transaction_element|
-      currency = transaction_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"].value
+      currency = transaction_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"]&.value || "GBP"
       date = transaction_element.children.detect { |child| child.name.eql?("transaction-date") }.attributes["iso-date"].value
       value = transaction_element.children.detect { |child| child.name.eql?("value") }.children.text
       transaction_type = transaction_element.children.detect { |child| child.name.eql?("transaction-type") }.attributes["code"].value
@@ -189,7 +189,7 @@ class IngestIatiActivities
       period_start_date = budget_element.children.detect { |child| child.name.eql?("period-start") }.attributes["iso-date"].value
       period_end_date = budget_element.children.detect { |child| child.name.eql?("period-end") }.attributes["iso-date"].value
       value = budget_element.children.detect { |child| child.name.eql?("value") }.children.text
-      currency = budget_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"].value
+      currency = budget_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"]&.value || "GBP"
 
       budget = Budget.new(
         status: status,
@@ -211,7 +211,7 @@ class IngestIatiActivities
     planned_disbursement_elements.each do |planned_disbursement_element|
       planned_disbursement_type = planned_disbursement_element.attributes["type"].value
       value = planned_disbursement_element.children.detect { |child| child.name.eql?("value") }.children.text
-      currency = planned_disbursement_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"].value
+      currency = planned_disbursement_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"]&.value || "GBP"
       period_start_date = planned_disbursement_element.children.detect { |child| child.name.eql?("period-start") }.attributes["iso-date"].value
       period_end_date = planned_disbursement_element.children.detect { |child| child.name.eql?("period-end") }.attributes["iso-date"].value
 
