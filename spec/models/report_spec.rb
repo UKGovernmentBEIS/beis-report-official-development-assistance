@@ -28,15 +28,6 @@ RSpec.describe Report, type: :model do
     expect(report.errors[:fund]).to include t("activerecord.errors.models.report.attributes.fund.level")
   end
 
-  it "does not allow more than one Report for the same Fund and Organisation combination" do
-    organisation = create(:delivery_partner_organisation)
-    fund = create(:fund_activity)
-    _existing_report = create(:report, organisation: organisation, fund: fund)
-
-    new_report = build(:report, organisation: organisation, fund: fund)
-    expect(new_report).not_to be_valid
-  end
-
   it "does not allow a Deadline which is in the past" do
     report = build(:report, deadline: Date.yesterday)
     expect(report).not_to be_valid

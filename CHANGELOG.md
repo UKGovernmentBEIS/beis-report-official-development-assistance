@@ -284,6 +284,8 @@
 - Delivery Partner Identifiers can be edited
 
 ## [unreleased]
+=======
+- Reports no longer have to be unique
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...HEAD
 [release-15]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...release-15
