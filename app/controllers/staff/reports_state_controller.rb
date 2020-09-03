@@ -47,10 +47,15 @@ class Staff::ReportsStateController < Staff::BaseController
 
   private def change_report_state_to_active
     authorize report, :activate?
-    report.update!(state: :active)
-    report.create_activity key: "report.activated", owner: current_user
-    @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/activate/complete"
+    if report.valid?
+      report.update!(state: :active)
+      report.create_activity key: "report.activated", owner: current_user
+      @report_presenter = ReportPresenter.new(report)
+      render "staff/reports_state/activate/complete"
+    else
+      flash[:error] = t("action.report.activate.failure")
+      redirect_to report_path(report)
+    end
   end
 
   private def confirm_submission
