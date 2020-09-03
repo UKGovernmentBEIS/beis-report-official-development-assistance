@@ -1,7 +1,9 @@
 FactoryBot.define do
   factory :activity do
     title { Faker::Lorem.sentence }
-    identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
+    delivery_partner_identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
+    roda_identifier_fragment { Faker::Alphanumeric.alpha(number: 5) }
+    roda_identifier_compound { nil }
     description { Faker::Lorem.paragraph }
     sector_category { "111" }
     sector { "11110" }
@@ -22,6 +24,10 @@ FactoryBot.define do
 
     association :organisation, factory: :organisation
     association :reporting_organisation, factory: :beis_organisation
+
+    before(:create) do |activity|
+      activity.cache_roda_identifier
+    end
 
     trait :with_report do
       after(:create) do |activity|
@@ -62,6 +68,9 @@ FactoryBot.define do
     factory :project_activity do
       parent factory: :programme_activity
       level { :project }
+      call_present { "true" }
+      call_open_date { Date.yesterday }
+      call_close_date { Date.tomorrow }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
       funding_organisation_type { "10" }
@@ -86,6 +95,9 @@ FactoryBot.define do
     factory :third_party_project_activity do
       parent factory: :project_activity
       level { :third_party_project }
+      call_present { "true" }
+      call_open_date { Date.yesterday }
+      call_close_date { Date.tomorrow }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
       funding_organisation_type { "10" }
@@ -99,12 +111,34 @@ FactoryBot.define do
   end
 
   trait :at_identifier_step do
-    identifier { nil }
     form_state { "identifier" }
+    delivery_partner_identifier { nil }
+    roda_identifier_fragment { nil }
     title { nil }
     description { nil }
     sector_category { nil }
     sector { nil }
+    call_present { nil }
+    programme_status { nil }
+    planned_start_date { nil }
+    planned_end_date { nil }
+    actual_start_date { nil }
+    actual_end_date { nil }
+    geography { nil }
+    recipient_region { nil }
+    recipient_country { nil }
+    flow { nil }
+    aid_type { nil }
+  end
+
+  trait :at_roda_identifier_step do
+    form_state { "roda_identifier" }
+    roda_identifier_fragment { nil }
+    title { nil }
+    description { nil }
+    sector_category { nil }
+    sector { nil }
+    call_present { nil }
     programme_status { nil }
     planned_start_date { nil }
     planned_end_date { nil }
@@ -118,10 +152,11 @@ FactoryBot.define do
   end
 
   trait :at_purpose_step do
-    form_state { "identifier" }
+    form_state { "purpose" }
     title { nil }
     description { nil }
     sector { nil }
+    call_present { nil }
     programme_status { nil }
     planned_start_date { nil }
     planned_end_date { nil }
@@ -158,6 +193,7 @@ FactoryBot.define do
     title { nil }
     description { nil }
     sector { nil }
+    call_present { nil }
     programme_status { nil }
     planned_start_date { nil }
     planned_end_date { nil }
@@ -176,10 +212,11 @@ FactoryBot.define do
   trait :level_form_state do
     form_state { "level" }
     level { nil }
-    identifier { nil }
+    delivery_partner_identifier { nil }
     title { nil }
     description { nil }
     sector { nil }
+    call_present { nil }
     programme_status { nil }
     planned_start_date { nil }
     planned_end_date { nil }
@@ -197,7 +234,7 @@ FactoryBot.define do
   trait :parent_form_state do
     form_state { "parent" }
     level { "programme" }
-    identifier { nil }
+    delivery_partner_identifier { nil }
     title { nil }
     description { nil }
     sector { nil }
@@ -217,8 +254,8 @@ FactoryBot.define do
 
   trait :with_transparency_identifier do
     after(:create) do |activity|
-      parent_identifier = activity.parent.present? ? "#{activity.parent.identifier}-" : ""
-      activity.transparency_identifier = "#{parent_identifier}#{activity.identifier}"
+      parent_identifier = activity.parent.present? ? "#{activity.parent.delivery_partner_identifier}-" : ""
+      activity.transparency_identifier = "#{parent_identifier}#{activity.delivery_partner_identifier}"
       activity.save
     end
   end

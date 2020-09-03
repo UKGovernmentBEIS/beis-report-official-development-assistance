@@ -10,11 +10,11 @@ RSpec.feature "Users can create a programme activity" do
       fund = create(:fund_activity, organisation: user.organisation)
 
       visit activities_path
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on(t("page_content.organisation.button.create_activity"))
 
       fill_in_activity_form(level: "programme", parent: fund)
 
-      expect(page).to have_content I18n.t("action.programme.create.success")
+      expect(page).to have_content t("action.programme.create.success")
     end
 
     scenario "the activity has the appropriate funding organisation defaults" do
@@ -23,12 +23,12 @@ RSpec.feature "Users can create a programme activity" do
 
       visit activities_path
       click_on fund.title
-      click_on I18n.t("tabs.activity.children")
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on t("tabs.activity.children")
+      click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "programme", parent: fund)
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "programme", parent: fund)
 
-      activity = Activity.find_by(identifier: identifier)
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
       expect(activity.funding_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
       expect(activity.funding_organisation_reference).to eq("GB-GOV-13")
       expect(activity.funding_organisation_type).to eq("10")
@@ -40,12 +40,12 @@ RSpec.feature "Users can create a programme activity" do
 
       visit activities_path
       click_on fund.title
-      click_on I18n.t("tabs.activity.children")
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on t("tabs.activity.children")
+      click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "programme", parent: fund)
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "programme", parent: fund)
 
-      activity = Activity.find_by(identifier: identifier)
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
       expect(activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
       expect(activity.accountable_organisation_reference).to eq("GB-GOV-13")
       expect(activity.accountable_organisation_type).to eq("10")
@@ -56,12 +56,12 @@ RSpec.feature "Users can create a programme activity" do
       identifier = "a-programme"
 
       visit activities_path
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "programme", parent: fund)
+      fill_in_activity_form(roda_identifier_fragment: identifier, level: "programme", parent: fund)
 
-      activity = Activity.find_by(identifier: identifier)
-      expect(activity.transparency_identifier).to eql("GB-GOV-13-#{fund.identifier}-#{activity.identifier}")
+      activity = Activity.find_by(roda_identifier_fragment: identifier)
+      expect(activity.transparency_identifier).to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{activity.roda_identifier_fragment}")
     end
 
     scenario "programme creation is tracked with public_activity" do
@@ -70,12 +70,12 @@ RSpec.feature "Users can create a programme activity" do
       PublicActivity.with_tracking do
         visit activities_path
         click_on fund.title
-        click_on I18n.t("tabs.activity.children")
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on t("tabs.activity.children")
+        click_on(t("page_content.organisation.button.create_activity"))
 
-        fill_in_activity_form(identifier: "my-unique-identifier", level: "programme", parent: fund)
+        fill_in_activity_form(delivery_partner_identifier: "my-unique-identifier", level: "programme", parent: fund)
 
-        programme = Activity.find_by(identifier: "my-unique-identifier")
+        programme = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
         auditable_events = PublicActivity::Activity.where(trackable_id: programme.id)
         expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.flow", "activity.create.aid_type")
         expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]

@@ -20,7 +20,8 @@ class IngestIatiActivities
 
     legacy_activity_nodes.each do |legacy_activity_node|
       legacy_activity = LegacyActivity.new(activity_node_set: legacy_activity_node, delivery_partner: delivery_partner)
-      existing_activity = Activity.find_by(previous_identifier: legacy_activity.identifier)
+      legacy_identifier = legacy_activity.identifier
+      existing_activity = Activity.find_by(previous_identifier: legacy_identifier)
 
       next if existing_activity&.ingested?
 
@@ -28,7 +29,7 @@ class IngestIatiActivities
         roda_activity = if existing_activity.present?
           existing_activity
         else
-          new_activity = Activity.new(identifier: legacy_activity.identifier, organisation: delivery_partner)
+          new_activity = Activity.new(delivery_partner_identifier: legacy_identifier, organisation: delivery_partner)
           add_identifiers(legacy_activity: legacy_activity, new_activity: new_activity)
           add_participating_organisation(delivery_partner: delivery_partner, new_activity: new_activity, legacy_activity: legacy_activity)
           add_title(legacy_activity: legacy_activity, new_activity: new_activity)
@@ -134,7 +135,7 @@ class IngestIatiActivities
   private def add_transactions(legacy_activity:, roda_activity:)
     transaction_elements = legacy_activity.elements.select { |element| element.name.eql?("transaction") }
     transaction_elements.each do |transaction_element|
-      currency = transaction_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"].value
+      currency = transaction_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"]&.value || "GBP"
       date = transaction_element.children.detect { |child| child.name.eql?("transaction-date") }.attributes["iso-date"].value
       value = transaction_element.children.detect { |child| child.name.eql?("value") }.children.text
       transaction_type = transaction_element.children.detect { |child| child.name.eql?("transaction-type") }.attributes["code"].value
@@ -188,7 +189,7 @@ class IngestIatiActivities
       period_start_date = budget_element.children.detect { |child| child.name.eql?("period-start") }.attributes["iso-date"].value
       period_end_date = budget_element.children.detect { |child| child.name.eql?("period-end") }.attributes["iso-date"].value
       value = budget_element.children.detect { |child| child.name.eql?("value") }.children.text
-      currency = budget_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"].value
+      currency = budget_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"]&.value || "GBP"
 
       budget = Budget.new(
         status: status,
@@ -210,7 +211,7 @@ class IngestIatiActivities
     planned_disbursement_elements.each do |planned_disbursement_element|
       planned_disbursement_type = planned_disbursement_element.attributes["type"].value
       value = planned_disbursement_element.children.detect { |child| child.name.eql?("value") }.children.text
-      currency = planned_disbursement_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"].value
+      currency = planned_disbursement_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"]&.value || "GBP"
       period_start_date = planned_disbursement_element.children.detect { |child| child.name.eql?("period-start") }.attributes["iso-date"].value
       period_end_date = planned_disbursement_element.children.detect { |child| child.name.eql?("period-end") }.attributes["iso-date"].value
 
@@ -291,7 +292,7 @@ class IngestIatiActivities
 
   private def add_identifiers(legacy_activity:, new_activity:)
     new_activity.previous_identifier = legacy_activity.elements.detect { |element| element.name.eql?("iati-identifier") }.children.text
-    new_activity.identifier = legacy_activity.infer_internal_identifier
+    new_activity.delivery_partner_identifier = legacy_activity.infer_internal_identifier
   end
 
   private def service_owner_organisation

@@ -9,27 +9,27 @@ RSpec.feature "Users can edit an activity" do
       activity = create(:third_party_project_activity, organisation: user.organisation)
 
       visit organisation_activity_path(activity.organisation, activity)
-      click_on I18n.t("tabs.activity.details")
+      click_on t("tabs.activity.details")
 
-      expect(page).to have_content(I18n.t("summary.label.activity.publish_to_iati.label"))
+      expect(page).to have_content(t("summary.label.activity.publish_to_iati.label"))
     end
 
     it "allows the user to redact the activity from Iati" do
       activity = create(:third_party_project_activity, organisation: user.organisation)
 
       visit organisation_activity_path(activity.organisation, activity)
-      click_on I18n.t("tabs.activity.details")
+      click_on t("tabs.activity.details")
 
       within ".publish_to_iati" do
-        click_on(I18n.t("default.link.edit"))
+        click_on(t("default.link.edit"))
       end
 
-      choose I18n.t("summary.label.activity.publish_to_iati.false")
-      click_button I18n.t("form.button.activity.submit")
+      choose t("summary.label.activity.publish_to_iati.false")
+      click_button t("form.button.activity.submit")
 
-      click_on I18n.t("tabs.activity.details")
+      click_on t("tabs.activity.details")
       within ".publish_to_iati" do
-        expect(page).to have_content(I18n.t("summary.label.activity.publish_to_iati.false"))
+        expect(page).to have_content(t("summary.label.activity.publish_to_iati.false"))
       end
     end
 
@@ -38,29 +38,28 @@ RSpec.feature "Users can edit an activity" do
       third_party_project_activity = create(:third_party_project_activity, parent: project_activity, organisation: user.organisation)
 
       visit organisation_activity_path(project_activity.organisation, project_activity)
-      click_on I18n.t("tabs.activity.details")
+      click_on t("tabs.activity.details")
 
       within ".publish_to_iati" do
-        click_on(I18n.t("default.link.edit"))
+        click_on(t("default.link.edit"))
       end
 
-      choose I18n.t("summary.label.activity.publish_to_iati.false")
-      click_button I18n.t("form.button.activity.submit")
+      choose t("summary.label.activity.publish_to_iati.false")
+      click_button t("form.button.activity.submit")
 
-      click_on I18n.t("tabs.activity.details")
+      click_on t("tabs.activity.details")
 
       within ".publish_to_iati" do
-        expect(page).to have_content(I18n.t("summary.label.activity.publish_to_iati.false"))
+        expect(page).to have_content(t("summary.label.activity.publish_to_iati.false"))
       end
 
       visit organisation_activity_path(third_party_project_activity.organisation, third_party_project_activity)
-      click_on I18n.t("tabs.activity.details")
+      click_on t("tabs.activity.details")
 
       within ".publish_to_iati" do
-        expect(page).to have_content(I18n.t("summary.label.activity.publish_to_iati.false"))
+        expect(page).to have_content(t("summary.label.activity.publish_to_iati.false"))
       end
     end
-
     context "before the activity has a level" do
       it "shows add link on the level step" do
         activity = create(:activity, :level_form_state, organisation: user.organisation)
@@ -68,11 +67,11 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".level") do
-          expect(page).to have_content(I18n.t("default.link.add"))
+          expect(page).to have_content(t("default.link.add"))
         end
 
         within(".parent") do
-          expect(page).not_to have_content(I18n.t("default.link.add"))
+          expect(page).not_to have_content(t("default.link.add"))
         end
       end
     end
@@ -83,7 +82,7 @@ RSpec.feature "Users can edit an activity" do
 
         visit organisation_activity_details_path(activity.organisation, activity)
 
-        expect(page).not_to have_content(I18n.t("summary.activity.parent"))
+        expect(page).not_to have_content(t("summary.label.activity.parent"))
       end
 
       it "does not show the Publish to Iati field" do
@@ -91,7 +90,7 @@ RSpec.feature "Users can edit an activity" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        expect(page).to_not have_content(I18n.t("summary.label.activity.publish_to_iati.label"))
+        expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
       end
 
       context "when a title attribute is present" do
@@ -102,7 +101,7 @@ RSpec.feature "Users can edit an activity" do
           visit organisation_activity_details_path(activity.organisation, activity)
 
           within(".title") do
-            expect(page).to have_content(I18n.t("default.link.edit"))
+            expect(page).to have_content(t("default.link.edit"))
           end
         end
       end
@@ -114,7 +113,7 @@ RSpec.feature "Users can edit an activity" do
           visit organisation_activity_details_path(activity.organisation, activity)
 
           within(".title") do
-            expect(page).to have_content(I18n.t("default.link.add"))
+            expect(page).to have_content(t("default.link.add"))
           end
         end
       end
@@ -122,36 +121,26 @@ RSpec.feature "Users can edit an activity" do
       context "when the activity is complete" do
         it "editing and saving a step returns the user to the activity page details tab" do
           activity = create(:fund_activity, organisation: user.organisation)
-          new_title = "Another new title"
+          identifier = "AB-CDE-1234"
           visit organisation_activity_details_path(activity.organisation, activity)
 
-          within(".title") do
-            click_on(I18n.t("default.link.edit"))
+          within(".identifier") do
+            click_on(t("default.link.edit"))
           end
 
-          fill_in "activity[title]", with: new_title
-          click_button I18n.t("form.button.activity.submit")
+          fill_in "activity[delivery_partner_identifier]", with: identifier
+          click_button t("form.button.activity.submit")
 
-          expect(page).to have_content I18n.t("action.fund.update.success")
+          expect(page).to have_content t("action.fund.update.success")
           expect(page.current_path).to eq organisation_activity_details_path(activity.organisation, activity)
         end
 
-        it "all edit links (except identifier) are available to take the user to the right step" do
+        it "all edit links are available to take the user to the right step" do
           activity = create(:fund_activity, organisation: user.organisation)
 
           visit organisation_activity_details_path(activity.organisation, activity)
 
           assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
-        end
-
-        it "does not show an edit link for the identifier" do
-          activity = create(:fund_activity, organisation: user.organisation)
-
-          visit organisation_activity_details_path(activity.organisation, activity)
-
-          within(".identifier") do
-            expect(page).to_not have_content I18n.t("default.link.edit")
-          end
         end
 
         it "does not show an edit link for the transparency identifier" do
@@ -160,26 +149,26 @@ RSpec.feature "Users can edit an activity" do
           visit organisation_activity_details_path(activity.organisation, activity)
 
           within(".transparency-identifier") do
-            expect(page).to_not have_content I18n.t("default.link.edit")
+            expect(page).to_not have_content t("default.link.edit")
           end
         end
 
         it "tracks activity updates with public_activity" do
           activity = create(:fund_activity, organisation: user.organisation)
-          new_title = "A new title"
+          identifier = "AB-CDE-1234"
           PublicActivity.with_tracking do
             visit organisation_activity_details_path(activity.organisation, activity)
 
-            within(".title") do
-              click_on(I18n.t("default.link.edit"))
+            within(".identifier") do
+              click_on(t("default.link.edit"))
             end
 
-            fill_in "activity[title]", with: new_title
-            click_button I18n.t("form.button.activity.submit")
+            fill_in "activity[delivery_partner_identifier]", with: identifier
+            click_button t("form.button.activity.submit")
 
             # grab the most recently created auditable_event
             auditable_events = PublicActivity::Activity.where(trackable_id: activity.id).order("created_at ASC")
-            expect(auditable_events.first.key).to eq "activity.update.purpose"
+            expect(auditable_events.first.key).to eq "activity.update.identifier"
             expect(auditable_events.first.owner_id).to eq user.id
             expect(auditable_events.first.trackable_id).to eq activity.id
           end
@@ -194,34 +183,34 @@ RSpec.feature "Users can edit an activity" do
           visit organisation_activity_details_path(activity.organisation, activity)
 
           within(".recipient_region") do
-            click_on(I18n.t("default.link.edit"))
+            click_on(t("default.link.edit"))
           end
           choose "Region"
-          click_button I18n.t("form.button.activity.submit")
+          click_button t("form.button.activity.submit")
           select recipient_region, from: "activity[recipient_region]"
-          click_button I18n.t("form.button.activity.submit")
+          click_button t("form.button.activity.submit")
 
-          expect(page).to have_content I18n.t("form.label.activity.flow")
+          expect(page).to have_content t("form.label.activity.flow")
           expect(page).not_to have_content activity.title
         end
 
         context "when the activity only has an identifier" do
-          it "does not show edit link on the identifier, and add link on only the next step" do
+          it "shows edit link on the identifier, and add link on only the next step" do
             activity = create(:fund_activity, :at_purpose_step, organisation: user.organisation)
 
             visit organisation_activity_details_path(activity.organisation, activity)
 
             # Click the first edit link that opens the form on step 1
             within(".identifier") do
-              expect(page).to_not have_content(I18n.t("default.link.edit"))
+              expect(page).to have_content(t("default.link.edit"))
             end
 
             within(".title") do
-              expect(page).to have_content(I18n.t("default.link.add"))
+              expect(page).to have_content(t("default.link.add"))
             end
 
             within(".sector") do
-              expect(page).to_not have_content(I18n.t("default.link.add"))
+              expect(page).to_not have_content(t("default.link.add"))
             end
           end
         end
@@ -235,11 +224,11 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".title") do
-          click_on(I18n.t("default.link.edit"))
+          click_on(t("default.link.edit"))
         end
 
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content(I18n.t("action.programme.update.success"))
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content(t("action.programme.update.success"))
       end
 
       it "does not show the Publish to Iati field" do
@@ -247,7 +236,7 @@ RSpec.feature "Users can edit an activity" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        expect(page).to_not have_content(I18n.t("summary.label.activity.publish_to_iati.label"))
+        expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
       end
 
       context "when the activity was left at the parent step" do
@@ -256,10 +245,10 @@ RSpec.feature "Users can edit an activity" do
 
           visit organisation_activity_details_path(activity.organisation, activity)
           within(".parent") do
-            expect(page).to have_content(I18n.t("default.link.add"))
+            expect(page).to have_content(t("default.link.add"))
           end
           within(".identifier") do
-            expect(page).not_to have_content(I18n.t("default.link.add"))
+            expect(page).not_to have_content(t("default.link.add"))
           end
         end
       end
@@ -274,11 +263,11 @@ RSpec.feature "Users can edit an activity" do
           visit organisation_activity_details_path(activity.organisation, activity)
 
           within(".level") do
-            expect(page).not_to have_content(I18n.t("default.link.add"))
+            expect(page).not_to have_content(t("default.link.add"))
           end
 
           within(".parent") do
-            expect(page).not_to have_content(I18n.t("default.link.add"))
+            expect(page).not_to have_content(t("default.link.add"))
           end
         end
       end
@@ -304,7 +293,7 @@ RSpec.feature "Users can edit an activity" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        expect(page).to_not have_content(I18n.t("summary.label.activity.publish_to_iati.label"))
+        expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
       end
     end
 
@@ -315,11 +304,11 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".title") do
-          click_on(I18n.t("default.link.edit"))
+          click_on(t("default.link.edit"))
         end
 
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content(I18n.t("action.project.update.success"))
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content(t("action.project.update.success"))
       end
 
       it "does not show the Publish to Iati field" do
@@ -327,7 +316,54 @@ RSpec.feature "Users can edit an activity" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        expect(page).to_not have_content(I18n.t("summary.label.activity.publish_to_iati.label"))
+        expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
+      end
+
+      context "when the project does not have a RODA identifier" do
+        let(:fund) { create(:fund_activity, roda_identifier_fragment: "AAA") }
+        let(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "BBB") }
+
+        scenario "a RODA identifier can be added" do
+          activity = create(:project_activity, organisation: user.organisation, parent: programme, roda_identifier_fragment: nil)
+          visit organisation_activity_details_path(activity.organisation, activity)
+
+          within(".roda_identifier") { click_on(t("default.link.add")) }
+          fill_in "activity[roda_identifier_fragment]", with: "CCC"
+          click_button t("form.button.activity.submit")
+
+          expect(page).to have_content(t("action.project.update.success"))
+          expect(activity.reload.roda_identifier_compound).to eq("AAA-BBB-CCC")
+        end
+      end
+
+      context "when the project has a RODA identifier" do
+        let(:activity) { create(:project_activity, organisation: user.organisation, roda_identifier_fragment: "A-RODA-ID") }
+
+        scenario "the RODA identifier cannot be edited" do
+          visit organisation_activity_details_path(activity.organisation, activity)
+
+          within(".roda_identifier") do
+            expect(page).not_to have_content(t("default.link.add"))
+            expect(page).not_to have_content(t("default.link.edit"))
+          end
+        end
+      end
+
+      context "when the project's parent does not have a RODA identifier" do
+        let(:activity) { create(:project_activity, organisation: user.organisation, roda_identifier_fragment: nil) }
+
+        before do
+          activity.parent.update!(roda_identifier_fragment: nil)
+        end
+
+        scenario "a RODA identifier cannot be added" do
+          visit organisation_activity_details_path(activity.organisation, activity)
+
+          within(".roda_identifier") do
+            expect(page).not_to have_content(t("default.link.add"))
+            expect(page).not_to have_content(t("default.link.edit"))
+          end
+        end
       end
     end
 
@@ -338,11 +374,11 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".title") do
-          click_on(I18n.t("default.link.edit"))
+          click_on(t("default.link.edit"))
         end
 
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content(I18n.t("action.third_party_project.update.success"))
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content(t("action.third_party_project.update.success"))
       end
     end
   end
@@ -350,107 +386,112 @@ end
 
 def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   within(".identifier") do
-    expect(page).to_not have_content I18n.t("default.link.edit")
+    click_on t("default.link.edit")
+    expect(page).to have_current_path(
+      activity_step_path(activity, :identifier)
+    )
   end
+  click_on t("default.link.back")
+  click_on t("tabs.activity.details")
 
   within(".sector") do
-    click_on(I18n.t("default.link.edit"))
+    click_on(t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :sector_category)
     )
   end
-  click_on(I18n.t("default.link.back"))
-  click_on I18n.t("tabs.activity.details")
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
 
   within(".title") do
-    click_on(I18n.t("default.link.edit"))
+    click_on(t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :purpose)
     )
   end
-  click_on(I18n.t("default.link.back"))
-  click_on I18n.t("tabs.activity.details")
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
 
   within(".description") do
-    click_on(I18n.t("default.link.edit"))
+    click_on(t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :purpose)
     )
   end
-  click_on(I18n.t("default.link.back"))
-  click_on I18n.t("tabs.activity.details")
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
 
   unless activity.fund?
     within(".programme_status") do
-      click_on(I18n.t("default.link.edit"))
+      click_on(t("default.link.edit"))
       expect(page).to have_current_path(
         activity_step_path(activity, :programme_status)
       )
     end
-    click_on(I18n.t("default.link.back"))
-    click_on I18n.t("tabs.activity.details")
+    click_on(t("default.link.back"))
+    click_on t("tabs.activity.details")
   end
 
   within(".planned_start_date") do
-    click_on(I18n.t("default.link.edit"))
+    click_on(t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :dates)
     )
   end
-  click_on(I18n.t("default.link.back"))
-  click_on I18n.t("tabs.activity.details")
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
 
   within(".planned_end_date") do
-    click_on(I18n.t("default.link.edit"))
+    click_on(t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :dates)
     )
   end
-  click_on(I18n.t("default.link.back"))
-  click_on I18n.t("tabs.activity.details")
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
 
   within(".actual_start_date") do
-    click_on(I18n.t("default.link.edit"))
+    click_on(t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :dates)
     )
   end
-  click_on(I18n.t("default.link.back"))
-  click_on I18n.t("tabs.activity.details")
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
 
   within(".actual_end_date") do
-    click_on(I18n.t("default.link.edit"))
+    click_on(t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :dates)
     )
   end
-  click_on(I18n.t("default.link.back"))
-  click_on I18n.t("tabs.activity.details")
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
 
   within(".recipient_region") do
-    click_on(I18n.t("default.link.edit"))
+    click_on(t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :geography)
     )
   end
-  click_on(I18n.t("default.link.back"))
-  click_on I18n.t("tabs.activity.details")
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
 
   within(".flow") do
-    click_on(I18n.t("default.link.edit"))
+    click_on(t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :flow)
     )
   end
-  click_on(I18n.t("default.link.back"))
-  click_on I18n.t("tabs.activity.details")
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
 
   within(".aid_type") do
-    click_on(I18n.t("default.link.edit"))
+    click_on(t("default.link.edit"))
     expect(page).to have_current_path(
       activity_step_path(activity, :aid_type)
     )
   end
-  click_on(I18n.t("default.link.back"))
-  click_on I18n.t("tabs.activity.details")
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
 end

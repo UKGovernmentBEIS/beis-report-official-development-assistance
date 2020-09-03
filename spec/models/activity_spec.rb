@@ -49,7 +49,7 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "sanitisation" do
-    it { should strip_attribute(:identifier) }
+    it { should strip_attribute(:delivery_partner_identifier) }
   end
 
   describe "validations" do
@@ -88,21 +88,21 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when identifier is blank" do
-      subject(:activity) { build(:activity, identifier: nil) }
+    context "when delivery_partner_identifier is blank" do
+      subject(:activity) { build(:activity, delivery_partner_identifier: nil) }
       it "should not be valid" do
         expect(activity.valid?(:identifier_step)).to be_falsey
       end
     end
 
-    describe "#identifier" do
-      context "when an activity exists with the same identifier" do
+    describe "#delivery_partner_identifier" do
+      context "when an activity exists with the same delivery_partner_identifier" do
         context "shares the same parent" do
           it "should be invalid" do
             fund = create(:fund_activity)
-            create(:programme_activity, identifier: "GB-GOV-13-001", parent: fund)
+            create(:programme_activity, delivery_partner_identifier: "GB-GOV-13-001", parent: fund)
 
-            new_programme_activity = build(:programme_activity, identifier: "GB-GOV-13-001", parent: fund)
+            new_programme_activity = build(:programme_activity, delivery_partner_identifier: "GB-GOV-13-001", parent: fund)
 
             expect(new_programme_activity).not_to be_valid
           end
@@ -111,14 +111,170 @@ RSpec.describe Activity, type: :model do
         context "does NOT share the same parent" do
           it "should be valid" do
             create(:fund_activity) do |fund|
-              create(:programme_activity, identifier: "GB-GOV-13-001", parent: fund)
+              create(:programme_activity, delivery_partner_identifier: "GB-GOV-13-001", parent: fund)
             end
 
             other_fund = create(:fund_activity)
-            new_programme_activity = build(:programme_activity, identifier: "GB-GOV-13-001", parent: other_fund)
+            new_programme_activity = build(:programme_activity, delivery_partner_identifier: "GB-GOV-13-001", parent: other_fund)
 
             expect(new_programme_activity).to be_valid
           end
+        end
+      end
+    end
+
+    describe "#roda_identifier_fragment" do
+      context "for a fund" do
+        let(:fund) { create(:fund_activity) }
+
+        it "is valid if blank" do
+          fund.roda_identifier_fragment = ""
+          expect(fund).to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid when containing certain punctuation" do
+          fund.roda_identifier_fragment = "A-A_A/A\\123"
+          expect(fund).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid when containing other punctuation" do
+          fund.roda_identifier_fragment = "A!A"
+          expect(fund).not_to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid up to 16 chars" do
+          fund.roda_identifier_fragment = "A" * 16
+          expect(fund).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid above 16 chars" do
+          fund.roda_identifier_fragment = "A" * 17
+          expect(fund).not_to be_valid(:roda_identifier_step)
+        end
+      end
+
+      context "for a programme" do
+        let(:fund) { create(:fund_activity) }
+        let(:programme) { create(:programme_activity, parent: fund) }
+
+        before do
+          fund.update!(roda_identifier_fragment: "A" * 6)
+        end
+
+        it "is valid if blank" do
+          programme.roda_identifier_fragment = ""
+          expect(programme).to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid when containing certain punctuation" do
+          programme.roda_identifier_fragment = "B-B_B/B\\123"
+          expect(programme).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid when containing other punctuation" do
+          programme.roda_identifier_fragment = "B!B"
+          expect(programme).not_to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid if 'A-B' is up to 18 chars" do
+          programme.roda_identifier_fragment = "B" * 11
+          expect(programme).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid if 'A-B' exceeds 18 chars" do
+          programme.roda_identifier_fragment = "B" * 12
+          expect(programme).not_to be_valid(:roda_identifier_step)
+        end
+
+        context "when there are other activities with similar identifiers" do
+          let!(:fund_a) { create(:fund_activity, roda_identifier_fragment: "AAA") }
+          let!(:programme_a) { create(:programme_activity, parent: fund_a, roda_identifier_fragment: "BBB-CCC") }
+
+          let!(:fund_b) { create(:fund_activity, roda_identifier_fragment: "AAA-BBB") }
+
+          it "is invalid if it has the same fragment identifier as a sibling activity" do
+            programme = build(:programme_activity, parent: fund_a, roda_identifier_fragment: "BBB-CCC")
+            programme.cache_roda_identifier!
+
+            expect(programme).not_to be_valid
+          end
+
+          it "is invalid if it has the same compound identifier as a cousin activity" do
+            programme = build(:programme_activity, parent: fund_b, roda_identifier_fragment: "CCC")
+            programme.cache_roda_identifier!
+
+            expect(programme).not_to be_valid
+          end
+
+          it "is valid if its identifier is different to all others" do
+            programme = build(:programme_activity, parent: fund_b, roda_identifier_fragment: "VALID")
+            programme.cache_roda_identifier!
+
+            expect(programme).to be_valid
+          end
+        end
+      end
+
+      context "for a project" do
+        let(:project) { create(:project_activity) }
+
+        it "is valid if blank" do
+          project.roda_identifier_fragment = ""
+          expect(project).to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid when containing certain punctuation" do
+          project.roda_identifier_fragment = "C-C_C/C\\123"
+          expect(project).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid when containing other punctuation" do
+          project.roda_identifier_fragment = "C!C"
+          expect(project).not_to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid up to 20 chars" do
+          project.roda_identifier_fragment = "C" * 20
+          expect(project).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid above 20 chars" do
+          project.roda_identifier_fragment = "C" * 21
+          expect(project).not_to be_valid(:roda_identifier_step)
+        end
+      end
+
+      context "for a third-party project" do
+        let(:project) { create(:project_activity) }
+        let(:third_party_project) { create(:third_party_project_activity, parent: project) }
+
+        before do
+          project.update!(roda_identifier_fragment: "C" * 10)
+        end
+
+        it "is valid if blank" do
+          third_party_project.roda_identifier_fragment = ""
+          expect(third_party_project).to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid when containing certain punctuation" do
+          third_party_project.roda_identifier_fragment = "D-D_D/D\\123"
+          expect(third_party_project).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid when containing other punctuation" do
+          third_party_project.roda_identifier_fragment = "D!D"
+          expect(third_party_project).not_to be_valid(:roda_identifier_step)
+        end
+
+        it "is valid if 'CD' is up to 18 chars" do
+          third_party_project.roda_identifier_fragment = "D" * 11
+          expect(third_party_project).to be_valid(:roda_identifier_step)
+        end
+
+        it "is not valid if 'CD' exceeds 18 chars" do
+          third_party_project.roda_identifier_fragment = "D" * 12
+          expect(third_party_project).not_to be_valid(:roda_identifier_step)
         end
       end
     end
@@ -294,6 +450,29 @@ RSpec.describe Activity, type: :model do
         blank_activity = create(:activity, funding_organisation_name: "old", form_state: :blank)
         blank_activity.funding_organisation_name = "new"
         expect(blank_activity.valid?).to eq(true)
+      end
+    end
+
+    context "when the activity is neither a fund nor a programme" do
+      context "when call_present is blank" do
+        subject(:activity) { build(:project_activity, call_present: nil) }
+        it "should not be valid" do
+          expect(activity.valid?(:call_present_step)).to be_falsey
+        end
+      end
+
+      context "when there is a call but any of the call dates are blank" do
+        subject(:activity) { build(:project_activity, call_present: true, call_open_date: Date.today, call_close_date: nil) }
+        it "should not be valid" do
+          expect(activity.valid?(:call_dates_step)).to be_falsey
+        end
+      end
+
+      context "when the activity is 'ingested:true'" do
+        subject(:activity) { build(:project_activity, ingested: true, call_present: nil) }
+        it "should not require the presence of 'call_present'" do
+          expect(activity.valid?(:call_present_step)).to be_truthy
+        end
       end
     end
   end
@@ -582,11 +761,11 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#iati_identifier" do
+  describe "#transparency_identifier" do
     context "when the activity is a fund" do
       it "returns a composite identifier formed with the reporting organisation" do
-        fund = build(:fund_activity, identifier: "GCRF-1", reporting_organisation: create(:beis_organisation))
-        expect(fund.iati_identifier).to eql("GB-GOV-13-GCRF-1")
+        fund = create(:fund_activity, roda_identifier_fragment: "GCRF-1", reporting_organisation: create(:beis_organisation))
+        expect(fund.transparency_identifier).to eql("GB-GOV-13-GCRF-1")
       end
     end
 
@@ -597,8 +776,8 @@ RSpec.describe Activity, type: :model do
           programme = create(:programme_activity, organisation: government_organisation)
           fund = programme.parent
 
-          expect(programme.iati_identifier)
-            .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}")
+          expect(programme.transparency_identifier)
+            .to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{programme.roda_identifier_fragment}")
         end
       end
     end
@@ -611,8 +790,8 @@ RSpec.describe Activity, type: :model do
           programme = project.parent
           fund = programme.parent
 
-          expect(project.iati_identifier)
-            .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}-#{project.identifier}")
+          expect(project.transparency_identifier)
+            .to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{project.roda_identifier_fragment}")
         end
       end
     end
@@ -626,9 +805,112 @@ RSpec.describe Activity, type: :model do
           programme = project.parent
           fund = programme.parent
 
-          expect(third_party_project.iati_identifier)
-            .to eql("GB-GOV-13-#{fund.identifier}-#{programme.identifier}-#{project.identifier}-#{third_party_project.identifier}")
+          expect(third_party_project.transparency_identifier)
+            .to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{project.roda_identifier_fragment}#{third_party_project.roda_identifier_fragment}")
         end
+      end
+    end
+  end
+
+  describe "#iati_identifier" do
+    it "returns the previous_identifier if it exists" do
+      activity = create(:activity, previous_identifier: "previous-id", transparency_identifier: "transparency-id")
+      expect(activity.iati_identifier).to eq("previous-id")
+    end
+
+    it "returns the transparency_identifier if previous_identifier is not set" do
+      activity = create(:activity, previous_identifier: nil, transparency_identifier: "transparency-id")
+      expect(activity.iati_identifier).to eq("transparency-id")
+    end
+  end
+
+  describe "#can_set_roda_identifier?" do
+    let!(:fund) { create(:fund_activity, roda_identifier_fragment: "Level/A") }
+    let!(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "Level/B") }
+    let!(:project) { create(:project_activity, parent: programme, roda_identifier_fragment: nil) }
+
+    context "for a top-level (fund) activity" do
+      it "is true when the activity does not have a RODA identifier" do
+        fund.roda_identifier_fragment = nil
+        expect(fund.can_set_roda_identifier?).to be(true)
+      end
+
+      it "is false when the activity already has a RODA identifier" do
+        expect(fund.can_set_roda_identifier?).to be(false)
+      end
+    end
+
+    it "is true when all parent identifiers are present" do
+      expect(project.can_set_roda_identifier?).to be(true)
+    end
+
+    it "is false if the activity has a RODA identifier" do
+      project.update!(roda_identifier_fragment: "Level/C")
+      expect(project.can_set_roda_identifier?).to be(false)
+    end
+
+    it "is false if the parent identifier is missing" do
+      programme.update!(roda_identifier_fragment: nil)
+      expect(project.can_set_roda_identifier?).to be(false)
+    end
+
+    it "is false if the grandparent identifier is missing" do
+      fund.update!(roda_identifier_fragment: nil)
+      expect(project.can_set_roda_identifier?).to be(false)
+    end
+  end
+
+  describe "#cache_roda_identifier!" do
+    let!(:fund) { create(:fund_activity, roda_identifier_fragment: "Level/A") }
+    let!(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "Level/B") }
+    let!(:project) { create(:project_activity, parent: programme, roda_identifier_fragment: "Level/C") }
+    let!(:third_party_project) { create(:third_party_project_activity, parent: project, roda_identifier_fragment: "Level/D") }
+
+    before do
+      project.write_attribute(:roda_identifier_compound, nil)
+      third_party_project.write_attribute(:roda_identifier_compound, nil)
+    end
+
+    it "raises an exception if roda_identifier_compound is overwritten" do
+      expect { fund.cache_roda_identifier! }.to raise_error(TypeError, "Activity #{fund.id} already has a compound RODA identifier")
+    end
+
+    it "caches the compound RODA identifier on a project" do
+      project.cache_roda_identifier!
+      expect(project.roda_identifier_compound).to eq("Level/A-Level/B-Level/C")
+    end
+
+    it "caches the transparency identifier on a project" do
+      project.cache_roda_identifier!
+      expect(project.transparency_identifier).to eq("GB-GOV-13-Level-A-Level-B-Level-C")
+    end
+
+    it "caches the compound RODA identifier on a third-party project" do
+      third_party_project.cache_roda_identifier!
+      expect(third_party_project.roda_identifier_compound).to eq("Level/A-Level/B-Level/CLevel/D")
+    end
+
+    context "when the activity does not have a RODA identifier fragment" do
+      before { project.update!(roda_identifier_fragment: nil) }
+
+      it "raises an exception" do
+        expect { project.cache_roda_identifier! }.to raise_error(TypeError)
+      end
+    end
+
+    context "when the activity's parent does not have a RODA identifier fragment" do
+      before { programme.update!(roda_identifier_fragment: nil) }
+
+      it "raises an exception" do
+        expect { project.cache_roda_identifier! }.to raise_error(TypeError)
+      end
+    end
+
+    context "when the activity's grandparent does not have a RODA identifier fragment" do
+      before { fund.update!(roda_identifier_fragment: nil) }
+
+      it "raises an exception" do
+        expect { project.cache_roda_identifier! }.to raise_error(TypeError)
       end
     end
   end
@@ -639,7 +921,7 @@ RSpec.describe Activity, type: :model do
       report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
       create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today)
       create(:transaction, parent_activity: project, value: 50.00, report: report, date: Date.today)
-      create(:transaction, parent_activity: project, value: 210, report: report, date: Date.today - 4.months)
+      create(:transaction, parent_activity: project, value: 210, report: report, date: 4.months.ago)
 
       expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(150.20)
     end
@@ -647,48 +929,57 @@ RSpec.describe Activity, type: :model do
     it "does not include the totals for any transactions outside the report's date range" do
       project = create(:project_activity, :with_report)
       report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
-      create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today - 6.months)
-      create(:transaction, parent_activity: project, value: 210, report: report, date: Date.today - 4.months)
+      create(:transaction, parent_activity: project, value: 100.20, report: report, date: 6.months.ago)
+      create(:transaction, parent_activity: project, value: 210, report: report, date: 4.months.ago)
 
       expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(0)
     end
   end
 
-  describe "#actual_total_for_report_financial_quarter" do
-    it "returns the total of all the activity's transactions scoped to a report" do
+  describe "#forecasted_total_for_report_financial_quarter" do
+    it "returns the total of all the activity's planned disbursements scoped to a report's financial quarter only" do
       project = create(:project_activity, :with_report)
       report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
-      create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today)
-      create(:transaction, parent_activity: project, value: 210)
 
-      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(100.20)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.today)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.today)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: 4.months.ago)
+
+      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(2000.00)
+    end
+
+    it "does not include totals for any planned disbursements outside the report's date range" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: 6.months.ago)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: 4.months.ago)
+
+      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(0)
     end
   end
 
-  describe "#forecasted_total_for_report_financial_quarter" do
-    it "returns the total of all the activity's planned disbursements scoped to a report's financial quarter only" do
-      quarter_one_date = Date.parse("1 April 2019")
-      quarter_two_date = Date.parse("1 July 2019")
+  describe "#variance_for_report_financial_quarter" do
+    it "returns the variance between #actual_total_for_report_financial_quarter and #forecasted_total_for_report_financial_quarter" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      create(:transaction, parent_activity: project, value: 100, report: report, date: Date.today)
+      create(:transaction, parent_activity: project, value: 200, report: report, date: Date.today)
+      create(:planned_disbursement, parent_activity: project, value: 1500, report: report, period_start_date: Date.today)
+      create(:planned_disbursement, parent_activity: project, value: 500, report: report, period_start_date: Date.today)
 
-      project = create(:project_activity)
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: quarter_one_date)
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: quarter_one_date)
+      expect(project.variance_for_report_financial_quarter(report: report)).to eq(-1700)
+    end
+  end
 
-      create(:planned_disbursement, parent_activity: project, value: 2000.00, period_start_date: quarter_two_date)
-      create(:planned_disbursement, parent_activity: project, value: 2000.00, period_start_date: quarter_two_date)
+  describe "#forecasted_total_for_date_range" do
+    it "returns the total of all the activity's planned disbursements scoped to a date range" do
+      project = create(:project_activity, :with_report)
+      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200, period_start_date: Date.parse("13 April 2020"))
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1000, period_start_date: Date.parse("20 November 2020"))
 
-      report = create(:report, fund: project.associated_fund)
-      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(0)
-
-      travel_to(quarter_one_date) do
-        report = create(:report, fund: project.associated_fund)
-        expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(2000.00)
-      end
-
-      travel_to(quarter_two_date) do
-        report = create(:report, fund: project.associated_fund)
-        expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(4000.00)
-      end
+      expect(project.forecasted_total_for_date_range(range: Date.parse("1 April 2020")..Date.parse("30 June 2020"))).to eq 200
+      expect(project.forecasted_total_for_date_range(range: Date.parse("1 October 2020")..Date.parse("31 December 2020"))).to eq 1000
     end
   end
 end

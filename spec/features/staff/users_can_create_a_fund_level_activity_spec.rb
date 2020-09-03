@@ -12,28 +12,28 @@ RSpec.feature "Users can create a fund level activity" do
 
     scenario "successfully create a activity" do
       visit activities_path
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on(t("page_content.organisation.button.create_activity"))
 
       fill_in_activity_form(level: "fund")
 
-      expect(page).to have_content I18n.t("action.fund.create.success")
+      expect(page).to have_content t("action.fund.create.success")
     end
 
     scenario "a default value of 'Spend in progress' for programme status gets set" do
       identifier = "a-fund-with-default-programme-status-of-spend-in-progress"
       visit activities_path
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
-      fill_in_activity_form(identifier: identifier, level: "fund")
-      activity = Activity.find_by(identifier: identifier)
+      click_on(t("page_content.organisation.button.create_activity"))
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
       expect(activity.programme_status).to eq("07")
     end
 
     scenario "the iati status gets set based on the default programme status value" do
       identifier = "a-fund-with-default-iati-status-of-implementation"
       visit activities_path
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
-      fill_in_activity_form(identifier: identifier, level: "fund")
-      activity = Activity.find_by(identifier: identifier)
+      click_on(t("page_content.organisation.button.create_activity"))
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
       expect(activity.status).to eq("2")
     end
 
@@ -42,7 +42,7 @@ RSpec.feature "Users can create a fund level activity" do
       activity_presenter = ActivityPresenter.new(activity)
       visit activities_path
 
-      click_on I18n.t("page_content.organisation.button.create_activity")
+      click_on t("page_content.organisation.button.create_activity")
 
       visit activity_step_path(activity, :region)
       expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.recipient_region
@@ -55,11 +55,11 @@ RSpec.feature "Users can create a fund level activity" do
       identifier = "a-fund-has-a-funding-organisation"
 
       visit activities_path
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "fund")
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
 
-      activity = Activity.find_by(identifier: identifier)
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
       expect(activity.funding_organisation_name).to eq("HM Treasury")
       expect(activity.funding_organisation_reference).to eq("GB-GOV-2")
       expect(activity.funding_organisation_type).to eq("10")
@@ -69,11 +69,11 @@ RSpec.feature "Users can create a fund level activity" do
       identifier = "a-fund-has-an-accountable-organisation"
 
       visit activities_path
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "fund")
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
 
-      activity = Activity.find_by(identifier: identifier)
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
       expect(activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
       expect(activity.accountable_organisation_reference).to eq("GB-GOV-13")
       expect(activity.accountable_organisation_type).to eq("10")
@@ -83,11 +83,11 @@ RSpec.feature "Users can create a fund level activity" do
       identifier = "a-fund-has-an-extending-organisation"
 
       visit activities_path
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "fund")
+      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
 
-      activity = Activity.find_by(identifier: identifier)
+      activity = Activity.find_by(delivery_partner_identifier: identifier)
       expect(activity.extending_organisation).to eql(user.organisation)
     end
 
@@ -95,38 +95,38 @@ RSpec.feature "Users can create a fund level activity" do
       identifier = "a-fund"
 
       visit activities_path
-      click_on(I18n.t("page_content.organisation.button.create_activity"))
+      click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(identifier: identifier, level: "fund")
+      fill_in_activity_form(roda_identifier_fragment: identifier, level: "fund")
 
-      activity = Activity.find_by(identifier: identifier)
-      expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.identifier}")
+      activity = Activity.find_by(roda_identifier_fragment: identifier)
+      expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier_fragment}")
     end
 
     context "when there is an existing activity with a nil identifier" do
       scenario "successfully create a activity" do
         visit activities_path
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on(t("page_content.organisation.button.create_activity"))
 
         visit activities_path
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on(t("page_content.organisation.button.create_activity"))
 
         fill_in_activity_form(level: "fund")
 
-        expect(page).to have_content I18n.t("action.fund.create.success")
+        expect(page).to have_content t("action.fund.create.success")
       end
     end
 
     context "when there is an existing activity with the same identifier" do
       scenario "cannot use the duplicate identifier" do
         identifier = "A-non-unique-identifier"
-        _another_activity = create(:activity, identifier: identifier)
+        _another_activity = create(:activity, delivery_partner_identifier: identifier)
         new_activity = create(:activity, :blank_form_state, organisation: user.organisation)
 
         visit activity_step_path(new_activity, :identifier)
 
-        fill_in "activity[identifier]", with: identifier
-        click_button I18n.t("form.button.activity.submit")
+        fill_in "activity[delivery_partner_identifier]", with: identifier
+        click_button t("form.button.activity.submit")
 
         expect(page).to have_content "has already been taken"
       end
@@ -138,71 +138,80 @@ RSpec.feature "Users can create a fund level activity" do
         identifier = "foo"
 
         visit activities_path
-        click_on I18n.t("page_content.organisation.button.create_activity")
+        click_on t("page_content.organisation.button.create_activity")
 
         # Don't provide a level
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.level.blank")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.level.blank")
 
         choose "Programme"
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("form.legend.activity.parent")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.parent")
 
         # Don't provide a parent
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.parent.blank")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.parent.blank")
 
         choose parent.title
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("form.label.activity.identifier")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.label.activity.delivery_partner_identifier")
 
         # Don't provide an identifier
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.identifier.blank")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.delivery_partner_identifier.blank")
 
-        fill_in "activity[identifier]", with: identifier
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("form.legend.activity.purpose", level: "programme")
-        expect(page).to have_content I18n.t("form.hint.activity.title", level: "programme")
+        fill_in "activity[delivery_partner_identifier]", with: identifier
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.label.activity.roda_identifier_fragment", level: "programme")
+
+        # Provide an invalid identifier
+        fill_in "activity[roda_identifier_fragment]", with: "!!!"
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.roda_identifier_fragment.invalid_characters")
+
+        fill_in "activity[roda_identifier_fragment]", with: identifier
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.purpose", level: "programme")
+        expect(page).to have_content t("form.hint.activity.title", level: "programme")
 
         # Don't provide a title and description
-        click_button I18n.t("form.button.activity.submit")
+        click_button t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.title.blank")
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.description.blank")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.title.blank")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.description.blank")
 
         fill_in "activity[title]", with: Faker::Lorem.word
         fill_in "activity[description]", with: Faker::Lorem.paragraph
-        click_button I18n.t("form.button.activity.submit")
+        click_button t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("form.legend.activity.sector_category", level: "programme")
+        expect(page).to have_content t("form.legend.activity.sector_category", level: "programme")
 
         # Don't provide a sector category
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.sector_category.blank")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.sector_category.blank")
 
         choose "Basic Education"
-        click_button I18n.t("form.button.activity.submit")
+        click_button t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("form.legend.activity.sector", sector_category: "Basic Education", level: "programme")
+        expect(page).to have_content t("form.legend.activity.sector", sector_category: "Basic Education", level: "programme")
         # Don't provide a sector
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.sector.blank")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.sector.blank")
 
         choose "Primary education"
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("form.legend.activity.programme_status", level: "programme")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.programme_status", level: "programme")
 
         # Don't provide a programme status
-        click_button I18n.t("form.button.activity.submit")
+        click_button t("form.button.activity.submit")
         expect(page).to have_content "can't be blank"
 
         choose("activity[programme_status]", option: "07")
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("page_title.activity_form.show.dates", level: "programme")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("page_title.activity_form.show.dates", level: "programme")
 
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.dates")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.dates")
 
         # Dates cannot contain only a zero
         fill_in "activity[planned_start_date(3i)]", with: 1
@@ -211,9 +220,9 @@ RSpec.feature "Users can create a fund level activity" do
         fill_in "activity[planned_end_date(3i)]", with: 0
         fill_in "activity[planned_end_date(2i)]", with: 12
         fill_in "activity[planned_end_date(1i)]", with: 2010
-        click_button I18n.t("form.button.activity.submit")
+        click_button t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.dates")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.dates")
 
         fill_in "activity[planned_start_date(3i)]", with: 1
         fill_in "activity[planned_start_date(2i)]", with: 12
@@ -221,44 +230,44 @@ RSpec.feature "Users can create a fund level activity" do
         fill_in "activity[planned_end_date(3i)]", with: 1
         fill_in "activity[planned_end_date(2i)]", with: 12
         fill_in "activity[planned_end_date(1i)]", with: 2010
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("form.legend.activity.geography")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.geography")
 
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.geography.blank")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.geography.blank")
 
         choose "Region"
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("form.label.activity.recipient_region")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.label.activity.recipient_region")
 
         # region has the default value already selected
-        click_button I18n.t("form.button.activity.submit")
+        click_button t("form.button.activity.submit")
 
-        expect(page).to have_content I18n.t("form.label.activity.flow")
+        expect(page).to have_content t("form.label.activity.flow")
 
         # Flow has a default and can't be set to blank so we skip
         select "ODA", from: "activity[flow]"
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("form.legend.activity.aid_type")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.aid_type")
 
         # Don't select an aid type
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content I18n.t("activerecord.errors.models.activity.attributes.aid_type.blank")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.aid_type.blank")
 
         choose("activity[aid_type]", option: "A01")
-        click_button I18n.t("form.button.activity.submit")
-        expect(page).to have_content Activity.find_by(identifier: identifier).title
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content Activity.find_by(delivery_partner_identifier: identifier).title
       end
     end
 
     scenario "fund creation is tracked with public_activity" do
       PublicActivity.with_tracking do
         visit activities_path
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on(t("page_content.organisation.button.create_activity"))
 
-        fill_in_activity_form(level: "fund", identifier: "my-unique-identifier")
+        fill_in_activity_form(level: "fund", delivery_partner_identifier: "my-unique-identifier")
 
-        fund = Activity.find_by(identifier: "my-unique-identifier")
+        fund = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
         auditable_events = PublicActivity::Activity.where(trackable_id: fund.id)
         expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.flow", "activity.create.aid_type")
         expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
@@ -281,7 +290,7 @@ RSpec.feature "Users can create a fund level activity" do
 
     it "does not let them create a fund level activity" do
       visit organisation_path(user.organisation)
-      expect(page).not_to have_button(I18n.t("page_content.organisation.button.create_activity"))
+      expect(page).not_to have_button(t("page_content.organisation.button.create_activity"))
     end
   end
 end

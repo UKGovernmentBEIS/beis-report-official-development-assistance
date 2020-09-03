@@ -30,4 +30,4 @@
           %td.govuk-table__cell= transaction.receiving_organisation_name
           %td.govuk-table__cell
             - if policy(transaction).create?
-              = a11y_action_link(I18n.t('default.link.edit'), edit_activity_transaction_path(transaction.parent_activity_id, transaction), t("page_content.transactions.edit_noun"))
+              = a11y_action_link(t('default.link.edit'), edit_activity_transaction_path(transaction.parent_activity_id, transaction), t("page_content.transactions.edit_noun"))

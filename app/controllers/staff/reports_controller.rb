@@ -7,20 +7,25 @@ class Staff::ReportsController < Staff::BaseController
   include ActionController::Live
 
   def index
-    inactive_reports if current_user.service_owner?
-    current_user.service_owner? ? active_reports_with_organisations : active_reports
+    if current_user.service_owner?
+      reports_for_service_owner
+    else
+      reports_for_delivery_partner
+    end
   end
 
   def show
     @report = Report.find(id)
     authorize @report
 
+    @report_presenter = ReportPresenter.new(@report)
+    @report_activities = level_c_and_d_activities_for_report(report: @report)
+
     respond_to do |format|
-      format.html
+      format.html do
+        @activities = @report_activities.map { |activity| ActivityPresenter.new(activity) }
+      end
       format.csv do
-        fund = @report.fund
-        @projects = Activity.project.where(organisation: @report.organisation).select { |activity| activity.associated_fund == fund }
-        @third_party_projects = Activity.third_party_project.where(organisation: @report.organisation).select { |activity| activity.associated_fund == fund }
         send_csv
       end
     end
@@ -39,8 +44,7 @@ class Staff::ReportsController < Staff::BaseController
     if @report.valid?
       @report.save!
       @report.create_activity key: "report.update", owner: current_user
-      activate!
-      flash[:notice] = I18n.t("action.report.update.success")
+      flash[:notice] = t("action.report.update.success")
       redirect_to reports_path
     else
       render :edit
@@ -57,12 +61,21 @@ class Staff::ReportsController < Staff::BaseController
     params.require(:report).permit(:deadline, :description)
   end
 
-  def activate!
-    if @report.deadline.present? && @report.deadline > Date.today
-      @report.state = :active
-      @report.save!
-      @report.create_activity key: "report.activate", owner: current_user
-    end
+  def reports_for_service_owner
+    inactive_reports
+    active_reports_with_organisations
+    submitted_reports_with_organisations
+    in_review_reports_with_organisations
+    awaiting_changes_reports_with_organisations
+    approved_reports_with_organisations
+  end
+
+  def reports_for_delivery_partner
+    active_reports
+    submitted_reports
+    in_review_reports
+    awaiting_changes_reports
+    approved_reports
   end
 
   def inactive_reports
@@ -83,16 +96,66 @@ class Staff::ReportsController < Staff::BaseController
     @active_report_presenters = active_reports.map { |report| ReportPresenter.new(report) }
   end
 
+  def submitted_reports_with_organisations
+    submitted_reports = policy_scope(Report.where(state: :submitted)).includes([:fund, :organisation])
+    authorize submitted_reports
+    @submitted_report_presenters = submitted_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def submitted_reports
+    submitted_reports = policy_scope(Report.where(state: :submitted)).includes(:fund)
+    authorize submitted_reports
+    @submitted_report_presenters = submitted_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def in_review_reports_with_organisations
+    in_review_reports = policy_scope(Report.where(state: :in_review)).includes([:fund, :organisation])
+    authorize in_review_reports
+    @in_review_report_presenters = in_review_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def in_review_reports
+    in_review_reports = policy_scope(Report.where(state: :in_review)).includes(:fund)
+    authorize in_review_reports
+    @in_review_report_presenters = in_review_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def awaiting_changes_reports_with_organisations
+    awaiting_changes_reports = policy_scope(Report.where(state: :awaiting_changes)).includes([:fund, :organisation])
+    authorize awaiting_changes_reports
+    @awaiting_changes_report_presenters = awaiting_changes_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def awaiting_changes_reports
+    awaiting_changes_reports = policy_scope(Report.where(state: :awaiting_changes)).includes(:fund)
+    authorize awaiting_changes_reports
+    @awaiting_changes_report_presenters = awaiting_changes_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def approved_reports_with_organisations
+    approved_reports = policy_scope(Report.where(state: :approved)).includes([:fund, :organisation])
+    authorize approved_reports
+    @approved_report_presenters = approved_reports.map { |report| ReportPresenter.new(report) }
+  end
+
+  def approved_reports
+    approved_reports = policy_scope(Report.where(state: :approved)).includes(:fund)
+    authorize approved_reports
+    @approved_report_presenters = approved_reports.map { |report| ReportPresenter.new(report) }
+  end
+
   def send_csv
     response.headers["Content-Type"] = "text/csv"
     response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(@report.description)}.csv"
-    response.stream.write ExportActivityToCsv.new(activity: nil, report: @report).headers
-    @projects.each do |project|
-      response.stream.write ExportActivityToCsv.new(activity: project, report: @report).call
-    end
-    @third_party_projects.each do |project|
-      response.stream.write ExportActivityToCsv.new(activity: project, report: @report).call
+    response.stream.write ExportActivityToCsv.new(report: @report).headers
+    @report_activities.each do |activity|
+      response.stream.write ExportActivityToCsv.new(activity: activity, report: @report).call
     end
     response.stream.close
+  end
+
+  def level_c_and_d_activities_for_report(report:)
+    return Activity.none if report.nil?
+    Activity.where(level: [:project, :third_party_project], organisation: report.organisation).select { |activity| activity.associated_fund == report.fund }
   end
 end

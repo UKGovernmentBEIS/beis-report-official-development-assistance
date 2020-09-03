@@ -3,7 +3,7 @@ require "nokogiri"
 
 RSpec.describe IngestIatiActivities do
   let(:beis) { create(:beis_organisation) }
-  let!(:existing_activity) { create(:programme_activity, identifier: "GCRF-INTPART", organisation: beis) }
+  let!(:existing_activity) { create(:programme_activity, delivery_partner_identifier: "GCRF-INTPART", organisation: beis) }
 
   describe "#call" do
     it "creates 35 new projects for UKSA" do
@@ -24,7 +24,7 @@ RSpec.describe IngestIatiActivities do
       described_class.new(delivery_partner: uksa, file_io: legacy_activities).call
 
       new_activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
-      expect(new_activity.identifier).to eq("UKSA_NS_UKSA-019")
+      expect(new_activity.delivery_partner_identifier).to eq("UKSA_NS_UKSA-019")
     end
 
     it "adds a new ingested flag to the activity so the team can distinguish old from new" do
@@ -62,7 +62,7 @@ RSpec.describe IngestIatiActivities do
       end
 
       it "sets the level to third-party project when its parent is a project" do
-        existing_activity.update!(level: :project)
+        existing_activity.update!(level: :project, call_present: false)
 
         described_class.new(delivery_partner: uksa, file_io: legacy_activities_xml).call
 
@@ -81,8 +81,8 @@ RSpec.describe IngestIatiActivities do
 
       activity = Activity.find_by(previous_identifier: "GB-GOV-13-GCRF-UKSA_NS_UKSA-019")
 
-      expect(activity.identifier).not_to be nil
-      expect(activity.identifier).not_to eq(activity.previous_identifier)
+      expect(activity.delivery_partner_identifier).not_to be nil
+      expect(activity.delivery_partner_identifier).not_to eq(activity.previous_identifier)
       expect(activity.organisation).to eq(uksa)
       expect(activity.reporting_organisation).to eq(beis)
       expect(activity.funding_organisation_reference).to eq(beis.iati_reference)
@@ -155,7 +155,7 @@ RSpec.describe IngestIatiActivities do
 
     it "ignores activities with the wrong IATI hierarchy level" do
       rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
-      programme = create(:programme_activity, organisation: rs, identifier: "RS-Del-RS")
+      programme = create(:programme_activity, organisation: rs, delivery_partner_identifier: "RS-Del-RS")
       legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/rs/with_wrong_hierarchy_level.xml")
 
       described_class.new(delivery_partner: rs, file_io: legacy_activities).call
@@ -234,7 +234,7 @@ RSpec.describe IngestIatiActivities do
 
       it "allows negative budgets" do
         rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
-        create(:programme_activity, organisation: rs, identifier: "Brazil-Newton-Mob-RS")
+        create(:programme_activity, organisation: rs, delivery_partner_identifier: "Brazil-Newton-Mob-RS")
 
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/rs/with_negative_budget.xml")
 
@@ -338,7 +338,7 @@ RSpec.describe IngestIatiActivities do
     describe "default aid type" do
       it "leaves aid_type blank if there is no attribute" do
         rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
-        create(:programme_activity, organisation: rs, identifier: "South Africa-Newton-Adv-RS")
+        create(:programme_activity, organisation: rs, delivery_partner_identifier: "South Africa-Newton-Adv-RS")
 
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/rs/with_missing_default_aid_type.xml")
 
@@ -497,6 +497,22 @@ RSpec.describe IngestIatiActivities do
       project = Activity.project.find_by(previous_identifier: "GB-GOV-13-NEWT-AMS_ZAF_NAF0012")
       expect(project.planned_start_date).to eq("2020-07-01".to_date)
       expect(project.planned_end_date).to eq("2020-09-30".to_date)
+    end
+  end
+
+  context "activities with transactions, budgets or transactions with missing currency attributes" do
+    it "defaults `currency` to GBP" do
+      raeng = create(:organisation, name: "Royal Academy of Engineering", iati_reference: "GB-CHC-293074")
+      fund = create(:fund_activity, delivery_partner_identifier: "GCRF")
+      legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/raeng/with_missing_currency_attributes.xml")
+      _report = create(:report, :active, organisation: raeng, fund: fund)
+
+      described_class.new(delivery_partner: raeng, file_io: legacy_activities).call
+
+      new_activity = Activity.find_by(parent: fund)
+      expect(new_activity.transactions.first.currency).to eql "GBP"
+      expect(new_activity.budgets.first.currency).to eql "GBP"
+      expect(new_activity.planned_disbursements.first.currency).to eql "GBP"
     end
   end
 end

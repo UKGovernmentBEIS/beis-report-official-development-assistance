@@ -45,6 +45,60 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#call_present" do
+    context "when there is a call" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, call_present: "true")
+        result = described_class.new(activity)
+        expect(result.call_present).to eq("Yes")
+      end
+    end
+
+    context "when there is not a call" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, call_present: "false")
+        result = described_class.new(activity)
+        expect(result.call_present).to eq("No")
+      end
+    end
+  end
+
+  describe "#call_open_date" do
+    context "when the call open date exists" do
+      it "returns a human readable date" do
+        activity = build(:project_activity, call_open_date: "2020-02-20")
+        result = described_class.new(activity).call_open_date
+        expect(result).to eq("20 Feb 2020")
+      end
+    end
+
+    context "when the planned start date does not exist" do
+      it "returns nil" do
+        activity = build(:project_activity, call_open_date: nil)
+        result = described_class.new(activity)
+        expect(result.call_open_date).to be_nil
+      end
+    end
+  end
+
+  describe "#call_close_date" do
+    context "when the call close date exists" do
+      it "returns a human readable date" do
+        activity = build(:project_activity, call_close_date: "2020-06-23")
+        result = described_class.new(activity).call_close_date
+        expect(result).to eq("23 Jun 2020")
+      end
+    end
+
+    context "when the planned close date does not exist" do
+      it "returns nil" do
+        activity = build(:project_activity, call_close_date: nil)
+        result = described_class.new(activity)
+        expect(result.call_close_date).to be_nil
+      end
+    end
+  end
+
   describe "#programme_status" do
     context "when the programme status exists" do
       it "returns the locale value for the code" do
@@ -158,7 +212,7 @@ RSpec.describe ActivityPresenter do
       it "returns the locale value for the code" do
         activity = build(:activity, recipient_country: "CL")
         result = described_class.new(activity).recipient_country
-        expect(result).to eq I18n.t("activity.recipient_country.#{activity.recipient_country}")
+        expect(result).to eq t("activity.recipient_country.#{activity.recipient_country}")
       end
     end
 
@@ -292,6 +346,33 @@ RSpec.describe ActivityPresenter do
 
       expect(described_class.new(project).forecasted_total_for_report_financial_quarter(report: report))
         .to eq "200.20"
+    end
+  end
+
+  describe "#forecasted_total_for_date_range" do
+    it "returns the planned disbursement total for a date range as a formatted number" do
+      project = create(:project_activity, :with_report)
+      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200.20, period_start_date: Date.today)
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: 3.months.ago)
+
+      expect(described_class.new(project).forecasted_total_for_date_range(range: Date.today.all_quarter))
+        .to eq "200.20"
+      expect(described_class.new(project).forecasted_total_for_date_range(range: 3.months.ago.all_quarter))
+        .to eq "1500.00"
+      expect(described_class.new(project).forecasted_total_for_date_range(range: 3.months.from_now.all_quarter))
+        .to eq "0.00"
+    end
+  end
+
+  describe "#variance_for_report_financial_quarter" do
+    it "returns the variance per report as a formatted number" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      _transaction = create(:transaction, parent_activity: project, report: report, value: 200, date: Date.today)
+      _disbursement = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: Date.today)
+
+      expect(described_class.new(project).variance_for_report_financial_quarter(report: report))
+        .to eq "-1300.00"
     end
   end
 end

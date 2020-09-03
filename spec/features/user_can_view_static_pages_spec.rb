@@ -6,45 +6,45 @@ RSpec.feature "Users can view the static pages" do
       visit root_path
 
       within("footer") do
-        expect(page).to have_link I18n.t("footer.link.privacy_policy")
+        expect(page).to have_link t("footer.link.privacy_policy")
       end
     end
 
     scenario "the linked privacy policy page can be viewed" do
       visit root_path
-      click_on I18n.t("footer.link.privacy_policy")
+      click_on t("footer.link.privacy_policy")
 
-      expect(page).to have_content I18n.t("page_title.privacy_policy")
+      expect(page).to have_content t("page_title.privacy_policy")
     end
 
     scenario "the footer contains a link to the cookie statment" do
       visit root_path
 
       within("footer") do
-        expect(page).to have_link I18n.t("footer.link.cookie_statement")
+        expect(page).to have_link t("footer.link.cookie_statement")
       end
     end
 
     scenario "the linked cookie statement page can be viewed" do
       visit root_path
-      click_on I18n.t("footer.link.cookie_statement")
+      click_on t("footer.link.cookie_statement")
 
-      expect(page).to have_content I18n.t("cookie_statement.title")
+      expect(page).to have_content t("cookie_statement.title")
     end
 
     scenario "the footer contains a link to the accessibility statment" do
       visit root_path
 
       within("footer") do
-        expect(page).to have_link I18n.t("footer.link.accessibility_statement")
+        expect(page).to have_link t("footer.link.accessibility_statement")
       end
     end
 
     scenario "the linked accessibility statement page can be viewed" do
       visit root_path
-      click_on I18n.t("footer.link.accessibility_statement")
+      click_on t("footer.link.accessibility_statement")
 
-      expect(page).to have_content I18n.t("accessibility_statement.title")
+      expect(page).to have_content t("accessibility_statement.title")
     end
   end
 
@@ -54,15 +54,15 @@ RSpec.feature "Users can view the static pages" do
       authenticate!(user: user)
       visit privacy_policy_path
 
-      expect(page).to have_content I18n.t("page_title.privacy_policy")
+      expect(page).to have_content t("page_title.privacy_policy")
 
       visit cookie_statement_path
 
-      expect(page).to have_content I18n.t("cookie_statement.title")
+      expect(page).to have_content t("cookie_statement.title")
 
       visit accessibility_statement_path
 
-      expect(page).to have_content I18n.t("accessibility_statement.title")
+      expect(page).to have_content t("accessibility_statement.title")
     end
   end
 end

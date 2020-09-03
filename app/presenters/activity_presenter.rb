@@ -13,6 +13,21 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.sector.#{super}")
   end
 
+  def call_present
+    return if super.nil?
+    I18n.t("activity.call_present.#{super}")
+  end
+
+  def call_open_date
+    return if super.blank?
+    I18n.l(super)
+  end
+
+  def call_close_date
+    return if super.blank?
+    I18n.l(super)
+  end
+
   def programme_status
     return if super.blank?
     I18n.t("activity.programme_status.#{super}")
@@ -87,6 +102,16 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def forecasted_total_for_report_financial_quarter(report:)
+    return if super.blank?
+    "%.2f" % super
+  end
+
+  def forecasted_total_for_date_range(range:)
+    return if super.blank?
+    "%.2f" % super
+  end
+
+  def variance_for_report_financial_quarter(report:)
     return if super.blank?
     "%.2f" % super
   end

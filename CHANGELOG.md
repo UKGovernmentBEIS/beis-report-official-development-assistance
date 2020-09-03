@@ -253,9 +253,40 @@
   `forecasted_total_for_report_financial_quarter` and output the value to the Report CSV
 - Ingest RAEng Newton fund data from IATI
 
+## [release-15] - 2020-09-03
+
+- Reports can be submitted
+- Submitted reports are shown to users
+- Reports can be activated explicitly
+- Inactive reports are shown in their own table on the reports page
+- Reports are no longer activated when the deadline is set
+- Calculate the variance between an Activity's transactions total for a date range, and
+  that same Activity's planned disbursements total for a date range. Output this value
+  to the Report CSV as "Variance"
+- Find the next four financial quarters after this report's financial quarter. Find the
+  forecasted totals (planned disbursement totals) for those four future quarters and output
+  them to the report CSV
+- Submitted reports can be moved into the review state
+- Reports in review can be moved into the awaiting changes state
+- Transactions & Planned Disbursements cannot be edited if they are associated with an approved Report
+- BEIS users can move a Report into the approved state
+- `Call open date` and `Call close date` added to the create activity form, for levels C and D.
+  This field is mandatory for new activities, but optional for activities marked as `ingested: true`
+- `Create activity` buttons that were not changed on previous PR, are changed to
+  `Add activity` now.
+- RODA Identifiers can be added to activities on creation and when updating
+- Reports in 'awaiting changes' can be submitted.
+- Forecasted and actual spend and variance is shown on the report show page
+- Ingest RS GCRF data from IATI
+- Ingest BA GCRF data from IATI
+- Ingest RAEng GCRF data from IATI
+- Transparency Identifiers are set based on RODA Identifiers
+- Delivery Partner Identifiers can be edited
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...HEAD
+[release-15]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...release-15
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13
 [release-12]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-11...release-12
@@ -267,5 +298,3 @@
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6
 [release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
 [release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
-[release-3]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-2...release-3
-[release-2]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-1...release-2

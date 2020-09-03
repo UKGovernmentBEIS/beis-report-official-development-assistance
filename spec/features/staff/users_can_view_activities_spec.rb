@@ -16,14 +16,14 @@ RSpec.feature "Users can view activities" do
       another_activity = create(:project_activity)
 
       visit activities_path(organisation_id: user.organisation)
-      expect(page).to have_content I18n.t("page_title.activity.index")
+      expect(page).to have_content t("page_title.activity.index")
 
       first_activity = activities.first
       last_activity = activities.last
 
-      expect(page).to have_content first_activity.identifier
-      expect(page).to have_content last_activity.identifier
-      expect(page).not_to have_content another_activity.identifier
+      expect(page).to have_content first_activity.delivery_partner_identifier
+      expect(page).to have_content last_activity.delivery_partner_identifier
+      expect(page).not_to have_content another_activity.delivery_partner_identifier
     end
 
     scenario "they can view another organisations activities" do
@@ -32,7 +32,7 @@ RSpec.feature "Users can view activities" do
 
       visit activities_path(organisation_id: activity.organisation)
 
-      expect(page).to have_content activity.identifier
+      expect(page).to have_content activity.delivery_partner_identifier
     end
 
     context "when an organisation id query parameter is not supplied" do
@@ -41,7 +41,7 @@ RSpec.feature "Users can view activities" do
 
         visit activities_path(organisation_id: "")
 
-        expect(page).to have_content activity.identifier
+        expect(page).to have_content activity.delivery_partner_identifier
       end
     end
 
@@ -52,7 +52,7 @@ RSpec.feature "Users can view activities" do
 
         visit activities_path(organisation_id: delivery_partner.id)
 
-        expect(page).to have_content activity.identifier
+        expect(page).to have_content activity.delivery_partner_identifier
       end
     end
 
@@ -62,7 +62,7 @@ RSpec.feature "Users can view activities" do
 
         visit activities_path(organisation_id: "this-is-no-a-know-organisation")
 
-        expect(page).to have_content activity.identifier
+        expect(page).to have_content activity.delivery_partner_identifier
       end
     end
   end
@@ -78,7 +78,7 @@ RSpec.feature "Users can view activities" do
 
       within("##{project.id}") do
         expect(page).to have_link project.title, href: organisation_activity_path(project.organisation, project)
-        expect(page).to have_content project.identifier
+        expect(page).to have_content project.delivery_partner_identifier
       end
     end
 
@@ -98,14 +98,14 @@ RSpec.feature "Users can view activities" do
 
       visit activities_path
       click_on project.title
-      click_on I18n.t("tabs.activity.details")
+      click_on t("tabs.activity.details")
       click_on programme.title
-      click_on I18n.t("tabs.activity.children")
+      click_on t("tabs.activity.children")
 
-      expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.label")
+      expect(page).to_not have_content t("summary.label.activity.publish_to_iati.label")
 
       within("##{project.id}") do
-        expect(page).to_not have_content I18n.t("summary.label.activity.publish_to_iati.yes")
+        expect(page).to_not have_content t("summary.label.activity.publish_to_iati.true")
       end
     end
 
@@ -131,7 +131,7 @@ RSpec.feature "Users can view activities" do
         expect(page).to have_content "Details"
       end
       expect(page).to have_content activity.title
-      expect(page).to have_link I18n.t("page_content.activity.implementing_organisation.button.new")
+      expect(page).to have_link t("page_content.activity.implementing_organisation.button.new")
     end
 
     scenario "all activities can be viewed" do
@@ -139,14 +139,14 @@ RSpec.feature "Users can view activities" do
 
       visit activities_path(organisation_id: user.organisation)
 
-      expect(page).to have_content I18n.t("page_title.activity.index")
+      expect(page).to have_content t("page_title.activity.index")
 
       first_activity = activities.first
       last_activity = activities.last
 
-      expect(page).to have_content first_activity.identifier
+      expect(page).to have_content first_activity.delivery_partner_identifier
 
-      expect(page).to have_content last_activity.identifier
+      expect(page).to have_content last_activity.delivery_partner_identifier
     end
 
     scenario "an activity can be viewed" do
@@ -156,13 +156,13 @@ RSpec.feature "Users can view activities" do
       visit activities_path
 
       click_on(programme.title)
-      click_on I18n.t("tabs.activity.children")
+      click_on t("tabs.activity.children")
       click_on activity.title
-      click_on I18n.t("tabs.activity.details")
+      click_on t("tabs.activity.details")
 
       activity_presenter = ActivityPresenter.new(activity)
 
-      expect(page).to have_content activity_presenter.identifier
+      expect(page).to have_content activity_presenter.delivery_partner_identifier
       expect(page).to have_content activity_presenter.sector
       expect(page).to have_content activity_presenter.title
       expect(page).to have_content activity_presenter.description
@@ -179,7 +179,7 @@ RSpec.feature "Users can view activities" do
 
         visit activities_path(organisation_id: another_delivery_partner.id)
 
-        expect(page).to have_content activity.identifier
+        expect(page).to have_content activity.delivery_partner_identifier
       end
     end
 
@@ -191,7 +191,7 @@ RSpec.feature "Users can view activities" do
                                              actual_end_date: Date.new(2020, 1, 29))
 
         visit organisation_activity_path(user.organisation, activity)
-        click_on I18n.t("tabs.activity.details")
+        click_on t("tabs.activity.details")
 
         within(".planned_start_date") do
           expect(page).to have_content("3 Feb 2020")

@@ -18,11 +18,11 @@ RSpec.feature "Users can create a transaction" do
 
       click_on(activity.title)
 
-      click_on(I18n.t("page_content.transactions.button.create"))
+      click_on(t("page_content.transactions.button.create"))
 
       fill_in_transaction_form
 
-      expect(page).to have_content(I18n.t("action.transaction.create.success"))
+      expect(page).to have_content(t("action.transaction.create.success"))
     end
 
     scenario "transaction creation is tracked with public_activity" do
@@ -33,7 +33,7 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.transactions.button.create"))
+        click_on(t("page_content.transactions.button.create"))
 
         fill_in_transaction_form
 
@@ -52,16 +52,16 @@ RSpec.feature "Users can create a transaction" do
 
       click_on(activity.title)
 
-      click_on(I18n.t("page_content.transactions.button.create"))
-      click_on(I18n.t("default.button.submit"))
+      click_on(t("page_content.transactions.button.create"))
+      click_on(t("default.button.submit"))
 
-      expect(page).to_not have_content(I18n.t("action.transaction.create.success"))
-      expect(page).to have_content(I18n.t("activerecord.errors.models.transaction.attributes.description.blank"))
-      expect(page).to have_content(I18n.t("activerecord.errors.models.transaction.attributes.transaction_type.blank"))
-      expect(page).to have_content(I18n.t("activerecord.errors.models.transaction.attributes.date.blank"))
-      expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.other_than")
-      expect(page).to have_content(I18n.t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
-      expect(page).to have_content(I18n.t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
+      expect(page).to_not have_content(t("action.transaction.create.success"))
+      expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.description.blank"))
+      expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.transaction_type.blank"))
+      expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.date.blank"))
+      expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.other_than")
+      expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
+      expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
     end
 
     scenario "disbursement channel is optional" do
@@ -71,9 +71,9 @@ RSpec.feature "Users can create a transaction" do
 
       click_on(activity.title)
 
-      click_on(I18n.t("page_content.transactions.button.create"))
+      click_on(t("page_content.transactions.button.create"))
       expect(page).to have_content("Disbursement channel (optional)")
-      click_on(I18n.t("default.button.submit"))
+      click_on(t("default.button.submit"))
 
       expect(page).to_not have_content("Disbursement channel can't be blank")
     end
@@ -86,7 +86,7 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.transactions.button.create"))
+        click_on(t("page_content.transactions.button.create"))
 
         fill_in "transaction[description]", with: "This money will be purchasing a new school roof"
         select "Outgoing Pledge", from: "transaction[transaction_type]"
@@ -96,9 +96,9 @@ RSpec.feature "Users can create a transaction" do
         fill_in "transaction[value]", with: "100000000000"
         select "Money is disbursed through central Ministry of Finance or Treasury", from: "transaction[disbursement_channel]"
         select "Pound Sterling", from: "transaction[currency]"
-        click_on(I18n.t("default.button.submit"))
+        click_on(t("default.button.submit"))
 
-        expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.less_than_or_equal_to")
+        expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.less_than_or_equal_to")
       end
 
       scenario "Value cannot be 0" do
@@ -108,7 +108,7 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.transactions.button.create"))
+        click_on(t("page_content.transactions.button.create"))
 
         fill_in "transaction[description]", with: "This money will be purchasing a new school roof"
         select "Outgoing Pledge", from: "transaction[transaction_type]"
@@ -118,9 +118,9 @@ RSpec.feature "Users can create a transaction" do
         fill_in "transaction[value]", with: "0"
         select "Money is disbursed through central Ministry of Finance or Treasury", from: "transaction[disbursement_channel]"
         select "Pound Sterling", from: "transaction[currency]"
-        click_on(I18n.t("default.button.submit"))
+        click_on(t("default.button.submit"))
 
-        expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.value.other_than")
+        expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.other_than")
       end
 
       scenario "Value can be negative" do
@@ -130,7 +130,7 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.transactions.button.create"))
+        click_on(t("page_content.transactions.button.create"))
 
         fill_in "transaction[description]", with: "This money will be purchasing a new school roof"
         select "Outgoing Pledge", from: "transaction[transaction_type]"
@@ -142,9 +142,9 @@ RSpec.feature "Users can create a transaction" do
         select "Pound Sterling", from: "transaction[currency]"
         fill_in "transaction[receiving_organisation_name]", with: "Company"
         select "Government", from: "transaction[receiving_organisation_type]"
-        click_on(I18n.t("default.button.submit"))
+        click_on(t("default.button.submit"))
 
-        expect(page).to have_content I18n.t("action.transaction.create.success")
+        expect(page).to have_content t("action.transaction.create.success")
       end
 
       scenario "When the value includes a pound sign" do
@@ -154,7 +154,7 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.transactions.button.create"))
+        click_on(t("page_content.transactions.button.create"))
 
         fill_in_transaction_form(value: "£123", expectations: false)
 
@@ -168,7 +168,7 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.transactions.button.create"))
+        click_on(t("page_content.transactions.button.create"))
 
         fill_in_transaction_form(value: "abc123def", expectations: false)
 
@@ -182,7 +182,7 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.transactions.button.create"))
+        click_on(t("page_content.transactions.button.create"))
 
         fill_in_transaction_form(value: "100.12", expectations: false)
 
@@ -196,7 +196,7 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.transactions.button.create"))
+        click_on(t("page_content.transactions.button.create"))
 
         fill_in_transaction_form(value: "123,000,000", expectations: false)
 
@@ -212,7 +212,7 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.transactions.button.create"))
+        click_on(t("page_content.transactions.button.create"))
 
         fill_in_transaction_form(date_day: 0o1, date_month: 0o1, date_year: 2100, expectations: false)
 
@@ -226,12 +226,12 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.transactions.button.create"))
+        click_on(t("page_content.transactions.button.create"))
 
         fill_in_transaction_form(date_day: 0o1, date_month: 0o1, date_year: 2.years.ago, expectations: false)
 
         expect(page).to_not have_content "Date must not be in the future"
-        expect(page).to have_content I18n.t("action.transaction.create.success")
+        expect(page).to have_content t("action.transaction.create.success")
       end
 
       scenario "When the date is nil" do
@@ -241,11 +241,11 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(activity.title)
 
-        click_on(I18n.t("page_content.transactions.button.create"))
+        click_on(t("page_content.transactions.button.create"))
 
         fill_in_transaction_form(date_day: "", date_month: "", date_year: "", expectations: false)
 
-        expect(page).to have_content I18n.t("activerecord.errors.models.transaction.attributes.date.blank")
+        expect(page).to have_content t("activerecord.errors.models.transaction.attributes.date.blank")
       end
     end
   end
@@ -263,8 +263,8 @@ RSpec.feature "Users can create a transaction" do
 
       visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
-      expect(page).not_to have_content(I18n.t("page_content.activity.transactions"))
-      expect(page).not_to have_content(I18n.t("page_content.transactions.button.create"))
+      expect(page).not_to have_content(t("page_content.activity.transactions"))
+      expect(page).not_to have_content(t("page_content.transactions.button.create"))
     end
 
     context "and the activity is a third-party project" do
@@ -276,9 +276,9 @@ RSpec.feature "Users can create a transaction" do
         visit organisation_activity_path(user.organisation, third_party_project)
         click_on "Add a transaction"
 
-        expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_name"), with: beis.name
-        expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_type"), with: beis.organisation_type
-        expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_reference"), with: beis.iati_reference
+        expect(page).to have_field t("form.label.transaction.providing_organisation_name"), with: beis.name
+        expect(page).to have_field t("form.label.transaction.providing_organisation_type"), with: beis.organisation_type
+        expect(page).to have_field t("form.label.transaction.providing_organisation_reference"), with: beis.iati_reference
       end
 
       scenario "the transaction is associated with the currently active report" do
@@ -311,9 +311,9 @@ RSpec.feature "Users can create a transaction" do
         visit organisation_activity_path(user.organisation, third_party_project)
         click_on "Add a transaction"
 
-        expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_name"), with: non_government_organisation.name
-        expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_type"), with: non_government_organisation.organisation_type
-        expect(page).to have_field I18n.t("form.label.transaction.providing_organisation_reference"), with: non_government_organisation.iati_reference
+        expect(page).to have_field t("form.label.transaction.providing_organisation_name"), with: non_government_organisation.name
+        expect(page).to have_field t("form.label.transaction.providing_organisation_type"), with: non_government_organisation.organisation_type
+        expect(page).to have_field t("form.label.transaction.providing_organisation_reference"), with: non_government_organisation.iati_reference
       end
     end
   end

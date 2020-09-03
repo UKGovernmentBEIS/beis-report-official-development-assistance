@@ -11,15 +11,29 @@ RSpec.feature "Users can create a project" do
 
         visit organisation_activity_children_path(programme.organisation, programme)
 
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on(t("page_content.organisation.button.create_activity"))
 
         fill_in_activity_form(level: "project", parent: programme)
 
-        expect(page).to have_content I18n.t("action.project.create.success")
+        expect(page).to have_content t("action.project.create.success")
         expect(programme.child_activities.count).to eq 1
 
         project = programme.child_activities.last
 
+        expect(project.organisation).to eq user.organisation
+      end
+
+      scenario "a new project can be added when the program has no RODA identifier" do
+        programme = create(:programme_activity, extending_organisation: user.organisation, roda_identifier_fragment: nil)
+
+        visit organisation_activity_children_path(programme.organisation, programme)
+        click_on(t("page_content.organisation.button.create_activity"))
+        fill_in_activity_form(level: "project", parent: programme)
+
+        expect(page).to have_content t("action.project.create.success")
+
+        expect(programme.child_activities.count).to eq 1
+        project = programme.child_activities.last
         expect(project.organisation).to eq user.organisation
       end
 
@@ -28,12 +42,12 @@ RSpec.feature "Users can create a project" do
         identifier = "a-project"
 
         visit activities_path
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on(t("page_content.organisation.button.create_activity"))
 
-        fill_in_activity_form(identifier: identifier, level: "project", parent: programme)
+        fill_in_activity_form(roda_identifier_fragment: identifier, level: "project", parent: programme)
 
-        activity = Activity.find_by(identifier: identifier)
-        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{programme.parent.identifier}-#{programme.identifier}-#{activity.identifier}")
+        activity = Activity.find_by(roda_identifier_fragment: identifier)
+        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{programme.parent.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{activity.roda_identifier_fragment}")
       end
 
       scenario "project creation is tracked with public_activity" do
@@ -41,11 +55,11 @@ RSpec.feature "Users can create a project" do
 
         PublicActivity.with_tracking do
           visit organisation_activity_children_path(programme.organisation, programme)
-          click_on(I18n.t("page_content.organisation.button.create_activity"))
+          click_on(t("page_content.organisation.button.create_activity"))
 
-          fill_in_activity_form(level: "project", identifier: "my-unique-identifier", parent: programme)
+          fill_in_activity_form(level: "project", delivery_partner_identifier: "my-unique-identifier", parent: programme)
 
-          project = Activity.find_by(identifier: "my-unique-identifier")
+          project = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
           auditable_events = PublicActivity::Activity.where(trackable_id: project.id)
           expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.flow", "activity.create.aid_type")
           expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]

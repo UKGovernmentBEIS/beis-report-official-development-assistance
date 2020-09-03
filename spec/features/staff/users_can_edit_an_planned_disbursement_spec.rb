@@ -19,7 +19,7 @@ RSpec.describe "Users can edit a planned disbursement" do
       fill_in "Receiving organisation", with: "An Organisation"
       click_button "Submit"
 
-      expect(page).to have_content I18n.t("action.planned_disbursement.update.success")
+      expect(page).to have_content t("action.planned_disbursement.update.success")
       expect(page).to have_content "An Organisation"
     end
 
@@ -31,7 +31,7 @@ RSpec.describe "Users can edit a planned disbursement" do
         visit activities_path
         click_on(project.title)
         within("##{planned_disbursement.id}") do
-          click_on(I18n.t("default.link.edit"))
+          click_on(t("default.link.edit"))
         end
 
         fill_in_planned_disbursement_form(value: "2000.51")

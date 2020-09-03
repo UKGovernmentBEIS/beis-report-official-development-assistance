@@ -5,6 +5,10 @@ en:
       report:
         active: Active reports
         inactive: Inactive reports
+        submitted: Submitted reports
+        in_review: Reports in review
+        awaiting_changes: Reports awaiting changes
+        approved: Approved reports
     header:
       report:
         financial_quarter: Financial quarter
@@ -13,10 +17,15 @@ en:
         organisation: Organisation
         fund: Level A
         deadline: Deadline
+    body:
+      report:
+        action:
+          edit: Edit
+          activate: Activate
+          in_review: Mark as in review
   page_content:
     reports:
       title: Reports
-      download_as_csv: Download report as a CSV
   label:
     report:
      state:
@@ -39,13 +48,62 @@ en:
       index: Reports
   page_title:
     report:
+      activate:
+        confirm: Confirm activation of %{report_financial_quarter} %{report_description}
+        complete: Report activation complete
       index: Reports
       edit: Edit report
-      show: View report %{report_name}
+      show: "%{report_financial_quarter} %{report_description}"
+      submit:
+        confirm: Confirm submission of %{report_financial_quarter} %{report_description}
+        complete: Submission complete
+      in_review:
+        confirm: Confirm you want to move %{report_financial_quarter} %{report_description} into review
+        complete: The report is now in review
+      request_changes:
+        confirm: Confirm you want to request changes for %{report_financial_quarter} %{report_description}
+        complete: This report is now awaiting changes
+      approve:
+        confirm: Confirm approval for %{report_financial_quarter} %{report_description}
+        complete: This report is approved
   action:
     report:
+      activate:
+        button: Activate report
+        confirm:
+          button: Confirm report activation
+        complete:
+          title: Report activation complete
+          body: "%{report_financial_quarter} %{report_description}"
       update:
         success: Report successfully updated
+      submit:
+        button: Submit report
+        complete:
+          title: Submission complete
+          body: "%{report_financial_quarter} %{report_description}"
+        confirm:
+          button: Confirm submission
+      download:
+        button: Download report as CSV file
+      in_review:
+        confirm:
+          button: Move into review
+        complete:
+          title: This report is now in review
+        button: Mark as in review
+      request_changes:
+        button: Request changes
+        confirm:
+          button: Confirm request
+        complete:
+          title: This report is now awaiting changes
+      approve:
+        complete:
+          title: This report is now approved
+        button: Approve
+        confirm:
+          button: Confirm approval
   activerecord:
     errors:
       models:

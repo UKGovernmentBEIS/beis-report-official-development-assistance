@@ -22,8 +22,8 @@ RSpec.describe FormHelper, type: :helper do
     it "builds a list of budget types for a planned disbursement" do
       budget_types = helper.list_of_planned_disbursement_budget_types
 
-      expect(budget_types[0].name).to eq I18n.t("form.label.planned_disbursement.planned_disbursement_type_options.original.name")
-      expect(budget_types[0].description).to eq I18n.t("form.label.planned_disbursement.planned_disbursement_type_options.original.description")
+      expect(budget_types[0].name).to eq t("form.label.planned_disbursement.planned_disbursement_type_options.original.name")
+      expect(budget_types[0].description).to eq t("form.label.planned_disbursement.planned_disbursement_type_options.original.description")
     end
   end
 
@@ -73,12 +73,12 @@ RSpec.describe FormHelper, type: :helper do
           OpenStruct.new(
             level: "fund",
             name: "Fund",
-            description: I18n.t("form.hint.activity.level_step.fund"),
+            description: t("form.hint.activity.level_step.fund"),
           ),
           OpenStruct.new(
             level: "programme",
             name: "Programme",
-            description: I18n.t("form.hint.activity.level_step.programme"),
+            description: t("form.hint.activity.level_step.programme"),
           ),
         ])
       end

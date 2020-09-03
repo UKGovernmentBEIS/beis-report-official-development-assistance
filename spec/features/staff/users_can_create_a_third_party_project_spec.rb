@@ -10,13 +10,13 @@ RSpec.feature "Users can create a project" do
         visit activities_path
 
         click_on(project.title)
-        click_on I18n.t("tabs.activity.children")
+        click_on t("tabs.activity.children")
 
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on(t("page_content.organisation.button.create_activity"))
 
         fill_in_activity_form(level: "third_party_project", parent: project)
 
-        expect(page).to have_content I18n.t("action.third_party_project.create.success")
+        expect(page).to have_content t("action.third_party_project.create.success")
         expect(project.child_activities.count).to eq 1
 
         third_party_project = project.child_activities.last
@@ -26,19 +26,19 @@ RSpec.feature "Users can create a project" do
 
       scenario "the activity saves its identifier as read-only `transparency_identifier`" do
         project = create(:project_activity, organisation: user.organisation)
-        identifier = "a-third-party-project"
+        identifier = "3rd-party-proj"
 
         visit activities_path
 
         click_on(project.title)
-        click_on I18n.t("tabs.activity.children")
+        click_on t("tabs.activity.children")
 
-        click_on(I18n.t("page_content.organisation.button.create_activity"))
+        click_on(t("page_content.organisation.button.create_activity"))
 
-        fill_in_activity_form(level: "third_party_project", identifier: identifier, parent: project)
+        fill_in_activity_form(level: "third_party_project", roda_identifier_fragment: identifier, parent: project)
 
-        activity = Activity.find_by(identifier: identifier)
-        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{project.parent.parent.identifier}-#{project.parent.identifier}-#{project.identifier}-#{activity.identifier}")
+        activity = Activity.find_by(roda_identifier_fragment: identifier)
+        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{project.parent.parent.roda_identifier_fragment}-#{project.parent.roda_identifier_fragment}-#{project.roda_identifier_fragment}#{activity.roda_identifier_fragment}")
       end
 
       scenario "third party project creation is tracked with public_activity" do
@@ -48,13 +48,13 @@ RSpec.feature "Users can create a project" do
           visit activities_path
 
           click_on(project.title)
-          click_on I18n.t("tabs.activity.children")
+          click_on t("tabs.activity.children")
 
-          click_on(I18n.t("page_content.organisation.button.create_activity"))
+          click_on(t("page_content.organisation.button.create_activity"))
 
-          fill_in_activity_form(level: "third_party_project", identifier: "my-unique-identifier", parent: project)
+          fill_in_activity_form(level: "third_party_project", delivery_partner_identifier: "my-unique-identifier", parent: project)
 
-          third_party_project = Activity.find_by(identifier: "my-unique-identifier")
+          third_party_project = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
           auditable_events = PublicActivity::Activity.where(trackable_id: third_party_project.id)
           expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.flow", "activity.create.aid_type")
           expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]

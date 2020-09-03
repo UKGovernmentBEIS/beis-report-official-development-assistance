@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_19_081212) do
+ActiveRecord::Schema.define(version: 2020_09_01_150652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2020_08_19_081212) do
     t.uuid "organisation_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "identifier"
+    t.string "delivery_partner_identifier"
     t.string "sector"
     t.string "title"
     t.text "description"
@@ -52,11 +52,18 @@ ActiveRecord::Schema.define(version: 2020_08_19_081212) do
     t.uuid "parent_id"
     t.string "transparency_identifier"
     t.string "programme_status"
+    t.boolean "call_present"
+    t.date "call_open_date"
+    t.date "call_close_date"
+    t.string "roda_identifier_fragment"
+    t.string "roda_identifier_compound"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
     t.index ["parent_id"], name: "index_activities_on_parent_id"
     t.index ["reporting_organisation_id"], name: "index_activities_on_reporting_organisation_id"
+    t.index ["roda_identifier_compound"], name: "index_activities_on_roda_identifier_compound"
+    t.index ["transparency_identifier"], name: "index_activities_on_transparency_identifier", unique: true
   end
 
   create_table "auditable_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

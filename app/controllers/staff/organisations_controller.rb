@@ -46,7 +46,7 @@ class Staff::OrganisationsController < Staff::BaseController
     if @organisation.valid?
       @organisation.save
       @organisation.create_activity key: "organisation.create", owner: current_user
-      flash[:notice] = I18n.t("action.organisation.create.success")
+      flash[:notice] = t("action.organisation.create.success")
       redirect_to organisation_path(@organisation)
     else
       render :new
@@ -67,7 +67,7 @@ class Staff::OrganisationsController < Staff::BaseController
     if @organisation.valid?
       @organisation.save
       @organisation.create_activity key: "organisation.update", owner: current_user
-      flash[:notice] = I18n.t("action.organisation.update.success")
+      flash[:notice] = t("action.organisation.update.success")
       redirect_to organisation_path(@organisation)
     else
       render :edit

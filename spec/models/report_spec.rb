@@ -25,7 +25,7 @@ RSpec.describe Report, type: :model do
     programme = create(:programme_activity)
     report = build(:report, fund: programme)
     expect(report).not_to be_valid
-    expect(report.errors[:fund]).to include I18n.t("activerecord.errors.models.report.attributes.fund.level")
+    expect(report.errors[:fund]).to include t("activerecord.errors.models.report.attributes.fund.level")
   end
 
   it "does not allow more than one Report for the same Fund and Organisation combination" do
@@ -113,6 +113,48 @@ RSpec.describe Report, type: :model do
         travel_to(Date.parse("1 February 2021")) do
           report = Report.new
           expect(report.financial_year).to eql 2020
+        end
+      end
+    end
+  end
+
+  describe "#next_four_financial_quarters" do
+    context "when in Q1 2020" do
+      it "returns an array with the next four financial quarters" do
+        travel_to(Date.parse("1 April 2020")) do
+          report = create(:report)
+
+          expect(report.next_four_financial_quarters).to eq ["Q2 2020", "Q3 2020", "Q4 2020", "Q1 2021"]
+        end
+      end
+    end
+
+    context "when in Q2 2020" do
+      it "returns an array with the next four financial quarters" do
+        travel_to(Date.parse("1 July 2020")) do
+          report = create(:report)
+
+          expect(report.next_four_financial_quarters).to eq ["Q3 2020", "Q4 2020", "Q1 2021", "Q2 2021"]
+        end
+      end
+    end
+
+    context "when in Q3 2020" do
+      it "returns an array with the next four financial quarters" do
+        travel_to(Date.parse("1 October 2020")) do
+          report = create(:report)
+
+          expect(report.next_four_financial_quarters).to eq ["Q4 2020", "Q1 2021", "Q2 2021", "Q3 2021"]
+        end
+      end
+    end
+
+    context "when in Q4 2020" do
+      it "returns an array with the next four financial quarters" do
+        travel_to(Date.parse("1 January 2021")) do
+          report = create(:report)
+
+          expect(report.next_four_financial_quarters).to eq ["Q1 2021", "Q2 2021", "Q3 2021", "Q4 2021"]
         end
       end
     end
