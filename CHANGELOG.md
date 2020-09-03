@@ -279,6 +279,8 @@
 - Ingest RS GCRF data from IATI
 - Ingest BA GCRF data from IATI
 - Ingest RAEng GCRF data from IATI
+- Transparency Identifiers are set based on RODA Identifiers
+- Delivery Partner Identifiers can be edited
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...HEAD
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14

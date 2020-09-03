@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_26_090103) do
+ActiveRecord::Schema.define(version: 2020_09_01_150652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 2020_08_26_090103) do
     t.index ["parent_id"], name: "index_activities_on_parent_id"
     t.index ["reporting_organisation_id"], name: "index_activities_on_reporting_organisation_id"
     t.index ["roda_identifier_compound"], name: "index_activities_on_roda_identifier_compound"
+    t.index ["transparency_identifier"], name: "index_activities_on_transparency_identifier", unique: true
   end
 
   create_table "auditable_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
