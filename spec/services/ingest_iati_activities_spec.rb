@@ -499,4 +499,20 @@ RSpec.describe IngestIatiActivities do
       expect(project.planned_end_date).to eq("2020-09-30".to_date)
     end
   end
+
+  context "activities with transactions, budgets or transactions with missing currency attributes" do
+    it "defaults `currency` to GBP" do
+      raeng = create(:organisation, name: "Royal Academy of Engineering", iati_reference: "GB-CHC-293074")
+      fund = create(:fund_activity, delivery_partner_identifier: "GCRF")
+      legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/raeng/with_missing_currency_attributes.xml")
+      _report = create(:report, :active, organisation: raeng, fund: fund)
+
+      described_class.new(delivery_partner: raeng, file_io: legacy_activities).call
+
+      new_activity = Activity.find_by(parent: fund)
+      expect(new_activity.transactions.first.currency).to eql "GBP"
+      expect(new_activity.budgets.first.currency).to eql "GBP"
+      expect(new_activity.planned_disbursements.first.currency).to eql "GBP"
+    end
+  end
 end
