@@ -194,6 +194,14 @@ class Activity < ApplicationRecord
     activity_chain.map(&:roda_identifier_fragment)
   end
 
+  def iati_identifier
+    if previous_identifier.present?
+      previous_identifier
+    else
+      transparency_identifier
+    end
+  end
+
   def actual_total_for_report_financial_quarter(report:)
     @actual_total_for_report_financial_quarter ||= transactions.where(report: report, date: report.created_at.all_quarter).sum(:value)
   end

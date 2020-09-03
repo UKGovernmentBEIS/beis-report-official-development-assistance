@@ -812,6 +812,18 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#iati_identifier" do
+    it "returns the previous_identifier if it exists" do
+      activity = create(:activity, previous_identifier: "previous-id", transparency_identifier: "transparency-id")
+      expect(activity.iati_identifier).to eq("previous-id")
+    end
+
+    it "returns the transparency_identifier if previous_identifier is not set" do
+      activity = create(:activity, previous_identifier: nil, transparency_identifier: "transparency-id")
+      expect(activity.iati_identifier).to eq("transparency-id")
+    end
+  end
+
   describe "#can_set_roda_identifier?" do
     let!(:fund) { create(:fund_activity, roda_identifier_fragment: "Level/A") }
     let!(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "Level/B") }
