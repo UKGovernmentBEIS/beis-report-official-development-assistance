@@ -761,54 +761,66 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#iati_identifier" do
+  describe "#transparency_identifier" do
     context "when the activity is a fund" do
-      it "returns a composite delivery_partner_identifier formed with the reporting organisation" do
-        fund = build(:fund_activity, delivery_partner_identifier: "GCRF-1", reporting_organisation: create(:beis_organisation))
-        expect(fund.iati_identifier).to eql("GB-GOV-13-GCRF-1")
+      it "returns a composite identifier formed with the reporting organisation" do
+        fund = create(:fund_activity, roda_identifier_fragment: "GCRF-1", reporting_organisation: create(:beis_organisation))
+        expect(fund.transparency_identifier).to eql("GB-GOV-13-GCRF-1")
       end
     end
 
     context "when the activity is a programme" do
       context "when the reporting organisation is a government organisation" do
-        it "returns an delivery_partner_identifier with the reporting organisation, fund and programme" do
+        it "returns an identifier with the reporting organisation, fund and programme" do
           government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
           programme = create(:programme_activity, organisation: government_organisation)
           fund = programme.parent
 
-          expect(programme.iati_identifier)
-            .to eql("GB-GOV-13-#{fund.delivery_partner_identifier}-#{programme.delivery_partner_identifier}")
+          expect(programme.transparency_identifier)
+            .to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{programme.roda_identifier_fragment}")
         end
       end
     end
 
     context "when the activity is a project" do
       context "when the reporting organisation is a government organisation" do
-        it "returns an delivery_partner_identifier with the reporting organisation, fund, programme and project" do
+        it "returns an identifier with the reporting organisation, fund, programme and project" do
           government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
           project = create(:project_activity, organisation: government_organisation, reporting_organisation: government_organisation)
           programme = project.parent
           fund = programme.parent
 
-          expect(project.iati_identifier)
-            .to eql("GB-GOV-13-#{fund.delivery_partner_identifier}-#{programme.delivery_partner_identifier}-#{project.delivery_partner_identifier}")
+          expect(project.transparency_identifier)
+            .to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{project.roda_identifier_fragment}")
         end
       end
     end
 
     context "when the activity is a third-party project" do
       context "when the reporting organisation is a government organisation" do
-        it "returns an delivery_partner_identifier with the reporting organisation, fund, programme, project and third-party project" do
+        it "returns an identifier with the reporting organisation, fund, programme, project and third-party project" do
           government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
           third_party_project = create(:third_party_project_activity, organisation: government_organisation, reporting_organisation: government_organisation)
           project = third_party_project.parent
           programme = project.parent
           fund = programme.parent
 
-          expect(third_party_project.iati_identifier)
-            .to eql("GB-GOV-13-#{fund.delivery_partner_identifier}-#{programme.delivery_partner_identifier}-#{project.delivery_partner_identifier}-#{third_party_project.delivery_partner_identifier}")
+          expect(third_party_project.transparency_identifier)
+            .to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{project.roda_identifier_fragment}#{third_party_project.roda_identifier_fragment}")
         end
       end
+    end
+  end
+
+  describe "#iati_identifier" do
+    it "returns the previous_identifier if it exists" do
+      activity = create(:activity, previous_identifier: "previous-id", transparency_identifier: "transparency-id")
+      expect(activity.iati_identifier).to eq("previous-id")
+    end
+
+    it "returns the transparency_identifier if previous_identifier is not set" do
+      activity = create(:activity, previous_identifier: nil, transparency_identifier: "transparency-id")
+      expect(activity.iati_identifier).to eq("transparency-id")
     end
   end
 
@@ -866,6 +878,11 @@ RSpec.describe Activity, type: :model do
     it "caches the compound RODA identifier on a project" do
       project.cache_roda_identifier!
       expect(project.roda_identifier_compound).to eq("Level/A-Level/B-Level/C")
+    end
+
+    it "caches the transparency identifier on a project" do
+      project.cache_roda_identifier!
+      expect(project.transparency_identifier).to eq("GB-GOV-13-Level-A-Level-B-Level-C")
     end
 
     it "caches the compound RODA identifier on a third-party project" do

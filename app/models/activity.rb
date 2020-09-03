@@ -42,6 +42,7 @@ class Activity < ApplicationRecord
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier_compound, uniqueness: true, allow_nil: true
+  validates :transparency_identifier, uniqueness: true, allow_nil: true
   validates :planned_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.actual_start_date.present? }
   validates :actual_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.planned_start_date.present? }
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
@@ -152,12 +153,6 @@ class Activity < ApplicationRecord
     end
   end
 
-  def iati_identifier
-    parent_activities.each_with_object([reporting_organisation.iati_reference]) { |parent, parent_identifiers|
-      parent_identifiers << parent.delivery_partner_identifier
-    }.push(delivery_partner_identifier).join("-")
-  end
-
   def can_set_roda_identifier?
     identifier_fragments = roda_identifier_fragment_chain
     identifier_fragments[0..-2].all?(&:present?) && identifier_fragments.last.blank?
@@ -171,6 +166,12 @@ class Activity < ApplicationRecord
     compound << identifier_fragments[3] if identifier_fragments.size == 4
 
     self.roda_identifier_compound = compound
+
+    self.transparency_identifier ||= [
+      reporting_organisation.iati_reference,
+      compound.gsub(/[^a-z0-9-]+/i, "-"),
+    ].join("-")
+
     true
   end
 
@@ -191,6 +192,14 @@ class Activity < ApplicationRecord
   private def roda_identifier_fragment_chain
     activity_chain = parent_activities + [self]
     activity_chain.map(&:roda_identifier_fragment)
+  end
+
+  def iati_identifier
+    if previous_identifier.present?
+      previous_identifier
+    else
+      transparency_identifier
+    end
   end
 
   def actual_total_for_report_financial_quarter(report:)

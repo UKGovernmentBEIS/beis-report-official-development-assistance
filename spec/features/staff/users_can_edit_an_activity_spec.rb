@@ -60,7 +60,6 @@ RSpec.feature "Users can edit an activity" do
         expect(page).to have_content(t("summary.label.activity.publish_to_iati.false"))
       end
     end
-
     context "before the activity has a level" do
       it "shows add link on the level step" do
         activity = create(:activity, :level_form_state, organisation: user.organisation)
@@ -122,36 +121,26 @@ RSpec.feature "Users can edit an activity" do
       context "when the activity is complete" do
         it "editing and saving a step returns the user to the activity page details tab" do
           activity = create(:fund_activity, organisation: user.organisation)
-          new_title = "Another new title"
+          identifier = "AB-CDE-1234"
           visit organisation_activity_details_path(activity.organisation, activity)
 
-          within(".title") do
+          within(".identifier") do
             click_on(t("default.link.edit"))
           end
 
-          fill_in "activity[title]", with: new_title
+          fill_in "activity[delivery_partner_identifier]", with: identifier
           click_button t("form.button.activity.submit")
 
           expect(page).to have_content t("action.fund.update.success")
           expect(page.current_path).to eq organisation_activity_details_path(activity.organisation, activity)
         end
 
-        it "all edit links (except identifier) are available to take the user to the right step" do
+        it "all edit links are available to take the user to the right step" do
           activity = create(:fund_activity, organisation: user.organisation)
 
           visit organisation_activity_details_path(activity.organisation, activity)
 
           assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
-        end
-
-        it "does not show an edit link for the identifier" do
-          activity = create(:fund_activity, organisation: user.organisation)
-
-          visit organisation_activity_details_path(activity.organisation, activity)
-
-          within(".identifier") do
-            expect(page).to_not have_content t("default.link.edit")
-          end
         end
 
         it "does not show an edit link for the transparency identifier" do
@@ -166,20 +155,20 @@ RSpec.feature "Users can edit an activity" do
 
         it "tracks activity updates with public_activity" do
           activity = create(:fund_activity, organisation: user.organisation)
-          new_title = "A new title"
+          identifier = "AB-CDE-1234"
           PublicActivity.with_tracking do
             visit organisation_activity_details_path(activity.organisation, activity)
 
-            within(".title") do
+            within(".identifier") do
               click_on(t("default.link.edit"))
             end
 
-            fill_in "activity[title]", with: new_title
+            fill_in "activity[delivery_partner_identifier]", with: identifier
             click_button t("form.button.activity.submit")
 
             # grab the most recently created auditable_event
             auditable_events = PublicActivity::Activity.where(trackable_id: activity.id).order("created_at ASC")
-            expect(auditable_events.first.key).to eq "activity.update.purpose"
+            expect(auditable_events.first.key).to eq "activity.update.identifier"
             expect(auditable_events.first.owner_id).to eq user.id
             expect(auditable_events.first.trackable_id).to eq activity.id
           end
@@ -206,14 +195,14 @@ RSpec.feature "Users can edit an activity" do
         end
 
         context "when the activity only has an identifier" do
-          it "does not show edit link on the identifier, and add link on only the next step" do
+          it "shows edit link on the identifier, and add link on only the next step" do
             activity = create(:fund_activity, :at_purpose_step, organisation: user.organisation)
 
             visit organisation_activity_details_path(activity.organisation, activity)
 
             # Click the first edit link that opens the form on step 1
             within(".identifier") do
-              expect(page).to_not have_content(t("default.link.edit"))
+              expect(page).to have_content(t("default.link.edit"))
             end
 
             within(".title") do
@@ -397,8 +386,13 @@ end
 
 def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   within(".identifier") do
-    expect(page).to_not have_content t("default.link.edit")
+    click_on t("default.link.edit")
+    expect(page).to have_current_path(
+      activity_step_path(activity, :identifier)
+    )
   end
+  click_on t("default.link.back")
+  click_on t("tabs.activity.details")
 
   within(".sector") do
     click_on(t("default.link.edit"))

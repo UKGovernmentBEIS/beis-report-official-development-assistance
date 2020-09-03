@@ -97,10 +97,10 @@ RSpec.feature "Users can create a fund level activity" do
       visit activities_path
       click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
+      fill_in_activity_form(roda_identifier_fragment: identifier, level: "fund")
 
-      activity = Activity.find_by(delivery_partner_identifier: identifier)
-      expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.delivery_partner_identifier}")
+      activity = Activity.find_by(roda_identifier_fragment: identifier)
+      expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier_fragment}")
     end
 
     context "when there is an existing activity with a nil identifier" do

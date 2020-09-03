@@ -58,10 +58,10 @@ RSpec.feature "Users can create a programme activity" do
       visit activities_path
       click_on(t("page_content.organisation.button.create_activity"))
 
-      fill_in_activity_form(delivery_partner_identifier: identifier, level: "programme", parent: fund)
+      fill_in_activity_form(roda_identifier_fragment: identifier, level: "programme", parent: fund)
 
-      activity = Activity.find_by(delivery_partner_identifier: identifier)
-      expect(activity.transparency_identifier).to eql("GB-GOV-13-#{fund.delivery_partner_identifier}-#{activity.delivery_partner_identifier}")
+      activity = Activity.find_by(roda_identifier_fragment: identifier)
+      expect(activity.transparency_identifier).to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{activity.roda_identifier_fragment}")
     end
 
     scenario "programme creation is tracked with public_activity" do

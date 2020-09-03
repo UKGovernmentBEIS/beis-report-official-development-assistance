@@ -44,10 +44,10 @@ RSpec.feature "Users can create a project" do
         visit activities_path
         click_on(t("page_content.organisation.button.create_activity"))
 
-        fill_in_activity_form(delivery_partner_identifier: identifier, level: "project", parent: programme)
+        fill_in_activity_form(roda_identifier_fragment: identifier, level: "project", parent: programme)
 
-        activity = Activity.find_by(delivery_partner_identifier: identifier)
-        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{programme.parent.delivery_partner_identifier}-#{programme.delivery_partner_identifier}-#{activity.delivery_partner_identifier}")
+        activity = Activity.find_by(roda_identifier_fragment: identifier)
+        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{programme.parent.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{activity.roda_identifier_fragment}")
       end
 
       scenario "project creation is tracked with public_activity" do
