@@ -30,11 +30,15 @@ class Staff::ReportsStateController < Staff::BaseController
   end
 
   def update
-    if STATE_TO_POLICY_ACTION.key?(params[:state])
-      change_report_state_to(params[:state])
-    else
-      authorize report
-      redirect_to report_path(report)
+    state = params[:state]
+
+    Report.transaction do
+      if STATE_TO_POLICY_ACTION.key?(state)
+        change_report_state_to(state)
+      else
+        authorize report
+        redirect_to report_path(report)
+      end
     end
   end
 
@@ -47,24 +51,25 @@ class Staff::ReportsStateController < Staff::BaseController
   private def change_report_state_to(state)
     policy_action = STATE_TO_POLICY_ACTION.fetch(state)
 
-    authorize report, policy_action + "?"
+    unless report.valid?
+      authorize report
+      flash[:error] = t("action.report.#{policy_action}.failure")
+      return redirect_to report_path(report)
+    end
 
-    if report.valid?
+    unless report.state == state
+      authorize report, policy_action + "?"
       report.update!(state: state)
       report.create_activity key: "report.state.changed_to.#{state}", owner: current_user
-
       find_or_create_new_report(organisation_id: report.organisation.id, fund_id: report.fund.id) if state == "approved"
-
-      @report_presenter = ReportPresenter.new(report)
-      render "staff/reports_state/#{policy_action}/complete"
-    else
-      flash[:error] = t("action.report.#{policy_action}.failure")
-      redirect_to report_path(report)
     end
+
+    @report_presenter = ReportPresenter.new(report)
+    render "staff/reports_state/#{policy_action}/complete"
   end
 
   private def report
-    @report ||= Report.find(params[:report_id])
+    @report ||= Report.lock.find(params[:report_id])
   end
 
   private def find_or_create_new_report(organisation_id:, fund_id:)
