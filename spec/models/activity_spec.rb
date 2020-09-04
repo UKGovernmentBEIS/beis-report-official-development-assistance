@@ -433,6 +433,20 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when requires_additional_benefitting_countries is blank when required" do
+      subject(:activity) { build(:activity, geography: :recipient_country, requires_additional_benefitting_countries: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:requires_additional_benefitting_countries_step)).to be_falsey
+      end
+    end
+
+    context "when intended_beneficiaries is blank" do
+      subject(:activity) { build(:activity, intended_beneficiaries: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:intended_beneficiaries_step)).to be_falsey
+      end
+    end
+
     context "when flow is blank" do
       subject(:activity) { build(:activity, flow: nil) }
       it "should not be valid" do

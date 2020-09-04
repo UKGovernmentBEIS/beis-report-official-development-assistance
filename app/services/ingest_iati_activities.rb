@@ -40,6 +40,8 @@ class IngestIatiActivities
           add_aid_type(legacy_activity: legacy_activity, new_activity: new_activity)
           add_dates(legacy_activity: legacy_activity, new_activity: new_activity)
           add_geography(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_requires_additional_benefitting_countries(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_intended_beneficiaries(legacy_activity: legacy_activity, new_activity: new_activity)
 
           new_activity.form_state = :complete
           new_activity
@@ -277,6 +279,16 @@ class IngestIatiActivities
       new_activity.geography = :recipient_country
       new_activity.recipient_country = recipient_country_element.attributes["code"].value
     end
+  end
+
+  private def add_requires_additional_benefitting_countries(legacy_activity:, new_activity:)
+    # Setting this value to true so it will allow the ingest of intended beneficiaries
+    new_activity.requires_additional_benefitting_countries = true
+  end
+
+  private def add_intended_beneficiaries(legacy_activity:, new_activity:)
+    # To be ingested once we have the information
+    new_activity.intended_beneficiaries = ["Replace me"]
   end
 
   private def add_dates(legacy_activity:, new_activity:)

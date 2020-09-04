@@ -1,0 +1,313 @@
+---
+attributes:
+  category-codelist: IntendedBeneficiariesType-category
+  name: IntendedBeneficiaries
+  complete: '1'
+data:
+  '1031': #Caribbean
+    - code: AG
+      name: Antigua and Barbuda
+    - code: CU
+      name: Cuba
+    - code: DM
+      name: Dominica
+    - code: DO
+      name: Dominican Republic
+    - code: GD
+      name: Grenada
+    - code: HT
+      name: Haiti
+    - code: JM
+      name: Jamaica
+    - code: MS
+      name: Montserrat
+    - code: LC
+      name: Saint Lucia
+    - code: VC
+      name: Saint Vincent and the Grenadines
+  '1032': # Central America
+    - code: BZ
+      name: Belize
+    - code: CR
+      name: Costa Rica
+    - code: SV
+      name: El Salvador
+    - code: GT
+      name: Guatemala
+    - code: HN
+      name: Honduras
+    - code: MX
+      name: Mexico
+    - code: NI
+      name: Nicaragua
+    - code: PA
+      name: Panama
+  '1027': # Eastern Africa
+    - code: BI
+      name: Burundi
+    - code: KM
+      name: Comoros
+    - code: DJ
+      name: Djibouti
+    - code: ER
+      name: Eritrea
+    - code: ET
+      name: Ethiopia
+    - code: KE
+      name: Kenya
+    - code: MG
+      name: Madagascar
+    - code: MW
+      name: Malawi
+    - code: MU
+      name: Mauritius
+    - code: MZ
+      name: Mozambique
+    - code: RW
+      name: Rwanda
+    - code: SO
+      name: Somalia
+    - code: SS
+      name: South Sudan
+    - code: SD
+      name: Sudan
+    - code: TZ
+      name: Tanzania
+    - code: UG
+      name: Uganda
+    - code: ZM
+      name: Zambia
+    - code: ZW
+      name: Zimbabwe
+  '89': # Europe
+    - code: AL
+      name: Albania
+    - code: BY
+      name: Belarus
+    - code: BA
+      name: Bosnia and Herzegovina
+    - code: XK
+      name: Kosovo
+    - code: MD
+      name: Moldova
+    - code: ME
+      name: Montenegro
+    - code: MK
+      name: North Macedonia
+    - code: RS
+      name: Serbia
+    - code: TR
+      name: Turkey
+    - code: UA
+      name: Ukraine
+  '789': # Far East Asia
+    - code: KH
+      name: Cambodia
+    - code: CN
+      name: China (People's Republic of)
+    - code: KP
+      name: Democratic People's Republic of Korea
+    - code: ID
+      name: Indonesia
+    - code: LA
+      name: Lao People's Democratic Republic
+    - code: MY
+      name: Malaysia
+    - code: MN
+      name: Mongolia
+    - code: PH
+      name: Philippines
+    - code: TH
+      name: Thailand
+    - code: TL
+      name: Timor-Leste
+    - code: VN
+      name: Viet Nam
+  '1033': # Melanesia
+    - code: FJ
+      name: Fiji
+    - code: PG
+      name: Papua New Guinea
+    - code: SB
+      name: Solomon Islands
+    - code: VU
+      name: Vanuatu
+  '1034': # Micronesia
+    - code: KI
+      name: Kiribati
+    - code: MH
+      name: Marshall Islands
+    - code: FM
+      name: Micronesia
+    - code: NR
+      name: Nauru
+    - code: PW
+      name: Palau
+  '1028': # Middle Africa
+    - code: AO
+      name: Angola
+    - code: CM
+      name: Cameroon
+    - code: CF
+      name: Central African Republic
+    - code: TD
+      name: Chad
+    - code: CG
+      name: Congo
+    - code: CD
+      name: Democratic Republic of the Congo
+    - code: GQ
+      name: Equatorial Guinea
+    - code: GA
+      name: Gabon
+    - code: ST
+      name: Sao Tome and Principe
+  '589': # Middle East
+    - code: IR
+      name: Iran
+    - code: IQ
+      name: Iraq
+    - code: JO
+      name: Jordan
+    - code: LB
+      name: Lebanon
+    - code: SY
+      name: Syrian Arab Republic
+    - code: PS
+      name: West Bank and Gaza Strip (Palestinian territory)
+    - code: YE
+      name: Yemen
+  '189': # North of Sahara
+    - code: DZ
+      name: Algeria
+    - code: EG
+      name: Egypt
+    - code: LY
+      name: Libya
+    - code: MA
+      name: Morocco
+    - code: TN
+      name: Tunisia
+  '889': # Oceania
+    - code: '889'
+      name: Oceania, regional
+  '1035': # Polynesia
+    - code: CK
+      name: Cook Islands
+    - code: NU
+      name: Niue
+    - code: WS
+      name: Samoa
+    - code: TK
+      name: Tokelau
+    - code: TO
+      name: Tonga
+    - code: TV
+      name: Tuvalu
+    - code: WF
+      name: Wallis and Futuna
+  '689': # South and Central Asia
+    - code: AF
+      name: Afghanistan
+    - code: AM
+      name: Armenia
+    - code: AZ
+      name: Azerbaijan
+    - code: BD
+      name: Bangladesh
+    - code: BT
+      name: Bhutan
+    - code: GE
+      name: Georgia
+    - code: IN
+      name: India
+    - code: KZ
+      name: Kazakhstan
+    - code: KG
+      name: Kyrgyzstan
+    - code: MV
+      name: Maldives
+    - code: MM
+      name: Myanmar
+    - code: NP
+      name: Nepal
+    - code: PK
+      name: Pakistan
+    - code: LK
+      name: Sri Lanka
+    - code: TJ
+      name: Tajikistan
+    - code: TM
+      name: Turkmenistan
+    - code: UZ
+      name: Uzbekistan
+  '489': # South America
+    - code: AR
+      name: Argentina
+    - code: BO
+      name: Bolivia
+    - code: BR
+      name: Brazil
+    - code: CO
+      name: Colombia
+    - code: EC
+      name: Ecuador
+    - code: GY
+      name: Guyana
+    - code: PY
+      name: Paraguay
+    - code: PE
+      name: Peru
+    - code: SR
+      name: Suriname
+    - code: VE
+      name: Venezuela
+  '289': # South of Sahara
+    - code: '289'
+      name: South of Sahara, regional
+  '1029': # Southern Africa
+    - code: BW
+      name: Botswana
+    - code: SZ
+      name: Eswatini
+    - code: LS
+      name: Lesotho
+    - code: NA
+      name: Namibia
+    - code: ZA
+      name: South Africa
+  '1030': # Western Africa
+    - code: BJ
+      name: Benin
+    - code: BF
+      name: Burkina Faso
+    - code: CV
+      name: Cabo Verde
+    - code: CI
+      name: Côte d'Ivoire
+    - code: GM
+      name: Gambia
+    - code: GH
+      name: Ghana
+    - code: GN
+      name: Guinea
+    - code: GW
+      name: Guinea-Bissau
+    - code: LR
+      name: Liberia
+    - code: ML
+      name: Mali
+    - code: MR
+      name: Mauritania
+    - code: NE
+      name: Niger
+    - code: NG
+      name: Nigeria
+    - code: SH
+      name: Saint Helena
+    - code: SN
+      name: Senegal
+    - code: SL
+      name: Sierra Leone
+    - code: TG
+      name: Togo
