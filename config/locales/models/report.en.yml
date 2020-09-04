@@ -80,6 +80,14 @@ en:
           title: Report activation complete
           body: "%{report_financial_quarter} %{report_description}"
         failure: Report could not be activated
+      submit:
+        failure: Report could not be submitted
+      review:
+        failure: Report could not be moved to in review
+      request_changes:
+        failure: Report could not be moved to awaiting changes
+      approve:
+        failure: Report could not be approved
       update:
         success: Report successfully updated
       submit:
