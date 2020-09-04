@@ -284,6 +284,13 @@
 - Delivery Partner Identifiers can be edited
 
 ## [unreleased]
+=======
+- Reports no longer have to be unique
+- Reports cannot be unique for the Level A activity
+- Add empty states for report tables
+- Show Level A (Fund), organisation and financial quarter on the report edit
+  page
+- Handle attempts to activate invalid reports
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...HEAD
 [release-15]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...release-15
