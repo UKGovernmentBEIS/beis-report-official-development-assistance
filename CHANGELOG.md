@@ -292,6 +292,9 @@
   page
 - Handle attempts to activate invalid reports
 
+- `Recipient_region` codelist modified
+- `Intended beneficiaries` form field added, including validations, and country to region mapping
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...HEAD
 [release-15]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...release-15
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14

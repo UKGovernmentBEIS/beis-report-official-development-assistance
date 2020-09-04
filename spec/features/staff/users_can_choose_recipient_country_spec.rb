@@ -19,8 +19,8 @@ RSpec.feature "Users can choose a recipient country" do
 
       scenario "choosing a recipient country sets a recipient region associated to that country" do
         select "Botswana"
-        click_button t("form.button.activity.submit")
-        expect(activity.reload.recipient_region).to eq("289") # South of Sahara
+        click_button I18n.t("form.button.activity.submit")
+        expect(activity.reload.recipient_region).to eq("1029") # Southern Africa
       end
     end
 
@@ -66,8 +66,8 @@ RSpec.feature "Users can choose a recipient country" do
       scenario "choosing a recipient country sets a recipient region associated to that country" do
         fill_in t("form.label.activity.recipient_country"), with: "saint"
         find("li.autocomplete__option", text: "Saint Lucia").click
-        click_button t("form.button.activity.submit")
-        expect(activity.reload.recipient_region).to eq("380") # West Indies
+        click_button I18n.t("form.button.activity.submit")
+        expect(activity.reload.recipient_region).to eq("1031") # Caribbean
       end
     end
   end

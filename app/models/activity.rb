@@ -19,6 +19,8 @@ class Activity < ApplicationRecord
     :geography_step,
     :region_step,
     :country_step,
+    :requires_additional_benefitting_countries_step,
+    :intended_beneficiaries_step,
     :flow_step,
     :aid_type,
   ]
@@ -37,6 +39,8 @@ class Activity < ApplicationRecord
   validates :geography, presence: true, on: :geography_step
   validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
   validates :recipient_country, presence: true, on: :country_step, if: :recipient_country?
+  validates :requires_additional_benefitting_countries, inclusion: {in: [true, false]}, on: :requires_additional_benefitting_countries_step, if: :recipient_country?
+  validates :intended_beneficiaries, presence: true, length: {maximum: 10}, on: :intended_beneficiaries_step, if: :requires_intended_beneficiaries?
   validates :flow, presence: true, on: :flow_step
   validates :aid_type, presence: true, on: :aid_type_step
 
@@ -220,5 +224,9 @@ class Activity < ApplicationRecord
 
   def forecasted_total_for_date_range(range:)
     planned_disbursements.where(period_start_date: range).sum(:value)
+  end
+
+  def requires_intended_beneficiaries?
+    recipient_region? || (recipient_country? && requires_additional_benefitting_countries?)
   end
 end
