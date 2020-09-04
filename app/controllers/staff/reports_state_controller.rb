@@ -4,11 +4,11 @@ class Staff::ReportsStateController < Staff::BaseController
   include Secured
 
   STATE_TO_POLICY_ACTION = {
-    active: :activate,
-    submitted: :submit,
-    in_review: :review,
-    awaiting_changes: :request_changes,
-    approved: :approve,
+    "active" => "activate",
+    "submitted" => "submit",
+    "in_review" => "review",
+    "awaiting_changes" => "request_changes",
+    "approved" => "approve",
   }
 
   def edit
@@ -30,17 +30,8 @@ class Staff::ReportsStateController < Staff::BaseController
   end
 
   def update
-    case report.state
-    when "inactive"
-      change_report_state_to(:active)
-    when "active"
-      change_report_state_to(:submitted)
-    when "submitted"
-      change_report_state_to(:in_review)
-    when "in_review"
-      params[:request_changes] ? change_report_state_to(:awaiting_changes) : change_report_state_to(:approved)
-    when "awaiting_changes"
-      change_report_state_to(:submitted)
+    if STATE_TO_POLICY_ACTION.key?(params[:state])
+      change_report_state_to(params[:state])
     else
       authorize report
       redirect_to report_path(report)
@@ -54,7 +45,7 @@ class Staff::ReportsStateController < Staff::BaseController
   end
 
   private def change_report_state_to(state)
-    policy_action = STATE_TO_POLICY_ACTION.fetch(state).to_s
+    policy_action = STATE_TO_POLICY_ACTION.fetch(state)
 
     authorize report, policy_action + "?"
 
@@ -62,7 +53,7 @@ class Staff::ReportsStateController < Staff::BaseController
       report.update!(state: state)
       report.create_activity key: "report.state.changed_to.#{state}", owner: current_user
 
-      find_or_create_new_report(organisation_id: report.organisation.id, fund_id: report.fund.id) if state == :approved
+      find_or_create_new_report(organisation_id: report.organisation.id, fund_id: report.fund.id) if state == "approved"
 
       @report_presenter = ReportPresenter.new(report)
       render "staff/reports_state/#{policy_action}/complete"
