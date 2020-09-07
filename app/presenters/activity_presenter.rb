@@ -83,6 +83,11 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.flow.#{super}")
   end
 
+  def oda_eligibility
+    return if super.nil?
+    I18n.t("activity.oda_eligibility.#{super}")
+  end
+
   def call_to_action(attribute)
     send(attribute).present? ? "edit" : "add"
   end
