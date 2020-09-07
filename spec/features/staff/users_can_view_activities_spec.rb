@@ -93,7 +93,7 @@ RSpec.feature "Users can view activities" do
     end
 
     scenario "they do not see a Publish to Iati column & status against projects" do
-      programme = create(:programme_activity)
+      programme = create(:programme_activity, extending_organisation: user.organisation)
       project = create(:project_activity, organisation: user.organisation, parent: programme)
 
       visit activities_path
@@ -151,7 +151,7 @@ RSpec.feature "Users can view activities" do
 
     scenario "an activity can be viewed" do
       programme = create(:programme_activity, organisation: user.organisation)
-      activity = create(:project_activity, parent: programme)
+      activity = create(:project_activity, parent: programme, organisation: user.organisation)
 
       visit activities_path
 
@@ -188,7 +188,8 @@ RSpec.feature "Users can view activities" do
         activity = create(:project_activity, planned_start_date: Date.new(2020, 2, 3),
                                              planned_end_date: Date.new(2024, 6, 22),
                                              actual_start_date: Date.new(2020, 1, 2),
-                                             actual_end_date: Date.new(2020, 1, 29))
+                                             actual_end_date: Date.new(2020, 1, 29),
+                                             organisation: user.organisation)
 
         visit organisation_activity_path(user.organisation, activity)
         click_on t("tabs.activity.details")

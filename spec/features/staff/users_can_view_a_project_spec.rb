@@ -27,7 +27,7 @@ RSpec.feature "Users can view a project" do
     context "when viewing a programme" do
       scenario "links to the programmes projects" do
         fund = create(:fund_activity)
-        programme = create(:programme_activity)
+        programme = create(:programme_activity, extending_organisation: user.organisation)
         fund.child_activities << programme
         project = create(:project_activity, organisation: user.organisation)
         programme.child_activities << project
