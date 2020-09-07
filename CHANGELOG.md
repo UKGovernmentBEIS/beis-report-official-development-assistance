@@ -284,7 +284,6 @@
 - Delivery Partner Identifiers can be edited
 
 ## [unreleased]
-=======
 - Reports no longer have to be unique
 - Reports cannot be unique for the Level A activity
 - Add empty states for report tables
@@ -294,6 +293,8 @@
 - `Recipient_region` codelist modified
 - `Intended beneficiaries` form field added, including validations, and country to region mapping
 - `ODA eligibility` form step added to create activity journey
+- Update any ingested Level B activities that do not have the BEIS organisation as their
+  associated organisation. All Level B activities should belong to BEIS.
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...HEAD
 [release-15]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...release-15
