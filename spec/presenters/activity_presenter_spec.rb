@@ -271,6 +271,24 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#oda_eligibility" do
+    context "when the activity is ODA eligible" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, oda_eligibility: "true")
+        result = described_class.new(activity)
+        expect(result.oda_eligibility).to eq("Eligible")
+      end
+    end
+
+    context "when the activity is no longer ODA eligible" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, oda_eligibility: "false")
+        result = described_class.new(activity)
+        expect(result.oda_eligibility).to eq("No longer eligible")
+      end
+    end
+  end
+
   describe "#call_to_action" do
     it "returns 'edit' if the desired attribute is present" do
       activity = build(:activity, title: "My title")

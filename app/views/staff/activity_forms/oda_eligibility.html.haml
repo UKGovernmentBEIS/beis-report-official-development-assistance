@@ -1,0 +1,5 @@
+= render layout: "wrapper" do |f|
+  = f.govuk_radio_buttons_fieldset(:oda_eligibility, legend: { text: t("form.legend.activity.oda_eligibility"), size: "xl", tag: "h1" }) do
+    = f.hidden_field :oda_eligibility, value: nil
+    = f.govuk_radio_button :oda_eligibility, :true, label: { text: t("form.label.activity.oda_eligibility.true") }
+    = f.govuk_radio_button :oda_eligibility, :false, label: { text: t("form.label.activity.oda_eligibility.false") }

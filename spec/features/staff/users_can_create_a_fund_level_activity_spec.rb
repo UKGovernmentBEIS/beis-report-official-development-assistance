@@ -264,6 +264,10 @@ RSpec.feature "Users can create a fund level activity" do
 
         choose("activity[aid_type]", option: "A01")
         click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.oda_eligibility")
+
+        # oda_eligibility has the default value already selected
+        click_button t("form.button.activity.submit")
         expect(page).to have_content Activity.find_by(delivery_partner_identifier: identifier).title
       end
     end

@@ -23,6 +23,7 @@ class Activity < ApplicationRecord
     :intended_beneficiaries_step,
     :flow_step,
     :aid_type,
+    :oda_eligibility_step,
   ]
 
   strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
@@ -43,6 +44,7 @@ class Activity < ApplicationRecord
   validates :intended_beneficiaries, presence: true, length: {maximum: 10}, on: :intended_beneficiaries_step, if: :requires_intended_beneficiaries?
   validates :flow, presence: true, on: :flow_step
   validates :aid_type, presence: true, on: :aid_type_step
+  validates :oda_eligibility, inclusion: {in: [true, false]}, on: :oda_eligibility_step
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier_compound, uniqueness: true, allow_nil: true
