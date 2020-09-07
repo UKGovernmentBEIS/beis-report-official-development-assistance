@@ -31,6 +31,7 @@ module FormHelpers
     intended_beneficiaries: "Haiti",
     flow: "ODA",
     aid_type: "A01",
+    oda_eligibility: "true",
     level:,
     parent: nil
   )
@@ -172,6 +173,11 @@ module FormHelpers
     choose("activity[aid_type]", option: aid_type)
     click_button t("form.button.activity.submit")
 
+    expect(page).to have_content t("form.legend.activity.oda_eligibility")
+    expect(page).to have_content t("form.hint.activity.oda_eligibility")
+    choose "Eligible"
+    click_button t("form.button.activity.submit")
+
     expect(page).to have_content delivery_partner_identifier
     expect(page).to have_content title
     expect(page).to have_content description
@@ -188,6 +194,7 @@ module FormHelpers
     expect(page).to have_content intended_beneficiaries
     expect(page).to have_content flow
     expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
+    expect(page).to have_content t("activity.oda_eligibility.#{oda_eligibility}")
     expect(page).to have_content localise_date_from_input_fields(
       year: planned_start_date_year,
       month: planned_start_date_month,

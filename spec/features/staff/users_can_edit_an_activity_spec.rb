@@ -503,4 +503,13 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   end
   click_on(t("default.link.back"))
   click_on t("tabs.activity.details")
+
+  within(".oda_eligibility") do
+    click_on(t("default.link.edit"))
+    expect(page).to have_current_path(
+      activity_step_path(activity, :oda_eligibility)
+    )
+  end
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
 end

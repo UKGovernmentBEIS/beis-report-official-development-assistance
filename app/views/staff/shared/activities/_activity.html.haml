@@ -213,6 +213,15 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :aid_type)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:aid_type)}"), activity_step_path(activity_presenter, :aid_type), t("summary.label.activity.aid_type"))
 
+  .govuk-summary-list__row.oda_eligibility
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.oda_eligibility")
+    %dd.govuk-summary-list__value
+      = activity_presenter.oda_eligibility
+    %dd.govuk-summary-list__actions
+      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :oda_eligibility)
+        = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:oda_eligibility)}"), activity_step_path(activity_presenter, :oda_eligibility), t("summary.label.activity.oda_eligibility"))
+
   - if policy(activity_presenter).redact_from_iati?
     .govuk-summary-list__row.publish_to_iati
       %dt.govuk-summary-list__key
