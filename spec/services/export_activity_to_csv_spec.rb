@@ -15,7 +15,7 @@ RSpec.describe ExportActivityToCsv do
       expect(result).to eq([
         activity_presenter.delivery_partner_identifier,
         activity_presenter.transparency_identifier,
-        activity_presenter.sector,
+        activity_presenter.sector_with_code,
         activity_presenter.title,
         activity_presenter.description,
         activity_presenter.status,
@@ -25,7 +25,7 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.actual_end_date,
         activity_presenter.recipient_region,
         activity_presenter.recipient_country,
-        activity_presenter.aid_type,
+        activity_presenter.aid_type_with_code,
         activity_presenter.level,
         activity_presenter.actual_total_for_report_financial_quarter(report: report),
         activity_presenter.forecasted_total_for_report_financial_quarter(report: report),

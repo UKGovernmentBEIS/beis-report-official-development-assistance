@@ -27,6 +27,24 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#aid_type_with_code" do
+    context "when the aid_type exists" do
+      it "returns the locale value for the code with the code in brackets" do
+        activity = build(:activity, aid_type: "A01")
+        result = described_class.new(activity).aid_type_with_code
+        expect(result).to eql("General budget support (A01)")
+      end
+    end
+
+    context "when the activity does not have an aid_type set" do
+      it "returns nil" do
+        activity = build(:activity, :at_identifier_step)
+        result = described_class.new(activity)
+        expect(result.aid_type_with_code).to be_nil
+      end
+    end
+  end
+
   describe "#sector" do
     context "when the sector exists" do
       it "returns the locale value for the code" do
@@ -41,6 +59,24 @@ RSpec.describe ActivityPresenter do
         activity = build(:activity, sector: nil)
         result = described_class.new(activity)
         expect(result.sector).to be_nil
+      end
+    end
+  end
+
+  describe "#sector_with_code" do
+    context "when the sector exists" do
+      it "returns the locale value for the code with the code in brackets" do
+        activity = build(:activity, sector: "11110")
+        result = described_class.new(activity).sector_with_code
+        expect(result).to eql("Education policy and administrative management (11110)")
+      end
+    end
+
+    context "when the activity does not have a sector set" do
+      it "returns nil" do
+        activity = build(:activity, sector: nil)
+        result = described_class.new(activity)
+        expect(result.sector_with_code).to be_nil
       end
     end
   end
