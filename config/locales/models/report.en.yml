@@ -123,7 +123,7 @@ en:
         report:
           attributes:
             description:
-              blank: Reporting period can't be bank
+              blank: Reporting period can't be blank
             fund:
               level: Activity must be a fund-level Activity
             deadline:
