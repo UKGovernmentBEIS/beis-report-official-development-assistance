@@ -298,6 +298,7 @@
   associated organisation. All Level B activities should belong to BEIS.
 - `GDI` form step added to create activity journey
 - Show Aid Type and Sector codes in Report CSV export for activities
+- Update activity policy to account for the report state
 
 ## [unreleased]
 
@@ -313,5 +314,3 @@
 [release-8]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...release-8
 [release-7]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...release-7
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6
-[release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
-[release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4
