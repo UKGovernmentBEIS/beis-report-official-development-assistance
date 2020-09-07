@@ -692,6 +692,9 @@ en:
       '4': Post-completion
       '5': Cancelled
       '6': Suspended
+    oda_eligibility:
+      'true': 'Eligible'
+      'false': 'No longer eligible'
   generic:
     default_currency:
       aed: UAE Dirham

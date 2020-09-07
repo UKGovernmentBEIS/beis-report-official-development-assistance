@@ -454,6 +454,13 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when oda_eligibility is blank" do
+      subject(:activity) { build(:activity, oda_eligibility: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:oda_eligibility_step)).to be_falsey
+      end
+    end
+
     context "when saving in the update_extending_organisation context" do
       subject { build(:activity) }
       it { should validate_presence_of(:extending_organisation_id).on(:update_extending_organisation) }
