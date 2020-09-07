@@ -29,6 +29,7 @@ RSpec.describe "Users can edit a budget" do
     scenario "a budget can be successfully edited" do
       activity = create(:project_activity, organisation: user.organisation)
       budget = create(:budget, parent_activity: activity, budget_type: "original", value: "10")
+      _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
 
       visit organisation_activity_path(user.organisation, activity)
       within("##{budget.id}") do
@@ -47,6 +48,7 @@ RSpec.describe "Users can edit a budget" do
     scenario "budget update is tracked with public_activity" do
       activity = create(:project_activity, organisation: user.organisation)
       budget = create(:budget, parent_activity: activity, budget_type: "original", value: "10")
+      _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
 
       PublicActivity.with_tracking do
         visit organisation_activity_path(user.organisation, activity)
@@ -68,6 +70,7 @@ RSpec.describe "Users can edit a budget" do
     scenario "validation errors work as expected" do
       activity = create(:project_activity, organisation: user.organisation)
       budget = create(:budget, parent_activity: activity, budget_type: "1", value: "10")
+      _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
 
       visit organisation_activity_path(user.organisation, activity)
       within("##{budget.id}") do

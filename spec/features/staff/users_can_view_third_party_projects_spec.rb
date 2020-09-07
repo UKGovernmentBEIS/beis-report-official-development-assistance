@@ -5,7 +5,7 @@ RSpec.feature "Users can view a third-party project" do
 
     scenario "can view a third-party project" do
       project = create(:project_activity, organisation: user.organisation)
-      third_party_project = create(:third_party_project_activity, parent: project)
+      third_party_project = create(:third_party_project_activity, parent: project, organisation: user.organisation)
 
       visit organisation_activity_path(third_party_project.organisation, third_party_project)
 
@@ -24,6 +24,7 @@ RSpec.feature "Users can view a third-party project" do
       third_party_project = create(:third_party_project_activity, organisation: user.organisation)
       budget = create(:budget, parent_activity: third_party_project)
       transaction = create(:transaction, parent_activity: third_party_project)
+      _report = create(:report, state: :active, organisation: user.organisation, fund: third_party_project.associated_fund)
 
       visit organisation_activity_path(third_party_project.organisation, third_party_project)
 
