@@ -31,6 +31,11 @@ en:
       '37': Other Private flows at market terms
       '40': Non flow
       '50': Other flows
+    gdi:
+      '1': Yes - China
+      '2': Yes - India
+      '3': Yes - China and India
+      '4': 'No'
     geography:
       recipient_country: Country
       recipient_region: Region

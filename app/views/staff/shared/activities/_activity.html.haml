@@ -195,6 +195,16 @@
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :intended_beneficiaries)
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:intended_beneficiaries)}"), activity_step_path(activity_presenter, :intended_beneficiaries), t("summary.label.activity.intended_beneficiaries"))
 
+  .govuk-summary-list__row.gdi
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.gdi")
+    %dd.govuk-summary-list__value
+      = activity_presenter.gdi
+    %dd.govuk-summary-list__actions
+      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :gdi)
+        = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:gdi)}"), activity_step_path(activity_presenter, :gdi), t("summary.label.activity.gdi"))
+
+
   .govuk-summary-list__row.flow
     %dt.govuk-summary-list__key
       = t("summary.label.activity.flow")

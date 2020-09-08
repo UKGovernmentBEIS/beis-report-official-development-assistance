@@ -98,6 +98,10 @@ module CodelistHelper
     end
   end
 
+  def gdi_radio_options
+    yaml_to_objects(entity: "activity", type: "gdi", with_empty_item: false).sort_by(&:code)
+  end
+
   def all_sectors
     yaml_to_objects_with_categories(entity: "activity", type: "sector", include_withdrawn: true)
   end

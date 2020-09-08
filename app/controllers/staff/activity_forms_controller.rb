@@ -23,6 +23,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :country,
     :requires_additional_benefitting_countries,
     :intended_beneficiaries,
+    :gdi,
     :flow,
     :aid_type,
     :oda_eligibility,
@@ -120,6 +121,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.assign_attributes(requires_additional_benefitting_countries: requires_additional_benefitting_countries)
     when :intended_beneficiaries
       @activity.assign_attributes(intended_beneficiaries: intended_beneficiaries.drop(1))
+    when :gdi
+      @activity.assign_attributes(gdi: gdi)
     when :flow
       @activity.assign_attributes(flow: flow)
     when :aid_type
@@ -229,6 +232,10 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def intended_beneficiaries
     params.require(:activity).permit(intended_beneficiaries: []).fetch("intended_beneficiaries", [])
+  end
+
+  def gdi
+    params.require(:activity).permit(:gdi).fetch("gdi", nil)
   end
 
   def flow
