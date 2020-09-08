@@ -253,6 +253,24 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#gdi" do
+    context "when gdi exists" do
+      it "returns the locale value for the code" do
+        activity = build(:activity, gdi: "3")
+        result = described_class.new(activity).gdi
+        expect(result).to eql("Yes - China and India")
+      end
+    end
+
+    context "when the activity does not have a gdi set" do
+      it "returns nil" do
+        activity = build(:activity, gdi: nil)
+        result = described_class.new(activity)
+        expect(result.gdi).to be_nil
+      end
+    end
+  end
+
   describe "#flow" do
     context "when flow aid_type exists" do
       it "returns the locale value for the code" do

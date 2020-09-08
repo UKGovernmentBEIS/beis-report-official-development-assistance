@@ -78,6 +78,11 @@ class ActivityPresenter < SimpleDelegator
     super.map { |item| I18n.t("activity.recipient_country.#{item}") }.to_sentence
   end
 
+  def gdi
+    return if super.blank?
+    I18n.t("activity.gdi.#{super}")
+  end
+
   def flow
     return if super.blank?
     I18n.t("activity.flow.#{super}")

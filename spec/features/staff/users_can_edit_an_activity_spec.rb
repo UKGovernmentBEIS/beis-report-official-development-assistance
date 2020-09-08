@@ -486,6 +486,15 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(t("default.link.back"))
   click_on t("tabs.activity.details")
 
+  within(".gdi") do
+    click_on(t("default.link.edit"))
+    expect(page).to have_current_path(
+      activity_step_path(activity, :gdi)
+    )
+  end
+  click_on(t("default.link.back"))
+  click_on t("tabs.activity.details")
+
   within(".flow") do
     click_on(t("default.link.edit"))
     expect(page).to have_current_path(
