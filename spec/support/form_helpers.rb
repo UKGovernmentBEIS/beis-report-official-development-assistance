@@ -29,6 +29,7 @@ module FormHelpers
     geography: "recipient_region",
     recipient_region: "Developing countries, unspecified",
     intended_beneficiaries: "Haiti",
+    gdi: "No",
     flow: "ODA",
     aid_type: "A01",
     oda_eligibility: "true",
@@ -163,6 +164,11 @@ module FormHelpers
     check intended_beneficiaries
     click_button t("form.button.activity.submit")
 
+    expect(page).to have_content t("form.label.activity.gdi")
+    expect(page).to have_content t("form.hint.activity.gdi")
+    choose "No"
+    click_button t("form.button.activity.submit")
+
     expect(page).to have_content t("form.label.activity.flow")
     expect(page.html).to include t("form.hint.activity.flow")
     select flow, from: "activity[flow]"
@@ -192,6 +198,7 @@ module FormHelpers
     end
     expect(page).to have_content recipient_region
     expect(page).to have_content intended_beneficiaries
+    expect(page).to have_content gdi
     expect(page).to have_content flow
     expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
     expect(page).to have_content t("activity.oda_eligibility.#{oda_eligibility}")

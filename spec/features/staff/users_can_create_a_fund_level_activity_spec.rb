@@ -251,6 +251,14 @@ RSpec.feature "Users can create a fund level activity" do
 
         check "Haiti"
         click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.label.activity.gdi")
+
+        # Don't select a GDI
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.gdi.blank")
+
+        choose "No"
+        click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.label.activity.flow")
 
         # Flow has a default and can't be set to blank so we skip

@@ -42,6 +42,7 @@ class IngestIatiActivities
           add_geography(legacy_activity: legacy_activity, new_activity: new_activity)
           add_requires_additional_benefitting_countries(legacy_activity: legacy_activity, new_activity: new_activity)
           add_intended_beneficiaries(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_gdi(legacy_activity: legacy_activity, new_activity: new_activity)
 
           new_activity.form_state = :complete
           new_activity
@@ -289,6 +290,11 @@ class IngestIatiActivities
   private def add_intended_beneficiaries(legacy_activity:, new_activity:)
     # To be ingested once we have the information
     new_activity.intended_beneficiaries = ["Replace me"]
+  end
+
+  private def add_gdi(legacy_activity:, new_activity:)
+    # To be ingested once we have the information
+    new_activity.gdi = "Replace me"
   end
 
   private def add_dates(legacy_activity:, new_activity:)

@@ -447,6 +447,13 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when gdi is blank" do
+      subject(:activity) { build(:activity, gdi: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:gdi_step)).to be_falsey
+      end
+    end
+
     context "when flow is blank" do
       subject(:activity) { build(:activity, flow: nil) }
       it "should not be valid" do

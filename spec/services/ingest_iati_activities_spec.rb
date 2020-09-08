@@ -113,6 +113,7 @@ RSpec.describe IngestIatiActivities do
       expect(activity.recipient_country).to be_nil
 
       expect(activity.intended_beneficiaries).to eql(["Replace me"])
+      expect(activity.gdi).to eql("Replace me")
       expect(activity.sector).to eql("43082")
       expect(activity.flow).to eql("10")
       expect(activity.aid_type).to eql("C01")
