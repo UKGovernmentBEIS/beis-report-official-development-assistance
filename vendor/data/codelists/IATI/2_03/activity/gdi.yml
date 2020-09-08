@@ -1,0 +1,14 @@
+---
+attributes:
+  category-codelist:
+  name: gdi
+  complete: '1'
+data:
+  - code: '1'
+    name: Yes - China
+  - code: '2'
+    name: Yes - India
+  - code: '3'
+    name: Yes - China and India
+  - code: '4'
+    name: 'No'
