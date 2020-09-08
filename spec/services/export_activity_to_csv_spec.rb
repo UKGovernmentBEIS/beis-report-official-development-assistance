@@ -18,7 +18,7 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.sector_with_code,
         activity_presenter.title,
         activity_presenter.description,
-        activity_presenter.status,
+        activity_presenter.programme_status,
         activity_presenter.planned_start_date,
         activity_presenter.actual_start_date,
         activity_presenter.planned_end_date,
