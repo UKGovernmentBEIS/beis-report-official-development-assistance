@@ -1,6 +1,6 @@
 class BudgetPolicy < ApplicationPolicy
   def create?
-    Pundit.policy!(user, record.parent_activity).create?
+    Pundit.policy!(user, record.parent_activity).edit?
   end
 
   def update?
