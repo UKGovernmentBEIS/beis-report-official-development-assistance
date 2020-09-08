@@ -296,6 +296,7 @@
 - Update any ingested Level B activities that do not have the BEIS organisation as their
   associated organisation. All Level B activities should belong to BEIS.
 - `GDI` form step added to create activity journey
+- Show Aid Type and Sector codes in Report CSV export for activities
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...HEAD
 [release-15]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...release-15

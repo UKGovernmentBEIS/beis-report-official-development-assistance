@@ -8,9 +8,19 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.aid_type.#{super.downcase}")
   end
 
+  def aid_type_with_code
+    return if aid_type.blank?
+    "#{aid_type} (#{to_model.aid_type})"
+  end
+
   def sector
     return if super.blank?
     I18n.t("activity.sector.#{super}")
+  end
+
+  def sector_with_code
+    return if sector.blank?
+    "#{sector} (#{to_model.sector})"
   end
 
   def call_present
