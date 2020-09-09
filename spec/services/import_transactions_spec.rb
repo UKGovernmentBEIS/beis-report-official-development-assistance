@@ -179,5 +179,38 @@ RSpec.describe ImportTransactions do
         ])
       end
     end
+
+    context "when the Receiving Organisation Name is blank" do
+      let :transaction_row do
+        super().merge("Receiving Organisation Name" => "")
+      end
+
+      it "does not import any transactions" do
+        expect(report.transactions.count).to eq(0)
+      end
+
+      it "returns an error" do
+        expect(importer.errors).to eq([
+          ImportTransactions::Error.new(0, "Receiving Organisation Name", "", t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank")),
+        ])
+      end
+    end
+
+    # https://iatistandard.org/en/iati-standard/203/codelists/organisationtype/
+    context "when the Receiving Organisation Type is not a valid IATI type" do
+      let :transaction_row do
+        super().merge("Receiving Organisation Type" => "81")
+      end
+
+      it "does not import any transactions" do
+        expect(report.transactions.count).to eq(0)
+      end
+
+      it "returns an error" do
+        expect(importer.errors).to eq([
+          ImportTransactions::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.transaction.invalid_iati_organisation_type")),
+        ])
+      end
+    end
   end
 end

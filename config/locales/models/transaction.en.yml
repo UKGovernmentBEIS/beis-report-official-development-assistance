@@ -82,4 +82,5 @@ en:
     errors:
       transaction:
         invalid_date: Date must be a valid date
+        invalid_iati_organisation_type: The receiving organisation type must be a valid IATI Organisation Type code
         unknown_identifier: Identifier is not recognised
