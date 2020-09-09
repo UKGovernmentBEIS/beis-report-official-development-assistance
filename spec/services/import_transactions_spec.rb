@@ -212,5 +212,20 @@ RSpec.describe ImportTransactions do
         ])
       end
     end
+
+    context "when a Receiving Organisation IATI Reference is provided" do
+      let :transaction_row do
+        super().merge("Receiving Organisation IATI Reference" => "Rec-Org-IATI-Ref")
+      end
+
+      it "imports the transaction" do
+        expect(report.transactions.count).to eq(1)
+      end
+
+      it "saves the IATI reference on the transaction" do
+        transaction = report.transactions.first
+        expect(transaction.receiving_organisation_reference).to eq("Rec-Org-IATI-Ref")
+      end
+    end
   end
 end
