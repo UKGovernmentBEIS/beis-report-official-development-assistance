@@ -61,6 +61,9 @@ class Staff::ReportsStateController < Staff::BaseController
     if report.valid?
       report.update!(state: state)
       report.create_activity key: "report.state.changed_to.#{state}", owner: current_user
+
+      find_or_create_new_report(organisation_id: report.organisation.id, fund_id: report.fund.id) if state == :approved
+
       @report_presenter = ReportPresenter.new(report)
       render "staff/reports_state/#{policy_action}/complete"
     else
@@ -71,5 +74,9 @@ class Staff::ReportsStateController < Staff::BaseController
 
   private def report
     @report ||= Report.find(params[:report_id])
+  end
+
+  private def find_or_create_new_report(organisation_id:, fund_id:)
+    Report.where.not(state: :approved).find_or_create_by!(organisation_id: organisation_id, fund_id: fund_id)
   end
 end

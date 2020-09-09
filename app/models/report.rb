@@ -3,7 +3,7 @@ class Report < ApplicationRecord
 
   attr_readonly :financial_quarter, :financial_year
 
-  validates_presence_of :description
+  validates_presence_of :description, on: :update
   validates_presence_of :state
 
   belongs_to :fund, -> { where(level: :fund) }, class_name: "Activity"
