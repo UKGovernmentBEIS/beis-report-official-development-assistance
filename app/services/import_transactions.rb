@@ -18,7 +18,9 @@ class ImportTransactions
 
   def import_row(row, row_number)
     converter = Converter.new(row)
-    attrs = converter.to_h
+    converter.errors.each do |attr_name, (value, message)|
+      add_error(row_number, attr_name, value, message)
+    end
 
     activity = converter.activity
     unless activity
@@ -27,6 +29,7 @@ class ImportTransactions
       return
     end
 
+    attrs = converter.to_h
     assign_default_values(attrs, activity)
 
     CreateTransaction.new(activity: activity).call(attributes: attrs)
@@ -57,10 +60,11 @@ class ImportTransactions
       description: "Description",
     }
 
-    attr_reader :activity
+    attr_reader :activity, :errors
 
     def initialize(row)
       @row = row
+      @errors = {}
       @attributes = convert_to_attributes
       @activity = @attributes.delete(:activity)
     end
@@ -80,16 +84,26 @@ class ImportTransactions
     end
 
     def convert_to_attribute(attr_name, value)
+      original_value = value.clone
       value = value.to_s.strip
 
       converter = "convert_#{attr_name}"
       value = __send__(converter, value) if respond_to?(converter)
 
       value
+    rescue => error
+      @errors[attr_name] = [original_value, error.message]
+      nil
     end
 
     def convert_activity(id)
       Activity.find_by(roda_identifier_compound: id)
+    end
+
+    def convert_date(date)
+      Date.iso8601(date)
+    rescue ArgumentError
+      raise I18n.t("importer.errors.transaction.invalid_date")
     end
   end
 end

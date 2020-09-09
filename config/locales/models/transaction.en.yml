@@ -81,4 +81,5 @@ en:
   importer:
     errors:
       transaction:
+        invalid_date: Date must be a valid date
         unknown_identifier: Identifier is not recognised
