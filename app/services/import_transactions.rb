@@ -1,21 +1,39 @@
 require "date"
 
 class ImportTransactions
+  Error = Struct.new(:row, :column, :value, :message)
+
   DEFAULT_CURRENCY = "GBP"
   TRANSACTION_TYPE_DISBURSEMENT = "3"
 
-  def import(transactions)
-    transactions.each { |row| import_row(row) }
+  attr_reader :errors
+
+  def initialize
+    @errors = []
   end
 
-  def import_row(row)
+  def import(transactions)
+    transactions.each_with_index { |row, index| import_row(row, index) }
+  end
+
+  def import_row(row, row_number)
     converter = Converter.new(row)
     attrs = converter.to_h
+
     activity = converter.activity
+    unless activity
+      message = I18n.t("importer.errors.transaction.unknown_identifier")
+      add_error(row_number, :activity, converter.raw(:activity), message)
+      return
+    end
 
     assign_default_values(attrs, activity)
 
     CreateTransaction.new(activity: activity).call(attributes: attrs)
+  end
+
+  def add_error(row_number, column, value, message)
+    @errors << Error.new(row_number, Converter::FIELDS[column], value, message)
   end
 
   def assign_default_values(attrs, activity)
@@ -45,6 +63,10 @@ class ImportTransactions
       @row = row
       @attributes = convert_to_attributes
       @activity = @attributes.delete(:activity)
+    end
+
+    def raw(attr_name)
+      @row[FIELDS[attr_name]]
     end
 
     def to_h
