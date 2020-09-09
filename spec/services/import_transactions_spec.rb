@@ -116,5 +116,68 @@ RSpec.describe ImportTransactions do
         ])
       end
     end
+
+    context "with additional formatting in the Value field" do
+      let :transaction_row do
+        super().merge("Value" => "£ 12,345.67")
+      end
+
+      it "imports the transaction" do
+        expect(report.transactions.count).to eq(1)
+      end
+
+      it "interprets the Value as a number" do
+        transaction = report.transactions.first
+        expect(transaction.value).to eq(12_345.67)
+      end
+    end
+
+    context "when the Value is blank" do
+      let :transaction_row do
+        super().merge("Value" => "")
+      end
+
+      it "does not import any transactions" do
+        expect(report.transactions.count).to eq(0)
+      end
+
+      it "returns an error" do
+        expect(importer.errors).to eq([
+          ImportTransactions::Error.new(0, "Value", "", t("activerecord.errors.models.transaction.attributes.value.other_than")),
+        ])
+      end
+    end
+
+    context "when the Value is zero" do
+      let :transaction_row do
+        super().merge("Value" => "0")
+      end
+
+      it "does not import any transactions" do
+        expect(report.transactions.count).to eq(0)
+      end
+
+      it "returns an error" do
+        expect(importer.errors).to eq([
+          ImportTransactions::Error.new(0, "Value", "0", t("activerecord.errors.models.transaction.attributes.value.other_than")),
+        ])
+      end
+    end
+
+    context "when the Value is not numeric" do
+      let :transaction_row do
+        super().merge("Value" => "This is not a number")
+      end
+
+      it "does not import any transactions" do
+        expect(report.transactions.count).to eq(0)
+      end
+
+      it "returns an error" do
+        expect(importer.errors).to eq([
+          ImportTransactions::Error.new(0, "Value", "This is not a number", t("activerecord.errors.models.transaction.attributes.value.other_than")),
+        ])
+      end
+    end
   end
 end
