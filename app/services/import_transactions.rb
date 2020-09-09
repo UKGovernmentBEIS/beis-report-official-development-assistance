@@ -135,5 +135,22 @@ class ImportTransactions
     def organisation_type_path
       Rails.root.join("vendor", "data", "codelists", "IATI", IATI_VERSION, "organisation", "organisation_type.yml")
     end
+
+    def convert_disbursement_channel(channel)
+      return nil if channel.blank?
+
+      codelist = YAML.safe_load(File.read(disbursement_channel_path))
+      valid_codes = codelist.fetch("data").map { |entry| entry.fetch("code") }
+
+      if valid_codes.include?(channel)
+        channel
+      else
+        raise I18n.t("importer.errors.transaction.invalid_iati_disbursement_channel")
+      end
+    end
+
+    def disbursement_channel_path
+      Rails.root.join("vendor", "data", "codelists", "IATI", IATI_VERSION, "transaction", "disbursement_channel.yml")
+    end
   end
 end
