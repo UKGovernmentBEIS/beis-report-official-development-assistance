@@ -78,3 +78,7 @@ en:
               blank: Enter a receiving organisation name
             receiving_organisation_type:
               blank: Select the organisation type
+  importer:
+    errors:
+      transaction:
+        unknown_identifier: Identifier is not recognised

@@ -68,5 +68,21 @@ RSpec.describe ImportTransactions do
         providing_organisation_type: project.providing_organisation.organisation_type,
       )
     end
+
+    context "when the Activity Identifier is not recognised" do
+      let :transaction_row do
+        super().merge("Activity RODA Identifier" => "not-a-real-id")
+      end
+
+      it "does not import any transactions" do
+        expect(report.transactions.count).to eq(0)
+      end
+
+      it "returns an error" do
+        expect(importer.errors).to eq([
+          ImportTransactions::Error.new(0, "Activity RODA Identifier", "not-a-real-id", t("importer.errors.transaction.unknown_identifier")),
+        ])
+      end
+    end
   end
 end
