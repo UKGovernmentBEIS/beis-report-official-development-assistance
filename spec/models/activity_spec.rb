@@ -496,10 +496,28 @@ RSpec.describe Activity, type: :model do
         end
       end
 
+      context "when there is a call and total applications is blank" do
+        subject(:activity) { build(:project_activity, call_present: true, total_applications: nil) }
+        it "should not be valid" do
+          expect(activity.valid?(:total_applications_and_awards_step)).to be_falsey
+        end
+      end
+
+      context "when there is a call and total awards is blank" do
+        subject(:activity) { build(:project_activity, call_present: true, total_awards: nil) }
+        it "should not be valid" do
+          expect(activity.valid?(:total_applications_and_awards_step)).to be_falsey
+        end
+      end
+
       context "when the activity is 'ingested:true'" do
-        subject(:activity) { build(:project_activity, ingested: true, call_present: nil) }
+        subject(:activity) { build(:project_activity, ingested: true, call_present: nil, total_applications: nil, total_awards: nil) }
         it "should not require the presence of 'call_present'" do
           expect(activity.valid?(:call_present_step)).to be_truthy
+        end
+
+        it "should not require the presence of neither total applications nor total awards" do
+          expect(activity.valid?(:total_applications_and_awards_step)).to be_truthy
         end
       end
     end

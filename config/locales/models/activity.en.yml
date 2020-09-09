@@ -47,6 +47,8 @@ en:
           month: Month
           year: Year
         publish_to_iati: Publish this activity to IATI?
+        total_applications: How many applications have you had?
+        total_awards: How many awards have you made?
     legend:
       activity:
         aid_type: Aid type
@@ -69,6 +71,8 @@ en:
         sector: Which %{sector_category} sector is the focus area for this %{level}?
         sector_category: What area of the economy or society is the %{level} helping?
         status: What is the status of the %{level}?
+        total_applications: How many applications have you had?
+        total_awards: How many awards have you made?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
@@ -93,6 +97,8 @@ en:
           project: Records a set of activities of a delivery partner and details of how the money is forecast and/or spent. A delivery partner can record if it plans to award to third parties or a delivery partner could spend these funds on its own activities. For example, on workshops
           third_party_project: How funding from delivery partners to third parties like universities and research institutes is forecast and spent. For example, spending on 10 research grants of £500k totalling £5m
         parent: Which existing %{parent_level} will this new %{level} belong to?
+        total_applications: You can enter 0 if this field is not applicable at the moment
+        total_awards: You can enter 0 if this field is not applicable at the moment
       organisation:
         hint: The organisation this activity is associated with
   summary:
@@ -139,6 +145,8 @@ en:
           label: Publish to IATI?
           'false': 'No'
           'true': 'Yes'
+        total_applications: Total applications
+        total_awards: Total awards
         transparency_identifier: "Transparency identifier"
   table:
     header:
@@ -229,6 +237,7 @@ en:
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
         status: Status
+        total_applications_and_awards: Applications and awards
   activerecord:
     attributes:
       activity:

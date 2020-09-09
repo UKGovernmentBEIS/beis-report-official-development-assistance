@@ -424,6 +424,26 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(t("default.link.back"))
   click_on t("tabs.activity.details")
 
+  if activity.call_present?
+    within(".total_applications") do
+      click_on(t("default.link.edit"))
+      expect(page).to have_current_path(
+        activity_step_path(activity, :total_applications_and_awards)
+      )
+    end
+    click_on(t("default.link.back"))
+    click_on t("tabs.activity.details")
+
+    within(".total_awards") do
+      click_on(t("default.link.edit"))
+      expect(page).to have_current_path(
+        activity_step_path(activity, :total_applications_and_awards)
+      )
+    end
+    click_on(t("default.link.back"))
+    click_on t("tabs.activity.details")
+  end
+
   unless activity.fund?
     within(".programme_status") do
       click_on(t("default.link.edit"))
