@@ -120,5 +120,20 @@ class ImportTransactions
     rescue ArgumentError
       raise I18n.t("importer.errors.transaction.invalid_date")
     end
+
+    def convert_receiving_organisation_type(type)
+      codelist = YAML.safe_load(File.read(organisation_type_path))
+      valid_codes = codelist.fetch("data").map { |entry| entry.fetch("code") }
+
+      if valid_codes.include?(type)
+        type
+      else
+        raise I18n.t("importer.errors.transaction.invalid_iati_organisation_type")
+      end
+    end
+
+    def organisation_type_path
+      Rails.root.join("vendor", "data", "codelists", "IATI", IATI_VERSION, "organisation", "organisation_type.yml")
+    end
   end
 end
