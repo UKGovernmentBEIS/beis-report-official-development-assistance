@@ -16,6 +16,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :sector,
     :call_present,
     :call_dates,
+    :total_applications_and_awards,
     :programme_status,
     :dates,
     :geography,
@@ -48,6 +49,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :call_present
       skip_step unless @activity.requires_call_dates?
     when :call_dates
+      skip_step unless @activity.call_present?
+    when :total_applications_and_awards
       skip_step unless @activity.call_present?
     when :region
       skip_step if @activity.recipient_country?
@@ -100,6 +103,8 @@ class Staff::ActivityFormsController < Staff::BaseController
         call_open_date: format_date(call_open_date),
         call_close_date: format_date(call_close_date),
       )
+    when :total_applications_and_awards
+      @activity.assign_attributes(total_applications: total_applications, total_awards: total_awards)
     when :programme_status
       iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
       @activity.assign_attributes(programme_status: programme_status, status: iati_status)
@@ -188,6 +193,14 @@ class Staff::ActivityFormsController < Staff::BaseController
   def call_close_date
     call_close_date = params.require(:activity).permit(:call_close_date)
     {day: call_close_date["call_close_date(3i)"], month: call_close_date["call_close_date(2i)"], year: call_close_date["call_close_date(1i)"]}
+  end
+
+  def total_applications
+    params.require(:activity).permit(:total_applications).fetch("total_applications", nil)
+  end
+
+  def total_awards
+    params.require(:activity).permit(:total_awards).fetch("total_awards", nil)
   end
 
   def programme_status

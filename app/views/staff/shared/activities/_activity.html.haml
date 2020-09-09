@@ -108,6 +108,26 @@
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :call_dates)
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:call_close_date)}"), activity_step_path(activity_presenter, :call_dates), t("summary.label.activity.call_close_date"))
 
+  - if activity_presenter.call_present?
+    .govuk-summary-list__row.total_applications
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.total_applications")
+      %dd.govuk-summary-list__value
+        = activity_presenter.total_applications
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :total_applications_and_awards)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:total_applications)}"), activity_step_path(activity_presenter, :total_applications_and_awards), t("summary.label.activity.total_applications"))
+
+  - if activity_presenter.call_present?
+    .govuk-summary-list__row.total_awards
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.total_awards")
+      %dd.govuk-summary-list__value
+        = activity_presenter.total_awards
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :total_applications_and_awards)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:total_awards)}"), activity_step_path(activity_presenter, :total_applications_and_awards), t("summary.label.activity.total_awards"))
+
   - unless activity_presenter.fund?
     .govuk-summary-list__row.programme_status
       %dt.govuk-summary-list__key

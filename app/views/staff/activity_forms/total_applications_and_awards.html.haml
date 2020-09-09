@@ -1,0 +1,5 @@
+= render layout: "wrapper" do |f|
+  %h1.govuk-heading-xl= @page_title
+
+  = f.govuk_text_field :total_applications, label: { size: "m" }
+  = f.govuk_text_field :total_awards, label: { size: "m" }
