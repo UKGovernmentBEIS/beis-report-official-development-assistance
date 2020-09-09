@@ -134,6 +134,7 @@ RSpec.describe "Users can create a budget" do
         project_activity = create(:project_activity,
           parent: programme_activity,
           organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
 
         visit activities_path
 
