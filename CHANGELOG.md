@@ -283,7 +283,8 @@
 - Transparency Identifiers are set based on RODA Identifiers
 - Delivery Partner Identifiers can be edited
 
-## [unreleased]
+## [release-16] - 2020-09-09
+
 - Reports no longer have to be unique
 - Reports cannot be unique for the Level A activity
 - Add empty states for report tables
@@ -298,7 +299,10 @@
 - `GDI` form step added to create activity journey
 - Show Aid Type and Sector codes in Report CSV export for activities
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...HEAD
+[release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16
 [release-15]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...release-15
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14
 [release-13]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-12...release-13
