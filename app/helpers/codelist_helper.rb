@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module CodelistHelper
+  DEVELOPING_COUNTRIES_CODE = "998"
   def yaml_to_objects(entity:, type:, with_empty_item: true)
     data = load_yaml(entity: entity, type: type)
     return [] if data.empty?
@@ -66,6 +67,19 @@ module CodelistHelper
     country.name
   end
 
+  def intended_beneficiaries_checkbox_options
+    recipient_region = @activity.recipient_region
+    list = load_yaml(entity: "activity", type: "intended_beneficiaries")
+    show_list = if recipient_region == DEVELOPING_COUNTRIES_CODE
+      list.values.flatten
+    else
+      list[recipient_region]
+    end
+    show_list.collect { |item|
+      OpenStruct.new(name: item["name"], code: item["code"])
+    }.compact.sort_by(&:name)
+  end
+
   def flow_select_options
     objects = yaml_to_objects(entity: "activity", type: "flow", with_empty_item: false)
     objects.unshift(OpenStruct.new(name: "ODA", code: "10")).uniq
@@ -82,6 +96,10 @@ module CodelistHelper
     else
       options
     end
+  end
+
+  def gdi_radio_options
+    yaml_to_objects(entity: "activity", type: "gdi", with_empty_item: false).sort_by(&:code)
   end
 
   def all_sectors

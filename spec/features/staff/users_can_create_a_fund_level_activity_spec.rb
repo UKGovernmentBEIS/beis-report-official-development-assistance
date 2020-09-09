@@ -243,6 +243,22 @@ RSpec.feature "Users can create a fund level activity" do
         # region has the default value already selected
         click_button t("form.button.activity.submit")
 
+        expect(page).to have_content t("form.label.activity.intended_beneficiaries")
+
+        # Don't select any intended beneficiaries
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.intended_beneficiaries.blank")
+
+        check "Haiti"
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.label.activity.gdi")
+
+        # Don't select a GDI
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.gdi.blank")
+
+        choose "No"
+        click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.label.activity.flow")
 
         # Flow has a default and can't be set to blank so we skip
@@ -255,6 +271,10 @@ RSpec.feature "Users can create a fund level activity" do
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.aid_type.blank")
 
         choose("activity[aid_type]", option: "A01")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.oda_eligibility")
+
+        # oda_eligibility has the default value already selected
         click_button t("form.button.activity.submit")
         expect(page).to have_content Activity.find_by(delivery_partner_identifier: identifier).title
       end

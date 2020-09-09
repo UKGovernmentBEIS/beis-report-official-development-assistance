@@ -21,8 +21,12 @@ class Staff::ActivityFormsController < Staff::BaseController
     :geography,
     :region,
     :country,
+    :requires_additional_benefitting_countries,
+    :intended_beneficiaries,
+    :gdi,
     :flow,
     :aid_type,
+    :oda_eligibility,
   ]
 
   steps(*FORM_STEPS)
@@ -49,6 +53,10 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.recipient_country?
     when :country
       skip_step if @activity.recipient_region?
+    when :requires_additional_benefitting_countries
+      skip_step if @activity.recipient_region?
+    when :intended_beneficiaries
+      skip_step unless @activity.requires_intended_beneficiaries?
     end
 
     render_wizard
@@ -109,10 +117,18 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :country
       inferred_region = country_to_region_mapping.find { |pair| pair["country"] == recipient_country }["region"]
       @activity.assign_attributes(recipient_region: inferred_region, recipient_country: recipient_country)
+    when :requires_additional_benefitting_countries
+      @activity.assign_attributes(requires_additional_benefitting_countries: requires_additional_benefitting_countries)
+    when :intended_beneficiaries
+      @activity.assign_attributes(intended_beneficiaries: intended_beneficiaries.drop(1))
+    when :gdi
+      @activity.assign_attributes(gdi: gdi)
     when :flow
       @activity.assign_attributes(flow: flow)
     when :aid_type
       @activity.assign_attributes(aid_type: aid_type)
+    when :oda_eligibility
+      @activity.assign_attributes(oda_eligibility: oda_eligibility)
     end
 
     update_form_state
@@ -210,12 +226,28 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(:recipient_country).fetch("recipient_country", nil)
   end
 
+  def requires_additional_benefitting_countries
+    params.require(:activity).permit(:requires_additional_benefitting_countries).fetch("requires_additional_benefitting_countries", nil)
+  end
+
+  def intended_beneficiaries
+    params.require(:activity).permit(intended_beneficiaries: []).fetch("intended_beneficiaries", [])
+  end
+
+  def gdi
+    params.require(:activity).permit(:gdi).fetch("gdi", nil)
+  end
+
   def flow
     params.require(:activity).permit(:flow).fetch("flow", nil)
   end
 
   def aid_type
     params.require(:activity).permit(:aid_type).fetch("aid_type", nil)
+  end
+
+  def oda_eligibility
+    params.require(:activity).permit(:oda_eligibility).fetch("oda_eligibility", nil)
   end
 
   def finish_wizard_path

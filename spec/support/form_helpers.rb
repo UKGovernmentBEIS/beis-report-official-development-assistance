@@ -28,8 +28,11 @@ module FormHelpers
     actual_end_date_year: "2020",
     geography: "recipient_region",
     recipient_region: "Developing countries, unspecified",
+    intended_beneficiaries: "Haiti",
+    gdi: "No",
     flow: "ODA",
     aid_type: "A01",
+    oda_eligibility: "true",
     level:,
     parent: nil
   )
@@ -151,6 +154,21 @@ module FormHelpers
     select recipient_region, from: "activity[recipient_region]"
     click_button t("form.button.activity.submit")
 
+    if geography == "recipient_country"
+      expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
+      choose "Yes"
+      click_button t("form.button.activity.submit")
+    end
+
+    expect(page).to have_content t("form.label.activity.intended_beneficiaries")
+    check intended_beneficiaries
+    click_button t("form.button.activity.submit")
+
+    expect(page).to have_content t("form.label.activity.gdi")
+    expect(page).to have_content t("form.hint.activity.gdi")
+    choose "No"
+    click_button t("form.button.activity.submit")
+
     expect(page).to have_content t("form.label.activity.flow")
     expect(page.html).to include t("form.hint.activity.flow")
     select flow, from: "activity[flow]"
@@ -159,6 +177,11 @@ module FormHelpers
     expect(page).to have_content t("form.legend.activity.aid_type")
     expect(page).to have_content "A code for the vocabulary aid-type classifications. International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)"
     choose("activity[aid_type]", option: aid_type)
+    click_button t("form.button.activity.submit")
+
+    expect(page).to have_content t("form.legend.activity.oda_eligibility")
+    expect(page).to have_content t("form.hint.activity.oda_eligibility")
+    choose "Eligible"
     click_button t("form.button.activity.submit")
 
     expect(page).to have_content delivery_partner_identifier
@@ -174,8 +197,11 @@ module FormHelpers
       expect(page).to have_content t("activity.programme_status.#{programme_status}")
     end
     expect(page).to have_content recipient_region
+    expect(page).to have_content intended_beneficiaries
+    expect(page).to have_content gdi
     expect(page).to have_content flow
     expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
+    expect(page).to have_content t("activity.oda_eligibility.#{oda_eligibility}")
     expect(page).to have_content localise_date_from_input_fields(
       year: planned_start_date_year,
       month: planned_start_date_month,

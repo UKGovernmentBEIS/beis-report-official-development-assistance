@@ -151,6 +151,18 @@ RSpec.feature "BEIS users can edit a report" do
       expect(page).to_not have_content t("action.report.update.success")
       expect(page).to have_content t("activerecord.errors.models.report.attributes.description.blank")
     end
+
+    scenario "they see the organisation, level A activity and financial quarter for the report" do
+      authenticate!(user: beis_user)
+      report = create(:report)
+      report_presenter = ReportPresenter.new(report)
+
+      visit edit_report_path(report)
+
+      expect(page).to have_content report_presenter.organisation.name
+      expect(page).to have_content report_presenter.fund.title
+      expect(page).to have_content report_presenter.financial_quarter_and_year
+    end
   end
 
   context "Logged in as a Delivery Partner user" do

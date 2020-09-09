@@ -31,6 +31,11 @@ en:
       '37': Other Private flows at market terms
       '40': Non flow
       '50': Other flows
+    gdi:
+      '1': Yes - China
+      '2': Yes - India
+      '3': Yes - China and India
+      '4': 'No'
     geography:
       recipient_country: Country
       recipient_region: Region
@@ -287,6 +292,8 @@ en:
       ZM: Zambia
       ZW: Zimbabwe
     recipient_region:
+      '88': States Ex-Yugoslavia unspecified
+      '89': Europe, regional
       '189': North of Sahara, regional
       '289': South of Sahara, regional
       '298': Africa, regional
@@ -300,10 +307,17 @@ en:
       '689': South & Central Asia, regional
       '789': Far East Asia, regional
       '798': Asia, regional
-      '88': States Ex-Yugoslavia unspecified
       '889': Oceania, regional
-      '89': Europe, regional
       '998': Developing countries, unspecified
+      '1027': Eastern Africa, regional
+      '1028': Middle Africa, regional
+      '1029': Southern Africa, regional
+      '1030': Western Africa, regional
+      '1031': Caribbean, regional
+      '1032': Central America, regional
+      '1033': Melanesia, regional
+      '1034': Micronesia, regional
+      '1035': Polynesia, regional
     sector:
       '11110': Education policy and administrative management
       '11120': Education facilities and training
@@ -673,6 +687,9 @@ en:
       '09': Completed
       '10': Stopped
       '11': Cancelled
+    requires_additional_benefitting_countries:
+      'true': 'Yes'
+      'false': 'No'
     status:
       '1': Pipeline/identification
       '2': Implementation
@@ -680,6 +697,9 @@ en:
       '4': Post-completion
       '5': Cancelled
       '6': Suspended
+    oda_eligibility:
+      'true': 'Eligible'
+      'false': 'No longer eligible'
   generic:
     default_currency:
       aed: UAE Dirham

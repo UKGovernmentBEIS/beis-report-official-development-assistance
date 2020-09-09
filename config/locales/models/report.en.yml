@@ -23,6 +23,8 @@ en:
           edit: Edit
           activate: Activate
           in_review: Mark as in review
+        no_reports:
+          No reports
   page_content:
     reports:
       title: Reports
@@ -34,11 +36,13 @@ en:
   form:
     label:
       report:
-        description: Reporting period
+        description: Report description
         fund: Level A
         organisation: Organisation
         state: State
         deadline: Deadline
+        level_a_activity: Level A
+        financial_quarter_and_year: Financial quarter
     legend:
       report:
         description: Reporting period
@@ -75,6 +79,15 @@ en:
         complete:
           title: Report activation complete
           body: "%{report_financial_quarter} %{report_description}"
+        failure: Report could not be activated
+      submit:
+        failure: Report could not be submitted
+      review:
+        failure: Report could not be moved to in review
+      request_changes:
+        failure: Report could not be moved to awaiting changes
+      approve:
+        failure: Report could not be approved
       update:
         success: Report successfully updated
       submit:
@@ -110,7 +123,7 @@ en:
         report:
           attributes:
             description:
-              blank: Reporting period can't be bank
+              blank: Reporting period can't be blank
             fund:
               level: Activity must be a fund-level Activity
             deadline:

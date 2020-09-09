@@ -27,6 +27,24 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#aid_type_with_code" do
+    context "when the aid_type exists" do
+      it "returns the locale value for the code with the code in brackets" do
+        activity = build(:activity, aid_type: "A01")
+        result = described_class.new(activity).aid_type_with_code
+        expect(result).to eql("General budget support (A01)")
+      end
+    end
+
+    context "when the activity does not have an aid_type set" do
+      it "returns nil" do
+        activity = build(:activity, :at_identifier_step)
+        result = described_class.new(activity)
+        expect(result.aid_type_with_code).to be_nil
+      end
+    end
+  end
+
   describe "#sector" do
     context "when the sector exists" do
       it "returns the locale value for the code" do
@@ -41,6 +59,24 @@ RSpec.describe ActivityPresenter do
         activity = build(:activity, sector: nil)
         result = described_class.new(activity)
         expect(result.sector).to be_nil
+      end
+    end
+  end
+
+  describe "#sector_with_code" do
+    context "when the sector exists" do
+      it "returns the locale value for the code with the code in brackets" do
+        activity = build(:activity, sector: "11110")
+        result = described_class.new(activity).sector_with_code
+        expect(result).to eql("Education policy and administrative management (11110)")
+      end
+    end
+
+    context "when the activity does not have a sector set" do
+      it "returns nil" do
+        activity = build(:activity, sector: nil)
+        result = described_class.new(activity)
+        expect(result.sector_with_code).to be_nil
       end
     end
   end
@@ -225,6 +261,52 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#requires_additional_benefitting_countries" do
+    context "when requires_additional_benefitting_countries exists" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, requires_additional_benefitting_countries: "true")
+        result = described_class.new(activity)
+        expect(result.requires_additional_benefitting_countries).to eq("Yes")
+      end
+    end
+
+    context "when requires_additional_benefitting_countries is not required" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, requires_additional_benefitting_countries: "false")
+        result = described_class.new(activity)
+        expect(result.requires_additional_benefitting_countries).to eq("No")
+      end
+    end
+  end
+
+  describe "#intended_beneficiaries" do
+    context "when there are other benefitting countries" do
+      it "returns the locale value for the codes of the countries" do
+        activity = build(:activity, intended_beneficiaries: ["AR", "EC", "BR"])
+        result = described_class.new(activity).intended_beneficiaries
+        expect(result).to eql("Argentina, Ecuador, and Brazil")
+      end
+    end
+  end
+
+  describe "#gdi" do
+    context "when gdi exists" do
+      it "returns the locale value for the code" do
+        activity = build(:activity, gdi: "3")
+        result = described_class.new(activity).gdi
+        expect(result).to eql("Yes - China and India")
+      end
+    end
+
+    context "when the activity does not have a gdi set" do
+      it "returns nil" do
+        activity = build(:activity, gdi: nil)
+        result = described_class.new(activity)
+        expect(result.gdi).to be_nil
+      end
+    end
+  end
+
   describe "#flow" do
     context "when flow aid_type exists" do
       it "returns the locale value for the code" do
@@ -239,6 +321,24 @@ RSpec.describe ActivityPresenter do
         activity = build(:activity, flow: nil)
         result = described_class.new(activity)
         expect(result.flow).to be_nil
+      end
+    end
+  end
+
+  describe "#oda_eligibility" do
+    context "when the activity is ODA eligible" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, oda_eligibility: "true")
+        result = described_class.new(activity)
+        expect(result.oda_eligibility).to eq("Eligible")
+      end
+    end
+
+    context "when the activity is no longer ODA eligible" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, oda_eligibility: "false")
+        result = described_class.new(activity)
+        expect(result.oda_eligibility).to eq("No longer eligible")
       end
     end
   end

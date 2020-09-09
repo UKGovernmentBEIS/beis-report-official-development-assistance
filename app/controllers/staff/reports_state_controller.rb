@@ -3,18 +3,26 @@
 class Staff::ReportsStateController < Staff::BaseController
   include Secured
 
+  STATE_TO_POLICY_ACTION = {
+    active: :activate,
+    submitted: :submit,
+    in_review: :review,
+    awaiting_changes: :request_changes,
+    approved: :approve,
+  }
+
   def edit
     case report.state
     when "inactive"
-      confirm_activation
+      show_state_change_confirmation(:activate)
     when "active"
-      confirm_submission
+      show_state_change_confirmation(:submit)
     when "submitted"
-      confirm_in_review
+      show_state_change_confirmation(:review)
     when "in_review"
-      params[:request_changes] ? confirm_request_changes : confirm_approve
+      params[:request_changes] ? show_state_change_confirmation(:request_changes) : show_state_change_confirmation(:approve)
     when "awaiting_changes"
-      confirm_submission
+      show_state_change_confirmation(:submit)
     else
       authorize report
       redirect_to report_path(report)
@@ -24,89 +32,41 @@ class Staff::ReportsStateController < Staff::BaseController
   def update
     case report.state
     when "inactive"
-      change_report_state_to_active
+      change_report_state_to(:active)
     when "active"
-      change_report_state_to_submitted
+      change_report_state_to(:submitted)
     when "submitted"
-      change_report_state_to_in_review
+      change_report_state_to(:in_review)
     when "in_review"
-      params[:request_changes] ? change_report_state_to_awaiting_changes : change_report_state_to_approved
+      params[:request_changes] ? change_report_state_to(:awaiting_changes) : change_report_state_to(:approved)
     when "awaiting_changes"
-      change_report_state_to_submitted
+      change_report_state_to(:submitted)
     else
       authorize report
       redirect_to report_path(report)
     end
   end
 
-  private def confirm_activation
-    authorize report, :activate?
+  private def show_state_change_confirmation(policy_action)
+    authorize report, policy_action.to_s + "?"
     @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/activate/confirm"
+    render "staff/reports_state/#{policy_action}/confirm"
   end
 
-  private def change_report_state_to_active
-    authorize report, :activate?
-    report.update!(state: :active)
-    report.create_activity key: "report.activated", owner: current_user
-    @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/activate/complete"
-  end
+  private def change_report_state_to(state)
+    policy_action = STATE_TO_POLICY_ACTION.fetch(state).to_s
 
-  private def confirm_submission
-    authorize report, :submit?
-    @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/submit/confirm"
-  end
+    authorize report, policy_action + "?"
 
-  private def change_report_state_to_submitted
-    authorize report, :submit?
-    report.update!(state: :submitted)
-    report.create_activity key: "report.submitted", owner: current_user
-    @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/submit/complete"
-  end
-
-  private def confirm_in_review
-    authorize report, :review?
-    @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/review/confirm"
-  end
-
-  private def change_report_state_to_in_review
-    authorize report, :review?
-    report.update!(state: :in_review)
-    report.create_activity key: "report.in_review", owner: current_user
-    @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/review/complete"
-  end
-
-  private def confirm_request_changes
-    authorize report, :request_changes?
-    @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/request_changes/confirm"
-  end
-
-  private def change_report_state_to_awaiting_changes
-    authorize report, :request_changes?
-    report.update!(state: :awaiting_changes)
-    report.create_activity key: "report.awaiting_changes", owner: current_user
-    @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/request_changes/complete"
-  end
-
-  private def confirm_approve
-    authorize report, :approve?
-    @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/approve/confirm"
-  end
-
-  private def change_report_state_to_approved
-    authorize report, :approve?
-    report.update!(state: :approved)
-    report.create_activity key: "report.approve", owner: current_user
-    @report_presenter = ReportPresenter.new(report)
-    render "staff/reports_state/approve/complete"
+    if report.valid?
+      report.update!(state: state)
+      report.create_activity key: "report.state.changed_to.#{state}", owner: current_user
+      @report_presenter = ReportPresenter.new(report)
+      render "staff/reports_state/#{policy_action}/complete"
+    else
+      flash[:error] = t("action.report.#{policy_action}.failure")
+      redirect_to report_path(report)
+    end
   end
 
   private def report

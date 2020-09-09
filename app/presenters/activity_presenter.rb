@@ -8,9 +8,19 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.aid_type.#{super.downcase}")
   end
 
+  def aid_type_with_code
+    return if aid_type.blank?
+    "#{aid_type} (#{to_model.aid_type})"
+  end
+
   def sector
     return if super.blank?
     I18n.t("activity.sector.#{super}")
+  end
+
+  def sector_with_code
+    return if sector.blank?
+    "#{sector} (#{to_model.sector})"
   end
 
   def call_present
@@ -68,9 +78,29 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.recipient_country.#{super}")
   end
 
+  def requires_additional_benefitting_countries
+    return if super.nil?
+    I18n.t("activity.requires_additional_benefitting_countries.#{super}")
+  end
+
+  def intended_beneficiaries
+    return if super.blank?
+    super.map { |item| I18n.t("activity.recipient_country.#{item}") }.to_sentence
+  end
+
+  def gdi
+    return if super.blank?
+    I18n.t("activity.gdi.#{super}")
+  end
+
   def flow
     return if super.blank?
     I18n.t("activity.flow.#{super}")
+  end
+
+  def oda_eligibility
+    return if super.nil?
+    I18n.t("activity.oda_eligibility.#{super}")
   end
 
   def call_to_action(attribute)
