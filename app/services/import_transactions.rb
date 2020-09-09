@@ -17,26 +17,35 @@ class ImportTransactions
   end
 
   def import_row(row, row_number)
+    errors = {}
+
     converter = Converter.new(row)
-    converter.errors.each do |attr_name, (value, message)|
-      add_error(row_number, attr_name, value, message)
-    end
+    errors.update(converter.errors)
 
     activity = converter.activity
     unless activity
-      message = I18n.t("importer.errors.transaction.unknown_identifier")
-      add_error(row_number, :activity, converter.raw(:activity), message)
-      return
+      errors[:activity] = [converter.raw(:activity), I18n.t("importer.errors.transaction.unknown_identifier")]
     end
+
+    create_transaction(converter)
+
+    errors.each do |attr_name, (value, message)|
+      add_error(row_number, attr_name, value, message)
+    end
+  end
+
+  def add_error(row_number, column, value, message)
+    @errors << Error.new(row_number, Converter::FIELDS[column], value, message)
+  end
+
+  def create_transaction(converter)
+    activity = converter.activity
+    return unless activity
 
     attrs = converter.to_h
     assign_default_values(attrs, activity)
 
     CreateTransaction.new(activity: activity).call(attributes: attrs)
-  end
-
-  def add_error(row_number, column, value, message)
-    @errors << Error.new(row_number, Converter::FIELDS[column], value, message)
   end
 
   def assign_default_values(attrs, activity)
