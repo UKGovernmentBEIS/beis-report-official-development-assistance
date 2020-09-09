@@ -84,5 +84,21 @@ RSpec.describe ImportTransactions do
         ])
       end
     end
+
+    context "when the Date is not an existing date" do
+      let :transaction_row do
+        super().merge("Date" => "2020-04-31")
+      end
+
+      it "does not import any transactions" do
+        expect(report.transactions.count).to eq(0)
+      end
+
+      it "returns an error" do
+        expect(importer.errors).to eq([
+          ImportTransactions::Error.new(0, "Date", "2020-04-31", t("importer.errors.transaction.invalid_date")),
+        ])
+      end
+    end
   end
 end
