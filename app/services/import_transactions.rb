@@ -122,35 +122,35 @@ class ImportTransactions
     end
 
     def convert_receiving_organisation_type(type)
-      codelist = YAML.safe_load(File.read(organisation_type_path))
-      valid_codes = codelist.fetch("data").map { |entry| entry.fetch("code") }
-
-      if valid_codes.include?(type)
-        type
-      else
-        raise I18n.t("importer.errors.transaction.invalid_iati_organisation_type")
-      end
-    end
-
-    def organisation_type_path
-      Rails.root.join("vendor", "data", "codelists", "IATI", IATI_VERSION, "organisation", "organisation_type.yml")
+      validate_from_codelist(
+        type,
+        "organisation/organisation_type.yml",
+        I18n.t("importer.errors.transaction.invalid_iati_organisation_type"),
+      )
     end
 
     def convert_disbursement_channel(channel)
-      return nil if channel.blank?
-
-      codelist = YAML.safe_load(File.read(disbursement_channel_path))
-      valid_codes = codelist.fetch("data").map { |entry| entry.fetch("code") }
-
-      if valid_codes.include?(channel)
-        channel
-      else
-        raise I18n.t("importer.errors.transaction.invalid_iati_disbursement_channel")
-      end
+      validate_from_codelist(
+        channel,
+        "transaction/disbursement_channel.yml",
+        I18n.t("importer.errors.transaction.invalid_iati_disbursement_channel"),
+      )
     end
 
-    def disbursement_channel_path
-      Rails.root.join("vendor", "data", "codelists", "IATI", IATI_VERSION, "transaction", "disbursement_channel.yml")
+    def validate_from_codelist(code, codelist_file, message)
+      return nil if code.blank?
+
+      codelist_path = codelist_root.join(codelist_file)
+      codelist = YAML.safe_load(File.read(codelist_path))
+      valid_codes = codelist.fetch("data").map { |entry| entry.fetch("code") }
+
+      raise message unless valid_codes.include?(code)
+
+      code
+    end
+
+    def codelist_root
+      Rails.root.join("vendor", "data", "codelists", "IATI", IATI_VERSION)
     end
   end
 end
