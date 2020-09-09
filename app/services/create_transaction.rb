@@ -1,8 +1,9 @@
 class CreateTransaction
-  attr_accessor :activity
+  attr_accessor :activity, :report
 
-  def initialize(activity:)
+  def initialize(activity:, report: nil)
     self.activity = activity
+    self.report = report || Report.editable_for_activity(activity)
   end
 
   def call(attributes: {})
@@ -13,7 +14,7 @@ class CreateTransaction
     transaction.value = sanitize_monetary_string(value: attributes[:value])
 
     unless activity.organisation.service_owner?
-      transaction.report = report(activity: activity)
+      transaction.report = report
     end
 
     result = if transaction.valid?
@@ -29,11 +30,5 @@ class CreateTransaction
 
   def sanitize_monetary_string(value:)
     Monetize.parse(value)
-  end
-
-  def report(activity:)
-    organisation = activity.organisation
-    fund = activity.associated_fund
-    Report.active.find_by(organisation: organisation, fund: fund)
   end
 end

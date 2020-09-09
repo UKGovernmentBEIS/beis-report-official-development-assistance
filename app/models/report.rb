@@ -25,6 +25,17 @@ class Report < ApplicationRecord
     approved: "approved",
   }
 
+  scope :editable, -> do
+    where(state: [:active, :awaiting_changes])
+  end
+
+  def self.editable_for_activity(activity)
+    editable.find_by(
+      organisation_id: activity.organisation_id,
+      fund_id: activity.associated_fund.id,
+    )
+  end
+
   def initialize(attributes = nil)
     super(attributes)
     self.financial_quarter = current_financial_quarter
