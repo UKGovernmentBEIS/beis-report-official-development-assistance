@@ -27,7 +27,7 @@ class ImportTransactions
       errors[:activity] = [converter.raw(:activity), I18n.t("importer.errors.transaction.unknown_identifier")]
     end
 
-    create_transaction(converter)
+    create_transaction(converter, errors)
 
     errors.each do |attr_name, (value, message)|
       add_error(row_number, attr_name, value, message)
@@ -38,14 +38,19 @@ class ImportTransactions
     @errors << Error.new(row_number, Converter::FIELDS[column], value, message)
   end
 
-  def create_transaction(converter)
+  def create_transaction(converter, errors)
     activity = converter.activity
     return unless activity
 
     attrs = converter.to_h
     assign_default_values(attrs, activity)
 
-    CreateTransaction.new(activity: activity).call(attributes: attrs)
+    result = CreateTransaction.new(activity: activity).call(attributes: attrs)
+    return unless result
+
+    result.object.errors.each do |attr_name, message|
+      errors[attr_name] ||= [converter.raw(attr_name), message]
+    end
   end
 
   def assign_default_values(attrs, activity)
@@ -110,6 +115,7 @@ class ImportTransactions
     end
 
     def convert_date(date)
+      return nil unless date.present?
       Date.iso8601(date)
     rescue ArgumentError
       raise I18n.t("importer.errors.transaction.invalid_date")
