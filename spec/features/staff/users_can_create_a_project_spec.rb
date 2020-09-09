@@ -8,6 +8,7 @@ RSpec.feature "Users can create a project" do
     context "when viewing a programme" do
       scenario "a new project can be added to the programme" do
         programme = create(:programme_activity, extending_organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 
         visit organisation_activity_children_path(programme.organisation, programme)
 
@@ -25,6 +26,7 @@ RSpec.feature "Users can create a project" do
 
       scenario "a new project can be added when the program has no RODA identifier" do
         programme = create(:programme_activity, extending_organisation: user.organisation, roda_identifier_fragment: nil)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 
         visit organisation_activity_children_path(programme.organisation, programme)
         click_on(t("page_content.organisation.button.create_activity"))
@@ -39,6 +41,7 @@ RSpec.feature "Users can create a project" do
 
       scenario "the activity saves its identifier as read-only `transparency_identifier`" do
         programme = create(:programme_activity, extending_organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
         identifier = "a-project"
 
         visit activities_path
@@ -52,6 +55,7 @@ RSpec.feature "Users can create a project" do
 
       scenario "project creation is tracked with public_activity" do
         programme = create(:programme_activity, extending_organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 
         PublicActivity.with_tracking do
           visit organisation_activity_children_path(programme.organisation, programme)

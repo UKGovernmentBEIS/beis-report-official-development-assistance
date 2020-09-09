@@ -300,6 +300,7 @@ RSpec.feature "Users can edit an activity" do
     context "when the activity is a project" do
       it "shows an update success message" do
         activity = create(:project_activity, organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
 
         visit organisation_activity_details_path(activity.organisation, activity)
 
@@ -325,6 +326,7 @@ RSpec.feature "Users can edit an activity" do
 
         scenario "a RODA identifier can be added" do
           activity = create(:project_activity, organisation: user.organisation, parent: programme, roda_identifier_fragment: nil)
+          _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
           visit organisation_activity_details_path(activity.organisation, activity)
 
           within(".roda_identifier") { click_on(t("default.link.add")) }
@@ -370,6 +372,7 @@ RSpec.feature "Users can edit an activity" do
     context "when the activity is a third-party project" do
       it "shows an update success message" do
         activity = create(:third_party_project_activity, organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
 
         visit organisation_activity_details_path(activity.organisation, activity)
 
