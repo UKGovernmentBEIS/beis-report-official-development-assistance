@@ -328,4 +328,114 @@ RSpec.describe ImportTransactions do
       end
     end
   end
+
+  describe "importing multiple transactions" do
+    let :sibling_project do
+      create(:project_activity, organisation: project.organisation, parent: project.parent)
+    end
+
+    let :first_transaction_row do
+      {
+        "Activity RODA Identifier" => sibling_project.roda_identifier_compound,
+        "Date" => "2020-09-08",
+        "Value" => "50.00",
+        "Receiving Organisation Name" => "Example University",
+        "Receiving Organisation Type" => "80",
+        "Description" => "Fees for Q3",
+      }
+    end
+
+    let :second_transaction_row do
+      {
+        "Activity RODA Identifier" => project.roda_identifier_compound,
+        "Date" => "2020-09-10",
+        "Value" => "150.00",
+        "Receiving Organisation Name" => "Example Corporation",
+        "Receiving Organisation Type" => "70",
+        "Description" => "Rent Payments",
+      }
+    end
+
+    let :third_transaction_row do
+      {
+        "Activity RODA Identifier" => sibling_project.roda_identifier_compound,
+        "Date" => "2019-12-25",
+        "Value" => "£5,000",
+        "Receiving Organisation Name" => "Example Foundation",
+        "Receiving Organisation Type" => "60",
+        "Description" => "Christmas Donation",
+      }
+    end
+
+    before do
+      importer.import([
+        first_transaction_row,
+        second_transaction_row,
+        third_transaction_row,
+      ])
+    end
+
+    it "imports all transactions successfully" do
+      expect(importer.errors).to eq([])
+      expect(Transaction.count).to eq(3)
+    end
+
+    it "assigns each transaction to the correct report" do
+      expect(report.transactions.map(&:description).sort).to eq([
+        "Christmas Donation",
+        "Fees for Q3",
+        "Rent Payments",
+      ])
+    end
+
+    it "assigns each transaction to the correct activity" do
+      expect(project.transactions.map(&:description)).to eq([
+        "Rent Payments",
+      ])
+      expect(sibling_project.transactions.map(&:description).sort).to eq([
+        "Christmas Donation",
+        "Fees for Q3",
+      ])
+    end
+
+    context "when any row is not valid" do
+      let :third_transaction_row do
+        super().merge("Value" => "0")
+      end
+
+      it "does not import any transactions" do
+        expect(Transaction.count).to eq(0)
+      end
+
+      it "returns an error" do
+        expect(importer.errors).to eq([
+          ImportTransactions::Error.new(2, "Value", "0", t("activerecord.errors.models.transaction.attributes.value.other_than")),
+        ])
+      end
+    end
+
+    context "when there are multiple errors" do
+      let :first_transaction_row do
+        super().merge("Receiving Organisation Type" => "81")
+      end
+
+      let :third_transaction_row do
+        super().merge("Date" => 6.months.from_now.iso8601, "Value" => "0")
+      end
+
+      it "does not import any transactions" do
+        expect(Transaction.count).to eq(0)
+      end
+
+      it "returns all the errors" do
+        errors = importer.errors.sort_by { |error| [error.row, error.column] }
+
+        expect(errors).to eq([
+          ImportTransactions::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.transaction.invalid_iati_organisation_type")),
+          ImportTransactions::Error.new(2, "Date", third_transaction_row["Date"], t("activerecord.errors.models.transaction.attributes.date.not_in_future")),
+          ImportTransactions::Error.new(2, "Value", "0", t("activerecord.errors.models.transaction.attributes.value.other_than")),
+        ])
+      end
+    end
+  end
 end
