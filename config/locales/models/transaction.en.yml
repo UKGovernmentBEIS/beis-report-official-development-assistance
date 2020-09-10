@@ -6,6 +6,10 @@ en:
         success: Transaction successfully created
       update:
         success: Transaction sucessfully updated
+      download:
+        button: Download CSV template
+      upload:
+        link: Upload actuals
   form:
     label:
       transaction:
@@ -57,6 +61,7 @@ en:
     transaction:
       edit: Edit transaction
       new: Add a transaction
+      upload: Upload bulk transactions data
   activerecord:
     errors:
       models:
