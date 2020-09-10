@@ -5,6 +5,10 @@ class ImportTransactions
 
   attr_reader :errors
 
+  def self.column_headings
+    Converter::FIELDS.values
+  end
+
   def initialize(report:, uploader:)
     @report = report
     @uploader = uploader

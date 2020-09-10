@@ -190,4 +190,23 @@ RSpec.describe Report, type: :model do
       end
     end
   end
+
+  describe "reportable_activities" do
+    let!(:report) { create(:report) }
+    let!(:programme) { create(:programme_activity, parent: report.fund, organisation: report.organisation) }
+    let!(:project_a) { create(:project_activity, parent: programme, organisation: report.organisation) }
+    let!(:project_b) { create(:project_activity, parent: programme, organisation: report.organisation) }
+    let!(:third_party_project) { create(:third_party_project_activity, parent: project_b, organisation: report.organisation) }
+    let!(:project_in_another_fund) { create(:project_activity, organisation: report.organisation) }
+
+    it "returns the level C and D activities belonging to the report's fund and organisation" do
+      expect(report.reportable_activities).to include(project_a)
+      expect(report.reportable_activities).to include(project_b)
+      expect(report.reportable_activities).to include(third_party_project)
+
+      expect(report.reportable_activities).not_to include(report.fund)
+      expect(report.reportable_activities).not_to include(programme)
+      expect(report.reportable_activities).not_to include(project_in_another_fund)
+    end
+  end
 end

@@ -49,6 +49,10 @@ class Report < ApplicationRecord
     end
   end
 
+  def reportable_activities
+    Activity.projects_and_third_party_projects_for_report(self).with_roda_identifier
+  end
+
   def next_four_financial_quarters
     case current_financial_quarter
     when 1
