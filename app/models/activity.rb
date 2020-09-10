@@ -15,6 +15,7 @@ class Activity < ApplicationRecord
     :sector_step,
     :call_present_step,
     :call_dates_step,
+    :total_applications_and_awards_step,
     :programme_status_step,
     :geography_step,
     :region_step,
@@ -37,6 +38,8 @@ class Activity < ApplicationRecord
   validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
   validates :call_present, inclusion: {in: [true, false]}, on: :call_present_step, if: :requires_call_dates?
+  validates :total_applications, presence: true, on: :total_applications_and_awards_step, if: :call_present?
+  validates :total_awards, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :programme_status, presence: true, on: :programme_status_step
   validates :geography, presence: true, on: :geography_step
   validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
