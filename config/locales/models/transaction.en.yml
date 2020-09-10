@@ -84,4 +84,5 @@ en:
         invalid_date: Date must be a valid date
         invalid_iati_disbursement_channel: The disbursement channel must be a valid IATI Disbursement Channel code
         invalid_iati_organisation_type: The receiving organisation type must be a valid IATI Organisation Type code
+        unauthorised: You are not authorised to report against this activity
         unknown_identifier: Identifier is not recognised

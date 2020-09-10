@@ -3,6 +3,9 @@ require "rails_helper"
 RSpec.describe ImportTransactions do
   let(:project) { create(:project_activity, description: "Example Project") }
 
+  let(:reporter_organisation) { project.organisation }
+  let(:reporter) { create(:delivery_partner_user, organisation: reporter_organisation) }
+
   let! :report do
     create(:report,
       fund: project.associated_fund,
@@ -13,7 +16,7 @@ RSpec.describe ImportTransactions do
   end
 
   let :importer do
-    ImportTransactions.new(report: report)
+    ImportTransactions.new(report: report, uploader: reporter)
   end
 
   describe "importing a single transaction" do
@@ -69,6 +72,38 @@ RSpec.describe ImportTransactions do
         providing_organisation_name: project.providing_organisation.name,
         providing_organisation_type: project.providing_organisation.organisation_type,
       )
+    end
+
+    context "when the reporter is not authorised to report on the Activity" do
+      let(:reporter_organisation) { create(:organisation) }
+
+      it "does not import any transactions" do
+        expect(report.transactions.count).to eq(0)
+      end
+
+      it "returns an error" do
+        expect(importer.errors).to eq([
+          ImportTransactions::Error.new(0, "Activity RODA Identifier", project.roda_identifier_compound, t("importer.errors.transaction.unauthorised")),
+        ])
+      end
+    end
+
+    context "when the Activity does not belong to the given Report" do
+      let(:another_project) { create(:project_activity, organisation: reporter_organisation) }
+
+      let :transaction_row do
+        super().merge("Activity RODA Identifier" => another_project.roda_identifier_compound)
+      end
+
+      it "does not import any transactions" do
+        expect(report.transactions.count).to eq(0)
+      end
+
+      it "returns an error" do
+        expect(importer.errors).to eq([
+          ImportTransactions::Error.new(0, "Activity RODA Identifier", another_project.roda_identifier_compound, t("importer.errors.transaction.unauthorised")),
+        ])
+      end
     end
 
     context "when the Activity Identifier is not recognised" do
