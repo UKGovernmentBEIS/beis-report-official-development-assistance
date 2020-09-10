@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       resources :steps, controller: "activity_forms"
       resource :extending_organisations, only: [:edit, :update]
       resources :implementing_organisations, only: [:new, :create, :edit, :update]
+      resources :comments
     end
   end
 

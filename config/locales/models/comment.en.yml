@@ -1,0 +1,8 @@
+---
+en:
+  document_title:
+    comment:
+      index: "Comments for %{activity}"
+  page_title:
+    comment:
+      index: Comments
