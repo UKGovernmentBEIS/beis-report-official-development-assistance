@@ -157,6 +157,7 @@ en:
         actual_spend_for_quarter: "%{financial_quarter_and_year} actual spend"
         forecasted_spend_for_quarter: "%{financial_quarter_and_year} forecasted spend"
         variance_for_quarter: "%{financial_quarter_and_year} variance"
+        comment: Comment
     body:
       activity:
         level:
@@ -207,6 +208,7 @@ en:
       details: Details
       financials: Financials
       children: Child activities
+      comments: Comments
   page_title:
     activity:
       index: Activities
