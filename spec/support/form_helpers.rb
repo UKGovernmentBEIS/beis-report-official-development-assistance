@@ -13,6 +13,8 @@ module FormHelpers
     call_close_date_day: "31",
     call_close_date_month: "12",
     call_close_date_year: "2019",
+    total_applications: "12",
+    total_awards: "5",
     programme_status: "07",
     planned_start_date_day: "1",
     planned_start_date_month: "1",
@@ -104,6 +106,18 @@ module FormHelpers
       call_present = nil
     end
 
+    if call_present == "true"
+      expect(page).to have_content t("form.legend.activity.total_applications")
+      expect(page).to have_content t("form.hint.activity.total_applications")
+      fill_in "activity[total_applications]", with: total_applications
+
+      expect(page).to have_content t("form.legend.activity.total_awards")
+      expect(page).to have_content t("form.hint.activity.total_awards")
+      fill_in "activity[total_awards]", with: total_awards
+
+      click_button t("form.button.activity.submit")
+    end
+
     unless level == "fund"
       expect(page).to have_content t("form.legend.activity.programme_status")
       expect(page).to have_content "Delivery"
@@ -190,7 +204,10 @@ module FormHelpers
     expect(page).to have_content sector
     if call_present == "true"
       expect(page).to have_content t("activity.call_present.#{call_present}")
+      expect(page).to have_content total_applications
+      expect(page).to have_content total_awards
     end
+
     if level == "fund"
       expect(page).not_to have_content t("activity.programme_status.#{programme_status}")
     else

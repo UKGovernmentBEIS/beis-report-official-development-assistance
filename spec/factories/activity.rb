@@ -74,6 +74,8 @@ FactoryBot.define do
       call_present { "true" }
       call_open_date { Date.yesterday }
       call_close_date { Date.tomorrow }
+      total_applications { "25" }
+      total_awards { "12" }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
       funding_organisation_type { "10" }
@@ -101,6 +103,8 @@ FactoryBot.define do
       call_present { "true" }
       call_open_date { Date.yesterday }
       call_close_date { Date.tomorrow }
+      total_applications { "25" }
+      total_awards { "12" }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
       funding_organisation_type { "10" }
