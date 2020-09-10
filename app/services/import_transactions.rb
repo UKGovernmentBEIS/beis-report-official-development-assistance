@@ -8,8 +8,9 @@ class ImportTransactions
 
   attr_reader :errors
 
-  def initialize(report:)
+  def initialize(report:, uploader:)
     @report = report
+    @uploader = uploader
     @errors = []
   end
 
@@ -23,11 +24,7 @@ class ImportTransactions
     converter = Converter.new(row)
     errors.update(converter.errors)
 
-    activity = converter.activity
-    unless activity
-      errors[:activity] = [converter.raw(:activity), I18n.t("importer.errors.transaction.unknown_identifier")]
-    end
-
+    authorise_activity(converter, errors)
     create_transaction(converter, errors)
 
     errors.each do |attr_name, (value, message)|
@@ -39,9 +36,27 @@ class ImportTransactions
     @errors << Error.new(row_number, Converter::FIELDS[column], value, message)
   end
 
+  def authorise_activity(converter, errors)
+    activity_id = converter.raw(:activity)
+    activity = converter.activity
+    policy = ActivityPolicy.new(@uploader, activity)
+
+    if activity.nil?
+      errors[:activity] = [activity_id, I18n.t("importer.errors.transaction.unknown_identifier")]
+    elsif activity && !policy.create?
+      errors[:activity] = [activity_id, I18n.t("importer.errors.transaction.unauthorised")]
+    elsif !reportable_activity?(activity)
+      errors[:activity] = [activity_id, I18n.t("importer.errors.transaction.unauthorised")]
+    end
+  end
+
+  def reportable_activity?(activity)
+    activity.organisation == @report.organisation && activity.associated_fund == @report.fund
+  end
+
   def create_transaction(converter, errors)
     activity = converter.activity
-    return unless activity
+    return unless activity && errors.empty?
 
     attrs = converter.to_h
     assign_default_values(attrs, activity)
