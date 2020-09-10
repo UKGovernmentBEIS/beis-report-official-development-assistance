@@ -12,13 +12,18 @@ class ImportTransactions
   end
 
   def import(transactions)
-    transactions.each_with_index do |row, index|
-      importer = RowImporter.new(@report, @uploader, row)
-      importer.import_row
+    ActiveRecord::Base.transaction do
+      transactions.each_with_index { |row, index| import_row(row, index) }
+      raise ActiveRecord::Rollback unless @errors.empty?
+    end
+  end
 
-      importer.errors.each do |attr_name, (value, message)|
-        add_error(index, attr_name, value, message)
-      end
+  def import_row(row, index)
+    importer = RowImporter.new(@report, @uploader, row)
+    importer.import_row
+
+    importer.errors.each do |attr_name, (value, message)|
+      add_error(index, attr_name, value, message)
     end
   end
 
