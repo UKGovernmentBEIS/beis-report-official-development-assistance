@@ -303,6 +303,7 @@
 ## [unreleased]
 - New reports are created when the prior is approved
 - `Total applications` and `Total awards` form step added to create activity journey
+- Report deadline value is shown on the edit form
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...HEAD
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16

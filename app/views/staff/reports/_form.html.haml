@@ -1,15 +1,15 @@
 = f.govuk_error_summary
 .govuk-form-group
   = label_tag "organisation", t("form.label.report.organisation"), class: "govuk-label"
-  = content_tag :p, f.object.organisation.name, class: "govuk-body", id: "organisation"
+  = content_tag :p, report_presenter.organisation.name, class: "govuk-body", id: "organisation"
 
 .govuk-form-group
   = label_tag "financial-quarter-and_year", t("form.label.report.financial_quarter_and_year"), class: "govuk-label"
-  = content_tag :p, f.object.financial_quarter_and_year, class: "govuk-body", id: "finacial-quarter-and-year"
+  = content_tag :p, report_presenter.financial_quarter_and_year, class: "govuk-body", id: "finacial-quarter-and-year"
 
 .govuk-form-group
   = label_tag "level-a-activity", t("form.label.report.level_a_activity"), class: "govuk-label"
-  = content_tag :p, f.object.fund.title, class: "govuk-body", id: "level-a-acitivty"
+  = content_tag :p, report_presenter.fund.title, class: "govuk-body", id: "level-a-activity"
 
 = f.govuk_text_field :description
 = f.govuk_date_field :deadline, legend: {  size: "s" }
