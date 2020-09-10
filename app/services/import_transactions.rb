@@ -3,9 +3,6 @@ require "date"
 class ImportTransactions
   Error = Struct.new(:row, :column, :value, :message)
 
-  DEFAULT_CURRENCY = "GBP"
-  TRANSACTION_TYPE_DISBURSEMENT = "3"
-
   attr_reader :errors
 
   def initialize(report:, uploader:)
@@ -15,20 +12,13 @@ class ImportTransactions
   end
 
   def import(transactions)
-    transactions.each_with_index { |row, index| import_row(row, index) }
-  end
+    transactions.each_with_index do |row, index|
+      importer = RowImporter.new(@report, @uploader, row)
+      importer.import_row
 
-  def import_row(row, row_number)
-    errors = {}
-
-    converter = Converter.new(row)
-    errors.update(converter.errors)
-
-    authorise_activity(converter, errors)
-    create_transaction(converter, errors)
-
-    errors.each do |attr_name, (value, message)|
-      add_error(row_number, attr_name, value, message)
+      importer.errors.each do |attr_name, (value, message)|
+        add_error(index, attr_name, value, message)
+      end
     end
   end
 
@@ -36,51 +26,74 @@ class ImportTransactions
     @errors << Error.new(row_number, Converter::FIELDS[column], value, message)
   end
 
-  def authorise_activity(converter, errors)
-    activity_id = converter.raw(:activity)
-    activity = converter.activity
-    policy = ActivityPolicy.new(@uploader, activity)
+  class RowImporter
+    DEFAULT_CURRENCY = "GBP"
+    TRANSACTION_TYPE_DISBURSEMENT = "3"
 
-    if activity.nil?
-      errors[:activity] = [activity_id, I18n.t("importer.errors.transaction.unknown_identifier")]
-    elsif activity && !policy.create?
-      errors[:activity] = [activity_id, I18n.t("importer.errors.transaction.unauthorised")]
-    elsif !reportable_activity?(activity)
-      errors[:activity] = [activity_id, I18n.t("importer.errors.transaction.unauthorised")]
+    attr_reader :errors
+
+    def initialize(report, uploader, row)
+      @report = report
+      @uploader = uploader
+      @row = row
+      @errors = {}
     end
-  end
 
-  def reportable_activity?(activity)
-    activity.organisation == @report.organisation && activity.associated_fund == @report.fund
-  end
+    def import_row
+      @converter = Converter.new(@row)
+      @errors.update(@converter.errors)
 
-  def create_transaction(converter, errors)
-    activity = converter.activity
-    return unless activity && errors.empty?
-
-    attrs = converter.to_h
-    assign_default_values(attrs, activity)
-
-    creator = CreateTransaction.new(activity: activity, report: @report)
-    result = creator.call(attributes: attrs)
-    return unless result
-
-    result.object.errors.each do |attr_name, message|
-      errors[attr_name] ||= [converter.raw(attr_name), message]
+      authorise_activity
+      create_transaction
     end
-  end
 
-  def assign_default_values(attrs, activity)
-    organisation = activity.providing_organisation
+    private
 
-    attrs[:currency] = DEFAULT_CURRENCY
-    attrs[:transaction_type] = TRANSACTION_TYPE_DISBURSEMENT
-    attrs[:providing_organisation_name] = organisation.name
-    attrs[:providing_organisation_type] = organisation.organisation_type
+    def authorise_activity
+      activity_id = @converter.raw(:activity)
+      @activity = @converter.activity
+      policy = ActivityPolicy.new(@uploader, @activity)
 
-    if attrs[:description].blank?
-      presenter = ReportPresenter.new(@report)
-      attrs[:description] = "#{presenter.financial_quarter_and_year} spend on #{activity.description}"
+      if @activity.nil?
+        @errors[:activity] = [activity_id, I18n.t("importer.errors.transaction.unknown_identifier")]
+      elsif @activity && !policy.create?
+        @errors[:activity] = [activity_id, I18n.t("importer.errors.transaction.unauthorised")]
+      elsif !reportable_activity?
+        @errors[:activity] = [activity_id, I18n.t("importer.errors.transaction.unauthorised")]
+      end
+    end
+
+    def reportable_activity?
+      @activity.organisation == @report.organisation && @activity.associated_fund == @report.fund
+    end
+
+    def create_transaction
+      return unless @activity && @errors.empty?
+
+      attrs = @converter.to_h
+      assign_default_values(attrs)
+
+      creator = CreateTransaction.new(activity: @activity, report: @report)
+      result = creator.call(attributes: attrs)
+      return unless result
+
+      result.object.errors.each do |attr_name, message|
+        @errors[attr_name] ||= [@converter.raw(attr_name), message]
+      end
+    end
+
+    def assign_default_values(attrs)
+      organisation = @activity.providing_organisation
+
+      attrs[:currency] = DEFAULT_CURRENCY
+      attrs[:transaction_type] = TRANSACTION_TYPE_DISBURSEMENT
+      attrs[:providing_organisation_name] = organisation.name
+      attrs[:providing_organisation_type] = organisation.organisation_type
+
+      if attrs[:description].blank?
+        presenter = ReportPresenter.new(@report)
+        attrs[:description] = "#{presenter.financial_quarter_and_year} spend on #{@activity.description}"
+      end
     end
   end
 
