@@ -29,6 +29,12 @@ RSpec.describe "Users can create a comment" do
     before { authenticate!(user: delivery_partner_user) }
 
     context "when the report is editable" do
+      scenario "the user sees 'Add comment' in the view" do
+        visit report_path(report)
+        expect(page).to have_content t("table.body.report.add_comment")
+        expect(page).to_not have_content t("table.body.report.edit_comment")
+      end
+
       scenario "the user can add a comment" do
         visit report_path(report)
         click_on t("table.body.report.add_comment")

@@ -31,6 +31,9 @@ class Staff::CommentsController < Staff::BaseController
 
   def edit
     @comment = Comment.find(id)
+    @activity = Activity.find(@comment.activity_id)
+    @report = Report.find(@comment.report_id)
+    @report_presenter = ReportPresenter.new(@report)
     authorize @comment
   end
 
@@ -38,10 +41,12 @@ class Staff::CommentsController < Staff::BaseController
     @comment = Comment.find(id)
     authorize @comment
 
-    @comment.update_attributes(comment_params)
+    @comment.update(comment_params)
     if @comment.valid?
       @comment.save!
       @comment.create_activity key: "comment.update", owner: current_user
+      flash[:notice] = t("action.comment.update.success")
+      redirect_to activity_comments_path(@comment.activity)
     else
       render :edit
     end
