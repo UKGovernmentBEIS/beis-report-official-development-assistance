@@ -92,10 +92,10 @@ en:
         title: A short title that explains the purpose of the %{level}
         level: Select the type of activity
         level_step:
-          fund: Total fund allocation to BEIS from the Treasury
-          programme: Breakdown of funds to delivery partners from BEIS. This is confirmed in the allocation letter or in the memorandum of understanding (MOU). For example, how a £50m fund will be allocated to different activities or spending
-          project: Records a set of activities of a delivery partner and details of how the money is forecast and/or spent. A delivery partner can record if it plans to award to third parties or a delivery partner could spend these funds on its own activities. For example, on workshops
-          third_party_project: How funding from delivery partners to third parties like universities and research institutes is forecast and spent. For example, spending on 10 research grants of £500k totalling £5m
+          fund: The amount of funding each delivery partner will receive
+          programme: A breakdown of each delivery partner's funding detailed and confirmed in allocation letters and MOUs
+          project: The activities of a delivery partner and details of how the funding is forecast and spent
+          third_party_project: The activities of third parties such as universities and how the funding is forecast and spent
         parent: Which existing %{parent_level} will this new %{level} belong to?
         total_applications: You can enter 0 if this field is not applicable at the moment
         total_awards: You can enter 0 if this field is not applicable at the moment
