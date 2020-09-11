@@ -25,6 +25,16 @@ RSpec.describe "Users can edit a planned disbursement" do
       expect(page).to have_content "An Organisation"
     end
 
+    scenario "they do not see the edit link when they cannot edit" do
+      activity = create(:project_activity, organisation: user.organisation)
+      planned_disbursement = create(:planned_disbursement, parent_activity: activity)
+
+      visit organisation_activity_path(activity.organisation, activity)
+
+      expect(page).not_to have_link t("default.link.edit"),
+        href: edit_activity_planned_disbursement_path(activity, planned_disbursement)
+    end
+
     scenario "the action is recorded with public_activity" do
       PublicActivity.with_tracking do
         project = create(:project_activity, organisation: user.organisation)
