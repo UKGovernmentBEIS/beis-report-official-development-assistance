@@ -17,4 +17,8 @@ module ActivityHelper
     return parent.title if parent.fund? && user.delivery_partner?
     link_to parent.title, organisation_activity_path(parent.organisation, parent), {class: "govuk-link govuk-link--no-visited-state"}
   end
+
+  def custom_capitalisation(level)
+    "#{level.chars.first.upcase}#{level[1..-1]}"
+  end
 end

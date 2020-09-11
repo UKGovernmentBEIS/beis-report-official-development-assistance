@@ -1,7 +1,7 @@
 = render layout: "wrapper" do |f|
   = f.govuk_fieldset legend: { text: t("form.legend.activity.purpose", level: t("page_content.activity.level.#{f.object.level}")), tag: :h1, size: "xl" } do
     = f.govuk_text_field :title,
-      label: { text: t("form.label.activity.title", level: t("page_content.activity.level.#{f.object.level}")).capitalize },
+      label: { text: t("form.label.activity.title", level: custom_capitalisation(t("page_content.activity.level.#{f.object.level}"))) },
       hint_text: t("form.hint.activity.title", level: t("page_content.activity.level.#{f.object.level}"))
 
     = f.govuk_text_area :description, rows: 5

@@ -1,4 +1,5 @@
 module FormHelpers
+  include ActivityHelper
   def fill_in_activity_form(
     delivery_partner_identifier: "A-Unique-Identifier",
     roda_identifier_fragment: "RODA-ID",
@@ -42,12 +43,12 @@ module FormHelpers
     expect(page).to have_content t("form.legend.activity.level")
     expect(page).to have_content t("form.hint.activity.level")
     expect(page).to have_content t("form.hint.activity.level_step.#{level}")
-    choose t("page_content.activity.level.#{level}").capitalize
+    choose custom_capitalisation(t("page_content.activity.level.#{level}"))
     click_button t("form.button.activity.submit")
 
     if parent.present?
-      expect(page).to have_content t("form.legend.activity.parent", parent_level: parent.level, level: t("page_content.activity.level.#{level}"))
-      expect(page).to have_content t("form.hint.activity.parent", parent_level: parent.level, level: t("page_content.activity.level.#{level}"))
+      expect(page).to have_content t("form.legend.activity.parent", parent_level: t("page_content.activity.level.#{level}", level: parent.level), level: t("page_content.activity.level.#{level}"))
+      expect(page).to have_content t("form.hint.activity.parent", parent_level: t("page_content.activity.level.#{parent.level}"), level: t("page_content.activity.level.#{level}"))
       choose parent.title
       click_button t("form.button.activity.submit")
     end
@@ -65,7 +66,7 @@ module FormHelpers
     end
 
     expect(page).to have_content t("form.legend.activity.purpose", level: activity_level(level))
-    expect(page).to have_content t("form.label.activity.title", level: activity_level(level).humanize)
+    expect(page).to have_content custom_capitalisation(t("form.label.activity.title", level: activity_level(level)))
     expect(page).to have_content t("form.label.activity.description")
     fill_in "activity[title]", with: title
     fill_in "activity[description]", with: description
