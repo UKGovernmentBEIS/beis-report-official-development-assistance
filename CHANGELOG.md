@@ -309,6 +309,7 @@
 - Updated transaction policy
 - Only show the edit transaction link when the transaction can be edited
 - Only show the add transaction button when the activity can be edited
+- Updated planned disbursement policy
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...HEAD
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16
