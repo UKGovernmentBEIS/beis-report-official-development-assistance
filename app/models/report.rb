@@ -1,6 +1,8 @@
 class Report < ApplicationRecord
   include PublicActivity::Common
 
+  EDITABLE_STATES = [:active, :awaiting_changes].freeze
+
   attr_readonly :financial_quarter, :financial_year
 
   validates_presence_of :description, on: :update
