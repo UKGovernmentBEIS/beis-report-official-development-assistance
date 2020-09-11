@@ -1,4 +1,4 @@
-RSpec.describe "Users can create a comment" do
+RSpec.describe "Users can edit a comment" do
   let(:beis_user) { create(:beis_user) }
   let(:delivery_partner_user) { create(:delivery_partner_user) }
 
@@ -7,10 +7,12 @@ RSpec.describe "Users can create a comment" do
   let(:report) { create(:report, :active, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
   let!(:comment) { create(:comment, activity_id: activity.id, report_id: report.id, owner: delivery_partner_user) }
 
-  context "when the user is a BEIS user" do
-    before { authenticate!(user: beis_user) }
+  context "editing a comment from the report view" do
+    context "when the user is a BEIS user" do
+      before { authenticate!(user: beis_user) }
+
       context "when the report is editable" do
-        scenario "the user can edit a comment" do
+        scenario "the user cannot edit a comment" do
           visit report_path(report)
           expect(page).not_to have_content t("table.body.report.edit_comment")
         end
@@ -67,36 +69,58 @@ RSpec.describe "Users can create a comment" do
           expect(page).not_to have_content t("table.body.report.edit_comment")
         end
       end
+
+      context "when the report is editable but does not belong to this user's organisation" do
+        let(:report) { create(:report, :active, fund: activity.associated_fund, organisation: create(:organisation)) }
+        scenario "the user cannot edit a comment" do
+          visit report_path(report)
+          expect(page).to have_content t("not_authorised.default")
+        end
+      end
     end
   end
 
-  context "when the user is a Delivery Partner user" do
-    before { authenticate!(user: delivery_partner_user) }
+  context "editing a comment from the activity view" do
+    context "when the user is a BEIS user" do
+      before { authenticate!(user: beis_user) }
 
-    context "when the report is editable" do
-      scenario "the user can edit a comment" do
-        visit report_path(report)
-        click_on t("table.body.report.edit_comment")
-        fill_in "comment[comment]", with: "Amendments have been made"
-        click_button t("default.button.submit")
-        expect(page).to have_content "Amendments have been made"
-        expect(page).to have_content t("action.comment.update.success")
+      context "when the report is editable" do
+        scenario "the user cannot edit a comment" do
+          visit activity_comments_path(activity)
+          expect(page).not_to have_content t("table.body.report.edit_comment")
+        end
+      end
+
+      context "when the report is not editable" do
+        let(:report) { create(:report, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
+        scenario "the user cannot edit a comment" do
+          visit activity_comments_path(activity)
+          expect(page).not_to have_content t("table.body.report.edit_comment")
+        end
       end
     end
 
-    context "when the report is not editable" do
-      let(:report) { create(:report, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
-      scenario "the user cannot edit a comment" do
-        visit report_path(report)
-        expect(page).not_to have_content t("table.body.report.edit_comment")
-      end
-    end
+    context "when the user is a Delivery Partner user" do
+      before { authenticate!(user: delivery_partner_user) }
 
-    context "when the report is editable but does not belong to this user's organisation" do
-      let(:report) { create(:report, :active, fund: activity.associated_fund, organisation: create(:organisation)) }
-      scenario "the user cannot edit a comment" do
-        visit report_path(report)
-        expect(page).to have_content t("not_authorised.default")
+      context "when the report is editable" do
+        scenario "the user can edit a comment" do
+          visit activity_comments_path(activity)
+          click_on t("table.body.report.edit_comment")
+          fill_in "comment[comment]", with: "Amendments have been made"
+          click_button t("default.button.submit")
+          expect(page).to have_content "Amendments have been made"
+          expect(page).to have_content t("action.comment.update.success")
+        end
+      end
+
+      context "when the report is not editable" do
+        let(:report) { create(:report, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
+        scenario "the user cannot edit a comment" do
+          visit activity_comments_path(activity)
+          expect(page).not_to have_content t("table.body.report.edit_comment")
+        end
       end
     end
+  end
 end

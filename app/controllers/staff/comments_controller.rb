@@ -5,7 +5,7 @@ class Staff::CommentsController < Staff::BaseController
     @activity = policy_scope(Activity.where(id: activity_id)).first
     @comments = Comment.where(activity_id: activity_id).includes(:report)
   end
-  
+
   def new
     @activity = Activity.find(activity_id)
     @report = Report.find(report_id)
@@ -41,7 +41,7 @@ class Staff::CommentsController < Staff::BaseController
     @comment = Comment.find(id)
     authorize @comment
 
-    @comment.update(comment_params)
+    @comment.assign_attributes(comment_params)
     if @comment.valid?
       @comment.save!
       @comment.create_activity key: "comment.update", owner: current_user
