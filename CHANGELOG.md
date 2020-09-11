@@ -312,6 +312,7 @@
 - Updated planned disbursement policy
 - Only show the edit planned disbursement link then it the planned disbursement
   can be edited
+- Only show the add planned disbursement button when the activity can be edited
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...HEAD
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16
