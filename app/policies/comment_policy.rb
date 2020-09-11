@@ -31,7 +31,7 @@ class CommentPolicy < ApplicationPolicy
   private def editable_report_for_organisation
     Report.find_by(organisation: user.organisation, state: [:active, :awaiting_changes])
   end
-  
+
   private def editable_report_for_organisation_and_fund
     fund = record.activity.associated_fund
     Report.find_by(organisation: record.owner.organisation, fund: fund, state: [:active, :awaiting_changes])

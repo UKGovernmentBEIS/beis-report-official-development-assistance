@@ -29,4 +29,4 @@
 
   .govuk-grid-row
     .govuk-grid-column-full
-      = render partial: "staff/shared/reports/table_variance", locals: { activities: @activities }
+      = render partial: "staff/shared/reports/table_variance", locals: { activities: @activities, readonly: false }
