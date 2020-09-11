@@ -103,4 +103,13 @@ RSpec.describe ActivityHelper, type: :helper do
       end
     end
   end
+
+  describe "#custom_capitalisation" do
+    context "when a string needs to be presented with the first letter of the first word upcased" do
+      it "takes that string, upcases that letter and leaves the rest of the string as it is" do
+        sample_string = "programme (level B)"
+        expect(custom_capitalisation(sample_string)).to eql("Programme (level B)")
+      end
+    end
+  end
 end

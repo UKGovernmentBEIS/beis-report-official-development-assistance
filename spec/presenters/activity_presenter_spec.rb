@@ -390,30 +390,30 @@ RSpec.describe ActivityPresenter do
 
   describe "#level" do
     context "when the activity is a fund" do
-      it "returns the titelized version of the string" do
+      it "returns the custom_capitalisation version of the string" do
         fund = create(:fund_activity)
-        expect(described_class.new(fund).level).to eql("Fund")
+        expect(described_class.new(fund).level).to eql("Fund (level A)")
       end
     end
 
     context "when the activity is a programme" do
-      it "returns the titelized version of the string" do
+      it "returns the custom_capitalisation version of the string" do
         programme = create(:programme_activity)
-        expect(described_class.new(programme).level).to eql("Programme")
+        expect(described_class.new(programme).level).to eql("Programme (level B)")
       end
     end
 
     context "when the activity is a project" do
-      it "returns the titelized version of the string" do
+      it "returns the custom_capitalisation version of the string" do
         project = create(:project_activity)
-        expect(described_class.new(project).level).to eql("Project")
+        expect(described_class.new(project).level).to eql("Project (level C)")
       end
     end
 
     context "when the activity is a third_party_project" do
-      it "returns the titelized version of the string" do
+      it "returns the custom_capitalisation version of the string" do
         third_party_project = create(:third_party_project_activity)
-        expect(described_class.new(third_party_project).level).to eql("Third-party project")
+        expect(described_class.new(third_party_project).level).to eql("Third-party project (level D)")
       end
     end
   end

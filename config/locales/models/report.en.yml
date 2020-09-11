@@ -15,7 +15,7 @@ en:
         state: State
         description: Description
         organisation: Organisation
-        fund: Level A
+        fund: Fund (level A)
         deadline: Deadline
     body:
       report:
@@ -37,11 +37,11 @@ en:
     label:
       report:
         description: Report description
-        fund: Level A
+        fund: Fund (level A)
         organisation: Organisation
         state: State
         deadline: Deadline
-        level_a_activity: Level A
+        level_a_activity: Fund (level A)
         financial_quarter_and_year: Financial quarter
     legend:
       report:
@@ -125,7 +125,7 @@ en:
             description:
               blank: Reporting period can't be blank
             fund:
-              level: Activity must be a fund-level Activity
+              level: Activity must be a Fund (level A) activity
             deadline:
               not_in_past: The deadline must be a date in the future
               between: Date must be between %{min} years ago and %{max} years in the future

@@ -16,7 +16,7 @@ module ActivityHelpers
     expect(page).to have_content t("summary.label.activity.delivery_partner_identifier")
     expect(page).to have_content activity_presenter.delivery_partner_identifier
 
-    expect(page).to have_content t("summary.label.activity.title", level: activity_presenter.level).capitalize
+    expect(page).to have_content custom_capitalisation(t("summary.label.activity.title", level: activity_presenter.level))
     expect(page).to have_content activity_presenter.title
 
     expect(page).to have_content t("summary.label.activity.description")

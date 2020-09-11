@@ -3,9 +3,9 @@ en:
   action:
     fund:
       create:
-        success: Fund successfully created
+        success: Fund (level A) successfully created
       update:
-        success: Fund successfully updated
+        success: Fund (level A) successfully updated
   table:
     header:
       fund:
