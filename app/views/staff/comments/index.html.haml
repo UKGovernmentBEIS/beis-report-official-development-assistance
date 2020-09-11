@@ -42,5 +42,6 @@
                 %dd.govuk-summary-list__value
                   = comment.comment
                 %dd.govuk-summary-list__actions
-
+                  - if policy(comment).update?
+                    = a11y_action_link(t("default.link.edit"), edit_activity_comment_path(@activity, comment), t("table.body.report.comment").downcase)
 
