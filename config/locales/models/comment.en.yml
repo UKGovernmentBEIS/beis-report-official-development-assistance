@@ -7,10 +7,14 @@ en:
     comment:
       index: Comments
       new: New comment
+      edit: Edit comment
   page_content:
     comment:
       add: Add a comment
+      edit: Edit comment
   action:
     comment:
       create:
         success: Comment successfully created
+      update:
+        success: Comment successfully updated
