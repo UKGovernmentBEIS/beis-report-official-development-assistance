@@ -6,3 +6,11 @@ en:
   page_title:
     comment:
       index: Comments
+      new: New comment
+  page_content:
+    comment:
+      add: Add a comment
+  action:
+    comment:
+      create:
+        success: Comment successfully created

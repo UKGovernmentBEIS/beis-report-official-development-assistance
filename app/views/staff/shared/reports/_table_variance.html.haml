@@ -9,7 +9,10 @@
         = t("table.header.activity.actual_spend_for_quarter", financial_quarter_and_year: @report_presenter.financial_quarter_and_year)
       %th.govuk-table__header
         = t("table.header.activity.variance_for_quarter", financial_quarter_and_year: @report_presenter.financial_quarter_and_year)
-      %th.govuk-table__header
+      - unless readonly
+        %th.govuk-table__header
+          = t("table.header.activity.comment")
+        %th.govuk-table__header
 
   %tbody.govuk-table__body
     - activities.each do |activity|
@@ -18,6 +21,10 @@
         %td.govuk-table__cell= activity.forecasted_total_for_report_financial_quarter(report: @report)
         %td.govuk-table__cell= activity.actual_total_for_report_financial_quarter(report: @report)
         %td.govuk-table__cell= activity.variance_for_report_financial_quarter(report: @report)
-        %td.govuk-table__cell
-          = a11y_action_link(t('default.link.view'), organisation_activity_path(activity.organisation, activity), activity.delivery_partner_identifier)
+        - unless readonly
+          %td.govuk-table__cell
+            - if policy(:comment).create?
+              = a11y_action_link(t("table.body.report.add_comment"), new_activity_comment_path(activity, report_id: @report.id), t("table.body.report.comment").downcase)
+          %td.govuk-table__cell
+            = a11y_action_link(t('default.link.view'), organisation_activity_path(activity.organisation, activity), activity.delivery_partner_identifier)
 
