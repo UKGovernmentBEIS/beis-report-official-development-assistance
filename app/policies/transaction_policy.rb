@@ -38,6 +38,6 @@ class TransactionPolicy < ApplicationPolicy
 
   private def editable_report_for_organisation_and_fund
     activity = record.parent_activity
-    Report.find_by(organisation: activity.organisation, fund: activity.associated_fund, state: [:active, :awaiting_changes])
+    Report.find_by(organisation: activity.organisation, fund: activity.associated_fund, state: Report::EDITABLE_STATES)
   end
 end
