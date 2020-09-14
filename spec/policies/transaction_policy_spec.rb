@@ -1,75 +1,186 @@
 require "rails_helper"
 
 RSpec.describe TransactionPolicy do
-  let(:user) { create(:beis_user) }
-  let(:activity) { create(:activity, organisation: user.organisation) }
   let(:transaction) { create(:transaction, parent_activity: activity) }
 
   subject { described_class.new(user, transaction) }
 
-  describe "#create?" do
-    context "when there is no report to attach this transaction to" do
-      context "when the user belongs to the authoring organisation" do
-        let(:transaction) { create(:transaction, parent_activity: activity) }
-        it { is_expected.to forbid_action(:create) }
-      end
+  context "when signed in as a BEIS user" do
+    let(:user) { create(:beis_user) }
+
+    context "when the activity has no level" do
+      let(:activity) { CreateActivity.new(organisation_id: user.organisation.id).call }
+
+      it { is_expected.to permit_action(:show) }
+
+      it { is_expected.to forbid_action(:create) }
+      it { is_expected.to forbid_action(:edit) }
+      it { is_expected.to forbid_action(:update) }
+      it { is_expected.to forbid_action(:destroy) }
     end
 
-    context "when there is a report to attach this transaction to" do
-      before do
-        _report = create(:report, :active, organisation: user.organisation, fund: activity)
-      end
+    context "when the activity is a fund" do
+      let(:activity) { create(:fund_activity, organisation: user.organisation) }
 
-      context "when the user belongs to the authoring organisation" do
-        let(:transaction) { create(:transaction, parent_activity: activity) }
-        it { is_expected.to permit_action(:create) }
-      end
+      it { is_expected.to permit_action(:show) }
+      it { is_expected.to permit_action(:create) }
+      it { is_expected.to permit_action(:edit) }
+      it { is_expected.to permit_action(:update) }
 
-      context "when the user does NOT belong to the authoring organisation" do
-        let(:another_organisation) { create(:organisation) }
-        let(:activity) { create(:activity, organisation: another_organisation) }
-        let(:transaction) { create(:transaction, parent_activity: activity) }
-        it { is_expected.to forbid_action(:create) }
-      end
+      it { is_expected.to forbid_action(:destroy) }
+    end
+
+    context "when the activity is a programme" do
+      let(:activity) { create(:programme_activity, organisation: user.organisation) }
+
+      it { is_expected.to permit_action(:show) }
+      it { is_expected.to permit_action(:create) }
+      it { is_expected.to permit_action(:edit) }
+      it { is_expected.to permit_action(:update) }
+
+      it { is_expected.to forbid_action(:destroy) }
+    end
+
+    context "when the activity is a project" do
+      let(:activity) { create(:project_activity, organisation: user.organisation) }
+
+      it { is_expected.to permit_action(:show) }
+
+      it { is_expected.to forbid_action(:create) }
+      it { is_expected.to forbid_action(:edit) }
+      it { is_expected.to forbid_action(:update) }
+      it { is_expected.to forbid_action(:destroy) }
+    end
+
+    context "when the activity is a third party project" do
+      let(:activity) { create(:third_party_project_activity, organisation: user.organisation) }
+
+      it { is_expected.to permit_action(:show) }
+
+      it { is_expected.to forbid_action(:create) }
+      it { is_expected.to forbid_action(:edit) }
+      it { is_expected.to forbid_action(:update) }
+      it { is_expected.to forbid_action(:destroy) }
     end
   end
 
-  describe "#update?" do
-    let(:report) { create(:report, :active, organisation: user.organisation, fund: activity) }
+  context "when signed in as a Delivery partner user" do
+    let(:user) { create(:delivery_partner_user) }
 
-    context "when the user belongs to the authoring organisation" do
-      let(:transaction) { create(:transaction, parent_activity: activity, report: report) }
-      it { is_expected.to permit_action(:update) }
-    end
+    context "when the activity has no level" do
+      let(:activity) { CreateActivity.new(organisation_id: user.organisation.id).call }
 
-    context "when the user does NOT belong to the authoring organisation" do
-      let(:another_organisation) { create(:organisation) }
-      let(:activity) { create(:activity, organisation: another_organisation) }
-      let(:transaction) { create(:transaction, parent_activity: activity) }
+      it { is_expected.to permit_action(:show) }
+
+      it { is_expected.to forbid_action(:create) }
+      it { is_expected.to forbid_action(:edit) }
       it { is_expected.to forbid_action(:update) }
+      it { is_expected.to forbid_action(:destroy) }
     end
 
-    context "when the transaction is associated to an active report" do
-      let(:report) { create(:report, :active, organisation: activity.organisation, fund: activity) }
-      let(:transaction) { create(:transaction, parent_activity: activity, report: report) }
-      it { is_expected.to permit_action(:update) }
-    end
+    context "when the activity is a fund" do
+      let(:activity) { create(:fund_activity, organisation: user.organisation) }
 
-    context "when the transaction is associated to an inactive report" do
-      let(:report) { create(:report, organisation: activity.organisation, fund: activity) }
-      let(:transaction) { create(:transaction, parent_activity: activity, report: report) }
+      it { is_expected.to permit_action(:show) }
+
+      it { is_expected.to forbid_action(:create) }
+      it { is_expected.to forbid_action(:edit) }
       it { is_expected.to forbid_action(:update) }
+      it { is_expected.to forbid_action(:destroy) }
     end
 
-    context "when the transaction is associated to an approved report" do
-      let(:report) { create(:report, :approved, organisation: activity.organisation, fund: activity) }
-      let(:transaction) { create(:transaction, parent_activity: activity, report: report) }
+    context "when the activity is a programme" do
+      let(:activity) { create(:programme_activity, organisation: user.organisation) }
+
+      it { is_expected.to permit_action(:show) }
+
+      it { is_expected.to forbid_action(:create) }
+      it { is_expected.to forbid_action(:edit) }
       it { is_expected.to forbid_action(:update) }
+      it { is_expected.to forbid_action(:destroy) }
     end
-  end
 
-  describe "#destroy?" do
-    let(:transaction) { create(:transaction, parent_activity: activity) }
-    it { is_expected.to forbid_action(:destroy) }
+    context "when the activity is a project" do
+      let(:activity) { create(:project_activity) }
+
+      context "and the activity does not belong to the users organiastion" do
+        it { is_expected.to forbid_action(:show) }
+        it { is_expected.to forbid_action(:create) }
+        it { is_expected.to forbid_action(:edit) }
+        it { is_expected.to forbid_action(:update) }
+        it { is_expected.to forbid_action(:destroy) }
+      end
+
+      context "and the activity does belong to the users organisation" do
+        before do
+          activity.update(organisation: user.organisation)
+        end
+
+        context "when there is no editable report" do
+          let(:report) { create(:report, state: :inactive) }
+
+          it { is_expected.to permit_action(:show) }
+
+          it { is_expected.to forbid_action(:create) }
+          it { is_expected.to forbid_action(:edit) }
+          it { is_expected.to forbid_action(:update) }
+          it { is_expected.to forbid_action(:destroy) }
+        end
+
+        context "when there is an editiable report" do
+          let(:report) { create(:report, state: :active) }
+
+          context "and the report is not for the organisation or fund of the activity" do
+            it { is_expected.to permit_action(:show) }
+
+            it { is_expected.to forbid_action(:create) }
+            it { is_expected.to forbid_action(:edit) }
+            it { is_expected.to forbid_action(:update) }
+            it { is_expected.to forbid_action(:destroy) }
+          end
+
+          context "and the report is for the organisation but not the fund of the activity" do
+            before do
+              report.update(organisation: activity.organisation)
+            end
+
+            it { is_expected.to permit_action(:show) }
+
+            it { is_expected.to forbid_action(:create) }
+            it { is_expected.to forbid_action(:edit) }
+            it { is_expected.to forbid_action(:update) }
+            it { is_expected.to forbid_action(:destroy) }
+          end
+
+          context "and the report is for the organisation and fund of the activity" do
+            before do
+              report.update(organisation: activity.organisation, fund: activity.associated_fund)
+            end
+
+            context "when the report is not the one in which the transaction was created" do
+              it { is_expected.to permit_action(:show) }
+              it { is_expected.to permit_action(:create) }
+
+              it { is_expected.to forbid_action(:edit) }
+              it { is_expected.to forbid_action(:update) }
+              it { is_expected.to forbid_action(:destroy) }
+            end
+
+            context "when the report is the one in which the transaction was created" do
+              before do
+                transaction.update(report: report)
+              end
+
+              it { is_expected.to permit_action(:show) }
+              it { is_expected.to permit_action(:create) }
+              it { is_expected.to permit_action(:edit) }
+              it { is_expected.to permit_action(:update) }
+
+              it { is_expected.to forbid_action(:destroy) }
+            end
+          end
+        end
+      end
+    end
   end
 end

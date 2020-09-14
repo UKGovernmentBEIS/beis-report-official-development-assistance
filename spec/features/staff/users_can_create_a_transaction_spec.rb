@@ -296,6 +296,15 @@ RSpec.feature "Users can create a transaction" do
         expect(transaction.report).to eq(report)
       end
     end
+
+    scenario "when the acitivity cannot be edited they cannot see the add transaction button" do
+      activity = create(:project_activity, organisation: user.organisation)
+      _report = create(:report, state: :inactive, organisation: activity.organisation, fund: activity.associated_fund)
+
+      visit organisation_activity_path(activity.organisation, activity)
+
+      expect(page).not_to have_link t("page_content.transactions.button.create"), href: new_activity_transaction_path(activity)
+    end
   end
 
   context "when they are a non-government delivery partner organisation user" do
