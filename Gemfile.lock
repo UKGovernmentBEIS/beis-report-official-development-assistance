@@ -166,7 +166,7 @@ GEM
       terminal-table (>= 1.5.1)
     ipaddr (1.2.2)
     jaro_winkler (1.5.4)
-    jbuilder (2.10.0)
+    jbuilder (2.10.1)
       activesupport (>= 5.0.0)
     json (2.3.0)
     jwt (2.2.2)
