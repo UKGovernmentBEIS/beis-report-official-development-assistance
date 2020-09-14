@@ -3,12 +3,12 @@ en:
   action:
     project:
       create:
-        success: Project successfully created
+        success: Project (level C) successfully created
       update:
-        success: Project successfully updated
+        success: Project (level C) successfully updated
   table:
     header:
       project:
         title: Title
         identifier: Identifier
-        programme: Programme
+        programme: Programme (level B)
