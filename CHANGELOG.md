@@ -306,6 +306,9 @@
 - Report deadline value is shown on the edit form
 - Change on hierarchy terminology to display activity levels A, B, C and D along with old terminology in the UI across the service
 - Update on the definitions for each level of activity
+- Updated transaction policy
+- Only show the edit transaction link when the transaction can be edited
+- Only show the add transaction button when the activity can be edited
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...HEAD
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16

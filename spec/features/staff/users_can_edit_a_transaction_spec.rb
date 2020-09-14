@@ -67,4 +67,36 @@ RSpec.feature "Users can edit a transaction" do
       end
     end
   end
+
+  context "when signed in as a delivery partner" do
+    let(:user) { create(:delivery_partner_user) }
+    let(:activity) { create(:project_activity, organisation: user.organisation) }
+    let(:transaction) { create(:transaction, parent_activity: activity) }
+    let(:report) { create(:report, organisation: activity.organisation, fund: activity.associated_fund) }
+
+    before { authenticate!(user: user) }
+
+    context "when the transaction can be edited" do
+      before do
+        transaction.update(report: report)
+        report.update(state: :active)
+      end
+
+      scenario "shows the edit link" do
+        visit organisation_activity_path(activity.organisation, activity)
+
+        expect(page).to have_link t("default.link.edit"), href: edit_activity_transaction_path(activity, transaction)
+      end
+    end
+
+    context "when the transaction cannot be edited" do
+      before { report.update(state: :active) }
+
+      scenario "does not show the edit link" do
+        visit organisation_activity_path(activity.organisation, activity)
+
+        expect(page).not_to have_link t("default.link.edit"), href: edit_activity_transaction_path(activity, transaction)
+      end
+    end
+  end
 end
