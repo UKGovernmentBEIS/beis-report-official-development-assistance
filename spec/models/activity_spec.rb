@@ -758,21 +758,21 @@ RSpec.describe Activity, type: :model do
     context "when the level is a programme" do
       it "returns a string for fund" do
         result = described_class.new(level: :programme).parent_level
-        expect(result).to eql("fund")
+        expect(result).to eql("fund (level A)")
       end
     end
 
     context "when the level is a project" do
       it "returns a string for programme" do
         result = described_class.new(level: :project).parent_level
-        expect(result).to eql("programme")
+        expect(result).to eql("programme (level B)")
       end
     end
 
     context "when the level is a third-party project" do
       it "returns a string for project" do
         result = described_class.new(level: :third_party_project).parent_level
-        expect(result).to eql("project")
+        expect(result).to eql("project (level C)")
       end
     end
   end

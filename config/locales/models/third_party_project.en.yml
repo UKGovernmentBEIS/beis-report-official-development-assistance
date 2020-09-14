@@ -3,12 +3,12 @@ en:
   action:
     third_party_project:
       create:
-        success: Third-party project successfully created
+        success: Third-party project (level D) successfully created
       update:
-        success: Third-party project successfully updated
+        success: Third-party project (level D) successfully updated
   table:
     header:
       third_party_project:
         title: Title
         identifier: Identifier
-        project: Project
+        project: Project (level C)

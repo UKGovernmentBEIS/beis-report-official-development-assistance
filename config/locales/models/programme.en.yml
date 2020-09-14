@@ -3,12 +3,12 @@ en:
   action:
     programme:
       create:
-        success: Programme successfully created
+        success: Programme (level B) successfully created
       update:
-        success: Programme successfully updated
+        success: Programme (level B) successfully updated
   table:
     header:
       programme:
         title: Title
         identifier: Identifier
-        fund: Fund
+        fund: Fund (level A)

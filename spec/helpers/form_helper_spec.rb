@@ -72,12 +72,12 @@ RSpec.describe FormHelper, type: :helper do
         expect(result).to eq([
           OpenStruct.new(
             level: "fund",
-            name: "Fund",
+            name: "Fund (level A)",
             description: t("form.hint.activity.level_step.fund"),
           ),
           OpenStruct.new(
             level: "programme",
-            name: "Programme",
+            name: "Programme (level B)",
             description: t("form.hint.activity.level_step.programme"),
           ),
         ])
@@ -89,8 +89,8 @@ RSpec.describe FormHelper, type: :helper do
         it "tells Pundit to return only the levels of activity a user can create or update" do
           user = create(:delivery_partner_user)
           result = helper.create_activity_level_options(user: user)
-          expect(result.detect { |options| options.name.eql?("Project") }).to be_truthy
-          expect(result.detect { |options| options.name.eql?("Third-party project") }).to be_truthy
+          expect(result.detect { |options| options.name.eql?("Project (level C)") }).to be_truthy
+          expect(result.detect { |options| options.name.eql?("Third-party project (level D)") }).to be_truthy
         end
       end
     end

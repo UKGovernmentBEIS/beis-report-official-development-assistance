@@ -52,10 +52,10 @@ en:
         third-party-projects:
           explanation: Download all third-party project (level D) activities for this organisation as XML
         title: Download as XML
-      funds: Funds
-      programmes: Programmes
-      projects: Projects
-      third_party_projects: Third-party projects
+      funds: Funds (level A)
+      programmes: Programmes (level B)
+      projects: Projects (level C)
+      third_party_projects: Third-party projects (level D)
   page_title:
     organisation:
       edit: Edit organisation
