@@ -86,7 +86,7 @@ RSpec.describe "Users can edit a comment" do
 
       context "when the report is editable" do
         scenario "the user cannot edit a comment" do
-          visit activity_comments_path(activity)
+          visit organisation_activity_comments_path(activity.organisation, activity)
           expect(page).not_to have_content t("table.body.report.edit_comment")
         end
       end
@@ -94,7 +94,7 @@ RSpec.describe "Users can edit a comment" do
       context "when the report is not editable" do
         let(:report) { create(:report, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
         scenario "the user cannot edit a comment" do
-          visit activity_comments_path(activity)
+          visit organisation_activity_comments_path(activity.organisation, activity)
           expect(page).not_to have_content t("table.body.report.edit_comment")
         end
       end
@@ -105,7 +105,7 @@ RSpec.describe "Users can edit a comment" do
 
       context "when the report is editable" do
         scenario "the user can edit a comment" do
-          visit activity_comments_path(activity)
+          visit organisation_activity_comments_path(activity.organisation, activity)
           click_on t("table.body.report.edit_comment")
           fill_in "comment[comment]", with: "Amendments have been made"
           click_button t("default.button.submit")
@@ -117,7 +117,7 @@ RSpec.describe "Users can edit a comment" do
       context "when the report is not editable" do
         let(:report) { create(:report, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
         scenario "the user cannot edit a comment" do
-          visit activity_comments_path(activity)
+          visit organisation_activity_comments_path(activity.organisation, activity)
           expect(page).not_to have_content t("table.body.report.edit_comment")
         end
       end

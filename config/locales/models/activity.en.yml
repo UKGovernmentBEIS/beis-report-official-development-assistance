@@ -9,6 +9,7 @@ en:
       financials: Activity %{name} — Financials
       children: Activity %{name} — Child activities
       extending_organisation: What extending organisation should be added to %{name}?
+      comments: Activity %{name} — Comments
   form:
     button:
       activity:

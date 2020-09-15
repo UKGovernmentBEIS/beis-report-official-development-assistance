@@ -1,11 +1,6 @@
 class Staff::CommentsController < Staff::BaseController
   include Secured
 
-  def index
-    @activity = policy_scope(Activity.where(id: activity_id)).first
-    @comments = Comment.where(activity_id: activity_id).includes(:report)
-  end
-
   def new
     @activity = Activity.find(activity_id)
     @report = Report.find(report_id)
@@ -23,7 +18,7 @@ class Staff::CommentsController < Staff::BaseController
       @comment.save!
       @comment.create_activity key: "comment.create", owner: current_user
       flash[:notice] = t("action.comment.create.success")
-      redirect_to activity_comments_path(@comment.activity)
+      redirect_to organisation_activity_comments_path(@comment.activity.organisation, @comment.activity)
     else
       render :new
     end
@@ -46,7 +41,7 @@ class Staff::CommentsController < Staff::BaseController
       @comment.save!
       @comment.create_activity key: "comment.update", owner: current_user
       flash[:notice] = t("action.comment.update.success")
-      redirect_to activity_comments_path(@comment.activity)
+      redirect_to organisation_activity_comments_path(@comment.activity.organisation, @comment.activity)
     else
       render :edit
     end

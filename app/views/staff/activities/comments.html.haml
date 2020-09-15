@@ -1,4 +1,4 @@
-= content_for :page_title_prefix, t("document_title.comment.index", activity: @activity.title)
+= content_for :page_title_prefix, t("document_title.activity.comments", name: @activity.title)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
@@ -27,7 +27,7 @@
               { class: "govuk-tabs__tab", role: "tab", aria: { controls: "children", selected: false } }
           %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
             = link_to t("tabs.activity.comments"),
-              activity_comments_path(@activity),
+              organisation_activity_comments_path(@activity.organisation, @activity),
               { class: "govuk-tabs__tab", role: "tab", aria: { controls: "comments", selected: true } }
 
         .govuk-tabs__panel
