@@ -9,11 +9,11 @@ RSpec.feature "Users can edit a transaction" do
   context "when the user belongs to BEIS" do
     before { authenticate!(user: user) }
     let(:user) { create(:beis_user) }
-    let!(:activity) { create(:fund_activity, organisation: user.organisation) }
-    let(:report) { create(:report, :active, organisation: user.organisation, fund: activity) }
+    let!(:activity) { create(:programme_activity, organisation: user.organisation) }
+    let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
     let!(:transaction) { create(:transaction, parent_activity: activity, report: report) }
 
-    scenario "editing a transaction on a fund" do
+    scenario "editing a transaction on a programme" do
       visit activities_path
 
       click_on(activity.title)
