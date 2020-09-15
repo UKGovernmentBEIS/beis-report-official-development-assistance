@@ -9,9 +9,12 @@ class CreatePlannedDisbursement
     planned_disbursement = PlannedDisbursement.new
 
     planned_disbursement.parent_activity = activity
-    planned_disbursement.report = report
     planned_disbursement.assign_attributes(attributes)
     planned_disbursement.value = sanitize_monetary_string(value: attributes[:value])
+
+    unless activity.organisation.service_owner?
+      planned_disbursement.report = report(activity: activity)
+    end
 
     result = if planned_disbursement.valid?
       Result.new(planned_disbursement.save, planned_disbursement)
@@ -28,7 +31,7 @@ class CreatePlannedDisbursement
     Monetize.parse(value)
   end
 
-  def report
+  def report(activity:)
     organisation = activity.organisation
     fund = activity.associated_fund
     Report.active.find_by(organisation: organisation, fund: fund)

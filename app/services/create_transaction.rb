@@ -10,8 +10,11 @@ class CreateTransaction
 
     transaction.parent_activity = activity
     transaction.assign_attributes(attributes)
-    transaction.report = report(activity: activity)
     transaction.value = sanitize_monetary_string(value: attributes[:value])
+
+    unless activity.organisation.service_owner?
+      transaction.report = report(activity: activity)
+    end
 
     result = if transaction.valid?
       Result.new(transaction.save, transaction)
