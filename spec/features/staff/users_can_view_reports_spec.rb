@@ -64,6 +64,18 @@ RSpec.feature "Users can view reports" do
       expect(page).to have_content report.description
     end
 
+    scenario "they can view budgets in a report" do
+      report = create(:report, :active)
+      budget = create(:budget, report: report)
+
+      visit report_budgets_path(report)
+
+      within "##{budget.id}" do
+        expect(page).to have_content budget.parent_activity.delivery_partner_identifier
+        expect(page).to have_content budget.value
+      end
+    end
+
     scenario "can download a CSV of the report" do
       report = create(:report, :active, description: "Legacy Report")
 
@@ -146,6 +158,20 @@ RSpec.feature "Users can view reports" do
             expect(page).to have_content "100.00"
             expect(page).to have_link t("default.link.view"), href: organisation_activity_path(activity.organisation, activity)
           end
+        end
+      end
+
+      scenario "they can view and edit budgets in a report" do
+        activity = create(:project_activity, organisation: delivery_partner_user.organisation)
+        report = create(:report, :active, organisation: delivery_partner_user.organisation, fund: activity.associated_fund)
+        budget = create(:budget, report: report, parent_activity: activity)
+
+        visit report_budgets_path(report)
+
+        within "##{budget.id}" do
+          expect(page).to have_content budget.parent_activity.delivery_partner_identifier
+          expect(page).to have_content budget.value
+          expect(page).to have_link t("default.link.edit"), href: edit_activity_budget_path(budget.parent_activity, budget)
         end
       end
 

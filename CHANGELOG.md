@@ -323,6 +323,7 @@
 - Ingest can handle the new budget/report relationship
 - Update the budget policy
 - Report variance is shown in a tab
+- Show budgets added in a report on the reports view
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...HEAD
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16
