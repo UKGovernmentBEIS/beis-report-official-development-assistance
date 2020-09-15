@@ -194,6 +194,8 @@ class IngestIatiActivities
       value = budget_element.children.detect { |child| child.name.eql?("value") }.children.text
       currency = budget_element.children.detect { |child| child.name.eql?("value") }.attributes["currency"]&.value || "GBP"
 
+      report = Report.find_by(fund: roda_activity.associated_fund, organisation: roda_activity.organisation)
+
       budget = Budget.new(
         status: status,
         budget_type: budget_type,
@@ -202,6 +204,7 @@ class IngestIatiActivities
         value: value,
         currency: currency,
         parent_activity: roda_activity,
+        report: report,
         ingested: true
       )
 
