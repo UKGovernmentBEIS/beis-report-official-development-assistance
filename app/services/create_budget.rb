@@ -11,6 +11,10 @@ class CreateBudget
     budget.assign_attributes(attributes)
     budget.value = sanitize_monetary_string(value: attributes[:value])
 
+    unless activity.organisation.service_owner?
+      budget.report = editable_report_for_activity(activity: activity)
+    end
+
     result = if budget.valid?
       Result.new(budget.save, budget)
     else
@@ -20,9 +24,11 @@ class CreateBudget
     result
   end
 
-  private
+  private def editable_report_for_activity(activity:)
+    Report.find_by(organisation: activity.organisation, fund: activity.associated_fund, state: Report::EDITABLE_STATES)
+  end
 
-  def sanitize_monetary_string(value:)
+  private def sanitize_monetary_string(value:)
     Monetize.parse(value)
   end
 end
