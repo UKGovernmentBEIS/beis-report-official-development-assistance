@@ -8,14 +8,9 @@ class Staff::ReportVarianceController < Staff::BaseController
     authorize @report
 
     @report_presenter = ReportPresenter.new(@report)
-    @report_activities = level_c_and_d_activities_for_report(report: @report)
+    @report_activities = Activity.projects_and_third_party_projects_for_report(@report)
 
     @activities = @report_activities.map { |activity| ActivityPresenter.new(activity) }
     render "staff/reports/variance"
-  end
-
-  private def level_c_and_d_activities_for_report(report:)
-    return Activity.none if report.nil?
-    Activity.where(level: [:project, :third_party_project], organisation: report.organisation).select { |activity| activity.associated_fund == report.fund }
   end
 end

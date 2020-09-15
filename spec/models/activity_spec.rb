@@ -46,6 +46,32 @@ RSpec.describe Activity, type: :model do
         expect(Activity.publishable_to_iati).to eq [complete_activity]
       end
     end
+
+    describe ".projects_and_third_party_projects_for_report" do
+      it "only returns projects and third party projects that are for the reports organisation and fund" do
+        organisation = create(:delivery_partner_organisation)
+        fund = create(:fund_activity, organisation: organisation)
+        programme = create(:programme_activity, parent: fund, organisation: organisation)
+        project = create(:project_activity, parent: programme, organisation: organisation)
+        third_party_project = create(:third_party_project_activity, parent: project, organisation: organisation)
+        report = create(:report, organisation: third_party_project.organisation, fund: fund)
+
+        another_fund = create(:fund_activity, organisation: organisation)
+        another_programme = create(:programme_activity, parent: another_fund, organisation: organisation)
+        another_project = create(:project_activity, parent: another_programme, organisation: organisation)
+        another_third_party_project = create(:third_party_project_activity, parent: another_project, organisation: organisation)
+
+        expect(Activity.projects_and_third_party_projects_for_report(report)).to include third_party_project
+        expect(Activity.projects_and_third_party_projects_for_report(report)).to include project
+
+        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include fund
+        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include programme
+        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include another_fund
+        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include another_programme
+        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include another_project
+        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include another_third_party_project
+      end
+    end
   end
 
   describe "sanitisation" do
