@@ -321,6 +321,7 @@
   The comments are exported to the report CSV
 - For delivery partners, Budgets relate to the report that creates them
 - Ingest can handle the new budget/report relationship
+- Update the budget policy
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...HEAD
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16
