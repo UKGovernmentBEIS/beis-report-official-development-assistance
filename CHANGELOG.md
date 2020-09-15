@@ -315,6 +315,8 @@
 - Only show the add planned disbursement button when the activity can be edited
 - BEIS users can add transactions regardless of report state
 - BEIS users can add planned disbursements regardless of report state
+- Update the activity financials view to show all financials on all levels
+  except Funds (Level A)
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...HEAD
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16
