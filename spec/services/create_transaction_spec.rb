@@ -28,6 +28,23 @@ RSpec.describe CreateTransaction do
       end
     end
 
+    context "when the activity belongs to BEIS" do
+      it "does not set the report" do
+        activity.update(organisation: build_stubbed(:beis_organisation))
+        result = described_class.new(activity: activity).call
+        expect(result.object.report).to be_nil
+      end
+    end
+
+    context "when the activity belongs to a delivery partner organisation" do
+      it "does set the report" do
+        activity.update(organisation: build_stubbed(:delivery_partner_organisation))
+        editable_report_for_activity = create(:report, state: :active, organisation: activity.organisation, fund: activity.associated_fund)
+        result = described_class.new(activity: activity).call
+        expect(result.object.report).to eql editable_report_for_activity
+      end
+    end
+
     context "when attributes are passed in" do
       it "sets the attributes passed in as transaction attributes" do
         attributes = ActionController::Parameters.new(description: "foo").permit!
