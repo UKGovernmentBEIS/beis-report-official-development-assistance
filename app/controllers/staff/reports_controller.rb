@@ -23,7 +23,7 @@ class Staff::ReportsController < Staff::BaseController
 
     respond_to do |format|
       format.html do
-        @activities = @report_activities.map { |activity| ActivityPresenter.new(activity) }
+        redirect_to report_variance_path(@report)
       end
       format.csv do
         send_csv
