@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
     resources :reports, only: [:show, :edit, :update, :index] do
       resource :state, only: [:edit, :update], controller: :reports_state
+      get "variance" => "report_variance#show"
     end
 
     concern :transactionable do
