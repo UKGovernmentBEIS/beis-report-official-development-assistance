@@ -102,3 +102,6 @@ terraform/.terraform/*
 
 # debug
 .byebug_history
+
+# CSV left in root
+/*.csv
