@@ -9,6 +9,28 @@ RSpec.describe CreateBudget do
       expect(result.object.parent_activity).to eq(activity)
     end
 
+    context "when the activity belongs to a delivery partner" do
+      it "sets the value of report to the editable report for the activity" do
+        activity.update(organisation: build_stubbed(:delivery_partner_organisation))
+        editable_report_for_activity = create(:report, state: :active, organisation: activity.organisation, fund: activity.associated_fund)
+
+        budget = described_class.new(activity: activity).call
+
+        expect(budget.object.report).to eql editable_report_for_activity
+      end
+    end
+
+    context "when the activity belongs to BEIS" do
+      it "does not set the value of report" do
+        activity.update(organisation: build_stubbed(:beis_organisation))
+        _editable_report_for_activity = create(:report, state: :active, organisation: activity.organisation, fund: activity.associated_fund)
+
+        budget = described_class.new(activity: activity).call
+
+        expect(budget.object.report).to be_nil
+      end
+    end
+
     it "returns a successful result" do
       allow_any_instance_of(Budget).to receive(:valid?).and_return(true)
       allow_any_instance_of(Budget).to receive(:save).and_return(true)
