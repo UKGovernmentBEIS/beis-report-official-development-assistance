@@ -51,4 +51,69 @@ RSpec.feature "users can upload transactions" do
       },
     ])
   end
+
+  scenario "not uploading a file" do
+    click_button t("action.transaction.upload.button")
+    expect(Transaction.count).to eq(0)
+    expect(page).to have_text(t("action.transaction.upload.file_missing"))
+  end
+
+  scenario "uploading a valid set of transactions" do
+    ids = [project, sibling_project].map(&:roda_identifier_compound)
+
+    upload_csv <<~CSV
+      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel | Description
+      #{ids[0]}                | 2020-04-01 | 20    | Example University          | 80                          |                                       | 4                    |
+      #{ids[1]}                | 2020-04-02 | 30    | Example Foundation          | 60                          |                                       | 4                    |
+    CSV
+
+    expect(Transaction.count).to eq(2)
+    expect(page).to have_text(t("action.transaction.upload.success"))
+    expect(page).not_to have_xpath("//tbody/tr")
+  end
+
+  scenario "uploading an invalid set of transactions" do
+    ids = [project, sibling_project].map(&:roda_identifier_compound)
+
+    upload_csv <<~CSV
+      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel | Description
+      #{ids[0]}                | 2020-04-01 | 0     | Example University          | 80                          |                                       | 4                    |
+      #{ids[1]}                | 2020-04-02 | 30    | Example Foundation          | 61                          |                                       | 5                    |
+    CSV
+
+    expect(Transaction.count).to eq(0)
+    expect(page).not_to have_text(t("action.transaction.upload.success"))
+
+    within "//tbody/tr[1]" do
+      expect(page).to have_xpath("td[1]", text: "Value")
+      expect(page).to have_xpath("td[2]", text: "2")
+      expect(page).to have_xpath("td[3]", text: "0")
+      expect(page).to have_xpath("td[4]", text: t("activerecord.errors.models.transaction.attributes.value.other_than"))
+    end
+
+    within "//tbody/tr[2]" do
+      expect(page).to have_xpath("td[1]", text: "Receiving Organisation Type")
+      expect(page).to have_xpath("td[2]", text: "3")
+      expect(page).to have_xpath("td[3]", text: "61")
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.transaction.invalid_iati_organisation_type"))
+    end
+
+    within "//tbody/tr[3]" do
+      expect(page).to have_xpath("td[1]", text: "Disbursement Channel")
+      expect(page).to have_xpath("td[2]", text: "3")
+      expect(page).to have_xpath("td[3]", text: "5")
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.transaction.invalid_iati_disbursement_channel"))
+    end
+  end
+
+  def upload_csv(content)
+    file = Tempfile.new("transactions.csv")
+    file.write(content.gsub(/ *\| */, ","))
+    file.close
+
+    attach_file "report[transaction_csv]", file.path
+    click_button t("action.transaction.upload.button")
+
+    file.unlink
+  end
 end

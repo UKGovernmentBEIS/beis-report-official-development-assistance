@@ -22,6 +22,25 @@ class Staff::TransactionUploadsController < Staff::BaseController
     response.stream.close
   end
 
+  def update
+    @report_presenter = ReportPresenter.new(@report)
+    rows = parse_transactions_from_upload
+
+    if rows.nil?
+      @errors = []
+      flash.now[:error] = t("action.transaction.upload.file_missing")
+      return
+    end
+
+    importer = ImportTransactions.new(report: @report, uploader: current_user)
+    importer.import(rows)
+    @errors = importer.errors
+
+    if @errors.empty?
+      flash.now[:notice] = t("action.transaction.upload.success")
+    end
+  end
+
   private def authorize_report
     @report = Report.find(params[:report_id])
     authorize @report, :show?
@@ -37,5 +56,14 @@ class Staff::TransactionUploadsController < Staff::BaseController
       activity.delivery_partner_identifier,
       activity.roda_identifier_compound,
     ]
+  end
+
+  private def parse_transactions_from_upload
+    file = params[:report]&.fetch(:transaction_csv, nil)
+    return nil unless file
+
+    CSV.parse(file.read, headers: true)
+  rescue
+    nil
   end
 end
