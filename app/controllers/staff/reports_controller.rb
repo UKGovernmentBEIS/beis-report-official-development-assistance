@@ -19,11 +19,11 @@ class Staff::ReportsController < Staff::BaseController
     authorize @report
 
     @report_presenter = ReportPresenter.new(@report)
-    @report_activities = level_c_and_d_activities_for_report(report: @report)
+    @report_activities = Activity.projects_and_third_party_projects_for_report(@report)
 
     respond_to do |format|
       format.html do
-        @activities = @report_activities.map { |activity| ActivityPresenter.new(activity) }
+        redirect_to report_variance_path(@report)
       end
       format.csv do
         send_csv
@@ -156,10 +156,5 @@ class Staff::ReportsController < Staff::BaseController
       response.stream.write ExportActivityToCsv.new(activity: activity, report: @report).call
     end
     response.stream.close
-  end
-
-  def level_c_and_d_activities_for_report(report:)
-    return Activity.none if report.nil?
-    Activity.where(level: [:project, :third_party_project], organisation: report.organisation).select { |activity| activity.associated_fund == report.fund }
   end
 end

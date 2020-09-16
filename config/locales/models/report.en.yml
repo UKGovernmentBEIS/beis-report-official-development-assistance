@@ -28,6 +28,10 @@ en:
         add_comment: Add comment
         edit_comment: Edit comment
         comment: Comment
+  tabs:
+    report:
+      variance: Variance
+      budgets: Budgets
   page_content:
     reports:
       title: Reports
@@ -73,6 +77,8 @@ en:
       approve:
         confirm: Confirm approval for %{report_financial_quarter} %{report_description}
         complete: This report is approved
+      variance: "%{report_financial_quarter} %{report_description} variance"
+      budgets: "%{report_financial_quarter} %{report_description} budgets"
   action:
     report:
       activate:
