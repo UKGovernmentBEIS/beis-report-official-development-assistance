@@ -8,7 +8,8 @@ class ImportTransactions
 
   attr_reader :errors
 
-  def initialize
+  def initialize(report:)
+    @report = report
     @errors = []
   end
 
@@ -45,7 +46,8 @@ class ImportTransactions
     attrs = converter.to_h
     assign_default_values(attrs, activity)
 
-    result = CreateTransaction.new(activity: activity).call(attributes: attrs)
+    creator = CreateTransaction.new(activity: activity, report: @report)
+    result = creator.call(attributes: attrs)
     return unless result
 
     result.object.errors.each do |attr_name, message|

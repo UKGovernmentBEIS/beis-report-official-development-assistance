@@ -11,7 +11,7 @@ RSpec.describe ImportTransactions do
   end
 
   let :importer do
-    ImportTransactions.new
+    ImportTransactions.new(report: report)
   end
 
   describe "importing a single transaction" do
