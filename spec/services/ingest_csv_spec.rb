@@ -20,7 +20,7 @@ RSpec.describe IngestCsv do
       end
     end
 
-    context "with a CSV file which contains the 'parent_roda_identifier_compound'" do
+    context "with a CSV file which contains a column which references a parent activity" do
       before do
         create(:fund_activity, roda_identifier_fragment: "GCRF") do |fund|
           create(:programme_activity, parent: fund, roda_identifier_fragment: "RFSBA") do |programme|
@@ -39,6 +39,22 @@ RSpec.describe IngestCsv do
         expect { IngestCsv.new(csv_file).call }
           .to change { Activity.third_party_project.count }
           .by(2)
+      end
+
+      it "updates any existing activities" do
+        parent = Activity.project.find_by(roda_identifier_fragment: "FLRR12020")
+        third_party_project = create(:third_party_project_activity,
+          parent: parent,
+          delivery_partner_identifier: "EXAMPLE_02",
+          title: "OVERWRITE ME")
+
+        csv_file = "#{Rails.root}/spec/fixtures/csv/existing_activity.csv"
+
+        expect { IngestCsv.new(csv_file).call }
+          .not_to change { Activity.third_party_project.count }
+
+        expect(third_party_project.reload.title)
+          .to eql "Isolation and redesign of single-celled examples"
       end
     end
   end
