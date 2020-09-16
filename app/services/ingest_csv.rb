@@ -62,21 +62,27 @@ class IngestCsv
       parent = Activity.find_by(roda_identifier_compound: row["parent_roda_identifier_compound"])
       return :missing_parent if parent.nil?
 
-      Activity.new(
+      activity = Activity.find_or_initialize_by(
+        delivery_partner_identifier: row["delivery_partner_identifier"],
         parent: parent,
-        level: parent.child_level,
-        form_state: :complete,
-        ingested: true,
-        funding_organisation_name: "Department for Business, Energy and Industrial Strategy",
-        funding_organisation_reference: "GB-GOV-13",
-        funding_organisation_type: "10",
-        accountable_organisation_name: "Department for Business, Energy and Industrial Strategy",
-        accountable_organisation_reference: "GB-GOV-13",
-        accountable_organisation_type: "10",
-        reporting_organisation: beis_organisation,
-        organisation: parent.organisation,
-        extending_organisation: parent.extending_organisation
-      )
+      ) { |activity|
+        activity.ingested = true
+        activity.funding_organisation_name = "Department for Business, Energy and Industrial Strategy"
+        activity.funding_organisation_reference = "GB-GOV-13"
+        activity.funding_organisation_type = "10"
+        activity.accountable_organisation_name = "Department for Business, Energy and Industrial Strategy"
+        activity.accountable_organisation_reference = "GB-GOV-13"
+        activity.accountable_organisation_type = "10"
+        activity.reporting_organisation = beis_organisation
+        activity.organisation = parent.organisation
+        activity.extending_organisation = parent.extending_organisation
+      }
+
+      # Always update these
+      activity.level = parent.child_level
+      activity.form_state = :complete
+
+      activity
     else
       Activity.where.not(level: nil).find_by(
         delivery_partner_identifier: row["delivery_partner_identifier"]
