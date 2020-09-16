@@ -1028,4 +1028,22 @@ RSpec.describe Activity, type: :model do
       expect(project.forecasted_total_for_date_range(range: Date.parse("1 October 2020")..Date.parse("31 December 2020"))).to eq 1000
     end
   end
+
+  describe "#comment_for_report" do
+    it "returns the comment associated to this activity and a particular report" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      comment = create(:comment, activity_id: project.id, report_id: report.id, comment: "Here's my comment")
+      expect(project.comment_for_report(report_id: report.id)).to eq comment
+      expect(project.comment_for_report(report_id: report.id).comment).to eq "Here's my comment"
+    end
+
+    it "does not return any other comments associated to this activity" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      comment = create(:comment, activity_id: project.id, report_id: create(:report).id)
+      expect(project.comment_for_report(report_id: report.id)).to_not eq comment
+      expect(project.comment_for_report(report_id: report.id)).to be_nil
+    end
+  end
 end

@@ -27,6 +27,7 @@ class ExportActivityToCsv
       activity_presenter.actual_total_for_report_financial_quarter(report: report),
       activity_presenter.forecasted_total_for_report_financial_quarter(report: report),
       activity_presenter.variance_for_report_financial_quarter(report: report),
+      activity_presenter.comment_for_report(report_id: report.id)&.comment,
       activity_presenter.link_to_roda,
     ].concat(next_four_quarter_forecasts).to_csv
   end
@@ -51,6 +52,7 @@ class ExportActivityToCsv
       report_financial_quarter ? report_financial_quarter + " actuals" : "Actuals",
       report_financial_quarter ? report_financial_quarter + " forecast" : "Forecast",
       "Variance",
+      "Comment",
       "Link to activity in RODA",
     ].concat(report_presenter.next_four_financial_quarters).to_csv
   end
