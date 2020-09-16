@@ -75,6 +75,8 @@ class Activity < ApplicationRecord
   has_many :transactions, foreign_key: "parent_activity_id"
   has_many :planned_disbursements, foreign_key: "parent_activity_id"
 
+  has_many :comments
+
   enum level: {
     fund: "fund",
     programme: "programme",
@@ -235,5 +237,9 @@ class Activity < ApplicationRecord
 
   def requires_intended_beneficiaries?
     recipient_region? || (recipient_country? && requires_additional_benefitting_countries?)
+  end
+
+  def comment_for_report(report_id:)
+    comments.find_by(report_id: report_id)
   end
 end

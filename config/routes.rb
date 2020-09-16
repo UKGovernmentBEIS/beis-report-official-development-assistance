@@ -19,6 +19,7 @@ Rails.application.routes.draw do
         get "financials" => "activity_financials#show"
         get "details" => "activity_details#show"
         get "children" => "activity_children#show"
+        get "comments" => "activity_comments#show"
       end
     end
 
@@ -43,6 +44,7 @@ Rails.application.routes.draw do
       resources :steps, controller: "activity_forms"
       resource :extending_organisations, only: [:edit, :update]
       resources :implementing_organisations, only: [:new, :create, :edit, :update]
+      resources :comments, only: [:new, :create, :edit, :update]
     end
   end
 

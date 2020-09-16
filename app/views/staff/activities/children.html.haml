@@ -31,6 +31,10 @@
             = link_to t("tabs.activity.children"),
               organisation_activity_children_path(@activity.organisation, @activity),
               { class: "govuk-tabs__tab", role: "tab", aria: { controls: "children", selected: false } }
+          %li.govuk-tabs__list-item
+            = link_to t("tabs.activity.comments"),
+              organisation_activity_comments_path(@activity.organisation, @activity),
+              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "comments", selected: false } }
 
         .govuk-tabs__panel
           %h2.govuk-heading-l

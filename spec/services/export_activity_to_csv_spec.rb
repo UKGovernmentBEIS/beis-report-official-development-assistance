@@ -4,6 +4,7 @@ require "csv"
 RSpec.describe ExportActivityToCsv do
   let(:project) { create(:project_activity, :with_report) }
   let(:report) { Report.find_by(fund: project.associated_fund, organisation: project.organisation) }
+  let!(:comment) { create(:comment, report: report, activity: project) }
 
   describe "#call" do
     it "creates a CSV line representation of the Activity" do
@@ -30,6 +31,7 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.actual_total_for_report_financial_quarter(report: report),
         activity_presenter.forecasted_total_for_report_financial_quarter(report: report),
         activity_presenter.variance_for_report_financial_quarter(report: report),
+        activity_presenter.comment_for_report(report_id: report.id).comment,
         activity_presenter.link_to_roda,
       ].concat(next_four_quarter_totals).to_csv)
     end

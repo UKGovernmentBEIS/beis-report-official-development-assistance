@@ -25,6 +25,9 @@ en:
           in_review: Mark as in review
         no_reports:
           No reports
+        add_comment: Add comment
+        edit_comment: Edit comment
+        comment: Comment
   page_content:
     reports:
       title: Reports
