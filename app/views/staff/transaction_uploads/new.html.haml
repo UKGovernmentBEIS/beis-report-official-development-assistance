@@ -7,3 +7,5 @@
   .govuk-grid-row
     .govuk-grid-column-full.page-actions
       = link_to t("action.transaction.download.button"), report_transaction_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
+
+  = render partial: "upload_form"

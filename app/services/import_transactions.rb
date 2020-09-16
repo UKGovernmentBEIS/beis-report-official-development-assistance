@@ -1,7 +1,11 @@
 require "date"
 
 class ImportTransactions
-  Error = Struct.new(:row, :column, :value, :message)
+  Error = Struct.new(:row, :column, :value, :message) {
+    def csv_row
+      row + 2
+    end
+  }
 
   attr_reader :errors
 
