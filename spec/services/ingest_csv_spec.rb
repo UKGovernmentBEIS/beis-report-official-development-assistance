@@ -16,7 +16,7 @@ RSpec.describe IngestCsv do
 
         IngestCsv.new(csv_file).call
 
-        expect(Activity.where(updated_at: Date.today..).count).to eql 3
+        expect(Activity.programme.where(updated_at: Date.today..).count).to eql 3
       end
     end
   end

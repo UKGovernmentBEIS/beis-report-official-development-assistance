@@ -22,20 +22,26 @@ class IngestCsvRow
       end
     end
 
-    # Set call_present if call_open_date or call_close_date provided
-    updated_attributes["call_present"] = updated_attributes["call_open_date"].present? || updated_attributes["call_close_date"].present?
+    # Set call_present to false if it wasn't already set, and the relevant attributes were passed in
+    if updated_attributes.key?("call_open_date") || updated_attributes.key?("call_close_date")
+      updated_attributes["call_present"] ||= false
+    end
 
     # Return the processed set of attributes
     updated_attributes
   end
 
   def process_call_open_date(value)
-    return :skip if value.blank? || value == "N/A"
+    return :skip if value.blank? || value.downcase == "n/a" || value.downcase == "not applicable"
+
+    updated_attributes["call_present"] = true
     Date.parse(value)
   end
 
   def process_call_close_date(value)
-    return :skip if value.blank? || value == "N/A"
+    return :skip if value.blank? || value.downcase == "n/a" || value.downcase == "not applicable"
+
+    updated_attributes["call_present"] = true
     Date.parse(value)
   end
 
@@ -71,7 +77,7 @@ class IngestCsvRow
 
   def process_intended_beneficiaries(value)
     updated_attributes["requires_additional_benefitting_countries"] = false
-    return [] if value.blank?
+    return [] if value.blank? || value.to_s.downcase == "none" || value.to_s.downcase == "not applicable"
 
     countries = value.split("|").map { |country| country.gsub(/[[:space:]]/, " ").downcase.strip }
     return [] if countries.none?
@@ -79,6 +85,9 @@ class IngestCsvRow
     updated_attributes["requires_additional_benefitting_countries"] = true
 
     countries.map! do |country|
+      return "LA" if country == "laos"
+      return "LC" if country == "st lucia"
+
       country_to_code_mapping.fetch(country)
     rescue KeyError
       Rails.logger.warn "#{attributes} no such country '#{country}'"
