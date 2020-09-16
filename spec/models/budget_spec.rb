@@ -12,6 +12,29 @@ RSpec.describe Budget do
     it { should validate_presence_of(:period_end_date) }
     it { should validate_presence_of(:value) }
     it { should validate_presence_of(:currency) }
+
+    context "when the activity belongs to a delivery partner" do
+      it "should validate that the report association exists" do
+        activity = build(:activity, organisation: build_stubbed(:delivery_partner_organisation))
+        report_for_activity = build_stubbed(:report, organisation: activity.organisation, fund: activity.associated_fund)
+        budget = build(:budget, parent_activity: activity, report: nil)
+
+        expect(budget).to be_invalid
+
+        budget.report = report_for_activity
+
+        expect(budget).to be_valid
+      end
+    end
+
+    context "when the activity belongs to BEIS" do
+      it "should validate that the report association exists" do
+        activity = build(:activity, organisation: build_stubbed(:beis_organisation))
+        budget = build(:budget, parent_activity: activity, report: nil)
+
+        expect(budget).to be_valid
+      end
+    end
   end
 
   context "value must be between 0.01 and 99,999,999,999.00 (100 billion minus one)" do

@@ -8,5 +8,6 @@ FactoryBot.define do
     currency { "gbp" }
     ingested { false }
     association :parent_activity, factory: :activity
+    association :report, factory: :report
   end
 end

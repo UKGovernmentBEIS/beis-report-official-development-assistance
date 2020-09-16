@@ -2,7 +2,9 @@ class Budget < ApplicationRecord
   include PublicActivity::Common
 
   belongs_to :parent_activity, class_name: "Activity"
+  belongs_to :report, optional: true
 
+  validates_presence_of :report, unless: -> { parent_activity&.organisation&.service_owner? }
   validates_presence_of :budget_type,
     :status,
     :period_start_date,

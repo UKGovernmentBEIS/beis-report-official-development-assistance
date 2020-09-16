@@ -236,7 +236,8 @@ RSpec.describe IngestIatiActivities do
 
       it "allows negative budgets" do
         rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
-        create(:programme_activity, organisation: rs, delivery_partner_identifier: "Brazil-Newton-Mob-RS")
+        programme = create(:programme_activity, organisation: rs, delivery_partner_identifier: "Brazil-Newton-Mob-RS")
+        _report = create(:report, organisation: programme.organisation, fund: programme.associated_fund)
 
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/rs/with_negative_budget.xml")
 
@@ -340,7 +341,8 @@ RSpec.describe IngestIatiActivities do
     describe "default aid type" do
       it "leaves aid_type blank if there is no attribute" do
         rs = create(:organisation, name: "Royal Society", iati_reference: "GB-COH-RC000519")
-        create(:programme_activity, organisation: rs, delivery_partner_identifier: "South Africa-Newton-Adv-RS")
+        programme = create(:programme_activity, organisation: rs, delivery_partner_identifier: "South Africa-Newton-Adv-RS")
+        _report = create(:report, organisation: programme.organisation, fund: programme.associated_fund)
 
         legacy_activities = File.read("#{Rails.root}/spec/fixtures/activities/rs/with_missing_default_aid_type.xml")
 

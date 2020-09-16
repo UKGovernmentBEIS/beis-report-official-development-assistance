@@ -92,6 +92,11 @@ class Activity < ApplicationRecord
   scope :funds, -> { where(level: :fund) }
   scope :programmes, -> { where(level: :programme) }
   scope :publishable_to_iati, -> { where(form_state: :complete, publish_to_iati: true) }
+  scope :projects_and_third_party_projects_for_report, ->(report) {
+    where(level: [:project, :third_party_project], organisation: report.organisation).select {
+      |activity| activity.associated_fund == report.fund
+    }
+  }
 
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
