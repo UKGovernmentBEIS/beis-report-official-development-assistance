@@ -118,11 +118,26 @@ RSpec.feature "Users can view an activity as XML" do
         end
       end
 
+      context "when the activity has a collaboration_type" do
+        let(:activity) { create(:programme_activity, organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER", collaboration_type: "1") }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it "contains the relevant collaboration_type code" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+          expect(xml.at("iati-activity/collaboration-type/@code").text).to eq "1"
+        end
+      end
+
       context "when the activity is a fund activity" do
         let(:activity) { create(:fund_activity, :with_transparency_identifier, organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER") }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
+
+        it "does not include collaboration_type field" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+          expect(xml).not_to have_selector("iati-activity/collaboration-type")
+        end
       end
 
       context "when the activity is a programme activity" do
