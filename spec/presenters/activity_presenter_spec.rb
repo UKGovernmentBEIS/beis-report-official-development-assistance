@@ -307,6 +307,24 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#collaboration_type" do
+    context "when collaboration_type exists" do
+      it "returns the locale value for the code" do
+        activity = build(:activity, collaboration_type: "1")
+        result = described_class.new(activity).collaboration_type
+        expect(result).to eql("Bilateral")
+      end
+    end
+
+    context "when the activity does not have a collaboration_type set" do
+      it "returns nil" do
+        activity = build(:activity, collaboration_type: nil)
+        result = described_class.new(activity)
+        expect(result.collaboration_type).to be_nil
+      end
+    end
+  end
+
   describe "#flow" do
     context "when flow aid_type exists" do
       it "returns the locale value for the code" do

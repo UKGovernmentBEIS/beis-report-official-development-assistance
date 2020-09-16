@@ -141,6 +141,18 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
+    describe "#collaboration_type_radio_options" do
+      it "returns the different options for collaboration type sorted by code" do
+        options = helper.collaboration_type_radio_options
+
+        expect(options.length).to eq 7
+        expect(options.first.code).to eq "1"
+        expect(options.first.name).to eq "Bilateral"
+        expect(options.last.code).to eq "8"
+        expect(options.last.name).to eq "Bilateral, triangular co-operation"
+      end
+    end
+
     describe "#flow_select_options" do
       it "returns an array of flow objects with 10 as the first (default) option" do
         expect(helper.flow_select_options.first)

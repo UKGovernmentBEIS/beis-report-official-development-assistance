@@ -224,6 +224,15 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :gdi)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:gdi)}"), activity_step_path(activity_presenter, :gdi), t("summary.label.activity.gdi"))
 
+  - unless activity_presenter.fund?
+    .govuk-summary-list__row.collaboration_type
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.collaboration_type")
+      %dd.govuk-summary-list__value
+        = activity_presenter.collaboration_type
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :collaboration_type)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:collaboration_type)}"), activity_step_path(activity_presenter, :collaboration_type), t("summary.label.activity.collaboration_type"))
 
   .govuk-summary-list__row.flow
     %dt.govuk-summary-list__key

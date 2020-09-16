@@ -94,6 +94,11 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.gdi.#{super}")
   end
 
+  def collaboration_type
+    return if super.blank?
+    I18n.t("activity.collaboration_type.#{super}")
+  end
+
   def flow
     return if super.blank?
     I18n.t("activity.flow.#{super}")

@@ -20,6 +20,14 @@ en:
     call_present:
       'true': 'Yes'
       'false': 'No'
+    collaboration_type:
+      '1': Bilateral
+      '2': Multilateral (inflows)
+      '3': Bilateral, core contributions to NGOs and other private bodies / PPPs
+      '4': Multilateral outflows
+      '6': Private Sector Outflows
+      '7': Bilateral, ex-post reporting on NGOs’ activities funded through core contributions
+      '8': Bilateral, triangular co-operation
     flow:
       '10': ODA
       '20': OOF
