@@ -56,6 +56,7 @@ FactoryBot.define do
     factory :programme_activity do
       parent factory: :fund_activity
       level { :programme }
+      collaboration_type { "1" }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
       funding_organisation_type { "10" }
@@ -74,6 +75,7 @@ FactoryBot.define do
       call_present { "true" }
       call_open_date { Date.yesterday }
       call_close_date { Date.tomorrow }
+      collaboration_type { "1" }
       total_applications { "25" }
       total_awards { "12" }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
@@ -103,6 +105,7 @@ FactoryBot.define do
       call_present { "true" }
       call_open_date { Date.yesterday }
       call_close_date { Date.tomorrow }
+      collaboration_type { "1" }
       total_applications { "25" }
       total_awards { "12" }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
@@ -134,6 +137,7 @@ FactoryBot.define do
     geography { nil }
     recipient_region { nil }
     recipient_country { nil }
+    collaboration_type { nil }
     flow { nil }
     aid_type { nil }
   end
@@ -156,6 +160,7 @@ FactoryBot.define do
     recipient_country { nil }
     intended_beneficiaries { nil }
     gdi { nil }
+    collaboration_type { nil }
     flow { nil }
     aid_type { nil }
   end
@@ -176,6 +181,7 @@ FactoryBot.define do
     recipient_country { nil }
     intended_beneficiaries { nil }
     gdi { nil }
+    collaboration_type { nil }
     flow { nil }
     aid_type { nil }
   end
@@ -185,6 +191,7 @@ FactoryBot.define do
     recipient_country { nil }
     intended_beneficiaries { nil }
     gdi { nil }
+    collaboration_type { nil }
     flow { nil }
     aid_type { nil }
   end
@@ -195,12 +202,20 @@ FactoryBot.define do
     recipient_country { nil }
     intended_beneficiaries { nil }
     gdi { nil }
+    collaboration_type { nil }
     flow { nil }
     aid_type { nil }
   end
 
   trait :nil_form_state do
     form_state { nil }
+  end
+
+  trait :at_collaboration_type_step do
+    form_state { "collaboration_type" }
+    collaboration_type { nil }
+    flow { nil }
+    aid_type { nil }
   end
 
   trait :blank_form_state do
@@ -219,6 +234,7 @@ FactoryBot.define do
     recipient_country { nil }
     intended_beneficiaries { nil }
     gdi { nil }
+    collaboration_type { nil }
     flow { nil }
     aid_type { nil }
     extending_organisation_id { nil }
@@ -244,6 +260,7 @@ FactoryBot.define do
     recipient_country { nil }
     intended_beneficiaries { nil }
     gdi { nil }
+    collaboration_type { nil }
     flow { nil }
     aid_type { nil }
     extending_organisation_id { nil }
@@ -267,6 +284,7 @@ FactoryBot.define do
     recipient_country { nil }
     intended_beneficiaries { nil }
     gdi { nil }
+    collaboration_type { nil }
     flow { nil }
     aid_type { nil }
     extending_organisation_id { nil }
