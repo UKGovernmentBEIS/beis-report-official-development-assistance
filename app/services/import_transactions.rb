@@ -62,6 +62,11 @@ class ImportTransactions
     attrs[:transaction_type] = TRANSACTION_TYPE_DISBURSEMENT
     attrs[:providing_organisation_name] = organisation.name
     attrs[:providing_organisation_type] = organisation.organisation_type
+
+    if attrs[:description].blank?
+      presenter = ReportPresenter.new(@report)
+      attrs[:description] = "#{presenter.financial_quarter_and_year} spend on #{activity.description}"
+    end
   end
 
   class Converter
