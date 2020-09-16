@@ -92,6 +92,27 @@ RSpec.feature "Users can view reports" do
       expect(header).to match(/Legacy%20Report/)
     end
 
+    context "if the report description is empty" do
+      scenario "the report csv has a filename made up of the fund name & report financial year & quarter" do
+        travel_to(Date.parse("1 Jan 2020")) do
+          report = create(:report, :active, description: "")
+
+          visit reports_path
+
+          within "##{report.id}" do
+            click_on t("default.link.show")
+          end
+
+          click_on t("action.report.download.button")
+
+          expect(page.response_headers["Content-Type"]).to include("text/csv")
+          header = page.response_headers["Content-Disposition"]
+          expect(header).to match(/#{ERB::Util.url_encode("Q4 2019-2020")}/)
+          expect(header).to match(/#{ERB::Util.url_encode(report.fund.title)}/)
+        end
+      end
+    end
+
     context "when there are no reports in a given state" do
       scenario "an empty state is shown" do
         visit reports_path
