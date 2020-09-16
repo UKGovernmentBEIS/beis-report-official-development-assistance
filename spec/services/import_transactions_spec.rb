@@ -1,13 +1,15 @@
 require "rails_helper"
 
 RSpec.describe ImportTransactions do
-  let(:project) { create(:project_activity) }
+  let(:project) { create(:project_activity, description: "Example Project") }
 
   let! :report do
     create(:report,
       fund: project.associated_fund,
       organisation: project.organisation,
-      state: :active)
+      state: :active,
+      financial_year: 1999,
+      financial_quarter: 4)
   end
 
   let :importer do
@@ -273,6 +275,21 @@ RSpec.describe ImportTransactions do
         expect(importer.errors).to eq([
           ImportTransactions::Error.new(0, "Disbursement Channel", "5", t("importer.errors.transaction.invalid_iati_disbursement_channel")),
         ])
+      end
+    end
+
+    context "when Description is blank" do
+      let :transaction_row do
+        super().merge("Description" => "")
+      end
+
+      it "imports the transaction" do
+        expect(report.transactions.count).to eq(1)
+      end
+
+      it "generates a default description" do
+        transaction = report.transactions.first
+        expect(transaction.description).to eq("Q4 1999-2000 spend on Example Project")
       end
     end
   end
