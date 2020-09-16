@@ -1,7 +1,7 @@
 require "csv"
 
 class IngestCsv
-  ACCEPTABLE_INVALID_ATTRIBUTES = [:gdi].freeze
+  ACCEPTABLE_INVALID_ATTRIBUTES = [:gdi, :intended_beneficiaries].freeze
 
   attr_accessor :csv, :filename
 
@@ -38,6 +38,8 @@ class IngestCsv
         else
           # Skip row and write message
           write_log("Skipping Activity #{row}: #{activity.errors.full_messages}")
+          write_log("attributes: #{attributes.inspect}")
+          # binding.pry
         end
       end
     end

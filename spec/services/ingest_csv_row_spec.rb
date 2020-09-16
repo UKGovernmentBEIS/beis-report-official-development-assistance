@@ -56,14 +56,27 @@ RSpec.describe IngestCsvRow do
         )
       end
 
-      it "is set to false if neither call_open_date or call_close_date is provided" do
-        input = {}
+      it "is set to false if both call_open_date or call_close_date are empty" do
+        input = {
+          "call_open_date" => " ",
+          "call_close_date" => "",
+        }
 
         output = IngestCsvRow.new(input).call
 
         expect(output).to include(
-          "call_present" => false
+          "call_present" => false,
+          "call_open_date" => :skip,
+          "call_close_date" => :skip
         )
+      end
+
+      it "isn't set if call_open_date and call_close_date not included in attributes" do
+        input = {}
+
+        output = IngestCsvRow.new(input).call
+
+        expect(output).not_to include("call_open_date", "call_close_date", "call_present")
       end
     end
   end
@@ -81,6 +94,10 @@ RSpec.describe IngestCsvRow do
     it "returns :skip when value is N/A" do
       expect(IngestCsvRow.new.process_call_open_date("N/A")).to eql :skip
     end
+
+    it "returns :skip when value is 'not applicable'" do
+      expect(IngestCsvRow.new.process_call_open_date("NOT APPLICABLE")).to eql :skip
+    end
   end
 
   context "#process_call_close_date" do
@@ -95,6 +112,10 @@ RSpec.describe IngestCsvRow do
 
     it "returns :skip when value is N/A" do
       expect(IngestCsvRow.new.process_call_close_date("N/A")).to eql :skip
+    end
+
+    it "returns :skip when value is 'not applicable'" do
+      expect(IngestCsvRow.new.process_call_close_date("not applicable")).to eql :skip
     end
   end
 
@@ -193,8 +214,28 @@ RSpec.describe IngestCsvRow do
         .to include("PE", "ZM")
     end
 
+    it "handles incorrectly-named Laos correctly" do
+      expect(IngestCsvRow.new.process_intended_beneficiaries("Laos"))
+        .to include("LA")
+    end
+
+    it "handles incorrectly-named St Lucia correctly" do
+      expect(IngestCsvRow.new.process_intended_beneficiaries("St Lucia"))
+        .to include("LC")
+    end
+
     it "returns an empty array if value is empty" do
       expect(IngestCsvRow.new.process_intended_beneficiaries("  "))
+        .to eql []
+    end
+
+    it "returns an empty array if value is 'None'" do
+      expect(IngestCsvRow.new.process_intended_beneficiaries("none"))
+        .to eql []
+    end
+
+    it "returns an empty array if value is 'Not applicable'" do
+      expect(IngestCsvRow.new.process_intended_beneficiaries("not applicable"))
         .to eql []
     end
 
