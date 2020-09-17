@@ -166,6 +166,33 @@ class IngestCsvRow
     aid_type_mapping[value] || :skip
   end
 
+  def process_transaction_type(value)
+    value = value.to_s.strip.downcase
+    return :skip if value.blank? || value == "not applicable" || value == "na"
+
+    transaction_type_mapping[value] || :skip
+  end
+
+  def process_date(value)
+    return :skip if value.blank? || value.downcase == "n/a" || value.downcase == "not applicable"
+
+    Date.parse(value)
+  end
+
+  def process_currency(value)
+    value = value.to_s.strip.downcase
+    return :skip if value.blank? || value == "not applicable" || value == "na"
+
+    default_currency_mapping[value] || :skip
+  end
+
+  def process_providing_organisation_type(value)
+    value = value.to_s.strip.downcase
+    return :skip if value.blank? || value == "not applicable" || value == "na"
+
+    organisation_type_mapping[value] || :skip
+  end
+
   private
 
   def programme_status_mapping
@@ -244,6 +271,30 @@ class IngestCsvRow
   def aid_type_mapping
     @aid_type_mapping ||= begin
       yaml_to_objects(entity: "activity", type: "aid_type")
+        .map { |status| [status["name"].downcase, status["code"]] }
+        .to_h
+    end
+  end
+
+  def transaction_type_mapping
+    @transaction_type_mapping ||= begin
+      yaml_to_objects(entity: "transaction", type: "transaction_type")
+        .map { |status| [status["name"].downcase, status["code"]] }
+        .to_h
+    end
+  end
+
+  def default_currency_mapping
+    @default_currency_mapping ||= begin
+      yaml_to_objects(entity: "generic", type: "default_currency")
+        .map { |status| [status["name"].downcase, status["code"]] }
+        .to_h
+    end
+  end
+
+  def organisation_type_mapping
+    @organisation_type_mapping ||= begin
+      yaml_to_objects(entity: "organisation", type: "organisation_type")
         .map { |status| [status["name"].downcase, status["code"]] }
         .to_h
     end
