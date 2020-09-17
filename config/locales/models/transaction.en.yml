@@ -6,9 +6,17 @@ en:
         success: Transaction successfully created
       update:
         success: Transaction sucessfully updated
+      download:
+        button: Download CSV template
+      upload:
+        button: Upload and continue
+        file_missing: Please upload a valid CSV file
+        link: Upload actuals
+        success: The transactions were successfully imported.
   form:
     label:
       transaction:
+        csv_file: Transaction spreadsheet
         currency: Currency
         description: Describe the transaction
         disbursement_channel: Disbursement channel (optional)
@@ -27,6 +35,7 @@ en:
         receiving_organisation: Receiving organisation
     hint:
       transaction:
+        csv_file: Upload a spreadsheet containing transaction information in CSV format.
         date: If you're reporting quarterly data, select the last day of the quarter. For example, 31 12 2020
         description: For example, 2020 quarter one spend on the Early Career Research Network project.
         disbursement_channel: The channel through which the funds will flow for this transaction.
@@ -57,6 +66,7 @@ en:
     transaction:
       edit: Edit transaction
       new: Add a transaction
+      upload: Upload bulk transactions data
   activerecord:
     errors:
       models:
@@ -78,3 +88,11 @@ en:
               blank: Enter a receiving organisation name
             receiving_organisation_type:
               blank: Select the organisation type
+  importer:
+    errors:
+      transaction:
+        invalid_date: Date must be a valid date
+        invalid_iati_disbursement_channel: The disbursement channel must be a valid IATI Disbursement Channel code
+        invalid_iati_organisation_type: The receiving organisation type must be a valid IATI Organisation Type code
+        unauthorised: You are not authorised to report against this activity
+        unknown_identifier: Identifier is not recognised
