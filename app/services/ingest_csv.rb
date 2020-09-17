@@ -36,31 +36,34 @@ class IngestCsv
           # Ignore parent_roda_identifier_compound attribute as there's no equivalent in RODA
           attributes.delete("parent_roda_identifier_compound")
 
-          activity.assign_attributes(attributes)
-
-          if activity.valid?
-            # Clean save
-            activity.save!
-          elsif (activity.errors.keys - ACCEPTABLE_INVALID_ATTRIBUTES).empty?
-            # Force validation if the only invalid fields are ones we're ok with
-            activity.save!(validate: false)
-          else
-            # Skip row and log validation errors, ignoring the ones we've deemed acceptable
-            ACCEPTABLE_INVALID_ATTRIBUTES.each { |attr| activity.errors.delete(attr) }
-            write_log("Skipping Activity #{activity.id}: #{activity.errors.full_messages}")
-
-            attributes.sort.each do |k, v|
-              write_log("attributes: #{k.ljust(30, " ").slice(0...30)} => #{v}")
-            end
-
-            # binding.pry
-          end
+          save_changes!(activity, attributes)
         end
       end
     end
   end
 
   private
+
+  def save_changes!(model, attributes)
+    model.assign_attributes(attributes)
+
+    if model.valid?
+      # Clean save
+      model.save!
+    elsif (model.errors.keys - ACCEPTABLE_INVALID_ATTRIBUTES).empty?
+      # Force validation if the only invalid fields are ones we're ok with
+      model.save!(validate: false)
+    else
+      # Skip row and log validation errors, ignoring the ones we've deemed acceptable
+      ACCEPTABLE_INVALID_ATTRIBUTES.each { |attr| model.errors.delete(attr) }
+
+      write_log("Skipping Activity #{model.id}: #{model.errors.full_messages}")
+
+      attributes.sort.each do |k, v|
+        write_log("attributes: #{k.ljust(30, " ").slice(0...30)} => #{v}")
+      end
+    end
+  end
 
   def activity_for(row)
     if has_parent_identifier?
