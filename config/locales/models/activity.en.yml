@@ -85,11 +85,12 @@ en:
         flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
         delivery_partner_identifier: This could be the reference you use in your internal systems
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
-        roda_identifier_fragment: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set
         intended_beneficiaries: You can select up to 10 different countries. This field is optional if you already selected a recipient country on the previous step
         oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
+        roda_identifier_fragment: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.
+        roda_identifier_fragment_with_parent_html: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.<br><br>The RODA identifier for this activity's parent is <strong>%{identifier}</strong>.
         sector_category: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
         title: A short title that explains the purpose of the %{level}
         level: Select the type of activity
