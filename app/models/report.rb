@@ -25,6 +25,17 @@ class Report < ApplicationRecord
     approved: "approved",
   }
 
+  scope :editable, -> do
+    where(state: [:active, :awaiting_changes])
+  end
+
+  def self.editable_for_activity(activity)
+    editable.find_by(
+      organisation_id: activity.organisation_id,
+      fund_id: activity.associated_fund.id,
+    )
+  end
+
   def initialize(attributes = nil)
     super(attributes)
     self.financial_quarter = current_financial_quarter
@@ -36,6 +47,10 @@ class Report < ApplicationRecord
     unless fund.fund?
       errors.add(:fund, I18n.t("activerecord.errors.models.report.attributes.fund.level"))
     end
+  end
+
+  def reportable_activities
+    Activity.projects_and_third_party_projects_for_report(self).with_roda_identifier
   end
 
   def next_four_financial_quarters
