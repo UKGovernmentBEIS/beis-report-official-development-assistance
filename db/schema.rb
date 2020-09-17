@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_15_101558) do
+ActiveRecord::Schema.define(version: 2020_09_15_124739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 2020_09_15_101558) do
     t.string "gdi"
     t.integer "total_applications"
     t.integer "total_awards"
+    t.string "collaboration_type"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"

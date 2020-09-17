@@ -35,6 +35,8 @@
     %recipient-region{"code" => activity.recipient_region, vocabulary: "1"}
       %narrative= region_name_from_code(activity.recipient_region)
   %sector{"vocabulary" => "1", "code" => activity.sector}/
+  - if activity.collaboration_type?
+    %collaboration-type{"code" => activity.collaboration_type}/
   %default-flow-type{"code" => activity.flow}/
   %default-finance-type{"code" => activity.finance}/
   %default-aid-type{"code" => activity.aid_type}/

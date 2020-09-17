@@ -33,6 +33,7 @@ module FormHelpers
     recipient_region: "Developing countries, unspecified",
     intended_beneficiaries: "Haiti",
     gdi: "No",
+    collaboration_type: "Bilateral",
     flow: "ODA",
     aid_type: "A01",
     oda_eligibility: "true",
@@ -184,6 +185,12 @@ module FormHelpers
     choose "No"
     click_button t("form.button.activity.submit")
 
+    unless level == "fund"
+      expect(page).to have_content t("form.label.activity.collaboration_type")
+      choose "Bilateral"
+      click_button t("form.button.activity.submit")
+    end
+
     expect(page).to have_content t("form.label.activity.flow")
     expect(page.html).to include t("form.hint.activity.flow")
     select flow, from: "activity[flow]"
@@ -213,6 +220,7 @@ module FormHelpers
       expect(page).not_to have_content t("activity.programme_status.#{programme_status}")
     else
       expect(page).to have_content t("activity.programme_status.#{programme_status}")
+      expect(page).to have_content collaboration_type
     end
     expect(page).to have_content recipient_region
     expect(page).to have_content intended_beneficiaries

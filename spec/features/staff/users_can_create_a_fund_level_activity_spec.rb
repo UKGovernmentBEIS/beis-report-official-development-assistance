@@ -259,6 +259,10 @@ RSpec.feature "Users can create a fund level activity" do
 
         choose "No"
         click_button t("form.button.activity.submit")
+        expect(page). to have_content t("form.label.activity.collaboration_type")
+
+        # Collaboration_type has a pre-selected option
+        click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.label.activity.flow")
 
         # Flow has a default and can't be set to blank so we skip

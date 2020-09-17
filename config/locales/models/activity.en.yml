@@ -23,6 +23,7 @@ en:
         call_present:
           'true': 'Yes'
           'false': 'No'
+        collaboration_type: What is the collaboration type for this activity?
         gdi: GDI
         geography_options:
           recipient_region: Region
@@ -114,6 +115,7 @@ en:
         call_present: Calls
         call_open_date: Call open date
         call_close_date: Call close date
+        collaboration_type: Collaboration type
         description: Description
         form_state:
           complete: Complete
@@ -224,6 +226,7 @@ en:
         aid_type: Aid type
         call_dates: What are the call open and close dates for this %{level}?
         call_present: Is there a call for this %{level}?
+        collaboration_type: Collaboration type
         country: What country will benefit from this activity?
         dates: What are the start and end dates for the %{level}?
         flow: Flow
