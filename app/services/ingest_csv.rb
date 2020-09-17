@@ -45,9 +45,14 @@ class IngestCsv
             # Force validation if the only invalid fields are ones we're ok with
             activity.save!(validate: false)
           else
-            # Skip row and write message
+            # Skip row and log validation errors, ignoring the ones we've deemed acceptable
+            ACCEPTABLE_INVALID_ATTRIBUTES.each { |attr| activity.errors.delete(attr) }
             write_log("Skipping Activity #{activity.id}: #{activity.errors.full_messages}")
-            write_log("attributes: #{attributes.sort.inspect}")
+
+            attributes.sort.each do |k, v|
+              write_log("attributes: #{k.ljust(30, " ").slice(0...30)} => #{v}")
+            end
+
             # binding.pry
           end
         end
