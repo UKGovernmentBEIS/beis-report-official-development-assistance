@@ -17,8 +17,8 @@ RSpec.feature "Users can submit a report" do
         click_button t("action.report.submit.confirm.button")
 
         expect(page).to have_content t("action.report.submit.complete.title",
-          report_description: report_presenter.description,
-          report_financial_quater_and_year: report_presenter.financial_quarter_and_year)
+          report_organisation: report.organisation.name,
+          report_financial_quarter: report_presenter.financial_quarter_and_year)
         expect(report.reload.state).to eql "submitted"
       end
 
@@ -51,8 +51,8 @@ RSpec.feature "Users can submit a report" do
         click_button t("action.report.submit.confirm.button")
 
         expect(page).to have_content t("action.report.submit.complete.title",
-          report_description: report_presenter.description,
-          report_financial_quater_and_year: report_presenter.financial_quarter_and_year)
+          report_organisation: report.organisation.name,
+          report_financial_quarter: report_presenter.financial_quarter_and_year)
         expect(report.reload.state).to eql "submitted"
       end
     end
