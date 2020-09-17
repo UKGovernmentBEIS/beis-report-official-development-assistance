@@ -25,6 +25,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :requires_additional_benefitting_countries,
     :intended_beneficiaries,
     :gdi,
+    :collaboration_type,
     :flow,
     :aid_type,
     :oda_eligibility,
@@ -60,6 +61,9 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.recipient_region?
     when :intended_beneficiaries
       skip_step unless @activity.requires_intended_beneficiaries?
+    when :collaboration_type
+      skip_step if @activity.fund?
+      assign_default_collaboration_type_value_if_nil
     end
 
     render_wizard
@@ -128,6 +132,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.assign_attributes(intended_beneficiaries: intended_beneficiaries.drop(1))
     when :gdi
       @activity.assign_attributes(gdi: gdi)
+    when :collaboration_type
+      @activity.assign_attributes(collaboration_type: collaboration_type)
     when :flow
       @activity.assign_attributes(flow: flow)
     when :aid_type
@@ -251,6 +257,10 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(:gdi).fetch("gdi", nil)
   end
 
+  def collaboration_type
+    params.require(:activity).permit(:collaboration_type).fetch("collaboration_type", nil)
+  end
+
   def flow
     params.require(:activity).permit(:flow).fetch("flow", nil)
   end
@@ -288,5 +298,10 @@ class Staff::ActivityFormsController < Staff::BaseController
   def country_to_region_mapping
     yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.yml"))
     yaml["data"]
+  end
+
+  def assign_default_collaboration_type_value_if_nil
+    # This allows us to pre-select a specific radio button on collaboration_type form step (value "Bilateral" in this case)
+    @activity.collaboration_type = "1" if @activity.collaboration_type.nil?
   end
 end

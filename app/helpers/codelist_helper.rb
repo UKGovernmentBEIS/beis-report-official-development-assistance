@@ -80,6 +80,10 @@ module CodelistHelper
     }.compact.sort_by(&:name)
   end
 
+  def collaboration_type_radio_options
+    yaml_to_objects(entity: "activity", type: "collaboration_type", with_empty_item: false).sort_by(&:code)
+  end
+
   def flow_select_options
     objects = yaml_to_objects(entity: "activity", type: "flow", with_empty_item: false)
     objects.unshift(OpenStruct.new(name: "ODA", code: "10")).uniq
