@@ -20,6 +20,7 @@
           You will be the contact for any freedom of information requests about this data once it has been published
 
       = form_for @report_presenter, url: report_state_path(@report_presenter) do |f|
+        = hidden_field_tag :state, "submitted"
         = f.govuk_submit t("action.report.submit.confirm.button")
 
   = render partial: "shared/help_and_support"

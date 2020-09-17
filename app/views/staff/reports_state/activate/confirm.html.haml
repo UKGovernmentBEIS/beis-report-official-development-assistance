@@ -13,4 +13,5 @@
         %li
 
       = form_for @report_presenter, url: report_state_path(@report_presenter) do |f|
+        = hidden_field_tag :state, "active"
         = f.govuk_submit t("action.report.activate.confirm.button")

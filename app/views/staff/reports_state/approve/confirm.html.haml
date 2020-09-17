@@ -16,4 +16,5 @@
           The associated transactions and planned disbursements will not be editable
 
       = form_for @report_presenter, url: report_state_path(@report_presenter) do |f|
+        = hidden_field_tag :state, "approved"
         = f.govuk_submit t("action.report.approve.confirm.button")
