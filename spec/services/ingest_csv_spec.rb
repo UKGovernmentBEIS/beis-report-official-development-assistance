@@ -6,7 +6,8 @@ RSpec.describe IngestCsv do
       before do
         create(:fund_activity, title: "Newton fund") do |fund|
           ["EXAMPLE_01", "EXAMPLE_02", "EXAMPLE_03", "EXAMPLE_XX"].each do |identifier|
-            create(:programme_activity, delivery_partner_identifier: identifier, parent: fund, updated_at: 1.month.ago)
+            activity = create(:programme_activity, delivery_partner_identifier: identifier, parent: fund, updated_at: 1.month.ago)
+            create(:report, fund: fund, organisation: activity.organisation, financial_quarter: nil)
           end
         end
       end
@@ -17,6 +18,32 @@ RSpec.describe IngestCsv do
         IngestCsv.new(csv_file).call
 
         expect(Activity.programme.where(updated_at: Date.today..).count).to eql 3
+      end
+
+      context "CSV contains columns relating to transactions" do
+        it "creates new transactions that are associated with an existing activity" do
+          csv_file = "#{Rails.root}/spec/fixtures/csv/transactions.csv"
+
+          example_01 = Activity.find_by(delivery_partner_identifier: "EXAMPLE_01")
+          example_02 = Activity.find_by(delivery_partner_identifier: "EXAMPLE_02")
+
+          IngestCsv.new(csv_file).call
+
+          expect(Activity.programme.where(updated_at: Date.today..).count).to be_zero
+
+          expect(example_01.transactions.count).to eql 1
+          expect(example_02.transactions.count).to eql 1
+        end
+
+        it "updates existing transactions" do
+          example_01 = Activity.find_by(delivery_partner_identifier: "EXAMPLE_01")
+          create(:transaction, parent_activity: example_01, description: "2020/21 Q1")
+
+          csv_file = "#{Rails.root}/spec/fixtures/csv/transactions.csv"
+
+          expect { IngestCsv.new(csv_file).call }
+            .to change { Transaction.first.updated_at }
+        end
       end
     end
 
