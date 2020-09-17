@@ -1,35 +1,26 @@
-= content_for :page_title_prefix, t("page_title.report.submit.complete", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+= content_for :page_title_prefix, t("page_title.report.submit.complete", report_organisation: @report.organisation.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       .govuk-panel.govuk-panel--confirmation
         %h1.govuk-panel__title
-          = t("action.report.submit.complete.title")
-
-        .govuk-panel__body
-          = t("action.report.submit.complete.body", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+          = t("action.report.submit.complete.title", report_organisation: @report.organisation.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
       %h2.govuk-heading-m
         What happens next
 
       %p.govuk-body
-        Your report submission is now complete
+        Your submission is now complete and you will receive email confirmation.
 
       %p.govuk-body
-        The RODA support team will check your report and assure it within two weeks. You will be the contact for any queries.
+        The RODA support team will check and assure your submission. You may receive queries on the submitted data before the report is approved, and you will be the main contact.
 
       %p.govuk-body
         You can still use RODA to:
 
       %ul.govuk-list.govuk-list--bullet
         %li
-          View historical data
-        %li
-          View the data in this report
-
-      %p.govuk-body
-        = link_to "What did you think of this service?", "https://docs.google.com/forms/d/e/1FAIpQLSfk9abTLRNZdB9tPdtoF_t_1z7q6uPQiZks8NfzGeqg-8UQtQ/viewform"
-        (takes 30 seconds)
+          View the data in this report and previous reports
 
   = render partial: "shared/help_and_support"
