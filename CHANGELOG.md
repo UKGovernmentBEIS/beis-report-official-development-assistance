@@ -300,7 +300,8 @@
 - Show Aid Type and Sector codes in Report CSV export for activities
 - Update activity policy to account for the report state
 
-## [unreleased]
+## [release-17] - 2020-09-18
+
 - New reports are created when the prior is approved
 - `Total applications` and `Total awards` form step added to create activity journey
 - Report deadline value is shown on the edit form
@@ -330,7 +331,10 @@
 - Missing `West Bank and Gaza Strip` country included in `recipient_country` list
 - Report state content updated
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...HEAD
+[release-17]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...release-17
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16
 [release-15]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...release-15
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14
