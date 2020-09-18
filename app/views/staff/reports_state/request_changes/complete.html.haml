@@ -1,17 +1,20 @@
-= content_for :page_title_prefix, t("page_title.report.request_changes.complete", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+= content_for :page_title_prefix, t("page_title.report.request_changes.complete", report_organisation: @report.organisation.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       .govuk-panel.govuk-panel--confirmation
         %h1.govuk-panel__title
-          = t("action.report.request_changes.complete.title")
-
-        .govuk-panel__body
-          = t("action.report.activate.complete.body", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+          = t("action.report.request_changes.complete.title", report_financial_quarter: @report_presenter.financial_quarter_and_year, report_organisation: @report.organisation.name)
 
       %h2.govuk-heading-m
         What happens next
 
       %p.govuk-body
-        This report has been passed back to the delivery partner for editing
+        The report is now Awaiting Changes from Delivery Partners. This means they can add or amend data in the existing report.
+
+      %p.govuk-body
+        If you have comments for the Delivery Partner to address, you must send these in the RODA Query Log template referencing the Activity RODA ID's and url links to the specific activities.
+
+      %p.govuk-body
+        This report will have to be re-submitted by Delivery Partners before it can be approved.

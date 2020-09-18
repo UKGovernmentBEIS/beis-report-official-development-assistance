@@ -1,7 +1,7 @@
 ---
 en:
   app:
-    title: Report your official development assistance
+    title: Report your Official Development Assistance
   date:
     formats:
       default: "%-d %b %Y"
