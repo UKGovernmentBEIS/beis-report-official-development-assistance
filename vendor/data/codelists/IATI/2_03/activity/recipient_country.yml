@@ -427,6 +427,9 @@ data:
 - code: WF
   name: Wallis and Futuna
   status: active
+- code: PS
+  name: West Bank and Gaza Strip (Palestinian territory)
+  status: active
 - code: YE
   name: Yemen
   status: active
