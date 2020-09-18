@@ -1,17 +1,20 @@
-= content_for :page_title_prefix, t("page_title.report.approve.complete", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+= content_for :page_title_prefix, t("page_title.report.approve.complete", report_organisation: @report.organisation.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       .govuk-panel.govuk-panel--confirmation
         %h1.govuk-panel__title
-          = t("action.report.approve.complete.title")
-
-        .govuk-panel__body
-          = t("action.report.activate.complete.body", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+          = t("action.report.approve.complete.title", report_organisation: @report.organisation.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
       %h2.govuk-heading-m
         What happens next
 
       %p.govuk-body
-        This report has been approved. It can no longer be edited. Its associated transactions & planned disbursements can no longer be edited.
+        This report is now approved and cannot be re-opened for editing, but you will be able to view the report at any time.
+
+      %p.govuk-body
+        If any updates are required to the data in this report, they will have to be made in the current active report (see RODA User Manual).
+
+      %p.govuk-body
+        Please notify the Service Manager and ODA PMO Finance Lead that the report has been approved. The Service Manager will then activate the new reports and notify Delivery Partners by email.

@@ -1,19 +1,13 @@
-= content_for :page_title_prefix, t("page_title.report.approve.confirm", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+= content_for :page_title_prefix, t("page_title.report.approve.confirm", report_organisation: @report.organisation.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
-        = t("page_title.report.approve.confirm", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+        = t("page_title.report.approve.confirm", report_organisation: @report.organisation.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
       %p.govuk-body
-        Once you approve  this report:
-
-      %ul.govuk-list.govuk-list--bullet
-        %li
-          The report will not be editable
-        %li
-          The associated transactions and planned disbursements will not be editable
+        By confirming approval of this report you are confirming that the data has been checked and approved by the relevant members of ODA PMO, RMT and BEIS Finance. Once approved: the data can no longer be changed; the data can be published to external organisation.
 
       = form_for @report_presenter, url: report_state_path(@report_presenter) do |f|
         = hidden_field_tag :state, "approved"
