@@ -1,25 +1,43 @@
 class PlannedDisbursementPolicy < ApplicationPolicy
+  def show?
+    return true if beis_user?
+    record.parent_activity.organisation == user.organisation
+  end
+
   def create?
-    return false if record.parent_activity.fund? || record.parent_activity.programme?
-    Pundit.policy!(user, record.parent_activity).create? && !!associated_report&.active?
+    return false if record.parent_activity.level.nil?
+
+    if beis_user?
+      return true if record.parent_activity.fund? || record.parent_activity.programme?
+    end
+
+    if delivery_partner_user?
+      return true if editable_report_for_organisation_and_fund.present?
+    end
+
+    false
   end
 
   def update?
-    return false if record.parent_activity.fund? || record.parent_activity.programme?
-    return false if associated_report&.approved?
-    Pundit.policy!(user, record.parent_activity).update? && !!associated_report&.active?
+    return false if record.parent_activity.level.nil?
+
+    if beis_user?
+      return true if record.parent_activity.fund? || record.parent_activity.programme?
+    end
+
+    if delivery_partner_user? && editable_report_for_organisation_and_fund.present?
+      return true if editable_report_for_organisation_and_fund == record.report
+    end
+
+    false
   end
 
   def destroy?
     false
   end
 
-  private
-
-  def associated_report
-    parent_activity = record.parent_activity
-    organisation = parent_activity.organisation
-    fund = parent_activity.associated_fund
-    Report.find_by(organisation: organisation, fund: fund)
+  private def editable_report_for_organisation_and_fund
+    activity = record.parent_activity
+    Report.find_by(organisation: activity.organisation, fund: activity.associated_fund, state: Report::EDITABLE_STATES)
   end
 end

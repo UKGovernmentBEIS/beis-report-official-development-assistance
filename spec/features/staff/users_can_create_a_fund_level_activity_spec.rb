@@ -171,8 +171,8 @@ RSpec.feature "Users can create a fund level activity" do
 
         fill_in "activity[roda_identifier_fragment]", with: identifier
         click_button t("form.button.activity.submit")
-        expect(page).to have_content t("form.legend.activity.purpose", level: "programme")
-        expect(page).to have_content t("form.hint.activity.title", level: "programme")
+        expect(page).to have_content custom_capitalisation(t("form.legend.activity.purpose", level: "programme (level B)"))
+        expect(page).to have_content t("form.hint.activity.title", level: "programme (level B)")
 
         # Don't provide a title and description
         click_button t("form.button.activity.submit")
@@ -184,7 +184,7 @@ RSpec.feature "Users can create a fund level activity" do
         fill_in "activity[description]", with: Faker::Lorem.paragraph
         click_button t("form.button.activity.submit")
 
-        expect(page).to have_content t("form.legend.activity.sector_category", level: "programme")
+        expect(page).to have_content t("form.legend.activity.sector_category", level: "programme (level B)")
 
         # Don't provide a sector category
         click_button t("form.button.activity.submit")
@@ -193,14 +193,14 @@ RSpec.feature "Users can create a fund level activity" do
         choose "Basic Education"
         click_button t("form.button.activity.submit")
 
-        expect(page).to have_content t("form.legend.activity.sector", sector_category: "Basic Education", level: "programme")
+        expect(page).to have_content t("form.legend.activity.sector", sector_category: "Basic Education", level: "programme (level B)")
         # Don't provide a sector
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.sector.blank")
 
         choose "Primary education"
         click_button t("form.button.activity.submit")
-        expect(page).to have_content t("form.legend.activity.programme_status", level: "programme")
+        expect(page).to have_content t("form.legend.activity.programme_status", level: "programme (level B)")
 
         # Don't provide a programme status
         click_button t("form.button.activity.submit")
@@ -208,7 +208,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         choose("activity[programme_status]", option: "07")
         click_button t("form.button.activity.submit")
-        expect(page).to have_content t("page_title.activity_form.show.dates", level: "programme")
+        expect(page).to have_content t("page_title.activity_form.show.dates", level: "programme (level B)")
 
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.dates")
@@ -258,6 +258,10 @@ RSpec.feature "Users can create a fund level activity" do
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.gdi.blank")
 
         choose "No"
+        click_button t("form.button.activity.submit")
+        expect(page). to have_content t("form.label.activity.collaboration_type")
+
+        # Collaboration_type has a pre-selected option
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.label.activity.flow")
 

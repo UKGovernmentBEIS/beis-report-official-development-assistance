@@ -19,11 +19,15 @@ Rails.application.routes.draw do
         get "financials" => "activity_financials#show"
         get "details" => "activity_details#show"
         get "children" => "activity_children#show"
+        get "comments" => "activity_comments#show"
       end
     end
 
     resources :reports, only: [:show, :edit, :update, :index] do
       resource :state, only: [:edit, :update], controller: :reports_state
+      resource :transaction_upload, only: [:new, :show, :update]
+      get "variance" => "report_variance#show"
+      get "budgets" => "report_budgets#show"
     end
 
     concern :transactionable do
@@ -43,6 +47,7 @@ Rails.application.routes.draw do
       resources :steps, controller: "activity_forms"
       resource :extending_organisations, only: [:edit, :update]
       resources :implementing_organisations, only: [:new, :create, :edit, :update]
+      resources :comments, only: [:new, :create, :edit, :update]
     end
   end
 

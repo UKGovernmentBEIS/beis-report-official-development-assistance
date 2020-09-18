@@ -2,6 +2,7 @@ RSpec.feature "Users can manage the implementing organisations" do
   context "when they are signed in as a delivery partner" do
     let(:delivery_partner) { create(:organisation) }
     let(:project) { create(:project_activity, organisation: delivery_partner) }
+    let!(:report) { create(:report, state: :active, organisation: delivery_partner, fund: project.associated_fund) }
 
     before { authenticate!(user: create(:delivery_partner_user, organisation: delivery_partner)) }
 
@@ -32,6 +33,7 @@ RSpec.feature "Users can manage the implementing organisations" do
     scenario "they can edit an implementing organisation" do
       other_public_sector_organisation = ImplementingOrganisation.new(name: "Other public sector organisation", organisation_type: "70", reference: "GB-COH-123456")
       project.implementing_organisations << other_public_sector_organisation
+      _report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
 
       visit organisation_activity_details_path(project.organisation, project)
 

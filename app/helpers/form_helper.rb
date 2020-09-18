@@ -69,7 +69,7 @@ module FormHelper
     authorised_levels.keys.map do |level|
       OpenStruct.new(
         level: level,
-        name: I18n.t("page_content.activity.level.#{level}").capitalize,
+        name: custom_capitalisation(I18n.t("page_content.activity.level.#{level}")),
         description: I18n.t("form.hint.activity.level_step.#{level}")
       )
     end

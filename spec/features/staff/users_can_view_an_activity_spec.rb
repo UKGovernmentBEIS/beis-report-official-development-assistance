@@ -156,7 +156,7 @@ RSpec.feature "Users can view an activity" do
     end
 
     scenario "the activity financials can be viewed" do
-      activity = create(:activity, organisation: user.organisation)
+      activity = create(:programme_activity, organisation: user.organisation)
       transaction = create(:transaction, parent_activity: activity)
       budget = create(:budget, parent_activity: activity)
 
@@ -253,7 +253,7 @@ RSpec.feature "Users can view an activity" do
     end
 
     scenario "they do not see a Publish to Iati column & status against third-party projects" do
-      project = create(:project_activity)
+      project = create(:project_activity, organisation: user.organisation)
       third_party_project = create(:third_party_project_activity, parent: project)
 
       visit organisation_activity_children_path(project.organisation, project)

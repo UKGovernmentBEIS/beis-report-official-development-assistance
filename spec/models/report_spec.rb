@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Report, type: :model do
   describe "validations" do
-    it { should validate_presence_of(:description) }
+    it { should validate_presence_of(:description).on(:update) }
     it { should validate_presence_of(:state) }
     it { should have_readonly_attribute(:financial_quarter) }
     it { should have_readonly_attribute(:financial_year) }
@@ -11,6 +11,46 @@ RSpec.describe Report, type: :model do
   describe "associations" do
     it { should belong_to(:fund).class_name("Activity") }
     it { should belong_to(:organisation) }
+  end
+
+  describe ".editable_for_activity" do
+    let!(:organisation) { create(:organisation) }
+    let!(:project) { create(:project_activity, organisation: organisation) }
+    let!(:project_in_another_fund) { create(:project_activity, organisation: organisation) }
+
+    let! :approved_report do
+      create(:report, fund: project.associated_fund, organisation: organisation, state: :approved)
+    end
+
+    let! :report_for_another_fund do
+      create(:report, fund: project_in_another_fund.associated_fund, organisation: organisation, state: :active)
+    end
+
+    context "when there is an active report" do
+      let! :active_report do
+        create(:report, fund: project.associated_fund, organisation: organisation, state: :active)
+      end
+
+      it "returns the editable report for the activity's fund" do
+        expect(Report.editable_for_activity(project)).to eq(active_report)
+      end
+    end
+
+    context "when there is a report awaiting changes" do
+      let! :report_awaiting_changes do
+        create(:report, fund: project.associated_fund, organisation: organisation, state: :awaiting_changes)
+      end
+
+      it "returns the editable report for the activity's fund" do
+        expect(Report.editable_for_activity(project)).to eq(report_awaiting_changes)
+      end
+    end
+
+    context "when there is no editable report" do
+      it "returns nothing" do
+        expect(Report.editable_for_activity(project)).to be_nil
+      end
+    end
   end
 
   it "sets the financial_quarter and financial_year when created" do
@@ -148,6 +188,25 @@ RSpec.describe Report, type: :model do
           expect(report.next_four_financial_quarters).to eq ["Q1 2021", "Q2 2021", "Q3 2021", "Q4 2021"]
         end
       end
+    end
+  end
+
+  describe "reportable_activities" do
+    let!(:report) { create(:report) }
+    let!(:programme) { create(:programme_activity, parent: report.fund, organisation: report.organisation) }
+    let!(:project_a) { create(:project_activity, parent: programme, organisation: report.organisation) }
+    let!(:project_b) { create(:project_activity, parent: programme, organisation: report.organisation) }
+    let!(:third_party_project) { create(:third_party_project_activity, parent: project_b, organisation: report.organisation) }
+    let!(:project_in_another_fund) { create(:project_activity, organisation: report.organisation) }
+
+    it "returns the level C and D activities belonging to the report's fund and organisation" do
+      expect(report.reportable_activities).to include(project_a)
+      expect(report.reportable_activities).to include(project_b)
+      expect(report.reportable_activities).to include(third_party_project)
+
+      expect(report.reportable_activities).not_to include(report.fund)
+      expect(report.reportable_activities).not_to include(programme)
+      expect(report.reportable_activities).not_to include(project_in_another_fund)
     end
   end
 end

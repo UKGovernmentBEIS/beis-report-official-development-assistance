@@ -1,4 +1,5 @@
 module FormHelpers
+  include ActivityHelper
   def fill_in_activity_form(
     delivery_partner_identifier: "A-Unique-Identifier",
     roda_identifier_fragment: "RODA-ID",
@@ -13,6 +14,8 @@ module FormHelpers
     call_close_date_day: "31",
     call_close_date_month: "12",
     call_close_date_year: "2019",
+    total_applications: "12",
+    total_awards: "5",
     programme_status: "07",
     planned_start_date_day: "1",
     planned_start_date_month: "1",
@@ -30,6 +33,7 @@ module FormHelpers
     recipient_region: "Developing countries, unspecified",
     intended_beneficiaries: "Haiti",
     gdi: "No",
+    collaboration_type: "Bilateral",
     flow: "ODA",
     aid_type: "A01",
     oda_eligibility: "true",
@@ -40,12 +44,12 @@ module FormHelpers
     expect(page).to have_content t("form.legend.activity.level")
     expect(page).to have_content t("form.hint.activity.level")
     expect(page).to have_content t("form.hint.activity.level_step.#{level}")
-    choose t("page_content.activity.level.#{level}").capitalize
+    choose custom_capitalisation(t("page_content.activity.level.#{level}"))
     click_button t("form.button.activity.submit")
 
     if parent.present?
-      expect(page).to have_content t("form.legend.activity.parent", parent_level: parent.level, level: t("page_content.activity.level.#{level}"))
-      expect(page).to have_content t("form.hint.activity.parent", parent_level: parent.level, level: t("page_content.activity.level.#{level}"))
+      expect(page).to have_content t("form.legend.activity.parent", parent_level: t("page_content.activity.level.#{level}", level: parent.level), level: t("page_content.activity.level.#{level}"))
+      expect(page).to have_content t("form.hint.activity.parent", parent_level: t("page_content.activity.level.#{parent.level}"), level: t("page_content.activity.level.#{level}"))
       choose parent.title
       click_button t("form.button.activity.submit")
     end
@@ -63,7 +67,7 @@ module FormHelpers
     end
 
     expect(page).to have_content t("form.legend.activity.purpose", level: activity_level(level))
-    expect(page).to have_content t("form.label.activity.title", level: activity_level(level).humanize)
+    expect(page).to have_content custom_capitalisation(t("form.label.activity.title", level: activity_level(level)))
     expect(page).to have_content t("form.label.activity.description")
     fill_in "activity[title]", with: title
     fill_in "activity[description]", with: description
@@ -102,6 +106,18 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     else
       call_present = nil
+    end
+
+    if call_present == "true"
+      expect(page).to have_content t("form.legend.activity.total_applications")
+      expect(page).to have_content t("form.hint.activity.total_applications")
+      fill_in "activity[total_applications]", with: total_applications
+
+      expect(page).to have_content t("form.legend.activity.total_awards")
+      expect(page).to have_content t("form.hint.activity.total_awards")
+      fill_in "activity[total_awards]", with: total_awards
+
+      click_button t("form.button.activity.submit")
     end
 
     unless level == "fund"
@@ -169,6 +185,12 @@ module FormHelpers
     choose "No"
     click_button t("form.button.activity.submit")
 
+    unless level == "fund"
+      expect(page).to have_content t("form.label.activity.collaboration_type")
+      choose "Bilateral"
+      click_button t("form.button.activity.submit")
+    end
+
     expect(page).to have_content t("form.label.activity.flow")
     expect(page.html).to include t("form.hint.activity.flow")
     select flow, from: "activity[flow]"
@@ -190,11 +212,15 @@ module FormHelpers
     expect(page).to have_content sector
     if call_present == "true"
       expect(page).to have_content t("activity.call_present.#{call_present}")
+      expect(page).to have_content total_applications
+      expect(page).to have_content total_awards
     end
+
     if level == "fund"
       expect(page).not_to have_content t("activity.programme_status.#{programme_status}")
     else
       expect(page).to have_content t("activity.programme_status.#{programme_status}")
+      expect(page).to have_content collaboration_type
     end
     expect(page).to have_content recipient_region
     expect(page).to have_content intended_beneficiaries

@@ -46,6 +46,32 @@ RSpec.describe Activity, type: :model do
         expect(Activity.publishable_to_iati).to eq [complete_activity]
       end
     end
+
+    describe ".projects_and_third_party_projects_for_report" do
+      it "only returns projects and third party projects that are for the reports organisation and fund" do
+        organisation = create(:delivery_partner_organisation)
+        fund = create(:fund_activity, organisation: organisation)
+        programme = create(:programme_activity, parent: fund, organisation: organisation)
+        project = create(:project_activity, parent: programme, organisation: organisation)
+        third_party_project = create(:third_party_project_activity, parent: project, organisation: organisation)
+        report = create(:report, organisation: third_party_project.organisation, fund: fund)
+
+        another_fund = create(:fund_activity, organisation: organisation)
+        another_programme = create(:programme_activity, parent: another_fund, organisation: organisation)
+        another_project = create(:project_activity, parent: another_programme, organisation: organisation)
+        another_third_party_project = create(:third_party_project_activity, parent: another_project, organisation: organisation)
+
+        expect(Activity.projects_and_third_party_projects_for_report(report)).to include third_party_project
+        expect(Activity.projects_and_third_party_projects_for_report(report)).to include project
+
+        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include fund
+        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include programme
+        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include another_fund
+        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include another_programme
+        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include another_project
+        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include another_third_party_project
+      end
+    end
   end
 
   describe "sanitisation" do
@@ -454,6 +480,31 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when activity is not a fund" do
+      context "and is 'ingested: false'" do
+        context "and the collaboration_type is blank" do
+          subject(:activity) { build(:programme_activity, collaboration_type: nil, ingested: false) }
+          it "should not be valid" do
+            expect(activity.valid?(:collaboration_type_step)).to be_falsey
+          end
+        end
+      end
+
+      context "but the activity is 'ingested:true'" do
+        subject(:activity) { build(:programme_activity, collaboration_type: nil, ingested: true) }
+        it "should be valid" do
+          expect(activity.valid?(:collaboration_type_step)).to be_truthy
+        end
+      end
+    end
+
+    context "when activity is a fund and collaboration_type is blank" do
+      subject(:activity) { build(:fund_activity, collaboration_type: nil) }
+      it "should be valid" do
+        expect(activity.valid?(:collaboration_type_step)).to be_truthy
+      end
+    end
+
     context "when flow is blank" do
       subject(:activity) { build(:activity, flow: nil) }
       it "should not be valid" do
@@ -496,10 +547,28 @@ RSpec.describe Activity, type: :model do
         end
       end
 
+      context "when there is a call and total applications is blank" do
+        subject(:activity) { build(:project_activity, call_present: true, total_applications: nil) }
+        it "should not be valid" do
+          expect(activity.valid?(:total_applications_and_awards_step)).to be_falsey
+        end
+      end
+
+      context "when there is a call and total awards is blank" do
+        subject(:activity) { build(:project_activity, call_present: true, total_awards: nil) }
+        it "should not be valid" do
+          expect(activity.valid?(:total_applications_and_awards_step)).to be_falsey
+        end
+      end
+
       context "when the activity is 'ingested:true'" do
-        subject(:activity) { build(:project_activity, ingested: true, call_present: nil) }
+        subject(:activity) { build(:project_activity, ingested: true, call_present: nil, total_applications: nil, total_awards: nil) }
         it "should not require the presence of 'call_present'" do
           expect(activity.valid?(:call_present_step)).to be_truthy
+        end
+
+        it "should not require the presence of neither total applications nor total awards" do
+          expect(activity.valid?(:total_applications_and_awards_step)).to be_truthy
         end
       end
     end
@@ -740,21 +809,21 @@ RSpec.describe Activity, type: :model do
     context "when the level is a programme" do
       it "returns a string for fund" do
         result = described_class.new(level: :programme).parent_level
-        expect(result).to eql("fund")
+        expect(result).to eql("fund (level A)")
       end
     end
 
     context "when the level is a project" do
       it "returns a string for programme" do
         result = described_class.new(level: :project).parent_level
-        expect(result).to eql("programme")
+        expect(result).to eql("programme (level B)")
       end
     end
 
     context "when the level is a third-party project" do
       it "returns a string for project" do
         result = described_class.new(level: :third_party_project).parent_level
-        expect(result).to eql("project")
+        expect(result).to eql("project (level C)")
       end
     end
   end
@@ -1008,6 +1077,24 @@ RSpec.describe Activity, type: :model do
 
       expect(project.forecasted_total_for_date_range(range: Date.parse("1 April 2020")..Date.parse("30 June 2020"))).to eq 200
       expect(project.forecasted_total_for_date_range(range: Date.parse("1 October 2020")..Date.parse("31 December 2020"))).to eq 1000
+    end
+  end
+
+  describe "#comment_for_report" do
+    it "returns the comment associated to this activity and a particular report" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      comment = create(:comment, activity_id: project.id, report_id: report.id, comment: "Here's my comment")
+      expect(project.comment_for_report(report_id: report.id)).to eq comment
+      expect(project.comment_for_report(report_id: report.id).comment).to eq "Here's my comment"
+    end
+
+    it "does not return any other comments associated to this activity" do
+      project = create(:project_activity, :with_report)
+      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      comment = create(:comment, activity_id: project.id, report_id: create(:report).id)
+      expect(project.comment_for_report(report_id: report.id)).to_not eq comment
+      expect(project.comment_for_report(report_id: report.id)).to be_nil
     end
   end
 end

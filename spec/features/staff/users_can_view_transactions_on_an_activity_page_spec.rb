@@ -6,11 +6,11 @@ RSpec.feature "Users can view transactions on an activity page" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
 
-    context "when the activity is a fund" do
-      let(:activity) { create(:fund_activity, organisation: user.organisation) }
-      let(:other_activity) { create(:fund_activity, organisation: user.organisation) }
+    context "when the activity is a programme" do
+      let(:activity) { create(:programme_activity, organisation: user.organisation) }
+      let(:other_activity) { create(:programme_activity, organisation: user.organisation) }
 
-      scenario "only transactions belonging to this fund activity are shown on the Activity#show page" do
+      scenario "only transactions belonging to this programme activity are shown on the Activity#show page" do
         transaction = create(:transaction, parent_activity: activity, value: "100")
         other_transaction = create(:transaction, parent_activity: other_activity, value: "200")
 

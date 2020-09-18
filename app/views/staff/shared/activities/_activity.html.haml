@@ -52,7 +52,7 @@
 
   .govuk-summary-list__row.title
     %dt.govuk-summary-list__key
-      = t("summary.label.activity.title", level: activity_presenter.level).capitalize
+      = custom_capitalisation(t("summary.label.activity.title", level: activity_presenter.level))
     %dd.govuk-summary-list__value
       = activity_presenter.title
     %dd.govuk-summary-list__actions
@@ -107,6 +107,26 @@
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :call_dates)
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:call_close_date)}"), activity_step_path(activity_presenter, :call_dates), t("summary.label.activity.call_close_date"))
+
+  - if activity_presenter.call_present?
+    .govuk-summary-list__row.total_applications
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.total_applications")
+      %dd.govuk-summary-list__value
+        = activity_presenter.total_applications
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :total_applications_and_awards)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:total_applications)}"), activity_step_path(activity_presenter, :total_applications_and_awards), t("summary.label.activity.total_applications"))
+
+  - if activity_presenter.call_present?
+    .govuk-summary-list__row.total_awards
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.total_awards")
+      %dd.govuk-summary-list__value
+        = activity_presenter.total_awards
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :total_applications_and_awards)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:total_awards)}"), activity_step_path(activity_presenter, :total_applications_and_awards), t("summary.label.activity.total_awards"))
 
   - unless activity_presenter.fund?
     .govuk-summary-list__row.programme_status
@@ -204,6 +224,15 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :gdi)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:gdi)}"), activity_step_path(activity_presenter, :gdi), t("summary.label.activity.gdi"))
 
+  - unless activity_presenter.fund?
+    .govuk-summary-list__row.collaboration_type
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.collaboration_type")
+      %dd.govuk-summary-list__value
+        = activity_presenter.collaboration_type
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :collaboration_type)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:collaboration_type)}"), activity_step_path(activity_presenter, :collaboration_type), t("summary.label.activity.collaboration_type"))
 
   .govuk-summary-list__row.flow
     %dt.govuk-summary-list__key

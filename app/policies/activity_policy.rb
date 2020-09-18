@@ -1,25 +1,43 @@
 class ActivityPolicy < ApplicationPolicy
   def show?
-    if record.level.blank?
-      return record.organisation == user.organisation
-    end
-
-    record.fund? && beis_user? ||
-      record.programme? ||
-      record.project? ||
-      record.third_party_project?
+    return true if beis_user?
+    return true if record.organisation == user.organisation
+    return true if record.programme? && record.extending_organisation_id == user.organisation.id
+    false
   end
 
   def create?
+    if beis_user?
+      return true if record.fund? || record.programme? || record.level.nil?
+    end
+    return false if editable_report_for_organisation.nil?
     record.organisation == user.organisation
+  end
+
+  def edit?
+    update?
   end
 
   def update?
-    record.organisation == user.organisation
+    return true if beis_user? && record.organisation == user.organisation
+
+    if delivery_partner_user?
+      return true if record.level.nil? && record.organisation == user.organisation
+      return true if record.parent.nil? && record.organisation == user.organisation
+
+      return false if record.organisation != user.organisation
+      return false if record.fund? || record.programme?
+      return false if editable_report_for_organisation_and_fund.nil?
+      return true
+    end
+    false
   end
 
   def redact_from_iati?
-    beis_user? && record.project? || record.third_party_project?
+    if beis_user?
+      return true if record.project? || record.third_party_project?
+    end
+    false
   end
 
   def destroy?
@@ -30,5 +48,14 @@ class ActivityPolicy < ApplicationPolicy
     def resolve
       scope.all
     end
+  end
+
+  private def editable_report_for_organisation
+    Report.find_by(organisation: record.organisation, state: Report::EDITABLE_STATES)
+  end
+
+  private def editable_report_for_organisation_and_fund
+    fund = record.parent.associated_fund
+    Report.find_by(organisation: record.organisation, fund: fund, state: Report::EDITABLE_STATES)
   end
 end

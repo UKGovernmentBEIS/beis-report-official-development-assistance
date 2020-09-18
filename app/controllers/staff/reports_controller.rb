@@ -19,11 +19,11 @@ class Staff::ReportsController < Staff::BaseController
     authorize @report
 
     @report_presenter = ReportPresenter.new(@report)
-    @report_activities = level_c_and_d_activities_for_report(report: @report)
+    @report_activities = Activity.projects_and_third_party_projects_for_report(@report)
 
     respond_to do |format|
       format.html do
-        @activities = @report_activities.map { |activity| ActivityPresenter.new(activity) }
+        redirect_to report_variance_path(@report)
       end
       format.csv do
         send_csv
@@ -32,22 +32,22 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def edit
-    report = Report.find(id)
-    authorize report
+    @report = Report.find(id)
+    authorize @report
 
-    @report_presenter = ReportPresenter.new(report)
+    @report_presenter = ReportPresenter.new(@report)
   end
 
   def update
-    report = Report.find(id)
-    authorize report
+    @report = Report.find(id)
+    authorize @report
 
-    @report_presenter = ReportPresenter.new(report)
+    @report_presenter = ReportPresenter.new(@report)
 
-    report.assign_attributes(report_params)
-    if report.valid?
-      report.save!
-      report.create_activity key: "report.update", owner: current_user
+    @report.assign_attributes(report_params)
+    if @report.valid?
+      @report.save!
+      @report.create_activity key: "report.update", owner: current_user
       flash[:notice] = t("action.report.update.success")
       redirect_to reports_path
     else
@@ -150,16 +150,11 @@ class Staff::ReportsController < Staff::BaseController
 
   def send_csv
     response.headers["Content-Type"] = "text/csv"
-    response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(@report.description)}.csv"
+    response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(@report_presenter.fund.title)}-#{ERB::Util.url_encode(@report_presenter.financial_quarter_and_year)}-#{ERB::Util.url_encode(@report.description)}.csv"
     response.stream.write ExportActivityToCsv.new(report: @report).headers
     @report_activities.each do |activity|
       response.stream.write ExportActivityToCsv.new(activity: activity, report: @report).call
     end
     response.stream.close
-  end
-
-  def level_c_and_d_activities_for_report(report:)
-    return Activity.none if report.nil?
-    Activity.where(level: [:project, :third_party_project], organisation: report.organisation).select { |activity| activity.associated_fund == report.fund }
   end
 end

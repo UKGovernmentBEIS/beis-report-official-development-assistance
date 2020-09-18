@@ -14,10 +14,24 @@ RSpec.describe Transaction, type: :model do
     it { should validate_presence_of(:providing_organisation_type) }
     it { should validate_presence_of(:receiving_organisation_name) }
     it { should validate_presence_of(:receiving_organisation_type) }
-  end
 
-  describe "associations" do
-    it { should belong_to(:report) }
+    context "when the activity belongs to a delivery partner organisation" do
+      before { activity.update(organisation: build_stubbed(:delivery_partner_organisation)) }
+
+      it "should validate the prescence of report" do
+        transaction = build_stubbed(:transaction, parent_activity: activity, report: nil)
+        expect(transaction.valid?).to be false
+      end
+    end
+
+    context "when the activity belongs to BEIS" do
+      before { activity.update(organisation: build_stubbed(:beis_organisation)) }
+
+      it "should not validate the prescence of report" do
+        transaction = build_stubbed(:transaction, parent_activity: activity, report: nil)
+        expect(transaction.valid?).to be true
+      end
+    end
   end
 
   describe "sanitation" do

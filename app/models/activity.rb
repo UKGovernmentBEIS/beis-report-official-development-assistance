@@ -15,6 +15,7 @@ class Activity < ApplicationRecord
     :sector_step,
     :call_present_step,
     :call_dates_step,
+    :total_applications_and_awards_step,
     :programme_status_step,
     :geography_step,
     :region_step,
@@ -22,6 +23,7 @@ class Activity < ApplicationRecord
     :requires_additional_benefitting_countries_step,
     :intended_beneficiaries_step,
     :gdi_step,
+    :collaboration_type_step,
     :flow_step,
     :aid_type,
     :oda_eligibility_step,
@@ -37,6 +39,8 @@ class Activity < ApplicationRecord
   validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
   validates :call_present, inclusion: {in: [true, false]}, on: :call_present_step, if: :requires_call_dates?
+  validates :total_applications, presence: true, on: :total_applications_and_awards_step, if: :call_present?
+  validates :total_awards, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :programme_status, presence: true, on: :programme_status_step
   validates :geography, presence: true, on: :geography_step
   validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
@@ -44,6 +48,7 @@ class Activity < ApplicationRecord
   validates :requires_additional_benefitting_countries, inclusion: {in: [true, false]}, on: :requires_additional_benefitting_countries_step, if: :recipient_country?
   validates :intended_beneficiaries, presence: true, length: {maximum: 10}, on: :intended_beneficiaries_step, if: :requires_intended_beneficiaries?
   validates :gdi, presence: true, on: :gdi_step
+  validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
   validates :flow, presence: true, on: :flow_step
   validates :aid_type, presence: true, on: :aid_type_step
   validates :oda_eligibility, inclusion: {in: [true, false]}, on: :oda_eligibility_step
@@ -72,6 +77,8 @@ class Activity < ApplicationRecord
   has_many :transactions, foreign_key: "parent_activity_id"
   has_many :planned_disbursements, foreign_key: "parent_activity_id"
 
+  has_many :comments
+
   enum level: {
     fund: "fund",
     programme: "programme",
@@ -87,6 +94,17 @@ class Activity < ApplicationRecord
   scope :funds, -> { where(level: :fund) }
   scope :programmes, -> { where(level: :programme) }
   scope :publishable_to_iati, -> { where(form_state: :complete, publish_to_iati: true) }
+  scope :with_roda_identifier, -> { where.not(roda_identifier_compound: nil) }
+
+  scope :projects_and_third_party_projects_for_report, ->(report) {
+    programmes = where(level: :programme, parent_id: report.fund_id)
+    projects = where(level: :project, parent_id: programmes.pluck(:id))
+    third_party_projects = where(level: :third_party_project, parent_id: projects.pluck(:id))
+
+    for_organisation = where(organisation_id: report.organisation_id)
+
+    for_organisation.merge(projects.or(third_party_projects))
+  }
 
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
@@ -146,9 +164,9 @@ class Activity < ApplicationRecord
   def parent_level
     case level
     when "fund" then nil
-    when "programme" then "fund"
-    when "project" then "programme"
-    when "third_party_project" then "project"
+    when "programme" then "fund (level A)"
+    when "project" then "programme (level B)"
+    when "third_party_project" then "project (level C)"
     end
   end
 
@@ -232,5 +250,13 @@ class Activity < ApplicationRecord
 
   def requires_intended_beneficiaries?
     recipient_region? || (recipient_country? && requires_additional_benefitting_countries?)
+  end
+
+  def comment_for_report(report_id:)
+    comments.find_by(report_id: report_id)
+  end
+
+  def requires_collaboration_type?
+    !ingested? && !fund?
   end
 end

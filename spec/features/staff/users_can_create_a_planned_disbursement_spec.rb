@@ -54,6 +54,15 @@ RSpec.describe "Users can create a planned disbursement" do
       end
     end
 
+    scenario "they do not see the add button when the activity is not editable" do
+      activity = create(:project_activity, organisation: user.organisation)
+
+      visit organisation_activity_path(activity.organisation, activity)
+
+      expect(page).not_to have_link t("page_content.planned_disbursements.button.create"),
+        href: new_activity_planned_disbursement_path(activity)
+    end
+
     scenario "the planned disbursement is associated with the currently active report" do
       fund = create(:fund_activity)
       programme = create(:programme_activity, parent: fund)

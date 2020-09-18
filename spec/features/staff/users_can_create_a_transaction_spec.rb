@@ -1,7 +1,7 @@
 RSpec.feature "Users can create a transaction" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
-      activity = create(:fund_activity)
+      activity = create(:programme_activity)
       visit organisation_activity_path(activity.organisation, activity)
       expect(current_path).to eq(root_path)
     end
@@ -12,7 +12,7 @@ RSpec.feature "Users can create a transaction" do
     let(:user) { create(:beis_user) }
 
     scenario "successfully creates a transaction on an activity" do
-      activity = create(:fund_activity, :with_report, organisation: user.organisation)
+      activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
       visit activities_path
 
@@ -26,7 +26,7 @@ RSpec.feature "Users can create a transaction" do
     end
 
     scenario "transaction creation is tracked with public_activity" do
-      activity = create(:fund_activity, :with_report, organisation: user.organisation)
+      activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
       PublicActivity.with_tracking do
         visit activities_path
@@ -46,7 +46,7 @@ RSpec.feature "Users can create a transaction" do
     end
 
     scenario "validations" do
-      activity = create(:fund_activity, :with_report, organisation: user.organisation)
+      activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
       visit activities_path
 
@@ -65,7 +65,7 @@ RSpec.feature "Users can create a transaction" do
     end
 
     scenario "disbursement channel is optional" do
-      activity = create(:fund_activity, :with_report, organisation: user.organisation)
+      activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
       visit activities_path
 
@@ -80,7 +80,7 @@ RSpec.feature "Users can create a transaction" do
 
     context "Value number validation" do
       scenario "Value must be maximum 99,999,999,999" do
-        activity = create(:fund_activity, :with_report, organisation: user.organisation)
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -102,7 +102,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "Value cannot be 0" do
-        activity = create(:fund_activity, :with_report, organisation: user.organisation)
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -124,7 +124,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "Value can be negative" do
-        activity = create(:fund_activity, :with_report, organisation: user.organisation)
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -148,7 +148,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes a pound sign" do
-        activity = create(:fund_activity, :with_report, organisation: user.organisation)
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -162,7 +162,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes alphabetical characters" do
-        activity = create(:fund_activity, :with_report, organisation: user.organisation)
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -176,7 +176,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes decimal places" do
-        activity = create(:fund_activity, :with_report, organisation: user.organisation)
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -190,7 +190,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the value includes commas" do
-        activity = create(:fund_activity, :with_report, organisation: user.organisation)
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -206,7 +206,7 @@ RSpec.feature "Users can create a transaction" do
 
     context "Date validation" do
       scenario "When the date is in the future" do
-        activity = create(:fund_activity, :with_report, organisation: user.organisation)
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -220,7 +220,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the date is in the past" do
-        activity = create(:fund_activity, :with_report, organisation: user.organisation)
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -235,7 +235,7 @@ RSpec.feature "Users can create a transaction" do
       end
 
       scenario "When the date is nil" do
-        activity = create(:fund_activity, :with_report, organisation: user.organisation)
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
         visit activities_path
 
@@ -263,7 +263,6 @@ RSpec.feature "Users can create a transaction" do
 
       visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
-      expect(page).not_to have_content(t("page_content.activity.transactions"))
       expect(page).not_to have_content(t("page_content.transactions.button.create"))
     end
 
@@ -295,6 +294,15 @@ RSpec.feature "Users can create a transaction" do
         report = Report.find_by(fund: fund, organisation: project.organisation)
         expect(transaction.report).to eq(report)
       end
+    end
+
+    scenario "when the acitivity cannot be edited they cannot see the add transaction button" do
+      activity = create(:project_activity, organisation: user.organisation)
+      _report = create(:report, state: :inactive, organisation: activity.organisation, fund: activity.associated_fund)
+
+      visit organisation_activity_path(activity.organisation, activity)
+
+      expect(page).not_to have_link t("page_content.transactions.button.create"), href: new_activity_transaction_path(activity)
     end
   end
 

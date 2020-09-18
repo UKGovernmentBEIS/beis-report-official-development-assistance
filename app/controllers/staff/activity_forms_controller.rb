@@ -16,6 +16,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :sector,
     :call_present,
     :call_dates,
+    :total_applications_and_awards,
     :programme_status,
     :dates,
     :geography,
@@ -24,6 +25,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :requires_additional_benefitting_countries,
     :intended_beneficiaries,
     :gdi,
+    :collaboration_type,
     :flow,
     :aid_type,
     :oda_eligibility,
@@ -49,6 +51,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step unless @activity.requires_call_dates?
     when :call_dates
       skip_step unless @activity.call_present?
+    when :total_applications_and_awards
+      skip_step unless @activity.call_present?
     when :region
       skip_step if @activity.recipient_country?
     when :country
@@ -57,6 +61,9 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.recipient_region?
     when :intended_beneficiaries
       skip_step unless @activity.requires_intended_beneficiaries?
+    when :collaboration_type
+      skip_step if @activity.fund?
+      assign_default_collaboration_type_value_if_nil
     end
 
     render_wizard
@@ -100,6 +107,8 @@ class Staff::ActivityFormsController < Staff::BaseController
         call_open_date: format_date(call_open_date),
         call_close_date: format_date(call_close_date),
       )
+    when :total_applications_and_awards
+      @activity.assign_attributes(total_applications: total_applications, total_awards: total_awards)
     when :programme_status
       iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
       @activity.assign_attributes(programme_status: programme_status, status: iati_status)
@@ -123,6 +132,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.assign_attributes(intended_beneficiaries: intended_beneficiaries.drop(1))
     when :gdi
       @activity.assign_attributes(gdi: gdi)
+    when :collaboration_type
+      @activity.assign_attributes(collaboration_type: collaboration_type)
     when :flow
       @activity.assign_attributes(flow: flow)
     when :aid_type
@@ -190,6 +201,14 @@ class Staff::ActivityFormsController < Staff::BaseController
     {day: call_close_date["call_close_date(3i)"], month: call_close_date["call_close_date(2i)"], year: call_close_date["call_close_date(1i)"]}
   end
 
+  def total_applications
+    params.require(:activity).permit(:total_applications).fetch("total_applications", nil)
+  end
+
+  def total_awards
+    params.require(:activity).permit(:total_awards).fetch("total_awards", nil)
+  end
+
   def programme_status
     params.require(:activity).permit(:programme_status).fetch("programme_status", nil)
   end
@@ -238,6 +257,10 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(:gdi).fetch("gdi", nil)
   end
 
+  def collaboration_type
+    params.require(:activity).permit(:collaboration_type).fetch("collaboration_type", nil)
+  end
+
   def flow
     params.require(:activity).permit(:flow).fetch("flow", nil)
   end
@@ -275,5 +298,10 @@ class Staff::ActivityFormsController < Staff::BaseController
   def country_to_region_mapping
     yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.yml"))
     yaml["data"]
+  end
+
+  def assign_default_collaboration_type_value_if_nil
+    # This allows us to pre-select a specific radio button on collaboration_type form step (value "Bilateral" in this case)
+    @activity.collaboration_type = "1" if @activity.collaboration_type.nil?
   end
 end

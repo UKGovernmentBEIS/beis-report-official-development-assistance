@@ -307,6 +307,24 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#collaboration_type" do
+    context "when collaboration_type exists" do
+      it "returns the locale value for the code" do
+        activity = build(:activity, collaboration_type: "1")
+        result = described_class.new(activity).collaboration_type
+        expect(result).to eql("Bilateral")
+      end
+    end
+
+    context "when the activity does not have a collaboration_type set" do
+      it "returns nil" do
+        activity = build(:activity, collaboration_type: nil)
+        result = described_class.new(activity)
+        expect(result.collaboration_type).to be_nil
+      end
+    end
+  end
+
   describe "#flow" do
     context "when flow aid_type exists" do
       it "returns the locale value for the code" do
@@ -390,30 +408,30 @@ RSpec.describe ActivityPresenter do
 
   describe "#level" do
     context "when the activity is a fund" do
-      it "returns the titelized version of the string" do
+      it "returns the custom_capitalisation version of the string" do
         fund = create(:fund_activity)
-        expect(described_class.new(fund).level).to eql("Fund")
+        expect(described_class.new(fund).level).to eql("Fund (level A)")
       end
     end
 
     context "when the activity is a programme" do
-      it "returns the titelized version of the string" do
+      it "returns the custom_capitalisation version of the string" do
         programme = create(:programme_activity)
-        expect(described_class.new(programme).level).to eql("Programme")
+        expect(described_class.new(programme).level).to eql("Programme (level B)")
       end
     end
 
     context "when the activity is a project" do
-      it "returns the titelized version of the string" do
+      it "returns the custom_capitalisation version of the string" do
         project = create(:project_activity)
-        expect(described_class.new(project).level).to eql("Project")
+        expect(described_class.new(project).level).to eql("Project (level C)")
       end
     end
 
     context "when the activity is a third_party_project" do
-      it "returns the titelized version of the string" do
+      it "returns the custom_capitalisation version of the string" do
         third_party_project = create(:third_party_project_activity)
-        expect(described_class.new(third_party_project).level).to eql("Third-party project")
+        expect(described_class.new(third_party_project).level).to eql("Third-party project (level D)")
       end
     end
   end

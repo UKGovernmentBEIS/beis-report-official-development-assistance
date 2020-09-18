@@ -2,6 +2,7 @@
 
 class ActivityPresenter < SimpleDelegator
   include CodelistHelper
+  include ActivityHelper
 
   def aid_type
     return if super.blank?
@@ -93,6 +94,11 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.gdi.#{super}")
   end
 
+  def collaboration_type
+    return if super.blank?
+    I18n.t("activity.collaboration_type.#{super}")
+  end
+
   def flow
     return if super.blank?
     I18n.t("activity.flow.#{super}")
@@ -119,7 +125,8 @@ class ActivityPresenter < SimpleDelegator
 
   def level
     return if super.blank?
-    I18n.t("page_content.activity.level.#{super}").capitalize
+    activity_level = I18n.t("page_content.activity.level.#{super}")
+    custom_capitalisation(activity_level)
   end
 
   def link_to_roda

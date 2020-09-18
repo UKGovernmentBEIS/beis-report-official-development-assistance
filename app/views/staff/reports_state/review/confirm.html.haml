@@ -1,16 +1,16 @@
-= content_for :page_title_prefix, t("page_title.report.in_review.confirm", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+= content_for :page_title_prefix, t("page_title.report.in_review.confirm", report_organisation: @report.organisation.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
-        = t("page_title.report.in_review.confirm", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+        = t("page_title.report.in_review.confirm", report_organisation: @report.organisation.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
       %p.govuk-body
-        Once you mark this report as in review:
+        You are now moving the report to 'in review' status. BEIS assurance should now review the data and let DPs know of any issues. Please note that DPs can view but not edit RODA whilst the data is 'in review'.
 
       %ul.govuk-list.govuk-list--bullet
-        %li
 
       = form_for @report_presenter, url: report_state_path(@report_presenter) do |f|
+        = hidden_field_tag :state, "in_review"
         = f.govuk_submit t("action.report.in_review.confirm.button")

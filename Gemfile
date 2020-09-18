@@ -18,6 +18,7 @@ gem "mail-notify"
 gem "monetize"
 gem "mini_racer"
 gem "parser", "~> 2.6.3.0"
+gem "pry-rails"
 gem "puma", "~> 4.3"
 gem "public_activity", "~> 1.5"
 gem "pundit"
@@ -50,7 +51,6 @@ group :development, :test do
   gem "i18n-tasks", "~> 0.9.31"
   gem "rspec-rails"
   gem "standard"
-  gem "pry-rails"
 end
 
 group :development do
@@ -74,7 +74,7 @@ group :test do
   gem "pundit-matchers", "~> 1.6.0"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
-  gem "webmock", "~> 3.8"
+  gem "webmock", "~> 3.9"
 end
 
 group :production do

@@ -9,6 +9,7 @@ en:
       financials: Activity %{name} — Financials
       children: Activity %{name} — Child activities
       extending_organisation: What extending organisation should be added to %{name}?
+      comments: Activity %{name} — Comments
   form:
     button:
       activity:
@@ -22,6 +23,7 @@ en:
         call_present:
           'true': 'Yes'
           'false': 'No'
+        collaboration_type: What is the collaboration type for this activity?
         gdi: GDI
         geography_options:
           recipient_region: Region
@@ -47,6 +49,8 @@ en:
           month: Month
           year: Year
         publish_to_iati: Publish this activity to IATI?
+        total_applications: How many applications have you had?
+        total_awards: How many awards have you made?
     legend:
       activity:
         aid_type: Aid type
@@ -69,6 +73,8 @@ en:
         sector: Which %{sector_category} sector is the focus area for this %{level}?
         sector_category: What area of the economy or society is the %{level} helping?
         status: What is the status of the %{level}?
+        total_applications: How many applications have you had?
+        total_awards: How many awards have you made?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
@@ -79,20 +85,23 @@ en:
         flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
         delivery_partner_identifier: This could be the reference you use in your internal systems
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
-        roda_identifier_fragment: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set
         intended_beneficiaries: You can select up to 10 different countries. This field is optional if you already selected a recipient country on the previous step
         oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
+        roda_identifier_fragment: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.
+        roda_identifier_fragment_with_parent_html: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.<br><br>The RODA identifier for this activity's parent is <strong>%{identifier}</strong>.
         sector_category: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
         title: A short title that explains the purpose of the %{level}
         level: Select the type of activity
         level_step:
-          fund: Total fund allocation to BEIS from the Treasury
-          programme: Breakdown of funds to delivery partners from BEIS. This is confirmed in the allocation letter or in the memorandum of understanding (MOU). For example, how a £50m fund will be allocated to different activities or spending
-          project: Records a set of activities of a delivery partner and details of how the money is forecast and/or spent. A delivery partner can record if it plans to award to third parties or a delivery partner could spend these funds on its own activities. For example, on workshops
-          third_party_project: How funding from delivery partners to third parties like universities and research institutes is forecast and spent. For example, spending on 10 research grants of £500k totalling £5m
+          fund: The amount of funding each delivery partner will receive
+          programme: A breakdown of each delivery partner's funding detailed and confirmed in allocation letters and MOUs
+          project: The activities of a delivery partner and details of how the funding is forecast and spent
+          third_party_project: The activities of third parties such as universities and how the funding is forecast and spent
         parent: Which existing %{parent_level} will this new %{level} belong to?
+        total_applications: You can enter 0 if this field is not applicable at the moment
+        total_awards: You can enter 0 if this field is not applicable at the moment
       organisation:
         hint: The organisation this activity is associated with
   summary:
@@ -107,6 +116,7 @@ en:
         call_present: Calls
         call_open_date: Call open date
         call_close_date: Call close date
+        collaboration_type: Collaboration type
         description: Description
         form_state:
           complete: Complete
@@ -125,7 +135,7 @@ en:
         planned_end_date: Planned end date
         planned_start_date: Planned start date
         programme_status: Activity status
-        projects: Projects
+        projects: Projects (level C)
         recipient_country: Recipient country
         recipient_region: Recipient region
         requires_additional_benefitting_countries: Other benefitting countries?
@@ -133,12 +143,14 @@ en:
         sector_category: Focus area category
         stage: Stage
         status: Status
-        third_party_projects: Third-party projects
+        third_party_projects: Third-party projects (level D)
         title: '%{level} name'
         publish_to_iati:
           label: Publish to IATI?
           'false': 'No'
           'true': 'Yes'
+        total_applications: Total applications
+        total_awards: Total awards
         transparency_identifier: "Transparency identifier"
   table:
     header:
@@ -149,13 +161,14 @@ en:
         actual_spend_for_quarter: "%{financial_quarter_and_year} actual spend"
         forecasted_spend_for_quarter: "%{financial_quarter_and_year} forecasted spend"
         variance_for_quarter: "%{financial_quarter_and_year} variance"
+        comment: Comment
     body:
       activity:
         level:
-          fund: Fund
-          programme: Programme
-          project: Project
-          third_party_project: Third-party project
+          fund: Fund (level A)
+          programme: Programme (level B)
+          project: Project (level C)
+          third_party_project: Third-party project (level D)
         view_activity: View
   filters:
     activity:
@@ -177,21 +190,21 @@ en:
         button:
           edit: Choose extending organisation
         heading: Extending organisation
-        hint: The extending organisation will be able to create and report project information against this programme
+        hint: The extending organisation will be able to create and report project (level C) information against this programme (level B)
       implementing_organisation:
         button:
           new: Add implementing organisation
         heading: Implementing organisations
       level:
-        fund: fund
-        programme: programme
-        project: project
-        third_party_project: third-party project
+        fund: fund (level A)
+        programme: programme (level B)
+        project: project (level C)
+        third_party_project: third-party project (level D)
       planned_disbursements: Forecasted spend
-      projects: Projects
+      projects: Projects (level C)
       recipient_country:
         default_selection_value: Select a recipient country
-      third_party_projects: Third-party projects
+      third_party_projects: Third-party projects (level D)
       transactions: Transactions
   tabs:
     activity:
@@ -199,6 +212,7 @@ en:
       details: Details
       financials: Financials
       children: Child activities
+      comments: Comments
   page_title:
     activity:
       index: Activities
@@ -213,6 +227,7 @@ en:
         aid_type: Aid type
         call_dates: What are the call open and close dates for this %{level}?
         call_present: Is there a call for this %{level}?
+        collaboration_type: Collaboration type
         country: What country will benefit from this activity?
         dates: What are the start and end dates for the %{level}?
         flow: Flow
@@ -229,6 +244,7 @@ en:
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
         status: Status
+        total_applications_and_awards: Applications and awards
   activerecord:
     attributes:
       activity:
@@ -262,10 +278,10 @@ en:
               blank: Enter a unique identifier
             roda_identifier_fragment:
               invalid_characters: Must contain only letters, digits, dashes, underscores and slashes
-              level_a_too_long: Fund identifiers must be at most %{limit} characters long
-              level_b_too_long: This programme's identifier must be at most %{limit} characters long
-              level_c_too_long: This project's identifier must be at most %{limit} characters long
-              level_d_too_long: This third-party project's identifier must be at most %{limit} characters long
+              level_a_too_long: Fund's (level A) identifiers must be at most %{limit} characters long
+              level_b_too_long: This programme's (level B) identifier must be at most %{limit} characters long
+              level_c_too_long: This project's (level C) identifier must be at most %{limit} characters long
+              level_d_too_long: This third-party project's (level D) identifier must be at most %{limit} characters long
             title:
               blank: Enter a title
             description:

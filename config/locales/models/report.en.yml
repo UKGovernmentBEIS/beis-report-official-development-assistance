@@ -15,7 +15,7 @@ en:
         state: State
         description: Description
         organisation: Organisation
-        fund: Level A
+        fund: Fund (level A)
         deadline: Deadline
     body:
       report:
@@ -25,6 +25,13 @@ en:
           in_review: Mark as in review
         no_reports:
           No reports
+        add_comment: Add comment
+        edit_comment: Edit comment
+        comment: Comment
+  tabs:
+    report:
+      variance: Variance
+      budgets: Budgets
   page_content:
     reports:
       title: Reports
@@ -37,11 +44,11 @@ en:
     label:
       report:
         description: Report description
-        fund: Level A
+        fund: Fund (level A)
         organisation: Organisation
         state: State
         deadline: Deadline
-        level_a_activity: Level A
+        level_a_activity: Fund (level A)
         financial_quarter_and_year: Financial quarter
     legend:
       report:
@@ -53,23 +60,25 @@ en:
   page_title:
     report:
       activate:
-        confirm: Confirm activation of %{report_financial_quarter} %{report_description}
+        confirm: Activate %{report_financial_quarter} for %{report_organisation}
         complete: Report activation complete
       index: Reports
       edit: Edit report
       show: "%{report_financial_quarter} %{report_description}"
       submit:
-        confirm: Confirm submission of %{report_financial_quarter} %{report_description}
-        complete: Submission complete
+        confirm: Confirm submission of your %{report_financial_quarter} report
+        complete: "%{report_financial_quarter} %{report_organisation} report submitted"
       in_review:
-        confirm: Confirm you want to move %{report_financial_quarter} %{report_description} into review
+        confirm: Review %{report_financial_quarter} %{report_organisation}
         complete: The report is now in review
       request_changes:
-        confirm: Confirm you want to request changes for %{report_financial_quarter} %{report_description}
+        confirm: Confirm you want to request changes for %{report_financial_quarter} %{report_organisation} report
         complete: This report is now awaiting changes
       approve:
-        confirm: Confirm approval for %{report_financial_quarter} %{report_description}
+        confirm: Confirm approval of %{report_organisation} %{report_financial_quarter} report
         complete: This report is approved
+      variance: "%{report_financial_quarter} %{report_description} variance"
+      budgets: "%{report_financial_quarter} %{report_description} budgets"
   action:
     report:
       activate:
@@ -93,27 +102,26 @@ en:
       submit:
         button: Submit report
         complete:
-          title: Submission complete
-          body: "%{report_financial_quarter} %{report_description}"
+          title: "%{report_financial_quarter} %{report_organisation} report submitted"
         confirm:
           button: Confirm submission
       download:
         button: Download report as CSV file
       in_review:
         confirm:
-          button: Move into review
+          button: Confirm
         complete:
-          title: This report is now in review
+          title: "%{report_financial_quarter} %{report_organisation} report in review"
         button: Mark as in review
       request_changes:
         button: Request changes
         confirm:
-          button: Confirm request
+          button: Confirm
         complete:
-          title: This report is now awaiting changes
+          title: "%{report_financial_quarter} %{report_organisation} report is now awaiting changes"
       approve:
         complete:
-          title: This report is now approved
+          title: "%{report_financial_quarter} report for %{report_organisation} approved"
         button: Approve
         confirm:
           button: Confirm approval
@@ -125,7 +133,7 @@ en:
             description:
               blank: Reporting period can't be blank
             fund:
-              level: Activity must be a fund-level Activity
+              level: Activity must be a Fund (level A) activity
             deadline:
               not_in_past: The deadline must be a date in the future
               between: Date must be between %{min} years ago and %{max} years in the future

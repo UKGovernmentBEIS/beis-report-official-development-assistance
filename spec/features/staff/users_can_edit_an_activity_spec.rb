@@ -300,6 +300,7 @@ RSpec.feature "Users can edit an activity" do
     context "when the activity is a project" do
       it "shows an update success message" do
         activity = create(:project_activity, organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
 
         visit organisation_activity_details_path(activity.organisation, activity)
 
@@ -325,6 +326,7 @@ RSpec.feature "Users can edit an activity" do
 
         scenario "a RODA identifier can be added" do
           activity = create(:project_activity, organisation: user.organisation, parent: programme, roda_identifier_fragment: nil)
+          _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
           visit organisation_activity_details_path(activity.organisation, activity)
 
           within(".roda_identifier") { click_on(t("default.link.add")) }
@@ -370,6 +372,7 @@ RSpec.feature "Users can edit an activity" do
     context "when the activity is a third-party project" do
       it "shows an update success message" do
         activity = create(:third_party_project_activity, organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
 
         visit organisation_activity_details_path(activity.organisation, activity)
 
@@ -420,6 +423,26 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   end
   click_on(t("default.link.back"))
   click_on t("tabs.activity.details")
+
+  if activity.call_present?
+    within(".total_applications") do
+      click_on(t("default.link.edit"))
+      expect(page).to have_current_path(
+        activity_step_path(activity, :total_applications_and_awards)
+      )
+    end
+    click_on(t("default.link.back"))
+    click_on t("tabs.activity.details")
+
+    within(".total_awards") do
+      click_on(t("default.link.edit"))
+      expect(page).to have_current_path(
+        activity_step_path(activity, :total_applications_and_awards)
+      )
+    end
+    click_on(t("default.link.back"))
+    click_on t("tabs.activity.details")
+  end
 
   unless activity.fund?
     within(".programme_status") do
@@ -494,6 +517,17 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   end
   click_on(t("default.link.back"))
   click_on t("tabs.activity.details")
+
+  unless activity.fund?
+    within(".collaboration_type") do
+      click_on(t("default.link.edit"))
+      expect(page).to have_current_path(
+        activity_step_path(activity, :collaboration_type)
+      )
+    end
+    click_on(t("default.link.back"))
+    click_on t("tabs.activity.details")
+  end
 
   within(".flow") do
     click_on(t("default.link.edit"))

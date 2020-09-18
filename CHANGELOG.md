@@ -298,10 +298,43 @@
   associated organisation. All Level B activities should belong to BEIS.
 - `GDI` form step added to create activity journey
 - Show Aid Type and Sector codes in Report CSV export for activities
+- Update activity policy to account for the report state
+
+## [release-17] - 2020-09-18
+
+- New reports are created when the prior is approved
+- `Total applications` and `Total awards` form step added to create activity journey
+- Report deadline value is shown on the edit form
+- Change on hierarchy terminology to display activity levels A, B, C and D along with old terminology in the UI across the service
+- Update on the definitions for each level of activity
+- Updated transaction policy
+- Only show the edit transaction link when the transaction can be edited
+- Only show the add transaction button when the activity can be edited
+- Updated planned disbursement policy
+- Only show the edit planned disbursement link then it the planned disbursement
+  can be edited
+- Only show the add planned disbursement button when the activity can be edited
+- BEIS users can add transactions regardless of report state
+- BEIS users can add planned disbursements regardless of report state
+- Update the activity financials view to show all financials on all levels
+  except Funds (Level A)
+- Delivery partners can create & update comments associated to an activity & a report
+  The comments are exported to the report CSV
+- For delivery partners, Budgets relate to the report that creates them
+- Ingest can handle the new budget/report relationship
+- Update the budget policy
+- Report variance is shown in a tab
+- Show budgets added in a report on the reports view
+- `Collaboration type` form field added to create activity journey and activity XML
+- Upload transaction data in bulk as CSV
+- Display the parent activity's RODA identifier when adding RODA IDs
+- Missing `West Bank and Gaza Strip` country included in `recipient_country` list
+- Report state content updated
 
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...HEAD
+[release-17]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...release-17
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16
 [release-15]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...release-15
 [release-14]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-13...release-14
@@ -313,5 +346,3 @@
 [release-8]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-7...release-8
 [release-7]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-6...release-7
 [release-6]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-5...release-6
-[release-5]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-4...release-5
-[release-4]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-3...release-4

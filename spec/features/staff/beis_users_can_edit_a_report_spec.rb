@@ -24,7 +24,11 @@ RSpec.feature "BEIS users can edit a report" do
       expect(page).to have_content t("action.report.update.success")
       within "##{report.id}" do
         expect(page).to have_content("31 Jan 2021")
+        click_on t("default.link.edit")
       end
+      expect(page).to have_field("report[deadline(1i)]", with: "2021")
+      expect(page).to have_field("report[deadline(2i)]", with: "1")
+      expect(page).to have_field("report[deadline(3i)]", with: "31")
     end
 
     scenario "editing a Report creates a log in PublicActivity" do

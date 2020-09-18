@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_07_141532) do
+ActiveRecord::Schema.define(version: 2020_09_15_124739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -61,6 +61,9 @@ ActiveRecord::Schema.define(version: 2020_09_07_141532) do
     t.boolean "requires_additional_benefitting_countries"
     t.boolean "oda_eligibility", default: true
     t.string "gdi"
+    t.integer "total_applications"
+    t.integer "total_awards"
+    t.string "collaboration_type"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
@@ -98,7 +101,21 @@ ActiveRecord::Schema.define(version: 2020_09_07_141532) do
     t.string "currency"
     t.uuid "parent_activity_id"
     t.boolean "ingested", default: false
+    t.uuid "report_id"
     t.index ["parent_activity_id"], name: "index_budgets_on_parent_activity_id"
+    t.index ["report_id"], name: "index_budgets_on_report_id"
+  end
+
+  create_table "comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "comment"
+    t.uuid "owner_id"
+    t.uuid "activity_id"
+    t.uuid "report_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id"], name: "index_comments_on_activity_id"
+    t.index ["owner_id"], name: "index_comments_on_owner_id"
+    t.index ["report_id"], name: "index_comments_on_report_id"
   end
 
   create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
