@@ -327,6 +327,7 @@
 - `Collaboration type` form field added to create activity journey and activity XML
 - Upload transaction data in bulk as CSV
 - Display the parent activity's RODA identifier when adding RODA IDs
+- Missing `West Bank and Gaza Strip` country included in `recipient_country` list
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...HEAD
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16
