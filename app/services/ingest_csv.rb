@@ -1,7 +1,15 @@
 require "csv"
 
 class IngestCsv
-  ACCEPTABLE_INVALID_ATTRIBUTES = [:gdi, :intended_beneficiaries, :report, :receiving_organisation_name, :receiving_organisation_type].freeze
+  ACCEPTABLE_INVALID_ATTRIBUTES = [
+    :gdi,
+    :intended_beneficiaries,
+    :report,
+    :receiving_organisation_name,
+    :receiving_organisation_type,
+    :date,
+    :collaboration_type,
+  ].freeze
 
   attr_accessor :csv, :filename
 
