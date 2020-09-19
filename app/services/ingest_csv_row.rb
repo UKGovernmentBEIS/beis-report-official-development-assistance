@@ -227,6 +227,7 @@ class IngestCsvRow
         .map { |status| [status["name"].downcase, [status["code"], status["category"]]] }
         .to_h
         .merge("solar energy for centralised grids" => ["23067", "230"])
+        .merge("modern biofuels manufacturing" => ["32173", "321"])
     end
   end
 
@@ -239,6 +240,9 @@ class IngestCsvRow
         .merge("gambia" => "GM")
         .merge("philippines" => "PH")
         .merge("tanzania" => "TZ")
+        .merge("west bank and gaza strip" => "PS")
+        .merge("democratic republic of the congo" => "CD")
+        .merge("sudan" => "SD")
     end
   end
 
