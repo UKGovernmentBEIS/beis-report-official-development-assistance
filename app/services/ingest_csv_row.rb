@@ -60,7 +60,7 @@ class IngestCsvRow
 
   def process_gdi(value)
     value = value.to_s.strip.downcase
-    return nil if value == "not applicable"
+    return nil if value == "not applicable" || value == "na"
 
     gdi_mapping[value] || :skip
   end
@@ -97,6 +97,75 @@ class IngestCsvRow
     countries.compact
   end
 
+  def process_sector(value)
+    mapped_sector = sector_mapping[value.to_s.downcase]
+
+    return :skip if mapped_sector.nil?
+
+    sector, sector_category = mapped_sector
+
+    updated_attributes["sector_category"] = sector_category
+    sector
+  end
+
+  def process_recipient_country(value)
+    mapped_country = country_mapping[value.to_s.downcase]
+
+    if mapped_country.present?
+      updated_attributes["geography"] = "recipient_country"
+      updated_attributes["recipient_region"] = country_to_region_mapping[mapped_country]
+      return mapped_country
+    end
+
+    mapped_region = region_mapping[value.to_s.downcase]
+
+    if mapped_region.present?
+      updated_attributes["geography"] = "recipient_region"
+      updated_attributes["recipient_region"] = mapped_region
+      return nil
+    end
+
+    :skip
+  end
+
+  def process_planned_start_date(value)
+    return :skip if value.blank? || value.downcase == "n/a" || value.downcase == "not applicable"
+
+    Date.parse(value)
+  end
+
+  def process_planned_end_date(value)
+    return :skip if value.blank? || value.downcase == "n/a" || value.downcase == "not applicable"
+
+    Date.parse(value)
+  end
+
+  def process_actual_start_date(value)
+    return :skip if value.blank? || value.downcase == "n/a" || value.downcase == "not applicable"
+
+    Date.parse(value)
+  end
+
+  def process_actual_end_date(value)
+    return :skip if value.blank? || value.downcase == "n/a" || value.downcase == "not applicable"
+
+    Date.parse(value)
+  end
+
+  def process_flow(value)
+    value = value.to_s.strip.downcase
+    return :skip if value.blank? || value == "not applicable" || value == "na"
+
+    flow_mapping[value] || :skip
+  end
+
+  def process_aid_type(value)
+    value = value.to_s.strip.downcase
+    return :skip if value.blank? || value == "not applicable" || value == "na"
+
+    aid_type_mapping[value] || :skip
+  end
+
   private
 
   def programme_status_mapping
@@ -120,6 +189,61 @@ class IngestCsvRow
       load_yaml(entity: "activity", type: "intended_beneficiaries")
         .values
         .flatten
+        .map { |status| [status["name"].downcase, status["code"]] }
+        .to_h
+    end
+  end
+
+  def sector_mapping
+    @sector_mapping ||= begin
+      load_yaml(entity: "activity", type: "sector")
+        .map { |status| [status["name"].downcase, [status["code"], status["category"]]] }
+        .to_h
+        .merge("solar energy for centralised grids" => ["23067", "230"])
+    end
+  end
+
+  def country_mapping
+    @country_mapping ||= begin
+      yaml_to_objects(entity: "activity", type: "recipient_country")
+        .map { |status| [status["name"].downcase, status["code"]] }
+        .to_h
+        .merge("china (people's republic of)" => "CN")
+        .merge("gambia" => "GM")
+        .merge("philippines" => "PH")
+        .merge("tanzania" => "TZ")
+    end
+  end
+
+  def region_mapping
+    @region_mapping ||= begin
+      yaml_to_objects(entity: "activity", type: "recipient_region")
+        .map { |status| [status["name"].downcase, status["code"]] }
+        .to_h
+        .merge("africa, regional" => "298")
+        .merge("asia, regional" => "798")
+        .merge("asia" => "798")
+    end
+  end
+
+  def country_to_region_mapping
+    @country_to_region_mapping ||= begin
+      yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.yml"))
+      yaml["data"].map { |status| [status["country"], status["region"]] }.to_h
+    end
+  end
+
+  def flow_mapping
+    @flow_mapping ||= begin
+      yaml_to_objects(entity: "activity", type: "flow")
+        .map { |status| [status["name"].downcase, status["code"]] }
+        .to_h
+    end
+  end
+
+  def aid_type_mapping
+    @aid_type_mapping ||= begin
+      yaml_to_objects(entity: "activity", type: "aid_type")
         .map { |status| [status["name"].downcase, status["code"]] }
         .to_h
     end
