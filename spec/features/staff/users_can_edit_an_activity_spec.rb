@@ -334,7 +334,7 @@ RSpec.feature "Users can edit an activity" do
           click_button t("form.button.activity.submit")
 
           expect(page).to have_content(t("action.project.update.success"))
-          expect(activity.reload.roda_identifier_compound).to eq("AAA-BBB-CCC")
+          expect(activity.reload.roda_identifier).to eq("AAA-BBB-CCC")
         end
       end
 

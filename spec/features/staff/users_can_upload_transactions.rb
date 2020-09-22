@@ -28,7 +28,7 @@ RSpec.feature "users can upload transactions" do
       {
         "Activity Name" => project.description,
         "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
-        "Activity RODA Identifier" => project.roda_identifier_compound,
+        "Activity RODA Identifier" => project.roda_identifier,
         "Date" => nil,
         "Value" => nil,
         "Receiving Organisation Name" => nil,
@@ -40,7 +40,7 @@ RSpec.feature "users can upload transactions" do
       {
         "Activity Name" => sibling_project.description,
         "Activity Delivery Partner Identifier" => sibling_project.delivery_partner_identifier,
-        "Activity RODA Identifier" => sibling_project.roda_identifier_compound,
+        "Activity RODA Identifier" => sibling_project.roda_identifier,
         "Date" => nil,
         "Value" => nil,
         "Receiving Organisation Name" => nil,
@@ -59,7 +59,7 @@ RSpec.feature "users can upload transactions" do
   end
 
   scenario "uploading a valid set of transactions" do
-    ids = [project, sibling_project].map(&:roda_identifier_compound)
+    ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
       Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel | Description
@@ -73,7 +73,7 @@ RSpec.feature "users can upload transactions" do
   end
 
   scenario "uploading an invalid set of transactions" do
-    ids = [project, sibling_project].map(&:roda_identifier_compound)
+    ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
       Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel | Description
