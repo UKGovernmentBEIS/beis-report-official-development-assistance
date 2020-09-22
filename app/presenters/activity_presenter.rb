@@ -104,6 +104,11 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.flow.#{super}")
   end
 
+  def flow_with_code
+    return if flow.blank?
+    "#{flow} (#{to_model.flow})"
+  end
+
   def oda_eligibility
     return if super.nil?
     I18n.t("activity.oda_eligibility.#{super}")
@@ -127,6 +132,14 @@ class ActivityPresenter < SimpleDelegator
     return if super.blank?
     activity_level = I18n.t("page_content.activity.level.#{super}")
     custom_capitalisation(activity_level)
+  end
+
+  def tied_status_with_code
+    "#{I18n.t("activity.tied_status.#{tied_status}")} (#{tied_status})"
+  end
+
+  def finance_with_code
+    "#{I18n.t("activity.finance.#{finance}")} (#{finance})"
   end
 
   def link_to_roda
