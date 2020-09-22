@@ -22,7 +22,7 @@ RSpec.describe ImportTransactions do
   describe "importing a single transaction" do
     let :transaction_row do
       {
-        "Activity RODA Identifier" => project.roda_identifier_compound,
+        "Activity RODA Identifier" => project.roda_identifier,
         "Date" => "2020-09-08",
         "Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
@@ -83,7 +83,7 @@ RSpec.describe ImportTransactions do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportTransactions::Error.new(0, "Activity RODA Identifier", project.roda_identifier_compound, t("importer.errors.transaction.unauthorised")),
+          ImportTransactions::Error.new(0, "Activity RODA Identifier", project.roda_identifier, t("importer.errors.transaction.unauthorised")),
         ])
       end
     end
@@ -92,7 +92,7 @@ RSpec.describe ImportTransactions do
       let(:another_project) { create(:project_activity, organisation: reporter_organisation) }
 
       let :transaction_row do
-        super().merge("Activity RODA Identifier" => another_project.roda_identifier_compound)
+        super().merge("Activity RODA Identifier" => another_project.roda_identifier)
       end
 
       it "does not import any transactions" do
@@ -101,7 +101,7 @@ RSpec.describe ImportTransactions do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportTransactions::Error.new(0, "Activity RODA Identifier", another_project.roda_identifier_compound, t("importer.errors.transaction.unauthorised")),
+          ImportTransactions::Error.new(0, "Activity RODA Identifier", another_project.roda_identifier, t("importer.errors.transaction.unauthorised")),
         ])
       end
     end
@@ -336,7 +336,7 @@ RSpec.describe ImportTransactions do
 
     let :first_transaction_row do
       {
-        "Activity RODA Identifier" => sibling_project.roda_identifier_compound,
+        "Activity RODA Identifier" => sibling_project.roda_identifier,
         "Date" => "2020-09-08",
         "Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
@@ -347,7 +347,7 @@ RSpec.describe ImportTransactions do
 
     let :second_transaction_row do
       {
-        "Activity RODA Identifier" => project.roda_identifier_compound,
+        "Activity RODA Identifier" => project.roda_identifier,
         "Date" => "2020-09-10",
         "Value" => "150.00",
         "Receiving Organisation Name" => "Example Corporation",
@@ -358,7 +358,7 @@ RSpec.describe ImportTransactions do
 
     let :third_transaction_row do
       {
-        "Activity RODA Identifier" => sibling_project.roda_identifier_compound,
+        "Activity RODA Identifier" => sibling_project.roda_identifier,
         "Date" => "2019-12-25",
         "Value" => "£5,000",
         "Receiving Organisation Name" => "Example Foundation",

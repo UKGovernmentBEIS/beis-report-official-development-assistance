@@ -54,7 +54,7 @@ class Staff::TransactionUploadsController < Staff::BaseController
     [
       activity.description,
       activity.delivery_partner_identifier,
-      activity.roda_identifier_compound,
+      activity.roda_identifier,
     ]
   end
 
