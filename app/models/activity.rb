@@ -179,6 +179,10 @@ class Activity < ApplicationRecord
     end
   end
 
+  def roda_identifier
+    roda_identifier_compound
+  end
+
   def can_set_roda_identifier?
     identifier_fragments = roda_identifier_fragment_chain
     identifier_fragments[0..-2].all?(&:present?) && identifier_fragments.last.blank?
