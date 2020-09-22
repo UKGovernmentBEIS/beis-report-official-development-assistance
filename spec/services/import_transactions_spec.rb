@@ -180,7 +180,7 @@ RSpec.describe ImportTransactions do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportTransactions::Error.new(0, "Value", "", t("activerecord.errors.models.transaction.attributes.value.other_than")),
+          ImportTransactions::Error.new(0, "Value", "", t("importer.errors.transaction.non_numeric_value")),
         ])
       end
     end
@@ -212,7 +212,23 @@ RSpec.describe ImportTransactions do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportTransactions::Error.new(0, "Value", "This is not a number", t("activerecord.errors.models.transaction.attributes.value.other_than")),
+          ImportTransactions::Error.new(0, "Value", "This is not a number", t("importer.errors.transaction.non_numeric_value")),
+        ])
+      end
+    end
+
+    context "when the Value is partially numeric" do
+      let :transaction_row do
+        super().merge("Value" => "3a4b5.c67")
+      end
+
+      it "does not import any transactions" do
+        expect(report.transactions.count).to eq(0)
+      end
+
+      it "returns an error" do
+        expect(importer.errors).to eq([
+          ImportTransactions::Error.new(0, "Value", "3a4b5.c67", t("importer.errors.transaction.non_numeric_value")),
         ])
       end
     end

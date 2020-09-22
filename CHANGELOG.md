@@ -334,6 +334,8 @@
 ## [unreleased]
 
 - Add and amend Activity data fields in the Report CSV export
+- Accept strictly numeric values in the `Value` column for bulk transaction
+  import
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...HEAD
 [release-17]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...release-17
