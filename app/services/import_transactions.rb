@@ -159,7 +159,7 @@ class ImportTransactions
     end
 
     def convert_activity(id)
-      Activity.find_by(roda_identifier_compound: id)
+      Activity.by_roda_identifier(id)
     end
 
     def convert_date(date)

@@ -12,7 +12,7 @@ newton_fund_params = FactoryBot.build(:fund_activity,
 
 _newton_fund = Activity.find_or_create_by(newton_fund_params)
 
-delivery_partner = Organisation.find_by!(service_owner: false)
+delivery_partner = User.all.find(&:delivery_partner?).organisation
 
 first_programme_params = FactoryBot.build(:programme_activity,
   title: "International Partnerships",
@@ -37,3 +37,8 @@ project_params = FactoryBot.build(:project_activity,
   extending_organisation: delivery_partner).attributes
 
 Activity.find_or_create_by(project_params)
+
+Activity.all.each do |activity|
+  activity.cache_roda_identifier!
+  activity.save!
+end
