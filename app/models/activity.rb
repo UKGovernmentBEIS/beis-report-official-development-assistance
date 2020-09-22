@@ -106,6 +106,10 @@ class Activity < ApplicationRecord
     for_organisation.merge(projects.or(third_party_projects))
   }
 
+  def self.by_roda_identifier(identifier)
+    find_by(roda_identifier_compound: identifier)
+  end
+
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
     super(context)
