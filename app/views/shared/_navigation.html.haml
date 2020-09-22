@@ -21,7 +21,7 @@
           = link_to t("page_title.users.index"), users_path, class: "govuk-header__link"
 
       - if authenticated?
-        %li{ class: navigation_item_class(users_path) }
+        %li{ class: navigation_item_class(sign_out_path) }
           %a{ href: sign_out_path, class: 'govuk-header__link' }
             = t("header.link.sign_out")
 
