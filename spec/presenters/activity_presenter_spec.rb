@@ -343,6 +343,13 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#flow_with_code" do
+    it "returns the flow string & code number" do
+      fund = create(:activity, flow: "20")
+      expect(described_class.new(fund).flow_with_code).to eql("OOF (20)")
+    end
+  end
+
   describe "#oda_eligibility" do
     context "when the activity is ODA eligible" do
       it "returns the locale value for this option" do
@@ -433,6 +440,20 @@ RSpec.describe ActivityPresenter do
         third_party_project = create(:third_party_project_activity)
         expect(described_class.new(third_party_project).level).to eql("Third-party project (level D)")
       end
+    end
+  end
+
+  describe "#tied_status_with_code" do
+    it "returns the tied status string & code number" do
+      fund = create(:activity)
+      expect(described_class.new(fund).tied_status_with_code).to eql("Untied (5)")
+    end
+  end
+
+  describe "#finance_with_code" do
+    it "returns the finance string & code number" do
+      fund = create(:activity)
+      expect(described_class.new(fund).finance_with_code).to eql("Standard grant (110)")
     end
   end
 

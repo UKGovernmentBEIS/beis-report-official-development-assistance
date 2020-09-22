@@ -708,6 +708,10 @@ en:
     oda_eligibility:
       'true': 'Eligible'
       'false': 'No longer eligible'
+    tied_status:
+      '5': Untied
+    finance:
+      '110': Standard grant
   generic:
     default_currency:
       aed: UAE Dirham
@@ -1099,3 +1103,4 @@ en:
       '7': Reimbursement
       '8': Purchase of Equity
       '9': Sale of Equity
+
