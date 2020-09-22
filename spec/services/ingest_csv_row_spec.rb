@@ -163,6 +163,11 @@ RSpec.describe IngestCsvRow do
         .to be_nil
     end
 
+    it "returns nil when the value is 'na'" do
+      expect(IngestCsvRow.new.process_gdi("NA"))
+        .to be_nil
+    end
+
     it "skips for other values" do
       expect(IngestCsvRow.new.process_gdi("xxxx"))
         .to eql :skip
@@ -242,6 +247,171 @@ RSpec.describe IngestCsvRow do
     it "returns an empty array if delimitered list is empty" do
       expect(IngestCsvRow.new.process_intended_beneficiaries(" |  "))
         .to eql []
+    end
+  end
+
+  context "#process_sector" do
+    it "returns the mapped sector code" do
+      expect(IngestCsvRow.new.process_sector("medical research"))
+        .to eql "12182"
+    end
+
+    it "sets the sector_category attribute to a value suitable for this sector" do
+      input = {"sector" => "Medical Research"}
+      output = IngestCsvRow.new(input).call
+
+      expect(output).to include(
+        "sector_category" => "121"
+      )
+    end
+
+    it "is skipped when value cannot be mapped" do
+      expect(IngestCsvRow.new.process_sector("wrong sector"))
+        .to eql :skip
+    end
+  end
+
+  context "#process_recipient_country" do
+    context "when the value is a known country" do
+      it "returns the mapped country code" do
+        expect(IngestCsvRow.new.process_recipient_country("Algeria"))
+          .to eql "DZ"
+      end
+
+      it "sets the geography attribute to recipient_country" do
+        input = {"recipient_country" => "Algeria"}
+        output = IngestCsvRow.new(input).call
+
+        expect(output).to include(
+          "geography" => "recipient_country"
+        )
+      end
+
+      it "sets the recipient_region to the region that the recipient_country is in" do
+        input = {"recipient_country" => "Algeria"}
+        output = IngestCsvRow.new(input).call
+
+        expect(output).to include(
+          "recipient_region" => "189"
+        )
+      end
+    end
+
+    context "when the value is a known region" do
+      it "return nil, as recipient_country shouldn't be set in this case" do
+        expect(IngestCsvRow.new.process_recipient_country("Far East Asia, regional"))
+          .to be_nil
+      end
+
+      it "sets the geography attribute to recipient_region" do
+        input = {"recipient_country" => "Far East Asia, regional"}
+        output = IngestCsvRow.new(input).call
+
+        expect(output).to include(
+          "geography" => "recipient_region"
+        )
+      end
+
+      it "sets the recipient_region attribute to the mapped region code" do
+        input = {"recipient_country" => "Far East Asia, regional"}
+        output = IngestCsvRow.new(input).call
+
+        expect(output).to include(
+          "recipient_region" => "789"
+        )
+      end
+    end
+
+    it "skips when the country or region cannot be found" do
+      expect(IngestCsvRow.new.process_recipient_country("Non-existent"))
+        .to eql :skip
+    end
+  end
+
+  context "#process_flow" do
+    it "returns the mapped sector code" do
+      expect(IngestCsvRow.new.process_flow("ODA"))
+        .to eql "10"
+    end
+
+    it "is skipped when value cannot be mapped" do
+      expect(IngestCsvRow.new.process_flow("bad-flow"))
+        .to eql :skip
+    end
+
+    it "is skipped when value is blank" do
+      expect(IngestCsvRow.new.process_flow(""))
+        .to eql :skip
+    end
+
+    it "is skipped when value is 'not applicable'" do
+      expect(IngestCsvRow.new.process_flow("NOT APPLICABLE"))
+        .to eql :skip
+    end
+  end
+
+  context "#process_planned_start_date" do
+    it "returns the parsed date" do
+      expect(IngestCsvRow.new.process_planned_start_date("25/12/2020"))
+        .to eql Date.new(2020, 12, 25)
+    end
+
+    it "returns :skip for a blank value" do
+      expect(IngestCsvRow.new.process_planned_start_date(""))
+        .to eql :skip
+    end
+
+    it "returns :skip when value is N/A" do
+      expect(IngestCsvRow.new.process_planned_start_date("N/A"))
+        .to eql :skip
+    end
+
+    it "returns :skip when value is 'not applicable'" do
+      expect(IngestCsvRow.new.process_planned_start_date("NOT APPLICABLE"))
+        .to eql :skip
+    end
+  end
+
+  context "#process_planned_end_date" do
+    it "returns the parsed date" do
+      expect(IngestCsvRow.new.process_planned_end_date("25/12/2020"))
+        .to eql Date.new(2020, 12, 25)
+    end
+  end
+
+  context "#process_actual_start_date" do
+    it "returns the parsed date" do
+      expect(IngestCsvRow.new.process_actual_start_date("25/12/2020"))
+        .to eql Date.new(2020, 12, 25)
+    end
+  end
+
+  context "#process_actual_end_date" do
+    it "returns the parsed date" do
+      expect(IngestCsvRow.new.process_actual_end_date("25/12/2020"))
+        .to eql Date.new(2020, 12, 25)
+    end
+  end
+
+  context "#process_aid_type" do
+    it "returns the mapped aid type code" do
+      expect(IngestCsvRow.new.process_aid_type("other technical assistance"))
+        .to eql "D02"
+    end
+
+    it "is skipped when value cannot be mapped" do
+      expect(IngestCsvRow.new.process_aid_type("bad-aid-type"))
+        .to eql :skip
+    end
+
+    it "is skipped when value is blank" do
+      expect(IngestCsvRow.new.process_aid_type(""))
+        .to eql :skip
+    end
+
+    it "is skipped when value is 'not applicable'" do
+      expect(IngestCsvRow.new.process_aid_type("NOT APPLICABLE"))
+        .to eql :skip
     end
   end
 end
