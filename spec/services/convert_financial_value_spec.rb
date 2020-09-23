@@ -11,8 +11,16 @@ RSpec.describe ConvertFinancialValue do
     expect(converter.convert("42")).to eq(BigDecimal("42"))
   end
 
-  it "converts a fractional value" do
+  it "converts a fractional value with one decimal place" do
+    expect(converter.convert("5.2")).to eq(BigDecimal("5.20"))
+  end
+
+  it "converts a fractional value with two decimal places" do
     expect(converter.convert("5.02")).to eq(BigDecimal("5.02"))
+  end
+
+  it "rejects a fractional value with three decimal places" do
+    expect { converter.convert("5.222") }.to raise_error(ConvertFinancialValue::Error)
   end
 
   it "converts a negative value" do
