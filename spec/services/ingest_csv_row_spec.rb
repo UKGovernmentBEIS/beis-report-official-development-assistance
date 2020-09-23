@@ -414,4 +414,47 @@ RSpec.describe IngestCsvRow do
         .to eql :skip
     end
   end
+
+  context "#process_transaction_type" do
+    it "returns the mapped transaction type code" do
+      expect(IngestCsvRow.new.process_transaction_type("disbursement"))
+        .to eql "3"
+    end
+
+    it "is skipped when value cannot be mapped" do
+      expect(IngestCsvRow.new.process_transaction_type("wrong"))
+        .to eql :skip
+    end
+  end
+
+  context "#process_date" do
+    it "returns the parsed date" do
+      expect(IngestCsvRow.new.process_date("2019-04-01"))
+        .to eql Date.new(2019, 4, 1)
+    end
+  end
+
+  context "#process_currency" do
+    it "returns the mapped currency code" do
+      expect(IngestCsvRow.new.process_currency("POUND STERLING"))
+        .to eql "GBP"
+    end
+
+    it "is skipped when value cannot be mapped" do
+      expect(IngestCsvRow.new.process_currency("Ferengi Latinum"))
+        .to eql :skip
+    end
+  end
+
+  context "#process_providing_organisation_type" do
+    it "returns the mapped organsation type code" do
+      expect(IngestCsvRow.new.process_providing_organisation_type("other public sector"))
+        .to eql "15"
+    end
+
+    it "is skipped when value cannot be mapped" do
+      expect(IngestCsvRow.new.process_providing_organisation_type("xxx"))
+        .to eql :skip
+    end
+  end
 end

@@ -1,7 +1,15 @@
 require "csv"
 
 class IngestCsv
-  ACCEPTABLE_INVALID_ATTRIBUTES = [:gdi, :intended_beneficiaries].freeze
+  ACCEPTABLE_INVALID_ATTRIBUTES = [
+    :gdi,
+    :intended_beneficiaries,
+    :report,
+    :receiving_organisation_name,
+    :receiving_organisation_type,
+    :date,
+    :collaboration_type,
+  ].freeze
 
   attr_accessor :csv, :filename
 
@@ -36,24 +44,19 @@ class IngestCsv
           # Ignore parent_roda_identifier_compound attribute as there's no equivalent in RODA
           attributes.delete("parent_roda_identifier_compound")
 
-          activity.assign_attributes(attributes)
+          if has_transactions?
+            transaction = activity.transactions.find_or_initialize_by(
+              description: attributes["description"]
+            ) { |transaction|
+              transaction.ingested = true
+              transaction.report = Report.find_by!(financial_quarter: nil, fund: activity.associated_fund, organisation: activity.organisation)
+            }
 
-          if activity.valid?
-            # Clean save
-            activity.save!
-          elsif (activity.errors.keys - ACCEPTABLE_INVALID_ATTRIBUTES).empty?
-            # Force validation if the only invalid fields are ones we're ok with
-            activity.save!(validate: false)
+            attributes.delete("delivery_partner_identifier")
+
+            save_changes!(transaction, attributes)
           else
-            # Skip row and log validation errors, ignoring the ones we've deemed acceptable
-            ACCEPTABLE_INVALID_ATTRIBUTES.each { |attr| activity.errors.delete(attr) }
-            write_log("Skipping Activity #{activity.id}: #{activity.errors.full_messages}")
-
-            attributes.sort.each do |k, v|
-              write_log("attributes: #{k.ljust(30, " ").slice(0...30)} => #{v}")
-            end
-
-            # binding.pry
+            save_changes!(activity, attributes)
           end
         end
       end
@@ -61,6 +64,27 @@ class IngestCsv
   end
 
   private
+
+  def save_changes!(model, attributes)
+    model.assign_attributes(attributes)
+
+    if model.valid?
+      # Clean save
+      model.save!
+    elsif (model.errors.keys - ACCEPTABLE_INVALID_ATTRIBUTES).empty?
+      # Force validation if the only invalid fields are ones we're ok with
+      model.save!(validate: false)
+    else
+      # Skip row and log validation errors, ignoring the ones we've deemed acceptable
+      ACCEPTABLE_INVALID_ATTRIBUTES.each { |attr| model.errors.delete(attr) }
+
+      write_log("Skipping #{model.model_name.name} #{model.id}: #{model.errors.full_messages}")
+
+      attributes.sort.each do |k, v|
+        write_log("attributes: #{k.ljust(30, " ").slice(0...30)} => #{v}")
+      end
+    end
+  end
 
   def activity_for(row)
     if has_parent_identifier?
@@ -97,6 +121,10 @@ class IngestCsv
 
   def has_parent_identifier?
     @has_parent_identifier ||= csv.first.headers.include?("parent_roda_identifier_compound")
+  end
+
+  def has_transactions?
+    @has_transactions ||= csv.first.headers.include?("transaction_type")
   end
 
   def write_log(message)
