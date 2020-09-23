@@ -1,5 +1,5 @@
 class ConvertFinancialValue
-  VALUE_FORMAT = /^(?:£ *)?((?:- *)?[0-9,]+(?:\.[0-9]{2})?)$/
+  VALUE_FORMAT = /^(?:£ *)?((?:- *)?[0-9,]+(?:\.[0-9]{1,2})?)$/
 
   Error = Class.new(StandardError)
 
