@@ -55,7 +55,7 @@ en:
       activity:
         aid_type: Aid type
         actual_end_date: Actual end date (optional)
-        actual_start_date: Actual start date (optional)
+        actual_start_date: Actual start date (optional if planned start date is entered)
         call_present: Is there a call for this %{level}?
         call_open_date: Call open date
         call_close_date: Call close date
