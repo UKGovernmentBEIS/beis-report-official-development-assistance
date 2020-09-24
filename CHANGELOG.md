@@ -338,6 +338,7 @@
   import
 - Do not automatically strip letters from numeric value fields; instead reject
   the values as invalid and show an error to the user  
+- the sign out navigation link is not active on the users page
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...HEAD
 [release-17]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...release-17
