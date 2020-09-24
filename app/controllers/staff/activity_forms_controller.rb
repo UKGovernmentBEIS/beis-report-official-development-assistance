@@ -124,8 +124,12 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :region
       @activity.assign_attributes(recipient_region: recipient_region)
     when :country
-      inferred_region = country_to_region_mapping.find { |pair| pair["country"] == recipient_country }["region"]
-      @activity.assign_attributes(recipient_region: inferred_region, recipient_country: recipient_country)
+      if recipient_country.blank?
+        @activity.assign_attributes(recipient_country: nil)
+      else
+        inferred_region = country_to_region_mapping.find { |pair| pair["country"] == recipient_country }["region"]
+        @activity.assign_attributes(recipient_region: inferred_region, recipient_country: recipient_country)
+      end
     when :requires_additional_benefitting_countries
       @activity.assign_attributes(requires_additional_benefitting_countries: requires_additional_benefitting_countries)
     when :intended_beneficiaries
