@@ -7,7 +7,8 @@ class UpdateBudget
 
   def call(attributes: {})
     budget.assign_attributes(attributes)
-    budget.value = sanitize_monetary_string(value: attributes[:value])
+
+    convert_and_assign_value(budget, attributes[:value])
 
     result = if budget.valid?
       Result.new(budget.save, budget)
@@ -20,7 +21,9 @@ class UpdateBudget
 
   private
 
-  def sanitize_monetary_string(value:)
-    Monetize.parse(value)
+  def convert_and_assign_value(budget, value)
+    budget.value = ConvertFinancialValue.new.convert(value.to_s)
+  rescue ConvertFinancialValue::Error
+    budget.errors.add(:value, I18n.t("activerecord.errors.models.budget.attributes.value.not_a_number"))
   end
 end

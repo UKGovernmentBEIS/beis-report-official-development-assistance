@@ -1,10 +1,10 @@
 RSpec.shared_examples "sanitises monetary field" do
   context "when a value is passed in" do
     context "and that value contains alphabetical characters" do
-      it "sets a value without these characters" do
+      it "returns an unsuccessful result" do
         attributes = ActionController::Parameters.new(value: "abc 123.00 xyz").permit!
         result = subject.call(attributes: attributes)
-        expect(result.object.value).to eq(BigDecimal("123.00"))
+        expect(result.success).to be false
       end
     end
 

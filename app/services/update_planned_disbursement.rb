@@ -7,7 +7,8 @@ class UpdatePlannedDisbursement
 
   def call(attributes: {})
     planned_disbursement.assign_attributes(attributes)
-    planned_disbursement.value = sanitize_monetary_string(value: attributes[:value])
+
+    convert_and_assign_value(planned_disbursement, attributes[:value])
 
     result = if planned_disbursement.valid?
       Result.new(planned_disbursement.save!, planned_disbursement)
@@ -20,7 +21,9 @@ class UpdatePlannedDisbursement
 
   private
 
-  def sanitize_monetary_string(value:)
-    Monetize.parse(value)
+  def convert_and_assign_value(planned_disbursement, value)
+    planned_disbursement.value = ConvertFinancialValue.new.convert(value.to_s)
+  rescue ConvertFinancialValue::Error
+    planned_disbursement.errors.add(:value, I18n.t("activerecord.errors.models.planned_disbursement.attributes.value.not_a_number"))
   end
 end

@@ -45,23 +45,47 @@ RSpec.feature "Users can create a transaction" do
       end
     end
 
-    scenario "validations" do
-      activity = create(:programme_activity, :with_report, organisation: user.organisation)
+    context "when all values are missing" do
+      scenario "validations" do
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-      visit activities_path
+        visit activities_path
 
-      click_on(activity.title)
+        click_on(activity.title)
 
-      click_on(t("page_content.transactions.button.create"))
-      click_on(t("default.button.submit"))
+        click_on(t("page_content.transactions.button.create"))
+        click_on(t("default.button.submit"))
 
-      expect(page).to_not have_content(t("action.transaction.create.success"))
-      expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.description.blank"))
-      expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.transaction_type.blank"))
-      expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.date.blank"))
-      expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.other_than")
-      expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
-      expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
+        expect(page).to_not have_content(t("action.transaction.create.success"))
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.description.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.transaction_type.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.date.blank"))
+        expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.blank")
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
+      end
+    end
+
+    context "when the value is not a number" do
+      scenario "validations" do
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
+
+        visit activities_path
+
+        click_on(activity.title)
+
+        click_on(t("page_content.transactions.button.create"))
+        fill_in "transaction[value]", with: "234r.67"
+        click_on(t("default.button.submit"))
+
+        expect(page).to_not have_content(t("action.transaction.create.success"))
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.description.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.transaction_type.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.date.blank"))
+        expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.not_a_number")
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
+      end
     end
 
     scenario "disbursement channel is optional" do
