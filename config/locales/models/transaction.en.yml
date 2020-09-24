@@ -80,6 +80,7 @@ en:
               less_than_or_equal_to: Value must be less than or equal to 99,999,999,999.00
               other_than: Value must not be zero
               blank: Enter a transaction amount
+              not_a_number: Value must be a valid number
             transaction_type:
               blank: Select a transaction type
             description:

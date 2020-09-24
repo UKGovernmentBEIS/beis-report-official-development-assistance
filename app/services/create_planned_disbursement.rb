@@ -11,7 +11,8 @@ class CreatePlannedDisbursement
 
     planned_disbursement.parent_activity = activity
     planned_disbursement.assign_attributes(attributes)
-    planned_disbursement.value = sanitize_monetary_string(value: attributes[:value])
+
+    convert_and_assign_value(planned_disbursement, attributes[:value])
 
     unless activity.organisation.service_owner?
       planned_disbursement.report = report
@@ -28,7 +29,9 @@ class CreatePlannedDisbursement
 
   private
 
-  def sanitize_monetary_string(value:)
-    Monetize.parse(value)
+  def convert_and_assign_value(planned_disbursement, value)
+    planned_disbursement.value = ConvertFinancialValue.new.convert(value.to_s)
+  rescue ConvertFinancialValue::Error
+    planned_disbursement.errors.add(:value, I18n.t("activerecord.errors.models.planned_disbursement.attributes.value.not_a_number"))
   end
 end

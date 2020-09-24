@@ -71,6 +71,7 @@ en:
               less_than_or_equal_to: Value must not be more than 99,999,999,999.00
               other_than: Value must not be zero
               blank: Enter a budget amount
+              not_a_number: Value must be a valid number
             budget_type:
               blank: Enter a budget type
             status:

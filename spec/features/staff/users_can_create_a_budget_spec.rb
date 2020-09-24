@@ -74,7 +74,7 @@ RSpec.describe "Users can create a budget" do
         expect(page).to have_content(t("activerecord.errors.models.budget.attributes.status.blank"))
         expect(page).to have_content(t("activerecord.errors.models.budget.attributes.period_start_date.blank"))
         expect(page).to have_content(t("activerecord.errors.models.budget.attributes.period_end_date.blank"))
-        expect(page).to have_content t("activerecord.errors.models.budget.attributes.value.other_than")
+        expect(page).to have_content t("activerecord.errors.models.budget.attributes.value.blank")
       end
 
       scenario "sees validation error when the value is more than allowed" do

@@ -11,7 +11,8 @@ class CreateTransaction
 
     transaction.parent_activity = activity
     transaction.assign_attributes(attributes)
-    transaction.value = sanitize_monetary_string(value: attributes[:value])
+
+    convert_and_assign_value(transaction, attributes[:value])
 
     unless activity.organisation.service_owner?
       transaction.report = report
@@ -28,7 +29,9 @@ class CreateTransaction
 
   private
 
-  def sanitize_monetary_string(value:)
-    Monetize.parse(value)
+  def convert_and_assign_value(transaction, value)
+    transaction.value = ConvertFinancialValue.new.convert(value.to_s)
+  rescue ConvertFinancialValue::Error
+    transaction.errors.add(:value, I18n.t("activerecord.errors.models.transaction.attributes.value.not_a_number"))
   end
 end
