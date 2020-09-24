@@ -169,6 +169,12 @@ class ImportTransactions
       raise I18n.t("importer.errors.transaction.invalid_date")
     end
 
+    def convert_value(value)
+      ConvertFinancialValue.new.convert(value)
+    rescue ConvertFinancialValue::Error
+      raise I18n.t("importer.errors.transaction.non_numeric_value")
+    end
+
     def convert_receiving_organisation_type(type)
       validate_from_codelist(
         type,
