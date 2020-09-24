@@ -12,20 +12,24 @@ class Staff::OrganisationsController < Staff::BaseController
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
 
-    project_activities = FindProjectActivities.new(organisation: organisation, user: current_user).call(eager_load_parent: false)
-    third_party_project_activities = FindThirdPartyProjectActivities.new(organisation: organisation, user: current_user).call(eager_load_parent: false)
+    @project_activities = iati_publishable_project_activities(
+      organisation: organisation,
+      user: current_user
+    )
+
+    @third_party_project_activities = iati_publishable_third_party_project_activities(
+      organisation: organisation,
+      user: current_user
+    )
 
     respond_to do |format|
-      format.html do
-        @project_activities = project_activities.map { |activity| ActivityPresenter.new(activity) }
-        @third_party_project_activities = third_party_project_activities.map { |activity| ActivityPresenter.new(activity) }
-      end
+      format.html
       format.xml do
         @activities = case level
         when "project"
-          project_activities.publishable_to_iati
+          @project_activities
         when "third_party_project"
-          third_party_project_activities.publishable_to_iati
+          @third_party_project_activities
         else
           []
         end
@@ -76,15 +80,29 @@ class Staff::OrganisationsController < Staff::BaseController
 
   private
 
-  def id
+  private def iati_publishable_project_activities(organisation:, user:)
+    FindProjectActivities.new(
+      organisation: organisation,
+      user: current_user
+    ).call(eager_load_parent: false).publishable_to_iati
+  end
+
+  private def iati_publishable_third_party_project_activities(organisation:, user:)
+    FindThirdPartyProjectActivities.new(
+      organisation: organisation,
+      user: current_user
+    ).call(eager_load_parent: false).publishable_to_iati
+  end
+
+  private def id
     params[:id]
   end
 
-  def organisation_params
+  private def organisation_params
     params.require(:organisation).permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference)
   end
 
-  def level
+  private def level
     params[:level]
   end
 end
