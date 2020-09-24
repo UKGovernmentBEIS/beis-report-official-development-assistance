@@ -38,7 +38,7 @@ gem "wicked"
 gem "strip_attributes"
 
 # Authentication
-gem "omniauth-auth0", "~> 2.3"
+gem "omniauth-auth0", "~> 2.4"
 gem "omniauth-rails_csrf_protection", "~> 0.1"
 
 group :development, :test do
