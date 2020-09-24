@@ -42,7 +42,8 @@ RSpec.feature "Users can view an organisation as XML" do
         end
 
         scenario "the XML file does not contain projects which should not be published to IATI" do
-          _redacted_project = create(:project_activity, organisation: organisation, publish_to_iati: false)
+          _project = create(:project_activity, organisation: organisation, publish_to_iati: true)
+          redacted_project = create(:project_activity, organisation: organisation, publish_to_iati: false)
 
           visit organisation_path(organisation)
           within ".download-projects" do
@@ -50,7 +51,8 @@ RSpec.feature "Users can view an organisation as XML" do
           end
           xml = Nokogiri::XML::Document.parse(page.body)
 
-          expect(xml.xpath("/iati-activities/iati-activity").count).to eq(0)
+          expect(xml.xpath("/iati-activities/iati-activity").count).to eq(1)
+          expect(page.body).not_to include redacted_project.title
         end
       end
 
@@ -80,7 +82,8 @@ RSpec.feature "Users can view an organisation as XML" do
         end
 
         scenario "the XML file does not contain third-party projects which should not be published to IATI" do
-          _redacted_project = create(:third_party_project_activity, organisation: organisation, publish_to_iati: false)
+          _project = create(:third_party_project_activity, organisation: organisation, publish_to_iati: true)
+          redacted_project = create(:third_party_project_activity, organisation: organisation, publish_to_iati: false)
 
           visit organisation_path(organisation)
           within ".download-third-party-projects" do
@@ -88,7 +91,17 @@ RSpec.feature "Users can view an organisation as XML" do
           end
           xml = Nokogiri::XML::Document.parse(page.body)
 
-          expect(xml.xpath("/iati-activities/iati-activity").count).to eq(0)
+          expect(xml.xpath("/iati-activities/iati-activity").count).to eq(1)
+          expect(page.body).not_to include redacted_project.title
+        end
+      end
+
+      context "the organisation does not have programmes" do
+        scenario "the download button does not appear for programmes" do
+          visit organisation_path(organisation)
+
+          expect(page).to have_content(organisation.name)
+          expect(page).to_not have_content(t("default.button.download_as_xml"))
         end
       end
 
@@ -134,12 +147,13 @@ RSpec.feature "Users can view an organisation as XML" do
       end
 
       scenario "the XML file does not contain incomplete activities" do
+        _complete_project = create(:project_activity, organisation: organisation)
         _project = create(:project_activity, :at_purpose_step, organisation: organisation)
         visit organisation_path(organisation)
         click_link t("default.button.download_as_xml")
         xml = Nokogiri::XML::Document.parse(page.body)
 
-        expect(xml.xpath("/iati-activities/iati-activity").count).to eq(0)
+        expect(xml.xpath("/iati-activities/iati-activity").count).to eq(1)
       end
     end
   end
