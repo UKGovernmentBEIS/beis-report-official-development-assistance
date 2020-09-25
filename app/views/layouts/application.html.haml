@@ -4,6 +4,8 @@
 %html.govuk-template.app-html-class{lang: "en"}
   /<![endif]
   %head
+    - if current_user.present?
+      = render partial: 'shared/google_tag_manager_service_owner', locals: { user_type: current_user.service_owner? ? "service_owner" : "non_service_owner" }
     = render partial: 'shared/google_tag_manager_head'
     %meta{charset: "utf-8"}/
     %title #{content_for :page_title_prefix} — #{t('app.title')}

@@ -341,6 +341,7 @@
 - the sign out navigation link is not active on the users page
 
 ## [unreleased]
+- The user type is tracked in Google Analytics
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-18...HEAD
 [release-18]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...release-18
