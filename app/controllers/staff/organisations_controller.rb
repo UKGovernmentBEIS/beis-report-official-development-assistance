@@ -12,6 +12,8 @@ class Staff::OrganisationsController < Staff::BaseController
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
 
+    @funds = funds_for_organisation_programmes(organisation_id: organisation.id)
+
     @project_activities = iati_publishable_project_activities(
       organisation: organisation,
       user: current_user
@@ -26,6 +28,13 @@ class Staff::OrganisationsController < Staff::BaseController
       format.html
       format.xml do
         @activities = case level
+        when "programme"
+          return [] unless fund_id.present?
+          @programmes_for_organisation_and_fund = publishable_programme_activities(
+            organisation: organisation,
+            user: current_user,
+            fund_id: fund_id
+          )
         when "project"
           @project_activities
         when "third_party_project"
@@ -78,7 +87,21 @@ class Staff::OrganisationsController < Staff::BaseController
     end
   end
 
-  private
+  private def funds_for_organisation_programmes(organisation_id:)
+    fund_ids_for_organisation_programmes = Activity.where(
+      level: :programme,
+      extending_organisation_id: organisation_id
+    ).pluck(:parent_id)
+    Activity.find(fund_ids_for_organisation_programmes)
+  end
+
+  private def publishable_programme_activities(organisation:, user:, fund_id:)
+    FindProgrammeActivities.new(
+      organisation: organisation,
+      user: current_user,
+      fund_id: fund_id
+    ).call(eager_load_parent: false)
+  end
 
   private def iati_publishable_project_activities(organisation:, user:)
     FindProjectActivities.new(
@@ -104,5 +127,9 @@ class Staff::OrganisationsController < Staff::BaseController
 
   private def level
     params[:level]
+  end
+
+  private def fund_id
+    params[:fund_id]
   end
 end
