@@ -47,6 +47,9 @@ en:
       details: Organisation details
       download:
         explanation: Download all activities for this organisation
+        programmes:
+          explanation: "Download all programme (level B) activities for this organisation as XML from:"
+          button: Download %{fund_title} XML
         projects:
           explanation: Download all project (level C) activities for this organisation as XML
         third-party-projects:

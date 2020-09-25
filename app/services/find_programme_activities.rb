@@ -1,11 +1,12 @@
 class FindProgrammeActivities
   include Pundit
 
-  attr_accessor :organisation, :user
+  attr_accessor :organisation, :user, :fund_id
 
-  def initialize(organisation:, user:)
+  def initialize(organisation:, user:, fund_id: nil)
     @organisation = organisation
     @user = user
+    @fund_id = fund_id
   end
 
   def call(eager_load_parent: true)
@@ -17,11 +18,11 @@ class FindProgrammeActivities
       .includes(eager_load_associations)
       .order("created_at ASC")
 
-    programmes = if organisation.service_owner
-      programmes.all
-    else
-      programmes.where(extending_organisation_id: organisation.id)
-    end
-    programmes
+    return programmes if organisation.service_owner
+
+    query_conditions = {extending_organisation_id: organisation.id}
+    query_conditions[:parent_id] = fund_id if fund_id.present?
+
+    programmes.where(query_conditions)
   end
 end
