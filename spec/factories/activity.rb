@@ -17,7 +17,7 @@ FactoryBot.define do
     recipient_country { nil }
     requires_additional_benefitting_countries { true }
     intended_beneficiaries { ["CU", "DM", "DO"] }
-    gdi { "No" }
+    gdi { "4" }
     flow { "10" }
     aid_type { "A01" }
     level { :fund }
