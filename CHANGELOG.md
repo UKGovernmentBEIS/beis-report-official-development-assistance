@@ -339,6 +339,7 @@
 - Do not automatically strip letters from numeric value fields; instead reject
   the values as invalid and show an error to the user  
 - the sign out navigation link is not active on the users page
+- BEIS users can download IATI XML for programmes (level B)
 
 ## [unreleased]
 
