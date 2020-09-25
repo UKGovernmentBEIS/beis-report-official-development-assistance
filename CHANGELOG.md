@@ -331,7 +331,7 @@
 - Missing `West Bank and Gaza Strip` country included in `recipient_country` list
 - Report state content updated
 
-## [unreleased]
+## [release-18] - 2020-09-25
 
 - Add and amend Activity data fields in the Report CSV export
 - Accept strictly numeric values in the `Value` column for bulk transaction
@@ -340,7 +340,10 @@
   the values as invalid and show an error to the user  
 - the sign out navigation link is not active on the users page
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-18...HEAD
+[release-18]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...release-18
 [release-17]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...release-17
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16
 [release-15]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-14...release-15
