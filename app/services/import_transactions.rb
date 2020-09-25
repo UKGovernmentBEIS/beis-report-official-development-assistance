@@ -159,7 +159,7 @@ class ImportTransactions
     end
 
     def convert_activity(id)
-      Activity.find_by(roda_identifier_compound: id)
+      Activity.by_roda_identifier(id)
     end
 
     def convert_date(date)
@@ -167,6 +167,12 @@ class ImportTransactions
       Date.iso8601(date)
     rescue ArgumentError
       raise I18n.t("importer.errors.transaction.invalid_date")
+    end
+
+    def convert_value(value)
+      ConvertFinancialValue.new.convert(value)
+    rescue ConvertFinancialValue::Error
+      raise I18n.t("importer.errors.transaction.non_numeric_value")
     end
 
     def convert_receiving_organisation_type(type)

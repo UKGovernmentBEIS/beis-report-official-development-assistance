@@ -1012,6 +1012,16 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#roda_identifier" do
+    let(:fund) { create(:fund_activity, roda_identifier_fragment: "GCRF") }
+    let(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "RSDel") }
+    let(:project) { create(:project_activity, parent: programme, roda_identifier_fragment: "DEL_Misc") }
+
+    it "returns the compound RODA identifier" do
+      expect(project.roda_identifier).to eq("GCRF-RSDel-DEL_Misc")
+    end
+  end
+
   describe "#actual_total_for_report_financial_quarter" do
     it "returns the total of all the activity's transactions scoped to a report" do
       project = create(:project_activity, :with_report)

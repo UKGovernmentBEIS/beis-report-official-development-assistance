@@ -106,6 +106,10 @@ class Activity < ApplicationRecord
     for_organisation.merge(projects.or(third_party_projects))
   }
 
+  def self.by_roda_identifier(identifier)
+    find_by(roda_identifier_compound: identifier)
+  end
+
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
     super(context)
@@ -177,6 +181,10 @@ class Activity < ApplicationRecord
     when "project" then "third_party_project"
     when "third_party_project" then raise "no level below third_party_project"
     end
+  end
+
+  def roda_identifier
+    roda_identifier_compound
   end
 
   def can_set_roda_identifier?

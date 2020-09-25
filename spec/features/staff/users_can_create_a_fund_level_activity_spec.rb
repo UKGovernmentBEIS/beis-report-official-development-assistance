@@ -282,6 +282,33 @@ RSpec.feature "Users can create a fund level activity" do
         click_button t("form.button.activity.submit")
         expect(page).to have_content Activity.find_by(delivery_partner_identifier: identifier).title
       end
+
+      scenario "failing to select a country shows an error message" do
+        visit activities_path
+        click_on(t("page_content.organisation.button.create_activity"))
+
+        choose custom_capitalisation(t("page_content.activity.level.fund"))
+        click_button t("form.button.activity.submit")
+        fill_in "activity[delivery_partner_identifier]", with: "no-country-selected"
+        click_button t("form.button.activity.submit")
+        fill_in "activity[roda_identifier_fragment]", with: "roda-identifier"
+        click_button t("form.button.activity.submit")
+        fill_in "activity[title]", with: "My title"
+        fill_in "activity[description]", with: "My description"
+        click_button t("form.button.activity.submit")
+        choose "Basic Education"
+        click_button t("form.button.activity.submit")
+        choose "School feeding"
+        click_button t("form.button.activity.submit")
+        fill_in "activity[planned_start_date(3i)]", with: "01"
+        fill_in "activity[planned_start_date(2i)]", with: "01"
+        fill_in "activity[planned_start_date(1i)]", with: "2020"
+        click_button t("form.button.activity.submit")
+        choose "Country"
+        click_button t("form.button.activity.submit")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content "Recipient country can't be blank"
+      end
     end
 
     scenario "fund creation is tracked with public_activity" do

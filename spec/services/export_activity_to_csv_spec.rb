@@ -14,22 +14,35 @@ RSpec.describe ExportActivityToCsv do
       next_four_quarter_totals = export_service.next_four_quarter_forecasts
 
       expect(result).to eq([
-        activity_presenter.delivery_partner_identifier,
+        activity_presenter.funding_organisation_name,
         activity_presenter.transparency_identifier,
-        activity_presenter.sector_with_code,
+        activity_presenter.delivery_partner_identifier,
+        activity_presenter.roda_identifier,
+        activity_presenter.level,
         activity_presenter.title,
         activity_presenter.description,
+        activity_presenter.recipient_region,
+        activity_presenter.recipient_country,
+        activity_presenter.intended_beneficiaries,
         activity_presenter.programme_status,
         activity_presenter.planned_start_date,
         activity_presenter.actual_start_date,
         activity_presenter.planned_end_date,
         activity_presenter.actual_end_date,
-        activity_presenter.recipient_region,
-        activity_presenter.recipient_country,
+        activity_presenter.call_open_date,
+        activity_presenter.call_close_date,
+        activity_presenter.total_applications,
+        activity_presenter.total_awards,
+        activity_presenter.sector_with_code,
         activity_presenter.aid_type_with_code,
-        activity_presenter.level,
-        activity_presenter.actual_total_for_report_financial_quarter(report: report),
+        activity_presenter.tied_status_with_code,
+        activity_presenter.finance_with_code,
+        activity_presenter.flow_with_code,
+        activity_presenter.gdi,
+        activity_presenter.collaboration_type,
+        activity_presenter.oda_eligibility,
         activity_presenter.forecasted_total_for_report_financial_quarter(report: report),
+        activity_presenter.actual_total_for_report_financial_quarter(report: report),
         activity_presenter.variance_for_report_financial_quarter(report: report),
         activity_presenter.comment_for_report(report_id: report.id).comment,
         activity_presenter.link_to_roda,
@@ -75,6 +88,45 @@ RSpec.describe ExportActivityToCsv do
         headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
         expect(headers).to include ["Q2 2020", "Q3 2020", "Q4 2020", "Q1 2021"].to_csv
+      end
+    end
+
+    it "returns the headers in the right order" do
+      travel_to("2020-09-01") do
+        report = Report.new
+        headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
+        expect(headers).to include "Funding organisation name",
+          "Transparency identifier",
+          "Delivery partner identifier",
+          "RODA identifier",
+          "Level",
+          "Title",
+          "Description",
+          "Recipient region",
+          "Recipient country",
+          "Intended beneficiaries",
+          "Programme status",
+          "Planned start date",
+          "Actual start date",
+          "Planned end date",
+          "Actual end date",
+          "Call open date",
+          "Call close date",
+          "Total applications",
+          "Total awards",
+          "Sector",
+          "Aid type",
+          "Tied status",
+          "Finance type",
+          "Flow",
+          "GDI",
+          "Collaboration type",
+          "ODA eligibility",
+          "Q2 2020-2021 forecast",
+          "Q2 2020-2021 actuals",
+          "Variance",
+          "Comment",
+          "Link to activity in RODA"
       end
     end
   end
