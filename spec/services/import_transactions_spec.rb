@@ -71,6 +71,7 @@ RSpec.describe ImportTransactions do
       expect(transaction).to have_attributes(
         providing_organisation_name: project.providing_organisation.name,
         providing_organisation_type: project.providing_organisation.organisation_type,
+        providing_organisation_reference: project.providing_organisation.iati_reference,
       )
     end
 
