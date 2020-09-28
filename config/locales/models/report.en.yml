@@ -35,6 +35,10 @@ en:
   page_content:
     reports:
       title: Reports
+    report:
+      activate:
+        confirm: By activating this report, you will allow Delivery Partner users to add new data, and amend existing data. These changes will will associate to this report only.
+
   label:
     report:
      state:
