@@ -89,7 +89,7 @@ class ExportActivityToCsv
   end
 
   private def activity_presenter
-    @activity_presenter ||= ActivityPresenter.new(activity)
+    @activity_presenter ||= ActivityCsvPresenter.new(activity)
   end
 
   private def report_presenter
