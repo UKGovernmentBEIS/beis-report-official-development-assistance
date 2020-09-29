@@ -337,12 +337,13 @@
 - Accept strictly numeric values in the `Value` column for bulk transaction
   import
 - Do not automatically strip letters from numeric value fields; instead reject
-  the values as invalid and show an error to the user  
+  the values as invalid and show an error to the user
 - the sign out navigation link is not active on the users page
 - BEIS users can download IATI XML for programmes (level B)
 
 ## [unreleased]
 - The user type is tracked in Google Analytics
+- `providing_organisation_reference` is set when the user uploads transactions
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-18...HEAD
 [release-18]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...release-18
