@@ -40,7 +40,6 @@ class ImportTransactions
   end
 
   class RowImporter
-    DEFAULT_CURRENCY = "GBP"
     TRANSACTION_TYPE_DISBURSEMENT = "3"
 
     attr_reader :errors
@@ -98,8 +97,9 @@ class ImportTransactions
     def assign_default_values(attrs)
       organisation = @activity.providing_organisation
 
-      attrs[:currency] = DEFAULT_CURRENCY
+      attrs[:currency] = organisation.default_currency
       attrs[:transaction_type] = TRANSACTION_TYPE_DISBURSEMENT
+      attrs[:providing_organisation_reference] = organisation.iati_reference
       attrs[:providing_organisation_name] = organisation.name
       attrs[:providing_organisation_type] = organisation.organisation_type
 
