@@ -344,6 +344,7 @@
 ## [unreleased]
 - The user type is tracked in Google Analytics
 - `providing_organisation_reference` is set when the user uploads transactions
+- Separate the list of intended beneficiaries in the report CSV with semicolons
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-18...HEAD
 [release-18]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...release-18
