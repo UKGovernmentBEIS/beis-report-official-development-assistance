@@ -2,9 +2,11 @@
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
-    .govuk-grid-column-two-thirds
+    .govuk-grid-column-full
       %h1.govuk-heading-xl
         = t("page_title.report.activate.confirm", report_financial_quarter: @report_presenter.financial_quarter_and_year, report_organisation: @report.organisation.name)
+      %p.govuk-body
+        = t("page_content.report.activate.confirm")
 
       = form_for @report_presenter, url: report_state_path(@report_presenter) do |f|
         = hidden_field_tag :state, "active"
