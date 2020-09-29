@@ -4,6 +4,6 @@
 
       = f.govuk_file_field :transaction_csv,
         label: { text: t("form.label.transaction.csv_file") },
-        hint_text: t("form.hint.transaction.csv_file")
+        hint: { text: t("form.hint.transaction.csv_file") }
 
       = f.govuk_submit t("action.transaction.upload.button")
