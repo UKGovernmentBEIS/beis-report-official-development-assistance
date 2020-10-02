@@ -284,9 +284,15 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def update_form_state
-    return if @activity.invalid?
+    return if @activity.invalid?(step)
 
-    if @activity.form_steps_completed?
+    if step == :geography && @activity.geography == "recipient_country"
+      jump_to :country
+    elsif step == :geography && @activity.geography == "recipient_region"
+      jump_to :region
+    elsif step == :sector_category
+      jump_to :sector
+    elsif @activity.form_steps_completed?
       flash[:notice] ||= t("action.#{@activity.level}.update.success")
       jump_to Wicked::FINISH_STEP
     else

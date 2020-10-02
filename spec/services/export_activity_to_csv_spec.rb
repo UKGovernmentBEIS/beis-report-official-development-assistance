@@ -8,7 +8,7 @@ RSpec.describe ExportActivityToCsv do
 
   describe "#call" do
     it "creates a CSV line representation of the Activity" do
-      activity_presenter = ActivityPresenter.new(project)
+      activity_presenter = ActivityCsvPresenter.new(project)
       export_service = ExportActivityToCsv.new(activity: project, report: report)
       result = export_service.call
       next_four_quarter_totals = export_service.next_four_quarter_forecasts

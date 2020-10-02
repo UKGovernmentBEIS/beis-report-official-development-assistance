@@ -53,5 +53,19 @@ RSpec.describe FindProgrammeActivities do
         expect(result).to match_array [extending_organisation_programme]
       end
     end
+
+    context "when a fund is passed" do
+      it "includes only the programmes for the organisaiton and the fund" do
+        delivery_partner_organisation = create(:delivery_partner_organisation)
+        fund = create(:fund_activity)
+        programme = create(:programme_activity, parent: fund, extending_organisation: delivery_partner_organisation)
+        programme_from_another_fund = create(:programme_activity, extending_organisation: delivery_partner_organisation)
+
+        result = described_class.new(organisation: delivery_partner_organisation, user: user, fund_id: fund.id).call
+
+        expect(result).to include programme
+        expect(result).not_to include programme_from_another_fund
+      end
+    end
   end
 end

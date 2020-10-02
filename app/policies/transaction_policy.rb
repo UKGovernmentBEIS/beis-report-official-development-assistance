@@ -6,10 +6,7 @@ class TransactionPolicy < ApplicationPolicy
 
   def create?
     return false if record.parent_activity.level.nil?
-
-    if beis_user?
-      return true if record.parent_activity.fund? || record.parent_activity.programme?
-    end
+    return true if beis_user? && record.parent_activity.programme?
 
     if delivery_partner_user?
       return true if editable_report_for_organisation_and_fund.present?
@@ -20,10 +17,7 @@ class TransactionPolicy < ApplicationPolicy
 
   def update?
     return false if record.parent_activity.level.nil?
-
-    if beis_user?
-      return true if record.parent_activity.fund? || record.parent_activity.programme?
-    end
+    return true if beis_user? && record.parent_activity.programme?
 
     if delivery_partner_user? && editable_report_for_organisation_and_fund.present?
       return true if editable_report_for_organisation_and_fund == record.report
