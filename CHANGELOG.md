@@ -348,7 +348,7 @@
 - Users can now edit fields on invalid completed activities
 
 ## [unreleased]
-
+- Fix bug that prevented delivery partners from submitting a report.
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...HEAD
 [release-19]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-18...release-19
 [release-18]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...release-18
