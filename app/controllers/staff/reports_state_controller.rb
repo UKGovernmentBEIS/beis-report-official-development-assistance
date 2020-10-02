@@ -53,7 +53,7 @@ class Staff::ReportsStateController < Staff::BaseController
 
     unless report.valid?(policy_action.to_sym)
       authorize report
-      flash[:error] = t("action.report.#{policy_action}.failure")
+      flash[:error] = {title: t("action.report.#{policy_action}.failure"), errors: report.errors}
       return redirect_to report_path(report)
     end
 

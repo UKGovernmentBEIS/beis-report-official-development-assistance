@@ -1,32 +1,24 @@
-.alert {
-  padding: 0 govuk-spacing(4);
-  @include govuk-font($size: 24, $weight: bold);
-  border-width: govuk-spacing(1);
-  border-style: solid;
-  border-color: govuk-colour("black");
-
-  &.alert-success {
-    border-color: govuk-colour("green");
-
-    .alert-message {
-      color: govuk-colour("green");
-    }
+.govuk-error-summary.govuk-error-summary--notice,
+.govuk-error-summary.govuk-error-summary--success {
+  color: govuk-colour("green");
+  border-color: govuk-colour("green");
+  margin-bottom: 0;
+  h2 {
+    margin-bottom: 0;
   }
+}
 
-  &.alert-notice {
-    border-color: govuk-colour("blue");
-
-    .alert-message {
-      color: govuk-colour("blue");
-    }
+.govuk-error-summary.govuk-error-summary--error,
+.govuk-error-summary.govuk-error-summary--alert {
+  color: govuk-colour("red");
+  border-color: govuk-colour("red");
+  margin-bottom: 0;
+  h2 {
+    margin-bottom: 0;
   }
+}
 
-  &.alert-danger {
-    border-color: govuk-colour("red");
-
-    .alert-message {
-      color: govuk-colour("red");
-    }
-  }
-
+ul.govuk-list.govuk-error-summary__list li {
+  @include govuk-font($size: 19, $weight: bold)
+  color:  $govuk-error-colour;
 }
