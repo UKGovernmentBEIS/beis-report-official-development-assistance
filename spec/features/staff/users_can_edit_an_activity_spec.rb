@@ -384,6 +384,26 @@ RSpec.feature "Users can edit an activity" do
         expect(page).to have_content(t("action.third_party_project.update.success"))
       end
     end
+
+    context "when editing an invalid activity that is already saved" do
+      let(:activity) { create(:project_activity, organisation: user.organisation) }
+
+      it "saves the value and shows an update success message" do
+        activity.update_columns(title: nil, programme_status: "Replace me")
+        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
+
+        visit organisation_activity_details_path(activity.organisation, activity)
+
+        within(".programme_status") do
+          click_on(t("default.link.edit"))
+        end
+        choose "Spend in progress"
+        click_button t("form.button.activity.submit")
+
+        expect(page).to have_content(t("action.project.update.success"))
+        expect(activity.reload.programme_status).to eql("07")
+      end
+    end
   end
 end
 
