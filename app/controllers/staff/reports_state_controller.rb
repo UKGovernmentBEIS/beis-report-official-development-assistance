@@ -51,7 +51,7 @@ class Staff::ReportsStateController < Staff::BaseController
   private def change_report_state_to(state)
     policy_action = STATE_TO_POLICY_ACTION.fetch(state)
 
-    unless report.valid?
+    unless report.valid?(policy_action.to_sym)
       authorize report
       flash[:error] = t("action.report.#{policy_action}.failure")
       return redirect_to report_path(report)
