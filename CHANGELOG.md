@@ -341,13 +341,16 @@
 - the sign out navigation link is not active on the users page
 - BEIS users can download IATI XML for programmes (level B)
 
-## [unreleased]
+## [release-19] - 2020-10-02
 - The user type is tracked in Google Analytics
 - `providing_organisation_reference` is set when the user uploads transactions
 - Separate the list of intended beneficiaries in the report CSV with semicolons
 - Users can now edit fields on invalid completed activities
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-18...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...HEAD
+[release-19]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-18...release-19
 [release-18]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...release-18
 [release-17]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-16...release-17
 [release-16]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-15...release-16
