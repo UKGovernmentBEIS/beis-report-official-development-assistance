@@ -15,7 +15,6 @@ RSpec.describe "Users can create a planned disbursement" do
 
       expect(page).to have_content t("page_title.planned_disbursement.new")
 
-      choose t("form.label.planned_disbursement.planned_disbursement_type_options.original.name")
       choose "Q1"
       select "2020-2021", from: "Financial year"
       select "Pound Sterling", from: "planned_disbursement[currency]"

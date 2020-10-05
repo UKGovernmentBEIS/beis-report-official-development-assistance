@@ -7,6 +7,13 @@ RSpec.describe CreatePlannedDisbursement do
     subject { described_class.new(activity: create(:activity)) }
     it_behaves_like "sanitises monetary field"
 
+    it "always sets the type to original" do
+      result = described_class.new(activity: activity).call
+      original_key_value = PlannedDisbursement::PLANNED_DISBURSEMENT_BUDGET_TYPES.key("original").to_s
+
+      expect(result.object.planned_disbursement_type).to eql original_key_value
+    end
+
     context "when the planned disbursement is valid" do
       it "sets the parent activity" do
         result = described_class.new(activity: activity).call

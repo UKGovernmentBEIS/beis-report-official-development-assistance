@@ -11,6 +11,7 @@ class CreatePlannedDisbursement
 
     planned_disbursement.parent_activity = activity
     planned_disbursement.assign_attributes(attributes)
+    planned_disbursement.planned_disbursement_type = PlannedDisbursement::PLANNED_DISBURSEMENT_BUDGET_TYPES.key("original").to_s
 
     if attributes.key?(:financial_quarter) && attributes.key?(:financial_year)
       planned_disbursement.period_start_date =
