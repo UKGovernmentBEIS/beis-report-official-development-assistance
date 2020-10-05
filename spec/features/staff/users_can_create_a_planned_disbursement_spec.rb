@@ -18,8 +18,6 @@ RSpec.describe "Users can create a planned disbursement" do
       choose "Q1"
       select "2020-2021", from: "Financial year"
       fill_in "planned_disbursement[value]", with: "1000.00"
-      fill_in "planned_disbursement[receiving_organisation_name]", with: "another org"
-      select "Other Public Sector", from: "planned_disbursement[receiving_organisation_type]"
       click_button t("default.button.submit")
 
       expect(page).to have_current_path organisation_activity_financials_path(user.organisation, project)

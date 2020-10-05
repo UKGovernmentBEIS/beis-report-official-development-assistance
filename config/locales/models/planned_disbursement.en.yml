@@ -9,13 +9,9 @@ en:
   form:
     label:
       planned_disbursement:
-        receiving_organisation_name: Receiving organisation name
-        receiving_organisation_type: Receiving organisation type
-        receiving_organisation_reference: IATI Reference (optional)
         value: Forecasted spend amount
     legend:
       planned_disbursement:
-        receiving_organisation: Receiving organisation
     hint:
       planned_disbursement:
         receiving_organisation: The organisation receiving the money from this transaction.
