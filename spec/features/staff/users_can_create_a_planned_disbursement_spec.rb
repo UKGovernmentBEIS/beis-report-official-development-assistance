@@ -17,7 +17,6 @@ RSpec.describe "Users can create a planned disbursement" do
 
       choose "Q1"
       select "2020-2021", from: "Financial year"
-      select "Pound Sterling", from: "planned_disbursement[currency]"
       fill_in "planned_disbursement[value]", with: "1000.00"
       fill_in "planned_disbursement[providing_organisation_name]", with: "org"
       select "Government", from: "planned_disbursement[providing_organisation_type]"

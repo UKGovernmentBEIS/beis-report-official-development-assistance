@@ -356,6 +356,7 @@
 - No longer collect start and end dates for planned disbursements (forecasts)
   through the application interface.
 - Planned disbursements are always original when created
+- Planned disbursement currency is always GBP
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...HEAD
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20

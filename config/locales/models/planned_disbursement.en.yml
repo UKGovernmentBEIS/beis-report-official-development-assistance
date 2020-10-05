@@ -13,7 +13,6 @@ en:
         providing_organisation_type: Providing organisation type
         receiving_organisation_name: Receiving organisation name
         receiving_organisation_type: Receiving organisation type
-        currency: Currency
         providing_organisation_reference: International Aid Transparency Initiative (IATI) Reference (optional)
         receiving_organisation_reference: IATI Reference (optional)
         value: Forecasted spend amount
