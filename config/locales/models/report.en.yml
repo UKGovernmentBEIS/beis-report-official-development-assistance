@@ -146,7 +146,7 @@ en:
         report:
           attributes:
             description:
-              blank: Reporting period can't be blank
+              blank: Report decription cannot be blank
             fund:
               level: Activity must be a Fund (level A) activity
             deadline:

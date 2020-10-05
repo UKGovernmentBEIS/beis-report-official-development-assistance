@@ -45,8 +45,8 @@ class Staff::ReportsController < Staff::BaseController
     @report_presenter = ReportPresenter.new(@report)
 
     @report.assign_attributes(report_params)
-    if @report.valid?
-      @report.save!
+    if @report.valid?(:edit)
+      @report.save
       @report.create_activity key: "report.update", owner: current_user
       flash[:notice] = t("action.report.update.success")
       redirect_to reports_path
