@@ -9,30 +9,20 @@ en:
   form:
     label:
       planned_disbursement:
-        planned_disbursement_type: Budget type
         providing_organisation_name: Providing organisation name
         providing_organisation_type: Providing organisation type
         receiving_organisation_name: Receiving organisation name
         receiving_organisation_type: Receiving organisation type
         currency: Currency
-        planned_disbursement_type_options:
-          original:
-            description: The original budget allocated to the activity
-            name: Original
-          revised:
-            description: The updated budget for an activity
-            name: Revised
         providing_organisation_reference: International Aid Transparency Initiative (IATI) Reference (optional)
         receiving_organisation_reference: IATI Reference (optional)
         value: Forecasted spend amount
     legend:
       planned_disbursement:
-        planned_disbursement_type: Budget type
         providing_organisation: Providing organisation
         receiving_organisation: Receiving organisation
     hint:
       planned_disbursement:
-        planned_disbursement_type: Whether this is an original plan (prepared when the original commitment was made) or has subsequently been revised
         providing_organisation: The organisation where this planned disbursement is coming from
         providing_organisation_reference_html: For example, GB-GOV-13. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
         receiving_organisation: The organisation receiving the money from this transaction.
@@ -66,8 +56,6 @@ en:
       models:
         planned_disbursement:
           attributes:
-            planned_disbursement_type:
-              blank: Budget type can't be blank
             value:
               inclusion: Value must be between 0.01 and 99,999,999,999.00
               not_a_number: "Value must be a valid number"

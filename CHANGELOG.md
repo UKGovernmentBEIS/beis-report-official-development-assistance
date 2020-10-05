@@ -355,6 +355,7 @@
   instead of start and end dates (the values of which are calculated).
 - No longer collect start and end dates for planned disbursements (forecasts)
   through the application interface.
+- Planned disbursements are always original when created
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...HEAD
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20

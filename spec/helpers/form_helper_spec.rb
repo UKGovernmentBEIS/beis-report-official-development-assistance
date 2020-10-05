@@ -18,15 +18,6 @@ RSpec.describe FormHelper, type: :helper do
     end
   end
 
-  describe "#list_of_planned_disbursement_budget_types" do
-    it "builds a list of budget types for a planned disbursement" do
-      budget_types = helper.list_of_planned_disbursement_budget_types
-
-      expect(budget_types[0].name).to eq t("form.label.planned_disbursement.planned_disbursement_type_options.original.name")
-      expect(budget_types[0].description).to eq t("form.label.planned_disbursement.planned_disbursement_type_options.original.description")
-    end
-  end
-
   describe "#scoped_parent_activities" do
     context "when the activity is a fund" do
       it "returns an empty result" do
