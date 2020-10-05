@@ -16,11 +16,6 @@
         :name,
         label: { text: "Financial year", tag: :h2, size: "m" }
 
-= f.govuk_collection_select :currency,
-                               currency_select_options,
-                               :code,
-                               :name
-
 = f.govuk_text_field :value, width: 20
 
 = f.govuk_fieldset legend: { text: t("form.legend.planned_disbursement.providing_organisation") } do

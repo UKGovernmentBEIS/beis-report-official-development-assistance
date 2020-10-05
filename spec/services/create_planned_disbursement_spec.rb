@@ -14,6 +14,11 @@ RSpec.describe CreatePlannedDisbursement do
       expect(result.object.planned_disbursement_type).to eql original_key_value
     end
 
+    it "always sets the currency to that of the organisation that owns the activity" do
+      result = described_class.new(activity: activity).call
+      expect(result.object.currency).to eql activity.organisation.default_currency
+    end
+
     context "when the planned disbursement is valid" do
       it "sets the parent activity" do
         result = described_class.new(activity: activity).call
