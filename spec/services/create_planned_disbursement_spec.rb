@@ -19,6 +19,15 @@ RSpec.describe CreatePlannedDisbursement do
       expect(result.object.currency).to eql activity.organisation.default_currency
     end
 
+    it "always sets the providing organisation to BEIS" do
+      result = described_class.new(activity: activity).call
+      beis = Organisation.find_by(service_owner: true)
+
+      expect(result.object.providing_organisation_name).to eql beis.name
+      expect(result.object.providing_organisation_type).to eql beis.organisation_type
+      expect(result.object.providing_organisation_reference).to eql beis.iati_reference
+    end
+
     context "when the planned disbursement is valid" do
       it "sets the parent activity" do
         result = described_class.new(activity: activity).call

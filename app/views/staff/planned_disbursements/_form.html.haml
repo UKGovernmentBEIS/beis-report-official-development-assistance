@@ -18,15 +18,6 @@
 
 = f.govuk_text_field :value, width: 20
 
-= f.govuk_fieldset legend: { text: t("form.legend.planned_disbursement.providing_organisation") } do
-  %span.govuk-hint= t("form.hint.planned_disbursement.providing_organisation")
-  = f.govuk_text_field :providing_organisation_name
-  = f.govuk_collection_select :providing_organisation_type,
-                       yaml_to_objects(entity: "organisation", type: "organisation_type"),
-                       :code,
-                       :name
-  = f.govuk_text_field :providing_organisation_reference
-
 = f.govuk_fieldset legend: { text: t("form.legend.planned_disbursement.receiving_organisation") } do
   %span.govuk-hint= t("form.hint.planned_disbursement.receiving_organisation")
   = f.govuk_text_field :receiving_organisation_name

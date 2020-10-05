@@ -39,7 +39,6 @@ RSpec.describe PlannedDisbursement, type: :model do
   end
 
   describe "sanitation" do
-    it { should strip_attribute(:providing_organisation_reference) }
     it { should strip_attribute(:receiving_organisation_reference) }
   end
 end
