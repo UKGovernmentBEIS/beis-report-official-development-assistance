@@ -5,7 +5,7 @@ class Report < ApplicationRecord
 
   attr_readonly :financial_quarter, :financial_year
 
-  validates_presence_of :description, on: :update
+  validates_presence_of :description, on: [:edit, :activate]
   validates_presence_of :state
 
   belongs_to :fund, -> { where(level: :fund) }, class_name: "Activity"
@@ -14,7 +14,7 @@ class Report < ApplicationRecord
   has_many :planned_disbursements
 
   validate :activity_must_be_a_fund
-  validates :deadline, date_not_in_past: true, date_within_boundaries: true
+  validates :deadline, date_not_in_past: true, date_within_boundaries: true, on: :edit
 
   enum state: {
     inactive: "inactive",

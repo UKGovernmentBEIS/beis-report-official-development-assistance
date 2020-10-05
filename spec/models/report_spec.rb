@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Report, type: :model do
   describe "validations" do
-    it { should validate_presence_of(:description).on(:update) }
+    it { should validate_presence_of(:description).on([:edit, :activate]) }
     it { should validate_presence_of(:state) }
     it { should have_readonly_attribute(:financial_quarter) }
     it { should have_readonly_attribute(:financial_year) }
@@ -68,9 +68,16 @@ RSpec.describe Report, type: :model do
     expect(report.errors[:fund]).to include t("activerecord.errors.models.report.attributes.fund.level")
   end
 
-  it "does not allow a Deadline which is in the past" do
+  it "allows a deadline which is in the past by default" do
     report = build(:report, deadline: Date.yesterday)
-    expect(report).not_to be_valid
+    expect(report).to be_valid
+  end
+
+  context "when editing the report details i.e. in the `edit` validation context" do
+    it "does not allow a deadline which is in the past" do
+      report = build(:report, deadline: Date.yesterday)
+      expect(report.valid?(:edit)).to eq false
+    end
   end
 
   describe "#financial_quarter" do
