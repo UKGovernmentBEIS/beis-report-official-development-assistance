@@ -54,9 +54,6 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
     params.require(:planned_disbursement).permit(
       :currency,
       :value,
-      :receiving_organisation_name,
-      :receiving_organisation_type,
-      :receiving_organisation_reference,
       :financial_quarter,
       :financial_year,
     )

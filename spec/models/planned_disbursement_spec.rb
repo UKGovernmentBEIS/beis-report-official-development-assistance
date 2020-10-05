@@ -37,8 +37,4 @@ RSpec.describe PlannedDisbursement, type: :model do
       expect(planned_disbursement.unknown_receiving_organisation_type?).to be false
     end
   end
-
-  describe "sanitation" do
-    it { should strip_attribute(:receiving_organisation_reference) }
-  end
 end

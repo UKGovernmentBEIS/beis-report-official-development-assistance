@@ -358,6 +358,8 @@
 - Planned disbursements are always original when created
 - Planned disbursement currency is always GBP
 - Planned disbursement providing organisation is always BEIS
+- Planned disbursement receiving organisations is no longer collect, but is
+  retained for existing records
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...HEAD
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20
