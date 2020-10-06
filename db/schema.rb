@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_15_124739) do
+ActiveRecord::Schema.define(version: 2020_10_06_091457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -160,6 +160,8 @@ ActiveRecord::Schema.define(version: 2020_09_15_124739) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "report_id"
+    t.integer "financial_quarter"
+    t.integer "financial_year"
     t.index ["parent_activity_id"], name: "index_planned_disbursements_on_parent_activity_id"
     t.index ["report_id"], name: "index_planned_disbursements_on_report_id"
   end
