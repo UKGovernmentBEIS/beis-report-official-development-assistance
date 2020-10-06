@@ -351,7 +351,8 @@
 - Fix bug that prevented delivery partners from submitting a report.
 
 ## [unreleased]
-
+- Collect financial quarter and year for planned disbursements (forecasts)
+  instead of start and end dates (the values of which are calculated).
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...HEAD
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20
 [release-19]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-18...release-19
