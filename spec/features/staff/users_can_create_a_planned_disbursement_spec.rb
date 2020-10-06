@@ -18,13 +18,6 @@ RSpec.describe "Users can create a planned disbursement" do
       choose t("form.label.planned_disbursement.planned_disbursement_type_options.original.name")
       choose "Q1"
       select "2020-2021", from: "Financial year"
-
-      fill_in "planned_disbursement[period_start_date(3i)]", with: "01"
-      fill_in "planned_disbursement[period_start_date(2i)]", with: "01"
-      fill_in "planned_disbursement[period_start_date(1i)]", with: "2020"
-      fill_in "planned_disbursement[period_end_date(3i)]", with: "31"
-      fill_in "planned_disbursement[period_end_date(2i)]", with: "12"
-      fill_in "planned_disbursement[period_end_date(1i)]", with: "2020"
       select "Pound Sterling", from: "planned_disbursement[currency]"
       fill_in "planned_disbursement[value]", with: "1000.00"
       fill_in "planned_disbursement[providing_organisation_name]", with: "org"

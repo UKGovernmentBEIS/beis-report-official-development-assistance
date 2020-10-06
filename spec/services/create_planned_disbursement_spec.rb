@@ -23,16 +23,6 @@ RSpec.describe CreatePlannedDisbursement do
         end
       end
 
-      context "when start and end date are provided" do
-        it "sets the financial quarter and year" do
-          start_date = "1 April 2020"
-          end_date = "30 June 2020"
-          result = described_class.new(activity: activity).call(attributes: {period_start_date: start_date, period_end_date: end_date})
-          expect(result.object.financial_quarter).to eq 1
-          expect(result.object.financial_year).to eq 2020
-        end
-      end
-
       it "returns a successful result" do
         allow_any_instance_of(PlannedDisbursement).to receive(:valid?).and_return(true)
         allow_any_instance_of(PlannedDisbursement).to receive(:save).and_return(true)

@@ -22,16 +22,6 @@ RSpec .describe UpdatePlannedDisbursement do
       end
     end
 
-    context "when start and end date are provided" do
-      it "sets the financial quarter and year" do
-        start_date = "1 April 2020"
-        end_date = "30 June 2020"
-        result = described_class.new(planned_disbursement: planned_disbursement).call(attributes: {period_start_date: start_date, period_end_date: end_date})
-        expect(result.object.financial_quarter).to eq 1
-        expect(result.object.financial_year).to eq 2020
-      end
-    end
-
     it "returns a Result with the success set to true" do
       allow(planned_disbursement).to receive(:valid?).and_return(true)
       allow(planned_disbursement).to receive(:save!).and_return(true)
