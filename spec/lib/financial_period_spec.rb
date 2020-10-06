@@ -46,4 +46,71 @@ RSpec.describe FinancialPeriod do
       end
     end
   end
+
+  describe "#current_quarter" do
+    context "when the month is in the first quarter" do
+      it "returns the financial quarter based on the date today" do
+        travel_to Date.parse("2019-04-01") do
+          expect(FinancialPeriod.current_quarter_string).to eql "1"
+        end
+      end
+    end
+
+    context "when the month is in the second quarter" do
+      it "returns the financial quarter based on the date today" do
+        travel_to Date.parse("2019-07-01") do
+          expect(FinancialPeriod.current_quarter_string).to eql "2"
+        end
+      end
+    end
+
+    context "when the month is in the third quarter" do
+      it "returns the financial quarter based on the date today" do
+        travel_to Date.parse("2019-10-01") do
+          expect(FinancialPeriod.current_quarter_string).to eql "3"
+        end
+      end
+    end
+
+    context "when the month is in the fourth quarter" do
+      it "returns the financial quarter based on the date today" do
+        travel_to Date.parse("2019-01-01") do
+          expect(FinancialPeriod.current_quarter_string).to eql "4"
+        end
+      end
+    end
+  end
+
+  describe "#current_year_string" do
+    context "when it is the first, second or third financial quarter" do
+      it "returns the current four digit year as a string" do
+        dates = ["2019-05-03", "2019-08-15", "2019-10-03"]
+        dates.each do |date|
+          travel_to Date.parse(date) do
+            expect(FinancialPeriod.current_year_string).to eql "2019"
+          end
+        end
+      end
+    end
+
+    context "when it is the fourth quarter" do
+      it "returns the previous four digit year as a string" do
+        travel_to Date.parse("2020-02-09") do
+          expect(FinancialPeriod.current_year_string).to eql "2019"
+        end
+      end
+    end
+  end
+
+  describe "#start_date_from_quarter_and_year" do
+    it "returns the date of the first day of a quarter" do
+      expect(FinancialPeriod.start_date_from_quarter_and_year("1", "2020")).to eq "2020-04-01".to_date
+    end
+  end
+
+  describe "#end_date_from_financial_quarter_and_year" do
+    it "returns the date of the last day of a quarter" do
+      expect(FinancialPeriod.end_date_from_quarter_and_year("1", "2020")).to eq "2020-06-30".to_date
+    end
+  end
 end

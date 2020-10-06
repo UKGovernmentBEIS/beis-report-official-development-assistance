@@ -6,5 +6,5 @@
       %h1.govuk-heading-xl
         = t("page_title.planned_disbursement.new")
 
-        = form_with model: @planned_disbursement, url: activity_planned_disbursements_path(@activity) do |f|
-          = render partial: "form", locals: { f: f }
+      = form_with model: @planned_disbursement, url: activity_planned_disbursements_path(@activity) do |f|
+        = render partial: "form", locals: { f: f }

@@ -1,4 +1,5 @@
 module FinancialPeriod
+  FINANCIAL_QUARTERS = (1..4).to_a
   def self.quarter_from_date(date)
     month = date.month
     case month
@@ -20,5 +21,31 @@ module FinancialPeriod
       return year.to_s
     end
     (year - 1).to_s
+  end
+
+  def self.current_quarter_string
+    quarter_from_date(Date.today).to_s
+  end
+
+  def self.current_year_string
+    year_from_date(Date.today).to_s
+  end
+
+  def self.next_ten_years
+    this_year = Date.today.year
+    tenth_year = this_year + 9
+    (this_year..tenth_year).step.to_a
+  end
+
+  def self.start_date_from_quarter_and_year(financial_quarter, financial_year)
+    first_month_of_quarter = {"1": "April", "2": "July", "3": "October", "4": "January"}
+    year_of_quarter = financial_quarter == "4" ? financial_year.to_i + 1 : financial_year
+    "#{first_month_of_quarter[financial_quarter.to_sym]} #{year_of_quarter}".to_date.beginning_of_quarter
+  end
+
+  def self.end_date_from_quarter_and_year(financial_quarter, financial_year)
+    last_month_of_quarter = {"1": "June", "2": "September", "3": "December", "4": "March"}
+    year_of_quarter = financial_quarter == "4" ? financial_year.to_i + 1 : financial_year
+    "#{last_month_of_quarter[financial_quarter.to_sym]} #{year_of_quarter}".to_date.end_of_quarter
   end
 end

@@ -16,6 +16,9 @@ RSpec.describe "Users can create a planned disbursement" do
       expect(page).to have_content t("page_title.planned_disbursement.new")
 
       choose t("form.label.planned_disbursement.planned_disbursement_type_options.original.name")
+      choose "Q1"
+      select "2020-2021", from: "Financial year"
+
       fill_in "planned_disbursement[period_start_date(3i)]", with: "01"
       fill_in "planned_disbursement[period_start_date(2i)]", with: "01"
       fill_in "planned_disbursement[period_start_date(1i)]", with: "2020"
@@ -32,6 +35,20 @@ RSpec.describe "Users can create a planned disbursement" do
 
       expect(page).to have_current_path organisation_activity_financials_path(user.organisation, project)
       expect(page).to have_content t("action.planned_disbursement.create.success")
+    end
+
+    scenario "the current financial quarter and year are pre selected" do
+      project = create(:project_activity, :with_report, organisation: user.organisation)
+      first_quarter_2019_2020 = "2019-04-01".to_date
+
+      travel_to first_quarter_2019_2020 do
+        visit activities_path
+        click_on project.title
+        click_on t("page_content.planned_disbursements.button.create")
+
+        expect(page).to have_checked_field "Q1"
+        expect(page).to have_select "Financial year", selected: "2019-2020"
+      end
     end
 
     scenario "the action is recorded with public_activity" do
