@@ -27,15 +27,11 @@ en:
         value: Forecasted spend amount
     legend:
       planned_disbursement:
-        period_end_date: End date
-        period_start_date: Start date
         planned_disbursement_type: Budget type
         providing_organisation: Providing organisation
         receiving_organisation: Receiving organisation
     hint:
       planned_disbursement:
-        period_end_date: The timeframe between the start date and the end date should not normally exceed 3 calendar months
-        period_start_date: The start date should define when the actual transfer of funds will take place, if a specific date is known. If the specific payment date is not known, the period in which the transfer is due to take place should be described by using both start date and end date
         planned_disbursement_type: Whether this is an original plan (prepared when the original commitment was made) or has subsequently been revised
         providing_organisation: The organisation where this planned disbursement is coming from
         providing_organisation_reference_html: For example, GB-GOV-13. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
@@ -70,10 +66,6 @@ en:
       models:
         planned_disbursement:
           attributes:
-            period_end_date:
-              between: Date must be between %{min} years ago and %{max} years in the future
-            period_start_date:
-              between: Date must be between %{min} years ago and %{max} years in the future
             planned_disbursement_type:
               blank: Budget type can't be blank
             value:

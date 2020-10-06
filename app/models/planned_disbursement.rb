@@ -19,8 +19,6 @@ class PlannedDisbursement < ApplicationRecord
     :financial_quarter,
     :financial_year
   validates :value, inclusion: {in: 0.01..99_999_999_999.00}
-  validates_with EndDateNotBeforeStartDateValidator, if: -> { period_start_date.present? && period_end_date.present? }
-  validates :period_start_date, :period_end_date, date_within_boundaries: true
 
   def unknown_receiving_organisation_type?
     receiving_organisation_type == "0"

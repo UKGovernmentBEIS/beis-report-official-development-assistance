@@ -305,24 +305,16 @@ module FormHelpers
   end
 
   def fill_in_planned_disbursement_form(planned_disbursement_type: "Original",
-    period_start_date_day: "1",
-    period_start_date_month: "1",
-    period_start_date_year: "2020",
-    period_end_date_day: "28",
-    period_end_date_month: "4",
-    period_end_date_year: "2020",
+    financial_quarter: "Q2",
+    financial_year: "2020-2021",
     currency: "Pound Sterling",
     value: "100000",
     receiving_organisation: OpenStruct.new(name: "Example receiver", reference: "GB-COH-987", type: "Private Sector"))
 
     choose planned_disbursement_type
-    fill_in "planned_disbursement[period_start_date(3i)]", with: period_start_date_day
-    fill_in "planned_disbursement[period_start_date(2i)]", with: period_start_date_month
-    fill_in "planned_disbursement[period_start_date(1i)]", with: period_start_date_year
 
-    fill_in "planned_disbursement[period_end_date(3i)]", with: period_end_date_day
-    fill_in "planned_disbursement[period_end_date(2i)]", with: period_end_date_month
-    fill_in "planned_disbursement[period_end_date(1i)]", with: period_end_date_year
+    choose financial_quarter
+    select financial_year, from: "Financial year"
 
     select currency, from: "planned_disbursement[currency]"
     fill_in "planned_disbursement[value]", with: value

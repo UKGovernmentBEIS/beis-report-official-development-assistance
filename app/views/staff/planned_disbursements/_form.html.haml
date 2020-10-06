@@ -23,10 +23,6 @@
         :name,
         label: { text: "Financial year", tag: :h2, size: "m" }
 
-= f.govuk_date_field :period_start_date
-
-= f.govuk_date_field :period_end_date
-
 = f.govuk_collection_select :currency,
                                currency_select_options,
                                :code,
