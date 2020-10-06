@@ -272,6 +272,8 @@ RSpec.describe IngestIatiActivities do
         expect(ingested_planned_disbursement.planned_disbursement_type).to eql("1")
         expect(ingested_planned_disbursement.period_start_date).to eq "2019-07-01".to_date
         expect(ingested_planned_disbursement.period_end_date).to eq "2020-04-30".to_date
+        expect(ingested_planned_disbursement.financial_quarter).to eq 2
+        expect(ingested_planned_disbursement.financial_year).to eq 2019
         expect(ingested_planned_disbursement.value).to eq "983052".to_i
         expect(ingested_planned_disbursement.currency).to eq "GBP"
         expect(ingested_planned_disbursement.providing_organisation_name).to eql("UK - Department for Business, Energy and Industrial Strategy")
