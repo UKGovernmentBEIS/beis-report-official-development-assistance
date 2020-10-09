@@ -17,8 +17,4 @@ class PlannedDisbursement < ApplicationRecord
     :financial_quarter,
     :financial_year
   validates :value, inclusion: {in: 0.01..99_999_999_999.00}
-
-  def unknown_receiving_organisation_type?
-    receiving_organisation_type == "0"
-  end
 end
