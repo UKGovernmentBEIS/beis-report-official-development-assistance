@@ -22,4 +22,10 @@ RSpec.describe PlannedDisbursementXmlPresenter do
       expect(described_class.new(planned_disbursement).value).to eq("100000.00")
     end
   end
+
+  describe "#planned_disbursement_type" do
+    it "returns the numeric value for the planned disbursement type" do
+      expect(described_class.new(planned_disbursement).planned_disbursement_type).to eq "1"
+    end
+  end
 end

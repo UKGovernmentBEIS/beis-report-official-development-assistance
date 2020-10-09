@@ -11,7 +11,7 @@ class CreatePlannedDisbursement
 
     planned_disbursement.parent_activity = activity
     planned_disbursement.assign_attributes(attributes)
-    planned_disbursement.planned_disbursement_type = PlannedDisbursement::PLANNED_DISBURSEMENT_BUDGET_TYPES.key("original").to_s
+    planned_disbursement.planned_disbursement_type = "1"
     planned_disbursement.currency = activity.organisation.default_currency
 
     if attributes.key?(:financial_quarter) && attributes.key?(:financial_year)

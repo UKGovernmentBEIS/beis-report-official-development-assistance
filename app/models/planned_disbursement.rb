@@ -1,6 +1,7 @@
 class PlannedDisbursement < ApplicationRecord
   include PublicActivity::Common
-  PLANNED_DISBURSEMENT_BUDGET_TYPES = {"1": "original", "2": "revised"}
+
+  enum planned_disbursement_type: {original: "1", revised: "2"}
 
   belongs_to :parent_activity, class_name: "Activity"
   belongs_to :report, optional: true

@@ -269,7 +269,7 @@ RSpec.describe IngestIatiActivities do
         ingested_planned_disbursement = planned_disbursements.first
 
         expect(ingested_planned_disbursement).to be_valid
-        expect(ingested_planned_disbursement.planned_disbursement_type).to eql("1")
+        expect(ingested_planned_disbursement).to be_original
         expect(ingested_planned_disbursement.period_start_date).to eq "2019-07-01".to_date
         expect(ingested_planned_disbursement.period_end_date).to eq "2020-04-30".to_date
         expect(ingested_planned_disbursement.financial_quarter).to eq 2
