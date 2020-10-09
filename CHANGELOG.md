@@ -360,6 +360,8 @@
 - Planned disbursement providing organisation is always BEIS
 - Planned disbursement receiving organisations is no longer collect, but is
   retained for existing records
+- Planned disbursements do not include receiving organisation in the IATI xml
+  export
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...HEAD
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20
