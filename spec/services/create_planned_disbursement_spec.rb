@@ -9,9 +9,8 @@ RSpec.describe CreatePlannedDisbursement do
 
     it "always sets the type to original" do
       result = described_class.new(activity: activity).call
-      original_key_value = PlannedDisbursement::PLANNED_DISBURSEMENT_BUDGET_TYPES.key("original").to_s
 
-      expect(result.object.planned_disbursement_type).to eql original_key_value
+      expect(result.object).to be_original
     end
 
     it "always sets the currency to that of the organisation that owns the activity" do

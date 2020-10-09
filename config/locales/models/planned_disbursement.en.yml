@@ -29,8 +29,8 @@ en:
     body:
       planned_disbursement:
         planned_disbursement_type_options:
-          '1': Original
-          '2': Revised
+          original: Original
+          revised: Revised
         edit_noun: planned disbursement
   page_content:
     planned_disbursements:
