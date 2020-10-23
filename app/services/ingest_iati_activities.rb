@@ -221,6 +221,9 @@ class IngestIatiActivities
       period_start_date = planned_disbursement_element.children.detect { |child| child.name.eql?("period-start") }.attributes["iso-date"].value
       period_end_date = planned_disbursement_element.children.detect { |child| child.name.eql?("period-end") }.attributes["iso-date"].value
 
+      financial_quarter = FinancialPeriod.quarter_from_date(period_start_date.to_date)
+      financial_year = FinancialPeriod.year_from_date(period_start_date.to_date)
+
       providing_organisation = planned_disbursement_element.children.detect { |child| child.name.eql?("provider-org") }
       providing_organisation_name = providing_organisation.children.detect { |child| child.name.eql?("narrative") }.text
       providing_organisation_type = providing_organisation_type(attribute: providing_organisation.attributes["type"])
@@ -237,6 +240,8 @@ class IngestIatiActivities
         planned_disbursement_type: planned_disbursement_type,
         period_start_date: period_start_date,
         period_end_date: period_end_date,
+        financial_quarter: financial_quarter,
+        financial_year: financial_year,
         value: value,
         currency: currency,
         parent_activity: roda_activity,

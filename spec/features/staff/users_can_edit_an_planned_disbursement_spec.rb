@@ -25,6 +25,23 @@ RSpec.describe "Users can edit a planned disbursement" do
       expect(page).to have_content "An Organisation"
     end
 
+    scenario "the correct financial quarter and year are selected" do
+      first_quarter_2018_2019 = "2018-04-01".to_date
+      project = create(:project_activity, organisation: user.organisation)
+      editable_report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
+      planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report, financial_quarter: 2, financial_year: 2018)
+
+      travel_to first_quarter_2018_2019 do
+        visit organisation_activity_path(project.organisation, project)
+        within "##{planned_disbursement.id}" do
+          click_on "Edit"
+        end
+
+        expect(page).to have_checked_field "Q2"
+        expect(page).to have_select "Financial year", selected: "2018-2019"
+      end
+    end
+
     scenario "they do not see the edit link when they cannot edit" do
       activity = create(:project_activity, organisation: user.organisation)
       planned_disbursement = create(:planned_disbursement, parent_activity: activity)
