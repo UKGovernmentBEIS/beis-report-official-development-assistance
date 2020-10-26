@@ -154,7 +154,7 @@ RSpec.describe IngestCsvRow do
 
   context "#process_gdi" do
     it "returns the mapped gdi code" do
-      expect(IngestCsvRow.new.process_gdi("NO"))
+      expect(IngestCsvRow.new.process_gdi("gdi not applicable"))
         .to eql "4"
     end
 
