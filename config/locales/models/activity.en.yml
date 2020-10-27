@@ -61,7 +61,7 @@ en:
           "G01": "Costs of development assistance programmes not already included under other ODA items as an integral part of the costs of delivering or implementing the aid provided. This includes delivery costs and in-house agency staff and contractors but not donor experts and consultants"
     legend:
       activity:
-        aid_type: Aid type
+        aid_type: What is the aid type?
         actual_end_date: Actual end date (optional)
         actual_start_date: Actual start date (optional if planned start date is entered)
         call_present: Is there a call for this %{level}?
