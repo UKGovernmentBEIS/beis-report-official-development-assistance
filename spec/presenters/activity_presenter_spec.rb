@@ -489,7 +489,7 @@ RSpec.describe ActivityPresenter do
       project = create(:project_activity, :with_report)
       report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
       _disbursement_1 = create(:planned_disbursement, parent_activity: project, report: report, value: 200.20, period_start_date: Date.today)
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500.00)
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500.00, financial_quarter: 4, financial_year: 2019)
 
       expect(described_class.new(project).forecasted_total_for_report_financial_quarter(report: report))
         .to eq "200.20"
@@ -499,14 +499,17 @@ RSpec.describe ActivityPresenter do
   describe "#forecasted_total_for_date_range" do
     it "returns the planned disbursement total for a date range as a formatted number" do
       project = create(:project_activity, :with_report)
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200.20, period_start_date: Date.today)
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: 3.months.ago)
+      current_financial_quarter = Date.parse("2020-07-01")
+      last_financial_quarter = Date.parse("2020-04-01")
+      next_financial_quarter = Date.parse("2020-10-01")
+      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200.20, period_start_date: current_financial_quarter, financial_quarter: 2, financial_year: 2020)
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: last_financial_quarter, financial_quarter: 1, financial_year: 2019)
 
-      expect(described_class.new(project).forecasted_total_for_date_range(range: Date.today.all_quarter))
+      expect(described_class.new(project).forecasted_total_for_date_range(range: current_financial_quarter.all_quarter))
         .to eq "200.20"
-      expect(described_class.new(project).forecasted_total_for_date_range(range: 3.months.ago.all_quarter))
+      expect(described_class.new(project).forecasted_total_for_date_range(range: last_financial_quarter.all_quarter))
         .to eq "1500.00"
-      expect(described_class.new(project).forecasted_total_for_date_range(range: 3.months.from_now.all_quarter))
+      expect(described_class.new(project).forecasted_total_for_date_range(range: next_financial_quarter.all_quarter))
         .to eq "0.00"
     end
   end

@@ -1045,22 +1045,21 @@ RSpec.describe Activity, type: :model do
 
   describe "#forecasted_total_for_report_financial_quarter" do
     it "returns the total of all the activity's planned disbursements scoped to a report's financial quarter only" do
-      project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = create(:report, financial_quarter: 1, financial_year: 2020, state: :active, created_at: Date.parse("2020-04-01"))
+      project = create(:project_activity)
 
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.today)
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.today)
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: 4.months.ago)
+      create(:planned_disbursement, parent_activity: project, report: report, value: 1000.00, period_start_date: Date.parse("2020-04-01"), financial_quarter: 1, financial_year: 2020)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.parse("2020-01-01"), financial_quarter: 4, financial_year: 2019)
 
-      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(2000.00)
+      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(1000.00)
     end
 
     it "does not include totals for any planned disbursements outside the report's date range" do
-      project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = create(:report, financial_quarter: 3, financial_year: 2020, state: :active, created_at: Date.parse("2020-10-01"))
+      project = create(:project_activity)
 
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: 6.months.ago)
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: 4.months.ago)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.parse("2020-04-01"), financial_quarter: 1, financial_year: 2020)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.parse("2020-07-01"), financial_quarter: 2, financial_year: 2020)
 
       expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(0)
     end
@@ -1073,17 +1072,16 @@ RSpec.describe Activity, type: :model do
       create(:transaction, parent_activity: project, value: 100, report: report, date: Date.today)
       create(:transaction, parent_activity: project, value: 200, report: report, date: Date.today)
       create(:planned_disbursement, parent_activity: project, value: 1500, report: report, period_start_date: Date.today)
-      create(:planned_disbursement, parent_activity: project, value: 500, report: report, period_start_date: Date.today)
 
-      expect(project.variance_for_report_financial_quarter(report: report)).to eq(-1700)
+      expect(project.variance_for_report_financial_quarter(report: report)).to eq(-1200)
     end
   end
 
   describe "#forecasted_total_for_date_range" do
     it "returns the total of all the activity's planned disbursements scoped to a date range" do
       project = create(:project_activity, :with_report)
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200, period_start_date: Date.parse("13 April 2020"))
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1000, period_start_date: Date.parse("20 November 2020"))
+      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200, period_start_date: Date.parse("13 April 2020"), financial_quarter: 1, financial_year: 2020)
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1000, period_start_date: Date.parse("20 November 2020"), financial_quarter: 3, financial_year: 2020)
 
       expect(project.forecasted_total_for_date_range(range: Date.parse("1 April 2020")..Date.parse("30 June 2020"))).to eq 200
       expect(project.forecasted_total_for_date_range(range: Date.parse("1 October 2020")..Date.parse("31 December 2020"))).to eq 1000
