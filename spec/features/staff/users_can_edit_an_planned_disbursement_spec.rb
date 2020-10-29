@@ -18,11 +18,11 @@ RSpec.describe "Users can edit a planned disbursement" do
 
       expect(page).to have_http_status(:success)
 
-      fill_in "Receiving organisation", with: "An Organisation"
+      fill_in "Forecasted spend amount", with: "£20000"
       click_button "Submit"
 
       expect(page).to have_content t("action.planned_disbursement.update.success")
-      expect(page).to have_content "An Organisation"
+      expect(page).to have_content "£20,000"
     end
 
     scenario "the correct financial quarter and year are selected" do

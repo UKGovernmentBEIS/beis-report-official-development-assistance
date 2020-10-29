@@ -355,6 +355,13 @@
   instead of start and end dates (the values of which are calculated).
 - No longer collect start and end dates for planned disbursements (forecasts)
   through the application interface.
+- Planned disbursements are always original when created
+- Planned disbursement currency is always GBP
+- Planned disbursement providing organisation is always BEIS
+- Planned disbursement receiving organisations is no longer collect, but is
+  retained for existing records
+- Planned disbursements do not include receiving organisation in the IATI xml
+  export
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...HEAD
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20
