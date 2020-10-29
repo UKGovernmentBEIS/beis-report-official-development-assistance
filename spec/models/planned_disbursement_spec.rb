@@ -27,29 +27,4 @@ RSpec.describe PlannedDisbursement, type: :model do
       end
     end
   end
-
-  describe "#unknown_receiving_organisation_type?" do
-    it "returns true when receiving organisation type is 0" do
-      planned_disbursement = create(:planned_disbursement, receiving_organisation_type: "0")
-      expect(planned_disbursement.unknown_receiving_organisation_type?).to be true
-
-      planned_disbursement.update(receiving_organisation_type: "10")
-      expect(planned_disbursement.unknown_receiving_organisation_type?).to be false
-    end
-  end
-
-  describe "sanitation" do
-    it { should strip_attribute(:providing_organisation_reference) }
-    it { should strip_attribute(:receiving_organisation_reference) }
-  end
-
-  describe "validations" do
-    context "when the planned_disbursement_type is blank" do
-      it "displays the appropriate error message" do
-        planned_disbursement = build(:planned_disbursement, planned_disbursement_type: nil)
-        expect(planned_disbursement.valid?).to be_falsey
-        expect(planned_disbursement.errors[:planned_disbursement_type]).to include t("activerecord.errors.models.planned_disbursement.attributes.planned_disbursement_type.blank")
-      end
-    end
-  end
 end

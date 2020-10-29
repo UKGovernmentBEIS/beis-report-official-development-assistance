@@ -7,6 +7,26 @@ RSpec.describe CreatePlannedDisbursement do
     subject { described_class.new(activity: create(:activity)) }
     it_behaves_like "sanitises monetary field"
 
+    it "always sets the type to original" do
+      result = described_class.new(activity: activity).call
+
+      expect(result.object).to be_original
+    end
+
+    it "always sets the currency to that of the organisation that owns the activity" do
+      result = described_class.new(activity: activity).call
+      expect(result.object.currency).to eql activity.organisation.default_currency
+    end
+
+    it "always sets the providing organisation to BEIS" do
+      result = described_class.new(activity: activity).call
+      beis = Organisation.find_by(service_owner: true)
+
+      expect(result.object.providing_organisation_name).to eql beis.name
+      expect(result.object.providing_organisation_type).to eql beis.organisation_type
+      expect(result.object.providing_organisation_reference).to eql beis.iati_reference
+    end
+
     context "when the planned disbursement is valid" do
       it "sets the parent activity" do
         result = described_class.new(activity: activity).call

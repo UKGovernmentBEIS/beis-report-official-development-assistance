@@ -304,24 +304,16 @@ module FormHelpers
     end
   end
 
-  def fill_in_planned_disbursement_form(planned_disbursement_type: "Original",
+  def fill_in_planned_disbursement_form(
     financial_quarter: "Q2",
     financial_year: "2020-2021",
-    currency: "Pound Sterling",
-    value: "100000",
-    receiving_organisation: OpenStruct.new(name: "Example receiver", reference: "GB-COH-987", type: "Private Sector"))
-
-    choose planned_disbursement_type
+    value: "100000"
+  )
 
     choose financial_quarter
     select financial_year, from: "Financial year"
 
-    select currency, from: "planned_disbursement[currency]"
     fill_in "planned_disbursement[value]", with: value
-
-    fill_in "planned_disbursement[receiving_organisation_name]", with: receiving_organisation.name
-    select receiving_organisation.type, from: "planned_disbursement[receiving_organisation_type]"
-    fill_in "planned_disbursement[receiving_organisation_reference]", with: receiving_organisation.reference
 
     click_on(t("default.button.submit"))
   end

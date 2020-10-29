@@ -16,4 +16,8 @@ class PlannedDisbursementXmlPresenter < SimpleDelegator
   def value
     number_to_currency(super, unit: "", delimiter: "")
   end
+
+  def planned_disbursement_type
+    PlannedDisbursement.planned_disbursement_types[super]
+  end
 end
