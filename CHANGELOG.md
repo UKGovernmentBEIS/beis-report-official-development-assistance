@@ -362,6 +362,7 @@
   retained for existing records
 - Planned disbursements do not include receiving organisation in the IATI xml
   export
+- Answers for GDI form step have been modified
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...HEAD
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20

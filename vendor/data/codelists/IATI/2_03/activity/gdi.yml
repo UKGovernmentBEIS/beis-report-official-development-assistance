@@ -11,4 +11,6 @@ data:
   - code: '3'
     name: Yes - China and India
   - code: '4'
-    name: 'No'
+    name: GDI not applicable
+  - code: '5'
+    name: No - This activity benefits China or India but GDI does not apply

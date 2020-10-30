@@ -32,7 +32,7 @@ module FormHelpers
     geography: "recipient_region",
     recipient_region: "Developing countries, unspecified",
     intended_beneficiaries: "Haiti",
-    gdi: "No",
+    gdi: "GDI not applicable",
     collaboration_type: "Bilateral",
     flow: "ODA",
     aid_type: "A01",
@@ -182,7 +182,7 @@ module FormHelpers
 
     expect(page).to have_content t("form.label.activity.gdi")
     expect(page).to have_content t("form.hint.activity.gdi")
-    choose "No"
+    choose "GDI not applicable"
     click_button t("form.button.activity.submit")
 
     unless level == "fund"

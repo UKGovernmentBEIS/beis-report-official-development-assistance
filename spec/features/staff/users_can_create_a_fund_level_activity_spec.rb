@@ -257,7 +257,7 @@ RSpec.feature "Users can create a fund level activity" do
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.gdi.blank")
 
-        choose "No"
+        choose "GDI not applicable"
         click_button t("form.button.activity.submit")
         expect(page). to have_content t("form.label.activity.collaboration_type")
 
