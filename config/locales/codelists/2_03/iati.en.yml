@@ -43,7 +43,8 @@ en:
       '1': Yes - China
       '2': Yes - India
       '3': Yes - China and India
-      '4': 'No'
+      '4': GDI not applicable
+      '5': No - This activity benefits China or India but GDI does not apply
     geography:
       recipient_country: Country
       recipient_region: Region
