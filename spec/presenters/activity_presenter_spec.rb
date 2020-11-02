@@ -353,7 +353,7 @@ RSpec.describe ActivityPresenter do
   describe "#oda_eligibility" do
     context "when the activity is ODA eligible" do
       it "returns the locale value for this option" do
-        activity = build(:project_activity, oda_eligibility: "true")
+        activity = build(:project_activity, oda_eligibility: 1)
         result = described_class.new(activity)
         expect(result.oda_eligibility).to eq("Eligible")
       end
@@ -361,9 +361,17 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity is no longer ODA eligible" do
       it "returns the locale value for this option" do
-        activity = build(:project_activity, oda_eligibility: "false")
+        activity = build(:project_activity, oda_eligibility: 2)
         result = described_class.new(activity)
         expect(result.oda_eligibility).to eq("No longer eligible")
+      end
+    end
+
+    context "when the activity was never ODA eligible" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, oda_eligibility: 0)
+        result = described_class.new(activity)
+        expect(result.oda_eligibility).to eq("No - was never eligible")
       end
     end
   end
