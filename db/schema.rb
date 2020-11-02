@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_06_091457) do
+ActiveRecord::Schema.define(version: 2020_11_02_105419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -59,11 +59,11 @@ ActiveRecord::Schema.define(version: 2020_10_06_091457) do
     t.string "roda_identifier_fragment"
     t.string "roda_identifier_compound"
     t.boolean "requires_additional_benefitting_countries"
-    t.boolean "oda_eligibility", default: true
     t.string "gdi"
     t.integer "total_applications"
     t.integer "total_awards"
     t.string "collaboration_type"
+    t.integer "oda_eligibility", default: 1, null: false
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
