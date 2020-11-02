@@ -53,9 +53,10 @@ class IngestCsvRow
   end
 
   def process_oda_eligibility(value)
-    return false if value.nil?
+    value = value.to_s.strip.downcase
+    return :skip if value.blank? || value.downcase == "n/a" || value.downcase == "not applicable"
 
-    value.downcase == "eligible"
+    oda_eligibility_mapping[value] || :skip
   end
 
   def process_gdi(value)
@@ -275,6 +276,14 @@ class IngestCsvRow
   def aid_type_mapping
     @aid_type_mapping ||= begin
       yaml_to_objects(entity: "activity", type: "aid_type")
+        .map { |status| [status["name"].downcase, status["code"]] }
+        .to_h
+    end
+  end
+
+  def oda_eligibility_mapping
+    @oda_eligibility_mapping ||= begin
+      yaml_to_objects(entity: "activity", type: "oda_eligibility")
         .map { |status| [status["name"].downcase, status["code"]] }
         .to_h
     end
