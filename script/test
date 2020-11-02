@@ -30,6 +30,9 @@ else
     bundle exec standardrb --fix
   fi
 
+  echo "==> Linting our shellscripts"
+  bundle exec rake shellcheck
+
   echo "==> Running the tests..."
   bundle exec rspec
 
