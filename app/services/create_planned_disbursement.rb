@@ -11,6 +11,19 @@ class CreatePlannedDisbursement
 
     planned_disbursement.parent_activity = activity
     planned_disbursement.assign_attributes(attributes)
+    planned_disbursement.planned_disbursement_type = "1"
+    planned_disbursement.currency = activity.organisation.default_currency
+
+    if attributes.key?(:financial_quarter) && attributes.key?(:financial_year)
+      planned_disbursement.period_start_date =
+        FinancialPeriod.start_date_from_quarter_and_year(attributes.fetch(:financial_quarter), attributes.fetch(:financial_year))
+      planned_disbursement.period_end_date =
+        FinancialPeriod.end_date_from_quarter_and_year(attributes.fetch(:financial_quarter), attributes.fetch(:financial_year))
+    end
+
+    planned_disbursement.providing_organisation_name = service_owner.name
+    planned_disbursement.providing_organisation_type = service_owner.organisation_type
+    planned_disbursement.providing_organisation_reference = service_owner.iati_reference
 
     convert_and_assign_value(planned_disbursement, attributes[:value])
 
@@ -27,11 +40,13 @@ class CreatePlannedDisbursement
     result
   end
 
-  private
-
-  def convert_and_assign_value(planned_disbursement, value)
+  private def convert_and_assign_value(planned_disbursement, value)
     planned_disbursement.value = ConvertFinancialValue.new.convert(value.to_s)
   rescue ConvertFinancialValue::Error
     planned_disbursement.errors.add(:value, I18n.t("activerecord.errors.models.planned_disbursement.attributes.value.not_a_number"))
+  end
+
+  private def service_owner
+    Organisation.find_by_service_owner(true)
   end
 end

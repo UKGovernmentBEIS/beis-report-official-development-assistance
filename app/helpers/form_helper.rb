@@ -20,21 +20,21 @@ module FormHelper
     end
   end
 
-  def list_of_planned_disbursement_budget_types
-    @list_of_planned_disbursement_budget_types ||= begin
-      PlannedDisbursement::PLANNED_DISBURSEMENT_BUDGET_TYPES.map do |id, name|
-        OpenStruct.new(
-          id: id,
-          name: t("form.label.planned_disbursement.planned_disbursement_type_options.#{name}.name"),
-          description: t("form.label.planned_disbursement.planned_disbursement_type_options.#{name}.description")
-        )
-      end
-    end
-  end
-
   def list_of_budget_statuses
     @list_of_budget_statuses ||= begin
       Budget::STATUSES.map { |id, name| OpenStruct.new(id: id, name: t("form.label.budget.status_options.#{name}")) }
+    end
+  end
+
+  def list_of_financial_quarters
+    @list_of_financial_quarters ||= begin
+      FinancialPeriod::FINANCIAL_QUARTERS.map { |id| OpenStruct.new(id: id, name: "Q#{id}") }
+    end
+  end
+
+  def list_of_financial_years
+    @list_of_financial_years ||= begin
+      FinancialPeriod.next_ten_years.map { |year| OpenStruct.new(id: year.to_s, name: "#{year}-#{year + 1}") }
     end
   end
 

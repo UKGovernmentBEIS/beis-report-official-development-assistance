@@ -4,11 +4,11 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "2.6.3"
 
-gem "auth0", "~> 4.15"
+gem "auth0", "~> 5.0"
 gem "acts_as_tree"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "data_migrate"
-gem "govuk_design_system_formbuilder", "~> 2.0.0"
+gem "govuk_design_system_formbuilder", "~> 2.1.1"
 gem "haml-rails"
 gem "high_voltage"
 gem "ipaddr"
@@ -48,6 +48,7 @@ group :development, :test do
   gem "dotenv-rails"
   gem "factory_bot_rails"
   gem "faker"
+  gem "foreman"
   gem "i18n-tasks", "~> 0.9.31"
   gem "rspec-rails"
   gem "standard"

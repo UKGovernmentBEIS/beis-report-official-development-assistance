@@ -4,7 +4,7 @@ Date: 2019-10-13
 
 ## Status
 
-Accepted
+Superceded by [22. use-govuk-paas-for-hosting](0022-use-govuk-paas-for-hosting.md)
 
 ## Context
 

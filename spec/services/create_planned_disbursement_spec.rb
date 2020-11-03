@@ -7,10 +7,40 @@ RSpec.describe CreatePlannedDisbursement do
     subject { described_class.new(activity: create(:activity)) }
     it_behaves_like "sanitises monetary field"
 
+    it "always sets the type to original" do
+      result = described_class.new(activity: activity).call
+
+      expect(result.object).to be_original
+    end
+
+    it "always sets the currency to that of the organisation that owns the activity" do
+      result = described_class.new(activity: activity).call
+      expect(result.object.currency).to eql activity.organisation.default_currency
+    end
+
+    it "always sets the providing organisation to BEIS" do
+      result = described_class.new(activity: activity).call
+      beis = Organisation.find_by(service_owner: true)
+
+      expect(result.object.providing_organisation_name).to eql beis.name
+      expect(result.object.providing_organisation_type).to eql beis.organisation_type
+      expect(result.object.providing_organisation_reference).to eql beis.iati_reference
+    end
+
     context "when the planned disbursement is valid" do
       it "sets the parent activity" do
         result = described_class.new(activity: activity).call
         expect(result.object.parent_activity).to eq(activity)
+      end
+
+      context "when financial quarter and year are provided" do
+        it "sets the period start and end dates" do
+          financial_quarter = "1"
+          financial_year = "2020"
+          result = described_class.new(activity: activity).call(attributes: {financial_quarter: financial_quarter, financial_year: financial_year})
+          expect(result.object.period_start_date).to eq "2020-04-01".to_date
+          expect(result.object.period_end_date).to eq "2020-06-30".to_date
+        end
       end
 
       it "returns a successful result" do

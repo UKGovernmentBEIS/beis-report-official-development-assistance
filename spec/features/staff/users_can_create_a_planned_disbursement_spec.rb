@@ -15,23 +15,27 @@ RSpec.describe "Users can create a planned disbursement" do
 
       expect(page).to have_content t("page_title.planned_disbursement.new")
 
-      choose t("form.label.planned_disbursement.planned_disbursement_type_options.original.name")
-      fill_in "planned_disbursement[period_start_date(3i)]", with: "01"
-      fill_in "planned_disbursement[period_start_date(2i)]", with: "01"
-      fill_in "planned_disbursement[period_start_date(1i)]", with: "2020"
-      fill_in "planned_disbursement[period_end_date(3i)]", with: "31"
-      fill_in "planned_disbursement[period_end_date(2i)]", with: "12"
-      fill_in "planned_disbursement[period_end_date(1i)]", with: "2020"
-      select "Pound Sterling", from: "planned_disbursement[currency]"
+      choose "Q1"
+      select "2020-2021", from: "Financial year"
       fill_in "planned_disbursement[value]", with: "1000.00"
-      fill_in "planned_disbursement[providing_organisation_name]", with: "org"
-      select "Government", from: "planned_disbursement[providing_organisation_type]"
-      fill_in "planned_disbursement[receiving_organisation_name]", with: "another org"
-      select "Other Public Sector", from: "planned_disbursement[receiving_organisation_type]"
       click_button t("default.button.submit")
 
       expect(page).to have_current_path organisation_activity_financials_path(user.organisation, project)
       expect(page).to have_content t("action.planned_disbursement.create.success")
+    end
+
+    scenario "the current financial quarter and year are pre selected" do
+      project = create(:project_activity, :with_report, organisation: user.organisation)
+      first_quarter_2019_2020 = "2019-04-01".to_date
+
+      travel_to first_quarter_2019_2020 do
+        visit activities_path
+        click_on project.title
+        click_on t("page_content.planned_disbursements.button.create")
+
+        expect(page).to have_checked_field "Q1"
+        expect(page).to have_select "Financial year", selected: "2019-2020"
+      end
     end
 
     scenario "the action is recorded with public_activity" do
@@ -78,74 +82,6 @@ RSpec.describe "Users can create a planned disbursement" do
 
       planned_disbursement = PlannedDisbursement.last
       expect(planned_disbursement.report).to eq(report)
-    end
-
-    context "when the delivery partner is a government organisation" do
-      context "and the activity is a project" do
-        it "pre fills the providing organisation details with those of BEIS" do
-          beis = create(:beis_organisation)
-          government_delivery_partner = create(:delivery_partner_organisation, organisation_type: "10")
-          user.update(organisation: government_delivery_partner)
-          project = create(:project_activity, :with_report, organisation: user.organisation)
-
-          visit activities_path
-          click_on project.title
-          click_on t("page_content.planned_disbursements.button.create")
-
-          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
-          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
-          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_reference"), with: beis.iati_reference)
-        end
-      end
-
-      context "and the activity is a third-party project" do
-        it "pre fills the providing organisation details with those of BEIS" do
-          beis = create(:beis_organisation)
-          government_delivery_partner = create(:delivery_partner_organisation, organisation_type: "10")
-          user.update(organisation: government_delivery_partner)
-          project = create(:third_party_project_activity, :with_report, organisation: user.organisation)
-
-          visit organisation_activity_path(user.organisation, project)
-          click_on t("page_content.planned_disbursements.button.create")
-
-          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
-          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
-          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_reference"), with: beis.iati_reference)
-        end
-      end
-    end
-
-    context "when the delivery partner is a non-government organisation" do
-      context "and the activity is a project" do
-        it "pre fills the providing organisation details with those of BEIS" do
-          beis = create(:beis_organisation)
-          government_devlivery_partner = create(:delivery_partner_organisation, organisation_type: "10")
-          user.update(organisation: government_devlivery_partner)
-          project = create(:project_activity, :with_report, organisation: user.organisation)
-
-          visit activities_path
-          click_on project.title
-          click_on t("page_content.planned_disbursements.button.create")
-
-          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_name"), with: beis.name)
-          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_type"), with: beis.organisation_type)
-          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_reference"), with: beis.iati_reference)
-        end
-      end
-      context "and the activity is a third-party project" do
-        it "pre fills the providing organisation details with those of the delivery partner" do
-          non_government_devlivery_partner = create(:delivery_partner_organisation, organisation_type: "22")
-          user.update(organisation: non_government_devlivery_partner)
-          project = create(:third_party_project_activity, :with_report, organisation: user.organisation)
-
-          visit organisation_activity_path(user.organisation, project)
-          click_on t("page_content.planned_disbursements.button.create")
-
-          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_name"), with: non_government_devlivery_partner.name)
-          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_type"), with: non_government_devlivery_partner.organisation_type)
-          expect(page).to have_field(t("form.label.planned_disbursement.providing_organisation_reference"), with: non_government_devlivery_partner.iati_reference)
-        end
-      end
     end
   end
 

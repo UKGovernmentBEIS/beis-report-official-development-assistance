@@ -100,10 +100,5 @@ RSpec.shared_examples "valid activity XML" do
     expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/@provider-activity-id").text).to eq ""
     expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/@ref").text).to eq planned_disbursement_presenter.providing_organisation_reference
     expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/narrative").text).to eq planned_disbursement_presenter.providing_organisation_name
-
-    expect(xml.xpath("//iati-activity/planned-disbursement/receiver-org/@type").text).to eq planned_disbursement_presenter.receiving_organisation_type
-    expect(xml.xpath("//iati-activity/planned-disbursement/receiver-org/@provider-activity-id").text).to eq ""
-    expect(xml.xpath("//iati-activity/planned-disbursement/receiver-org/@ref").text).to eq planned_disbursement_presenter.receiving_organisation_reference
-    expect(xml.xpath("//iati-activity/planned-disbursement/receiver-org/narrative").text).to eq planned_disbursement_presenter.receiving_organisation_name
   end
 end

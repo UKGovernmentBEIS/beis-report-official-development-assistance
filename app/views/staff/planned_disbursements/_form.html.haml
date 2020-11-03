@@ -1,39 +1,21 @@
 = f.govuk_error_summary
 
-= f.govuk_collection_radio_buttons :planned_disbursement_type,
-  list_of_planned_disbursement_budget_types,
-  :id,
-  :name,
-  :description,
-  legend: { tag: :h2, size: "s" }
+= f.govuk_fieldset legend: { text: nil } do
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      = f.govuk_collection_radio_buttons :financial_quarter,
+        list_of_financial_quarters,
+        :id,
+        :name,
+        inline: true,
+        legend: { text: "Financial quarter" , tag: :h2 }
+    .govuk-grid-column-one-third
+      = f.govuk_collection_select :financial_year,
+        list_of_financial_years,
+        :id,
+        :name,
+        label: { text: "Financial year", tag: :h2, size: "m" }
 
-= f.govuk_date_field :period_start_date
-
-= f.govuk_date_field :period_end_date
-
-= f.govuk_collection_select :currency,
-                               currency_select_options,
-                               :code,
-                               :name
-
-= f.govuk_text_field :value
-
-= f.govuk_fieldset legend: { text: t("form.legend.planned_disbursement.providing_organisation") } do
-  %span.govuk-hint= t("form.hint.planned_disbursement.providing_organisation")
-  = f.govuk_text_field :providing_organisation_name
-  = f.govuk_collection_select :providing_organisation_type,
-                       yaml_to_objects(entity: "organisation", type: "organisation_type"),
-                       :code,
-                       :name
-  = f.govuk_text_field :providing_organisation_reference
-
-= f.govuk_fieldset legend: { text: t("form.legend.planned_disbursement.receiving_organisation") } do
-  %span.govuk-hint= t("form.hint.planned_disbursement.receiving_organisation")
-  = f.govuk_text_field :receiving_organisation_name
-  = f.govuk_collection_select :receiving_organisation_type,
-                      yaml_to_objects(entity: "organisation", type: "organisation_type"),
-                      :code,
-                      :name
-  = f.govuk_text_field :receiving_organisation_reference
+= f.govuk_text_field :value, width: 20
 
 = f.govuk_submit t("default.button.submit")

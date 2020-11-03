@@ -153,7 +153,7 @@
 ## [release-8] - 2020-06-04
 
 - The IATI identifier on an activity, transaction, planned disbursement,
-  organisation and implementing organisation  is stripped of leading and
+  organisation and implementing organisation is stripped of leading and
   trailing whitespace
 - Header navigation follows GOVUK frontend pattern
 - Infer a transaction's and planned disbursement's `receiving-org type` from its
@@ -165,7 +165,7 @@
 ## [release-9] - 2020-06-18
 
 - Transactions can have a negative value (but not zero)
-- Amend Activity date validations - either `planned_start_date` *OR* `actual_start_date`
+- Amend Activity date validations - either `planned_start_date` _OR_ `actual_start_date`
   must be present, in line with the IATI `activity-date` XML standard
 - Amend ingest service to successfully ingest Activities without an `activity-date` type
   2 (`actual_start_date`)
@@ -342,17 +342,36 @@
 - BEIS users can download IATI XML for programmes (level B)
 
 ## [release-19] - 2020-10-02
+
 - The user type is tracked in Google Analytics
 - `providing_organisation_reference` is set when the user uploads transactions
 - Separate the list of intended beneficiaries in the report CSV with semicolons
 - Users can now edit fields on invalid completed activities
 
 ## [release-20] - 2020-10-06
+
 - Fix bug that prevented delivery partners from submitting a report.
+
+## [release-21] - 2020-11-03
+
+- Collect financial quarter and year for planned disbursements (forecasts)
+  instead of start and end dates (the values of which are calculated).
+- No longer collect start and end dates for planned disbursements (forecasts)
+  through the application interface.
+- Planned disbursements are always original when created
+- Planned disbursement currency is always GBP
+- Planned disbursement providing organisation is always BEIS
+- Planned disbursement receiving organisations is no longer collect, but is
+  retained for existing records
+- Planned disbursements do not include receiving organisation in the IATI xml
+  export
+- Answers for GDI form step have been modified
+- Use scripts to rule them all for development tasks
 
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...HEAD
+[release-21]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...release-21
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20
 [release-19]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-18...release-19
 [release-18]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...release-18

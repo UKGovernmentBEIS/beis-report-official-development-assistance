@@ -9,36 +9,11 @@ en:
   form:
     label:
       planned_disbursement:
-        planned_disbursement_type: Budget type
-        providing_organisation_name: Providing organisation name
-        providing_organisation_type: Providing organisation type
-        receiving_organisation_name: Receiving organisation name
-        receiving_organisation_type: Receiving organisation type
-        currency: Currency
-        planned_disbursement_type_options:
-          original:
-            description: The original budget allocated to the activity
-            name: Original
-          revised:
-            description: The updated budget for an activity
-            name: Revised
-        providing_organisation_reference: International Aid Transparency Initiative (IATI) Reference (optional)
-        receiving_organisation_reference: IATI Reference (optional)
         value: Forecasted spend amount
     legend:
       planned_disbursement:
-        period_end_date: End date
-        period_start_date: Start date
-        planned_disbursement_type: Budget type
-        providing_organisation: Providing organisation
-        receiving_organisation: Receiving organisation
     hint:
       planned_disbursement:
-        period_end_date: The timeframe between the start date and the end date should not normally exceed 3 calendar months
-        period_start_date: The start date should define when the actual transfer of funds will take place, if a specific date is known. If the specific payment date is not known, the period in which the transfer is due to take place should be described by using both start date and end date
-        planned_disbursement_type: Whether this is an original plan (prepared when the original commitment was made) or has subsequently been revised
-        providing_organisation: The organisation where this planned disbursement is coming from
-        providing_organisation_reference_html: For example, GB-GOV-13. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
         receiving_organisation: The organisation receiving the money from this transaction.
         receiving_organisation_reference_html: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
   table:
@@ -54,8 +29,8 @@ en:
     body:
       planned_disbursement:
         planned_disbursement_type_options:
-          '1': Original
-          '2': Revised
+          original: Original
+          revised: Revised
         edit_noun: planned disbursement
   page_content:
     planned_disbursements:
@@ -70,12 +45,6 @@ en:
       models:
         planned_disbursement:
           attributes:
-            period_end_date:
-              between: Date must be between %{min} years ago and %{max} years in the future
-            period_start_date:
-              between: Date must be between %{min} years ago and %{max} years in the future
-            planned_disbursement_type:
-              blank: Budget type can't be blank
             value:
               inclusion: Value must be between 0.01 and 99,999,999,999.00
               not_a_number: "Value must be a valid number"
