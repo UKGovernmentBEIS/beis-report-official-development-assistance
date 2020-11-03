@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# script/console: Launch a console for the application.
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+echo "==> Updating..."
+script/update
+
+echo "==> Starting a local Rails console..."
+bundle exec rails console "$@"

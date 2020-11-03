@@ -7,73 +7,22 @@ This service enables the Department for Business, Energy and Industrial Strategy
 
 ## Getting started
 
-1. copy `/.env.example` into `/.env.development.local`.
+First, run the setup script. This installs the required system (assuming you're using OSX and Homebrew), frontend and Ruby dependencies, as well as setting up the test and development databases.
 
-      Our intention is that the example should include enough to get the application started quickly. If this is not the case, please ask another developer for a copy of their `/.env.development.local` file.
-1. set up the local database
+```bash
+script/setup
+```
 
-      ```bash
-      bundle exec rake db:setup
-      ```
+Once setup has been completed, you can start the server with
 
-1. get the required GOVUK assets with NPM
-
-      ```bash
-      npm install
-      ```
-
-1. start Redis ([install guide](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-homebrew-eb8df9a4f298))
-
-      ```bash
-      redis-server /usr/local/etc/redis.conf
-      ```
-
-1. start Sidekiq
-
-      ```bash
-      bundle exec sidekiq -C config/sidekiq.yml
-      ```
-
-1. start Rails
-
-      ```bash
-      bundle exec rails server
-      ```
-
-1. log in using the generic development user roda@dxw.com. Find the credentials in the team 1Password vault.
+```bash
+script/server
+```
 
 ## Running the tests
 
-You will need to install Firefox and
-[Geckodriver](https://github.com/mozilla/geckodriver) to run the entire test
-suite, this can be achieved with Homebrew on Mac OS:
-
-1. Install Firefox `brew cask install firefox`
-
-1. Install Geckodriver `brew install geckodriver`
-
-If you don't want to run the JavaScript specs, you can skip the Firefox and
-Geckodriver install, but you must exclude the JavaScript tests with:
-
-`bundle exec rspec --tag "~js"`
-
-To run all the tests, and linters we use `rake`:
-
-```
-bundle exec rake
-```
-
-Under the hood this is using RSpec so normal commands can be used:
-
-```
-bundle exec rspec spec
-```
-
-### Initial set up
-
-```
-createuser --super test
-RAILS_ENV=test rake db:setup
+```bash
+script/test
 ```
 
 ## Architecture decision records
