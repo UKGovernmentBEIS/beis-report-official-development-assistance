@@ -352,7 +352,7 @@
 
 - Fix bug that prevented delivery partners from submitting a report.
 
-## [unreleased]
+## [release-21] - 2020-11-03
 
 - Collect financial quarter and year for planned disbursements (forecasts)
   instead of start and end dates (the values of which are calculated).
@@ -368,7 +368,10 @@
 - Answers for GDI form step have been modified
 - Use scripts to rule them all for development tasks
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...HEAD
+[release-21]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...release-21
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20
 [release-19]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-18...release-19
 [release-18]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-17...release-18
