@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module CodelistHelper
+  class UnreadableCodelist < StandardError; end
+
   DEVELOPING_COUNTRIES_CODE = "998"
   ALLOWED_AID_TYPE_CODES = [
     "B02",
@@ -21,7 +23,7 @@ module CodelistHelper
 
   def yaml_to_objects(entity:, type:, with_empty_item: true)
     data = load_yaml(entity: entity, type: type)
-    return [] if data.empty?
+    raise UnreadableCodelist if data.empty?
 
     objects = data.collect { |item|
       next if item["status"] == "withdrawn"
@@ -37,7 +39,7 @@ module CodelistHelper
 
   def yaml_to_objects_with_description(entity:, type:, code_displayed_in_name: false)
     data = load_yaml(entity: entity, type: type)
-    return [] if data.empty?
+    raise UnreadableCodelist if data.empty?
 
     data = data.collect { |item|
       name = code_displayed_in_name ? "#{item["name"]} (#{item["code"]})" : item["name"]
