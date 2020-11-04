@@ -153,6 +153,10 @@ RSpec.feature "Users can create a programme activity" do
         # Flow has a default and can't be set to blank so we skip
         select "ODA", from: "activity[flow]"
         click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.sustainable_development_goals")
+
+        # Don't select any SDGs
+        click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.aid_type")
 
         # Don't select an aid type

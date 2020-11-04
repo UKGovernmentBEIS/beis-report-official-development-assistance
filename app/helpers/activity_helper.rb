@@ -21,4 +21,8 @@ module ActivityHelper
   def custom_capitalisation(level)
     "#{level.chars.first.upcase}#{level[1..-1]}"
   end
+
+  def sdg_options
+    I18n.t("form.label.activity.sdg_options")
+  end
 end
