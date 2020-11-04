@@ -283,6 +283,14 @@ FactoryBot.define do
     policy_marker_nutrition { nil }
   end
 
+  trait :at_sustainable_development_goals_step do
+    form_state { "sustainable_development_goals" }
+
+    sdg_1 { nil }
+    sdg_2 { nil }
+    sdg_3 { nil }
+  end
+
   trait :blank_form_state do
     form_state { "blank" }
     title { nil }

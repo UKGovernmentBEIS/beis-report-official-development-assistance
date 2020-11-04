@@ -35,6 +35,7 @@ module FormHelpers
     gdi: "GDI not applicable",
     collaboration_type: "Bilateral",
     flow: "ODA",
+    sdg_1: 1,
     aid_type: "B02",
     fstc_applies: true,
     policy_marker_gender: "Not assessed",
@@ -204,6 +205,11 @@ module FormHelpers
     expect(page).to have_content t("form.label.activity.flow")
     expect(page.html).to include t("form.hint.activity.flow")
     select flow, from: "activity[flow]"
+    click_button t("form.button.activity.submit")
+
+    expect(page).to have_content t("form.legend.activity.sustainable_development_goals")
+    expect(page).to have_content t("form.hint.activity.sustainable_development_goals")
+    select t("form.label.activity.sdg_options.5"), from: "activity[sdg_1]"
     click_button t("form.button.activity.submit")
 
     expect(page).to have_content t("form.legend.activity.aid_type")

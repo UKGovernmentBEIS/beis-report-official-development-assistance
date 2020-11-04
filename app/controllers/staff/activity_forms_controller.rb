@@ -27,6 +27,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :gdi,
     :collaboration_type,
     :flow,
+    :sustainable_development_goals,
     :aid_type,
     :fstc_applies,
     :policy_markers,
@@ -162,6 +163,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       )
     when :covid19_related
       @activity.assign_attributes(covid19_related: covid19_related)
+    when :sustainable_development_goals
+      @activity.assign_attributes(sdg_1: sdg_1, sdg_2: sdg_2, sdg_3: sdg_3)
     when :oda_eligibility
       @activity.assign_attributes(oda_eligibility: oda_eligibility)
     end
@@ -287,6 +290,18 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def flow
     params.require(:activity).permit(:flow).fetch("flow", nil)
+  end
+
+  def sdg_1
+    params.require(:activity).permit(:sdg_1).fetch("sdg_1", nil)
+  end
+
+  def sdg_2
+    params.require(:activity).permit(:sdg_2).fetch("sdg_2", nil)
+  end
+
+  def sdg_3
+    params.require(:activity).permit(:sdg_3).fetch("sdg_3", nil)
   end
 
   def aid_type

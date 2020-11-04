@@ -63,6 +63,9 @@ ActiveRecord::Schema.define(version: 2020_11_12_191320) do
     t.integer "total_applications"
     t.integer "total_awards"
     t.string "collaboration_type"
+    t.integer "sdg_1"
+    t.integer "sdg_2"
+    t.integer "sdg_3"
     t.integer "oda_eligibility", default: 1, null: false
     t.boolean "fstc_applies"
     t.integer "covid19_related", default: 0
