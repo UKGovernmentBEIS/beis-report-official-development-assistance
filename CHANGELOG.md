@@ -369,6 +369,7 @@
 - Use scripts to rule them all for development tasks
 
 ## [unreleased]
+- Fix allow application to create new users in Auth0
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...HEAD
 [release-21]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...release-21
