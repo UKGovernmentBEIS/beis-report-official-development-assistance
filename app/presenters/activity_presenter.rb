@@ -110,7 +110,7 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def oda_eligibility
-    return if super.nil?
+    return if super.blank?
     I18n.t("activity.oda_eligibility.#{super}")
   end
 

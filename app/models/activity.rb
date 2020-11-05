@@ -51,7 +51,7 @@ class Activity < ApplicationRecord
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
   validates :flow, presence: true, on: :flow_step
   validates :aid_type, presence: true, on: :aid_type_step
-  validates :oda_eligibility, inclusion: {in: [true, false]}, on: :oda_eligibility_step
+  validates :oda_eligibility, presence: true, on: :oda_eligibility_step
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier_compound, uniqueness: true, allow_nil: true
@@ -89,6 +89,12 @@ class Activity < ApplicationRecord
   enum geography: {
     recipient_region: "Recipient region",
     recipient_country: "Recipient country",
+  }
+
+  enum oda_eligibility: {
+    never_eligible: 0,
+    eligible: 1,
+    no_longer_eligible: 2,
   }
 
   scope :funds, -> { where(level: :fund) }
