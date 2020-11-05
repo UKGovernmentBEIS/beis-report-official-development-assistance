@@ -35,7 +35,7 @@ module FormHelpers
     gdi: "GDI not applicable",
     collaboration_type: "Bilateral",
     flow: "ODA",
-    aid_type: "A01",
+    aid_type: "B02",
     oda_eligibility: "Eligible",
     level:,
     parent: nil
