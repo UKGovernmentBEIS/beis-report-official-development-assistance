@@ -12,6 +12,7 @@ describe "invalid_activities.rake" do
     invalid_activities_from_csv = CSV.read("tmp/invalid_activities.csv")
 
     expect(invalid_activities_from_csv.count).to eql(2)
+    expect(invalid_activities_from_csv.first).to include(activities.first.roda_identifier_compound)
     expect(invalid_activities_from_csv.first).to include(activities.first.title)
     expect(invalid_activities_from_csv.first).to include(activities.first.organisation.name)
     expect(invalid_activities_from_csv.first).to include(activities.first.level)
