@@ -36,7 +36,7 @@ module FormHelpers
     collaboration_type: "Bilateral",
     flow: "ODA",
     aid_type: "A01",
-    oda_eligibility: "true",
+    oda_eligibility: "Eligible",
     level:,
     parent: nil
   )
@@ -203,7 +203,7 @@ module FormHelpers
 
     expect(page).to have_content t("form.legend.activity.oda_eligibility")
     expect(page).to have_content t("form.hint.activity.oda_eligibility")
-    choose "Eligible"
+    choose oda_eligibility
     click_button t("form.button.activity.submit")
 
     expect(page).to have_content delivery_partner_identifier
@@ -227,7 +227,7 @@ module FormHelpers
     expect(page).to have_content gdi
     expect(page).to have_content flow
     expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
-    expect(page).to have_content t("activity.oda_eligibility.#{oda_eligibility}")
+    expect(page).to have_content oda_eligibility
     expect(page).to have_content localise_date_from_input_fields(
       year: planned_start_date_year,
       month: planned_start_date_month,

@@ -371,6 +371,8 @@
 ## [unreleased]
 - Fix allow application to create new users in Auth0
 
+- Option `No - was never eligible` added to ODA eligibility form step
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...HEAD
 [release-21]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...release-21
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20

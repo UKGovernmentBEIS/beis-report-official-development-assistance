@@ -136,19 +136,24 @@ RSpec.describe IngestCsvRow do
   end
 
   context "#process_oda_eligibility" do
-    it "returns true when the value is 'eligible'" do
+    it "returns 1 when the value is 'Eligible'" do
       expect(IngestCsvRow.new.process_oda_eligibility("ELIgibLE"))
-        .to be(true)
+        .to eql("eligible")
     end
 
-    it "returns false when the value is not 'eligible'" do
-      expect(IngestCsvRow.new.process_oda_eligibility("something-else"))
-        .to be(false)
+    it "returns 2 when the value is 'No longer eligible'" do
+      expect(IngestCsvRow.new.process_oda_eligibility("no longer eligible"))
+        .to eql("no_longer_eligible")
     end
 
-    it "returns false when the value is nil" do
-      expect(IngestCsvRow.new.process_oda_eligibility(nil))
-        .to be(false)
+    it "returns 0 when the value is 'No - was never eligible'" do
+      expect(IngestCsvRow.new.process_oda_eligibility("no - was never eligible"))
+        .to eql("never_eligible")
+    end
+
+    it "is skipped when value is blank" do
+      expect(IngestCsvRow.new.process_oda_eligibility(""))
+        .to eql :skip
     end
   end
 

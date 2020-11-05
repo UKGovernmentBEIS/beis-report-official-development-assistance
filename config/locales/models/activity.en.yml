@@ -32,8 +32,9 @@ en:
         roda_identifier_fragment: Enter a unique identifier for RODA
         intended_beneficiaries: What are the intended beneficiaries?
         oda_eligibility:
-          'true': 'Eligible'
-          'false': 'No longer eligible'
+          never_eligible: No - was never eligible
+          eligible: Eligible
+          no_longer_eligible: No longer eligible
         region: Recipient region
         actual_end_date: Actual end date
         actual_start_date: Actual start date
@@ -237,6 +238,7 @@ en:
         roda_identifier: Enter your unique RODA identifier
         intended_beneficiaries: What are the intended beneficiaries?
         level: Hierarchy level
+        oda_eligibility: ODA eligibility
         parent: Select the parent
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
