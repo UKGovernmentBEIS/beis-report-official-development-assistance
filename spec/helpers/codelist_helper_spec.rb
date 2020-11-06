@@ -104,6 +104,13 @@ RSpec.describe CodelistHelper, type: :helper do
           type: "status",
         ).last).to eq(OpenStruct.new(name: "Suspended", code: "6", description: "The activity has been temporarily suspended"))
       end
+
+      it "tries to get a description from the translations if one if available" do
+        objects = helper.yaml_to_objects_with_description(entity: "activity", type: "aid_type")
+
+        expect(objects.find { |o| o["code"] == "B02" }.description).to eq(t("form.label.activity.aid_type.B02"))
+        expect(objects.find { |o| o["code"] == "E01" }.description).to eq("Financial aid awards for individual students and contributions to trainees.")
+      end
     end
 
     describe "#currency_select_options" do

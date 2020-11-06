@@ -34,7 +34,9 @@ module CodelistHelper
 
     data = data.collect { |item|
       name = code_displayed_in_name ? "#{item["name"]} (#{item["code"]})" : item["name"]
-      OpenStruct.new(name: name, code: item["code"], description: item["description"])
+      description = t("form.label.#{entity}.#{type}.#{item["code"]}", default: item["description"])
+
+      OpenStruct.new(name: name, code: item["code"], description: description)
     }
 
     data.sort_by(&:code)
@@ -121,9 +123,13 @@ module CodelistHelper
   end
 
   def aid_type_radio_options
-    yaml_to_objects_with_description(entity: "activity", type: "aid_type", code_displayed_in_name: true).select { |a|
-      ALLOWED_AID_TYPE_CODES.include?(a.code)
-    }
+    options = yaml_to_objects_with_description(
+      entity: "activity",
+      type: "aid_type",
+      code_displayed_in_name: true
+    )
+
+    options.select { |a| ALLOWED_AID_TYPE_CODES.include?(a.code) }
   end
 
   def load_yaml(entity:, type:)
