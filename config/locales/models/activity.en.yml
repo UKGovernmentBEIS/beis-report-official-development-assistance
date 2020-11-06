@@ -16,13 +16,13 @@ en:
         submit: Continue
     link:
       activity:
-       back: Back to activity details
+        back: Back to activity details
     label:
       activity:
         flow: What is the flow type?
         call_present:
-          'true': 'Yes'
-          'false': 'No'
+          "true": "Yes"
+          "false": "No"
         collaboration_type: What is the collaboration type for this activity?
         gdi: GDI
         geography_options:
@@ -42,9 +42,9 @@ en:
         recipient_country: What country will benefit from this activity?
         recipient_region: What region will benefit from this activity?
         requires_additional_benefitting_countries:
-          'true': 'Yes'
-          'false': 'No'
-        title: '%{level} title'
+          "true": "Yes"
+          "false": "No"
+        title: "%{level} title"
         date:
           day: Day
           month: Month
@@ -52,6 +52,13 @@ en:
         publish_to_iati: Publish this activity to IATI?
         total_applications: How many applications have you had?
         total_awards: How many awards have you made?
+        aid_type:
+          "B02": "These funds are classified as multilateral ODA. All other categories fall under bilateral ODA"
+          "B03": "International organisations set up and raise funds for specific programmes and funds with clearly identified sectoral, thematic, or geographical focus"
+          "C01": "A project is a set of inputs, activities, and outputs, agreed with the partner country to reach specific objectives/outcomes within a defined time frame, budget, and geographical area. Projects can be large or small, complex or simple"
+          "D01": "Experts, consultants, teachers, academics, researchers, volunteers and contributions to public and private bodies for sending experts to developing countries."
+          "D02": "Provision of technical assistance in recipient countries outside of project described in project-type interventions (C01). This includes conferences, workshops and seminars but does not include activities such as scholarships/training described in (E01)"
+          "G01": "Costs of development assistance programmes not already included under other ODA items as an integral part of the costs of delivering or implementing the aid provided. This includes delivery costs and in-house agency staff and contractors but not donor experts and consultants"
     legend:
       activity:
         aid_type: Aid type
@@ -145,11 +152,11 @@ en:
         stage: Stage
         status: Status
         third_party_projects: Third-party projects (level D)
-        title: '%{level} name'
+        title: "%{level} name"
         publish_to_iati:
           label: Publish to IATI?
-          'false': 'No'
-          'true': 'Yes'
+          "false": "No"
+          "true": "Yes"
         total_applications: Total applications
         total_awards: Total awards
         transparency_identifier: "Transparency identifier"
