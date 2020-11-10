@@ -35,7 +35,7 @@ module FormHelpers
     gdi: "GDI not applicable",
     collaboration_type: "Bilateral",
     flow: "ODA",
-    aid_type: "A01",
+    aid_type: "B02",
     oda_eligibility: "Eligible",
     level:,
     parent: nil
@@ -197,7 +197,7 @@ module FormHelpers
     click_button t("form.button.activity.submit")
 
     expect(page).to have_content t("form.legend.activity.aid_type")
-    expect(page).to have_content "A code for the vocabulary aid-type classifications. International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)"
+    expect(page).to have_content t("form.hint.activity.aid_type")
     choose("activity[aid_type]", option: aid_type)
     click_button t("form.button.activity.submit")
 

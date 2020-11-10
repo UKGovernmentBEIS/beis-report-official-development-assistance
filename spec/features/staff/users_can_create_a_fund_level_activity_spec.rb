@@ -274,7 +274,7 @@ RSpec.feature "Users can create a fund level activity" do
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.aid_type.blank")
 
-        choose("activity[aid_type]", option: "A01")
+        choose("activity[aid_type]", option: "B02")
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.oda_eligibility")
 
