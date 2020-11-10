@@ -19,7 +19,7 @@ FactoryBot.define do
     intended_beneficiaries { ["CU", "DM", "DO"] }
     gdi { "4" }
     flow { "10" }
-    aid_type { "A01" }
+    aid_type { "B02" }
     level { :fund }
     publish_to_iati { true }
 
