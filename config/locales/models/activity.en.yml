@@ -16,13 +16,13 @@ en:
         submit: Continue
     link:
       activity:
-       back: Back to activity details
+        back: Back to activity details
     label:
       activity:
         flow: What is the flow type?
         call_present:
-          'true': 'Yes'
-          'false': 'No'
+          "true": "Yes"
+          "false": "No"
         collaboration_type: What is the collaboration type for this activity?
         gdi: GDI
         geography_options:
@@ -42,9 +42,9 @@ en:
         recipient_country: What country will benefit from this activity?
         recipient_region: What region will benefit from this activity?
         requires_additional_benefitting_countries:
-          'true': 'Yes'
-          'false': 'No'
-        title: '%{level} title'
+          "true": "Yes"
+          "false": "No"
+        title: "%{level} title"
         date:
           day: Day
           month: Month
@@ -52,9 +52,16 @@ en:
         publish_to_iati: Publish this activity to IATI?
         total_applications: How many applications have you had?
         total_awards: How many awards have you made?
+        aid_type:
+          "B02": "These funds are classified as multilateral ODA. All other categories fall under bilateral ODA"
+          "B03": "International organisations set up and raise funds for specific programmes and funds with clearly identified sectoral, thematic, or geographical focus"
+          "C01": "A project is a set of inputs, activities, and outputs, agreed with the partner country to reach specific objectives/outcomes within a defined time frame, budget, and geographical area. Projects can be large or small, complex or simple"
+          "D01": "Experts, consultants, teachers, academics, researchers, volunteers and contributions to public and private bodies for sending experts to developing countries."
+          "D02": "Provision of technical assistance in recipient countries outside of project described in project-type interventions (C01). This includes conferences, workshops and seminars but does not include activities such as scholarships/training described in (E01)"
+          "G01": "Costs of development assistance programmes not already included under other ODA items as an integral part of the costs of delivering or implementing the aid provided. This includes delivery costs and in-house agency staff and contractors but not donor experts and consultants"
     legend:
       activity:
-        aid_type: Aid type
+        aid_type: What is the aid type?
         actual_end_date: Actual end date (optional)
         actual_start_date: Actual start date (optional if planned start date is entered)
         call_present: Is there a call for this %{level}?
@@ -80,7 +87,7 @@ en:
       activity:
         actual_end_date: For example, 2 2 2020
         actual_start_date: For example, 11 1 2020
-        aid_type: A code for the vocabulary aid-type classifications. <a href='http://reference.iatistandard.org/203/codelists/AidType/' target='_blank'>International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)</a>
+        aid_type: Where an activity is not G01 or E01 we would expect most of our activity to be classified as D02 but there will be cases where C01 is more appropriate.
         call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Programme Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
         call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Programme Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
         flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
@@ -145,11 +152,11 @@ en:
         stage: Stage
         status: Status
         third_party_projects: Third-party projects (level D)
-        title: '%{level} name'
+        title: "%{level} name"
         publish_to_iati:
           label: Publish to IATI?
-          'false': 'No'
-          'true': 'Yes'
+          "false": "No"
+          "true": "Yes"
         total_applications: Total applications
         total_awards: Total awards
         transparency_identifier: "Transparency identifier"
