@@ -27,6 +27,7 @@ class Activity < ApplicationRecord
     :collaboration_type_step,
     :flow_step,
     :aid_type,
+    :fstc_applies_step,
     :oda_eligibility_step,
   ]
 
@@ -49,6 +50,7 @@ class Activity < ApplicationRecord
   validates :requires_additional_benefitting_countries, inclusion: {in: [true, false]}, on: :requires_additional_benefitting_countries_step, if: :recipient_country?
   validates :intended_beneficiaries, presence: true, length: {maximum: 10}, on: :intended_beneficiaries_step, if: :requires_intended_beneficiaries?
   validates :gdi, presence: true, on: :gdi_step
+  validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
   validates :flow, presence: true, on: :flow_step
   validates :aid_type, presence: true, on: :aid_type_step
