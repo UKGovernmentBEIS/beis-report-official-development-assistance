@@ -9,6 +9,7 @@ class IngestCsv
     :receiving_organisation_type,
     :date,
     :collaboration_type,
+    :fstc_applies,
   ].freeze
 
   attr_accessor :csv, :filename

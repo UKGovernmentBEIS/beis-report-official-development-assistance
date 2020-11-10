@@ -18,6 +18,7 @@ FactoryBot.define do
     requires_additional_benefitting_countries { true }
     intended_beneficiaries { ["CU", "DM", "DO"] }
     gdi { "4" }
+    fstc_applies { true }
     flow { "10" }
     aid_type { "B02" }
     level { :fund }
