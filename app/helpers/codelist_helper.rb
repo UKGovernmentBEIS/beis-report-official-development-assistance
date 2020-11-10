@@ -2,6 +2,16 @@
 
 module CodelistHelper
   DEVELOPING_COUNTRIES_CODE = "998"
+  ALLOWED_AID_TYPE_CODES = [
+    "B02",
+    "B03",
+    "C01",
+    "D01",
+    "D02",
+    "E01",
+    "G01",
+  ]
+
   def yaml_to_objects(entity:, type:, with_empty_item: true)
     data = load_yaml(entity: entity, type: type)
     return [] if data.empty?
@@ -24,7 +34,9 @@ module CodelistHelper
 
     data = data.collect { |item|
       name = code_displayed_in_name ? "#{item["name"]} (#{item["code"]})" : item["name"]
-      OpenStruct.new(name: name, code: item["code"], description: item["description"])
+      description = t("form.label.#{entity}.#{type}.#{item["code"]}", default: item["description"])
+
+      OpenStruct.new(name: name, code: item["code"], description: description)
     }
 
     data.sort_by(&:code)
@@ -111,7 +123,13 @@ module CodelistHelper
   end
 
   def aid_type_radio_options
-    yaml_to_objects_with_description(entity: "activity", type: "aid_type", code_displayed_in_name: true)
+    options = yaml_to_objects_with_description(
+      entity: "activity",
+      type: "aid_type",
+      code_displayed_in_name: true
+    )
+
+    options.select { |a| ALLOWED_AID_TYPE_CODES.include?(a.code) }
   end
 
   def load_yaml(entity:, type:)
