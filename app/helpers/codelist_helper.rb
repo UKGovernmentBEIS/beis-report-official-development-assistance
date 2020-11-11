@@ -12,6 +12,13 @@ module CodelistHelper
     "G01",
   ]
 
+  ALLOWED_POLICY_MARKERS_SIGNIFICANCES = [
+    "0",
+    "1",
+    "2",
+    "3",
+  ]
+
   def yaml_to_objects(entity:, type:, with_empty_item: true)
     data = load_yaml(entity: entity, type: type)
     return [] if data.empty?
@@ -130,6 +137,14 @@ module CodelistHelper
     )
 
     options.select { |a| ALLOWED_AID_TYPE_CODES.include?(a.code) }
+  end
+
+  def policy_markers_select_options
+    objects = yaml_to_objects(entity: "activity", type: "policy_markers", with_empty_item: false)
+    not_assessed_option = OpenStruct.new(name: "Not assessed", code: "1000")
+
+    filtered_list = objects.select { |object| ALLOWED_POLICY_MARKERS_SIGNIFICANCES.include?(object.code) }.sort_by(&:code)
+    filtered_list.unshift(not_assessed_option)
   end
 
   def load_yaml(entity:, type:)

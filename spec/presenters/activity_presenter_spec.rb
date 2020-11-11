@@ -350,6 +350,32 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#policy_marker_gender" do
+    context "when gender exists" do
+      it "returns the locale value for the code" do
+        activity = build(:activity, policy_marker_gender: "not_targeted")
+        result = described_class.new(activity).policy_marker_gender
+        expect(result).to eql("Not targeted")
+      end
+    end
+
+    context "when the value is the BEIS custom value" do
+      it "returns the locale value for the custom code" do
+        activity = build(:activity, policy_marker_gender: "not_assessed")
+        result = described_class.new(activity).policy_marker_gender
+        expect(result).to eql("Not assessed")
+      end
+    end
+
+    context "when the activity does not have a gender set" do
+      it "returns nil" do
+        activity = build(:activity, policy_marker_gender: nil)
+        result = described_class.new(activity)
+        expect(result.policy_marker_gender).to be_nil
+      end
+    end
+  end
+
   describe "#oda_eligibility" do
     context "when the activity is ODA eligible" do
       it "returns the locale value for this option" do

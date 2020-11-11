@@ -29,6 +29,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :flow,
     :aid_type,
     :fstc_applies,
+    :policy_markers,
     :oda_eligibility,
   ]
 
@@ -65,6 +66,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :collaboration_type
       skip_step if @activity.fund?
       assign_default_collaboration_type_value_if_nil
+    when :policy_markers
+      skip_step unless @activity.is_project?
     end
 
     render_wizard
@@ -145,6 +148,17 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.assign_attributes(aid_type: aid_type)
     when :fstc_applies
       @activity.assign_attributes(fstc_applies: fstc_applies)
+    when :policy_markers
+      @activity.assign_attributes(
+        policy_marker_gender: policy_markers_iati_codes_to_enum(policy_marker_gender),
+        policy_marker_climate_change_adaptation: policy_markers_iati_codes_to_enum(policy_marker_climate_change_adaptation),
+        policy_marker_climate_change_mitigation: policy_markers_iati_codes_to_enum(policy_marker_climate_change_mitigation),
+        policy_marker_biodiversity: policy_markers_iati_codes_to_enum(policy_marker_biodiversity),
+        policy_marker_desertification: policy_markers_iati_codes_to_enum(policy_marker_desertification),
+        policy_marker_disability: policy_markers_iati_codes_to_enum(policy_marker_disability),
+        policy_marker_disaster_risk_reduction: policy_markers_iati_codes_to_enum(policy_marker_disaster_risk_reduction),
+        policy_marker_nutrition: policy_markers_iati_codes_to_enum(policy_marker_nutrition),
+      )
     when :oda_eligibility
       @activity.assign_attributes(oda_eligibility: oda_eligibility)
     end
@@ -280,6 +294,38 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(:fstc_applies).fetch("fstc_applies", nil)
   end
 
+  def policy_marker_gender
+    params.require(:activity).permit(:policy_marker_gender).fetch("policy_marker_gender", nil)
+  end
+
+  def policy_marker_climate_change_adaptation
+    params.require(:activity).permit(:policy_marker_climate_change_adaptation).fetch("policy_marker_climate_change_adaptation", nil)
+  end
+
+  def policy_marker_climate_change_mitigation
+    params.require(:activity).permit(:policy_marker_climate_change_mitigation).fetch("policy_marker_climate_change_mitigation", nil)
+  end
+
+  def policy_marker_biodiversity
+    params.require(:activity).permit(:policy_marker_biodiversity).fetch("policy_marker_biodiversity", nil)
+  end
+
+  def policy_marker_desertification
+    params.require(:activity).permit(:policy_marker_desertification).fetch("policy_marker_desertification", nil)
+  end
+
+  def policy_marker_disability
+    params.require(:activity).permit(:policy_marker_disability).fetch("policy_marker_disability", nil)
+  end
+
+  def policy_marker_disaster_risk_reduction
+    params.require(:activity).permit(:policy_marker_disaster_risk_reduction).fetch("policy_marker_disaster_risk_reduction", nil)
+  end
+
+  def policy_marker_nutrition
+    params.require(:activity).permit(:policy_marker_nutrition).fetch("policy_marker_nutrition", nil)
+  end
+
   def oda_eligibility
     params.require(:activity).permit(:oda_eligibility).fetch("oda_eligibility", nil)
   end
@@ -320,5 +366,15 @@ class Staff::ActivityFormsController < Staff::BaseController
   def assign_default_collaboration_type_value_if_nil
     # This allows us to pre-select a specific radio button on collaboration_type form step (value "Bilateral" in this case)
     @activity.collaboration_type = "1" if @activity.collaboration_type.nil?
+  end
+
+  def policy_markers_iati_codes_to_enum(code)
+    case code
+    when "0" then "not_targeted"
+    when "1" then "significant_objective"
+    when "2" then "principal_objective"
+    when "3" then "principal_objective_and_in_support"
+    when "1000" then "not_assessed"
+    end
   end
 end
