@@ -164,7 +164,13 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :covid19_related
       @activity.assign_attributes(covid19_related: covid19_related)
     when :sustainable_development_goals
-      @activity.assign_attributes(sdgs_apply: sdgs_apply, sdg_1: sdg_1, sdg_2: sdg_2, sdg_3: sdg_3)
+      @activity.assign_attributes(sdgs_apply: sdgs_apply)
+
+      if @activity.sdgs_apply?
+        @activity.assign_attributes(sdg_1: sdg_1, sdg_2: sdg_2, sdg_3: sdg_3)
+      else
+        @activity.assign_attributes(sdg_1: nil, sdg_2: nil, sdg_3: nil)
+      end
     when :oda_eligibility
       @activity.assign_attributes(oda_eligibility: oda_eligibility)
     end
