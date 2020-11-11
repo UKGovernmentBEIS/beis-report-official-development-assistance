@@ -32,5 +32,24 @@ RSpec.feature "Users can add Sustainable Development Goals for an activity" do
 
       expect(page).to have_content t("activerecord.errors.models.activity.attributes.sdg_1.blank")
     end
+
+    scenario "when selecting 'SDGs do not apply' radio button, no SDGs are stored" do
+      visit activity_step_path(activity, :sustainable_development_goals)
+
+      choose "activity[sdgs_apply]", option: "true"
+      select "Quality Education", from: "activity[sdg_1]"
+      select "Gender Equality", from: "activity[sdg_2]"
+      select "Climate Action", from: "activity[sdg_3]"
+
+      choose "activity[sdgs_apply]", option: "false"
+
+      click_button t("form.button.activity.submit")
+
+      activity.reload
+
+      expect(activity.sdg_1).to be_nil
+      expect(activity.sdg_2).to be_nil
+      expect(activity.sdg_3).to be_nil
+    end
   end
 end
