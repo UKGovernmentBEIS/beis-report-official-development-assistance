@@ -72,6 +72,7 @@ module Activities
         title: "Title",
         description: "Description",
         recipient_region: "Recipient Region",
+        delivery_partner_identifier: "Delivery partner identifier",
       }
 
       def initialize(row)

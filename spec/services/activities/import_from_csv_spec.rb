@@ -9,6 +9,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Title" => "Here is a title",
       "Description" => "Some description goes here...",
       "Recipient Region" => "789",
+      "Delivery partner identifier" => "1234567890",
     }
   end
 
@@ -35,6 +36,7 @@ RSpec.describe Activities::ImportFromCsv do
     expect(existing_activity.reload.title).to eq(activity_attributes["Title"])
     expect(existing_activity.description).to eq(activity_attributes["Description"])
     expect(existing_activity.recipient_region).to eq(activity_attributes["Recipient Region"])
+    expect(existing_activity.delivery_partner_identifier).to eq(activity_attributes["Delivery partner identifier"])
   end
 
   it "ignores any blank columns" do
