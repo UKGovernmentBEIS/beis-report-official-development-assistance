@@ -164,7 +164,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :covid19_related
       @activity.assign_attributes(covid19_related: covid19_related)
     when :sustainable_development_goals
-      @activity.assign_attributes(sdg_1: sdg_1, sdg_2: sdg_2, sdg_3: sdg_3)
+      @activity.assign_attributes(sdgs_apply: sdgs_apply, sdg_1: sdg_1, sdg_2: sdg_2, sdg_3: sdg_3)
     when :oda_eligibility
       @activity.assign_attributes(oda_eligibility: oda_eligibility)
     end
@@ -302,6 +302,10 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def sdg_3
     params.require(:activity).permit(:sdg_3).fetch("sdg_3", nil)
+  end
+
+  def sdgs_apply
+    params.require(:activity).permit(:sdgs_apply).fetch("sdgs_apply", false)
   end
 
   def aid_type

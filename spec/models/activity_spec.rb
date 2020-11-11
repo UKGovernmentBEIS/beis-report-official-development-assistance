@@ -487,6 +487,20 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "#sdg_1" do
+      it "is required if sdgs_apply is true" do
+        activity = build(:programme_activity, sdgs_apply: true)
+
+        expect(activity.valid?(:sustainable_development_goals_step)).to be_falsey
+      end
+
+      it "is not required if sdgs_apply is false" do
+        activity = build(:programme_activity, sdgs_apply: false)
+
+        expect(activity.valid?(:sustainable_development_goals_step)).to be_truthy
+      end
+    end
+
     context "when fstc applies is blank" do
       subject(:activity) { build(:activity, fstc_applies: nil) }
       it "should not be valid" do

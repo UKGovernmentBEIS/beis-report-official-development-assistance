@@ -55,6 +55,9 @@ en:
         sdg_1: First most relevant goal
         sdg_2: Second most relevant goal (optional)
         sdg_3: Third most relevant goal (optional)
+        sdgs_apply_options:
+          "false": "This is a broad programme/delivery activity so the sustainable development goals do not apply"
+          "true": "The sustainable development goals apply to this activity with the three most relevant in descending order being:"
         sdg_options:
           "": N/A
           1: No Poverty
@@ -119,10 +122,10 @@ en:
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
         requires_additional_benefitting_countries: Does this activity have other benefitting countries?
+        sdgs_apply: Which Sustainable Development Goals does this activity meet?
         sector: Which %{sector_category} sector is the focus area for this %{level}?
         sector_category: What area of the economy or society is the %{level} helping?
         status: What is the status of the %{level}?
-        sustainable_development_goals: Which Sustainable Development Goals does this activity meet?
         total_applications: How many applications have you had?
         total_awards: How many awards have you made?
         fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
@@ -143,11 +146,8 @@ en:
         planned_start_date: For example, 27 3 2020
         roda_identifier_fragment: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.
         roda_identifier_fragment_with_parent_html: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.<br><br>The RODA identifier for this activity's parent is <strong>%{identifier}</strong>.
-        sdg_1: Select the first most relevant goal
-        sdg_2: Select the second most relevant goal
-        sdg_3: Select the third most relevant goal
+        sdgs_apply: For broad programme calls, please select the SDG most commonly represented across the individual projects within the programme. If unable, or if the activity is a delivery line, you may select 'N/A'.
         sector_category: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
-        sustainable_development_goals: For broad programme calls, please select the SDG most commonly represented across the individual projects within the programme. If unable, or if the activity is a delivery line, you may select 'N/A'.
         title: A short title that explains the purpose of the %{level}
         level: Select the type of activity
         level_step:
@@ -387,6 +387,8 @@ en:
               blank: Enter a title
             description:
               blank: Enter a description
+            sdg_1:
+              blank: Select the first most relevant goal
             sector_category:
               blank: Select a category
             sector:
