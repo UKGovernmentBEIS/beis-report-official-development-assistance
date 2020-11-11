@@ -1,4 +1,4 @@
-RSpec.feature "Users can view a project" do
+RSpec.feature "Users can view project level activities" do
   context "when the user does NOT belong to BEIS" do
     let(:user) { create(:delivery_partner_user) }
     before { authenticate!(user: user) }
