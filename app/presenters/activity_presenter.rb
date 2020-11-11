@@ -153,6 +153,15 @@ class ActivityPresenter < SimpleDelegator
     I18n.t("activity.policy_markers.#{super}")
   end
 
+  def sustainable_development_goals
+    goals = [sdg_1, sdg_2, sdg_3].compact
+    return if goals.blank?
+
+    goals.map { |goal|
+      I18n.t("form.label.activity.sdg_options.#{goal}")
+    }.join(" / ")
+  end
+
   def oda_eligibility
     return if super.blank?
     I18n.t("activity.oda_eligibility.#{super}")

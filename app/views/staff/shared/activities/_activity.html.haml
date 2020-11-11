@@ -243,6 +243,15 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :flow)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:flow)}"), activity_step_path(activity_presenter, :flow), t("summary.label.activity.flow"))
 
+  .govuk-summary-list__row.sustainable_development_goals
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.sustainable_development_goals")
+    %dd.govuk-summary-list__value
+      = activity_presenter.sustainable_development_goals
+    %dd.govuk-summary-list__actions
+      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :sustainable_development_goals)
+        = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:sustainable_development_goals)}"), activity_step_path(activity_presenter, :sustainable_development_goals), t("summary.label.activity.sustainable_development_goals"))
+
   .govuk-summary-list__row.aid_type
     %dt.govuk-summary-list__key
       = t("summary.label.activity.aid_type")

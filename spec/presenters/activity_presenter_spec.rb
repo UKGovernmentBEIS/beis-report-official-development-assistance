@@ -384,6 +384,29 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#sustainable_development_goals" do
+    it "when there is a single SDG, return its name" do
+      activity = build(:activity, sdg_1: 5)
+      result = described_class.new(activity)
+
+      expect(result.sustainable_development_goals).to eql("Gender Equality")
+    end
+
+    it "when there are multiple SDGs, return their names, separated by a slash" do
+      activity = build(:activity, sdg_1: 5, sdg_2: 1)
+      result = described_class.new(activity)
+
+      expect(result.sustainable_development_goals).to eql("Gender Equality / No Poverty")
+    end
+
+    it "when there are no SDGs return nil" do
+      activity = build(:activity, sdg_1: nil, sdg_2: nil, sdg_3: nil)
+      result = described_class.new(activity)
+
+      expect(result.sustainable_development_goals).to be_nil
+    end
+  end
+
   describe "#oda_eligibility" do
     context "when the activity is ODA eligible" do
       it "returns the locale value for this option" do

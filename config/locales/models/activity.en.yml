@@ -233,9 +233,7 @@ en:
         recipient_country: Recipient country
         recipient_region: Recipient region
         requires_additional_benefitting_countries: Other benefitting countries?
-        sdg_1: First most relevant goal
-        sdg_2: Second most relevant goal
-        sdg_3: Third most relevant goal
+        sustainable_development_goals: Sustainable Development Goals
         sector: Economic/societal area
         sector_category: Focus area category
         stage: Stage
