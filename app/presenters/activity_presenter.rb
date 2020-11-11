@@ -109,6 +109,46 @@ class ActivityPresenter < SimpleDelegator
     "#{flow} (#{to_model.flow})"
   end
 
+  def policy_marker_gender
+    return if super.blank?
+    I18n.t("activity.policy_markers.#{super}")
+  end
+
+  def policy_marker_climate_change_adaptation
+    return if super.blank?
+    I18n.t("activity.policy_markers.#{super}")
+  end
+
+  def policy_marker_climate_change_mitigation
+    return if super.blank?
+    I18n.t("activity.policy_markers.#{super}")
+  end
+
+  def policy_marker_biodiversity
+    return if super.blank?
+    I18n.t("activity.policy_markers.#{super}")
+  end
+
+  def policy_marker_desertification
+    return if super.blank?
+    I18n.t("activity.policy_markers.#{super}")
+  end
+
+  def policy_marker_disability
+    return if super.blank?
+    I18n.t("activity.policy_markers.#{super}")
+  end
+
+  def policy_marker_disaster_risk_reduction
+    return if super.blank?
+    I18n.t("activity.policy_markers.#{super}")
+  end
+
+  def policy_marker_nutrition
+    return if super.blank?
+    I18n.t("activity.policy_markers.#{super}")
+  end
+
   def oda_eligibility
     return if super.blank?
     I18n.t("activity.oda_eligibility.#{super}")

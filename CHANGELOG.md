@@ -379,6 +379,7 @@
 - Two original planned disbursements for the same activity, financial quarter
   and year cannot be created.
 - Add a field to report Free Standing Technical Cooperation
+- Policy markers added to activity form, including BEIS custom answer `not assessed`
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...HEAD
 [release-21]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...release-21
