@@ -79,6 +79,14 @@ FactoryBot.define do
       collaboration_type { "1" }
       total_applications { "25" }
       total_awards { "12" }
+      policy_marker_gender { "not_assessed" }
+      policy_marker_climate_change_adaptation { "not_assessed" }
+      policy_marker_climate_change_mitigation { "not_assessed" }
+      policy_marker_biodiversity { "not_assessed" }
+      policy_marker_desertification { "not_assessed" }
+      policy_marker_disability { "not_assessed" }
+      policy_marker_disaster_risk_reduction { "not_assessed" }
+      policy_marker_nutrition { "not_assessed" }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
       funding_organisation_type { "10" }
@@ -109,6 +117,14 @@ FactoryBot.define do
       collaboration_type { "1" }
       total_applications { "25" }
       total_awards { "12" }
+      policy_marker_gender { "not_assessed" }
+      policy_marker_climate_change_adaptation { "not_assessed" }
+      policy_marker_climate_change_mitigation { "not_assessed" }
+      policy_marker_biodiversity { "not_assessed" }
+      policy_marker_desertification { "not_assessed" }
+      policy_marker_disability { "not_assessed" }
+      policy_marker_disaster_risk_reduction { "not_assessed" }
+      policy_marker_nutrition { "not_assessed" }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
       funding_organisation_type { "10" }
@@ -141,6 +157,14 @@ FactoryBot.define do
     collaboration_type { nil }
     flow { nil }
     aid_type { nil }
+    policy_marker_gender { nil }
+    policy_marker_climate_change_adaptation { nil }
+    policy_marker_climate_change_mitigation { nil }
+    policy_marker_biodiversity { nil }
+    policy_marker_desertification { nil }
+    policy_marker_disability { nil }
+    policy_marker_disaster_risk_reduction { nil }
+    policy_marker_nutrition { nil }
   end
 
   trait :at_roda_identifier_step do
@@ -164,6 +188,14 @@ FactoryBot.define do
     collaboration_type { nil }
     flow { nil }
     aid_type { nil }
+    policy_marker_gender { nil }
+    policy_marker_climate_change_adaptation { nil }
+    policy_marker_climate_change_mitigation { nil }
+    policy_marker_biodiversity { nil }
+    policy_marker_desertification { nil }
+    policy_marker_disability { nil }
+    policy_marker_disaster_risk_reduction { nil }
+    policy_marker_nutrition { nil }
   end
 
   trait :at_purpose_step do
@@ -185,6 +217,14 @@ FactoryBot.define do
     collaboration_type { nil }
     flow { nil }
     aid_type { nil }
+    policy_marker_gender { nil }
+    policy_marker_climate_change_adaptation { nil }
+    policy_marker_climate_change_mitigation { nil }
+    policy_marker_biodiversity { nil }
+    policy_marker_desertification { nil }
+    policy_marker_disability { nil }
+    policy_marker_disaster_risk_reduction { nil }
+    policy_marker_nutrition { nil }
   end
 
   trait :at_region_step do
@@ -195,6 +235,14 @@ FactoryBot.define do
     collaboration_type { nil }
     flow { nil }
     aid_type { nil }
+    policy_marker_gender { nil }
+    policy_marker_climate_change_adaptation { nil }
+    policy_marker_climate_change_mitigation { nil }
+    policy_marker_biodiversity { nil }
+    policy_marker_desertification { nil }
+    policy_marker_disability { nil }
+    policy_marker_disaster_risk_reduction { nil }
+    policy_marker_nutrition { nil }
   end
 
   trait :at_geography_step do
@@ -206,6 +254,14 @@ FactoryBot.define do
     collaboration_type { nil }
     flow { nil }
     aid_type { nil }
+    policy_marker_gender { nil }
+    policy_marker_climate_change_adaptation { nil }
+    policy_marker_climate_change_mitigation { nil }
+    policy_marker_biodiversity { nil }
+    policy_marker_desertification { nil }
+    policy_marker_disability { nil }
+    policy_marker_disaster_risk_reduction { nil }
+    policy_marker_nutrition { nil }
   end
 
   trait :nil_form_state do
@@ -217,6 +273,14 @@ FactoryBot.define do
     collaboration_type { nil }
     flow { nil }
     aid_type { nil }
+    policy_marker_gender { nil }
+    policy_marker_climate_change_adaptation { nil }
+    policy_marker_climate_change_mitigation { nil }
+    policy_marker_biodiversity { nil }
+    policy_marker_desertification { nil }
+    policy_marker_disability { nil }
+    policy_marker_disaster_risk_reduction { nil }
+    policy_marker_nutrition { nil }
   end
 
   trait :blank_form_state do
@@ -238,6 +302,14 @@ FactoryBot.define do
     collaboration_type { nil }
     flow { nil }
     aid_type { nil }
+    policy_marker_gender { nil }
+    policy_marker_climate_change_adaptation { nil }
+    policy_marker_climate_change_mitigation { nil }
+    policy_marker_biodiversity { nil }
+    policy_marker_desertification { nil }
+    policy_marker_disability { nil }
+    policy_marker_disaster_risk_reduction { nil }
+    policy_marker_nutrition { nil }
     extending_organisation_id { nil }
     parent { nil }
     level { nil }
@@ -264,6 +336,14 @@ FactoryBot.define do
     collaboration_type { nil }
     flow { nil }
     aid_type { nil }
+    policy_marker_gender { nil }
+    policy_marker_climate_change_adaptation { nil }
+    policy_marker_climate_change_mitigation { nil }
+    policy_marker_biodiversity { nil }
+    policy_marker_desertification { nil }
+    policy_marker_disability { nil }
+    policy_marker_disaster_risk_reduction { nil }
+    policy_marker_nutrition { nil }
     extending_organisation_id { nil }
     parent { nil }
   end
