@@ -21,18 +21,22 @@ module Activities
     end
 
     def import_row(row, index)
-      activity = Activity.by_roda_identifier(row["RODA ID"])
-
-      if activity.nil?
-        add_error(index, :roda_id, row["RODA ID"], I18n.t("importer.errors.activity.not_found"))
+      if row["RODA ID"].present?
+        action = update_activity(row, index)
       else
-        updater = ActivityUpdater.new(activity, @organisation, row)
-        updater.update
-
-        updater.errors.each do |attr_name, (value, message)|
-          add_error(index, attr_name, value, message)
-        end
+        add_error(index, :roda_id, row["RODA ID"], I18n.t("importer.errors.activity.cannot_update")) && return
       end
+
+      action.errors.each do |attr_name, (value, message)|
+        add_error(index, attr_name, value, message)
+      end
+    end
+
+    def update_activity(row, index)
+      updater = ActivityUpdater.new(row, @organisation)
+      updater.update
+
+      updater
     end
 
     def add_error(row_number, column, value, message)
@@ -42,10 +46,10 @@ module Activities
     class ActivityUpdater
       attr_reader :errors
 
-      def initialize(activity, organisation, row)
-        @activity = activity
-        @organisation = organisation
+      def initialize(row, organisation)
         @errors = {}
+        @activity = find_activity_by_roda_id(row["RODA ID"])
+        @organisation = organisation
         @converter = Converter.new(row)
         @errors.update(@converter.errors)
       end
@@ -60,6 +64,13 @@ module Activities
         @activity.errors.each do |attr_name, message|
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
         end
+      end
+
+      def find_activity_by_roda_id(roda_id)
+        activity = Activity.by_roda_identifier(roda_id)
+        @errors[:roda_id] ||= [roda_id, I18n.t("importer.errors.activity.not_found")] if activity.nil?
+
+        activity
       end
     end
 
