@@ -375,3 +375,4 @@ en:
       activity:
         not_found: Cannot be found
         invalid_region: The region cannot be found
+        cannot_update: There is no RODA ID present
