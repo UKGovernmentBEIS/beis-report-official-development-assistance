@@ -371,6 +371,8 @@
 ## [unreleased]
 
 - Fix allow application to create new users in Auth0
+- Activity capital-spend is always exported as 0 to the IATI xml
+- Fix allow application to create new users in Auth0
 - Filter out unused aid types.
 - Replace the hints in the aid type form with shorter, more accessible copy if available.
 - Option `No - was never eligible` added to ODA eligibility form step

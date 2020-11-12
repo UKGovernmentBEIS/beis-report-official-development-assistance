@@ -4,6 +4,7 @@ class Activity < ApplicationRecord
 
   STANDARD_GRANT_FINANCE_CODE = "110"
   UNTIED_TIED_STATUS_CODE = "5"
+  CAPITAL_SPEND_PERCENTAGE = 0
 
   VALIDATION_STEPS = [
     :level_step,
@@ -131,6 +132,10 @@ class Activity < ApplicationRecord
 
   def tied_status
     UNTIED_TIED_STATUS_CODE
+  end
+
+  def capital_spend
+    CAPITAL_SPEND_PERCENTAGE
   end
 
   def default_currency

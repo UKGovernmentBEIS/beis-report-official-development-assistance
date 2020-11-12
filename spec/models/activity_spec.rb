@@ -15,6 +15,13 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#capital_spend" do
+    it "always returns 0" do
+      activity = Activity.new
+      expect(activity.capital_spend).to eq 0
+    end
+  end
+
   describe "scopes" do
     describe ".funds" do
       it "only returns fund level activities" do
