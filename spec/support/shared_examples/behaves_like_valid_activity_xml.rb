@@ -60,6 +60,12 @@ RSpec.shared_examples "valid activity XML" do
     expect(xml.at("iati-activity/default-finance-type/@code").text).to eq("110")
   end
 
+  it "contains the default value of 0% capital spend" do
+    visit organisation_activity_path(organisation, activity, format: :xml)
+
+    expect(xml.at("iati-activity/capital-spend/@percentage").text).to eq("0")
+  end
+
   it "contains the default value for Tied Status" do
     visit organisation_activity_path(organisation, activity, format: :xml)
 
