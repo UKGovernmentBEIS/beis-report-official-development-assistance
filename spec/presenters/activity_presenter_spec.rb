@@ -382,6 +382,11 @@ RSpec.describe ActivityPresenter do
       expect(described_class.new(activity).call_to_action(:title)).to eql("edit")
     end
 
+    it "returns 'edit' if the desired attribute is 'false'" do
+      activity = build(:activity, fstc_applies: false)
+      expect(described_class.new(activity).call_to_action(:title)).to eql("edit")
+    end
+
     it "returns 'add' if the desired attribute is not present" do
       activity = build(:activity, title: nil)
       expect(described_class.new(activity).call_to_action(:title)).to eql("add")

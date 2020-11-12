@@ -487,6 +487,13 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when fstc applies is blank" do
+      subject(:activity) { build(:activity, fstc_applies: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:fstc_applies_step)).to be_falsey
+      end
+    end
+
     context "when activity is not a fund" do
       context "and is 'ingested: false'" do
         context "and the collaboration_type is blank" do

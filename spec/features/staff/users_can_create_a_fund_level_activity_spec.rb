@@ -276,6 +276,14 @@ RSpec.feature "Users can create a fund level activity" do
 
         choose("activity[aid_type]", option: "B02")
         click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.fstc_applies")
+
+        # Don't choose if fstc applies or not
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion")
+
+        choose("activity[fstc_applies]", option: true)
+        click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.oda_eligibility")
 
         # oda_eligibility has the default value already selected
