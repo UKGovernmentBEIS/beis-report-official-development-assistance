@@ -70,6 +70,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       assign_default_collaboration_type_value_if_nil
     when :policy_markers
       skip_step unless @activity.is_project?
+    when :sustainable_development_goals
+      skip_step if @activity.fund?
     end
 
     render_wizard

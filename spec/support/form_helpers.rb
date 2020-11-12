@@ -207,11 +207,13 @@ module FormHelpers
     select flow, from: "activity[flow]"
     click_button t("form.button.activity.submit")
 
-    expect(page).to have_content t("form.legend.activity.sdgs_apply")
-    expect(page).to have_content t("form.hint.activity.sdgs_apply")
-    choose t("form.label.activity.sdgs_apply_options.true")
-    select t("form.label.activity.sdg_options.5"), from: "activity[sdg_1]"
-    click_button t("form.button.activity.submit")
+    unless level == "fund"
+      expect(page).to have_content t("form.legend.activity.sdgs_apply")
+      expect(page).to have_content t("form.hint.activity.sdgs_apply")
+      choose t("form.label.activity.sdgs_apply_options.true")
+      select t("form.label.activity.sdg_options.5"), from: "activity[sdg_1]"
+      click_button t("form.button.activity.submit")
+    end
 
     expect(page).to have_content t("form.legend.activity.aid_type")
     expect(page).to have_content t("form.hint.activity.aid_type")
