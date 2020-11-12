@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_02_105419) do
+ActiveRecord::Schema.define(version: 2020_11_06_110954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2020_11_02_105419) do
     t.integer "total_awards"
     t.string "collaboration_type"
     t.integer "oda_eligibility", default: 1, null: false
+    t.boolean "fstc_applies"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
