@@ -318,3 +318,8 @@ en:
               blank: Select an extending organisation
             fstc_applies:
               inclusion: You must select "Yes" or "No"
+  importer:
+    errors:
+      activity:
+        not_found: Cannot be found
+        invalid_region: The region cannot be found
