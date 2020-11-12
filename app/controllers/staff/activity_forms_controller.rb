@@ -28,6 +28,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :collaboration_type,
     :flow,
     :aid_type,
+    :fstc_applies,
     :oda_eligibility,
   ]
 
@@ -142,6 +143,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.assign_attributes(flow: flow)
     when :aid_type
       @activity.assign_attributes(aid_type: aid_type)
+    when :fstc_applies
+      @activity.assign_attributes(fstc_applies: fstc_applies)
     when :oda_eligibility
       @activity.assign_attributes(oda_eligibility: oda_eligibility)
     end
@@ -271,6 +274,10 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def aid_type
     params.require(:activity).permit(:aid_type).fetch("aid_type", nil)
+  end
+
+  def fstc_applies
+    params.require(:activity).permit(:fstc_applies).fetch("fstc_applies", nil)
   end
 
   def oda_eligibility

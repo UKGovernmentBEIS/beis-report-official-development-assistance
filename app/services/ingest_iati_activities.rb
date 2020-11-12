@@ -43,6 +43,7 @@ class IngestIatiActivities
           add_requires_additional_benefitting_countries(legacy_activity: legacy_activity, new_activity: new_activity)
           add_intended_beneficiaries(legacy_activity: legacy_activity, new_activity: new_activity)
           add_gdi(legacy_activity: legacy_activity, new_activity: new_activity)
+          add_fstc_applies(new_activity: new_activity)
 
           new_activity.form_state = :complete
           new_activity
@@ -303,6 +304,21 @@ class IngestIatiActivities
   private def add_gdi(legacy_activity:, new_activity:)
     # To be ingested once we have the information
     new_activity.gdi = "Replace me"
+  end
+
+  private def add_fstc_applies(new_activity:)
+    new_activity.fstc_applies = case new_activity.aid_type
+    when "C01"
+      true
+    when "E01"
+      true
+    when "D01"
+      true
+    when "GO1"
+      false
+    else
+      false
+    end
   end
 
   private def add_dates(legacy_activity:, new_activity:)
