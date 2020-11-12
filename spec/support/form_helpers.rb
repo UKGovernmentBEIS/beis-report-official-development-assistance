@@ -36,6 +36,7 @@ module FormHelpers
     collaboration_type: "Bilateral",
     flow: "ODA",
     aid_type: "B02",
+    fstc_applies: true,
     oda_eligibility: "Eligible",
     level:,
     parent: nil
@@ -199,6 +200,11 @@ module FormHelpers
     expect(page).to have_content t("form.legend.activity.aid_type")
     expect(page).to have_content t("form.hint.activity.aid_type")
     choose("activity[aid_type]", option: aid_type)
+    click_button t("form.button.activity.submit")
+
+    expect(page).to have_content t("form.legend.activity.fstc_applies")
+    expect(page.body).to include t("form.hint.activity.fstc_applies", aid_type: aid_type)
+    choose("activity[fstc_applies]", option: fstc_applies)
     click_button t("form.button.activity.submit")
 
     expect(page).to have_content t("form.legend.activity.oda_eligibility")

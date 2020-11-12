@@ -59,6 +59,9 @@ en:
           "D01": "Experts, consultants, teachers, academics, researchers, volunteers and contributions to public and private bodies for sending experts to developing countries."
           "D02": "Provision of technical assistance in recipient countries outside of project described in project-type interventions (C01). This includes conferences, workshops and seminars but does not include activities such as scholarships/training described in (E01)"
           "G01": "Costs of development assistance programmes not already included under other ODA items as an integral part of the costs of delivering or implementing the aid provided. This includes delivery costs and in-house agency staff and contractors but not donor experts and consultants"
+        fstc_applies:
+          "true": "Yes"
+          "false": "No"
     legend:
       activity:
         aid_type: What is the aid type?
@@ -83,6 +86,7 @@ en:
         status: What is the status of the %{level}?
         total_applications: How many applications have you had?
         total_awards: How many awards have you made?
+        fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
@@ -110,6 +114,7 @@ en:
         parent: Which existing %{parent_level} will this new %{level} belong to?
         total_applications: You can enter 0 if this field is not applicable at the moment
         total_awards: You can enter 0 if this field is not applicable at the moment
+        fstc_applies: "<p>Free-standing technical co-operation is defined as financing of activities whose primary purpose is to augment the level of knowledge, skills, technical know-how or productive aptitudes of the population of developing countries.</p><ul><li>If aid type C01, please select FTC1 except in unusual circumstances</li><li>If aid type G01, please select FTC0 as the activity cannot have FTC.</li><li>If aid types E01 and D02, please select FTC1 as the activity must have FTC.</li></ul><p>This activity's aid type is <strong>%{aid_type}</strong></p>"
       organisation:
         hint: The organisation this activity is associated with
   summary:
@@ -307,3 +312,5 @@ en:
               blank: Select the aid type
             extending_organisation_id:
               blank: Select an extending organisation
+            fstc_applies:
+              inclusion: You must select "Yes" or "No"
