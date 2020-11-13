@@ -217,4 +217,18 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
   end
+
+  describe "BEIS" do
+    describe "#covid19_related_radio_options" do
+      it "returns the BEIS codes and descriptions" do
+        options = helper.covid19_related_radio_options
+
+        expect(options.length).to eq 5
+        expect(options.first.code).to eq 0
+        expect(options.first.description).to eq "Not related"
+        expect(options.last.code).to eq 4
+        expect(options.last.description).to eq "Existing activity adapted to somewhat focus on COVID-19"
+      end
+    end
+  end
 end
