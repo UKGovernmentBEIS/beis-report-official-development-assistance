@@ -75,7 +75,7 @@ group :test do
   gem "pundit-matchers", "~> 1.6.0"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
-  gem "webmock", "~> 3.9"
+  gem "webmock", "~> 3.10"
 end
 
 group :production do
