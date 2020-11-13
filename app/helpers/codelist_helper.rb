@@ -147,6 +147,13 @@ module CodelistHelper
     filtered_list.unshift(not_assessed_option)
   end
 
+  def covid19_related_radio_options
+    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/covid19_related_research.yml"))
+    yaml["data"].collect { |item|
+      OpenStruct.new(code: item["code"], description: item["description"])
+    }.compact.sort_by(&:code)
+  end
+
   def load_yaml(entity:, type:)
     yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/IATI/#{IATI_VERSION}/#{entity}/#{type}.yml"))
     yaml["data"]
