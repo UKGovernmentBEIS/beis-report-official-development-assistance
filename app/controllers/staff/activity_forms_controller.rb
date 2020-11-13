@@ -30,6 +30,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :aid_type,
     :fstc_applies,
     :policy_markers,
+    :covid19_related,
     :oda_eligibility,
   ]
 
@@ -159,6 +160,8 @@ class Staff::ActivityFormsController < Staff::BaseController
         policy_marker_disaster_risk_reduction: policy_markers_iati_codes_to_enum(policy_marker_disaster_risk_reduction),
         policy_marker_nutrition: policy_markers_iati_codes_to_enum(policy_marker_nutrition),
       )
+    when :covid19_related
+      @activity.assign_attributes(covid19_related: covid19_related)
     when :oda_eligibility
       @activity.assign_attributes(oda_eligibility: oda_eligibility)
     end
@@ -324,6 +327,10 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def policy_marker_nutrition
     params.require(:activity).permit(:policy_marker_nutrition).fetch("policy_marker_nutrition", nil)
+  end
+
+  def covid19_related
+    params.require(:activity).permit(:covid19_related).fetch("covid19_related", 0)
   end
 
   def oda_eligibility
