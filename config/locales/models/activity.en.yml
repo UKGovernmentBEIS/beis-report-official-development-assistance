@@ -171,6 +171,7 @@ en:
         call_open_date: Call open date
         call_close_date: Call close date
         collaboration_type: Collaboration type
+        covid19_related: Is this activity related to Covid-19?
         description: Description
         form_state:
           complete: Complete

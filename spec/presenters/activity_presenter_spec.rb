@@ -45,6 +45,14 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#covid19_related" do
+    it "returns the locale value for the code" do
+      activity = build(:activity, covid19_related: 3)
+      result = described_class.new(activity).covid19_related
+      expect(result).to eql("New activity that will somewhat focus on COVID-19")
+    end
+  end
+
   describe "#sector" do
     context "when the sector exists" do
       it "returns the locale value for the code" do
