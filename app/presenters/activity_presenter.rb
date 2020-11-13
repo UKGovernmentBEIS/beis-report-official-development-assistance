@@ -14,6 +14,10 @@ class ActivityPresenter < SimpleDelegator
     "#{aid_type} (#{to_model.aid_type})"
   end
 
+  def covid19_related
+    I18n.t("covid19_related.#{super}")
+  end
+
   def sector
     return if super.blank?
     I18n.t("activity.sector.#{super}")
