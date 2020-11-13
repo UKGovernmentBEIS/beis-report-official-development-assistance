@@ -375,4 +375,5 @@ en:
       activity:
         not_found: Cannot be found
         invalid_region: The region cannot be found
-        cannot_update: There is no RODA ID present
+        parent_not_found: The parent activity cannot be found
+        cannot_create_or_update: There is no RODA ID or RODA ID Fragment and Parent RODA ID present
