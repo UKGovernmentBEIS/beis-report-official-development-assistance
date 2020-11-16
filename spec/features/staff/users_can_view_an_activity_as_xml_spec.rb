@@ -128,6 +128,43 @@ RSpec.feature "Users can view an activity as XML" do
         end
       end
 
+      context "when the activity has policy markers" do
+        let(:activity) {
+          create(:project_activity,
+            organisation: organisation,
+            delivery_partner_identifier: "IND-ENT-IFIER",
+            policy_marker_gender: "not_targeted",
+            policy_marker_biodiversity: "significant_objective",
+            policy_marker_disability: "principal_objective",
+            policy_marker_desertification: "principal_objective_and_in_support",
+            policy_marker_nutrition: "not_assessed",
+            policy_marker_climate_change_adaptation: "not_assessed",
+            policy_marker_climate_change_mitigation: "not_assessed",
+            policy_marker_disaster_risk_reduction: "not_assessed")
+        }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it "includes all the policy markers with reportable values for IATI" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+          expect(xml).to have_selector("iati-activity/policy-marker/@code", count: 4) # We do not report 'not_assessed' values to IATI
+        end
+
+        it "includes policy marker for gender with all the correct values" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+          expect(xml.at("iati-activity/policy-marker/@vocabulary").text).to eq("1")
+          expect(xml.at("iati-activity/policy-marker/@code").text).to eq("1")
+          expect(xml.at("iati-activity/policy-marker/@significance").text).to eq("0")
+        end
+
+        it "does not include the policy markers with a value of 'not assessed'" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+          significances = xml.xpath("//iati-activity/policy-marker/@significance").to_a
+          significances.each do |node|
+            expect(node).to_not have_content("1000")
+          end
+        end
+      end
+
       context "when the activity is a fund activity" do
         let(:activity) { create(:fund_activity, :with_transparency_identifier, organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER") }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }

@@ -204,5 +204,17 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.last.name).to eq "Administrative costs not included elsewhere (G01)"
       end
     end
+
+    describe "#policy_markers_select_options" do
+      it "returns the options for policy markers, prepending the BEIS custom option" do
+        options = helper.policy_markers_select_options
+
+        expect(options.length).to eq 5
+        expect(options.first.name).to eq("Not assessed")
+        expect(options.first.code).to eq("1000")
+        expect(options.last.name).to eq("Principal objective AND in support of an action programme")
+        expect(options.last.code).to eq("3")
+      end
+    end
   end
 end
