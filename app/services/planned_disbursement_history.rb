@@ -45,6 +45,8 @@ class PlannedDisbursementHistory
       planned_disbursement_type: :original,
       value: value,
     )
+    attributes[:report] = Report.editable_for_activity(@activity) if record_history?
+
     PlannedDisbursement.create!(attributes)
   end
 
@@ -59,6 +61,10 @@ class PlannedDisbursementHistory
 
   def update_entry(entry, value)
     entry.update!(value: value)
+  end
+
+  def record_history?
+    !@activity.organisation.service_owner?
   end
 
   def series_attributes
