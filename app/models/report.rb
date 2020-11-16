@@ -27,6 +27,13 @@ class Report < ApplicationRecord
     order(financial_year: :desc, financial_quarter: :desc)
   end
 
+  scope :historically_up_to, ->(report) do
+    year, quarter = report.financial_year, report.financial_quarter
+
+    where("reports.financial_year < ?", year)
+      .or(where(financial_year: year).where("reports.financial_quarter <= ?", quarter))
+  end
+
   scope :editable, -> do
     where(state: [:active, :awaiting_changes])
   end
