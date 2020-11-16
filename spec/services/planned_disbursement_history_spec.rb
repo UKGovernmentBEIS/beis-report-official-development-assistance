@@ -92,6 +92,15 @@ RSpec.describe PlannedDisbursementHistory do
       ])
     end
 
+    it "edits an original entry when it belongs to the current report" do
+      history.set_value(10)
+      history.set_value(20)
+
+      expect(history_entries).to eq([
+        ["original", 1, 2015, 20],
+      ])
+    end
+
     it "adds a revision when the original entry is part of an approved report" do
       history.set_value(10)
       reporting_cycle.tick
@@ -126,6 +135,22 @@ RSpec.describe PlannedDisbursementHistory do
       expect(history_entries).to eq([
         ["original", 1, 2015, 10],
         ["revised", 2, 2015, 30],
+      ])
+    end
+
+    it "adds a revision when the last revision is part of an approved report" do
+      history.set_value(10)
+      reporting_cycle.tick
+
+      history.set_value(20)
+      3.times { reporting_cycle.tick }
+
+      history.set_value(30)
+
+      expect(history_entries).to eq([
+        ["original", 1, 2015, 10],
+        ["revised", 2, 2015, 20],
+        ["revised", 1, 2016, 30],
       ])
     end
   end
