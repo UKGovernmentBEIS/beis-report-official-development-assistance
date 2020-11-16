@@ -2,6 +2,44 @@
 
 module CodelistHelper
   DEVELOPING_COUNTRIES_CODE = "998"
+  AFRICA_REGIONAL_SUBREGIONS = [
+    "1027",
+    "1028",
+    "189",
+    "1029",
+    "1030",
+  ]
+  SOUTH_SAHARA_SUBREGIONS = [
+    "1027",
+    "1028",
+    "1029",
+    "1030",
+  ]
+  AMERICA_REGIONAL_SUBREGIONS = [
+    "1031",
+    "1032",
+    "489",
+  ]
+  NORTH_AND_CENTRAL_AMERICA_REGIONAL_SUBREGIONS = [
+    "1031",
+    "1032",
+  ]
+  ASIA_REGIONAL_SUBREGIONS = [
+    "789",
+    "589",
+    "689",
+  ]
+  CENTRAL_ASIA_REGIONAL_SUBREGIONS = [
+    "689",
+  ]
+  SOUTH_ASIA_REGIONAL_SUBREGIONS = [
+    "689",
+  ]
+  OCEANIA_REGIONAL_SUBREGIONS = [
+    "1033",
+    "1034",
+    "1035",
+  ]
   ALLOWED_AID_TYPE_CODES = [
     "B02",
     "B03",
@@ -82,8 +120,22 @@ module CodelistHelper
   def intended_beneficiaries_checkbox_options
     recipient_region = @activity.recipient_region
     list = load_yaml(entity: "activity", type: "intended_beneficiaries")
-    show_list = if recipient_region == DEVELOPING_COUNTRIES_CODE
+    show_list = if recipient_region == DEVELOPING_COUNTRIES_CODE || @activity.recipient_country?
       list.values.flatten
+    elsif recipient_region == "298" # Africa, regional
+      AFRICA_REGIONAL_SUBREGIONS.map { |subregion| list[subregion] }.flatten
+    elsif recipient_region == "289" # South of Sahara
+      SOUTH_SAHARA_SUBREGIONS.map { |subregion| list[subregion] }.flatten
+    elsif recipient_region == "498" # America, regional
+      AMERICA_REGIONAL_SUBREGIONS.map { |subregion| list[subregion] }.flatten
+    elsif recipient_region == "389" # North & Central America, regional
+      NORTH_AND_CENTRAL_AMERICA_REGIONAL_SUBREGIONS.map { |subregion| list[subregion] }.flatten
+    elsif recipient_region == "798" # Asia, regional
+      ASIA_REGIONAL_SUBREGIONS.map { |subregion| list[subregion] }.flatten
+    elsif recipient_region == "619" || recipient_region == "679" # Central Asia, regional and South Asia, regional. No matching countries as single regions so mapping to South & Central Asia instead
+      list["689"]
+    elsif recipient_region == "889" # Oceania, regional
+      OCEANIA_REGIONAL_SUBREGIONS.map { |subregion| list[subregion] }.flatten
     else
       list[recipient_region]
     end

@@ -33,7 +33,7 @@ RSpec.feature "users can add benefitting countries as intended beneficiaries" do
           click_button t("form.button.activity.submit")
           expect(page).to have_current_path(activity_step_path(activity, :gdi))
         end
-        scenario "the user has the option of selecting other intended beneficiaries based on a reduced list depending on the region of the country selected" do
+        scenario "the user has the option of selecting other intended beneficiaries based from the full list of countries available" do
           visit activity_step_path(activity, :geography)
           choose "Country"
           click_button t("form.button.activity.submit")
@@ -48,14 +48,15 @@ RSpec.feature "users can add benefitting countries as intended beneficiaries" do
           click_button t("form.button.activity.submit")
 
           expect(page).to have_content t("form.legend.activity.intended_beneficiaries")
-          expect(page).to have_content("Argentina")
-          expect(page).to have_content("Venezuela")
-          check "Argentina"
-          check "Colombia"
-          check "Peru"
+          expect(page).to have_selector(".govuk-checkboxes__item", count: 145)
+          expect(page).to have_content("Afghanistan")
+          expect(page).to have_content("Zimbabwe")
+          check "Gambia"
+          check "Indonesia"
+          check "Yemen"
           click_button t("form.button.activity.submit")
           activity.reload
-          expect(activity.intended_beneficiaries).to eq(["AR", "CO", "PE"])
+          expect(activity.intended_beneficiaries).to eq(["GM", "ID", "YE"])
           expect(page).to have_current_path(activity_step_path(activity, :gdi))
         end
 
@@ -114,6 +115,33 @@ RSpec.feature "users can add benefitting countries as intended beneficiaries" do
         click_button t("form.button.activity.submit")
         activity.reload
         expect(activity.intended_beneficiaries).to eq(["KE", "TR"])
+      end
+
+      context "if they choose one of the wider regions" do
+        scenario "they will be able to select benefitting countries from the sub-regions the wider region maps to" do
+          visit activity_step_path(activity, :geography)
+          choose "Region"
+          click_button t("form.button.activity.submit")
+          expect(page).to have_content t("form.label.activity.recipient_region")
+
+          select "Africa, regional"
+          click_button t("form.button.activity.submit")
+          expect(activity.reload.recipient_region).to eq("298")
+
+          expect(page).to have_content t("form.legend.activity.intended_beneficiaries")
+          expect(page).to have_selector(".govuk-checkboxes__item", count: 54)
+          expect(page).to have_content("Algeria")
+          expect(page).to have_content("Zimbabwe")
+          expect(page).to_not have_content("Ukraine")
+
+          check "Cameroon"
+          check "Mozambique"
+          check "Senegal"
+          check "Egypt"
+          click_button t("form.button.activity.submit")
+          activity.reload
+          expect(activity.intended_beneficiaries).to eq(["CM", "EG", "MZ", "SN"])
+        end
       end
     end
   end
