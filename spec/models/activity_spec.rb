@@ -693,7 +693,7 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#form_stpes_completed?" do
+  describe "#form_steps_completed?" do
     it "is true when a user has completed all of the form steps" do
       activity = build(:activity, form_state: :complete)
 
