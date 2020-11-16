@@ -380,6 +380,7 @@
   and year cannot be created.
 - Add a field to report Free Standing Technical Cooperation
 - Policy markers added to activity form, including BEIS custom answer `not assessed`
+- Add a class to import Activities from a CSV
 
 ## [unreleased]
 - Fix parent level strings
