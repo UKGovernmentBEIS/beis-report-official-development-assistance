@@ -51,11 +51,11 @@ class ActivityPolicy < ApplicationPolicy
   end
 
   private def editable_report_for_organisation
-    Report.find_by(organisation: record.organisation, state: Report::EDITABLE_STATES)
+    Report.editable.find_by(organisation: record.organisation)
   end
 
   private def editable_report_for_organisation_and_fund
     fund = record.parent.associated_fund
-    Report.find_by(organisation: record.organisation, fund: fund, state: Report::EDITABLE_STATES)
+    Report.editable.find_by(organisation: record.organisation, fund: fund)
   end
 end
