@@ -21,13 +21,9 @@ module Activities
     end
 
     def import_row(row, index)
-      if row["RODA ID"].blank? && row["RODA ID Fragment"].present? && row["Parent RODA ID"].present?
-        action = create_activity(row, index)
-      elsif row["RODA ID"].present?
-        action = update_activity(row, index)
-      else
-        add_error(index, :roda_id, row["RODA ID"], I18n.t("importer.errors.activity.cannot_create_or_update")) && return
-      end
+      action = row["RODA ID"].blank? ? create_activity(row, index) : update_activity(row, index)
+
+      return if action.nil?
 
       action.errors.each do |attr_name, (value, message)|
         add_error(index, attr_name, value, message)
@@ -35,17 +31,27 @@ module Activities
     end
 
     def create_activity(row, index)
-      creator = ActivityCreator.new(@organisation, row)
-      creator.create
+      if row["RODA ID Fragment"].present? && row["Parent RODA ID"].present?
+        creator = ActivityCreator.new(@organisation, row)
+        creator.create
 
-      creator
+        creator
+      else
+        add_error(index, :roda_id, row["RODA ID"], I18n.t("importer.errors.activity.cannot_create")) && return
+      end
     end
 
     def update_activity(row, index)
-      updater = ActivityUpdater.new(row, @organisation)
-      updater.update
+      if row["RODA ID Fragment"].present?
+        add_error(index, :roda_identifier_fragment, row["RODA ID Fragment"], I18n.t("importer.errors.activity.cannot_update.fragment_present")) && return
+      elsif row["Parent RODA ID"].present?
+        add_error(index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
+      else
+        updater = ActivityUpdater.new(row, @organisation)
+        updater.update
 
-      updater
+        updater
+      end
     end
 
     def add_error(row_number, column, value, message)

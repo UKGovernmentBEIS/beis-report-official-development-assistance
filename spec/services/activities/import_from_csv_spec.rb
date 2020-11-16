@@ -29,23 +29,11 @@ RSpec.describe Activities::ImportFromCsv do
 
   subject { described_class.new(organisation: organisation) }
 
-  it "returns an error when the ID and fragments are not present" do
-    existing_activity_attributes["RODA ID"] = ""
-
-    expect { subject.import([existing_activity_attributes]) }.to_not change { Activity.count }
-
-    expect(subject.errors.count).to eq(1)
-    expect(subject.errors.first.csv_row).to eq(2)
-    expect(subject.errors.first.column).to eq(:roda_id)
-    expect(subject.errors.first.value).to eq("")
-    expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_create_or_update"))
-  end
-
   context "when updating an existing activity" do
     it "has an error if an Activity does not exist" do
       existing_activity_attributes["RODA ID"] = "FAKE RODA ID"
 
-      subject.import([existing_activity_attributes])
+      expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
 
       expect(subject.errors.count).to eq(1)
 
@@ -53,6 +41,30 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:roda_id)
       expect(subject.errors.first.value).to eq("FAKE RODA ID")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.not_found"))
+    end
+
+    it "has an error when the ID present, but there is a fragment present" do
+      existing_activity_attributes["RODA ID Fragment"] = "13344"
+
+      expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.column).to eq(:roda_identifier_fragment)
+      expect(subject.errors.first.value).to eq("13344")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.fragment_present"))
+    end
+
+    it "has an error when the ID present, but there is a parent present" do
+      existing_activity_attributes["Parent RODA ID"] = parent_activity.roda_identifier_fragment
+
+      expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.column).to eq(:parent_id)
+      expect(subject.errors.first.value).to eq(parent_activity.roda_identifier_fragment)
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.parent_present"))
     end
 
     it "updates an existing activity" do
@@ -117,6 +129,18 @@ RSpec.describe Activities::ImportFromCsv do
   end
 
   context "when creating a new activity" do
+    it "returns an error when the ID and fragments are not present" do
+      existing_activity_attributes["RODA ID"] = ""
+
+      expect { subject.import([existing_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.column).to eq(:roda_id)
+      expect(subject.errors.first.value).to eq("")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_create"))
+    end
+
     it "creates the activity" do
       rows = [new_activity_attributes]
       expect { subject.import(rows) }.to change { Activity.count }.by(1)

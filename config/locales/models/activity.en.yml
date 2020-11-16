@@ -376,4 +376,7 @@ en:
         not_found: Cannot be found
         invalid_region: The region cannot be found
         parent_not_found: The parent activity cannot be found
-        cannot_create_or_update: There is no RODA ID or RODA ID Fragment and Parent RODA ID present
+        cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
+        cannot_update:
+          fragment_present: There is an existing RODA ID present, but there is a fragment specified too, which will overwrite the existing fragment. Please remove the fragement from this row and try again.
+          parent_present: There is an existing RODA ID present, but there is a parent activity specified too, which will overwrite the existing parent. Please remove the parent ID from this row and try again.
