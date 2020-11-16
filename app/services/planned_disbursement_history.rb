@@ -44,8 +44,8 @@ class PlannedDisbursementHistory
     attributes = series_attributes.merge(required_attributes).merge(
       planned_disbursement_type: :original,
       value: value,
+      report: current_report,
     )
-    attributes[:report] = Report.editable_for_activity(@activity) if record_history?
 
     PlannedDisbursement.create!(attributes)
   end
@@ -55,7 +55,8 @@ class PlannedDisbursementHistory
 
     new_entry.update!(
       planned_disbursement_type: :revised,
-      value: value
+      value: value,
+      report: current_report,
     )
   end
 
@@ -63,8 +64,10 @@ class PlannedDisbursementHistory
     entry.update!(value: value)
   end
 
-  def record_history?
-    !@activity.organisation.service_owner?
+  def current_report
+    unless @activity.organisation.service_owner?
+      Report.editable_for_activity(@activity)
+    end
   end
 
   def series_attributes
