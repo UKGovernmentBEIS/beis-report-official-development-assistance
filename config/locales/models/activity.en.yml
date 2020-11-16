@@ -60,13 +60,6 @@ en:
         publish_to_iati: Publish this activity to IATI?
         total_applications: How many applications have you had?
         total_awards: How many awards have you made?
-        aid_type:
-          "B02": "These funds are classified as multilateral ODA. All other categories fall under bilateral ODA"
-          "B03": "International organisations set up and raise funds for specific programmes and funds with clearly identified sectoral, thematic, or geographical focus"
-          "C01": "A project is a set of inputs, activities, and outputs, agreed with the partner country to reach specific objectives/outcomes within a defined time frame, budget, and geographical area. Projects can be large or small, complex or simple"
-          "D01": "Experts, consultants, teachers, academics, researchers, volunteers and contributions to public and private bodies for sending experts to developing countries."
-          "D02": "Provision of technical assistance in recipient countries outside of project described in project-type interventions (C01). This includes conferences, workshops and seminars but does not include activities such as scholarships/training described in (E01)"
-          "G01": "Costs of development assistance programmes not already included under other ODA items as an integral part of the costs of delivering or implementing the aid provided. This includes delivery costs and in-house agency staff and contractors but not donor experts and consultants"
         fstc_applies:
           "true": "Yes"
           "false": "No"
@@ -154,6 +147,14 @@ en:
         total_applications: You can enter 0 if this field is not applicable at the moment
         total_awards: You can enter 0 if this field is not applicable at the moment
         fstc_applies: "<p>Free-standing technical co-operation is defined as financing of activities whose primary purpose is to augment the level of knowledge, skills, technical know-how or productive aptitudes of the population of developing countries.</p><ul><li>If aid type C01, please select FTC1 except in unusual circumstances</li><li>If aid type G01, please select FTC0 as the activity cannot have FTC.</li><li>If aid types E01 and D02, please select FTC1 as the activity must have FTC.</li></ul><p>This activity's aid type is <strong>%{aid_type}</strong></p>"
+        options:
+          aid_type:
+            "B02": "These funds are classified as multilateral ODA. All other categories fall under bilateral ODA"
+            "B03": "International organisations set up and raise funds for specific programmes and funds with clearly identified sectoral, thematic, or geographical focus"
+            "C01": "A project is a set of inputs, activities, and outputs, agreed with the partner country to reach specific objectives/outcomes within a defined time frame, budget, and geographical area. Projects can be large or small, complex or simple"
+            "D01": "Experts, consultants, teachers, academics, researchers, volunteers and contributions to public and private bodies for sending experts to developing countries."
+            "D02": "Provision of technical assistance in recipient countries outside of project described in project-type interventions (C01). This includes conferences, workshops and seminars but does not include activities such as scholarships/training described in (E01)"
+            "G01": "Costs of development assistance programmes not already included under other ODA items as an integral part of the costs of delivering or implementing the aid provided. This includes delivery costs and in-house agency staff and contractors but not donor experts and consultants"
       organisation:
         hint: The organisation this activity is associated with
   summary:

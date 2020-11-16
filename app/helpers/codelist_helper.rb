@@ -41,7 +41,7 @@ module CodelistHelper
 
     data = data.collect { |item|
       name = code_displayed_in_name ? "#{item["name"]} (#{item["code"]})" : item["name"]
-      description = t("form.label.#{entity}.#{type}.#{item["code"]}", default: item["description"])
+      description = t("form.hint.#{entity}.options.#{type}.#{item["code"]}", default: item["description"])
 
       OpenStruct.new(name: name, code: item["code"], description: description)
     }
