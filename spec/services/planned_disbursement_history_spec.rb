@@ -1,5 +1,6 @@
 RSpec.describe PlannedDisbursementHistory do
   let(:history) { PlannedDisbursementHistory.new(activity, 3, 2020) }
+  let(:reporting_cycle) { ReportingCycle.new(activity, 1, 2015) }
 
   def history_entries
     history.all_entries.map do |entry|
@@ -13,7 +14,8 @@ RSpec.describe PlannedDisbursementHistory do
   end
 
   context "for a level B activity, owned by BEIS" do
-    let(:activity) { create(:programme_activity) }
+    let(:beis) { create(:beis_organisation) }
+    let(:activity) { create(:programme_activity, organisation: beis) }
 
     it "begins with no entries" do
       expect(history_entries).to eq([])
@@ -54,6 +56,34 @@ RSpec.describe PlannedDisbursementHistory do
 
       expect(history_entries).to eq([
         ["original", nil, nil, 10],
+      ])
+    end
+
+    it "does not associate created records with a report" do
+      reporting_cycle.tick
+      history.set_value(10)
+
+      expect(history_entries).to eq([
+        ["original", nil, nil, 10],
+      ])
+    end
+  end
+
+  context "for a level C activity, owned by a delivery partner" do
+    let(:delivery_partner) { create(:delivery_partner_organisation) }
+    let(:activity) { create(:project_activity, organisation: delivery_partner) }
+
+    before { reporting_cycle.tick }
+
+    it "begins with no entries" do
+      expect(history_entries).to eq([])
+    end
+
+    it "creates an original entry when the value is first set" do
+      history.set_value(10)
+
+      expect(history_entries).to eq([
+        ["original", 1, 2015, 10],
       ])
     end
   end
