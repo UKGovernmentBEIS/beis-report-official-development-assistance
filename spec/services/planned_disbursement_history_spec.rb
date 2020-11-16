@@ -79,11 +79,53 @@ RSpec.describe PlannedDisbursementHistory do
       expect(history_entries).to eq([])
     end
 
+    it "raises an error when no editable report exists" do
+      Report.update_all(state: :approved)
+      expect { history.set_value(10) }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+
     it "creates an original entry when the value is first set" do
       history.set_value(10)
 
       expect(history_entries).to eq([
         ["original", 1, 2015, 10],
+      ])
+    end
+
+    it "adds a revision when the original entry is part of an approved report" do
+      history.set_value(10)
+      reporting_cycle.tick
+
+      history.set_value(20)
+
+      expect(history_entries).to eq([
+        ["original", 1, 2015, 10],
+        ["revised", 2, 2015, 20],
+      ])
+    end
+
+    it "adds a revision when the original entry is part of an older approved report" do
+      history.set_value(10)
+      6.times { reporting_cycle.tick }
+
+      history.set_value(20)
+
+      expect(history_entries).to eq([
+        ["original", 1, 2015, 10],
+        ["revised", 3, 2016, 20],
+      ])
+    end
+
+    it "edits a revision when it belongs to the current report" do
+      history.set_value(10)
+      reporting_cycle.tick
+
+      history.set_value(20)
+      history.set_value(30)
+
+      expect(history_entries).to eq([
+        ["original", 1, 2015, 10],
+        ["revised", 2, 2015, 30],
       ])
     end
   end
