@@ -540,7 +540,7 @@ RSpec.describe ActivityPresenter do
   describe "#actual_total_for_report_financial_quarter" do
     it "returns the transaction total scoped to report as a formatted number" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       _transaction_in_report_scope = create(:transaction, parent_activity: project, report: report, value: 100.20, date: Date.today)
       _transaction_outside_report_scope = create(:transaction, parent_activity: project, report: report, value: 300, date: Date.today - 4.months)
 
@@ -552,7 +552,7 @@ RSpec.describe ActivityPresenter do
   describe "#forecasted_total_for_report_financial_quarter" do
     it "returns the planned disbursement total per report as a formatted number" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       _disbursement_1 = create(:planned_disbursement, parent_activity: project, report: report, value: 200.20, period_start_date: Date.today)
       _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500.00, financial_quarter: 4, financial_year: 2019)
 
@@ -582,7 +582,7 @@ RSpec.describe ActivityPresenter do
   describe "#variance_for_report_financial_quarter" do
     it "returns the variance per report as a formatted number" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       _transaction = create(:transaction, parent_activity: project, report: report, value: 200, date: Date.today)
       _disbursement = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: Date.today)
 

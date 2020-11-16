@@ -28,7 +28,7 @@ class CreateBudget
   private
 
   def editable_report_for_activity(activity:)
-    Report.find_by(organisation: activity.organisation, fund: activity.associated_fund, state: Report::EDITABLE_STATES)
+    Report.editable_for_activity(activity)
   end
 
   def convert_and_assign_value(budget, value)

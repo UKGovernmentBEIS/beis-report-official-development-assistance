@@ -3,7 +3,7 @@ require "csv"
 
 RSpec.describe ExportActivityToCsv do
   let(:project) { create(:project_activity, :with_report) }
-  let(:report) { Report.find_by(fund: project.associated_fund, organisation: project.organisation) }
+  let(:report) { Report.for_activity(project).first }
   let!(:comment) { create(:comment, report: report, activity: project) }
 
   describe "#call" do

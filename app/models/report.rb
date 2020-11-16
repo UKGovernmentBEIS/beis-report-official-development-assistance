@@ -1,8 +1,6 @@
 class Report < ApplicationRecord
   include PublicActivity::Common
 
-  EDITABLE_STATES = [:active, :awaiting_changes].freeze
-
   attr_readonly :financial_quarter, :financial_year
 
   validates_presence_of :description, on: [:edit, :activate]
@@ -29,11 +27,12 @@ class Report < ApplicationRecord
     where(state: [:active, :awaiting_changes])
   end
 
+  scope :for_activity, ->(activity) do
+    where(fund_id: activity.associated_fund.id, organisation_id: activity.organisation_id)
+  end
+
   def self.editable_for_activity(activity)
-    editable.find_by(
-      organisation_id: activity.organisation_id,
-      fund_id: activity.associated_fund.id,
-    )
+    editable.for_activity(activity).first
   end
 
   def initialize(attributes = nil)

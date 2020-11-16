@@ -83,67 +83,67 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def inactive_reports
-    inactive_reports = policy_scope(Report.where(state: :inactive)).includes([:fund, :organisation])
+    inactive_reports = policy_scope(Report.inactive).includes([:fund, :organisation])
     authorize inactive_reports
     @inactive_report_presenters = inactive_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def active_reports_with_organisations
-    active_reports = policy_scope(Report.where(state: :active)).includes([:fund, :organisation])
+    active_reports = policy_scope(Report.active).includes([:fund, :organisation])
     authorize active_reports
     @active_report_presenters = active_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def active_reports
-    active_reports = policy_scope(Report.where(state: :active)).includes(:fund)
+    active_reports = policy_scope(Report.active).includes(:fund)
     authorize active_reports
     @active_report_presenters = active_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def submitted_reports_with_organisations
-    submitted_reports = policy_scope(Report.where(state: :submitted)).includes([:fund, :organisation])
+    submitted_reports = policy_scope(Report.submitted).includes([:fund, :organisation])
     authorize submitted_reports
     @submitted_report_presenters = submitted_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def submitted_reports
-    submitted_reports = policy_scope(Report.where(state: :submitted)).includes(:fund)
+    submitted_reports = policy_scope(Report.submitted).includes(:fund)
     authorize submitted_reports
     @submitted_report_presenters = submitted_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def in_review_reports_with_organisations
-    in_review_reports = policy_scope(Report.where(state: :in_review)).includes([:fund, :organisation])
+    in_review_reports = policy_scope(Report.in_review).includes([:fund, :organisation])
     authorize in_review_reports
     @in_review_report_presenters = in_review_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def in_review_reports
-    in_review_reports = policy_scope(Report.where(state: :in_review)).includes(:fund)
+    in_review_reports = policy_scope(Report.in_review).includes(:fund)
     authorize in_review_reports
     @in_review_report_presenters = in_review_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def awaiting_changes_reports_with_organisations
-    awaiting_changes_reports = policy_scope(Report.where(state: :awaiting_changes)).includes([:fund, :organisation])
+    awaiting_changes_reports = policy_scope(Report.awaiting_changes).includes([:fund, :organisation])
     authorize awaiting_changes_reports
     @awaiting_changes_report_presenters = awaiting_changes_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def awaiting_changes_reports
-    awaiting_changes_reports = policy_scope(Report.where(state: :awaiting_changes)).includes(:fund)
+    awaiting_changes_reports = policy_scope(Report.awaiting_changes).includes(:fund)
     authorize awaiting_changes_reports
     @awaiting_changes_report_presenters = awaiting_changes_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def approved_reports_with_organisations
-    approved_reports = policy_scope(Report.where(state: :approved)).includes([:fund, :organisation])
+    approved_reports = policy_scope(Report.approved).includes([:fund, :organisation])
     authorize approved_reports
     @approved_report_presenters = approved_reports.map { |report| ReportPresenter.new(report) }
   end
 
   def approved_reports
-    approved_reports = policy_scope(Report.where(state: :approved)).includes(:fund)
+    approved_reports = policy_scope(Report.approved).includes(:fund)
     authorize approved_reports
     @approved_report_presenters = approved_reports.map { |report| ReportPresenter.new(report) }
   end
