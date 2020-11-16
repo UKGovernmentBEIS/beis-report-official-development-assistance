@@ -62,7 +62,7 @@ RSpec.describe IngestIatiActivities do
       end
 
       it "sets the level to third-party project when its parent is a project" do
-        existing_activity.update!(level: :project, call_present: false)
+        existing_activity.update!(level: :project, call_present: false, ingested: true)
 
         described_class.new(delivery_partner: uksa, file_io: legacy_activities_xml).call
 

@@ -526,6 +526,13 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when any of the policy markers is blank on levels C or D" do
+      subject(:activity) { build(:project_activity, policy_marker_gender: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:policy_markers_step)).to be_falsey
+      end
+    end
+
     context "when oda_eligibility is blank" do
       subject(:activity) { build(:activity, oda_eligibility: nil) }
       it "should not be valid" do

@@ -35,6 +35,14 @@ en:
           never_eligible: No - was never eligible
           eligible: Eligible
           no_longer_eligible: No longer eligible
+        policy_marker_gender: Gender
+        policy_marker_climate_change_adaptation: Climate change - Adaptation
+        policy_marker_climate_change_mitigation: Climate change - Mitigation
+        policy_marker_biodiversity: Biodiversity
+        policy_marker_desertification: Desertification
+        policy_marker_disability: Disability
+        policy_marker_disaster_risk_reduction: Disaster Risk Reduction
+        policy_marker_nutrition: Nutrition Policy
         region: Recipient region
         actual_end_date: Actual end date
         actual_start_date: Actual start date
@@ -78,6 +86,21 @@ en:
         parent: Select the parent activity
         planned_end_date: Planned end date
         planned_start_date: Planned start date
+        policy_markers:
+          gender: Gender
+          climate_change_adaptation: Climate change - Adaptation
+          climate_change_mitigation: Climate change - Mitigation
+          biodiversity: Biodiversity
+          desertification: Desertification
+          disability: Disability
+          disaster_risk_reduction: Disaster Risk Reduction
+          nutrition: Nutrition Policy
+          responses:
+            not_assessed: Not assessed
+            not_targeted: Not targeted
+            significant_objective: Significant objective
+            principal_objective: Principal objective
+            principal_objective_and_in_support: Principal objective AND in support of an action programme
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
         requires_additional_benefitting_countries: Does this activity have other benefitting countries?
@@ -112,6 +135,22 @@ en:
           project: The activities of a delivery partner and details of how the funding is forecast and spent
           third_party_project: The activities of third parties such as universities and how the funding is forecast and spent
         parent: Which existing %{parent_level} will this new %{level} belong to?
+        policy_markers:
+          title: The policy markers have been established by DAC to guarantee monitoring and comparability of the official development measures of member states. It is designed to measure the degree to which the member states have put the OECD's development policy objectives into practice, and to identify measures with a particular development-policy focus. Detailed guidance on each marker can be found in the ODA Handbook
+          responses:
+            not_assessed: The activity has not been examined
+            not_targeted: The activity was examined but found not to target the policy objective
+            significant_objective: Significant (secondary) policy objectives are those which, although important, were not the prime motivation for undertaking the activity
+            principal_objective: Fundamental in the design and impact of the activity and which is an explicit objective of the activity. May be selected by answering the question "Would the activity have been undertaken without this objective?"
+            principal_objective_and_in_support: For desertification-related aid only
+          gender: Gender equality is explicitly promoted in activity documentation through specific measures for this activity
+          climate_change_adaptation: This activity intends to reduce the vulnerability of human or natural systems to the impacts of climate change and climate related risks, by maintaining or increasing adaptive capacity and resilience
+          climate_change_mitigation: This activity contributes to the objective of stabilisation of greenhouse gas (GHG) concentrations in the atmosphere at a level that would prevent dangerous anthropogenic interference with the climate system by promoting efforts to reduce or limit GHG emissions or to enhance GHG sequestration
+          biodiversity: 'This activity promotes at least one of the three objectives of the Convention: the conservation of bio-diversity, sustainable use of its components (ecosystems, species or genetic resources), or fair and equitable sharing of the benefits of the utilisation of genetic resources'
+          desertification: This activity is aimed at combating desertification or mitigating the effects of drought in arid, semi arid and dry sub-humid areas through prevention and/or reduction of land degradation, rehabilitation of partly degraded land, or reclamation of desertified land
+          disability: This activity either has a deliberate objective of, contributes to, or supports the implementation and/or monitoring of the Convention on the Rights of Persons with Disabilities
+          disaster_risk_reduction: This activity promotes the goal and global targets of the Sendai Framework , to achieve substantial reduction of disaster risk and losses in lives, livelihoods and health and in the economic, physical, social, cultural and environmental assets of persons, businesses, communities and countries
+          nutrition: This activity is intended to address the immediate or underlying determinants of malnutrition
         total_applications: You can enter 0 if this field is not applicable at the moment
         total_awards: You can enter 0 if this field is not applicable at the moment
         fstc_applies: "<p>Free-standing technical co-operation is defined as financing of activities whose primary purpose is to augment the level of knowledge, skills, technical know-how or productive aptitudes of the population of developing countries.</p><ul><li>If aid type C01, please select FTC1 except in unusual circumstances</li><li>If aid type G01, please select FTC0 as the activity cannot have FTC.</li><li>If aid types E01 and D02, please select FTC1 as the activity must have FTC.</li></ul><p>This activity's aid type is <strong>%{aid_type}</strong></p>"
@@ -151,6 +190,14 @@ en:
         planned_disbursements: Forecasted spend
         planned_end_date: Planned end date
         planned_start_date: Planned start date
+        policy_marker_gender: Gender
+        policy_marker_climate_change_adaptation: Climate change - Adaptation
+        policy_marker_climate_change_mitigation: Climate change - Mitigation
+        policy_marker_biodiversity: Biodiversity
+        policy_marker_desertification: Desertification
+        policy_marker_disability: Disability
+        policy_marker_disaster_risk_reduction: Disaster Risk Reduction
+        policy_marker_nutrition: Nutrition Policy
         programme_status: Activity status
         projects: Projects (level C)
         recipient_country: Recipient country
@@ -256,6 +303,7 @@ en:
         level: Hierarchy level
         oda_eligibility: ODA eligibility
         parent: Select the parent
+        policy_markers: Policy markers
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
         region: What region will benefit from this activity?
