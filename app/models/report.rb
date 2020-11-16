@@ -23,6 +23,10 @@ class Report < ApplicationRecord
     approved: "approved",
   }
 
+  scope :in_historical_order, -> do
+    order(financial_year: :desc, financial_quarter: :desc)
+  end
+
   scope :editable, -> do
     where(state: [:active, :awaiting_changes])
   end

@@ -13,12 +13,10 @@ class PlannedDisbursementHistory
 
     return if latest_entry&.value == value
 
-    if latest_entry.nil?
-      create_original_entry(value)
-    elsif latest_entry.original?
-      revise_entry(latest_entry, value)
-    elsif latest_entry.revised?
-      update_entry(latest_entry, value)
+    if record_history?
+      update_history(latest_entry, value)
+    else
+      edit_in_place(latest_entry, value)
     end
   end
 
@@ -32,42 +30,68 @@ class PlannedDisbursementHistory
 
   private
 
+  def record_history?
+    !@activity.organisation.service_owner?
+  end
+
   def find_latest_entry
     entries.first
   end
 
   def entries
-    PlannedDisbursement.where(series_attributes).order(planned_disbursement_type: :desc)
+    entries = PlannedDisbursement.where(series_attributes)
+
+    if record_history?
+      entries.joins(:report).merge(Report.in_historical_order)
+    else
+      entries.order(planned_disbursement_type: :desc)
+    end
   end
 
-  def create_original_entry(value)
+  def update_history(latest_entry, value)
+    report = Report.editable_for_activity(@activity)
+
+    if report && latest_entry&.report_id == report.id
+      update_entry(latest_entry, value)
+    elsif latest_entry
+      revise_entry(latest_entry, value, report)
+    else
+      create_original_entry(value, report)
+    end
+  end
+
+  def edit_in_place(latest_entry, value)
+    if latest_entry.nil?
+      create_original_entry(value)
+    elsif latest_entry.original?
+      revise_entry(latest_entry, value)
+    elsif latest_entry.revised?
+      update_entry(latest_entry, value)
+    end
+  end
+
+  def create_original_entry(value, report = nil)
     attributes = series_attributes.merge(required_attributes).merge(
       planned_disbursement_type: :original,
       value: value,
-      report: current_report,
+      report: report,
     )
 
     PlannedDisbursement.create!(attributes)
   end
 
-  def revise_entry(entry, value)
+  def revise_entry(entry, value, report = nil)
     new_entry = entry.dup
 
     new_entry.update!(
       planned_disbursement_type: :revised,
       value: value,
-      report: current_report,
+      report: report,
     )
   end
 
   def update_entry(entry, value)
     entry.update!(value: value)
-  end
-
-  def current_report
-    unless @activity.organisation.service_owner?
-      Report.editable_for_activity(@activity)
-    end
   end
 
   def series_attributes
