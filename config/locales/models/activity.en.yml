@@ -97,7 +97,7 @@ en:
         flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
         delivery_partner_identifier: This could be the reference you use in your internal systems
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
-        intended_beneficiaries: You can select up to 10 different countries. This field is optional if you already selected a recipient country on the previous step
+        intended_beneficiaries: This field is optional if you already selected a recipient country on the previous step
         oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
