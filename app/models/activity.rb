@@ -60,8 +60,8 @@ class Activity < ApplicationRecord
   validates :geography, presence: true, on: :geography_step
   validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
   validates :recipient_country, presence: true, on: :country_step, if: :recipient_country?
-  validates :requires_additional_benefitting_countries, inclusion: {in: [true, false]}, on: :requires_additional_benefitting_countries_step, if: :recipient_country?
-  validates :intended_beneficiaries, presence: true, length: {maximum: 10}, on: :intended_beneficiaries_step, if: :requires_intended_beneficiaries?
+  validates :requires_additional_benefitting_countries, inclusion: {in: [true, false], message: I18n.t("activerecord.errors.models.activity.attributes.requires_additional_benefitting_countries.blank")}, on: :requires_additional_benefitting_countries_step
+  validates :intended_beneficiaries, presence: true, length: {maximum: 10}, on: :intended_beneficiaries_step, if: :requires_additional_benefitting_countries?
   validates :gdi, presence: true, on: :gdi_step
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
   validates :covid19_related, presence: true, on: :covid19_related_step
@@ -306,10 +306,6 @@ class Activity < ApplicationRecord
 
   def forecasted_total_for_date_range(range:)
     planned_disbursements.where(period_start_date: range).sum(:value)
-  end
-
-  def requires_intended_beneficiaries?
-    recipient_region? || (recipient_country? && requires_additional_benefitting_countries?)
   end
 
   def comment_for_report(report_id:)
