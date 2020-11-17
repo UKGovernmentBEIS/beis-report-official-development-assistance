@@ -214,9 +214,9 @@ class Activity < ApplicationRecord
   def parent_level
     case level
     when "fund" then nil
-    when "programme" then "fund (level A)"
-    when "project" then "programme (level B)"
-    when "third_party_project" then "project (level C)"
+    when "programme" then "fund"
+    when "project" then "programme"
+    when "third_party_project" then "project"
     end
   end
 

@@ -693,7 +693,7 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#form_stpes_completed?" do
+  describe "#form_steps_completed?" do
     it "is true when a user has completed all of the form steps" do
       activity = build(:activity, form_state: :complete)
 
@@ -830,21 +830,21 @@ RSpec.describe Activity, type: :model do
     context "when the level is a programme" do
       it "returns a string for fund" do
         result = described_class.new(level: :programme).parent_level
-        expect(result).to eql("fund (level A)")
+        expect(result).to eql("fund")
       end
     end
 
     context "when the level is a project" do
       it "returns a string for programme" do
         result = described_class.new(level: :project).parent_level
-        expect(result).to eql("programme (level B)")
+        expect(result).to eql("programme")
       end
     end
 
     context "when the level is a third-party project" do
       it "returns a string for project" do
         result = described_class.new(level: :third_party_project).parent_level
-        expect(result).to eql("project (level C)")
+        expect(result).to eql("project")
       end
     end
   end
