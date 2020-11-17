@@ -494,6 +494,13 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when Covid19-related research is blank" do
+      subject(:activity) { build(:activity, covid19_related: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:covid19_related_step)).to be_falsey
+      end
+    end
+
     context "when activity is not a fund" do
       context "and is 'ingested: false'" do
         context "and the collaboration_type is blank" do

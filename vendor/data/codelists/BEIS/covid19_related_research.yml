@@ -1,0 +1,11 @@
+data:
+  - code: 0
+    description: Not related
+  - code: 1
+    description: New activity full focus on COVID-19
+  - code: 2
+    description: Existing activity adapted to fully focus on COVID-19
+  - code: 3
+    description: New activity that will somewhat focus on COVID-19
+  - code: 4
+    description: Existing activity adapted to somewhat focus on COVID-19

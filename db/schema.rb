@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_09_113715) do
+ActiveRecord::Schema.define(version: 2020_11_12_191320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2020_11_09_113715) do
     t.string "collaboration_type"
     t.integer "oda_eligibility", default: 1, null: false
     t.boolean "fstc_applies"
+    t.integer "covid19_related", default: 0
     t.integer "policy_marker_gender"
     t.integer "policy_marker_climate_change_adaptation"
     t.integer "policy_marker_climate_change_mitigation"

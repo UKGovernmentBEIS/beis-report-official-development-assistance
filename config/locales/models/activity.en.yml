@@ -103,6 +103,7 @@ en:
         total_applications: How many applications have you had?
         total_awards: How many awards have you made?
         fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
+        covid19_related: Is this activity related to Covid-19?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
@@ -170,6 +171,7 @@ en:
         call_open_date: Call open date
         call_close_date: Call close date
         collaboration_type: Collaboration type
+        covid19_related: Is this activity related to Covid-19?
         description: Description
         form_state:
           complete: Complete
@@ -294,6 +296,7 @@ en:
         call_present: Is there a call for this %{level}?
         collaboration_type: Collaboration type
         country: What country will benefit from this activity?
+        covid19_related: Is this activity related to Covid-19?
         dates: What are the start and end dates for the %{level}?
         flow: Flow
         gdi: GDI

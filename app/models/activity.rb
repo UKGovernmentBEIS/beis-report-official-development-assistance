@@ -37,6 +37,7 @@ class Activity < ApplicationRecord
     :aid_type,
     :fstc_applies_step,
     :policy_markers_step,
+    :covid19_related_step,
     :oda_eligibility_step,
   ]
 
@@ -60,6 +61,7 @@ class Activity < ApplicationRecord
   validates :intended_beneficiaries, presence: true, length: {maximum: 10}, on: :intended_beneficiaries_step, if: :requires_intended_beneficiaries?
   validates :gdi, presence: true, on: :gdi_step
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
+  validates :covid19_related, presence: true, on: :covid19_related_step
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
   validates :flow, presence: true, on: :flow_step
   validates :aid_type, presence: true, on: :aid_type_step
