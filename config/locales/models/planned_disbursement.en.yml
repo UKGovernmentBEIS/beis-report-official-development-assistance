@@ -38,7 +38,7 @@ en:
         create: Add forecasted spend
   page_title:
     planned_disbursement:
-      edit: Edit forecasted spend
+      edit: Edit forecasted spend for %{quarter}
       new: Add forecasted spend
   activerecord:
     errors:
