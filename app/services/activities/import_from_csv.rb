@@ -149,6 +149,7 @@ module Activities
         title: "Title",
         description: "Description",
         recipient_region: "Recipient Region",
+        recipient_country: "Recipient Country",
         delivery_partner_identifier: "Delivery partner identifier",
         roda_identifier_fragment: "RODA ID Fragment",
         parent_id: "Parent RODA ID",
@@ -192,6 +193,14 @@ module Activities
           region,
           :recipient_region,
           I18n.t("importer.errors.activity.invalid_region"),
+        )
+      end
+
+      def convert_recipient_country(country)
+        validate_from_codelist(
+          country,
+          :recipient_country,
+          I18n.t("importer.errors.activity.invalid_country"),
         )
       end
 
