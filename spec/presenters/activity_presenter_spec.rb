@@ -389,14 +389,17 @@ RSpec.describe ActivityPresenter do
       activity = build(:activity, sdg_1: 5)
       result = described_class.new(activity)
 
-      expect(result.sustainable_development_goals).to eql("Gender Equality")
+      items = Nokogiri::HTML(result.sustainable_development_goals).css("ol > li")
+      expect(items[0].text).to eql "Gender Equality"
     end
 
     it "when there are multiple SDGs, return their names, separated by a slash" do
       activity = build(:activity, sdg_1: 5, sdg_2: 1)
       result = described_class.new(activity)
 
-      expect(result.sustainable_development_goals).to eql("Gender Equality / No Poverty")
+      items = Nokogiri::HTML(result.sustainable_development_goals).css("ol > li")
+      expect(items[0].text).to eql "Gender Equality"
+      expect(items[1].text).to eql "No Poverty"
     end
 
     it "when there are no SDGs return nil" do

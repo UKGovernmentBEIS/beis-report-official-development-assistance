@@ -157,9 +157,14 @@ class ActivityPresenter < SimpleDelegator
     goals = [sdg_1, sdg_2, sdg_3].compact
     return if goals.blank?
 
-    goals.map { |goal|
-      I18n.t("form.label.activity.sdg_options.#{goal}")
-    }.join(" / ")
+    html = "<ol class=\"govuk-list govuk-list--number\">"
+
+    goals.each do |goal|
+      html += "<li>" + I18n.t("form.label.activity.sdg_options.#{goal}") + "</li>"
+    end
+
+    html += "</ol>"
+    html.html_safe
   end
 
   def oda_eligibility
