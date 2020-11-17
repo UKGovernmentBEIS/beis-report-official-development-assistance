@@ -125,6 +125,26 @@ RSpec.describe PlannedDisbursementOverview do
       ])
     end
 
+    context "when the first report is a historic one with no financial quarter" do
+      let(:report) { Report.for_activity(activity).find_by(financial_quarter: 4, financial_year: 2015) }
+
+      before do
+        Report.where(id: report.id).update_all(financial_quarter: nil, financial_year: nil)
+      end
+
+      it "returns the values as of the first report" do
+        forecasts = forecast_values(overview.values_at_report(report))
+
+        expect(forecasts).to eq([
+          [1, 2017, 10],
+          [4, 2017, 20],
+          [1, 2018, 30],
+          [3, 2018, 40],
+          [4, 2018, 50],
+        ])
+      end
+    end
+
     context "when there are forecasts for multiple activities" do
       let(:project) { create(:project_activity, parent: activity.parent, organisation: delivery_partner) }
       let(:project_history) { PlannedDisbursementHistory.new(project, 1, 2019) }

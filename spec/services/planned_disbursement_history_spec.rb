@@ -154,4 +154,65 @@ RSpec.describe PlannedDisbursementHistory do
       ])
     end
   end
+
+  context "for a level C activity whose history includes a historic report" do
+    let(:delivery_partner) { create(:delivery_partner_organisation) }
+    let(:activity) { create(:project_activity, organisation: delivery_partner) }
+
+    before do
+      reporting_cycle.tick
+      Report.update_all(financial_quarter: nil, financial_year: nil)
+    end
+
+    it "begins with no entries" do
+      expect(history_entries).to eq([])
+    end
+
+    it "raises an error when no editable report exists" do
+      Report.update_all(state: :approved)
+      expect { history.set_value(10) }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+
+    it "creates an original entry when the value is first set" do
+      history.set_value(10)
+
+      expect(history_entries).to eq([
+        ["original", nil, nil, 10],
+      ])
+    end
+
+    it "edits an original entry when it belongs to the current report" do
+      history.set_value(10)
+      history.set_value(20)
+
+      expect(history_entries).to eq([
+        ["original", nil, nil, 20],
+      ])
+    end
+
+    it "adds a revision when the original entry is part of an approved report" do
+      history.set_value(10)
+      reporting_cycle.tick
+
+      history.set_value(20)
+
+      expect(history_entries).to eq([
+        ["original", nil, nil, 10],
+        ["revised", 2, 2015, 20],
+      ])
+    end
+
+    it "edits a revision when it belongs to the current report" do
+      history.set_value(10)
+      reporting_cycle.tick
+
+      history.set_value(20)
+      history.set_value(30)
+
+      expect(history_entries).to eq([
+        ["original", nil, nil, 10],
+        ["revised", 2, 2015, 30],
+      ])
+    end
+  end
 end
