@@ -166,11 +166,9 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :covid19_related
       @activity.assign_attributes(covid19_related: covid19_related)
     when :sustainable_development_goals
-      @activity.assign_attributes(sdgs_apply: sdgs_apply)
+      @activity.assign_attributes(sustainable_development_goals)
 
-      if @activity.sdgs_apply?
-        @activity.assign_attributes(sdg_1: sdg_1, sdg_2: sdg_2, sdg_3: sdg_3)
-      else
+      unless @activity.sdgs_apply?
         @activity.assign_attributes(sdg_1: nil, sdg_2: nil, sdg_3: nil)
       end
     when :oda_eligibility
@@ -300,20 +298,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(:flow).fetch("flow", nil)
   end
 
-  def sdg_1
-    params.require(:activity).permit(:sdg_1).fetch("sdg_1", nil)
-  end
-
-  def sdg_2
-    params.require(:activity).permit(:sdg_2).fetch("sdg_2", nil)
-  end
-
-  def sdg_3
-    params.require(:activity).permit(:sdg_3).fetch("sdg_3", nil)
-  end
-
-  def sdgs_apply
-    params.require(:activity).permit(:sdgs_apply).fetch("sdgs_apply", false)
+  def sustainable_development_goals
+    params.require(:activity).permit(:sdg_1, :sdg_2, :sdg_3, :sdgs_apply)
   end
 
   def aid_type
