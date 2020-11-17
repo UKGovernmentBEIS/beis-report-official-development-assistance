@@ -170,7 +170,10 @@ RSpec.feature "Users can view activities" do
       expect(page).to have_content activity_presenter.planned_end_date
       expect(page).to have_content activity_presenter.recipient_region
       expect(page).to have_content activity_presenter.flow
-      expect(page).to have_content activity_presenter.sustainable_development_goals
+
+      within ".sustainable_development_goals" do
+        expect(page).to have_content "Gender Equality"
+      end
     end
 
     context "when the organisation id query parameter is not the delivery_partners organisation id" do
