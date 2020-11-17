@@ -2,6 +2,23 @@
 
 module CodelistHelper
   DEVELOPING_COUNTRIES_CODE = "998"
+  ALLOWED_AID_TYPE_CODES = [
+    "B02",
+    "B03",
+    "C01",
+    "D01",
+    "D02",
+    "E01",
+    "G01",
+  ]
+
+  ALLOWED_POLICY_MARKERS_SIGNIFICANCES = [
+    "0",
+    "1",
+    "2",
+    "3",
+  ]
+
   def yaml_to_objects(entity:, type:, with_empty_item: true)
     data = load_yaml(entity: entity, type: type)
     return [] if data.empty?
@@ -24,7 +41,9 @@ module CodelistHelper
 
     data = data.collect { |item|
       name = code_displayed_in_name ? "#{item["name"]} (#{item["code"]})" : item["name"]
-      OpenStruct.new(name: name, code: item["code"], description: item["description"])
+      description = t("form.hint.#{entity}.options.#{type}.#{item["code"]}", default: item["description"])
+
+      OpenStruct.new(name: name, code: item["code"], description: description)
     }
 
     data.sort_by(&:code)
@@ -111,7 +130,21 @@ module CodelistHelper
   end
 
   def aid_type_radio_options
-    yaml_to_objects_with_description(entity: "activity", type: "aid_type", code_displayed_in_name: true)
+    options = yaml_to_objects_with_description(
+      entity: "activity",
+      type: "aid_type",
+      code_displayed_in_name: true
+    )
+
+    options.select { |a| ALLOWED_AID_TYPE_CODES.include?(a.code) }
+  end
+
+  def policy_markers_select_options
+    objects = yaml_to_objects(entity: "activity", type: "policy_markers", with_empty_item: false)
+    not_assessed_option = OpenStruct.new(name: "Not assessed", code: "1000")
+
+    filtered_list = objects.select { |object| ALLOWED_POLICY_MARKERS_SIGNIFICANCES.include?(object.code) }.sort_by(&:code)
+    filtered_list.unshift(not_assessed_option)
   end
 
   def load_yaml(entity:, type:)

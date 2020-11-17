@@ -4,6 +4,15 @@ class Activity < ApplicationRecord
 
   STANDARD_GRANT_FINANCE_CODE = "110"
   UNTIED_TIED_STATUS_CODE = "5"
+  CAPITAL_SPEND_PERCENTAGE = 0
+
+  POLICY_MARKER_CODES = {
+    not_targeted: 0,
+    significant_objective: 1,
+    principal_objective: 2,
+    principal_objective_and_in_support: 3,
+    not_assessed: 1000,
+  }
 
   VALIDATION_STEPS = [
     :level_step,
@@ -26,6 +35,8 @@ class Activity < ApplicationRecord
     :collaboration_type_step,
     :flow_step,
     :aid_type,
+    :fstc_applies_step,
+    :policy_markers_step,
     :oda_eligibility_step,
   ]
 
@@ -48,10 +59,19 @@ class Activity < ApplicationRecord
   validates :requires_additional_benefitting_countries, inclusion: {in: [true, false]}, on: :requires_additional_benefitting_countries_step, if: :recipient_country?
   validates :intended_beneficiaries, presence: true, length: {maximum: 10}, on: :intended_beneficiaries_step, if: :requires_intended_beneficiaries?
   validates :gdi, presence: true, on: :gdi_step
+  validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
   validates :flow, presence: true, on: :flow_step
   validates :aid_type, presence: true, on: :aid_type_step
-  validates :oda_eligibility, inclusion: {in: [true, false]}, on: :oda_eligibility_step
+  validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
+  validates :policy_marker_climate_change_adaptation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
+  validates :policy_marker_climate_change_mitigation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
+  validates :policy_marker_biodiversity, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
+  validates :policy_marker_desertification, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
+  validates :policy_marker_disability, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
+  validates :policy_marker_disaster_risk_reduction, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
+  validates :policy_marker_nutrition, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
+  validates :oda_eligibility, presence: true, on: :oda_eligibility_step
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier_compound, uniqueness: true, allow_nil: true
@@ -91,6 +111,28 @@ class Activity < ApplicationRecord
     recipient_country: "Recipient country",
   }
 
+  enum policy_marker_gender: POLICY_MARKER_CODES, _prefix: :gender
+
+  enum policy_marker_climate_change_adaptation: POLICY_MARKER_CODES, _prefix: :climate_change_adaptation
+
+  enum policy_marker_climate_change_mitigation: POLICY_MARKER_CODES, _prefix: :climate_change_mitigation
+
+  enum policy_marker_biodiversity: POLICY_MARKER_CODES, _prefix: :biodiversity
+
+  enum policy_marker_desertification: POLICY_MARKER_CODES, _prefix: :desertification
+
+  enum policy_marker_disability: POLICY_MARKER_CODES, _prefix: :disability
+
+  enum policy_marker_disaster_risk_reduction: POLICY_MARKER_CODES, _prefix: :disaster_risk_reduction
+
+  enum policy_marker_nutrition: POLICY_MARKER_CODES, _prefix: :nutrition
+
+  enum oda_eligibility: {
+    never_eligible: 0,
+    eligible: 1,
+    no_longer_eligible: 2,
+  }
+
   scope :funds, -> { where(level: :fund) }
   scope :programmes, -> { where(level: :programme) }
   scope :publishable_to_iati, -> { where(form_state: :complete, publish_to_iati: true) }
@@ -125,6 +167,10 @@ class Activity < ApplicationRecord
 
   def tied_status
     UNTIED_TIED_STATUS_CODE
+  end
+
+  def capital_spend
+    CAPITAL_SPEND_PERCENTAGE
   end
 
   def default_currency
@@ -249,7 +295,7 @@ class Activity < ApplicationRecord
   end
 
   def requires_call_dates?
-    !ingested? && (project? || third_party_project?)
+    !ingested? && is_project?
   end
 
   def forecasted_total_for_date_range(range:)
@@ -266,5 +312,13 @@ class Activity < ApplicationRecord
 
   def requires_collaboration_type?
     !ingested? && !fund?
+  end
+
+  def requires_policy_markers?
+    !ingested? && is_project?
+  end
+
+  def is_project?
+    project? || third_party_project?
   end
 end

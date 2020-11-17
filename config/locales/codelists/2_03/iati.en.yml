@@ -327,6 +327,12 @@ en:
       '1033': Melanesia, regional
       '1034': Micronesia, regional
       '1035': Polynesia, regional
+    policy_markers:
+      not_targeted: Not targeted
+      significant_objective: Significant objective
+      principal_objective: Principal objective
+      principal_objective_and_in_support: Principal objective AND in support of an action programme
+      not_assessed: Not assessed
     sector:
       '11110': Education policy and administrative management
       '11120': Education facilities and training
@@ -707,8 +713,9 @@ en:
       '5': Cancelled
       '6': Suspended
     oda_eligibility:
-      'true': 'Eligible'
-      'false': 'No longer eligible'
+      never_eligible: No - was never eligible
+      eligible: Eligible
+      no_longer_eligible: No longer eligible
     tied_status:
       '5': Untied
     finance:

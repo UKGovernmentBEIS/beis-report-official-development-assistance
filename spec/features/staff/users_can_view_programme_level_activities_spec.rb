@@ -1,4 +1,4 @@
-RSpec.feature "Users can view programme level activites" do
+RSpec.feature "Users can view programme level activities" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
 

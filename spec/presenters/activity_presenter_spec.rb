@@ -350,10 +350,36 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#policy_marker_gender" do
+    context "when gender exists" do
+      it "returns the locale value for the code" do
+        activity = build(:activity, policy_marker_gender: "not_targeted")
+        result = described_class.new(activity).policy_marker_gender
+        expect(result).to eql("Not targeted")
+      end
+    end
+
+    context "when the value is the BEIS custom value" do
+      it "returns the locale value for the custom code" do
+        activity = build(:activity, policy_marker_gender: "not_assessed")
+        result = described_class.new(activity).policy_marker_gender
+        expect(result).to eql("Not assessed")
+      end
+    end
+
+    context "when the activity does not have a gender set" do
+      it "returns nil" do
+        activity = build(:activity, policy_marker_gender: nil)
+        result = described_class.new(activity)
+        expect(result.policy_marker_gender).to be_nil
+      end
+    end
+  end
+
   describe "#oda_eligibility" do
     context "when the activity is ODA eligible" do
       it "returns the locale value for this option" do
-        activity = build(:project_activity, oda_eligibility: "true")
+        activity = build(:project_activity, oda_eligibility: 1)
         result = described_class.new(activity)
         expect(result.oda_eligibility).to eq("Eligible")
       end
@@ -361,9 +387,17 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity is no longer ODA eligible" do
       it "returns the locale value for this option" do
-        activity = build(:project_activity, oda_eligibility: "false")
+        activity = build(:project_activity, oda_eligibility: 2)
         result = described_class.new(activity)
         expect(result.oda_eligibility).to eq("No longer eligible")
+      end
+    end
+
+    context "when the activity was never ODA eligible" do
+      it "returns the locale value for this option" do
+        activity = build(:project_activity, oda_eligibility: 0)
+        result = described_class.new(activity)
+        expect(result.oda_eligibility).to eq("No - was never eligible")
       end
     end
   end
@@ -371,6 +405,11 @@ RSpec.describe ActivityPresenter do
   describe "#call_to_action" do
     it "returns 'edit' if the desired attribute is present" do
       activity = build(:activity, title: "My title")
+      expect(described_class.new(activity).call_to_action(:title)).to eql("edit")
+    end
+
+    it "returns 'edit' if the desired attribute is 'false'" do
+      activity = build(:activity, fstc_applies: false)
       expect(described_class.new(activity).call_to_action(:title)).to eql("edit")
     end
 
@@ -481,7 +520,7 @@ RSpec.describe ActivityPresenter do
       project = create(:project_activity, :with_report)
       report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
       _disbursement_1 = create(:planned_disbursement, parent_activity: project, report: report, value: 200.20, period_start_date: Date.today)
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500.00)
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500.00, financial_quarter: 4, financial_year: 2019)
 
       expect(described_class.new(project).forecasted_total_for_report_financial_quarter(report: report))
         .to eq "200.20"
@@ -491,14 +530,17 @@ RSpec.describe ActivityPresenter do
   describe "#forecasted_total_for_date_range" do
     it "returns the planned disbursement total for a date range as a formatted number" do
       project = create(:project_activity, :with_report)
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200.20, period_start_date: Date.today)
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: 3.months.ago)
+      current_financial_quarter = Date.parse("2020-07-01")
+      last_financial_quarter = Date.parse("2020-04-01")
+      next_financial_quarter = Date.parse("2020-10-01")
+      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200.20, period_start_date: current_financial_quarter, financial_quarter: 2, financial_year: 2020)
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: last_financial_quarter, financial_quarter: 1, financial_year: 2019)
 
-      expect(described_class.new(project).forecasted_total_for_date_range(range: Date.today.all_quarter))
+      expect(described_class.new(project).forecasted_total_for_date_range(range: current_financial_quarter.all_quarter))
         .to eq "200.20"
-      expect(described_class.new(project).forecasted_total_for_date_range(range: 3.months.ago.all_quarter))
+      expect(described_class.new(project).forecasted_total_for_date_range(range: last_financial_quarter.all_quarter))
         .to eq "1500.00"
-      expect(described_class.new(project).forecasted_total_for_date_range(range: 3.months.from_now.all_quarter))
+      expect(described_class.new(project).forecasted_total_for_date_range(range: next_financial_quarter.all_quarter))
         .to eq "0.00"
     end
   end

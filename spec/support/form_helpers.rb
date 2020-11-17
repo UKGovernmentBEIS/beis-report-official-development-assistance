@@ -35,8 +35,17 @@ module FormHelpers
     gdi: "GDI not applicable",
     collaboration_type: "Bilateral",
     flow: "ODA",
-    aid_type: "A01",
-    oda_eligibility: "true",
+    aid_type: "B02",
+    fstc_applies: true,
+    policy_marker_gender: "Not assessed",
+    policy_marker_climate_change_adaptation: "Not targeted",
+    policy_marker_climate_change_mitigation: "Significant objective",
+    policy_marker_biodiversity: "Principal objective",
+    policy_marker_desertification: "Principal objective AND in support of an action programme",
+    policy_marker_disability: "Not assessed",
+    policy_marker_disaster_risk_reduction: "Not assessed",
+    policy_marker_nutrition: "Not assessed",
+    oda_eligibility: "Eligible",
     level:,
     parent: nil
   )
@@ -197,13 +206,51 @@ module FormHelpers
     click_button t("form.button.activity.submit")
 
     expect(page).to have_content t("form.legend.activity.aid_type")
-    expect(page).to have_content "A code for the vocabulary aid-type classifications. International Aid Transparency Initiative (IATI) descriptions can be found here (Opens in new window)"
+    expect(page).to have_content t("form.hint.activity.aid_type")
     choose("activity[aid_type]", option: aid_type)
     click_button t("form.button.activity.submit")
 
+    expect(page).to have_content t("form.legend.activity.fstc_applies")
+    expect(page.body).to include t("form.hint.activity.fstc_applies", aid_type: aid_type)
+    choose("activity[fstc_applies]", option: fstc_applies)
+    click_button t("form.button.activity.submit")
+
+    if level == "project" || level == "third_party_project"
+      expect(page).to have_content t("page_title.activity_form.show.policy_markers")
+      expect(page).to have_content t("form.hint.activity.policy_markers.title")
+      expect(page).to have_content("Explanation of responses")
+      expect(page).to have_content t("form.legend.activity.policy_markers.responses.not_assessed")
+      expect(page).to have_content t("form.hint.activity.policy_markers.responses.not_assessed")
+
+      expect(page).to have_content t("form.legend.activity.policy_markers.gender")
+      select policy_marker_gender, from: "activity[policy_marker_gender]"
+
+      expect(page).to have_content t("form.legend.activity.policy_markers.climate_change_adaptation")
+      select policy_marker_climate_change_adaptation, from: "activity[policy_marker_climate_change_adaptation]"
+
+      expect(page).to have_content t("form.legend.activity.policy_markers.climate_change_mitigation")
+      select policy_marker_climate_change_mitigation, from: "activity[policy_marker_climate_change_mitigation]"
+
+      expect(page).to have_content t("form.legend.activity.policy_markers.biodiversity")
+      select policy_marker_biodiversity, from: "activity[policy_marker_biodiversity]"
+
+      expect(page).to have_content t("form.legend.activity.policy_markers.desertification")
+      select policy_marker_desertification, from: "activity[policy_marker_desertification]"
+
+      expect(page).to have_content t("form.legend.activity.policy_markers.disability")
+      select policy_marker_disability, from: "activity[policy_marker_disability]"
+
+      expect(page).to have_content t("form.legend.activity.policy_markers.disaster_risk_reduction")
+      select policy_marker_disaster_risk_reduction, from: "activity[policy_marker_disaster_risk_reduction]"
+
+      expect(page).to have_content t("form.legend.activity.policy_markers.nutrition")
+      select policy_marker_nutrition, from: "activity[policy_marker_nutrition]"
+      click_button t("form.button.activity.submit")
+    end
+
     expect(page).to have_content t("form.legend.activity.oda_eligibility")
     expect(page).to have_content t("form.hint.activity.oda_eligibility")
-    choose "Eligible"
+    choose oda_eligibility
     click_button t("form.button.activity.submit")
 
     expect(page).to have_content delivery_partner_identifier
@@ -227,7 +274,33 @@ module FormHelpers
     expect(page).to have_content gdi
     expect(page).to have_content flow
     expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
-    expect(page).to have_content t("activity.oda_eligibility.#{oda_eligibility}")
+    if level == "project" || level == "third_party_project"
+      within(".policy_marker_gender") do
+        expect(page).to have_content policy_marker_gender
+      end
+      within(".policy_marker_climate_change_adaptation") do
+        expect(page).to have_content policy_marker_climate_change_adaptation
+      end
+      within(".policy_marker_climate_change_mitigation") do
+        expect(page).to have_content policy_marker_climate_change_mitigation
+      end
+      within(".policy_marker_biodiversity") do
+        expect(page).to have_content policy_marker_biodiversity
+      end
+      within(".policy_marker_desertification") do
+        expect(page).to have_content policy_marker_desertification
+      end
+      within(".policy_marker_disability") do
+        expect(page).to have_content policy_marker_disability
+      end
+      within(".policy_marker_disaster_risk_reduction") do
+        expect(page).to have_content policy_marker_disaster_risk_reduction
+      end
+      within(".policy_marker_nutrition") do
+        expect(page).to have_content policy_marker_nutrition
+      end
+    end
+    expect(page).to have_content oda_eligibility
     expect(page).to have_content localise_date_from_input_fields(
       year: planned_start_date_year,
       month: planned_start_date_month,

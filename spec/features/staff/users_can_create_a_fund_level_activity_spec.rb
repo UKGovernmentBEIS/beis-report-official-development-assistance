@@ -134,7 +134,6 @@ RSpec.feature "Users can create a fund level activity" do
 
     context "validations" do
       scenario "validation errors work as expected" do
-        parent = create(:fund_activity, organisation: user.organisation)
         identifier = "foo"
 
         visit activities_path
@@ -144,16 +143,11 @@ RSpec.feature "Users can create a fund level activity" do
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.level.blank")
 
-        choose "Programme"
+        choose "Fund"
         click_button t("form.button.activity.submit")
-        expect(page).to have_content t("form.legend.activity.parent")
 
-        # Don't provide a parent
-        click_button t("form.button.activity.submit")
-        expect(page).to have_content t("activerecord.errors.models.activity.attributes.parent.blank")
-
-        choose parent.title
-        click_button t("form.button.activity.submit")
+        # Skip the parent step, and instead goto the delivery partner identifier step
+        expect(page).to have_no_content t("form.legend.activity.parent")
         expect(page).to have_content t("form.label.activity.delivery_partner_identifier")
 
         # Don't provide an identifier
@@ -162,7 +156,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         fill_in "activity[delivery_partner_identifier]", with: identifier
         click_button t("form.button.activity.submit")
-        expect(page).to have_content t("form.label.activity.roda_identifier_fragment", level: "programme")
+        expect(page).to have_content t("form.label.activity.roda_identifier_fragment", level: "fund")
 
         # Provide an invalid identifier
         fill_in "activity[roda_identifier_fragment]", with: "!!!"
@@ -171,8 +165,8 @@ RSpec.feature "Users can create a fund level activity" do
 
         fill_in "activity[roda_identifier_fragment]", with: identifier
         click_button t("form.button.activity.submit")
-        expect(page).to have_content custom_capitalisation(t("form.legend.activity.purpose", level: "programme (level B)"))
-        expect(page).to have_content t("form.hint.activity.title", level: "programme (level B)")
+        expect(page).to have_content custom_capitalisation(t("form.legend.activity.purpose", level: "fund (level A)"))
+        expect(page).to have_content t("form.hint.activity.title", level: "fund (level A)")
 
         # Don't provide a title and description
         click_button t("form.button.activity.submit")
@@ -184,7 +178,7 @@ RSpec.feature "Users can create a fund level activity" do
         fill_in "activity[description]", with: Faker::Lorem.paragraph
         click_button t("form.button.activity.submit")
 
-        expect(page).to have_content t("form.legend.activity.sector_category", level: "programme (level B)")
+        expect(page).to have_content t("form.legend.activity.sector_category", level: "fund (level A)")
 
         # Don't provide a sector category
         click_button t("form.button.activity.submit")
@@ -193,25 +187,17 @@ RSpec.feature "Users can create a fund level activity" do
         choose "Basic Education"
         click_button t("form.button.activity.submit")
 
-        expect(page).to have_content t("form.legend.activity.sector", sector_category: "Basic Education", level: "programme (level B)")
+        expect(page).to have_content t("form.legend.activity.sector", sector_category: "Basic Education", level: "fund (level A)")
         # Don't provide a sector
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.sector.blank")
 
         choose "Primary education"
         click_button t("form.button.activity.submit")
-        expect(page).to have_content t("form.legend.activity.programme_status", level: "programme (level B)")
 
-        # Don't provide a programme status
-        click_button t("form.button.activity.submit")
-        expect(page).to have_content "can't be blank"
-
-        choose("activity[programme_status]", option: "07")
-        click_button t("form.button.activity.submit")
-        expect(page).to have_content t("page_title.activity_form.show.dates", level: "programme (level B)")
-
-        click_button t("form.button.activity.submit")
-        expect(page).to have_content t("activerecord.errors.models.activity.attributes.dates")
+        # Skip the programme_status step, and go straight to the date step
+        expect(page).to have_no_content t("form.legend.activity.programme_status", level: "fund (level A)")
+        expect(page).to have_content t("page_title.activity_form.show.dates", level: "fund (level A)")
 
         # Dates cannot contain only a zero
         fill_in "activity[planned_start_date(3i)]", with: 1
@@ -259,10 +245,9 @@ RSpec.feature "Users can create a fund level activity" do
 
         choose "GDI not applicable"
         click_button t("form.button.activity.submit")
-        expect(page). to have_content t("form.label.activity.collaboration_type")
 
-        # Collaboration_type has a pre-selected option
-        click_button t("form.button.activity.submit")
+        # Skip the collaboration type step, and instead goto the flow step
+        expect(page).to have_no_content t("form.label.activity.collaboration_type")
         expect(page).to have_content t("form.label.activity.flow")
 
         # Flow has a default and can't be set to blank so we skip
@@ -274,7 +259,15 @@ RSpec.feature "Users can create a fund level activity" do
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.aid_type.blank")
 
-        choose("activity[aid_type]", option: "A01")
+        choose("activity[aid_type]", option: "B02")
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.fstc_applies")
+
+        # Don't choose if fstc applies or not
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion")
+
+        choose("activity[fstc_applies]", option: true)
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.oda_eligibility")
 

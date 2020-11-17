@@ -368,9 +368,23 @@
 - Answers for GDI form step have been modified
 - Use scripts to rule them all for development tasks
 
-## [unreleased]
+## [release-22] - 2020-11-17
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...HEAD
+- Fix allow application to create new users in Auth0
+- Activity capital-spend is always exported as 0 to the IATI xml
+- Fix allow application to create new users in Auth0
+- Filter out unused aid types.
+- Replace the hints in the aid type form with shorter, more accessible copy if available.
+- Option `No - was never eligible` added to ODA eligibility form step
+- Two original planned disbursements for the same activity, financial quarter
+  and year cannot be created.
+- Add a field to report Free Standing Technical Cooperation
+- Policy markers added to activity form, including BEIS custom answer `not assessed`
+
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...HEAD
+[release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
 [release-21]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...release-21
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20
 [release-19]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-18...release-19

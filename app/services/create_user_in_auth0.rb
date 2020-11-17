@@ -9,10 +9,10 @@ class CreateUserInAuth0
 
   def call
     auth0_response = auth0_client.create_user(
-      user.name,
+      "Username-Password-Authentication",
+      name: user.name,
       email: user.email,
-      password: CreateUserInAuth0.temporary_password,
-      connection: "Username-Password-Authentication",
+      password: CreateUserInAuth0.temporary_password
     )
     user.update(identifier: auth0_response.fetch("user_id"))
   end

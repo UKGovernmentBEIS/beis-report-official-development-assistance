@@ -8,7 +8,7 @@ gem "auth0", "~> 5.0"
 gem "acts_as_tree"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "data_migrate"
-gem "govuk_design_system_formbuilder", "~> 2.1.1"
+gem "govuk_design_system_formbuilder", "~> 2.1.4"
 gem "haml-rails"
 gem "high_voltage"
 gem "ipaddr"
@@ -57,7 +57,7 @@ end
 group :development do
   gem "better_errors"
   gem "html2haml"
-  gem "listen", ">= 3.0.5", "< 3.3"
+  gem "listen", ">= 3.0.5", "< 3.4"
   gem "spring"
   gem "spring-commands-rspec"
   gem "spring-watcher-listen", "~> 2.0.0"
@@ -75,7 +75,7 @@ group :test do
   gem "pundit-matchers", "~> 1.6.0"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
-  gem "webmock", "~> 3.9"
+  gem "webmock", "~> 3.10"
 end
 
 group :production do

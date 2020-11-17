@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "rails_helper"
 
 RSpec.describe CodelistHelper, type: :helper do
@@ -106,6 +104,13 @@ RSpec.describe CodelistHelper, type: :helper do
           type: "status",
         ).last).to eq(OpenStruct.new(name: "Suspended", code: "6", description: "The activity has been temporarily suspended"))
       end
+
+      it "tries to get a description from the translations if one if available" do
+        objects = helper.yaml_to_objects_with_description(entity: "activity", type: "aid_type")
+
+        expect(objects.find { |o| o["code"] == "B02" }.description).to eq(t("form.hint.activity.options.aid_type.B02"))
+        expect(objects.find { |o| o["code"] == "E01" }.description).to eq("Financial aid awards for individual students and contributions to trainees.")
+      end
     end
 
     describe "#currency_select_options" do
@@ -194,9 +199,21 @@ RSpec.describe CodelistHelper, type: :helper do
       it "returns the aid type with the code appended to the name" do
         options = helper.aid_type_radio_options
 
-        expect(options.length).to eq 15
-        expect(options.first.name).to eq "General budget support (A01)"
-        expect(options.last.name).to eq "Refugees in donor countries (H02)"
+        expect(options.length).to eq 7
+        expect(options.first.name).to eq "Core contributions to multilateral institutions (B02)"
+        expect(options.last.name).to eq "Administrative costs not included elsewhere (G01)"
+      end
+    end
+
+    describe "#policy_markers_select_options" do
+      it "returns the options for policy markers, prepending the BEIS custom option" do
+        options = helper.policy_markers_select_options
+
+        expect(options.length).to eq 5
+        expect(options.first.name).to eq("Not assessed")
+        expect(options.first.code).to eq("1000")
+        expect(options.last.name).to eq("Principal objective AND in support of an action programme")
+        expect(options.last.code).to eq("3")
       end
     end
   end
