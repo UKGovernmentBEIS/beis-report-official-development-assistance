@@ -45,6 +45,7 @@ module FormHelpers
     policy_marker_disability: "Not assessed",
     policy_marker_disaster_risk_reduction: "Not assessed",
     policy_marker_nutrition: "Not assessed",
+    covid19_related: "4",
     oda_eligibility: "Eligible",
     level:,
     parent: nil
@@ -247,6 +248,10 @@ module FormHelpers
       select policy_marker_nutrition, from: "activity[policy_marker_nutrition]"
       click_button t("form.button.activity.submit")
     end
+
+    expect(page).to have_content t("form.legend.activity.covid19_related")
+    choose("activity[covid19_related]", option: covid19_related)
+    click_button t("form.button.activity.submit")
 
     expect(page).to have_content t("form.legend.activity.oda_eligibility")
     expect(page).to have_content t("form.hint.activity.oda_eligibility")

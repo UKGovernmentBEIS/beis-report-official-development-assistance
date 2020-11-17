@@ -335,6 +335,15 @@
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :policy_markers)
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_nutrition)}"), activity_step_path(activity_presenter, :policy_markers), t("summary.label.activity.policy_marker_nutrition"))
 
+  .govuk-summary-list__row.covid19_related
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.covid19_related")
+    %dd.govuk-summary-list__value
+      = activity_presenter.covid19_related
+    %dd.govuk-summary-list__actions
+      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :covid19_related)
+        = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:covid19_related)}"), activity_step_path(activity_presenter, :covid19_related), t("summary.label.activity.covid19_related"))
+
   .govuk-summary-list__row.oda_eligibility
     %dt.govuk-summary-list__key
       = t("summary.label.activity.oda_eligibility")

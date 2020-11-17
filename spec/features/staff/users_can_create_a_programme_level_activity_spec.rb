@@ -169,6 +169,9 @@ RSpec.feature "Users can create a programme activity" do
 
         choose("activity[fstc_applies]", option: true)
         click_button t("form.button.activity.submit")
+
+        # Covid19-related has a default and can't be set to blank so we skip
+        click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.oda_eligibility")
 
         # oda_eligibility has the default value already selected
