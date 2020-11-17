@@ -7,6 +7,7 @@ RSpec.describe Activities::ImportFromCsv do
   let(:existing_activity_attributes) do
     {
       "RODA ID" => existing_activity.roda_identifier_compound,
+      "Transparency identifier" => "13232332323",
       "RODA ID Fragment" => "",
       "Parent RODA ID" => "",
       "Title" => "Here is a title",
@@ -18,6 +19,7 @@ RSpec.describe Activities::ImportFromCsv do
   let(:new_activity_attributes) do
     {
       "RODA ID" => "",
+      "Transparency identifier" => "3232332323",
       "RODA ID Fragment" => "234566",
       "Parent RODA ID" => parent_activity.roda_identifier_fragment,
       "Title" => "Here is a title",
@@ -83,7 +85,8 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.created.count).to eq(0)
       expect(subject.updated.count).to eq(1)
 
-      expect(existing_activity.reload.title).to eq(existing_activity_attributes["Title"])
+      expect(existing_activity.reload.transparency_identifier).to eq(existing_activity_attributes["Transparency identifier"])
+      expect(existing_activity.title).to eq(existing_activity_attributes["Title"])
       expect(existing_activity.description).to eq(existing_activity_attributes["Description"])
       expect(existing_activity.recipient_region).to eq(existing_activity_attributes["Recipient Region"])
       expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Delivery partner identifier"])
@@ -179,6 +182,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(new_activity.parent).to eq(parent_activity)
       expect(new_activity.roda_identifier_compound).to eq(expected_roda_identifier_compound)
+      expect(new_activity.transparency_identifier).to eq(new_activity_attributes["Transparency identifier"])
       expect(new_activity.title).to eq(new_activity_attributes["Title"])
       expect(new_activity.description).to eq(new_activity_attributes["Description"])
       expect(new_activity.roda_identifier_fragment).to eq(new_activity_attributes["RODA ID Fragment"])
