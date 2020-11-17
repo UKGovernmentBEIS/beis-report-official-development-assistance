@@ -383,11 +383,13 @@
 - Add a class to import Activities from a CSV
 
 ## [unreleased]
+
 - Fix parent level strings
 - Add a field to report whether the activity has any relation to the Covid-19 pandemic.
 - Include the Covid-19 field in the CSV report.
 - Append the text "COVID-19" to the activity description in the IATI XML export, where applicable.
 - Collect Sustainable Development Goals (SDGs) for activities
+- Policy markers added to the CSV report file
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...HEAD
 [release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
