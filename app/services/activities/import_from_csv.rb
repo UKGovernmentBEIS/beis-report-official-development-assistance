@@ -145,6 +145,7 @@ module Activities
       attr_reader :errors
 
       FIELDS = {
+        transparency_identifier: "Transparency identifier",
         title: "Title",
         description: "Description",
         recipient_region: "Recipient Region",
