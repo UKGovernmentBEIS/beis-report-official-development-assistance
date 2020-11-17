@@ -368,7 +368,7 @@
 - Answers for GDI form step have been modified
 - Use scripts to rule them all for development tasks
 
-## [unreleased]
+## [release-22] - 2020-11-17
 
 - Fix allow application to create new users in Auth0
 - Activity capital-spend is always exported as 0 to the IATI xml
@@ -381,7 +381,10 @@
 - Add a field to report Free Standing Technical Cooperation
 - Policy markers added to activity form, including BEIS custom answer `not assessed`
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...HEAD
+[release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
 [release-21]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...release-21
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20
 [release-19]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-18...release-19
