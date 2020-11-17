@@ -14,40 +14,43 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
     @activity = Activity.find(params["activity_id"])
     authorize @activity
 
-    result = CreatePlannedDisbursement.new(activity: @activity).call(attributes: planned_disbursement_params)
-    @planned_disbursement = result.object
+    history = history_for_create
+    history.set_value(planned_disbursement_params[:value])
 
-    if result.success?
-      @planned_disbursement.create_activity key: "planned_disbursement.create", owner: current_user
-      flash[:notice] = t("action.planned_disbursement.create.success")
-      redirect_to organisation_activity_path(@activity.organisation, @activity)
-    else
-      render :new
-    end
+    flash[:notice] = t("action.planned_disbursement.create.success")
+    redirect_to organisation_activity_path(@activity.organisation, @activity)
   end
 
   def edit
-    @planned_disbursement = PlannedDisbursement.find(params["id"])
+    @activity = Activity.find(params["activity_id"])
+    history = history_for_update
+    @planned_disbursement = PlannedDisbursementPresenter.new(history.latest_entry)
     authorize @planned_disbursement
-
-    @activity = @planned_disbursement.parent_activity
   end
 
   def update
-    @planned_disbursement = PlannedDisbursement.find(params["id"])
+    @activity = Activity.find(params["activity_id"])
+    history = history_for_update
+    @planned_disbursement = history.latest_entry
     authorize @planned_disbursement
 
-    @activity = Activity.find(params["activity_id"])
-    result = UpdatePlannedDisbursement.new(planned_disbursement: @planned_disbursement)
-      .call(attributes: planned_disbursement_params)
+    history.set_value(planned_disbursement_params[:value])
 
-    if result.success?
-      @planned_disbursement.create_activity key: "planned_disbursement.update", owner: current_user
-      flash[:notice] = t("action.planned_disbursement.update.success")
-      redirect_to organisation_activity_path(@activity.organisation, @activity)
-    else
-      render :edit
-    end
+    flash[:notice] = t("action.planned_disbursement.update.success")
+    redirect_to organisation_activity_path(@activity.organisation, @activity)
+  end
+
+  private def history_for_create
+    PlannedDisbursementHistory.new(
+      @activity,
+      planned_disbursement_params[:financial_quarter],
+      planned_disbursement_params[:financial_year],
+      user: current_user
+    )
+  end
+
+  private def history_for_update
+    PlannedDisbursementHistory.new(@activity, params[:quarter], params[:year], user: current_user)
   end
 
   private def planned_disbursement_params

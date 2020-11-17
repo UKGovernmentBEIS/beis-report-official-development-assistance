@@ -3,10 +3,11 @@ class PlannedDisbursementHistory
 
   attr_reader :financial_year, :financial_quarter
 
-  def initialize(activity, financial_quarter, financial_year)
+  def initialize(activity, financial_quarter, financial_year, user: nil)
     @activity = activity
     @financial_quarter = financial_quarter.to_i
     @financial_year = financial_year.to_i
+    @user = user
   end
 
   def set_value(value)
@@ -91,7 +92,8 @@ class PlannedDisbursementHistory
       report: report,
     )
 
-    PlannedDisbursement.create!(attributes)
+    entry = PlannedDisbursement.create!(attributes)
+    entry.create_activity(key: "planned_disbursement.create", owner: @user)
   end
 
   def revise_entry(entry, value, report = nil)
@@ -102,10 +104,12 @@ class PlannedDisbursementHistory
       value: value,
       report: report,
     )
+    new_entry.create_activity(key: "planned_disbursement.create", owner: @user)
   end
 
   def update_entry(entry, value)
     entry.update!(value: value)
+    entry.create_activity(key: "planned_disbursement.update", owner: @user)
   end
 
   def series_attributes

@@ -39,7 +39,14 @@ Rails.application.routes.draw do
     end
 
     concern :disbursement_plannable do
-      resources :planned_disbursements, only: [:new, :create, :edit, :update]
+      resources :planned_disbursements, only: [:new, :create] do
+        collection do
+          constraints year: /\d{4}/, quarter: /[1-4]/ do
+            get ":year/:quarter", to: "planned_disbursements#edit", as: "edit"
+            patch ":year/:quarter", to: "planned_disbursements#update", as: "update"
+          end
+        end
+      end
     end
 
     resources :activities, only: [], concerns: [:transactionable, :budgetable, :disbursement_plannable] do

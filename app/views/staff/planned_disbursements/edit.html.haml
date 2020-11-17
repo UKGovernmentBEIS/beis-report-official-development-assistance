@@ -1,10 +1,12 @@
-=content_for :page_title_prefix, t("page_title.planned_disbursement.edit")
+=content_for :page_title_prefix, t("page_title.planned_disbursement.edit", quarter: @planned_disbursement.financial_quarter_and_year)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
-        = t("page_title.planned_disbursement.edit")
+        = t("page_title.planned_disbursement.edit", quarter: @planned_disbursement.financial_quarter_and_year)
 
-      = form_with model: @planned_disbursement, url: activity_planned_disbursement_path(@activity) do |f|
-        = render partial: "form", locals: { f: f }
+      = form_with model: @planned_disbursement, url: update_activity_planned_disbursements_path(@activity, @planned_disbursement.financial_year, @planned_disbursement.financial_quarter) do |f|
+        = f.govuk_error_summary
+        = f.govuk_text_field :value, width: 20
+        = f.govuk_submit t("default.button.submit")
