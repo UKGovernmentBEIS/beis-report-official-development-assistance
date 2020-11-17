@@ -138,7 +138,15 @@ RSpec.feature "Users can create a programme activity" do
         # region has the default value already selected
         click_button t("form.button.activity.submit")
 
-        expect(page).to have_content t("form.label.activity.intended_beneficiaries")
+        expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
+
+        # Don't select any option
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.requires_additional_benefitting_countries.blank")
+
+        choose "Yes"
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.intended_beneficiaries")
 
         # Don't select any intended beneficiaries
         click_button t("form.button.activity.submit")

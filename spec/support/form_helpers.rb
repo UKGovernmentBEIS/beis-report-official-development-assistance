@@ -189,11 +189,9 @@ module FormHelpers
     select recipient_region, from: "activity[recipient_region]"
     click_button t("form.button.activity.submit")
 
-    if geography == "recipient_country"
-      expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
-      choose "Yes"
-      click_button t("form.button.activity.submit")
-    end
+    expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
+    choose "Yes"
+    click_button t("form.button.activity.submit")
 
     expect(page).to have_content t("form.label.activity.intended_beneficiaries")
     check intended_beneficiaries

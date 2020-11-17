@@ -191,7 +191,7 @@ RSpec.feature "Users can edit an activity" do
           select recipient_region, from: "activity[recipient_region]"
           click_button t("form.button.activity.submit")
 
-          expect(page).to have_content t("form.label.activity.intended_beneficiaries")
+          expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
           expect(page).not_to have_content activity.title
         end
 
