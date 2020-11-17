@@ -384,6 +384,7 @@
 ## [unreleased]
 - Fix parent level strings
 - Add a field to report whether the activity has any relation to the Covid-19 pandemic.
+- Include the Covid-19 field in the CSV report.
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...HEAD
 [release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
