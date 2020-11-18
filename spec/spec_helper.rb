@@ -115,6 +115,9 @@ RSpec.configure do |config|
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
 
+  # Prevent --bisect from locking up
+  config.bisect_runner = :shell
+
   # Don't generate coverage for partial test runs
   SimpleCov.start if config.files_to_run.map { |file| file.split("spec/").last.split("/").first }.uniq.size > 3
 end
