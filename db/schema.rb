@@ -63,9 +63,12 @@ ActiveRecord::Schema.define(version: 2020_11_12_191320) do
     t.integer "total_applications"
     t.integer "total_awards"
     t.string "collaboration_type"
+    t.integer "sdg_1"
+    t.integer "sdg_2"
+    t.integer "sdg_3"
     t.integer "oda_eligibility", default: 1, null: false
     t.boolean "fstc_applies"
-    t.integer "covid19_related", default: 0
+    t.boolean "sdgs_apply", default: false, null: false
     t.integer "policy_marker_gender"
     t.integer "policy_marker_climate_change_adaptation"
     t.integer "policy_marker_climate_change_mitigation"
@@ -74,6 +77,7 @@ ActiveRecord::Schema.define(version: 2020_11_12_191320) do
     t.integer "policy_marker_disability"
     t.integer "policy_marker_disaster_risk_reduction"
     t.integer "policy_marker_nutrition"
+    t.integer "covid19_related", default: 0
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
