@@ -35,6 +35,9 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
 
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
       expect(subject.errors.count).to eq(1)
 
       expect(subject.errors.first.csv_row).to eq(2)
@@ -48,6 +51,9 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
 
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
       expect(subject.errors.first.column).to eq(:roda_identifier_fragment)
@@ -60,6 +66,9 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
 
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
       expect(subject.errors.first.column).to eq(:parent_id)
@@ -71,6 +80,8 @@ RSpec.describe Activities::ImportFromCsv do
       subject.import([existing_activity_attributes])
 
       expect(subject.errors.count).to eq(0)
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(1)
 
       expect(existing_activity.reload.title).to eq(existing_activity_attributes["Title"])
       expect(existing_activity.description).to eq(existing_activity_attributes["Description"])
@@ -98,6 +109,9 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect { subject.import(activities) }.to_not change { existing_activity }
 
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(3)
       expect(subject.errors.first.column).to eq(:roda_id)
@@ -120,6 +134,9 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect { subject.import(activities) }.to_not change { existing_activity }
 
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(3)
       expect(subject.errors.first.column).to eq(:recipient_region)
@@ -134,6 +151,9 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect { subject.import([existing_activity_attributes]) }.to_not change { Activity.count }
 
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
       expect(subject.errors.first.column).to eq(:roda_id)
@@ -144,6 +164,9 @@ RSpec.describe Activities::ImportFromCsv do
     it "creates the activity" do
       rows = [new_activity_attributes]
       expect { subject.import(rows) }.to change { Activity.count }.by(1)
+
+      expect(subject.created.count).to eq(1)
+      expect(subject.updated.count).to eq(0)
 
       expect(subject.errors.count).to eq(0)
 
@@ -168,6 +191,9 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
       expect(subject.errors.first.column).to eq(:recipient_region)
@@ -179,6 +205,9 @@ RSpec.describe Activities::ImportFromCsv do
       new_activity_attributes["Parent RODA ID"] = "111111"
 
       expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
@@ -192,6 +221,9 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
       expect(subject.errors.first.column).to eq(:roda_identifier_fragment)
@@ -204,6 +236,9 @@ RSpec.describe Activities::ImportFromCsv do
     it "creates and imports activities" do
       rows = [existing_activity_attributes, new_activity_attributes]
       expect { subject.import(rows) }.to change { Activity.count }.by(1)
+
+      expect(subject.created.count).to eq(1)
+      expect(subject.updated.count).to eq(1)
 
       expect(subject.errors.count).to eq(0)
     end
