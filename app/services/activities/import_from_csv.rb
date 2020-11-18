@@ -104,6 +104,9 @@ module Activities
         :parent_step,
         :identifier_step,
         :roda_identifier_step,
+        :geography_step,
+        :region_step,
+        :country_step,
       ]
 
       attr_reader :errors, :activity
@@ -170,9 +173,13 @@ module Activities
       end
 
       def convert_to_attributes
-        FIELDS.each_with_object({}) do |(attr_name, column_name), attrs|
+        attributes = FIELDS.each_with_object({}) { |(attr_name, column_name), attrs|
           attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name]) if @row[column_name].present?
-        end
+        }
+
+        attributes[:geography] = infer_geography(attributes)
+
+        attributes
       end
 
       def convert_to_attribute(attr_name, value)
@@ -210,6 +217,10 @@ module Activities
         raise I18n.t("importer.errors.activity.parent_not_found") if parent.nil?
 
         parent.id
+      end
+
+      def infer_geography(attributes)
+        attributes[:recipient_region].present? ? :recipient_region : :recipient_country
       end
 
       def validate_from_codelist(code, entity, message)

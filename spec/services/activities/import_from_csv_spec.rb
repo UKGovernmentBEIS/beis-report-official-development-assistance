@@ -191,7 +191,18 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.roda_identifier_fragment).to eq(new_activity_attributes["RODA ID Fragment"])
       expect(new_activity.recipient_region).to eq(new_activity_attributes["Recipient Region"])
       expect(new_activity.recipient_country).to eq(new_activity_attributes["Recipient Country"])
+      expect(new_activity.geography).to eq("recipient_region")
       expect(new_activity.delivery_partner_identifier).to eq(new_activity_attributes["Delivery partner identifier"])
+    end
+
+    it "sets the geography to recipient country if the region is not specified" do
+      new_activity_attributes["Recipient Region"] = ""
+
+      subject.import([new_activity_attributes])
+
+      new_activity = Activity.order(:created_at).last
+
+      expect(new_activity.geography).to eq("recipient_country")
     end
 
     it "has an error if a region does not exist" do
