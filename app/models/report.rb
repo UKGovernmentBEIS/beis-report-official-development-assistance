@@ -24,7 +24,13 @@ class Report < ApplicationRecord
   }
 
   scope :in_historical_order, -> do
-    order("reports.financial_year DESC NULLS LAST, reports.financial_quarter DESC NULLS LAST")
+    clauses = [
+      "reports.financial_year DESC NULLS LAST",
+      "reports.financial_quarter DESC NULLS LAST",
+      "reports.created_at DESC",
+    ]
+
+    order(clauses.join(", "))
   end
 
   scope :historically_up_to, ->(report) do
@@ -33,9 +39,12 @@ class Report < ApplicationRecord
     quarter, year = report.financial_quarter, report.financial_year
     return historic_reports unless quarter && year
 
+    created_at = report.created_at
+
     historic_reports
       .or(where("reports.financial_year < ?", year))
-      .or(where(financial_year: year).where("reports.financial_quarter <= ?", quarter))
+      .or(where(financial_year: year).where("reports.financial_quarter < ?", quarter))
+      .or(where(financial_year: year, financial_quarter: quarter).where("reports.created_at <= ?", created_at))
   end
 
   scope :editable, -> do
