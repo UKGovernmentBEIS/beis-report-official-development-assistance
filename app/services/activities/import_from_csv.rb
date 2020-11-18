@@ -6,17 +6,24 @@ module Activities
       end
     }
 
-    attr_reader :errors
+    attr_reader :errors, :created, :updated
 
     def initialize(organisation:)
       @organisation = organisation
       @errors = []
+      @created = []
+      @updated = []
     end
 
     def import(activities)
       ActiveRecord::Base.transaction do
         activities.each_with_index { |row, index| import_row(row, index) }
-        raise ActiveRecord::Rollback unless @errors.empty?
+
+        if @errors.present?
+          @created = []
+          @updated = []
+          raise ActiveRecord::Rollback
+        end
       end
     end
 
@@ -34,6 +41,7 @@ module Activities
       if row["RODA ID Fragment"].present? && row["Parent RODA ID"].present?
         creator = ActivityCreator.new(@organisation, row)
         creator.create
+        created << creator.activity unless creator.errors.any?
 
         creator
       else
@@ -49,6 +57,7 @@ module Activities
       else
         updater = ActivityUpdater.new(row, @organisation)
         updater.update
+        updated << updater.activity unless updater.errors.any?
 
         updater
       end
@@ -59,7 +68,7 @@ module Activities
     end
 
     class ActivityUpdater
-      attr_reader :errors
+      attr_reader :errors, :activity
 
       def initialize(row, organisation)
         @errors = {}
@@ -97,7 +106,7 @@ module Activities
         :roda_identifier_step,
       ]
 
-      attr_reader :errors
+      attr_reader :errors, :activity
 
       def initialize(organisation, row)
         @organisation = organisation
