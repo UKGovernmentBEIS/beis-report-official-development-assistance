@@ -4,8 +4,9 @@ RSpec.describe CodelistHelper, type: :helper do
   describe "version 2_03" do
     let(:version) { "2_03" }
     describe "#yaml_to_objects" do
-      it "gracefully handles a missing or incorrect yaml file" do
-        expect(helper.yaml_to_objects(entity: "generic", type: "favourite_colours")).to eq([])
+      it "raises an error when the YAML file is missing or incorrect" do
+        expect { helper.yaml_to_objects(entity: "generic", type: "favourite_colours") }
+          .to raise_error "CodelistHelper::UnreadableCodelist"
       end
 
       it "formats the data in a yaml file to an array of objects for use in govuk form builder" do
@@ -78,8 +79,9 @@ RSpec.describe CodelistHelper, type: :helper do
     end
 
     describe "#yaml_to_objects_with_description" do
-      it "gracefully handles a missing or incorrect yaml file" do
-        expect(helper.yaml_to_objects_with_description(entity: "generic", type: "favourite_colours")).to eq([])
+      it "raises an error when the YAML file is missing or incorrect" do
+        expect { helper.yaml_to_objects_with_description(entity: "generic", type: "favourite_colours") }
+          .to raise_error "CodelistHelper::UnreadableCodelist"
       end
 
       it "formats the data in a yaml file to an array of objects for use in govuk form builder, with descriptions" do
@@ -101,7 +103,7 @@ RSpec.describe CodelistHelper, type: :helper do
         ).first).to eq(OpenStruct.new(name: "Pipeline/identification", code: "1", description: "The activity is being scoped or planned"))
         expect(helper.yaml_to_objects_with_description(
           entity: "activity",
-          type: "status",
+          type: "status"
         ).last).to eq(OpenStruct.new(name: "Suspended", code: "6", description: "The activity has been temporarily suspended"))
       end
 

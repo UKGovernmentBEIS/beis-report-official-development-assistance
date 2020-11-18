@@ -253,6 +253,9 @@ RSpec.feature "Users can create a fund level activity" do
         # Flow has a default and can't be set to blank so we skip
         select "ODA", from: "activity[flow]"
         click_button t("form.button.activity.submit")
+
+        # Skip the SDGs step and instead go to the aid type step
+        expect(page).to have_no_content t("form.legend.activity.sdgs_apply")
         expect(page).to have_content t("form.legend.activity.aid_type")
 
         # Don't select an aid type

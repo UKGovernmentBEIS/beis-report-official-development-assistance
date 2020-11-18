@@ -1,0 +1,8 @@
+= render layout: "wrapper" do |f|
+  = f.govuk_radio_buttons_fieldset :sdgs_apply, legend: { tag: 'h1', size: 'xl', text: t("form.legend.activity.sdgs_apply") }, hint: { text: t("form.hint.activity.sdgs_apply") } do
+    = f.govuk_radio_button :sdgs_apply, 'false', link_errors: true, label: { text: t("form.label.activity.sdgs_apply_options.false") }
+    = f.govuk_radio_button :sdgs_apply, 'true', label: { text: t("form.label.activity.sdgs_apply_options.true") } do
+      = f.govuk_collection_select :sdg_1, sdg_options, :first, :last, label: { tag: 'h2', size: 'm', text: t("form.label.activity.sdg_1") }
+      = f.govuk_collection_select :sdg_2, sdg_options, :first, :last, label: { tag: 'h2', size: 'm', text: t("form.label.activity.sdg_2") }
+      = f.govuk_collection_select :sdg_3, sdg_options, :first, :last, label: { tag: 'h2', size: 'm', text: t("form.label.activity.sdg_3") }
+

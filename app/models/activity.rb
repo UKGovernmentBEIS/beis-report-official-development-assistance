@@ -34,6 +34,7 @@ class Activity < ApplicationRecord
     :gdi_step,
     :collaboration_type_step,
     :flow_step,
+    :sustainable_development_goals_step,
     :aid_type,
     :fstc_applies_step,
     :policy_markers_step,
@@ -64,6 +65,7 @@ class Activity < ApplicationRecord
   validates :covid19_related, presence: true, on: :covid19_related_step
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
   validates :flow, presence: true, on: :flow_step
+  validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
   validates :aid_type, presence: true, on: :aid_type_step
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_adaptation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?

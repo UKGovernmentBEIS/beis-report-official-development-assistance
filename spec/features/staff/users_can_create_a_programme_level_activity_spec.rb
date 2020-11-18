@@ -153,6 +153,16 @@ RSpec.feature "Users can create a programme activity" do
         # Flow has a default and can't be set to blank so we skip
         select "ODA", from: "activity[flow]"
         click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.sdgs_apply")
+
+        # Choose option that SDGs apply, but do not select any SDGs
+        choose "activity[sdgs_apply]", option: "true"
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.sdg_1.blank")
+
+        # Now select a primary SDG
+        select "Quality Education", from: "activity[sdg_1]"
+        click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.aid_type")
 
         # Don't select an aid type
