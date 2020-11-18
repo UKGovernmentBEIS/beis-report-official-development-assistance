@@ -81,7 +81,17 @@ RSpec.describe PlannedDisbursementHistory do
 
     it "raises an error when no editable report exists" do
       Report.update_all(state: :approved)
-      expect { history.set_value(10) }.to raise_error(ActiveRecord::RecordInvalid)
+      expect { history.set_value(10) }.to raise_error(PlannedDisbursementHistory::SequenceError)
+    end
+
+    it "raises an error when reporting forecasts for the quarter of the current report" do
+      history = PlannedDisbursementHistory.new(activity, 1, 2015)
+      expect { history.set_value(10) }.to raise_error(PlannedDisbursementHistory::SequenceError)
+    end
+
+    it "raises an error when reporting forecasts for a quarter earlier than the current report" do
+      history = PlannedDisbursementHistory.new(activity, 4, 2014)
+      expect { history.set_value(10) }.to raise_error(PlannedDisbursementHistory::SequenceError)
     end
 
     it "creates an original entry when the value is first set" do
@@ -170,7 +180,7 @@ RSpec.describe PlannedDisbursementHistory do
 
     it "raises an error when no editable report exists" do
       Report.update_all(state: :approved)
-      expect { history.set_value(10) }.to raise_error(ActiveRecord::RecordInvalid)
+      expect { history.set_value(10) }.to raise_error(PlannedDisbursementHistory::SequenceError)
     end
 
     it "creates an original entry when the value is first set" do
