@@ -145,6 +145,65 @@ RSpec.describe PlannedDisbursementOverview do
       end
     end
 
+    context "when there are two reports for the same financial quarter" do
+      let(:reports) { Report.in_historical_order.to_a }
+
+      before do
+        Report.where(id: reports.first.id).update_all(financial_quarter: 1)
+        quarters = Report.in_historical_order.map { |r| [r.financial_quarter, r.financial_year] }
+
+        expect(quarters).to eq([
+          [1, 2016],
+          [1, 2016],
+          [4, 2015],
+        ])
+      end
+
+      it "returns the latest values of all forecasts for an activity" do
+        forecasts = forecast_values(overview.latest_values)
+
+        expect(forecasts).to eq([
+          [1, 2017, 10],
+          [2, 2017, 60],
+          [3, 2017, 100],
+          [4, 2017, 70],
+          [1, 2018, 110],
+          [2, 2018, 120],
+          [3, 2018, 130],
+          [4, 2018, 140],
+        ])
+      end
+
+      it "returns the values as of the latest report" do
+        forecasts = forecast_values(overview.values_at_report(reports[0]))
+
+        expect(forecasts).to eq([
+          [1, 2017, 10],
+          [2, 2017, 60],
+          [3, 2017, 100],
+          [4, 2017, 70],
+          [1, 2018, 110],
+          [2, 2018, 120],
+          [3, 2018, 130],
+          [4, 2018, 140],
+        ])
+      end
+
+      it "returns the values as of the penultimate report" do
+        forecasts = forecast_values(overview.values_at_report(reports[1]))
+
+        expect(forecasts).to eq([
+          [1, 2017, 10],
+          [2, 2017, 60],
+          [4, 2017, 70],
+          [1, 2018, 30],
+          [2, 2018, 80],
+          [3, 2018, 90],
+          [4, 2018, 50],
+        ])
+      end
+    end
+
     context "when there are forecasts for multiple activities" do
       let(:project) { create(:project_activity, parent: activity.parent, organisation: delivery_partner) }
       let(:project_history) { PlannedDisbursementHistory.new(project, 1, 2019) }
