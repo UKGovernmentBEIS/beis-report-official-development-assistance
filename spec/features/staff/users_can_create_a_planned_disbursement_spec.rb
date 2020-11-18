@@ -15,10 +15,7 @@ RSpec.describe "Users can create a planned disbursement" do
 
       expect(page).to have_content t("page_title.planned_disbursement.new")
 
-      choose "Q1"
-      select "2020-2021", from: "Financial year"
-      fill_in "planned_disbursement[value]", with: "1000.00"
-      click_button t("default.button.submit")
+      fill_in_planned_disbursement_form_for_activity(project)
 
       expect(page).to have_current_path organisation_activity_financials_path(user.organisation, project)
       expect(page).to have_content t("action.planned_disbursement.create.success")
@@ -48,7 +45,7 @@ RSpec.describe "Users can create a planned disbursement" do
 
         click_on(t("page_content.planned_disbursements.button.create"))
 
-        fill_in_planned_disbursement_form
+        fill_in_planned_disbursement_form_for_activity(activity)
 
         planned_disbursement = PlannedDisbursement.last
         auditable_event = PublicActivity::Activity.last
@@ -78,7 +75,7 @@ RSpec.describe "Users can create a planned disbursement" do
       click_on(project.title)
       click_on(t("page_content.planned_disbursements.button.create"))
 
-      fill_in_planned_disbursement_form
+      fill_in_planned_disbursement_form_for_activity(project)
 
       planned_disbursement = PlannedDisbursement.last
       expect(planned_disbursement.report).to eq(report)

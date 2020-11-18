@@ -8,7 +8,7 @@ RSpec.describe "Users can edit a planned disbursement" do
       organisation = user.organisation
       project = create(:project_activity, organisation: user.organisation)
       editable_report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
-      planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report)
+      planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report, financial_year: editable_report.financial_year + 1)
 
       visit organisation_activity_path(organisation, project)
 
@@ -56,7 +56,7 @@ RSpec.describe "Users can edit a planned disbursement" do
       PublicActivity.with_tracking do
         project = create(:project_activity, organisation: user.organisation)
         editable_report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
-        planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report)
+        planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report, financial_year: editable_report.financial_year + 1)
 
         visit activities_path
         click_on(project.title)
@@ -64,7 +64,12 @@ RSpec.describe "Users can edit a planned disbursement" do
           click_on(t("default.link.edit"))
         end
 
-        fill_in_planned_disbursement_form(value: "2000.51")
+        year = planned_disbursement.financial_year
+        fill_in_planned_disbursement_form(
+          financial_quarter: "Q#{planned_disbursement.financial_quarter}",
+          financial_year: "#{year}-#{year + 1}",
+          value: "2000.51"
+        )
 
         auditable_event = PublicActivity::Activity.find_by(trackable_id: planned_disbursement.id)
         expect(auditable_event.key).to eq "planned_disbursement.update"

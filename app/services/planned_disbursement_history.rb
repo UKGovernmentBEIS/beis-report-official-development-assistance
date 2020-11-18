@@ -1,10 +1,12 @@
 class PlannedDisbursementHistory
+  SequenceError = Class.new(StandardError)
+
   attr_reader :financial_year, :financial_quarter
 
   def initialize(activity, financial_quarter, financial_year)
     @activity = activity
-    @financial_quarter = financial_quarter
-    @financial_year = financial_year
+    @financial_quarter = financial_quarter.to_i
+    @financial_year = financial_year.to_i
   end
 
   def set_value(value)
@@ -50,13 +52,25 @@ class PlannedDisbursementHistory
 
   def update_history(latest_entry, value)
     report = Report.editable_for_activity(@activity)
+    check_forecast_in_future(report)
 
-    if report && latest_entry&.report_id == report.id
+    if latest_entry&.report_id == report.id
       update_entry(latest_entry, value)
     elsif latest_entry
       revise_entry(latest_entry, value, report)
     else
       create_original_entry(value, report)
+    end
+  end
+
+  def check_forecast_in_future(report)
+    raise SequenceError unless report
+
+    year, quarter = report.financial_year, report.financial_quarter
+    return unless year && quarter
+
+    unless year < @financial_year || (year == @financial_year && quarter < @financial_quarter)
+      raise SequenceError
     end
   end
 
