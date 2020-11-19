@@ -1,6 +1,11 @@
 class PlannedDisbursement < ApplicationRecord
   include PublicActivity::Common
 
+  attr_readonly :parent_activity_id,
+    :financial_quarter,
+    :financial_year,
+    :report_id
+
   enum planned_disbursement_type: {original: "1", revised: "2"}
 
   belongs_to :parent_activity, class_name: "Activity"
