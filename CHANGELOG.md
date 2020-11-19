@@ -396,6 +396,7 @@
 - Store the BEIS ID and export it to the report CSV file
 - Add field to record the ODA eligibility lead
 - Add missing fields to the activity importer
+- Allow forecasts to be edited, preserving their history
 
 ## [unreleased]
 
