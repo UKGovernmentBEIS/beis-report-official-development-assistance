@@ -107,6 +107,8 @@ module Activities
         :geography_step,
         :region_step,
         :country_step,
+        :requires_additional_benefitting_countries_step,
+        :intended_beneficiaries_step,
       ]
 
       attr_reader :errors, :activity
@@ -153,6 +155,7 @@ module Activities
         description: "Description",
         recipient_region: "Recipient Region",
         recipient_country: "Recipient Country",
+        intended_beneficiaries: "Intended Beneficiaries",
         delivery_partner_identifier: "Delivery partner identifier",
         roda_identifier_fragment: "RODA ID Fragment",
         parent_id: "Parent RODA ID",
@@ -178,6 +181,8 @@ module Activities
         }
 
         attributes[:geography] = infer_geography(attributes)
+        attributes[:requires_additional_benefitting_countries] = (@row["Recipient Country"] && @row["Intended Beneficiaries"]).present?
+        attributes[:recipient_region] ||= inferred_region
 
         attributes
       end
@@ -211,6 +216,17 @@ module Activities
         )
       end
 
+      def convert_intended_beneficiaries(intended_beneficiaries)
+        codelist = load_yaml(entity: :activity, type: :intended_beneficiaries)
+        valid_codes = codelist.values.flatten.map { |entry| entry.fetch("code") }
+
+        intended_beneficiaries.split(";").map do |code|
+          raise I18n.t("importer.errors.activity.invalid_intended_beneficiaries") unless valid_codes.include?(code)
+
+          code
+        end
+      end
+
       def convert_parent_id(roda_id)
         parent = Activity.by_roda_identifier(roda_id)
 
@@ -223,6 +239,14 @@ module Activities
         attributes[:recipient_region].present? ? :recipient_region : :recipient_country
       end
 
+      def inferred_region
+        @inferred_region ||= begin
+          return if @row["Recipient Region"].present?
+
+          country_to_region_mapping.find { |pair| pair["country"] == @row["Recipient Country"] }["region"]
+        end
+      end
+
       def validate_from_codelist(code, entity, message)
         return nil if code.blank?
 
@@ -232,6 +256,11 @@ module Activities
         raise message unless valid_codes.include?(code)
 
         code
+      end
+
+      def country_to_region_mapping
+        yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.yml"))
+        yaml["data"]
       end
     end
   end
