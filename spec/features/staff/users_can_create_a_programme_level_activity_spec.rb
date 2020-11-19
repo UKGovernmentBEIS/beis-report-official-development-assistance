@@ -69,6 +69,16 @@ RSpec.feature "Users can create a programme activity" do
         fill_in "activity[description]", with: Faker::Lorem.paragraph
         click_button t("form.button.activity.submit")
 
+        expect(page).to have_content t("form.legend.activity.objectives", level: "programme (level B)")
+
+        # Don't provide any objectives
+
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.objectives.blank")
+
+        fill_in "activity[objectives]", with: Faker::Lorem.paragraph
+        click_button t("form.button.activity.submit")
+
         expect(page).to have_content t("form.legend.activity.sector_category", level: "programme (level B)")
 
         # Don't provide a sector category

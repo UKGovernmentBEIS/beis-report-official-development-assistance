@@ -57,6 +57,7 @@ FactoryBot.define do
     factory :programme_activity do
       parent factory: :fund_activity
       level { :programme }
+      objectives { Faker::Lorem.paragraph }
       collaboration_type { "1" }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
@@ -73,6 +74,7 @@ FactoryBot.define do
     factory :project_activity do
       parent factory: :programme_activity
       level { :project }
+      objectives { Faker::Lorem.paragraph }
       call_present { "true" }
       call_open_date { Date.yesterday }
       call_close_date { Date.tomorrow }
@@ -111,6 +113,7 @@ FactoryBot.define do
     factory :third_party_project_activity do
       parent factory: :project_activity
       level { :third_party_project }
+      objectives { Faker::Lorem.paragraph }
       call_present { "true" }
       call_open_date { Date.yesterday }
       call_close_date { Date.tomorrow }
@@ -143,6 +146,7 @@ FactoryBot.define do
     roda_identifier_fragment { nil }
     title { nil }
     description { nil }
+    objectives { nil }
     sector_category { nil }
     sector { nil }
     call_present { nil }
@@ -172,6 +176,7 @@ FactoryBot.define do
     roda_identifier_fragment { nil }
     title { nil }
     description { nil }
+    objectives { nil }
     sector_category { nil }
     sector { nil }
     call_present { nil }
@@ -202,6 +207,7 @@ FactoryBot.define do
     form_state { "purpose" }
     title { nil }
     description { nil }
+    objectives { nil }
     sector { nil }
     call_present { nil }
     programme_status { nil }
@@ -296,6 +302,7 @@ FactoryBot.define do
     form_state { "blank" }
     title { nil }
     description { nil }
+    objectives { nil }
     sector { nil }
     call_present { nil }
     programme_status { nil }
@@ -330,6 +337,7 @@ FactoryBot.define do
     delivery_partner_identifier { nil }
     title { nil }
     description { nil }
+    objectives { nil }
     sector { nil }
     call_present { nil }
     programme_status { nil }
@@ -363,6 +371,7 @@ FactoryBot.define do
     delivery_partner_identifier { nil }
     title { nil }
     description { nil }
+    objectives { nil }
     sector { nil }
     programme_status { nil }
     planned_start_date { nil }

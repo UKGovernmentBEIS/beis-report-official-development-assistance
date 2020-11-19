@@ -390,6 +390,7 @@
 - Append the text "COVID-19" to the activity description in the IATI XML export, where applicable.
 - Collect Sustainable Development Goals (SDGs) for activities
 - Policy markers added to the CSV report file
+- Activity Objectives added to the activity form, IATI XML and CSV report
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...HEAD
 [release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
