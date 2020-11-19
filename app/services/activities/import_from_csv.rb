@@ -112,6 +112,7 @@ module Activities
         :gdi_step,
         :sustainable_development_goals_step,
         :covid19_related_step,
+        :oda_eligibility_step,
       ]
 
       attr_reader :errors, :activity
@@ -168,6 +169,7 @@ module Activities
         sdg_2: "SDG 2",
         sdg_3: "SDG 3",
         covid19_related: "Covid-19 related research",
+        oda_eligibility: "ODA Eligibility",
       }
 
       def initialize(row)
@@ -267,6 +269,14 @@ module Activities
         raise I18n.t("importer.errors.activity.invalid_covid19_related") unless codelist.include?(covid19_related.to_s)
 
         covid19_related
+      end
+
+      def convert_oda_eligibility(oda_eligibility)
+        validate_from_codelist(
+          oda_eligibility,
+          :oda_eligibility,
+          I18n.t("importer.errors.activity.invalid_oda_eligibility"),
+        )
       end
 
       def infer_geography(attributes)
