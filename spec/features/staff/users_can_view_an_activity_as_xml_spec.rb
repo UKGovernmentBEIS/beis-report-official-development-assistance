@@ -192,6 +192,13 @@ RSpec.feature "Users can view an activity as XML" do
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
+
+        it "includes the activity aims/objectives" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+          expect(xml).to have_selector("iati-activity/description", count: 2)
+          descriptions = xml.xpath("//iati-activity/description/@type").to_a
+          expect(descriptions.last.value).to eq("2")
+        end
       end
 
       context "when the activity is a project" do
