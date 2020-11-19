@@ -110,6 +110,7 @@ module Activities
         :requires_additional_benefitting_countries_step,
         :intended_beneficiaries_step,
         :gdi_step,
+        :sustainable_development_goals_step,
       ]
 
       attr_reader :errors, :activity
@@ -146,6 +147,7 @@ module Activities
     end
 
     class Converter
+      include ActivityHelper
       include CodelistHelper
 
       attr_reader :errors
@@ -161,6 +163,9 @@ module Activities
         roda_identifier_fragment: "RODA ID Fragment",
         parent_id: "Parent RODA ID",
         gdi: "GDI",
+        sdg_1: "SDG 1",
+        sdg_2: "SDG 2",
+        sdg_3: "SDG 3",
       }
 
       def initialize(row)
@@ -225,6 +230,15 @@ module Activities
           I18n.t("importer.errors.activity.invalid_gdi"),
         )
       end
+
+      def convert_sustainable_development_goal(goal)
+        raise I18n.t("importer.errors.activity.invalid_sdg_goal") unless sdg_options.keys.map(&:to_s).include?(goal.to_s)
+
+        goal
+      end
+      alias convert_sdg_1 convert_sustainable_development_goal
+      alias convert_sdg_2 convert_sustainable_development_goal
+      alias convert_sdg_3 convert_sustainable_development_goal
 
       def convert_intended_beneficiaries(intended_beneficiaries)
         codelist = load_yaml(entity: :activity, type: :intended_beneficiaries)

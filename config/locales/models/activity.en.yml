@@ -423,6 +423,7 @@ en:
         invalid_country: The country code cannot be found
         invalid_intended_beneficiaries: The intended beneficiaries are invalid
         invalid_gdi: The GDI code is invalid
+        invalid_sdg_goal: The sustainable development goal is invalid
         parent_not_found: The parent activity cannot be found
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:

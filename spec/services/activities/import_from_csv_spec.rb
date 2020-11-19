@@ -17,6 +17,9 @@ RSpec.describe Activities::ImportFromCsv do
       "Intended Beneficiaries" => "KH;KP;ID",
       "Delivery partner identifier" => "1234567890",
       "GDI" => "1",
+      "SDG 1" => "1",
+      "SDG 2" => "2",
+      "SDG 3" => "3",
     }
   end
   let(:new_activity_attributes) do
@@ -32,6 +35,9 @@ RSpec.describe Activities::ImportFromCsv do
       "Intended Beneficiaries" => "KH;KP;ID",
       "Delivery partner identifier" => "98765432",
       "GDI" => "1",
+      "SDG 1" => "1",
+      "SDG 2" => "2",
+      "SDG 3" => "3",
     }
   end
 
@@ -272,6 +278,23 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:gdi)
       expect(subject.errors.first.value).to eq("2222222")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_gdi"))
+    end
+
+    ["SDG 1", "SDG 2", "SDG 3"].each.with_index(1) do |key, i|
+      it "has an error if the #{i.ordinalize} sustainable development goal is invalid" do
+        new_activity_attributes[key] = "9999999"
+
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.column).to eq("sdg_#{i}".to_sym)
+        expect(subject.errors.first.value).to eq("9999999")
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sdg_goal"))
+      end
     end
 
     it "has an error if the parent activity cannot be found" do
