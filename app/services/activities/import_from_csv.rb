@@ -118,6 +118,7 @@ module Activities
         :call_dates_step,
         :sector_category_step,
         :sector_step,
+        :collaboration_type_step,
       ]
 
       attr_reader :errors, :activity
@@ -185,6 +186,7 @@ module Activities
         actual_start_date: "Actual start date",
         actual_end_date: "Actual end date",
         sector: "Sector",
+        collaboration_type: "Collaboration type (Bi/Multi Marker)",
       }
 
       def initialize(row)
@@ -309,6 +311,14 @@ module Activities
           sector,
           :sector,
           I18n.t("importer.errors.activity.invalid_sector"),
+        )
+      end
+
+      def convert_collaboration_type(collaboration_type)
+        validate_from_codelist(
+          collaboration_type,
+          :collaboration_type,
+          I18n.t("importer.errors.activity.invalid_collaboration_type"),
         )
       end
 
