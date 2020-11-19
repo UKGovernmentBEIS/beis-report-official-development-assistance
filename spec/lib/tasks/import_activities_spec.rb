@@ -43,12 +43,6 @@ describe "rake activities:import", type: :task do
       CSV
     end
 
-    around do |example|
-      ClimateControl.modify ORGANISATION_ID: organisation.id, CSV: "/foo/bar/baz" do
-        example.run
-      end
-    end
-
     before do
       allow(File).to receive(:open).and_return(StringIO.new(csv))
       allow(Activities::ImportFromCsv).to receive(:new).with(organisation: organisation) { importer }
@@ -61,7 +55,9 @@ describe "rake activities:import", type: :task do
       end
 
       it "outputs the number of activities imported and updated" do
-        expect { task.execute }.to output(/Successfully created 3 activities and updated 2 activities/).to_stdout
+        ClimateControl.modify ORGANISATION_ID: organisation.id, CSV: "/foo/bar/baz" do
+          expect { task.execute }.to output(/Successfully created 3 activities and updated 2 activities/).to_stdout
+        end
       end
     end
 
@@ -78,11 +74,15 @@ describe "rake activities:import", type: :task do
       end
 
       it "outputs the number of errors" do
-        expect { task.execute }.to output(/There were 2 errors when importing/).to_stdout
+        ClimateControl.modify ORGANISATION_ID: organisation.id, CSV: "/foo/bar/baz" do
+          expect { task.execute }.to output(/There were 2 errors when importing/).to_stdout
+        end
       end
 
       it "outputs the specific errors" do
-        expect { task.execute }.to output(/At row 3: Blah\nAt row 4: Blah/).to_stdout
+        ClimateControl.modify ORGANISATION_ID: organisation.id, CSV: "/foo/bar/baz" do
+          expect { task.execute }.to output(/At row 3: Blah\nAt row 4: Blah/).to_stdout
+        end
       end
     end
   end
