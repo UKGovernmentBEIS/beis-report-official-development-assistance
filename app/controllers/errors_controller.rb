@@ -2,8 +2,6 @@ class ErrorsController < ApplicationController
   include Auth
   include Pundit
 
-  layout "errors"
-
   def not_found
     render "pages/errors/not_found",
       status: 404
