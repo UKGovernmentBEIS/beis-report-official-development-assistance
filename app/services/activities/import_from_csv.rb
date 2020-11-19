@@ -113,6 +113,7 @@ module Activities
         :sustainable_development_goals_step,
         :covid19_related_step,
         :oda_eligibility_step,
+        :programme_status_step,
       ]
 
       attr_reader :errors, :activity
@@ -170,6 +171,7 @@ module Activities
         sdg_3: "SDG 3",
         covid19_related: "Covid-19 related research",
         oda_eligibility: "ODA Eligibility",
+        programme_status: "Programme Status",
       }
 
       def initialize(row)
@@ -276,6 +278,14 @@ module Activities
           oda_eligibility,
           :oda_eligibility,
           I18n.t("importer.errors.activity.invalid_oda_eligibility"),
+        )
+      end
+
+      def convert_programme_status(programme_status)
+        validate_from_codelist(
+          programme_status,
+          :programme_status,
+          I18n.t("importer.errors.activity.invalid_programme_status"),
         )
       end
 
