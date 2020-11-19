@@ -1144,9 +1144,8 @@ RSpec.describe Activity, type: :model do
       create(:transaction, parent_activity: project, value: 100, report: report, date: Date.today)
       create(:transaction, parent_activity: project, value: 200, report: report, date: Date.today)
       create(:planned_disbursement, parent_activity: project, value: 1500, report: report, period_start_date: Date.today)
-      create(:planned_disbursement, parent_activity: project, value: 500, report: report, period_start_date: Date.today)
 
-      expect(project.variance_for_report_financial_quarter(report: report)).to eq(-1700)
+      expect(project.variance_for_report_financial_quarter(report: report)).to eq(-1200)
     end
   end
 
