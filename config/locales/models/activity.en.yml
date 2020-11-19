@@ -433,6 +433,7 @@ en:
         invalid_actual_end_date: The Actual end date is in an invalid format
         invalid_planned_start_date: The Planned start date is in an invalid format
         invalid_planned_end_date: The Planned end date is in an invalid format
+        invalid_sector: The sector code is not valid
         parent_not_found: The parent activity cannot be found
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:

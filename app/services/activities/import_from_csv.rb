@@ -116,6 +116,8 @@ module Activities
         :programme_status_step,
         :call_present_step,
         :call_dates_step,
+        :sector_category_step,
+        :sector_step,
       ]
 
       attr_reader :errors, :activity
@@ -182,6 +184,7 @@ module Activities
         planned_end_date: "Planned end date",
         actual_start_date: "Actual start date",
         actual_end_date: "Actual end date",
+        sector: "Sector",
       }
 
       def initialize(row)
@@ -207,6 +210,7 @@ module Activities
         attributes[:requires_additional_benefitting_countries] = (@row["Recipient Country"] && @row["Intended Beneficiaries"]).present?
         attributes[:recipient_region] ||= inferred_region
         attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
+        attributes[:sector_category] = get_sector_category(attributes[:sector])
 
         attributes
       end
@@ -300,6 +304,14 @@ module Activities
         )
       end
 
+      def convert_sector(sector)
+        validate_from_codelist(
+          sector,
+          :sector,
+          I18n.t("importer.errors.activity.invalid_sector"),
+        )
+      end
+
       def convert_call_open_date(call_open_date)
         parse_date(call_open_date, I18n.t("importer.errors.activity.invalid_call_open_date"))
       end
@@ -330,6 +342,13 @@ module Activities
         Date.strptime(date, "%Y-%m-%d").to_datetime
       rescue ArgumentError
         raise message
+      end
+
+      def get_sector_category(sector_code)
+        codelist = load_yaml(entity: :activity, type: :sector)
+        sector = codelist.find { |list_item| list_item["code"] == sector_code }
+
+        sector["category"] if sector
       end
 
       def infer_geography(attributes)

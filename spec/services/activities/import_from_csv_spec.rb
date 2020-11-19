@@ -31,6 +31,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Actual start date" => "2020-01-03",
       "Planned end date" => "2020-01-04",
       "Actual end date" => "2020-01-05",
+      "Sector" => "11220",
     }
   end
   let(:new_activity_attributes) do
@@ -60,6 +61,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Actual start date" => "2020-01-03",
       "Planned end date" => "2020-01-04",
       "Actual end date" => "2020-01-05",
+      "Sector" => "11220",
     }
   end
 
@@ -136,8 +138,9 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.planned_end_date).to eq(DateTime.parse(existing_activity_attributes["Planned end date"]))
       expect(existing_activity.actual_start_date).to eq(DateTime.parse(existing_activity_attributes["Actual start date"]))
       expect(existing_activity.actual_end_date).to eq(DateTime.parse(existing_activity_attributes["Actual end date"]))
-
       expect(existing_activity.call_present).to eq(true)
+      expect(existing_activity.sector).to eq(existing_activity_attributes["Sector"])
+      expect(existing_activity.sector_category).to eq("112")
     end
 
     it "ignores any blank columns" do
@@ -250,6 +253,8 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.planned_end_date).to eq(DateTime.parse(new_activity_attributes["Planned end date"]))
       expect(new_activity.actual_start_date).to eq(DateTime.parse(new_activity_attributes["Actual start date"]))
       expect(new_activity.actual_end_date).to eq(DateTime.parse(new_activity_attributes["Actual end date"]))
+      expect(new_activity.sector).to eq(new_activity_attributes["Sector"])
+      expect(new_activity.sector_category).to eq("112")
     end
 
     it "sets the geography to recipient country and infers the region if the region is not specified" do
@@ -396,6 +401,21 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:programme_status)
       expect(subject.errors.first.value).to eq("99331")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_programme_status"))
+    end
+
+    it "has an error if the Sector option is invalid" do
+      new_activity_attributes["Sector"] = "53453453453453"
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.column).to eq(:sector)
+      expect(subject.errors.first.value).to eq("53453453453453")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sector"))
     end
 
     {
