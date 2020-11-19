@@ -13,7 +13,8 @@ RSpec.describe Activities::ImportFromCsv do
       "Title" => "Here is a title",
       "Description" => "Some description goes here...",
       "Recipient Region" => "789",
-      "Recipient Country" => "LR",
+      "Recipient Country" => "KH",
+      "Intended Beneficiaries" => "KH;KP;ID",
       "Delivery partner identifier" => "1234567890",
     }
   end
@@ -26,7 +27,8 @@ RSpec.describe Activities::ImportFromCsv do
       "Title" => "Here is a title",
       "Description" => "Some description goes here...",
       "Recipient Region" => "789",
-      "Recipient Country" => "LR",
+      "Recipient Country" => "KH",
+      "Intended Beneficiaries" => "KH;KP;ID",
       "Delivery partner identifier" => "98765432",
     }
   end
@@ -92,6 +94,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.description).to eq(existing_activity_attributes["Description"])
       expect(existing_activity.recipient_region).to eq(existing_activity_attributes["Recipient Region"])
       expect(existing_activity.recipient_country).to eq(existing_activity_attributes["Recipient Country"])
+      expect(existing_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
       expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Delivery partner identifier"])
     end
 
@@ -191,18 +194,20 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.roda_identifier_fragment).to eq(new_activity_attributes["RODA ID Fragment"])
       expect(new_activity.recipient_region).to eq(new_activity_attributes["Recipient Region"])
       expect(new_activity.recipient_country).to eq(new_activity_attributes["Recipient Country"])
+      expect(new_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
       expect(new_activity.geography).to eq("recipient_region")
       expect(new_activity.delivery_partner_identifier).to eq(new_activity_attributes["Delivery partner identifier"])
     end
 
-    it "sets the geography to recipient country if the region is not specified" do
+    it "sets the geography to recipient country and infers the region if the region is not specified" do
       new_activity_attributes["Recipient Region"] = ""
 
-      subject.import([new_activity_attributes])
+      expect { subject.import([new_activity_attributes]) }.to change { Activity.count }
 
       new_activity = Activity.order(:created_at).last
 
       expect(new_activity.geography).to eq("recipient_country")
+      expect(new_activity.recipient_region).to eq("789")
     end
 
     it "has an error if a region does not exist" do
@@ -233,6 +238,21 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:recipient_country)
       expect(subject.errors.first.value).to eq("BBBBBB")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_country"))
+    end
+
+    it "has an error if the intended beneficiaries are invalid" do
+      new_activity_attributes["Intended Beneficiaries"] = "ffsdfdsfsfds"
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.column).to eq(:intended_beneficiaries)
+      expect(subject.errors.first.value).to eq("ffsdfdsfsfds")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_intended_beneficiaries"))
     end
 
     it "has an error if the parent activity cannot be found" do

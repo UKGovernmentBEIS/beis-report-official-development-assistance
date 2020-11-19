@@ -421,6 +421,7 @@ en:
         not_found: Cannot be found
         invalid_region: The region cannot be found
         invalid_country: The country code cannot be found
+        invalid_intended_beneficiaries: The intended beneficiaries are invalid
         parent_not_found: The parent activity cannot be found
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:
