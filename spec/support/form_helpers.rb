@@ -5,6 +5,7 @@ module FormHelpers
     roda_identifier_fragment: "RODA-ID",
     title: "My Aid Activity",
     description: Faker::Lorem.paragraph,
+    objectives: Faker::Lorem.paragraph,
     sector_category: "Basic Education",
     sector: "Primary education",
     call_present: "true",
@@ -83,6 +84,13 @@ module FormHelpers
     fill_in "activity[title]", with: title
     fill_in "activity[description]", with: description
     click_button t("form.button.activity.submit")
+
+    unless level == "fund"
+      expect(page).to have_content t("form.legend.activity.objectives", level: activity_level(level))
+      expect(page).to have_content t("form.hint.activity.objectives")
+      fill_in "activity[objectives]", with: objectives
+      click_button t("form.button.activity.submit")
+    end
 
     expect(page).to have_content t("form.legend.activity.sector_category", level: activity_level(level))
     expect(page).to have_content(
@@ -279,9 +287,11 @@ module FormHelpers
 
     if level == "fund"
       expect(page).not_to have_content t("activity.programme_status.#{programme_status}")
+      expect(page).not_to have_content objectives
     else
       expect(page).to have_content t("activity.programme_status.#{programme_status}")
       expect(page).to have_content collaboration_type
+      expect(page).to have_content objectives
     end
     expect(page).to have_content recipient_region
     expect(page).to have_content intended_beneficiaries

@@ -31,6 +31,7 @@ en:
         delivery_partner_identifier: Enter your unique identifier
         roda_identifier_fragment: Enter a unique identifier for RODA
         intended_beneficiaries: What are the intended beneficiaries?
+        objectives: Aims/Objectives of the activity
         oda_eligibility:
           never_eligible: No - was never eligible
           eligible: Eligible
@@ -100,6 +101,7 @@ en:
         geography: Will the benefitting recipient be a region or country?
         intended_beneficiaries: What are the intended beneficiaries?
         level: Add new activity
+        objectives: What are the aims/objectives of this %{level}?
         oda_eligibility: Is this activity ODA eligible?
         parent: Select the parent activity
         planned_end_date: Planned end date
@@ -141,6 +143,7 @@ en:
         delivery_partner_identifier: This could be the reference you use in your internal systems
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
         intended_beneficiaries: You can select up to 10 different countries. This field is optional if you already selected a recipient country on the previous step
+        objectives: Please refrain from using any abbreviations
         oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
@@ -212,6 +215,7 @@ en:
         geography: Benefitting recipient geography
         delivery_partner_identifier: Delivery partner identifier
         intended_beneficiaries: Intended beneficiaries
+        objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
         roda_identifier: RODA identifier
         level: Level
@@ -333,6 +337,7 @@ en:
         roda_identifier: Enter your unique RODA identifier
         intended_beneficiaries: What are the intended beneficiaries?
         level: Hierarchy level
+        objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
         parent: Select the parent
         policy_markers: Policy markers
@@ -371,6 +376,8 @@ en:
               too_long: A maximum of 10 intended beneficiaries can be added
             level:
               blank: Select the activity type
+            objectives:
+              blank: Enter objectives
             parent:
               blank: Select a parent activity
             delivery_partner_identifier:

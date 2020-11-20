@@ -20,6 +20,7 @@ class Activity < ApplicationRecord
     :identifier_step,
     :roda_identifier_step,
     :purpose_step,
+    :objectives_step,
     :sector_category_step,
     :sector_step,
     :call_present_step,
@@ -49,6 +50,7 @@ class Activity < ApplicationRecord
   validates :delivery_partner_identifier, presence: true, on: :identifier_step
   validates_with RodaIdentifierValidator, on: :roda_identifier_step
   validates :title, :description, presence: true, on: :purpose_step
+  validates :objectives, presence: true, on: :objectives_step, unless: proc { |activity| activity.fund? }
   validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
   validates :call_present, inclusion: {in: [true, false]}, on: :call_present_step, if: :requires_call_dates?

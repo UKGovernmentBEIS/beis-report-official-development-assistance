@@ -69,6 +69,16 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :purpose)
         = a11y_action_link(I18n.t("default.link.#{activity_presenter.call_to_action(:description)}"), activity_step_path(activity_presenter, :purpose), I18n.t("summary.label.activity.description").downcase)
 
+  - unless activity_presenter.fund?
+    .govuk-summary-list__row.objectives
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.objectives")
+      %dd.govuk-summary-list__value
+        = activity_presenter.objectives
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :objectives)
+          = a11y_action_link(I18n.t("default.link.#{activity_presenter.call_to_action(:objectives)}"), activity_step_path(activity_presenter, :objectives), I18n.t("summary.label.activity.objectives").downcase)
+
   .govuk-summary-list__row.sector
     %dt.govuk-summary-list__key
       = t("summary.label.activity.sector", level: activity_presenter.level)
