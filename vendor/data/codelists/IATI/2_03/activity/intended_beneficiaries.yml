@@ -188,9 +188,6 @@ data:
       name: Morocco
     - code: TN
       name: Tunisia
-  '889': # Oceania
-    - code: '889'
-      name: Oceania, regional
   '1035': # Polynesia
     - code: CK
       name: Cook Islands
@@ -262,9 +259,6 @@ data:
       name: Suriname
     - code: VE
       name: Venezuela
-  '289': # South of Sahara
-    - code: '289'
-      name: South of Sahara, regional
   '1029': # Southern Africa
     - code: BW
       name: Botswana

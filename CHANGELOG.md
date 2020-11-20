@@ -391,6 +391,8 @@
 - Collect Sustainable Development Goals (SDGs) for activities
 - Policy markers added to the CSV report file
 - Activity Objectives added to the activity form, IATI XML and CSV report
+- Add missing regions back on RODA and open scope of country list for `intended_beneficiaries`
+- `Intended_beneficiaries` is now optional in all cases
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...HEAD
 [release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
