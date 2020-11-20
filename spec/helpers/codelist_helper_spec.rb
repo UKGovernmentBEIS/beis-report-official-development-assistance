@@ -218,6 +218,16 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.last.code).to eq("3")
       end
     end
+
+    describe "#intended_beneficiaries_checkbox_options" do
+      it "returns a full list of all countries" do
+        options = helper.intended_beneficiaries_checkbox_options
+
+        expect(options.length).to eq 143
+        expect(options.first.name).to eq("Afghanistan")
+        expect(options.last.name).to eq("Zimbabwe")
+      end
+    end
   end
 
   describe "BEIS" do

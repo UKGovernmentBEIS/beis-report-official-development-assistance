@@ -64,10 +64,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.recipient_country?
     when :country
       skip_step if @activity.recipient_region?
-    when :requires_additional_benefitting_countries
-      skip_step if @activity.recipient_region?
     when :intended_beneficiaries
-      skip_step unless @activity.requires_intended_beneficiaries?
+      skip_step unless @activity.requires_additional_benefitting_countries?
     when :collaboration_type
       skip_step if @activity.fund?
       assign_default_collaboration_type_value_if_nil

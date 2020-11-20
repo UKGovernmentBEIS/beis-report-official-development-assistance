@@ -89,14 +89,8 @@ module CodelistHelper
   end
 
   def intended_beneficiaries_checkbox_options
-    recipient_region = @activity.recipient_region
-    list = load_yaml(entity: "activity", type: "intended_beneficiaries")
-    show_list = if recipient_region == DEVELOPING_COUNTRIES_CODE
-      list.values.flatten
-    else
-      list[recipient_region]
-    end
-    show_list.collect { |item|
+    list = load_yaml(entity: "activity", type: "intended_beneficiaries").values.flatten
+    list.collect { |item|
       OpenStruct.new(name: item["name"], code: item["code"])
     }.compact.sort_by(&:name)
   end
