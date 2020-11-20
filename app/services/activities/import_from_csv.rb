@@ -167,6 +167,7 @@ module Activities
         flow: "Flow",
         aid_type: "Aid type",
         fstc_applies: "Free Standing Technical Cooperation",
+        objectives: "Aims/Objectives (DP Definition)",
       }
 
       def initialize(row)

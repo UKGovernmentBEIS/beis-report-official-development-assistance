@@ -36,6 +36,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Flow" => "10",
       "Aid type" => "B03",
       "Free Standing Technical Cooperation" => "1",
+      "Aims/Objectives (DP Definition)" => "Foo bar baz",
     }
   end
   let(:new_activity_attributes) do
@@ -70,6 +71,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Flow" => "10",
       "Aid type" => "B03",
       "Free Standing Technical Cooperation" => "1",
+      "Aims/Objectives (DP Definition)" => "Foo bar baz",
     }
   end
 
@@ -153,6 +155,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.flow).to eq(existing_activity_attributes["Flow"])
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
       expect(existing_activity.fstc_applies).to eq(true)
+      expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives (DP Definition)"])
     end
 
     it "ignores any blank columns" do
@@ -271,6 +274,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.flow).to eq(new_activity_attributes["Flow"])
       expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
       expect(new_activity.fstc_applies).to eq(true)
+      expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (DP Definition)"])
     end
 
     it "sets the geography to recipient country and infers the region if the region is not specified" do
