@@ -1,6 +1,6 @@
 %nav
   %ul{id: 'navigation', class: 'govuk-header__navigation', aria: { label: "Top Level Navigation"}}
-    -if defined?(current_user) && current_user.active?
+    -if current_user.present? && current_user.active?
 
       %li{ class: navigation_item_class(organisation_path(current_user.organisation)) }
         %a{ href: organisation_path(current_user.organisation), class: 'govuk-header__link' }
@@ -20,13 +20,7 @@
         %li{ class: navigation_item_class(users_path) }
           = link_to t("page_title.users.index"), users_path, class: "govuk-header__link"
 
-      - if authenticated?
-        %li{ class: navigation_item_class(sign_out_path) }
-          %a{ href: sign_out_path, class: 'govuk-header__link' }
-            = t("header.link.sign_out")
+      %li{ class: navigation_item_class(sign_out_path) }
+        %a{ href: sign_out_path, class: 'govuk-header__link' }
+          = t("header.link.sign_out")
 
-      - else
-        %li{ class: navigation_item_class(users_path) }
-          .govuk-header__content.app-header__user-links.app-visitor
-            %a.govuk-header__link{ data: { method: "post" }, href: "/auth/auth0" }
-              = t('header.link.sign_in')

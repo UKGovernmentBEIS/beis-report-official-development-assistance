@@ -1,4 +1,4 @@
-# 16. Use Terraform to set up and deploy to the PaaS
+# 25. Use Terraform to set up and deploy to the PaaS
 
 Date: 2020-03-03
 
