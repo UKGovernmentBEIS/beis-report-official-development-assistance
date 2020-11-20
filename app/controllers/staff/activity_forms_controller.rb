@@ -12,6 +12,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :identifier,
     :roda_identifier,
     :purpose,
+    :objectives,
     :sector_category,
     :sector,
     :call_present,
@@ -49,6 +50,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step unless @activity.can_set_roda_identifier?
     when :blank
       skip_step
+    when :objectives
+      skip_step if @activity.fund?
     when :programme_status
       skip_step if @activity.fund?
     when :call_present
@@ -104,6 +107,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.cache_roda_identifier!
     when :purpose
       @activity.assign_attributes(title: title, description: description)
+    when :objectives
+      @activity.assign_attributes(objectives: objectives)
     when :sector_category
       @activity.assign_attributes(sector_category: sector_category, sector: nil)
     when :sector
@@ -218,6 +223,10 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def description
     params.require(:activity).permit(:description).fetch("description", nil)
+  end
+
+  def objectives
+    params.require(:activity).permit(:objectives).fetch("objectives", nil)
   end
 
   def call_present
