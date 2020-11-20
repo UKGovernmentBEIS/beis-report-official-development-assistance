@@ -40,39 +40,12 @@ RSpec.describe Activities::ImportFromCsv do
     }
   end
   let(:new_activity_attributes) do
-    {
+    existing_activity_attributes.merge({
       "RODA ID" => "",
-      "Transparency identifier" => "3232332323",
       "RODA ID Fragment" => "234566",
       "Parent RODA ID" => parent_activity.roda_identifier_fragment,
-      "Title" => "Here is a title",
-      "Description" => "Some description goes here...",
-      "Recipient Region" => "789",
-      "Recipient Country" => "KH",
-      "Intended Beneficiaries" => "KH;KP;ID",
-      "Delivery partner identifier" => "98765432",
-      "GDI" => "1",
-      "SDG 1" => "1",
-      "SDG 2" => "2",
-      "SDG 3" => "3",
-      "Covid-19 related research" => "0",
-      "ODA Eligibility" => "never_eligible",
-      "Programme Status" => "01",
-      "Call open date" => "2020-01-02",
-      "Call close date" => "2020-01-02",
-      "Total applications" => "12",
-      "Total awards" => "12",
-      "Planned start date" => "2020-01-02",
-      "Actual start date" => "2020-01-03",
-      "Planned end date" => "2020-01-04",
-      "Actual end date" => "2020-01-05",
-      "Sector" => "11220",
-      "Collaboration type (Bi/Multi Marker)" => "1",
-      "Flow" => "10",
-      "Aid type" => "B03",
-      "Free Standing Technical Cooperation" => "1",
-      "Aims/Objectives (DP Definition)" => "Foo bar baz",
-    }
+      "Transparency identifier" => "23232332323",
+    })
   end
 
   subject { described_class.new(organisation: organisation) }
