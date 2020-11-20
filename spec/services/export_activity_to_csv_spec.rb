@@ -18,6 +18,7 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.transparency_identifier,
         activity_presenter.delivery_partner_identifier,
         activity_presenter.roda_identifier,
+        activity_presenter.beis_id,
         activity_presenter.level,
         activity_presenter.title,
         activity_presenter.description,
@@ -57,6 +58,15 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.comment_for_report(report_id: report.id).comment,
         activity_presenter.link_to_roda,
       ].concat(next_four_quarter_totals).to_csv)
+    end
+
+    it "includes the BEIS id if there is one" do
+      project.update(beis_id: "GCRF_AHRC_NS_AH1001")
+      activity_presenter = ActivityCsvPresenter.new(project)
+      export_service = ExportActivityToCsv.new(activity: project, report: report)
+      result = export_service.call
+
+      expect(result).to include activity_presenter.beis_id
     end
   end
 
@@ -109,6 +119,7 @@ RSpec.describe ExportActivityToCsv do
           "Transparency identifier",
           "Delivery partner identifier",
           "RODA identifier",
+          "BEIS identifier",
           "Level",
           "Title",
           "Description",
