@@ -41,6 +41,7 @@ class Activity < ApplicationRecord
     :policy_markers_step,
     :covid19_related_step,
     :oda_eligibility_step,
+    :oda_eligibility_lead_step,
   ]
 
   strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
@@ -78,6 +79,7 @@ class Activity < ApplicationRecord
   validates :policy_marker_disaster_risk_reduction, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_nutrition, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :oda_eligibility, presence: true, on: :oda_eligibility_step
+  validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :is_project?
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier_compound, uniqueness: true, allow_nil: true
