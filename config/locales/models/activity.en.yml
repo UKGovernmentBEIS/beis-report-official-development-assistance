@@ -101,6 +101,7 @@ en:
         call_open_date: Call open date
         call_close_date: Call close date
         country_delivery_partners: Country delivery partner
+        gcrf_challenge_area: GCRF challenge area
         gdi: Is your activity affected by the Global Development Impact (GDI) policy?
         geography: Will the benefitting recipient be a region or country?
         intended_beneficiaries: What are the intended beneficiaries?
@@ -146,6 +147,7 @@ en:
         country_delivery_partners: "Please provide up to ten country delivery partners. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
         flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
         delivery_partner_identifier: This could be the reference you use in your internal systems
+        gcrf_challenge_area: Select the most relevant GCRF challenge area for this activity. For broad programme calls, please select the challenge area most commonly represented across the individual projects within the programme. If the activity is a delivery line, you may select 'Not applicable'.
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
         objectives: Please refrain from using any abbreviations
         intended_beneficiaries: You can select up to 10 different countries
@@ -341,6 +343,7 @@ en:
         covid19_related: Is this activity related to Covid-19?
         dates: What are the start and end dates for the %{level}?
         flow: Flow
+        gcrf_challenge_area: GCRF challenge area
         gdi: GDI
         geography: Will the benefitting recipient be a region or country?
         delivery_partner_identifier: Enter your unique identifier

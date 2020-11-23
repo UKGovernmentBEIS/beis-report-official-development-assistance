@@ -41,6 +41,7 @@ class Activity < ApplicationRecord
     :fstc_applies_step,
     :policy_markers_step,
     :covid19_related_step,
+    :gcrf_challenge_area_step,
     :oda_eligibility_step,
     :oda_eligibility_lead_step,
     :uk_dp_named_contact_step,

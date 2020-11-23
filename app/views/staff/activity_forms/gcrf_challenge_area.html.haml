@@ -1,0 +1,8 @@
+= render layout: "wrapper" do |f|
+  = f.hidden_field :gcrf_challenge_area
+  = f.govuk_collection_radio_buttons :gcrf_challenge_area,
+    gcrf_challenge_area_options,
+    :code,
+    :description,
+    legend: { tag: 'h1', size: 'xl', text: t("form.legend.activity.gcrf_challenge_area") },
+    hint: { text: t("form.hint.activity.gcrf_challenge_area") }
