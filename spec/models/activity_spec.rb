@@ -586,6 +586,12 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when gcrf_challenge_area is blank" do
+      subject { build(:activity, gcrf_challenge_area: nil) }
+
+      it { is_expected.to be_invalid(:gcrf_challenge_area_step) }
+    end
+
     context "when oda_eligibility is blank" do
       subject(:activity) { build(:activity, oda_eligibility: nil) }
       it "should not be valid" do

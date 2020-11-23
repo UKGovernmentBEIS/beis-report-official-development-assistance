@@ -428,6 +428,8 @@ en:
               blank: Select an extending organisation
             fstc_applies:
               inclusion: You must select "Yes" or "No"
+            gcrf_challenge_area:
+              blank: Select a GCRF challenge area
   importer:
     errors:
       activity:
