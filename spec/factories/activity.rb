@@ -4,6 +4,7 @@ FactoryBot.define do
     delivery_partner_identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
     roda_identifier_fragment { Faker::Alphanumeric.alpha(number: 5) }
     roda_identifier_compound { nil }
+    beis_id { nil }
     description { Faker::Lorem.paragraph }
     sector_category { "111" }
     sector { "11110" }

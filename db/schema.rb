@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_19_110735) do
+ActiveRecord::Schema.define(version: 2020_11_20_150002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 2020_11_19_110735) do
     t.boolean "sdgs_apply", default: false, null: false
     t.integer "covid19_related", default: 0
     t.text "objectives"
+    t.string "beis_id"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
