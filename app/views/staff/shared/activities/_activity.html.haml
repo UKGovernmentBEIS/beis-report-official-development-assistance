@@ -372,6 +372,17 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :oda_eligibility)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:oda_eligibility)}"), activity_step_path(activity_presenter, :oda_eligibility), t("summary.label.activity.oda_eligibility"))
 
+  - if @activity.is_project?
+    .govuk-summary-list__row.oda_eligibility_lead
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.oda_eligibility_lead")
+      %dd.govuk-summary-list__value
+        = activity_presenter.oda_eligibility_lead
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :oda_eligibility_lead)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:oda_eligibility_lead)}"), activity_step_path(activity_presenter, :oda_eligibility_lead), t("summary.label.activity.oda_eligibility_lead"))
+
+
   - if policy(activity_presenter).redact_from_iati?
     .govuk-summary-list__row.publish_to_iati
       %dt.govuk-summary-list__key
