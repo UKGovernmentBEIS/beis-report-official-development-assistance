@@ -62,6 +62,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.count).to eq(1)
 
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("roda_id")
       expect(subject.errors.first.column).to eq(:roda_id)
       expect(subject.errors.first.value).to eq("FAKE RODA ID")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.not_found"))
@@ -77,6 +78,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("RODA ID Fragment")
       expect(subject.errors.first.column).to eq(:roda_identifier_fragment)
       expect(subject.errors.first.value).to eq("13344")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.fragment_present"))
@@ -92,6 +94,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Parent RODA ID")
       expect(subject.errors.first.column).to eq(:parent_id)
       expect(subject.errors.first.value).to eq(parent_activity.roda_identifier_fragment)
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.parent_present"))
@@ -156,6 +159,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(3)
+      expect(subject.errors.first.csv_column).to eq("roda_id")
       expect(subject.errors.first.column).to eq(:roda_id)
       expect(subject.errors.first.value).to eq("FAKE RODA ID")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.not_found"))
@@ -181,6 +185,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(3)
+      expect(subject.errors.first.csv_column).to eq("Recipient Region")
       expect(subject.errors.first.column).to eq(:recipient_region)
       expect(subject.errors.first.value).to eq("111111")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_region"))
@@ -198,6 +203,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("roda_id")
       expect(subject.errors.first.column).to eq(:roda_id)
       expect(subject.errors.first.value).to eq("")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_create"))
@@ -284,6 +290,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Recipient Region")
       expect(subject.errors.first.column).to eq(:recipient_region)
       expect(subject.errors.first.value).to eq("111111")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_region"))
@@ -299,6 +306,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Recipient Country")
       expect(subject.errors.first.column).to eq(:recipient_country)
       expect(subject.errors.first.value).to eq("BBBBBB")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_country"))
@@ -314,6 +322,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Intended Beneficiaries")
       expect(subject.errors.first.column).to eq(:intended_beneficiaries)
       expect(subject.errors.first.value).to eq("ffsdfdsfsfds")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_intended_beneficiaries"))
@@ -329,6 +338,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("GDI")
       expect(subject.errors.first.column).to eq(:gdi)
       expect(subject.errors.first.value).to eq("2222222")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_gdi"))
@@ -345,6 +355,7 @@ RSpec.describe Activities::ImportFromCsv do
 
         expect(subject.errors.count).to eq(1)
         expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq("SDG #{i}")
         expect(subject.errors.first.column).to eq("sdg_#{i}".to_sym)
         expect(subject.errors.first.value).to eq("9999999")
         expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sdg_goal"))
@@ -361,6 +372,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Covid-19 related research")
       expect(subject.errors.first.column).to eq(:covid19_related)
       expect(subject.errors.first.value).to eq("9999999")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_covid19_related"))
@@ -376,6 +388,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("ODA Eligibility")
       expect(subject.errors.first.column).to eq(:oda_eligibility)
       expect(subject.errors.first.value).to eq("some_invalid_string")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_oda_eligibility"))
@@ -391,6 +404,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Programme Status")
       expect(subject.errors.first.column).to eq(:programme_status)
       expect(subject.errors.first.value).to eq("99331")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_programme_status"))
@@ -406,6 +420,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Sector")
       expect(subject.errors.first.column).to eq(:sector)
       expect(subject.errors.first.value).to eq("53453453453453")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sector"))
@@ -421,6 +436,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Collaboration type (Bi/Multi Marker)")
       expect(subject.errors.first.column).to eq(:collaboration_type)
       expect(subject.errors.first.value).to eq("99")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_collaboration_type"))
@@ -436,6 +452,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Flow")
       expect(subject.errors.first.column).to eq(:flow)
       expect(subject.errors.first.value).to eq("1")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_flow"))
@@ -451,6 +468,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Aid type")
       expect(subject.errors.first.column).to eq(:aid_type)
       expect(subject.errors.first.value).to eq("1")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_aid_type"))
@@ -466,6 +484,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Free Standing Technical Cooperation")
       expect(subject.errors.first.column).to eq(:fstc_applies)
       expect(subject.errors.first.value).to eq("x")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_fstc_applies"))
@@ -489,6 +508,7 @@ RSpec.describe Activities::ImportFromCsv do
 
         expect(subject.errors.count).to eq(1)
         expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq(attr_name)
         expect(subject.errors.first.column).to eq(column_name)
         expect(subject.errors.first.value).to eq("01/01/2020")
         expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_#{column_name}"))
@@ -505,6 +525,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Parent RODA ID")
       expect(subject.errors.first.column).to eq(:parent_id)
       expect(subject.errors.first.value).to eq("111111")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.parent_not_found"))
@@ -520,6 +541,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("RODA ID Fragment")
       expect(subject.errors.first.column).to eq(:roda_identifier_fragment)
       expect(subject.errors.first.value).to eq("%^$!234566")
       expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.roda_identifier_fragment.invalid_characters"))
