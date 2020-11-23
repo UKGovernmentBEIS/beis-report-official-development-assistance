@@ -214,6 +214,10 @@ RSpec.feature "Users can create a programme activity" do
         expect(page).to have_content t("form.legend.activity.gcrf_challenge_area")
         expect(page).to have_content t("form.hint.activity.gcrf_challenge_area")
 
+        # Don't select a GCRF challenge area
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.gcrf_challenge_area.blank")
+
         # GCRF challenge area (GCRF)
         choose("activity[gcrf_challenge_area]", option: "1")
         click_button t("form.button.activity.submit")
