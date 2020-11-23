@@ -36,6 +36,7 @@ en:
           never_eligible: No - was never eligible
           eligible: Eligible
           no_longer_eligible: No longer eligible
+        oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
         policy_marker_gender: Gender
         policy_marker_climate_change_adaptation: Climate change - Adaptation
         policy_marker_climate_change_mitigation: Climate change - Mitigation
@@ -145,6 +146,7 @@ en:
         objectives: Please refrain from using any abbreviations
         intended_beneficiaries: You can select up to 10 different countries
         oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
+        oda_eligibility_lead: This will be used by us as a first point of contact for anything ODA related.
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
         roda_identifier_fragment: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.
@@ -170,7 +172,7 @@ en:
           gender: Gender equality is explicitly promoted in activity documentation through specific measures for this activity
           climate_change_adaptation: This activity intends to reduce the vulnerability of human or natural systems to the impacts of climate change and climate related risks, by maintaining or increasing adaptive capacity and resilience
           climate_change_mitigation: This activity contributes to the objective of stabilisation of greenhouse gas (GHG) concentrations in the atmosphere at a level that would prevent dangerous anthropogenic interference with the climate system by promoting efforts to reduce or limit GHG emissions or to enhance GHG sequestration
-          biodiversity: 'This activity promotes at least one of the three objectives of the Convention: the conservation of bio-diversity, sustainable use of its components (ecosystems, species or genetic resources), or fair and equitable sharing of the benefits of the utilisation of genetic resources'
+          biodiversity: "This activity promotes at least one of the three objectives of the Convention: the conservation of bio-diversity, sustainable use of its components (ecosystems, species or genetic resources), or fair and equitable sharing of the benefits of the utilisation of genetic resources"
           desertification: This activity is aimed at combating desertification or mitigating the effects of drought in arid, semi arid and dry sub-humid areas through prevention and/or reduction of land degradation, rehabilitation of partly degraded land, or reclamation of desertified land
           disability: This activity either has a deliberate objective of, contributes to, or supports the implementation and/or monitoring of the Convention on the Rights of Persons with Disabilities
           disaster_risk_reduction: This activity promotes the goal and global targets of the Sendai Framework , to achieve substantial reduction of disaster risk and losses in lives, livelihoods and health and in the economic, physical, social, cultural and environmental assets of persons, businesses, communities and countries
@@ -340,6 +342,7 @@ en:
         level: Hierarchy level
         objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
+        oda_eligibility_lead: ODA eligibility lead
         parent: Select the parent
         policy_markers: Policy markers
         programme_status: A description of the status of the activity

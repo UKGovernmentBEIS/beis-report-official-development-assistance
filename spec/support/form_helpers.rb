@@ -49,6 +49,7 @@ module FormHelpers
     policy_marker_nutrition: "Not assessed",
     covid19_related: "4",
     oda_eligibility: "Eligible",
+    oda_eligibility_lead: Faker::Name.name,
     level:,
     parent: nil
   )
@@ -272,6 +273,13 @@ module FormHelpers
     expect(page).to have_content t("form.hint.activity.oda_eligibility")
     choose oda_eligibility
     click_button t("form.button.activity.submit")
+
+    if level == "project" || level == "third_party_project"
+      expect(page).to have_content t("form.label.activity.oda_eligibility_lead")
+      expect(page).to have_content t("form.hint.activity.oda_eligibility_lead")
+      fill_in "activity[oda_eligibility_lead]", with: oda_eligibility_lead
+      click_button t("form.button.activity.submit")
+    end
 
     expect(page).to have_content delivery_partner_identifier
     expect(page).to have_content title
