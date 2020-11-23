@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2020_11_20_150002) do
     t.integer "covid19_related", default: 0
     t.text "objectives"
     t.string "beis_id"
+    t.string "oda_eligibility_lead"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"

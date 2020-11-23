@@ -34,6 +34,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :policy_markers,
     :covid19_related,
     :oda_eligibility,
+    :oda_eligibility_lead,
   ]
 
   steps(*FORM_STEPS)
@@ -73,6 +74,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step unless @activity.is_project?
     when :sustainable_development_goals
       skip_step if @activity.fund?
+    when :oda_eligibility_lead
+      skip_step unless @activity.is_project?
     end
 
     render_wizard
@@ -176,6 +179,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       end
     when :oda_eligibility
       @activity.assign_attributes(oda_eligibility: oda_eligibility)
+    when :oda_eligibility_lead
+      @activity.assign_attributes(oda_eligibility_lead: oda_eligibility_lead)
     end
 
     update_form_state
@@ -355,6 +360,10 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def oda_eligibility
     params.require(:activity).permit(:oda_eligibility).fetch("oda_eligibility", nil)
+  end
+
+  def oda_eligibility_lead
+    params.require(:activity).permit(:oda_eligibility_lead).fetch("oda_eligibility_lead", nil)
   end
 
   def finish_wizard_path

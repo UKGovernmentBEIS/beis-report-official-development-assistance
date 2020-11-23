@@ -568,6 +568,28 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when saving in the oda_eligibility_lead_step context" do
+      context "and the activity is a fund" do
+        subject { build(:activity, level: :fund) }
+        it { should_not validate_presence_of(:oda_eligibility_lead).on(:oda_eligibility_lead_step) }
+      end
+
+      context "and the activity is a programme" do
+        subject { build(:activity, level: :programme) }
+        it { should_not validate_presence_of(:oda_eligibility_lead).on(:oda_eligibility_lead_step) }
+      end
+
+      context "and the activity is a project" do
+        subject { build(:activity, level: :project) }
+        it { should validate_presence_of(:oda_eligibility_lead).on(:oda_eligibility_lead_step) }
+      end
+
+      context "and the activity is a third party project" do
+        subject { build(:activity, level: :third_party_project) }
+        it { should validate_presence_of(:oda_eligibility_lead).on(:oda_eligibility_lead_step) }
+      end
+    end
+
     context "when saving in the update_extending_organisation context" do
       subject { build(:activity) }
       it { should validate_presence_of(:extending_organisation_id).on(:update_extending_organisation) }
