@@ -25,6 +25,20 @@ en:
           "false": "No"
         collaboration_type: What is the collaboration type for this activity?
         country_delivery_partners: Name and acronym
+        gcrf_challenge_area_options:
+          "0": Not applicable
+          "1": Secure and resilient food systems supported by sustainable marine resources and agriculture
+          "2": Sustainable health and well being
+          "3": Inclusive and equitable quality education
+          "4": Clean air, water and sanitation
+          "5": Affordable, reliable, sustainable energy
+          "6": Sustainable livelihoods supported by strong foundations for inclusive economic growth and innovation
+          "7": Resilience and action on short-term environmental shocks and long-term environmental change
+          "8": Sustainable cities and communities
+          "9": Sustainable production and consumption of materials and other resources
+          "10": Understand and respond effectively to forced displacement and multiple refugee crises
+          "11": Reduce conflict and promote peace, justice and humanitarian action
+          "12": Reduce poverty and inequality, including gender inequalities
         gdi: GDI
         geography_options:
           recipient_region: Region
@@ -220,6 +234,7 @@ en:
           label: Free-Standing Technical Cooperation applies?
           "false": "No"
           "true": "Yes"
+        gcrf_challenge_area: GCRF challenge area
         gdi: GDI
         geography: Benefitting recipient geography
         delivery_partner_identifier: Delivery partner identifier
