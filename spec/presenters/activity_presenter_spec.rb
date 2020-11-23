@@ -410,6 +410,15 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#gcrf_challenge_area" do
+    it "returns the locale value for the stored integer" do
+      activity = build(:activity, gcrf_challenge_area: 2)
+      result = described_class.new(activity)
+
+      expect(result.gcrf_challenge_area).to eql "Sustainable health and well being"
+    end
+  end
+
   describe "#oda_eligibility" do
     context "when the activity is ODA eligible" do
       it "returns the locale value for this option" do
