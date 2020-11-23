@@ -24,6 +24,7 @@ FactoryBot.define do
     aid_type { "B02" }
     level { :fund }
     publish_to_iati { true }
+    oda_eligibility_lead { Faker::Name.name }
 
     form_state { "complete" }
 
@@ -170,6 +171,7 @@ FactoryBot.define do
     policy_marker_disability { nil }
     policy_marker_disaster_risk_reduction { nil }
     policy_marker_nutrition { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :at_roda_identifier_step do
@@ -202,6 +204,7 @@ FactoryBot.define do
     policy_marker_disability { nil }
     policy_marker_disaster_risk_reduction { nil }
     policy_marker_nutrition { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :at_purpose_step do
@@ -232,6 +235,7 @@ FactoryBot.define do
     policy_marker_disability { nil }
     policy_marker_disaster_risk_reduction { nil }
     policy_marker_nutrition { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :at_region_step do
@@ -250,6 +254,7 @@ FactoryBot.define do
     policy_marker_disability { nil }
     policy_marker_disaster_risk_reduction { nil }
     policy_marker_nutrition { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :at_geography_step do
@@ -269,6 +274,7 @@ FactoryBot.define do
     policy_marker_disability { nil }
     policy_marker_disaster_risk_reduction { nil }
     policy_marker_nutrition { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :nil_form_state do
@@ -288,6 +294,7 @@ FactoryBot.define do
     policy_marker_disability { nil }
     policy_marker_disaster_risk_reduction { nil }
     policy_marker_nutrition { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :at_sustainable_development_goals_step do
@@ -330,6 +337,7 @@ FactoryBot.define do
     extending_organisation_id { nil }
     parent { nil }
     level { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :level_form_state do
@@ -364,6 +372,7 @@ FactoryBot.define do
     policy_marker_nutrition { nil }
     extending_organisation_id { nil }
     parent { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :parent_form_state do
@@ -389,6 +398,7 @@ FactoryBot.define do
     aid_type { nil }
     extending_organisation_id { nil }
     parent { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :with_transparency_identifier do

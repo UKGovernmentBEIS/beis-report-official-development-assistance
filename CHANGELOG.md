@@ -394,6 +394,7 @@
 - Add missing regions back on RODA and open scope of country list for `intended_beneficiaries`
 - `Intended_beneficiaries` is now optional in all cases
 - Store the BEIS ID and export it to the report CSV file
+- Add field to record the ODA eligibility lead
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...HEAD
 [release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
