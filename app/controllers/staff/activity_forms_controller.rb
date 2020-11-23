@@ -34,6 +34,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :fstc_applies,
     :policy_markers,
     :covid19_related,
+    :gcrf_challenge_area,
     :oda_eligibility,
     :oda_eligibility_lead,
     :uk_dp_named_contact,
@@ -179,6 +180,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       )
     when :covid19_related
       @activity.assign_attributes(covid19_related: covid19_related)
+    when :gcrf_challenge_area
+      @activity.assign_attributes(gcrf_challenge_area)
     when :sustainable_development_goals
       @activity.assign_attributes(sustainable_development_goals)
 
@@ -370,6 +373,10 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def covid19_related
     params.require(:activity).permit(:covid19_related).fetch("covid19_related", 0)
+  end
+
+  def gcrf_challenge_area
+    params.require(:activity).permit(:gcrf_challenge_area)
   end
 
   def oda_eligibility

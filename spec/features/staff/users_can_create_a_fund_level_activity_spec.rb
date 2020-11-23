@@ -283,6 +283,12 @@ RSpec.feature "Users can create a fund level activity" do
 
         # Covid19-related has a default and can't be set to blank so we skip
         click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.gcrf_challenge_area")
+        expect(page).to have_content t("form.hint.activity.gcrf_challenge_area")
+
+        # GCRF challenge area (GCRF)
+        choose("activity[gcrf_challenge_area]", option: "1")
+        click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.oda_eligibility")
 
         # oda_eligibility has the default value already selected

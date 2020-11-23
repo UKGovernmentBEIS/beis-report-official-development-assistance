@@ -1,0 +1,27 @@
+data:
+  - code: 0
+    description: Not applicable
+  - code: 1
+    description: Secure and resilient food systems supported by sustainable marine resources and agriculture
+  - code: 2
+    description: Sustainable health and well being
+  - code: 3
+    description: Inclusive and equitable quality education
+  - code: 4
+    description: Clean air, water and sanitation
+  - code: 5
+    description: Affordable, reliable, sustainable energy
+  - code: 6
+    description: Sustainable livelihoods supported by strong foundations for inclusive economic growth and innovation
+  - code: 7
+    description: Resilience and action on short-term environmental shocks and long-term environmental change
+  - code: 8
+    description: Sustainable cities and communities
+  - code: 9
+    description: Sustainable production and consumption of materials and other resources
+  - code: 10
+    description: Understand and respond effectively to forced displacement and multiple refugee crises
+  - code: 11
+    description: Reduce conflict and promote peace, justice and humanitarian action
+  - code: 12
+    description: Reduce poverty and inequality, including gender inequalities
