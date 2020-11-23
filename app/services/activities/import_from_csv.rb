@@ -4,6 +4,10 @@ module Activities
       def csv_row
         row + 2
       end
+
+      def csv_column
+        Converter::FIELDS[column] || column.to_s
+      end
     }
 
     attr_reader :errors, :created, :updated
