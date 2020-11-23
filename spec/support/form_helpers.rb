@@ -331,6 +331,7 @@ module FormHelpers
       end
     end
     expect(page).to have_content oda_eligibility
+    expect(page).to have_content oda_eligibility_lead if level == "project" || level == "third_party_project"
     expect(page).to have_content localise_date_from_input_fields(
       year: planned_start_date_year,
       month: planned_start_date_month,
