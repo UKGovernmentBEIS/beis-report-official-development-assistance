@@ -395,6 +395,7 @@
 - `Intended_beneficiaries` is now optional in all cases
 - Store the BEIS ID and export it to the report CSV file
 - Add field to record the ODA eligibility lead
+- Add missing fields to the activity importer
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...HEAD
 [release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
