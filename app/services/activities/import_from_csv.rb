@@ -178,6 +178,10 @@ module Activities
         call_close_date: "Call close date",
         total_applications: "Total applications",
         total_awards: "Total awards",
+        planned_start_date: "Planned start date",
+        planned_end_date: "Planned end date",
+        actual_start_date: "Actual start date",
+        actual_end_date: "Actual end date",
       }
 
       def initialize(row)
@@ -302,6 +306,22 @@ module Activities
 
       def convert_call_close_date(call_close_date)
         parse_date(call_close_date, I18n.t("importer.errors.activity.invalid_call_close_date"))
+      end
+
+      def convert_planned_start_date(planned_start_date)
+        parse_date(planned_start_date, I18n.t("importer.errors.activity.invalid_planned_start_date"))
+      end
+
+      def convert_planned_end_date(planned_end_date)
+        parse_date(planned_end_date, I18n.t("importer.errors.activity.invalid_planned_end_date"))
+      end
+
+      def convert_actual_start_date(actual_start_date)
+        parse_date(actual_start_date, I18n.t("importer.errors.activity.invalid_actual_start_date"))
+      end
+
+      def convert_actual_end_date(actual_end_date)
+        parse_date(actual_end_date, I18n.t("importer.errors.activity.invalid_actual_end_date"))
       end
 
       def parse_date(date, message)

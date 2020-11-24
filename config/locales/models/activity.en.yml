@@ -429,6 +429,10 @@ en:
         invalid_programme_status: The Programme status option is invalid
         invalid_call_open_date: The Call Open Date option is in an invalid format
         invalid_call_close_date: The Call Close Date option is in an invalid format
+        invalid_actual_start_date: The Actual start date is in an invalid format
+        invalid_actual_end_date: The Actual end date is in an invalid format
+        invalid_planned_start_date: The Planned start date is in an invalid format
+        invalid_planned_end_date: The Planned end date is in an invalid format
         parent_not_found: The parent activity cannot be found
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:
