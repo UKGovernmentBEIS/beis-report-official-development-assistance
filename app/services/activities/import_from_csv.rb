@@ -99,31 +99,6 @@ module Activities
     end
 
     class ActivityCreator
-      IMPORT_VALIDATION_STEPS = [
-        :level_step,
-        :parent_step,
-        :identifier_step,
-        :roda_identifier_step,
-        :geography_step,
-        :region_step,
-        :country_step,
-        :requires_additional_benefitting_countries_step,
-        :intended_beneficiaries_step,
-        :gdi_step,
-        :sustainable_development_goals_step,
-        :covid19_related_step,
-        :oda_eligibility_step,
-        :programme_status_step,
-        :call_present_step,
-        :call_dates_step,
-        :sector_category_step,
-        :sector_step,
-        :collaboration_type_step,
-        :flow_step,
-        :aid_type_step,
-        :fstc_applies_step,
-      ]
-
       attr_reader :errors, :activity
 
       def initialize(organisation, row)
@@ -144,8 +119,7 @@ module Activities
         @activity.level = calculate_level
         @activity.cache_roda_identifier
 
-        # TODO: This will eventually need to validate against all contexts (Activity::VALIDATION_STEPS)
-        return if @activity.save(context: IMPORT_VALIDATION_STEPS)
+        return if @activity.save(context: Activity::VALIDATION_STEPS)
 
         @activity.errors.each do |attr_name, message|
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
