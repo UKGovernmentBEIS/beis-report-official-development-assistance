@@ -587,9 +587,25 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when gcrf_challenge_area is blank" do
-      subject { build(:activity, gcrf_challenge_area: nil) }
+      subject { build(:programme_activity, parent: fund, gcrf_challenge_area: nil) }
+      let(:fund) { build(:fund_activity) }
 
-      it { is_expected.to be_invalid(:gcrf_challenge_area_step) }
+      it { is_expected.to be_valid(:gcrf_challenge_area_step) }
+      it { is_expected.to be_valid }
+
+      context "with a GCRF funded activity" do
+        let(:fund) { build(:fund_activity, :gcrf) }
+
+        it { is_expected.to be_invalid(:gcrf_challenge_area_step) }
+        it { is_expected.to be_invalid }
+      end
+
+      context "for a fund" do
+        subject { build(:fund_activity, :gcrf, gcrf_challenge_area: nil) }
+
+        it { is_expected.to be_valid(:gcrf_challenge_area_step) }
+        it { is_expected.to be_valid }
+      end
     end
 
     context "when oda_eligibility is blank" do

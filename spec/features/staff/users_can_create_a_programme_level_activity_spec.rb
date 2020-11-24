@@ -19,7 +19,7 @@ RSpec.feature "Users can create a programme activity" do
 
     context "validations" do
       scenario "validation errors work as expected" do
-        parent = create(:fund_activity, organisation: user.organisation)
+        parent = create(:fund_activity, :gcrf, organisation: user.organisation)
         identifier = "foo"
 
         visit activities_path
