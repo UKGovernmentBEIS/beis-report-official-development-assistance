@@ -120,6 +120,7 @@ module Activities
         :sector_step,
         :collaboration_type_step,
         :flow_step,
+        :aid_type_step,
       ]
 
       attr_reader :errors, :activity
@@ -189,6 +190,7 @@ module Activities
         sector: "Sector",
         collaboration_type: "Collaboration type (Bi/Multi Marker)",
         flow: "Flow",
+        aid_type: "Aid type",
       }
 
       def initialize(row)
@@ -329,6 +331,14 @@ module Activities
           flow,
           :flow,
           I18n.t("importer.errors.activity.invalid_flow"),
+        )
+      end
+
+      def convert_aid_type(aid_type)
+        validate_from_codelist(
+          aid_type,
+          :aid_type,
+          I18n.t("importer.errors.activity.invalid_aid_type"),
         )
       end
 
