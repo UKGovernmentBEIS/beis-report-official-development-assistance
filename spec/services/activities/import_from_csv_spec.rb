@@ -20,6 +20,7 @@ RSpec.describe Activities::ImportFromCsv do
       "SDG 1" => "1",
       "SDG 2" => "2",
       "SDG 3" => "3",
+      "Covid-19 related research" => "0",
     }
   end
   let(:new_activity_attributes) do
@@ -38,6 +39,7 @@ RSpec.describe Activities::ImportFromCsv do
       "SDG 1" => "1",
       "SDG 2" => "2",
       "SDG 3" => "3",
+      "Covid-19 related research" => "0",
     }
   end
 
@@ -105,6 +107,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
       expect(existing_activity.gdi).to eq("1")
       expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Delivery partner identifier"])
+      expect(existing_activity.covid19_related).to eq(0)
     end
 
     it "ignores any blank columns" do
@@ -207,6 +210,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.gdi).to eq("1")
       expect(new_activity.geography).to eq("recipient_region")
       expect(new_activity.delivery_partner_identifier).to eq(new_activity_attributes["Delivery partner identifier"])
+      expect(new_activity.covid19_related).to eq(0)
     end
 
     it "sets the geography to recipient country and infers the region if the region is not specified" do
@@ -295,6 +299,21 @@ RSpec.describe Activities::ImportFromCsv do
         expect(subject.errors.first.value).to eq("9999999")
         expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sdg_goal"))
       end
+    end
+
+    it "has an error if the Covid-19 related option is invalid" do
+      new_activity_attributes["Covid-19 related research"] = "9999999"
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.column).to eq(:covid19_related)
+      expect(subject.errors.first.value).to eq("9999999")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_covid19_related"))
     end
 
     it "has an error if the parent activity cannot be found" do
