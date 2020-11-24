@@ -111,6 +111,7 @@ module Activities
         :intended_beneficiaries_step,
         :gdi_step,
         :sustainable_development_goals_step,
+        :covid19_related_step,
       ]
 
       attr_reader :errors, :activity
@@ -166,6 +167,7 @@ module Activities
         sdg_1: "SDG 1",
         sdg_2: "SDG 2",
         sdg_3: "SDG 3",
+        covid19_related: "Covid-19 related research",
       }
 
       def initialize(row)
@@ -257,6 +259,14 @@ module Activities
         raise I18n.t("importer.errors.activity.parent_not_found") if parent.nil?
 
         parent.id
+      end
+
+      def convert_covid19_related(covid19_related)
+        codelist = covid19_related_radio_options.map(&:code).map(&:to_s)
+
+        raise I18n.t("importer.errors.activity.invalid_covid19_related") unless codelist.include?(covid19_related.to_s)
+
+        covid19_related
       end
 
       def infer_geography(attributes)
