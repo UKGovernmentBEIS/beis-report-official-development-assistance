@@ -121,6 +121,7 @@ module Activities
         :collaboration_type_step,
         :flow_step,
         :aid_type_step,
+        :fstc_applies_step,
       ]
 
       attr_reader :errors, :activity
@@ -191,6 +192,7 @@ module Activities
         collaboration_type: "Collaboration type (Bi/Multi Marker)",
         flow: "Flow",
         aid_type: "Aid type",
+        fstc_applies: "Free Standing Technical Cooperation",
       }
 
       def initialize(row)
@@ -340,6 +342,12 @@ module Activities
           :aid_type,
           I18n.t("importer.errors.activity.invalid_aid_type"),
         )
+      end
+
+      def convert_fstc_applies(fstc_applies)
+        raise I18n.t("importer.errors.activity.invalid_fstc_applies") unless ["1", "0"].include?(fstc_applies)
+
+        fstc_applies
       end
 
       def convert_call_open_date(call_open_date)
