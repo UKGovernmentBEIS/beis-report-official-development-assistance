@@ -23,7 +23,7 @@ namespace :activities do
       # Output errors
       puts "There were #{pluralize(importer.errors.count, "error")} when importing"
       importer.errors.each do |error|
-        puts "At row #{error.csv_row}: #{error.message}"
+        puts "At row #{error.csv_row}, column `#{error.csv_column}`: #{error.message}"
       end
     end
   rescue Errno::ENOENT
