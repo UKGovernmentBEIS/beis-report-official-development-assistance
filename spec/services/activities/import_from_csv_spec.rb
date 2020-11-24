@@ -27,6 +27,10 @@ RSpec.describe Activities::ImportFromCsv do
       "Call close date" => "2020-01-02",
       "Total applications" => "12",
       "Total awards" => "12",
+      "Planned start date" => "2020-01-02",
+      "Actual start date" => "2020-01-03",
+      "Planned end date" => "2020-01-04",
+      "Actual end date" => "2020-01-05",
     }
   end
   let(:new_activity_attributes) do
@@ -52,6 +56,10 @@ RSpec.describe Activities::ImportFromCsv do
       "Call close date" => "2020-01-02",
       "Total applications" => "12",
       "Total awards" => "12",
+      "Planned start date" => "2020-01-02",
+      "Actual start date" => "2020-01-03",
+      "Planned end date" => "2020-01-04",
+      "Actual end date" => "2020-01-05",
     }
   end
 
@@ -124,6 +132,11 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.programme_status).to eq("01")
       expect(existing_activity.call_open_date).to eq(DateTime.parse(existing_activity_attributes["Call open date"]))
       expect(existing_activity.call_close_date).to eq(DateTime.parse(existing_activity_attributes["Call close date"]))
+      expect(existing_activity.planned_start_date).to eq(DateTime.parse(existing_activity_attributes["Planned start date"]))
+      expect(existing_activity.planned_end_date).to eq(DateTime.parse(existing_activity_attributes["Planned end date"]))
+      expect(existing_activity.actual_start_date).to eq(DateTime.parse(existing_activity_attributes["Actual start date"]))
+      expect(existing_activity.actual_end_date).to eq(DateTime.parse(existing_activity_attributes["Actual end date"]))
+
       expect(existing_activity.call_present).to eq(true)
     end
 
@@ -233,6 +246,10 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.call_open_date).to eq(DateTime.parse(new_activity_attributes["Call open date"]))
       expect(new_activity.call_close_date).to eq(DateTime.parse(new_activity_attributes["Call close date"]))
       expect(new_activity.call_present).to eq(true)
+      expect(new_activity.planned_start_date).to eq(DateTime.parse(new_activity_attributes["Planned start date"]))
+      expect(new_activity.planned_end_date).to eq(DateTime.parse(new_activity_attributes["Planned end date"]))
+      expect(new_activity.actual_start_date).to eq(DateTime.parse(new_activity_attributes["Actual start date"]))
+      expect(new_activity.actual_end_date).to eq(DateTime.parse(new_activity_attributes["Actual end date"]))
     end
 
     it "sets the geography to recipient country and infers the region if the region is not specified" do
@@ -381,19 +398,28 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_programme_status"))
     end
 
-    it "has an error if the Call Open Date is invalid" do
-      new_activity_attributes["Call open date"] = "01/01/2020"
+    {
+      "Call open date" => :call_open_date,
+      "Call close date" => :call_close_date,
+      "Planned start date" => :planned_start_date,
+      "Planned end date" => :planned_end_date,
+      "Actual start date" => :actual_start_date,
+      "Actual end date" => :actual_end_date,
+    }.each do |attr_name, column_name|
+      it "has an error if any the #{attr_name} is invalid" do
+        new_activity_attributes[attr_name] = "01/01/2020"
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.column).to eq(:call_open_date)
-      expect(subject.errors.first.value).to eq("01/01/2020")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_call_open_date"))
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.column).to eq(column_name)
+        expect(subject.errors.first.value).to eq("01/01/2020")
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_#{column_name}"))
+      end
     end
 
     it "has an error if the parent activity cannot be found" do
