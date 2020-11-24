@@ -34,6 +34,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Sector" => "11220",
       "Collaboration type (Bi/Multi Marker)" => "1",
       "Flow" => "10",
+      "Aid type" => "B03",
     }
   end
   let(:new_activity_attributes) do
@@ -66,6 +67,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Sector" => "11220",
       "Collaboration type (Bi/Multi Marker)" => "1",
       "Flow" => "10",
+      "Aid type" => "B03",
     }
   end
 
@@ -147,6 +149,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.sector_category).to eq("112")
       expect(existing_activity.collaboration_type).to eq(existing_activity_attributes["Collaboration type (Bi/Multi Marker)"])
       expect(existing_activity.flow).to eq(existing_activity_attributes["Flow"])
+      expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
     end
 
     it "ignores any blank columns" do
@@ -263,6 +266,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.sector_category).to eq("112")
       expect(new_activity.collaboration_type).to eq(new_activity_attributes["Collaboration type (Bi/Multi Marker)"])
       expect(new_activity.flow).to eq(new_activity_attributes["Flow"])
+      expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
     end
 
     it "sets the geography to recipient country and infers the region if the region is not specified" do
@@ -454,6 +458,21 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:flow)
       expect(subject.errors.first.value).to eq("1")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_flow"))
+    end
+
+    it "has an error if the Aid Type option is invalid" do
+      new_activity_attributes["Aid type"] = "1"
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.column).to eq(:aid_type)
+      expect(subject.errors.first.value).to eq("1")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_aid_type"))
     end
 
     {
