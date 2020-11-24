@@ -36,7 +36,7 @@ class Activity < ApplicationRecord
     :collaboration_type_step,
     :flow_step,
     :sustainable_development_goals_step,
-    :aid_type,
+    :aid_type_step,
     :fstc_applies_step,
     :policy_markers_step,
     :covid19_related_step,
