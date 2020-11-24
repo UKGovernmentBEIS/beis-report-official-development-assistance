@@ -33,6 +33,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Actual end date" => "2020-01-05",
       "Sector" => "11220",
       "Collaboration type (Bi/Multi Marker)" => "1",
+      "Flow" => "10",
     }
   end
   let(:new_activity_attributes) do
@@ -64,6 +65,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Actual end date" => "2020-01-05",
       "Sector" => "11220",
       "Collaboration type (Bi/Multi Marker)" => "1",
+      "Flow" => "10",
     }
   end
 
@@ -144,6 +146,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.sector).to eq(existing_activity_attributes["Sector"])
       expect(existing_activity.sector_category).to eq("112")
       expect(existing_activity.collaboration_type).to eq(existing_activity_attributes["Collaboration type (Bi/Multi Marker)"])
+      expect(existing_activity.flow).to eq(existing_activity_attributes["Flow"])
     end
 
     it "ignores any blank columns" do
@@ -259,6 +262,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.sector).to eq(new_activity_attributes["Sector"])
       expect(new_activity.sector_category).to eq("112")
       expect(new_activity.collaboration_type).to eq(new_activity_attributes["Collaboration type (Bi/Multi Marker)"])
+      expect(new_activity.flow).to eq(new_activity_attributes["Flow"])
     end
 
     it "sets the geography to recipient country and infers the region if the region is not specified" do
@@ -435,6 +439,21 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:collaboration_type)
       expect(subject.errors.first.value).to eq("99")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_collaboration_type"))
+    end
+
+    it "has an error if the Flow option is invalid" do
+      new_activity_attributes["Flow"] = "1"
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.column).to eq(:flow)
+      expect(subject.errors.first.value).to eq("1")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_flow"))
     end
 
     {

@@ -119,6 +119,7 @@ module Activities
         :sector_category_step,
         :sector_step,
         :collaboration_type_step,
+        :flow_step,
       ]
 
       attr_reader :errors, :activity
@@ -187,6 +188,7 @@ module Activities
         actual_end_date: "Actual end date",
         sector: "Sector",
         collaboration_type: "Collaboration type (Bi/Multi Marker)",
+        flow: "Flow",
       }
 
       def initialize(row)
@@ -319,6 +321,14 @@ module Activities
           collaboration_type,
           :collaboration_type,
           I18n.t("importer.errors.activity.invalid_collaboration_type"),
+        )
+      end
+
+      def convert_flow(flow)
+        validate_from_codelist(
+          flow,
+          :flow,
+          I18n.t("importer.errors.activity.invalid_flow"),
         )
       end
 
