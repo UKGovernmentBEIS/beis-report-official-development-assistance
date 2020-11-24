@@ -152,6 +152,7 @@ module Activities
         roda_identifier_fragment: "RODA ID Fragment",
         parent_id: "Parent RODA ID",
         gdi: "GDI",
+        gcrf_challenge_area: "GCRF Challenge Area",
         sdg_1: "SDG 1",
         sdg_2: "SDG 2",
         sdg_3: "SDG 3",
@@ -275,6 +276,15 @@ module Activities
       alias convert_policy_marker_disability convert_policy_marker
       alias convert_policy_marker_disaster_risk_reduction convert_policy_marker
       alias convert_policy_marker_nutrition convert_policy_marker
+
+      def convert_gcrf_challenge_area(gcrf_challenge_area)
+        return nil if gcrf_challenge_area.blank?
+
+        valid_codes = gcrf_challenge_area_options.map { |area| area.code.to_s }
+        raise I18n.t("importer.errors.activity.invalid_gcrf_challenge_area") unless valid_codes.include?(gcrf_challenge_area)
+
+        gcrf_challenge_area.to_i
+      end
 
       def convert_sustainable_development_goal(goal)
         raise I18n.t("importer.errors.activity.invalid_sdg_goal") unless sdg_options.keys.map(&:to_s).include?(goal.to_s)
