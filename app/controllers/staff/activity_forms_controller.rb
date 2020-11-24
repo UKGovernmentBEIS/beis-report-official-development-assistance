@@ -79,6 +79,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step unless @activity.is_project?
     when :sustainable_development_goals
       skip_step if @activity.fund?
+    when :gcrf_challenge_area
+      skip_step unless @activity.is_gcrf_funded?
     when :oda_eligibility_lead
       skip_step unless @activity.is_project?
     when :uk_dp_named_contact

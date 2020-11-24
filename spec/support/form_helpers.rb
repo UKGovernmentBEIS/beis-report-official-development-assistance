@@ -281,10 +281,12 @@ module FormHelpers
     choose("activity[covid19_related]", option: covid19_related)
     click_button t("form.button.activity.submit")
 
-    expect(page).to have_content t("form.legend.activity.gcrf_challenge_area")
-    expect(page).to have_content t("form.hint.activity.gcrf_challenge_area")
-    choose("activity[gcrf_challenge_area]", option: gcrf_challenge_area)
-    click_button t("form.button.activity.submit")
+    if parent&.is_gcrf_funded?
+      expect(page).to have_content t("form.legend.activity.gcrf_challenge_area")
+      expect(page).to have_content t("form.hint.activity.gcrf_challenge_area")
+      choose("activity[gcrf_challenge_area]", option: gcrf_challenge_area)
+      click_button t("form.button.activity.submit")
+    end
 
     expect(page).to have_content t("form.legend.activity.oda_eligibility")
     expect(page).to have_content t("form.hint.activity.oda_eligibility")

@@ -22,7 +22,13 @@ RSpec.describe Staff::ActivityFormsController do
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }
 
-        it { is_expected.to render_current_step }
+        it { is_expected.to skip_to_next_step }
+
+        context "when activity is the GCRF fund" do
+          let(:activity) { create(:fund_activity, :gcrf, organisation: organisation) }
+
+          it { is_expected.to skip_to_next_step }
+        end
       end
     end
 
@@ -39,7 +45,13 @@ RSpec.describe Staff::ActivityFormsController do
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }
 
-        it { is_expected.to render_current_step }
+        it { is_expected.to skip_to_next_step }
+
+        context "when activity is the GCRF fund" do
+          let(:fund) { create(:fund_activity, :gcrf) }
+
+          it { is_expected.to render_current_step }
+        end
       end
     end
 
@@ -57,7 +69,13 @@ RSpec.describe Staff::ActivityFormsController do
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }
 
-        it { is_expected.to render_current_step }
+        it { is_expected.to skip_to_next_step }
+
+        context "when activity is associated with the GCRF fund" do
+          let(:fund) { create(:fund_activity, :gcrf) }
+
+          it { is_expected.to render_current_step }
+        end
       end
     end
 
@@ -76,7 +94,13 @@ RSpec.describe Staff::ActivityFormsController do
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }
 
-        it { is_expected.to render_current_step }
+        it { is_expected.to skip_to_next_step }
+
+        context "when activity is associated with the GCRF fund" do
+          let(:fund) { create(:fund_activity, :gcrf) }
+
+          it { is_expected.to render_current_step }
+        end
       end
     end
   end
