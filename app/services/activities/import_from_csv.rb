@@ -109,6 +109,7 @@ module Activities
         :country_step,
         :requires_additional_benefitting_countries_step,
         :intended_beneficiaries_step,
+        :gdi_step,
       ]
 
       attr_reader :errors, :activity
@@ -159,6 +160,7 @@ module Activities
         delivery_partner_identifier: "Delivery partner identifier",
         roda_identifier_fragment: "RODA ID Fragment",
         parent_id: "Parent RODA ID",
+        gdi: "GDI",
       }
 
       def initialize(row)
@@ -213,6 +215,14 @@ module Activities
           country,
           :recipient_country,
           I18n.t("importer.errors.activity.invalid_country"),
+        )
+      end
+
+      def convert_gdi(gdi)
+        validate_from_codelist(
+          gdi,
+          :gdi,
+          I18n.t("importer.errors.activity.invalid_gdi"),
         )
       end
 

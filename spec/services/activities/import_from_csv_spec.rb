@@ -16,6 +16,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Recipient Country" => "KH",
       "Intended Beneficiaries" => "KH;KP;ID",
       "Delivery partner identifier" => "1234567890",
+      "GDI" => "1",
     }
   end
   let(:new_activity_attributes) do
@@ -30,6 +31,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Recipient Country" => "KH",
       "Intended Beneficiaries" => "KH;KP;ID",
       "Delivery partner identifier" => "98765432",
+      "GDI" => "1",
     }
   end
 
@@ -95,6 +97,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.recipient_region).to eq(existing_activity_attributes["Recipient Region"])
       expect(existing_activity.recipient_country).to eq(existing_activity_attributes["Recipient Country"])
       expect(existing_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
+      expect(existing_activity.gdi).to eq("1")
       expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Delivery partner identifier"])
     end
 
@@ -195,6 +198,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.recipient_region).to eq(new_activity_attributes["Recipient Region"])
       expect(new_activity.recipient_country).to eq(new_activity_attributes["Recipient Country"])
       expect(new_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
+      expect(new_activity.gdi).to eq("1")
       expect(new_activity.geography).to eq("recipient_region")
       expect(new_activity.delivery_partner_identifier).to eq(new_activity_attributes["Delivery partner identifier"])
     end
@@ -253,6 +257,21 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:intended_beneficiaries)
       expect(subject.errors.first.value).to eq("ffsdfdsfsfds")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_intended_beneficiaries"))
+    end
+
+    it "has an error if the GDI is invalid" do
+      new_activity_attributes["GDI"] = "2222222"
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.column).to eq(:gdi)
+      expect(subject.errors.first.value).to eq("2222222")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_gdi"))
     end
 
     it "has an error if the parent activity cannot be found" do
