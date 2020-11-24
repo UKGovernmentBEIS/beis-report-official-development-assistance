@@ -435,6 +435,7 @@ en:
         invalid_planned_end_date: The Planned end date is in an invalid format
         invalid_sector: The sector code is not valid
         invalid_collaboration_type: The collaboration type code is not valid
+        invalid_flow: The flow code is not valid
         parent_not_found: The parent activity cannot be found
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:
