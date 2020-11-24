@@ -17,6 +17,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Intended Beneficiaries" => "KH|KP|ID",
       "Delivery partner identifier" => "1234567890",
       "GDI" => "1",
+      "GCRF Challenge Area" => "4",
       "SDG 1" => "1",
       "SDG 2" => "2",
       "SDG 3" => "3",
@@ -123,6 +124,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.recipient_country).to eq(existing_activity_attributes["Recipient Country"])
       expect(existing_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
       expect(existing_activity.gdi).to eq("1")
+      expect(existing_activity.gcrf_challenge_area).to eq(4)
       expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Delivery partner identifier"])
       expect(existing_activity.covid19_related).to eq(0)
       expect(existing_activity.oda_eligibility).to eq("never_eligible")
@@ -253,6 +255,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.recipient_country).to eq(new_activity_attributes["Recipient Country"])
       expect(new_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
       expect(new_activity.gdi).to eq("1")
+      expect(new_activity.gcrf_challenge_area).to eq(4)
       expect(new_activity.geography).to eq("recipient_region")
       expect(new_activity.delivery_partner_identifier).to eq(new_activity_attributes["Delivery partner identifier"])
       expect(new_activity.covid19_related).to eq(0)
@@ -361,6 +364,24 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:gdi)
       expect(subject.errors.first.value).to eq("2222222")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_gdi"))
+    end
+
+    context "GCRF Challenge Area" do
+      it "has an error if its invalid" do
+        new_activity_attributes["GCRF Challenge Area"] = "invalid"
+
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq("GCRF Challenge Area")
+        expect(subject.errors.first.column).to eq(:gcrf_challenge_area)
+        expect(subject.errors.first.value).to eq("invalid")
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_gcrf_challenge_area"))
+      end
     end
 
     ["SDG 1", "SDG 2", "SDG 3"].each.with_index(1) do |key, i|

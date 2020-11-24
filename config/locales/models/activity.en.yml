@@ -436,6 +436,7 @@ en:
         invalid_country: The country code cannot be found
         invalid_intended_beneficiaries: The intended beneficiaries are invalid
         invalid_gdi: The GDI code is invalid
+        invalid_gcrf_challenge_area: The GCRF challenge area is invalid
         invalid_sdg_goal: The sustainable development goal is invalid
         invalid_covid19_related: The COVID 19 Related option is invalid
         invalid_oda_eligibility: The ODA Eligibility option is invalid
