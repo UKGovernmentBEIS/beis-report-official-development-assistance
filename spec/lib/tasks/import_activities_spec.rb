@@ -64,8 +64,8 @@ describe "rake activities:import", type: :task do
     context "When there are errors from the importer" do
       let(:errors) do
         [
-          Activities::ImportFromCsv::Error.new(1, 3, "Foo", "Blah"),
-          Activities::ImportFromCsv::Error.new(2, 4, "Bar", "Blah"),
+          Activities::ImportFromCsv::Error.new(1, :title, "Foo", "Blah"),
+          Activities::ImportFromCsv::Error.new(2, :description, "Bar", "Blah"),
         ]
       end
 
@@ -81,7 +81,7 @@ describe "rake activities:import", type: :task do
 
       it "outputs the specific errors" do
         ClimateControl.modify ORGANISATION_ID: organisation.id, CSV: "/foo/bar/baz" do
-          expect { task.execute }.to output(/At row 3: Blah\nAt row 4: Blah/).to_stdout
+          expect { task.execute }.to output(/At row 3, column `Title`: Blah\nAt row 4, column `Description`: Blah/).to_stdout
         end
       end
     end
