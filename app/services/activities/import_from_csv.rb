@@ -114,6 +114,8 @@ module Activities
         :covid19_related_step,
         :oda_eligibility_step,
         :programme_status_step,
+        :call_present_step,
+        :call_dates_step,
       ]
 
       attr_reader :errors, :activity
@@ -172,6 +174,10 @@ module Activities
         covid19_related: "Covid-19 related research",
         oda_eligibility: "ODA Eligibility",
         programme_status: "Programme Status",
+        call_open_date: "Call open date",
+        call_close_date: "Call close date",
+        total_applications: "Total applications",
+        total_awards: "Total awards",
       }
 
       def initialize(row)
@@ -196,6 +202,7 @@ module Activities
         attributes[:geography] = infer_geography(attributes)
         attributes[:requires_additional_benefitting_countries] = (@row["Recipient Country"] && @row["Intended Beneficiaries"]).present?
         attributes[:recipient_region] ||= inferred_region
+        attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
 
         attributes
       end
@@ -287,6 +294,22 @@ module Activities
           :programme_status,
           I18n.t("importer.errors.activity.invalid_programme_status"),
         )
+      end
+
+      def convert_call_open_date(call_open_date)
+        parse_date(call_open_date, I18n.t("importer.errors.activity.invalid_call_open_date"))
+      end
+
+      def convert_call_close_date(call_close_date)
+        parse_date(call_close_date, I18n.t("importer.errors.activity.invalid_call_close_date"))
+      end
+
+      def parse_date(date, message)
+        return if date.blank?
+
+        Date.strptime(date, "%Y-%m-%d").to_datetime
+      rescue ArgumentError
+        raise message
       end
 
       def infer_geography(attributes)
