@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module CodelistHelper
+  class UnreadableCodelist < StandardError; end
+
   DEVELOPING_COUNTRIES_CODE = "998"
   ALLOWED_AID_TYPE_CODES = [
     "B02",
@@ -21,7 +23,7 @@ module CodelistHelper
 
   def yaml_to_objects(entity:, type:, with_empty_item: true)
     data = load_yaml(entity: entity, type: type)
-    return [] if data.empty?
+    raise UnreadableCodelist if data.empty?
 
     objects = data.collect { |item|
       next if item["status"] == "withdrawn"
@@ -37,7 +39,7 @@ module CodelistHelper
 
   def yaml_to_objects_with_description(entity:, type:, code_displayed_in_name: false)
     data = load_yaml(entity: entity, type: type)
-    return [] if data.empty?
+    raise UnreadableCodelist if data.empty?
 
     data = data.collect { |item|
       name = code_displayed_in_name ? "#{item["name"]} (#{item["code"]})" : item["name"]
@@ -87,14 +89,8 @@ module CodelistHelper
   end
 
   def intended_beneficiaries_checkbox_options
-    recipient_region = @activity.recipient_region
-    list = load_yaml(entity: "activity", type: "intended_beneficiaries")
-    show_list = if recipient_region == DEVELOPING_COUNTRIES_CODE
-      list.values.flatten
-    else
-      list[recipient_region]
-    end
-    show_list.collect { |item|
+    list = load_yaml(entity: "activity", type: "intended_beneficiaries").values.flatten
+    list.collect { |item|
       OpenStruct.new(name: item["name"], code: item["code"])
     }.compact.sort_by(&:name)
   end
@@ -145,6 +141,13 @@ module CodelistHelper
 
     filtered_list = objects.select { |object| ALLOWED_POLICY_MARKERS_SIGNIFICANCES.include?(object.code) }.sort_by(&:code)
     filtered_list.unshift(not_assessed_option)
+  end
+
+  def covid19_related_radio_options
+    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/covid19_related_research.yml"))
+    yaml["data"].collect { |item|
+      OpenStruct.new(code: item["code"], description: item["description"])
+    }.compact.sort_by(&:code)
   end
 
   def load_yaml(entity:, type:)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_09_113715) do
+ActiveRecord::Schema.define(version: 2020_11_20_150002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -64,7 +64,6 @@ ActiveRecord::Schema.define(version: 2020_11_09_113715) do
     t.integer "total_awards"
     t.string "collaboration_type"
     t.integer "oda_eligibility", default: 1, null: false
-    t.boolean "fstc_applies"
     t.integer "policy_marker_gender"
     t.integer "policy_marker_climate_change_adaptation"
     t.integer "policy_marker_climate_change_mitigation"
@@ -73,6 +72,15 @@ ActiveRecord::Schema.define(version: 2020_11_09_113715) do
     t.integer "policy_marker_disability"
     t.integer "policy_marker_disaster_risk_reduction"
     t.integer "policy_marker_nutrition"
+    t.boolean "fstc_applies"
+    t.integer "sdg_1"
+    t.integer "sdg_2"
+    t.integer "sdg_3"
+    t.boolean "sdgs_apply", default: false, null: false
+    t.integer "covid19_related", default: 0
+    t.text "objectives"
+    t.string "beis_id"
+    t.string "oda_eligibility_lead"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"

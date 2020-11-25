@@ -31,10 +31,12 @@ en:
         delivery_partner_identifier: Enter your unique identifier
         roda_identifier_fragment: Enter a unique identifier for RODA
         intended_beneficiaries: What are the intended beneficiaries?
+        objectives: Aims/Objectives of the activity
         oda_eligibility:
           never_eligible: No - was never eligible
           eligible: Eligible
           no_longer_eligible: No longer eligible
+        oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
         policy_marker_gender: Gender
         policy_marker_climate_change_adaptation: Climate change - Adaptation
         policy_marker_climate_change_mitigation: Climate change - Mitigation
@@ -52,6 +54,31 @@ en:
         requires_additional_benefitting_countries:
           "true": "Yes"
           "false": "No"
+        sdg_1: First most relevant goal
+        sdg_2: Second most relevant goal (optional)
+        sdg_3: Third most relevant goal (optional)
+        sdgs_apply_options:
+          "false": "This is a broad programme/delivery activity so the sustainable development goals do not apply"
+          "true": "The sustainable development goals apply to this activity with the three most relevant in descending order being:"
+        sdg_options:
+          "": N/A
+          1: No Poverty
+          2: Zero Hunger
+          3: Good Health and Well-Being
+          4: Quality Education
+          5: Gender Equality
+          6: Clean Water and Sanitation
+          7: Affordable and Clean Energy
+          8: Decent Work and Economic Growth
+          9: Industry, Innovation and Infrastructure
+          10: Reduced Inequality
+          11: Sustainable Cities and Communities
+          12: Responsible Consumption and Production
+          13: Climate Action
+          14: Life Below Water
+          15: Life on Land
+          16: Peace, Justice and Strong Institutions
+          17: Partnerships to achieve the Goal
         title: "%{level} title"
         date:
           day: Day
@@ -75,6 +102,7 @@ en:
         geography: Will the benefitting recipient be a region or country?
         intended_beneficiaries: What are the intended beneficiaries?
         level: Add new activity
+        objectives: What are the aims/objectives of this %{level}?
         oda_eligibility: Is this activity ODA eligible?
         parent: Select the parent activity
         planned_end_date: Planned end date
@@ -97,12 +125,14 @@ en:
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
         requires_additional_benefitting_countries: Does this activity have other benefitting countries?
+        sdgs_apply: Which Sustainable Development Goals does this activity meet?
         sector: Which %{sector_category} sector is the focus area for this %{level}?
         sector_category: What area of the economy or society is the %{level} helping?
         status: What is the status of the %{level}?
         total_applications: How many applications have you had?
         total_awards: How many awards have you made?
         fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
+        covid19_related: Is this activity related to Covid-19?
     hint:
       activity:
         actual_end_date: For example, 2 2 2020
@@ -113,12 +143,15 @@ en:
         flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
         delivery_partner_identifier: This could be the reference you use in your internal systems
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
-        intended_beneficiaries: You can select up to 10 different countries. This field is optional if you already selected a recipient country on the previous step
+        objectives: Please refrain from using any abbreviations
+        intended_beneficiaries: You can select up to 10 different countries
         oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
+        oda_eligibility_lead: This will be used by us as a first point of contact for anything ODA related.
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
         roda_identifier_fragment: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.
         roda_identifier_fragment_with_parent_html: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.<br><br>The RODA identifier for this activity's parent is <strong>%{identifier}</strong>.
+        sdgs_apply: For broad programme calls, please select the SDG most commonly represented across the individual projects within the programme. If unable, or if the activity is a delivery line, you may select 'N/A'.
         sector_category: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
         title: A short title that explains the purpose of the %{level}
         level: Select the type of activity
@@ -139,7 +172,7 @@ en:
           gender: Gender equality is explicitly promoted in activity documentation through specific measures for this activity
           climate_change_adaptation: This activity intends to reduce the vulnerability of human or natural systems to the impacts of climate change and climate related risks, by maintaining or increasing adaptive capacity and resilience
           climate_change_mitigation: This activity contributes to the objective of stabilisation of greenhouse gas (GHG) concentrations in the atmosphere at a level that would prevent dangerous anthropogenic interference with the climate system by promoting efforts to reduce or limit GHG emissions or to enhance GHG sequestration
-          biodiversity: 'This activity promotes at least one of the three objectives of the Convention: the conservation of bio-diversity, sustainable use of its components (ecosystems, species or genetic resources), or fair and equitable sharing of the benefits of the utilisation of genetic resources'
+          biodiversity: "This activity promotes at least one of the three objectives of the Convention: the conservation of bio-diversity, sustainable use of its components (ecosystems, species or genetic resources), or fair and equitable sharing of the benefits of the utilisation of genetic resources"
           desertification: This activity is aimed at combating desertification or mitigating the effects of drought in arid, semi arid and dry sub-humid areas through prevention and/or reduction of land degradation, rehabilitation of partly degraded land, or reclamation of desertified land
           disability: This activity either has a deliberate objective of, contributes to, or supports the implementation and/or monitoring of the Convention on the Rights of Persons with Disabilities
           disaster_risk_reduction: This activity promotes the goal and global targets of the Sendai Framework , to achieve substantial reduction of disaster risk and losses in lives, livelihoods and health and in the economic, physical, social, cultural and environmental assets of persons, businesses, communities and countries
@@ -170,6 +203,7 @@ en:
         call_open_date: Call open date
         call_close_date: Call close date
         collaboration_type: Collaboration type
+        covid19_related: Is this activity related to Covid-19?
         description: Description
         form_state:
           complete: Complete
@@ -183,7 +217,9 @@ en:
         geography: Benefitting recipient geography
         delivery_partner_identifier: Delivery partner identifier
         intended_beneficiaries: Intended beneficiaries
+        objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
+        oda_eligibility_lead: ODA eligibility lead
         roda_identifier: RODA identifier
         level: Level
         organisation: Organisation
@@ -204,6 +240,7 @@ en:
         recipient_country: Recipient country
         recipient_region: Recipient region
         requires_additional_benefitting_countries: Other benefitting countries?
+        sustainable_development_goals: Sustainable Development Goals
         sector: Economic/societal area
         sector_category: Focus area category
         stage: Stage
@@ -294,15 +331,19 @@ en:
         call_present: Is there a call for this %{level}?
         collaboration_type: Collaboration type
         country: What country will benefit from this activity?
+        covid19_related: Is this activity related to Covid-19?
         dates: What are the start and end dates for the %{level}?
         flow: Flow
         gdi: GDI
         geography: Will the benefitting recipient be a region or country?
         delivery_partner_identifier: Enter your unique identifier
         roda_identifier: Enter your unique RODA identifier
+        requires_additional_benefitting_countries: Additional benefitting countries
         intended_beneficiaries: What are the intended beneficiaries?
         level: Hierarchy level
+        objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
+        oda_eligibility_lead: ODA eligibility lead
         parent: Select the parent
         policy_markers: Policy markers
         programme_status: A description of the status of the activity
@@ -311,6 +352,7 @@ en:
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
         status: Status
+        sustainable_development_goals: Sustainable Development Goals
         total_applications_and_awards: Applications and awards
   activerecord:
     attributes:
@@ -339,6 +381,8 @@ en:
               too_long: A maximum of 10 intended beneficiaries can be added
             level:
               blank: Select the activity type
+            objectives:
+              blank: Enter objectives
             parent:
               blank: Select a parent activity
             delivery_partner_identifier:
@@ -349,10 +393,14 @@ en:
               level_b_too_long: This programme's (level B) identifier must be at most %{limit} characters long
               level_c_too_long: This project's (level C) identifier must be at most %{limit} characters long
               level_d_too_long: This third-party project's (level D) identifier must be at most %{limit} characters long
+            requires_additional_benefitting_countries:
+              blank: Select an option
             title:
               blank: Enter a title
             description:
               blank: Enter a description
+            sdg_1:
+              blank: Select the first most relevant goal
             sector_category:
               blank: Select a category
             sector:
@@ -372,3 +420,26 @@ en:
       activity:
         not_found: Cannot be found
         invalid_region: The region cannot be found
+        invalid_country: The country code cannot be found
+        invalid_intended_beneficiaries: The intended beneficiaries are invalid
+        invalid_gdi: The GDI code is invalid
+        invalid_sdg_goal: The sustainable development goal is invalid
+        invalid_covid19_related: The COVID 19 Related option is invalid
+        invalid_oda_eligibility: The ODA Eligibility option is invalid
+        invalid_programme_status: The Programme status option is invalid
+        invalid_call_open_date: The Call Open Date option is in an invalid format
+        invalid_call_close_date: The Call Close Date option is in an invalid format
+        invalid_actual_start_date: The Actual start date is in an invalid format
+        invalid_actual_end_date: The Actual end date is in an invalid format
+        invalid_planned_start_date: The Planned start date is in an invalid format
+        invalid_planned_end_date: The Planned end date is in an invalid format
+        invalid_sector: The sector code is not valid
+        invalid_collaboration_type: The collaboration type code is not valid
+        invalid_flow: The flow code is not valid
+        invalid_aid_type: The aid type code is not valid
+        invalid_fstc_applies: The free standing technical cooperation column is not valid
+        parent_not_found: The parent activity cannot be found
+        cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
+        cannot_update:
+          fragment_present: There is an existing RODA ID present, but there is a fragment specified too, which will overwrite the existing fragment. Please remove the fragement from this row and try again.
+          parent_present: There is an existing RODA ID present, but there is a parent activity specified too, which will overwrite the existing parent. Please remove the parent ID from this row and try again.

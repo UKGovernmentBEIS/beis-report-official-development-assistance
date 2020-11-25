@@ -229,7 +229,15 @@ RSpec.feature "Users can create a fund level activity" do
         # region has the default value already selected
         click_button t("form.button.activity.submit")
 
-        expect(page).to have_content t("form.label.activity.intended_beneficiaries")
+        expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
+
+        # Don't select any option
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.requires_additional_benefitting_countries.blank")
+
+        choose "Yes"
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.intended_beneficiaries")
 
         # Don't select any intended beneficiaries
         click_button t("form.button.activity.submit")
@@ -253,6 +261,9 @@ RSpec.feature "Users can create a fund level activity" do
         # Flow has a default and can't be set to blank so we skip
         select "ODA", from: "activity[flow]"
         click_button t("form.button.activity.submit")
+
+        # Skip the SDGs step and instead go to the aid type step
+        expect(page).to have_no_content t("form.legend.activity.sdgs_apply")
         expect(page).to have_content t("form.legend.activity.aid_type")
 
         # Don't select an aid type
@@ -268,6 +279,9 @@ RSpec.feature "Users can create a fund level activity" do
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion")
 
         choose("activity[fstc_applies]", option: true)
+        click_button t("form.button.activity.submit")
+
+        # Covid19-related has a default and can't be set to blank so we skip
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.oda_eligibility")
 

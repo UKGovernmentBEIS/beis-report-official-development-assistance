@@ -165,6 +165,16 @@ RSpec.feature "Users can view an activity as XML" do
         end
       end
 
+      context "when the activity is Covid19-related" do
+        let(:activity) { create(:programme_activity, organisation: organisation, delivery_partner_identifier: "ID-ENT-IFIER", covid19_related: "1") }
+        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+
+        it "appends 'COVID-19' to the activity description" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+          expect(xml.at("iati-activity/description/narrative").text).to end_with "COVID-19"
+        end
+      end
+
       context "when the activity is a fund activity" do
         let(:activity) { create(:fund_activity, :with_transparency_identifier, organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER") }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
@@ -182,6 +192,13 @@ RSpec.feature "Users can view an activity as XML" do
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
+
+        it "includes the activity aims/objectives" do
+          visit organisation_activity_path(organisation, activity, format: :xml)
+          expect(xml).to have_selector("iati-activity/description", count: 2)
+          descriptions = xml.xpath("//iati-activity/description/@type").to_a
+          expect(descriptions.last.value).to eq("2")
+        end
       end
 
       context "when the activity is a project" do

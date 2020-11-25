@@ -5,6 +5,7 @@ module FormHelpers
     roda_identifier_fragment: "RODA-ID",
     title: "My Aid Activity",
     description: Faker::Lorem.paragraph,
+    objectives: Faker::Lorem.paragraph,
     sector_category: "Basic Education",
     sector: "Primary education",
     call_present: "true",
@@ -35,6 +36,7 @@ module FormHelpers
     gdi: "GDI not applicable",
     collaboration_type: "Bilateral",
     flow: "ODA",
+    sdg_1: 1,
     aid_type: "B02",
     fstc_applies: true,
     policy_marker_gender: "Not assessed",
@@ -45,7 +47,9 @@ module FormHelpers
     policy_marker_disability: "Not assessed",
     policy_marker_disaster_risk_reduction: "Not assessed",
     policy_marker_nutrition: "Not assessed",
+    covid19_related: "4",
     oda_eligibility: "Eligible",
+    oda_eligibility_lead: Faker::Name.name,
     level:,
     parent: nil
   )
@@ -81,6 +85,13 @@ module FormHelpers
     fill_in "activity[title]", with: title
     fill_in "activity[description]", with: description
     click_button t("form.button.activity.submit")
+
+    unless level == "fund"
+      expect(page).to have_content t("form.legend.activity.objectives", level: activity_level(level))
+      expect(page).to have_content t("form.hint.activity.objectives")
+      fill_in "activity[objectives]", with: objectives
+      click_button t("form.button.activity.submit")
+    end
 
     expect(page).to have_content t("form.legend.activity.sector_category", level: activity_level(level))
     expect(page).to have_content(
@@ -179,11 +190,9 @@ module FormHelpers
     select recipient_region, from: "activity[recipient_region]"
     click_button t("form.button.activity.submit")
 
-    if geography == "recipient_country"
-      expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
-      choose "Yes"
-      click_button t("form.button.activity.submit")
-    end
+    expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
+    choose "Yes"
+    click_button t("form.button.activity.submit")
 
     expect(page).to have_content t("form.label.activity.intended_beneficiaries")
     check intended_beneficiaries
@@ -204,6 +213,14 @@ module FormHelpers
     expect(page.html).to include t("form.hint.activity.flow")
     select flow, from: "activity[flow]"
     click_button t("form.button.activity.submit")
+
+    unless level == "fund"
+      expect(page).to have_content t("form.legend.activity.sdgs_apply")
+      expect(page).to have_content t("form.hint.activity.sdgs_apply")
+      choose t("form.label.activity.sdgs_apply_options.true")
+      select t("form.label.activity.sdg_options.5"), from: "activity[sdg_1]"
+      click_button t("form.button.activity.submit")
+    end
 
     expect(page).to have_content t("form.legend.activity.aid_type")
     expect(page).to have_content t("form.hint.activity.aid_type")
@@ -248,10 +265,21 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
+    expect(page).to have_content t("form.legend.activity.covid19_related")
+    choose("activity[covid19_related]", option: covid19_related)
+    click_button t("form.button.activity.submit")
+
     expect(page).to have_content t("form.legend.activity.oda_eligibility")
     expect(page).to have_content t("form.hint.activity.oda_eligibility")
     choose oda_eligibility
     click_button t("form.button.activity.submit")
+
+    if level == "project" || level == "third_party_project"
+      expect(page).to have_content t("form.label.activity.oda_eligibility_lead")
+      expect(page).to have_content t("form.hint.activity.oda_eligibility_lead")
+      fill_in "activity[oda_eligibility_lead]", with: oda_eligibility_lead
+      click_button t("form.button.activity.submit")
+    end
 
     expect(page).to have_content delivery_partner_identifier
     expect(page).to have_content title
@@ -265,9 +293,11 @@ module FormHelpers
 
     if level == "fund"
       expect(page).not_to have_content t("activity.programme_status.#{programme_status}")
+      expect(page).not_to have_content objectives
     else
       expect(page).to have_content t("activity.programme_status.#{programme_status}")
       expect(page).to have_content collaboration_type
+      expect(page).to have_content objectives
     end
     expect(page).to have_content recipient_region
     expect(page).to have_content intended_beneficiaries
@@ -301,6 +331,7 @@ module FormHelpers
       end
     end
     expect(page).to have_content oda_eligibility
+    expect(page).to have_content oda_eligibility_lead if level == "project" || level == "third_party_project"
     expect(page).to have_content localise_date_from_input_fields(
       year: planned_start_date_year,
       month: planned_start_date_month,

@@ -326,6 +326,13 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when objectives is blank" do
+      subject(:activity) { build(:programme_activity, objectives: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:objectives_step)).to be_falsey
+      end
+    end
+
     context "when sector category is blank" do
       subject(:activity) { build(:activity, sector_category: nil) }
       it "should not be valid" do
@@ -487,10 +494,31 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "#sdg_1" do
+      it "is required if sdgs_apply is true" do
+        activity = build(:programme_activity, sdgs_apply: true)
+
+        expect(activity.valid?(:sustainable_development_goals_step)).to be_falsey
+      end
+
+      it "is not required if sdgs_apply is false" do
+        activity = build(:programme_activity, sdgs_apply: false)
+
+        expect(activity.valid?(:sustainable_development_goals_step)).to be_truthy
+      end
+    end
+
     context "when fstc applies is blank" do
       subject(:activity) { build(:activity, fstc_applies: nil) }
       it "should not be valid" do
         expect(activity.valid?(:fstc_applies_step)).to be_falsey
+      end
+    end
+
+    context "when Covid19-related research is blank" do
+      subject(:activity) { build(:activity, covid19_related: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:covid19_related_step)).to be_falsey
       end
     end
 
@@ -537,6 +565,28 @@ RSpec.describe Activity, type: :model do
       subject(:activity) { build(:activity, oda_eligibility: nil) }
       it "should not be valid" do
         expect(activity.valid?(:oda_eligibility_step)).to be_falsey
+      end
+    end
+
+    context "when saving in the oda_eligibility_lead_step context" do
+      context "and the activity is a fund" do
+        subject { build(:activity, level: :fund) }
+        it { should_not validate_presence_of(:oda_eligibility_lead).on(:oda_eligibility_lead_step) }
+      end
+
+      context "and the activity is a programme" do
+        subject { build(:activity, level: :programme) }
+        it { should_not validate_presence_of(:oda_eligibility_lead).on(:oda_eligibility_lead_step) }
+      end
+
+      context "and the activity is a project" do
+        subject { build(:activity, level: :project) }
+        it { should validate_presence_of(:oda_eligibility_lead).on(:oda_eligibility_lead_step) }
+      end
+
+      context "and the activity is a third party project" do
+        subject { build(:activity, level: :third_party_project) }
+        it { should validate_presence_of(:oda_eligibility_lead).on(:oda_eligibility_lead_step) }
       end
     end
 
@@ -693,7 +743,7 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#form_stpes_completed?" do
+  describe "#form_steps_completed?" do
     it "is true when a user has completed all of the form steps" do
       activity = build(:activity, form_state: :complete)
 
@@ -830,21 +880,21 @@ RSpec.describe Activity, type: :model do
     context "when the level is a programme" do
       it "returns a string for fund" do
         result = described_class.new(level: :programme).parent_level
-        expect(result).to eql("fund (level A)")
+        expect(result).to eql("fund")
       end
     end
 
     context "when the level is a project" do
       it "returns a string for programme" do
         result = described_class.new(level: :project).parent_level
-        expect(result).to eql("programme (level B)")
+        expect(result).to eql("programme")
       end
     end
 
     context "when the level is a third-party project" do
       it "returns a string for project" do
         result = described_class.new(level: :third_party_project).parent_level
-        expect(result).to eql("project (level C)")
+        expect(result).to eql("project")
       end
     end
   end

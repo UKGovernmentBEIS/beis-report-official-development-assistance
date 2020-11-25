@@ -45,6 +45,14 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#covid19_related" do
+    it "returns the locale value for the code" do
+      activity = build(:activity, covid19_related: 3)
+      result = described_class.new(activity).covid19_related
+      expect(result).to eql("New activity that will somewhat focus on COVID-19")
+    end
+  end
+
   describe "#sector" do
     context "when the sector exists" do
       it "returns the locale value for the code" do
@@ -373,6 +381,32 @@ RSpec.describe ActivityPresenter do
         result = described_class.new(activity)
         expect(result.policy_marker_gender).to be_nil
       end
+    end
+  end
+
+  describe "#sustainable_development_goals" do
+    it "when there is a single SDG, return its name" do
+      activity = build(:activity, sdg_1: 5)
+      result = described_class.new(activity)
+
+      items = Nokogiri::HTML(result.sustainable_development_goals).css("ol > li")
+      expect(items[0].text).to eql "Gender Equality"
+    end
+
+    it "when there are multiple SDGs, return their names, separated by a slash" do
+      activity = build(:activity, sdg_1: 5, sdg_2: 1)
+      result = described_class.new(activity)
+
+      items = Nokogiri::HTML(result.sustainable_development_goals).css("ol > li")
+      expect(items[0].text).to eql "Gender Equality"
+      expect(items[1].text).to eql "No Poverty"
+    end
+
+    it "when there are no SDGs return nil" do
+      activity = build(:activity, sdg_1: nil, sdg_2: nil, sdg_3: nil)
+      result = described_class.new(activity)
+
+      expect(result.sustainable_development_goals).to be_nil
     end
   end
 

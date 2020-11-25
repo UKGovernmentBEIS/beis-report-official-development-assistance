@@ -69,6 +69,16 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :purpose)
         = a11y_action_link(I18n.t("default.link.#{activity_presenter.call_to_action(:description)}"), activity_step_path(activity_presenter, :purpose), I18n.t("summary.label.activity.description").downcase)
 
+  - unless activity_presenter.fund?
+    .govuk-summary-list__row.objectives
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.objectives")
+      %dd.govuk-summary-list__value
+        = activity_presenter.objectives
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :objectives)
+          = a11y_action_link(I18n.t("default.link.#{activity_presenter.call_to_action(:objectives)}"), activity_step_path(activity_presenter, :objectives), I18n.t("summary.label.activity.objectives").downcase)
+
   .govuk-summary-list__row.sector
     %dt.govuk-summary-list__key
       = t("summary.label.activity.sector", level: activity_presenter.level)
@@ -195,17 +205,16 @@
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :country)
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:recipient_country)}"), activity_step_path(activity_presenter, :geography), t("summary.label.activity.recipient_country"))
 
-  - if activity_presenter.recipient_country?
-    .govuk-summary-list__row.requires_additional_benefitting_countries
-      %dt.govuk-summary-list__key
-        = t("summary.label.activity.requires_additional_benefitting_countries")
-      %dd.govuk-summary-list__value
-        = activity_presenter.requires_additional_benefitting_countries
-      %dd.govuk-summary-list__actions
-        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :requires_additional_benefitting_countries)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:requires_additional_benefitting_countries)}"), activity_step_path(activity_presenter, :requires_additional_benefitting_countries), t("summary.label.activity.requires_additional_benefitting_countries"))
+  .govuk-summary-list__row.requires_additional_benefitting_countries
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.requires_additional_benefitting_countries")
+    %dd.govuk-summary-list__value
+      = activity_presenter.requires_additional_benefitting_countries
+    %dd.govuk-summary-list__actions
+      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :requires_additional_benefitting_countries)
+        = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:requires_additional_benefitting_countries)}"), activity_step_path(activity_presenter, :requires_additional_benefitting_countries), t("summary.label.activity.requires_additional_benefitting_countries"))
 
-  - if activity_presenter.requires_intended_beneficiaries?
+  - if activity_presenter.requires_additional_benefitting_countries?
     .govuk-summary-list__row.intended_beneficiaries
       %dt.govuk-summary-list__key
         = t("summary.label.activity.intended_beneficiaries")
@@ -242,6 +251,16 @@
     %dd.govuk-summary-list__actions
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :flow)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:flow)}"), activity_step_path(activity_presenter, :flow), t("summary.label.activity.flow"))
+
+  - unless activity_presenter.fund?
+    .govuk-summary-list__row.sustainable_development_goals
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.sustainable_development_goals")
+      %dd.govuk-summary-list__value
+        = activity_presenter.sustainable_development_goals
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :sustainable_development_goals)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:sustainable_development_goals)}"), activity_step_path(activity_presenter, :sustainable_development_goals), t("summary.label.activity.sustainable_development_goals"))
 
   .govuk-summary-list__row.aid_type
     %dt.govuk-summary-list__key
@@ -335,6 +354,15 @@
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :policy_markers)
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_nutrition)}"), activity_step_path(activity_presenter, :policy_markers), t("summary.label.activity.policy_marker_nutrition"))
 
+  .govuk-summary-list__row.covid19_related
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.covid19_related")
+    %dd.govuk-summary-list__value
+      = activity_presenter.covid19_related
+    %dd.govuk-summary-list__actions
+      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :covid19_related)
+        = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:covid19_related)}"), activity_step_path(activity_presenter, :covid19_related), t("summary.label.activity.covid19_related"))
+
   .govuk-summary-list__row.oda_eligibility
     %dt.govuk-summary-list__key
       = t("summary.label.activity.oda_eligibility")
@@ -343,6 +371,17 @@
     %dd.govuk-summary-list__actions
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :oda_eligibility)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:oda_eligibility)}"), activity_step_path(activity_presenter, :oda_eligibility), t("summary.label.activity.oda_eligibility"))
+
+  - if @activity.is_project?
+    .govuk-summary-list__row.oda_eligibility_lead
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.oda_eligibility_lead")
+      %dd.govuk-summary-list__value
+        = activity_presenter.oda_eligibility_lead
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :oda_eligibility_lead)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:oda_eligibility_lead)}"), activity_step_path(activity_presenter, :oda_eligibility_lead), t("summary.label.activity.oda_eligibility_lead"))
+
 
   - if policy(activity_presenter).redact_from_iati?
     .govuk-summary-list__row.publish_to_iati

@@ -20,6 +20,7 @@ class Activity < ApplicationRecord
     :identifier_step,
     :roda_identifier_step,
     :purpose_step,
+    :objectives_step,
     :sector_category_step,
     :sector_step,
     :call_present_step,
@@ -34,10 +35,13 @@ class Activity < ApplicationRecord
     :gdi_step,
     :collaboration_type_step,
     :flow_step,
-    :aid_type,
+    :sustainable_development_goals_step,
+    :aid_type_step,
     :fstc_applies_step,
     :policy_markers_step,
+    :covid19_related_step,
     :oda_eligibility_step,
+    :oda_eligibility_lead_step,
   ]
 
   strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
@@ -47,6 +51,7 @@ class Activity < ApplicationRecord
   validates :delivery_partner_identifier, presence: true, on: :identifier_step
   validates_with RodaIdentifierValidator, on: :roda_identifier_step
   validates :title, :description, presence: true, on: :purpose_step
+  validates :objectives, presence: true, on: :objectives_step, unless: proc { |activity| activity.fund? }
   validates :sector_category, presence: true, on: :sector_category_step
   validates :sector, presence: true, on: :sector_step
   validates :call_present, inclusion: {in: [true, false]}, on: :call_present_step, if: :requires_call_dates?
@@ -56,12 +61,14 @@ class Activity < ApplicationRecord
   validates :geography, presence: true, on: :geography_step
   validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
   validates :recipient_country, presence: true, on: :country_step, if: :recipient_country?
-  validates :requires_additional_benefitting_countries, inclusion: {in: [true, false]}, on: :requires_additional_benefitting_countries_step, if: :recipient_country?
-  validates :intended_beneficiaries, presence: true, length: {maximum: 10}, on: :intended_beneficiaries_step, if: :requires_intended_beneficiaries?
+  validates :requires_additional_benefitting_countries, inclusion: {in: [true, false], message: I18n.t("activerecord.errors.models.activity.attributes.requires_additional_benefitting_countries.blank")}, on: :requires_additional_benefitting_countries_step
+  validates :intended_beneficiaries, presence: true, length: {maximum: 10}, on: :intended_beneficiaries_step, if: :requires_additional_benefitting_countries?
   validates :gdi, presence: true, on: :gdi_step
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
+  validates :covid19_related, presence: true, on: :covid19_related_step
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
   validates :flow, presence: true, on: :flow_step
+  validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
   validates :aid_type, presence: true, on: :aid_type_step
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_climate_change_adaptation, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
@@ -72,6 +79,7 @@ class Activity < ApplicationRecord
   validates :policy_marker_disaster_risk_reduction, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_nutrition, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :oda_eligibility, presence: true, on: :oda_eligibility_step
+  validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :is_project?
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier_compound, uniqueness: true, allow_nil: true
@@ -214,9 +222,9 @@ class Activity < ApplicationRecord
   def parent_level
     case level
     when "fund" then nil
-    when "programme" then "fund (level A)"
-    when "project" then "programme (level B)"
-    when "third_party_project" then "project (level C)"
+    when "programme" then "fund"
+    when "project" then "programme"
+    when "third_party_project" then "project"
     end
   end
 
@@ -300,10 +308,6 @@ class Activity < ApplicationRecord
 
   def forecasted_total_for_date_range(range:)
     planned_disbursements.where(period_start_date: range).sum(:value)
-  end
-
-  def requires_intended_beneficiaries?
-    recipient_region? || (recipient_country? && requires_additional_benefitting_countries?)
   end
 
   def comment_for_report(report_id:)

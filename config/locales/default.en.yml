@@ -20,6 +20,7 @@ en:
       edit: Edit
       show: View
       view: View
+      go_home: Go to the home page
     error:
       unknown: Unknown error
     warning: Warning

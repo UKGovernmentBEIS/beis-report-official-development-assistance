@@ -18,9 +18,11 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.transparency_identifier,
         activity_presenter.delivery_partner_identifier,
         activity_presenter.roda_identifier,
+        activity_presenter.beis_id,
         activity_presenter.level,
         activity_presenter.title,
         activity_presenter.description,
+        activity_presenter.objectives,
         activity_presenter.recipient_region,
         activity_presenter.recipient_country,
         activity_presenter.intended_beneficiaries,
@@ -40,13 +42,32 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.flow_with_code,
         activity_presenter.gdi,
         activity_presenter.collaboration_type,
+        activity_presenter.covid19_related,
+        activity_presenter.policy_marker_gender,
+        activity_presenter.policy_marker_climate_change_adaptation,
+        activity_presenter.policy_marker_climate_change_mitigation,
+        activity_presenter.policy_marker_biodiversity,
+        activity_presenter.policy_marker_desertification,
+        activity_presenter.policy_marker_disability,
+        activity_presenter.policy_marker_disaster_risk_reduction,
+        activity_presenter.policy_marker_nutrition,
         activity_presenter.oda_eligibility,
+        activity_presenter.oda_eligibility_lead,
         activity_presenter.forecasted_total_for_report_financial_quarter(report: report),
         activity_presenter.actual_total_for_report_financial_quarter(report: report),
         activity_presenter.variance_for_report_financial_quarter(report: report),
         activity_presenter.comment_for_report(report_id: report.id).comment,
         activity_presenter.link_to_roda,
       ].concat(next_four_quarter_totals).to_csv)
+    end
+
+    it "includes the BEIS id if there is one" do
+      project.update(beis_id: "GCRF_AHRC_NS_AH1001")
+      activity_presenter = ActivityCsvPresenter.new(project)
+      export_service = ExportActivityToCsv.new(activity: project, report: report)
+      result = export_service.call
+
+      expect(result).to include activity_presenter.beis_id
     end
   end
 
@@ -99,9 +120,11 @@ RSpec.describe ExportActivityToCsv do
           "Transparency identifier",
           "Delivery partner identifier",
           "RODA identifier",
+          "BEIS identifier",
           "Level",
           "Title",
           "Description",
+          "Aims/Objectives",
           "Recipient region",
           "Recipient country",
           "Intended beneficiaries",
@@ -121,7 +144,17 @@ RSpec.describe ExportActivityToCsv do
           "Flow",
           "GDI",
           "Collaboration type",
+          "Covid-19 related research",
+          "Gender",
+          "Climate change - Adaptation",
+          "Climate change - Mitigation",
+          "Biodiversity",
+          "Desertification",
+          "Disability",
+          "Disaster Risk Reduction",
+          "Nutrition policy",
           "ODA eligibility",
+          "ODA eligibility lead",
           "Q2 2020-2021 forecast",
           "Q2 2020-2021 actuals",
           "Variance",

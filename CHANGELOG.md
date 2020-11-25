@@ -380,10 +380,27 @@
   and year cannot be created.
 - Add a field to report Free Standing Technical Cooperation
 - Policy markers added to activity form, including BEIS custom answer `not assessed`
+- Add a class to import Activities from a CSV
+
+## [release-23] - 2020-11-25
+
+- Fix parent level strings
+- Add a field to report whether the activity has any relation to the Covid-19 pandemic.
+- Include the Covid-19 field in the CSV report.
+- Append the text "COVID-19" to the activity description in the IATI XML export, where applicable.
+- Collect Sustainable Development Goals (SDGs) for activities
+- Policy markers added to the CSV report file
+- Activity Objectives added to the activity form, IATI XML and CSV report
+- Add missing regions back on RODA and open scope of country list for `intended_beneficiaries`
+- `Intended_beneficiaries` is now optional in all cases
+- Store the BEIS ID and export it to the report CSV file
+- Add field to record the ODA eligibility lead
+- Add missing fields to the activity importer
 
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...HEAD
+[release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23
 [release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
 [release-21]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...release-21
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20

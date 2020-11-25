@@ -5,7 +5,10 @@
   %title
     %narrative= activity.title
   %description{"type" => "1"}
-    %narrative= activity.description
+    %narrative= activity.covid19_related.zero? ? activity.description : "#{activity.description} COVID-19"
+  - unless activity.fund?
+    %description{"type" => "2"}
+      %narrative= activity.objectives
   - if activity.has_funding_organisation?
     %participating-org{"ref" => activity.funding_organisation_reference, "type" => activity.funding_organisation_type, "role" => 1}
       %narrative= activity.funding_organisation_name

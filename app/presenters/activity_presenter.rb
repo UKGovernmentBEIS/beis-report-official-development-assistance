@@ -14,6 +14,10 @@ class ActivityPresenter < SimpleDelegator
     "#{aid_type} (#{to_model.aid_type})"
   end
 
+  def covid19_related
+    I18n.t("covid19_related.#{super}")
+  end
+
   def sector
     return if super.blank?
     I18n.t("activity.sector.#{super}")
@@ -147,6 +151,20 @@ class ActivityPresenter < SimpleDelegator
   def policy_marker_nutrition
     return if super.blank?
     I18n.t("activity.policy_markers.#{super}")
+  end
+
+  def sustainable_development_goals
+    goals = [sdg_1, sdg_2, sdg_3].compact
+    return if goals.blank?
+
+    html = "<ol class=\"govuk-list govuk-list--number\">"
+
+    goals.each do |goal|
+      html += "<li>" + I18n.t("form.label.activity.sdg_options.#{goal}") + "</li>"
+    end
+
+    html += "</ol>"
+    html.html_safe
   end
 
   def oda_eligibility

@@ -4,6 +4,7 @@ FactoryBot.define do
     delivery_partner_identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
     roda_identifier_fragment { Faker::Alphanumeric.alpha(number: 5) }
     roda_identifier_compound { nil }
+    beis_id { nil }
     description { Faker::Lorem.paragraph }
     sector_category { "111" }
     sector { "11110" }
@@ -23,6 +24,7 @@ FactoryBot.define do
     aid_type { "B02" }
     level { :fund }
     publish_to_iati { true }
+    oda_eligibility_lead { Faker::Name.name }
 
     form_state { "complete" }
 
@@ -57,6 +59,7 @@ FactoryBot.define do
     factory :programme_activity do
       parent factory: :fund_activity
       level { :programme }
+      objectives { Faker::Lorem.paragraph }
       collaboration_type { "1" }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
@@ -73,6 +76,7 @@ FactoryBot.define do
     factory :project_activity do
       parent factory: :programme_activity
       level { :project }
+      objectives { Faker::Lorem.paragraph }
       call_present { "true" }
       call_open_date { Date.yesterday }
       call_close_date { Date.tomorrow }
@@ -111,6 +115,7 @@ FactoryBot.define do
     factory :third_party_project_activity do
       parent factory: :project_activity
       level { :third_party_project }
+      objectives { Faker::Lorem.paragraph }
       call_present { "true" }
       call_open_date { Date.yesterday }
       call_close_date { Date.tomorrow }
@@ -143,6 +148,7 @@ FactoryBot.define do
     roda_identifier_fragment { nil }
     title { nil }
     description { nil }
+    objectives { nil }
     sector_category { nil }
     sector { nil }
     call_present { nil }
@@ -165,6 +171,7 @@ FactoryBot.define do
     policy_marker_disability { nil }
     policy_marker_disaster_risk_reduction { nil }
     policy_marker_nutrition { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :at_roda_identifier_step do
@@ -172,6 +179,7 @@ FactoryBot.define do
     roda_identifier_fragment { nil }
     title { nil }
     description { nil }
+    objectives { nil }
     sector_category { nil }
     sector { nil }
     call_present { nil }
@@ -196,12 +204,14 @@ FactoryBot.define do
     policy_marker_disability { nil }
     policy_marker_disaster_risk_reduction { nil }
     policy_marker_nutrition { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :at_purpose_step do
     form_state { "purpose" }
     title { nil }
     description { nil }
+    objectives { nil }
     sector { nil }
     call_present { nil }
     programme_status { nil }
@@ -225,6 +235,7 @@ FactoryBot.define do
     policy_marker_disability { nil }
     policy_marker_disaster_risk_reduction { nil }
     policy_marker_nutrition { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :at_region_step do
@@ -243,6 +254,7 @@ FactoryBot.define do
     policy_marker_disability { nil }
     policy_marker_disaster_risk_reduction { nil }
     policy_marker_nutrition { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :at_geography_step do
@@ -262,6 +274,7 @@ FactoryBot.define do
     policy_marker_disability { nil }
     policy_marker_disaster_risk_reduction { nil }
     policy_marker_nutrition { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :nil_form_state do
@@ -281,12 +294,23 @@ FactoryBot.define do
     policy_marker_disability { nil }
     policy_marker_disaster_risk_reduction { nil }
     policy_marker_nutrition { nil }
+    oda_eligibility_lead { nil }
+  end
+
+  trait :at_sustainable_development_goals_step do
+    form_state { "sustainable_development_goals" }
+
+    sdgs_apply { false }
+    sdg_1 { nil }
+    sdg_2 { nil }
+    sdg_3 { nil }
   end
 
   trait :blank_form_state do
     form_state { "blank" }
     title { nil }
     description { nil }
+    objectives { nil }
     sector { nil }
     call_present { nil }
     programme_status { nil }
@@ -313,6 +337,7 @@ FactoryBot.define do
     extending_organisation_id { nil }
     parent { nil }
     level { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :level_form_state do
@@ -321,6 +346,7 @@ FactoryBot.define do
     delivery_partner_identifier { nil }
     title { nil }
     description { nil }
+    objectives { nil }
     sector { nil }
     call_present { nil }
     programme_status { nil }
@@ -346,6 +372,7 @@ FactoryBot.define do
     policy_marker_nutrition { nil }
     extending_organisation_id { nil }
     parent { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :parent_form_state do
@@ -354,6 +381,7 @@ FactoryBot.define do
     delivery_partner_identifier { nil }
     title { nil }
     description { nil }
+    objectives { nil }
     sector { nil }
     programme_status { nil }
     planned_start_date { nil }
@@ -370,6 +398,7 @@ FactoryBot.define do
     aid_type { nil }
     extending_organisation_id { nil }
     parent { nil }
+    oda_eligibility_lead { nil }
   end
 
   trait :with_transparency_identifier do

@@ -10,14 +10,26 @@ data:
     name: North of Sahara, regional
   - code: '289'
     name: South of Sahara, regional
+  - code: '298'
+    name: Africa, regional
+  - code: '389'
+    name: North & Central America, regional
   - code: '489'
     name: South America, regional
+  - code: '498'
+    name: America, regional
   - code: '589'
     name: Middle East, regional
+  - code: '619'
+    name: Central Asia, regional
+  - code: '679'
+    name: South Asia, regional
   - code: '689'
     name: South & Central Asia, regional
   - code: '789'
     name: Far East Asia, regional
+  - code: '798'
+    name: Asia, regional
   - code: '889'
     name: Oceania, regional
   - code: '998'

@@ -151,7 +151,7 @@ RSpec.feature "Users can view activities" do
 
     scenario "an activity can be viewed" do
       programme = create(:programme_activity, organisation: user.organisation)
-      activity = create(:project_activity, parent: programme, organisation: user.organisation)
+      activity = create(:project_activity, parent: programme, organisation: user.organisation, sdg_1: 5)
 
       visit activities_path
 
@@ -170,6 +170,10 @@ RSpec.feature "Users can view activities" do
       expect(page).to have_content activity_presenter.planned_end_date
       expect(page).to have_content activity_presenter.recipient_region
       expect(page).to have_content activity_presenter.flow
+
+      within ".sustainable_development_goals" do
+        expect(page).to have_content "Gender Equality"
+      end
     end
 
     context "when the organisation id query parameter is not the delivery_partners organisation id" do

@@ -12,6 +12,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :identifier,
     :roda_identifier,
     :purpose,
+    :objectives,
     :sector_category,
     :sector,
     :call_present,
@@ -27,10 +28,13 @@ class Staff::ActivityFormsController < Staff::BaseController
     :gdi,
     :collaboration_type,
     :flow,
+    :sustainable_development_goals,
     :aid_type,
     :fstc_applies,
     :policy_markers,
+    :covid19_related,
     :oda_eligibility,
+    :oda_eligibility_lead,
   ]
 
   steps(*FORM_STEPS)
@@ -47,6 +51,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step unless @activity.can_set_roda_identifier?
     when :blank
       skip_step
+    when :objectives
+      skip_step if @activity.fund?
     when :programme_status
       skip_step if @activity.fund?
     when :call_present
@@ -59,14 +65,16 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.recipient_country?
     when :country
       skip_step if @activity.recipient_region?
-    when :requires_additional_benefitting_countries
-      skip_step if @activity.recipient_region?
     when :intended_beneficiaries
-      skip_step unless @activity.requires_intended_beneficiaries?
+      skip_step unless @activity.requires_additional_benefitting_countries?
     when :collaboration_type
       skip_step if @activity.fund?
       assign_default_collaboration_type_value_if_nil
     when :policy_markers
+      skip_step unless @activity.is_project?
+    when :sustainable_development_goals
+      skip_step if @activity.fund?
+    when :oda_eligibility_lead
       skip_step unless @activity.is_project?
     end
 
@@ -100,6 +108,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.cache_roda_identifier!
     when :purpose
       @activity.assign_attributes(title: title, description: description)
+    when :objectives
+      @activity.assign_attributes(objectives: objectives)
     when :sector_category
       @activity.assign_attributes(sector_category: sector_category, sector: nil)
     when :sector
@@ -159,8 +169,18 @@ class Staff::ActivityFormsController < Staff::BaseController
         policy_marker_disaster_risk_reduction: policy_markers_iati_codes_to_enum(policy_marker_disaster_risk_reduction),
         policy_marker_nutrition: policy_markers_iati_codes_to_enum(policy_marker_nutrition),
       )
+    when :covid19_related
+      @activity.assign_attributes(covid19_related: covid19_related)
+    when :sustainable_development_goals
+      @activity.assign_attributes(sustainable_development_goals)
+
+      unless @activity.sdgs_apply?
+        @activity.assign_attributes(sdg_1: nil, sdg_2: nil, sdg_3: nil)
+      end
     when :oda_eligibility
       @activity.assign_attributes(oda_eligibility: oda_eligibility)
+    when :oda_eligibility_lead
+      @activity.assign_attributes(oda_eligibility_lead: oda_eligibility_lead)
     end
 
     update_form_state
@@ -206,6 +226,10 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def description
     params.require(:activity).permit(:description).fetch("description", nil)
+  end
+
+  def objectives
+    params.require(:activity).permit(:objectives).fetch("objectives", nil)
   end
 
   def call_present
@@ -286,6 +310,10 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(:flow).fetch("flow", nil)
   end
 
+  def sustainable_development_goals
+    params.require(:activity).permit(:sdg_1, :sdg_2, :sdg_3, :sdgs_apply)
+  end
+
   def aid_type
     params.require(:activity).permit(:aid_type).fetch("aid_type", nil)
   end
@@ -326,8 +354,16 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(:policy_marker_nutrition).fetch("policy_marker_nutrition", nil)
   end
 
+  def covid19_related
+    params.require(:activity).permit(:covid19_related).fetch("covid19_related", 0)
+  end
+
   def oda_eligibility
     params.require(:activity).permit(:oda_eligibility).fetch("oda_eligibility", nil)
+  end
+
+  def oda_eligibility_lead
+    params.require(:activity).permit(:oda_eligibility_lead).fetch("oda_eligibility_lead", nil)
   end
 
   def finish_wizard_path

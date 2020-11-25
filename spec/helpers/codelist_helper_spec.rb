@@ -4,8 +4,9 @@ RSpec.describe CodelistHelper, type: :helper do
   describe "version 2_03" do
     let(:version) { "2_03" }
     describe "#yaml_to_objects" do
-      it "gracefully handles a missing or incorrect yaml file" do
-        expect(helper.yaml_to_objects(entity: "generic", type: "favourite_colours")).to eq([])
+      it "raises an error when the YAML file is missing or incorrect" do
+        expect { helper.yaml_to_objects(entity: "generic", type: "favourite_colours") }
+          .to raise_error "CodelistHelper::UnreadableCodelist"
       end
 
       it "formats the data in a yaml file to an array of objects for use in govuk form builder" do
@@ -78,8 +79,9 @@ RSpec.describe CodelistHelper, type: :helper do
     end
 
     describe "#yaml_to_objects_with_description" do
-      it "gracefully handles a missing or incorrect yaml file" do
-        expect(helper.yaml_to_objects_with_description(entity: "generic", type: "favourite_colours")).to eq([])
+      it "raises an error when the YAML file is missing or incorrect" do
+        expect { helper.yaml_to_objects_with_description(entity: "generic", type: "favourite_colours") }
+          .to raise_error "CodelistHelper::UnreadableCodelist"
       end
 
       it "formats the data in a yaml file to an array of objects for use in govuk form builder, with descriptions" do
@@ -101,7 +103,7 @@ RSpec.describe CodelistHelper, type: :helper do
         ).first).to eq(OpenStruct.new(name: "Pipeline/identification", code: "1", description: "The activity is being scoped or planned"))
         expect(helper.yaml_to_objects_with_description(
           entity: "activity",
-          type: "status",
+          type: "status"
         ).last).to eq(OpenStruct.new(name: "Suspended", code: "6", description: "The activity has been temporarily suspended"))
       end
 
@@ -214,6 +216,30 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.first.code).to eq("1000")
         expect(options.last.name).to eq("Principal objective AND in support of an action programme")
         expect(options.last.code).to eq("3")
+      end
+    end
+
+    describe "#intended_beneficiaries_checkbox_options" do
+      it "returns a full list of all countries" do
+        options = helper.intended_beneficiaries_checkbox_options
+
+        expect(options.length).to eq 143
+        expect(options.first.name).to eq("Afghanistan")
+        expect(options.last.name).to eq("Zimbabwe")
+      end
+    end
+  end
+
+  describe "BEIS" do
+    describe "#covid19_related_radio_options" do
+      it "returns the BEIS codes and descriptions" do
+        options = helper.covid19_related_radio_options
+
+        expect(options.length).to eq 5
+        expect(options.first.code).to eq 0
+        expect(options.first.description).to eq "Not related"
+        expect(options.last.code).to eq 4
+        expect(options.last.description).to eq "Existing activity adapted to somewhat focus on COVID-19"
       end
     end
   end
