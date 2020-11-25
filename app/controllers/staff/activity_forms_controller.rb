@@ -35,6 +35,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :covid19_related,
     :oda_eligibility,
     :oda_eligibility_lead,
+    :uk_dp_named_contact,
   ]
 
   steps(*FORM_STEPS)
@@ -76,6 +77,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.fund?
     when :oda_eligibility_lead
       skip_step unless @activity.is_project?
+    when :uk_dp_named_contact
+      skip_step unless @activity.is_project? && @activity.is_newton_funded?
     end
 
     render_wizard
@@ -181,6 +184,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.assign_attributes(oda_eligibility: oda_eligibility)
     when :oda_eligibility_lead
       @activity.assign_attributes(oda_eligibility_lead: oda_eligibility_lead)
+    when :uk_dp_named_contact
+      @activity.assign_attributes(uk_dp_named_contact: uk_dp_named_contact)
     end
 
     update_form_state
@@ -364,6 +369,10 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def oda_eligibility_lead
     params.require(:activity).permit(:oda_eligibility_lead).fetch("oda_eligibility_lead", nil)
+  end
+
+  def uk_dp_named_contact
+    params.require(:activity).permit(:uk_dp_named_contact).fetch("uk_dp_named_contact", nil)
   end
 
   def finish_wizard_path

@@ -42,6 +42,7 @@ class Activity < ApplicationRecord
     :covid19_related_step,
     :oda_eligibility_step,
     :oda_eligibility_lead_step,
+    :uk_dp_named_contact_step,
   ]
 
   strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]

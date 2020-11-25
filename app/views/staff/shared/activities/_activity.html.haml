@@ -88,6 +88,15 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :sector)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:sector)}"), activity_step_path(activity_presenter, :sector_category), t("summary.label.activity.sector"))
 
+  - if @activity.is_project? && @activity.is_newton_funded?
+    .govuk-summary-list__row.uk_dp_named_contact
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.uk_dp_named_contact")
+      %dd.govuk-summary-list__value
+        = activity_presenter.uk_dp_named_contact
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :uk_dp_named_contact)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:uk_dp_named_contact)}"), activity_step_path(activity_presenter, :uk_dp_named_contact), t("summary.label.activity.uk_dp_named_contact"))
 
   - if activity_presenter.requires_call_dates?
     .govuk-summary-list__row.call_present
@@ -156,7 +165,6 @@
     %dd.govuk-summary-list__actions
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :dates)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:planned_start_date)}"), activity_step_path(activity_presenter, :dates), t("summary.label.activity.planned_start_date"))
-
 
   .govuk-summary-list__row.planned_end_date
     %dt.govuk-summary-list__key
