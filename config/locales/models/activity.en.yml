@@ -138,8 +138,8 @@ en:
         actual_end_date: For example, 2 2 2020
         actual_start_date: For example, 11 1 2020
         aid_type: Where an activity is not G01 or E01 we would expect most of our activity to be classified as D02 but there will be cases where C01 is more appropriate.
-        call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Programme Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
-        call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Programme Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
+        call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
+        call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
         flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
         delivery_partner_identifier: This could be the reference you use in your internal systems
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
