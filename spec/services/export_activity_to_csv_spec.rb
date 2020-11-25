@@ -128,7 +128,7 @@ RSpec.describe ExportActivityToCsv do
           "Recipient region",
           "Recipient country",
           "Intended beneficiaries",
-          "Programme status",
+          "Activity status",
           "Planned start date",
           "Actual start date",
           "Planned end date",
