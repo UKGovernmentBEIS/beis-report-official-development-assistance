@@ -382,7 +382,7 @@
 - Policy markers added to activity form, including BEIS custom answer `not assessed`
 - Add a class to import Activities from a CSV
 
-## [unreleased]
+## [release-23] - 2020-11-25
 
 - Fix parent level strings
 - Add a field to report whether the activity has any relation to the Covid-19 pandemic.
@@ -397,7 +397,10 @@
 - Add field to record the ODA eligibility lead
 - Add missing fields to the activity importer
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...HEAD
+[release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23
 [release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
 [release-21]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...release-21
 [release-20]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-19...release-20
