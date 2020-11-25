@@ -37,6 +37,9 @@ data:
   - code: '11'
     name: Cancelled
     description: Activity has been cancelled or indefinitely postponed after an activity has started
+  - code: '12'
+    name: Paused
+    description: Activity has been temporarily suspended. No spend should take place while this status is in use
 metadata:
   url: ''
   name: Programme Status
