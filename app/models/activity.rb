@@ -81,6 +81,7 @@ class Activity < ApplicationRecord
   validates :policy_marker_nutrition, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :oda_eligibility, presence: true, on: :oda_eligibility_step
   validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :is_project?
+  validates :uk_dp_named_contact, presence: true, on: :uk_dp_named_contact_step, if: :is_project? && :is_newton_funded?
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier_compound, uniqueness: true, allow_nil: true
