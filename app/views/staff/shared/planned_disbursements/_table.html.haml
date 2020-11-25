@@ -3,8 +3,6 @@
     %thead.govuk-table__head
       %tr.govuk-table__row
         %th.govuk-table__header
-          =t("table.header.planned_disbursement.planned_disbursement_type")
-        %th.govuk-table__header
           =t("table.header.planned_disbursement.period_start_date")
         %th.govuk-table__header
           =t("table.header.planned_disbursement.period_end_date")
@@ -21,7 +19,6 @@
     %tbody.govuk-table__body
       - planned_disbursements.each do |planned_disbursement|
         %tr.govuk-table__row{id: planned_disbursement.id}
-          %td.govuk-table__cell= planned_disbursement.planned_disbursement_type
           %td.govuk-table__cell= planned_disbursement.period_start_date
           %td.govuk-table__cell= planned_disbursement.period_end_date
           %td.govuk-table__cell= planned_disbursement.currency
@@ -30,4 +27,6 @@
           %td.govuk-table__cell= planned_disbursement.receiving_organisation_name
           %td.govuk-table__cell
             - if policy(planned_disbursement).edit?
-              = a11y_action_link(t('default.link.edit'), edit_activity_planned_disbursement_path(planned_disbursement.parent_activity, planned_disbursement), t("table.body.planned_disbursement.edit_noun"))
+              = a11y_action_link(t('default.link.edit'),
+                edit_activity_planned_disbursements_path(planned_disbursement.parent_activity, planned_disbursement.financial_year, planned_disbursement.financial_quarter),
+                t("table.body.planned_disbursement.edit_noun"))

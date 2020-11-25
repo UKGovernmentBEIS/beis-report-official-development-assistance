@@ -1096,7 +1096,7 @@ RSpec.describe Activity, type: :model do
   describe "#actual_total_for_report_financial_quarter" do
     it "returns the total of all the activity's transactions scoped to a report" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today)
       create(:transaction, parent_activity: project, value: 50.00, report: report, date: Date.today)
       create(:transaction, parent_activity: project, value: 210, report: report, date: 4.months.ago)
@@ -1106,7 +1106,7 @@ RSpec.describe Activity, type: :model do
 
     it "does not include the totals for any transactions outside the report's date range" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       create(:transaction, parent_activity: project, value: 100.20, report: report, date: 6.months.ago)
       create(:transaction, parent_activity: project, value: 210, report: report, date: 4.months.ago)
 
@@ -1116,21 +1116,22 @@ RSpec.describe Activity, type: :model do
 
   describe "#forecasted_total_for_report_financial_quarter" do
     it "returns the total of all the activity's planned disbursements scoped to a report's financial quarter only" do
-      report = create(:report, financial_quarter: 1, financial_year: 2020, state: :active, created_at: Date.parse("2020-04-01"))
-      project = create(:project_activity)
+      project = create(:project_activity, :with_report)
+      report = Report.for_activity(project).first
 
-      create(:planned_disbursement, parent_activity: project, report: report, value: 1000.00, period_start_date: Date.parse("2020-04-01"), financial_quarter: 1, financial_year: 2020)
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.parse("2020-01-01"), financial_quarter: 4, financial_year: 2019)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.today)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.today)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: 4.months.ago)
 
-      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(1000.00)
+      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(2000.00)
     end
 
     it "does not include totals for any planned disbursements outside the report's date range" do
-      report = create(:report, financial_quarter: 3, financial_year: 2020, state: :active, created_at: Date.parse("2020-10-01"))
-      project = create(:project_activity)
+      project = create(:project_activity, :with_report)
+      report = Report.for_activity(project).first
 
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.parse("2020-04-01"), financial_quarter: 1, financial_year: 2020)
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.parse("2020-07-01"), financial_quarter: 2, financial_year: 2020)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: 6.months.ago)
+      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: 4.months.ago)
 
       expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(0)
     end
@@ -1139,7 +1140,7 @@ RSpec.describe Activity, type: :model do
   describe "#variance_for_report_financial_quarter" do
     it "returns the variance between #actual_total_for_report_financial_quarter and #forecasted_total_for_report_financial_quarter" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       create(:transaction, parent_activity: project, value: 100, report: report, date: Date.today)
       create(:transaction, parent_activity: project, value: 200, report: report, date: Date.today)
       create(:planned_disbursement, parent_activity: project, value: 1500, report: report, period_start_date: Date.today)
@@ -1151,8 +1152,8 @@ RSpec.describe Activity, type: :model do
   describe "#forecasted_total_for_date_range" do
     it "returns the total of all the activity's planned disbursements scoped to a date range" do
       project = create(:project_activity, :with_report)
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200, period_start_date: Date.parse("13 April 2020"), financial_quarter: 1, financial_year: 2020)
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1000, period_start_date: Date.parse("20 November 2020"), financial_quarter: 3, financial_year: 2020)
+      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200, period_start_date: Date.parse("13 April 2020"))
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1000, period_start_date: Date.parse("20 November 2020"))
 
       expect(project.forecasted_total_for_date_range(range: Date.parse("1 April 2020")..Date.parse("30 June 2020"))).to eq 200
       expect(project.forecasted_total_for_date_range(range: Date.parse("1 October 2020")..Date.parse("31 December 2020"))).to eq 1000
@@ -1162,7 +1163,7 @@ RSpec.describe Activity, type: :model do
   describe "#comment_for_report" do
     it "returns the comment associated to this activity and a particular report" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       comment = create(:comment, activity_id: project.id, report_id: report.id, comment: "Here's my comment")
       expect(project.comment_for_report(report_id: report.id)).to eq comment
       expect(project.comment_for_report(report_id: report.id).comment).to eq "Here's my comment"
@@ -1170,7 +1171,7 @@ RSpec.describe Activity, type: :model do
 
     it "does not return any other comments associated to this activity" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       comment = create(:comment, activity_id: project.id, report_id: create(:report).id)
       expect(project.comment_for_report(report_id: report.id)).to_not eq comment
       expect(project.comment_for_report(report_id: report.id)).to be_nil

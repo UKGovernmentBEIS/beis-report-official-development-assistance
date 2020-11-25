@@ -14,6 +14,11 @@ class PlannedDisbursementPresenter < SimpleDelegator
     I18n.l(super)
   end
 
+  def financial_quarter_and_year
+    return nil if financial_quarter.nil? || financial_year.nil?
+    "Q#{financial_quarter} #{financial_year}-#{financial_year + 1}"
+  end
+
   def currency
     return if super.blank?
     I18n.t("generic.default_currency.#{super.downcase}")

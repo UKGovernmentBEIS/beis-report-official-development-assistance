@@ -422,6 +422,16 @@ module FormHelpers
     click_on(t("default.button.submit"))
   end
 
+  def fill_in_planned_disbursement_form_for_activity(activity)
+    report = Report.editable_for_activity(activity)
+    year = report.financial_year
+
+    fill_in_planned_disbursement_form(
+      financial_quarter: "Q#{report.financial_quarter}",
+      financial_year: "#{year + 1}-#{year + 2}"
+    )
+  end
+
   def localise_date_from_input_fields(year:, month:, day:)
     I18n.l(Date.parse("#{year}-#{month}-#{day}"))
   end

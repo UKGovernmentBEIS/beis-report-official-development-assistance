@@ -8,7 +8,7 @@ RSpec.describe "Users can edit a planned disbursement" do
       organisation = user.organisation
       project = create(:project_activity, organisation: user.organisation)
       editable_report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
-      planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report)
+      planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report, financial_year: editable_report.financial_year + 1)
 
       visit organisation_activity_path(organisation, project)
 
@@ -37,8 +37,7 @@ RSpec.describe "Users can edit a planned disbursement" do
           click_on "Edit"
         end
 
-        expect(page).to have_checked_field "Q2"
-        expect(page).to have_select "Financial year", selected: "2018-2019"
+        expect(page).to have_content("Edit forecasted spend for Q2 2018-2019")
       end
     end
 
@@ -49,14 +48,14 @@ RSpec.describe "Users can edit a planned disbursement" do
       visit organisation_activity_path(activity.organisation, activity)
 
       expect(page).not_to have_link t("default.link.edit"),
-        href: edit_activity_planned_disbursement_path(activity, planned_disbursement)
+        href: edit_activity_planned_disbursements_path(activity, planned_disbursement.financial_year, planned_disbursement.financial_quarter)
     end
 
     scenario "the action is recorded with public_activity" do
       PublicActivity.with_tracking do
         project = create(:project_activity, organisation: user.organisation)
         editable_report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
-        planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report)
+        planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report, financial_year: editable_report.financial_year + 1)
 
         visit activities_path
         click_on(project.title)
@@ -64,7 +63,8 @@ RSpec.describe "Users can edit a planned disbursement" do
           click_on(t("default.link.edit"))
         end
 
-        fill_in_planned_disbursement_form(value: "2000.51")
+        fill_in "planned_disbursement[value]", with: "2000.51"
+        click_on(t("default.button.submit"))
 
         auditable_event = PublicActivity::Activity.find_by(trackable_id: planned_disbursement.id)
         expect(auditable_event.key).to eq "planned_disbursement.update"

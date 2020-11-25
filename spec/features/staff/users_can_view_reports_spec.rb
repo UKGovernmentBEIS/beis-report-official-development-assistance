@@ -26,13 +26,11 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "they see the financial quarter the of the report" do
-      travel_to(Date.parse("1 Jan 2020")) do
-        _report = create(:report, :active)
+      _report = create(:report, :active, financial_quarter: 4, financial_year: 2019)
 
-        visit reports_path
+      visit reports_path
 
-        expect(page).to have_content "Q4 2019-2020"
-      end
+      expect(page).to have_content "Q4 2019-2020"
     end
 
     scenario "they can view all inactive reports for all organisations" do
@@ -94,22 +92,20 @@ RSpec.feature "Users can view reports" do
 
     context "if the report description is empty" do
       scenario "the report csv has a filename made up of the fund name & report financial year & quarter" do
-        travel_to(Date.parse("1 Jan 2020")) do
-          report = create(:report, :active, description: "")
+        report = create(:report, :active, description: "", financial_quarter: 4, financial_year: 2019)
 
-          visit reports_path
+        visit reports_path
 
-          within "##{report.id}" do
-            click_on t("default.link.show")
-          end
-
-          click_on t("action.report.download.button")
-
-          expect(page.response_headers["Content-Type"]).to include("text/csv")
-          header = page.response_headers["Content-Disposition"]
-          expect(header).to match(/#{ERB::Util.url_encode("Q4 2019-2020")}/)
-          expect(header).to match(/#{ERB::Util.url_encode(report.fund.title)}/)
+        within "##{report.id}" do
+          click_on t("default.link.show")
         end
+
+        click_on t("action.report.download.button")
+
+        expect(page.response_headers["Content-Type"]).to include("text/csv")
+        header = page.response_headers["Content-Disposition"]
+        expect(header).to match(/#{ERB::Util.url_encode("Q4 2019-2020")}/)
+        expect(header).to match(/#{ERB::Util.url_encode(report.fund.title)}/)
       end
     end
 

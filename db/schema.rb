@@ -179,6 +179,8 @@ ActiveRecord::Schema.define(version: 2020_11_20_150002) do
     t.uuid "report_id"
     t.integer "financial_quarter"
     t.integer "financial_year"
+    t.index ["parent_activity_id", "financial_year", "financial_quarter", "planned_disbursement_type"], name: "unique_type_per_unversioned_item", unique: true, where: "(report_id IS NULL)"
+    t.index ["parent_activity_id", "financial_year", "financial_quarter", "report_id"], name: "unique_report_per_versioned_item", unique: true, where: "(report_id IS NOT NULL)"
     t.index ["parent_activity_id"], name: "index_planned_disbursements_on_parent_activity_id"
     t.index ["report_id"], name: "index_planned_disbursements_on_report_id"
   end
