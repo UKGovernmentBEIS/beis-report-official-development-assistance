@@ -33,7 +33,7 @@ RSpec.feature "Users can manage the implementing organisations" do
     scenario "they can edit an implementing organisation" do
       other_public_sector_organisation = ImplementingOrganisation.new(name: "Other public sector organisation", organisation_type: "70", reference: "GB-COH-123456")
       project.implementing_organisations << other_public_sector_organisation
-      _report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
+      Report.for_activity(project).first.update!(state: :active)
 
       visit organisation_activity_details_path(project.organisation, project)
 
