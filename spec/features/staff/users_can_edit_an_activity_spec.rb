@@ -368,6 +368,24 @@ RSpec.feature "Users can edit an activity" do
           end
         end
       end
+
+      context "when the project is Newton-funded" do
+        let(:activity) { create(:project_activity, organisation: user.organisation, parent: create(:programme_activity, parent: create(:fund_activity, :newton))) }
+
+        it "shows a link to edit the UK DP named contact" do
+          # Report needs to exist so the activity is editable
+          _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
+
+          visit organisation_activity_details_path(activity.organisation, activity)
+
+          within(".uk_dp_named_contact") do
+            click_on(t("default.link.edit"))
+            expect(page).to have_current_path(
+              activity_step_path(activity, :uk_dp_named_contact)
+            )
+          end
+        end
+      end
     end
 
     context "when the activity is a third-party project" do
@@ -600,6 +618,17 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       click_on(t("default.link.edit"))
       expect(page).to have_current_path(
         activity_step_path(activity, :oda_eligibility_lead)
+      )
+    end
+    click_on(t("default.link.back"))
+    click_on t("tabs.activity.details")
+  end
+
+  if activity.is_project? && activity.is_newton_funded?
+    within(".uk_dp_named_contact") do
+      click_on(t("default.link.edit"))
+      expect(page).to have_current_path(
+        activity_step_path(activity, :uk_dp_named_contact)
       )
     end
     click_on(t("default.link.back"))
