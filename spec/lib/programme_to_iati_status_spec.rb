@@ -35,6 +35,9 @@ RSpec.describe "#programme_status_to_iati_status" do
 
       status = ProgrammeToIatiStatus.new.programme_status_to_iati_status("11")
       expect(status).to eq "5"
+
+      status = ProgrammeToIatiStatus.new.programme_status_to_iati_status("12")
+      expect(status).to eq "6"
     end
   end
 end
