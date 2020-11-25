@@ -22,7 +22,7 @@ RSpec.describe Activities::ImportFromCsv do
       "SDG 3" => "3",
       "Covid-19 related research" => "0",
       "ODA Eligibility" => "never_eligible",
-      "Programme Status" => "01",
+      "Activity Status" => "01",
       "Call open date" => "2020-01-02",
       "Call close date" => "2020-01-02",
       "Total applications" => "12",
@@ -394,8 +394,8 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_oda_eligibility"))
     end
 
-    it "has an error if the Programme Status option is invalid" do
-      new_activity_attributes["Programme Status"] = "99331"
+    it "has an error if the Activity Status option is invalid" do
+      new_activity_attributes["Activity Status"] = "99331"
 
       expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
@@ -404,7 +404,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Programme Status")
+      expect(subject.errors.first.csv_column).to eq("Activity Status")
       expect(subject.errors.first.column).to eq(:programme_status)
       expect(subject.errors.first.value).to eq("99331")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_programme_status"))

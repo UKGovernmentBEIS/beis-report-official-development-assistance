@@ -157,7 +157,7 @@ module Activities
         sdg_3: "SDG 3",
         covid19_related: "Covid-19 related research",
         oda_eligibility: "ODA Eligibility",
-        programme_status: "Programme Status",
+        programme_status: "Activity Status",
         call_open_date: "Call open date",
         call_close_date: "Call close date",
         total_applications: "Total applications",
