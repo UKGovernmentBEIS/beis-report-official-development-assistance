@@ -3,7 +3,7 @@ require "csv"
 
 RSpec.describe ExportActivityToCsv do
   let(:project) { create(:project_activity, :with_report) }
-  let(:report) { Report.find_by(fund: project.associated_fund, organisation: project.organisation) }
+  let(:report) { Report.for_activity(project).first }
   let!(:comment) { create(:comment, report: report, activity: project) }
 
   describe "#call" do
@@ -73,7 +73,7 @@ RSpec.describe ExportActivityToCsv do
 
   describe "#next_four_quarter_forecasts" do
     it "gets the forecasted total for the date ranges of the next four quarters" do
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, period_start_date: 3.months.from_now, value: 1000, financial_quarter: FinancialPeriod.quarter_from_date(3.months.from_now), financial_year: FinancialPeriod.year_from_date(3.months.from_now))
+      _disbursement_1 = create(:planned_disbursement, parent_activity: project, period_start_date: 3.months.from_now, value: 1000)
       _disbursement_2 = create(:planned_disbursement, parent_activity: project, period_start_date: 9.months.from_now, value: 500)
       totals = ExportActivityToCsv.new(activity: project, report: report).next_four_quarter_forecasts
 

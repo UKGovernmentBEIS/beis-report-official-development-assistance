@@ -38,7 +38,7 @@ en:
         create: Add forecasted spend
   page_title:
     planned_disbursement:
-      edit: Edit forecasted spend
+      edit: Edit forecasted spend for %{quarter}
       new: Add forecasted spend
   activerecord:
     errors:
@@ -48,5 +48,3 @@ en:
             value:
               inclusion: Value must be between 0.01 and 99,999,999,999.00
               not_a_number: "Value must be a valid number"
-            planned_disbursement_type:
-              only_one_original: There is already an original forecasted spend for Q%{financial_quarter} %{financial_year_start}-%{financial_year_end}

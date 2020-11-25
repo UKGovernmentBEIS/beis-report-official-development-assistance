@@ -540,7 +540,7 @@ RSpec.describe ActivityPresenter do
   describe "#actual_total_for_report_financial_quarter" do
     it "returns the transaction total scoped to report as a formatted number" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       _transaction_in_report_scope = create(:transaction, parent_activity: project, report: report, value: 100.20, date: Date.today)
       _transaction_outside_report_scope = create(:transaction, parent_activity: project, report: report, value: 300, date: Date.today - 4.months)
 
@@ -552,9 +552,9 @@ RSpec.describe ActivityPresenter do
   describe "#forecasted_total_for_report_financial_quarter" do
     it "returns the planned disbursement total per report as a formatted number" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       _disbursement_1 = create(:planned_disbursement, parent_activity: project, report: report, value: 200.20, period_start_date: Date.today)
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500.00, financial_quarter: 4, financial_year: 2019)
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500.00)
 
       expect(described_class.new(project).forecasted_total_for_report_financial_quarter(report: report))
         .to eq "200.20"
@@ -564,17 +564,14 @@ RSpec.describe ActivityPresenter do
   describe "#forecasted_total_for_date_range" do
     it "returns the planned disbursement total for a date range as a formatted number" do
       project = create(:project_activity, :with_report)
-      current_financial_quarter = Date.parse("2020-07-01")
-      last_financial_quarter = Date.parse("2020-04-01")
-      next_financial_quarter = Date.parse("2020-10-01")
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200.20, period_start_date: current_financial_quarter, financial_quarter: 2, financial_year: 2020)
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: last_financial_quarter, financial_quarter: 1, financial_year: 2019)
+      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200.20, period_start_date: Date.today)
+      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: 3.months.ago)
 
-      expect(described_class.new(project).forecasted_total_for_date_range(range: current_financial_quarter.all_quarter))
+      expect(described_class.new(project).forecasted_total_for_date_range(range: Date.today.all_quarter))
         .to eq "200.20"
-      expect(described_class.new(project).forecasted_total_for_date_range(range: last_financial_quarter.all_quarter))
+      expect(described_class.new(project).forecasted_total_for_date_range(range: 3.months.ago.all_quarter))
         .to eq "1500.00"
-      expect(described_class.new(project).forecasted_total_for_date_range(range: next_financial_quarter.all_quarter))
+      expect(described_class.new(project).forecasted_total_for_date_range(range: 3.months.from_now.all_quarter))
         .to eq "0.00"
     end
   end
@@ -582,7 +579,7 @@ RSpec.describe ActivityPresenter do
   describe "#variance_for_report_financial_quarter" do
     it "returns the variance per report as a formatted number" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       _transaction = create(:transaction, parent_activity: project, report: report, value: 200, date: Date.today)
       _disbursement = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: Date.today)
 
