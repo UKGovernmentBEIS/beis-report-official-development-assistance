@@ -702,6 +702,7 @@ en:
       '09': Completed
       '10': Stopped
       '11': Cancelled
+      '12': Paused
     requires_additional_benefitting_countries:
       'true': 'Yes'
       'false': 'No'
