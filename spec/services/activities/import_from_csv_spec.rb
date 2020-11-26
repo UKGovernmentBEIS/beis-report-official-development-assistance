@@ -14,7 +14,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Description" => "Some description goes here...",
       "Recipient Region" => "789",
       "Recipient Country" => "KH",
-      "Intended Beneficiaries" => "KH;KP;ID",
+      "Intended Beneficiaries" => "KH|KP|ID",
       "Delivery partner identifier" => "1234567890",
       "GDI" => "1",
       "SDG 1" => "1",
