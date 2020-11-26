@@ -356,7 +356,7 @@ module Activities
       def parse_date(date, message)
         return if date.blank?
 
-        Date.strptime(date, "%Y-%m-%d").to_datetime
+        Date.strptime(date, "%d/%m/%Y").to_datetime
       rescue ArgumentError
         raise message
       end
