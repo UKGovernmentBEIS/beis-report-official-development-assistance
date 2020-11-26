@@ -54,6 +54,24 @@ FactoryBot.define do
       association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :beis_organisation
       association :reporting_organisation, factory: :beis_organisation
+
+      trait :gcrf do
+        roda_identifier_fragment { "GCRF" }
+        title { "Global Challenges Research Fund (GCRF)" }
+
+        initialize_with do
+          Activity.find_or_initialize_by(roda_identifier_fragment: "GCRF")
+        end
+      end
+
+      trait :newton do
+        roda_identifier_fragment { "NF" }
+        title { "Newton Fund" }
+
+        initialize_with do
+          Activity.find_or_initialize_by(roda_identifier_fragment: "NF")
+        end
+      end
     end
 
     factory :programme_activity do
