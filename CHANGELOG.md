@@ -401,6 +401,8 @@
 ## [unreleased]
 
 - Add a new activity status: "Paused"
+- Update importer date format to be MM/DD/YYYY
+- Separate intended beneficiaries with a pipe
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...HEAD
 [release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23
