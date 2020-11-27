@@ -125,6 +125,27 @@ RSpec.describe PlannedDisbursementOverview do
       ])
     end
 
+    it "can return the forecast value for the quarter of a report" do
+      6.times { reporting_cycle.tick }
+
+      expected_values = [
+        [1, 2017, 10],
+        [2, 2017, 60],
+        [3, 2017, 100],
+        [4, 2017, 70],
+      ]
+
+      expected_values.each do |quarter, year, amount|
+        report = Report.for_activity(activity).find_by(financial_year: year, financial_quarter: quarter)
+        expect(overview.value_for_report(report)).to eq(amount)
+      end
+    end
+
+    it "returns a zero forecast value for a report whose quarter has no forecast" do
+      report = Report.for_activity(activity).find_by(financial_year: 2016, financial_quarter: 2)
+      expect(overview.value_for_report(report)).to eq(0)
+    end
+
     context "when the first report is a historic one with no financial quarter" do
       let(:report) { Report.for_activity(activity).find_by(financial_quarter: 4, financial_year: 2015) }
 
