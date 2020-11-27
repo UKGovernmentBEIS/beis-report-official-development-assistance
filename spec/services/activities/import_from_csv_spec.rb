@@ -14,7 +14,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Description" => "Some description goes here...",
       "Recipient Region" => "789",
       "Recipient Country" => "KH",
-      "Intended Beneficiaries" => "KH;KP;ID",
+      "Intended Beneficiaries" => "KH|KP|ID",
       "Delivery partner identifier" => "1234567890",
       "GDI" => "1",
       "SDG 1" => "1",
@@ -23,14 +23,14 @@ RSpec.describe Activities::ImportFromCsv do
       "Covid-19 related research" => "0",
       "ODA Eligibility" => "never_eligible",
       "Activity Status" => "01",
-      "Call open date" => "2020-01-02",
-      "Call close date" => "2020-01-02",
+      "Call open date" => "02/01/2020",
+      "Call close date" => "02/01/2020",
       "Total applications" => "12",
       "Total awards" => "12",
-      "Planned start date" => "2020-01-02",
-      "Actual start date" => "2020-01-03",
-      "Planned end date" => "2020-01-04",
-      "Actual end date" => "2020-01-05",
+      "Planned start date" => "02/01/2020",
+      "Actual start date" => "03/01/2020",
+      "Planned end date" => "04/01/2020",
+      "Actual end date" => "05/01/2020",
       "Sector" => "11220",
       "Collaboration type (Bi/Multi Marker)" => "1",
       "Flow" => "10",
@@ -499,7 +499,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Actual end date" => :actual_end_date,
     }.each do |attr_name, column_name|
       it "has an error if any the #{attr_name} is invalid" do
-        new_activity_attributes[attr_name] = "01/01/2020"
+        new_activity_attributes[attr_name] = "12/31/2020"
 
         expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
@@ -510,7 +510,7 @@ RSpec.describe Activities::ImportFromCsv do
         expect(subject.errors.first.csv_row).to eq(2)
         expect(subject.errors.first.csv_column).to eq(attr_name)
         expect(subject.errors.first.column).to eq(column_name)
-        expect(subject.errors.first.value).to eq("01/01/2020")
+        expect(subject.errors.first.value).to eq("12/31/2020")
         expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_#{column_name}"))
       end
     end
