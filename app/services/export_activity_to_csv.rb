@@ -106,12 +106,19 @@ class ExportActivityToCsv
       "Variance",
       "Comment",
       "Link to activity in RODA",
-    ].concat(report_presenter.next_four_financial_quarters).to_csv
+    ].concat(next_four_financial_quarters).to_csv
   end
 
   def next_four_quarter_forecasts
-    quarter_date_ranges = report_presenter.quarters_to_date_ranges
-    quarter_date_ranges.map { |range| activity_presenter.forecasted_total_for_date_range(range: range) }
+    report_presenter.next_four_financial_quarters.map do |quarter, year|
+      overview = PlannedDisbursementOverview.new(activity_presenter)
+      value = overview.value_for_report(report_presenter, financial_quarter: quarter, financial_year: year)
+      "%.2f" % value
+    end
+  end
+
+  private def next_four_financial_quarters
+    report_presenter.next_four_financial_quarters.map { |quarter, year| "Q#{quarter} #{year}" }
   end
 
   private def activity_presenter

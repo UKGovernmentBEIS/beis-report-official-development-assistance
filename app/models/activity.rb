@@ -308,10 +308,6 @@ class Activity < ApplicationRecord
     !ingested? && is_project?
   end
 
-  def forecasted_total_for_date_range(range:)
-    planned_disbursements.where(period_start_date: range).sum(:value)
-  end
-
   def comment_for_report(report_id:)
     comments.find_by(report_id: report_id)
   end

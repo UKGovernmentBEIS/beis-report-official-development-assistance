@@ -1220,17 +1220,6 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#forecasted_total_for_date_range" do
-    it "returns the total of all the activity's planned disbursements scoped to a date range" do
-      project = create(:project_activity, :with_report)
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200, period_start_date: Date.parse("13 April 2020"))
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1000, period_start_date: Date.parse("20 November 2020"))
-
-      expect(project.forecasted_total_for_date_range(range: Date.parse("1 April 2020")..Date.parse("30 June 2020"))).to eq 200
-      expect(project.forecasted_total_for_date_range(range: Date.parse("1 October 2020")..Date.parse("31 December 2020"))).to eq 1000
-    end
-  end
-
   describe "#comment_for_report" do
     it "returns the comment associated to this activity and a particular report" do
       project = create(:project_activity, :with_report)
