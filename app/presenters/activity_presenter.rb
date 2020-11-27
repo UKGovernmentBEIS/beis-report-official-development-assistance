@@ -173,7 +173,11 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def call_to_action(attribute)
-    send(attribute).to_s.present? ? "edit" : "add"
+    if send(attribute).blank?
+      "add"
+    else
+      "edit"
+    end
   end
 
   def display_title

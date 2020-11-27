@@ -18,6 +18,7 @@ module FormHelpers
     total_applications: "12",
     total_awards: "5",
     programme_status: "07",
+    country_delivery_partners: "National Council for the State Funding Agencies (CONFAP)",
     planned_start_date_day: "1",
     planned_start_date_month: "1",
     planned_start_date_year: "2020",
@@ -159,6 +160,15 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
+    # NB: Since the parent might be a fund, `is_newton_fund?` won't work here
+    if parent&.associated_fund&.roda_identifier_fragment == "NF"
+      expect(page).to have_content t("form.legend.activity.country_delivery_partners")
+      expect(page).to have_content t("form.hint.activity.country_delivery_partners")
+      fill_in "activity[country_delivery_partners][]", match: :first, with: country_delivery_partners
+
+      click_button t("form.button.activity.submit")
+    end
+
     expect(page).to have_content t("page_title.activity_form.show.dates", level: activity_level(level))
 
     expect(page).to have_content t("form.legend.activity.planned_start_date")
@@ -288,6 +298,7 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
+    # Activity details page ===================================================
     expect(page).to have_content delivery_partner_identifier
     expect(page).to have_content title
     expect(page).to have_content description
@@ -306,6 +317,15 @@ module FormHelpers
       expect(page).to have_content collaboration_type
       expect(page).to have_content objectives
     end
+
+    # NB: Since the parent might be a fund, `is_newton_fund?` won't work here
+    if parent&.associated_fund&.roda_identifier_fragment == "NF"
+      expect(page).to have_css(".govuk-summary-list__row.country_delivery_partners")
+      expect(page).to have_content country_delivery_partners if country_delivery_partners.present?
+    else
+      expect(page).to have_no_css(".govuk-summary-list__row.country_delivery_partners")
+    end
+
     expect(page).to have_content recipient_region
     expect(page).to have_content intended_beneficiaries
     expect(page).to have_content gdi

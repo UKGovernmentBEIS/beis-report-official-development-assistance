@@ -103,6 +103,17 @@ RSpec.feature "Users can create a programme activity" do
 
         choose("activity[programme_status]", option: "07")
         click_button t("form.button.activity.submit")
+
+        if parent.roda_identifier_compound.include?("NF")
+          expect(page).to have_content t("form.legend.activity.country_delivery_partners")
+
+          # Don't provide a country delivery partner
+          click_button t("form.button.activity.submit")
+          expect(page).to have_content t("activerecord.errors.models.activity.attributes.country_delivery_partners.blank")
+
+          fill_in "activity[country_delivery_partners][]", match: :first, with: "National Council for the State Funding Agencies (CONFAP)"
+          click_button t("form.button.activity.submit")
+        end
         expect(page).to have_content t("page_title.activity_form.show.dates", level: "programme (level B)")
 
         click_button t("form.button.activity.submit")
@@ -299,6 +310,32 @@ RSpec.feature "Users can create a programme activity" do
         expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
         expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [programme.id]
       end
+    end
+
+    scenario "country_delivery_parters is included in Newton funded programmes" do
+      newton_fund = create(:fund_activity, :newton, organisation: user.organisation)
+      identifier = "newton-prog"
+      visit activities_path
+      click_on(t("page_content.organisation.button.create_activity"))
+
+      fill_in_activity_form(level: "programme", roda_identifier_fragment: identifier, parent: newton_fund)
+
+      expect(page).to have_content t("action.programme.create.success")
+      activity = Activity.find_by(roda_identifier_fragment: identifier)
+      expect(activity.country_delivery_partners).to eql(["National Council for the State Funding Agencies (CONFAP)"])
+    end
+
+    scenario "non Newton funded programmes do not include 'country_delivery_partners'" do
+      other_fund = create(:fund_activity, organisation: user.organisation)
+      identifier = "other-prog"
+      visit activities_path
+      click_on(t("page_content.organisation.button.create_activity"))
+
+      fill_in_activity_form(level: "programme", roda_identifier_fragment: identifier, parent: other_fund)
+
+      expect(page).to have_content t("action.programme.create.success")
+      activity = Activity.find_by(roda_identifier_fragment: identifier)
+      expect(activity.country_delivery_partners).to be_nil
     end
   end
 end
