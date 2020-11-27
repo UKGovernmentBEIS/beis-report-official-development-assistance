@@ -1177,4 +1177,60 @@ RSpec.describe Activity, type: :model do
       expect(project.comment_for_report(report_id: report.id)).to be_nil
     end
   end
+
+  describe "#is_gcrf_funded?" do
+    it "returns true if activity is associated with the GCRF fund" do
+      fund = build(:fund_activity, :gcrf)
+      programme = build(:programme_activity, parent: fund)
+
+      expect(programme.is_gcrf_funded?).to be_truthy
+    end
+
+    it "returns false if activity is not associated with the GCRF fund" do
+      fund = build(:fund_activity)
+      programme = build(:programme_activity, parent: fund)
+
+      expect(programme.is_gcrf_funded?).to be_falsey
+    end
+
+    it "returns false if activity does not yet have a level" do
+      programme = build(:programme_activity, :level_form_state)
+
+      expect(programme.is_gcrf_funded?).to be_falsey
+    end
+
+    it "returns false if activity is a fund" do
+      fund = build(:fund_activity)
+
+      expect(fund.is_gcrf_funded?).to be_falsey
+    end
+  end
+
+  describe "#is_newton_funded?" do
+    it "returns true if activity is associated with the Newton fund" do
+      fund = build(:fund_activity, :newton)
+      programme = build(:programme_activity, parent: fund)
+
+      expect(programme.is_newton_funded?).to be_truthy
+    end
+
+    it "returns false if activity is not associated with the Newton fund" do
+      fund = build(:fund_activity)
+      programme = build(:programme_activity, parent: fund)
+
+      expect(programme.is_newton_funded?).to be_falsey
+    end
+
+    it "returns false if activity does not yet have a level" do
+      programme = build(:programme_activity, :level_form_state)
+
+      expect(programme.is_newton_funded?).to be_falsey
+    end
+
+    it "returns false if activity is a fund" do
+      fund = build(:fund_activity, :newton)
+
+      expect(fund.is_newton_funded?).to be_falsey
+    end
+  end
 end

@@ -325,4 +325,12 @@ class Activity < ApplicationRecord
   def is_project?
     project? || third_party_project?
   end
+
+  def is_gcrf_funded?
+    parent.present? && associated_fund.roda_identifier_fragment == "GCRF"
+  end
+
+  def is_newton_funded?
+    parent.present? && associated_fund.roda_identifier_fragment == "NF"
+  end
 end
