@@ -297,7 +297,7 @@ class Activity < ApplicationRecord
   end
 
   def forecasted_total_for_report_financial_quarter(report:)
-    @forecasted_total_for_report_financial_quarter ||= forecasted_total_for_date_range(range: report.created_at.all_quarter)
+    @forecasted_total_for_report_financial_quarter ||= PlannedDisbursementOverview.new(self).value_for_report(report)
   end
 
   def variance_for_report_financial_quarter(report:)
