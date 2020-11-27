@@ -39,7 +39,7 @@ RSpec.describe PlannedDisbursementOverview do
     end
 
     it "does not support requesting values at a specific report" do
-      expect { overview.values_at_report(Report.new) }.to raise_error(TypeError)
+      expect { overview.snapshot(Report.new).all_quarters }.to raise_error(TypeError)
     end
   end
 
@@ -99,13 +99,13 @@ RSpec.describe PlannedDisbursementOverview do
 
     shared_examples_for "forecast report history" do
       it "returns the forecast values for all quarters" do
-        forecasts = forecast_values(overview.values_at_report(report))
+        forecasts = forecast_values(overview.snapshot(report).all_quarters)
         expect(forecasts).to eq(expected_values)
       end
 
       it "returns the forecast value for a particular quarter" do
         expected_values.each do |quarter, year, amount|
-          value = overview.value_for_report(report, financial_quarter: quarter, financial_year: year)
+          value = overview.snapshot(report).value_for(financial_quarter: quarter, financial_year: year)
           expect(value).to eq(amount)
         end
       end
@@ -157,13 +157,13 @@ RSpec.describe PlannedDisbursementOverview do
 
       expected_values.each do |quarter, year, amount|
         report = Report.for_activity(activity).find_by(financial_year: year, financial_quarter: quarter)
-        expect(overview.value_for_report(report)).to eq(amount)
+        expect(overview.snapshot(report).value_for_report_quarter).to eq(amount)
       end
     end
 
     it "returns a zero forecast value for a report whose quarter has no forecast" do
       report = Report.for_activity(activity).find_by(financial_year: 2016, financial_quarter: 2)
-      expect(overview.value_for_report(report)).to eq(0)
+      expect(overview.snapshot(report).value_for_report_quarter).to eq(0)
     end
 
     context "when the first report is a historic one with no financial quarter" do
