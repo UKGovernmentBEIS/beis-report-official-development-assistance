@@ -73,9 +73,14 @@ RSpec.describe ExportActivityToCsv do
   end
 
   describe "#next_four_quarter_forecasts" do
-    it "gets the forecasted total for the date ranges of the next four quarters" do
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, period_start_date: 3.months.from_now, value: 1000)
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, period_start_date: 9.months.from_now, value: 500)
+    it "gets the forecasted total for the next four quarters" do
+      quarters = report.next_four_financial_quarters
+      q1_forecast = PlannedDisbursementHistory.new(project, *quarters[0])
+      q3_forecast = PlannedDisbursementHistory.new(project, *quarters[2])
+
+      q1_forecast.set_value(1000)
+      q3_forecast.set_value(500)
+
       totals = ExportActivityToCsv.new(activity: project, report: report).next_four_quarter_forecasts
 
       expect(totals).to eq ["1000.00", "0.00", "500.00", "0.00"]

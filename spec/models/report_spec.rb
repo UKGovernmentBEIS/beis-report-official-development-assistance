@@ -162,7 +162,7 @@ RSpec.describe Report, type: :model do
         travel_to(Date.parse("1 April 2020")) do
           report = create(:report)
 
-          expect(report.next_four_financial_quarters).to eq ["Q2 2020", "Q3 2020", "Q4 2020", "Q1 2021"]
+          expect(report.next_four_financial_quarters).to eq [[2, 2020], [3, 2020], [4, 2020], [1, 2021]]
         end
       end
     end
@@ -172,7 +172,7 @@ RSpec.describe Report, type: :model do
         travel_to(Date.parse("1 July 2020")) do
           report = create(:report)
 
-          expect(report.next_four_financial_quarters).to eq ["Q3 2020", "Q4 2020", "Q1 2021", "Q2 2021"]
+          expect(report.next_four_financial_quarters).to eq [[3, 2020], [4, 2020], [1, 2021], [2, 2021]]
         end
       end
     end
@@ -182,7 +182,7 @@ RSpec.describe Report, type: :model do
         travel_to(Date.parse("1 October 2020")) do
           report = create(:report)
 
-          expect(report.next_four_financial_quarters).to eq ["Q4 2020", "Q1 2021", "Q2 2021", "Q3 2021"]
+          expect(report.next_four_financial_quarters).to eq [[4, 2020], [1, 2021], [2, 2021], [3, 2021]]
         end
       end
     end
@@ -192,7 +192,7 @@ RSpec.describe Report, type: :model do
         travel_to(Date.parse("1 January 2021")) do
           report = create(:report)
 
-          expect(report.next_four_financial_quarters).to eq ["Q1 2021", "Q2 2021", "Q3 2021", "Q4 2021"]
+          expect(report.next_four_financial_quarters).to eq [[1, 2021], [2, 2021], [3, 2021], [4, 2021]]
         end
       end
     end

@@ -77,15 +77,14 @@ class Report < ApplicationRecord
   end
 
   def next_four_financial_quarters
-    case current_financial_quarter
-    when 1
-      ["Q2 #{current_financial_year}", "Q3 #{current_financial_year}", "Q4 #{current_financial_year}", "Q1 #{current_financial_year + 1}"]
-    when 2
-      ["Q3 #{current_financial_year}", "Q4 #{current_financial_year}", "Q1 #{current_financial_year + 1}", "Q2 #{current_financial_year + 1}"]
-    when 3
-      ["Q4 #{current_financial_year}", "Q1 #{current_financial_year + 1}", "Q2 #{current_financial_year + 1}", "Q3 #{current_financial_year + 1}"]
-    when 4
-      ["Q1 #{current_financial_year + 1}", "Q2 #{current_financial_year + 1}", "Q3 #{current_financial_year + 1}", "Q4 #{current_financial_year + 1}"]
+    quarter, year = current_financial_quarter, current_financial_year
+
+    (0..3).map do |increment|
+      next_quarter = quarter + increment
+      [
+        (next_quarter % 4) + 1,
+        next_quarter >= 4 ? year + 1 : year,
+      ]
     end
   end
 
