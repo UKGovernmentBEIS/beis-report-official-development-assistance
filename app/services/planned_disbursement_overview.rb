@@ -19,20 +19,12 @@ class PlannedDisbursementOverview
     end
   end
 
-  def values_at_report(report)
+  def snapshot(report)
     unless record_history?
       raise TypeError, "Cannot retrieve history for unversioned activities"
     end
 
-    latest_values.merge(Report.historically_up_to(report))
-  end
-
-  def value_for_report(report, financial_quarter: report.financial_quarter, financial_year: report.financial_year)
-    forecasts_for_report_quarter = values_at_report(report).where(
-      financial_quarter: financial_quarter,
-      financial_year: financial_year
-    )
-    PlannedDisbursement.from(forecasts_for_report_quarter).sum(:value)
+    Snapshot.new(self, report)
   end
 
   private
@@ -54,5 +46,31 @@ class PlannedDisbursementOverview
       .select(LATEST_ENTRY_PER_QUARTER)
       .where(parent_activity_id: @activity.id)
       .order(financial_year: :asc, financial_quarter: :asc)
+  end
+
+  class Snapshot
+    def initialize(overview, report)
+      @overview = overview
+      @report = report
+    end
+
+    def all_quarters
+      @overview.latest_values.merge(Report.historically_up_to(@report))
+    end
+
+    def value_for_report_quarter
+      lookup_value_for_quarter(@report.financial_quarter, @report.financial_year)
+    end
+
+    def value_for(financial_quarter:, financial_year:)
+      lookup_value_for_quarter(financial_quarter, financial_year)
+    end
+
+    private
+
+    def lookup_value_for_quarter(quarter, year)
+      forecasts_for_quarter = all_quarters.where(financial_quarter: quarter, financial_year: year)
+      PlannedDisbursement.from(forecasts_for_quarter).sum(:value)
+    end
   end
 end

@@ -112,7 +112,7 @@ class ExportActivityToCsv
   def next_four_quarter_forecasts
     report_presenter.next_four_financial_quarters.map do |quarter, year|
       overview = PlannedDisbursementOverview.new(activity_presenter)
-      value = overview.value_for_report(report_presenter, financial_quarter: quarter, financial_year: year)
+      value = overview.snapshot(report_presenter).value_for(financial_quarter: quarter, financial_year: year)
       "%.2f" % value
     end
   end
