@@ -4,7 +4,6 @@ class ReportingCycle
     @financial_quarter = financial_quarter
     @financial_year = financial_year
     @report = nil
-    @time = Time.now
   end
 
   def tick
@@ -21,9 +20,8 @@ class ReportingCycle
 
   def create_report
     @report = Report.new(fund: @activity.associated_fund, organisation: @activity.organisation)
-    @time += 1.second
 
-    @report.created_at = @time
+    @report.created_at = FinancialPeriod.start_date_from_quarter_and_year(@financial_quarter.to_s, @financial_year.to_s)
     @report.financial_quarter = @financial_quarter
     @report.financial_year = @financial_year
     @report.state = :active
