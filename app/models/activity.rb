@@ -27,6 +27,7 @@ class Activity < ApplicationRecord
     :call_dates_step,
     :total_applications_and_awards_step,
     :programme_status_step,
+    :country_delivery_partners_step,
     :geography_step,
     :region_step,
     :country_step,
@@ -59,6 +60,7 @@ class Activity < ApplicationRecord
   validates :total_applications, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :total_awards, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :programme_status, presence: true, on: :programme_status_step
+  validates :country_delivery_partners, presence: true, on: :country_delivery_partners_step, if: :requires_country_delivery_partners?
   validates :geography, presence: true, on: :geography_step
   validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
   validates :recipient_country, presence: true, on: :country_step, if: :recipient_country?
@@ -330,5 +332,9 @@ class Activity < ApplicationRecord
 
   def is_newton_funded?
     parent.present? && associated_fund.roda_identifier_fragment == "NF"
+  end
+
+  def requires_country_delivery_partners?
+    is_newton_funded? && programme?
   end
 end
