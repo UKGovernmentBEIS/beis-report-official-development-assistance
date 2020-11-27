@@ -252,7 +252,7 @@ module Activities
         codelist = load_yaml(entity: :activity, type: :intended_beneficiaries)
         valid_codes = codelist.values.flatten.map { |entry| entry.fetch("code") }
 
-        intended_beneficiaries.split(";").map do |code|
+        intended_beneficiaries.split("|").map do |code|
           raise I18n.t("importer.errors.activity.invalid_intended_beneficiaries") unless valid_codes.include?(code)
 
           code
@@ -356,7 +356,7 @@ module Activities
       def parse_date(date, message)
         return if date.blank?
 
-        Date.strptime(date, "%Y-%m-%d").to_datetime
+        Date.strptime(date, "%d/%m/%Y").to_datetime
       rescue ArgumentError
         raise message
       end
