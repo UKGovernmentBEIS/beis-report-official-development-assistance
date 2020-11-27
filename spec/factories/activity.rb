@@ -27,6 +27,7 @@ FactoryBot.define do
     gcrf_challenge_area { 0 }
     oda_eligibility_lead { Faker::Name.name }
     uk_dp_named_contact { Faker::Name.name }
+    fund_pillar { "0" }
 
     form_state { "complete" }
 
