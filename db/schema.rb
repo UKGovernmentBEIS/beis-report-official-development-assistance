@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 2020_11_27_105312) do
     t.string "uk_dp_named_contact"
     t.string "country_delivery_partners", array: true
     t.integer "gcrf_challenge_area"
+    t.integer "fund_pillar"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
