@@ -409,6 +409,7 @@
 - Validate country codes against all valid-country codes in the importer
 - Importer can import policy markers
 - Allow importer to import the ODA Eligibility Lead
+- Users can add `country_delivery_partners` for Newton funded activities
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...HEAD
 [release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23
