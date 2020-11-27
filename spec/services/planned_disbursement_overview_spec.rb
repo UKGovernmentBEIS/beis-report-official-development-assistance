@@ -97,32 +97,52 @@ RSpec.describe PlannedDisbursementOverview do
       ])
     end
 
-    it "returns the values as of the first report" do
-      report = Report.for_activity(activity).find_by(financial_quarter: 4, financial_year: 2015)
-      forecasts = forecast_values(overview.values_at_report(report))
+    shared_examples_for "forecast report history" do
+      it "returns the forecast values for all quarters" do
+        forecasts = forecast_values(overview.values_at_report(report))
+        expect(forecasts).to eq(expected_values)
+      end
 
-      expect(forecasts).to eq([
-        [1, 2017, 10],
-        [4, 2017, 20],
-        [1, 2018, 30],
-        [3, 2018, 40],
-        [4, 2018, 50],
-      ])
+      it "returns the forecast value for a particular quarter" do
+        expected_values.each do |quarter, year, amount|
+          value = overview.value_for_report(report, financial_quarter: quarter, financial_year: year)
+          expect(value).to eq(amount)
+        end
+      end
     end
 
-    it "returns the values as of a specific report" do
-      report = Report.for_activity(activity).find_by(financial_quarter: 1, financial_year: 2016)
-      forecasts = forecast_values(overview.values_at_report(report))
+    context "for the first report" do
+      let(:report) { Report.for_activity(activity).find_by(financial_quarter: 4, financial_year: 2015) }
 
-      expect(forecasts).to eq([
-        [1, 2017, 10],
-        [2, 2017, 60],
-        [4, 2017, 70],
-        [1, 2018, 30],
-        [2, 2018, 80],
-        [3, 2018, 90],
-        [4, 2018, 50],
-      ])
+      let(:expected_values) {
+        [
+          [1, 2017, 10],
+          [4, 2017, 20],
+          [1, 2018, 30],
+          [3, 2018, 40],
+          [4, 2018, 50],
+        ]
+      }
+
+      it_should_behave_like "forecast report history"
+    end
+
+    context "for a specific report" do
+      let(:report) { Report.for_activity(activity).find_by(financial_quarter: 1, financial_year: 2016) }
+
+      let(:expected_values) {
+        [
+          [1, 2017, 10],
+          [2, 2017, 60],
+          [4, 2017, 70],
+          [1, 2018, 30],
+          [2, 2018, 80],
+          [3, 2018, 90],
+          [4, 2018, 50],
+        ]
+      }
+
+      it_should_behave_like "forecast report history"
     end
 
     it "can return the forecast value for the quarter of a report" do
@@ -149,21 +169,21 @@ RSpec.describe PlannedDisbursementOverview do
     context "when the first report is a historic one with no financial quarter" do
       let(:report) { Report.for_activity(activity).find_by(financial_quarter: 4, financial_year: 2015) }
 
-      before do
-        Report.where(id: report.id).update_all(financial_quarter: nil, financial_year: nil)
-      end
-
-      it "returns the values as of the first report" do
-        forecasts = forecast_values(overview.values_at_report(report))
-
-        expect(forecasts).to eq([
+      let(:expected_values) {
+        [
           [1, 2017, 10],
           [4, 2017, 20],
           [1, 2018, 30],
           [3, 2018, 40],
           [4, 2018, 50],
-        ])
+        ]
+      }
+
+      before do
+        Report.where(id: report.id).update_all(financial_quarter: nil, financial_year: nil)
       end
+
+      it_should_behave_like "forecast report history"
     end
 
     context "when there are two reports for the same financial quarter" do
@@ -195,33 +215,41 @@ RSpec.describe PlannedDisbursementOverview do
         ])
       end
 
-      it "returns the values as of the latest report" do
-        forecasts = forecast_values(overview.values_at_report(reports[0]))
+      context "for the latest report" do
+        let(:report) { reports[0] }
 
-        expect(forecasts).to eq([
-          [1, 2017, 10],
-          [2, 2017, 60],
-          [3, 2017, 100],
-          [4, 2017, 70],
-          [1, 2018, 110],
-          [2, 2018, 120],
-          [3, 2018, 130],
-          [4, 2018, 140],
-        ])
+        let(:expected_values) {
+          [
+            [1, 2017, 10],
+            [2, 2017, 60],
+            [3, 2017, 100],
+            [4, 2017, 70],
+            [1, 2018, 110],
+            [2, 2018, 120],
+            [3, 2018, 130],
+            [4, 2018, 140],
+          ]
+        }
+
+        it_should_behave_like "forecast report history"
       end
 
-      it "returns the values as of the penultimate report" do
-        forecasts = forecast_values(overview.values_at_report(reports[1]))
+      context "for the penultimate report" do
+        let(:report) { reports[1] }
 
-        expect(forecasts).to eq([
-          [1, 2017, 10],
-          [2, 2017, 60],
-          [4, 2017, 70],
-          [1, 2018, 30],
-          [2, 2018, 80],
-          [3, 2018, 90],
-          [4, 2018, 50],
-        ])
+        let(:expected_values) {
+          [
+            [1, 2017, 10],
+            [2, 2017, 60],
+            [4, 2017, 70],
+            [1, 2018, 30],
+            [2, 2018, 80],
+            [3, 2018, 90],
+            [4, 2018, 50],
+          ]
+        }
+
+        it_should_behave_like "forecast report history"
       end
     end
 

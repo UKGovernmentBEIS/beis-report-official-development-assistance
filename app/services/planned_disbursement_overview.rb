@@ -27,10 +27,10 @@ class PlannedDisbursementOverview
     latest_values.merge(Report.historically_up_to(report))
   end
 
-  def value_for_report(report)
+  def value_for_report(report, financial_quarter: report.financial_quarter, financial_year: report.financial_year)
     forecasts_for_report_quarter = values_at_report(report).where(
-      financial_quarter: report.financial_quarter,
-      financial_year: report.financial_year
+      financial_quarter: financial_quarter,
+      financial_year: financial_year
     )
     PlannedDisbursement.from(forecasts_for_report_quarter).sum(:value)
   end
@@ -52,7 +52,7 @@ class PlannedDisbursementOverview
   def historical_entries
     PlannedDisbursement
       .select(LATEST_ENTRY_PER_QUARTER)
-      .where(parent_activity: @activity)
+      .where(parent_activity_id: @activity.id)
       .order(financial_year: :asc, financial_quarter: :asc)
   end
 end
