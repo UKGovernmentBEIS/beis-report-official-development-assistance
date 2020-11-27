@@ -398,7 +398,9 @@
 - Add missing fields to the activity importer
 - Allow forecasts to be edited, preserving their history
 
-## [unreleased]
+## [unreleased]
+
+- Show only the financial quarter and value for forecasts on the activity page
 
 - Add a new activity status: "Paused"
 - Update importer date format to be MM/DD/YYYY
