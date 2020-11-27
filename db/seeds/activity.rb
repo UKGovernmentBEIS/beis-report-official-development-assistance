@@ -1,12 +1,14 @@
 beis = Organisation.find_by(service_owner: true)
 
 gcrf_fund_params = FactoryBot.build(:fund_activity,
-  title: "GCRF",
+  roda_identifier_fragment: "GCRF",
+  title: "Global Challenges Research Fund (GCRF)",
   organisation: beis).attributes
 
 gcrf_fund = Activity.find_or_create_by(gcrf_fund_params)
 
 newton_fund_params = FactoryBot.build(:fund_activity,
+  roda_identifier_fragment: "NF",
   title: "Newton Fund",
   organisation: beis).attributes
 
