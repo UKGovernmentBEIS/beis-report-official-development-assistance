@@ -27,6 +27,14 @@ class PlannedDisbursementOverview
     latest_values.merge(Report.historically_up_to(report))
   end
 
+  def value_for_report(report)
+    forecasts_for_report_quarter = values_at_report(report).where(
+      financial_quarter: report.financial_quarter,
+      financial_year: report.financial_year
+    )
+    PlannedDisbursement.from(forecasts_for_report_quarter).sum(:value)
+  end
+
   private
 
   def record_history?
