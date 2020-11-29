@@ -38,13 +38,15 @@ class ImportPlannedDisbursements
       year = match[1].to_i
       quarter = match[2].to_i
 
-      import_forecast(activity, quarter, year, value)
+      import_forecast(activity, quarter, year, value, header: key)
     end
   end
 
-  def import_forecast(activity, quarter, year, value)
+  def import_forecast(activity, quarter, year, value, header:)
     history = PlannedDisbursementHistory.new(activity, quarter, year, report: @report)
     history.set_value(value)
+  rescue ConvertFinancialValue::Error
+    @errors << "The forecast for #{header} for activity #{activity.roda_identifier} is not a number."
   end
 
   def lookup_activity(roda_identifier)
