@@ -79,4 +79,25 @@ RSpec.describe ImportPlannedDisbursements do
       expect(forecast_values).to eq([])
     end
   end
+
+  context "when the data includes an unknown RODA identifier" do
+    before do
+      importer.import([
+        {
+          "RODA identifier" => "not-really-an-id",
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
+        },
+      ])
+    end
+
+    it "reports an error" do
+      expect(importer.errors).to eq([
+        "The RODA identifier 'not-really-an-id' was not recognised.",
+      ])
+    end
+
+    it "does not import any forecasts" do
+      expect(forecast_values).to eq([])
+    end
+  end
 end

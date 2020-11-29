@@ -28,7 +28,8 @@ class ImportPlannedDisbursements
 
   def import_row(row)
     roda_identifier = row[RODA_ID_KEY]
-    activity = Activity.by_roda_identifier(roda_identifier)
+    activity = lookup_activity(roda_identifier)
+    return unless activity
 
     row.each do |key, value|
       match = FORECAST_COLUMN_HEADER.match(key)
@@ -44,6 +45,14 @@ class ImportPlannedDisbursements
   def import_forecast(activity, quarter, year, value)
     history = PlannedDisbursementHistory.new(activity, quarter, year, report: @report)
     history.set_value(value)
+  end
+
+  def lookup_activity(roda_identifier)
+    activity = Activity.by_roda_identifier(roda_identifier)
+    return activity if activity
+
+    @errors << "The RODA identifier '#{roda_identifier}' was not recognised."
+    nil
   end
 
   def log_report_not_latest_error(latest_report)
