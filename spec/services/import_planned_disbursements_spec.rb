@@ -100,4 +100,25 @@ RSpec.describe ImportPlannedDisbursements do
       expect(forecast_values).to eq([])
     end
   end
+
+  context "when the data includes a non-numeric forecast" do
+    before do
+      importer.import([
+        {
+          "RODA identifier" => project.roda_identifier,
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "not a number",
+        },
+      ])
+    end
+
+    it "reports an error" do
+      expect(importer.errors).to eq([
+        "The forecast for FC 2020/21 FY Q3 (Oct, Nov, Dec) for activity #{project.roda_identifier} is not a number.",
+      ])
+    end
+
+    it "does not import any forecasts" do
+      expect(forecast_values).to eq([])
+    end
+  end
 end
