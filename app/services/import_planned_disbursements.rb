@@ -19,7 +19,10 @@ class ImportPlannedDisbursements
 
     ActiveRecord::Base.transaction do
       log_report_not_latest_error(latest_report) unless @report == latest_report
-      forecasts.each { |row| import_row(row) }
+      forecasts.each_with_index do |row, index|
+        @current_index = index
+        import_row(row)
+      end
       raise ActiveRecord::Rollback unless @errors.empty?
     end
   end
@@ -46,23 +49,28 @@ class ImportPlannedDisbursements
     history = PlannedDisbursementHistory.new(activity, quarter, year, report: @report)
     history.set_value(value)
   rescue ConvertFinancialValue::Error
-    @errors << "The forecast for #{header} for activity #{activity.roda_identifier} is not a number."
+    log_error("The forecast for #{header} for activity #{activity.roda_identifier} is not a number.")
   end
 
   def lookup_activity(roda_identifier)
     activity = Activity.by_roda_identifier(roda_identifier)
 
     unless activity
-      @errors << "The RODA identifier '#{roda_identifier}' was not recognised."
+      log_error("The RODA identifier '#{roda_identifier}' was not recognised.")
       return nil
     end
 
     unless Report.for_activity(activity).find_by(id: @report.id)
-      @errors << "The activity #{activity.roda_identifier} is not related to the report, which belongs to #{report_fund} and #{report_organisation}."
+      log_error("The activity #{activity.roda_identifier} is not related to the report, which belongs to #{report_fund} and #{report_organisation}.")
       return nil
     end
 
     activity
+  end
+
+  def log_error(message)
+    message = "Line #{@current_index + 2}: #{message}" if @current_index
+    @errors << message
   end
 
   def log_report_not_latest_error(latest_report)
@@ -72,7 +80,7 @@ class ImportPlannedDisbursements
       "The latest is #{latest_report.id}, for #{quarter latest_report} (#{latest_report.state}).",
     ]
 
-    @errors << message.join(" ")
+    log_error(message.join(" "))
   end
 
   def quarter(report)
