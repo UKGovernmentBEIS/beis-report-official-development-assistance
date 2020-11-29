@@ -51,18 +51,23 @@ class ImportPlannedDisbursements
 
   def lookup_activity(roda_identifier)
     activity = Activity.by_roda_identifier(roda_identifier)
-    return activity if activity
 
-    @errors << "The RODA identifier '#{roda_identifier}' was not recognised."
-    nil
+    unless activity
+      @errors << "The RODA identifier '#{roda_identifier}' was not recognised."
+      return nil
+    end
+
+    unless Report.for_activity(activity).find_by(id: @report.id)
+      @errors << "The activity #{activity.roda_identifier} is not related to the report, which belongs to #{report_fund} and #{report_organisation}."
+      return nil
+    end
+
+    activity
   end
 
   def log_report_not_latest_error(latest_report)
-    organisation = @report.organisation.name
-    fund = @report.fund.roda_identifier
-
     message = [
-      "The report #{@report.id} (#{organisation}, #{quarter @report} for #{fund},",
+      "The report #{@report.id} (#{report_organisation}, #{quarter @report} for #{report_fund},",
       "#{@report.state}) is not the latest for that organisation and fund.",
       "The latest is #{latest_report.id}, for #{quarter latest_report} (#{latest_report.state}).",
     ]
@@ -72,5 +77,13 @@ class ImportPlannedDisbursements
 
   def quarter(report)
     "Q#{report.financial_quarter} #{report.financial_year}"
+  end
+
+  def report_fund
+    @report.fund.roda_identifier
+  end
+
+  def report_organisation
+    @report.organisation.name
   end
 end

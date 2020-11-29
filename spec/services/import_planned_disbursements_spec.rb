@@ -121,4 +121,34 @@ RSpec.describe ImportPlannedDisbursements do
       expect(forecast_values).to eq([])
     end
   end
+
+  context "when the data includes a project unrelated to the report" do
+    let(:unrelated_project) { create(:project_activity) }
+
+    let(:organisation) { project.organisation.name }
+    let(:fund) { project.associated_fund.roda_identifier }
+
+    before do
+      importer.import([
+        {
+          "RODA identifier" => project.roda_identifier,
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
+        },
+        {
+          "RODA identifier" => unrelated_project.roda_identifier,
+          "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793",
+        },
+      ])
+    end
+
+    it "reports an error" do
+      expect(importer.errors).to eq([
+        "The activity #{unrelated_project.roda_identifier} is not related to the report, which belongs to #{fund} and #{organisation}.",
+      ])
+    end
+
+    it "does not import any forecasts" do
+      expect(forecast_values).to eq([])
+    end
+  end
 end
