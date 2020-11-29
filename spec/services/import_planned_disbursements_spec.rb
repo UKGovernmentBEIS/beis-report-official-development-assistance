@@ -3,10 +3,10 @@ require "rails_helper"
 RSpec.describe ImportPlannedDisbursements do
   let(:project) { create(:project_activity) }
   let(:reporting_cycle) { ReportingCycle.new(project, 1, 2020) }
-  let(:latest_report) { Report.in_historical_order.first }
+  let(:selected_report) { Report.in_historical_order.first }
 
   let :importer do
-    ImportPlannedDisbursements.new(report: latest_report)
+    ImportPlannedDisbursements.new(report: selected_report)
   end
 
   before do
@@ -48,6 +48,35 @@ RSpec.describe ImportPlannedDisbursements do
         [1, 2021, 984_150.0],
         [2, 2021, 206_206.0],
       ])
+    end
+  end
+
+  context "when the selected report is not the latest one" do
+    let(:latest_report) { Report.in_historical_order.first }
+    let(:selected_report) { Report.in_historical_order.to_a.last }
+
+    let(:organisation) { project.organisation.name }
+    let(:fund) { project.associated_fund.roda_identifier }
+
+    before do
+      importer.import([
+        {
+          "RODA identifier" => project.roda_identifier,
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
+        },
+      ])
+    end
+
+    it "reports an error" do
+      expect(importer.errors).to eq([
+        "The report #{selected_report.id} (#{organisation}, Q1 2020 for #{fund}, approved)\
+ is not the latest for that organisation and fund. The latest is #{latest_report.id},\
+ for Q2 2020 (in_review).",
+      ])
+    end
+
+    it "does not import any forecasts" do
+      expect(forecast_values).to eq([])
     end
   end
 end
