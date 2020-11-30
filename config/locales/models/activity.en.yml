@@ -429,6 +429,7 @@ en:
         invalid_sdg_goal: The sustainable development goal is invalid
         invalid_covid19_related: The COVID 19 Related option is invalid
         invalid_oda_eligibility: The ODA Eligibility option is invalid
+        invalid_channel_of_delivery_code: The Channel of delivery code is invalid
         invalid_programme_status: The Activity status option is invalid
         invalid_call_open_date: The Call Open Date option is in an invalid format
         invalid_call_close_date: The Call Close Date option is in an invalid format

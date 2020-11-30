@@ -406,6 +406,7 @@
 - Update importer date format to be MM/DD/YYYY
 - Separate intended beneficiaries with a pipe
 - Add a field to record the UK delivery partner named contact for project-level activities
+- Allow Channel of delivery code to be imported from CSV and reported in the CSV
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...HEAD
 [release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23

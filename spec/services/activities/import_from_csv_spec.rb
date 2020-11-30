@@ -32,6 +32,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Planned end date" => "04/01/2020",
       "Actual end date" => "05/01/2020",
       "Sector" => "11220",
+      "Channel of delivery code" => "11000",
       "Collaboration type (Bi/Multi Marker)" => "1",
       "Flow" => "10",
       "Aid type" => "B03",
@@ -127,6 +128,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.call_present).to eq(true)
       expect(existing_activity.sector).to eq(existing_activity_attributes["Sector"])
       expect(existing_activity.sector_category).to eq("112")
+      expect(existing_activity.channel_of_delivery_code).to eq(existing_activity_attributes["Channel of delivery code"])
       expect(existing_activity.collaboration_type).to eq(existing_activity_attributes["Collaboration type (Bi/Multi Marker)"])
       expect(existing_activity.flow).to eq(existing_activity_attributes["Flow"])
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
@@ -249,6 +251,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.actual_end_date).to eq(DateTime.parse(new_activity_attributes["Actual end date"]))
       expect(new_activity.sector).to eq(new_activity_attributes["Sector"])
       expect(new_activity.sector_category).to eq("112")
+      expect(new_activity.channel_of_delivery_code).to eq(new_activity_attributes["Channel of delivery code"])
       expect(new_activity.collaboration_type).to eq(new_activity_attributes["Collaboration type (Bi/Multi Marker)"])
       expect(new_activity.flow).to eq(new_activity_attributes["Flow"])
       expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
@@ -431,6 +434,48 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:sector)
       expect(subject.errors.first.value).to eq("53453453453453")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sector"))
+    end
+
+    it "has an error if the 'Channel of delivery code' is invalid" do
+      new_activity_attributes["Channel of delivery code"] = "abc123"
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Channel of delivery code")
+      expect(subject.errors.first.column).to eq(:channel_of_delivery_code)
+      expect(subject.errors.first.value).to eq("abc123")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
+    end
+
+    it "has an error if the 'Channel of delivery code' is empty" do
+      new_activity_attributes["Channel of delivery code"] = ""
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Channel of delivery code")
+      expect(subject.errors.first.column).to eq(:channel_of_delivery_code)
+      expect(subject.errors.first.value).to eq("")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
+    end
+
+    it "allows the value of 'Channel of delivery code' to be 'N/A'" do
+      new_activity_attributes["Channel of delivery code"] = "N/A"
+
+      expect { subject.import([new_activity_attributes]) }.to change { Activity.count }
+
+      new_activity = Activity.order(:created_at).last
+
+      expect(new_activity.channel_of_delivery_code).to eq("N/A")
     end
 
     it "has an error if the Collaboration type option is invalid" do
