@@ -90,6 +90,7 @@ en:
         fstc_applies:
           "true": "Yes"
           "false": "No"
+        uk_dp_named_contact: Who is the UK delivery partner named contact for this activity?
     legend:
       activity:
         aid_type: What is the aid type?
@@ -254,6 +255,7 @@ en:
         total_applications: Total applications
         total_awards: Total awards
         transparency_identifier: "Transparency identifier"
+        uk_dp_named_contact: UK delivery partner named contact for this activity
   table:
     header:
       activity:
@@ -354,6 +356,7 @@ en:
         status: Status
         sustainable_development_goals: Sustainable Development Goals
         total_applications_and_awards: Applications and awards
+        uk_dp_named_contact: Who is the UK delivery partner named contact for this activity?
   activerecord:
     attributes:
       activity:

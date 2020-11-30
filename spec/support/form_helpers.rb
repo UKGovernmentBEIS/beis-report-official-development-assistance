@@ -51,7 +51,8 @@ module FormHelpers
     oda_eligibility: "Eligible",
     oda_eligibility_lead: Faker::Name.name,
     level:,
-    parent: nil
+    parent: nil,
+    uk_dp_named_contact: Faker::Name.name
   )
 
     expect(page).to have_content t("form.legend.activity.level")
@@ -281,6 +282,12 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
+    if (level == "project" || level == "third_party_project") && parent.is_newton_funded?
+      expect(page).to have_content t("form.label.activity.uk_dp_named_contact")
+      fill_in "activity[uk_dp_named_contact]", with: uk_dp_named_contact
+      click_button t("form.button.activity.submit")
+    end
+
     expect(page).to have_content delivery_partner_identifier
     expect(page).to have_content title
     expect(page).to have_content description
@@ -332,6 +339,9 @@ module FormHelpers
     end
     expect(page).to have_content oda_eligibility
     expect(page).to have_content oda_eligibility_lead if level == "project" || level == "third_party_project"
+    if (level == "project" || level == "third_party_project") && parent.is_newton_funded?
+      expect(page).to have_content uk_dp_named_contact
+    end
     expect(page).to have_content localise_date_from_input_fields(
       year: planned_start_date_year,
       month: planned_start_date_month,
