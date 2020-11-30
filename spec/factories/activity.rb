@@ -25,6 +25,7 @@ FactoryBot.define do
     level { :fund }
     publish_to_iati { true }
     oda_eligibility_lead { Faker::Name.name }
+    uk_dp_named_contact { Faker::Name.name }
 
     form_state { "complete" }
 

@@ -70,6 +70,17 @@ RSpec.feature "Users can create a project" do
           expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [project.id]
         end
       end
+
+      scenario "a new project requires specific fields when the programme is Newton-funded" do
+        newton_fund = create(:fund_activity, :newton)
+        newton_programme = create(:programme_activity, parent: newton_fund, extending_organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: newton_fund)
+
+        visit activities_path
+        click_on(t("page_content.organisation.button.create_activity"))
+
+        fill_in_activity_form(level: "project", parent: newton_programme)
+      end
     end
   end
 end
