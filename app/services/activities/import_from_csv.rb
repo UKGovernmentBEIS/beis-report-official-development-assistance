@@ -170,6 +170,7 @@ module Activities
         actual_start_date: "Actual start date",
         actual_end_date: "Actual end date",
         sector: "Sector",
+        channel_of_delivery_code: "Channel of delivery code",
         collaboration_type: "Collaboration type (Bi/Multi Marker)",
         policy_marker_gender: "DFID policy marker - Gender",
         policy_marker_climate_change_adaptation: "DFID policy marker - Climate Change - Adaptation",
@@ -194,6 +195,7 @@ module Activities
         "DFID policy marker - Disability",
         "DFID policy marker - Disaster Risk Reduction",
         "DFID policy marker - Nutrition",
+        "Channel of delivery code",
       ]
 
       def initialize(row)
@@ -353,6 +355,16 @@ module Activities
         )
       end
 
+      def convert_channel_of_delivery_code(channel_of_delivery_code)
+        raise I18n.t("importer.errors.activity.invalid_channel_of_delivery_code") if channel_of_delivery_code.blank?
+
+        validate_channel_of_delivery_code(
+          channel_of_delivery_code,
+          :channel_of_delivery_code,
+          I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"),
+        )
+      end
+
       def convert_collaboration_type(collaboration_type)
         validate_from_codelist(
           collaboration_type,
@@ -439,6 +451,18 @@ module Activities
 
         codelist = load_yaml(entity: :activity, type: entity)
         valid_codes = codelist.map { |entry| entry.fetch("code") }
+
+        raise message unless valid_codes.include?(code)
+
+        code
+      end
+
+      def validate_channel_of_delivery_code(code, entity, message)
+        return nil if code.blank?
+
+        codelist = load_yaml(entity: :activity, type: entity)
+        valid_codes = codelist.map { |entry| entry.fetch("code") }
+        valid_codes << "N/A"
 
         raise message unless valid_codes.include?(code)
 
