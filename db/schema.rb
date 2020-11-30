@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_24_160000) do
+ActiveRecord::Schema.define(version: 2020_11_25_160306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -173,12 +173,12 @@ ActiveRecord::Schema.define(version: 2020_11_24_160000) do
     t.string "receiving_organisation_type"
     t.string "receiving_organisation_reference"
     t.boolean "ingested", default: false
-    t.uuid "parent_activity_id"
+    t.uuid "parent_activity_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "report_id"
-    t.integer "financial_quarter"
-    t.integer "financial_year"
+    t.integer "financial_quarter", null: false
+    t.integer "financial_year", null: false
     t.index ["parent_activity_id", "financial_year", "financial_quarter", "planned_disbursement_type"], name: "unique_type_per_unversioned_item", unique: true, where: "(report_id IS NULL)"
     t.index ["parent_activity_id", "financial_year", "financial_quarter", "report_id"], name: "unique_report_per_versioned_item", unique: true, where: "(report_id IS NOT NULL)"
     t.index ["parent_activity_id"], name: "index_planned_disbursements_on_parent_activity_id"
