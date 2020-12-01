@@ -34,18 +34,4 @@ RSpec.describe ReportPresenter do
       expect(result).to be_nil
     end
   end
-
-  describe "#quarters_to_date_ranges" do
-    it "returns a date range for each quarter it is passed" do
-      travel_to(Date.parse("20 January 2021")) do
-        report = create(:report)
-        expect(described_class.new(report).quarters_to_date_ranges).to eq [
-          Date.parse("1 April 2021").all_quarter,
-          Date.parse("1 July 2021").all_quarter,
-          Date.parse("1 October 2021").all_quarter,
-          Date.parse("1 January 2022").all_quarter,
-        ]
-      end
-    end
-  end
 end
