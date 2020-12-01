@@ -1155,48 +1155,68 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "#forecasted_total_for_report_financial_quarter" do
-    it "returns the total of all the activity's planned disbursements scoped to a report's financial quarter only" do
-      project = create(:project_activity, :with_report)
-      report = Report.for_activity(project).first
+    let(:project) { create(:project_activity) }
 
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.today)
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.today)
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: 4.months.ago)
+    it "returns the activity's planned disbursement value for a report's financial quarter" do
+      forecast = PlannedDisbursementHistory.new(project, 3, 2020)
+      reporting_cycle = ReportingCycle.new(project, 2, 2020)
+
+      reporting_cycle.tick
+      forecast.set_value(1000.0)
+
+      reporting_cycle.tick
+      report = Report.for_activity(project).find_by(financial_quarter: 3)
+
+      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(1000.00)
+    end
+
+    it "does not include totals for any planned disbursements outside the report's date range" do
+      q3_forecast = PlannedDisbursementHistory.new(project, 3, 2020)
+      q4_forecast = PlannedDisbursementHistory.new(project, 4, 2020)
+      reporting_cycle = ReportingCycle.new(project, 2, 2020)
+
+      reporting_cycle.tick
+      q3_forecast.set_value(2000.0)
+      q4_forecast.set_value(1000.0)
+
+      reporting_cycle.tick
+      report = Report.for_activity(project).find_by(financial_quarter: 3)
 
       expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(2000.00)
     end
 
-    it "does not include totals for any planned disbursements outside the report's date range" do
-      project = create(:project_activity, :with_report)
-      report = Report.for_activity(project).first
+    it "only counts the latest revision value for a planned disbursement" do
+      forecast = PlannedDisbursementHistory.new(project, 3, 2020)
+      reporting_cycle = ReportingCycle.new(project, 1, 2020)
 
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: 6.months.ago)
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: 4.months.ago)
+      reporting_cycle.tick
+      forecast.set_value(3000.0)
 
-      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(0)
+      reporting_cycle.tick
+      forecast.set_value(4000.0)
+
+      reporting_cycle.tick
+      report = Report.for_activity(project).find_by(financial_quarter: 3)
+
+      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(4000.00)
     end
   end
 
   describe "#variance_for_report_financial_quarter" do
+    let(:project) { create(:project_activity) }
+    let(:reporting_cycle) { ReportingCycle.new(project, 2, 2020) }
+    let(:forecast) { PlannedDisbursementHistory.new(project, 3, 2020) }
+
     it "returns the variance between #actual_total_for_report_financial_quarter and #forecasted_total_for_report_financial_quarter" do
-      project = create(:project_activity, :with_report)
-      report = Report.for_activity(project).first
+      reporting_cycle.tick
+      forecast.set_value(1500)
+      reporting_cycle.tick
+
+      report = Report.for_activity(project).find_by(financial_quarter: 3)
       create(:transaction, parent_activity: project, value: 100, report: report, date: Date.today)
       create(:transaction, parent_activity: project, value: 200, report: report, date: Date.today)
-      create(:planned_disbursement, parent_activity: project, value: 1500, report: report, period_start_date: Date.today)
 
       expect(project.variance_for_report_financial_quarter(report: report)).to eq(-1200)
-    end
-  end
-
-  describe "#forecasted_total_for_date_range" do
-    it "returns the total of all the activity's planned disbursements scoped to a date range" do
-      project = create(:project_activity, :with_report)
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200, period_start_date: Date.parse("13 April 2020"))
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1000, period_start_date: Date.parse("20 November 2020"))
-
-      expect(project.forecasted_total_for_date_range(range: Date.parse("1 April 2020")..Date.parse("30 June 2020"))).to eq 200
-      expect(project.forecasted_total_for_date_range(range: Date.parse("1 October 2020")..Date.parse("31 December 2020"))).to eq 1000
     end
   end
 

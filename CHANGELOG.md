@@ -401,6 +401,7 @@
 ## [unreleased]
 
 - Show only the financial quarter and value for forecasts on the activity page
+- Use the latest versions of forecasts from the report history to calculate variance
 - Add a new activity status: "Paused"
 - Update importer date format to be MM/DD/YYYY
 - Separate intended beneficiaries with a pipe

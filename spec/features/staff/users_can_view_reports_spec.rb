@@ -150,16 +150,20 @@ RSpec.feature "Users can view reports" do
       end
 
       scenario "the report shows the total forecasted and actual spend and the variance" do
-        quarter_one_2019 = Date.parse("2019-4-1")
         quarter_two_2019 = Date.parse("2019-7-1")
 
         activity = create(:project_activity, organisation: delivery_partner_user.organisation)
+        reporting_cycle = ReportingCycle.new(activity, 4, 2018)
+        forecast = PlannedDisbursementHistory.new(activity, 1, 2019)
 
-        report = create(:report, :active, organisation: delivery_partner_user.organisation, fund: activity.associated_fund, financial_quarter: 1, financial_year: 2019, created_at: quarter_one_2019)
+        reporting_cycle.tick
+        forecast.set_value(1000)
+
+        reporting_cycle.tick
+        report = Report.for_activity(activity).in_historical_order.first
         report_presenter = ReportPresenter.new(report)
 
-        _forecasted_value = create(:planned_disbursement, parent_activity: activity, period_start_date: quarter_one_2019, value: 1000)
-        _actual_value = create(:transaction, parent_activity: activity, report: report, date: quarter_one_2019, value: 1100)
+        _actual_value = create(:transaction, parent_activity: activity, report: report, date: report.created_at, value: 1100)
 
         travel_to quarter_two_2019 do
           visit reports_path
