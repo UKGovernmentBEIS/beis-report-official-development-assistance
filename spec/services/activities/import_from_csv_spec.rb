@@ -256,6 +256,13 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (DP Definition)"])
     end
 
+    it "does not ignore blank columns" do
+      new_activity_attributes["Title"] = ""
+
+      expect { subject.import([new_activity_attributes]) }.to change { Activity.count }.by(0)
+      expect(subject.errors.count).to eq(1)
+    end
+
     it "sets the geography to recipient country and infers the region if the region is not specified" do
       new_activity_attributes["Recipient Region"] = ""
 

@@ -78,7 +78,7 @@ module Activities
         @errors = {}
         @activity = find_activity_by_roda_id(row["RODA ID"])
         @organisation = organisation
-        @converter = Converter.new(row)
+        @converter = Converter.new(row, allow_blank_columns: true)
         @errors.update(@converter.errors)
       end
 
@@ -174,9 +174,10 @@ module Activities
         objectives: "Aims/Objectives (DP Definition)",
       }
 
-      def initialize(row)
+      def initialize(row, allow_blank_columns: false)
         @row = row
         @errors = {}
+        @allow_blank_columns = allow_blank_columns
         @attributes = convert_to_attributes
       end
 
@@ -190,7 +191,11 @@ module Activities
 
       def convert_to_attributes
         attributes = FIELDS.each_with_object({}) { |(attr_name, column_name), attrs|
-          attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name]) if @row[column_name].present?
+          if @allow_blank_columns
+            attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name]) if @row[column_name].present?
+          else
+            attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name])
+          end
         }
 
         attributes[:geography] = infer_geography(attributes)
