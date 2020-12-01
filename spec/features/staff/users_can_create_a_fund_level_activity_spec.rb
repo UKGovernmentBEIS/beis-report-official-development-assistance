@@ -212,10 +212,10 @@ RSpec.feature "Users can create a fund level activity" do
 
         fill_in "activity[planned_start_date(3i)]", with: 1
         fill_in "activity[planned_start_date(2i)]", with: 12
-        fill_in "activity[planned_start_date(1i)]", with: 2010
+        fill_in "activity[planned_start_date(1i)]", with: 2020
         fill_in "activity[planned_end_date(3i)]", with: 1
         fill_in "activity[planned_end_date(2i)]", with: 12
-        fill_in "activity[planned_end_date(1i)]", with: 2010
+        fill_in "activity[planned_end_date(1i)]", with: 2020
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.geography")
 
