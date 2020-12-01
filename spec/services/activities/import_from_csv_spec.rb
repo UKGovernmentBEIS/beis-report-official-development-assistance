@@ -508,14 +508,14 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
     end
 
-    it "allows the value of 'Channel of delivery code' to be 'N/A'" do
-      new_activity_attributes["Channel of delivery code"] = "N/A"
+    it "allows the value of 'Channel of delivery code' to be 'N/A' (case insensitive)" do
+      new_activity_attributes["Channel of delivery code"] = "n/A"
 
       expect { subject.import([new_activity_attributes]) }.to change { Activity.count }
 
       new_activity = Activity.order(:created_at).last
 
-      expect(new_activity.channel_of_delivery_code).to eq("N/A")
+      expect(new_activity.channel_of_delivery_code).to eq("n/A")
     end
 
     it "has an error if the Collaboration type option is invalid" do
