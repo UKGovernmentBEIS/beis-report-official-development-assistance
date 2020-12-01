@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_25_172731) do
+ActiveRecord::Schema.define(version: 2020_11_27_105312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -196,7 +196,7 @@ ActiveRecord::Schema.define(version: 2020_11_25_172731) do
     t.date "deadline"
     t.integer "financial_quarter"
     t.integer "financial_year"
-    t.index ["fund_id", "organisation_id"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text = ANY ((ARRAY['active'::character varying, 'awaiting_changes'::character varying])::text[]))"
+    t.index ["fund_id", "organisation_id"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text <> ALL ((ARRAY['inactive'::character varying, 'approved'::character varying])::text[]))"
     t.index ["fund_id", "organisation_id"], name: "enforce_one_historic_report_per_series", unique: true, where: "((financial_quarter IS NULL) OR (financial_year IS NULL))"
     t.index ["fund_id"], name: "index_reports_on_fund_id"
     t.index ["organisation_id"], name: "index_reports_on_organisation_id"
