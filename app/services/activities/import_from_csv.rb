@@ -464,7 +464,7 @@ module Activities
         valid_codes = codelist.map { |entry| entry.fetch("code") }
         valid_codes << "N/A"
 
-        raise message unless valid_codes.include?(code)
+        raise message unless valid_codes.include?(code.upcase)
 
         code
       end
