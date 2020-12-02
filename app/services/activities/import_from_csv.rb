@@ -224,10 +224,9 @@ module Activities
       end
 
       def convert_recipient_country(country)
-        validate_from_codelist(
+        validate_country(
           country,
-          :recipient_country,
-          I18n.t("importer.errors.activity.invalid_country"),
+          I18n.t("importer.errors.activity.invalid_country")
         )
       end
 
@@ -249,13 +248,11 @@ module Activities
       alias convert_sdg_3 convert_sustainable_development_goal
 
       def convert_intended_beneficiaries(intended_beneficiaries)
-        codelist = load_yaml(entity: :activity, type: :intended_beneficiaries)
-        valid_codes = codelist.values.flatten.map { |entry| entry.fetch("code") }
-
         intended_beneficiaries.split("|").map do |code|
-          raise I18n.t("importer.errors.activity.invalid_intended_beneficiaries") unless valid_codes.include?(code)
-
-          code
+          validate_country(
+            code,
+            I18n.t("importer.errors.activity.invalid_intended_beneficiaries")
+          )
         end
       end
 
@@ -394,6 +391,15 @@ module Activities
       def country_to_region_mapping
         yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.yml"))
         yaml["data"]
+      end
+
+      def validate_country(country, error)
+        yaml = YAML.safe_load(File.read("#{Rails.root}/config/locales/codelists/#{IATI_VERSION}/iati.en.yml"))
+        countries = yaml["en"]["activity"]["recipient_country"]
+
+        raise error unless countries.key?(country)
+
+        country
       end
     end
   end
