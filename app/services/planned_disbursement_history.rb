@@ -86,6 +86,8 @@ class PlannedDisbursementHistory
   end
 
   def create_original_entry(value, report = nil)
+    return if value == 0
+
     attributes = series_attributes.merge(required_attributes).merge(
       planned_disbursement_type: :original,
       value: value,
@@ -108,8 +110,12 @@ class PlannedDisbursementHistory
   end
 
   def update_entry(entry, value)
-    entry.update!(value: value)
-    entry.create_activity(key: "planned_disbursement.update", owner: @user)
+    if value == 0 && entries.count == 1
+      entry.destroy!
+    else
+      entry.update!(value: value)
+      entry.create_activity(key: "planned_disbursement.update", owner: @user)
+    end
   end
 
   def series_attributes
