@@ -41,6 +41,21 @@ RSpec.describe PlannedDisbursementOverview do
     it "does not support requesting values at a specific report" do
       expect { overview.snapshot(Report.new).all_quarters }.to raise_error(TypeError)
     end
+
+    context "when a forecast has been revised with a zero value" do
+      before do
+        histories[[2017, 2]].set_value(0)
+      end
+
+      it "omits that forecast from the result set" do
+        forecasts = forecast_values(overview.latest_values)
+
+        expect(forecasts).to eq([
+          [1, 2017, 10],
+          [3, 2017, 40],
+        ])
+      end
+    end
   end
 
   context "for a level C activity, with report-pinned history" do
@@ -57,7 +72,7 @@ RSpec.describe PlannedDisbursementOverview do
     #   2017-Q4          20          70
     #   2018-Q1          30                     110
     #   2018-Q2                      80         120
-    #   2018-Q3          40          90         130
+    #   2018-Q3          40           0         130
     #   2018-Q4          50                     140
 
     before do
@@ -72,7 +87,7 @@ RSpec.describe PlannedDisbursementOverview do
       histories[[2017, 2]].set_value(60)
       histories[[2017, 4]].set_value(70)
       histories[[2018, 2]].set_value(80)
-      histories[[2018, 3]].set_value(90)
+      histories[[2018, 3]].set_value(0)
 
       reporting_cycle.tick
       histories[[2017, 3]].set_value(100)
@@ -95,6 +110,26 @@ RSpec.describe PlannedDisbursementOverview do
         [3, 2018, 130],
         [4, 2018, 140],
       ])
+    end
+
+    context "when a forecast has been revised with a zero value" do
+      before do
+        histories[[2018, 4]].set_value(0)
+      end
+
+      it "omits that forecast from the result set" do
+        forecasts = forecast_values(overview.latest_values)
+
+        expect(forecasts).to eq([
+          [1, 2017, 10],
+          [2, 2017, 60],
+          [3, 2017, 100],
+          [4, 2017, 70],
+          [1, 2018, 110],
+          [2, 2018, 120],
+          [3, 2018, 130],
+        ])
+      end
     end
 
     shared_examples_for "forecast report history" do
@@ -137,12 +172,16 @@ RSpec.describe PlannedDisbursementOverview do
           [4, 2017, 70],
           [1, 2018, 30],
           [2, 2018, 80],
-          [3, 2018, 90],
           [4, 2018, 50],
         ]
       }
 
       it_should_behave_like "forecast report history"
+
+      it "returns zero for the value of a quarter that was revised to zero in that report" do
+        value = overview.snapshot(report).value_for(financial_quarter: 3, financial_year: 2018)
+        expect(value).to eq(0)
+      end
     end
 
     it "can return the forecast value for the quarter of a report" do
@@ -244,7 +283,6 @@ RSpec.describe PlannedDisbursementOverview do
             [4, 2017, 70],
             [1, 2018, 30],
             [2, 2018, 80],
-            [3, 2018, 90],
             [4, 2018, 50],
           ]
         }
