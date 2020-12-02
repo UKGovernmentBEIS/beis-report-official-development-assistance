@@ -12,6 +12,10 @@ class PlannedDisbursementOverview
   end
 
   def latest_values
+    Snapshot.non_zero_forecasts_from(latest_values_relation)
+  end
+
+  def latest_values_relation
     if record_history?
       latest_with_report_versioning
     else
@@ -49,13 +53,18 @@ class PlannedDisbursementOverview
   end
 
   class Snapshot
+    def self.non_zero_forecasts_from(relation)
+      PlannedDisbursement.from(relation, :planned_disbursements).where.not(value: 0)
+    end
+
     def initialize(overview, report)
       @overview = overview
       @report = report
     end
 
     def all_quarters
-      @overview.latest_values.merge(Report.historically_up_to(@report))
+      relation = @overview.latest_values_relation.merge(Report.historically_up_to(@report))
+      Snapshot.non_zero_forecasts_from(relation)
     end
 
     def value_for_report_quarter
@@ -69,8 +78,7 @@ class PlannedDisbursementOverview
     private
 
     def lookup_value_for_quarter(quarter, year)
-      forecasts_for_quarter = all_quarters.where(financial_quarter: quarter, financial_year: year)
-      PlannedDisbursement.from(forecasts_for_quarter).sum(:value)
+      all_quarters.where(financial_quarter: quarter, financial_year: year).sum(:value)
     end
   end
 end
