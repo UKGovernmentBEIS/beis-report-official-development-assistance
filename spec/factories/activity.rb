@@ -79,6 +79,7 @@ FactoryBot.define do
       parent factory: :fund_activity
       level { :programme }
       objectives { Faker::Lorem.paragraph }
+      country_delivery_partners { ["National Council for the State Funding Agencies (CONFAP)"] }
       collaboration_type { "1" }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
@@ -172,6 +173,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
+    country_delivery_partners { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -203,6 +205,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
+    country_delivery_partners { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -234,6 +237,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
+    country_delivery_partners { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -333,6 +337,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
+    country_delivery_partners { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -369,6 +374,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
+    country_delivery_partners { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -403,6 +409,7 @@ FactoryBot.define do
     objectives { nil }
     sector { nil }
     programme_status { nil }
+    country_delivery_partners { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
