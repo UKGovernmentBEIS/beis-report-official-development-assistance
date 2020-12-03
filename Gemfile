@@ -73,6 +73,7 @@ group :test do
   gem "fakeredis", require: false
   gem "launchy"
   gem "pundit-matchers", "~> 1.6.0"
+  gem "rails-controller-testing"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
   gem "webmock", "~> 3.10"
