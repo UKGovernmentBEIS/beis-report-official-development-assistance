@@ -25,4 +25,8 @@ module ActivityHelper
   def sdg_options
     I18n.t("form.label.activity.sdg_options")
   end
+
+  def policy_markers_iati_codes_to_enum(code)
+    Activity::POLICY_MARKER_CODES.key(code.to_i)
+  end
 end
