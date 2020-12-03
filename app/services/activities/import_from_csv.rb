@@ -168,11 +168,30 @@ module Activities
         actual_end_date: "Actual end date",
         sector: "Sector",
         collaboration_type: "Collaboration type (Bi/Multi Marker)",
+        policy_marker_gender: "DFID policy marker - Gender",
+        policy_marker_climate_change_adaptation: "DFID policy marker - Climate Change - Adaptation",
+        policy_marker_climate_change_mitigation: "DFID policy marker - Climate Change - Mitigation",
+        policy_marker_biodiversity: "DFID policy marker - Biodiversity",
+        policy_marker_desertification: "DFID policy marker - Desertification",
+        policy_marker_disability: "DFID policy marker - Disability",
+        policy_marker_disaster_risk_reduction: "DFID policy marker - Disaster Risk Reduction",
+        policy_marker_nutrition: "DFID policy marker - Nutrition",
         flow: "Flow",
         aid_type: "Aid type",
         fstc_applies: "Free Standing Technical Cooperation",
         objectives: "Aims/Objectives (DP Definition)",
       }
+
+      ALLOWED_BLANK_FIELDS = [
+        "DFID policy marker - Gender",
+        "DFID policy marker - Climate Change - Adaptation",
+        "DFID policy marker - Climate Change - Mitigation",
+        "DFID policy marker - Biodiversity",
+        "DFID policy marker - Desertification",
+        "DFID policy marker - Disability",
+        "DFID policy marker - Disaster Risk Reduction",
+        "DFID policy marker - Nutrition",
+      ]
 
       def initialize(row)
         @row = row
@@ -190,7 +209,7 @@ module Activities
 
       def convert_to_attributes
         attributes = FIELDS.each_with_object({}) { |(attr_name, column_name), attrs|
-          attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name]) if @row[column_name].present?
+          attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name]) if field_should_be_converted?(column_name)
         }
 
         attributes[:geography] = infer_geography(attributes)
@@ -200,6 +219,10 @@ module Activities
         attributes[:sector_category] = get_sector_category(attributes[:sector])
 
         attributes
+      end
+
+      def field_should_be_converted?(column_name)
+        ALLOWED_BLANK_FIELDS.include?(column_name) || @row[column_name].present?
       end
 
       def convert_to_attribute(attr_name, value)
@@ -237,6 +260,20 @@ module Activities
           I18n.t("importer.errors.activity.invalid_gdi"),
         )
       end
+
+      def convert_policy_marker(policy_marker)
+        return "not_assessed" if policy_marker.blank?
+
+        policy_markers_iati_codes_to_enum(policy_marker)
+      end
+      alias convert_policy_marker_gender convert_policy_marker
+      alias convert_policy_marker_climate_change_adaptation convert_policy_marker
+      alias convert_policy_marker_climate_change_mitigation convert_policy_marker
+      alias convert_policy_marker_biodiversity convert_policy_marker
+      alias convert_policy_marker_desertification convert_policy_marker
+      alias convert_policy_marker_disability convert_policy_marker
+      alias convert_policy_marker_disaster_risk_reduction convert_policy_marker
+      alias convert_policy_marker_nutrition convert_policy_marker
 
       def convert_sustainable_development_goal(goal)
         raise I18n.t("importer.errors.activity.invalid_sdg_goal") unless sdg_options.keys.map(&:to_s).include?(goal.to_s)

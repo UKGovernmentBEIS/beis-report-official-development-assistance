@@ -33,6 +33,14 @@ RSpec.describe Activities::ImportFromCsv do
       "Actual end date" => "05/01/2020",
       "Sector" => "11220",
       "Collaboration type (Bi/Multi Marker)" => "1",
+      "DFID policy marker - Gender" => "0",
+      "DFID policy marker - Climate Change - Adaptation" => "2",
+      "DFID policy marker - Climate Change - Mitigation" => "1",
+      "DFID policy marker - Biodiversity" => "2",
+      "DFID policy marker - Desertification" => "1000",
+      "DFID policy marker - Disability" => "",
+      "DFID policy marker - Disaster Risk Reduction" => "0",
+      "DFID policy marker - Nutrition" => "",
       "Flow" => "10",
       "Aid type" => "B03",
       "Free Standing Technical Cooperation" => "1",
@@ -128,6 +136,14 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.sector).to eq(existing_activity_attributes["Sector"])
       expect(existing_activity.sector_category).to eq("112")
       expect(existing_activity.collaboration_type).to eq(existing_activity_attributes["Collaboration type (Bi/Multi Marker)"])
+      expect(existing_activity.policy_marker_gender).to eq("not_targeted")
+      expect(existing_activity.policy_marker_climate_change_adaptation).to eq("principal_objective")
+      expect(existing_activity.policy_marker_climate_change_mitigation).to eq("significant_objective")
+      expect(existing_activity.policy_marker_biodiversity).to eq("principal_objective")
+      expect(existing_activity.policy_marker_desertification).to eq("not_assessed")
+      expect(existing_activity.policy_marker_disability).to eq("not_assessed")
+      expect(existing_activity.policy_marker_disaster_risk_reduction).to eq("not_targeted")
+      expect(existing_activity.policy_marker_nutrition).to eq("not_assessed")
       expect(existing_activity.flow).to eq(existing_activity_attributes["Flow"])
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
       expect(existing_activity.fstc_applies).to eq(true)
