@@ -167,6 +167,11 @@ class ActivityPresenter < SimpleDelegator
     html.html_safe
   end
 
+  def gcrf_challenge_area
+    return if super.blank?
+    I18n.t(super, scope: "form.label.activity.gcrf_challenge_area_options")
+  end
+
   def oda_eligibility
     return if super.blank?
     I18n.t("activity.oda_eligibility.#{super}")

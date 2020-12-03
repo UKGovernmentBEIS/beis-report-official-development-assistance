@@ -410,6 +410,7 @@
 - Importer can import policy markers
 - Allow importer to import the ODA Eligibility Lead
 - Users can add `country_delivery_partners` for Newton funded activities
+- Users can add `gcrf_challenge_area` for GCRF-funded activities
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...HEAD
 [release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23

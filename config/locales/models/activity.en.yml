@@ -25,6 +25,20 @@ en:
           "false": "No"
         collaboration_type: What is the collaboration type for this activity?
         country_delivery_partners: Name and acronym
+        gcrf_challenge_area_options:
+          "0": Not applicable
+          "1": Secure and resilient food systems supported by sustainable marine resources and agriculture
+          "2": Sustainable health and well being
+          "3": Inclusive and equitable quality education
+          "4": Clean air, water and sanitation
+          "5": Affordable, reliable, sustainable energy
+          "6": Sustainable livelihoods supported by strong foundations for inclusive economic growth and innovation
+          "7": Resilience and action on short-term environmental shocks and long-term environmental change
+          "8": Sustainable cities and communities
+          "9": Sustainable production and consumption of materials and other resources
+          "10": Understand and respond effectively to forced displacement and multiple refugee crises
+          "11": Reduce conflict and promote peace, justice and humanitarian action
+          "12": Reduce poverty and inequality, including gender inequalities
         gdi: GDI
         geography_options:
           recipient_region: Region
@@ -101,6 +115,7 @@ en:
         call_open_date: Call open date
         call_close_date: Call close date
         country_delivery_partners: Country delivery partner
+        gcrf_challenge_area: GCRF challenge area
         gdi: Is your activity affected by the Global Development Impact (GDI) policy?
         geography: Will the benefitting recipient be a region or country?
         intended_beneficiaries: What are the intended beneficiaries?
@@ -146,6 +161,7 @@ en:
         country_delivery_partners: "Please provide up to ten country delivery partners. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
         flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
         delivery_partner_identifier: This could be the reference you use in your internal systems
+        gcrf_challenge_area: Select the most relevant GCRF challenge area for this activity. For broad programme calls, please select the challenge area most commonly represented across the individual projects within the programme. If the activity is a delivery line, you may select 'Not applicable'.
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
         objectives: Please refrain from using any abbreviations
         intended_beneficiaries: You can select up to 10 different countries
@@ -218,6 +234,7 @@ en:
           label: Free-Standing Technical Cooperation applies?
           "false": "No"
           "true": "Yes"
+        gcrf_challenge_area: GCRF challenge area
         gdi: GDI
         geography: Benefitting recipient geography
         delivery_partner_identifier: Delivery partner identifier
@@ -341,6 +358,7 @@ en:
         covid19_related: Is this activity related to Covid-19?
         dates: What are the start and end dates for the %{level}?
         flow: Flow
+        gcrf_challenge_area: GCRF challenge area
         gdi: GDI
         geography: Will the benefitting recipient be a region or country?
         delivery_partner_identifier: Enter your unique identifier
@@ -425,6 +443,8 @@ en:
               blank: Select an extending organisation
             fstc_applies:
               inclusion: You must select "Yes" or "No"
+            gcrf_challenge_area:
+              blank: Select a GCRF challenge area
   importer:
     errors:
       activity:
@@ -433,6 +453,7 @@ en:
         invalid_country: The country code cannot be found
         invalid_intended_beneficiaries: The intended beneficiaries are invalid
         invalid_gdi: The GDI code is invalid
+        invalid_gcrf_challenge_area: The GCRF challenge area is invalid
         invalid_sdg_goal: The sustainable development goal is invalid
         invalid_covid19_related: The COVID 19 Related option is invalid
         invalid_oda_eligibility: The ODA Eligibility option is invalid

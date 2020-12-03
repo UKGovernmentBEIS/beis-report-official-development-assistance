@@ -134,7 +134,7 @@ RSpec.feature "Users can create a fund level activity" do
 
     context "validations" do
       scenario "validation errors work as expected" do
-        identifier = "foo"
+        identifier = "GCRF"
 
         visit activities_path
         click_on t("page_content.organisation.button.create_activity")
@@ -283,10 +283,18 @@ RSpec.feature "Users can create a fund level activity" do
 
         # Covid19-related has a default and can't be set to blank so we skip
         click_button t("form.button.activity.submit")
+
+        # Skip the GCRF challenge area step, and instead go to the oda_eligibility step
+        expect(page).to have_no_content t("form.legend.activity.gcrf_challenge_area")
         expect(page).to have_content t("form.legend.activity.oda_eligibility")
 
         # oda_eligibility has the default value already selected
         click_button t("form.button.activity.submit")
+
+        # Skip the oda_eligibility_lead step
+        expect(page).to have_no_content t("form.hint.activity.oda_eligibility_lead")
+
+        # Form completed
         expect(page).to have_content Activity.find_by(delivery_partner_identifier: identifier).title
       end
 
