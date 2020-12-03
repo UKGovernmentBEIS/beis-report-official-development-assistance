@@ -22,6 +22,7 @@ RSpec.describe Activities::ImportFromCsv do
       "SDG 3" => "3",
       "Covid-19 related research" => "0",
       "ODA Eligibility" => "never_eligible",
+      "ODA Eligibility Lead" => "Bruce Wayne",
       "Activity Status" => "01",
       "Call open date" => "02/01/2020",
       "Call close date" => "02/01/2020",
@@ -125,6 +126,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Delivery partner identifier"])
       expect(existing_activity.covid19_related).to eq(0)
       expect(existing_activity.oda_eligibility).to eq("never_eligible")
+      expect(existing_activity.oda_eligibility_lead).to eq(existing_activity_attributes["ODA Eligibility Lead"])
       expect(existing_activity.programme_status).to eq("01")
       expect(existing_activity.call_open_date).to eq(DateTime.parse(existing_activity_attributes["Call open date"]))
       expect(existing_activity.call_close_date).to eq(DateTime.parse(existing_activity_attributes["Call close date"]))
@@ -255,6 +257,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.delivery_partner_identifier).to eq(new_activity_attributes["Delivery partner identifier"])
       expect(new_activity.covid19_related).to eq(0)
       expect(new_activity.oda_eligibility).to eq("never_eligible")
+      expect(new_activity.oda_eligibility_lead).to eq(new_activity_attributes["ODA Eligibility Lead"])
       expect(new_activity.programme_status).to eq("01")
       expect(new_activity.call_open_date).to eq(DateTime.parse(new_activity_attributes["Call open date"]))
       expect(new_activity.call_close_date).to eq(DateTime.parse(new_activity_attributes["Call close date"]))
