@@ -412,14 +412,4 @@ class Staff::ActivityFormsController < Staff::BaseController
     # This allows us to pre-select a specific radio button on collaboration_type form step (value "Bilateral" in this case)
     @activity.collaboration_type = "1" if @activity.collaboration_type.nil?
   end
-
-  def policy_markers_iati_codes_to_enum(code)
-    case code
-    when "0" then "not_targeted"
-    when "1" then "significant_objective"
-    when "2" then "principal_objective"
-    when "3" then "principal_objective_and_in_support"
-    when "1000" then "not_assessed"
-    end
-  end
 end
