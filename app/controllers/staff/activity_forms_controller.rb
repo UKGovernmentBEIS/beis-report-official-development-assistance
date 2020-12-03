@@ -19,6 +19,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :call_dates,
     :total_applications_and_awards,
     :programme_status,
+    :country_delivery_partners,
     :dates,
     :geography,
     :region,
@@ -56,6 +57,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.fund?
     when :programme_status
       skip_step if @activity.fund?
+    when :country_delivery_partners
+      skip_step unless @activity.is_newton_funded?
     when :call_present
       skip_step unless @activity.requires_call_dates?
     when :call_dates
@@ -129,6 +132,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :programme_status
       iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
       @activity.assign_attributes(programme_status: programme_status, status: iati_status)
+    when :country_delivery_partners
+      @activity.assign_attributes(country_delivery_partners: country_delivery_partners)
     when :dates
       @activity.assign_attributes(
         planned_start_date: format_date(planned_start_date),
@@ -263,6 +268,10 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(:programme_status).fetch("programme_status", nil)
   end
 
+  def country_delivery_partners
+    params.require(:activity).permit(country_delivery_partners: []).fetch("country_delivery_partners", []).reject(&:blank?)
+  end
+
   def planned_start_date
     planned_start_date = params.require(:activity).permit(:planned_start_date)
     {day: planned_start_date["planned_start_date(3i)"], month: planned_start_date["planned_start_date(2i)"], year: planned_start_date["planned_start_date(1i)"]}
@@ -382,7 +391,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   end
 
   def update_form_state
-    return if @activity.invalid?(step)
+    return if @activity.invalid?("#{step}_step".to_sym)
 
     if step == :geography && @activity.geography == "recipient_country"
       jump_to :country

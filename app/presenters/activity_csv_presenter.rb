@@ -7,4 +7,9 @@ class ActivityCsvPresenter < ActivityPresenter
   def beis_id
     super.to_s
   end
+
+  def country_delivery_partners
+    return if super.blank?
+    super.join(" | ")
+  end
 end
