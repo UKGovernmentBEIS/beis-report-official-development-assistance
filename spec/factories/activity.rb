@@ -27,6 +27,7 @@ FactoryBot.define do
     gcrf_challenge_area { 0 }
     oda_eligibility_lead { Faker::Name.name }
     uk_dp_named_contact { Faker::Name.name }
+    fund_pillar { "0" }
 
     form_state { "complete" }
 
@@ -92,6 +93,14 @@ FactoryBot.define do
       association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :delivery_partner_organisation
       association :reporting_organisation, factory: :beis_organisation
+
+      trait :newton_funded do
+        parent factory: [:fund_activity, :newton]
+      end
+
+      trait :gcrf_funded do
+        parent factory: [:fund_activity, :gcrf]
+      end
     end
 
     factory :project_activity do
@@ -131,6 +140,14 @@ FactoryBot.define do
           create_list(:implementing_organisation, evaluator.implementing_organisations_count, activity: project_activity)
         end
       end
+
+      trait :newton_funded do
+        parent factory: [:programme_activity, :newton_funded]
+      end
+
+      trait :gcrf_funded do
+        parent factory: [:programme_activity, :gcrf_funded]
+      end
     end
 
     factory :third_party_project_activity do
@@ -160,6 +177,14 @@ FactoryBot.define do
 
       association :extending_organisation, factory: :delivery_partner_organisation
       association :reporting_organisation, factory: :beis_organisation
+
+      trait :newton_funded do
+        parent factory: [:project_activity, :newton_funded]
+      end
+
+      trait :gcrf_funded do
+        parent factory: [:project_activity, :gcrf_funded]
+      end
     end
   end
 

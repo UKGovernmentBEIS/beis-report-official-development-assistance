@@ -24,6 +24,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Covid-19 related research" => "0",
       "ODA Eligibility" => "never_eligible",
       "ODA Eligibility Lead" => "Bruce Wayne",
+      "Newton Fund Pillar" => "1",
       "Activity Status" => "01",
       "Call open date" => "02/01/2020",
       "Call close date" => "02/01/2020",
@@ -126,6 +127,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.gdi).to eq("1")
       expect(existing_activity.gcrf_challenge_area).to eq(4)
       expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Delivery partner identifier"])
+      expect(existing_activity.fund_pillar).to eq(existing_activity_attributes["Newton Fund Pillar"].to_i)
       expect(existing_activity.covid19_related).to eq(0)
       expect(existing_activity.oda_eligibility).to eq("never_eligible")
       expect(existing_activity.oda_eligibility_lead).to eq(existing_activity_attributes["ODA Eligibility Lead"])
@@ -262,6 +264,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.oda_eligibility).to eq("never_eligible")
       expect(new_activity.oda_eligibility_lead).to eq(new_activity_attributes["ODA Eligibility Lead"])
       expect(new_activity.programme_status).to eq("01")
+      expect(new_activity.fund_pillar).to eq(new_activity_attributes["Newton Fund Pillar"].to_i)
       expect(new_activity.call_open_date).to eq(DateTime.parse(new_activity_attributes["Call open date"]))
       expect(new_activity.call_close_date).to eq(DateTime.parse(new_activity_attributes["Call close date"]))
       expect(new_activity.call_present).to eq(true)
@@ -400,6 +403,22 @@ RSpec.describe Activities::ImportFromCsv do
         expect(subject.errors.first.value).to eq("9999999")
         expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sdg_goal"))
       end
+    end
+
+    it "has an error if the Fund Pillar option is invalid" do
+      new_activity_attributes["Newton Fund Pillar"] = "9999999"
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Newton Fund Pillar")
+      expect(subject.errors.first.column).to eq(:fund_pillar)
+      expect(subject.errors.first.value).to eq("9999999")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_fund_pillar"))
     end
 
     it "has an error if the Covid-19 related option is invalid" do

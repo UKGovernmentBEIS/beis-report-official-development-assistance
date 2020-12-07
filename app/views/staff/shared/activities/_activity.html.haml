@@ -294,6 +294,16 @@
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :sustainable_development_goals)
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:sustainable_development_goals)}"), activity_step_path(activity_presenter, :sustainable_development_goals), t("summary.label.activity.sustainable_development_goals"))
 
+  - if activity_presenter.is_newton_funded?
+    .govuk-summary-list__row.fund_pillar
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.fund_pillar")
+      %dd.govuk-summary-list__value
+        = activity_presenter.fund_pillar
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :fund_pillar)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:fund_pillar)}"), activity_step_path(activity_presenter, :fund_pillar), t("summary.label.activity.fund_pillar"))
+
   .govuk-summary-list__row.aid_type
     %dt.govuk-summary-list__key
       = t("summary.label.activity.aid_type")
