@@ -519,6 +519,50 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "#fund_pillar" do
+      it "is required if the activity is a Newton-funded programme activity" do
+        activity = build(:programme_activity, :newton_funded, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_falsey
+      end
+
+      it "is not required if the activity is a GCRF-funded programme activity" do
+        activity = build(:programme_activity, :gcrf_funded, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_truthy
+      end
+
+      it "is required if the activity is a Newton-funded project activity" do
+        activity = build(:project_activity, :newton_funded, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_falsey
+      end
+
+      it "is not required if the activity is a GCRF-funded third party project activity" do
+        activity = build(:third_party_project_activity, :gcrf_funded, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_truthy
+      end
+
+      it "is required if the activity is a Newton-funded third party project activity" do
+        activity = build(:third_party_project_activity, :newton_funded, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_falsey
+      end
+
+      it "is not required if the activity is a GCRF-funded project activity" do
+        activity = build(:project_activity, :gcrf_funded, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_truthy
+      end
+
+      it "is not required if the activity is a fund" do
+        activity = build(:activity, level: :fund, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_truthy
+      end
+    end
+
     context "#sdg_1" do
       it "is required if sdgs_apply is true" do
         activity = build(:programme_activity, sdgs_apply: true)

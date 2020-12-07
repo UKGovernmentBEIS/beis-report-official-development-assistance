@@ -156,6 +156,7 @@ module Activities
         sdg_1: "SDG 1",
         sdg_2: "SDG 2",
         sdg_3: "SDG 3",
+        fund_pillar: "Newton Fund Pillar",
         covid19_related: "Covid-19 related research",
         oda_eligibility: "ODA Eligibility",
         oda_eligibility_lead: "ODA Eligibility Lead",
@@ -318,6 +319,14 @@ module Activities
         raise I18n.t("importer.errors.activity.invalid_covid19_related") unless codelist.include?(covid19_related.to_s)
 
         covid19_related
+      end
+
+      def convert_fund_pillar(fund_pillar)
+        codelist = fund_pillar_radio_options.map(&:code).map(&:to_s)
+
+        raise I18n.t("importer.errors.activity.invalid_fund_pillar") unless codelist.include?(fund_pillar.to_s)
+
+        fund_pillar
       end
 
       def convert_oda_eligibility(oda_eligibility)

@@ -30,6 +30,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     :collaboration_type,
     :flow,
     :sustainable_development_goals,
+    :fund_pillar,
     :aid_type,
     :fstc_applies,
     :policy_markers,
@@ -81,6 +82,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.fund?
     when :gcrf_challenge_area
       skip_step unless @activity.is_gcrf_funded?
+    when :fund_pillar
+      skip_step unless @activity.is_newton_funded?
     when :oda_eligibility_lead
       skip_step unless @activity.is_project?
     when :uk_dp_named_contact
@@ -190,6 +193,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       unless @activity.sdgs_apply?
         @activity.assign_attributes(sdg_1: nil, sdg_2: nil, sdg_3: nil)
       end
+    when :fund_pillar
+      @activity.assign_attributes(fund_pillar: fund_pillar)
     when :oda_eligibility
       @activity.assign_attributes(oda_eligibility: oda_eligibility)
     when :oda_eligibility_lead
@@ -331,6 +336,10 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   def sustainable_development_goals
     params.require(:activity).permit(:sdg_1, :sdg_2, :sdg_3, :sdgs_apply)
+  end
+
+  def fund_pillar
+    params.require(:activity).permit(:fund_pillar).fetch("fund_pillar", nil)
   end
 
   def aid_type

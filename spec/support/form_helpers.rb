@@ -38,6 +38,7 @@ module FormHelpers
     collaboration_type: "Bilateral",
     flow: "ODA",
     sdg_1: 1,
+    fund_pillar: "1",
     aid_type: "B02",
     fstc_applies: true,
     policy_marker_gender: "Not assessed",
@@ -234,6 +235,14 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
+    if associated_fund_is_newton?(parent)
+      expect(page).to have_content t("form.legend.activity.fund_pillar")
+      expect(page).to have_content t("form.hint.activity.fund_pillar")
+
+      choose("activity[fund_pillar]", option: fund_pillar)
+      click_button t("form.button.activity.submit")
+    end
+
     expect(page).to have_content t("form.legend.activity.aid_type")
     expect(page).to have_content t("form.hint.activity.aid_type")
     choose("activity[aid_type]", option: aid_type)
@@ -365,6 +374,7 @@ module FormHelpers
         expect(page).to have_content policy_marker_nutrition
       end
     end
+    expect(page).to have_content fund_pillar if associated_fund_is_newton?(parent)
     expect(page).to have_content oda_eligibility
     expect(page).to have_content oda_eligibility_lead if level == "project" || level == "third_party_project"
     if (level == "project" || level == "third_party_project") && parent.is_newton_funded?

@@ -347,5 +347,15 @@ RSpec.feature "Users can create a programme activity" do
       activity = Activity.find_by(roda_identifier_fragment: identifier)
       expect(activity.country_delivery_partners).to be_nil
     end
+
+    scenario "a new programme requires specific fields when the programme is Newton-funded" do
+      newton_fund = create(:fund_activity, :newton)
+      _report = create(:report, state: :active, organisation: user.organisation, fund: newton_fund)
+
+      visit activities_path
+      click_on(t("page_content.organisation.button.create_activity"))
+
+      fill_in_activity_form(level: "programme", parent: newton_fund)
+    end
   end
 end
