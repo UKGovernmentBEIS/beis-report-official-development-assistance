@@ -209,6 +209,11 @@ class ActivityPresenter < SimpleDelegator
     "#{I18n.t("activity.finance.#{finance}")} (#{finance})"
   end
 
+  def fund_pillar
+    return if super.blank?
+    I18n.t("page_content.activity.fund_pillar.#{super}")
+  end
+
   def link_to_roda
     Rails.application.routes.url_helpers.organisation_activity_details_url(organisation, self, host: ENV["DOMAIN"]).to_s
   end
