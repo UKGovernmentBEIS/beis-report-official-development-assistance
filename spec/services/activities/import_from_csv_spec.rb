@@ -166,31 +166,24 @@ RSpec.describe Activities::ImportFromCsv do
     end
 
     it "has an error and does not update any other activities if an Activity does not exist" do
-      invalid_activity_attributes = {
-        "RODA ID" => "FAKE RODA ID",
-        "Title" => "Here is another title",
-        "Description" => "Another description goes here...",
-        "Recipient Region" => "789",
-      }
+      invalid_activity_attributes = existing_activity_attributes.merge({"RODA ID" => "FAKE RODA ID"})
       activities = [
         existing_activity_attributes,
         invalid_activity_attributes,
       ]
-
       expect { subject.import(activities) }.to_not change { existing_activity }
 
       expect(subject.created.count).to eq(0)
       expect(subject.updated.count).to eq(0)
+      expect(subject.errors.count).to eq(1)
     end
 
     it "has an error and does not update any other activities if a region does not exist" do
       activity_2 = create(:activity)
-      invalid_activity_attributes = {
+      invalid_activity_attributes = existing_activity_attributes.merge({
         "RODA ID" => activity_2.roda_identifier_compound,
-        "Title" => "Here is another title",
-        "Description" => "Another description goes here...",
         "Recipient Region" => "111111",
-      }
+      })
 
       activities = [
         existing_activity_attributes,
@@ -201,6 +194,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.created.count).to eq(0)
       expect(subject.updated.count).to eq(0)
+      expect(subject.errors.count).to eq(1)
     end
   end
 
