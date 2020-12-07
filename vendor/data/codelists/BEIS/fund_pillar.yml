@@ -1,0 +1,9 @@
+data:
+  - code: 0
+    description: Not Applicable
+  - code: 1
+    description: People
+  - code: 2
+    description: Research
+  - code: 3
+    description: Translation

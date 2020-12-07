@@ -38,6 +38,7 @@ module FormHelpers
     collaboration_type: "Bilateral",
     flow: "ODA",
     sdg_1: 1,
+    fund_pillar: "1",
     aid_type: "B02",
     fstc_applies: true,
     policy_marker_gender: "Not assessed",
@@ -231,6 +232,14 @@ module FormHelpers
       expect(page).to have_content t("form.hint.activity.sdgs_apply")
       choose t("form.label.activity.sdgs_apply_options.true")
       select t("form.label.activity.sdg_options.5"), from: "activity[sdg_1]"
+      click_button t("form.button.activity.submit")
+    end
+
+    if associated_fund_is_newton?(parent)
+      expect(page).to have_content t("form.legend.activity.fund_pillar")
+      expect(page).to have_content t("form.hint.activity.fund_pillar")
+
+      choose("activity[fund_pillar]", option: fund_pillar)
       click_button t("form.button.activity.submit")
     end
 
