@@ -51,4 +51,10 @@ module ActivityHelpers
     expect(page).to have_content t("summary.label.activity.aid_type")
     expect(page).to have_content activity_presenter.aid_type
   end
+
+  def associated_fund_is_newton?(activity)
+    return if activity.nil?
+
+    activity.associated_fund.roda_identifier_fragment == "NF"
+  end
 end

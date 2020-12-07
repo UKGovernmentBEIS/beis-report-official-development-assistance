@@ -157,6 +157,13 @@ module CodelistHelper
     }.compact.sort_by { |x| x.code.to_i }
   end
 
+  def fund_pillar_radio_options
+    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/fund_pillar.yml"))
+    yaml["data"].collect { |item|
+      OpenStruct.new(code: item["code"], description: item["description"])
+    }.compact.sort_by(&:code)
+  end
+
   def load_yaml(entity:, type:)
     yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/IATI/#{IATI_VERSION}/#{entity}/#{type}.yml"))
     yaml["data"]
