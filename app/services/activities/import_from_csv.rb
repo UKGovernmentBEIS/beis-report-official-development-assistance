@@ -85,9 +85,9 @@ module Activities
       def update
         return unless @activity && @errors.empty?
 
-        attributes = @converter.to_h
+        @activity.assign_attributes(@converter.to_h)
 
-        return if @activity.update(attributes)
+        return if @activity.save
 
         @activity.errors.each do |attr_name, message|
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
