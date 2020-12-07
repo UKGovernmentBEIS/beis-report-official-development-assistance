@@ -374,6 +374,7 @@ module FormHelpers
         expect(page).to have_content policy_marker_nutrition
       end
     end
+    expect(page).to have_content fund_pillar if associated_fund_is_newton?(parent)
     expect(page).to have_content oda_eligibility
     expect(page).to have_content oda_eligibility_lead if level == "project" || level == "third_party_project"
     if (level == "project" || level == "third_party_project") && parent.is_newton_funded?
