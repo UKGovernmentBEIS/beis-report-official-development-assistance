@@ -6,7 +6,7 @@ module Activities
       end
 
       def csv_column
-        Converter::FIELDS[column] || Converter::IMPLEMENTING_ORGANISATION_FIELDS[column.to_sym] || column.to_s
+        Converter::FIELDS[column] || ImplementingOrganisationBuilder::FIELDS[column] || column.to_s
       end
     }
 
@@ -88,15 +88,8 @@ module Activities
 
         @activity.assign_attributes(@converter.to_h)
 
-        associated_implementing_organisation = ImplementingOrganisation.find_or_initialize_by(
-          activity_id: @activity.id
-        ) { |implementing_organisation|
-          implementing_organisation.name = row["Implementing organisation name"]
-          implementing_organisation.reference = row["Implementing organisation reference"]
-          implementing_organisation.organisation_type = row["Implementing organisation sector"]
-        }
-
-        @activity.implementing_organisations = [associated_implementing_organisation]
+        implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
+        @activity.implementing_organisations = [implementing_organisation_builder.build]
 
         return if @activity.save
 
@@ -104,11 +97,7 @@ module Activities
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
         end
 
-        @errors.delete(:implementing_organisations)
-
-        implementing_organisation_errors = @activity.implementing_organisations.first.errors.messages
-        @errors["implementing_organisation_name"] = [row["Implementing organisation name"], implementing_organisation_errors[:name].first] if implementing_organisation_errors[:name].any?
-        @errors["implementing_organisation_organisation_type"] = [row["Implementing organisation sector"], implementing_organisation_errors[:organisation_type].first] if implementing_organisation_errors[:organisation_type].any?
+        implementing_organisation_builder.add_errors(@errors)
       end
 
       def find_activity_by_roda_id(roda_id)
@@ -141,11 +130,8 @@ module Activities
         @activity.level = calculate_level
         @activity.cache_roda_identifier
 
-        @activity.implementing_organisations = [ImplementingOrganisation.new(
-          name: row["Implementing organisation name"],
-          reference: row["Implementing organisation reference"],
-          organisation_type: row["Implementing organisation sector"],
-        )]
+        implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
+        @activity.implementing_organisations = [implementing_organisation_builder.build]
 
         return if @activity.save(context: Activity::VALIDATION_STEPS)
 
@@ -153,15 +139,45 @@ module Activities
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
         end
 
-        @errors.delete(:implementing_organisations)
-
-        implementing_organisation_errors = @activity.implementing_organisations.first.errors.messages
-        @errors["implementing_organisation_name"] = [row["Implementing organisation name"], implementing_organisation_errors[:name].first] if implementing_organisation_errors[:name].any?
-        @errors["implementing_organisation_organisation_type"] = [row["Implementing organisation sector"], implementing_organisation_errors[:organisation_type].first] if implementing_organisation_errors[:organisation_type].any?
+        implementing_organisation_builder.add_errors(@errors)
       end
 
       def calculate_level
         @activity&.parent&.child_level
+      end
+    end
+
+    class ImplementingOrganisationBuilder
+      FIELDS = {
+        "implementing_organisation_name" => "Implementing organisation name",
+        "implementing_organisation_reference" => "Implementing organisation reference",
+        "implementing_organisation_organisation_type" => "Implementing organisation sector",
+      }.freeze
+
+      attr_accessor :activity, :row
+
+      def initialize(activity, row)
+        @activity = activity
+        @row = row
+      end
+
+      def build
+        ImplementingOrganisation.find_or_initialize_by(
+          activity_id: activity.id
+        ) { |implementing_organisation|
+          implementing_organisation.name = row["Implementing organisation name"]
+          implementing_organisation.reference = row["Implementing organisation reference"]
+          implementing_organisation.organisation_type = row["Implementing organisation sector"]
+        }
+      end
+
+      def add_errors(errors)
+        errors.delete(:implementing_organisations)
+
+        implementing_organisation_errors = @activity.implementing_organisations.first.errors.messages
+        errors["implementing_organisation_name"] = [row["Implementing organisation name"], implementing_organisation_errors[:name].first] if implementing_organisation_errors[:name].any?
+        errors["implementing_organisation_organisation_type"] = [row["Implementing organisation sector"], implementing_organisation_errors[:organisation_type].first] if implementing_organisation_errors[:organisation_type].any?
+        errors
       end
     end
 
@@ -215,12 +231,6 @@ module Activities
         fstc_applies: "Free Standing Technical Cooperation",
         objectives: "Aims/Objectives (DP Definition)",
       }
-
-      IMPLEMENTING_ORGANISATION_FIELDS = {
-        implementing_organisation_name: "Implementing organisation name",
-        implementing_organisation_reference: "Implementing organisation reference",
-        implementing_organisation_organisation_type: "Implementing organisation sector",
-      }.freeze
 
       ALLOWED_BLANK_FIELDS = [
         "DFID policy marker - Gender",
