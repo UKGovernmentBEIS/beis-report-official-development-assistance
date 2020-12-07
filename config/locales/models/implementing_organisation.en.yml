@@ -6,6 +6,16 @@ en:
         success: Implementing organisation successfully created
       update:
         success: Implementing organisation successfully updated
+  activerecord:
+    errors:
+      models:
+        implementing_organisation:
+          attributes:
+            name:
+              blank: Implementing organisation name can't be blank
+            organisation_type:
+              blank: Implementing organisation sector can't be blank
+              inclusion: Implementing organisation sector must be included in the IATI codelist
   form:
     label:
       implementing_organisation:

@@ -940,7 +940,7 @@ RSpec.describe Activity, type: :model do
     it "returns true when there is one or more implementing organisationg" do
       activity = create(:project_activity_with_implementing_organisations)
 
-      expect(activity.has_implementing_organisations?).to be true
+      expect(activity.reload.has_implementing_organisations?).to be true
     end
   end
 
