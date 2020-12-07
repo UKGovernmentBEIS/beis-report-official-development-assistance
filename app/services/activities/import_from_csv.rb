@@ -6,7 +6,7 @@ module Activities
       end
 
       def csv_column
-        Converter::FIELDS[column] || column.to_s
+        Converter::FIELDS[column] || Converter::IMPLEMENTING_ORGANISATION_FIELDS[column.to_sym] || column.to_s
       end
     }
 
@@ -72,12 +72,13 @@ module Activities
     end
 
     class ActivityUpdater
-      attr_reader :errors, :activity
+      attr_reader :errors, :activity, :row
 
       def initialize(row, organisation)
         @errors = {}
         @activity = find_activity_by_roda_id(row["RODA ID"])
         @organisation = organisation
+        @row = row
         @converter = Converter.new(row)
         @errors.update(@converter.errors)
       end
@@ -87,11 +88,27 @@ module Activities
 
         @activity.assign_attributes(@converter.to_h)
 
+        associated_implementing_organisation = ImplementingOrganisation.find_or_initialize_by(
+          activity_id: @activity.id
+        ) { |implementing_organisation|
+          implementing_organisation.name = row["Implementing organisation name"]
+          implementing_organisation.reference = row["Implementing organisation reference"]
+          implementing_organisation.organisation_type = row["Implementing organisation sector"]
+        }
+
+        @activity.implementing_organisations = [associated_implementing_organisation]
+
         return if @activity.save
 
         @activity.errors.each do |attr_name, message|
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
         end
+
+        @errors.delete(:implementing_organisations)
+
+        implementing_organisation_errors = @activity.implementing_organisations.first.errors.messages
+        @errors["implementing_organisation_name"] = [row["Implementing organisation name"], implementing_organisation_errors[:name].first] if implementing_organisation_errors[:name].any?
+        @errors["implementing_organisation_organisation_type"] = [row["Implementing organisation sector"], implementing_organisation_errors[:organisation_type].first] if implementing_organisation_errors[:organisation_type].any?
       end
 
       def find_activity_by_roda_id(roda_id)
@@ -103,12 +120,13 @@ module Activities
     end
 
     class ActivityCreator
-      attr_reader :errors, :activity
+      attr_reader :errors, :row, :activity
 
       def initialize(organisation, row)
         @organisation = organisation
         @activity = Activity.new
         @errors = {}
+        @row = row
         @converter = Converter.new(row)
         @errors.update(@converter.errors)
       end
@@ -123,11 +141,23 @@ module Activities
         @activity.level = calculate_level
         @activity.cache_roda_identifier
 
+        @activity.implementing_organisations = [ImplementingOrganisation.new(
+          name: row["Implementing organisation name"],
+          reference: row["Implementing organisation reference"],
+          organisation_type: row["Implementing organisation sector"],
+        )]
+
         return if @activity.save(context: Activity::VALIDATION_STEPS)
 
         @activity.errors.each do |attr_name, message|
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
         end
+
+        @errors.delete(:implementing_organisations)
+
+        implementing_organisation_errors = @activity.implementing_organisations.first.errors.messages
+        @errors["implementing_organisation_name"] = [row["Implementing organisation name"], implementing_organisation_errors[:name].first] if implementing_organisation_errors[:name].any?
+        @errors["implementing_organisation_organisation_type"] = [row["Implementing organisation sector"], implementing_organisation_errors[:organisation_type].first] if implementing_organisation_errors[:organisation_type].any?
       end
 
       def calculate_level
@@ -186,6 +216,12 @@ module Activities
         objectives: "Aims/Objectives (DP Definition)",
       }
 
+      IMPLEMENTING_ORGANISATION_FIELDS = {
+        implementing_organisation_name: "Implementing organisation name",
+        implementing_organisation_reference: "Implementing organisation reference",
+        implementing_organisation_organisation_type: "Implementing organisation sector",
+      }.freeze
+
       ALLOWED_BLANK_FIELDS = [
         "DFID policy marker - Gender",
         "DFID policy marker - Climate Change - Adaptation",
@@ -196,6 +232,7 @@ module Activities
         "DFID policy marker - Disaster Risk Reduction",
         "DFID policy marker - Nutrition",
         "Channel of delivery code",
+        "Implementing organisation reference",
       ]
 
       def initialize(row)
