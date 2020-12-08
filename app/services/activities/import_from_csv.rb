@@ -393,11 +393,11 @@ module Activities
       end
 
       def convert_programme_status(programme_status)
-        validate_from_codelist(
-          programme_status,
-          :programme_status,
-          I18n.t("importer.errors.activity.invalid_programme_status"),
-        )
+        status = Activity.programme_statuses.key(programme_status.to_i)
+
+        raise I18n.t("importer.errors.activity.invalid_programme_status") if status.nil?
+
+        status
       end
 
       def convert_sector(sector)
