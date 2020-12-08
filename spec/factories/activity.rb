@@ -138,6 +138,7 @@ FactoryBot.define do
 
         after(:create) do |project_activity, evaluator|
           create_list(:implementing_organisation, evaluator.implementing_organisations_count, activity: project_activity)
+          project_activity.reload
         end
       end
 

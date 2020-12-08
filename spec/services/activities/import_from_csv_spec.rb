@@ -716,5 +716,22 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(0)
     end
+
+    context "with existing implementing organisation" do
+      let(:existing_activity) do
+        create(:project_activity_with_implementing_organisations, implementing_organisations_count: 3)
+      end
+
+      it "leaves only one associated implementing organisation and updates it" do
+        rows = [existing_activity_attributes]
+
+        expect { subject.import(rows) }.to change { ImplementingOrganisation.count }.by(-2)
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(1)
+
+        expect(subject.errors.count).to eq(0)
+      end
+    end
   end
 end
