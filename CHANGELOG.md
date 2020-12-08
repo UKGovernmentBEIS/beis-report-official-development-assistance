@@ -416,6 +416,7 @@
 - Allow importer to import the implementing organisation name, reference and sector
 - Add "BEIS ID" (beis_id) to the importer
 - Add "UK DP Named Contact (NF)" (uk_dp_named_contact) to the importer
+- Add "NF Partner Country DP" (country_delivery_partners) to the importer
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...HEAD
 [release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23
