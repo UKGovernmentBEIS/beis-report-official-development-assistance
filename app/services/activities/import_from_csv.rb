@@ -6,7 +6,7 @@ module Activities
       end
 
       def csv_column
-        Converter::FIELDS[column] || column.to_s
+        Converter::FIELDS[column] || ImplementingOrganisationBuilder::FIELDS[column] || column.to_s
       end
     }
 
@@ -72,12 +72,13 @@ module Activities
     end
 
     class ActivityUpdater
-      attr_reader :errors, :activity
+      attr_reader :errors, :activity, :row
 
       def initialize(row, organisation)
         @errors = {}
         @activity = find_activity_by_roda_id(row["RODA ID"])
         @organisation = organisation
+        @row = row
         @converter = Converter.new(row)
         @errors.update(@converter.errors)
       end
@@ -85,13 +86,18 @@ module Activities
       def update
         return unless @activity && @errors.empty?
 
-        attributes = @converter.to_h
+        @activity.assign_attributes(@converter.to_h)
 
-        return if @activity.update(attributes)
+        implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
+        @activity.implementing_organisations = [implementing_organisation_builder.build]
+
+        return if @activity.save
 
         @activity.errors.each do |attr_name, message|
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
         end
+
+        implementing_organisation_builder.add_errors(@errors)
       end
 
       def find_activity_by_roda_id(roda_id)
@@ -103,12 +109,13 @@ module Activities
     end
 
     class ActivityCreator
-      attr_reader :errors, :activity
+      attr_reader :errors, :row, :activity
 
       def initialize(organisation, row)
         @organisation = organisation
         @activity = Activity.new
         @errors = {}
+        @row = row
         @converter = Converter.new(row)
         @errors.update(@converter.errors)
       end
@@ -123,15 +130,54 @@ module Activities
         @activity.level = calculate_level
         @activity.cache_roda_identifier
 
+        implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
+        @activity.implementing_organisations = [implementing_organisation_builder.build]
+
         return if @activity.save(context: Activity::VALIDATION_STEPS)
 
         @activity.errors.each do |attr_name, message|
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
         end
+
+        implementing_organisation_builder.add_errors(@errors)
       end
 
       def calculate_level
         @activity&.parent&.child_level
+      end
+    end
+
+    class ImplementingOrganisationBuilder
+      FIELDS = {
+        "implementing_organisation_name" => "Implementing organisation name",
+        "implementing_organisation_reference" => "Implementing organisation reference",
+        "implementing_organisation_organisation_type" => "Implementing organisation sector",
+      }.freeze
+
+      attr_accessor :activity, :row
+
+      def initialize(activity, row)
+        @activity = activity
+        @row = row
+      end
+
+      def build
+        ImplementingOrganisation.find_or_initialize_by(
+          activity_id: activity.id
+        ) { |implementing_organisation|
+          implementing_organisation.name = row["Implementing organisation name"]
+          implementing_organisation.reference = row["Implementing organisation reference"]
+          implementing_organisation.organisation_type = row["Implementing organisation sector"]
+        }
+      end
+
+      def add_errors(errors)
+        errors.delete(:implementing_organisations)
+
+        implementing_organisation_errors = @activity.implementing_organisations.first.errors.messages
+        errors["implementing_organisation_name"] = [row["Implementing organisation name"], implementing_organisation_errors[:name].first] if implementing_organisation_errors[:name].any?
+        errors["implementing_organisation_organisation_type"] = [row["Implementing organisation sector"], implementing_organisation_errors[:organisation_type].first] if implementing_organisation_errors[:organisation_type].any?
+        errors
       end
     end
 
@@ -196,6 +242,7 @@ module Activities
         "DFID policy marker - Disaster Risk Reduction",
         "DFID policy marker - Nutrition",
         "Channel of delivery code",
+        "Implementing organisation reference",
       ]
 
       def initialize(row)

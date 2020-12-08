@@ -3,7 +3,13 @@ require "rails_helper"
 RSpec.describe Activities::ImportFromCsv do
   let(:organisation) { create(:organisation) }
   let(:parent_activity) { create(:activity) }
-  let(:existing_activity) { create(:activity) }
+  let(:existing_activity) do
+    create(:activity) do |activity|
+      activity.implementing_organisations = [
+        create(:implementing_organisation, activity: activity),
+      ]
+    end
+  end
   let(:existing_activity_attributes) do
     {
       "RODA ID" => existing_activity.roda_identifier_compound,
@@ -49,6 +55,9 @@ RSpec.describe Activities::ImportFromCsv do
       "Aid type" => "B03",
       "Free Standing Technical Cooperation" => "1",
       "Aims/Objectives (DP Definition)" => "Foo bar baz",
+      "Implementing organisation name" => existing_activity.implementing_organisations.first.name,
+      "Implementing organisation reference" => existing_activity.implementing_organisations.first.reference,
+      "Implementing organisation sector" => existing_activity.implementing_organisations.first.organisation_type,
     }
   end
   let(:new_activity_attributes) do
@@ -156,6 +165,11 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
       expect(existing_activity.fstc_applies).to eq(true)
       expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives (DP Definition)"])
+
+      expect(existing_activity.implementing_organisations.count).to eql(1)
+      expect(existing_activity.implementing_organisations.first.name).to eq(existing_activity_attributes["Implementing organisation name"])
+      expect(existing_activity.implementing_organisations.first.reference).to eq(existing_activity_attributes["Implementing organisation reference"])
+      expect(existing_activity.implementing_organisations.first.organisation_type).to eq(existing_activity_attributes["Implementing organisation sector"])
     end
 
     it "ignores any blank columns" do
@@ -264,6 +278,17 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
       expect(new_activity.fstc_applies).to eq(true)
       expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (DP Definition)"])
+    end
+
+    it "creates the associated implementing organisations" do
+      rows = [new_activity_attributes]
+      expect { subject.import(rows) }.to change { ImplementingOrganisation.count }.by(1)
+
+      new_activity = Activity.order(:created_at).last
+
+      expect(new_activity.implementing_organisations.first.name).to eq(new_activity_attributes["Implementing organisation name"])
+      expect(new_activity.implementing_organisations.first.reference).to eq(new_activity_attributes["Implementing organisation reference"])
+      expect(new_activity.implementing_organisations.first.organisation_type).to eq(new_activity_attributes["Implementing organisation sector"])
     end
 
     it "sets the geography to recipient country and infers the region if the region is not specified" do
@@ -632,6 +657,46 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.value).to eq("%^$!234566")
       expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.roda_identifier_fragment.invalid_characters"))
     end
+
+    context "implementing organisation" do
+      it "has an error if the name is empty" do
+        new_activity_attributes["Implementing organisation name"] = ""
+
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_column).to eq("Implementing organisation name")
+        expect(subject.errors.first.column).to eq("implementing_organisation_name")
+        expect(subject.errors.first.value).to eq("")
+        expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.implementing_organisation.attributes.name.blank"))
+      end
+
+      it "has an error if the sector is empty" do
+        new_activity_attributes["Implementing organisation sector"] = ""
+
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_column).to eq("Implementing organisation sector")
+        expect(subject.errors.first.column).to eq("implementing_organisation_organisation_type")
+        expect(subject.errors.first.value).to eq("")
+        expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.implementing_organisation.attributes.organisation_type.blank"))
+      end
+
+      it "has an error if the sector is not in the organisation-type codelist" do
+        new_activity_attributes["Implementing organisation sector"] = "9999"
+
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.implementing_organisation.attributes.organisation_type.inclusion"))
+      end
+    end
   end
 
   context "when updating and importing" do
@@ -643,6 +708,30 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.updated.count).to eq(1)
 
       expect(subject.errors.count).to eq(0)
+    end
+
+    it "creates and imports implementing organisations" do
+      rows = [existing_activity_attributes, new_activity_attributes]
+      expect { subject.import(rows) }.to change { ImplementingOrganisation.count }.by(1)
+
+      expect(subject.errors.count).to eq(0)
+    end
+
+    context "with existing implementing organisation" do
+      let(:existing_activity) do
+        create(:project_activity_with_implementing_organisations, implementing_organisations_count: 3)
+      end
+
+      it "leaves only one associated implementing organisation and updates it" do
+        rows = [existing_activity_attributes]
+
+        expect { subject.import(rows) }.to change { ImplementingOrganisation.count }.by(-2)
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(1)
+
+        expect(subject.errors.count).to eq(0)
+      end
     end
   end
 end
