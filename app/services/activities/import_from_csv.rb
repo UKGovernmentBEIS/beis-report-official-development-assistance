@@ -230,6 +230,7 @@ module Activities
         aid_type: "Aid type",
         fstc_applies: "Free Standing Technical Cooperation",
         objectives: "Aims/Objectives (DP Definition)",
+        beis_id: "BEIS ID",
       }
 
       ALLOWED_BLANK_FIELDS = [
@@ -243,6 +244,7 @@ module Activities
         "DFID policy marker - Nutrition",
         "Channel of delivery code",
         "Implementing organisation reference",
+        "BEIS ID",
       ]
 
       def initialize(row)
