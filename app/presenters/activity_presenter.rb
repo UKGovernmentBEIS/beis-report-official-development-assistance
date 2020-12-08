@@ -15,7 +15,7 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def covid19_related
-    I18n.t("covid19_related.#{super}")
+    I18n.t("activity.covid19_related.#{super}")
   end
 
   def sector
