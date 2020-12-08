@@ -230,6 +230,9 @@ module Activities
         aid_type: "Aid type",
         fstc_applies: "Free Standing Technical Cooperation",
         objectives: "Aims/Objectives (DP Definition)",
+        beis_id: "BEIS ID",
+        uk_dp_named_contact: "UK DP Named Contact (NF)",
+        country_delivery_partners: "NF Partner Country DP",
       }
 
       ALLOWED_BLANK_FIELDS = [
@@ -243,6 +246,9 @@ module Activities
         "DFID policy marker - Nutrition",
         "Channel of delivery code",
         "Implementing organisation reference",
+        "BEIS ID",
+        "UK DP Named Contact (NF)",
+        "NF Partner Country DP",
       ]
 
       def initialize(row)
@@ -464,6 +470,10 @@ module Activities
 
       def convert_actual_end_date(actual_end_date)
         parse_date(actual_end_date, I18n.t("importer.errors.activity.invalid_actual_end_date"))
+      end
+
+      def convert_country_delivery_partners(delivery_partners)
+        delivery_partners.split("|").map(&:strip).reject(&:blank?)
       end
 
       def parse_date(date, message)

@@ -55,6 +55,9 @@ RSpec.describe Activities::ImportFromCsv do
       "Aid type" => "B03",
       "Free Standing Technical Cooperation" => "1",
       "Aims/Objectives (DP Definition)" => "Foo bar baz",
+      "BEIS ID" => "BEIS_ID_EXAMPLE_01",
+      "UK DP Named Contact (NF)" => "Jo Soap",
+      "NF Partner Country DP" => "Association of Example Companies (AEC) | | Board of Sample Organisations (BSO)",
       "Implementing organisation name" => existing_activity.implementing_organisations.first.name,
       "Implementing organisation reference" => existing_activity.implementing_organisations.first.reference,
       "Implementing organisation sector" => existing_activity.implementing_organisations.first.organisation_type,
@@ -165,11 +168,14 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
       expect(existing_activity.fstc_applies).to eq(true)
       expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives (DP Definition)"])
+      expect(existing_activity.beis_id).to eq(existing_activity_attributes["BEIS ID"])
+      expect(existing_activity.uk_dp_named_contact).to eq(existing_activity_attributes["UK DP Named Contact (NF)"])
 
       expect(existing_activity.implementing_organisations.count).to eql(1)
       expect(existing_activity.implementing_organisations.first.name).to eq(existing_activity_attributes["Implementing organisation name"])
       expect(existing_activity.implementing_organisations.first.reference).to eq(existing_activity_attributes["Implementing organisation reference"])
       expect(existing_activity.implementing_organisations.first.organisation_type).to eq(existing_activity_attributes["Implementing organisation sector"])
+      expect(existing_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
     end
 
     it "ignores any blank columns" do
@@ -278,6 +284,9 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
       expect(new_activity.fstc_applies).to eq(true)
       expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (DP Definition)"])
+      expect(new_activity.beis_id).to eq(new_activity_attributes["BEIS ID"])
+      expect(new_activity.uk_dp_named_contact).to eq(new_activity_attributes["UK DP Named Contact (NF)"])
+      expect(new_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
     end
 
     it "creates the associated implementing organisations" do
