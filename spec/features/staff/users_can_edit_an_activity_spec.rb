@@ -408,19 +408,19 @@ RSpec.feature "Users can edit an activity" do
       let(:activity) { create(:project_activity, organisation: user.organisation) }
 
       it "saves the value and shows an update success message" do
-        activity.update_columns(title: nil, programme_status: "Replace me")
+        activity.update_columns(title: nil, collaboration_type: "Replace me")
         _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
 
         visit organisation_activity_details_path(activity.organisation, activity)
 
-        within(".programme_status") do
+        within(".collaboration_type") do
           click_on(t("default.link.edit"))
         end
-        choose "Spend in progress"
+        choose "Bilateral"
         click_button t("form.button.activity.submit")
 
         expect(page).to have_content(t("action.project.update.success"))
-        expect(activity.reload.programme_status).to eql("07")
+        expect(activity.reload.collaboration_type).to eql("1")
       end
     end
   end

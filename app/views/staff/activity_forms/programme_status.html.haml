@@ -1,8 +1,8 @@
 = render layout: "wrapper" do |f|
   = f.hidden_field :programme_status, value: nil
   = f.govuk_collection_radio_buttons :programme_status,
-    yaml_to_objects_with_description(entity: "activity", type: "programme_status"),
-    :code,
-    :name,
+    programme_status_radio_options,
+    :value,
+    :label,
     :description,
     legend: { tag: 'h1', size: 'xl', text: t("form.legend.activity.programme_status", level: t("page_content.activity.level.#{f.object.level}")) }

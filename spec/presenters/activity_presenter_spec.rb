@@ -146,7 +146,7 @@ RSpec.describe ActivityPresenter do
   describe "#programme_status" do
     context "when the programme status exists" do
       it "returns the locale value for the code" do
-        activity = build(:activity, programme_status: "07")
+        activity = build(:activity, programme_status: "spend_in_progress")
         result = described_class.new(activity).programme_status
         expect(result).to eql("Spend in progress")
       end
