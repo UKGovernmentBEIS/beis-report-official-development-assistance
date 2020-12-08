@@ -46,6 +46,14 @@ RSpec.feature "Users can view the static pages" do
 
       expect(page).to have_content t("accessibility_statement.title")
     end
+
+    scenario "the footer contains a link to the support site" do
+      visit root_path
+
+      within("footer") do
+        expect(page).to have_link t("footer.link.support_site"), href: "https://beisodahelp.zendesk.com/"
+      end
+    end
   end
 
   context "when signed in" do
