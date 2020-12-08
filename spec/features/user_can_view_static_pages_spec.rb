@@ -17,7 +17,7 @@ RSpec.feature "Users can view the static pages" do
       expect(page).to have_content t("page_title.privacy_policy")
     end
 
-    scenario "the footer contains a link to the cookie statment" do
+    scenario "the footer contains a link to the cookie statement" do
       visit root_path
 
       within("footer") do
@@ -32,7 +32,7 @@ RSpec.feature "Users can view the static pages" do
       expect(page).to have_content t("cookie_statement.title")
     end
 
-    scenario "the footer contains a link to the accessibility statment" do
+    scenario "the footer contains a link to the accessibility statement" do
       visit root_path
 
       within("footer") do
@@ -45,6 +45,14 @@ RSpec.feature "Users can view the static pages" do
       click_on t("footer.link.accessibility_statement")
 
       expect(page).to have_content t("accessibility_statement.title")
+    end
+
+    scenario "the footer contains a link to the support site" do
+      visit root_path
+
+      within("footer") do
+        expect(page).to have_link t("footer.link.support_site"), href: "https://beisodahelp.zendesk.com/"
+      end
     end
   end
 
