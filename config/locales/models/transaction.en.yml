@@ -46,12 +46,8 @@ en:
   table:
     header:
       transaction:
-        transaction_type: Type
-        date: Date
-        currency: Currency
+        financial_quarter: Financial quarter
         value: Transaction amount
-        disbursement_channel: Disbursement channel
-        providing_organisation: Provide
         receiving_organisation: Receiver
   page_content:
     transactions:

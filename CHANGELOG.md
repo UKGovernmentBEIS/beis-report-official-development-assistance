@@ -419,6 +419,7 @@
 - Add "NF Partner Country DP" (country_delivery_partners) to the importer
 - Add link to the support site in the footer
 - Change programme status field to an enum
+- Simplify actuals/transactions display on an activity's financials page
 
 ## [unreleased]
 
