@@ -231,6 +231,7 @@ module Activities
         fstc_applies: "Free Standing Technical Cooperation",
         objectives: "Aims/Objectives (DP Definition)",
         beis_id: "BEIS ID",
+        uk_dp_named_contact: "UK DP Named Contact (NF)",
       }
 
       ALLOWED_BLANK_FIELDS = [
@@ -245,6 +246,7 @@ module Activities
         "Channel of delivery code",
         "Implementing organisation reference",
         "BEIS ID",
+        "UK DP Named Contact (NF)",
       ]
 
       def initialize(row)
