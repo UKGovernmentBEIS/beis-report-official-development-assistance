@@ -413,6 +413,7 @@
 - Users can add `gcrf_challenge_area` for GCRF-funded activities
 - Add fund pillar question to the Activity form
 - Allow Channel of delivery code to be imported from CSV and reported in the CSV
+- Allow importer to import the implementing organisation name, reference and sector
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...HEAD
 [release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23

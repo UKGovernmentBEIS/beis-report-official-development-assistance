@@ -106,7 +106,8 @@ class Activity < ApplicationRecord
   has_many :child_activities, foreign_key: "parent_id", class_name: "Activity"
   belongs_to :organisation
   belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
-  has_many :implementing_organisations
+  has_many :implementing_organisations, dependent: :destroy
+  validates_associated :implementing_organisations
   belongs_to :reporting_organisation, foreign_key: "reporting_organisation_id", class_name: "Organisation"
 
   has_many :budgets, foreign_key: "parent_activity_id"
