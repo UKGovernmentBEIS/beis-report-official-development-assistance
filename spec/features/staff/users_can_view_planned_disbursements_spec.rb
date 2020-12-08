@@ -3,7 +3,7 @@ RSpec.describe "Users can view planned disbursements" do
     let(:user) { create(:delivery_partner_user) }
     before { authenticate!(user: user) }
 
-    scenario "they can view planned disburesment on projects" do
+    scenario "they can view planned disbursements on projects" do
       project = create(:project_activity, organisation: user.organisation)
       planned_disbursement = create(:planned_disbursement, parent_activity: project)
 
@@ -28,7 +28,7 @@ RSpec.describe "Users can view planned disbursements" do
     let(:beis_user) { create(:beis_user) }
     before { authenticate!(user: beis_user) }
 
-    scenario "they can view planned disburesment on projects" do
+    scenario "they can view planned disbursements on projects" do
       project = create(:project_activity, organisation: beis_user.organisation)
       planned_disbursement = create(:planned_disbursement, parent_activity: project)
 
