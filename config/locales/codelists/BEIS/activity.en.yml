@@ -7,3 +7,16 @@ en:
       "2": Existing activity adapted to fully focus on COVID-19
       "3": New activity that will somewhat focus on COVID-19
       "4": Existing activity adapted to somewhat focus on COVID-19
+    programme_status:
+      delivery: Delivery
+      planned: Planned
+      agreement_in_place: Agreement in place
+      open_for_applications: Call/Activity open
+      review: Review
+      decided: Decided
+      spend_in_progress: Spend in progress
+      finalisation: Finalisation
+      completed: Completed
+      stoped: Stopped
+      cancelled: Cancelled
+      paused: Paused
