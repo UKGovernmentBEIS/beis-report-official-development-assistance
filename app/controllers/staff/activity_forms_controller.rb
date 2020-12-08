@@ -3,7 +3,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   include DateHelper
   include ActivityHelper
 
-  DEFAULT_PROGRAMME_STATUS_FOR_FUNDS = "07"
+  DEFAULT_PROGRAMME_STATUS_FOR_FUNDS = "spend_in_progress"
 
   FORM_STEPS = [
     :blank,

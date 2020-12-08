@@ -128,6 +128,21 @@ class Activity < ApplicationRecord
     recipient_country: "Recipient country",
   }
 
+  enum programme_status: {
+    delivery: 1,
+    planned: 2,
+    agreement_in_place: 3,
+    open_for_applications: 4,
+    review: 5,
+    decided: 6,
+    spend_in_progress: 7,
+    finalisation: 8,
+    completed: 9,
+    stopped: 10,
+    cancelled: 11,
+    paused: 12,
+  }
+
   enum policy_marker_gender: POLICY_MARKER_CODES, _prefix: :gender
 
   enum policy_marker_climate_change_adaptation: POLICY_MARKER_CODES, _prefix: :climate_change_adaptation
