@@ -30,49 +30,67 @@ class ExportActivityToCsv
 
   private def columns
     @_columns ||= {
-      "Funding organisation name" => -> { activity_presenter.funding_organisation_name },
-      "Transparency identifier" => -> { activity_presenter.transparency_identifier },
-      "Delivery partner identifier" => -> { activity_presenter.delivery_partner_identifier },
       "RODA identifier" => -> { activity_presenter.roda_identifier },
+      # RODA ID fragment
+      # Parent RODA ID
+      "Transparency identifier" => -> { activity_presenter.transparency_identifier },
       "BEIS identifier" => -> { activity_presenter.beis_id },
       "Level" => -> { activity_presenter.level },
-      "Title" => -> { activity_presenter.title },
-      "Description" => -> { activity_presenter.description },
-      "Aims/Objectives" => -> { activity_presenter.objectives },
+      # Other UK DPs
+      # DP 'Brand'
+      "Delivery partner identifier" => -> { activity_presenter.delivery_partner_identifier },
       "Recipient region" => -> { activity_presenter.recipient_region },
       "Recipient country" => -> { activity_presenter.recipient_country },
       "Intended beneficiaries" => -> { activity_presenter.intended_beneficiaries },
+      "GDI" => -> { activity_presenter.gdi },
+      # GCRF Challenge Area
+      "Fund Pillar" => -> { activity_presenter.fund_pillar },
+      # SDG 1
+      # SDG 2
+      # SDG 3
+      "Title" => -> { activity_presenter.title },
+      # DFID Activity Title
+      "Description" => -> { activity_presenter.description },
+      # DFID Activity Description
+      "Aims/Objectives" => -> { activity_presenter.objectives },
+      "ODA eligibility" => -> { activity_presenter.oda_eligibility },
+      "ODA eligibility lead" => -> { activity_presenter.oda_eligibility_lead },
+      "Covid-19 related research" => -> { activity_presenter.covid19_related },
       "Activity status" => -> { activity_presenter.programme_status },
       "Country delivery partners" => -> { activity_presenter.country_delivery_partners },
+      "UK DP named contact" => -> { activity_presenter.uk_dp_named_contact },
+      "Call open date" => -> { activity_presenter.call_open_date },
+      "Call close date" => -> { activity_presenter.call_close_date },
       "Planned start date" => -> { activity_presenter.planned_start_date },
       "Actual start date" => -> { activity_presenter.actual_start_date },
       "Planned end date" => -> { activity_presenter.planned_end_date },
       "Actual end date" => -> { activity_presenter.actual_end_date },
-      "Call open date" => -> { activity_presenter.call_open_date },
-      "Call close date" => -> { activity_presenter.call_close_date },
       "Total applications" => -> { activity_presenter.total_applications },
       "Total awards" => -> { activity_presenter.total_awards },
+      # Total applications to Newton Fund partner DP
+      # Total awards by NF partner DP
       "Sector" => -> { activity_presenter.sector_with_code },
       "Channel of delivery code" => -> { activity_presenter.channel_of_delivery_code },
-      "Aid type" => -> { activity_presenter.aid_type_with_code },
-      "Tied status" => -> { activity_presenter.tied_status_with_code },
-      "Finance type" => -> { activity_presenter.finance_with_code },
       "Flow" => -> { activity_presenter.flow_with_code },
-      "GDI" => -> { activity_presenter.gdi },
+      "Finance type" => -> { activity_presenter.finance_with_code },
+      "Aid type" => -> { activity_presenter.aid_type_with_code },
       "Collaboration type" => -> { activity_presenter.collaboration_type },
-      "Covid-19 related research" => -> { activity_presenter.covid19_related },
       "Gender" => -> { activity_presenter.policy_marker_gender },
       "Climate change - Adaptation" => -> { activity_presenter.policy_marker_climate_change_adaptation },
       "Climate change - Mitigation" => -> { activity_presenter.policy_marker_climate_change_mitigation },
       "Biodiversity" => -> { activity_presenter.policy_marker_biodiversity },
       "Desertification" => -> { activity_presenter.policy_marker_desertification },
       "Disability" => -> { activity_presenter.policy_marker_disability },
+      # Free Standing Technical Cooperation
       "Disaster Risk Reduction" => -> { activity_presenter.policy_marker_disaster_risk_reduction },
       "Nutrition policy" => -> { activity_presenter.policy_marker_nutrition },
-      "Fund Pillar" => -> { activity_presenter.fund_pillar },
-      "ODA eligibility" => -> { activity_presenter.oda_eligibility },
-      "ODA eligibility lead" => -> { activity_presenter.oda_eligibility_lead },
-      "UK DP named contact" => -> { activity_presenter.uk_dp_named_contact },
+      # Implementing organisation name
+      # Implementing organisation reference
+      # Implementing organisation sector
+      "Tied status" => -> { activity_presenter.tied_status_with_code },
+
+      # Additional headers specific to export CSV =============================
+      "Funding organisation name" => -> { activity_presenter.funding_organisation_name },
       forecast_header => -> { activity_presenter.forecasted_total_for_report_financial_quarter(report: report) },
       actuals_header => -> { activity_presenter.actual_total_for_report_financial_quarter(report: report) },
       "Variance" => -> { activity_presenter.variance_for_report_financial_quarter(report: report) },
