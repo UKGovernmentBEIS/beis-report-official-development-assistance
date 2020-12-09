@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_20_150002) do
+ActiveRecord::Schema.define(version: 2020_12_08_093803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -51,7 +51,6 @@ ActiveRecord::Schema.define(version: 2020_11_20_150002) do
     t.boolean "publish_to_iati", default: true
     t.uuid "parent_id"
     t.string "transparency_identifier"
-    t.string "programme_status"
     t.boolean "call_present"
     t.date "call_open_date"
     t.date "call_close_date"
@@ -64,6 +63,8 @@ ActiveRecord::Schema.define(version: 2020_11_20_150002) do
     t.integer "total_awards"
     t.string "collaboration_type"
     t.integer "oda_eligibility", default: 1, null: false
+    t.boolean "fstc_applies"
+    t.integer "covid19_related", default: 0
     t.integer "policy_marker_gender"
     t.integer "policy_marker_climate_change_adaptation"
     t.integer "policy_marker_climate_change_mitigation"
@@ -72,15 +73,19 @@ ActiveRecord::Schema.define(version: 2020_11_20_150002) do
     t.integer "policy_marker_disability"
     t.integer "policy_marker_disaster_risk_reduction"
     t.integer "policy_marker_nutrition"
-    t.boolean "fstc_applies"
     t.integer "sdg_1"
     t.integer "sdg_2"
     t.integer "sdg_3"
     t.boolean "sdgs_apply", default: false, null: false
-    t.integer "covid19_related", default: 0
     t.text "objectives"
-    t.string "beis_id"
     t.string "oda_eligibility_lead"
+    t.string "beis_id"
+    t.string "uk_dp_named_contact"
+    t.string "country_delivery_partners", array: true
+    t.integer "gcrf_challenge_area"
+    t.integer "fund_pillar"
+    t.integer "programme_status"
+    t.string "channel_of_delivery_code"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
@@ -173,12 +178,14 @@ ActiveRecord::Schema.define(version: 2020_11_20_150002) do
     t.string "receiving_organisation_type"
     t.string "receiving_organisation_reference"
     t.boolean "ingested", default: false
-    t.uuid "parent_activity_id"
+    t.uuid "parent_activity_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "report_id"
-    t.integer "financial_quarter"
-    t.integer "financial_year"
+    t.integer "financial_quarter", null: false
+    t.integer "financial_year", null: false
+    t.index ["parent_activity_id", "financial_year", "financial_quarter", "planned_disbursement_type"], name: "unique_type_per_unversioned_item", unique: true, where: "(report_id IS NULL)"
+    t.index ["parent_activity_id", "financial_year", "financial_quarter", "report_id"], name: "unique_report_per_versioned_item", unique: true, where: "(report_id IS NOT NULL)"
     t.index ["parent_activity_id"], name: "index_planned_disbursements_on_parent_activity_id"
     t.index ["report_id"], name: "index_planned_disbursements_on_report_id"
   end
@@ -193,6 +200,8 @@ ActiveRecord::Schema.define(version: 2020_11_20_150002) do
     t.date "deadline"
     t.integer "financial_quarter"
     t.integer "financial_year"
+    t.index ["fund_id", "organisation_id"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text <> ALL ((ARRAY['inactive'::character varying, 'approved'::character varying])::text[]))"
+    t.index ["fund_id", "organisation_id"], name: "enforce_one_historic_report_per_series", unique: true, where: "((financial_quarter IS NULL) OR (financial_year IS NULL))"
     t.index ["fund_id"], name: "index_reports_on_fund_id"
     t.index ["organisation_id"], name: "index_reports_on_organisation_id"
     t.index ["state"], name: "index_reports_on_state"

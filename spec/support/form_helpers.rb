@@ -17,7 +17,8 @@ module FormHelpers
     call_close_date_year: "2019",
     total_applications: "12",
     total_awards: "5",
-    programme_status: "07",
+    programme_status: "spend_in_progress",
+    country_delivery_partners: "National Council for the State Funding Agencies (CONFAP)",
     planned_start_date_day: "1",
     planned_start_date_month: "1",
     planned_start_date_year: "2020",
@@ -37,6 +38,7 @@ module FormHelpers
     collaboration_type: "Bilateral",
     flow: "ODA",
     sdg_1: 1,
+    fund_pillar: "1",
     aid_type: "B02",
     fstc_applies: true,
     policy_marker_gender: "Not assessed",
@@ -48,10 +50,12 @@ module FormHelpers
     policy_marker_disaster_risk_reduction: "Not assessed",
     policy_marker_nutrition: "Not assessed",
     covid19_related: "4",
+    gcrf_challenge_area: "1",
     oda_eligibility: "Eligible",
     oda_eligibility_lead: Faker::Name.name,
     level:,
-    parent: nil
+    parent: nil,
+    uk_dp_named_contact: Faker::Name.name
   )
 
     expect(page).to have_content t("form.legend.activity.level")
@@ -158,6 +162,15 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
+    # NB: Since the parent might be a fund, `is_newton_fund?` won't work here
+    if parent&.associated_fund&.roda_identifier_fragment == "NF"
+      expect(page).to have_content t("form.legend.activity.country_delivery_partners")
+      expect(page).to have_content t("form.hint.activity.country_delivery_partners")
+      fill_in "activity[country_delivery_partners][]", match: :first, with: country_delivery_partners
+
+      click_button t("form.button.activity.submit")
+    end
+
     expect(page).to have_content t("page_title.activity_form.show.dates", level: activity_level(level))
 
     expect(page).to have_content t("form.legend.activity.planned_start_date")
@@ -222,6 +235,14 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
+    if associated_fund_is_newton?(parent)
+      expect(page).to have_content t("form.legend.activity.fund_pillar")
+      expect(page).to have_content t("form.hint.activity.fund_pillar")
+
+      choose("activity[fund_pillar]", option: fund_pillar)
+      click_button t("form.button.activity.submit")
+    end
+
     expect(page).to have_content t("form.legend.activity.aid_type")
     expect(page).to have_content t("form.hint.activity.aid_type")
     choose("activity[aid_type]", option: aid_type)
@@ -269,6 +290,13 @@ module FormHelpers
     choose("activity[covid19_related]", option: covid19_related)
     click_button t("form.button.activity.submit")
 
+    if parent&.is_gcrf_funded?
+      expect(page).to have_content t("form.legend.activity.gcrf_challenge_area")
+      expect(page).to have_content t("form.hint.activity.gcrf_challenge_area")
+      choose("activity[gcrf_challenge_area]", option: gcrf_challenge_area)
+      click_button t("form.button.activity.submit")
+    end
+
     expect(page).to have_content t("form.legend.activity.oda_eligibility")
     expect(page).to have_content t("form.hint.activity.oda_eligibility")
     choose oda_eligibility
@@ -281,6 +309,13 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
+    if (level == "project" || level == "third_party_project") && parent.is_newton_funded?
+      expect(page).to have_content t("form.label.activity.uk_dp_named_contact")
+      fill_in "activity[uk_dp_named_contact]", with: uk_dp_named_contact
+      click_button t("form.button.activity.submit")
+    end
+
+    # Activity details page ===================================================
     expect(page).to have_content delivery_partner_identifier
     expect(page).to have_content title
     expect(page).to have_content description
@@ -299,6 +334,15 @@ module FormHelpers
       expect(page).to have_content collaboration_type
       expect(page).to have_content objectives
     end
+
+    # NB: Since the parent might be a fund, `is_newton_fund?` won't work here
+    if parent&.associated_fund&.roda_identifier_fragment == "NF"
+      expect(page).to have_css(".govuk-summary-list__row.country_delivery_partners")
+      expect(page).to have_content country_delivery_partners if country_delivery_partners.present?
+    else
+      expect(page).to have_no_css(".govuk-summary-list__row.country_delivery_partners")
+    end
+
     expect(page).to have_content recipient_region
     expect(page).to have_content intended_beneficiaries
     expect(page).to have_content gdi
@@ -330,8 +374,12 @@ module FormHelpers
         expect(page).to have_content policy_marker_nutrition
       end
     end
+    expect(page).to have_content fund_pillar if associated_fund_is_newton?(parent)
     expect(page).to have_content oda_eligibility
     expect(page).to have_content oda_eligibility_lead if level == "project" || level == "third_party_project"
+    if (level == "project" || level == "third_party_project") && parent.is_newton_funded?
+      expect(page).to have_content uk_dp_named_contact
+    end
     expect(page).to have_content localise_date_from_input_fields(
       year: planned_start_date_year,
       month: planned_start_date_month,
@@ -420,6 +468,16 @@ module FormHelpers
     fill_in "planned_disbursement[value]", with: value
 
     click_on(t("default.button.submit"))
+  end
+
+  def fill_in_planned_disbursement_form_for_activity(activity)
+    report = Report.editable_for_activity(activity)
+    year = report.financial_year
+
+    fill_in_planned_disbursement_form(
+      financial_quarter: "Q#{report.financial_quarter}",
+      financial_year: "#{year + 1}-#{year + 2}"
+    )
   end
 
   def localise_date_from_input_fields(year:, month:, day:)

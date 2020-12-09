@@ -27,6 +27,7 @@ class Activity < ApplicationRecord
     :call_dates_step,
     :total_applications_and_awards_step,
     :programme_status_step,
+    :country_delivery_partners_step,
     :geography_step,
     :region_step,
     :country_step,
@@ -37,11 +38,14 @@ class Activity < ApplicationRecord
     :flow_step,
     :sustainable_development_goals_step,
     :aid_type_step,
+    :fund_pillar_step,
     :fstc_applies_step,
     :policy_markers_step,
     :covid19_related_step,
+    :gcrf_challenge_area_step,
     :oda_eligibility_step,
     :oda_eligibility_lead_step,
+    :uk_dp_named_contact_step,
   ]
 
   strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
@@ -58,6 +62,7 @@ class Activity < ApplicationRecord
   validates :total_applications, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :total_awards, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :programme_status, presence: true, on: :programme_status_step
+  validates :country_delivery_partners, presence: true, on: :country_delivery_partners_step, if: :requires_country_delivery_partners?
   validates :geography, presence: true, on: :geography_step
   validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
   validates :recipient_country, presence: true, on: :country_step, if: :recipient_country?
@@ -68,6 +73,7 @@ class Activity < ApplicationRecord
   validates :covid19_related, presence: true, on: :covid19_related_step
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
   validates :flow, presence: true, on: :flow_step
+  validates :fund_pillar, presence: true, on: :fund_pillar_step, if: :is_newton_funded?
   validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
   validates :aid_type, presence: true, on: :aid_type_step
   validates :policy_marker_gender, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
@@ -78,8 +84,10 @@ class Activity < ApplicationRecord
   validates :policy_marker_disability, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_disaster_risk_reduction, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_nutrition, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
+  validates :gcrf_challenge_area, presence: true, on: :gcrf_challenge_area_step, if: :is_gcrf_funded?
   validates :oda_eligibility, presence: true, on: :oda_eligibility_step
   validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :is_project?
+  validates :uk_dp_named_contact, presence: true, on: :uk_dp_named_contact_step, if: :is_project? && :is_newton_funded?
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier_compound, uniqueness: true, allow_nil: true
@@ -98,7 +106,8 @@ class Activity < ApplicationRecord
   has_many :child_activities, foreign_key: "parent_id", class_name: "Activity"
   belongs_to :organisation
   belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
-  has_many :implementing_organisations
+  has_many :implementing_organisations, dependent: :destroy
+  validates_associated :implementing_organisations
   belongs_to :reporting_organisation, foreign_key: "reporting_organisation_id", class_name: "Organisation"
 
   has_many :budgets, foreign_key: "parent_activity_id"
@@ -117,6 +126,21 @@ class Activity < ApplicationRecord
   enum geography: {
     recipient_region: "Recipient region",
     recipient_country: "Recipient country",
+  }
+
+  enum programme_status: {
+    delivery: 1,
+    planned: 2,
+    agreement_in_place: 3,
+    open_for_applications: 4,
+    review: 5,
+    decided: 6,
+    spend_in_progress: 7,
+    finalisation: 8,
+    completed: 9,
+    stopped: 10,
+    cancelled: 11,
+    paused: 12,
   }
 
   enum policy_marker_gender: POLICY_MARKER_CODES, _prefix: :gender
@@ -295,7 +319,7 @@ class Activity < ApplicationRecord
   end
 
   def forecasted_total_for_report_financial_quarter(report:)
-    @forecasted_total_for_report_financial_quarter ||= forecasted_total_for_date_range(range: report.created_at.all_quarter)
+    @forecasted_total_for_report_financial_quarter ||= PlannedDisbursementOverview.new(self).snapshot(report).value_for_report_quarter
   end
 
   def variance_for_report_financial_quarter(report:)
@@ -304,10 +328,6 @@ class Activity < ApplicationRecord
 
   def requires_call_dates?
     !ingested? && is_project?
-  end
-
-  def forecasted_total_for_date_range(range:)
-    planned_disbursements.where(period_start_date: range).sum(:value)
   end
 
   def comment_for_report(report_id:)
@@ -324,5 +344,17 @@ class Activity < ApplicationRecord
 
   def is_project?
     project? || third_party_project?
+  end
+
+  def is_gcrf_funded?
+    parent.present? && associated_fund.roda_identifier_fragment == "GCRF"
+  end
+
+  def is_newton_funded?
+    parent.present? && associated_fund.roda_identifier_fragment == "NF"
+  end
+
+  def requires_country_delivery_partners?
+    is_newton_funded? && programme?
   end
 end

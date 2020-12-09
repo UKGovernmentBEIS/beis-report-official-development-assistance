@@ -146,7 +146,7 @@ RSpec.describe ActivityPresenter do
   describe "#programme_status" do
     context "when the programme status exists" do
       it "returns the locale value for the code" do
-        activity = build(:activity, programme_status: "07")
+        activity = build(:activity, programme_status: "spend_in_progress")
         result = described_class.new(activity).programme_status
         expect(result).to eql("Spend in progress")
       end
@@ -410,6 +410,15 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#gcrf_challenge_area" do
+    it "returns the locale value for the stored integer" do
+      activity = build(:activity, gcrf_challenge_area: 2)
+      result = described_class.new(activity)
+
+      expect(result.gcrf_challenge_area).to eql "Sustainable health and well being"
+    end
+  end
+
   describe "#oda_eligibility" do
     context "when the activity is ODA eligible" do
       it "returns the locale value for this option" do
@@ -540,7 +549,7 @@ RSpec.describe ActivityPresenter do
   describe "#actual_total_for_report_financial_quarter" do
     it "returns the transaction total scoped to report as a formatted number" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       _transaction_in_report_scope = create(:transaction, parent_activity: project, report: report, value: 100.20, date: Date.today)
       _transaction_outside_report_scope = create(:transaction, parent_activity: project, report: report, value: 300, date: Date.today - 4.months)
 
@@ -551,40 +560,33 @@ RSpec.describe ActivityPresenter do
 
   describe "#forecasted_total_for_report_financial_quarter" do
     it "returns the planned disbursement total per report as a formatted number" do
-      project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, report: report, value: 200.20, period_start_date: Date.today)
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500.00, financial_quarter: 4, financial_year: 2019)
+      project = create(:project_activity)
+      reporting_cycle = ReportingCycle.new(project, 3, 2020)
+      forecast = PlannedDisbursementHistory.new(project, 4, 2020)
+
+      reporting_cycle.tick
+      forecast.set_value(200.20)
+
+      reporting_cycle.tick
+      report = Report.for_activity(project).in_historical_order.first
 
       expect(described_class.new(project).forecasted_total_for_report_financial_quarter(report: report))
         .to eq "200.20"
     end
   end
 
-  describe "#forecasted_total_for_date_range" do
-    it "returns the planned disbursement total for a date range as a formatted number" do
-      project = create(:project_activity, :with_report)
-      current_financial_quarter = Date.parse("2020-07-01")
-      last_financial_quarter = Date.parse("2020-04-01")
-      next_financial_quarter = Date.parse("2020-10-01")
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200.20, period_start_date: current_financial_quarter, financial_quarter: 2, financial_year: 2020)
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: last_financial_quarter, financial_quarter: 1, financial_year: 2019)
-
-      expect(described_class.new(project).forecasted_total_for_date_range(range: current_financial_quarter.all_quarter))
-        .to eq "200.20"
-      expect(described_class.new(project).forecasted_total_for_date_range(range: last_financial_quarter.all_quarter))
-        .to eq "1500.00"
-      expect(described_class.new(project).forecasted_total_for_date_range(range: next_financial_quarter.all_quarter))
-        .to eq "0.00"
-    end
-  end
-
   describe "#variance_for_report_financial_quarter" do
     it "returns the variance per report as a formatted number" do
-      project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
-      _transaction = create(:transaction, parent_activity: project, report: report, value: 200, date: Date.today)
-      _disbursement = create(:planned_disbursement, parent_activity: project, value: 1500, period_start_date: Date.today)
+      project = create(:project_activity)
+      reporting_cycle = ReportingCycle.new(project, 3, 2019)
+      forecast = PlannedDisbursementHistory.new(project, 4, 2019)
+
+      reporting_cycle.tick
+      forecast.set_value(1500)
+
+      reporting_cycle.tick
+      report = Report.for_activity(project).in_historical_order.first
+      _transaction = create(:transaction, parent_activity: project, report: report, value: 200, date: report.created_at)
 
       expect(described_class.new(project).variance_for_report_financial_quarter(report: report))
         .to eq "-1300.00"

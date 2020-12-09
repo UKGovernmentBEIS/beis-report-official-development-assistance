@@ -143,8 +143,31 @@ module CodelistHelper
     filtered_list.unshift(not_assessed_option)
   end
 
+  def programme_status_radio_options
+    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/programme_status.yml"))
+
+    Activity.programme_statuses.map do |name, code|
+      status = yaml["data"].find { |d| d["code"] == code }
+      OpenStruct.new(value: name, label: status["name"], description: status["description"])
+    end
+  end
+
   def covid19_related_radio_options
     yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/covid19_related_research.yml"))
+    yaml["data"].collect { |item|
+      OpenStruct.new(code: item["code"], description: item["description"])
+    }.compact.sort_by(&:code)
+  end
+
+  def gcrf_challenge_area_options
+    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/gcrf_challenge_area.yml"))
+    yaml["data"].collect { |item|
+      OpenStruct.new(code: item["code"], description: item["description"])
+    }.compact.sort_by { |x| x.code.to_i }
+  end
+
+  def fund_pillar_radio_options
+    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/fund_pillar.yml"))
     yaml["data"].collect { |item|
       OpenStruct.new(code: item["code"], description: item["description"])
     }.compact.sort_by(&:code)

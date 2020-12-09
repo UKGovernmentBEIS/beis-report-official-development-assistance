@@ -1,8 +1,6 @@
 class Report < ApplicationRecord
   include PublicActivity::Common
 
-  EDITABLE_STATES = [:active, :awaiting_changes].freeze
-
   attr_readonly :financial_quarter, :financial_year
 
   validates_presence_of :description, on: [:edit, :activate]
@@ -25,15 +23,40 @@ class Report < ApplicationRecord
     approved: "approved",
   }
 
+  scope :in_historical_order, -> do
+    clauses = [
+      "reports.financial_year DESC NULLS LAST",
+      "reports.financial_quarter DESC NULLS LAST",
+      "reports.created_at DESC",
+    ]
+
+    order(clauses.join(", "))
+  end
+
+  scope :historically_up_to, ->(report) do
+    historic_reports = where(financial_year: nil, financial_quarter: nil)
+
+    quarter, year = report.financial_quarter, report.financial_year
+    return historic_reports unless quarter && year
+
+    created_at = report.created_at
+
+    historic_reports
+      .or(where("reports.financial_year < ?", year))
+      .or(where(financial_year: year).where("reports.financial_quarter < ?", quarter))
+      .or(where(financial_year: year, financial_quarter: quarter).where("reports.created_at <= ?", created_at))
+  end
+
   scope :editable, -> do
     where(state: [:active, :awaiting_changes])
   end
 
+  scope :for_activity, ->(activity) do
+    where(fund_id: activity.associated_fund.id, organisation_id: activity.organisation_id)
+  end
+
   def self.editable_for_activity(activity)
-    editable.find_by(
-      organisation_id: activity.organisation_id,
-      fund_id: activity.associated_fund.id,
-    )
+    editable.for_activity(activity).first
   end
 
   def initialize(attributes = nil)
@@ -54,15 +77,14 @@ class Report < ApplicationRecord
   end
 
   def next_four_financial_quarters
-    case current_financial_quarter
-    when 1
-      ["Q2 #{current_financial_year}", "Q3 #{current_financial_year}", "Q4 #{current_financial_year}", "Q1 #{current_financial_year + 1}"]
-    when 2
-      ["Q3 #{current_financial_year}", "Q4 #{current_financial_year}", "Q1 #{current_financial_year + 1}", "Q2 #{current_financial_year + 1}"]
-    when 3
-      ["Q4 #{current_financial_year}", "Q1 #{current_financial_year + 1}", "Q2 #{current_financial_year + 1}", "Q3 #{current_financial_year + 1}"]
-    when 4
-      ["Q1 #{current_financial_year + 1}", "Q2 #{current_financial_year + 1}", "Q3 #{current_financial_year + 1}", "Q4 #{current_financial_year + 1}"]
+    quarter, year = current_financial_quarter, current_financial_year
+
+    (0..3).map do |increment|
+      next_quarter = quarter + increment
+      [
+        (next_quarter % 4) + 1,
+        next_quarter >= 4 ? year + 1 : year,
+      ]
     end
   end
 

@@ -25,7 +25,7 @@ RSpec.feature "Users can create a fund level activity" do
       click_on(t("page_content.organisation.button.create_activity"))
       fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
       activity = Activity.find_by(delivery_partner_identifier: identifier)
-      expect(activity.programme_status).to eq("07")
+      expect(activity.programme_status).to eq("spend_in_progress")
     end
 
     scenario "the iati status gets set based on the default programme status value" do
@@ -134,7 +134,7 @@ RSpec.feature "Users can create a fund level activity" do
 
     context "validations" do
       scenario "validation errors work as expected" do
-        identifier = "foo"
+        identifier = "GCRF"
 
         visit activities_path
         click_on t("page_content.organisation.button.create_activity")
@@ -212,10 +212,10 @@ RSpec.feature "Users can create a fund level activity" do
 
         fill_in "activity[planned_start_date(3i)]", with: 1
         fill_in "activity[planned_start_date(2i)]", with: 12
-        fill_in "activity[planned_start_date(1i)]", with: 2010
+        fill_in "activity[planned_start_date(1i)]", with: 2020
         fill_in "activity[planned_end_date(3i)]", with: 1
         fill_in "activity[planned_end_date(2i)]", with: 12
-        fill_in "activity[planned_end_date(1i)]", with: 2010
+        fill_in "activity[planned_end_date(1i)]", with: 2020
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.geography")
 
@@ -283,10 +283,18 @@ RSpec.feature "Users can create a fund level activity" do
 
         # Covid19-related has a default and can't be set to blank so we skip
         click_button t("form.button.activity.submit")
+
+        # Skip the GCRF challenge area step, and instead go to the oda_eligibility step
+        expect(page).to have_no_content t("form.legend.activity.gcrf_challenge_area")
         expect(page).to have_content t("form.legend.activity.oda_eligibility")
 
         # oda_eligibility has the default value already selected
         click_button t("form.button.activity.submit")
+
+        # Skip the oda_eligibility_lead step
+        expect(page).to have_no_content t("form.hint.activity.oda_eligibility_lead")
+
+        # Form completed
         expect(page).to have_content Activity.find_by(delivery_partner_identifier: identifier).title
       end
 

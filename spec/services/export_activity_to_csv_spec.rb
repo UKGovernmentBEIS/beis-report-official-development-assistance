@@ -3,7 +3,7 @@ require "csv"
 
 RSpec.describe ExportActivityToCsv do
   let(:project) { create(:project_activity, :with_report) }
-  let(:report) { Report.find_by(fund: project.associated_fund, organisation: project.organisation) }
+  let(:report) { Report.for_activity(project).first }
   let!(:comment) { create(:comment, report: report, activity: project) }
 
   describe "#call" do
@@ -27,6 +27,7 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.recipient_country,
         activity_presenter.intended_beneficiaries,
         activity_presenter.programme_status,
+        activity_presenter.country_delivery_partners,
         activity_presenter.planned_start_date,
         activity_presenter.actual_start_date,
         activity_presenter.planned_end_date,
@@ -36,6 +37,7 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.total_applications,
         activity_presenter.total_awards,
         activity_presenter.sector_with_code,
+        activity_presenter.channel_of_delivery_code,
         activity_presenter.aid_type_with_code,
         activity_presenter.tied_status_with_code,
         activity_presenter.finance_with_code,
@@ -51,8 +53,10 @@ RSpec.describe ExportActivityToCsv do
         activity_presenter.policy_marker_disability,
         activity_presenter.policy_marker_disaster_risk_reduction,
         activity_presenter.policy_marker_nutrition,
+        activity_presenter.fund_pillar,
         activity_presenter.oda_eligibility,
         activity_presenter.oda_eligibility_lead,
+        activity_presenter.uk_dp_named_contact,
         activity_presenter.forecasted_total_for_report_financial_quarter(report: report),
         activity_presenter.actual_total_for_report_financial_quarter(report: report),
         activity_presenter.variance_for_report_financial_quarter(report: report),
@@ -72,9 +76,14 @@ RSpec.describe ExportActivityToCsv do
   end
 
   describe "#next_four_quarter_forecasts" do
-    it "gets the forecasted total for the date ranges of the next four quarters" do
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, period_start_date: 3.months.from_now, value: 1000, financial_quarter: FinancialPeriod.quarter_from_date(3.months.from_now), financial_year: FinancialPeriod.year_from_date(3.months.from_now))
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, period_start_date: 9.months.from_now, value: 500)
+    it "gets the forecasted total for the next four quarters" do
+      quarters = report.next_four_financial_quarters
+      q1_forecast = PlannedDisbursementHistory.new(project, *quarters[0])
+      q3_forecast = PlannedDisbursementHistory.new(project, *quarters[2])
+
+      q1_forecast.set_value(1000)
+      q3_forecast.set_value(500)
+
       totals = ExportActivityToCsv.new(activity: project, report: report).next_four_quarter_forecasts
 
       expect(totals).to eq ["1000.00", "0.00", "500.00", "0.00"]
@@ -128,7 +137,8 @@ RSpec.describe ExportActivityToCsv do
           "Recipient region",
           "Recipient country",
           "Intended beneficiaries",
-          "Programme status",
+          "Activity status",
+          "Country delivery partners",
           "Planned start date",
           "Actual start date",
           "Planned end date",
@@ -138,6 +148,7 @@ RSpec.describe ExportActivityToCsv do
           "Total applications",
           "Total awards",
           "Sector",
+          "Channel of delivery code",
           "Aid type",
           "Tied status",
           "Finance type",
@@ -153,8 +164,10 @@ RSpec.describe ExportActivityToCsv do
           "Disability",
           "Disaster Risk Reduction",
           "Nutrition policy",
+          "Fund Pillar",
           "ODA eligibility",
           "ODA eligibility lead",
+          "UK DP named contact",
           "Q2 2020-2021 forecast",
           "Q2 2020-2021 actuals",
           "Variance",

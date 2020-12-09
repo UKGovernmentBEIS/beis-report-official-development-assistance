@@ -1,43 +1,42 @@
 ---
-attributes:
-  category-codelist:
-  name: ProgrammeStatus
-  complete: '1'
 data:
-  - code: '01'
+  - code: 1
     name: Delivery
     description: Activities related to delivery of ODA activities only
-  - code: '02'
+  - code: 2
     name: Planned
     description: Scoping negotiations and/or workshops have begun but no formal commitment has been made between the UK Delivery Partner. Scoping activity. Financial allocation has been made
-  - code: '03'
+  - code: 3
     name: Agreement in place
     description: A formal agreement to fund the activity has been made, or is at outline stage. For activities in outline stage, please only progress to 'Call/Activity open' if a full call is initiated
-  - code: '04'
+  - code: 4
     name: Call/Activity open
     description: The call/activity is open for applications
-  - code: '05'
+  - code: 5
     name: Review
-    description: The application period has ended and the activity is in the peer review stage. The panek neetubg has not yet happened
-  - code: '06'
+    description: The application period has ended and the activity is in the peer review stage. The panel meeting has not yet happened
+  - code: 6
     name: Decided
     description: Awards have been made (i.e. panel meeting has occurred) but have not begun
-  - code: '07'
+  - code: 7
     name: Spend in progress
     description: Awards/activity active, contracted and actual spend is occurring
-  - code: '08'
+  - code: 8
     name: Finalisation
-    description: Physical activity is complete or the final disbursement has been made, but the activity remains open pending financia sign off or M&E
-  - code: '09'
+    description: Physical activity is complete or the final disbursement has been made, but the activity remains open pending financial sign off or M&E
+  - code: 9
     name: Completed
     description: All awards have completed and there is no more financial spend or forecast spend from UK. Can only be applied after ALL final payments on the activity, including final reconciliation, have been made
-  - code: '10'
+  - code: 10
     name: Stopped
     description: Activity has been cancelled or indefinitely postponed before an activity started
-  - code: '11'
+  - code: 11
     name: Cancelled
     description: Activity has been cancelled or indefinitely postponed after an activity has started
+  - code: 12
+    name: Paused
+    description: Activity has been temporarily suspended. No spend should take place while this status is in use
 metadata:
-  url: ''
+  url: ""
   name: Programme Status
   description: A description of the status of the activity

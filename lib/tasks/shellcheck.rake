@@ -1,6 +1,6 @@
 desc "Lint with ShellCheck"
 task shellcheck: :environment do
-  files = Dir.glob(["**/*.{sh,ksh,bash}", "script/*"]).reject { |path|
+  files = Dir.glob(["**/*.{sh,ksh,bash}", "script/*[^.rb]"]).reject { |path|
     Dir.exist?(path)
   }
 

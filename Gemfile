@@ -8,7 +8,7 @@ gem "auth0", "~> 5.0"
 gem "acts_as_tree"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "data_migrate"
-gem "govuk_design_system_formbuilder", "~> 2.1.4"
+gem "govuk_design_system_formbuilder", "~> 2.1.5"
 gem "haml-rails"
 gem "high_voltage"
 gem "ipaddr"
@@ -73,6 +73,7 @@ group :test do
   gem "fakeredis", require: false
   gem "launchy"
   gem "pundit-matchers", "~> 1.6.0"
+  gem "rails-controller-testing"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
   gem "webmock", "~> 3.10"

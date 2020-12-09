@@ -3,7 +3,13 @@ require "rails_helper"
 RSpec.describe Activities::ImportFromCsv do
   let(:organisation) { create(:organisation) }
   let(:parent_activity) { create(:activity) }
-  let(:existing_activity) { create(:activity) }
+  let(:existing_activity) do
+    create(:activity) do |activity|
+      activity.implementing_organisations = [
+        create(:implementing_organisation, activity: activity),
+      ]
+    end
+  end
   let(:existing_activity_attributes) do
     {
       "RODA ID" => existing_activity.roda_identifier_compound,
@@ -14,29 +20,47 @@ RSpec.describe Activities::ImportFromCsv do
       "Description" => "Some description goes here...",
       "Recipient Region" => "789",
       "Recipient Country" => "KH",
-      "Intended Beneficiaries" => "KH;KP;ID",
+      "Intended Beneficiaries" => "KH|KP|ID",
       "Delivery partner identifier" => "1234567890",
       "GDI" => "1",
+      "GCRF Challenge Area" => "4",
       "SDG 1" => "1",
       "SDG 2" => "2",
       "SDG 3" => "3",
       "Covid-19 related research" => "0",
       "ODA Eligibility" => "never_eligible",
-      "Programme Status" => "01",
-      "Call open date" => "2020-01-02",
-      "Call close date" => "2020-01-02",
+      "ODA Eligibility Lead" => "Bruce Wayne",
+      "Newton Fund Pillar" => "1",
+      "Activity Status" => "1",
+      "Call open date" => "02/01/2020",
+      "Call close date" => "02/01/2020",
       "Total applications" => "12",
       "Total awards" => "12",
-      "Planned start date" => "2020-01-02",
-      "Actual start date" => "2020-01-03",
-      "Planned end date" => "2020-01-04",
-      "Actual end date" => "2020-01-05",
+      "Planned start date" => "02/01/2020",
+      "Actual start date" => "03/01/2020",
+      "Planned end date" => "04/01/2020",
+      "Actual end date" => "05/01/2020",
       "Sector" => "11220",
+      "Channel of delivery code" => "11000",
       "Collaboration type (Bi/Multi Marker)" => "1",
+      "DFID policy marker - Gender" => "0",
+      "DFID policy marker - Climate Change - Adaptation" => "2",
+      "DFID policy marker - Climate Change - Mitigation" => "1",
+      "DFID policy marker - Biodiversity" => "2",
+      "DFID policy marker - Desertification" => "1000",
+      "DFID policy marker - Disability" => "",
+      "DFID policy marker - Disaster Risk Reduction" => "0",
+      "DFID policy marker - Nutrition" => "",
       "Flow" => "10",
       "Aid type" => "B03",
       "Free Standing Technical Cooperation" => "1",
       "Aims/Objectives (DP Definition)" => "Foo bar baz",
+      "BEIS ID" => "BEIS_ID_EXAMPLE_01",
+      "UK DP Named Contact (NF)" => "Jo Soap",
+      "NF Partner Country DP" => "Association of Example Companies (AEC) | | Board of Sample Organisations (BSO)",
+      "Implementing organisation name" => existing_activity.implementing_organisations.first.name,
+      "Implementing organisation reference" => existing_activity.implementing_organisations.first.reference,
+      "Implementing organisation sector" => existing_activity.implementing_organisations.first.organisation_type,
     }
   end
   let(:new_activity_attributes) do
@@ -114,10 +138,13 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.recipient_country).to eq(existing_activity_attributes["Recipient Country"])
       expect(existing_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
       expect(existing_activity.gdi).to eq("1")
+      expect(existing_activity.gcrf_challenge_area).to eq(4)
       expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Delivery partner identifier"])
+      expect(existing_activity.fund_pillar).to eq(existing_activity_attributes["Newton Fund Pillar"].to_i)
       expect(existing_activity.covid19_related).to eq(0)
       expect(existing_activity.oda_eligibility).to eq("never_eligible")
-      expect(existing_activity.programme_status).to eq("01")
+      expect(existing_activity.oda_eligibility_lead).to eq(existing_activity_attributes["ODA Eligibility Lead"])
+      expect(existing_activity.programme_status).to eq("delivery")
       expect(existing_activity.call_open_date).to eq(DateTime.parse(existing_activity_attributes["Call open date"]))
       expect(existing_activity.call_close_date).to eq(DateTime.parse(existing_activity_attributes["Call close date"]))
       expect(existing_activity.planned_start_date).to eq(DateTime.parse(existing_activity_attributes["Planned start date"]))
@@ -127,11 +154,28 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.call_present).to eq(true)
       expect(existing_activity.sector).to eq(existing_activity_attributes["Sector"])
       expect(existing_activity.sector_category).to eq("112")
+      expect(existing_activity.channel_of_delivery_code).to eq(existing_activity_attributes["Channel of delivery code"])
       expect(existing_activity.collaboration_type).to eq(existing_activity_attributes["Collaboration type (Bi/Multi Marker)"])
+      expect(existing_activity.policy_marker_gender).to eq("not_targeted")
+      expect(existing_activity.policy_marker_climate_change_adaptation).to eq("principal_objective")
+      expect(existing_activity.policy_marker_climate_change_mitigation).to eq("significant_objective")
+      expect(existing_activity.policy_marker_biodiversity).to eq("principal_objective")
+      expect(existing_activity.policy_marker_desertification).to eq("not_assessed")
+      expect(existing_activity.policy_marker_disability).to eq("not_assessed")
+      expect(existing_activity.policy_marker_disaster_risk_reduction).to eq("not_targeted")
+      expect(existing_activity.policy_marker_nutrition).to eq("not_assessed")
       expect(existing_activity.flow).to eq(existing_activity_attributes["Flow"])
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
       expect(existing_activity.fstc_applies).to eq(true)
       expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives (DP Definition)"])
+      expect(existing_activity.beis_id).to eq(existing_activity_attributes["BEIS ID"])
+      expect(existing_activity.uk_dp_named_contact).to eq(existing_activity_attributes["UK DP Named Contact (NF)"])
+
+      expect(existing_activity.implementing_organisations.count).to eql(1)
+      expect(existing_activity.implementing_organisations.first.name).to eq(existing_activity_attributes["Implementing organisation name"])
+      expect(existing_activity.implementing_organisations.first.reference).to eq(existing_activity_attributes["Implementing organisation reference"])
+      expect(existing_activity.implementing_organisations.first.organisation_type).to eq(existing_activity_attributes["Implementing organisation sector"])
+      expect(existing_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
     end
 
     it "ignores any blank columns" do
@@ -142,53 +186,35 @@ RSpec.describe Activities::ImportFromCsv do
     end
 
     it "has an error and does not update any other activities if an Activity does not exist" do
+      invalid_activity_attributes = existing_activity_attributes.merge({"RODA ID" => "FAKE RODA ID"})
       activities = [
         existing_activity_attributes,
-        {
-          "RODA ID" => "FAKE RODA ID",
-          "Title" => "Here is another title",
-          "Description" => "Another description goes here...",
-          "Recipient Region" => "789",
-        },
+        invalid_activity_attributes,
       ]
-
       expect { subject.import(activities) }.to_not change { existing_activity }
 
       expect(subject.created.count).to eq(0)
       expect(subject.updated.count).to eq(0)
-
       expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(3)
-      expect(subject.errors.first.csv_column).to eq("roda_id")
-      expect(subject.errors.first.column).to eq(:roda_id)
-      expect(subject.errors.first.value).to eq("FAKE RODA ID")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.not_found"))
     end
 
     it "has an error and does not update any other activities if a region does not exist" do
       activity_2 = create(:activity)
+      invalid_activity_attributes = existing_activity_attributes.merge({
+        "RODA ID" => activity_2.roda_identifier_compound,
+        "Recipient Region" => "111111",
+      })
 
       activities = [
         existing_activity_attributes,
-        {
-          "RODA ID" => activity_2.roda_identifier_compound,
-          "Title" => "Here is another title",
-          "Description" => "Another description goes here...",
-          "Recipient Region" => "111111",
-        },
+        invalid_activity_attributes,
       ]
 
       expect { subject.import(activities) }.to_not change { existing_activity }
 
       expect(subject.created.count).to eq(0)
       expect(subject.updated.count).to eq(0)
-
       expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(3)
-      expect(subject.errors.first.csv_column).to eq("Recipient Region")
-      expect(subject.errors.first.column).to eq(:recipient_region)
-      expect(subject.errors.first.value).to eq("111111")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_region"))
     end
   end
 
@@ -235,11 +261,14 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.recipient_country).to eq(new_activity_attributes["Recipient Country"])
       expect(new_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
       expect(new_activity.gdi).to eq("1")
+      expect(new_activity.gcrf_challenge_area).to eq(4)
       expect(new_activity.geography).to eq("recipient_region")
       expect(new_activity.delivery_partner_identifier).to eq(new_activity_attributes["Delivery partner identifier"])
       expect(new_activity.covid19_related).to eq(0)
       expect(new_activity.oda_eligibility).to eq("never_eligible")
-      expect(new_activity.programme_status).to eq("01")
+      expect(new_activity.oda_eligibility_lead).to eq(new_activity_attributes["ODA Eligibility Lead"])
+      expect(new_activity.programme_status).to eq("delivery")
+      expect(new_activity.fund_pillar).to eq(new_activity_attributes["Newton Fund Pillar"].to_i)
       expect(new_activity.call_open_date).to eq(DateTime.parse(new_activity_attributes["Call open date"]))
       expect(new_activity.call_close_date).to eq(DateTime.parse(new_activity_attributes["Call close date"]))
       expect(new_activity.call_present).to eq(true)
@@ -249,11 +278,26 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.actual_end_date).to eq(DateTime.parse(new_activity_attributes["Actual end date"]))
       expect(new_activity.sector).to eq(new_activity_attributes["Sector"])
       expect(new_activity.sector_category).to eq("112")
+      expect(new_activity.channel_of_delivery_code).to eq(new_activity_attributes["Channel of delivery code"])
       expect(new_activity.collaboration_type).to eq(new_activity_attributes["Collaboration type (Bi/Multi Marker)"])
       expect(new_activity.flow).to eq(new_activity_attributes["Flow"])
       expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
       expect(new_activity.fstc_applies).to eq(true)
       expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (DP Definition)"])
+      expect(new_activity.beis_id).to eq(new_activity_attributes["BEIS ID"])
+      expect(new_activity.uk_dp_named_contact).to eq(new_activity_attributes["UK DP Named Contact (NF)"])
+      expect(new_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
+    end
+
+    it "creates the associated implementing organisations" do
+      rows = [new_activity_attributes]
+      expect { subject.import(rows) }.to change { ImplementingOrganisation.count }.by(1)
+
+      new_activity = Activity.order(:created_at).last
+
+      expect(new_activity.implementing_organisations.first.name).to eq(new_activity_attributes["Implementing organisation name"])
+      expect(new_activity.implementing_organisations.first.reference).to eq(new_activity_attributes["Implementing organisation reference"])
+      expect(new_activity.implementing_organisations.first.organisation_type).to eq(new_activity_attributes["Implementing organisation sector"])
     end
 
     it "sets the geography to recipient country and infers the region if the region is not specified" do
@@ -344,6 +388,24 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_gdi"))
     end
 
+    context "GCRF Challenge Area" do
+      it "has an error if its invalid" do
+        new_activity_attributes["GCRF Challenge Area"] = "invalid"
+
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq("GCRF Challenge Area")
+        expect(subject.errors.first.column).to eq(:gcrf_challenge_area)
+        expect(subject.errors.first.value).to eq("invalid")
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_gcrf_challenge_area"))
+      end
+    end
+
     ["SDG 1", "SDG 2", "SDG 3"].each.with_index(1) do |key, i|
       it "has an error if the #{i.ordinalize} sustainable development goal is invalid" do
         new_activity_attributes[key] = "9999999"
@@ -360,6 +422,22 @@ RSpec.describe Activities::ImportFromCsv do
         expect(subject.errors.first.value).to eq("9999999")
         expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sdg_goal"))
       end
+    end
+
+    it "has an error if the Fund Pillar option is invalid" do
+      new_activity_attributes["Newton Fund Pillar"] = "9999999"
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Newton Fund Pillar")
+      expect(subject.errors.first.column).to eq(:fund_pillar)
+      expect(subject.errors.first.value).to eq("9999999")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_fund_pillar"))
     end
 
     it "has an error if the Covid-19 related option is invalid" do
@@ -394,8 +472,8 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_oda_eligibility"))
     end
 
-    it "has an error if the Programme Status option is invalid" do
-      new_activity_attributes["Programme Status"] = "99331"
+    it "has an error if the Activity Status option is invalid" do
+      new_activity_attributes["Activity Status"] = "99331"
 
       expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
@@ -404,7 +482,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(subject.errors.count).to eq(1)
       expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Programme Status")
+      expect(subject.errors.first.csv_column).to eq("Activity Status")
       expect(subject.errors.first.column).to eq(:programme_status)
       expect(subject.errors.first.value).to eq("99331")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_programme_status"))
@@ -424,6 +502,48 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:sector)
       expect(subject.errors.first.value).to eq("53453453453453")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sector"))
+    end
+
+    it "has an error if the 'Channel of delivery code' is invalid" do
+      new_activity_attributes["Channel of delivery code"] = "abc123"
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Channel of delivery code")
+      expect(subject.errors.first.column).to eq(:channel_of_delivery_code)
+      expect(subject.errors.first.value).to eq("abc123")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
+    end
+
+    it "has an error if the 'Channel of delivery code' is empty" do
+      new_activity_attributes["Channel of delivery code"] = ""
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Channel of delivery code")
+      expect(subject.errors.first.column).to eq(:channel_of_delivery_code)
+      expect(subject.errors.first.value).to eq("")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
+    end
+
+    it "allows the value of 'Channel of delivery code' to be 'N/A' (case insensitive)" do
+      new_activity_attributes["Channel of delivery code"] = "n/A"
+
+      expect { subject.import([new_activity_attributes]) }.to change { Activity.count }
+
+      new_activity = Activity.order(:created_at).last
+
+      expect(new_activity.channel_of_delivery_code).to eq("n/A")
     end
 
     it "has an error if the Collaboration type option is invalid" do
@@ -499,7 +619,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Actual end date" => :actual_end_date,
     }.each do |attr_name, column_name|
       it "has an error if any the #{attr_name} is invalid" do
-        new_activity_attributes[attr_name] = "01/01/2020"
+        new_activity_attributes[attr_name] = "12/31/2020"
 
         expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
@@ -510,7 +630,7 @@ RSpec.describe Activities::ImportFromCsv do
         expect(subject.errors.first.csv_row).to eq(2)
         expect(subject.errors.first.csv_column).to eq(attr_name)
         expect(subject.errors.first.column).to eq(column_name)
-        expect(subject.errors.first.value).to eq("01/01/2020")
+        expect(subject.errors.first.value).to eq("12/31/2020")
         expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_#{column_name}"))
       end
     end
@@ -546,6 +666,46 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.value).to eq("%^$!234566")
       expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.roda_identifier_fragment.invalid_characters"))
     end
+
+    context "implementing organisation" do
+      it "has an error if the name is empty" do
+        new_activity_attributes["Implementing organisation name"] = ""
+
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_column).to eq("Implementing organisation name")
+        expect(subject.errors.first.column).to eq("implementing_organisation_name")
+        expect(subject.errors.first.value).to eq("")
+        expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.implementing_organisation.attributes.name.blank"))
+      end
+
+      it "has an error if the sector is empty" do
+        new_activity_attributes["Implementing organisation sector"] = ""
+
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_column).to eq("Implementing organisation sector")
+        expect(subject.errors.first.column).to eq("implementing_organisation_organisation_type")
+        expect(subject.errors.first.value).to eq("")
+        expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.implementing_organisation.attributes.organisation_type.blank"))
+      end
+
+      it "has an error if the sector is not in the organisation-type codelist" do
+        new_activity_attributes["Implementing organisation sector"] = "9999"
+
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.implementing_organisation.attributes.organisation_type.inclusion"))
+      end
+    end
   end
 
   context "when updating and importing" do
@@ -557,6 +717,30 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.updated.count).to eq(1)
 
       expect(subject.errors.count).to eq(0)
+    end
+
+    it "creates and imports implementing organisations" do
+      rows = [existing_activity_attributes, new_activity_attributes]
+      expect { subject.import(rows) }.to change { ImplementingOrganisation.count }.by(1)
+
+      expect(subject.errors.count).to eq(0)
+    end
+
+    context "with existing implementing organisation" do
+      let(:existing_activity) do
+        create(:project_activity_with_implementing_organisations, implementing_organisations_count: 3)
+      end
+
+      it "leaves only one associated implementing organisation and updates it" do
+        rows = [existing_activity_attributes]
+
+        expect { subject.import(rows) }.to change { ImplementingOrganisation.count }.by(-2)
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(1)
+
+        expect(subject.errors.count).to eq(0)
+      end
     end
   end
 end

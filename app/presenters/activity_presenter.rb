@@ -15,7 +15,7 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def covid19_related
-    I18n.t("covid19_related.#{super}")
+    I18n.t("activity.covid19_related.#{super}")
   end
 
   def sector
@@ -167,13 +167,22 @@ class ActivityPresenter < SimpleDelegator
     html.html_safe
   end
 
+  def gcrf_challenge_area
+    return if super.blank?
+    I18n.t(super, scope: "form.label.activity.gcrf_challenge_area_options")
+  end
+
   def oda_eligibility
     return if super.blank?
     I18n.t("activity.oda_eligibility.#{super}")
   end
 
   def call_to_action(attribute)
-    send(attribute).to_s.present? ? "edit" : "add"
+    if send(attribute).blank?
+      "add"
+    else
+      "edit"
+    end
   end
 
   def display_title
@@ -200,6 +209,11 @@ class ActivityPresenter < SimpleDelegator
     "#{I18n.t("activity.finance.#{finance}")} (#{finance})"
   end
 
+  def fund_pillar
+    return if super.blank?
+    I18n.t("page_content.activity.fund_pillar.#{super}")
+  end
+
   def link_to_roda
     Rails.application.routes.url_helpers.organisation_activity_details_url(organisation, self, host: ENV["DOMAIN"]).to_s
   end
@@ -210,11 +224,6 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def forecasted_total_for_report_financial_quarter(report:)
-    return if super.blank?
-    "%.2f" % super
-  end
-
-  def forecasted_total_for_date_range(range:)
     return if super.blank?
     "%.2f" % super
   end

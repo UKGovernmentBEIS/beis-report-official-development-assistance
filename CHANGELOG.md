@@ -396,10 +396,32 @@
 - Store the BEIS ID and export it to the report CSV file
 - Add field to record the ODA eligibility lead
 - Add missing fields to the activity importer
+- Allow forecasts to be edited, preserving their history
 
-## [unreleased]
+## [release-24] - 2020-12-09
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...HEAD
+- Show only the financial quarter and value for forecasts on the activity page
+- Use the latest versions of forecasts from the report history to calculate variance
+- Add a new activity status: "Paused"
+- Update importer date format to be MM/DD/YYYY
+- Separate intended beneficiaries with a pipe
+- Add a field to record the UK delivery partner named contact for project-level activities
+- Validate country codes against all valid-country codes in the importer
+- Importer can import policy markers
+- Allow importer to import the ODA Eligibility Lead
+- Users can add `country_delivery_partners` for Newton funded activities
+- Users can add `gcrf_challenge_area` for GCRF-funded activities
+- Add fund pillar question to the Activity form
+- Allow Channel of delivery code to be imported from CSV and reported in the CSV
+- Allow importer to import the implementing organisation name, reference and sector
+- Add "BEIS ID" (beis_id) to the importer
+- Add "UK DP Named Contact (NF)" (uk_dp_named_contact) to the importer
+- Add "NF Partner Country DP" (country_delivery_partners) to the importer
+- Add link to the support site in the footer
+- Change programme status field to an enum
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...HEAD
+[release-24]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...release-24
 [release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23
 [release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
 [release-21]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...release-21

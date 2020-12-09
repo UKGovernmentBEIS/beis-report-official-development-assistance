@@ -450,6 +450,31 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when country_delivery_partners is blank/empty array on a Newton funded programme" do
+      subject(:newton_fund) { build(:fund_activity, :newton) }
+      subject(:activity) { build(:programme_activity, parent: newton_fund, country_delivery_partners: nil) }
+      it "should not be valid" do
+        expect(activity.valid?(:country_delivery_partners_step)).to be_falsey
+      end
+    end
+
+    context "when country_delivery_partners is blank on a Newton funded project" do
+      subject(:newton_fund) { build(:fund_activity, :newton) }
+      subject(:newton_programme) { build(:programme_activity, parent: newton_fund) }
+      subject(:activity) { build(:project_activity, parent: newton_programme, country_delivery_partners: nil) }
+      it "should be valid" do
+        expect(activity.valid?).to be_truthy
+      end
+    end
+
+    context "when country_delivery_partners is blank on a non-Newton funded programme" do
+      subject(:other_fund) { build(:fund_activity) }
+      subject(:activity) { build(:programme_activity, parent: other_fund, country_delivery_partners: nil) }
+      it "should be valid" do
+        expect(activity.valid?).to be_truthy
+      end
+    end
+
     context "when geography is blank" do
       subject(:activity) { build(:activity, geography: nil) }
       it "should not be valid" do
@@ -491,6 +516,50 @@ RSpec.describe Activity, type: :model do
       subject(:activity) { build(:activity, gdi: nil) }
       it "should not be valid" do
         expect(activity.valid?(:gdi_step)).to be_falsey
+      end
+    end
+
+    context "#fund_pillar" do
+      it "is required if the activity is a Newton-funded programme activity" do
+        activity = build(:programme_activity, :newton_funded, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_falsey
+      end
+
+      it "is not required if the activity is a GCRF-funded programme activity" do
+        activity = build(:programme_activity, :gcrf_funded, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_truthy
+      end
+
+      it "is required if the activity is a Newton-funded project activity" do
+        activity = build(:project_activity, :newton_funded, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_falsey
+      end
+
+      it "is not required if the activity is a GCRF-funded third party project activity" do
+        activity = build(:third_party_project_activity, :gcrf_funded, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_truthy
+      end
+
+      it "is required if the activity is a Newton-funded third party project activity" do
+        activity = build(:third_party_project_activity, :newton_funded, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_falsey
+      end
+
+      it "is not required if the activity is a GCRF-funded project activity" do
+        activity = build(:project_activity, :gcrf_funded, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_truthy
+      end
+
+      it "is not required if the activity is a fund" do
+        activity = build(:activity, level: :fund, fund_pillar: nil)
+
+        expect(activity.valid?(:fund_pillar_step)).to be_truthy
       end
     end
 
@@ -561,6 +630,28 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when gcrf_challenge_area is blank" do
+      subject { build(:programme_activity, parent: fund, gcrf_challenge_area: nil) }
+      let(:fund) { build(:fund_activity) }
+
+      it { is_expected.to be_valid(:gcrf_challenge_area_step) }
+      it { is_expected.to be_valid }
+
+      context "with a GCRF funded activity" do
+        let(:fund) { build(:fund_activity, :gcrf) }
+
+        it { is_expected.to be_invalid(:gcrf_challenge_area_step) }
+        it { is_expected.to be_invalid }
+      end
+
+      context "for a fund" do
+        subject { build(:fund_activity, :gcrf, gcrf_challenge_area: nil) }
+
+        it { is_expected.to be_valid(:gcrf_challenge_area_step) }
+        it { is_expected.to be_valid }
+      end
+    end
+
     context "when oda_eligibility is blank" do
       subject(:activity) { build(:activity, oda_eligibility: nil) }
       it "should not be valid" do
@@ -587,6 +678,46 @@ RSpec.describe Activity, type: :model do
       context "and the activity is a third party project" do
         subject { build(:activity, level: :third_party_project) }
         it { should validate_presence_of(:oda_eligibility_lead).on(:oda_eligibility_lead_step) }
+      end
+    end
+
+    context "when saving in the uk_dp_named_contact context" do
+      context "and the activity is a fund" do
+        subject { build(:activity, level: :fund) }
+        it { should_not validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
+      end
+
+      context "and the activity is a programme" do
+        subject { build(:activity, level: :programme) }
+        it { should_not validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
+      end
+
+      context "when the activity is a project" do
+        context "and it is Newton-funded" do
+          subject { build(:project_activity, parent: build(:programme_activity, parent: build(:fund_activity, :newton))) }
+
+          it { should validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
+        end
+
+        context "and it is not Newton-funded" do
+          subject { build(:project_activity) }
+
+          it { should_not validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
+        end
+      end
+
+      context "when the activity is a third party project" do
+        context "and it is Newton-funded" do
+          subject { build(:third_party_project_activity, parent: build(:programme_activity, parent: build(:fund_activity, :newton))) }
+
+          it { should validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
+        end
+
+        context "and it is not Newton-funded" do
+          subject { build(:third_party_project_activity) }
+
+          it { should_not validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
+        end
       end
     end
 
@@ -1096,7 +1227,7 @@ RSpec.describe Activity, type: :model do
   describe "#actual_total_for_report_financial_quarter" do
     it "returns the total of all the activity's transactions scoped to a report" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today)
       create(:transaction, parent_activity: project, value: 50.00, report: report, date: Date.today)
       create(:transaction, parent_activity: project, value: 210, report: report, date: 4.months.ago)
@@ -1106,7 +1237,7 @@ RSpec.describe Activity, type: :model do
 
     it "does not include the totals for any transactions outside the report's date range" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       create(:transaction, parent_activity: project, value: 100.20, report: report, date: 6.months.ago)
       create(:transaction, parent_activity: project, value: 210, report: report, date: 4.months.ago)
 
@@ -1115,54 +1246,75 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "#forecasted_total_for_report_financial_quarter" do
-    it "returns the total of all the activity's planned disbursements scoped to a report's financial quarter only" do
-      report = create(:report, financial_quarter: 1, financial_year: 2020, state: :active, created_at: Date.parse("2020-04-01"))
-      project = create(:project_activity)
+    let(:project) { create(:project_activity) }
 
-      create(:planned_disbursement, parent_activity: project, report: report, value: 1000.00, period_start_date: Date.parse("2020-04-01"), financial_quarter: 1, financial_year: 2020)
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.parse("2020-01-01"), financial_quarter: 4, financial_year: 2019)
+    it "returns the activity's planned disbursement value for a report's financial quarter" do
+      forecast = PlannedDisbursementHistory.new(project, 3, 2020)
+      reporting_cycle = ReportingCycle.new(project, 2, 2020)
+
+      reporting_cycle.tick
+      forecast.set_value(1000.0)
+
+      reporting_cycle.tick
+      report = Report.for_activity(project).find_by(financial_quarter: 3)
 
       expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(1000.00)
     end
 
     it "does not include totals for any planned disbursements outside the report's date range" do
-      report = create(:report, financial_quarter: 3, financial_year: 2020, state: :active, created_at: Date.parse("2020-10-01"))
-      project = create(:project_activity)
+      q3_forecast = PlannedDisbursementHistory.new(project, 3, 2020)
+      q4_forecast = PlannedDisbursementHistory.new(project, 4, 2020)
+      reporting_cycle = ReportingCycle.new(project, 2, 2020)
 
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.parse("2020-04-01"), financial_quarter: 1, financial_year: 2020)
-      create(:planned_disbursement, parent_activity: project, value: 1000.00, period_start_date: Date.parse("2020-07-01"), financial_quarter: 2, financial_year: 2020)
+      reporting_cycle.tick
+      q3_forecast.set_value(2000.0)
+      q4_forecast.set_value(1000.0)
 
-      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(0)
+      reporting_cycle.tick
+      report = Report.for_activity(project).find_by(financial_quarter: 3)
+
+      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(2000.00)
+    end
+
+    it "only counts the latest revision value for a planned disbursement" do
+      forecast = PlannedDisbursementHistory.new(project, 3, 2020)
+      reporting_cycle = ReportingCycle.new(project, 1, 2020)
+
+      reporting_cycle.tick
+      forecast.set_value(3000.0)
+
+      reporting_cycle.tick
+      forecast.set_value(4000.0)
+
+      reporting_cycle.tick
+      report = Report.for_activity(project).find_by(financial_quarter: 3)
+
+      expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(4000.00)
     end
   end
 
   describe "#variance_for_report_financial_quarter" do
+    let(:project) { create(:project_activity) }
+    let(:reporting_cycle) { ReportingCycle.new(project, 2, 2020) }
+    let(:forecast) { PlannedDisbursementHistory.new(project, 3, 2020) }
+
     it "returns the variance between #actual_total_for_report_financial_quarter and #forecasted_total_for_report_financial_quarter" do
-      project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      reporting_cycle.tick
+      forecast.set_value(1500)
+      reporting_cycle.tick
+
+      report = Report.for_activity(project).find_by(financial_quarter: 3)
       create(:transaction, parent_activity: project, value: 100, report: report, date: Date.today)
       create(:transaction, parent_activity: project, value: 200, report: report, date: Date.today)
-      create(:planned_disbursement, parent_activity: project, value: 1500, report: report, period_start_date: Date.today)
 
       expect(project.variance_for_report_financial_quarter(report: report)).to eq(-1200)
-    end
-  end
-
-  describe "#forecasted_total_for_date_range" do
-    it "returns the total of all the activity's planned disbursements scoped to a date range" do
-      project = create(:project_activity, :with_report)
-      _disbursement_1 = create(:planned_disbursement, parent_activity: project, value: 200, period_start_date: Date.parse("13 April 2020"), financial_quarter: 1, financial_year: 2020)
-      _disbursement_2 = create(:planned_disbursement, parent_activity: project, value: 1000, period_start_date: Date.parse("20 November 2020"), financial_quarter: 3, financial_year: 2020)
-
-      expect(project.forecasted_total_for_date_range(range: Date.parse("1 April 2020")..Date.parse("30 June 2020"))).to eq 200
-      expect(project.forecasted_total_for_date_range(range: Date.parse("1 October 2020")..Date.parse("31 December 2020"))).to eq 1000
     end
   end
 
   describe "#comment_for_report" do
     it "returns the comment associated to this activity and a particular report" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       comment = create(:comment, activity_id: project.id, report_id: report.id, comment: "Here's my comment")
       expect(project.comment_for_report(report_id: report.id)).to eq comment
       expect(project.comment_for_report(report_id: report.id).comment).to eq "Here's my comment"
@@ -1170,10 +1322,66 @@ RSpec.describe Activity, type: :model do
 
     it "does not return any other comments associated to this activity" do
       project = create(:project_activity, :with_report)
-      report = Report.find_by(fund: project.associated_fund, organisation: project.organisation)
+      report = Report.for_activity(project).first
       comment = create(:comment, activity_id: project.id, report_id: create(:report).id)
       expect(project.comment_for_report(report_id: report.id)).to_not eq comment
       expect(project.comment_for_report(report_id: report.id)).to be_nil
+    end
+  end
+
+  describe "#is_gcrf_funded?" do
+    it "returns true if activity is associated with the GCRF fund" do
+      fund = build(:fund_activity, :gcrf)
+      programme = build(:programme_activity, parent: fund)
+
+      expect(programme.is_gcrf_funded?).to be_truthy
+    end
+
+    it "returns false if activity is not associated with the GCRF fund" do
+      fund = build(:fund_activity)
+      programme = build(:programme_activity, parent: fund)
+
+      expect(programme.is_gcrf_funded?).to be_falsey
+    end
+
+    it "returns false if activity does not yet have a level" do
+      programme = build(:programme_activity, :level_form_state)
+
+      expect(programme.is_gcrf_funded?).to be_falsey
+    end
+
+    it "returns false if activity is a fund" do
+      fund = build(:fund_activity)
+
+      expect(fund.is_gcrf_funded?).to be_falsey
+    end
+  end
+
+  describe "#is_newton_funded?" do
+    it "returns true if activity is associated with the Newton fund" do
+      fund = build(:fund_activity, :newton)
+      programme = build(:programme_activity, parent: fund)
+
+      expect(programme.is_newton_funded?).to be_truthy
+    end
+
+    it "returns false if activity is not associated with the Newton fund" do
+      fund = build(:fund_activity)
+      programme = build(:programme_activity, parent: fund)
+
+      expect(programme.is_newton_funded?).to be_falsey
+    end
+
+    it "returns false if activity does not yet have a level" do
+      programme = build(:programme_activity, :level_form_state)
+
+      expect(programme.is_newton_funded?).to be_falsey
+    end
+
+    it "returns false if activity is a fund" do
+      fund = build(:fund_activity, :newton)
+
+      expect(fund.is_newton_funded?).to be_falsey
     end
   end
 end

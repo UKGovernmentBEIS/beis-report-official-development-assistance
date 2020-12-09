@@ -6,7 +6,7 @@ module Activities
       end
 
       def csv_column
-        Converter::FIELDS[column] || column.to_s
+        Converter::FIELDS[column] || ImplementingOrganisationBuilder::FIELDS[column] || column.to_s
       end
     }
 
@@ -72,12 +72,13 @@ module Activities
     end
 
     class ActivityUpdater
-      attr_reader :errors, :activity
+      attr_reader :errors, :activity, :row
 
       def initialize(row, organisation)
         @errors = {}
         @activity = find_activity_by_roda_id(row["RODA ID"])
         @organisation = organisation
+        @row = row
         @converter = Converter.new(row)
         @errors.update(@converter.errors)
       end
@@ -85,13 +86,18 @@ module Activities
       def update
         return unless @activity && @errors.empty?
 
-        attributes = @converter.to_h
+        @activity.assign_attributes(@converter.to_h)
 
-        return if @activity.update(attributes)
+        implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
+        @activity.implementing_organisations = [implementing_organisation_builder.build]
+
+        return if @activity.save
 
         @activity.errors.each do |attr_name, message|
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
         end
+
+        implementing_organisation_builder.add_errors(@errors)
       end
 
       def find_activity_by_roda_id(roda_id)
@@ -103,12 +109,13 @@ module Activities
     end
 
     class ActivityCreator
-      attr_reader :errors, :activity
+      attr_reader :errors, :row, :activity
 
       def initialize(organisation, row)
         @organisation = organisation
         @activity = Activity.new
         @errors = {}
+        @row = row
         @converter = Converter.new(row)
         @errors.update(@converter.errors)
       end
@@ -123,15 +130,54 @@ module Activities
         @activity.level = calculate_level
         @activity.cache_roda_identifier
 
+        implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
+        @activity.implementing_organisations = [implementing_organisation_builder.build]
+
         return if @activity.save(context: Activity::VALIDATION_STEPS)
 
         @activity.errors.each do |attr_name, message|
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
         end
+
+        implementing_organisation_builder.add_errors(@errors)
       end
 
       def calculate_level
         @activity&.parent&.child_level
+      end
+    end
+
+    class ImplementingOrganisationBuilder
+      FIELDS = {
+        "implementing_organisation_name" => "Implementing organisation name",
+        "implementing_organisation_reference" => "Implementing organisation reference",
+        "implementing_organisation_organisation_type" => "Implementing organisation sector",
+      }.freeze
+
+      attr_accessor :activity, :row
+
+      def initialize(activity, row)
+        @activity = activity
+        @row = row
+      end
+
+      def build
+        ImplementingOrganisation.find_or_initialize_by(
+          activity_id: activity.id
+        ) { |implementing_organisation|
+          implementing_organisation.name = row["Implementing organisation name"]
+          implementing_organisation.reference = row["Implementing organisation reference"]
+          implementing_organisation.organisation_type = row["Implementing organisation sector"]
+        }
+      end
+
+      def add_errors(errors)
+        errors.delete(:implementing_organisations)
+
+        implementing_organisation_errors = @activity.implementing_organisations.first.errors.messages
+        errors["implementing_organisation_name"] = [row["Implementing organisation name"], implementing_organisation_errors[:name].first] if implementing_organisation_errors[:name].any?
+        errors["implementing_organisation_organisation_type"] = [row["Implementing organisation sector"], implementing_organisation_errors[:organisation_type].first] if implementing_organisation_errors[:organisation_type].any?
+        errors
       end
     end
 
@@ -152,12 +198,15 @@ module Activities
         roda_identifier_fragment: "RODA ID Fragment",
         parent_id: "Parent RODA ID",
         gdi: "GDI",
+        gcrf_challenge_area: "GCRF Challenge Area",
         sdg_1: "SDG 1",
         sdg_2: "SDG 2",
         sdg_3: "SDG 3",
+        fund_pillar: "Newton Fund Pillar",
         covid19_related: "Covid-19 related research",
         oda_eligibility: "ODA Eligibility",
-        programme_status: "Programme Status",
+        oda_eligibility_lead: "ODA Eligibility Lead",
+        programme_status: "Activity Status",
         call_open_date: "Call open date",
         call_close_date: "Call close date",
         total_applications: "Total applications",
@@ -167,12 +216,40 @@ module Activities
         actual_start_date: "Actual start date",
         actual_end_date: "Actual end date",
         sector: "Sector",
+        channel_of_delivery_code: "Channel of delivery code",
         collaboration_type: "Collaboration type (Bi/Multi Marker)",
+        policy_marker_gender: "DFID policy marker - Gender",
+        policy_marker_climate_change_adaptation: "DFID policy marker - Climate Change - Adaptation",
+        policy_marker_climate_change_mitigation: "DFID policy marker - Climate Change - Mitigation",
+        policy_marker_biodiversity: "DFID policy marker - Biodiversity",
+        policy_marker_desertification: "DFID policy marker - Desertification",
+        policy_marker_disability: "DFID policy marker - Disability",
+        policy_marker_disaster_risk_reduction: "DFID policy marker - Disaster Risk Reduction",
+        policy_marker_nutrition: "DFID policy marker - Nutrition",
         flow: "Flow",
         aid_type: "Aid type",
         fstc_applies: "Free Standing Technical Cooperation",
         objectives: "Aims/Objectives (DP Definition)",
+        beis_id: "BEIS ID",
+        uk_dp_named_contact: "UK DP Named Contact (NF)",
+        country_delivery_partners: "NF Partner Country DP",
       }
+
+      ALLOWED_BLANK_FIELDS = [
+        "DFID policy marker - Gender",
+        "DFID policy marker - Climate Change - Adaptation",
+        "DFID policy marker - Climate Change - Mitigation",
+        "DFID policy marker - Biodiversity",
+        "DFID policy marker - Desertification",
+        "DFID policy marker - Disability",
+        "DFID policy marker - Disaster Risk Reduction",
+        "DFID policy marker - Nutrition",
+        "Channel of delivery code",
+        "Implementing organisation reference",
+        "BEIS ID",
+        "UK DP Named Contact (NF)",
+        "NF Partner Country DP",
+      ]
 
       def initialize(row)
         @row = row
@@ -190,7 +267,7 @@ module Activities
 
       def convert_to_attributes
         attributes = FIELDS.each_with_object({}) { |(attr_name, column_name), attrs|
-          attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name]) if @row[column_name].present?
+          attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name]) if field_should_be_converted?(column_name)
         }
 
         attributes[:geography] = infer_geography(attributes)
@@ -200,6 +277,10 @@ module Activities
         attributes[:sector_category] = get_sector_category(attributes[:sector])
 
         attributes
+      end
+
+      def field_should_be_converted?(column_name)
+        ALLOWED_BLANK_FIELDS.include?(column_name) || @row[column_name].present?
       end
 
       def convert_to_attribute(attr_name, value)
@@ -224,10 +305,9 @@ module Activities
       end
 
       def convert_recipient_country(country)
-        validate_from_codelist(
+        validate_country(
           country,
-          :recipient_country,
-          I18n.t("importer.errors.activity.invalid_country"),
+          I18n.t("importer.errors.activity.invalid_country")
         )
       end
 
@@ -237,6 +317,29 @@ module Activities
           :gdi,
           I18n.t("importer.errors.activity.invalid_gdi"),
         )
+      end
+
+      def convert_policy_marker(policy_marker)
+        return "not_assessed" if policy_marker.blank?
+
+        policy_markers_iati_codes_to_enum(policy_marker)
+      end
+      alias convert_policy_marker_gender convert_policy_marker
+      alias convert_policy_marker_climate_change_adaptation convert_policy_marker
+      alias convert_policy_marker_climate_change_mitigation convert_policy_marker
+      alias convert_policy_marker_biodiversity convert_policy_marker
+      alias convert_policy_marker_desertification convert_policy_marker
+      alias convert_policy_marker_disability convert_policy_marker
+      alias convert_policy_marker_disaster_risk_reduction convert_policy_marker
+      alias convert_policy_marker_nutrition convert_policy_marker
+
+      def convert_gcrf_challenge_area(gcrf_challenge_area)
+        return nil if gcrf_challenge_area.blank?
+
+        valid_codes = gcrf_challenge_area_options.map { |area| area.code.to_s }
+        raise I18n.t("importer.errors.activity.invalid_gcrf_challenge_area") unless valid_codes.include?(gcrf_challenge_area)
+
+        gcrf_challenge_area.to_i
       end
 
       def convert_sustainable_development_goal(goal)
@@ -249,13 +352,11 @@ module Activities
       alias convert_sdg_3 convert_sustainable_development_goal
 
       def convert_intended_beneficiaries(intended_beneficiaries)
-        codelist = load_yaml(entity: :activity, type: :intended_beneficiaries)
-        valid_codes = codelist.values.flatten.map { |entry| entry.fetch("code") }
-
-        intended_beneficiaries.split(";").map do |code|
-          raise I18n.t("importer.errors.activity.invalid_intended_beneficiaries") unless valid_codes.include?(code)
-
-          code
+        intended_beneficiaries.split("|").map do |code|
+          validate_country(
+            code,
+            I18n.t("importer.errors.activity.invalid_intended_beneficiaries")
+          )
         end
       end
 
@@ -275,6 +376,14 @@ module Activities
         covid19_related
       end
 
+      def convert_fund_pillar(fund_pillar)
+        codelist = fund_pillar_radio_options.map(&:code).map(&:to_s)
+
+        raise I18n.t("importer.errors.activity.invalid_fund_pillar") unless codelist.include?(fund_pillar.to_s)
+
+        fund_pillar
+      end
+
       def convert_oda_eligibility(oda_eligibility)
         validate_from_codelist(
           oda_eligibility,
@@ -284,11 +393,11 @@ module Activities
       end
 
       def convert_programme_status(programme_status)
-        validate_from_codelist(
-          programme_status,
-          :programme_status,
-          I18n.t("importer.errors.activity.invalid_programme_status"),
-        )
+        status = Activity.programme_statuses.key(programme_status.to_i)
+
+        raise I18n.t("importer.errors.activity.invalid_programme_status") if status.nil?
+
+        status
       end
 
       def convert_sector(sector)
@@ -296,6 +405,16 @@ module Activities
           sector,
           :sector,
           I18n.t("importer.errors.activity.invalid_sector"),
+        )
+      end
+
+      def convert_channel_of_delivery_code(channel_of_delivery_code)
+        raise I18n.t("importer.errors.activity.invalid_channel_of_delivery_code") if channel_of_delivery_code.blank?
+
+        validate_channel_of_delivery_code(
+          channel_of_delivery_code,
+          :channel_of_delivery_code,
+          I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"),
         )
       end
 
@@ -353,10 +472,14 @@ module Activities
         parse_date(actual_end_date, I18n.t("importer.errors.activity.invalid_actual_end_date"))
       end
 
+      def convert_country_delivery_partners(delivery_partners)
+        delivery_partners.split("|").map(&:strip).reject(&:blank?)
+      end
+
       def parse_date(date, message)
         return if date.blank?
 
-        Date.strptime(date, "%Y-%m-%d").to_datetime
+        Date.strptime(date, "%d/%m/%Y").to_datetime
       rescue ArgumentError
         raise message
       end
@@ -391,9 +514,30 @@ module Activities
         code
       end
 
+      def validate_channel_of_delivery_code(code, entity, message)
+        return nil if code.blank?
+
+        codelist = load_yaml(entity: :activity, type: entity)
+        valid_codes = codelist.map { |entry| entry.fetch("code") }
+        valid_codes << "N/A"
+
+        raise message unless valid_codes.include?(code.upcase)
+
+        code
+      end
+
       def country_to_region_mapping
         yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.yml"))
         yaml["data"]
+      end
+
+      def validate_country(country, error)
+        yaml = YAML.safe_load(File.read("#{Rails.root}/config/locales/codelists/#{IATI_VERSION}/iati.en.yml"))
+        countries = yaml["en"]["activity"]["recipient_country"]
+
+        raise error unless countries.key?(country)
+
+        country
       end
     end
   end

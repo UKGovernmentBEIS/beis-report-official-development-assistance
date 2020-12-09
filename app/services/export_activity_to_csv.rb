@@ -23,6 +23,7 @@ class ExportActivityToCsv
       activity_presenter.recipient_country,
       activity_presenter.intended_beneficiaries,
       activity_presenter.programme_status,
+      activity_presenter.country_delivery_partners,
       activity_presenter.planned_start_date,
       activity_presenter.actual_start_date,
       activity_presenter.planned_end_date,
@@ -32,6 +33,7 @@ class ExportActivityToCsv
       activity_presenter.total_applications,
       activity_presenter.total_awards,
       activity_presenter.sector_with_code,
+      activity_presenter.channel_of_delivery_code,
       activity_presenter.aid_type_with_code,
       activity_presenter.tied_status_with_code,
       activity_presenter.finance_with_code,
@@ -47,8 +49,10 @@ class ExportActivityToCsv
       activity_presenter.policy_marker_disability,
       activity_presenter.policy_marker_disaster_risk_reduction,
       activity_presenter.policy_marker_nutrition,
+      activity_presenter.fund_pillar,
       activity_presenter.oda_eligibility,
       activity_presenter.oda_eligibility_lead,
+      activity_presenter.uk_dp_named_contact,
       activity_presenter.forecasted_total_for_report_financial_quarter(report: report),
       activity_presenter.actual_total_for_report_financial_quarter(report: report),
       activity_presenter.variance_for_report_financial_quarter(report: report),
@@ -72,7 +76,8 @@ class ExportActivityToCsv
       "Recipient region",
       "Recipient country",
       "Intended beneficiaries",
-      "Programme status",
+      "Activity status",
+      "Country delivery partners",
       "Planned start date",
       "Actual start date",
       "Planned end date",
@@ -82,6 +87,7 @@ class ExportActivityToCsv
       "Total applications",
       "Total awards",
       "Sector",
+      "Channel of delivery code",
       "Aid type",
       "Tied status",
       "Finance type",
@@ -97,19 +103,28 @@ class ExportActivityToCsv
       "Disability",
       "Disaster Risk Reduction",
       "Nutrition policy",
+      "Fund Pillar",
       "ODA eligibility",
       "ODA eligibility lead",
+      "UK DP named contact",
       report_financial_quarter ? report_financial_quarter + " forecast" : "Forecast",
       report_financial_quarter ? report_financial_quarter + " actuals" : "Actuals",
       "Variance",
       "Comment",
       "Link to activity in RODA",
-    ].concat(report_presenter.next_four_financial_quarters).to_csv
+    ].concat(next_four_financial_quarters).to_csv
   end
 
   def next_four_quarter_forecasts
-    quarter_date_ranges = report_presenter.quarters_to_date_ranges
-    quarter_date_ranges.map { |range| activity_presenter.forecasted_total_for_date_range(range: range) }
+    report_presenter.next_four_financial_quarters.map do |quarter, year|
+      overview = PlannedDisbursementOverview.new(activity_presenter)
+      value = overview.snapshot(report_presenter).value_for(financial_quarter: quarter, financial_year: year)
+      "%.2f" % value
+    end
+  end
+
+  private def next_four_financial_quarters
+    report_presenter.next_four_financial_quarters.map { |quarter, year| "Q#{quarter} #{year}" }
   end
 
   private def activity_presenter

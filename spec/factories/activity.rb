@@ -8,7 +8,7 @@ FactoryBot.define do
     description { Faker::Lorem.paragraph }
     sector_category { "111" }
     sector { "11110" }
-    programme_status { "07" }
+    programme_status { 7 }
     planned_start_date { Date.today }
     planned_end_date { Date.tomorrow }
     actual_start_date { Date.yesterday }
@@ -24,7 +24,10 @@ FactoryBot.define do
     aid_type { "B02" }
     level { :fund }
     publish_to_iati { true }
+    gcrf_challenge_area { 0 }
     oda_eligibility_lead { Faker::Name.name }
+    uk_dp_named_contact { Faker::Name.name }
+    fund_pillar { "0" }
 
     form_state { "complete" }
 
@@ -54,12 +57,31 @@ FactoryBot.define do
       association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :beis_organisation
       association :reporting_organisation, factory: :beis_organisation
+
+      trait :gcrf do
+        roda_identifier_fragment { "GCRF" }
+        title { "Global Challenges Research Fund (GCRF)" }
+
+        initialize_with do
+          Activity.find_or_initialize_by(roda_identifier_fragment: "GCRF")
+        end
+      end
+
+      trait :newton do
+        roda_identifier_fragment { "NF" }
+        title { "Newton Fund" }
+
+        initialize_with do
+          Activity.find_or_initialize_by(roda_identifier_fragment: "NF")
+        end
+      end
     end
 
     factory :programme_activity do
       parent factory: :fund_activity
       level { :programme }
       objectives { Faker::Lorem.paragraph }
+      country_delivery_partners { ["National Council for the State Funding Agencies (CONFAP)"] }
       collaboration_type { "1" }
       funding_organisation_name { "Department for Business, Energy and Industrial Strategy" }
       funding_organisation_reference { "GB-GOV-13" }
@@ -71,6 +93,14 @@ FactoryBot.define do
       association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :delivery_partner_organisation
       association :reporting_organisation, factory: :beis_organisation
+
+      trait :newton_funded do
+        parent factory: [:fund_activity, :newton]
+      end
+
+      trait :gcrf_funded do
+        parent factory: [:fund_activity, :gcrf]
+      end
     end
 
     factory :project_activity do
@@ -108,7 +138,16 @@ FactoryBot.define do
 
         after(:create) do |project_activity, evaluator|
           create_list(:implementing_organisation, evaluator.implementing_organisations_count, activity: project_activity)
+          project_activity.reload
         end
+      end
+
+      trait :newton_funded do
+        parent factory: [:programme_activity, :newton_funded]
+      end
+
+      trait :gcrf_funded do
+        parent factory: [:programme_activity, :gcrf_funded]
       end
     end
 
@@ -139,6 +178,14 @@ FactoryBot.define do
 
       association :extending_organisation, factory: :delivery_partner_organisation
       association :reporting_organisation, factory: :beis_organisation
+
+      trait :newton_funded do
+        parent factory: [:project_activity, :newton_funded]
+      end
+
+      trait :gcrf_funded do
+        parent factory: [:project_activity, :gcrf_funded]
+      end
     end
   end
 
@@ -153,6 +200,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
+    country_delivery_partners { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -184,6 +232,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
+    country_delivery_partners { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -215,6 +264,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
+    country_delivery_partners { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -314,6 +364,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
+    country_delivery_partners { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -350,6 +401,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
+    country_delivery_partners { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -384,6 +436,7 @@ FactoryBot.define do
     objectives { nil }
     sector { nil }
     programme_status { nil }
+    country_delivery_partners { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
