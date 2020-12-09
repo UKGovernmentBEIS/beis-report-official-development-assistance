@@ -398,7 +398,7 @@
 - Add missing fields to the activity importer
 - Allow forecasts to be edited, preserving their history
 
-## [unreleased]
+## [release-24] - 2020-12-09
 
 - Show only the financial quarter and value for forecasts on the activity page
 - Use the latest versions of forecasts from the report history to calculate variance
@@ -420,7 +420,8 @@
 - Add link to the support site in the footer
 - Change programme status field to an enum
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...HEAD
+[release-24]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...release-24
 [release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23
 [release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
 [release-21]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-20...release-21
