@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_30_114052) do
+ActiveRecord::Schema.define(version: 2020_12_08_093803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -51,7 +51,6 @@ ActiveRecord::Schema.define(version: 2020_11_30_114052) do
     t.boolean "publish_to_iati", default: true
     t.uuid "parent_id"
     t.string "transparency_identifier"
-    t.string "programme_status"
     t.boolean "call_present"
     t.date "call_open_date"
     t.date "call_close_date"
@@ -85,6 +84,7 @@ ActiveRecord::Schema.define(version: 2020_11_30_114052) do
     t.string "country_delivery_partners", array: true
     t.integer "gcrf_challenge_area"
     t.integer "fund_pillar"
+    t.integer "programme_status"
     t.string "channel_of_delivery_code"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"

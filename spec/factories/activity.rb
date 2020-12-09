@@ -8,7 +8,7 @@ FactoryBot.define do
     description { Faker::Lorem.paragraph }
     sector_category { "111" }
     sector { "11110" }
-    programme_status { "07" }
+    programme_status { 7 }
     planned_start_date { Date.today }
     planned_end_date { Date.tomorrow }
     actual_start_date { Date.yesterday }

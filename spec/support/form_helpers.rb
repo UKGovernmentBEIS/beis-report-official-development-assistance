@@ -17,7 +17,7 @@ module FormHelpers
     call_close_date_year: "2019",
     total_applications: "12",
     total_awards: "5",
-    programme_status: "07",
+    programme_status: "spend_in_progress",
     country_delivery_partners: "National Council for the State Funding Agencies (CONFAP)",
     planned_start_date_day: "1",
     planned_start_date_month: "1",
