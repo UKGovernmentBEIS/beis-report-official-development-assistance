@@ -43,11 +43,11 @@ class ExportActivityToCsv
       "Recipient country" => -> { activity_presenter.recipient_country },
       "Intended beneficiaries" => -> { activity_presenter.intended_beneficiaries },
       "GDI" => -> { activity_presenter.gdi },
-      # GCRF Challenge Area
+      "GCRF Challenge Area" => -> { activity_presenter.gcrf_challenge_area },
       "Fund Pillar" => -> { activity_presenter.fund_pillar },
-      # SDG 1
-      # SDG 2
-      # SDG 3
+      "SDG 1" => -> { activity_presenter.sdg_1 },
+      "SDG 2" => -> { activity_presenter.sdg_2 },
+      "SDG 3" => -> { activity_presenter.sdg_3 },
       "Title" => -> { activity_presenter.title },
       # DFID Activity Title
       "Description" => -> { activity_presenter.description },
@@ -81,7 +81,7 @@ class ExportActivityToCsv
       "Biodiversity" => -> { activity_presenter.policy_marker_biodiversity },
       "Desertification" => -> { activity_presenter.policy_marker_desertification },
       "Disability" => -> { activity_presenter.policy_marker_disability },
-      # Free Standing Technical Cooperation
+      "Free Standing Technical Cooperation" => -> { activity_presenter.fstc_applies },
       "Disaster Risk Reduction" => -> { activity_presenter.policy_marker_disaster_risk_reduction },
       "Nutrition policy" => -> { activity_presenter.policy_marker_nutrition },
       # Implementing organisation name
