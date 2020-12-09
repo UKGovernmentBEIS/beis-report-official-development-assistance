@@ -4,6 +4,8 @@ class ChangeActivityProgrammeStatusToEnum < ActiveRecord::Migration[6.0]
 
     Activity.find_each do |activity|
       programme_status = Integer(activity.programme_status_before_type_cast, exception: false)
+      programme_status = 8 if activity.programme_status_before_type_cast == "08"
+      programme_status = 9 if activity.programme_status_before_type_cast == "09"
       activity.update_column(:programme_status_integer, programme_status)
     end
 
