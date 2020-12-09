@@ -101,7 +101,7 @@ RSpec.feature "Users can create a programme activity" do
         click_button t("form.button.activity.submit")
         expect(page).to have_content "can't be blank"
 
-        choose("activity[programme_status]", option: "07")
+        choose("activity[programme_status]", option: "spend_in_progress")
         click_button t("form.button.activity.submit")
 
         if parent.roda_identifier_compound.include?("NF")

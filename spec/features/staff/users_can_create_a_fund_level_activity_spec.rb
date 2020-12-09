@@ -25,7 +25,7 @@ RSpec.feature "Users can create a fund level activity" do
       click_on(t("page_content.organisation.button.create_activity"))
       fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
       activity = Activity.find_by(delivery_partner_identifier: identifier)
-      expect(activity.programme_status).to eq("07")
+      expect(activity.programme_status).to eq("spend_in_progress")
     end
 
     scenario "the iati status gets set based on the default programme status value" do
