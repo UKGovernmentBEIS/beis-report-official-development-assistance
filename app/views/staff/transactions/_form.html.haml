@@ -1,34 +1,8 @@
 = f.govuk_error_summary
-= f.govuk_text_area :description
 
-= f.govuk_collection_select :transaction_type,
-                               yaml_to_objects(entity: "transaction", type: "transaction_type"),
-                               :code,
-                               :name
+= f.govuk_text_field :value, width: 'one-third'
 
 = f.govuk_date_field :date, legend: {  size: "s" }
-
-= f.govuk_collection_select :currency,
-                               currency_select_options,
-                               :code,
-                               :name
-= f.govuk_text_field :value
-
-= f.govuk_collection_select :disbursement_channel,
-                               yaml_to_objects(entity: "transaction", type: "disbursement_channel"),
-                               :code,
-                               :name
-
-= f.govuk_fieldset legend: { text: t("form.legend.transaction.providing_organisation") } do
-  %span.govuk-hint= t("form.hint.transaction.providing_organisation")
-  = f.govuk_text_field :providing_organisation_name
-
-  = f.govuk_collection_select :providing_organisation_type,
-                      yaml_to_objects(entity: "organisation", type: "organisation_type"),
-                      :code,
-                      :name
-
-  = f.govuk_text_field :providing_organisation_reference
 
 = f.govuk_fieldset legend: { text: t("form.legend.transaction.receiving_organisation") } do
   %span.govuk-hint= t("form.hint.transaction.receiving_organisation")

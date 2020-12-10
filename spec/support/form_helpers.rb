@@ -410,29 +410,16 @@ module FormHelpers
   end
 
   def fill_in_transaction_form(expectations: true,
-    description: "This money will be purchasing a new school roof",
-    transaction_type: "Outgoing Pledge",
+    value: "1000.01",
     date_year: "2020",
     date_month: "1",
     date_day: "2",
-    value: "1000.01",
-    disbursement_channel: "Money is disbursed through central Ministry of Finance or Treasury",
-    currency: "Pound Sterling",
-    providing_organisation: OpenStruct.new(name: "Example provider", reference: "GB-GOV-1", type: "Government"),
     receiving_organisation: OpenStruct.new(name: "Example receiver", reference: "GB-COH-123", type: "Private Sector"))
-    fill_in "transaction[description]", with: description
-    select transaction_type, from: "transaction[transaction_type]"
+
+    fill_in "transaction[value]", with: value
     fill_in "transaction[date(3i)]", with: date_day
     fill_in "transaction[date(2i)]", with: date_month
     fill_in "transaction[date(1i)]", with: date_year
-    fill_in "transaction[value]", with: value
-    select disbursement_channel, from: "transaction[disbursement_channel]"
-    select currency, from: "transaction[currency]"
-
-    fill_in "transaction[providing_organisation_name]", with: providing_organisation.name
-    select providing_organisation.type, from: "transaction[providing_organisation_type]"
-    fill_in "transaction[providing_organisation_reference]", with: providing_organisation.reference
-
     fill_in "transaction[receiving_organisation_name]", with: receiving_organisation.name
     select receiving_organisation.type, from: "transaction[receiving_organisation_type]"
     fill_in "transaction[receiving_organisation_reference]", with: receiving_organisation.reference
