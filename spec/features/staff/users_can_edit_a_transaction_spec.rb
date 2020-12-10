@@ -25,14 +25,10 @@ RSpec.feature "Users can edit a transaction" do
       end
 
       fill_in_transaction_form(
-        description: "This money will be buying some books for students",
-        transaction_type: "Expenditure",
+        value: "2000.51",
         date_day: "1",
         date_month: "1",
         date_year: "2020",
-        value: "2000.51",
-        disbursement_channel: "Aid in kind: Donors manage funds themselves",
-        currency: "US Dollar"
       )
 
       expect(page).to have_content(t("action.transaction.update.success"))
@@ -51,14 +47,10 @@ RSpec.feature "Users can edit a transaction" do
         end
 
         fill_in_transaction_form(
-          description: "This money will be buying some books for students",
-          transaction_type: "Expenditure",
+          value: "2000.51",
           date_day: "1",
           date_month: "1",
           date_year: "2020",
-          value: "2000.51",
-          disbursement_channel: "Aid in kind: Donors manage funds themselves",
-          currency: "US Dollar"
         )
 
         auditable_event = PublicActivity::Activity.find_by(trackable_id: transaction.id)
