@@ -18,7 +18,7 @@ class Staff::ActivitiesController < Staff::BaseController
 
     @transactions = policy_scope(Transaction).where(parent_activity: @activity).order("date DESC")
     @budgets = policy_scope(Budget).where(parent_activity: @activity).order("period_start_date DESC")
-    @planned_disbursements = policy_scope(PlannedDisbursement).where(parent_activity: @activity).order("period_start_date DESC")
+    @planned_disbursements = policy_scope(@activity.latest_planned_disbursements)
 
     respond_to do |format|
       format.html do
