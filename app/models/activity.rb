@@ -326,6 +326,10 @@ class Activity < ApplicationRecord
     @variance_for_report_financial_quarter ||= actual_total_for_report_financial_quarter(report: report) - forecasted_total_for_report_financial_quarter(report: report)
   end
 
+  def latest_planned_disbursements
+    PlannedDisbursementOverview.new(self).latest_values
+  end
+
   def requires_call_dates?
     !ingested? && is_project?
   end
