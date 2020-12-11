@@ -441,16 +441,8 @@ module FormHelpers
 
     if expectations
       within ".transactions" do
-        expect(page).to have_content(transaction_type)
-        expect(page).to have_content localise_date_from_input_fields(
-          year: date_year,
-          month: date_month,
-          day: date_day
-        )
+        expect(page).to have_content financial_quarter_and_year_from_date_input_fields(year: date_year, month: date_month, day: date_day)
         expect(page).to have_content(ActionController::Base.helpers.number_to_currency(value, unit: "£"))
-        expect(page).to have_content(disbursement_channel)
-        expect(page).to have_content(currency)
-        expect(page).to have_content(providing_organisation.name)
         expect(page).to have_content(receiving_organisation.name)
       end
     end
@@ -482,6 +474,11 @@ module FormHelpers
 
   def localise_date_from_input_fields(year:, month:, day:)
     I18n.l(Date.parse("#{year}-#{month}-#{day}"))
+  end
+
+  def financial_quarter_and_year_from_date_input_fields(year:, month:, day:)
+    date = Date.parse("#{year}-#{month}-#{day}")
+    TransactionPresenter.new(Transaction.new(date: date)).financial_quarter_and_year
   end
 
   private def activity_level(level)
