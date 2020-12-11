@@ -156,44 +156,16 @@ RSpec.describe Report, type: :model do
     end
   end
 
-  describe "#next_four_financial_quarters" do
-    context "when in Q1 2020" do
-      it "returns an array with the next four financial quarters" do
-        travel_to(Date.parse("1 April 2020")) do
-          report = create(:report)
+  describe "#next_twelve_financial_quarters" do
+    it "returns an array with the next twelve financial quarters" do
+      travel_to(Date.parse("1 April 2020")) do
+        report = create(:report)
 
-          expect(report.next_four_financial_quarters).to eq [[2, 2020], [3, 2020], [4, 2020], [1, 2021]]
-        end
-      end
-    end
-
-    context "when in Q2 2020" do
-      it "returns an array with the next four financial quarters" do
-        travel_to(Date.parse("1 July 2020")) do
-          report = create(:report)
-
-          expect(report.next_four_financial_quarters).to eq [[3, 2020], [4, 2020], [1, 2021], [2, 2021]]
-        end
-      end
-    end
-
-    context "when in Q3 2020" do
-      it "returns an array with the next four financial quarters" do
-        travel_to(Date.parse("1 October 2020")) do
-          report = create(:report)
-
-          expect(report.next_four_financial_quarters).to eq [[4, 2020], [1, 2021], [2, 2021], [3, 2021]]
-        end
-      end
-    end
-
-    context "when in Q4 2020" do
-      it "returns an array with the next four financial quarters" do
-        travel_to(Date.parse("1 January 2021")) do
-          report = create(:report)
-
-          expect(report.next_four_financial_quarters).to eq [[1, 2021], [2, 2021], [3, 2021], [4, 2021]]
-        end
+        expect(report.next_twelve_financial_quarters).to eq [
+          [2, 2020], [3, 2020], [4, 2020], [1, 2021],
+          [2, 2021], [3, 2021], [4, 2021], [1, 2022],
+          [2, 2022], [3, 2022], [4, 2022], [1, 2023],
+        ]
       end
     end
   end
