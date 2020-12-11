@@ -11,6 +11,21 @@ RSpec.feature "Users can create a transaction" do
     before { authenticate!(user: user) }
     let(:user) { create(:beis_user) }
 
+    scenario "the form only shows relevant fields" do
+      activity = create(:programme_activity, :with_report, organisation: user.organisation)
+
+      visit activities_path
+
+      click_on(activity.title)
+
+      click_on(t("page_content.transactions.button.create"))
+
+      expect(page).to have_content t("page_title.transaction.new")
+      expect(page).to have_content t("form.label.transaction.value")
+      expect(page).to have_content t("form.legend.transaction.date")
+      expect(page).to have_content t("form.legend.transaction.receiving_organisation")
+    end
+
     scenario "successfully creates a transaction on an activity" do
       activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
@@ -57,10 +72,8 @@ RSpec.feature "Users can create a transaction" do
         click_on(t("default.button.submit"))
 
         expect(page).to_not have_content(t("action.transaction.create.success"))
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.description.blank"))
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.transaction_type.blank"))
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.date.blank"))
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.blank")
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.date.blank"))
         expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
         expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
       end
@@ -79,27 +92,11 @@ RSpec.feature "Users can create a transaction" do
         click_on(t("default.button.submit"))
 
         expect(page).to_not have_content(t("action.transaction.create.success"))
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.description.blank"))
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.transaction_type.blank"))
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.date.blank"))
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.not_a_number")
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.date.blank"))
         expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
         expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
       end
-    end
-
-    scenario "disbursement channel is optional" do
-      activity = create(:programme_activity, :with_report, organisation: user.organisation)
-
-      visit activities_path
-
-      click_on(activity.title)
-
-      click_on(t("page_content.transactions.button.create"))
-      expect(page).to have_content("Disbursement channel (optional)")
-      click_on(t("default.button.submit"))
-
-      expect(page).to_not have_content("Disbursement channel can't be blank")
     end
 
     context "Value number validation" do
@@ -112,14 +109,10 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(t("page_content.transactions.button.create"))
 
-        fill_in "transaction[description]", with: "This money will be purchasing a new school roof"
-        select "Outgoing Pledge", from: "transaction[transaction_type]"
+        fill_in "transaction[value]", with: "100000000000"
         fill_in "transaction[date(3i)]", with: "1"
         fill_in "transaction[date(2i)]", with: "1"
         fill_in "transaction[date(1i)]", with: "2020"
-        fill_in "transaction[value]", with: "100000000000"
-        select "Money is disbursed through central Ministry of Finance or Treasury", from: "transaction[disbursement_channel]"
-        select "Pound Sterling", from: "transaction[currency]"
         click_on(t("default.button.submit"))
 
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.less_than_or_equal_to")
@@ -134,14 +127,10 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(t("page_content.transactions.button.create"))
 
-        fill_in "transaction[description]", with: "This money will be purchasing a new school roof"
-        select "Outgoing Pledge", from: "transaction[transaction_type]"
+        fill_in "transaction[value]", with: "0"
         fill_in "transaction[date(3i)]", with: "1"
         fill_in "transaction[date(2i)]", with: "1"
         fill_in "transaction[date(1i)]", with: "2020"
-        fill_in "transaction[value]", with: "0"
-        select "Money is disbursed through central Ministry of Finance or Treasury", from: "transaction[disbursement_channel]"
-        select "Pound Sterling", from: "transaction[currency]"
         click_on(t("default.button.submit"))
 
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.other_than")
@@ -156,14 +145,10 @@ RSpec.feature "Users can create a transaction" do
 
         click_on(t("page_content.transactions.button.create"))
 
-        fill_in "transaction[description]", with: "This money will be purchasing a new school roof"
-        select "Outgoing Pledge", from: "transaction[transaction_type]"
+        fill_in "transaction[value]", with: "-500000"
         fill_in "transaction[date(3i)]", with: "1"
         fill_in "transaction[date(2i)]", with: "1"
         fill_in "transaction[date(1i)]", with: "2020"
-        fill_in "transaction[value]", with: "-500000"
-        select "Money is disbursed through central Ministry of Finance or Treasury", from: "transaction[disbursement_channel]"
-        select "Pound Sterling", from: "transaction[currency]"
         fill_in "transaction[receiving_organisation_name]", with: "Company"
         select "Government", from: "transaction[receiving_organisation_type]"
         click_on(t("default.button.submit"))
@@ -291,19 +276,6 @@ RSpec.feature "Users can create a transaction" do
     end
 
     context "and the activity is a third-party project" do
-      scenario "the providing organisation details are pre-filled with BEIS information" do
-        beis = create(:beis_organisation)
-        third_party_project = create(:third_party_project_activity, organisation: user.organisation)
-        _report = create(:report, :active, organisation: user.organisation, fund: third_party_project.associated_fund)
-
-        visit organisation_activity_path(user.organisation, third_party_project)
-        click_on "Add a transaction"
-
-        expect(page).to have_field t("form.label.transaction.providing_organisation_name"), with: beis.name
-        expect(page).to have_field t("form.label.transaction.providing_organisation_type"), with: beis.organisation_type
-        expect(page).to have_field t("form.label.transaction.providing_organisation_reference"), with: beis.iati_reference
-      end
-
       scenario "the transaction is associated with the currently active report" do
         fund = create(:fund_activity)
         programme = create(:programme_activity, parent: fund)
@@ -327,26 +299,6 @@ RSpec.feature "Users can create a transaction" do
       visit organisation_activity_path(activity.organisation, activity)
 
       expect(page).not_to have_link t("page_content.transactions.button.create"), href: new_activity_transaction_path(activity)
-    end
-  end
-
-  context "when they are a non-government delivery partner organisation user" do
-    before { authenticate!(user: user) }
-    let(:non_government_organisation) { create(:delivery_partner_organisation, organisation_type: "22") }
-    let(:user) { create(:delivery_partner_user, organisation: non_government_organisation) }
-
-    context "and the activity is a third-party project" do
-      scenario "the providing organisation details are pre-filled with the delivery organisation information" do
-        third_party_project = create(:third_party_project_activity, organisation: user.organisation)
-        _report = create(:report, :active, organisation: user.organisation, fund: third_party_project.associated_fund)
-
-        visit organisation_activity_path(user.organisation, third_party_project)
-        click_on "Add a transaction"
-
-        expect(page).to have_field t("form.label.transaction.providing_organisation_name"), with: non_government_organisation.name
-        expect(page).to have_field t("form.label.transaction.providing_organisation_type"), with: non_government_organisation.organisation_type
-        expect(page).to have_field t("form.label.transaction.providing_organisation_reference"), with: non_government_organisation.iati_reference
-      end
     end
   end
 end

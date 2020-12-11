@@ -7,7 +7,6 @@ class Staff::TransactionsController < Staff::BaseController
     @activity = activity
     @transaction = Transaction.new
     @transaction.parent_activity = @activity
-    pre_fill_providing_organisation
 
     authorize @transaction
   end
@@ -57,16 +56,8 @@ class Staff::TransactionsController < Staff::BaseController
 
   def transaction_params
     params.require(:transaction).permit(
-      :reference,
-      :description,
-      :transaction_type,
-      :currency,
-      :date,
       :value,
-      :disbursement_channel,
-      :providing_organisation_name,
-      :providing_organisation_reference,
-      :providing_organisation_type,
+      :date,
       :receiving_organisation_name,
       :receiving_organisation_reference,
       :receiving_organisation_type
@@ -83,11 +74,5 @@ class Staff::TransactionsController < Staff::BaseController
 
   def activity
     @activity ||= Activity.find(activity_id)
-  end
-
-  private def pre_fill_providing_organisation
-    @transaction.providing_organisation_name = @activity.providing_organisation.name
-    @transaction.providing_organisation_type = @activity.providing_organisation.organisation_type
-    @transaction.providing_organisation_reference = @activity.providing_organisation.iati_reference
   end
 end

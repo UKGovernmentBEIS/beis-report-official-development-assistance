@@ -4,14 +4,8 @@ RSpec.describe Transaction, type: :model do
   let(:activity) { build(:activity) }
 
   describe "validations" do
-    it { should validate_presence_of(:description) }
-    it { should validate_presence_of(:transaction_type) }
-    it { should validate_presence_of(:date) }
-    it { should validate_presence_of(:currency) }
     it { should validate_presence_of(:value) }
-    it { should_not validate_presence_of(:disbursement_channel) }
-    it { should validate_presence_of(:providing_organisation_name) }
-    it { should validate_presence_of(:providing_organisation_type) }
+    it { should validate_presence_of(:date) }
     it { should validate_presence_of(:receiving_organisation_name) }
     it { should validate_presence_of(:receiving_organisation_type) }
 
@@ -35,7 +29,6 @@ RSpec.describe Transaction, type: :model do
   end
 
   describe "sanitation" do
-    it { should strip_attribute(:providing_organisation_reference) }
     it { should strip_attribute(:receiving_organisation_reference) }
   end
 
