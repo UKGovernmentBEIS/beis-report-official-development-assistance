@@ -52,7 +52,7 @@ class Staff::TransactionUploadsController < Staff::BaseController
 
   private def csv_row(activity)
     [
-      activity.description,
+      activity.title,
       activity.delivery_partner_identifier,
       activity.roda_identifier,
     ]
