@@ -12,7 +12,7 @@ RSpec.describe PlannedDisbursement, type: :model do
     context "when the activity belongs to a delivery partner organisation" do
       before { activity.update(organisation: build_stubbed(:delivery_partner_organisation)) }
 
-      it "should validate the prescence of report" do
+      it "should validate the presence of report" do
         transaction = build_stubbed(:transaction, parent_activity: activity, report: nil)
         expect(transaction.valid?).to be false
       end
@@ -21,7 +21,7 @@ RSpec.describe PlannedDisbursement, type: :model do
     context "when the activity belongs to BEIS" do
       before { activity.update(organisation: build_stubbed(:beis_organisation)) }
 
-      it "should not validate the prescence of report" do
+      it "should not validate the presence of report" do
         transaction = build_stubbed(:transaction, parent_activity: activity, report: nil)
         expect(transaction.valid?).to be true
       end

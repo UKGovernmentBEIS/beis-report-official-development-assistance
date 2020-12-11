@@ -30,12 +30,8 @@ RSpec.feature "Users can view transactions on an activity page" do
 
         click_link activity.title
 
-        expect(page).to have_content(transaction_presenter.transaction_type)
-        expect(page).to have_content(transaction_presenter.date)
-        expect(page).to have_content(transaction_presenter.currency)
+        expect(page).to have_content(transaction_presenter.financial_quarter_and_year)
         expect(page).to have_content(transaction_presenter.value)
-        expect(page).to have_content(transaction_presenter.disbursement_channel)
-        expect(page).to have_content(transaction_presenter.providing_organisation_name)
         expect(page).to have_content(transaction_presenter.receiving_organisation_name)
       end
 
@@ -70,12 +66,8 @@ RSpec.feature "Users can view transactions on an activity page" do
         click_on t("tabs.activity.children")
         click_link project_activity.title
 
-        expect(page).to have_content(transaction_presenter.transaction_type)
-        expect(page).to have_content(transaction_presenter.date)
-        expect(page).to have_content(transaction_presenter.currency)
+        expect(page).to have_content(transaction_presenter.financial_quarter_and_year)
         expect(page).to have_content(transaction_presenter.value)
-        expect(page).to have_content(transaction_presenter.disbursement_channel)
-        expect(page).to have_content(transaction_presenter.providing_organisation_name)
         expect(page).to have_content(transaction_presenter.receiving_organisation_name)
       end
 

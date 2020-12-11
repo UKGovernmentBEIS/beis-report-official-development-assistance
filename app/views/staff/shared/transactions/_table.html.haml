@@ -3,17 +3,9 @@
     %thead.govuk-table__head
       %tr.govuk-table__row
         %th.govuk-table__header
-          = t("table.header.transaction.transaction_type")
-        %th.govuk-table__header
-          = t("table.header.transaction.date")
-        %th.govuk-table__header
-          = t("table.header.transaction.currency")
+          = t("table.header.transaction.financial_quarter")
         %th.govuk-table__header
           = t("table.header.transaction.value")
-        %th.govuk-table__header
-          = t("table.header.transaction.disbursement_channel")
-        %th.govuk-table__header
-          = t("table.header.transaction.providing_organisation")
         %th.govuk-table__header
           = t("table.header.transaction.receiving_organisation")
         %th.govuk-table__header
@@ -21,12 +13,8 @@
     %tbody.govuk-table__body
       - transactions.each do |transaction|
         %tr.govuk-table__row{id: transaction.id}
-          %td.govuk-table__cell= transaction.transaction_type
-          %td.govuk-table__cell= transaction.date
-          %td.govuk-table__cell= transaction.currency
+          %td.govuk-table__cell= transaction.financial_quarter_and_year
           %td.govuk-table__cell= transaction.value
-          %td.govuk-table__cell= transaction.disbursement_channel
-          %td.govuk-table__cell= transaction.providing_organisation_name
           %td.govuk-table__cell= transaction.receiving_organisation_name
           %td.govuk-table__cell
             - if policy(transaction).edit?
