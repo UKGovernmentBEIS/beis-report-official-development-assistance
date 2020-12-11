@@ -2,25 +2,23 @@ require "rails_helper"
 require "csv"
 
 RSpec.describe ExportActivityToCsv do
-  let(:project) { create(:project_activity, :with_report) }
+  let(:project) { travel_to(Date.parse("1 April 2020")) { create(:project_activity, :with_report) } }
   let(:report) { Report.for_activity(project).first }
   let!(:comment) { create(:comment, report: report, activity: project) }
 
   describe "#call" do
     it "creates a CSV line which contains all columns in order, followed by forecasts for the next twelve financial quarters" do
-      travel_to(Date.parse("1 April 2020")) do
-        export_service = ExportActivityToCsv.new(activity: project, report: report)
+      export_service = ExportActivityToCsv.new(activity: project, report: report)
 
-        allow(export_service).to receive(:columns).and_return(
-          "Header A" => -> { "Value A" },
-          "Header B" => -> { "Value B" },
-          "Header C" => -> { "Value C" },
-        )
+      allow(export_service).to receive(:columns).and_return(
+        "Header A" => -> { "Value A" },
+        "Header B" => -> { "Value B" },
+        "Header C" => -> { "Value C" },
+      )
 
-        result = export_service.call
+      result = export_service.call
 
-        expect(result).to eql("Value A,Value B,Value C,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00\n")
-      end
+      expect(result).to eql("Value A,Value B,Value C,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00\n")
     end
 
     it "includes the BEIS id if there is one" do
@@ -56,53 +54,45 @@ RSpec.describe ExportActivityToCsv do
 
   describe "#headers" do
     it "generates a CSV header row for all columns in order, followed by the next twelve financial quarters" do
-      travel_to(Date.parse("1 April 2020")) do
-        export_service = ExportActivityToCsv.new(activity: project, report: report)
+      export_service = ExportActivityToCsv.new(activity: project, report: report)
 
-        allow(export_service).to receive(:columns).and_return(
-          "Header A" => -> { "Value A" },
-          "Header B" => -> { "Value B" },
-          "Header C" => -> { "Value C" },
-        )
+      allow(export_service).to receive(:columns).and_return(
+        "Header A" => -> { "Value A" },
+        "Header B" => -> { "Value B" },
+        "Header C" => -> { "Value C" },
+      )
 
-        headers = export_service.headers
+      headers = export_service.headers
 
-        expect(headers).to eql("Header A,Header B,Header C,Q2 2020,Q3 2020,Q4 2020,Q1 2021,Q2 2021,Q3 2021,Q4 2021,Q1 2022,Q2 2022,Q3 2022,Q4 2022,Q1 2023\n")
-      end
+      expect(headers).to eql("Header A,Header B,Header C,Q2 2020,Q3 2020,Q4 2020,Q1 2021,Q2 2021,Q3 2021,Q4 2021,Q1 2022,Q2 2022,Q3 2022,Q4 2022,Q1 2023\n")
     end
 
     it "uses the current report financial quarter to generate the actuals total column" do
-      travel_to(Date.parse("1 April 2020")) do
-        report = Report.new
+      report = travel_to(Date.parse("1 April 2020")) { Report.new }
 
-        headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
+      headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
-        expect(headers).to include "Q1 2020-2021 actuals"
-      end
+      expect(headers).to include "Q1 2020-2021 actuals"
     end
 
     it "uses the current report financial quarter to generate the forecast total column" do
-      travel_to(Date.parse("1 April 2020")) do
-        report = Report.new
+      report = travel_to(Date.parse("1 April 2020")) { Report.new }
 
-        headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
+      headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
-        expect(headers).to include "Q1 2020-2021 forecast"
-      end
+      expect(headers).to include "Q1 2020-2021 forecast"
     end
 
     it "includes the next twelve financial quarters as headers" do
-      travel_to(Date.parse("1 April 2020")) do
-        report = Report.new
+      report = travel_to(Date.parse("1 April 2020")) { Report.new }
 
-        headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
+      headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
-        expect(headers).to include [
-          "Q2 2020", "Q3 2020", "Q4 2020", "Q1 2021",
-          "Q2 2021", "Q3 2021", "Q4 2021", "Q1 2022",
-          "Q2 2022", "Q3 2022", "Q4 2022", "Q1 2023",
-        ].to_csv
-      end
+      expect(headers).to include [
+        "Q2 2020", "Q3 2020", "Q4 2020", "Q1 2021",
+        "Q2 2021", "Q3 2021", "Q4 2021", "Q1 2022",
+        "Q2 2022", "Q3 2022", "Q4 2022", "Q1 2023",
+      ].to_csv
     end
   end
 end

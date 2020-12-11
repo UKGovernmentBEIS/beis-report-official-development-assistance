@@ -77,7 +77,7 @@ class Report < ApplicationRecord
   end
 
   def next_twelve_financial_quarters
-    quarter, year = current_financial_quarter, current_financial_year
+    quarter, year = financial_quarter, financial_year
 
     (1..12).map do
       year += 1 if quarter == 4
