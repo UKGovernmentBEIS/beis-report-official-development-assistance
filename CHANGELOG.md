@@ -429,6 +429,7 @@
 - Add a transaction form has been simplified
 - CSV template uses `activity.title` for activity name
 - Updated version of sector codelist added to RODA
+- Activity importer handles missing implementing organisations
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...HEAD
 [release-24]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...release-24
