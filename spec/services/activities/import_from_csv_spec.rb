@@ -124,6 +124,19 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.parent_present"))
     end
 
+    it "does not fail when the acitvity and import row has no implementing organiation" do
+      existing_activity_attributes["Implementing organisation name"] = nil
+      existing_activity_attributes["Implementing organisation reference"] = nil
+      existing_activity_attributes["Implementing organisation sector"] = nil
+      existing_activity.update(implementing_organisations: [])
+
+      subject.import([existing_activity_attributes])
+
+      expect(subject.errors.count).to eq(0)
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(1)
+    end
+
     it "updates an existing activity" do
       subject.import([existing_activity_attributes])
 
@@ -233,6 +246,19 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:roda_id)
       expect(subject.errors.first.value).to eq("")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_create"))
+    end
+
+    it "does not fail when the row has no implementing organiation" do
+      new_activity_attributes["Implementing organisation name"] = nil
+      new_activity_attributes["Implementing organisation reference"] = nil
+      new_activity_attributes["Implementing organisation sector"] = nil
+      rows = [new_activity_attributes]
+
+      expect { subject.import(rows) }.to change { Activity.count }.by(1)
+
+      expect(subject.created.count).to eq(1)
+      expect(subject.updated.count).to eq(0)
+      expect(subject.errors.count).to eq(0)
     end
 
     it "creates the activity" do
