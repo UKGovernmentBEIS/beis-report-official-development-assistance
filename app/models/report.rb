@@ -76,15 +76,14 @@ class Report < ApplicationRecord
     Activity.projects_and_third_party_projects_for_report(self).with_roda_identifier
   end
 
-  def next_four_financial_quarters
+  def next_twelve_financial_quarters
     quarter, year = current_financial_quarter, current_financial_year
 
-    (0..3).map do |increment|
-      next_quarter = quarter + increment
-      [
-        (next_quarter % 4) + 1,
-        next_quarter >= 4 ? year + 1 : year,
-      ]
+    (1..12).map do
+      year += 1 if quarter == 4
+      quarter = (quarter % 4) + 1
+
+      [quarter, year]
     end
   end
 
