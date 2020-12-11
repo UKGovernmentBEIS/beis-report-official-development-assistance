@@ -420,6 +420,10 @@
 - Add link to the support site in the footer
 - Change programme status field to an enum
 
+## [unreleased]
+
+- Lock bundler version for Docker to 2.1.4
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...HEAD
 [release-24]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...release-24
 [release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23
