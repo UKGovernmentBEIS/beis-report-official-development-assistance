@@ -426,6 +426,7 @@
 - Lock bundler version for Docker to 2.1.4
 - Column order of CSV report file matches data migration template
 - Add missing columns to the CSV report file
+- Add a transaction form has been simplified
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...HEAD
 [release-24]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...release-24

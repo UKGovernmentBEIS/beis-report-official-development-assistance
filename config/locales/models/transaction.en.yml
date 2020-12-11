@@ -30,7 +30,7 @@ en:
         value: Transaction amount
     legend:
       transaction:
-        date: Date transaction was made
+        date: Date of transaction
         providing_organisation: Providing organisation
         receiving_organisation: Receiving organisation
     hint:
