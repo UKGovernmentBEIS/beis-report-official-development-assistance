@@ -427,6 +427,7 @@
 - Column order of CSV report file matches data migration template
 - Add missing columns to the CSV report file
 - Add a transaction form has been simplified
+- CSV template uses `activity.title` for activity name
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...HEAD
 [release-24]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...release-24
