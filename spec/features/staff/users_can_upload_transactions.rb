@@ -26,7 +26,7 @@ RSpec.feature "users can upload transactions" do
 
     expect(rows).to eq([
       {
-        "Activity Name" => project.description,
+        "Activity Name" => project.title,
         "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
         "Activity RODA Identifier" => project.roda_identifier,
         "Date" => nil,
@@ -38,7 +38,7 @@ RSpec.feature "users can upload transactions" do
         "Description" => nil,
       },
       {
-        "Activity Name" => sibling_project.description,
+        "Activity Name" => sibling_project.title,
         "Activity Delivery Partner Identifier" => sibling_project.delivery_partner_identifier,
         "Activity RODA Identifier" => sibling_project.roda_identifier,
         "Date" => nil,
