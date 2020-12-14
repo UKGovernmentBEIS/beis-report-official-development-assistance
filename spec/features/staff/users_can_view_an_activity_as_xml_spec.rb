@@ -282,6 +282,24 @@ RSpec.feature "Users can view an activity as XML" do
           expect(xml.xpath("//iati-activity/planned-disbursement").count).to eq(1)
         end
 
+        it "only includes the latest values for planned disbursements" do
+          reporting_cycle = ReportingCycle.new(activity, 1, 2019)
+          q2_planned_disbursement = PlannedDisbursementHistory.new(activity, 2, 2020)
+          q3_planned_disbursement = PlannedDisbursementHistory.new(activity, 3, 2020)
+
+          reporting_cycle.tick
+          q2_planned_disbursement.set_value(10)
+          q3_planned_disbursement.set_value(20)
+
+          reporting_cycle.tick
+          q2_planned_disbursement.set_value(30)
+
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.xpath("//iati-activity/planned-disbursement").count).to eq(2)
+          expect(xml.xpath("//iati-activity/planned-disbursement/value").map(&:text)).to eq(["30.00", "20.00"])
+        end
+
         it "has the period end date when one is supplied" do
           planned_disbursement = create(:planned_disbursement, parent_activity: activity, period_start_date: Date.today, period_end_date: Date.today + 3.months)
           planned_disbursement_presenter = PlannedDisbursementXmlPresenter.new(planned_disbursement)
