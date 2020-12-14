@@ -116,7 +116,6 @@ class ImportTransactions
       receiving_organisation_name: "Receiving Organisation Name",
       receiving_organisation_type: "Receiving Organisation Type",
       receiving_organisation_reference: "Receiving Organisation IATI Reference",
-      disbursement_channel: "Disbursement Channel",
     }
 
     attr_reader :activity, :errors
@@ -183,14 +182,6 @@ class ImportTransactions
         type,
         "organisation/organisation_type.yml",
         I18n.t("importer.errors.transaction.invalid_iati_organisation_type"),
-      )
-    end
-
-    def convert_disbursement_channel(channel)
-      validate_from_codelist(
-        channel,
-        "transaction/disbursement_channel.yml",
-        I18n.t("importer.errors.transaction.invalid_iati_disbursement_channel"),
       )
     end
 

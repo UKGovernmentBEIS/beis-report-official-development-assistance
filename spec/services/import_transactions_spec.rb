@@ -28,7 +28,6 @@ RSpec.describe ImportTransactions do
         "Receiving Organisation Name" => "Example University",
         "Receiving Organisation Type" => "80",
         "Receiving Organisation IATI Reference" => "",
-        "Disbursement Channel" => "",
       }
     end
 
@@ -278,54 +277,6 @@ RSpec.describe ImportTransactions do
       it "saves the IATI reference on the transaction" do
         transaction = report.transactions.first
         expect(transaction.receiving_organisation_reference).to eq("Rec-Org-IATI-Ref")
-      end
-    end
-
-    context "when Disbursement Channel is blank" do
-      let :transaction_row do
-        super().merge("Disbursement Channel" => "")
-      end
-
-      it "imports the transaction" do
-        expect(report.transactions.count).to eq(1)
-      end
-
-      it "assigns nil for the transaction's disbursement channel" do
-        transaction = report.transactions.first
-        expect(transaction.disbursement_channel).to be_nil
-      end
-    end
-
-    # https://iatistandard.org/en/iati-standard/203/codelists/disbursementchannel/
-    context "when Disbursement Channel is a valid IATI type" do
-      let :transaction_row do
-        super().merge("Disbursement Channel" => "4")
-      end
-
-      it "imports the transaction" do
-        expect(report.transactions.count).to eq(1)
-      end
-
-      it "assigns the transaction's disbursement channel" do
-        transaction = report.transactions.first
-        expect(transaction.disbursement_channel).to eq("4")
-      end
-    end
-
-    # https://iatistandard.org/en/iati-standard/203/codelists/disbursementchannel/
-    context "when Disbursement Channel is not a valid IATI type" do
-      let :transaction_row do
-        super().merge("Disbursement Channel" => "5")
-      end
-
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
-      end
-
-      it "returns an error" do
-        expect(importer.errors).to eq([
-          ImportTransactions::Error.new(0, "Disbursement Channel", "5", t("importer.errors.transaction.invalid_iati_disbursement_channel")),
-        ])
       end
     end
   end
