@@ -112,7 +112,6 @@ class Activity < ApplicationRecord
 
   has_many :budgets, foreign_key: "parent_activity_id"
   has_many :transactions, foreign_key: "parent_activity_id"
-  has_many :planned_disbursements, foreign_key: "parent_activity_id"
 
   has_many :comments
 
@@ -324,6 +323,10 @@ class Activity < ApplicationRecord
 
   def variance_for_report_financial_quarter(report:)
     @variance_for_report_financial_quarter ||= actual_total_for_report_financial_quarter(report: report) - forecasted_total_for_report_financial_quarter(report: report)
+  end
+
+  def latest_planned_disbursements
+    PlannedDisbursementOverview.new(self).latest_values
   end
 
   def requires_call_dates?
