@@ -428,6 +428,7 @@
 - Add missing columns to the CSV report file
 - Add a transaction form has been simplified
 - CSV template uses `activity.title` for activity name
+- Updated version of sector codelist added to RODA
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...HEAD
 [release-24]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...release-24
