@@ -419,8 +419,22 @@
 - Add "NF Partner Country DP" (country_delivery_partners) to the importer
 - Add link to the support site in the footer
 - Change programme status field to an enum
+- Simplify actuals/transactions display on an activity's financials page
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...HEAD
+## [release-25] - 2020-12-14
+
+- Lock bundler version for Docker to 2.1.4
+- Column order of CSV report file matches data migration template
+- Add missing columns to the CSV report file
+- Add a transaction form has been simplified
+- CSV template uses `activity.title` for activity name
+- Updated version of sector codelist added to RODA
+- Activity importer handles missing implementing organisations
+
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...HEAD
+[release-25]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...release-25
 [release-24]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...release-24
 [release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23
 [release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22

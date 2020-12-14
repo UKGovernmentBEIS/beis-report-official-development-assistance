@@ -9,122 +9,94 @@ class ExportActivityToCsv
   end
 
   def call
-    [
-      activity_presenter.funding_organisation_name,
-      activity_presenter.transparency_identifier,
-      activity_presenter.delivery_partner_identifier,
-      activity_presenter.roda_identifier,
-      activity_presenter.beis_id,
-      activity_presenter.level,
-      activity_presenter.title,
-      activity_presenter.description,
-      activity_presenter.objectives,
-      activity_presenter.recipient_region,
-      activity_presenter.recipient_country,
-      activity_presenter.intended_beneficiaries,
-      activity_presenter.programme_status,
-      activity_presenter.country_delivery_partners,
-      activity_presenter.planned_start_date,
-      activity_presenter.actual_start_date,
-      activity_presenter.planned_end_date,
-      activity_presenter.actual_end_date,
-      activity_presenter.call_open_date,
-      activity_presenter.call_close_date,
-      activity_presenter.total_applications,
-      activity_presenter.total_awards,
-      activity_presenter.sector_with_code,
-      activity_presenter.channel_of_delivery_code,
-      activity_presenter.aid_type_with_code,
-      activity_presenter.tied_status_with_code,
-      activity_presenter.finance_with_code,
-      activity_presenter.flow_with_code,
-      activity_presenter.gdi,
-      activity_presenter.collaboration_type,
-      activity_presenter.covid19_related,
-      activity_presenter.policy_marker_gender,
-      activity_presenter.policy_marker_climate_change_adaptation,
-      activity_presenter.policy_marker_climate_change_mitigation,
-      activity_presenter.policy_marker_biodiversity,
-      activity_presenter.policy_marker_desertification,
-      activity_presenter.policy_marker_disability,
-      activity_presenter.policy_marker_disaster_risk_reduction,
-      activity_presenter.policy_marker_nutrition,
-      activity_presenter.fund_pillar,
-      activity_presenter.oda_eligibility,
-      activity_presenter.oda_eligibility_lead,
-      activity_presenter.uk_dp_named_contact,
-      activity_presenter.forecasted_total_for_report_financial_quarter(report: report),
-      activity_presenter.actual_total_for_report_financial_quarter(report: report),
-      activity_presenter.variance_for_report_financial_quarter(report: report),
-      activity_presenter.comment_for_report(report_id: report.id)&.comment,
-      activity_presenter.link_to_roda,
-    ].concat(next_four_quarter_forecasts).to_csv
+    columns.values.map(&:call).concat(next_twelve_quarter_forecasts).to_csv
   end
 
   def headers
-    report_financial_quarter = ReportPresenter.new(report).financial_quarter_and_year
-    [
-      "Funding organisation name",
-      "Transparency identifier",
-      "Delivery partner identifier",
-      "RODA identifier",
-      "BEIS identifier",
-      "Level",
-      "Title",
-      "Description",
-      "Aims/Objectives",
-      "Recipient region",
-      "Recipient country",
-      "Intended beneficiaries",
-      "Activity status",
-      "Country delivery partners",
-      "Planned start date",
-      "Actual start date",
-      "Planned end date",
-      "Actual end date",
-      "Call open date",
-      "Call close date",
-      "Total applications",
-      "Total awards",
-      "Sector",
-      "Channel of delivery code",
-      "Aid type",
-      "Tied status",
-      "Finance type",
-      "Flow",
-      "GDI",
-      "Collaboration type",
-      "Covid-19 related research",
-      "Gender",
-      "Climate change - Adaptation",
-      "Climate change - Mitigation",
-      "Biodiversity",
-      "Desertification",
-      "Disability",
-      "Disaster Risk Reduction",
-      "Nutrition policy",
-      "Fund Pillar",
-      "ODA eligibility",
-      "ODA eligibility lead",
-      "UK DP named contact",
-      report_financial_quarter ? report_financial_quarter + " forecast" : "Forecast",
-      report_financial_quarter ? report_financial_quarter + " actuals" : "Actuals",
-      "Variance",
-      "Comment",
-      "Link to activity in RODA",
-    ].concat(next_four_financial_quarters).to_csv
+    columns.keys.concat(next_twelve_financial_quarters).to_csv
   end
 
-  def next_four_quarter_forecasts
-    report_presenter.next_four_financial_quarters.map do |quarter, year|
+  def next_twelve_quarter_forecasts
+    report_presenter.next_twelve_financial_quarters.map do |quarter, year|
       overview = PlannedDisbursementOverview.new(activity_presenter)
       value = overview.snapshot(report_presenter).value_for(financial_quarter: quarter, financial_year: year)
       "%.2f" % value
     end
   end
 
-  private def next_four_financial_quarters
-    report_presenter.next_four_financial_quarters.map { |quarter, year| "Q#{quarter} #{year}" }
+  private def next_twelve_financial_quarters
+    report_presenter.next_twelve_financial_quarters.map { |quarter, year| "Q#{quarter} #{year}" }
+  end
+
+  private def columns
+    @_columns ||= {
+      "RODA identifier" => -> { activity_presenter.roda_identifier },
+      # RODA ID fragment
+      # Parent RODA ID
+      "Transparency identifier" => -> { activity_presenter.transparency_identifier },
+      "BEIS identifier" => -> { activity_presenter.beis_id },
+      "Level" => -> { activity_presenter.level },
+      # Other UK DPs
+      # DP 'Brand'
+      "Delivery partner identifier" => -> { activity_presenter.delivery_partner_identifier },
+      "Recipient region" => -> { activity_presenter.recipient_region },
+      "Recipient country" => -> { activity_presenter.recipient_country },
+      "Intended beneficiaries" => -> { activity_presenter.intended_beneficiaries },
+      "GDI" => -> { activity_presenter.gdi },
+      "GCRF Challenge Area" => -> { activity_presenter.gcrf_challenge_area },
+      "Fund Pillar" => -> { activity_presenter.fund_pillar },
+      "SDG 1" => -> { activity_presenter.sdg_1 },
+      "SDG 2" => -> { activity_presenter.sdg_2 },
+      "SDG 3" => -> { activity_presenter.sdg_3 },
+      "Title" => -> { activity_presenter.title },
+      # DFID Activity Title
+      "Description" => -> { activity_presenter.description },
+      # DFID Activity Description
+      "Aims/Objectives" => -> { activity_presenter.objectives },
+      "ODA eligibility" => -> { activity_presenter.oda_eligibility },
+      "ODA eligibility lead" => -> { activity_presenter.oda_eligibility_lead },
+      "Covid-19 related research" => -> { activity_presenter.covid19_related },
+      "Activity status" => -> { activity_presenter.programme_status },
+      "Country delivery partners" => -> { activity_presenter.country_delivery_partners },
+      "UK DP named contact" => -> { activity_presenter.uk_dp_named_contact },
+      "Call open date" => -> { activity_presenter.call_open_date },
+      "Call close date" => -> { activity_presenter.call_close_date },
+      "Planned start date" => -> { activity_presenter.planned_start_date },
+      "Actual start date" => -> { activity_presenter.actual_start_date },
+      "Planned end date" => -> { activity_presenter.planned_end_date },
+      "Actual end date" => -> { activity_presenter.actual_end_date },
+      "Total applications" => -> { activity_presenter.total_applications },
+      "Total awards" => -> { activity_presenter.total_awards },
+      # Total applications to Newton Fund partner DP
+      # Total awards by NF partner DP
+      "Sector" => -> { activity_presenter.sector_with_code },
+      "Channel of delivery code" => -> { activity_presenter.channel_of_delivery_code },
+      "Flow" => -> { activity_presenter.flow_with_code },
+      "Finance type" => -> { activity_presenter.finance_with_code },
+      "Aid type" => -> { activity_presenter.aid_type_with_code },
+      "Collaboration type" => -> { activity_presenter.collaboration_type },
+      "Gender" => -> { activity_presenter.policy_marker_gender },
+      "Climate change - Adaptation" => -> { activity_presenter.policy_marker_climate_change_adaptation },
+      "Climate change - Mitigation" => -> { activity_presenter.policy_marker_climate_change_mitigation },
+      "Biodiversity" => -> { activity_presenter.policy_marker_biodiversity },
+      "Desertification" => -> { activity_presenter.policy_marker_desertification },
+      "Disability" => -> { activity_presenter.policy_marker_disability },
+      "Free Standing Technical Cooperation" => -> { activity_presenter.fstc_applies },
+      "Disaster Risk Reduction" => -> { activity_presenter.policy_marker_disaster_risk_reduction },
+      "Nutrition policy" => -> { activity_presenter.policy_marker_nutrition },
+      # Implementing organisation name
+      # Implementing organisation reference
+      # Implementing organisation sector
+      "Tied status" => -> { activity_presenter.tied_status_with_code },
+
+      # Additional headers specific to export CSV =============================
+      "Funding organisation name" => -> { activity_presenter.funding_organisation_name },
+      forecast_header => -> { activity_presenter.forecasted_total_for_report_financial_quarter(report: report) },
+      actuals_header => -> { activity_presenter.actual_total_for_report_financial_quarter(report: report) },
+      "Variance" => -> { activity_presenter.variance_for_report_financial_quarter(report: report) },
+      "Comment" => -> { activity_presenter.comment_for_report(report_id: report.id)&.comment },
+      "Link to activity in RODA" => -> { activity_presenter.link_to_roda },
+    }
   end
 
   private def activity_presenter
@@ -133,5 +105,17 @@ class ExportActivityToCsv
 
   private def report_presenter
     @report_presenter ||= ReportPresenter.new(report)
+  end
+
+  private def report_financial_quarter
+    report_presenter.financial_quarter_and_year
+  end
+
+  private def forecast_header
+    report_financial_quarter ? report_financial_quarter + " forecast" : "Forecast"
+  end
+
+  private def actuals_header
+    report_financial_quarter ? report_financial_quarter + " actuals" : "Actuals"
   end
 end

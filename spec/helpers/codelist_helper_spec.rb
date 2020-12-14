@@ -171,8 +171,8 @@ RSpec.describe CodelistHelper, type: :helper do
       it "returns all sectors when no category is passed" do
         options = helper.sector_radio_options
 
-        expect(options.length).to eq 283
-        expect(options).to include OpenStruct.new(name: "Women's equality organisations and institutions", code: "15170", category: "151")
+        expect(options.length).to eq 294
+        expect(options).to include OpenStruct.new(name: "Women’s rights organisations and movements, and government institutions", code: "15170", category: "151")
         expect(options).to include OpenStruct.new(name: "Action relating to debt", code: "60010", category: "600")
       end
 
