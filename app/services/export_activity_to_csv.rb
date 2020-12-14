@@ -9,23 +9,23 @@ class ExportActivityToCsv
   end
 
   def call
-    columns.values.map(&:call).concat(next_four_quarter_forecasts).to_csv
+    columns.values.map(&:call).concat(next_twelve_quarter_forecasts).to_csv
   end
 
   def headers
-    columns.keys.concat(next_four_financial_quarters).to_csv
+    columns.keys.concat(next_twelve_financial_quarters).to_csv
   end
 
-  def next_four_quarter_forecasts
-    report_presenter.next_four_financial_quarters.map do |quarter, year|
+  def next_twelve_quarter_forecasts
+    report_presenter.next_twelve_financial_quarters.map do |quarter, year|
       overview = PlannedDisbursementOverview.new(activity_presenter)
       value = overview.snapshot(report_presenter).value_for(financial_quarter: quarter, financial_year: year)
       "%.2f" % value
     end
   end
 
-  private def next_four_financial_quarters
-    report_presenter.next_four_financial_quarters.map { |quarter, year| "Q#{quarter} #{year}" }
+  private def next_twelve_financial_quarters
+    report_presenter.next_twelve_financial_quarters.map { |quarter, year| "Q#{quarter} #{year}" }
   end
 
   private def columns
