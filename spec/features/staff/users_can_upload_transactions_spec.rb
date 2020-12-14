@@ -35,7 +35,6 @@ RSpec.feature "users can upload transactions" do
         "Receiving Organisation Type" => nil,
         "Receiving Organisation IATI Reference" => nil,
         "Disbursement Channel" => nil,
-        "Description" => nil,
       },
       {
         "Activity Name" => sibling_project.title,
@@ -47,7 +46,6 @@ RSpec.feature "users can upload transactions" do
         "Receiving Organisation Type" => nil,
         "Receiving Organisation IATI Reference" => nil,
         "Disbursement Channel" => nil,
-        "Description" => nil,
       },
     ])
   end
@@ -62,9 +60,9 @@ RSpec.feature "users can upload transactions" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
-      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel | Description
-      #{ids[0]}                | 2020-04-01 | 20    | Example University          | 80                          |                                       | 4                    |
-      #{ids[1]}                | 2020-04-02 | 30    | Example Foundation          | 60                          |                                       | 4                    |
+      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel
+      #{ids[0]}                | 2020-04-01 | 20    | Example University          | 80                          |                                       | 4
+      #{ids[1]}                | 2020-04-02 | 30    | Example Foundation          | 60                          |                                       | 4
     CSV
 
     expect(Transaction.count).to eq(2)
@@ -76,9 +74,9 @@ RSpec.feature "users can upload transactions" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
-      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel | Description
-      #{ids[0]}                | 2020-04-01 | 0     | Example University          | 80                          |                                       | 4                    |
-      #{ids[1]}                | 2020-04-02 | 30    | Example Foundation          | 61                          |                                       | 5                    |
+      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel
+      #{ids[0]}                | 2020-04-01 | 0     | Example University          | 80                          |                                       | 4
+      #{ids[1]}                | 2020-04-02 | 30    | Example Foundation          | 61                          |                                       | 5
     CSV
 
     expect(Transaction.count).to eq(0)
@@ -110,9 +108,9 @@ RSpec.feature "users can upload transactions" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
-      Activity RODA Identifier | Date       | Value  | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel | Description
-      #{ids[0]}                | 2020-04-01 | �20    | Example University          | 80                          |                                       | 4                    |
-      #{ids[1]}                | 2020-04-02 | �30    | Example Foundation          | 60                          |                                       | 4                    |
+      Activity RODA Identifier | Date       | Value  | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel
+      #{ids[0]}                | 2020-04-01 | �20    | Example University          | 80                          |                                       | 4
+      #{ids[1]}                | 2020-04-02 | �30    | Example Foundation          | 60                          |                                       | 4
     CSV
 
     expect(Transaction.count).to eq(0)
