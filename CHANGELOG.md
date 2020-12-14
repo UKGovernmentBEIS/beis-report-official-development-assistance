@@ -421,7 +421,7 @@
 - Change programme status field to an enum
 - Simplify actuals/transactions display on an activity's financials page
 
-## [unreleased]
+## [release-25] - 2020-12-14
 
 - Lock bundler version for Docker to 2.1.4
 - Column order of CSV report file matches data migration template
@@ -431,7 +431,10 @@
 - Updated version of sector codelist added to RODA
 - Activity importer handles missing implementing organisations
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...HEAD
+[release-25]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...release-25
 [release-24]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...release-24
 [release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23
 [release-22]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-21...release-22
