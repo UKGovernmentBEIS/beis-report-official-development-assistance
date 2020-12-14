@@ -89,7 +89,9 @@ module Activities
         @activity.assign_attributes(@converter.to_h)
 
         implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
-        @activity.implementing_organisations = [implementing_organisation_builder.build]
+        implementing_organisation = implementing_organisation_builder.build
+
+        @activity.implementing_organisations = [implementing_organisation] if implementing_organisation.valid?
 
         return if @activity.save
 
@@ -131,7 +133,10 @@ module Activities
         @activity.cache_roda_identifier
 
         implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
-        @activity.implementing_organisations = [implementing_organisation_builder.build]
+        if row["Implementing organisation name"].present? || row["Implementing organisation sector"].present?
+          implementing_organisation = implementing_organisation_builder.build
+          @activity.implementing_organisations = [implementing_organisation]
+        end
 
         return if @activity.save(context: Activity::VALIDATION_STEPS)
 
@@ -139,7 +144,7 @@ module Activities
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
         end
 
-        implementing_organisation_builder.add_errors(@errors)
+        implementing_organisation_builder.add_errors(@errors) if @activity.implementing_organisations.any?
       end
 
       def calculate_level
