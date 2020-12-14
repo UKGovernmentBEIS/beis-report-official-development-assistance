@@ -29,7 +29,6 @@ RSpec.describe ImportTransactions do
         "Receiving Organisation Type" => "80",
         "Receiving Organisation IATI Reference" => "",
         "Disbursement Channel" => "",
-        "Description" => "Fees for Q3",
       }
     end
 
@@ -50,7 +49,7 @@ RSpec.describe ImportTransactions do
         value: 50.0,
         receiving_organisation_name: "Example University",
         receiving_organisation_type: "80",
-        description: "Fees for Q3",
+        description: "Q4 1999-2000 spend on Example Project",
       )
     end
 
@@ -329,26 +328,11 @@ RSpec.describe ImportTransactions do
         ])
       end
     end
-
-    context "when Description is blank" do
-      let :transaction_row do
-        super().merge("Description" => "")
-      end
-
-      it "imports the transaction" do
-        expect(report.transactions.count).to eq(1)
-      end
-
-      it "generates a default description" do
-        transaction = report.transactions.first
-        expect(transaction.description).to eq("Q4 1999-2000 spend on Example Project")
-      end
-    end
   end
 
   describe "importing multiple transactions" do
     let :sibling_project do
-      create(:project_activity, organisation: project.organisation, parent: project.parent)
+      create(:project_activity, organisation: project.organisation, parent: project.parent, description: "Sibling Project")
     end
 
     let :first_transaction_row do
@@ -358,7 +342,6 @@ RSpec.describe ImportTransactions do
         "Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
         "Receiving Organisation Type" => "80",
-        "Description" => "Fees for Q3",
       }
     end
 
@@ -369,7 +352,6 @@ RSpec.describe ImportTransactions do
         "Value" => "150.00",
         "Receiving Organisation Name" => "Example Corporation",
         "Receiving Organisation Type" => "70",
-        "Description" => "Rent Payments",
       }
     end
 
@@ -380,7 +362,6 @@ RSpec.describe ImportTransactions do
         "Value" => "£5,000",
         "Receiving Organisation Name" => "Example Foundation",
         "Receiving Organisation Type" => "60",
-        "Description" => "Christmas Donation",
       }
     end
 
@@ -398,20 +379,20 @@ RSpec.describe ImportTransactions do
     end
 
     it "assigns each transaction to the correct report" do
-      expect(report.transactions.map(&:description).sort).to eq([
-        "Christmas Donation",
-        "Fees for Q3",
-        "Rent Payments",
-      ])
+      expect(report.transactions.pluck(:description)).to contain_exactly(
+        "Q4 1999-2000 spend on Example Project",
+        "Q4 1999-2000 spend on Sibling Project",
+        "Q4 1999-2000 spend on Sibling Project",
+      )
     end
 
     it "assigns each transaction to the correct activity" do
-      expect(project.transactions.map(&:description)).to eq([
-        "Rent Payments",
+      expect(project.transactions.pluck(:description)).to eq([
+        "Q4 1999-2000 spend on Example Project",
       ])
-      expect(sibling_project.transactions.map(&:description).sort).to eq([
-        "Christmas Donation",
-        "Fees for Q3",
+      expect(sibling_project.transactions.pluck(:description)).to eq([
+        "Q4 1999-2000 spend on Sibling Project",
+        "Q4 1999-2000 spend on Sibling Project",
       ])
     end
 

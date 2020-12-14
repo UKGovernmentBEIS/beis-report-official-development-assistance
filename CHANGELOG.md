@@ -446,6 +446,9 @@
 
 ## [unreleased]
 
+- Transaction importer sets Description automatically from report and project attributes
+- Transaction importer doesn't process Disbursement channel
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...HEAD
 [release-26]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...release-26
 [release-25]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...release-25
