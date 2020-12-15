@@ -289,6 +289,7 @@ module Activities
         attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
         attributes[:sector_category] = get_sector_category(attributes[:sector])
         attributes[:status] = infer_status(attributes)
+        attributes[:form_state] = "complete"
 
         attributes
       end

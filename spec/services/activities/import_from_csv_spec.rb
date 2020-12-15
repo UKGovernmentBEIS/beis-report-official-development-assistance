@@ -190,6 +190,13 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.implementing_organisations.first.reference).to eq(existing_activity_attributes["Implementing organisation reference"])
       expect(existing_activity.implementing_organisations.first.organisation_type).to eq(existing_activity_attributes["Implementing organisation sector"])
       expect(existing_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
+      expect(existing_activity.form_state).to eq "complete"
+    end
+
+    it "sets form_state to complete" do
+      subject.import([existing_activity_attributes])
+
+      expect(existing_activity.reload.form_state).to eq "complete"
     end
 
     it "ignores any blank columns" do
@@ -338,6 +345,13 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.accountable_organisation_name).to eq beis.name
       expect(new_activity.accountable_organisation_reference).to eq beis.iati_reference
       expect(new_activity.accountable_organisation_type).to eq beis.organisation_type
+    end
+
+    it "sets form_state to complete" do
+      subject.import([new_activity_attributes])
+
+      new_activity = Activity.order(:created_at).last
+      expect(new_activity.form_state).to eq "complete"
     end
 
     it "creates the associated implementing organisations" do

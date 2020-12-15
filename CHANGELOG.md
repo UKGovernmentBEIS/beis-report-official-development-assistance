@@ -439,6 +439,7 @@
 - Move CI tests to Github Actions
 - Activity importer sets BEIS as the funding and accountable organisation
 - Activity importer infers `status` from `programme_status`
+- Activity importer sets `form_state` to "complete" to ensure correct behaviour
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...HEAD
 [release-25]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...release-25
