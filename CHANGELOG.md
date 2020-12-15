@@ -437,6 +437,7 @@
 - Validation prevents to add a `planned_end_date` that is earlier than `planned_start_date`
 - Hint text for `fstc` modified
 - Move CI tests to Github Actions
+- Activity importer sets BEIS as the funding and accountable organisation
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...HEAD
 [release-25]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...release-25
