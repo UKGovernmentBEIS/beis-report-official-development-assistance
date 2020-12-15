@@ -438,6 +438,7 @@
 - Hint text for `fstc` modified
 - Move CI tests to Github Actions
 - Activity importer sets BEIS as the funding and accountable organisation
+- Activity importer infers `status` from `programme_status`
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...HEAD
 [release-25]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...release-25
