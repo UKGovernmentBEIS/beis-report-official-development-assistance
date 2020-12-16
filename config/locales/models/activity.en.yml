@@ -409,6 +409,7 @@ en:
               not_in_future: Actual start date must not be in the future
             planned_end_date:
               between: Date must be between %{min} years ago and %{max} years in the future
+              not_before_start_date: Planned end date must be after planned start date
             planned_start_date:
               between: Date must be between %{min} years ago and %{max} years in the future
             gdi:
