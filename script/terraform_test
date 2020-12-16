@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+cd terraform
+git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+export PATH="$HOME/.tfenv/bin:$PATH"
+tfenv install
+../install-terraform-provider-for-cf.sh
+terraform init
+terraform fmt  -diff -check -recursive
+terraform validate
