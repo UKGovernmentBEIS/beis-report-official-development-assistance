@@ -201,7 +201,7 @@ en:
           nutrition: This activity is intended to address the immediate or underlying determinants of malnutrition
         total_applications: You can enter 0 if this field is not applicable at the moment
         total_awards: You can enter 0 if this field is not applicable at the moment
-        fstc_applies: "<p>Free-standing technical co-operation is defined as financing of activities whose primary purpose is to augment the level of knowledge, skills, technical know-how or productive aptitudes of the population of developing countries.</p><ul><li>If aid type C01, please select FTC1 except in unusual circumstances</li><li>If aid type G01, please select FTC0 as the activity cannot have FTC.</li><li>If aid types E01 and D02, please select FTC1 as the activity must have FTC.</li></ul><p>This activity's aid type is <strong>%{aid_type}</strong></p>"
+        fstc_applies: "<p>Free-standing technical co-operation is defined as financing of activities whose primary purpose is to augment the level of knowledge, skills, technical know-how or productive aptitudes of the population of developing countries.</p><ul><li>If aid type C01, please select Yes except in unusual circumstances</li><li>If aid type G01, please select No as the activity cannot have FTC.</li><li>If aid types E01 and D02, please select Yes as the activity must have Free-Standing Technical Co-operation.</li></ul><p>This activity's aid type is <strong>%{aid_type}</strong></p>"
         options:
           aid_type:
             "B02": "These funds are classified as multilateral ODA. All other categories fall under bilateral ODA"
