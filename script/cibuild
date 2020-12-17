@@ -1,0 +1,5 @@
+#!/bin/sh
+
+set -e
+
+docker-compose -f docker-compose.test.yml run -e CI=true --rm test script/test

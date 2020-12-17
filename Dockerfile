@@ -104,7 +104,8 @@ CMD ["bundle", "exec", "puma"]
 # ------------------------------------------------------------------------------
 FROM web as test
 
-RUN apt-get install -qq -y firefox-esr
+RUN apt-get install -qq -y firefox-esr \
+  shellcheck
 
 ARG gecko_driver_version=0.26.0
 
@@ -113,5 +114,3 @@ RUN tar -xvzf  geckodriver-v$gecko_driver_version-linux64.tar.gz
 RUN rm geckodriver-v$gecko_driver_version-linux64.tar.gz
 RUN chmod +x geckodriver
 RUN mv geckodriver* /usr/local/bin
-
-CMD [ "bundle", "exec", "rake, default" ]

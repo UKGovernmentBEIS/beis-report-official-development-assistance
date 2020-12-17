@@ -6,17 +6,13 @@ services:
       target: test
       args:
         RAILS_ENV: test
-    entrypoint: bundle exec rails db:prepare default
     depends_on:
       - db
     environment:
-      DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: 'true'
+      DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
       DATABASE_URL: postgres://postgres:password@db:5432/roda_test
     env_file:
       - .env.test
-    volumes:
-      - .:/app:cached
-      - .node_modules:/deps/node_modules:cached
   db:
     image: postgres
     volumes:
