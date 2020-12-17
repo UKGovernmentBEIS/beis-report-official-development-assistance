@@ -1,0 +1,21 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set Docker tag environment variable
+        run: echo "DOCKER_TAG=${GITHUB_RUN_ID}-${GITHUB_SHA}" >> $GITHUB_ENV
+      - name: Tag and Push Docker Container
+        run: script/docker-push
