@@ -9,6 +9,7 @@ RSpec.describe Organisation, type: :model do
     it { should validate_presence_of(:iati_reference) }
 
     it { should validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
+    it { should validate_uniqueness_of(:name).ignoring_case_sensitivity }
 
     describe "sanitation" do
       it { should strip_attribute(:iati_reference) }

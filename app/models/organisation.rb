@@ -5,7 +5,10 @@ class Organisation < ApplicationRecord
   has_many :users
   has_many :funds
 
-  validates_presence_of :name, :organisation_type, :language_code, :default_currency
+  validates_presence_of :organisation_type, :language_code, :default_currency
+  validates :name,
+    presence: true,
+    uniqueness: {case_sensitive: false}
   validates :iati_reference,
     uniqueness: {case_sensitive: false},
     presence: true,
