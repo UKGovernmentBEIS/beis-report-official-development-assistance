@@ -12,7 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - id: cache-docker
+        uses: actions/cache@v2
+        with:
+          path: /tmp/docker-save
+          key: docker-save-${{ hashFiles('Dockerfile') }}
+      - name: Load cached Docker image
+        run: docker load -i /tmp/docker-save/snapshot.tar || true
+        if: steps.cache-docker.outputs.cache-hit == 'true'
       - name: Run tests
         run: script/cibuild
       - name: Test terraform scripts
         run: script/terraform_test
+      - name: Prepare Docker cache
+        run: mkdir -p /tmp/docker-save && docker save beis-report-official-development-assistance_test:latest -o /tmp/docker-save/snapshot.tar && ls -lh /tmp/docker-save
+        if: always() && steps.cache-docker.outputs.cache-hit != 'true'

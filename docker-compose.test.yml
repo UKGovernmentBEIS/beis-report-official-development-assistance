@@ -2,6 +2,8 @@ version: "3.7"
 services:
   test:
     build:
+      cache_from:
+        - beis-report-official-development-assistance_test:latest
       context: .
       target: test
       args:
