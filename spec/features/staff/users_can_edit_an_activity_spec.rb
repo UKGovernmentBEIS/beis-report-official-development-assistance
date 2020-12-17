@@ -386,6 +386,22 @@ RSpec.feature "Users can edit an activity" do
           end
         end
       end
+
+      it "shows an error message when the user enters an invalid date" do
+        activity = create(:project_activity, organisation: user.organisation, planned_start_date: Date.parse("2020-01-01"), actual_start_date: nil)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
+
+        visit organisation_activity_details_path(activity.organisation, activity)
+
+        within(".planned_start_date") do
+          click_on(t("default.link.edit"))
+        end
+
+        fill_in "activity[planned_start_date(2i)]", with: "15"
+
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.planned_start_date.invalid")
+      end
     end
 
     context "when the activity is a third-party project" do

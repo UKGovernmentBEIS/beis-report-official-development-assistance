@@ -208,7 +208,8 @@ RSpec.feature "Users can create a fund level activity" do
         fill_in "activity[planned_end_date(1i)]", with: 2010
         click_button t("form.button.activity.submit")
 
-        expect(page).to have_content t("activerecord.errors.models.activity.attributes.dates")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.planned_start_date.invalid")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.planned_end_date.invalid")
 
         fill_in "activity[planned_start_date(3i)]", with: 1
         fill_in "activity[planned_start_date(2i)]", with: 12
