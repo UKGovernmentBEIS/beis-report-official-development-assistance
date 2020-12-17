@@ -1,56 +1,19 @@
 language: minimal
 services:
-- docker
+  - docker
 before_install:
-- docker build . --target test --build-arg RAILS_ENV=test -t app/test
-jobs:
-  include:
-  - stage: Test
-    name: Build and test the current version of the application using Docker
-    env:
-    - RAILS_ENV=test
-    script: |
-      set -eu
-      docker network create test
-      docker run -d --name pg --network test -p 5432:5432 postgres:11.6
-      docker run \
-        --network test \
-        -e RAILS_ENV=test \
-        -e DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL=true \
-        -e DATABASE_URL=postgres://postgres@pg:5432/roda_test \
-        -e TRAVIS="$TRAVIS" \
-        -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" \
-        -e TRAVIS_BRANCH="$TRAVIS_BRANCH" \
-        -e TRAVIS_PULL_REQUEST="$TRAVIS_PULL_REQUEST" \
-        -e COVERALLS_SERVICE_NAME=travis-ci \
-        -e COVERALLS_REPO_TOKEN="$COVERALLS_REPO_TOKEN" \
-        -e CI=true \
-        --env-file .env.test \
-        app/test /bin/bash -c "set -eu; bundle exec rake; bundle exec brakeman"
-      echo "==== testing terrafrom ===="
-      cd terraform
-      git clone https://github.com/tfutils/tfenv.git ~/.tfenv
-      export PATH="$HOME/.tfenv/bin:$PATH"
-      tfenv install
-      ../install-terraform-provider-for-cf.sh
-      terraform init
-      terraform fmt  -diff -check -recursive
-      terraform validate
-      cd ..
-      echo "==== linting our shell scripts ===="
-      bash -c 'shopt -s globstar nullglob; shellcheck **/*.{sh,ksh,bash}'
-      set +eu
+  - docker build . --target test --build-arg RAILS_ENV=test -t app/test
 deploy:
-- provider: script
-  script: bash travis-docker-push.sh
-  on:
-    all_branches: true
-    condition: "$TRAVIS_BRANCH =~ ^(develop|master|hotfix)"
-- provider: script
-  script: bash deploy-terraform.sh
-  on:
-    all_branches: true
-    condition: "$TRAVIS_BRANCH =~ ^(develop|master)$"
+  - provider: script
+    script: bash travis-docker-push.sh
+    on:
+      all_branches: true
+      condition: "$TRAVIS_BRANCH =~ ^(develop|master|hotfix)"
+  - provider: script
+    script: bash deploy-terraform.sh
+    on:
+      all_branches: true
+      condition: "$TRAVIS_BRANCH =~ ^(develop|master)$"
 env:
   global:
     secure: mBNvcyOEhYVAbbUJL4sXvwU6RM9LgFLAaEq/B5VKhUSOSKWvcYYInk5qWOldMF79aE8mC7JsOi5D4AC6fvPEEU2aM9N5jcvoNyR5FEKg80ltgK8GE8NwrzqjD3shS2IhFtKdBN1PI/vDxAtIJqefQ8eSy2/FwdpN/aB06QDGjEy5ye2dh/A4YH5fAz1W9lncFI8zr7ZdPC5N7FG6DkNCVju9wfqwzyHCQabuJ3iKvq3dxBaRvJgrIi6I2QVHV9ieWARuI5CHgYQWwm2VPVW5vUhrZ3ZaefD5qJZ4Bp+NzlnDH7frCjuDpPrCiNI6wYrbOxj4LFVDAWl9dMYcZ9BY6DNQjeTtSt9qLCgG6csBsTf9RHR5THz3zreChEyf/+iJvBqyh9XdSNj/ZtEDFAM4z4LTsyQy7VlxyjLoO+oYOONzQP/y4EOmELJ7YPvB6bZmazJ2Rpix91svlBmaxtcx63W0aZa8yqqzJ5n6mPdIIBnMQOlNkofUSapaKJRceMcVqHk/5EqjUG7ETTf8eohrfLqrHP/S344NPNCDMHmTIoWd4QL7K9E0IeAinBUOa8RfN4A3SfXvouOPvfZGqCjmciAsQi2r024EqZ/c39xu1BQDLIm+LZ9ThMBimi2u7yZV7W4ijoY7DRae3mgzqGxnHxEmWhtDMWWnEujfR2BM4oY= # Coveralls.io READ_TOKEN
