@@ -86,7 +86,7 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
   end
 
   private def pre_fill_financial_quarter_and_year
-    @planned_disbursement.financial_quarter = FinancialPeriod.current_quarter_string
-    @planned_disbursement.financial_year = FinancialPeriod.current_year_string
+    @planned_disbursement.financial_quarter = FinancialPeriod.current_financial_quarter
+    @planned_disbursement.financial_year = FinancialPeriod.current_financial_year
   end
 end
