@@ -28,7 +28,7 @@ RSpec.describe Activities::ImportFromCsv do
       "SDG 2" => "2",
       "SDG 3" => "3",
       "Covid-19 related research" => "0",
-      "ODA Eligibility" => "never_eligible",
+      "ODA Eligibility" => "0",
       "ODA Eligibility Lead" => "Bruce Wayne",
       "Newton Fund Pillar" => "1",
       "Activity Status" => "1",
@@ -522,7 +522,7 @@ RSpec.describe Activities::ImportFromCsv do
     end
 
     it "has an error if the ODA Eligibility option is invalid" do
-      new_activity_attributes["ODA Eligibility"] = "some_invalid_string"
+      new_activity_attributes["ODA Eligibility"] = "789"
 
       expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
@@ -533,7 +533,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.csv_row).to eq(2)
       expect(subject.errors.first.csv_column).to eq("ODA Eligibility")
       expect(subject.errors.first.column).to eq(:oda_eligibility)
-      expect(subject.errors.first.value).to eq("some_invalid_string")
+      expect(subject.errors.first.value).to eq("789")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_oda_eligibility"))
     end
 
