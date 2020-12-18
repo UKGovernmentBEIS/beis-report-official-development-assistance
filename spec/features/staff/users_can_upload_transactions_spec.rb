@@ -24,7 +24,7 @@ RSpec.feature "users can upload transactions" do
 
     rows = CSV.parse(page.body, headers: true).map(&:to_h)
 
-    expect(rows).to eq([
+    expect(rows).to match_array([
       {
         "Activity Name" => project.title,
         "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
