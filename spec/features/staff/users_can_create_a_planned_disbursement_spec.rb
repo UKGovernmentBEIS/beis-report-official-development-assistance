@@ -109,6 +109,25 @@ RSpec.describe "Users can create a planned disbursement" do
 
       expect(page).to have_content t("activerecord.errors.models.planned_disbursement.attributes.financial_quarter.in_the_past")
     end
+
+    scenario "they receive an error message if the value is not a valid number" do
+      project = create(:project_activity, :with_report, organisation: user.organisation)
+      visit activities_path
+      click_on project.title
+
+      click_on t("page_content.planned_disbursements.button.create")
+
+      report = Report.editable_for_activity(project)
+      year = report.financial_year
+
+      fill_in_planned_disbursement_form(
+        financial_quarter: "Q#{report.financial_quarter}",
+        financial_year: "#{year + 1}-#{year + 2}",
+        value: ""
+      )
+
+      expect(page).to have_content t("activerecord.errors.models.planned_disbursement.attributes.value.not_a_number")
+    end
   end
 
   context "when signed in as a beis user" do
