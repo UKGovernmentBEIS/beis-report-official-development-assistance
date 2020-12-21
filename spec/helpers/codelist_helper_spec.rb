@@ -228,6 +228,18 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.last.name).to eq("Zimbabwe")
       end
     end
+
+    describe "#oda_eligibility_radio_options" do
+      it "returns the radio options and hints for ODA eligibility" do
+        options = helper.oda_eligibility_radio_options
+
+        expect(options.length).to eq 3
+        expect(options.first.label).to eq("No - was never eligible")
+        expect(options.first.description).to eq("The activity was reported as eligible but was actually never ODA eligible, this applies to past and future spend")
+        expect(options.last.label).to eq("No longer eligible")
+        expect(options.last.description).to eq("The activity used to be ODA eligible but no longer meets the OECD DAC rules for future spend")
+      end
+    end
   end
 
   describe "BEIS" do

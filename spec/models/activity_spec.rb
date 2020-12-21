@@ -416,6 +416,16 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when planned_end_date is not blank" do
+      let(:activity) { build(:activity) }
+
+      it "does not allow planned_end_date to be earlier than planned_start_date" do
+        activity = build(:activity, planned_start_date: Date.today, planned_end_date: Date.yesterday)
+        expect(activity.valid?).to be_falsey
+        expect(activity.errors[:planned_end_date]).to include "Planned end date must be after planned start date"
+      end
+    end
+
     context "when the actual_start_date is not blank" do
       it "allows todays date" do
         activity = build(:activity, actual_start_date: Date.today)

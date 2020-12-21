@@ -141,12 +141,11 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :country_delivery_partners
       @activity.assign_attributes(country_delivery_partners: country_delivery_partners)
     when :dates
-      @activity.assign_attributes(
-        planned_start_date: format_date(planned_start_date),
-        planned_end_date: format_date(planned_end_date),
-        actual_start_date: format_date(actual_start_date),
-        actual_end_date: format_date(actual_end_date),
-      )
+      assign_inputs_on_dates_step
+      if @activity.errors.present?
+        render_step :dates
+        return
+      end
     when :geography
       @activity.assign_attributes(geography: geography, recipient_region: nil, recipient_country: nil)
     when :region
@@ -282,24 +281,22 @@ class Staff::ActivityFormsController < Staff::BaseController
     params.require(:activity).permit(country_delivery_partners: []).fetch("country_delivery_partners", []).reject(&:blank?)
   end
 
-  def planned_start_date
-    planned_start_date = params.require(:activity).permit(:planned_start_date)
-    {day: planned_start_date["planned_start_date(3i)"], month: planned_start_date["planned_start_date(2i)"], year: planned_start_date["planned_start_date(1i)"]}
+  def extract_date_parts_for(date_attr)
+    date_params = params.require(:activity).permit(date_attr)
+    {day: date_params["#{date_attr}(3i)"], month: date_params["#{date_attr}(2i)"], year: date_params["#{date_attr}(1i)"]}
   end
 
-  def planned_end_date
-    planned_end_date = params.require(:activity).permit(:planned_end_date)
-    {day: planned_end_date["planned_end_date(3i)"], month: planned_end_date["planned_end_date(2i)"], year: planned_end_date["planned_end_date(1i)"]}
-  end
-
-  def actual_start_date
-    actual_start_date = params.require(:activity).permit(:actual_start_date)
-    {day: actual_start_date["actual_start_date(3i)"], month: actual_start_date["actual_start_date(2i)"], year: actual_start_date["actual_start_date(1i)"]}
-  end
-
-  def actual_end_date
-    actual_end_date = params.require(:activity).permit(:actual_end_date)
-    {day: actual_end_date["actual_end_date(3i)"], month: actual_end_date["actual_end_date(2i)"], year: actual_end_date["actual_end_date(1i)"]}
+  def assign_inputs_on_dates_step
+    %i[
+      planned_start_date
+      planned_end_date
+      actual_start_date
+      actual_end_date
+    ].each do |date_attr|
+      @activity.assign_attributes(date_attr => validated_date(extract_date_parts_for(date_attr)))
+    rescue InvalidDateError
+      @activity.errors.add(date_attr, t("activerecord.errors.models.activity.attributes.#{date_attr}.invalid"))
+    end
   end
 
   def geography

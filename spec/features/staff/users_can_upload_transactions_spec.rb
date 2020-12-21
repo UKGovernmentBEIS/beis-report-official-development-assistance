@@ -24,7 +24,7 @@ RSpec.feature "users can upload transactions" do
 
     rows = CSV.parse(page.body, headers: true).map(&:to_h)
 
-    expect(rows).to eq([
+    expect(rows).to match_array([
       {
         "Activity Name" => project.title,
         "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
@@ -103,6 +103,32 @@ RSpec.feature "users can upload transactions" do
       expect(page).to have_xpath("td[2]", text: "3")
       expect(page).to have_xpath("td[3]", text: "5")
       expect(page).to have_xpath("td[4]", text: t("importer.errors.transaction.invalid_iati_disbursement_channel"))
+    end
+  end
+
+  scenario "uploading a set of transactions with encoding errors" do
+    ids = [project, sibling_project].map(&:roda_identifier)
+
+    upload_csv <<~CSV
+      Activity RODA Identifier | Date       | Value  | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel | Description
+      #{ids[0]}                | 2020-04-01 | �20    | Example University          | 80                          |                                       | 4                    |
+      #{ids[1]}                | 2020-04-02 | �30    | Example Foundation          | 60                          |                                       | 4                    |
+    CSV
+
+    expect(Transaction.count).to eq(0)
+
+    within "//tbody/tr[1]" do
+      expect(page).to have_xpath("td[1]", text: "Value")
+      expect(page).to have_xpath("td[2]", text: "2")
+      expect(page).to have_xpath("td[3]", text: "�20")
+      expect(page).to have_xpath("td[4]", text: I18n.t("importer.errors.transaction.invalid_characters"))
+    end
+
+    within "//tbody/tr[2]" do
+      expect(page).to have_xpath("td[1]", text: "Value")
+      expect(page).to have_xpath("td[2]", text: "3")
+      expect(page).to have_xpath("td[3]", text: "�30")
+      expect(page).to have_xpath("td[4]", text: I18n.t("importer.errors.transaction.invalid_characters"))
     end
   end
 

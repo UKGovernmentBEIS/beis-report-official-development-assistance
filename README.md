@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/UKGovernmentBEIS/beis-report-official-development-assistance.svg?branch=develop)](https://travis-ci.org/UKGovernmentBEIS/beis-report-official-development-assistance)
+[![Build Status](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/workflows/CI/badge.svg?branch=develop))](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/actions?query=branch%3Adevelop)
 [![Coverage Status](https://coveralls.io/repos/github/UKGovernmentBEIS/beis-report-official-development-assistance/badge.svg?branch=develop)](https://coveralls.io/github/UKGovernmentBEIS/beis-report-official-development-assistance?branch=develop)
 
 # Report Official Development Assistance (RODA)

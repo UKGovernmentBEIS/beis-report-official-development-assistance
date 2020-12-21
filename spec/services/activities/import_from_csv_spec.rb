@@ -28,7 +28,7 @@ RSpec.describe Activities::ImportFromCsv do
       "SDG 2" => "2",
       "SDG 3" => "3",
       "Covid-19 related research" => "0",
-      "ODA Eligibility" => "never_eligible",
+      "ODA Eligibility" => "0",
       "ODA Eligibility Lead" => "Bruce Wayne",
       "Newton Fund Pillar" => "1",
       "Activity Status" => "1",
@@ -158,6 +158,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.oda_eligibility).to eq("never_eligible")
       expect(existing_activity.oda_eligibility_lead).to eq(existing_activity_attributes["ODA Eligibility Lead"])
       expect(existing_activity.programme_status).to eq("delivery")
+      expect(existing_activity.status).to eq("2")
       expect(existing_activity.call_open_date).to eq(DateTime.parse(existing_activity_attributes["Call open date"]))
       expect(existing_activity.call_close_date).to eq(DateTime.parse(existing_activity_attributes["Call close date"]))
       expect(existing_activity.planned_start_date).to eq(DateTime.parse(existing_activity_attributes["Planned start date"]))
@@ -189,6 +190,13 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.implementing_organisations.first.reference).to eq(existing_activity_attributes["Implementing organisation reference"])
       expect(existing_activity.implementing_organisations.first.organisation_type).to eq(existing_activity_attributes["Implementing organisation sector"])
       expect(existing_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
+      expect(existing_activity.form_state).to eq "complete"
+    end
+
+    it "sets form_state to complete" do
+      subject.import([existing_activity_attributes])
+
+      expect(existing_activity.reload.form_state).to eq "complete"
     end
 
     it "ignores any blank columns" do
@@ -294,6 +302,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.oda_eligibility).to eq("never_eligible")
       expect(new_activity.oda_eligibility_lead).to eq(new_activity_attributes["ODA Eligibility Lead"])
       expect(new_activity.programme_status).to eq("delivery")
+      expect(new_activity.status).to eq("2")
       expect(new_activity.fund_pillar).to eq(new_activity_attributes["Newton Fund Pillar"].to_i)
       expect(new_activity.call_open_date).to eq(DateTime.parse(new_activity_attributes["Call open date"]))
       expect(new_activity.call_close_date).to eq(DateTime.parse(new_activity_attributes["Call close date"]))
@@ -313,6 +322,36 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.beis_id).to eq(new_activity_attributes["BEIS ID"])
       expect(new_activity.uk_dp_named_contact).to eq(new_activity_attributes["UK DP Named Contact (NF)"])
       expect(new_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
+    end
+
+    it "sets BEIS as the funding organisation" do
+      beis = create(:beis_organisation)
+
+      subject.import([new_activity_attributes])
+
+      new_activity = Activity.order(:created_at).last
+
+      expect(new_activity.funding_organisation_name).to eq beis.name
+      expect(new_activity.funding_organisation_reference).to eq beis.iati_reference
+      expect(new_activity.funding_organisation_type).to eq beis.organisation_type
+    end
+
+    it "sets BEIS as the accountable organisation" do
+      beis = create(:beis_organisation)
+
+      subject.import([new_activity_attributes])
+
+      new_activity = Activity.order(:created_at).last
+      expect(new_activity.accountable_organisation_name).to eq beis.name
+      expect(new_activity.accountable_organisation_reference).to eq beis.iati_reference
+      expect(new_activity.accountable_organisation_type).to eq beis.organisation_type
+    end
+
+    it "sets form_state to complete" do
+      subject.import([new_activity_attributes])
+
+      new_activity = Activity.order(:created_at).last
+      expect(new_activity.form_state).to eq "complete"
     end
 
     it "creates the associated implementing organisations" do
@@ -483,7 +522,7 @@ RSpec.describe Activities::ImportFromCsv do
     end
 
     it "has an error if the ODA Eligibility option is invalid" do
-      new_activity_attributes["ODA Eligibility"] = "some_invalid_string"
+      new_activity_attributes["ODA Eligibility"] = "789"
 
       expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
@@ -494,7 +533,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.csv_row).to eq(2)
       expect(subject.errors.first.csv_column).to eq("ODA Eligibility")
       expect(subject.errors.first.column).to eq(:oda_eligibility)
-      expect(subject.errors.first.value).to eq("some_invalid_string")
+      expect(subject.errors.first.value).to eq("789")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_oda_eligibility"))
     end
 

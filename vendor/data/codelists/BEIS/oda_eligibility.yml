@@ -1,15 +1,11 @@
 ---
-attributes:
-  category-codelist:
-  name: OdaEligibility
-  complete: '1'
 data:
-  - code: never_eligible
+  - code: 0
     name: No - was never eligible
     description: The activity was reported as eligible but was actually never ODA eligible, this applies to past and future spend
-  - code: eligible
+  - code: 1
     name: Eligible
     description: The activity adheres to the OECD DAC rules for ODA Eligibility
-  - code: no_longer_eligible
+  - code: 2
     name: No longer eligible
     description: The activity used to be ODA eligible but no longer meets the OECD DAC rules for future spend

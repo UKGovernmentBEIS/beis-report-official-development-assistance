@@ -49,7 +49,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "foreman"
-  gem "i18n-tasks", "~> 0.9.31"
+  gem "i18n-tasks", "~> 0.9.32"
   gem "rspec-rails"
   gem "standard"
 end
@@ -76,7 +76,7 @@ group :test do
   gem "rails-controller-testing"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
-  gem "webmock", "~> 3.10"
+  gem "webmock", "~> 3.11"
 end
 
 group :production do
