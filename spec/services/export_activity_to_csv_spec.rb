@@ -2,7 +2,7 @@ require "rails_helper"
 require "csv"
 
 RSpec.describe ExportActivityToCsv do
-  let(:project) { travel_to(Date.parse("1 April 2020")) { create(:project_activity, :with_report) } }
+  let(:project) { travel_to_quarter(1, 2020) { create(:project_activity, :with_report) } }
   let(:report) { Report.for_activity(project).first }
 
   describe "#call" do
@@ -24,7 +24,7 @@ RSpec.describe ExportActivityToCsv do
       fund = report.fund
       organisation = report.organisation
 
-      travel_to(Date.parse("1 January 2020")) { Report.create(fund: fund, organisation: organisation) }
+      travel_to_quarter(4, 2019) { Report.create(fund: fund, organisation: organisation) }
 
       export_service = ExportActivityToCsv.new(activity: project, report: report)
 
@@ -76,7 +76,7 @@ RSpec.describe ExportActivityToCsv do
       organisation = report.organisation
       report.approved!
 
-      travel_to(Date.parse("1 January 2020")) do
+      travel_to_quarter(4, 2019) do
         previous_report = Report.create(fund: fund, organisation: organisation, state: :active)
         create(:transaction, report: previous_report, parent_activity: project, value: 9876.54)
       end
@@ -111,7 +111,7 @@ RSpec.describe ExportActivityToCsv do
     end
 
     it "uses the current report financial quarter to generate the forecast total column" do
-      report = travel_to(Date.parse("1 April 2020")) { Report.new }
+      report = travel_to_quarter(1, 2020) { Report.new }
 
       headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
@@ -119,7 +119,7 @@ RSpec.describe ExportActivityToCsv do
     end
 
     it "includes the next twelve financial quarters as headers" do
-      report = travel_to(Date.parse("1 April 2020")) { Report.new }
+      report = travel_to_quarter(1, 2020) { Report.new }
 
       headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
@@ -134,8 +134,8 @@ RSpec.describe ExportActivityToCsv do
       fund = create(:fund_activity)
       organisation = create(:delivery_partner_organisation)
 
-      _previous_report = travel_to(Date.parse("1 January 2020")) { Report.new(fund: fund, organisation: organisation).save! }
-      report = travel_to(Date.parse("1 April 2020")) { Report.new(fund: fund, organisation: organisation) }
+      _previous_report = travel_to_quarter(4, 2019) { Report.new(fund: fund, organisation: organisation).save! }
+      report = travel_to_quarter(1, 2020) { Report.new(fund: fund, organisation: organisation) }
 
       headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
