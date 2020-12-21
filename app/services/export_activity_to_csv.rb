@@ -9,11 +9,21 @@ class ExportActivityToCsv
   end
 
   def call
-    columns.values.map(&:call).concat(next_twelve_quarter_forecasts).to_csv
+    values = columns.values.map(&:call)
+    values = values.push(previous_quarter_actuals) if previous_report.present?
+    values = values.concat(next_twelve_quarter_forecasts)
+    values.to_csv
   end
 
   def headers
-    columns.keys.concat(next_twelve_financial_quarters).to_csv
+    values = columns.keys
+    values = values.push(previous_quarter_actuals_header) if previous_report.present?
+    values = values.concat(next_twelve_quarter_forecasts_headers)
+    values.to_csv
+  end
+
+  def previous_quarter_actuals
+    activity_presenter.actual_total_for_report_financial_quarter(report: previous_report)
   end
 
   def next_twelve_quarter_forecasts
@@ -22,10 +32,6 @@ class ExportActivityToCsv
       value = overview.snapshot(report_presenter).value_for(financial_quarter: quarter, financial_year: year)
       "%.2f" % value
     end
-  end
-
-  private def next_twelve_financial_quarters
-    report_presenter.next_twelve_financial_quarters.map { |quarter, year| "Q#{quarter} #{year}" }
   end
 
   private def columns
@@ -117,5 +123,17 @@ class ExportActivityToCsv
 
   private def actuals_header
     report_financial_quarter ? report_financial_quarter + " actuals" : "Actuals"
+  end
+
+  private def previous_report
+    @_previous_report ||= report.previous
+  end
+
+  private def previous_quarter_actuals_header
+    "Q#{previous_report.financial_quarter} #{previous_report.financial_year}-#{previous_report.financial_year + 1} actuals"
+  end
+
+  private def next_twelve_quarter_forecasts_headers
+    report_presenter.next_twelve_financial_quarters.map { |quarter, year| "Q#{quarter} #{year}" }
   end
 end
