@@ -80,6 +80,35 @@ RSpec.describe "Users can create a planned disbursement" do
       planned_disbursement = PlannedDisbursement.last
       expect(planned_disbursement.report).to eq(report)
     end
+
+    scenario "they cannot add a planned disbursement when no editable report exists" do
+      project = create(:project_activity, :with_report, organisation: user.organisation)
+      Report.update_all(state: :approved)
+
+      visit activities_path
+      click_on project.title
+
+      expect(page).to have_content t("page_content.activity.planned_disbursements")
+      expect(page).not_to have_link t("page_content.planned_disbursements.button.create")
+    end
+
+    scenario "they receive an error message if the forecast is not in the future" do
+      project = create(:project_activity, :with_report, organisation: user.organisation)
+      visit activities_path
+      click_on project.title
+
+      click_on t("page_content.planned_disbursements.button.create")
+
+      report = Report.editable_for_activity(project)
+      year = report.financial_year
+
+      fill_in_planned_disbursement_form(
+        financial_quarter: "Q1",
+        financial_year: "#{year}-#{year + 1}"
+      )
+
+      expect(page).to have_content t("activerecord.errors.models.planned_disbursement.attributes.financial_quarter.in_the_past")
+    end
   end
 
   context "when signed in as a beis user" do

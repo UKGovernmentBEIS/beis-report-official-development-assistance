@@ -15,7 +15,16 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
     authorize @activity
 
     history = history_for_create
-    history.set_value(planned_disbursement_params[:value])
+
+    begin
+      history.set_value(planned_disbursement_params[:value])
+    rescue PlannedDisbursementHistory::SequenceError
+      @planned_disbursement = PlannedDisbursement.new(planned_disbursement_params)
+      @planned_disbursement.parent_activity = @activity
+      @planned_disbursement.errors.add(:financial_quarter, :in_the_past)
+      render :new
+      return
+    end
 
     flash[:notice] = t("action.planned_disbursement.create.success")
     redirect_to organisation_activity_path(@activity.organisation, @activity)
