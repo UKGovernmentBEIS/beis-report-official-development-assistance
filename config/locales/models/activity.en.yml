@@ -401,17 +401,21 @@ en:
             actual_end_date:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_in_future: Actual end date must not be in the future
+              invalid: Please enter a valid date
             country_delivery_partners:
               blank: Enter at least one country delivery partner
             dates: Enter an actual start date or a planned start date for the activity
             actual_start_date:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_in_future: Actual start date must not be in the future
+              invalid: Please enter a valid date
             planned_end_date:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_before_start_date: Planned end date must be after planned start date
+              invalid: Please enter a valid date
             planned_start_date:
               between: Date must be between %{min} years ago and %{max} years in the future
+              invalid: Please enter a valid date
             gdi:
               blank: Select an option for GDI
             intended_beneficiaries:

@@ -53,6 +53,49 @@ RSpec.feature "Users can create a project" do
         expect(activity.transparency_identifier).to eql("GB-GOV-13-#{programme.parent.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{activity.roda_identifier_fragment}")
       end
 
+      scenario "the activity date shows an error message if an invalid date is entered" do
+        programme = create(:programme_activity, extending_organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
+
+        visit organisation_activity_children_path(programme.organisation, programme)
+
+        click_on(t("page_content.organisation.button.create_activity"))
+        visit activities_path
+        click_on(t("page_content.organisation.button.create_activity"))
+
+        choose custom_capitalisation(t("page_content.activity.level.project"))
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("form.legend.activity.parent", parent_level: t("page_content.activity.level.programme", level: "programme"), level: t("page_content.activity.level.programme"))
+        expect(page).to have_content t("form.hint.activity.parent", parent_level: t("page_content.activity.level.programme"), level: t("page_content.activity.level.project"))
+        choose programme.title
+        click_button t("form.button.activity.submit")
+        fill_in "activity[delivery_partner_identifier]", with: "no-country-selected"
+        click_button t("form.button.activity.submit")
+        fill_in "activity[roda_identifier_fragment]", with: "roda-identifier"
+        click_button t("form.button.activity.submit")
+        fill_in "activity[title]", with: "My title"
+        fill_in "activity[description]", with: "My description"
+        click_button t("form.button.activity.submit")
+        fill_in "activity[objectives]", with: Faker::Lorem.paragraph
+        click_button t("form.button.activity.submit")
+        choose "Basic Education"
+        click_button t("form.button.activity.submit")
+        choose "School feeding"
+        click_button t("form.button.activity.submit")
+        choose "No"
+        click_button t("form.button.activity.submit")
+        choose "Delivery"
+        click_button t("form.button.activity.submit")
+        fill_in "activity[planned_start_date(3i)]", with: "01"
+        fill_in "activity[planned_start_date(2i)]", with: "12"
+        fill_in "activity[planned_start_date(1i)]", with: "2020"
+        fill_in "activity[planned_end_date(3i)]", with: "01"
+        fill_in "activity[planned_end_date(2i)]", with: "15"
+        fill_in "activity[planned_end_date(1i)]", with: "2021"
+        click_button t("form.button.activity.submit")
+        expect(page).to have_content t("activerecord.errors.models.activity.attributes.planned_end_date.invalid")
+      end
+
       scenario "project creation is tracked with public_activity" do
         programme = create(:programme_activity, extending_organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
