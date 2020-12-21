@@ -153,6 +153,12 @@ class ImportTransactions
       value = __send__(converter, value) if respond_to?(converter)
 
       value
+    rescue Encoding::CompatibilityError
+      @errors[attr_name] = [
+        original_value.force_encoding("UTF-8"),
+        I18n.t("importer.errors.transaction.invalid_characters"),
+      ]
+      nil
     rescue => error
       @errors[attr_name] = [original_value, error.message]
       nil
