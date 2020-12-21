@@ -400,11 +400,11 @@ module Activities
       end
 
       def convert_oda_eligibility(oda_eligibility)
-        validate_from_codelist(
-          oda_eligibility,
-          :oda_eligibility,
-          I18n.t("importer.errors.activity.invalid_oda_eligibility"),
-        )
+        option = Activity.oda_eligibilities.key(oda_eligibility.to_i)
+
+        raise I18n.t("importer.errors.activity.invalid_oda_eligibility") if option.nil?
+
+        option
       end
 
       def convert_programme_status(programme_status)

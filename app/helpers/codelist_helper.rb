@@ -173,6 +173,15 @@ module CodelistHelper
     }.compact.sort_by(&:code)
   end
 
+  def oda_eligibility_radio_options
+    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/oda_eligibility.yml"))
+
+    Activity.oda_eligibilities.map do |name, code|
+      options = yaml["data"].find { |d| d["code"] == code }
+      OpenStruct.new(value: name, label: options["name"], description: options["description"])
+    end
+  end
+
   def load_yaml(entity:, type:)
     yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/IATI/#{IATI_VERSION}/#{entity}/#{type}.yml"))
     yaml["data"]
