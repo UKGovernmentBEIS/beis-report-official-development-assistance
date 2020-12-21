@@ -42,6 +42,7 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 RSpec.configure do |config|
   config.include ActionView::Helpers::TranslationHelper
+  config.include ActiveSupport::Testing::TimeHelpers
 
   config.include AuthenticationHelpers
   config.include Auth0Helpers
@@ -49,6 +50,7 @@ RSpec.configure do |config|
   config.include FormHelpers
   config.include ActivityHelpers
   config.include StripAttributes::Matchers
+  config.include TimeTravelHelpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
