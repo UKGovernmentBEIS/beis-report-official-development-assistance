@@ -431,7 +431,7 @@
 - Updated version of sector codelist added to RODA
 - Activity importer handles missing implementing organisations
 
-## [unreleased]
+## [release-26] - 2020-12-21
 
 - Fix bug on option `stopped` for `programme_status`
 - Validation prevents to add a `planned_end_date` that is earlier than `planned_start_date`
@@ -444,7 +444,10 @@
 - Show error message when the user tries to enter an invalid date on the `dates` step. Covers `planned_start_date`, `planned_end_date`, `actual_start_date`, `actual_end_date`
 - Catch encoding errors when uploading Transactions with invalid characters
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...HEAD
+[release-26]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...release-26
 [release-25]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...release-25
 [release-24]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...release-24
 [release-23]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-22...release-23
