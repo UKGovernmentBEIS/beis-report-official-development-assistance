@@ -1,8 +1,8 @@
 = render layout: "wrapper" do |f|
   = f.hidden_field :oda_eligibility, value: nil
   = f.govuk_collection_radio_buttons :oda_eligibility,
-    yaml_to_objects_with_description(entity: "activity", type: "oda_eligibility"),
-    :code,
-    :name,
+    oda_eligibility_radio_options,
+    :value,
+    :label,
     :description,
     legend: { tag: 'h1', size: 'xl', text: t("form.legend.activity.oda_eligibility") }
