@@ -442,6 +442,7 @@
 - Activity importer sets `form_state` to "complete" to ensure correct behaviour
 - Organisation name must be unique
 - Show error message when the user tries to enter an invalid date on the `dates` step. Covers `planned_start_date`, `planned_end_date`, `actual_start_date`, `actual_end_date`
+- Catch encoding errors when uploading Transactions with invalid characters
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...HEAD
 [release-25]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...release-25
