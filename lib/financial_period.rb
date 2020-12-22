@@ -1,5 +1,6 @@
 module FinancialPeriod
   FINANCIAL_QUARTERS = (1..4).to_a
+
   def self.quarter_from_date(date)
     month = date.month
     case month
@@ -23,12 +24,12 @@ module FinancialPeriod
     (year - 1).to_s
   end
 
-  def self.current_quarter_string
-    quarter_from_date(Date.today).to_s
+  def self.current_financial_quarter
+    quarter_from_date(Date.today)
   end
 
-  def self.current_year_string
-    year_from_date(Date.today).to_s
+  def self.current_financial_year
+    year_from_date(Date.today)
   end
 
   def self.next_ten_years

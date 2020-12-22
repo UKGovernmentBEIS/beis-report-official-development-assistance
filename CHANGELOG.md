@@ -450,6 +450,7 @@
 - Transaction importer doesn't process Disbursement channel
 - Show error messages when the user tries to enter invalid values for a forecasted spend. Covers financial quarter being in the past and forecast value an invalid number
 - Transaction importer expects dates in `dd/mm/yyyy` format
+- Activity CSV export includes previous quarter's actuals where available
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...HEAD
 [release-26]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...release-26
