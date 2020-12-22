@@ -166,7 +166,7 @@ class ImportTransactions
 
     def convert_date(date)
       return nil unless date.present?
-      Date.iso8601(date)
+      Date.strptime(date, "%d/%m/%Y")
     rescue ArgumentError
       raise I18n.t("importer.errors.transaction.invalid_date")
     end

@@ -23,7 +23,7 @@ RSpec.describe ImportTransactions do
     let :transaction_row do
       {
         "Activity RODA Identifier" => project.roda_identifier,
-        "Date" => "2020-09-08",
+        "Date" => "8/9/2020",
         "Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
         "Receiving Organisation Type" => "80",
@@ -137,9 +137,9 @@ RSpec.describe ImportTransactions do
       end
     end
 
-    context "when the Date is not an existing date" do
+    context "when the Date is invalid" do
       let :transaction_row do
-        super().merge("Date" => "2020-04-31")
+        super().merge("Date" => "99/4/2020")
       end
 
       it "does not import any transactions" do
@@ -148,8 +148,20 @@ RSpec.describe ImportTransactions do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportTransactions::Error.new(0, "Date", "2020-04-31", t("importer.errors.transaction.invalid_date")),
+          ImportTransactions::Error.new(0, "Date", "99/4/2020", t("importer.errors.transaction.invalid_date")),
         ])
+      end
+
+      context "two-digit date" do
+        let :transaction_row do
+          super().merge("Date" => "21/10/15")
+        end
+
+        it "returns an error" do
+          expect(importer.errors).to eq([
+            ImportTransactions::Error.new(0, "Date", "21/10/15", t("activerecord.errors.models.transaction.attributes.date.between", min: 10, max: 25)),
+          ])
+        end
       end
     end
 
@@ -289,7 +301,7 @@ RSpec.describe ImportTransactions do
     let :first_transaction_row do
       {
         "Activity RODA Identifier" => sibling_project.roda_identifier,
-        "Date" => "2020-09-08",
+        "Date" => "8/9/2020",
         "Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
         "Receiving Organisation Type" => "80",
@@ -299,7 +311,7 @@ RSpec.describe ImportTransactions do
     let :second_transaction_row do
       {
         "Activity RODA Identifier" => project.roda_identifier,
-        "Date" => "2020-09-10",
+        "Date" => "10/9/2020",
         "Value" => "150.00",
         "Receiving Organisation Name" => "Example Corporation",
         "Receiving Organisation Type" => "70",
@@ -309,7 +321,7 @@ RSpec.describe ImportTransactions do
     let :third_transaction_row do
       {
         "Activity RODA Identifier" => sibling_project.roda_identifier,
-        "Date" => "2019-12-25",
+        "Date" => "25/12/2019",
         "Value" => "£5,000",
         "Receiving Organisation Name" => "Example Foundation",
         "Receiving Organisation Type" => "60",
@@ -369,7 +381,7 @@ RSpec.describe ImportTransactions do
       end
 
       let :third_transaction_row do
-        super().merge("Date" => 6.months.from_now.iso8601, "Value" => "0")
+        super().merge("Date" => 6.months.from_now.strftime("%-d/%-m/%Y"), "Value" => "0")
       end
 
       it "does not import any transactions" do
