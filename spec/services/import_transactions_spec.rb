@@ -151,6 +151,18 @@ RSpec.describe ImportTransactions do
           ImportTransactions::Error.new(0, "Date", "99/4/2020", t("importer.errors.transaction.invalid_date")),
         ])
       end
+
+      context "two-digit date" do
+        let :transaction_row do
+          super().merge("Date" => "21/10/15")
+        end
+
+        it "returns an error" do
+          expect(importer.errors).to eq([
+            ImportTransactions::Error.new(0, "Date", "21/10/15", t("activerecord.errors.models.transaction.attributes.date.between", min: 10, max: 25)),
+          ])
+        end
+      end
     end
 
     context "with additional formatting in the Value field" do
