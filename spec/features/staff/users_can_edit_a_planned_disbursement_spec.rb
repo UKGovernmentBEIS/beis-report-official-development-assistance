@@ -1,5 +1,5 @@
 RSpec.describe "Users can edit a planned disbursement" do
-  context "when signed in as a deivery partner" do
+  context "when signed in as a delivery partner" do
     let(:user) { create(:delivery_partner_user) }
 
     before { authenticate!(user: user) }
@@ -49,6 +49,24 @@ RSpec.describe "Users can edit a planned disbursement" do
 
       expect(page).not_to have_link t("default.link.edit"),
         href: edit_activity_planned_disbursements_path(activity, planned_disbursement.financial_year, planned_disbursement.financial_quarter)
+    end
+
+    scenario "they receive an error message if the value is not a valid number" do
+      organisation = user.organisation
+      project = create(:project_activity, organisation: user.organisation)
+      editable_report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
+      planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report, financial_year: editable_report.financial_year + 1)
+
+      visit organisation_activity_path(organisation, project)
+
+      within "##{planned_disbursement.id}" do
+        click_on "Edit"
+      end
+
+      fill_in "Forecasted spend amount", with: ""
+      click_button "Submit"
+
+      expect(page).to have_content t("activerecord.errors.models.planned_disbursement.attributes.value.not_a_number")
     end
 
     scenario "the action is recorded with public_activity" do
