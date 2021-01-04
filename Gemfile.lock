@@ -125,7 +125,7 @@ GEM
       redis (~> 4.1)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
-    ffi (1.13.1)
+    ffi (1.14.2)
     foreman (0.87.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -174,7 +174,7 @@ GEM
     launchy (2.5.0)
       addressable (~> 2.7)
     libv8 (8.4.255.0)
-    listen (3.3.3)
+    listen (3.4.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     lograge (0.11.2)
@@ -466,7 +466,7 @@ DEPENDENCIES
   ipaddr
   jbuilder (~> 2.10)
   launchy
-  listen (>= 3.0.5, < 3.4)
+  listen (>= 3.0.5, < 3.5)
   lograge
   mail-notify
   mini_racer
