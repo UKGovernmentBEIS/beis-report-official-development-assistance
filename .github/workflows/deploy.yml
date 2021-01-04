@@ -44,7 +44,7 @@ jobs:
           TF_VAR_google_tag_manager_environment_preview: ${{ secrets.STAGING_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW }}
         run: |
           script/deploy-terraform
-        if: ${{ github.ref == "refs/heads/develop" }}
+        if: github.ref == 'refs/heads/develop'
       - name: Deploy terraform to production
         env:
           TF_VAR_environment: "prod"
@@ -66,4 +66,4 @@ jobs:
           TF_VAR_google_tag_manager_environment_preview: ${{ secrets.PROD_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW }}
         run: |
           script/deploy-terraform
-        if: ${{ github.ref == "refs/heads/master" }}
+        if: github.ref == 'refs/heads/master'
