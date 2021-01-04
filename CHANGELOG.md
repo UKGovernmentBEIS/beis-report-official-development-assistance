@@ -456,6 +456,7 @@
 
 - SDGs on activity details page now shows `Not applicable` when the user selects this option on the form
 - Refactor away `funding organisation` field
+- Forecasted spend form always includes the current financial year
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-27...HEAD
 [release-27]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...release-27

@@ -81,7 +81,7 @@ RSpec.describe FinancialPeriod do
     end
   end
 
-  describe "#current_year" do
+  describe "#current_financial_year" do
     context "when it is the first, second or third financial quarter" do
       it "returns the current four digit year as a string" do
         dates = ["2019-05-03", "2019-08-15", "2019-10-03"]
@@ -97,6 +97,17 @@ RSpec.describe FinancialPeriod do
       it "returns the previous four digit year as a string" do
         travel_to Date.parse("2020-02-09") do
           expect(FinancialPeriod.current_financial_year).to eql "2019"
+        end
+      end
+    end
+  end
+
+  describe "#next_ten_years" do
+    it "returns the list of the next ten financial years including the current financial year" do
+      dates = ["2019-05-03", "2019-08-15", "2019-10-03", "2020-02-09"]
+      dates.each do |date|
+        travel_to Date.parse(date) do
+          expect(FinancialPeriod.next_ten_years).to eql [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028]
         end
       end
     end

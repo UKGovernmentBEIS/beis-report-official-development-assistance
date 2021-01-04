@@ -33,7 +33,7 @@ module FinancialPeriod
   end
 
   def self.next_ten_years
-    this_year = Date.today.year
+    this_year = current_financial_year.to_i
     tenth_year = this_year + 9
     (this_year..tenth_year).step.to_a
   end
