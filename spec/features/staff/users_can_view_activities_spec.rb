@@ -151,7 +151,7 @@ RSpec.feature "Users can view activities" do
 
     scenario "an activity can be viewed" do
       programme = create(:programme_activity, organisation: user.organisation)
-      activity = create(:project_activity, parent: programme, organisation: user.organisation, sdg_1: 5)
+      activity = create(:project_activity, parent: programme, organisation: user.organisation, sdgs_apply: true, sdg_1: 5)
 
       visit activities_path
 
