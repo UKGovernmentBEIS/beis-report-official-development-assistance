@@ -1303,6 +1303,13 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "#variance_for_report_financial_quarter" do
+    before do
+      start_of_third_quarter = Date.parse("2020-10-01")
+      travel_to start_of_third_quarter
+    end
+
+    after { travel_back }
+
     let(:project) { create(:project_activity) }
     let(:reporting_cycle) { ReportingCycle.new(project, 2, 2020) }
     let(:forecast) { PlannedDisbursementHistory.new(project, 3, 2020) }
