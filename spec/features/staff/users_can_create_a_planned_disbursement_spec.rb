@@ -93,6 +93,9 @@ RSpec.describe "Users can create a planned disbursement" do
     end
 
     scenario "they receive an error message if the forecast is not in the future" do
+      start_of_third_quarter = Date.parse("2020-10-01")
+      travel_to start_of_third_quarter
+
       project = create(:project_activity, :with_report, organisation: user.organisation)
       visit activities_path
       click_on project.title
@@ -108,6 +111,8 @@ RSpec.describe "Users can create a planned disbursement" do
       )
 
       expect(page).to have_content t("activerecord.errors.models.planned_disbursement.attributes.financial_quarter.in_the_past")
+
+      travel_back
     end
 
     scenario "they receive an error message if the value is not a valid number" do
