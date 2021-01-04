@@ -21,17 +21,31 @@ RSpec.describe "Users can create a planned disbursement" do
       expect(page).to have_content t("action.planned_disbursement.create.success")
     end
 
-    scenario "the current financial quarter and year are pre selected" do
-      project = create(:project_activity, :with_report, organisation: user.organisation)
-      first_quarter_2019_2020 = "2019-04-01".to_date
+    context "when we are in the first quarter" do
+      scenario "the current financial quarter and year are pre selected" do
+        travel_to_quarter(1, 2019) do
+          project = create(:project_activity, :with_report, organisation: user.organisation)
+          visit activities_path
+          click_on project.title
+          click_on t("page_content.planned_disbursements.button.create")
 
-      travel_to first_quarter_2019_2020 do
-        visit activities_path
-        click_on project.title
-        click_on t("page_content.planned_disbursements.button.create")
+          expect(page).to have_checked_field "Q1"
+          expect(page).to have_select "Financial year", selected: "2019-2020"
+        end
+      end
+    end
 
-        expect(page).to have_checked_field "Q1"
-        expect(page).to have_select "Financial year", selected: "2019-2020"
+    context "when we are in the fourth quarter" do
+      scenario "the current financial quarter and year are pre selected" do
+        travel_to_quarter(4, 2019) do
+          project = create(:project_activity, :with_report, organisation: user.organisation)
+          visit activities_path
+          click_on project.title
+          click_on t("page_content.planned_disbursements.button.create")
+
+          expect(page).to have_checked_field "Q4"
+          expect(page).to have_select "Financial year", selected: "2019-2020"
+        end
       end
     end
 
