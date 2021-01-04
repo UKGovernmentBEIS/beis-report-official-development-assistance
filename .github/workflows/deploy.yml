@@ -9,6 +9,10 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  CF_USER: ${{ secrets.CF_USER }}
+  CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
   deploy:
@@ -19,3 +23,47 @@ jobs:
         run: echo "DOCKER_TAG=${GITHUB_RUN_ID}-${GITHUB_SHA}" >> $GITHUB_ENV
       - name: Tag and Push Docker Container
         run: script/docker-push
+      - name: Deploy terraform to staging
+        env:
+          TF_VAR_environment: "staging"
+          TF_VAR_data_migrate: ${{ secrets.STAGING_DATA_MIGRATE }}
+          TF_VAR_secret_key_base: ${{ secrets.STAGING_SECRET_KEY_BASE }}
+          TF_VAR_auth0_client_id: ${{ secrets.STAGING_AUTH0_CLIENT_ID }}
+          TF_VAR_auth0_client_secret: ${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}
+          TF_VAR_auth0_domain: ${{ secrets.STAGING_AUTH0_DOMAIN }}
+          TF_VAR_notify_key: ${{ secrets.STAGING_NOTIFY_KEY }}
+          TF_VAR_notify_welcome_email_template: ${{ secrets.STAGING_NOTIFY_WELCOME_EMAIL_TEMPLATE }}
+          TF_VAR_rollbar_access_token: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
+          TF_VAR_skylight_access_token: ${{ secrets.SKYLIGHT_ACCESS_TOKEN }}
+          TF_VAR_skylight_env: ${{ secrets.SKYLIGHT_ENV }}
+          TF_VAR_skylight_enable_sidekiq: ${{ secrets.SKYLIGHT_ENABLE_SIDEKIQ }}
+          TF_VAR_domain: ${{ secrets.STAGING_DOMAIN }}
+          TF_VAR_papertrail_destination: ${{ secrets.STAGING_PAPERTRAIL_DESTINATION }}
+          TF_VAR_google_tag_manager_container_id: ${{ secrets.STAGING_GOOGLE_TAG_MANAGER_CONTAINER_ID }}
+          TF_VAR_google_tag_manager_environment_auth: ${{ secrets.STAGING_GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH }}
+          TF_VAR_google_tag_manager_environment_preview: ${{ secrets.STAGING_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW }}
+        run: |
+          script/deploy-terraform
+        if: ${{ github.ref == "refs/heads/develop" }}
+      - name: Deploy terraform to production
+        env:
+          TF_VAR_environment: "prod"
+          TF_VAR_data_migrate: ${{ secrets.PROD_DATA_MIGRATE }}
+          TF_VAR_secret_key_base: ${{ secrets.PROD_SECRET_KEY_BASE }}
+          TF_VAR_auth0_client_id: ${{ secrets.PROD_AUTH0_CLIENT_ID }}
+          TF_VAR_auth0_client_secret: ${{ secrets.PROD_AUTH0_CLIENT_SECRET }}
+          TF_VAR_auth0_domain: ${{ secrets.PROD_AUTH0_DOMAIN }}
+          TF_VAR_notify_key: ${{ secrets.PROD_NOTIFY_KEY }}
+          TF_VAR_notify_welcome_email_template: ${{ secrets.PROD_NOTIFY_WELCOME_EMAIL_TEMPLATE }}
+          TF_VAR_rollbar_access_token: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
+          TF_VAR_skylight_access_token: ${{ secrets.SKYLIGHT_ACCESS_TOKEN }}
+          TF_VAR_skylight_env: ${{ secrets.SKYLIGHT_ENV }}
+          TF_VAR_skylight_enable_sidekiq: ${{ secrets.SKYLIGHT_ENABLE_SIDEKIQ }}
+          TF_VAR_domain: ${{ secrets.PROD_DOMAIN }}
+          TF_VAR_papertrail_destination: ${{ secrets.PROD_PAPERTRAIL_DESTINATION }}
+          TF_VAR_google_tag_manager_container_id: ${{ secrets.PROD_GOOGLE_TAG_MANAGER_CONTAINER_ID }}
+          TF_VAR_google_tag_manager_environment_auth: ${{ secrets.PROD_GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH }}
+          TF_VAR_google_tag_manager_environment_preview: ${{ secrets.PROD_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW }}
+        run: |
+          script/deploy-terraform
+        if: ${{ github.ref == "refs/heads/master" }}
