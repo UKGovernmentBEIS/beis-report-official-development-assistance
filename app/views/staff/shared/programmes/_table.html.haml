@@ -9,8 +9,6 @@
         = t("table.header.programme.identifier")
       %th.govuk-table__header
         =t("table.header.programme.fund")
-      %th.govuk-table__header
-        =t("summary.label.activity.stage")
 
   %tbody.govuk-table__body
     - programmes.each do |programme|
@@ -18,10 +16,3 @@
         %td.govuk-table__cell= link_to programme.display_title, organisation_activity_path(programme.organisation, programme), class: "govuk-link govuk-link--no-visited-state"
         %td.govuk-table__cell= programme.delivery_partner_identifier
         %td.govuk-table__cell= programme.parent_title
-        %td.govuk-table__cell
-          - if programme.form_steps_completed?
-            %strong.govuk-tag.govuk-tag--green
-              = t("summary.label.activity.form_state.complete")
-          - else
-            %strong.govuk-tag.govuk-tag--yellow
-              = t("summary.label.activity.form_state.incomplete")
