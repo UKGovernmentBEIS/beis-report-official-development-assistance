@@ -209,12 +209,6 @@ class Activity < ApplicationRecord
     organisation.default_currency
   end
 
-  def has_funding_organisation?
-    funding_organisation_reference.present? &&
-      funding_organisation_name.present? &&
-      funding_organisation_type.present?
-  end
-
   def has_accountable_organisation?
     accountable_organisation_reference.present? &&
       accountable_organisation_name.present? &&
@@ -239,7 +233,16 @@ class Activity < ApplicationRecord
   end
 
   def providing_organisation
-    return organisation if third_party_project? && !organisation.is_government?
+    third_party_project? && !organisation.is_government? ? organisation : service_owner
+  end
+
+  def funding_organisation
+    return nil if fund?
+
+    service_owner
+  end
+
+  def service_owner
     Organisation.find_by(service_owner: true)
   end
 

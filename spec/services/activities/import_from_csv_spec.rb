@@ -324,18 +324,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
     end
 
-    it "sets BEIS as the funding organisation" do
-      beis = create(:beis_organisation)
-
-      subject.import([new_activity_attributes])
-
-      new_activity = Activity.order(:created_at).last
-
-      expect(new_activity.funding_organisation_name).to eq beis.name
-      expect(new_activity.funding_organisation_reference).to eq beis.iati_reference
-      expect(new_activity.funding_organisation_type).to eq beis.organisation_type
-    end
-
     it "sets BEIS as the accountable organisation" do
       beis = create(:beis_organisation)
 

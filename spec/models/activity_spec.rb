@@ -736,14 +736,6 @@ RSpec.describe Activity, type: :model do
       it { should validate_presence_of(:extending_organisation_id).on(:update_extending_organisation) }
     end
 
-    context "when the form state is blank" do
-      it "allows updates to be made to other fields set on creation" do
-        blank_activity = create(:activity, funding_organisation_name: "old", form_state: :blank)
-        blank_activity.funding_organisation_name = "new"
-        expect(blank_activity.valid?).to eq(true)
-      end
-    end
-
     context "when the activity is neither a fund nor a programme" do
       context "when call_present is blank" do
         subject(:activity) { build(:project_activity, call_present: nil) }
@@ -903,20 +895,6 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#has_funding_organisation?" do
-    it "returns true if all funding_organisation fields are present" do
-      activity = build(:fund_activity)
-
-      expect(activity.has_funding_organisation?).to be true
-    end
-
-    it "returns false if all funding_organisation fields are not present" do
-      activity = build(:activity)
-
-      expect(activity.has_funding_organisation?).to be false
-    end
-  end
-
   describe "#has_accountable_organisation?" do
     it "returns true if all accountable_organisation fields are present" do
       activity = build(:fund_activity)
@@ -984,6 +962,30 @@ RSpec.describe Activity, type: :model do
           project = build(:project_activity, organisation: non_government_delivery_partner)
           expect(project.providing_organisation).to eql beis
         end
+      end
+    end
+
+    describe "#funding_organisation" do
+      let!(:beis) { create(:beis_organisation) }
+
+      it "returns BEIS if the activity is a programme" do
+        project = build(:programme_activity)
+        expect(project.funding_organisation).to eql beis
+      end
+
+      it "returns BEIS if the activity is a project" do
+        project = build(:project_activity)
+        expect(project.funding_organisation).to eql beis
+      end
+
+      it "returns BEIS if the activity is a third party project" do
+        project = build(:third_party_project_activity)
+        expect(project.funding_organisation).to eql beis
+      end
+
+      it "returns nil if the activity is a fund" do
+        fund = build(:fund_activity)
+        expect(fund.funding_organisation).to be_nil
       end
     end
 
