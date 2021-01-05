@@ -34,8 +34,6 @@ RSpec.feature "users can upload transactions" do
         "Receiving Organisation Name" => nil,
         "Receiving Organisation Type" => nil,
         "Receiving Organisation IATI Reference" => nil,
-        "Disbursement Channel" => nil,
-        "Description" => nil,
       },
       {
         "Activity Name" => sibling_project.title,
@@ -46,8 +44,6 @@ RSpec.feature "users can upload transactions" do
         "Receiving Organisation Name" => nil,
         "Receiving Organisation Type" => nil,
         "Receiving Organisation IATI Reference" => nil,
-        "Disbursement Channel" => nil,
-        "Description" => nil,
       },
     ])
   end
@@ -62,9 +58,9 @@ RSpec.feature "users can upload transactions" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
-      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel | Description
-      #{ids[0]}                | 2020-04-01 | 20    | Example University          | 80                          |                                       | 4                    |
-      #{ids[1]}                | 2020-04-02 | 30    | Example Foundation          | 60                          |                                       | 4                    |
+      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1/4/2020   | 20    | Example University          | 80                          |
+      #{ids[1]}                | 2/4/2020   | 30    | Example Foundation          | 60                          |
     CSV
 
     expect(Transaction.count).to eq(2)
@@ -76,9 +72,9 @@ RSpec.feature "users can upload transactions" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
-      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel | Description
-      #{ids[0]}                | 2020-04-01 | 0     | Example University          | 80                          |                                       | 4                    |
-      #{ids[1]}                | 2020-04-02 | 30    | Example Foundation          | 61                          |                                       | 5                    |
+      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1/4/2020   | 0     | Example University          | 80                          |
+      #{ids[1]}                | 2/4/2020   | 30    | Example Foundation          | 61                          |
     CSV
 
     expect(Transaction.count).to eq(0)
@@ -97,22 +93,15 @@ RSpec.feature "users can upload transactions" do
       expect(page).to have_xpath("td[3]", text: "61")
       expect(page).to have_xpath("td[4]", text: t("importer.errors.transaction.invalid_iati_organisation_type"))
     end
-
-    within "//tbody/tr[3]" do
-      expect(page).to have_xpath("td[1]", text: "Disbursement Channel")
-      expect(page).to have_xpath("td[2]", text: "3")
-      expect(page).to have_xpath("td[3]", text: "5")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.transaction.invalid_iati_disbursement_channel"))
-    end
   end
 
   scenario "uploading a set of transactions with encoding errors" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
-      Activity RODA Identifier | Date       | Value  | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Disbursement Channel | Description
-      #{ids[0]}                | 2020-04-01 | �20    | Example University          | 80                          |                                       | 4                    |
-      #{ids[1]}                | 2020-04-02 | �30    | Example Foundation          | 60                          |                                       | 4                    |
+      Activity RODA Identifier | Date       | Value  | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1/4/2020   | �20    | Example University          | 80                          |
+      #{ids[1]}                | 2/4/2020   | �30    | Example Foundation          | 60                          |
     CSV
 
     expect(Transaction.count).to eq(0)

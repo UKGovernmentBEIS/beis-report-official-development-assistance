@@ -3,6 +3,8 @@ require "rails_helper"
 RSpec.feature "BEIS users can edit a report" do
   context "Logged in as a BEIS user" do
     let(:beis_user) { create(:beis_user) }
+    before { travel_to DateTime.parse("2021-01-01") }
+    after { travel_back }
 
     scenario "they can edit a Report to set the deadline" do
       user = create(:beis_user)

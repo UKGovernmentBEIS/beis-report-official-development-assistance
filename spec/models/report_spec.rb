@@ -168,6 +168,21 @@ RSpec.describe Report, type: :model do
     end
   end
 
+  describe "#previous" do
+    it "returns the report for the previous quarter" do
+      report = travel_to(Date.parse("1 April 2020")) { create(:report) }
+      previous_report = travel_to(Date.parse("1 January 2020")) { create(:report, :approved, organisation: report.organisation, fund: report.fund) }
+
+      expect(report.previous).to eql previous_report
+    end
+
+    it "returns nil when there is no previous report" do
+      report = travel_to(Date.parse("1 April 2020")) { create(:report) }
+
+      expect(report.previous).to be_nil
+    end
+  end
+
   describe "reportable_activities" do
     let!(:report) { create(:report) }
     let!(:programme) { create(:programme_activity, parent: report.fund, organisation: report.organisation) }

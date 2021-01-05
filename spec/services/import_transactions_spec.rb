@@ -23,13 +23,11 @@ RSpec.describe ImportTransactions do
     let :transaction_row do
       {
         "Activity RODA Identifier" => project.roda_identifier,
-        "Date" => "2020-09-08",
+        "Date" => "8/9/2020",
         "Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
         "Receiving Organisation Type" => "80",
         "Receiving Organisation IATI Reference" => "",
-        "Disbursement Channel" => "",
-        "Description" => "Fees for Q3",
       }
     end
 
@@ -50,7 +48,7 @@ RSpec.describe ImportTransactions do
         value: 50.0,
         receiving_organisation_name: "Example University",
         receiving_organisation_type: "80",
-        description: "Fees for Q3",
+        description: "Q4 1999-2000 spend on Example Project",
       )
     end
 
@@ -139,9 +137,9 @@ RSpec.describe ImportTransactions do
       end
     end
 
-    context "when the Date is not an existing date" do
+    context "when the Date is invalid" do
       let :transaction_row do
-        super().merge("Date" => "2020-04-31")
+        super().merge("Date" => "99/4/2020")
       end
 
       it "does not import any transactions" do
@@ -150,8 +148,20 @@ RSpec.describe ImportTransactions do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportTransactions::Error.new(0, "Date", "2020-04-31", t("importer.errors.transaction.invalid_date")),
+          ImportTransactions::Error.new(0, "Date", "99/4/2020", t("importer.errors.transaction.invalid_date")),
         ])
+      end
+
+      context "two-digit date" do
+        let :transaction_row do
+          super().merge("Date" => "21/10/15")
+        end
+
+        it "returns an error" do
+          expect(importer.errors).to eq([
+            ImportTransactions::Error.new(0, "Date", "21/10/15", t("activerecord.errors.models.transaction.attributes.date.between", min: 10, max: 25)),
+          ])
+        end
       end
     end
 
@@ -281,106 +291,40 @@ RSpec.describe ImportTransactions do
         expect(transaction.receiving_organisation_reference).to eq("Rec-Org-IATI-Ref")
       end
     end
-
-    context "when Disbursement Channel is blank" do
-      let :transaction_row do
-        super().merge("Disbursement Channel" => "")
-      end
-
-      it "imports the transaction" do
-        expect(report.transactions.count).to eq(1)
-      end
-
-      it "assigns nil for the transaction's disbursement channel" do
-        transaction = report.transactions.first
-        expect(transaction.disbursement_channel).to be_nil
-      end
-    end
-
-    # https://iatistandard.org/en/iati-standard/203/codelists/disbursementchannel/
-    context "when Disbursement Channel is a valid IATI type" do
-      let :transaction_row do
-        super().merge("Disbursement Channel" => "4")
-      end
-
-      it "imports the transaction" do
-        expect(report.transactions.count).to eq(1)
-      end
-
-      it "assigns the transaction's disbursement channel" do
-        transaction = report.transactions.first
-        expect(transaction.disbursement_channel).to eq("4")
-      end
-    end
-
-    # https://iatistandard.org/en/iati-standard/203/codelists/disbursementchannel/
-    context "when Disbursement Channel is not a valid IATI type" do
-      let :transaction_row do
-        super().merge("Disbursement Channel" => "5")
-      end
-
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
-      end
-
-      it "returns an error" do
-        expect(importer.errors).to eq([
-          ImportTransactions::Error.new(0, "Disbursement Channel", "5", t("importer.errors.transaction.invalid_iati_disbursement_channel")),
-        ])
-      end
-    end
-
-    context "when Description is blank" do
-      let :transaction_row do
-        super().merge("Description" => "")
-      end
-
-      it "imports the transaction" do
-        expect(report.transactions.count).to eq(1)
-      end
-
-      it "generates a default description" do
-        transaction = report.transactions.first
-        expect(transaction.description).to eq("Q4 1999-2000 spend on Example Project")
-      end
-    end
   end
 
   describe "importing multiple transactions" do
     let :sibling_project do
-      create(:project_activity, organisation: project.organisation, parent: project.parent)
+      create(:project_activity, organisation: project.organisation, parent: project.parent, description: "Sibling Project")
     end
 
     let :first_transaction_row do
       {
         "Activity RODA Identifier" => sibling_project.roda_identifier,
-        "Date" => "2020-09-08",
+        "Date" => "8/9/2020",
         "Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
         "Receiving Organisation Type" => "80",
-        "Description" => "Fees for Q3",
       }
     end
 
     let :second_transaction_row do
       {
         "Activity RODA Identifier" => project.roda_identifier,
-        "Date" => "2020-09-10",
+        "Date" => "10/9/2020",
         "Value" => "150.00",
         "Receiving Organisation Name" => "Example Corporation",
         "Receiving Organisation Type" => "70",
-        "Description" => "Rent Payments",
       }
     end
 
     let :third_transaction_row do
       {
         "Activity RODA Identifier" => sibling_project.roda_identifier,
-        "Date" => "2019-12-25",
+        "Date" => "25/12/2019",
         "Value" => "£5,000",
         "Receiving Organisation Name" => "Example Foundation",
         "Receiving Organisation Type" => "60",
-        "Description" => "Christmas Donation",
       }
     end
 
@@ -398,20 +342,20 @@ RSpec.describe ImportTransactions do
     end
 
     it "assigns each transaction to the correct report" do
-      expect(report.transactions.map(&:description).sort).to eq([
-        "Christmas Donation",
-        "Fees for Q3",
-        "Rent Payments",
-      ])
+      expect(report.transactions.pluck(:description)).to contain_exactly(
+        "Q4 1999-2000 spend on Example Project",
+        "Q4 1999-2000 spend on Sibling Project",
+        "Q4 1999-2000 spend on Sibling Project",
+      )
     end
 
     it "assigns each transaction to the correct activity" do
-      expect(project.transactions.map(&:description)).to eq([
-        "Rent Payments",
+      expect(project.transactions.pluck(:description)).to eq([
+        "Q4 1999-2000 spend on Example Project",
       ])
-      expect(sibling_project.transactions.map(&:description).sort).to eq([
-        "Christmas Donation",
-        "Fees for Q3",
+      expect(sibling_project.transactions.pluck(:description)).to eq([
+        "Q4 1999-2000 spend on Sibling Project",
+        "Q4 1999-2000 spend on Sibling Project",
       ])
     end
 
@@ -437,7 +381,7 @@ RSpec.describe ImportTransactions do
       end
 
       let :third_transaction_row do
-        super().merge("Date" => 6.months.from_now.iso8601, "Value" => "0")
+        super().merge("Date" => 6.months.from_now.strftime("%-d/%-m/%Y"), "Value" => "0")
       end
 
       it "does not import any transactions" do

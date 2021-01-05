@@ -49,7 +49,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "foreman"
-  gem "i18n-tasks", "~> 0.9.32"
+  gem "i18n-tasks", "~> 0.9.33"
   gem "rspec-rails"
   gem "standard"
 end
@@ -57,7 +57,7 @@ end
 group :development do
   gem "better_errors"
   gem "html2haml"
-  gem "listen", ">= 3.0.5", "< 3.4"
+  gem "listen", ">= 3.0.5", "< 3.5"
   gem "spring"
   gem "spring-commands-rspec"
   gem "spring-watcher-listen", "~> 2.0.0"

@@ -103,10 +103,8 @@ class ImportTransactions
       attrs[:providing_organisation_name] = organisation.name
       attrs[:providing_organisation_type] = organisation.organisation_type
 
-      if attrs[:description].blank?
-        presenter = ReportPresenter.new(@report)
-        attrs[:description] = "#{presenter.financial_quarter_and_year} spend on #{@activity.description}"
-      end
+      presenter = ReportPresenter.new(@report)
+      attrs[:description] = "#{presenter.financial_quarter_and_year} spend on #{@activity.description}"
     end
   end
 
@@ -118,8 +116,6 @@ class ImportTransactions
       receiving_organisation_name: "Receiving Organisation Name",
       receiving_organisation_type: "Receiving Organisation Type",
       receiving_organisation_reference: "Receiving Organisation IATI Reference",
-      disbursement_channel: "Disbursement Channel",
-      description: "Description",
     }
 
     attr_reader :activity, :errors
@@ -170,7 +166,7 @@ class ImportTransactions
 
     def convert_date(date)
       return nil unless date.present?
-      Date.iso8601(date)
+      Date.strptime(date, "%d/%m/%Y")
     rescue ArgumentError
       raise I18n.t("importer.errors.transaction.invalid_date")
     end
@@ -186,14 +182,6 @@ class ImportTransactions
         type,
         "organisation/organisation_type.yml",
         I18n.t("importer.errors.transaction.invalid_iati_organisation_type"),
-      )
-    end
-
-    def convert_disbursement_channel(channel)
-      validate_from_codelist(
-        channel,
-        "transaction/disbursement_channel.yml",
-        I18n.t("importer.errors.transaction.invalid_iati_disbursement_channel"),
       )
     end
 

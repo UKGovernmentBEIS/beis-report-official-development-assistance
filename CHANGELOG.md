@@ -444,9 +444,18 @@
 - Show error message when the user tries to enter an invalid date on the `dates` step. Covers `planned_start_date`, `planned_end_date`, `actual_start_date`, `actual_end_date`
 - Catch encoding errors when uploading Transactions with invalid characters
 
+## [release-27] - 2021-01-05
+
+- Transaction importer sets Description automatically from report and project attributes
+- Transaction importer doesn't process Disbursement channel
+- Show error messages when the user tries to enter invalid values for a forecasted spend. Covers financial quarter being in the past and forecast value an invalid number
+- Transaction importer expects dates in `dd/mm/yyyy` format
+- Activity CSV export includes previous quarter's actuals where available
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-27...HEAD
+[release-26]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...release-27
 [release-26]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...release-26
 [release-25]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...release-25
 [release-24]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...release-24

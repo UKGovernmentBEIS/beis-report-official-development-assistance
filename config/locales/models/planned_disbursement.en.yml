@@ -43,3 +43,5 @@ en:
             value:
               inclusion: Value must be between 0.01 and 99,999,999,999.00
               not_a_number: "Value must be a valid number"
+            financial_quarter:
+              in_the_past: The forecast must be for a future financial quarter
