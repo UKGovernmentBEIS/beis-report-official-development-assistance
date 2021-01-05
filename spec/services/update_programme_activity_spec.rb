@@ -20,12 +20,6 @@ RSpec.describe UpdateActivityAsProgramme do
       expect(result.level).to eq("programme")
     end
 
-    it "sets the funding organisation details to service_owner" do
-      expect(result.funding_organisation_name).to eq beis.name
-      expect(result.funding_organisation_reference).to eq beis.iati_reference
-      expect(result.funding_organisation_type).to eq beis.organisation_type
-    end
-
     it "sets the accountable organisation details to the service owner" do
       expect(result.accountable_organisation_name).to eq beis.name
       expect(result.accountable_organisation_reference).to eq beis.iati_reference

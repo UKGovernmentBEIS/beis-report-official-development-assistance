@@ -51,20 +51,6 @@ RSpec.feature "Users can create a fund level activity" do
       expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.flow
     end
 
-    scenario "the activity has the appropriate funding organisation defaults" do
-      identifier = "a-fund-has-a-funding-organisation"
-
-      visit activities_path
-      click_on(t("page_content.organisation.button.create_activity"))
-
-      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
-
-      activity = Activity.find_by(delivery_partner_identifier: identifier)
-      expect(activity.funding_organisation_name).to eq("HM Treasury")
-      expect(activity.funding_organisation_reference).to eq("GB-GOV-2")
-      expect(activity.funding_organisation_type).to eq("10")
-    end
-
     scenario "the activity has the appropriate accountable organisation defaults" do
       identifier = "a-fund-has-an-accountable-organisation"
 
