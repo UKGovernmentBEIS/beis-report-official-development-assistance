@@ -402,11 +402,6 @@ module FormHelpers
         day: call_close_date_day
       )
     end
-
-    my_activity = Activity.find_by(delivery_partner_identifier: delivery_partner_identifier)
-    iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
-    expect(my_activity.status).not_to be_nil
-    expect(my_activity.status).to eq(iati_status)
   end
 
   def fill_in_transaction_form(expectations: true,
