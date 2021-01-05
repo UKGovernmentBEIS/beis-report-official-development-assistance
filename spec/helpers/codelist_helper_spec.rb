@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe CodelistHelper, type: :helper do
   describe "version 2_03" do
     let(:version) { "2_03" }
+
     describe "#yaml_to_objects" do
       it "raises an error when the YAML file is missing or incorrect" do
         expect { helper.yaml_to_objects(entity: "generic", type: "favourite_colours") }
@@ -107,7 +108,7 @@ RSpec.describe CodelistHelper, type: :helper do
         ).last).to eq(OpenStruct.new(name: "Suspended", code: "6", description: "The activity has been temporarily suspended"))
       end
 
-      it "tries to get a description from the translations if one if available" do
+      it "tries to get a description from the translations if one is available" do
         objects = helper.yaml_to_objects_with_description(entity: "activity", type: "aid_type")
 
         expect(objects.find { |o| o["code"] == "B02" }.description).to eq(t("form.hint.activity.options.aid_type.B02"))
@@ -228,7 +229,9 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.last.name).to eq("Zimbabwe")
       end
     end
+  end
 
+  describe "BEIS" do
     describe "#oda_eligibility_radio_options" do
       it "returns the radio options and hints for ODA eligibility" do
         options = helper.oda_eligibility_radio_options
@@ -240,9 +243,21 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.last.description).to eq("The activity used to be ODA eligible but no longer meets the OECD DAC rules for future spend")
       end
     end
-  end
 
-  describe "BEIS" do
+    describe "#programme_status_radio_options" do
+      it "returns the BEIS codes and descriptions" do
+        options = helper.programme_status_radio_options
+
+        expect(options.length).to eq 12
+        expect(options.first.value).to eq "delivery"
+        expect(options.first.label).to eq "Delivery"
+        expect(options.first.description).to eq "Activities related to delivery of ODA activities only"
+        expect(options.last.value).to eq "paused"
+        expect(options.last.label).to eq "Paused"
+        expect(options.last.description).to eq "Activity has been temporarily suspended. No spend should take place while this status is in use"
+      end
+    end
+
     describe "#covid19_related_radio_options" do
       it "returns the BEIS codes and descriptions" do
         options = helper.covid19_related_radio_options
@@ -252,6 +267,30 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.first.description).to eq "Not related"
         expect(options.last.code).to eq 4
         expect(options.last.description).to eq "Existing activity adapted to somewhat focus on COVID-19"
+      end
+    end
+
+    describe "#gcrf_challenge_area_options" do
+      it "returns the BEIS codes and descriptions" do
+        options = helper.gcrf_challenge_area_options
+
+        expect(options.length).to eq 13
+        expect(options.first.code).to eq 0
+        expect(options.first.description).to eq "Not applicable"
+        expect(options.last.code).to eq 12
+        expect(options.last.description).to eq "Reduce poverty and inequality, including gender inequalities"
+      end
+    end
+
+    describe "#fund_pillar_radio_options" do
+      it "returns the BEIS codes and descriptions" do
+        options = helper.fund_pillar_radio_options
+
+        expect(options.length).to eq 4
+        expect(options.first.code).to eq 0
+        expect(options.first.description).to eq "Not Applicable"
+        expect(options.last.code).to eq 3
+        expect(options.last.description).to eq "Translation"
       end
     end
   end

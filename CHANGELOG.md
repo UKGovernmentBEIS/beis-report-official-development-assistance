@@ -458,6 +458,7 @@
 - Refactor away `funding organisation` field
 - Forecasted spend form always includes the current financial year
 - Remove `Complete` label from child activities view
+- Refactor helper to standardise the way we load BEIS codes
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-27...HEAD
 [release-27]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...release-27
