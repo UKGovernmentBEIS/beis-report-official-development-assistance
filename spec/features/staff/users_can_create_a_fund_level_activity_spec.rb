@@ -28,15 +28,6 @@ RSpec.feature "Users can create a fund level activity" do
       expect(activity.programme_status).to eq("spend_in_progress")
     end
 
-    scenario "the iati status gets set based on the default programme status value" do
-      identifier = "a-fund-with-default-iati-status-of-implementation"
-      visit activities_path
-      click_on(t("page_content.organisation.button.create_activity"))
-      fill_in_activity_form(delivery_partner_identifier: identifier, level: "fund")
-      activity = Activity.find_by(delivery_partner_identifier: identifier)
-      expect(activity.status).to eq("2")
-    end
-
     scenario "the activity form has some defaults" do
       activity = create(:fund_activity, organisation: user.organisation)
       activity_presenter = ActivityPresenter.new(activity)

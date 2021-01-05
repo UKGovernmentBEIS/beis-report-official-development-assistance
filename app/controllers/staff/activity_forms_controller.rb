@@ -99,8 +99,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     authorize @activity
 
     if @activity.fund?
-      iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(DEFAULT_PROGRAMME_STATUS_FOR_FUNDS)
-      @activity.assign_attributes(programme_status: DEFAULT_PROGRAMME_STATUS_FOR_FUNDS, status: iati_status)
+      @activity.assign_attributes(programme_status: DEFAULT_PROGRAMME_STATUS_FOR_FUNDS)
     end
 
     case step
@@ -136,8 +135,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :total_applications_and_awards
       @activity.assign_attributes(total_applications: total_applications, total_awards: total_awards)
     when :programme_status
-      iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
-      @activity.assign_attributes(programme_status: programme_status, status: iati_status)
+      @activity.assign_attributes(programme_status: programme_status)
     when :country_delivery_partners
       @activity.assign_attributes(country_delivery_partners: country_delivery_partners)
     when :dates

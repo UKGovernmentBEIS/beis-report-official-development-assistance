@@ -285,7 +285,6 @@ module Activities
         attributes[:recipient_region] ||= inferred_region
         attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
         attributes[:sector_category] = get_sector_category(attributes[:sector])
-        attributes[:status] = infer_status(attributes)
         attributes[:form_state] = "complete"
 
         attributes
@@ -514,10 +513,6 @@ module Activities
 
           country_to_region_mapping.find { |pair| pair["country"] == @row["Recipient Country"] }["region"]
         end
-      end
-
-      def infer_status(attributes)
-        ProgrammeToIatiStatus.new.programme_status_to_iati_status(attributes[:programme_status])
       end
 
       def validate_from_codelist(code, entity, message)
