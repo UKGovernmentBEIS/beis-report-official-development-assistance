@@ -21,17 +21,31 @@ RSpec.describe "Users can create a planned disbursement" do
       expect(page).to have_content t("action.planned_disbursement.create.success")
     end
 
-    scenario "the current financial quarter and year are pre selected" do
-      project = create(:project_activity, :with_report, organisation: user.organisation)
-      first_quarter_2019_2020 = "2019-04-01".to_date
+    context "when we are in the first quarter" do
+      scenario "the current financial quarter and year are pre selected" do
+        travel_to_quarter(1, 2019) do
+          project = create(:project_activity, :with_report, organisation: user.organisation)
+          visit activities_path
+          click_on project.title
+          click_on t("page_content.planned_disbursements.button.create")
 
-      travel_to first_quarter_2019_2020 do
-        visit activities_path
-        click_on project.title
-        click_on t("page_content.planned_disbursements.button.create")
+          expect(page).to have_checked_field "Q1"
+          expect(page).to have_select "Financial year", selected: "2019-2020"
+        end
+      end
+    end
 
-        expect(page).to have_checked_field "Q1"
-        expect(page).to have_select "Financial year", selected: "2019-2020"
+    context "when we are in the fourth quarter" do
+      scenario "the current financial quarter and year are pre selected" do
+        travel_to_quarter(4, 2019) do
+          project = create(:project_activity, :with_report, organisation: user.organisation)
+          visit activities_path
+          click_on project.title
+          click_on t("page_content.planned_disbursements.button.create")
+
+          expect(page).to have_checked_field "Q4"
+          expect(page).to have_select "Financial year", selected: "2019-2020"
+        end
       end
     end
 
@@ -93,26 +107,23 @@ RSpec.describe "Users can create a planned disbursement" do
     end
 
     scenario "they receive an error message if the forecast is not in the future" do
-      start_of_third_quarter = Date.parse("2020-10-01")
-      travel_to start_of_third_quarter
+      travel_to_quarter(3, 2020) do
+        project = create(:project_activity, :with_report, organisation: user.organisation)
+        visit activities_path
+        click_on project.title
 
-      project = create(:project_activity, :with_report, organisation: user.organisation)
-      visit activities_path
-      click_on project.title
+        click_on t("page_content.planned_disbursements.button.create")
 
-      click_on t("page_content.planned_disbursements.button.create")
+        report = Report.editable_for_activity(project)
+        year = report.financial_year
 
-      report = Report.editable_for_activity(project)
-      year = report.financial_year
+        fill_in_planned_disbursement_form(
+          financial_quarter: "Q1",
+          financial_year: "#{year}-#{year + 1}"
+        )
 
-      fill_in_planned_disbursement_form(
-        financial_quarter: "Q1",
-        financial_year: "#{year}-#{year + 1}"
-      )
-
-      expect(page).to have_content t("activerecord.errors.models.planned_disbursement.attributes.financial_quarter.in_the_past")
-
-      travel_back
+        expect(page).to have_content t("activerecord.errors.models.planned_disbursement.attributes.financial_quarter.in_the_past")
+      end
     end
 
     scenario "they receive an error message if the value is not a valid number" do
