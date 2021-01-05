@@ -257,23 +257,6 @@ RSpec.feature "Users can create a programme activity" do
       end
     end
 
-    scenario "the activity has the appropriate funding organisation defaults" do
-      fund = create(:activity, level: :fund, organisation: user.organisation)
-      identifier = "a-programme-has-a-funding-organisation"
-
-      visit activities_path
-      click_on fund.title
-      click_on t("tabs.activity.children")
-      click_on(t("page_content.organisation.button.create_activity"))
-
-      fill_in_activity_form(delivery_partner_identifier: identifier, level: "programme", parent: fund)
-
-      activity = Activity.find_by(delivery_partner_identifier: identifier)
-      expect(activity.funding_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
-      expect(activity.funding_organisation_reference).to eq("GB-GOV-13")
-      expect(activity.funding_organisation_type).to eq("10")
-    end
-
     scenario "the activity has the appropriate accountable organisation defaults" do
       fund = create(:activity, level: :fund, organisation: user.organisation)
       identifier = "a-fund-has-an-accountable-organisation"

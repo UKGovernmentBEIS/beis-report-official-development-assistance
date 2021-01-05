@@ -19,10 +19,6 @@ class UpdateActivityAsProject
     activity.form_state = "parent"
     activity.level = :project
 
-    activity.funding_organisation_name = service_owner.name
-    activity.funding_organisation_reference = service_owner.iati_reference
-    activity.funding_organisation_type = service_owner.organisation_type
-
     activity.accountable_organisation_name = service_owner.name
     activity.accountable_organisation_reference = service_owner.iati_reference
     activity.accountable_organisation_type = service_owner.organisation_type

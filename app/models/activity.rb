@@ -209,12 +209,6 @@ class Activity < ApplicationRecord
     organisation.default_currency
   end
 
-  def has_funding_organisation?
-    funding_organisation_reference.present? &&
-      funding_organisation_name.present? &&
-      funding_organisation_type.present?
-  end
-
   def has_accountable_organisation?
     accountable_organisation_reference.present? &&
       accountable_organisation_name.present? &&
