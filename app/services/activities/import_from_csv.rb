@@ -129,9 +129,6 @@ module Activities
         @activity.reporting_organisation = @organisation
 
         beis = Organisation.find_by(service_owner: true)
-        @activity.funding_organisation_name = beis.name
-        @activity.funding_organisation_reference = beis.iati_reference
-        @activity.funding_organisation_type = beis.organisation_type
         @activity.accountable_organisation_name = beis.name
         @activity.accountable_organisation_reference = beis.iati_reference
         @activity.accountable_organisation_type = beis.organisation_type

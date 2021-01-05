@@ -96,7 +96,6 @@ class ExportActivityToCsv
       "Tied status" => -> { activity_presenter.tied_status_with_code },
 
       # Additional headers specific to export CSV =============================
-      "Funding organisation name" => -> { activity_presenter.funding_organisation_name },
       forecast_header => -> { activity_presenter.forecasted_total_for_report_financial_quarter(report: report) },
       actuals_header => -> { activity_presenter.actual_total_for_report_financial_quarter(report: report) },
       "Variance" => -> { activity_presenter.variance_for_report_financial_quarter(report: report) },
