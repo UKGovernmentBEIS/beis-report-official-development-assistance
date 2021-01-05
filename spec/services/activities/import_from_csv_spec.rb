@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Activities::ImportFromCsv do
   let(:organisation) { create(:organisation) }
-  let(:parent_activity) { create(:activity) }
+  let(:parent_activity) { create(:fund_activity) }
   let(:existing_activity) do
     create(:activity) do |activity|
       activity.implementing_organisations = [
@@ -286,6 +286,7 @@ RSpec.describe Activities::ImportFromCsv do
       ].join("-")
 
       expect(new_activity.parent).to eq(parent_activity)
+      expect(new_activity.level).to eq("programme")
       expect(new_activity.roda_identifier_compound).to eq(expected_roda_identifier_compound)
       expect(new_activity.transparency_identifier).to eq(new_activity_attributes["Transparency identifier"])
       expect(new_activity.title).to eq(new_activity_attributes["Title"])
