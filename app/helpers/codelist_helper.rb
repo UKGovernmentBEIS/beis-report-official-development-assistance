@@ -2,6 +2,7 @@
 
 module CodelistHelper
   class UnreadableCodelist < StandardError; end
+  class UnrecognisedSource < StandardError; end
 
   DEVELOPING_COUNTRIES_CODE = "998"
   ALLOWED_AID_TYPE_CODES = [
@@ -144,46 +145,52 @@ module CodelistHelper
   end
 
   def programme_status_radio_options
-    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/programme_status.yml"))
+    data = load_yaml(entity: "activity", type: "programme_status", source: "beis")
 
     Activity.programme_statuses.map do |name, code|
-      status = yaml["data"].find { |d| d["code"] == code }
+      status = data.find { |d| d["code"] == code }
       OpenStruct.new(value: name, label: status["name"], description: status["description"])
     end
   end
 
   def covid19_related_radio_options
-    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/covid19_related_research.yml"))
-    yaml["data"].collect { |item|
+    data = load_yaml(entity: "activity", type: "covid19_related_research", source: "beis")
+    data.collect { |item|
       OpenStruct.new(code: item["code"], description: item["description"])
     }.compact.sort_by(&:code)
   end
 
   def gcrf_challenge_area_options
-    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/gcrf_challenge_area.yml"))
-    yaml["data"].collect { |item|
+    data = load_yaml(entity: "activity", type: "gcrf_challenge_area", source: "beis")
+    data.collect { |item|
       OpenStruct.new(code: item["code"], description: item["description"])
     }.compact.sort_by { |x| x.code.to_i }
   end
 
   def fund_pillar_radio_options
-    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/fund_pillar.yml"))
-    yaml["data"].collect { |item|
+    data = load_yaml(entity: "activity", type: "fund_pillar", source: "beis")
+    data.collect { |item|
       OpenStruct.new(code: item["code"], description: item["description"])
     }.compact.sort_by(&:code)
   end
 
   def oda_eligibility_radio_options
-    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/oda_eligibility.yml"))
+    data = load_yaml(entity: "activity", type: "oda_eligibility", source: "beis")
 
     Activity.oda_eligibilities.map do |name, code|
-      options = yaml["data"].find { |d| d["code"] == code }
+      options = data.find { |d| d["code"] == code }
       OpenStruct.new(value: name, label: options["name"], description: options["description"])
     end
   end
 
-  def load_yaml(entity:, type:)
-    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/IATI/#{IATI_VERSION}/#{entity}/#{type}.yml"))
+  def load_yaml(entity:, type:, source: "iati")
+    raise UnrecognisedSource unless source.in?(%w[iati beis])
+
+    yaml = if source == "iati"
+      YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/IATI/#{IATI_VERSION}/#{entity}/#{type}.yml"))
+    else
+      YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/#{type}.yml"))
+    end
     yaml["data"]
   rescue
     []
