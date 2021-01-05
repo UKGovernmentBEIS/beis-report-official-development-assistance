@@ -154,17 +154,21 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def sustainable_development_goals
-    goals = [sdg_1, sdg_2, sdg_3].compact
-    return if goals.blank?
+    if sdgs_apply == false && step_is_complete_or_next?(activity: self, step: :sustainable_development_goals)
+      "Not applicable"
+    else
+      goals = [sdg_1, sdg_2, sdg_3].compact
+      return if goals.blank?
 
-    html = "<ol class=\"govuk-list govuk-list--number\">"
+      html = "<ol class=\"govuk-list govuk-list--number\">"
 
-    goals.each do |goal|
-      html += "<li>" + I18n.t("form.label.activity.sdg_options.#{goal}") + "</li>"
+      goals.each do |goal|
+        html += "<li>" + I18n.t("form.label.activity.sdg_options.#{goal}") + "</li>"
+      end
+
+      html += "</ol>"
+      html.html_safe
     end
-
-    html += "</ol>"
-    html.html_safe
   end
 
   def gcrf_challenge_area

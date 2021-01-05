@@ -454,6 +454,8 @@
 
 ## [unreleased]
 
+- SDGs on activity details page now shows `Not applicable` when the user selects this option on the form
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-27...HEAD
 [release-26]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...release-27
 [release-26]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...release-26
