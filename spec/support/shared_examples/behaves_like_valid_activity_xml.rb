@@ -18,11 +18,15 @@ RSpec.shared_examples "valid activity XML" do
     expect(xml.at("iati-activity/reporting-org/narrative").text).to eq(activity.reporting_organisation.name)
   end
 
-  it "contains the funding organisation XML" do
+  it "has the relevant funding organisation XML" do
     visit organisation_activity_path(organisation, activity, format: :xml)
-    expect(xml.at("iati-activity/participating-org[@role = '1']/@ref").text).to eq(activity.funding_organisation_reference)
-    expect(xml.at("iati-activity/participating-org[@role = '1']/@type").text).to eq(activity.funding_organisation_type)
-    expect(xml.at("iati-activity/participating-org[@role = '1']/narrative").text).to eq(activity.funding_organisation_name)
+    if activity.funding_organisation.present?
+      expect(xml.at("iati-activity/participating-org[@role = '1']/@ref").text).to eq(activity.funding_organisation.iati_reference)
+      expect(xml.at("iati-activity/participating-org[@role = '1']/@type").text).to eq(activity.funding_organisation.organisation_type)
+      expect(xml.at("iati-activity/participating-org[@role = '1']/narrative").text).to eq(activity.funding_organisation.name)
+    else
+      expect(xml.at("iati-activity/participating-org[@role = '1']")).to be_nil
+    end
   end
 
   it "contains the accountable organisation XML" do
