@@ -364,4 +364,10 @@ class Activity < ApplicationRecord
   def requires_country_delivery_partners?
     is_newton_funded? && programme?
   end
+
+  def iati_status
+    return if programme_status.blank?
+
+    iati_status_from_programme_status(programme_status)
+  end
 end

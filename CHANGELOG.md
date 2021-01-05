@@ -460,6 +460,7 @@
 - Remove `Complete` label from child activities view
 - Refactor helper to standardise the way we load BEIS codes
 - Activity importer ignores incomplete activities when finding a parent
+- IATI status is calculated on the fly from the programme status
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-27...HEAD
 [release-27]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...release-27
