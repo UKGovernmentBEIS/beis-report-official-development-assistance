@@ -239,7 +239,16 @@ class Activity < ApplicationRecord
   end
 
   def providing_organisation
-    return organisation if third_party_project? && !organisation.is_government?
+    third_party_project? && !organisation.is_government? ? organisation : service_owner
+  end
+
+  def funding_organisation
+    return nil if fund?
+
+    service_owner
+  end
+
+  def service_owner
     Organisation.find_by(service_owner: true)
   end
 
