@@ -376,6 +376,7 @@ module Activities
         parent = Activity.by_roda_identifier(roda_id)
 
         raise I18n.t("importer.errors.activity.parent_not_found") if parent.nil?
+        raise I18n.t("importer.errors.activity.invalid_parent") unless parent.form_steps_completed?
 
         parent.id
       end

@@ -485,6 +485,7 @@ en:
         invalid_flow: The flow code is not valid
         invalid_aid_type: The aid type code is not valid
         invalid_fstc_applies: The free standing technical cooperation column is not valid
+        invalid_parent: The parent activity is not valid
         parent_not_found: The parent activity cannot be found
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:
