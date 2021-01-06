@@ -258,6 +258,31 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
+    describe "#iati_status_from_programme_status" do
+      it "returns the IATI status corresponding to the BEIS programme status" do
+        %w[planned agreement_in_place open_for_applications review decided].each do |ps|
+          expect(helper.iati_status_from_programme_status(ps)).to eql "1"
+        end
+
+        %w[delivery spend_in_progress].each do |ps|
+          expect(helper.iati_status_from_programme_status(ps)).to eql "2"
+        end
+
+        ps = "finalisation"
+        expect(helper.iati_status_from_programme_status(ps)).to eql "3"
+
+        ps = "completed"
+        expect(helper.iati_status_from_programme_status(ps)).to eql "4"
+
+        %w[stopped cancelled].each do |ps|
+          expect(helper.iati_status_from_programme_status(ps)).to eql "5"
+        end
+
+        ps = "paused"
+        expect(helper.iati_status_from_programme_status(ps)).to eql "6"
+      end
+    end
+
     describe "#covid19_related_radio_options" do
       it "returns the BEIS codes and descriptions" do
         options = helper.covid19_related_radio_options

@@ -153,6 +153,14 @@ module CodelistHelper
     end
   end
 
+  def iati_status_from_programme_status(programme_status)
+    data = load_yaml(entity: "activity", type: "programme_status", source: "beis")
+
+    programme_status_code = Activity.programme_statuses[programme_status]
+    status = data.find { |d| d["code"] == programme_status_code }
+    status["iati_status_code"].to_s
+  end
+
   def covid19_related_radio_options
     data = load_yaml(entity: "activity", type: "covid19_related_research", source: "beis")
     data.collect { |item|
