@@ -10,8 +10,6 @@
           = t("table.header.third_party_project.identifier")
         %th.govuk-table__header
           =t("table.header.third_party_project.project")
-        %th.govuk-table__header
-          =t("summary.label.activity.stage")
         - if policy(:third_party_project).redact_from_iati?
           %th.govuk-table__header
             = t("summary.label.activity.publish_to_iati.label")
@@ -22,13 +20,6 @@
           %td.govuk-table__cell= link_to project.display_title, organisation_activity_path(project.organisation, project), class: "govuk-link govuk-link--no-visited-state"
           %td.govuk-table__cell= project.delivery_partner_identifier
           %td.govuk-table__cell= project.parent_title
-          %td.govuk-table__cell
-            - if project.form_steps_completed?
-              %strong.govuk-tag.govuk-tag--green
-                = t("summary.label.activity.form_state.complete")
-            - else
-              %strong.govuk-tag.govuk-tag--yellow
-                = t("summary.label.activity.form_state.incomplete")
           - if policy(:third_party_project).redact_from_iati?
             %td.govuk-table__cell
               - if project.publish_to_iati?

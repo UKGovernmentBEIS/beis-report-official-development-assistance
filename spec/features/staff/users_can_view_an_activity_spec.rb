@@ -36,18 +36,6 @@ RSpec.feature "Users can view an activity" do
         expect(page.find("table.programmes  tbody tr:last-child")[:id]).to have_content(programme_2.id)
       end
 
-      scenario "they see 'Incomplete' next to incomplete programmes" do
-        fund = create(:fund_activity)
-        incomplete_programme = create(:programme_activity, :at_purpose_step, parent: fund)
-
-        visit organisation_activity_children_path(fund.organisation, fund)
-
-        within("##{incomplete_programme.id}") do
-          expect(page).to have_link incomplete_programme.title
-          expect(page).to have_content t("summary.label.activity.form_state.incomplete")
-        end
-      end
-
       scenario "they do not see a Publish to Iati column & status against programmes" do
         fund = create(:fund_activity)
         programme = create(:programme_activity, parent: fund)
@@ -86,18 +74,6 @@ RSpec.feature "Users can view an activity" do
         end
       end
 
-      scenario "they see 'Incomplete' next to incomplete projects" do
-        fund = create(:fund_activity)
-        programme = create(:programme_activity, parent: fund)
-        incomplete_project = create(:project_activity, :at_purpose_step, parent: programme)
-
-        visit organisation_activity_children_path(programme.organisation, programme)
-        within("##{incomplete_project.id}") do
-          expect(page).to have_link incomplete_project.title
-          expect(page).to have_content t("summary.label.activity.form_state.incomplete")
-        end
-      end
-
       scenario "they see a Publish to Iati column & status against projects" do
         fund = create(:fund_activity)
         programme = create(:programme_activity, parent: fund)
@@ -126,18 +102,6 @@ RSpec.feature "Users can view an activity" do
           expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
           expect(page).to have_content third_party_project.delivery_partner_identifier
           expect(page).to have_content third_party_project.parent.title
-        end
-      end
-
-      scenario "they see 'Incomplete' next to incomplete third-party projects" do
-        project = create(:project_activity)
-        incomplete_third_party_project = create(:project_activity, :at_identifier_step, parent: project)
-
-        visit organisation_activity_children_path(user.organisation, project)
-
-        within("##{incomplete_third_party_project.id}") do
-          expect(page).to have_link incomplete_third_party_project.title
-          expect(page).to have_content t("summary.label.activity.form_state.incomplete")
         end
       end
 
