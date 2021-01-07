@@ -4,6 +4,7 @@ class User < ApplicationRecord
   belongs_to :organisation
   validates_presence_of :name, :email
   validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}
+  validates :email, with: :email_cannot_be_changed_after_create, on: :update
 
   enum role: {
     administrator: "administrator",
@@ -25,5 +26,13 @@ class User < ApplicationRecord
 
   def delivery_partner?
     !service_owner?
+  end
+
+  private
+
+  def email_cannot_be_changed_after_create
+    if email_changed?
+      errors.add(:email, :cannot_be_changed)
+    end
   end
 end

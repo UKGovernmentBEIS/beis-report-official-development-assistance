@@ -14,12 +14,11 @@ RSpec.feature "BEIS users can editing other users" do
     target_user = create(:administrator, name: "Old Name", email: "old@example.com")
 
     updated_name = "New Name"
-    updated_email = "new@example.com"
 
     stub_auth0_update_user_request(
       auth0_identifier: target_user.identifier,
-      email: updated_email,
-      name: updated_name
+      name: updated_name,
+      email: target_user.email,
     )
 
     # Navigate from the landing page
@@ -36,14 +35,12 @@ RSpec.feature "BEIS users can editing other users" do
 
     # Fill out the form
     fill_in "user[name]", with: updated_name
-    fill_in "user[email]", with: updated_email
 
     # Submit the form
     click_button t("form.button.user.submit")
 
     # Verify the user was updated
     expect(page).to have_content(updated_name)
-    expect(page).to have_content(updated_email)
   end
 
   scenario "the role can be changed" do
@@ -98,12 +95,11 @@ RSpec.feature "BEIS users can editing other users" do
     target_user = create(:administrator, name: "Old Name", email: "old@example.com")
 
     updated_name = "New Name"
-    updated_email = "new@example.com"
 
     stub_auth0_update_user_request(
       auth0_identifier: target_user.identifier,
-      email: updated_email,
-      name: updated_name
+      name: updated_name,
+      email: target_user.email,
     )
 
     PublicActivity.with_tracking do
@@ -114,7 +110,6 @@ RSpec.feature "BEIS users can editing other users" do
       find("tr", text: target_user.name).click_link("Edit")
 
       fill_in "user[name]", with: updated_name
-      fill_in "user[email]", with: updated_email
 
       click_button t("form.button.user.submit")
 

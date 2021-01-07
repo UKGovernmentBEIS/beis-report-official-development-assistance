@@ -4,6 +4,15 @@ RSpec.describe User, type: :model do
   describe "validations" do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:email) }
+
+    it "should not allow an email to be changed" do
+      user = create(:administrator, email: "old@example.com")
+
+      user.email = "new@example.com"
+
+      expect(user).to be_invalid
+      expect(user.errors[:email]).to eq([I18n.t("activerecord.errors.models.user.attributes.email.cannot_be_changed")])
+    end
   end
 
   describe "associations" do
