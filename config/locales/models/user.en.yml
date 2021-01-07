@@ -3,7 +3,7 @@ en:
   action:
     user:
       create:
-        failed: 'The service failed to create the new user. The error received was: %{error}'
+        failed: "The service failed to create the new user. The error received was: %{error}"
         success: User successfully created
       update:
         failed: The service is experiencing issues updating users and the team has been alerted to the problem.
@@ -28,10 +28,10 @@ en:
     user:
       active:
         active: Activate
-        'false': 'No'
+        "false": "No"
         inactive: Deactivate
         label: Activate user
-        'true': 'Yes'
+        "true": "Yes"
   table:
     header:
       user:
@@ -81,3 +81,4 @@ en:
               blank: Enter a full name
             email:
               blank: Enter an email address
+              cannot_be_changed: "cannot be changed once a user has been created"
