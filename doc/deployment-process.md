@@ -23,42 +23,43 @@ The heading should link to a Github URL at the bottom of the file, which shows t
 ### Steps
 
 1. Create a release branch and make a pull request
-    * Create a branch from develop for the release called release-X where X is the release number
-    * Update CHANGELOG.md to:
-      document the changes in this release in a bullet point form
-      add a link to the diff at the bottom of the file
-    * Document the changes in the commit message as well
-    * Push the changes up to Github `git push -u origin release-x`
-    * Create a pull request to merge that release into **develop** with content from the CHANGELOG.md
-    * Get that pull request reviewed and approved
+   - Create a branch from develop for the release called release-X where X is the release number
+   - Update CHANGELOG.md to:
+     document the changes in this release in a bullet point form
+     add a link to the diff at the bottom of the file
+   - Document the changes in the commit message as well
+   - Push the changes up to Github `git push -u origin release-x`
+   - Create a pull request to merge that release into **develop** with content from the CHANGELOG.md
+   - Get that pull request reviewed and approved
 1. Review and merge the release pull request
-    The pull request should be reviewed to confirm that the changes in the release are safe to ship and that CHANGELOG.md accurately reflects the changes included in the release.
+   The pull request should be reviewed to confirm that the changes in the release are safe to ship and that CHANGELOG.md accurately reflects the changes included in the release.
 1. Update your local develop branch and tag the merge commit on develop `git tag release-X [merge-commit-for-release]`
 1. Push the tag to Github `git push origin refs/tags/release-X` (we need the
    refs otherwise git will not know if you mean the tag or the branch as they
    have the same name)
 1. Confirm the release candidate and perform any prerequisites
-    * Confirm the release with any relevant people (product owner, delivery manager, etc)
-    * Think about any dependencies that also need considering: dependent parts of the service that also need updating; environment variables that need changing/adding; third-party services that need to be set up/updated
+   - Confirm the release with any relevant people (product owner, delivery manager, etc)
+   - Think about any dependencies that also need considering: dependent parts of the service that also need updating; environment variables that need changing/adding; third-party services that need to be set up/updated
 1. Announce the release
-    Let the team know about the release. This is posted in Slack under #beis-roda. Typical form is:
+   Let the team know about the release. This is posted in Slack under #beis-roda. Typical form is:
 
-    ```
-    @here :badger: Release N of RODA going to production :badger:
-    ```
+   ```
+   @here :badger: Release N of RODA going to production :badger:
+   ```
+
 1. Manually merge to master to release
-    Once the release pull request has been merged into the develop branch, the production deploy can be performed by manually merging develop into master:
-    ```
-    git fetch
-    git checkout master
-    git pull
-    git merge origin/develop
-    # Edit the commit message to reference the release number
-    # e.g. "Release 43" or "merge origin/develop for release 43"
-    git push
-    ```
+   Once the release pull request has been merged into the develop branch, the production deploy can be performed by manually merging develop into master:
+   ```
+   git fetch
+   git checkout master
+   git pull
+   git merge origin/develop
+   # Edit the commit message to reference the release number
+   # e.g. "Release 43" or "merge origin/develop for release 43"
+   git push
+   ```
 1. Production smoke test
-    Once the code has been deployed to production, carry out a quick smoke test to confirm that the changes have been successfully deployed.
+   Once the code has been deployed to production, carry out a quick smoke test to confirm that the changes have been successfully deployed.
 
 ## Staging
 
@@ -67,7 +68,7 @@ The heading should link to a Github URL at the bottom of the file, which shows t
 1. Check that any prerequisite changes to things like environment variables or third-party service configuration is ready
 1. Merge the pull request
 
-The changes should be automatically applied by Travis. [You can track the progress of Travis jobs at this link](https://travis-ci.org/UKGovernmentBEIS/beis-report-official-development-assistance).
+The changes should be automatically applied by Github Actions. [You can track the progress of Github Actions jobs at this link](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/actions?query=workflow%3ADeploy).
 
 ## Migrations
 
