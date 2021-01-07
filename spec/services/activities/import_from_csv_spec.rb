@@ -2,8 +2,10 @@ require "rails_helper"
 
 RSpec.describe Activities::ImportFromCsv do
   let(:organisation) { create(:organisation) }
-  let(:parent_activity) { create(:activity) }
-  let(:existing_activity) do
+  let(:parent_activity) { create(:fund_activity) }
+
+  # NB: 'let!' to prevent `to change { Activity.count }` from giving confusing results
+  let!(:existing_activity) do
     create(:activity) do |activity|
       activity.implementing_organisations = [
         create(:implementing_organisation, activity: activity),
@@ -286,6 +288,7 @@ RSpec.describe Activities::ImportFromCsv do
       ].join("-")
 
       expect(new_activity.parent).to eq(parent_activity)
+      expect(new_activity.level).to eq("programme")
       expect(new_activity.roda_identifier_compound).to eq(expected_roda_identifier_compound)
       expect(new_activity.transparency_identifier).to eq(new_activity_attributes["Transparency identifier"])
       expect(new_activity.title).to eq(new_activity_attributes["Title"])
@@ -322,6 +325,20 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.beis_id).to eq(new_activity_attributes["BEIS ID"])
       expect(new_activity.uk_dp_named_contact).to eq(new_activity_attributes["UK DP Named Contact (NF)"])
       expect(new_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
+    end
+
+    context "with a parent activity that is incomplete" do
+      it "doesn't allow the new activity to be created" do
+        parent_activity.update!(form_state: "level")
+
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq("Parent RODA ID")
+        expect(subject.errors.first.column).to eq(:parent_id)
+        expect(subject.errors.first.value).to eq(parent_activity.roda_identifier)
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_parent"))
+      end
     end
 
     it "sets BEIS as the accountable organisation" do
