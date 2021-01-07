@@ -1402,4 +1402,20 @@ RSpec.describe Activity, type: :model do
       expect(fund.is_newton_funded?).to be_falsey
     end
   end
+
+  describe "#iati_status" do
+    context "when the activity does not have a programme status set" do
+      it "returns nil" do
+        activity = Activity.new
+        expect(activity.iati_status).to be_nil
+      end
+    end
+
+    context "when the programme status exists" do
+      it "returns the corresponding IATI status code" do
+        activity = Activity.new(programme_status: "spend_in_progress")
+        expect(activity.iati_status).to eql "2"
+      end
+    end
+  end
 end

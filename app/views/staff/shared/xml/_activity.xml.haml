@@ -24,7 +24,7 @@
         %narrative= organisation.name
   - if activity.previous_identifier?
     %other-identifier{"ref" => activity.transparency_identifier, type: "A1"}
-  %activity-status{"code" => activity.status}/
+  %activity-status{"code" => activity.iati_status}/
   %activity-date{"iso-date" => activity.planned_start_date, type: "1"}/
   - if activity.actual_start_date?
     %activity-date{"iso-date" => activity.actual_start_date, type: "2"}/

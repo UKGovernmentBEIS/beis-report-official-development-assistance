@@ -147,7 +147,6 @@ en:
         sdgs_apply: Which Sustainable Development Goals does this activity meet?
         sector: Which %{sector_category} sector is the focus area for this %{level}?
         sector_category: What area of the economy or society is the %{level} helping?
-        status: What is the status of the %{level}?
         total_applications: How many applications have you had?
         total_awards: How many awards have you made?
         fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
@@ -269,7 +268,6 @@ en:
         sector: Economic/societal area
         sector_category: Focus area category
         stage: Stage
-        status: Status
         third_party_projects: Third-party projects (level D)
         title: "%{level} name"
         publish_to_iati:
@@ -385,7 +383,6 @@ en:
         region: What region will benefit from this activity?
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
-        status: Status
         sustainable_development_goals: Sustainable Development Goals
         total_applications_and_awards: Applications and awards
         uk_dp_named_contact: Who is the UK delivery partner named contact for this activity?
@@ -447,8 +444,6 @@ en:
               blank: Select a category
             sector:
               blank: Select a focus area
-            status:
-              blank: Select a status
             geography:
               blank: Select a benefitting region or country
             aid_type:
