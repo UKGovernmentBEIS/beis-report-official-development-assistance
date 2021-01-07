@@ -7,6 +7,21 @@ RSpec.feature "BEIS users can editing other users" do
     stub_auth0_token_request
   end
 
+  scenario "the email address is disabled" do
+    user = create(:beis_user)
+    authenticate!(user: user)
+
+    target_user = create(:administrator, name: "Old Name", email: "old@example.com")
+
+    visit organisation_path(user.organisation)
+    click_on(t("page_title.users.index"))
+
+    find("tr", text: target_user.name).click_link("Edit")
+
+    email_field = find("input[name='user[email]']")
+    expect(email_field).to be_disabled
+  end
+
   scenario "the details of the user can be updated" do
     user = create(:beis_user)
     authenticate!(user: user)
