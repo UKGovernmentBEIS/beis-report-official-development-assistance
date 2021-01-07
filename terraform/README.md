@@ -6,19 +6,21 @@ We use terraform workspaces to keep the terraform state seperate for each enviro
 
 We store our state in an s3 bucket on the PaaS in the terraform space.
 
-Deploys will happen automatically from travis
+Deploys will happen automatically from Github Actions
 
 ## Manual Deployment
 
 We should avoid manual deployments but the following instructions will allow you to do one.
 
 ### Setup
+
 - go to the application `/terraform` directory
 - install [tfenv](https://github.com/tfutils/tfenv)
 - install Terraform version `0.12.x` using `tfenv`, use `tfenv list-remote` to see available versions. Our Terrafiles are not backwards-compatible with Terraform `0.11.x`
 - install the latest [cloundfoundry provider](https://github.com/cloudfoundry-community/terraform-provider-cf/wiki#installations)
 
 ### Deployment
+
 - checkout the correct branch
   - `develop` for staging or other testing environments
   - `master` for production
@@ -55,7 +57,7 @@ We should avoid manual deployments but the following instructions will allow you
   `terraform workspace select $TF_VAR_environment`
   You can view available workspaces with `terraform workspace list`
 - `terraform plan` to check it will do what you think it will
-   if using a tfvars file you will need to provide it with `-var-file`
+  if using a tfvars file you will need to provide it with `-var-file`
 - `terraform apply` to deploy
-   if using a tfvars file you will need to provide it with `-var-file`
+  if using a tfvars file you will need to provide it with `-var-file`
 - If changes are not applied you can run `cf restage <app>`
