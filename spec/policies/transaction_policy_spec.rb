@@ -37,8 +37,7 @@ RSpec.describe TransactionPolicy do
       it { is_expected.to permit_action(:create) }
       it { is_expected.to permit_action(:edit) }
       it { is_expected.to permit_action(:update) }
-
-      it { is_expected.to forbid_action(:destroy) }
+      it { is_expected.to permit_action(:destroy) }
     end
 
     context "when the activity is a project" do
@@ -175,8 +174,7 @@ RSpec.describe TransactionPolicy do
               it { is_expected.to permit_action(:create) }
               it { is_expected.to permit_action(:edit) }
               it { is_expected.to permit_action(:update) }
-
-              it { is_expected.to forbid_action(:destroy) }
+              it { is_expected.to permit_action(:destroy) }
             end
           end
         end
