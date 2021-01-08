@@ -147,6 +147,38 @@ RSpec.feature "Users can create a project" do
           expect(activity.country_delivery_partners).to be_empty
         end
       end
+
+      context "when the aid type is one of 'D02', 'E01', 'G01'" do
+        it "skips the FSTC applies step and infers it from the aid type" do
+          programme = create(:programme_activity, extending_organisation: user.organisation)
+          _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
+
+          visit organisation_activity_children_path(programme.organisation, programme)
+          click_on(t("page_content.organisation.button.create_activity"))
+
+          # Test is done in this method:
+          fill_in_activity_form(level: "project", parent: programme, aid_type: "D02")
+
+          expect(page).to have_content t("action.project.create.success")
+          expect(programme.child_activities.last.fstc_applies).to eql true
+        end
+      end
+
+      context "when the aid type is 'C01'" do
+        it "pre-selects Yes for the FSTC applies step but lets the user choose" do
+          programme = create(:programme_activity, extending_organisation: user.organisation)
+          _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
+
+          visit organisation_activity_children_path(programme.organisation, programme)
+          click_on(t("page_content.organisation.button.create_activity"))
+
+          # Test is done in this method:
+          fill_in_activity_form(level: "project", parent: programme, aid_type: "C01", fstc_applies: false)
+
+          expect(page).to have_content t("action.project.create.success")
+          expect(programme.child_activities.last.fstc_applies).to eql false
+        end
+      end
     end
   end
 end
