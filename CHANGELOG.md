@@ -465,6 +465,7 @@
 - Infer the value of FSTC applies from aid type, where possible
 - Require UK Delivery partner named contact for all projects and third-party projects
 - Fix a brittle spec
+- Fix users can change the extending organisation on a level B (programme) activity
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-27...HEAD
 [release-27]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...release-27
