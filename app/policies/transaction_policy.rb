@@ -16,6 +16,14 @@ class TransactionPolicy < ApplicationPolicy
   end
 
   def update?
+    can_update_or_delete?
+  end
+
+  def destroy?
+    can_update_or_delete?
+  end
+
+  private def can_update_or_delete?
     return false if record.parent_activity.level.nil?
     return true if beis_user? && record.parent_activity.programme?
 
@@ -23,10 +31,6 @@ class TransactionPolicy < ApplicationPolicy
       return true if editable_report_for_organisation_and_fund == record.report
     end
 
-    false
-  end
-
-  def destroy?
     false
   end
 
