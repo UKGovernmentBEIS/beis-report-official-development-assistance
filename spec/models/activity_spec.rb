@@ -703,31 +703,13 @@ RSpec.describe Activity, type: :model do
       end
 
       context "when the activity is a project" do
-        context "and it is Newton-funded" do
-          subject { build(:project_activity, parent: build(:programme_activity, parent: build(:fund_activity, :newton))) }
-
-          it { should validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
-        end
-
-        context "and it is not Newton-funded" do
-          subject { build(:project_activity) }
-
-          it { should_not validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
-        end
+        subject { build(:project_activity) }
+        it { should validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
       end
 
       context "when the activity is a third party project" do
-        context "and it is Newton-funded" do
-          subject { build(:third_party_project_activity, parent: build(:programme_activity, parent: build(:fund_activity, :newton))) }
-
-          it { should validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
-        end
-
-        context "and it is not Newton-funded" do
-          subject { build(:third_party_project_activity) }
-
-          it { should_not validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
-        end
+        subject { build(:third_party_project_activity) }
+        it { should validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
       end
     end
 

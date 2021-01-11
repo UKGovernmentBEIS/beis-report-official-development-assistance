@@ -88,7 +88,7 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :sector)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:sector)}"), activity_step_path(activity_presenter, :sector_category), t("summary.label.activity.sector"))
 
-  - if @activity.is_project? && @activity.is_newton_funded?
+  - if @activity.is_project?
     .govuk-summary-list__row.uk_dp_named_contact
       %dt.govuk-summary-list__key
         = t("summary.label.activity.uk_dp_named_contact")

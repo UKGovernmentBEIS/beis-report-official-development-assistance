@@ -317,7 +317,7 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
-    if (level == "project" || level == "third_party_project") && parent.is_newton_funded?
+    if level == "project" || level == "third_party_project"
       expect(page).to have_content t("form.label.activity.uk_dp_named_contact")
       fill_in "activity[uk_dp_named_contact]", with: uk_dp_named_contact
       click_button t("form.button.activity.submit")
@@ -396,7 +396,7 @@ module FormHelpers
     expect(page).to have_content fund_pillar if associated_fund_is_newton?(parent)
     expect(page).to have_content oda_eligibility
     expect(page).to have_content oda_eligibility_lead if level == "project" || level == "third_party_project"
-    if (level == "project" || level == "third_party_project") && parent.is_newton_funded?
+    if level == "project" || level == "third_party_project"
       expect(page).to have_content uk_dp_named_contact
     end
     expect(page).to have_content localise_date_from_input_fields(
