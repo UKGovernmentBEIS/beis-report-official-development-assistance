@@ -2,6 +2,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
   include DateHelper
   include ActivityHelper
+  include CodelistHelper
 
   DEFAULT_PROGRAMME_STATUS_FOR_FUNDS = "spend_in_progress"
 
@@ -88,6 +89,9 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step unless @activity.is_project?
     when :uk_dp_named_contact
       skip_step unless @activity.is_project? && @activity.is_newton_funded?
+    when :fstc_applies
+      skip_step if can_infer_fstc?(@activity.aid_type)
+      assign_default_fstc_applies_value_if_aid_type_c01
     end
 
     render_wizard
@@ -167,6 +171,9 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.assign_attributes(flow: flow)
     when :aid_type
       @activity.assign_attributes(aid_type: aid_type)
+      if can_infer_fstc?(@activity.aid_type)
+        @activity.fstc_applies = fstc_from_aid_type(@activity.aid_type)
+      end
     when :fstc_applies
       @activity.assign_attributes(fstc_applies: fstc_applies)
     when :policy_markers
@@ -433,5 +440,9 @@ class Staff::ActivityFormsController < Staff::BaseController
   def assign_default_collaboration_type_value_if_nil
     # This allows us to pre-select a specific radio button on collaboration_type form step (value "Bilateral" in this case)
     @activity.collaboration_type = "1" if @activity.collaboration_type.nil?
+  end
+
+  def assign_default_fstc_applies_value_if_aid_type_c01
+    @activity.fstc_applies = true if @activity.aid_type == "C01"
   end
 end

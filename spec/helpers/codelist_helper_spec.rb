@@ -229,6 +229,46 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.last.name).to eq("Zimbabwe")
       end
     end
+
+    describe "#fstc_from_aid_type" do
+      it "returns nil if the aid type is not set" do
+        expect(helper.fstc_from_aid_type(nil)).to be_nil
+      end
+
+      it "returns true for D02" do
+        expect(helper.fstc_from_aid_type("D02")).to eql true
+      end
+
+      it "returns true for E01" do
+        expect(helper.fstc_from_aid_type("E01")).to eql true
+      end
+
+      it "returns false for G01" do
+        expect(helper.fstc_from_aid_type("G01")).to eql false
+      end
+
+      it "returns nil for any other aid type" do
+        expect(helper.fstc_from_aid_type("B02")).to be_nil
+      end
+    end
+
+    describe "#can_infer_fstc?" do
+      it "returns false if the aid type is not set" do
+        expect(helper.can_infer_fstc?(nil)).to eql false
+      end
+
+      it "returns true for aid types 'D02', 'E01', 'G01'" do
+        %w[D02 E01 G01].each do |at|
+          expect(helper.can_infer_fstc?(at)).to eql true
+        end
+      end
+
+      it "returns false for any other aid type" do
+        (CodelistHelper::ALLOWED_AID_TYPE_CODES - %w[D02 E01 G01]).each do |at|
+          expect(helper.can_infer_fstc?(at)).to eql false
+        end
+      end
+    end
   end
 
   describe "BEIS" do
