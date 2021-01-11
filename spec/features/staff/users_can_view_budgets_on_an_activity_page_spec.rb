@@ -22,8 +22,8 @@ RSpec.feature "Users can view budgets on an activity page" do
       scenario "budgets are shown in period date order, newest first" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         budget_1 = create(:budget, parent_activity: fund_activity, period_start_date: Date.today, period_end_date: Date.tomorrow)
-        budget_2 = create(:budget, parent_activity: fund_activity, period_start_date: 1.year.ago, period_end_date: Date.yesterday)
-        budget_3 = create(:budget, parent_activity: fund_activity, period_start_date: 2.years.ago, period_end_date: 1.year.ago)
+        budget_2 = create(:budget, parent_activity: fund_activity, period_start_date: 11.months.ago, period_end_date: Date.yesterday)
+        budget_3 = create(:budget, parent_activity: fund_activity, period_start_date: 23.months.ago, period_end_date: 12.months.ago)
 
         visit activities_path
 
