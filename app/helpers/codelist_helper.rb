@@ -14,6 +14,11 @@ module CodelistHelper
     "E01",
     "G01",
   ]
+  FSTC_FROM_AID_TYPE_CODE = {
+    "D02" => true,
+    "E01" => true,
+    "G01" => false,
+  }
 
   ALLOWED_POLICY_MARKERS_SIGNIFICANCES = [
     "0",
@@ -134,6 +139,14 @@ module CodelistHelper
     )
 
     options.select { |a| ALLOWED_AID_TYPE_CODES.include?(a.code) }
+  end
+
+  def fstc_from_aid_type(aid_type_code)
+    FSTC_FROM_AID_TYPE_CODE[aid_type_code]
+  end
+
+  def can_infer_fstc?(aid_type_code)
+    FSTC_FROM_AID_TYPE_CODE.key?(aid_type_code)
   end
 
   def policy_markers_select_options
