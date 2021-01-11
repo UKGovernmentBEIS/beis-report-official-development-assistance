@@ -88,7 +88,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :oda_eligibility_lead
       skip_step unless @activity.is_project?
     when :uk_dp_named_contact
-      skip_step unless @activity.is_project? && @activity.is_newton_funded?
+      skip_step unless @activity.is_project?
     when :fstc_applies
       skip_step if can_infer_fstc?(@activity.aid_type)
       assign_default_fstc_applies_value_if_aid_type_c01
