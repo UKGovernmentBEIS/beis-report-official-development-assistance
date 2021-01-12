@@ -21,6 +21,18 @@ RSpec.describe "Users can create a planned disbursement" do
       expect(page).to have_content t("action.planned_disbursement.create.success")
     end
 
+    scenario "they can go back if they try to add a planned disbursement in error" do
+      project = create(:project_activity, :with_report, organisation: user.organisation)
+      visit activities_path
+      click_on project.title
+
+      click_on t("page_content.planned_disbursements.button.create")
+
+      click_on t("form.link.activity.back")
+
+      expect(page).to have_title t("document_title.activity.financials", name: project.title)
+    end
+
     context "when we are in the first quarter" do
       scenario "the current financial quarter and year are pre selected" do
         travel_to_quarter(1, 2019) do
