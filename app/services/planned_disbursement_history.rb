@@ -24,6 +24,10 @@ class PlannedDisbursementHistory
     end
   end
 
+  def clear!
+    entries.destroy_all
+  end
+
   def all_entries
     entries.to_a.reverse
   end

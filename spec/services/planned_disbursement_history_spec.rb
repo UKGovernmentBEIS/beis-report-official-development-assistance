@@ -94,6 +94,35 @@ RSpec.describe PlannedDisbursementHistory do
         ["original", nil, nil, 10],
       ])
     end
+
+    context "when deleting a report" do
+      it "deletes the original planned disbursement when there is only one entry" do
+        history.set_value(10)
+
+        history.clear!
+
+        expect(history_entries).to eq([])
+      end
+
+      it "deletes the original and revised entries when a forecast has been revised" do
+        history.set_value(10)
+        history.set_value(5)
+
+        history.clear!
+
+        expect(history_entries).to eq([])
+      end
+
+      it "deletes the original and revised entries when a forecast has been revised multiple times" do
+        history.set_value(10)
+        history.set_value(5)
+        history.set_value(7)
+
+        history.clear!
+
+        expect(history_entries).to eq([])
+      end
+    end
   end
 
   context "for a level C activity, owned by a delivery partner" do
