@@ -16,6 +16,14 @@ class PlannedDisbursementPolicy < ApplicationPolicy
   end
 
   def update?
+    can_update_or_destroy?
+  end
+
+  def destroy?
+    can_update_or_destroy?
+  end
+
+  private def can_update_or_destroy?
     return false if record.parent_activity.level.nil?
     return true if beis_user? && record.parent_activity.programme?
 
@@ -23,10 +31,6 @@ class PlannedDisbursementPolicy < ApplicationPolicy
       return true if editable_report_for_organisation_and_fund.present?
     end
 
-    false
-  end
-
-  def destroy?
     false
   end
 
