@@ -10,3 +10,5 @@
         = f.govuk_error_summary
         = f.govuk_text_field :value, width: 20
         = f.govuk_submit t("default.button.submit")
+        = link_to t("default.button.delete"), destroy_activity_planned_disbursements_path(@planned_disbursement.parent_activity, @planned_disbursement.financial_year, @planned_disbursement.financial_quarter), method: "delete" , class: "govuk-button govuk-button--warning", "data-module": "govuk-button", role: "button", data: { confirm: "Are you sure you want to delete this forecast and all its associated history?" }
+
