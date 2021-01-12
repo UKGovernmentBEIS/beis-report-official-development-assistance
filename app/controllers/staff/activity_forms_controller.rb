@@ -6,43 +6,7 @@ class Staff::ActivityFormsController < Staff::BaseController
 
   DEFAULT_PROGRAMME_STATUS_FOR_FUNDS = "spend_in_progress"
 
-  FORM_STEPS = [
-    :blank,
-    :level,
-    :parent,
-    :identifier,
-    :roda_identifier,
-    :purpose,
-    :objectives,
-    :sector_category,
-    :sector,
-    :call_present,
-    :call_dates,
-    :total_applications_and_awards,
-    :programme_status,
-    :country_delivery_partners,
-    :dates,
-    :geography,
-    :region,
-    :country,
-    :requires_additional_benefitting_countries,
-    :intended_beneficiaries,
-    :gdi,
-    :collaboration_type,
-    :flow,
-    :sustainable_development_goals,
-    :fund_pillar,
-    :aid_type,
-    :fstc_applies,
-    :policy_markers,
-    :covid19_related,
-    :gcrf_challenge_area,
-    :oda_eligibility,
-    :oda_eligibility_lead,
-    :uk_dp_named_contact,
-  ]
-
-  steps(*FORM_STEPS)
+  steps(*Activity::FORM_STEPS)
 
   def show
     @activity = Activity.find(activity_id)
