@@ -6,6 +6,8 @@ en:
         success: Forecasted spend successfully created
       update:
         success: Forecasted spend successfully updated
+      destroy:
+        success: Forecasted spend successfully deleted
   form:
     label:
       planned_disbursement:
