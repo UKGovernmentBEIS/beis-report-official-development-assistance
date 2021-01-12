@@ -6,6 +6,8 @@ en:
         success: Transaction successfully created
       update:
         success: Transaction sucessfully updated
+      destroy:
+        success: Transaction sucessfully deleted
       download:
         button: Download CSV template
       upload:

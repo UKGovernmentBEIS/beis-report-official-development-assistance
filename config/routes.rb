@@ -31,7 +31,7 @@ Rails.application.routes.draw do
     end
 
     concern :transactionable do
-      resources :transactions, only: [:new, :create, :show, :edit, :update]
+      resources :transactions
     end
 
     concern :budgetable do
