@@ -98,6 +98,29 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "#form_state" do
+      context "when the form_state is set to a value we expect" do
+        subject(:activity) { build(:activity) }
+        it "should be valid" do
+          expect(activity.valid?).to be_truthy
+        end
+      end
+
+      context "when form_state is set to a value not included in the validation list" do
+        subject(:activity) { build(:activity, form_state: "completed") }
+        it "should not be valid" do
+          expect(activity.valid?).to be_falsey
+        end
+      end
+
+      context "when form_state is set to a value included in the validation list" do
+        subject(:activity) { build(:activity, form_state: "purpose") }
+        it "should be valid" do
+          expect(activity.valid?).to be_truthy
+        end
+      end
+    end
+
     context "when the level is blank" do
       subject(:activity) { build(:activity, level: nil) }
       it "should not be valid" do
