@@ -14,6 +14,42 @@ class Activity < ApplicationRecord
     not_assessed: 1000,
   }
 
+  FORM_STEPS = [
+    :blank,
+    :level,
+    :parent,
+    :identifier,
+    :roda_identifier,
+    :purpose,
+    :objectives,
+    :sector_category,
+    :sector,
+    :call_present,
+    :call_dates,
+    :total_applications_and_awards,
+    :programme_status,
+    :country_delivery_partners,
+    :dates,
+    :geography,
+    :region,
+    :country,
+    :requires_additional_benefitting_countries,
+    :intended_beneficiaries,
+    :gdi,
+    :collaboration_type,
+    :flow,
+    :sustainable_development_goals,
+    :fund_pillar,
+    :aid_type,
+    :fstc_applies,
+    :policy_markers,
+    :covid19_related,
+    :gcrf_challenge_area,
+    :oda_eligibility,
+    :oda_eligibility_lead,
+    :uk_dp_named_contact,
+  ]
+
   VALIDATION_STEPS = [
     :level_step,
     :parent_step,
@@ -47,6 +83,8 @@ class Activity < ApplicationRecord
     :oda_eligibility_lead_step,
     :uk_dp_named_contact_step,
   ]
+
+  FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete", "recipient_country", "recipient_region")
 
   strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
 
@@ -100,6 +138,7 @@ class Activity < ApplicationRecord
   validates :extending_organisation_id, presence: true, on: :update_extending_organisation
   validates :call_open_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :call_close_date, presence: true, on: :call_dates_step, if: :call_present?
+  validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}, allow_nil: true
 
   acts_as_tree
   belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"

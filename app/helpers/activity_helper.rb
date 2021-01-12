@@ -1,6 +1,6 @@
 module ActivityHelper
   def step_is_complete_or_next?(activity:, step:)
-    steps = Staff::ActivityFormsController::FORM_STEPS
+    steps = Activity::FORM_STEPS
 
     return false if activity.form_state.nil?
     return true if activity.form_steps_completed?

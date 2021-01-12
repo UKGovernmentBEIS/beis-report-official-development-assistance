@@ -43,7 +43,7 @@ RSpec.describe ActivityHelper, type: :helper do
     context "when the activity form hasn't been started" do
       it "shows no steps" do
         activity = build(:activity, :nil_form_state)
-        all_steps = Staff::ActivityFormsController::FORM_STEPS
+        all_steps = Activity::FORM_STEPS
 
         all_steps.each do |step|
           expect(helper.step_is_complete_or_next?(activity: activity, step: step)).to be(false)
@@ -54,7 +54,7 @@ RSpec.describe ActivityHelper, type: :helper do
     context "when the activity form has been completed" do
       it "shows all steps" do
         activity = build(:activity, form_state: "complete")
-        all_steps = Staff::ActivityFormsController::FORM_STEPS
+        all_steps = Activity::FORM_STEPS
 
         all_steps.each do |step|
           expect(helper.step_is_complete_or_next?(activity: activity, step: step)).to be(true)
