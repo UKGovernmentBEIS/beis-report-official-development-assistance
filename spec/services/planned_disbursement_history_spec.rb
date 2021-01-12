@@ -122,6 +122,28 @@ RSpec.describe PlannedDisbursementHistory do
 
         expect(history_entries).to eq([])
       end
+
+      it "creates a public activity record for each deleted entry" do
+        PublicActivity.with_tracking do
+          history.set_value(10)
+          history.set_value(5)
+
+          old_entries = history.all_entries
+
+          expect { history.clear! }.to change { PublicActivity::Activity.where(key: "planned_disbursement.destroy").count }.by(2)
+
+          activities = PublicActivity::Activity.where(key: "planned_disbursement.destroy").order(created_at: :desc)
+
+          first_activity = activities.first
+          second_activity = activities.second
+
+          expect(first_activity.trackable_id).to eq(old_entries.first.id)
+          expect(first_activity.parameters).to eq({associated_activity_id: activity.id})
+
+          expect(second_activity.trackable_id).to eq(old_entries.last.id)
+          expect(second_activity.parameters).to eq({associated_activity_id: activity.id})
+        end
+      end
     end
   end
 
