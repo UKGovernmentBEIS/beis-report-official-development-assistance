@@ -84,6 +84,8 @@ class Activity < ApplicationRecord
     :uk_dp_named_contact_step,
   ]
 
+  FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete", "recipient_country", "recipient_region")
+
   strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
 
   validates :level, presence: true, on: :level_step
@@ -136,6 +138,7 @@ class Activity < ApplicationRecord
   validates :extending_organisation_id, presence: true, on: :update_extending_organisation
   validates :call_open_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :call_close_date, presence: true, on: :call_dates_step, if: :call_present?
+  validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}, allow_nil: true
 
   acts_as_tree
   belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"
