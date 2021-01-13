@@ -257,6 +257,20 @@ RSpec.feature "Users can create a transaction" do
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.date.blank")
       end
     end
+
+    scenario "they can cancel their transaction" do
+      activity = create(:programme_activity, :with_report, organisation: user.organisation)
+
+      visit activities_path
+
+      click_on(activity.title)
+
+      click_on(t("page_content.transactions.button.create"))
+
+      click_on(t("form.link.activity.back"))
+
+      expect(page).to have_content(activity.title)
+    end
   end
 
   context "when they are a government delivery partner organisation user" do
