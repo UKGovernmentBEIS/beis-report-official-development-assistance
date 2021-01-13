@@ -8,3 +8,4 @@
 
       = form_with model: @planned_disbursement, url: activity_planned_disbursements_path(@activity) do |f|
         = render partial: "form", locals: { f: f }
+        = link_to t("form.link.activity.back"), organisation_activity_financials_path(@activity.organisation, @activity), class: "govuk-button govuk-button--secondary", "data-module": "govuk-button", role: "button"

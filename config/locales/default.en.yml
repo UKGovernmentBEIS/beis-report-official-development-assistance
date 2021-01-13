@@ -14,6 +14,7 @@ en:
       download_as_xml: Download as XML
       menu: Menu
       submit: Submit
+      delete: Delete
     link:
       add: Add
       back: Back
@@ -41,7 +42,7 @@ en:
         invalid: "%{attribute} is invalid"
         less_than: "%{attribute} must be less than %{count}"
         less_than_or_equal_to: "%{attribute} must be less than or equal to %{count}"
-        model_invalid: 'Validation failed: %{errors}'
+        model_invalid: "Validation failed: %{errors}"
         not_a_number: "%{attribute} is not a number"
         not_an_integer: "%{attribute} must be an integer"
         odd: "%{attribute} must be odd"

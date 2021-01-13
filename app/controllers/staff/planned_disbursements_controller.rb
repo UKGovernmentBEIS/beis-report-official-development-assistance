@@ -63,6 +63,17 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
     redirect_to organisation_activity_path(@activity.organisation, @activity)
   end
 
+  def destroy
+    @activity = Activity.find(params["activity_id"])
+    history = history_for_update
+    authorize history.latest_entry
+
+    history.clear!
+
+    flash[:notice] = t("action.planned_disbursement.destroy.success")
+    redirect_to organisation_activity_path(@activity.organisation, @activity)
+  end
+
   private def history_for_create
     PlannedDisbursementHistory.new(
       @activity,
