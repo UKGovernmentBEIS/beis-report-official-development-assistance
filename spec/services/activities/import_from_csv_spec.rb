@@ -2,8 +2,10 @@ require "rails_helper"
 
 RSpec.describe Activities::ImportFromCsv do
   let(:organisation) { create(:organisation) }
-  let(:parent_activity) { create(:activity) }
-  let(:existing_activity) do
+  let(:parent_activity) { create(:fund_activity) }
+
+  # NB: 'let!' to prevent `to change { Activity.count }` from giving confusing results
+  let!(:existing_activity) do
     create(:activity) do |activity|
       activity.implementing_organisations = [
         create(:implementing_organisation, activity: activity),
@@ -158,7 +160,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.oda_eligibility).to eq("never_eligible")
       expect(existing_activity.oda_eligibility_lead).to eq(existing_activity_attributes["ODA Eligibility Lead"])
       expect(existing_activity.programme_status).to eq("delivery")
-      expect(existing_activity.status).to eq("2")
+      expect(existing_activity.iati_status).to eq("2")
       expect(existing_activity.call_open_date).to eq(DateTime.parse(existing_activity_attributes["Call open date"]))
       expect(existing_activity.call_close_date).to eq(DateTime.parse(existing_activity_attributes["Call close date"]))
       expect(existing_activity.planned_start_date).to eq(DateTime.parse(existing_activity_attributes["Planned start date"]))
@@ -286,6 +288,7 @@ RSpec.describe Activities::ImportFromCsv do
       ].join("-")
 
       expect(new_activity.parent).to eq(parent_activity)
+      expect(new_activity.level).to eq("programme")
       expect(new_activity.roda_identifier_compound).to eq(expected_roda_identifier_compound)
       expect(new_activity.transparency_identifier).to eq(new_activity_attributes["Transparency identifier"])
       expect(new_activity.title).to eq(new_activity_attributes["Title"])
@@ -302,7 +305,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.oda_eligibility).to eq("never_eligible")
       expect(new_activity.oda_eligibility_lead).to eq(new_activity_attributes["ODA Eligibility Lead"])
       expect(new_activity.programme_status).to eq("delivery")
-      expect(new_activity.status).to eq("2")
+      expect(new_activity.iati_status).to eq("2")
       expect(new_activity.fund_pillar).to eq(new_activity_attributes["Newton Fund Pillar"].to_i)
       expect(new_activity.call_open_date).to eq(DateTime.parse(new_activity_attributes["Call open date"]))
       expect(new_activity.call_close_date).to eq(DateTime.parse(new_activity_attributes["Call close date"]))
@@ -324,16 +327,18 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
     end
 
-    it "sets BEIS as the funding organisation" do
-      beis = create(:beis_organisation)
+    context "with a parent activity that is incomplete" do
+      it "doesn't allow the new activity to be created" do
+        parent_activity.update!(form_state: "level")
 
-      subject.import([new_activity_attributes])
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      new_activity = Activity.order(:created_at).last
-
-      expect(new_activity.funding_organisation_name).to eq beis.name
-      expect(new_activity.funding_organisation_reference).to eq beis.iati_reference
-      expect(new_activity.funding_organisation_type).to eq beis.organisation_type
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq("Parent RODA ID")
+        expect(subject.errors.first.column).to eq(:parent_id)
+        expect(subject.errors.first.value).to eq(parent_activity.roda_identifier)
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_parent"))
+      end
     end
 
     it "sets BEIS as the accountable organisation" do

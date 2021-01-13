@@ -144,6 +144,14 @@ RSpec.feature "Users can edit an activity" do
           assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
         end
 
+        it "does not show an edit link for FSTC applies if it can be inferred from the aid type" do
+          activity = create(:fund_activity, organisation: user.organisation, aid_type: "D02", fstc_applies: true)
+
+          visit organisation_activity_details_path(activity.organisation, activity)
+
+          assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
+        end
+
         it "does not show an edit link for the transparency identifier" do
           activity = create(:fund_activity, organisation: user.organisation)
 
@@ -369,21 +377,18 @@ RSpec.feature "Users can edit an activity" do
         end
       end
 
-      context "when the project is Newton-funded" do
-        let(:activity) { create(:project_activity, organisation: user.organisation, parent: create(:programme_activity, parent: create(:fund_activity, :newton))) }
+      it "shows a link to edit the UK DP named contact" do
+        activity = create(:project_activity, organisation: user.organisation)
+        # Report needs to exist so the activity is editable
+        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
 
-        it "shows a link to edit the UK DP named contact" do
-          # Report needs to exist so the activity is editable
-          _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
-          visit organisation_activity_details_path(activity.organisation, activity)
-
-          within(".uk_dp_named_contact") do
-            click_on(t("default.link.edit"))
-            expect(page).to have_current_path(
-              activity_step_path(activity, :uk_dp_named_contact)
-            )
-          end
+        within(".uk_dp_named_contact") do
+          click_on(t("default.link.edit"))
+          expect(page).to have_current_path(
+            activity_step_path(activity, :uk_dp_named_contact)
+          )
         end
       end
 
@@ -613,14 +618,20 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(t("default.link.back"))
   click_on t("tabs.activity.details")
 
-  within(".fstc_applies") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :fstc_applies)
-    )
+  if activity.aid_type.in?(["D02", "E01", "G01"])
+    within(".fstc_applies") do
+      expect(page).to_not have_link(t("default.link.edit"))
+    end
+  else
+    within(".fstc_applies") do
+      click_on(t("default.link.edit"))
+      expect(page).to have_current_path(
+        activity_step_path(activity, :fstc_applies)
+      )
+    end
+    click_on(t("default.link.back"))
+    click_on t("tabs.activity.details")
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
 
   within(".covid19_related") do
     click_on(t("default.link.edit"))
@@ -662,7 +673,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     click_on t("tabs.activity.details")
   end
 
-  if activity.is_project? && activity.is_newton_funded?
+  if activity.is_project?
     within(".uk_dp_named_contact") do
       click_on(t("default.link.edit"))
       expect(page).to have_current_path(

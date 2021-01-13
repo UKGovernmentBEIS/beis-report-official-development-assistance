@@ -14,6 +14,42 @@ class Activity < ApplicationRecord
     not_assessed: 1000,
   }
 
+  FORM_STEPS = [
+    :blank,
+    :level,
+    :parent,
+    :identifier,
+    :roda_identifier,
+    :purpose,
+    :objectives,
+    :sector_category,
+    :sector,
+    :call_present,
+    :call_dates,
+    :total_applications_and_awards,
+    :programme_status,
+    :country_delivery_partners,
+    :dates,
+    :geography,
+    :region,
+    :country,
+    :requires_additional_benefitting_countries,
+    :intended_beneficiaries,
+    :gdi,
+    :collaboration_type,
+    :flow,
+    :sustainable_development_goals,
+    :fund_pillar,
+    :aid_type,
+    :fstc_applies,
+    :policy_markers,
+    :covid19_related,
+    :gcrf_challenge_area,
+    :oda_eligibility,
+    :oda_eligibility_lead,
+    :uk_dp_named_contact,
+  ]
+
   VALIDATION_STEPS = [
     :level_step,
     :parent_step,
@@ -47,6 +83,8 @@ class Activity < ApplicationRecord
     :oda_eligibility_lead_step,
     :uk_dp_named_contact_step,
   ]
+
+  FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete", "recipient_country", "recipient_region")
 
   strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
 
@@ -87,7 +125,7 @@ class Activity < ApplicationRecord
   validates :gcrf_challenge_area, presence: true, on: :gcrf_challenge_area_step, if: :is_gcrf_funded?
   validates :oda_eligibility, presence: true, on: :oda_eligibility_step
   validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :is_project?
-  validates :uk_dp_named_contact, presence: true, on: :uk_dp_named_contact_step, if: :is_project? && :is_newton_funded?
+  validates :uk_dp_named_contact, presence: true, on: :uk_dp_named_contact_step, if: :is_project?
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier_compound, uniqueness: true, allow_nil: true
@@ -100,6 +138,7 @@ class Activity < ApplicationRecord
   validates :extending_organisation_id, presence: true, on: :update_extending_organisation
   validates :call_open_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :call_close_date, presence: true, on: :call_dates_step, if: :call_present?
+  validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}, allow_nil: true
 
   acts_as_tree
   belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"
@@ -209,12 +248,6 @@ class Activity < ApplicationRecord
     organisation.default_currency
   end
 
-  def has_funding_organisation?
-    funding_organisation_reference.present? &&
-      funding_organisation_name.present? &&
-      funding_organisation_type.present?
-  end
-
   def has_accountable_organisation?
     accountable_organisation_reference.present? &&
       accountable_organisation_name.present? &&
@@ -239,7 +272,16 @@ class Activity < ApplicationRecord
   end
 
   def providing_organisation
-    return organisation if third_party_project? && !organisation.is_government?
+    third_party_project? && !organisation.is_government? ? organisation : service_owner
+  end
+
+  def funding_organisation
+    return nil if fund?
+
+    service_owner
+  end
+
+  def service_owner
     Organisation.find_by(service_owner: true)
   end
 
@@ -360,5 +402,11 @@ class Activity < ApplicationRecord
 
   def requires_country_delivery_partners?
     is_newton_funded? && programme?
+  end
+
+  def iati_status
+    return if programme_status.blank?
+
+    iati_status_from_programme_status(programme_status)
   end
 end

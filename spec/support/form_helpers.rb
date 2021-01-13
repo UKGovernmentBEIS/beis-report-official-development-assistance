@@ -248,10 +248,18 @@ module FormHelpers
     choose("activity[aid_type]", option: aid_type)
     click_button t("form.button.activity.submit")
 
-    expect(page).to have_content t("form.legend.activity.fstc_applies")
-    expect(page.body).to include t("form.hint.activity.fstc_applies", aid_type: aid_type)
-    choose("activity[fstc_applies]", option: fstc_applies)
-    click_button t("form.button.activity.submit")
+    if aid_type.in?(["B02", "B03", "D01"])
+      expect(page).to have_content t("form.legend.activity.fstc_applies")
+      expect(page.body).to include t("form.hint.activity.fstc_applies", aid_type: aid_type)
+      choose("activity[fstc_applies]", option: fstc_applies)
+      click_button t("form.button.activity.submit")
+    elsif aid_type == "C01"
+      expect(page).to have_content t("form.legend.activity.fstc_applies")
+      expect(page.body).to include t("form.hint.activity.fstc_applies", aid_type: aid_type)
+      expect(find_field("activity-fstc-applies-true-field")).to be_checked
+      choose("activity[fstc_applies]", option: fstc_applies)
+      click_button t("form.button.activity.submit")
+    end
 
     if level == "project" || level == "third_party_project"
       expect(page).to have_content t("page_title.activity_form.show.policy_markers")
@@ -309,7 +317,7 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
-    if (level == "project" || level == "third_party_project") && parent.is_newton_funded?
+    if level == "project" || level == "third_party_project"
       expect(page).to have_content t("form.label.activity.uk_dp_named_contact")
       fill_in "activity[uk_dp_named_contact]", with: uk_dp_named_contact
       click_button t("form.button.activity.submit")
@@ -348,6 +356,17 @@ module FormHelpers
     expect(page).to have_content gdi
     expect(page).to have_content flow
     expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
+
+    within(".govuk-summary-list__row.fstc_applies") do
+      if aid_type.in?(["B02", "B03", "C01", "D01"])
+        expect(page).to have_content t("summary.label.activity.fstc_applies.#{fstc_applies}")
+      elsif aid_type.in?(["D02", "E01"])
+        expect(page).to have_content "Yes"
+      elsif aid_type == "G01"
+        expect(page).to have_content "No"
+      end
+    end
+
     if level == "project" || level == "third_party_project"
       within(".policy_marker_gender") do
         expect(page).to have_content policy_marker_gender
@@ -377,7 +396,7 @@ module FormHelpers
     expect(page).to have_content fund_pillar if associated_fund_is_newton?(parent)
     expect(page).to have_content oda_eligibility
     expect(page).to have_content oda_eligibility_lead if level == "project" || level == "third_party_project"
-    if (level == "project" || level == "third_party_project") && parent.is_newton_funded?
+    if level == "project" || level == "third_party_project"
       expect(page).to have_content uk_dp_named_contact
     end
     expect(page).to have_content localise_date_from_input_fields(
@@ -402,11 +421,6 @@ module FormHelpers
         day: call_close_date_day
       )
     end
-
-    my_activity = Activity.find_by(delivery_partner_identifier: delivery_partner_identifier)
-    iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
-    expect(my_activity.status).not_to be_nil
-    expect(my_activity.status).to eq(iati_status)
   end
 
   def fill_in_transaction_form(expectations: true,

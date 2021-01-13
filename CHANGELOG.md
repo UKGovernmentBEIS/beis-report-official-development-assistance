@@ -452,10 +452,26 @@
 - Transaction importer expects dates in `dd/mm/yyyy` format
 - Activity CSV export includes previous quarter's actuals where available
 
+## [release-28] - 2021-01-13
+
+- SDGs on activity details page now shows `Not applicable` when the user selects this option on the form
+- Refactor away `funding organisation` field
+- Forecasted spend form always includes the current financial year
+- Remove `Complete` label from child activities view
+- Refactor helper to standardise the way we load BEIS codes
+- Activity importer ignores incomplete activities when finding a parent
+- IATI status is calculated on the fly from the programme status
+- Do not allow a user's email address to be changed after creation
+- Infer the value of FSTC applies from aid type, where possible
+- Require UK Delivery partner named contact for all projects and third-party projects
+- Fix a brittle spec
+- Fix users can change the extending organisation on a level B (programme) activity
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-27...HEAD
-[release-26]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...release-27
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-28...HEAD
+[release-28]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-27...release-28
+[release-27]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...release-27
 [release-26]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...release-26
 [release-25]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-24...release-25
 [release-24]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-23...release-24

@@ -385,8 +385,22 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#sustainable_development_goals" do
+    it "returns 'Not applicable' when the user selects that SDGs do not apply (sdgs_apply is false)" do
+      activity = build(:activity, sdgs_apply: false)
+      result = described_class.new(activity).sustainable_development_goals
+
+      expect(result).to eq("Not applicable")
+    end
+
+    it "leaves the field blank when the SDG form step has not been filled yet" do
+      activity = build(:activity, sdgs_apply: false, form_state: nil)
+      result = described_class.new(activity).sustainable_development_goals
+
+      expect(result).to be_nil
+    end
+
     it "when there is a single SDG, return its name" do
-      activity = build(:activity, sdg_1: 5)
+      activity = build(:activity, sdgs_apply: true, sdg_1: 5)
       result = described_class.new(activity)
 
       items = Nokogiri::HTML(result.sustainable_development_goals).css("ol > li")
@@ -394,7 +408,7 @@ RSpec.describe ActivityPresenter do
     end
 
     it "when there are multiple SDGs, return their names, separated by a slash" do
-      activity = build(:activity, sdg_1: 5, sdg_2: 1)
+      activity = build(:activity, sdgs_apply: true, sdg_1: 5, sdg_2: 1)
       result = described_class.new(activity)
 
       items = Nokogiri::HTML(result.sustainable_development_goals).css("ol > li")
@@ -403,7 +417,7 @@ RSpec.describe ActivityPresenter do
     end
 
     it "when there are no SDGs return nil" do
-      activity = build(:activity, sdg_1: nil, sdg_2: nil, sdg_3: nil)
+      activity = build(:activity, sdgs_apply: true, sdg_1: nil, sdg_2: nil, sdg_3: nil)
       result = described_class.new(activity)
 
       expect(result.sustainable_development_goals).to be_nil

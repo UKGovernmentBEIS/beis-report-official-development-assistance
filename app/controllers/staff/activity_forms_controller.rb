@@ -2,46 +2,11 @@ class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
   include DateHelper
   include ActivityHelper
+  include CodelistHelper
 
   DEFAULT_PROGRAMME_STATUS_FOR_FUNDS = "spend_in_progress"
 
-  FORM_STEPS = [
-    :blank,
-    :level,
-    :parent,
-    :identifier,
-    :roda_identifier,
-    :purpose,
-    :objectives,
-    :sector_category,
-    :sector,
-    :call_present,
-    :call_dates,
-    :total_applications_and_awards,
-    :programme_status,
-    :country_delivery_partners,
-    :dates,
-    :geography,
-    :region,
-    :country,
-    :requires_additional_benefitting_countries,
-    :intended_beneficiaries,
-    :gdi,
-    :collaboration_type,
-    :flow,
-    :sustainable_development_goals,
-    :fund_pillar,
-    :aid_type,
-    :fstc_applies,
-    :policy_markers,
-    :covid19_related,
-    :gcrf_challenge_area,
-    :oda_eligibility,
-    :oda_eligibility_lead,
-    :uk_dp_named_contact,
-  ]
-
-  steps(*FORM_STEPS)
+  steps(*Activity::FORM_STEPS)
 
   def show
     @activity = Activity.find(activity_id)
@@ -87,7 +52,10 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :oda_eligibility_lead
       skip_step unless @activity.is_project?
     when :uk_dp_named_contact
-      skip_step unless @activity.is_project? && @activity.is_newton_funded?
+      skip_step unless @activity.is_project?
+    when :fstc_applies
+      skip_step if can_infer_fstc?(@activity.aid_type)
+      assign_default_fstc_applies_value_if_aid_type_c01
     end
 
     render_wizard
@@ -99,8 +67,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     authorize @activity
 
     if @activity.fund?
-      iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(DEFAULT_PROGRAMME_STATUS_FOR_FUNDS)
-      @activity.assign_attributes(programme_status: DEFAULT_PROGRAMME_STATUS_FOR_FUNDS, status: iati_status)
+      @activity.assign_attributes(programme_status: DEFAULT_PROGRAMME_STATUS_FOR_FUNDS)
     end
 
     case step
@@ -136,8 +103,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :total_applications_and_awards
       @activity.assign_attributes(total_applications: total_applications, total_awards: total_awards)
     when :programme_status
-      iati_status = ProgrammeToIatiStatus.new.programme_status_to_iati_status(programme_status)
-      @activity.assign_attributes(programme_status: programme_status, status: iati_status)
+      @activity.assign_attributes(programme_status: programme_status)
     when :country_delivery_partners
       @activity.assign_attributes(country_delivery_partners: country_delivery_partners)
     when :dates
@@ -169,6 +135,9 @@ class Staff::ActivityFormsController < Staff::BaseController
       @activity.assign_attributes(flow: flow)
     when :aid_type
       @activity.assign_attributes(aid_type: aid_type)
+      if can_infer_fstc?(@activity.aid_type)
+        @activity.fstc_applies = fstc_from_aid_type(@activity.aid_type)
+      end
     when :fstc_applies
       @activity.assign_attributes(fstc_applies: fstc_applies)
     when :policy_markers
@@ -435,5 +404,9 @@ class Staff::ActivityFormsController < Staff::BaseController
   def assign_default_collaboration_type_value_if_nil
     # This allows us to pre-select a specific radio button on collaboration_type form step (value "Bilateral" in this case)
     @activity.collaboration_type = "1" if @activity.collaboration_type.nil?
+  end
+
+  def assign_default_fstc_applies_value_if_aid_type_c01
+    @activity.fstc_applies = true if @activity.aid_type == "C01"
   end
 end

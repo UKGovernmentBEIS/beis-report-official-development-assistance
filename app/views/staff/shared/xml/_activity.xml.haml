@@ -9,9 +9,9 @@
   - unless activity.fund?
     %description{"type" => "2"}
       %narrative= activity.objectives
-  - if activity.has_funding_organisation?
-    %participating-org{"ref" => activity.funding_organisation_reference, "type" => activity.funding_organisation_type, "role" => 1}
-      %narrative= activity.funding_organisation_name
+  - if activity.funding_organisation.present?
+    %participating-org{"ref" => activity.funding_organisation.iati_reference, "type" => activity.funding_organisation.organisation_type, "role" => 1}
+      %narrative= activity.funding_organisation.name
   - if activity.has_accountable_organisation?
     %participating-org{"ref" => activity.accountable_organisation_reference, "type" => activity.accountable_organisation_type, "role" => 2}
       %narrative= activity.accountable_organisation_name
@@ -24,7 +24,7 @@
         %narrative= organisation.name
   - if activity.previous_identifier?
     %other-identifier{"ref" => activity.transparency_identifier, type: "A1"}
-  %activity-status{"code" => activity.status}/
+  %activity-status{"code" => activity.iati_status}/
   %activity-date{"iso-date" => activity.planned_start_date, type: "1"}/
   - if activity.actual_start_date?
     %activity-date{"iso-date" => activity.actual_start_date, type: "2"}/

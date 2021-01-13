@@ -98,6 +98,29 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "#form_state" do
+      context "when the form_state is set to a value we expect" do
+        subject(:activity) { build(:activity) }
+        it "should be valid" do
+          expect(activity.valid?).to be_truthy
+        end
+      end
+
+      context "when form_state is set to a value not included in the validation list" do
+        subject(:activity) { build(:activity, form_state: "completed") }
+        it "should not be valid" do
+          expect(activity.valid?).to be_falsey
+        end
+      end
+
+      context "when form_state is set to a value included in the validation list" do
+        subject(:activity) { build(:activity, form_state: "purpose") }
+        it "should be valid" do
+          expect(activity.valid?).to be_truthy
+        end
+      end
+    end
+
     context "when the level is blank" do
       subject(:activity) { build(:activity, level: nil) }
       it "should not be valid" do
@@ -703,45 +726,19 @@ RSpec.describe Activity, type: :model do
       end
 
       context "when the activity is a project" do
-        context "and it is Newton-funded" do
-          subject { build(:project_activity, parent: build(:programme_activity, parent: build(:fund_activity, :newton))) }
-
-          it { should validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
-        end
-
-        context "and it is not Newton-funded" do
-          subject { build(:project_activity) }
-
-          it { should_not validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
-        end
+        subject { build(:project_activity) }
+        it { should validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
       end
 
       context "when the activity is a third party project" do
-        context "and it is Newton-funded" do
-          subject { build(:third_party_project_activity, parent: build(:programme_activity, parent: build(:fund_activity, :newton))) }
-
-          it { should validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
-        end
-
-        context "and it is not Newton-funded" do
-          subject { build(:third_party_project_activity) }
-
-          it { should_not validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
-        end
+        subject { build(:third_party_project_activity) }
+        it { should validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
       end
     end
 
     context "when saving in the update_extending_organisation context" do
       subject { build(:activity) }
       it { should validate_presence_of(:extending_organisation_id).on(:update_extending_organisation) }
-    end
-
-    context "when the form state is blank" do
-      it "allows updates to be made to other fields set on creation" do
-        blank_activity = create(:activity, funding_organisation_name: "old", form_state: :blank)
-        blank_activity.funding_organisation_name = "new"
-        expect(blank_activity.valid?).to eq(true)
-      end
     end
 
     context "when the activity is neither a fund nor a programme" do
@@ -903,20 +900,6 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#has_funding_organisation?" do
-    it "returns true if all funding_organisation fields are present" do
-      activity = build(:fund_activity)
-
-      expect(activity.has_funding_organisation?).to be true
-    end
-
-    it "returns false if all funding_organisation fields are not present" do
-      activity = build(:activity)
-
-      expect(activity.has_funding_organisation?).to be false
-    end
-  end
-
   describe "#has_accountable_organisation?" do
     it "returns true if all accountable_organisation fields are present" do
       activity = build(:fund_activity)
@@ -984,6 +967,30 @@ RSpec.describe Activity, type: :model do
           project = build(:project_activity, organisation: non_government_delivery_partner)
           expect(project.providing_organisation).to eql beis
         end
+      end
+    end
+
+    describe "#funding_organisation" do
+      let!(:beis) { create(:beis_organisation) }
+
+      it "returns BEIS if the activity is a programme" do
+        project = build(:programme_activity)
+        expect(project.funding_organisation).to eql beis
+      end
+
+      it "returns BEIS if the activity is a project" do
+        project = build(:project_activity)
+        expect(project.funding_organisation).to eql beis
+      end
+
+      it "returns BEIS if the activity is a third party project" do
+        project = build(:third_party_project_activity)
+        expect(project.funding_organisation).to eql beis
+      end
+
+      it "returns nil if the activity is a fund" do
+        fund = build(:fund_activity)
+        expect(fund.funding_organisation).to be_nil
       end
     end
 
@@ -1398,6 +1405,22 @@ RSpec.describe Activity, type: :model do
       fund = build(:fund_activity, :newton)
 
       expect(fund.is_newton_funded?).to be_falsey
+    end
+  end
+
+  describe "#iati_status" do
+    context "when the activity does not have a programme status set" do
+      it "returns nil" do
+        activity = Activity.new
+        expect(activity.iati_status).to be_nil
+      end
+    end
+
+    context "when the programme status exists" do
+      it "returns the corresponding IATI status code" do
+        activity = Activity.new(programme_status: "spend_in_progress")
+        expect(activity.iati_status).to eql "2"
+      end
     end
   end
 end

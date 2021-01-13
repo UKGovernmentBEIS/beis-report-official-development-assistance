@@ -2,6 +2,7 @@
 
 module CodelistHelper
   class UnreadableCodelist < StandardError; end
+  class UnrecognisedSource < StandardError; end
 
   DEVELOPING_COUNTRIES_CODE = "998"
   ALLOWED_AID_TYPE_CODES = [
@@ -13,6 +14,11 @@ module CodelistHelper
     "E01",
     "G01",
   ]
+  FSTC_FROM_AID_TYPE_CODE = {
+    "D02" => true,
+    "E01" => true,
+    "G01" => false,
+  }
 
   ALLOWED_POLICY_MARKERS_SIGNIFICANCES = [
     "0",
@@ -135,6 +141,14 @@ module CodelistHelper
     options.select { |a| ALLOWED_AID_TYPE_CODES.include?(a.code) }
   end
 
+  def fstc_from_aid_type(aid_type_code)
+    FSTC_FROM_AID_TYPE_CODE[aid_type_code]
+  end
+
+  def can_infer_fstc?(aid_type_code)
+    FSTC_FROM_AID_TYPE_CODE.key?(aid_type_code)
+  end
+
   def policy_markers_select_options
     objects = yaml_to_objects(entity: "activity", type: "policy_markers", with_empty_item: false)
     not_assessed_option = OpenStruct.new(name: "Not assessed", code: "1000")
@@ -144,46 +158,60 @@ module CodelistHelper
   end
 
   def programme_status_radio_options
-    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/programme_status.yml"))
+    data = load_yaml(entity: "activity", type: "programme_status", source: "beis")
 
     Activity.programme_statuses.map do |name, code|
-      status = yaml["data"].find { |d| d["code"] == code }
+      status = data.find { |d| d["code"] == code }
       OpenStruct.new(value: name, label: status["name"], description: status["description"])
     end
   end
 
+  def iati_status_from_programme_status(programme_status)
+    data = load_yaml(entity: "activity", type: "programme_status", source: "beis")
+
+    programme_status_code = Activity.programme_statuses[programme_status]
+    status = data.find { |d| d["code"] == programme_status_code }
+    status["iati_status_code"].to_s
+  end
+
   def covid19_related_radio_options
-    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/covid19_related_research.yml"))
-    yaml["data"].collect { |item|
+    data = load_yaml(entity: "activity", type: "covid19_related_research", source: "beis")
+    data.collect { |item|
       OpenStruct.new(code: item["code"], description: item["description"])
     }.compact.sort_by(&:code)
   end
 
   def gcrf_challenge_area_options
-    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/gcrf_challenge_area.yml"))
-    yaml["data"].collect { |item|
+    data = load_yaml(entity: "activity", type: "gcrf_challenge_area", source: "beis")
+    data.collect { |item|
       OpenStruct.new(code: item["code"], description: item["description"])
     }.compact.sort_by { |x| x.code.to_i }
   end
 
   def fund_pillar_radio_options
-    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/fund_pillar.yml"))
-    yaml["data"].collect { |item|
+    data = load_yaml(entity: "activity", type: "fund_pillar", source: "beis")
+    data.collect { |item|
       OpenStruct.new(code: item["code"], description: item["description"])
     }.compact.sort_by(&:code)
   end
 
   def oda_eligibility_radio_options
-    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/oda_eligibility.yml"))
+    data = load_yaml(entity: "activity", type: "oda_eligibility", source: "beis")
 
     Activity.oda_eligibilities.map do |name, code|
-      options = yaml["data"].find { |d| d["code"] == code }
+      options = data.find { |d| d["code"] == code }
       OpenStruct.new(value: name, label: options["name"], description: options["description"])
     end
   end
 
-  def load_yaml(entity:, type:)
-    yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/IATI/#{IATI_VERSION}/#{entity}/#{type}.yml"))
+  def load_yaml(entity:, type:, source: "iati")
+    raise UnrecognisedSource unless source.in?(%w[iati beis])
+
+    yaml = if source == "iati"
+      YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/IATI/#{IATI_VERSION}/#{entity}/#{type}.yml"))
+    else
+      YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/#{type}.yml"))
+    end
     yaml["data"]
   rescue
     []

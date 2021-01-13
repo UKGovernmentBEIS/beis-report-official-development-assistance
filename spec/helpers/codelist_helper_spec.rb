@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe CodelistHelper, type: :helper do
   describe "version 2_03" do
     let(:version) { "2_03" }
+
     describe "#yaml_to_objects" do
       it "raises an error when the YAML file is missing or incorrect" do
         expect { helper.yaml_to_objects(entity: "generic", type: "favourite_colours") }
@@ -107,7 +108,7 @@ RSpec.describe CodelistHelper, type: :helper do
         ).last).to eq(OpenStruct.new(name: "Suspended", code: "6", description: "The activity has been temporarily suspended"))
       end
 
-      it "tries to get a description from the translations if one if available" do
+      it "tries to get a description from the translations if one is available" do
         objects = helper.yaml_to_objects_with_description(entity: "activity", type: "aid_type")
 
         expect(objects.find { |o| o["code"] == "B02" }.description).to eq(t("form.hint.activity.options.aid_type.B02"))
@@ -229,6 +230,48 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
+    describe "#fstc_from_aid_type" do
+      it "returns nil if the aid type is not set" do
+        expect(helper.fstc_from_aid_type(nil)).to be_nil
+      end
+
+      it "returns true for D02" do
+        expect(helper.fstc_from_aid_type("D02")).to eql true
+      end
+
+      it "returns true for E01" do
+        expect(helper.fstc_from_aid_type("E01")).to eql true
+      end
+
+      it "returns false for G01" do
+        expect(helper.fstc_from_aid_type("G01")).to eql false
+      end
+
+      it "returns nil for any other aid type" do
+        expect(helper.fstc_from_aid_type("B02")).to be_nil
+      end
+    end
+
+    describe "#can_infer_fstc?" do
+      it "returns false if the aid type is not set" do
+        expect(helper.can_infer_fstc?(nil)).to eql false
+      end
+
+      it "returns true for aid types 'D02', 'E01', 'G01'" do
+        %w[D02 E01 G01].each do |at|
+          expect(helper.can_infer_fstc?(at)).to eql true
+        end
+      end
+
+      it "returns false for any other aid type" do
+        (CodelistHelper::ALLOWED_AID_TYPE_CODES - %w[D02 E01 G01]).each do |at|
+          expect(helper.can_infer_fstc?(at)).to eql false
+        end
+      end
+    end
+  end
+
+  describe "BEIS" do
     describe "#oda_eligibility_radio_options" do
       it "returns the radio options and hints for ODA eligibility" do
         options = helper.oda_eligibility_radio_options
@@ -240,9 +283,46 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.last.description).to eq("The activity used to be ODA eligible but no longer meets the OECD DAC rules for future spend")
       end
     end
-  end
 
-  describe "BEIS" do
+    describe "#programme_status_radio_options" do
+      it "returns the BEIS codes and descriptions" do
+        options = helper.programme_status_radio_options
+
+        expect(options.length).to eq 12
+        expect(options.first.value).to eq "delivery"
+        expect(options.first.label).to eq "Delivery"
+        expect(options.first.description).to eq "Activities related to delivery of ODA activities only"
+        expect(options.last.value).to eq "paused"
+        expect(options.last.label).to eq "Paused"
+        expect(options.last.description).to eq "Activity has been temporarily suspended. No spend should take place while this status is in use"
+      end
+    end
+
+    describe "#iati_status_from_programme_status" do
+      it "returns the IATI status corresponding to the BEIS programme status" do
+        %w[planned agreement_in_place open_for_applications review decided].each do |ps|
+          expect(helper.iati_status_from_programme_status(ps)).to eql "1"
+        end
+
+        %w[delivery spend_in_progress].each do |ps|
+          expect(helper.iati_status_from_programme_status(ps)).to eql "2"
+        end
+
+        ps = "finalisation"
+        expect(helper.iati_status_from_programme_status(ps)).to eql "3"
+
+        ps = "completed"
+        expect(helper.iati_status_from_programme_status(ps)).to eql "4"
+
+        %w[stopped cancelled].each do |ps|
+          expect(helper.iati_status_from_programme_status(ps)).to eql "5"
+        end
+
+        ps = "paused"
+        expect(helper.iati_status_from_programme_status(ps)).to eql "6"
+      end
+    end
+
     describe "#covid19_related_radio_options" do
       it "returns the BEIS codes and descriptions" do
         options = helper.covid19_related_radio_options
@@ -252,6 +332,30 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.first.description).to eq "Not related"
         expect(options.last.code).to eq 4
         expect(options.last.description).to eq "Existing activity adapted to somewhat focus on COVID-19"
+      end
+    end
+
+    describe "#gcrf_challenge_area_options" do
+      it "returns the BEIS codes and descriptions" do
+        options = helper.gcrf_challenge_area_options
+
+        expect(options.length).to eq 13
+        expect(options.first.code).to eq 0
+        expect(options.first.description).to eq "Not applicable"
+        expect(options.last.code).to eq 12
+        expect(options.last.description).to eq "Reduce poverty and inequality, including gender inequalities"
+      end
+    end
+
+    describe "#fund_pillar_radio_options" do
+      it "returns the BEIS codes and descriptions" do
+        options = helper.fund_pillar_radio_options
+
+        expect(options.length).to eq 4
+        expect(options.first.code).to eq 0
+        expect(options.first.description).to eq "Not Applicable"
+        expect(options.last.code).to eq 3
+        expect(options.last.description).to eq "Translation"
       end
     end
   end

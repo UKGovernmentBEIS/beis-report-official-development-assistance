@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_08_093803) do
+ActiveRecord::Schema.define(version: 2021_01_05_163844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 2020_12_08_093803) do
     t.string "sector"
     t.string "title"
     t.text "description"
-    t.string "status"
     t.date "planned_start_date"
     t.date "planned_end_date"
     t.date "actual_start_date"
@@ -34,9 +33,6 @@ ActiveRecord::Schema.define(version: 2020_12_08_093803) do
     t.string "aid_type"
     t.string "form_state"
     t.string "level"
-    t.string "funding_organisation_name"
-    t.string "funding_organisation_reference"
-    t.string "funding_organisation_type"
     t.string "accountable_organisation_name"
     t.string "accountable_organisation_reference"
     t.string "accountable_organisation_type"
