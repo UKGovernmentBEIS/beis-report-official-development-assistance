@@ -511,7 +511,7 @@ module Activities
         @inferred_region ||= begin
           return if @row["Recipient Region"].present?
 
-          country_to_region_mapping.find { |pair| pair["country"] == @row["Recipient Country"] }["region"]
+          country_to_region_mapping.find { |pair| pair["country"] == @row["Recipient Country"] }&.fetch("region")
         end
       end
 
