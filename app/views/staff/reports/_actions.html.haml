@@ -1,5 +1,6 @@
 .govuk-grid-row
   .govuk-grid-column-full.page-actions
+    = link_to t("action.activity.upload.link"), new_report_activity_upload_path(@report_presenter), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
     = link_to t("action.transaction.upload.link"), new_report_transaction_upload_path(@report_presenter), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
 
     - if policy(@report_presenter).download?

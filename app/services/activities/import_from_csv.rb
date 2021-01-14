@@ -12,6 +12,10 @@ module Activities
 
     attr_reader :errors, :created, :updated
 
+    def self.column_headings
+      Converter::FIELDS.values
+    end
+
     def initialize(organisation:)
       @organisation = organisation
       @errors = []
