@@ -241,7 +241,7 @@ module Activities
         fstc_applies: "Free Standing Technical Cooperation",
         objectives: "Aims/Objectives (DP Definition)",
         beis_id: "BEIS ID",
-        uk_dp_named_contact: "UK DP Named Contact (NF)",
+        uk_dp_named_contact: "UK DP Named Contact",
         country_delivery_partners: "NF Partner Country DP",
       }
 
