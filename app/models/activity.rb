@@ -357,7 +357,7 @@ class Activity < ApplicationRecord
   end
 
   def actual_total_for_report_financial_quarter(report:)
-    @actual_total_for_report_financial_quarter ||= transactions.where(report: report, date: report.created_at.all_quarter).sum(:value)
+    transactions.where(report: report, date: report.created_at.all_quarter).sum(:value)
   end
 
   def forecasted_total_for_report_financial_quarter(report:)
