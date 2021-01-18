@@ -470,6 +470,7 @@
 ## [unreleased]
 
 - Allow users to delete their transactions
+- Fix display of previous actuals in the report CSV
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-28...HEAD
 [release-28]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-27...release-28
