@@ -12,7 +12,8 @@ class Staff::UsersController < Staff::BaseController
   def new
     @user = User.new
     authorize @user
-    @organisations = policy_scope(Organisation)
+    @service_owner = service_owner
+    @delivery_partners = delivery_partners
   end
 
   def create
@@ -39,13 +40,15 @@ class Staff::UsersController < Staff::BaseController
   def edit
     @user = User.find(id)
     authorize @user
-    @organisations = policy_scope(Organisation)
+    @service_owner = service_owner
+    @delivery_partners = delivery_partners
   end
 
   def update
     @user = User.find(id)
     authorize @user
-    @organisations = policy_scope(Organisation)
+    @service_owner = service_owner
+    @delivery_partners = delivery_partners
 
     @user.assign_attributes(user_params)
     @user.active = params[:user][:active]
@@ -80,5 +83,13 @@ class Staff::UsersController < Staff::BaseController
 
   def organisation
     Organisation.find(organisation_id)
+  end
+
+  private def service_owner
+    Organisation.find_by(service_owner: true)
+  end
+
+  private def delivery_partners
+    Organisation.delivery_partners
   end
 end
