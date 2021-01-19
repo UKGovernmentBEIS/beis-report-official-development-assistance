@@ -137,6 +137,13 @@ RSpec.feature "BEIS users can invite new users to the service" do
     # Create a new user
     click_on(t("page_content.users.button.create"))
 
+    # We expect to see BEIS separately on this page
+    within(".user-organisations") do
+      beis_id = Organisation.find_by(service_owner: true).id
+      expect(page).to have_css("input[type='radio'][value='#{beis_id}']:first-child")
+      expect(page).to have_css(".govuk-radios__divider:nth-child(2)")
+    end
+
     # Fill out the form
     expect(page).to have_content(t("page_title.users.new"))
     fill_in "user[name]", with: new_user_name
