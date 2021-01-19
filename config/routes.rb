@@ -31,7 +31,7 @@ Rails.application.routes.draw do
     end
 
     concern :transactionable do
-      resources :transactions, only: [:new, :create, :show, :edit, :update]
+      resources :transactions
     end
 
     concern :budgetable do
@@ -44,6 +44,7 @@ Rails.application.routes.draw do
           constraints year: /\d{4}/, quarter: /[1-4]/ do
             get ":year/:quarter", to: "planned_disbursements#edit", as: "edit"
             patch ":year/:quarter", to: "planned_disbursements#update", as: "update"
+            delete ":year/:quarter", to: "planned_disbursements#destroy", as: "destroy"
           end
         end
       end

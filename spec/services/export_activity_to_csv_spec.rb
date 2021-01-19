@@ -72,18 +72,24 @@ RSpec.describe ExportActivityToCsv do
 
   describe "#previous_quarter_actuals" do
     it "gets the actuals for the previous quarter" do
-      fund = report.fund
-      organisation = report.organisation
-      report.approved!
+      activity = create(:project_activity)
+      organisation = activity.organisation
+      fund = activity.associated_fund
 
-      travel_to_quarter(4, 2019) do
-        previous_report = Report.create(fund: fund, organisation: organisation, state: :active)
-        create(:transaction, report: previous_report, parent_activity: project, value: 9876.54)
+      travel_to_quarter(1, 2019) do
+        previous_report = Report.new(fund: fund, organisation: organisation, state: :active)
+        create(:transaction, report: previous_report, parent_activity: activity, value: 666.66)
+        previous_report.approved!
       end
 
-      actuals = ExportActivityToCsv.new(activity: project, report: report).previous_quarter_actuals
+      travel_to_quarter(2, 2019) do
+        current_report = Report.new(fund: fund, organisation: organisation, state: :active)
+        create(:transaction, report: current_report, parent_activity: activity, value: 10000.00)
 
-      expect(actuals).to eq "9876.54"
+        exporter = ExportActivityToCsv.new(activity: activity, report: current_report)
+
+        expect(exporter.call).to include "666.66"
+      end
     end
   end
 

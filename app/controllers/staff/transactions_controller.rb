@@ -52,6 +52,18 @@ class Staff::TransactionsController < Staff::BaseController
     end
   end
 
+  def destroy
+    @transaction = Transaction.find(id)
+    authorize @transaction
+
+    @transaction.create_activity key: "transaction.destroy", owner: current_user, parameters: {activity_id: activity.id}
+    @transaction.destroy
+
+    flash[:notice] = t("action.transaction.destroy.success")
+
+    redirect_to organisation_activity_path(activity.organisation, activity)
+  end
+
   private
 
   def transaction_params

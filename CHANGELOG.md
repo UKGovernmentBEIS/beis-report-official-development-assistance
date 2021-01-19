@@ -467,9 +467,15 @@
 - Fix a brittle spec
 - Fix users can change the extending organisation on a level B (programme) activity
 
+## [release-29] - 2021-01-18
+
+- Allow users to delete their transactions
+- Fix display of previous actuals in the report CSV
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-28...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-29...HEAD
+[release-29]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-28...release-29
 [release-28]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-27...release-28
 [release-27]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...release-27
 [release-26]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-25...release-26
