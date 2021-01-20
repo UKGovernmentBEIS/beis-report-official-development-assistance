@@ -9,12 +9,13 @@
       :name,
       legend: { tag: :h2 }
 
-  - if @organisations.any?
-    = f.govuk_collection_radio_buttons :organisation_id,
-        @organisations,
-        :id,
-        :name,
-        legend: { tag: :h2 }
+  - if @service_owner.present?
+    = f.govuk_radio_buttons_fieldset :organisation_id, classes: "user-organisations" do
+      = f.govuk_radio_button :organisation_id, @service_owner.id, label: { text: @service_owner.name }, link_errors: true
+      - if @delivery_partners.any?
+        = f.govuk_radio_divider
+        - @delivery_partners.each do |dp|
+          = f.govuk_radio_button :organisation_id, dp.id, label: { text: dp.name }
   - else
     .govuk-inset-text
       = succeed "." do
