@@ -12,6 +12,10 @@ module Activities
 
     attr_reader :errors, :created, :updated
 
+    def self.column_headings
+      Converter::FIELDS.values
+    end
+
     def initialize(organisation:)
       @organisation = organisation
       @errors = []
@@ -241,7 +245,7 @@ module Activities
         fstc_applies: "Free Standing Technical Cooperation",
         objectives: "Aims/Objectives (DP Definition)",
         beis_id: "BEIS ID",
-        uk_dp_named_contact: "UK DP Named Contact (NF)",
+        uk_dp_named_contact: "UK DP Named Contact",
         country_delivery_partners: "NF Partner Country DP",
       }
 
@@ -511,7 +515,7 @@ module Activities
         @inferred_region ||= begin
           return if @row["Recipient Region"].present?
 
-          country_to_region_mapping.find { |pair| pair["country"] == @row["Recipient Country"] }["region"]
+          country_to_region_mapping.find { |pair| pair["country"] == @row["Recipient Country"] }&.fetch("region")
         end
       end
 
