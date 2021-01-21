@@ -7,7 +7,7 @@ class ImportPlannedDisbursements
     end
   }
 
-  RODA_ID_KEY = "RODA identifier"
+  RODA_ID_KEY = "Activity RODA Identifier"
   FORECAST_COLUMN_HEADER = /FC +(\d{4})\/\d{2} +FY +Q([1-4])/
 
   attr_reader :errors

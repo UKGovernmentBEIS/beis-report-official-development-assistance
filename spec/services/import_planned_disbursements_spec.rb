@@ -30,7 +30,7 @@ RSpec.describe ImportPlannedDisbursements do
   describe "importing a row of forecasts" do
     let :forecast_row do
       {
-        "RODA identifier" => project.roda_identifier,
+        "Activity RODA Identifier" => project.roda_identifier,
         "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
         "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793",
         "FC 2021/22 FY Q1 (Apr, May, Jun)" => "984150",
@@ -58,7 +58,7 @@ RSpec.describe ImportPlannedDisbursements do
     before do
       importer.import([
         {
-          "RODA identifier" => project.roda_identifier,
+          "Activity RODA Identifier" => project.roda_identifier,
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "40",
         },
       ])
@@ -66,7 +66,7 @@ RSpec.describe ImportPlannedDisbursements do
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        ImportPlannedDisbursements::Error.new(0, "RODA identifier", project.roda_identifier, t("importer.errors.planned_disbursement.unauthorised")),
+        ImportPlannedDisbursements::Error.new(0, "Activity RODA Identifier", project.roda_identifier, t("importer.errors.planned_disbursement.unauthorised")),
       ])
     end
 
@@ -79,7 +79,7 @@ RSpec.describe ImportPlannedDisbursements do
     before do
       importer.import([
         {
-          "RODA identifier" => "not-really-an-id",
+          "Activity RODA Identifier" => "not-really-an-id",
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
         },
       ])
@@ -87,7 +87,7 @@ RSpec.describe ImportPlannedDisbursements do
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        ImportPlannedDisbursements::Error.new(0, "RODA identifier", "not-really-an-id", t("importer.errors.planned_disbursement.unknown_identifier")),
+        ImportPlannedDisbursements::Error.new(0, "Activity RODA Identifier", "not-really-an-id", t("importer.errors.planned_disbursement.unknown_identifier")),
       ])
     end
 
@@ -100,7 +100,7 @@ RSpec.describe ImportPlannedDisbursements do
     before do
       importer.import([
         {
-          "RODA identifier" => project.roda_identifier,
+          "Activity RODA Identifier" => project.roda_identifier,
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "not a number",
         },
       ])
