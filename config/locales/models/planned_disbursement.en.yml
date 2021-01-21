@@ -8,14 +8,23 @@ en:
         success: Forecasted spend successfully updated
       destroy:
         success: Forecasted spend successfully deleted
+      download:
+        button: Download CSV template
+      upload:
+        button: Upload and continue
+        file_missing: Please upload a valid CSV file
+        link: Upload forecasts
+        success: The forecasts were successfully imported.
   form:
     label:
       planned_disbursement:
+        csv_file: Forecast spreadsheet
         value: Forecasted spend amount
     legend:
       planned_disbursement:
     hint:
       planned_disbursement:
+        csv_file: Upload a spreadsheet containing forecast information in CSV format.
         receiving_organisation: The organisation receiving the money from this transaction.
         receiving_organisation_reference_html: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
   table:
@@ -37,6 +46,7 @@ en:
     planned_disbursement:
       edit: Edit forecasted spend for %{quarter}
       new: Add forecasted spend
+      upload: Upload bulk forecasts data
   activerecord:
     errors:
       models:

@@ -10,6 +10,10 @@ class ImportPlannedDisbursements
   RODA_ID_KEY = "Activity RODA Identifier"
   FORECAST_COLUMN_HEADER = /FC +(\d{4})\/\d{2} +FY +Q([1-4])/
 
+  def self.column_headings
+    [RODA_ID_KEY]
+  end
+
   attr_reader :errors
 
   def initialize(uploader:)
