@@ -1,6 +1,5 @@
 RSpec.describe PlannedDisbursementHistory do
-  let(:edited_report) { nil }
-  let(:history) { PlannedDisbursementHistory.new(activity, 3, 2020, report: edited_report) }
+  let(:history) { PlannedDisbursementHistory.new(activity, 3, 2020) }
   let(:reporting_cycle) { ReportingCycle.new(activity, 1, 2015) }
 
   def history_entries
@@ -276,25 +275,6 @@ RSpec.describe PlannedDisbursementHistory do
         ["original", 1, 2015, 10],
         ["revised", 2, 2015, 20],
         ["revised", 1, 2016, 30],
-      ])
-    end
-  end
-
-  context "adding data to a specific report" do
-    let(:delivery_partner) { create(:delivery_partner_organisation) }
-    let(:activity) { create(:project_activity, organisation: delivery_partner) }
-    let(:edited_report) { Report.in_historical_order.first }
-
-    before do
-      reporting_cycle.tick
-      Report.update_all(state: :in_review)
-    end
-
-    it "allows data to be added to the given report" do
-      history.set_value(10)
-
-      expect(history_entries).to eq([
-        ["original", 1, 2015, 10],
       ])
     end
   end
