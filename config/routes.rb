@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     resources :reports, only: [:show, :edit, :update, :index] do
       resource :state, only: [:edit, :update], controller: :reports_state
       resource :activity_upload, only: [:new, :show, :update]
+      resource :planned_disbursement_upload, only: [:new, :show, :update]
       resource :transaction_upload, only: [:new, :show, :update]
       get "variance" => "report_variance#show"
       get "budgets" => "report_budgets#show"
