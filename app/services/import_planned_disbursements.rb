@@ -6,19 +6,12 @@ class ImportPlannedDisbursements
 
   attr_reader :errors
 
-  def initialize(report:)
-    @report = report
+  def initialize
     @errors = []
   end
 
   def import(forecasts)
-    latest_report = Report
-      .where(fund: @report.fund_id, organisation: @report.organisation_id)
-      .in_historical_order
-      .first
-
     ActiveRecord::Base.transaction do
-      log_report_not_latest_error(latest_report) unless @report == latest_report
       forecasts.each_with_index do |row, index|
         @current_index = index
         import_row(row)
@@ -46,7 +39,7 @@ class ImportPlannedDisbursements
   end
 
   def import_forecast(activity, quarter, year, value, header:)
-    history = PlannedDisbursementHistory.new(activity, quarter, year, report: @report)
+    history = PlannedDisbursementHistory.new(activity, quarter, year)
     history.set_value(value)
   rescue ConvertFinancialValue::Error
     log_error("The forecast for #{header} for activity #{activity.roda_identifier} is not a number.")
@@ -60,38 +53,11 @@ class ImportPlannedDisbursements
       return nil
     end
 
-    unless Report.for_activity(activity).find_by(id: @report.id)
-      log_error("The activity #{activity.roda_identifier} is not related to the report, which belongs to #{report_fund} and #{report_organisation}.")
-      return nil
-    end
-
     activity
   end
 
   def log_error(message)
     message = "Line #{@current_index + 2}: #{message}" if @current_index
     @errors << message
-  end
-
-  def log_report_not_latest_error(latest_report)
-    message = [
-      "The report #{@report.id} (#{report_organisation}, #{quarter @report} for #{report_fund},",
-      "#{@report.state}) is not the latest for that organisation and fund.",
-      "The latest is #{latest_report.id}, for #{quarter latest_report} (#{latest_report.state}).",
-    ]
-
-    log_error(message.join(" "))
-  end
-
-  def quarter(report)
-    "Q#{report.financial_quarter} #{report.financial_year}"
-  end
-
-  def report_fund
-    @report.fund.roda_identifier
-  end
-
-  def report_organisation
-    @report.organisation.name
   end
 end
