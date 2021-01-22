@@ -47,3 +47,8 @@ en:
               not_a_number: "Value must be a valid number"
             financial_quarter:
               in_the_past: The forecast must be for a future financial quarter
+  importer:
+    errors:
+      planned_disbursement:
+        non_numeric_value: The value must be numeric
+        unknown_identifier: Identifier is not recognised
