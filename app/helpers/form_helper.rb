@@ -46,7 +46,7 @@ module FormHelper
   end
 
   def scoped_parent_activities(activity:, user:)
-    case activity.level.to_sym
+    activities = case activity.level.to_sym
     when :fund
       Activity.none
     when :programme
@@ -59,6 +59,8 @@ module FormHelper
       FindProjectActivities.new(organisation: activity.organisation, user: user)
         .call(eager_load_parent: false)
     end
+
+    activities.where(form_state: "complete")
   end
 
   def create_activity_level_options(user:)
