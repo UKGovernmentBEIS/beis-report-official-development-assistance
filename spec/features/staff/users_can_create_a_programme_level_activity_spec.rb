@@ -341,5 +341,24 @@ RSpec.feature "Users can create a programme activity" do
 
       fill_in_activity_form(level: "programme", parent: newton_fund)
     end
+
+    scenario "only completed parent activities are listed" do
+      funds = create_list(:fund_activity, 2, organisation: user.organisation)
+      incomplete_funds = create_list(:fund_activity, 2, :at_region_step, organisation: user.organisation)
+
+      visit activities_path
+      click_on(t("page_content.organisation.button.create_activity"))
+
+      choose custom_capitalisation(t("page_content.activity.level.programme"))
+      click_button t("form.button.activity.submit")
+
+      funds.each do |fund|
+        expect(page).to have_content(fund.title)
+      end
+
+      incomplete_funds.each do |fund|
+        expect(page).to_not have_content(fund.title)
+      end
+    end
   end
 end
