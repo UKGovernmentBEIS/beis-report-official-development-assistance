@@ -61,7 +61,7 @@ RSpec.describe ImportPlannedDisbursements do
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        "Line 2: The RODA identifier 'not-really-an-id' was not recognised.",
+        ImportPlannedDisbursements::Error.new(0, "RODA identifier", "not-really-an-id", t("importer.errors.planned_disbursement.unknown_identifier")),
       ])
     end
 
@@ -82,7 +82,7 @@ RSpec.describe ImportPlannedDisbursements do
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        "Line 2: The forecast for FC 2020/21 FY Q3 (Oct, Nov, Dec) for activity #{project.roda_identifier} is not a number.",
+        ImportPlannedDisbursements::Error.new(0, "FC 2020/21 FY Q3 (Oct, Nov, Dec)", "not a number", t("importer.errors.planned_disbursement.non_numeric_value")),
       ])
     end
 

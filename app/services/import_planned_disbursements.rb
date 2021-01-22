@@ -1,6 +1,12 @@
 require "csv"
 
 class ImportPlannedDisbursements
+  Error = Struct.new(:row, :column, :value, :message) {
+    def csv_row
+      row + 2
+    end
+  }
+
   RODA_ID_KEY = "RODA identifier"
   FORECAST_COLUMN_HEADER = /FC +(\d{4})\/\d{2} +FY +Q([1-4])/
 
@@ -42,22 +48,17 @@ class ImportPlannedDisbursements
     history = PlannedDisbursementHistory.new(activity, quarter, year)
     history.set_value(value)
   rescue ConvertFinancialValue::Error
-    log_error("The forecast for #{header} for activity #{activity.roda_identifier} is not a number.")
+    @errors << Error.new(@current_index, header, value, I18n.t("importer.errors.planned_disbursement.non_numeric_value"))
   end
 
   def lookup_activity(roda_identifier)
     activity = Activity.by_roda_identifier(roda_identifier)
 
     unless activity
-      log_error("The RODA identifier '#{roda_identifier}' was not recognised.")
+      @errors << Error.new(@current_index, RODA_ID_KEY, roda_identifier, I18n.t("importer.errors.planned_disbursement.unknown_identifier"))
       return nil
     end
 
     activity
-  end
-
-  def log_error(message)
-    message = "Line #{@current_index + 2}: #{message}" if @current_index
-    @errors << message
   end
 end
