@@ -60,6 +60,52 @@ RSpec.feature "users can upload planned disbursements" do
     expect(page).not_to have_xpath("//tbody/tr")
   end
 
+  scenario "uploading an invalid set of forecasts" do
+    ids = [project, sibling_project].map(&:roda_identifier)
+
+    upload_csv <<~CSV
+      Activity RODA Identifier | FC 2021/22 FY Q2 | FC 2021/22 FY Q3 | FC 2021/22 FY Q4
+      #{ids[0]}                | 10               | 20               | 30
+      #{ids[1]}                | 40               | not a number     | 60
+    CSV
+
+    expect(PlannedDisbursement.count).to eq(0)
+    expect(page).not_to have_text(t("action.planned_disbursement.upload.success"))
+
+    within "//tbody/tr[1]" do
+      expect(page).to have_xpath("td[1]", text: "FC 2021/22 FY Q3")
+      expect(page).to have_xpath("td[2]", text: "3")
+      expect(page).to have_xpath("td[3]", text: "not a number")
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.planned_disbursement.non_numeric_value"))
+    end
+  end
+
+  scenario "uploading a set of forecasts with encoding errors" do
+    ids = [project, sibling_project].map(&:roda_identifier)
+
+    upload_csv <<~CSV
+      Activity RODA Identifier | FC 2021/22 FY Q2 | FC 2021/22 FY Q3 | FC 2021/22 FY Q4
+      #{ids[0]}                | 10               | �20              | 30
+      #{ids[1]}                | 40               | �50              | 60
+    CSV
+
+    expect(PlannedDisbursement.count).to eq(0)
+
+    within "//tbody/tr[1]" do
+      expect(page).to have_xpath("td[1]", text: "FC 2021/22 FY Q3")
+      expect(page).to have_xpath("td[2]", text: "2")
+      expect(page).to have_xpath("td[3]", text: "�20")
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.planned_disbursement.invalid_characters"))
+    end
+
+    within "//tbody/tr[2]" do
+      expect(page).to have_xpath("td[1]", text: "FC 2021/22 FY Q3")
+      expect(page).to have_xpath("td[2]", text: "3")
+      expect(page).to have_xpath("td[3]", text: "�50")
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.planned_disbursement.invalid_characters"))
+    end
+  end
+
   def upload_csv(content)
     file = Tempfile.new("forecasts.csv")
     file.write(content.gsub(/ *\| */, ","))

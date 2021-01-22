@@ -63,3 +63,4 @@ en:
         non_numeric_value: The value must be numeric
         unauthorised: You are not authorised to report against this activity
         unknown_identifier: Identifier is not recognised
+        invalid_characters: This cell contains invalid characters
