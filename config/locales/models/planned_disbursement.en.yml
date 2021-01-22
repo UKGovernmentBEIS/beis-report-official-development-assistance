@@ -51,4 +51,5 @@ en:
     errors:
       planned_disbursement:
         non_numeric_value: The value must be numeric
+        unauthorised: You are not authorised to report against this activity
         unknown_identifier: Identifier is not recognised

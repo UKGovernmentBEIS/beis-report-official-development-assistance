@@ -4,8 +4,11 @@ RSpec.describe ImportPlannedDisbursements do
   let(:project) { create(:project_activity) }
   let(:reporting_cycle) { ReportingCycle.new(project, 1, 2020) }
 
+  let(:reporter_organisation) { project.organisation }
+  let(:reporter) { create(:delivery_partner_user, organisation: reporter_organisation) }
+
   let :importer do
-    ImportPlannedDisbursements.new
+    ImportPlannedDisbursements.new(uploader: reporter)
   end
 
   before do
@@ -46,6 +49,29 @@ RSpec.describe ImportPlannedDisbursements do
         [1, 2021, 984_150.0],
         [2, 2021, 206_206.0],
       ])
+    end
+  end
+
+  context "when the reporter is not authorised to report on the Activity" do
+    let(:reporter_organisation) { create(:organisation) }
+
+    before do
+      importer.import([
+        {
+          "RODA identifier" => project.roda_identifier,
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "40",
+        },
+      ])
+    end
+
+    it "reports an error" do
+      expect(importer.errors).to eq([
+        ImportPlannedDisbursements::Error.new(0, "RODA identifier", project.roda_identifier, t("importer.errors.planned_disbursement.unauthorised")),
+      ])
+    end
+
+    it "does not import any forecasts" do
+      expect(forecast_values).to eq([])
     end
   end
 
