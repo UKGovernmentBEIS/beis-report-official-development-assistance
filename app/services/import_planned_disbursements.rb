@@ -54,6 +54,9 @@ class ImportPlannedDisbursements
     history.set_value(value)
   rescue ConvertFinancialValue::Error
     @errors << Error.new(@current_index, header, value, I18n.t("importer.errors.planned_disbursement.non_numeric_value"))
+  rescue Encoding::CompatibilityError
+    value.force_encoding(Encoding::UTF_8)
+    @errors << Error.new(@current_index, header, value, I18n.t("importer.errors.planned_disbursement.invalid_characters"))
   end
 
   def lookup_activity(roda_identifier)
