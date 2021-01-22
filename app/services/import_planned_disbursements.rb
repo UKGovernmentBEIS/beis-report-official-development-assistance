@@ -12,7 +12,8 @@ class ImportPlannedDisbursements
 
   attr_reader :errors
 
-  def initialize
+  def initialize(uploader:)
+    @uploader = uploader
     @errors = []
   end
 
@@ -45,7 +46,7 @@ class ImportPlannedDisbursements
   end
 
   def import_forecast(activity, quarter, year, value, header:)
-    history = PlannedDisbursementHistory.new(activity, quarter, year)
+    history = PlannedDisbursementHistory.new(activity, quarter, year, user: @uploader)
     history.set_value(value)
   rescue ConvertFinancialValue::Error
     @errors << Error.new(@current_index, header, value, I18n.t("importer.errors.planned_disbursement.non_numeric_value"))
@@ -53,12 +54,16 @@ class ImportPlannedDisbursements
 
   def lookup_activity(roda_identifier)
     activity = Activity.by_roda_identifier(roda_identifier)
+    policy = ActivityPolicy.new(@uploader, activity)
 
-    unless activity
+    if activity.nil?
       @errors << Error.new(@current_index, RODA_ID_KEY, roda_identifier, I18n.t("importer.errors.planned_disbursement.unknown_identifier"))
-      return nil
+      nil
+    elsif !policy.create?
+      @errors << Error.new(@current_index, RODA_ID_KEY, roda_identifier, I18n.t("importer.errors.planned_disbursement.unauthorised"))
+      nil
+    else
+      activity
     end
-
-    activity
   end
 end
