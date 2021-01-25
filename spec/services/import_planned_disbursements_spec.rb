@@ -116,4 +116,37 @@ RSpec.describe ImportPlannedDisbursements do
       expect(forecast_values).to eq([])
     end
   end
+
+  context "when the data includes unrecognised columns" do
+    before do
+      importer.import([
+        {
+          "Activity Name" => "",
+          "Activity Delivery Partner Identifier" => "",
+          "Activity RODA Identifier" => project.roda_identifier,
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "10",
+          "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "20",
+          "Unknown Column" => "",
+        },
+        {
+          "Activity Name" => "",
+          "Activity Delivery Partner Identifier" => "",
+          "Activity RODA Identifier" => project.roda_identifier,
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "10",
+          "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "20",
+          "Unknown Column" => "",
+        },
+      ])
+    end
+
+    it "reports an error" do
+      expect(importer.errors).to eq([
+        ImportPlannedDisbursements::Error.new(-1, "Unknown Column", "", t("importer.errors.planned_disbursement.unrecognised_column")),
+      ])
+    end
+
+    it "does not import any forecasts" do
+      expect(forecast_values).to eq([])
+    end
+  end
 end

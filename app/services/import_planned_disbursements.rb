@@ -1,4 +1,5 @@
 require "csv"
+require "set"
 
 class ImportPlannedDisbursements
   Error = Struct.new(:row, :column, :value, :message) {
@@ -35,6 +36,7 @@ class ImportPlannedDisbursements
   def initialize(uploader:)
     @uploader = uploader
     @errors = []
+    @warned_columns = Set.new
   end
 
   def import(forecasts)
@@ -56,12 +58,14 @@ class ImportPlannedDisbursements
 
     row.each do |key, value|
       match = FORECAST_COLUMN_HEADER.match(key)
-      next unless match
 
-      year = match[1].to_i
-      quarter = match[2].to_i
-
-      import_forecast(activity, quarter, year, value, header: key)
+      if match
+        year = match[1].to_i
+        quarter = match[2].to_i
+        import_forecast(activity, quarter, year, value, header: key)
+      elsif !COLUMN_HEADINGS.include?(key) && @warned_columns.add?(key)
+        @errors << Error.new(-1, key, "", I18n.t("importer.errors.planned_disbursement.unrecognised_column"))
+      end
     end
   end
 
