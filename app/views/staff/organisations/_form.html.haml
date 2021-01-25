@@ -1,16 +1,16 @@
 = f.govuk_error_summary
 = f.govuk_text_field :name
 = f.govuk_collection_select :organisation_type,
-                     yaml_to_objects(entity: "organisation", type: "organisation_type"),
+                     organisation_type_options,
                      :code,
                      :name
 = f.govuk_text_field :iati_reference
 = f.govuk_collection_select :language_code,
-                     yaml_to_objects(entity: "organisation", type: "language_code"),
+                     language_code_options,
                      :code,
                      :name
 = f.govuk_collection_select :default_currency,
-                     yaml_to_objects(entity: "generic", type: "default_currency"),
+                     default_currency_options,
                      :code,
                      :name
 = f.govuk_submit t("default.button.submit")

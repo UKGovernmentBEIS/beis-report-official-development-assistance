@@ -181,8 +181,7 @@ class Activity
     end
 
     def country_to_region_mapping
-      yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.yml"))
-      yaml["data"]
+      Codelist.new(type: "country_to_region_mapping", source: "beis")
     end
   end
 end
