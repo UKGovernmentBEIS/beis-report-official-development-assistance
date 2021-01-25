@@ -478,6 +478,7 @@
 - Users can upload activities in bulk from a CSV
 - Make sure only completed parent activities are shown when prompting for a parent activity
 - Expose forecast bulk upload to end users
+- Load codelists into memory in production
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-29...HEAD
 [release-29]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-28...release-29

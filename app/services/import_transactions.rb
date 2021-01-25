@@ -180,25 +180,21 @@ class ImportTransactions
     def convert_receiving_organisation_type(type)
       validate_from_codelist(
         type,
-        "organisation/organisation_type.yml",
+        "organisation_type",
         I18n.t("importer.errors.transaction.invalid_iati_organisation_type"),
       )
     end
 
-    def validate_from_codelist(code, codelist_file, message)
+    def validate_from_codelist(code, type, message)
       return nil if code.blank?
 
-      codelist_path = codelist_root.join(codelist_file)
-      codelist = YAML.safe_load(File.read(codelist_path))
-      valid_codes = codelist.fetch("data").map { |entry| entry.fetch("code") }
+      codelist = Codelist.new(type: type)
+
+      valid_codes = codelist.map { |entry| entry.fetch("code") }
 
       raise message unless valid_codes.include?(code)
 
       code
-    end
-
-    def codelist_root
-      Rails.root.join("vendor", "data", "codelists", "IATI", IATI_VERSION)
     end
   end
 end

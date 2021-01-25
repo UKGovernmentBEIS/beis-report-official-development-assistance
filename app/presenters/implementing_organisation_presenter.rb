@@ -10,6 +10,6 @@ class ImplementingOrganisationPresenter < SimpleDelegator
   private
 
   def organisation_types
-    yaml_to_objects(entity: "organisation", type: "organisation_type", with_empty_item: false)
+    Codelist.new(type: "organisation_type").to_objects(with_empty_item: false)
   end
 end
