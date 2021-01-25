@@ -9,7 +9,7 @@
   = f.govuk_text_field :receiving_organisation_name
 
   = f.govuk_collection_select :receiving_organisation_type,
-                      yaml_to_objects(entity: "organisation", type: "organisation_type"),
+                      organisation_type_options,
                       :code,
                       :name
 

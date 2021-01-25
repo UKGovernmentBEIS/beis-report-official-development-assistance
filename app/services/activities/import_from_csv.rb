@@ -12,6 +12,10 @@ module Activities
 
     attr_reader :errors, :created, :updated
 
+    def self.column_headings
+      Converter::FIELDS.values
+    end
+
     def initialize(organisation:)
       @organisation = organisation
       @errors = []
@@ -241,7 +245,7 @@ module Activities
         fstc_applies: "Free Standing Technical Cooperation",
         objectives: "Aims/Objectives (DP Definition)",
         beis_id: "BEIS ID",
-        uk_dp_named_contact: "UK DP Named Contact (NF)",
+        uk_dp_named_contact: "UK DP Named Contact",
         country_delivery_partners: "NF Partner Country DP",
       }
 
@@ -310,7 +314,7 @@ module Activities
       def convert_recipient_region(region)
         validate_from_codelist(
           region,
-          :recipient_region,
+          "recipient_region",
           I18n.t("importer.errors.activity.invalid_region"),
         )
       end
@@ -325,7 +329,7 @@ module Activities
       def convert_gdi(gdi)
         validate_from_codelist(
           gdi,
-          :gdi,
+          "gdi",
           I18n.t("importer.errors.activity.invalid_gdi"),
         )
       end
@@ -415,7 +419,7 @@ module Activities
       def convert_sector(sector)
         validate_from_codelist(
           sector,
-          :sector,
+          "sector",
           I18n.t("importer.errors.activity.invalid_sector"),
         )
       end
@@ -425,7 +429,7 @@ module Activities
 
         validate_channel_of_delivery_code(
           channel_of_delivery_code,
-          :channel_of_delivery_code,
+          "channel_of_delivery_code",
           I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"),
         )
       end
@@ -433,7 +437,7 @@ module Activities
       def convert_collaboration_type(collaboration_type)
         validate_from_codelist(
           collaboration_type,
-          :collaboration_type,
+          "collaboration_type",
           I18n.t("importer.errors.activity.invalid_collaboration_type"),
         )
       end
@@ -441,7 +445,7 @@ module Activities
       def convert_flow(flow)
         validate_from_codelist(
           flow,
-          :flow,
+          "flow",
           I18n.t("importer.errors.activity.invalid_flow"),
         )
       end
@@ -449,7 +453,7 @@ module Activities
       def convert_aid_type(aid_type)
         validate_from_codelist(
           aid_type,
-          :aid_type,
+          "aid_type",
           I18n.t("importer.errors.activity.invalid_aid_type"),
         )
       end
@@ -497,7 +501,7 @@ module Activities
       end
 
       def get_sector_category(sector_code)
-        codelist = load_yaml(entity: :activity, type: :sector)
+        codelist = Codelist.new(type: "sector")
         sector = codelist.find { |list_item| list_item["code"] == sector_code }
 
         sector["category"] if sector
@@ -511,14 +515,14 @@ module Activities
         @inferred_region ||= begin
           return if @row["Recipient Region"].present?
 
-          country_to_region_mapping.find { |pair| pair["country"] == @row["Recipient Country"] }["region"]
+          country_to_region_mapping.find { |pair| pair["country"] == @row["Recipient Country"] }&.fetch("region")
         end
       end
 
       def validate_from_codelist(code, entity, message)
         return nil if code.blank?
 
-        codelist = load_yaml(entity: :activity, type: entity)
+        codelist = Codelist.new(type: entity)
         valid_codes = codelist.map { |entry| entry.fetch("code") }
 
         raise message unless valid_codes.include?(code)
@@ -529,7 +533,7 @@ module Activities
       def validate_channel_of_delivery_code(code, entity, message)
         return nil if code.blank?
 
-        codelist = load_yaml(entity: :activity, type: entity)
+        codelist = Codelist.new(type: entity)
         valid_codes = codelist.map { |entry| entry.fetch("code") }
         valid_codes << "N/A"
 
@@ -539,8 +543,7 @@ module Activities
       end
 
       def country_to_region_mapping
-        yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/BEIS/country_to_region_mapping.yml"))
-        yaml["data"]
+        Codelist.new(type: "country_to_region_mapping", source: "beis")
       end
 
       def validate_country(country, error)

@@ -3,15 +3,16 @@ require "rails_helper"
 RSpec.describe ImportPlannedDisbursements do
   let(:project) { create(:project_activity) }
   let(:reporting_cycle) { ReportingCycle.new(project, 1, 2020) }
-  let(:selected_report) { Report.in_historical_order.first }
+
+  let(:reporter_organisation) { project.organisation }
+  let(:reporter) { create(:delivery_partner_user, organisation: reporter_organisation) }
 
   let :importer do
-    ImportPlannedDisbursements.new(report: selected_report)
+    ImportPlannedDisbursements.new(uploader: reporter)
   end
 
   before do
-    2.times { reporting_cycle.tick }
-    Report.in_historical_order.first.update!(state: :in_review)
+    reporting_cycle.tick
   end
 
   def forecast_values
@@ -29,7 +30,7 @@ RSpec.describe ImportPlannedDisbursements do
   describe "importing a row of forecasts" do
     let :forecast_row do
       {
-        "RODA identifier" => project.roda_identifier,
+        "Activity RODA Identifier" => project.roda_identifier,
         "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
         "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793",
         "FC 2021/22 FY Q1 (Apr, May, Jun)" => "984150",
@@ -51,27 +52,21 @@ RSpec.describe ImportPlannedDisbursements do
     end
   end
 
-  context "when the selected report is not the latest one" do
-    let(:latest_report) { Report.in_historical_order.first }
-    let(:selected_report) { Report.in_historical_order.to_a.last }
-
-    let(:organisation) { project.organisation.name }
-    let(:fund) { project.associated_fund.roda_identifier }
+  context "when the reporter is not authorised to report on the Activity" do
+    let(:reporter_organisation) { create(:organisation) }
 
     before do
       importer.import([
         {
-          "RODA identifier" => project.roda_identifier,
-          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
+          "Activity RODA Identifier" => project.roda_identifier,
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "40",
         },
       ])
     end
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        "The report #{selected_report.id} (#{organisation}, Q1 2020 for #{fund}, approved)\
- is not the latest for that organisation and fund. The latest is #{latest_report.id},\
- for Q2 2020 (in_review).",
+        ImportPlannedDisbursements::Error.new(0, "Activity RODA Identifier", project.roda_identifier, t("importer.errors.planned_disbursement.unauthorised")),
       ])
     end
 
@@ -84,7 +79,7 @@ RSpec.describe ImportPlannedDisbursements do
     before do
       importer.import([
         {
-          "RODA identifier" => "not-really-an-id",
+          "Activity RODA Identifier" => "not-really-an-id",
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
         },
       ])
@@ -92,7 +87,7 @@ RSpec.describe ImportPlannedDisbursements do
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        "Line 2: The RODA identifier 'not-really-an-id' was not recognised.",
+        ImportPlannedDisbursements::Error.new(0, "Activity RODA Identifier", "not-really-an-id", t("importer.errors.planned_disbursement.unknown_identifier")),
       ])
     end
 
@@ -105,7 +100,7 @@ RSpec.describe ImportPlannedDisbursements do
     before do
       importer.import([
         {
-          "RODA identifier" => project.roda_identifier,
+          "Activity RODA Identifier" => project.roda_identifier,
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "not a number",
         },
       ])
@@ -113,7 +108,7 @@ RSpec.describe ImportPlannedDisbursements do
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        "Line 2: The forecast for FC 2020/21 FY Q3 (Oct, Nov, Dec) for activity #{project.roda_identifier} is not a number.",
+        ImportPlannedDisbursements::Error.new(0, "FC 2020/21 FY Q3 (Oct, Nov, Dec)", "not a number", t("importer.errors.planned_disbursement.non_numeric_value")),
       ])
     end
 
@@ -122,28 +117,31 @@ RSpec.describe ImportPlannedDisbursements do
     end
   end
 
-  context "when the data includes a project unrelated to the report" do
-    let(:unrelated_project) { create(:project_activity) }
-
-    let(:organisation) { project.organisation.name }
-    let(:fund) { project.associated_fund.roda_identifier }
-
+  context "when the data includes unrecognised columns" do
     before do
       importer.import([
         {
-          "RODA identifier" => project.roda_identifier,
-          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
+          "Activity Name" => "",
+          "Activity Delivery Partner Identifier" => "",
+          "Activity RODA Identifier" => project.roda_identifier,
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "10",
+          "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "20",
+          "Unknown Column" => "",
         },
         {
-          "RODA identifier" => unrelated_project.roda_identifier,
-          "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793",
+          "Activity Name" => "",
+          "Activity Delivery Partner Identifier" => "",
+          "Activity RODA Identifier" => project.roda_identifier,
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "10",
+          "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "20",
+          "Unknown Column" => "",
         },
       ])
     end
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        "Line 3: The activity #{unrelated_project.roda_identifier} is not related to the report, which belongs to #{fund} and #{organisation}.",
+        ImportPlannedDisbursements::Error.new(-1, "Unknown Column", "", t("importer.errors.planned_disbursement.unrecognised_column")),
       ])
     end
 

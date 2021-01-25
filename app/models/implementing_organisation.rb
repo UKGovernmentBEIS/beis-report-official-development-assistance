@@ -10,8 +10,8 @@ class ImplementingOrganisation < ApplicationRecord
 
   class << self
     private def valid_organisation_types
-      yaml = YAML.safe_load(File.read("#{Rails.root}/vendor/data/codelists/IATI/#{IATI_VERSION}/organisation/organisation_type.yml"))
-      yaml["data"].map { |d| d["code"] }
+      organisations = Codelist.new(type: "organisation_type")
+      organisations.map { |d| d["code"] }
     end
   end
 end
