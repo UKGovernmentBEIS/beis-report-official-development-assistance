@@ -472,7 +472,7 @@
 - Allow users to delete their transactions
 - Fix display of previous actuals in the report CSV
 
-## [unreleased]
+## [release-30] - 2021-01-25
 
 - On the user administration page, BEIS now appears as a separate organisation to avoid users being assigned to this org by accident
 - Users can upload activities in bulk from a CSV
@@ -480,7 +480,10 @@
 - Expose forecast bulk upload to end users
 - Load codelists into memory in production
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-29...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-30...HEAD
+[release-30]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-29...release-30
 [release-29]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-28...release-29
 [release-28]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-27...release-28
 [release-27]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-26...release-27
