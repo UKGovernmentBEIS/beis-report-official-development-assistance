@@ -1,0 +1,12 @@
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.planned_disbursement.upload")
+
+  - unless @errors.empty?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        = render partial: "error_table"
+
+  = render partial: "upload_form"
