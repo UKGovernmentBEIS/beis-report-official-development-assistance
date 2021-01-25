@@ -10,8 +10,24 @@ class ImportPlannedDisbursements
   RODA_ID_KEY = "Activity RODA Identifier"
   FORECAST_COLUMN_HEADER = /FC +(\d{4})\/\d{2} +FY +Q([1-4])/
 
-  def self.column_headings
-    [RODA_ID_KEY]
+  COLUMN_HEADINGS = [
+    "Activity Name",
+    "Activity Delivery Partner Identifier",
+    RODA_ID_KEY,
+  ]
+
+  class Generator
+    def column_headings
+      COLUMN_HEADINGS
+    end
+
+    def csv_row(activity)
+      [
+        activity.title,
+        activity.delivery_partner_identifier,
+        activity.roda_identifier,
+      ]
+    end
   end
 
   attr_reader :errors
