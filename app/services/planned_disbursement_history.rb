@@ -3,11 +3,10 @@ class PlannedDisbursementHistory
 
   attr_reader :financial_year, :financial_quarter
 
-  def initialize(activity, financial_quarter, financial_year, report: nil, user: nil)
+  def initialize(activity, financial_quarter, financial_year, user: nil)
     @activity = activity
     @financial_quarter = financial_quarter.to_i
     @financial_year = financial_year.to_i
-    @report = report
     @user = user
   end
 
@@ -60,7 +59,7 @@ class PlannedDisbursementHistory
   end
 
   def update_history(latest_entry, value)
-    report = @report || Report.editable_for_activity(@activity)
+    report = Report.editable_for_activity(@activity)
     check_forecast_in_future(report)
 
     if latest_entry&.report_id == report.id
