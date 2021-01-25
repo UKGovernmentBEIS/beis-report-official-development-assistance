@@ -11,7 +11,7 @@
         = f.hidden_field :activity_id, value: @activity.id
         = f.govuk_text_field :name
         = f.govuk_collection_select :organisation_type,
-                     yaml_to_objects(entity: "organisation", type: "organisation_type"),
+                     organisation_type_options,
                      :code,
                      :name
         = f.govuk_text_field :reference
