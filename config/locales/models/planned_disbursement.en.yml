@@ -64,3 +64,4 @@ en:
         unauthorised: You are not authorised to report against this activity
         unknown_identifier: Identifier is not recognised
         invalid_characters: This cell contains invalid characters
+        unrecognised_column: The column heading is not recognised
