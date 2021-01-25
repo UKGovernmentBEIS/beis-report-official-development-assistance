@@ -15,9 +15,11 @@ class Staff::PlannedDisbursementUploadsController < Staff::BaseController
     response.headers["Content-Type"] = "text/csv"
     response.headers["Content-Disposition"] = "attachment; filename=forecasts.csv"
 
-    response.stream.write(CSV.generate_line(csv_headers))
+    generator = ImportPlannedDisbursements::Generator.new
+
+    response.stream.write(CSV.generate_line(generator.column_headings))
     @report.reportable_activities.each do |activity|
-      response.stream.write(CSV.generate_line(csv_row(activity)))
+      response.stream.write(CSV.generate_line(generator.csv_row(activity)))
     end
     response.stream.close
   end
@@ -44,18 +46,6 @@ class Staff::PlannedDisbursementUploadsController < Staff::BaseController
   private def authorize_report
     @report = Report.find(params[:report_id])
     authorize @report, :show?
-  end
-
-  private def csv_headers
-    ["Activity Name", "Activity Delivery Partner Identifier"] + ImportPlannedDisbursements.column_headings
-  end
-
-  private def csv_row(activity)
-    [
-      activity.title,
-      activity.delivery_partner_identifier,
-      activity.roda_identifier,
-    ]
   end
 
   private def parse_planned_disbursements_from_upload
