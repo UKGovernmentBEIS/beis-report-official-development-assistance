@@ -6,13 +6,19 @@
       %h1.govuk-heading-xl
         = t("page_title.report.index")
 
-  - if current_user.service_owner?
-    .govuk-grid-row.activity-page
-      .govuk-grid-column-full
-        %h2.govuk-heading-m
-          = t("table.title.report.inactive")
+  .govuk-grid-row.activity-page
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("table.title.report.awaiting_changes")
 
-        = render partial: "staff/shared/reports/table_inactive", locals: { reports: @inactive_report_presenters }
+      = render partial: "staff/shared/reports/table_awaiting_changes", locals: { reports: @awaiting_changes_report_presenters }
+
+  .govuk-grid-row.activity-page
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("table.title.report.in_review")
+
+      = render partial: "staff/shared/reports/table_in_review", locals: { reports: @in_review_report_presenters }
 
   .govuk-grid-row.activity-page
     .govuk-grid-column-full
@@ -31,22 +37,14 @@
   .govuk-grid-row.activity-page
     .govuk-grid-column-full
       %h2.govuk-heading-m
-        = t("table.title.report.in_review")
-
-      = render partial: "staff/shared/reports/table_in_review", locals: { reports: @in_review_report_presenters }
-
-  .govuk-grid-row.activity-page
-    .govuk-grid-column-full
-      %h2.govuk-heading-m
-        = t("table.title.report.awaiting_changes")
-
-      = render partial: "staff/shared/reports/table_awaiting_changes", locals: { reports: @awaiting_changes_report_presenters }
-
-  .govuk-grid-row.activity-page
-    .govuk-grid-column-full
-      %h2.govuk-heading-m
         = t("table.title.report.approved")
 
       = render partial: "staff/shared/reports/table_approved", locals: { reports: @approved_report_presenters }
 
+  - if current_user.service_owner?
+    .govuk-grid-row.activity-page
+      .govuk-grid-column-full
+        %h2.govuk-heading-m
+          = t("table.title.report.inactive")
 
+        = render partial: "staff/shared/reports/table_inactive", locals: { reports: @inactive_report_presenters }
