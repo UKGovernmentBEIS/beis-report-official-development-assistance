@@ -13,6 +13,7 @@ RSpec.describe Budget do
     it { should validate_presence_of(:period_end_date) }
     it { should validate_presence_of(:value) }
     it { should validate_presence_of(:currency) }
+    it { should validate_presence_of(:financial_year) }
 
     it { should validate_attribute(:period_start_date).with(:date_within_boundaries) }
     it { should validate_attribute(:period_end_date).with(:date_within_boundaries) }
