@@ -1,4 +1,4 @@
-feature "Organisation show page" do
+RSpec.feature "Organisation show page" do
   let(:delivery_partner_user) { create(:delivery_partner_user) }
   let(:beis_user) { create(:beis_user) }
 
