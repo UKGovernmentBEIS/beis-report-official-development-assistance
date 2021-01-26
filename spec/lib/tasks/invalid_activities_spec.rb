@@ -1,7 +1,7 @@
 require "rails_helper"
 require "csv"
 
-describe "rake invalid_activities" do
+RSpec.describe "rake invalid_activities" do
   it "creates a csv file on tmp folder with a list of invalid activities in RODA" do
     activities = create_list(:project_activity, 5)
 
