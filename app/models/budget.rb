@@ -11,7 +11,8 @@ class Budget < ApplicationRecord
     :period_end_date,
     :value,
     :currency,
-    :funding_type
+    :funding_type,
+    :financial_year
   validates :value, numericality: {other_than: 0, less_than_or_equal_to: 99_999_999_999.00}
   validates :period_start_date, :period_end_date, date_within_boundaries: true
   validates :funding_type, inclusion: {in: ->(_) { valid_funding_type_codes }}
