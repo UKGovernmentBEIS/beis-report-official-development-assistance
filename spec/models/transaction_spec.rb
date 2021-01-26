@@ -9,6 +9,9 @@ RSpec.describe Transaction, type: :model do
     it { should validate_presence_of(:receiving_organisation_name) }
     it { should validate_presence_of(:receiving_organisation_type) }
 
+    it { should validate_attribute(:date).with(:date_within_boundaries) }
+    it { should validate_attribute(:date).with(:date_not_in_future) }
+
     context "when the activity belongs to a delivery partner organisation" do
       before { activity.update(organisation: build_stubbed(:delivery_partner_organisation)) }
 
@@ -62,38 +65,6 @@ RSpec.describe Transaction, type: :model do
       it "allows a negative value" do
         transaction = build(:transaction, parent_activity: activity, value: -500_000.00)
         expect(transaction.valid?).to be true
-      end
-    end
-  end
-
-  describe "#date" do
-    context "date must not be in the future" do
-      it "allows a date in the past" do
-        transaction = build(:transaction, parent_activity: activity, date: 1.year.ago)
-        expect(transaction.valid?).to be true
-      end
-
-      it "does not allow a date in the future" do
-        transaction = build(:transaction, parent_activity: activity, date: 1.year.from_now)
-        expect(transaction.valid?).to be false
-        expect(transaction.errors[:date]).to include "Date must not be in the future"
-      end
-
-      it "allows today's date" do
-        transaction = build(:transaction, parent_activity: activity, date: Date.today)
-        expect(transaction.valid?).to be true
-      end
-
-      it "allows a nil date" do
-        transaction = build(:transaction, parent_activity: activity, date: Date.today)
-        expect(transaction.valid?).to be true
-      end
-    end
-
-    context "when the value is more than 10 years in the past" do
-      it "is not valid" do
-        transaction = build(:transaction, date: 10.years.ago)
-        expect(transaction).to be_invalid
       end
     end
   end
