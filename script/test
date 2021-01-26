@@ -34,7 +34,12 @@ else
   bundle exec rake shellcheck
 
   echo "==> Running the tests..."
-  bundle exec rspec
+
+  if [ -n "$CI" ]; then
+    bundle exec rspec --format=documentation
+  else
+    bundle exec rspec
+  fi
 
   echo "==> Running Brakeman"
   bundle exec brakeman
