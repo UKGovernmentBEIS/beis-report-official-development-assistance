@@ -11,7 +11,8 @@ Environment variables are passed to live environments through Terraform by eithe
      description = "Google Tag Manager preview identifier"
    }
    ```
-1. Inject the new variables to the app and/or worker (if in doubt add to both):
+1. Inject the new variable to the app and/or worker (if in doubt add to both) by
+   adding it in `terraform/app.tf`:
    ```
    resource "cloudfoundry_app" "beis-roda-app" {
      environment = {
@@ -19,20 +20,23 @@ Environment variables are passed to live environments through Terraform by eithe
        "GOOGLE_TAG_MANAGER_CONTAINER_ID" = var.google_tag_manager_container_id
        …
    ```
-1. Reference the new variable in our `deploy-terraform.sh` script in **2 places**, one for each environment. Changing the prefix to match the environment name that the variable should be applied to:
-   ```
-   if [ "$TRAVIS_BRANCH" = master ]
-     export TF_VAR_google_tag_manager_environment_preview="$PROD_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW"
-   if [ "$TRAVIS_BRANCH" = develop ]
-     export TF_VAR_google_tag_manager_environment_preview="$STAGING_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW"
-   ```
-1. Add 2 new environment variables to Github matching those names from the previous step. [Github settings can be managed here.](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/settings/secrets/actions)
-1. Once all steps are complete and merged, the next time Travis deploys either staging and production those environment variables will be made available to the app
-1. Add those variables to our environment file in the RODA 1Password vault as they cannot be read back out of Travis
+1. Add the new variable to the deploy settings for staging and production in
+   `.github/workflows/deploy.yml`, check the correct step for each env:
+  ```
+  TF_VAR_google_tag_manager_container_id: ${{ secrets.STAGING_GOOGLE_TAG_MANAGER_CONTAINER_ID }}
+  ```
+
+1. Add 2 new environment variables to GitHub secrets - one for staging, one for prod. [GitHub settings can be managed here.](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/settings/secrets/actions) prepending the environment name as appropriate, `STAGING_` for staging and `PROD_` for production.
+  ```
+  STAGING_GOOGLE_TAG_MANAGER_CONTAINER_ID=...
+  PROD_GOOGLE_TAG_MANAGER_CONTAINER_ID=...
+  ```
+1. Once all steps are complete and merged, the next time GitHub Actions deploys either staging and production those environment variables will be made available to the app
+1. Add those variables to our environment files and tfvars files in the RODA 1Password vault as they cannot be read back out of GitHub Secrets
 
 ## Deploying changes to environment variables
 
 There are currently 2 mechanisms available:
 
-1. Automated deployments through Travis
+1. Automated deployments through GitHub Actions
 1. Manual deployments made locally where the environment variables are provided from a local `.tfvars` file. See [the Terraform README](/terraform/README.md#Manual-Deployment) for more information.
