@@ -485,6 +485,7 @@
 - Relegate "Download report as CSV" link to tertiary status
 - Add a `funding_type` column to a budget
 - Work out a Budget's period based on the financial year
+- Users can see Current activities and Historic activities in different tabs
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-30...HEAD
 [release-30]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-29...release-30
