@@ -33,7 +33,7 @@ RSpec.feature "Users can manage the extending organisation" do
         expect(implementing_organisation.reference).to eq(delivery_partner.iati_reference)
       end
 
-      scenario "they can change the extending organistion when the activity is valid" do
+      scenario "they can change the extending organisation when the activity is valid" do
         delivery_partner = create(:delivery_partner_organisation)
         programme.update(extending_organisation: delivery_partner)
         another_delivery_partner = create(:delivery_partner_organisation)
@@ -52,7 +52,7 @@ RSpec.feature "Users can manage the extending organisation" do
         expect(programme.reload.extending_organisation_id).to eql another_delivery_partner.id
       end
 
-      scenario "they can change the extending organistion when the activity is invalid i.e. not yet complete" do
+      scenario "they can change the extending organisation when the activity is invalid i.e. not yet complete" do
         delivery_partner = create(:delivery_partner_organisation)
         invalid_programme = create(:programme_activity)
         invalid_programme.update(extending_organisation: delivery_partner)

@@ -179,7 +179,7 @@ RSpec.feature "Users can view an organisation as XML" do
 
     before { authenticate!(user: user) }
 
-    context "when the user is viewing their own organisaton" do
+    context "when the user is viewing their own organisation" do
       let(:organisation) { user.organisation }
 
       scenario "they cannot download the organisation's activities as XML" do
@@ -203,7 +203,7 @@ RSpec.feature "Users can view an organisation as XML" do
       end
     end
 
-    context "when the user is viewing another organisaton" do
+    context "when the user is viewing another organisation" do
       let(:organisation) { create(:delivery_partner_organisation) }
 
       scenario "they cannot download the XML of the organisation" do

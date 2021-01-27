@@ -103,7 +103,7 @@ RSpec.describe BudgetPolicy do
     context "when the activity is a project" do
       let(:activity) { create(:project_activity) }
 
-      context "and the activity does not belong to the users organiastion" do
+      context "and the activity does not belong to the users organisation" do
         it { is_expected.to forbid_action(:show) }
         it { is_expected.to forbid_action(:create) }
         it { is_expected.to forbid_action(:edit) }
@@ -127,7 +127,7 @@ RSpec.describe BudgetPolicy do
           it { is_expected.to forbid_action(:destroy) }
         end
 
-        context "when there is an editiable report" do
+        context "when there is an editable report" do
           let(:report) { create(:report, state: :active) }
 
           context "and the report is not for the organisation or fund of the activity" do
@@ -157,7 +157,7 @@ RSpec.describe BudgetPolicy do
               report.update(organisation: activity.organisation, fund: activity.associated_fund)
             end
 
-            context "when the report is not the one in which the budtet was created" do
+            context "when the report is not the one in which the budget was created" do
               it { is_expected.to permit_action(:show) }
               it { is_expected.to permit_action(:create) }
 

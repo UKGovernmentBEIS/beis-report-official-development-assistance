@@ -126,7 +126,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.parent_present"))
     end
 
-    it "does not fail when the acitvity and import row has no implementing organiation" do
+    it "does not fail when the activity and import row has no implementing organisation" do
       existing_activity_attributes["Implementing organisation name"] = nil
       existing_activity_attributes["Implementing organisation reference"] = nil
       existing_activity_attributes["Implementing organisation sector"] = nil
@@ -258,7 +258,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_create"))
     end
 
-    it "does not fail when the row has no implementing organiation" do
+    it "does not fail when the row has no implementing organisation" do
       new_activity_attributes["Implementing organisation name"] = nil
       new_activity_attributes["Implementing organisation reference"] = nil
       new_activity_attributes["Implementing organisation sector"] = nil

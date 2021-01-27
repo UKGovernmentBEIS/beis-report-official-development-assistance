@@ -1,12 +1,12 @@
 # This translation file is used for Pundit errors
-# Use the Pundit polciy class name as the key
+# Use the Pundit policy class name as the key
 # otherwise the default is used
 #
 # For example one might add:
 #
 # not_authorised:
 #   organisation_policy:
-#     show?: You have not been authorised to see this organiastion.
+#     show?: You have not been authorised to see this organisation.
 ---
 en:
   not_authorised:
