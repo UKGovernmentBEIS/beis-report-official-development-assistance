@@ -2,7 +2,7 @@
   .govuk-grid-column-full
     %h2.govuk-heading-s
       = t("filters.activity.title")
-    = form_with url: activities_path, method: :get do |f|
+    = form_with method: :get do |f|
       .govuk-form-group
         %label{ class: "govuk-label", for: :organistaion_id }
           = t("filters.activity.organisation")
