@@ -13,7 +13,11 @@ Rails.application.routes.draw do
   scope module: "staff" do
     resource :dashboard, only: :show
     resources :users
-    resources :activities, only: [:index]
+    resources :activities, only: [:index] do
+      collection do
+        get "historic" => "activities#historic"
+      end
+    end
     resources :organisations, except: [:destroy] do
       resources :activities, except: [:index, :destroy] do
         get "financials" => "activity_financials#show"
