@@ -126,7 +126,7 @@ RSpec.describe PlannedDisbursementPolicy do
           it { is_expected.to forbid_action(:destroy) }
         end
 
-        context "when there is an editiable report" do
+        context "when there is an editable report" do
           let(:report) { create(:report, state: :active) }
 
           context "and the report is not for the organisation or fund of the activity" do
