@@ -83,13 +83,13 @@ Data migrations are applied automatically on deployment via the docker-entrypoin
 
 The app is currently hosted on GPaaS: [https://beis-roda-staging.london.cloudapps.digital](https://beis-roda-staging.london.cloudapps.digital)
 
-The `develop` branch is deployed to staging after a successful build via Travis CI.
+The `develop` branch is deployed to staging after a successful build via GitHub Actions.
 
 ### Production
 
 The app is currently hosted on GPaaS: [https://beis-roda-prod.london.cloudapps.digital](https://beis-roda-prod.london.cloudapps.digital)
 
-The `master` branch is deployed to production after a successful build via Travis CI.
+The `master` branch is deployed to production after a successful build via GitHub Actions.
 
 ## DNS
 
