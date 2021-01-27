@@ -1,4 +1,4 @@
-describe "layouts/_messages" do
+RSpec.describe "layouts/_messages" do
   context "when passed a flash message with a string" do
     it "renders a simple message" do
       flash[:notice] = "This is a notice!"
