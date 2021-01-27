@@ -13,6 +13,9 @@ RSpec.describe Budget do
     it { should validate_presence_of(:value) }
     it { should validate_presence_of(:currency) }
 
+    it { should validate_attribute(:period_start_date).with(:date_within_boundaries) }
+    it { should validate_attribute(:period_end_date).with(:date_within_boundaries) }
+
     context "when the activity belongs to a delivery partner" do
       it "should validate that the report association exists" do
         activity = build(:activity, organisation: build_stubbed(:delivery_partner_organisation))
@@ -66,30 +69,6 @@ RSpec.describe Budget do
     it "allows a value between 1 and 99,999,999,999.00" do
       budget = build(:budget, value: 500_000.00)
       expect(budget).to be_valid
-    end
-  end
-
-  context "date must be between 10 years ago and 25 years from now" do
-    it "does not allow a date more than 10 years ago" do
-      budget = build(:budget, period_start_date: 11.years.ago)
-      expect(budget).to_not be_valid
-      expect(budget.errors[:period_start_date]).to include "Date must be between 10 years ago and 25 years in the future"
-    end
-
-    it "does not allow a date more than 25 years in the future" do
-      budget = build(:budget, period_start_date: 26.years.from_now)
-      expect(budget).to_not be_valid
-      expect(budget.errors[:period_start_date]).to include "Date must be between 10 years ago and 25 years in the future"
-    end
-
-    it "allows a date between 10 years ago and 25 years in the future" do
-      budget = build(:budget, period_start_date: Date.today)
-      expect(budget).to be_valid
-    end
-
-    it "does not allow nil date" do
-      budget = build(:budget, period_start_date: nil)
-      expect(budget).to_not be_valid
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_05_163844) do
+ActiveRecord::Schema.define(version: 2021_01_26_124531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -225,6 +225,15 @@ ActiveRecord::Schema.define(version: 2021_01_05_163844) do
     t.index ["report_id"], name: "index_transactions_on_report_id"
   end
 
+  create_table "transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "source_id", null: false
+    t.uuid "destination_id", null: false
+    t.decimal "value", precision: 13, scale: 2, null: false
+    t.date "date"
+    t.index ["destination_id"], name: "index_transfers_on_destination_id"
+    t.index ["source_id"], name: "index_transfers_on_source_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "identifier"
     t.string "name"
@@ -246,5 +255,7 @@ ActiveRecord::Schema.define(version: 2021_01_05_163844) do
   add_foreign_key "budgets", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "planned_disbursements", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "transactions", "activities", column: "parent_activity_id", on_delete: :cascade
+  add_foreign_key "transfers", "activities", column: "destination_id", on_delete: :restrict
+  add_foreign_key "transfers", "activities", column: "source_id", on_delete: :restrict
   add_foreign_key "users", "organisations", on_delete: :restrict
 end

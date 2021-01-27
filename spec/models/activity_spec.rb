@@ -86,6 +86,11 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "validations" do
+    it { should validate_attribute(:planned_start_date).with(:date_within_boundaries) }
+    it { should validate_attribute(:planned_end_date).with(:date_within_boundaries) }
+    it { should validate_attribute(:actual_start_date).with(:date_within_boundaries) }
+    it { should validate_attribute(:actual_end_date).with(:date_within_boundaries) }
+
     context "overall activity state" do
       context "when the activity form is a draft" do
         subject { build(:activity, :at_identifier_step, form_state: "blank") }
@@ -419,26 +424,6 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when planned_start_date is not blank" do
-      let(:activity) { build(:activity) }
-
-      it "does not allow a planned_start_date more than 10 years ago" do
-        activity = build(:activity, planned_start_date: 11.years.ago)
-        expect(activity.valid?).to be_falsey
-        expect(activity.errors[:planned_start_date]).to include "Date must be between 10 years ago and 25 years in the future"
-      end
-
-      it "does not allow a planned_start_date more than 25 years in the future" do
-        activity = build(:activity, planned_start_date: 26.years.from_now)
-        expect(activity.valid?).to be_falsey
-      end
-
-      it "allows a planned_start_date between 10 years ago and 25 years in the future" do
-        activity = build(:activity, planned_start_date: Date.today)
-        expect(activity.valid?).to be_truthy
-      end
-    end
-
     context "when planned_end_date is not blank" do
       let(:activity) { build(:activity) }
 
@@ -446,40 +431,6 @@ RSpec.describe Activity, type: :model do
         activity = build(:activity, planned_start_date: Date.today, planned_end_date: Date.yesterday)
         expect(activity.valid?).to be_falsey
         expect(activity.errors[:planned_end_date]).to include "Planned end date must be after planned start date"
-      end
-    end
-
-    context "when the actual_start_date is not blank" do
-      it "allows todays date" do
-        activity = build(:activity, actual_start_date: Date.today)
-        expect(activity.valid?).to be_truthy
-      end
-
-      it "allows dates in the past" do
-        activity = build(:activity, actual_start_date: 1.year.ago)
-        expect(activity.valid?).to be_truthy
-      end
-
-      it "does not allow a date in the future" do
-        activity = build(:activity, actual_start_date: 1.day.from_now)
-        expect(activity.valid?).to be_falsey
-      end
-    end
-
-    context "when the actual_end_date is not blank" do
-      it "allows todays date" do
-        activity = build(:activity, actual_end_date: Date.today)
-        expect(activity.valid?).to be_truthy
-      end
-
-      it "allows dates in the past" do
-        activity = build(:activity, actual_end_date: 1.year.ago)
-        expect(activity.valid?).to be_truthy
-      end
-
-      it "does not allow a date in the future" do
-        activity = build(:activity, actual_end_date: 1.day.from_now)
-        expect(activity.valid?).to be_falsey
       end
     end
 
