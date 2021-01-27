@@ -32,15 +32,56 @@ second_programme_params = FactoryBot.build(:programme_activity,
 
 Activity.find_or_create_by(second_programme_params)
 
-project_params = FactoryBot.build(:project_activity,
+first_project_params = FactoryBot.build(:project_activity,
   title: "Airbus Flood and Drought",
   organisation: delivery_partner,
   parent: programme,
   extending_organisation: delivery_partner).attributes
 
-Activity.find_or_create_by(project_params)
+first_project = Activity.find_or_create_by(first_project_params)
 
-Activity.all.each do |activity|
-  activity.cache_roda_identifier!
-  activity.save!
+second_project_params = FactoryBot.build(:project_activity,
+  title: "Second Project - no children",
+  organisation: delivery_partner,
+  parent: programme,
+  extending_organisation: delivery_partner).attributes
+
+Activity.find_or_create_by(second_project_params)
+
+third_project_params = FactoryBot.build(:project_activity,
+  title: "Third Project - 1 child",
+  organisation: delivery_partner,
+  parent: programme,
+  extending_organisation: delivery_partner).attributes
+
+third_project = Activity.find_or_create_by(third_project_params)
+
+(1..4).each do |i|
+  third_party_project_params = FactoryBot.build(:third_party_project_activity,
+    title: "Something good #{i}",
+    organisation: delivery_partner,
+    parent: first_project,
+    extending_organisation: delivery_partner).attributes
+
+  Activity.find_or_create_by(third_party_project_params)
+end
+
+third_party_project_params = FactoryBot.build(:third_party_project_activity,
+  title: "Only child",
+  organisation: delivery_partner,
+  parent: third_project,
+  extending_organisation: delivery_partner).attributes
+
+Activity.find_or_create_by(third_party_project_params)
+
+[
+  Activity.fund,
+  Activity.programme,
+  Activity.project,
+  Activity.third_party_project,
+].each do |set|
+  set.each do |activity|
+    activity.cache_roda_identifier! unless activity.roda_identifier.present?
+    activity.save!
+  end
 end
