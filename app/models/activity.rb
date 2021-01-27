@@ -219,6 +219,14 @@ class Activity < ApplicationRecord
     for_organisation.merge(projects.or(third_party_projects))
   }
 
+  scope :current, -> {
+                    where.not(programme_status: ["completed", "stopped", "cancelled"]).or(where(programme_status: nil))
+                  }
+
+  scope :historic, -> {
+    where(programme_status: ["completed", "stopped", "cancelled"])
+  }
+
   def self.by_roda_identifier(identifier)
     find_by(roda_identifier_compound: identifier)
   end
