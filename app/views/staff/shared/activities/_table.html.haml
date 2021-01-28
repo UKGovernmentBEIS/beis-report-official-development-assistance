@@ -1,23 +1,23 @@
 - unless activities.empty?
-  %table.govuk-table.activities
-    %thead.govuk-table__head
-      %tr.govuk-table__row
-        %th.govuk-table__header
-          = t("table.header.activity.title")
-        %th.govuk-table__header
-          = t("table.header.activity.identifier")
-        %th.govuk-table__header
-          = t("table.header.activity.level")
-        %th.govuk-table__header
+  .govuk-grid-row
+    .govuk-grid-column-full
+      .govuk-tabs
+        %h2.govuk-tabs__title
+          Activities
 
-    %tbody.govuk-table__body
-      - activities.each do |activity|
-        %tr.govuk-table__row{ id: activity.id }
-          %td.govuk-table__cell= activity.display_title
-          %td.govuk-table__cell= activity.delivery_partner_identifier
-          %td.govuk-table__cell= activity.level
-          %td.govuk-table__cell
-            = a11y_action_link t("table.body.activity.view_activity"),
-              organisation_activity_path(activity.organisation, activity),
-              activity.title
+        %ul.govuk-tabs__list
+          %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
+            = link_to t("tabs.activities.current"),
+              activities_path(organisation_id: @organisation_id),
+              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "current", selected: true } }
 
+          %li.govuk-tabs__list-item
+            = link_to t("tabs.activities.historic"),
+              historic_activities_path(organisation_id: @organisation_id),
+              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "historic", selected: false } }
+
+        .govuk-tabs__panel
+          %h2.govuk-heading-l
+            = t("page_title.activities.current")
+
+          = render partial: "staff/shared/activities/current"
