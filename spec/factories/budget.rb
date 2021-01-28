@@ -7,6 +7,7 @@ FactoryBot.define do
     value { BigDecimal("110.01") }
     currency { "gbp" }
     ingested { false }
+    funding_type { 1 }
     association :parent_activity, factory: :activity
     association :report, factory: :report
   end

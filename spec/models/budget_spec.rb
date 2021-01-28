@@ -8,6 +8,7 @@ RSpec.describe Budget do
   describe "validations" do
     it { should validate_presence_of(:status) }
     it { should validate_presence_of(:budget_type) }
+    it { should validate_presence_of(:funding_type) }
     it { should validate_presence_of(:period_start_date) }
     it { should validate_presence_of(:period_end_date) }
     it { should validate_presence_of(:value) }
@@ -15,6 +16,12 @@ RSpec.describe Budget do
 
     it { should validate_attribute(:period_start_date).with(:date_within_boundaries) }
     it { should validate_attribute(:period_end_date).with(:date_within_boundaries) }
+
+    describe ".funding_type" do
+      it { is_expected.to allow_value("1").for(:funding_type) }
+      it { is_expected.not_to allow_value("").for(:funding_type) }
+      it { is_expected.not_to allow_value("9999").for(:funding_type) }
+    end
 
     context "when the activity belongs to a delivery partner" do
       it "should validate that the report association exists" do
