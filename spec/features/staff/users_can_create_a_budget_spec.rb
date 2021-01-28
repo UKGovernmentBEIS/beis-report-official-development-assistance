@@ -73,6 +73,7 @@ RSpec.describe "Users can create a budget" do
         expect(page).to have_content(t("activerecord.errors.models.budget.attributes.budget_type.blank"))
         expect(page).to have_content(t("activerecord.errors.models.budget.attributes.status.blank"))
         expect(page).to have_content(t("activerecord.errors.models.budget.attributes.funding_type.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.budget.attributes.financial_year.blank"))
         expect(page).to have_content(t("activerecord.errors.models.budget.attributes.period_start_date.blank"))
         expect(page).to have_content(t("activerecord.errors.models.budget.attributes.period_end_date.blank"))
         expect(page).to have_content t("activerecord.errors.models.budget.attributes.value.blank")
@@ -154,6 +155,7 @@ RSpec.describe "Users can create a budget" do
     choose("budget[budget_type]", option: "1")
     choose("budget[status]", option: "1")
     choose("budget[funding_type]", option: "1")
+    select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
     fill_in "budget[period_start_date(3i)]", with: "01"
     fill_in "budget[period_start_date(2i)]", with: "01"
     fill_in "budget[period_start_date(1i)]", with: "2020"
