@@ -355,6 +355,9 @@ en:
       financials: Financials
       children: Child activities
       comments: Comments
+    activities:
+      current: Current
+      historic: Historic
   page_title:
     activity:
       index: Activities
@@ -365,6 +368,9 @@ en:
       financials: Financials
       children: Child activities
       upload: Upload bulk activity data
+    activities:
+      current: Current activities
+      historic: Historic activities
     activity_form:
       show:
         aid_type: Aid type

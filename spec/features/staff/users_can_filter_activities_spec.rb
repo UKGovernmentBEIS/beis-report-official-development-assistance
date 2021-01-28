@@ -29,6 +29,38 @@ RSpec.feature "Users can filter activities" do
       expect(page).to have_content project.title
       expect(page).to have_content project.delivery_partner_identifier
     end
+
+    scenario "they will see Current activities if they filter while on the 'Current' tab" do
+      delivery_partner_organisation = create(:delivery_partner_organisation)
+      current_project = create(:project_activity, organisation: delivery_partner_organisation)
+      historic_project = create(:project_activity, organisation: delivery_partner_organisation, programme_status: "cancelled")
+
+      visit activities_path
+
+      select delivery_partner_organisation.name, from: "organisation_id"
+      click_on t("filters.activity.submit")
+
+      expect(page).to have_content current_project.title
+      expect(page).to have_content current_project.delivery_partner_identifier
+      expect(page).to_not have_content historic_project.title
+      expect(page).to_not have_content historic_project.delivery_partner_identifier
+    end
+
+    scenario "they will see Historic activities if they filter while on the 'Historic' tab" do
+      delivery_partner_organisation = create(:delivery_partner_organisation)
+      current_project = create(:project_activity, organisation: delivery_partner_organisation)
+      historic_project = create(:project_activity, organisation: delivery_partner_organisation, programme_status: "cancelled")
+
+      visit historic_activities_path
+
+      select delivery_partner_organisation.name, from: "organisation_id"
+      click_on t("filters.activity.submit")
+
+      expect(page).to have_content historic_project.title
+      expect(page).to have_content historic_project.delivery_partner_identifier
+      expect(page).to_not have_content current_project.title
+      expect(page).to_not have_content current_project.delivery_partner_identifier
+    end
   end
 
   context "when the user is signed in as a delivery partner user" do
