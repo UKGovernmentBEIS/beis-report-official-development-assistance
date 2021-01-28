@@ -6,7 +6,7 @@
       = t("page_content.reports.title")
     %thead.govuk-table__head
       %tr.govuk-table__row
-        %th.govuk-table__header
+        %th{class: "govuk-table__header govuk-!-width-one-quarter"}
           = t("table.header.report.financial_quarter")
         - if current_user.service_owner?
           %th.govuk-table__header
