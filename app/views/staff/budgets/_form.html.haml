@@ -11,6 +11,12 @@
   :name,
   legend: { tag: :h2 }
 
+= f.govuk_collection_radio_buttons :funding_type,
+  list_of_funding_types,
+  :code,
+  :name,
+  legend: { tag: :h2 }
+
 = f.govuk_date_field :period_start_date,
   legend: { size: "s" }
 
