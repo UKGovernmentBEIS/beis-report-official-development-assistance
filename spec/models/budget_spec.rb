@@ -11,14 +11,9 @@ RSpec.describe Budget do
     it { should validate_presence_of(:status) }
     it { should validate_presence_of(:budget_type) }
     it { should validate_presence_of(:funding_type) }
-    it { should validate_presence_of(:period_start_date) }
-    it { should validate_presence_of(:period_end_date) }
     it { should validate_presence_of(:value) }
     it { should validate_presence_of(:currency) }
     it { should validate_presence_of(:financial_year) }
-
-    it { should validate_attribute(:period_start_date).with(:date_within_boundaries) }
-    it { should validate_attribute(:period_end_date).with(:date_within_boundaries) }
 
     describe ".funding_type" do
       it { is_expected.to allow_value("1").for(:funding_type) }
@@ -79,26 +74,6 @@ RSpec.describe Budget do
     it "allows a value between 1 and 99,999,999,999.00" do
       budget = build(:budget, value: 500_000.00)
       expect(budget).to be_valid
-    end
-  end
-
-  context "when the period start and period end dates are blank" do
-    it "does not perform budget date validation" do
-      budget = build(:budget, period_start_date: "", period_end_date: "")
-
-      budget.valid?
-
-      expect(budget.errors[:period_end_date]).not_to include t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")
-    end
-  end
-
-  context "when the period start and period end dates are invalid" do
-    it "performs budget date validation" do
-      budget = build(:budget, period_start_date: Date.today, period_end_date: Date.today + 366.days)
-
-      budget.valid?
-
-      expect(budget.errors[:period_end_date]).to include t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")
     end
   end
 

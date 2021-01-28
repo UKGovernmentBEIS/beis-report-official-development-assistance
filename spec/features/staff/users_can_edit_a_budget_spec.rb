@@ -78,13 +78,11 @@ RSpec.describe "Users can edit a budget" do
       end
 
       fill_in "budget[value]", with: ""
-      fill_in "budget[period_start_date(3i)]", with: ""
-      fill_in "budget[period_start_date(2i)]", with: ""
-      fill_in "budget[period_start_date(1i)]", with: ""
+
       click_on t("default.button.submit")
 
       expect(page).to have_content("There is a problem")
-      expect(page).to have_content(t("activerecord.errors.models.budget.attributes.period_start_date.blank"))
+      expect(page).to have_content(t("activerecord.errors.models.budget.attributes.value.blank"))
     end
   end
 end
