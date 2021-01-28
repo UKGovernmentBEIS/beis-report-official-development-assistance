@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 2021_01_26_124531) do
     t.uuid "parent_activity_id"
     t.boolean "ingested", default: false
     t.uuid "report_id"
+    t.integer "funding_type"
     t.index ["parent_activity_id"], name: "index_budgets_on_parent_activity_id"
     t.index ["report_id"], name: "index_budgets_on_report_id"
   end
