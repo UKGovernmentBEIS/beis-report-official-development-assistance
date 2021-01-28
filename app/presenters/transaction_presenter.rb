@@ -11,7 +11,7 @@ class TransactionPresenter < SimpleDelegator
 
   def financial_quarter_and_year
     return nil if date.blank?
-    financial_year = FinancialPeriod.year_from_date(to_model.date).to_i
-    "Q#{FinancialPeriod.quarter_from_date(to_model.date)} #{financial_year}-#{financial_year + 1}"
+
+    FinancialQuarter.for_date(to_model.date).to_s
   end
 end

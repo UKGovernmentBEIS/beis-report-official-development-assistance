@@ -21,7 +21,7 @@ class ReportingCycle
   def create_report
     @report = Report.new(fund: @activity.associated_fund, organisation: @activity.organisation)
 
-    @report.created_at = FinancialPeriod.start_date_from_quarter_and_year(@financial_quarter.to_s, @financial_year.to_s)
+    @report.created_at = FinancialQuarter.new(@financial_year.to_i, @financial_quarter.to_i).start_date
     @report.financial_quarter = @financial_quarter
     @report.financial_year = @financial_year
     @report.state = :active
