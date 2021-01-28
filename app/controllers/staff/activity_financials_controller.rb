@@ -8,7 +8,7 @@ class Staff::ActivityFinancialsController < Staff::BaseController
     authorize @activity
 
     @transactions = policy_scope(Transaction).where(parent_activity: @activity).order("date DESC")
-    @budgets = policy_scope(Budget).where(parent_activity: @activity).order("period_start_date DESC")
+    @budgets = policy_scope(Budget).where(parent_activity: @activity).order("financial_year DESC")
     @planned_disbursements = policy_scope(@activity.latest_planned_disbursements)
 
     @transaction_presenters = @transactions.includes(:parent_activity).map { |transaction| TransactionPresenter.new(transaction) }
