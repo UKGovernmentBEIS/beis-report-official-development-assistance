@@ -14,7 +14,7 @@ class Budget < ApplicationRecord
     :funding_type
   validates :value, numericality: {other_than: 0, less_than_or_equal_to: 99_999_999_999.00}
   validates :period_start_date, :period_end_date, date_within_boundaries: true
-  validates :funding_type, inclusion: {in: ->(_) { valid_funding_types }}
+  validates :funding_type, inclusion: {in: ->(_) { valid_funding_type_codes }}
 
   validates_with BudgetDatesValidator, if: -> { period_start_date.present? && period_end_date.present? }
 
@@ -22,8 +22,12 @@ class Budget < ApplicationRecord
   STATUSES = {"1": "indicative", "2": "committed"}
 
   class << self
-    def valid_funding_types
-      Codelist.new(type: "fund_types", source: "beis").values_for("code")
+    def valid_funding_type_codes
+      funding_types.values_for("code")
+    end
+
+    def funding_types
+      Codelist.new(type: "fund_types", source: "beis")
     end
   end
 end

@@ -23,6 +23,7 @@ en:
         status: Budget status
         period_end_date: Period end date
         period_start_date: Period start date
+        funding_type: Funding type
     hint:
       budget:
         period_end_date: Period end date must not be more than one year after the period start date. For example, 11 3 2021
@@ -45,11 +46,11 @@ en:
         create: Add budget
     budget:
       budget_type:
-        '1': Original
-        '2': Updated
+        "1": Original
+        "2": Updated
       status:
-        '1': Indicative
-        '2': Committed
+        "1": Indicative
+        "2": Committed
   page_title:
     budget:
       edit: Edit budget
@@ -76,4 +77,5 @@ en:
               blank: Enter a budget type
             status:
               blank: Enter a budget status
-
+            funding_type:
+              blank: Select a funding type

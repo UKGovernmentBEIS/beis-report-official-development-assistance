@@ -66,7 +66,8 @@ class Staff::BudgetsController < Staff::BaseController
       :value,
       :period_start_date,
       :period_end_date,
-      :currency
+      :currency,
+      :funding_type
     )
   end
 end
