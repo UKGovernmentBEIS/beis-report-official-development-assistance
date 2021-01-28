@@ -28,13 +28,13 @@ module FormHelper
 
   def list_of_financial_quarters
     @list_of_financial_quarters ||= begin
-      FinancialPeriod::FINANCIAL_QUARTERS.map { |id| OpenStruct.new(id: id, name: "Q#{id}") }
+      FinancialQuarter::QUARTERS.map { |id| OpenStruct.new(id: id, name: "Q#{id}") }
     end
   end
 
   def list_of_financial_years
     @list_of_financial_years ||= begin
-      FinancialPeriod.next_ten_years.map { |year| OpenStruct.new(id: year.to_s, name: "#{year}-#{year + 1}") }
+      FinancialYear.next_ten.map { |year| OpenStruct.new(id: year.to_i, name: year.to_s) }
     end
   end
 
