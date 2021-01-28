@@ -3,34 +3,20 @@
 require "rails_helper"
 
 RSpec.describe BudgetXmlPresenter do
-  describe "#period_start_date" do
-    context "when the period_start_date is blank" do
-      it "returns nil" do
-        budget = build(:budget, period_start_date: "")
+  describe "#financial_year" do
+    context "when the financial_year is blank" do
+      it "returns nil for the start and end dates" do
+        budget = build(:budget, financial_year: "")
         expect(described_class.new(budget).period_start_date).to be_nil
-      end
-    end
-
-    context "when the period_start_date exists" do
-      it "returns an IATI-formatted date" do
-        budget = build(:budget, period_start_date: Date.today)
-        expect(described_class.new(budget).period_start_date).to eq(Date.today.strftime("%Y-%m-%d"))
-      end
-    end
-  end
-
-  describe "#period_end_date" do
-    context "when the period_end_date is blank" do
-      it "returns nil" do
-        budget = build(:budget, period_end_date: "")
         expect(described_class.new(budget).period_end_date).to be_nil
       end
     end
 
-    context "when the period_end_date exists" do
-      it "returns an IATI-formatted date" do
-        budget = build(:budget, period_end_date: Date.tomorrow)
-        expect(described_class.new(budget).period_end_date).to eq(Date.tomorrow.strftime("%Y-%m-%d"))
+    context "when the financial_year exists" do
+      it "returns IATI-formatted dates" do
+        budget = build(:budget, financial_year: 2020)
+        expect(described_class.new(budget).period_start_date).to eq(Date.parse("2020-04-01").strftime("%Y-%m-%d"))
+        expect(described_class.new(budget).period_end_date).to eq(Date.parse("2021-03-31").strftime("%Y-%m-%d"))
       end
     end
   end

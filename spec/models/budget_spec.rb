@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Budget do
+  subject { build(:budget) }
+
   describe "relations" do
     it { should belong_to(:parent_activity) }
   end
@@ -8,13 +10,16 @@ RSpec.describe Budget do
   describe "validations" do
     it { should validate_presence_of(:status) }
     it { should validate_presence_of(:budget_type) }
-    it { should validate_presence_of(:period_start_date) }
-    it { should validate_presence_of(:period_end_date) }
+    it { should validate_presence_of(:funding_type) }
     it { should validate_presence_of(:value) }
     it { should validate_presence_of(:currency) }
+    it { should validate_presence_of(:financial_year) }
 
-    it { should validate_attribute(:period_start_date).with(:date_within_boundaries) }
-    it { should validate_attribute(:period_end_date).with(:date_within_boundaries) }
+    describe ".funding_type" do
+      it { is_expected.to allow_value("1").for(:funding_type) }
+      it { is_expected.not_to allow_value("").for(:funding_type) }
+      it { is_expected.not_to allow_value("9999").for(:funding_type) }
+    end
 
     context "when the activity belongs to a delivery partner" do
       it "should validate that the report association exists" do
@@ -72,23 +77,13 @@ RSpec.describe Budget do
     end
   end
 
-  context "when the period start and period end dates are blank" do
-    it "does not perform budget date validation" do
-      budget = build(:budget, period_start_date: "", period_end_date: "")
+  it "returns an instance of FinancialYear for the financial year" do
+    travel_to Date.new(2020, 5, 16) do
+      budget = build(:budget, financial_year: Date.today.year)
 
-      budget.valid?
-
-      expect(budget.errors[:period_end_date]).not_to include t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")
-    end
-  end
-
-  context "when the period start and period end dates are invalid" do
-    it "performs budget date validation" do
-      budget = build(:budget, period_start_date: Date.today, period_end_date: Date.today + 366.days)
-
-      budget.valid?
-
-      expect(budget.errors[:period_end_date]).to include t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")
+      expect(budget.financial_year).to be_a(FinancialYear)
+      expect(budget.period_start_date).to eq(Date.parse("01-04-2020"))
+      expect(budget.period_end_date).to eq(Date.parse("31-03-2021"))
     end
   end
 end

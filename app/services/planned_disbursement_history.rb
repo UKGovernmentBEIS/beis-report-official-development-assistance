@@ -148,11 +148,11 @@ class PlannedDisbursementHistory
   end
 
   def period_start_and_end_dates
-    args = [@financial_quarter, @financial_year].map(&:to_s)
+    quarter = FinancialQuarter.new(@financial_year.to_i, @financial_quarter.to_i)
 
     [
-      FinancialPeriod.start_date_from_quarter_and_year(*args),
-      FinancialPeriod.end_date_from_quarter_and_year(*args),
+      quarter.start_date,
+      quarter.end_date,
     ]
   end
 end
