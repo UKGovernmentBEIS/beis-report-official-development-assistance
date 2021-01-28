@@ -1,6 +1,7 @@
 class Codelist
   class UnreadableCodelist < StandardError; end
   class UnrecognisedSource < StandardError; end
+  class KeyNotFound < StandardError; end
 
   include Enumerable
 
@@ -80,6 +81,14 @@ class Codelist
 
   def values
     list.values
+  end
+
+  def values_for(key)
+    values = list.pluck(key).compact
+
+    raise KeyNotFound if values.empty?
+
+    values
   end
 
   private def fetch_codelist
