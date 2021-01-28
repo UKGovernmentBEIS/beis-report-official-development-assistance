@@ -22,6 +22,20 @@ class Budget < ApplicationRecord
   BUDGET_TYPES = {"1": "original", "2": "updated"}
   STATUSES = {"1": "indicative", "2": "committed"}
 
+  def financial_year
+    return nil if self[:financial_year].nil?
+
+    @financial_year ||= FinancialYear.new(self[:financial_year])
+  end
+
+  def period_start_date
+    financial_year&.start_date
+  end
+
+  def period_end_date
+    financial_year&.end_date
+  end
+
   class << self
     def valid_funding_type_codes
       funding_types.values_for("code")
