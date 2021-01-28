@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Budget do
+  subject { build(:budget) }
+
   describe "relations" do
     it { should belong_to(:parent_activity) }
   end
@@ -97,6 +99,16 @@ RSpec.describe Budget do
       budget.valid?
 
       expect(budget.errors[:period_end_date]).to include t("activerecord.errors.models.budget.attributes.period_end_date.within_365_days_of_start_date")
+    end
+  end
+
+  it "returns an instance of FinancialYear for the financial year" do
+    travel_to Date.new(2020, 5, 16) do
+      budget = build(:budget, financial_year: Date.today.year)
+
+      expect(budget.financial_year).to be_a(FinancialYear)
+      expect(budget.period_start_date).to eq(Date.parse("01-04-2020"))
+      expect(budget.period_end_date).to eq(Date.parse("31-03-2021"))
     end
   end
 end
