@@ -8,7 +8,7 @@ gem "auth0", "~> 5.0"
 gem "acts_as_tree"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "data_migrate"
-gem "govuk_design_system_formbuilder", "~> 2.1.5"
+gem "govuk_design_system_formbuilder", "~> 2.1.7"
 gem "haml-rails"
 gem "high_voltage"
 gem "ipaddr"
