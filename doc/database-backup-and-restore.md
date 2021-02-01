@@ -70,37 +70,61 @@ You will need to be a user of the services GPaaS account. You're OK if you can s
 
 ### PaaS to local
 
-In this example we will overwrite our local development database with the contents of the production database.
+In this example we will overwrite our local development database with the
+contents of the production database and add the local users so we can sign in to
+the application.
 
 ---
 
-1. Create a new backup of production
+### Prerequisites
+
+- Cloud Foundry (`cf`) tool installed
+- Credentials for the BEIS Government Platform as a Service (GPaaS) account
+- [GPaaS Conduit plugin installed](#installing-the-cf-conduit-plugin)
+
+1. Login and select the production space:
     ```
-    cf install-plugin conduit
-    cf target -s prod
-    cf services # to get the POSTGRES_SERVICE_NAME of postgres
-    cf conduit POSTGRES_SERVICE_NAME -- pg_dump --file PROD_DATA_FILE_NAME.sql
+    cf login
     ```
-1. Find the Database role name from the database dump. It should be of the form: `rdsbroker_<uuid>_manager`
+1. List the backing services and note the name of the postgres service, this
+   should be `beis-roda-prod-postgres` but we should confirm:
     ```
-    grep -n rdsbroker PROD_DATA_FILE_NAME.sql
+    cf services
     ```
-1. Use the Postgres binary to wipe and prepare the local database (if you've done this process before you'll get a warning that this role already exists)
+1. Create a new backup of production data locally using cf conduit:
     ```
-    psql
+    cf conduit POSTGRES_SERVICE_NAME -- pg_dump --file PROD_DATA_FILE_NAME.sql --no-acl --no-owner
+    ```
+1. Destroy the existing local database in postgres and create a new empty one:
+    ```
+    psql -d postgres
       > DROP DATABASE "roda-development";
       > CREATE DATABASE "roda-development";
-      > CREATE ROLE "rdsbroker_de78448a_1869_4e6c_9ffc_1256420e96f3_manager" WITH SUPERUSER CREATEDB CREATEROLE;
+      > \q
     ```
-1. Add production data to the clean local database
+1. Add production data to the new local database
     ```
     psql -d roda-development < PROD_DATA_FILE_NAME.sql
     ```
-1. Prepare and seed the database
+1. Add the local development users to the data we just imported using
+   the Rails console, so that we can login to the application locally:
     ```
-    rake db:prepare
-    rake db:seed
+    bundle exec rails console
     ```
-1. Log in using generic development credentials
+    ```
+    load File.join(Rails.root, "db", "seeds", "development_users.rb")
+    ```
 
-NB. As a product of restoring the production database, some postgres plugins will be added to your local schema along with a table called `spatial_ref_sys`. You can safely ignore/discard these changes to your schema. In the future and with more time we could look at ways to prevent this side effect.
+## Installing the CF Conduit plugin
+
+[CF Conduit is a Cloud Foundry
+plugin](https://github.com/alphagov/paas-cf-conduit) written by the GPaaS team
+to support the GPaaS service.
+
+To install the plugin:
+```
+cf install-plugin conduit
+```
+
+This step warns of untrusted packages, we trust that the author is the
+Government Digital Service.
