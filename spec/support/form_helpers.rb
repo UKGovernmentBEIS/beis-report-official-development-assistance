@@ -394,6 +394,12 @@ module FormHelpers
       end
     end
     expect(page).to have_content fund_pillar if associated_fund_is_newton?(parent)
+
+    if level == "project" || level == "third_party_project"
+      expect(page).to have_content t("summary.label.activity.channel_of_delivery_code")
+      expect(page).to have_content channel_of_delivery_code
+    end
+
     expect(page).to have_content oda_eligibility
     expect(page).to have_content oda_eligibility_lead if level == "project" || level == "third_party_project"
     if level == "project" || level == "third_party_project"

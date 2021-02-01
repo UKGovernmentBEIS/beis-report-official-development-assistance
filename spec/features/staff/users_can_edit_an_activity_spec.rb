@@ -644,6 +644,17 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     click_on t("tabs.activity.details")
   end
 
+  if activity.is_project?
+    within(".channel_of_delivery_code") do
+      click_on(t("default.link.edit"))
+      expect(page).to have_current_path(
+        activity_step_path(activity, :channel_of_delivery_code)
+      )
+    end
+    click_on(t("default.link.back"))
+    click_on t("tabs.activity.details")
+  end
+
   within(".oda_eligibility") do
     click_on(t("default.link.edit"))
     expect(page).to have_current_path(
