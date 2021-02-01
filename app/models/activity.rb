@@ -79,6 +79,7 @@ class Activity < ApplicationRecord
     :policy_markers_step,
     :covid19_related_step,
     :gcrf_challenge_area_step,
+    :channel_of_delivery_code_step,
     :oda_eligibility_step,
     :oda_eligibility_lead_step,
     :uk_dp_named_contact_step,
@@ -125,6 +126,7 @@ class Activity < ApplicationRecord
   validates :oda_eligibility, presence: true, on: :oda_eligibility_step
   validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :is_project?
   validates :uk_dp_named_contact, presence: true, on: :uk_dp_named_contact_step, if: :is_project?
+  validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :is_project?
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier_compound, uniqueness: true, allow_nil: true

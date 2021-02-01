@@ -472,6 +472,8 @@ en:
               inclusion: You must select "Yes" or "No"
             gcrf_challenge_area:
               blank: Select a GCRF challenge area
+            channel_of_delivery_code:
+              invalid: Please select a valid Channel of delivery code
   importer:
     errors:
       activity:
