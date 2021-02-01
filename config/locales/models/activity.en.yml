@@ -234,6 +234,7 @@ en:
         call_present: Calls
         call_open_date: Call open date
         call_close_date: Call close date
+        channel_of_delivery_code: Channel of delivery code
         collaboration_type: Collaboration type
         country_delivery_partners: Country delivery partners
         covid19_related: Is this activity related to Covid-19?

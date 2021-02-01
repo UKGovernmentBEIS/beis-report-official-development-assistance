@@ -596,4 +596,12 @@ RSpec.describe ActivityPresenter do
         .to eq "-1300.00"
     end
   end
+
+  describe "#channel_of_delivery_code" do
+    it "returns the IATI code and IATI name of item" do
+      activity = build(:project_activity, channel_of_delivery_code: "20000")
+      result = described_class.new(activity)
+      expect(result.channel_of_delivery_code).to eq("20000: Non-Governmental Organisation (NGO) and Civil Society")
+    end
+  end
 end
