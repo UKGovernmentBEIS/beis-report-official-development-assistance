@@ -732,6 +732,38 @@ RSpec.describe Activity, type: :model do
         end
       end
     end
+
+    describe "channel_of_delivery_code" do
+      it "is not required for a fund" do
+        expect(build(:fund_activity, channel_of_delivery_code: nil)).to be_valid
+      end
+
+      it "is not required for a programme" do
+        expect(build(:programme_activity, channel_of_delivery_code: nil)).to be_valid
+      end
+
+      it "is required to be a BEIS-allowed code for a project" do
+        activity = build(:project_activity, channel_of_delivery_code: nil)
+        expect(activity).to be_invalid
+
+        activity.channel_of_delivery_code = "12004"
+        expect(activity).to be_invalid
+
+        activity.channel_of_delivery_code = "11000"
+        expect(activity).to be_valid
+      end
+
+      it "is required to be a BEIS-allowed code for a third party project" do
+        activity = build(:third_party_project_activity, channel_of_delivery_code: nil)
+        expect(activity).to be_invalid
+
+        activity.channel_of_delivery_code = "12004"
+        expect(activity).to be_invalid
+
+        activity.channel_of_delivery_code = "11000"
+        expect(activity).to be_valid
+      end
+    end
   end
 
   describe "associations" do

@@ -524,11 +524,9 @@ module Activities
       def validate_channel_of_delivery_code(code, entity, message)
         return nil if code.blank?
 
-        codelist = Codelist.new(type: entity)
-        valid_codes = codelist.map { |entry| entry.fetch("code") }
-        valid_codes << "N/A"
+        valid_codes = beis_allowed_channel_of_delivery_codes
 
-        raise message unless valid_codes.include?(code.upcase)
+        raise message unless valid_codes.include?(code)
 
         code
       end
