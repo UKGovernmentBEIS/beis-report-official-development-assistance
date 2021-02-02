@@ -178,11 +178,7 @@ RSpec.feature "Users can create a programme activity" do
 
         # Collaboration_type has a pre-selected option
         click_button t("form.button.activity.submit")
-        expect(page).to have_content t("form.label.activity.flow")
 
-        # Flow has a default and can't be set to blank so we skip
-        select "ODA", from: "activity[flow]"
-        click_button t("form.button.activity.submit")
         expect(page).to have_content t("form.legend.activity.sdgs_apply")
 
         # Choose option that SDGs apply, but do not select any SDGs
@@ -300,7 +296,7 @@ RSpec.feature "Users can create a programme activity" do
 
         programme = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
         auditable_events = PublicActivity::Activity.where(trackable_id: programme.id)
-        expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.flow", "activity.create.aid_type")
+        expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.aid_type")
         expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
         expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [programme.id]
       end
