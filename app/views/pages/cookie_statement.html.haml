@@ -1,0 +1,90 @@
+= content_for :page_title_prefix, t("cookie_statement.title")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full.app-visitor-welcome
+      %h1.govuk-heading-xl
+        = t("cookie_statement.title")
+
+      %p.govuk-body
+        Report your official development assistance (RODA) puts small files
+        (known as 'cookies') onto your computer to collect information about
+        how you browse the site and allow the site to operate. Find out more
+        about the cookies we use, what they're for and when they expire.
+
+      %h2.govuk-heading-m
+        Cookies that measure website use
+
+      %p.govuk-body
+        We use Google Analytics software to collect anonymised information
+        about how you use RODA. We do this to help make sure the site is
+        meeting the needs of its users and to help us make improvements to the
+        site.
+
+      %p.govuk-body
+        We do not allow Google to use or share the data about how you use this site.
+
+      %p.govuk-body
+        Google Analytics stores information about:
+
+      %ul.govuk-list.govuk-list--bullet
+        %li how you got to the site
+        %li the pages you visit on RODA and how long you spend on them
+        %li what you click on while you’re visiting the site
+
+      %p.govuk-body
+        Google Analytics sets the following cookies:
+
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "col"} Name
+            %th.govuk-table__header{scope: "col"} Purpose
+            %th.govuk-table__header{scope: "col"} Expires
+        %tbody.govuk-table__body
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: "row"} _ga
+            %td.govuk-table__cell These help us count how many people visit RODA by tracking if you’ve visited before
+            %td.govuk-table__cell 2 years
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: "row"} _gid
+            %td.govuk-table__cell These help us count how many people visit RODA by tracking if you’ve visited before
+            %td.govuk-table__cell 24 hours
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: "row"} _gat_UA-151431879-2
+            %td.govuk-table__cell Used to  control the number of requests RODA makes to Google Analytics
+            %td.govuk-table__cell 1 minute
+
+      %p.govuk-body
+        For more information on Google‘s cookies, please see the
+        = link_to "Google Privacy & Terms", "https://policies.google.com/technologies/cookies?hl=en-uk"
+        site.
+
+      %h2.govuk-heading-m
+        Strictly necessary cookies
+
+      %p.govuk-body
+        These cookies do not store your personal data but are required for the service to operate:
+
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "col"} Name
+            %th.govuk-table__header{scope: "col"} Purpose
+            %th.govuk-table__header{scope: "col"} Expires
+        %tbody.govuk-table__body
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: "row"} _roda_session
+            %td.govuk-table__cell Identifies your session in RODA
+            %td.govuk-table__cell When you close your browser or 24 hours
+
+      %h2.govuk-heading-m
+        Gathering your feedback
+
+      %p.govuk-body
+        We use google forms software to collect information about what you
+        thought of the RODA service. We do this to help make sure the site is
+        meeting the needs of its users and to help us make improvements.
+
+      %p.govuk-body.published-dates
+        Last updated 21 May 2020

@@ -4,10 +4,6 @@ Rails.application.routes.draw do
   scope module: "public" do
     get "health_check" => "base#health_check"
     root to: "visitors#index"
-
-    get "privacy-policy" => "privacy_policy#index"
-    get "cookie-statement" => "cookie_statement#index"
-    get "accessibility-statement" => "accessibility_statement#index"
   end
 
   scope module: "staff" do
