@@ -104,12 +104,10 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def flow
-    return if super.blank?
     I18n.t("activity.flow.#{super}")
   end
 
   def flow_with_code
-    return if flow.blank?
     "#{flow} (#{to_model.flow})"
   end
 
