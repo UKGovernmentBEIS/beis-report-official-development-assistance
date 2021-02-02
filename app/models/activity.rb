@@ -417,4 +417,17 @@ class Activity < ApplicationRecord
 
     iati_status_from_programme_status(programme_status)
   end
+
+  def self.hierarchically_grouped_projects
+    activities = all.to_a
+    projects = activities.select(&:project?).sort_by(&:roda_identifier_fragment)
+    third_party_projects = activities.select(&:third_party_project?).group_by(&:parent_id)
+
+    grouped_projects = []
+    projects.each do |project|
+      grouped_projects << project
+      grouped_projects += third_party_projects.fetch(project.id, []).sort_by(&:roda_identifier_fragment)
+    end
+    grouped_projects
+  end
 end
