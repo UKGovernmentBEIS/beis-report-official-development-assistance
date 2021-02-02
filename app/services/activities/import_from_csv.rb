@@ -289,6 +289,7 @@ module Activities
         attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
         attributes[:sector_category] = get_sector_category(attributes[:sector])
         attributes[:form_state] = "complete"
+        attributes[:source_fund_code] = @parent&.source_fund_code
 
         attributes
       end
@@ -375,12 +376,12 @@ module Activities
       end
 
       def convert_parent_id(roda_id)
-        parent = Activity.by_roda_identifier(roda_id)
+        @parent = Activity.by_roda_identifier(roda_id)
 
-        raise I18n.t("importer.errors.activity.parent_not_found") if parent.nil?
-        raise I18n.t("importer.errors.activity.invalid_parent") unless parent.form_steps_completed?
+        raise I18n.t("importer.errors.activity.parent_not_found") if @parent.nil?
+        raise I18n.t("importer.errors.activity.invalid_parent") unless @parent.form_steps_completed?
 
-        parent.id
+        @parent.id
       end
 
       def convert_covid19_related(covid19_related)
