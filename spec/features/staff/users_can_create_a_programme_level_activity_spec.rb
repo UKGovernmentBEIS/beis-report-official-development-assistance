@@ -7,7 +7,7 @@ RSpec.feature "Users can create a programme activity" do
     end
 
     scenario "successfully creates a programme" do
-      fund = create(:fund_activity, organisation: user.organisation)
+      fund = create(:fund_activity, :newton, organisation: user.organisation)
 
       visit activities_path
       click_on(t("page_content.organisation.button.create_activity"))
@@ -254,7 +254,7 @@ RSpec.feature "Users can create a programme activity" do
     end
 
     scenario "the activity has the appropriate accountable organisation defaults" do
-      fund = create(:activity, level: :fund, organisation: user.organisation)
+      fund = create(:fund_activity, :newton, organisation: user.organisation)
       identifier = "a-fund-has-an-accountable-organisation"
 
       visit activities_path
@@ -271,7 +271,7 @@ RSpec.feature "Users can create a programme activity" do
     end
 
     scenario "the activity saves its identifier as read-only `transparency_identifier`" do
-      fund = create(:activity, level: :fund, organisation: user.organisation)
+      fund = create(:fund_activity, :newton, organisation: user.organisation)
       identifier = "a-programme"
 
       visit activities_path
@@ -284,7 +284,7 @@ RSpec.feature "Users can create a programme activity" do
     end
 
     scenario "programme creation is tracked with public_activity" do
-      fund = create(:activity, level: :fund, organisation: user.organisation)
+      fund = create(:fund_activity, :newton, organisation: user.organisation)
 
       PublicActivity.with_tracking do
         visit activities_path
@@ -316,7 +316,7 @@ RSpec.feature "Users can create a programme activity" do
     end
 
     scenario "non Newton funded programmes do not include 'country_delivery_partners'" do
-      other_fund = create(:fund_activity, organisation: user.organisation)
+      other_fund = create(:fund_activity, :gcrf, organisation: user.organisation)
       identifier = "other-prog"
       visit activities_path
       click_on(t("page_content.organisation.button.create_activity"))
