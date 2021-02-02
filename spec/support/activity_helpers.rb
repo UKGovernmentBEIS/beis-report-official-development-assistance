@@ -45,9 +45,6 @@ module ActivityHelpers
     expect(page).to have_content t("summary.label.activity.recipient_region")
     expect(page).to have_content activity_presenter.recipient_region
 
-    expect(page).to have_content t("summary.label.activity.flow")
-    expect(page).to have_content activity_presenter.flow
-
     expect(page).to have_content t("summary.label.activity.aid_type")
     expect(page).to have_content activity_presenter.aid_type
   end

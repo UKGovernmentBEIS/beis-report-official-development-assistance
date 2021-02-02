@@ -240,7 +240,6 @@ module Activities
         policy_marker_disability: "DFID policy marker - Disability",
         policy_marker_disaster_risk_reduction: "DFID policy marker - Disaster Risk Reduction",
         policy_marker_nutrition: "DFID policy marker - Nutrition",
-        flow: "Flow",
         aid_type: "Aid type",
         fstc_applies: "Free Standing Technical Cooperation",
         objectives: "Aims/Objectives (DP Definition)",
@@ -439,14 +438,6 @@ module Activities
           collaboration_type,
           "collaboration_type",
           I18n.t("importer.errors.activity.invalid_collaboration_type"),
-        )
-      end
-
-      def convert_flow(flow)
-        validate_from_codelist(
-          flow,
-          "flow",
-          I18n.t("importer.errors.activity.invalid_flow"),
         )
       end
 

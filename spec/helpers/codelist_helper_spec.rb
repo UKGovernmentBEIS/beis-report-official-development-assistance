@@ -49,13 +49,6 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
-    describe "#flow_select_options" do
-      it "returns an array of flow objects with 10 as the first (default) option" do
-        expect(helper.flow_select_options.first)
-          .to eq(OpenStruct.new(name: "ODA", code: "10"))
-      end
-    end
-
     describe "#sector_radio_options" do
       it "returns all sectors when no category is passed" do
         options = helper.sector_radio_options

@@ -66,11 +66,6 @@ module CodelistHelper
     Codelist.new(type: "collaboration_type").to_objects(with_empty_item: false).sort_by(&:code)
   end
 
-  def flow_select_options
-    objects = Codelist.new(type: "flow").to_objects(with_empty_item: false)
-    objects.unshift(OpenStruct.new(name: "ODA", code: "10")).uniq
-  end
-
   def sector_category_radio_options
     Codelist.new(type: "sector_category").to_objects(with_empty_item: false)
   end

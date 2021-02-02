@@ -206,7 +206,6 @@ RSpec.feature "Users can view activities" do
       expect(page).to have_content activity_presenter.planned_start_date
       expect(page).to have_content activity_presenter.planned_end_date
       expect(page).to have_content activity_presenter.recipient_region
-      expect(page).to have_content activity_presenter.flow
 
       within ".sustainable_development_goals" do
         expect(page).to have_content "Gender Equality"

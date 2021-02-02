@@ -17,7 +17,6 @@ RSpec.describe ActivityHelper, type: :helper do
         expect(helper.step_is_complete_or_next?(activity: activity, step: "dates")).to be(false)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "region")).to be(false)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "country")).to be(false)
-        expect(helper.step_is_complete_or_next?(activity: activity, step: "flow")).to be(false)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "aid_type")).to be(false)
       end
     end
@@ -31,7 +30,6 @@ RSpec.describe ActivityHelper, type: :helper do
         expect(helper.step_is_complete_or_next?(activity: activity, step: "dates")).to be(true)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "region")).to be(true)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "country")).to be(true)
-        expect(helper.step_is_complete_or_next?(activity: activity, step: "flow")).to be(false)
       end
 
       it "returns false for the next fields" do
