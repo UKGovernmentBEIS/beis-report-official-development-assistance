@@ -5,6 +5,7 @@ class Activity < ApplicationRecord
   STANDARD_GRANT_FINANCE_CODE = "110"
   UNTIED_TIED_STATUS_CODE = "5"
   CAPITAL_SPEND_PERCENTAGE = 0
+  DEFAULT_FLOW_TYPE = "10"
 
   POLICY_MARKER_CODES = {
     not_targeted: 0,
@@ -250,6 +251,10 @@ class Activity < ApplicationRecord
 
   def capital_spend
     CAPITAL_SPEND_PERCENTAGE
+  end
+
+  def flow
+    DEFAULT_FLOW_TYPE
   end
 
   def default_currency
