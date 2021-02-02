@@ -292,7 +292,7 @@ en:
   table:
     header:
       activity:
-        identifier: Identifier
+        identifier: RODA Identifier
         title: Name
         level: Level
         actual_spend_for_quarter: "%{financial_quarter_and_year} actual spend"

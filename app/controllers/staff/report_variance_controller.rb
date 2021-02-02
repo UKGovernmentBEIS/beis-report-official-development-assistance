@@ -8,9 +8,14 @@ class Staff::ReportVarianceController < Staff::BaseController
     authorize @report
 
     @report_presenter = ReportPresenter.new(@report)
-    @report_activities = Activity.includes(:organisation).projects_and_third_party_projects_for_report(@report)
 
-    @activities = @report_activities.map { |activity| ActivityPresenter.new(activity) }
+    @activities = hierarchically_grouped_projects.map { |activity| ActivityPresenter.new(activity) }
     render "staff/reports/variance"
+  end
+
+  private
+
+  def hierarchically_grouped_projects
+    Activity.includes(:organisation).projects_and_third_party_projects_for_report(@report).hierarchically_grouped_projects
   end
 end

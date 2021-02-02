@@ -1374,4 +1374,24 @@ RSpec.describe Activity, type: :model do
       end
     end
   end
+
+  describe ".hierarchically_grouped_projects" do
+    before do
+      first_project = create(:project_activity, roda_identifier_fragment: "zzxx")
+      create(:third_party_project_activity, roda_identifier_fragment: "ww", parent: first_project)
+
+      _second_project = create(:project_activity, roda_identifier_fragment: "mmnn")
+
+      third_project = create(:project_activity, roda_identifier_fragment: "aabb")
+      (1..3).each do |i|
+        create(:third_party_project_activity, roda_identifier_fragment: "cc#{3 - i}", parent: third_project)
+      end
+    end
+
+    it "returns projects followed by their third-party project children" do
+      result = Activity.all.hierarchically_grouped_projects
+
+      expect(result.map(&:roda_identifier_fragment)).to eq(["aabb", "cc0", "cc1", "cc2", "mmnn", "zzxx", "ww"])
+    end
+  end
 end
