@@ -17,10 +17,10 @@ class Codelist
 
   class << self
     def codelists
-      if Rails.env.production?
-        @codelists ||= initialize_codelists
-      else
+      if Rails.env.development?
         initialize_codelists
+      else
+        @codelists ||= initialize_codelists
       end
     end
 
