@@ -64,4 +64,26 @@ class FinancialQuarter
   def to_i
     quarter
   end
+
+  def +(other)
+    months = other * 3
+    date = (start_date + months.months)
+
+    self.class.for_date(date)
+  end
+
+  def -(other)
+    months = other * 3
+    date = (start_date - months.months)
+
+    self.class.for_date(date)
+  end
+
+  def <=>(other)
+    start_date <=> other.start_date
+  end
+
+  def succ
+    self + 1
+  end
 end

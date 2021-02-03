@@ -70,4 +70,89 @@ RSpec.describe FinancialQuarter do
       expect(FinancialQuarter.for_date(march_date).to_s).to eq("Q4 2020-2021")
     end
   end
+
+  describe "#+" do
+    it "appends 1 to the quarter and leaves the year alone if the quarter is less than 4" do
+      q1 = FinancialQuarter.new(2020, 1)
+      q2 = FinancialQuarter.new(2020, 2)
+      q3 = FinancialQuarter.new(2020, 3)
+
+      expect((q1 + 1).to_s).to eq("Q2 2020-2021")
+      expect((q2 + 1).to_s).to eq("Q3 2020-2021")
+      expect((q3 + 1).to_s).to eq("Q4 2020-2021")
+    end
+
+    it "appends 1 to the quarter and 1 to the year if the quarter is Q4" do
+      q4 = FinancialQuarter.new(2020, 4)
+
+      expect((q4 + 1).to_s).to eq("Q1 2021-2022")
+    end
+
+    it "appends numbers that stretch over multiple financial years" do
+      quarter = FinancialQuarter.new(2020, 1)
+
+      expect((quarter + 10).to_s).to eq("Q3 2022-2023")
+    end
+  end
+
+  describe "#-" do
+    it "appends 1 to the quarter and leaves the year alone if the quarter is more than 1" do
+      q2 = FinancialQuarter.new(2020, 2)
+      q3 = FinancialQuarter.new(2020, 3)
+      q4 = FinancialQuarter.new(2020, 4)
+
+      expect((q2 - 1).to_s).to eq("Q1 2020-2021")
+      expect((q3 - 1).to_s).to eq("Q2 2020-2021")
+      expect((q4 - 1).to_s).to eq("Q3 2020-2021")
+    end
+
+    it "removes one 1 from the quarter and 1 from the year if the quarter is Q1" do
+      q1 = FinancialQuarter.new(2020, 1)
+
+      expect((q1 - 1).to_s).to eq("Q4 2019-2020")
+    end
+
+    it "appends numbers that stretch over multiple financial years" do
+      quarter = FinancialQuarter.new(2020, 1)
+
+      expect((quarter - 10).to_s).to eq("Q3 2017-2018")
+    end
+  end
+
+  describe "#succ" do
+    it "returns the next quarters" do
+      q1 = FinancialQuarter.new(2020, 1)
+      q2 = FinancialQuarter.new(2020, 2)
+      q3 = FinancialQuarter.new(2020, 3)
+      q4 = FinancialQuarter.new(2020, 4)
+
+      expect(q1.succ.to_s).to eq("Q2 2020-2021")
+      expect(q2.succ.to_s).to eq("Q3 2020-2021")
+      expect(q3.succ.to_s).to eq("Q4 2020-2021")
+      expect(q4.succ.to_s).to eq("Q1 2021-2022")
+    end
+  end
+
+  describe "range" do
+    it "returns a range of quarters" do
+      q1 = FinancialQuarter.new(2020, 1)
+      range = (q1...(q1 + 10))
+
+      expect(range.count).to eq(10)
+    end
+
+    it "returns the expected items in the range" do
+      q1 = FinancialQuarter.new(2020, 1)
+
+      range = (q1...(q1 + 5))
+
+      expect(range.to_a.map(&:to_s)).to eq([
+        "Q1 2020-2021",
+        "Q2 2020-2021",
+        "Q3 2020-2021",
+        "Q4 2020-2021",
+        "Q1 2021-2022",
+      ])
+    end
+  end
 end
