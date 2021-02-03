@@ -23,6 +23,7 @@ RSpec.describe Codelist do
     before { allow(Rails).to receive(:env) { "production".inquiry } }
 
     it "does not reinitialize the codelist once it has been initialized" do
+      Codelist.instance_variable_set(:@codelists, nil)
       expect(Codelist).to receive(:initialize_codelists).once.and_call_original
 
       Codelist.new(type: "default_currency")
