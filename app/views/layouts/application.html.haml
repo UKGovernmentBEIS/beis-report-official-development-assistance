@@ -67,11 +67,11 @@
               Support links
             %ul.govuk-footer__inline-list
               %li.govuk-footer__inline-list-item
-                = link_to t("footer.link.privacy_policy"), privacy_policy_path, class: "govuk-footer__link"
+                = link_to t("footer.link.privacy_policy"), page_path("privacy_policy"), class: "govuk-footer__link"
               %li.govuk-footer__inline-list-item
-                = link_to t("footer.link.cookie_statement"), cookie_statement_path, class: "govuk-footer__link"
+                = link_to t("footer.link.cookie_statement"), page_path("cookie_statement"), class: "govuk-footer__link"
               %li.govuk-footer__inline-list-item
-                = link_to t("footer.link.accessibility_statement"), accessibility_statement_path, class: "govuk-footer__link"
+                = link_to t("footer.link.accessibility_statement"), page_path("accessibility_statement"), class: "govuk-footer__link"
               %li.govuk-footer__inline-list-item
                 = link_to t("footer.link.support_site"), "https://beisodahelp.zendesk.com/", class: "govuk-footer__link"
 
