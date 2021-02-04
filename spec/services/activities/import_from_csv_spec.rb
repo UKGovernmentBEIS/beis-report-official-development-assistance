@@ -571,8 +571,8 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sector"))
     end
 
-    it "has an error if the 'Channel of delivery code' is invalid" do
-      new_activity_attributes["Channel of delivery code"] = "abc123"
+    it "has an error if the 'Channel of delivery code' is invalid for BEIS" do
+      new_activity_attributes["Channel of delivery code"] = "21019"
 
       expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
@@ -583,7 +583,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.csv_row).to eq(2)
       expect(subject.errors.first.csv_column).to eq("Channel of delivery code")
       expect(subject.errors.first.column).to eq(:channel_of_delivery_code)
-      expect(subject.errors.first.value).to eq("abc123")
+      expect(subject.errors.first.value).to eq("21019")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
     end
 
@@ -601,16 +601,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:channel_of_delivery_code)
       expect(subject.errors.first.value).to eq("")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
-    end
-
-    it "allows the value of 'Channel of delivery code' to be 'N/A' (case insensitive)" do
-      new_activity_attributes["Channel of delivery code"] = "n/A"
-
-      expect { subject.import([new_activity_attributes]) }.to change { Activity.count }
-
-      new_activity = Activity.order(:created_at).last
-
-      expect(new_activity.channel_of_delivery_code).to eq("n/A")
     end
 
     it "has an error if the Collaboration type option is invalid" do
