@@ -14,7 +14,14 @@
         Your submission is now complete and you will receive email confirmation.
 
       %p.govuk-body
-        The RODA support team will check and assure your submission. You may receive queries on the submitted data before the report is approved, and you will be the main contact.
+        = succeed "." do
+          The RODA support team will
+          %a{href: "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500000101042-Reporting-and-Assurance-Process-Diagram-"} check and assure your submission
+
+        = succeed "." do
+          You may
+          %a{href: "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500000094841-Responding-to-BEIS-queries"}receive queries from BEIS
+          before the report is approved, and you will be the main contact.
 
       %p.govuk-body
         You can still use RODA to:

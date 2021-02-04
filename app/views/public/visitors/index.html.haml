@@ -1,4 +1,4 @@
-=content_for :page_title_prefix, t("start_page.document_title")
+=content_for :page_title_prefix, t("start_page.title")
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
@@ -7,17 +7,27 @@
         = t("start_page.title")
 
       %p.govuk-body
-        = t("start_page.introduction")
+        = succeed "." do
+          This service is for reporting BEIS research and innovation
+          %a{href: "https://beisodahelp.zendesk.com/hc/en-gb/categories/360004750374-What-is-ODA-Spending-"} ODA
 
       %p.govuk-body
-        = t("start_page.use_this_page_to")
+        Use this service to:
 
       %ul.govuk-list.govuk-list--bullet
-        - t("start_page.uses").each do |use|
-          %li
-            = use
+        %li add and manage information about funds and related activities
+        %li report actual and forecast spend on activities
+        %li see a summary of your ODA activity
 
       = button_to '/auth/auth0', class: 'govuk-button', role: 'button', draggable: 'false' do
         = t("header.link.sign_in")
         %svg.govuk-button__start-icon{ xmlns: "http://www.w3.org/2000/svg", width: "17.5", height: "19", viewBox: "0 0 33 40", role: "presentation", focusable: "false" }
           %path{ fill: "currentColor", d: "M0 0h13l20 20-20 20H0l20-20z" }
+
+      %h2.govuk-heading-m
+        Before you start
+
+      %p.govuk-body
+        Please
+        %a{href: "https://beisodahelp.zendesk.com/hc/en-gb/articles/360060340013-Accessing-the-service"} request an account
+        if you have not yet received sign-in details to access this service.

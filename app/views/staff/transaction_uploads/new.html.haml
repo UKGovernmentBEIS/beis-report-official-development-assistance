@@ -4,8 +4,14 @@
       %h1.govuk-heading-xl
         = t("page_title.transaction.upload")
 
+      %p.govuk-body
+        This page allows you to
+        %a{href: "https://beisodahelp.zendesk.com/hc/en-gb/articles/360058523436-Uploading-actual-transactions-in-bulk"} upload actual transactions in bulk
+        using the provided template.
+
   .govuk-grid-row
     .govuk-grid-column-full.page-actions
       = link_to t("action.transaction.download.button"), report_transaction_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
+
 
   = render partial: "upload_form"
