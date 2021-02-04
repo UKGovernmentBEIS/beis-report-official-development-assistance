@@ -20,7 +20,6 @@ FactoryBot.define do
     intended_beneficiaries { ["CU", "DM", "DO"] }
     gdi { "4" }
     fstc_applies { true }
-    flow { "10" }
     aid_type { "B02" }
     level { :fund }
     publish_to_iati { true }
@@ -197,7 +196,6 @@ FactoryBot.define do
     recipient_region { nil }
     recipient_country { nil }
     collaboration_type { nil }
-    flow { nil }
     aid_type { nil }
     policy_marker_gender { nil }
     policy_marker_climate_change_adaptation { nil }
@@ -231,7 +229,6 @@ FactoryBot.define do
     intended_beneficiaries { nil }
     gdi { nil }
     collaboration_type { nil }
-    flow { nil }
     aid_type { nil }
     policy_marker_gender { nil }
     policy_marker_climate_change_adaptation { nil }
@@ -263,7 +260,6 @@ FactoryBot.define do
     intended_beneficiaries { nil }
     gdi { nil }
     collaboration_type { nil }
-    flow { nil }
     aid_type { nil }
     policy_marker_gender { nil }
     policy_marker_climate_change_adaptation { nil }
@@ -282,7 +278,6 @@ FactoryBot.define do
     intended_beneficiaries { nil }
     gdi { nil }
     collaboration_type { nil }
-    flow { nil }
     aid_type { nil }
     policy_marker_gender { nil }
     policy_marker_climate_change_adaptation { nil }
@@ -302,7 +297,6 @@ FactoryBot.define do
     intended_beneficiaries { nil }
     gdi { nil }
     collaboration_type { nil }
-    flow { nil }
     aid_type { nil }
     policy_marker_gender { nil }
     policy_marker_climate_change_adaptation { nil }
@@ -322,7 +316,6 @@ FactoryBot.define do
   trait :at_collaboration_type_step do
     form_state { "collaboration_type" }
     collaboration_type { nil }
-    flow { nil }
     aid_type { nil }
     policy_marker_gender { nil }
     policy_marker_climate_change_adaptation { nil }
@@ -363,7 +356,6 @@ FactoryBot.define do
     intended_beneficiaries { nil }
     gdi { nil }
     collaboration_type { nil }
-    flow { nil }
     aid_type { nil }
     policy_marker_gender { nil }
     policy_marker_climate_change_adaptation { nil }
@@ -400,7 +392,6 @@ FactoryBot.define do
     intended_beneficiaries { nil }
     gdi { nil }
     collaboration_type { nil }
-    flow { nil }
     aid_type { nil }
     policy_marker_gender { nil }
     policy_marker_climate_change_adaptation { nil }
@@ -435,7 +426,6 @@ FactoryBot.define do
     intended_beneficiaries { nil }
     gdi { nil }
     collaboration_type { nil }
-    flow { nil }
     aid_type { nil }
     extending_organisation_id { nil }
     parent { nil }

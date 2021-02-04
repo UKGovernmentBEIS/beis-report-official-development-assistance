@@ -161,7 +161,6 @@ RSpec.feature "Users can view an activity" do
       expect(page).to have_content activity_presenter.planned_start_date
       expect(page).to have_content activity_presenter.planned_end_date
       expect(page).to have_content activity_presenter.recipient_region
-      expect(page).to have_content activity_presenter.flow
     end
 
     scenario "the activity links to the parent activity" do

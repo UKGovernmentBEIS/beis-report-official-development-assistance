@@ -108,7 +108,7 @@ RSpec.feature "Users can create a project" do
 
           project = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
           auditable_events = PublicActivity::Activity.where(trackable_id: project.id)
-          expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.flow", "activity.create.aid_type")
+          expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.aid_type")
           expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
           expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [project.id]
         end
