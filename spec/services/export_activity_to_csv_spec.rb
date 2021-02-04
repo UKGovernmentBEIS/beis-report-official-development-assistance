@@ -52,9 +52,9 @@ RSpec.describe ExportActivityToCsv do
   describe "#next_twelve_quarter_forecasts" do
     it "gets the forecasted total for the next twelve quarters" do
       quarters = report.next_twelve_financial_quarters
-      q1_forecast = PlannedDisbursementHistory.new(project, *quarters[0])
-      q3_forecast = PlannedDisbursementHistory.new(project, *quarters[2])
-      q11_forecast = PlannedDisbursementHistory.new(project, *quarters[10])
+      q1_forecast = PlannedDisbursementHistory.new(project, quarters[0].to_i, quarters[0].financial_year.to_i)
+      q3_forecast = PlannedDisbursementHistory.new(project, quarters[2].to_i, quarters[2].financial_year.to_i)
+      q11_forecast = PlannedDisbursementHistory.new(project, quarters[10].to_i, quarters[10].financial_year.to_i)
 
       q1_forecast.set_value(1000)
       q3_forecast.set_value(500)
@@ -105,7 +105,7 @@ RSpec.describe ExportActivityToCsv do
 
       headers = export_service.headers
 
-      expect(headers).to eql("Header A,Header B,Header C,Q2 2020,Q3 2020,Q4 2020,Q1 2021,Q2 2021,Q3 2021,Q4 2021,Q1 2022,Q2 2022,Q3 2022,Q4 2022,Q1 2023\n")
+      expect(headers).to eql("Header A,Header B,Header C,Q2 2020-2021,Q3 2020-2021,Q4 2020-2021,Q1 2021-2022,Q2 2021-2022,Q3 2021-2022,Q4 2021-2022,Q1 2022-2023,Q2 2022-2023,Q3 2022-2023,Q4 2022-2023,Q1 2023-2024\n")
     end
 
     it "uses the current report financial quarter to generate the actuals total column" do
@@ -130,9 +130,9 @@ RSpec.describe ExportActivityToCsv do
       headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
       expect(headers).to include [
-        "Q2 2020", "Q3 2020", "Q4 2020", "Q1 2021",
-        "Q2 2021", "Q3 2021", "Q4 2021", "Q1 2022",
-        "Q2 2022", "Q3 2022", "Q4 2022", "Q1 2023",
+        "Q2 2020-2021", "Q3 2020-2021", "Q4 2020-2021", "Q1 2021-2022",
+        "Q2 2021-2022", "Q3 2021-2022", "Q4 2021-2022", "Q1 2022-2023",
+        "Q2 2022-2023", "Q3 2022-2023", "Q4 2022-2023", "Q1 2023-2024",
       ].to_csv
     end
 

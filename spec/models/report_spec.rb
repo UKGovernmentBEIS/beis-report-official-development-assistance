@@ -160,10 +160,10 @@ RSpec.describe Report, type: :model do
     it "returns an array with the next twelve financial quarters from the date of the report" do
       report = travel_to(Date.parse("1 April 2020")) { create(:report) }
 
-      expect(report.next_twelve_financial_quarters).to eq [
-        [2, 2020], [3, 2020], [4, 2020], [1, 2021],
-        [2, 2021], [3, 2021], [4, 2021], [1, 2022],
-        [2, 2022], [3, 2022], [4, 2022], [1, 2023],
+      expect(report.next_twelve_financial_quarters.map(&:to_s)).to eq [
+        "Q2 2020-2021", "Q3 2020-2021", "Q4 2020-2021", "Q1 2021-2022",
+        "Q2 2021-2022", "Q3 2021-2022", "Q4 2021-2022", "Q1 2022-2023",
+        "Q2 2022-2023", "Q3 2022-2023", "Q4 2022-2023", "Q1 2023-2024",
       ]
     end
   end

@@ -77,26 +77,15 @@ class Report < ApplicationRecord
   end
 
   def next_twelve_financial_quarters
-    quarter, year = financial_quarter, financial_year
+    quarter = FinancialQuarter.new(financial_year, financial_quarter)
 
-    (1..12).map do
-      year += 1 if quarter == 4
-      quarter = (quarter % 4) + 1
-
-      [quarter, year]
-    end
+    ((quarter + 1)..(quarter + 12)).to_a
   end
 
   def previous
-    quarter, year = financial_quarter, financial_year
+    quarter = FinancialQuarter.new(financial_year, financial_quarter)
+    previous_quarter = quarter - 1
 
-    quarter -= 1
-
-    if quarter == 0
-      quarter = 4
-      year -= 1
-    end
-
-    Report.find_by(fund: fund, organisation: organisation, financial_quarter: quarter, financial_year: year)
+    Report.find_by(fund: fund, organisation: organisation, financial_quarter: previous_quarter.quarter, financial_year: previous_quarter.financial_year.to_i)
   end
 end
