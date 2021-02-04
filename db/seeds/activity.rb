@@ -85,3 +85,5 @@ Activity.find_or_create_by(third_party_project_params)
     activity.save!
   end
 end
+
+Report.for_activity(first_project).create!(state: :active)
