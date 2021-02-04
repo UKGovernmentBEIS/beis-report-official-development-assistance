@@ -76,6 +76,12 @@ class Report < ApplicationRecord
     Activity.projects_and_third_party_projects_for_report(self).with_roda_identifier
   end
 
+  def previous_twelve_financial_quarters
+    quarter = FinancialQuarter.new(financial_year, financial_quarter)
+
+    ((quarter - 12)..(quarter - 1)).to_a.reverse
+  end
+
   def next_twelve_financial_quarters
     quarter = FinancialQuarter.new(financial_year, financial_quarter)
 
