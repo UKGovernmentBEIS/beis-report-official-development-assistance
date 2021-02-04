@@ -45,6 +45,7 @@ class Activity < ApplicationRecord
     :policy_markers,
     :covid19_related,
     :gcrf_challenge_area,
+    :channel_of_delivery_code,
     :oda_eligibility,
     :oda_eligibility_lead,
     :uk_dp_named_contact,
