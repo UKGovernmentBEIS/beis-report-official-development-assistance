@@ -31,6 +31,7 @@ en:
         call_present:
           "true": "Yes"
           "false": "No"
+        channel_of_delivery_code: Channel of delivery code
         collaboration_type: What is the collaboration type for this activity?
         country_delivery_partners: Name and acronym
         gcrf_challenge_area_options:
@@ -123,6 +124,7 @@ en:
         call_present: Is there a call for this %{level}?
         call_open_date: Call open date
         call_close_date: Call close date
+        channel_of_delivery_code: Channel of delivery code
         country_delivery_partners: Country delivery partner
         gcrf_challenge_area: GCRF challenge area
         fund_pillar: What Newton Fund Pillar does this activity fall under?
@@ -232,6 +234,7 @@ en:
         call_present: Calls
         call_open_date: Call open date
         call_close_date: Call close date
+        channel_of_delivery_code: Channel of delivery code
         collaboration_type: Collaboration type
         country_delivery_partners: Country delivery partners
         covid19_related: Is this activity related to Covid-19?
@@ -373,6 +376,7 @@ en:
         aid_type: Aid type
         call_dates: What are the call open and close dates for this %{level}?
         call_present: Is there a call for this %{level}?
+        channel_of_delivery_code: Channel of delivery code
         collaboration_type: Collaboration type
         country: What country will benefit from this activity?
         country_delivery_partners: Country delivery partner
@@ -468,6 +472,8 @@ en:
               inclusion: You must select "Yes" or "No"
             gcrf_challenge_area:
               blank: Select a GCRF challenge area
+            channel_of_delivery_code:
+              invalid: Please select a valid Channel of delivery code
   importer:
     errors:
       activity:

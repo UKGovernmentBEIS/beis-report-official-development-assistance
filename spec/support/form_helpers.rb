@@ -52,6 +52,7 @@ module FormHelpers
     gcrf_challenge_area: "1",
     oda_eligibility: "Eligible",
     oda_eligibility_lead: Faker::Name.name,
+    channel_of_delivery_code: "11000",
     level:,
     parent: nil,
     uk_dp_named_contact: Faker::Name.name
@@ -299,6 +300,12 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
+    if level == "project" || level == "third_party_project"
+      expect(page).to have_content t("form.legend.activity.channel_of_delivery_code")
+      select channel_of_delivery_code, from: "activity[channel_of_delivery_code]"
+      click_button t("form.button.activity.submit")
+    end
+
     expect(page).to have_content t("form.legend.activity.oda_eligibility")
     expect(page).to have_content t("form.hint.activity.oda_eligibility")
     choose oda_eligibility
@@ -387,6 +394,12 @@ module FormHelpers
       end
     end
     expect(page).to have_content fund_pillar if associated_fund_is_newton?(parent)
+
+    if level == "project" || level == "third_party_project"
+      expect(page).to have_content t("summary.label.activity.channel_of_delivery_code")
+      expect(page).to have_content channel_of_delivery_code
+    end
+
     expect(page).to have_content oda_eligibility
     expect(page).to have_content oda_eligibility_lead if level == "project" || level == "third_party_project"
     if level == "project" || level == "third_party_project"

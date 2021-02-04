@@ -489,6 +489,7 @@
 - Reorder reports in a more intuitive manner
 - Group activities by hierarchy on the view of a single report page
 - Add links to the guidance across the site
+- Users can report Channel of delivery code through the activity form
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-30...HEAD
 [release-30]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-29...release-30

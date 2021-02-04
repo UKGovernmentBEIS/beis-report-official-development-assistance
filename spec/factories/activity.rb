@@ -27,6 +27,7 @@ FactoryBot.define do
     oda_eligibility_lead { Faker::Name.name }
     uk_dp_named_contact { Faker::Name.name }
     fund_pillar { "0" }
+    channel_of_delivery_code { "11000" }
 
     form_state { "complete" }
 

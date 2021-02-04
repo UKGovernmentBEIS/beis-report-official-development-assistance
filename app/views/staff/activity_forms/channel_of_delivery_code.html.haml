@@ -1,0 +1,7 @@
+= render layout: "wrapper" do |f|
+  = f.govuk_collection_select :channel_of_delivery_code,
+                              channel_of_delivery_code_select_options,
+                              :code,
+                              :name,
+                              options: { selected: f.object.channel_of_delivery_code },
+                              label: { tag: 'h1', size: 'xl' }

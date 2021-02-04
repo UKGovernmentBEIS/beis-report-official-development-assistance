@@ -234,4 +234,11 @@ class ActivityPresenter < SimpleDelegator
     return if super.blank?
     "%.2f" % super
   end
+
+  def channel_of_delivery_code
+    item = channel_of_delivery_codes.find { |item| item["code"] == super }
+    return if item.blank?
+
+    "#{item["code"]}: #{item["name"]}"
+  end
 end
