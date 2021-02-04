@@ -1,2 +1,0 @@
-= render layout: "wrapper" do |f|
-  = f.govuk_collection_select :flow, flow_select_options, :code, :name, options: { selected: f.object.flow || flow_select_options.first.code }, label: { tag: 'h1', size: 'xl' }, hint: { text: t("form.hint.activity.flow").html_safe }

@@ -5,6 +5,7 @@ class Activity < ApplicationRecord
   STANDARD_GRANT_FINANCE_CODE = "110"
   UNTIED_TIED_STATUS_CODE = "5"
   CAPITAL_SPEND_PERCENTAGE = 0
+  DEFAULT_FLOW_TYPE = "10"
 
   POLICY_MARKER_CODES = {
     not_targeted: 0,
@@ -37,7 +38,6 @@ class Activity < ApplicationRecord
     :intended_beneficiaries,
     :gdi,
     :collaboration_type,
-    :flow,
     :sustainable_development_goals,
     :fund_pillar,
     :aid_type,
@@ -71,7 +71,6 @@ class Activity < ApplicationRecord
     :intended_beneficiaries_step,
     :gdi_step,
     :collaboration_type_step,
-    :flow_step,
     :sustainable_development_goals_step,
     :aid_type_step,
     :fund_pillar_step,
@@ -110,7 +109,6 @@ class Activity < ApplicationRecord
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
   validates :covid19_related, presence: true, on: :covid19_related_step
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
-  validates :flow, presence: true, on: :flow_step
   validates :fund_pillar, presence: true, on: :fund_pillar_step, if: :is_newton_funded?
   validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
   validates :aid_type, presence: true, on: :aid_type_step
@@ -250,6 +248,10 @@ class Activity < ApplicationRecord
 
   def capital_spend
     CAPITAL_SPEND_PERCENTAGE
+  end
+
+  def flow
+    DEFAULT_FLOW_TYPE
   end
 
   def default_currency

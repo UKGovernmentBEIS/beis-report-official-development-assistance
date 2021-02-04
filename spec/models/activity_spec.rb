@@ -22,6 +22,13 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#flow" do
+    it "always returns the default ODA flow type, code '10'" do
+      activity = Activity.new
+      expect(activity.flow).to eq "10"
+    end
+  end
+
   describe "scopes" do
     describe ".funds" do
       it "only returns fund level activities" do
@@ -597,13 +604,6 @@ RSpec.describe Activity, type: :model do
       subject(:activity) { build(:fund_activity, collaboration_type: nil) }
       it "should be valid" do
         expect(activity.valid?(:collaboration_type_step)).to be_truthy
-      end
-    end
-
-    context "when flow is blank" do
-      subject(:activity) { build(:activity, flow: nil) }
-      it "should not be valid" do
-        expect(activity.valid?(:flow_step)).to be_falsey
       end
     end
 

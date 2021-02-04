@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_26_124531) do
+ActiveRecord::Schema.define(version: 2021_02_02_192712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -29,7 +29,6 @@ ActiveRecord::Schema.define(version: 2021_01_26_124531) do
     t.date "actual_start_date"
     t.date "actual_end_date"
     t.string "recipient_region"
-    t.string "flow"
     t.string "aid_type"
     t.string "form_state"
     t.string "level"
@@ -198,7 +197,7 @@ ActiveRecord::Schema.define(version: 2021_01_26_124531) do
     t.date "deadline"
     t.integer "financial_quarter"
     t.integer "financial_year"
-    t.index ["fund_id", "organisation_id"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text <> ALL ((ARRAY['inactive'::character varying, 'approved'::character varying])::text[]))"
+    t.index ["fund_id", "organisation_id"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text <> ALL (ARRAY[('inactive'::character varying)::text, ('approved'::character varying)::text]))"
     t.index ["fund_id", "organisation_id"], name: "enforce_one_historic_report_per_series", unique: true, where: "((financial_quarter IS NULL) OR (financial_year IS NULL))"
     t.index ["fund_id"], name: "index_reports_on_fund_id"
     t.index ["organisation_id"], name: "index_reports_on_organisation_id"

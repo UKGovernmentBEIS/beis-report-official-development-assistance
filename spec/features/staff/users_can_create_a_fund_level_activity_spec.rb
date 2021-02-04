@@ -37,9 +37,6 @@ RSpec.feature "Users can create a fund level activity" do
 
       visit activity_step_path(activity, :region)
       expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.recipient_region
-
-      visit activity_step_path(activity, :flow)
-      expect(page.find("option[@selected = 'selected']").text).to eq activity_presenter.flow
     end
 
     scenario "the activity has the appropriate accountable organisation defaults" do
@@ -232,13 +229,8 @@ RSpec.feature "Users can create a fund level activity" do
         choose "GDI not applicable"
         click_button t("form.button.activity.submit")
 
-        # Skip the collaboration type step, and instead goto the flow step
+        # Skip the collaboration type step
         expect(page).to have_no_content t("form.label.activity.collaboration_type")
-        expect(page).to have_content t("form.label.activity.flow")
-
-        # Flow has a default and can't be set to blank so we skip
-        select "ODA", from: "activity[flow]"
-        click_button t("form.button.activity.submit")
 
         # Skip the SDGs step and instead go to the aid type step
         expect(page).to have_no_content t("form.legend.activity.sdgs_apply")
@@ -313,7 +305,7 @@ RSpec.feature "Users can create a fund level activity" do
 
         fund = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
         auditable_events = PublicActivity::Activity.where(trackable_id: fund.id)
-        expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.flow", "activity.create.aid_type")
+        expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.aid_type")
         expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
         expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [fund.id]
       end
