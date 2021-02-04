@@ -425,13 +425,13 @@ class Activity < ApplicationRecord
 
   def self.hierarchically_grouped_projects
     activities = all.to_a
-    projects = activities.select(&:project?).sort_by(&:roda_identifier_fragment)
+    projects = activities.select(&:project?).sort_by { |a| a.roda_identifier_fragment.to_s }
     third_party_projects = activities.select(&:third_party_project?).group_by(&:parent_id)
 
     grouped_projects = []
     projects.each do |project|
       grouped_projects << project
-      grouped_projects += third_party_projects.fetch(project.id, []).sort_by(&:roda_identifier_fragment)
+      grouped_projects += third_party_projects.fetch(project.id, []).sort_by { |a| a.roda_identifier_fragment.to_s }
     end
     grouped_projects
   end
