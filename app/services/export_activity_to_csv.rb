@@ -10,26 +10,30 @@ class ExportActivityToCsv
 
   def call
     values = columns.values.map(&:call)
-    values = values.push(previous_quarter_actuals) if previous_report.present?
+    values = values.concat(previous_quarters_actuals)
     values = values.concat(next_twelve_quarter_forecasts)
     values.to_csv
   end
 
   def headers
     values = columns.keys
-    values = values.push(previous_quarter_actuals_header) if previous_report.present?
+    values = values.concat(previous_quarters_actuals_headers)
     values = values.concat(next_twelve_quarter_forecasts_headers)
     values.to_csv
-  end
-
-  def previous_quarter_actuals
-    activity_presenter.actual_total_for_report_financial_quarter(report: previous_report)
   end
 
   def next_twelve_quarter_forecasts
     report_presenter.next_twelve_financial_quarters.map do |quarter|
       overview = PlannedDisbursementOverview.new(activity_presenter)
       value = overview.snapshot(report_presenter).value_for(financial_quarter: quarter.to_i, financial_year: quarter.financial_year.to_i)
+      "%.2f" % value
+    end
+  end
+
+  def previous_quarters_actuals
+    previous_reports.map do |report|
+      value = activity_presenter.actual_total_for_report_financial_quarter(report: report)
+
       "%.2f" % value
     end
   end
@@ -124,12 +128,15 @@ class ExportActivityToCsv
     report_financial_quarter ? report_financial_quarter + " actuals" : "Actuals"
   end
 
-  private def previous_report
-    @_previous_report ||= report.previous
+  private def previous_reports
+    report_presenter.previous_twelve_reports.reject(&:nil?)
   end
 
-  private def previous_quarter_actuals_header
-    "Q#{previous_report.financial_quarter} #{previous_report.financial_year}-#{previous_report.financial_year + 1} actuals"
+  private def previous_quarters_actuals_headers
+    previous_reports.map do |report|
+      quarter = FinancialQuarter.new(report.financial_year, report.financial_quarter).to_s
+      "#{quarter} actuals"
+    end
   end
 
   private def next_twelve_quarter_forecasts_headers

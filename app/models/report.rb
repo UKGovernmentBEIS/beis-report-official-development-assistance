@@ -94,4 +94,10 @@ class Report < ApplicationRecord
 
     Report.find_by(fund: fund, organisation: organisation, financial_quarter: previous_quarter.quarter, financial_year: previous_quarter.financial_year.to_i)
   end
+
+  def previous_twelve_reports
+    previous_twelve_financial_quarters.map do |quarter|
+      Report.find_by(fund: fund, organisation: organisation, financial_quarter: quarter.to_i, financial_year: quarter.financial_year.to_i)
+    end
+  end
 end
