@@ -24,7 +24,8 @@ RSpec.feature "users can upload planned disbursements" do
   scenario "downloading a CSV template with activities for the current report" do
     click_link t("action.planned_disbursement.download.button")
 
-    rows = CSV.parse(page.body, headers: true).map(&:to_h)
+    csv_data = page.body.delete_prefix("\uFEFF")
+    rows = CSV.parse(csv_data, headers: true).map(&:to_h)
 
     expect(rows).to match_array([
       {
