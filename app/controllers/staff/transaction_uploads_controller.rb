@@ -4,6 +4,7 @@ require "csv"
 
 class Staff::TransactionUploadsController < Staff::BaseController
   include Secured
+  include StreamCsvDownload
 
   before_action :authorize_report
 
@@ -12,14 +13,11 @@ class Staff::TransactionUploadsController < Staff::BaseController
   end
 
   def show
-    response.headers["Content-Type"] = "text/csv"
-    response.headers["Content-Disposition"] = "attachment; filename=transactions.csv"
-
-    response.stream.write(CSV.generate_line(csv_headers))
-    @report.reportable_activities.each do |activity|
-      response.stream.write(CSV.generate_line(csv_row(activity)))
+    stream_csv_download(filename: "transactions.csv", headers: csv_headers) do |csv|
+      @report.reportable_activities.each do |activity|
+        csv << csv_row(activity)
+      end
     end
-    response.stream.close
   end
 
   def update
