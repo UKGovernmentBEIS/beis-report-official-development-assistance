@@ -85,7 +85,6 @@ RUN \
   AUTH0_CLIENT_ID="stand-in" \
   AUTH0_CLIENT_SECRET="stand-in" \
   AUTH0_DOMAIN="stand-in.local" \
-  DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL="true" \
   bundle exec rake assets:precompile --quiet
 
 # create tmp/pids
