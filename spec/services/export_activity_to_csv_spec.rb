@@ -17,7 +17,12 @@ RSpec.describe ExportActivityToCsv do
 
       result = export_service.call
 
-      expect(result).to eql("Value A,Value B,Value C,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00\n")
+      expect(result).to eql [
+        "Value A", "Value B", "Value C",
+        "0.00", "0.00", "0.00", "0.00",
+        "0.00", "0.00", "0.00", "0.00",
+        "0.00", "0.00", "0.00", "0.00",
+      ]
     end
 
     it "includes the forecast and actuals for the previous quarter, if a suitable report is available" do
@@ -36,7 +41,12 @@ RSpec.describe ExportActivityToCsv do
 
       result = export_service.call
 
-      expect(result).to eql("Value A,Value B,Value C,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00\n")
+      expect(result).to eql [
+        "Value A", "Value B", "Value C",
+        "0.00", "0.00", "0.00", "0.00",
+        "0.00", "0.00", "0.00", "0.00",
+        "0.00", "0.00", "0.00", "0.00", "0.00",
+      ]
     end
 
     it "includes the BEIS id if there is one" do
@@ -105,7 +115,12 @@ RSpec.describe ExportActivityToCsv do
 
       headers = export_service.headers
 
-      expect(headers).to eql("Header A,Header B,Header C,Q2 2020,Q3 2020,Q4 2020,Q1 2021,Q2 2021,Q3 2021,Q4 2021,Q1 2022,Q2 2022,Q3 2022,Q4 2022,Q1 2023\n")
+      expect(headers).to eql [
+        "Header A", "Header B", "Header C",
+        "Q2 2020", "Q3 2020", "Q4 2020", "Q1 2021",
+        "Q2 2021", "Q3 2021", "Q4 2021", "Q1 2022",
+        "Q2 2022", "Q3 2022", "Q4 2022", "Q1 2023",
+      ]
     end
 
     it "uses the current report financial quarter to generate the actuals total column" do
@@ -129,7 +144,7 @@ RSpec.describe ExportActivityToCsv do
 
       headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
-      expect(headers).to include [
+      expect(headers.to_csv).to include [
         "Q2 2020", "Q3 2020", "Q4 2020", "Q1 2021",
         "Q2 2021", "Q3 2021", "Q4 2021", "Q1 2022",
         "Q2 2022", "Q3 2022", "Q4 2022", "Q1 2023",
