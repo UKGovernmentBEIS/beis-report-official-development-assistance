@@ -317,7 +317,7 @@ GEM
       actionpack (>= 5, < 7)
       redis-rack (>= 2.1.0, < 3)
       redis-store (>= 1.1.0, < 2)
-    redis-namespace (1.8.0)
+    redis-namespace (1.8.1)
       redis (>= 3.0.4)
     redis-rack (2.1.2)
       rack (>= 2.0.8, < 3)
