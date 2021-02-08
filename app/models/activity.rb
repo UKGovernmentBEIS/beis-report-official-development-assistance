@@ -279,6 +279,12 @@ class Activity < ApplicationRecord
     @parent_activities ||= ancestors.reverse
   end
 
+  def source_fund
+    @source_fund ||= if source_fund_code.present?
+      Fund.new(source_fund_code)
+    end
+  end
+
   def associated_fund
     return self if fund?
     parent_activities.detect(&:fund?)

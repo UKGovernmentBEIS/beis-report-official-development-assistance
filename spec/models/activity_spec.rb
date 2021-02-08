@@ -1426,4 +1426,26 @@ RSpec.describe Activity, type: :model do
       expect(result.map(&:roda_identifier_fragment)).to eq(["aabb", "cc0", "cc1", "cc2", "mmnn", "zzxx", "ww"])
     end
   end
+
+  describe "#source_fund" do
+    context "for a Newton fund activity" do
+      let(:activity) { build(:activity, source_fund_code: Fund::MAPPINGS["NF"]) }
+
+      it "returns a Newton fund" do
+        expect(activity.source_fund).to be_a(Fund)
+        expect(activity.source_fund.name).to eq("Newton Fund")
+        expect(activity.source_fund.id).to eq(1)
+      end
+    end
+
+    context "for a GCRF activity" do
+      let(:activity) { build(:activity, source_fund_code: Fund::MAPPINGS["GCRF"]) }
+
+      it "returns a GCRF fund" do
+        expect(activity.source_fund).to be_a(Fund)
+        expect(activity.source_fund.name).to eq("GCRF")
+        expect(activity.source_fund.id).to eq(2)
+      end
+    end
+  end
 end
