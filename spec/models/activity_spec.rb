@@ -1448,4 +1448,14 @@ RSpec.describe Activity, type: :model do
       end
     end
   end
+
+  describe "#source_fund=" do
+    it "sets the source fund code" do
+      activity = build(:activity)
+      activity.source_fund = Fund.new(Fund::MAPPINGS["GCRF"])
+      activity.save
+
+      expect(activity.reload.source_fund_code).to eq(2)
+    end
+  end
 end

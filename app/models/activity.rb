@@ -279,6 +279,10 @@ class Activity < ApplicationRecord
     @parent_activities ||= ancestors.reverse
   end
 
+  def source_fund=(fund)
+    self.source_fund_code = fund&.id
+  end
+
   def source_fund
     @source_fund ||= if source_fund_code.present?
       Fund.new(source_fund_code)
