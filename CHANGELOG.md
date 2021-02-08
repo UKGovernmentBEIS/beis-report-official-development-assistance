@@ -480,7 +480,7 @@
 - Expose forecast bulk upload to end users
 - Load codelists into memory in production
 
-## [unreleased]
+## [release-31] - 2021-02-08
 
 - Relegate "Download report as CSV" link to tertiary status
 - Add a `funding_type` column to a budget
@@ -491,7 +491,8 @@
 - Add links to the guidance across the site
 - Users can report Channel of delivery code through the activity form
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-30...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-31...HEAD
+[release-31]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-30...release-31
 [release-30]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-29...release-30
 [release-29]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-28...release-29
 [release-28]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-27...release-28
