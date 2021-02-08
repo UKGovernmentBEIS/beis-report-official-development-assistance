@@ -48,7 +48,7 @@ RSpec.describe Staff::ActivityFormsController do
         it { is_expected.to skip_to_next_step }
 
         context "when activity is the GCRF fund" do
-          let(:fund) { create(:fund_activity, :gcrf) }
+          let(:activity) { create(:project_activity, organisation: organisation, parent: fund, source_fund_code: Fund::MAPPINGS["GCRF"]) }
 
           it { is_expected.to render_current_step }
         end
@@ -72,7 +72,7 @@ RSpec.describe Staff::ActivityFormsController do
         it { is_expected.to skip_to_next_step }
 
         context "when activity is associated with the GCRF fund" do
-          let(:fund) { create(:fund_activity, :gcrf) }
+          let(:activity) { create(:project_activity, organisation: organisation, parent: programme, source_fund_code: Fund::MAPPINGS["GCRF"]) }
 
           it { is_expected.to render_current_step }
         end
@@ -97,7 +97,7 @@ RSpec.describe Staff::ActivityFormsController do
         it { is_expected.to skip_to_next_step }
 
         context "when activity is associated with the GCRF fund" do
-          let(:fund) { create(:fund_activity, :gcrf) }
+          let(:activity) { create(:project_activity, organisation: organisation, parent: programme, source_fund_code: Fund::MAPPINGS["GCRF"]) }
 
           it { is_expected.to render_current_step }
         end

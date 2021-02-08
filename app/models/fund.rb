@@ -23,6 +23,14 @@ class Fund
     code["name"]
   end
 
+  def gcrf?
+    id == MAPPINGS["GCRF"]
+  end
+
+  def newton?
+    id == MAPPINGS["NF"]
+  end
+
   class << self
     def from_activity(activity)
       raise InvalidActivity unless activity.fund?
