@@ -416,11 +416,11 @@ class Activity < ApplicationRecord
   end
 
   def is_gcrf_funded?
-    parent.present? && associated_fund.roda_identifier_fragment == "GCRF"
+    !fund? && source_fund.present? && source_fund.gcrf?
   end
 
   def is_newton_funded?
-    parent.present? && associated_fund.roda_identifier_fragment == "NF"
+    !fund? && source_fund.present? && source_fund.newton?
   end
 
   def requires_country_delivery_partners?

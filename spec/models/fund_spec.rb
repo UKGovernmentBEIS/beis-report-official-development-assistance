@@ -57,4 +57,38 @@ RSpec.describe Fund do
       end
     end
   end
+
+  describe "#gcrf?" do
+    let(:fund) { described_class.new(id) }
+    subject { fund.gcrf? }
+
+    context "when the fund is GCRF" do
+      let(:id) { Fund::MAPPINGS["GCRF"] }
+
+      it { is_expected.to be true }
+    end
+
+    context "when the fund is not GCRF" do
+      let(:id) { Fund::MAPPINGS["NF"] }
+
+      it { is_expected.to be false }
+    end
+  end
+
+  describe "#newton?" do
+    let(:fund) { described_class.new(id) }
+    subject { fund.newton? }
+
+    context "when the fund is Newton" do
+      let(:id) { Fund::MAPPINGS["NF"] }
+
+      it { is_expected.to be true }
+    end
+
+    context "when the fund is not Newton" do
+      let(:id) { Fund::MAPPINGS["GCRF"] }
+
+      it { is_expected.to be false }
+    end
+  end
 end
