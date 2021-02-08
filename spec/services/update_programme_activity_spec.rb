@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe UpdateActivityAsProgramme do
   let(:beis) { create(:beis_organisation) }
-  let(:parent) { create(:fund_activity) }
+  let(:parent) { create(:fund_activity, :gcrf) }
   let(:activity) { create(:programme_activity, :blank_form_state) }
 
   describe "#call" do
@@ -10,6 +10,10 @@ RSpec.describe UpdateActivityAsProgramme do
 
     it "sets the parent Activity to the fund" do
       expect(result.parent).to eq(parent)
+    end
+
+    it "sets the source fund code to the project" do
+      expect(result.source_fund_code).to eq(2)
     end
 
     it "sets the parent form_state" do

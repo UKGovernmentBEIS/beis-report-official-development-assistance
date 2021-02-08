@@ -279,6 +279,16 @@ class Activity < ApplicationRecord
     @parent_activities ||= ancestors.reverse
   end
 
+  def source_fund=(fund)
+    self.source_fund_code = fund&.id
+  end
+
+  def source_fund
+    @source_fund ||= if source_fund_code.present?
+      Fund.new(source_fund_code)
+    end
+  end
+
   def associated_fund
     return self if fund?
     parent_activities.detect(&:fund?)
@@ -406,11 +416,11 @@ class Activity < ApplicationRecord
   end
 
   def is_gcrf_funded?
-    parent.present? && associated_fund.roda_identifier_fragment == "GCRF"
+    !fund? && source_fund.present? && source_fund.gcrf?
   end
 
   def is_newton_funded?
-    parent.present? && associated_fund.roda_identifier_fragment == "NF"
+    !fund? && source_fund.present? && source_fund.newton?
   end
 
   def requires_country_delivery_partners?

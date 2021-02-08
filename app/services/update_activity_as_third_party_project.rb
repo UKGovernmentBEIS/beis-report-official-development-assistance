@@ -10,11 +10,7 @@ class UpdateActivityAsThirdPartyProject
     activity.reporting_organisation = reporting_organisation
     activity.extending_organisation = activity.organisation
 
-    activity.parent = begin
-                        Activity.project.find(parent_id)
-                      rescue ActiveRecord::RecordNotFound
-                        nil
-                      end
+    set_parent_and_fund
 
     activity.form_state = "parent"
     activity.level = :third_party_project
@@ -35,5 +31,18 @@ class UpdateActivityAsThirdPartyProject
 
   def reporting_organisation
     activity.organisation.is_government? ? service_owner : activity.organisation
+  end
+
+  def fetch_source_fund_from_parent(parent)
+    return if parent.nil?
+
+    Fund.from_activity(parent.parent.parent)
+  end
+
+  def set_parent_and_fund
+    parent = Activity.project.find_by_id(parent_id)
+
+    activity.parent = parent
+    activity.source_fund = fetch_source_fund_from_parent(parent)
   end
 end

@@ -459,8 +459,7 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when country_delivery_partners is blank on a non-Newton funded programme" do
-      subject(:other_fund) { build(:fund_activity) }
-      subject(:activity) { build(:programme_activity, parent: other_fund, country_delivery_partners: nil) }
+      subject(:activity) { build(:programme_activity, :gcrf_funded, country_delivery_partners: nil) }
       it "should be valid" do
         expect(activity.valid?).to be_truthy
       end
@@ -615,14 +614,14 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when gcrf_challenge_area is blank" do
-      subject { build(:programme_activity, parent: fund, gcrf_challenge_area: nil) }
-      let(:fund) { build(:fund_activity) }
+      let(:source_fund_code) { Fund::MAPPINGS["NF"] }
+      subject { build(:programme_activity, source_fund_code: source_fund_code, gcrf_challenge_area: nil) }
 
       it { is_expected.to be_valid(:gcrf_challenge_area_step) }
       it { is_expected.to be_valid }
 
       context "with a GCRF funded activity" do
-        let(:fund) { build(:fund_activity, :gcrf) }
+        let(:source_fund_code) { Fund::MAPPINGS["GCRF"] }
 
         it { is_expected.to be_invalid(:gcrf_challenge_area_step) }
         it { is_expected.to be_invalid }
@@ -1337,15 +1336,13 @@ RSpec.describe Activity, type: :model do
 
   describe "#is_gcrf_funded?" do
     it "returns true if activity is associated with the GCRF fund" do
-      fund = build(:fund_activity, :gcrf)
-      programme = build(:programme_activity, parent: fund)
+      programme = build(:programme_activity, :gcrf_funded)
 
       expect(programme.is_gcrf_funded?).to be_truthy
     end
 
     it "returns false if activity is not associated with the GCRF fund" do
-      fund = build(:fund_activity)
-      programme = build(:programme_activity, parent: fund)
+      programme = build(:programme_activity, :newton_funded)
 
       expect(programme.is_gcrf_funded?).to be_falsey
     end
@@ -1365,15 +1362,13 @@ RSpec.describe Activity, type: :model do
 
   describe "#is_newton_funded?" do
     it "returns true if activity is associated with the Newton fund" do
-      fund = build(:fund_activity, :newton)
-      programme = build(:programme_activity, parent: fund)
+      programme = build(:programme_activity, :newton_funded)
 
       expect(programme.is_newton_funded?).to be_truthy
     end
 
     it "returns false if activity is not associated with the Newton fund" do
-      fund = build(:fund_activity)
-      programme = build(:programme_activity, parent: fund)
+      programme = build(:programme_activity, :gcrf_funded)
 
       expect(programme.is_newton_funded?).to be_falsey
     end
@@ -1424,6 +1419,38 @@ RSpec.describe Activity, type: :model do
       result = Activity.all.hierarchically_grouped_projects
 
       expect(result.map(&:roda_identifier_fragment)).to eq(["aabb", "cc0", "cc1", "cc2", "mmnn", "zzxx", "ww"])
+    end
+  end
+
+  describe "#source_fund" do
+    context "for a Newton fund activity" do
+      let(:activity) { build(:activity, source_fund_code: Fund::MAPPINGS["NF"]) }
+
+      it "returns a Newton fund" do
+        expect(activity.source_fund).to be_a(Fund)
+        expect(activity.source_fund.name).to eq("Newton Fund")
+        expect(activity.source_fund.id).to eq(1)
+      end
+    end
+
+    context "for a GCRF activity" do
+      let(:activity) { build(:activity, source_fund_code: Fund::MAPPINGS["GCRF"]) }
+
+      it "returns a GCRF fund" do
+        expect(activity.source_fund).to be_a(Fund)
+        expect(activity.source_fund.name).to eq("GCRF")
+        expect(activity.source_fund.id).to eq(2)
+      end
+    end
+  end
+
+  describe "#source_fund=" do
+    it "sets the source fund code" do
+      activity = build(:activity)
+      activity.source_fund = Fund.new(Fund::MAPPINGS["GCRF"])
+      activity.save
+
+      expect(activity.reload.source_fund_code).to eq(2)
     end
   end
 end
