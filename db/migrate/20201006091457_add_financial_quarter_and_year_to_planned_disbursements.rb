@@ -8,11 +8,11 @@ class AddFinancialQuarterAndYearToPlannedDisbursements < ActiveRecord::Migration
         planned_disbursements = PlannedDisbursement.all
 
         planned_disbursements.each do |planned_disbursement|
-          financial_quarter = FinancialPeriod.quarter_from_date(planned_disbursement.period_start_date)
-          financial_year = FinancialPeriod.year_from_date(planned_disbursement.period_start_date)
+          financial_quarter = FinancialQuarter.for_date(planned_disbursement.period_start_date)
+          financial_year = FinancialYear.for_date(planned_disbursement.period_start_date)
 
-          planned_disbursement.financial_quarter = financial_quarter
-          planned_disbursement.financial_year = financial_year
+          planned_disbursement.financial_quarter = financial_quarter.to_i
+          planned_disbursement.financial_year = financial_year.to_i
           planned_disbursement.save(validate: false)
         end
       end

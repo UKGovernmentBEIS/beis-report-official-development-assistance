@@ -102,7 +102,7 @@ RSpec.describe TransactionPolicy do
     context "when the activity is a project" do
       let(:activity) { create(:project_activity) }
 
-      context "and the activity does not belong to the users organiastion" do
+      context "and the activity does not belong to the users organisation" do
         it { is_expected.to forbid_action(:show) }
         it { is_expected.to forbid_action(:create) }
         it { is_expected.to forbid_action(:edit) }
@@ -126,7 +126,7 @@ RSpec.describe TransactionPolicy do
           it { is_expected.to forbid_action(:destroy) }
         end
 
-        context "when there is an editiable report" do
+        context "when there is an editable report" do
           let(:report) { create(:report, state: :active) }
 
           context "and the report is not for the organisation or fund of the activity" do

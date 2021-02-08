@@ -4,16 +4,16 @@ Rails.application.routes.draw do
   scope module: "public" do
     get "health_check" => "base#health_check"
     root to: "visitors#index"
-
-    get "privacy-policy" => "privacy_policy#index"
-    get "cookie-statement" => "cookie_statement#index"
-    get "accessibility-statement" => "accessibility_statement#index"
   end
 
   scope module: "staff" do
     resource :dashboard, only: :show
     resources :users
-    resources :activities, only: [:index]
+    resources :activities, only: [:index] do
+      collection do
+        get "historic" => "activities#historic"
+      end
+    end
     resources :organisations, except: [:destroy] do
       resources :activities, except: [:index, :destroy] do
         get "financials" => "activity_financials#show"

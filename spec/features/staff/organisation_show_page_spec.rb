@@ -1,4 +1,4 @@
-feature "Organisation show page" do
+RSpec.feature "Organisation show page" do
   let(:delivery_partner_user) { create(:delivery_partner_user) }
   let(:beis_user) { create(:beis_user) }
 
@@ -22,7 +22,7 @@ feature "Organisation show page" do
       end
 
       context "when viewing a delivery partners organisation" do
-        scenario "they see a download xml button for project activties" do
+        scenario "they see a download xml button for project activities" do
           delivery_partner_organisation = create(:delivery_partner_organisation)
           _project = create(:project_activity, organisation: delivery_partner_organisation)
 
@@ -50,7 +50,7 @@ feature "Organisation show page" do
       authenticate!(user: delivery_partner_user)
     end
 
-    scenario "they do not see the edit detials button" do
+    scenario "they do not see the edit details button" do
       visit organisation_path(delivery_partner_user.organisation)
 
       expect(page).not_to have_link t("page_content.organisation.button.edit_details"), href: edit_organisation_path(delivery_partner_user.organisation)

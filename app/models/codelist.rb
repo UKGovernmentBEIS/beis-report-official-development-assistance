@@ -1,6 +1,7 @@
 class Codelist
   class UnreadableCodelist < StandardError; end
   class UnrecognisedSource < StandardError; end
+  class KeyNotFound < StandardError; end
 
   include Enumerable
 
@@ -16,10 +17,10 @@ class Codelist
 
   class << self
     def codelists
-      if Rails.env.production?
-        @codelists ||= initialize_codelists
-      else
+      if Rails.env.development?
         initialize_codelists
+      else
+        @codelists ||= initialize_codelists
       end
     end
 
@@ -80,6 +81,14 @@ class Codelist
 
   def values
     list.values
+  end
+
+  def values_for(key)
+    values = list.pluck(key).compact
+
+    raise KeyNotFound if values.empty?
+
+    values
   end
 
   private def fetch_codelist

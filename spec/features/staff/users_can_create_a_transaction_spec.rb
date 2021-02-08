@@ -306,7 +306,7 @@ RSpec.feature "Users can create a transaction" do
       end
     end
 
-    scenario "when the acitivity cannot be edited they cannot see the add transaction button" do
+    scenario "when the activity cannot be edited they cannot see the add transaction button" do
       activity = create(:project_activity, organisation: user.organisation)
       _report = create(:report, state: :inactive, organisation: activity.organisation, fund: activity.associated_fund)
 

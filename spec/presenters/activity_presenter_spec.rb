@@ -334,27 +334,17 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#flow" do
-    context "when flow aid_type exists" do
-      it "returns the locale value for the code" do
-        activity = build(:activity, flow: "20")
-        result = described_class.new(activity).flow
-        expect(result).to eql("OOF")
-      end
-    end
-
-    context "when the activity does not have a flow set" do
-      it "returns nil" do
-        activity = build(:activity, flow: nil)
-        result = described_class.new(activity)
-        expect(result.flow).to be_nil
-      end
+    it "returns the locale value for the default ODA code" do
+      activity = build(:activity)
+      result = described_class.new(activity).flow
+      expect(result).to eql("ODA")
     end
   end
 
   describe "#flow_with_code" do
-    it "returns the flow string & code number" do
-      fund = create(:activity, flow: "20")
-      expect(described_class.new(fund).flow_with_code).to eql("OOF (20)")
+    it "returns the default flow string & code number" do
+      fund = create(:activity)
+      expect(described_class.new(fund).flow_with_code).to eql("ODA (10)")
     end
   end
 
@@ -604,6 +594,14 @@ RSpec.describe ActivityPresenter do
 
       expect(described_class.new(project).variance_for_report_financial_quarter(report: report))
         .to eq "-1300.00"
+    end
+  end
+
+  describe "#channel_of_delivery_code" do
+    it "returns the IATI code and IATI name of item" do
+      activity = build(:project_activity, channel_of_delivery_code: "20000")
+      result = described_class.new(activity)
+      expect(result.channel_of_delivery_code).to eq("20000: Non-Governmental Organisation (NGO) and Civil Society")
     end
   end
 end

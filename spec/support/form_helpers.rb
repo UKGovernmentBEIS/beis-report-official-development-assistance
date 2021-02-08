@@ -36,7 +36,6 @@ module FormHelpers
     intended_beneficiaries: "Haiti",
     gdi: "GDI not applicable",
     collaboration_type: "Bilateral",
-    flow: "ODA",
     sdg_1: 1,
     fund_pillar: "1",
     aid_type: "B02",
@@ -53,6 +52,7 @@ module FormHelpers
     gcrf_challenge_area: "1",
     oda_eligibility: "Eligible",
     oda_eligibility_lead: Faker::Name.name,
+    channel_of_delivery_code: "11000",
     level:,
     parent: nil,
     uk_dp_named_contact: Faker::Name.name
@@ -222,11 +222,6 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
-    expect(page).to have_content t("form.label.activity.flow")
-    expect(page.html).to include t("form.hint.activity.flow")
-    select flow, from: "activity[flow]"
-    click_button t("form.button.activity.submit")
-
     unless level == "fund"
       expect(page).to have_content t("form.legend.activity.sdgs_apply")
       expect(page).to have_content t("form.hint.activity.sdgs_apply")
@@ -305,6 +300,12 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
+    if level == "project" || level == "third_party_project"
+      expect(page).to have_content t("form.legend.activity.channel_of_delivery_code")
+      select channel_of_delivery_code, from: "activity[channel_of_delivery_code]"
+      click_button t("form.button.activity.submit")
+    end
+
     expect(page).to have_content t("form.legend.activity.oda_eligibility")
     expect(page).to have_content t("form.hint.activity.oda_eligibility")
     choose oda_eligibility
@@ -354,7 +355,6 @@ module FormHelpers
     expect(page).to have_content recipient_region
     expect(page).to have_content intended_beneficiaries
     expect(page).to have_content gdi
-    expect(page).to have_content flow
     expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
 
     within(".govuk-summary-list__row.fstc_applies") do
@@ -394,6 +394,12 @@ module FormHelpers
       end
     end
     expect(page).to have_content fund_pillar if associated_fund_is_newton?(parent)
+
+    if level == "project" || level == "third_party_project"
+      expect(page).to have_content t("summary.label.activity.channel_of_delivery_code")
+      expect(page).to have_content channel_of_delivery_code
+    end
+
     expect(page).to have_content oda_eligibility
     expect(page).to have_content oda_eligibility_lead if level == "project" || level == "third_party_project"
     if level == "project" || level == "third_party_project"

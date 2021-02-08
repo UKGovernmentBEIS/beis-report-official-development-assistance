@@ -11,11 +11,6 @@ if [ -n "$DEBUG" ]; then
   set -x
 fi
 
-set +e
-echo "==> Setting up test user..."
-createuser --super test >/dev/null 2>&1
-set -e
-
 TEST_FILE=$1
 
 if [ -n "$TEST_FILE" ]; then
@@ -34,7 +29,12 @@ else
   bundle exec rake shellcheck
 
   echo "==> Running the tests..."
-  bundle exec rspec
+
+  if [ -n "$CI" ]; then
+    bundle exec rspec --format=documentation
+  else
+    bundle exec rspec
+  fi
 
   echo "==> Running Brakeman"
   bundle exec brakeman

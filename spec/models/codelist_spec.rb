@@ -23,6 +23,7 @@ RSpec.describe Codelist do
     before { allow(Rails).to receive(:env) { "production".inquiry } }
 
     it "does not reinitialize the codelist once it has been initialized" do
+      Codelist.instance_variable_set(:@codelists, nil)
       expect(Codelist).to receive(:initialize_codelists).once.and_call_original
 
       Codelist.new(type: "default_currency")
@@ -124,6 +125,18 @@ RSpec.describe Codelist do
 
       expect(objects.find { |o| o["code"] == "B02" }.description).to eq(t("form.hint.activity.options.aid_type.B02"))
       expect(objects.find { |o| o["code"] == "E01" }.description).to eq("Financial aid awards for individual students and contributions to trainees.")
+    end
+  end
+
+  describe "#values_for" do
+    let(:codelist) { Codelist.new(type: "aid_type") }
+
+    it "fetches the values with a particular key from a codelist" do
+      expect(codelist.values_for("code")).to eq(["A01", "A02", "B01", "B02", "B03", "B04", "C01", "D01", "D02", "E01", "E02", "F01", "G01", "H01", "H02"])
+    end
+
+    it "raises an error if the key does not exist" do
+      expect { codelist.values_for("words") }.to raise_error "Codelist::KeyNotFound"
     end
   end
 end

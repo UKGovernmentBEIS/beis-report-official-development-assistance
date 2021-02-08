@@ -28,10 +28,10 @@ en:
         back: Back to activity details
     label:
       activity:
-        flow: What is the flow type?
         call_present:
           "true": "Yes"
           "false": "No"
+        channel_of_delivery_code: Channel of delivery code
         collaboration_type: What is the collaboration type for this activity?
         country_delivery_partners: Name and acronym
         gcrf_challenge_area_options:
@@ -124,6 +124,7 @@ en:
         call_present: Is there a call for this %{level}?
         call_open_date: Call open date
         call_close_date: Call close date
+        channel_of_delivery_code: Channel of delivery code
         country_delivery_partners: Country delivery partner
         gcrf_challenge_area: GCRF challenge area
         fund_pillar: What Newton Fund Pillar does this activity fall under?
@@ -169,7 +170,6 @@ en:
         call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
         call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
         country_delivery_partners: "Please provide up to ten country delivery partners. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
-        flow: Read <a href='http://reference.iatistandard.org/203/codelists/FlowType/' target='_blank'>International Aid Transparency Initiative descriptions</a> of each flow type (opens in new window)
         fund_pillar: The Newton Fund largely comprises three pillar activities, which all activities must fall under. Use 'Not applicable' for delivery, other non-programme/project lines.
         delivery_partner_identifier: This could be the reference you use in your internal systems
         gcrf_challenge_area: Select the most relevant GCRF challenge area for this activity. For broad programme calls, please select the challenge area most commonly represented across the individual projects within the programme. If the activity is a delivery line, you may select 'Not applicable'.
@@ -234,6 +234,7 @@ en:
         call_present: Calls
         call_open_date: Call open date
         call_close_date: Call close date
+        channel_of_delivery_code: Channel of delivery code
         collaboration_type: Collaboration type
         country_delivery_partners: Country delivery partners
         covid19_related: Is this activity related to Covid-19?
@@ -241,7 +242,6 @@ en:
         form_state:
           complete: Complete
           incomplete: Incomplete
-        flow: Flow type
         fstc_applies:
           label: Free-Standing Technical Cooperation applies?
           "false": "No"
@@ -292,7 +292,7 @@ en:
   table:
     header:
       activity:
-        identifier: Identifier
+        identifier: RODA Identifier
         title: Name
         level: Level
         actual_spend_for_quarter: "%{financial_quarter_and_year} actual spend"
@@ -355,6 +355,9 @@ en:
       financials: Financials
       children: Child activities
       comments: Comments
+    activities:
+      current: Current
+      historic: Historic
   page_title:
     activity:
       index: Activities
@@ -365,17 +368,20 @@ en:
       financials: Financials
       children: Child activities
       upload: Upload bulk activity data
+    activities:
+      current: Current activities
+      historic: Historic activities
     activity_form:
       show:
         aid_type: Aid type
         call_dates: What are the call open and close dates for this %{level}?
         call_present: Is there a call for this %{level}?
+        channel_of_delivery_code: Channel of delivery code
         collaboration_type: Collaboration type
         country: What country will benefit from this activity?
         country_delivery_partners: Country delivery partner
         covid19_related: Is this activity related to Covid-19?
         dates: What are the start and end dates for the %{level}?
-        flow: Flow
         gcrf_challenge_area: GCRF challenge area
         fund_pillar: What Newton Fund Pillar does this activity fall under?
         gdi: GDI
@@ -466,6 +472,8 @@ en:
               inclusion: You must select "Yes" or "No"
             gcrf_challenge_area:
               blank: Select a GCRF challenge area
+            channel_of_delivery_code:
+              invalid: Please select a valid Channel of delivery code
   importer:
     errors:
       activity:
@@ -489,7 +497,6 @@ en:
         invalid_planned_end_date: The Planned end date is in an invalid format
         invalid_sector: The sector code is not valid
         invalid_collaboration_type: The collaboration type code is not valid
-        invalid_flow: The flow code is not valid
         invalid_aid_type: The aid type code is not valid
         invalid_fstc_applies: The free standing technical cooperation column is not valid
         invalid_parent: The parent activity is not valid

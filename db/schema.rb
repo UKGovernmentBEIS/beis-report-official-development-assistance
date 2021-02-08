@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_05_163844) do
+ActiveRecord::Schema.define(version: 2021_02_02_192712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -29,7 +29,6 @@ ActiveRecord::Schema.define(version: 2021_01_05_163844) do
     t.date "actual_start_date"
     t.date "actual_end_date"
     t.string "recipient_region"
-    t.string "flow"
     t.string "aid_type"
     t.string "form_state"
     t.string "level"
@@ -120,6 +119,8 @@ ActiveRecord::Schema.define(version: 2021_01_05_163844) do
     t.uuid "parent_activity_id"
     t.boolean "ingested", default: false
     t.uuid "report_id"
+    t.integer "funding_type"
+    t.integer "financial_year"
     t.index ["parent_activity_id"], name: "index_budgets_on_parent_activity_id"
     t.index ["report_id"], name: "index_budgets_on_report_id"
   end
@@ -196,7 +197,7 @@ ActiveRecord::Schema.define(version: 2021_01_05_163844) do
     t.date "deadline"
     t.integer "financial_quarter"
     t.integer "financial_year"
-    t.index ["fund_id", "organisation_id"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text <> ALL ((ARRAY['inactive'::character varying, 'approved'::character varying])::text[]))"
+    t.index ["fund_id", "organisation_id"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text <> ALL (ARRAY[('inactive'::character varying)::text, ('approved'::character varying)::text]))"
     t.index ["fund_id", "organisation_id"], name: "enforce_one_historic_report_per_series", unique: true, where: "((financial_quarter IS NULL) OR (financial_year IS NULL))"
     t.index ["fund_id"], name: "index_reports_on_fund_id"
     t.index ["organisation_id"], name: "index_reports_on_organisation_id"
@@ -225,6 +226,15 @@ ActiveRecord::Schema.define(version: 2021_01_05_163844) do
     t.index ["report_id"], name: "index_transactions_on_report_id"
   end
 
+  create_table "transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "source_id", null: false
+    t.uuid "destination_id", null: false
+    t.decimal "value", precision: 13, scale: 2, null: false
+    t.date "date"
+    t.index ["destination_id"], name: "index_transfers_on_destination_id"
+    t.index ["source_id"], name: "index_transfers_on_source_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "identifier"
     t.string "name"
@@ -246,5 +256,7 @@ ActiveRecord::Schema.define(version: 2021_01_05_163844) do
   add_foreign_key "budgets", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "planned_disbursements", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "transactions", "activities", column: "parent_activity_id", on_delete: :cascade
+  add_foreign_key "transfers", "activities", column: "destination_id", on_delete: :restrict
+  add_foreign_key "transfers", "activities", column: "source_id", on_delete: :restrict
   add_foreign_key "users", "organisations", on_delete: :restrict
 end

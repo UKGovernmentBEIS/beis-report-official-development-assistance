@@ -5,6 +5,7 @@ class Activity < ApplicationRecord
   STANDARD_GRANT_FINANCE_CODE = "110"
   UNTIED_TIED_STATUS_CODE = "5"
   CAPITAL_SPEND_PERCENTAGE = 0
+  DEFAULT_FLOW_TYPE = "10"
 
   POLICY_MARKER_CODES = {
     not_targeted: 0,
@@ -37,7 +38,6 @@ class Activity < ApplicationRecord
     :intended_beneficiaries,
     :gdi,
     :collaboration_type,
-    :flow,
     :sustainable_development_goals,
     :fund_pillar,
     :aid_type,
@@ -45,6 +45,7 @@ class Activity < ApplicationRecord
     :policy_markers,
     :covid19_related,
     :gcrf_challenge_area,
+    :channel_of_delivery_code,
     :oda_eligibility,
     :oda_eligibility_lead,
     :uk_dp_named_contact,
@@ -71,7 +72,6 @@ class Activity < ApplicationRecord
     :intended_beneficiaries_step,
     :gdi_step,
     :collaboration_type_step,
-    :flow_step,
     :sustainable_development_goals_step,
     :aid_type_step,
     :fund_pillar_step,
@@ -79,6 +79,7 @@ class Activity < ApplicationRecord
     :policy_markers_step,
     :covid19_related_step,
     :gcrf_challenge_area_step,
+    :channel_of_delivery_code_step,
     :oda_eligibility_step,
     :oda_eligibility_lead_step,
     :uk_dp_named_contact_step,
@@ -110,7 +111,6 @@ class Activity < ApplicationRecord
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
   validates :covid19_related, presence: true, on: :covid19_related_step
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
-  validates :flow, presence: true, on: :flow_step
   validates :fund_pillar, presence: true, on: :fund_pillar_step, if: :is_newton_funded?
   validates :sdg_1, presence: true, on: :sustainable_development_goals_step, if: :sdgs_apply?
   validates :aid_type, presence: true, on: :aid_type_step
@@ -126,6 +126,7 @@ class Activity < ApplicationRecord
   validates :oda_eligibility, presence: true, on: :oda_eligibility_step
   validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :is_project?
   validates :uk_dp_named_contact, presence: true, on: :uk_dp_named_contact_step, if: :is_project?
+  validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :is_project?
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier_compound, uniqueness: true, allow_nil: true
@@ -219,6 +220,14 @@ class Activity < ApplicationRecord
     for_organisation.merge(projects.or(third_party_projects))
   }
 
+  scope :current, -> {
+                    where.not(programme_status: ["completed", "stopped", "cancelled"]).or(where(programme_status: nil))
+                  }
+
+  scope :historic, -> {
+    where(programme_status: ["completed", "stopped", "cancelled"])
+  }
+
   def self.by_roda_identifier(identifier)
     find_by(roda_identifier_compound: identifier)
   end
@@ -242,6 +251,10 @@ class Activity < ApplicationRecord
 
   def capital_spend
     CAPITAL_SPEND_PERCENTAGE
+  end
+
+  def flow
+    DEFAULT_FLOW_TYPE
   end
 
   def default_currency
@@ -408,5 +421,18 @@ class Activity < ApplicationRecord
     return if programme_status.blank?
 
     iati_status_from_programme_status(programme_status)
+  end
+
+  def self.hierarchically_grouped_projects
+    activities = all.to_a
+    projects = activities.select(&:project?).sort_by { |a| a.roda_identifier_fragment.to_s }
+    third_party_projects = activities.select(&:third_party_project?).group_by(&:parent_id)
+
+    grouped_projects = []
+    projects.each do |project|
+      grouped_projects << project
+      grouped_projects += third_party_projects.fetch(project.id, []).sort_by { |a| a.roda_identifier_fragment.to_s }
+    end
+    grouped_projects
   end
 end

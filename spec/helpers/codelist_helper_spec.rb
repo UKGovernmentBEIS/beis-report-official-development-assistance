@@ -49,13 +49,6 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
-    describe "#flow_select_options" do
-      it "returns an array of flow objects with 10 as the first (default) option" do
-        expect(helper.flow_select_options.first)
-          .to eq(OpenStruct.new(name: "ODA", code: "10"))
-      end
-    end
-
     describe "#sector_radio_options" do
       it "returns all sectors when no category is passed" do
         options = helper.sector_radio_options
@@ -244,6 +237,37 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.first.description).to eq "Not Applicable"
         expect(options.last.code).to eq 3
         expect(options.last.description).to eq "Translation"
+      end
+    end
+
+    describe "#channel_of_delivery_codes" do
+      it "returns the list of items whose codes are allowed by BEIS" do
+        expect(helper.channel_of_delivery_codes.size).to eql 5
+      end
+
+      it "returns items with their IATI code and name" do
+        first_item = helper.channel_of_delivery_codes.first
+
+        expect(first_item.fetch("code")).to eql "11000"
+        expect(first_item.fetch("name")).to eql "Donor Government"
+      end
+    end
+
+    describe "#channel_of_delivery_code_select_options" do
+      it "returns a list of options starting with an empty item" do
+        options = helper.channel_of_delivery_code_select_options
+
+        first_option = options.first
+        expect(first_option.code).to eql ""
+        expect(first_option.name).to eql "Please select a value"
+      end
+
+      it "returns a list of options where the value is the IATI code and the name is the IATI code plus the IATI name" do
+        options = helper.channel_of_delivery_code_select_options
+
+        second_option = options[1]
+        expect(second_option.code).to eql "11000"
+        expect(second_option.name).to eql "11000: Donor Government"
       end
     end
   end

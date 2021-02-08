@@ -275,15 +275,6 @@
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :collaboration_type)
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:collaboration_type)}"), activity_step_path(activity_presenter, :collaboration_type), t("summary.label.activity.collaboration_type"))
 
-  .govuk-summary-list__row.flow
-    %dt.govuk-summary-list__key
-      = t("summary.label.activity.flow")
-    %dd.govuk-summary-list__value
-      = activity_presenter.flow
-    %dd.govuk-summary-list__actions
-      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :flow)
-        = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:flow)}"), activity_step_path(activity_presenter, :flow), t("summary.label.activity.flow"))
-
   - unless activity_presenter.fund?
     .govuk-summary-list__row.sustainable_development_goals
       %dt.govuk-summary-list__key
@@ -404,6 +395,15 @@
     %dd.govuk-summary-list__actions
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :covid19_related)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:covid19_related)}"), activity_step_path(activity_presenter, :covid19_related), t("summary.label.activity.covid19_related"))
+
+  .govuk-summary-list__row.channel_of_delivery_code
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.channel_of_delivery_code")
+    %dd.govuk-summary-list__value
+      = activity_presenter.channel_of_delivery_code
+    %dd.govuk-summary-list__actions
+      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :channel_of_delivery_code)
+        = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:channel_of_delivery_code)}"), activity_step_path(activity_presenter, :channel_of_delivery_code), t("summary.label.activity.channel_of_delivery_code"))
 
   .govuk-summary-list__row.oda_eligibility
     %dt.govuk-summary-list__key

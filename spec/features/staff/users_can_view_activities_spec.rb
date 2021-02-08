@@ -71,6 +71,43 @@ RSpec.feature "Users can view activities" do
     let(:user) { create(:delivery_partner_user) }
     before { authenticate!(user: user) }
 
+    scenario "the page displays two tabs, one for current activities and one for historic ones" do
+      create_list(:project_activity, 5, organisation: user.organisation)
+      visit activities_path
+
+      expect(page).to have_css(".govuk-tabs__tab", count: 2)
+      expect(page).to have_css(".govuk-tabs__tab", text: "Current")
+      expect(page).to have_css(".govuk-tabs__tab", text: "Historic")
+    end
+
+    scenario "they see a list of current activities" do
+      current_project = create(:project_activity, organisation: user.organisation)
+      another_current_project = create(:project_activity, :at_purpose_step, organisation: user.organisation)
+      historic_project = create(:project_activity, organisation: user.organisation, programme_status: "completed")
+
+      visit activities_path
+
+      expect(page).to have_content(current_project.title)
+      expect(page).to have_content(current_project.delivery_partner_identifier)
+      expect(page).to have_content(another_current_project.title)
+      expect(page).to have_content(another_current_project.delivery_partner_identifier)
+      expect(page).to_not have_content(historic_project.title)
+      expect(page).to_not have_content(historic_project.delivery_partner_identifier)
+    end
+
+    scenario "they can choose to see a list of historic activities" do
+      current_project = create(:project_activity, organisation: user.organisation)
+      historic_project = create(:project_activity, organisation: user.organisation, programme_status: "completed")
+      another_historic_project = create(:project_activity, organisation: user.organisation, programme_status: "stopped")
+
+      visit activities_path
+      click_on t("tabs.activities.historic")
+
+      expect(page).to have_content(historic_project.title)
+      expect(page).to have_content(another_historic_project.title)
+      expect(page).to_not have_content(current_project.title)
+    end
+
     scenario "they see a list of all their projects" do
       project = create(:project_activity, organisation: user.organisation)
 
@@ -169,7 +206,6 @@ RSpec.feature "Users can view activities" do
       expect(page).to have_content activity_presenter.planned_start_date
       expect(page).to have_content activity_presenter.planned_end_date
       expect(page).to have_content activity_presenter.recipient_region
-      expect(page).to have_content activity_presenter.flow
 
       within ".sustainable_development_goals" do
         expect(page).to have_content "Gender Equality"

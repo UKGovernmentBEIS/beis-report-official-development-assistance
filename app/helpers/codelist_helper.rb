@@ -66,11 +66,6 @@ module CodelistHelper
     Codelist.new(type: "collaboration_type").to_objects(with_empty_item: false).sort_by(&:code)
   end
 
-  def flow_select_options
-    objects = Codelist.new(type: "flow").to_objects(with_empty_item: false)
-    objects.unshift(OpenStruct.new(name: "ODA", code: "10")).uniq
-  end
-
   def sector_category_radio_options
     Codelist.new(type: "sector_category").to_objects(with_empty_item: false)
   end
@@ -169,5 +164,23 @@ module CodelistHelper
 
   def language_code_options
     Codelist.new(type: "language_code").to_objects
+  end
+
+  def beis_allowed_channel_of_delivery_codes
+    Codelist.new(type: "channel_of_delivery_code", source: "beis").list
+  end
+
+  def channel_of_delivery_codes
+    iati_data = Codelist.new(type: "channel_of_delivery_code")
+    beis_allowed_codes = beis_allowed_channel_of_delivery_codes
+
+    iati_data.select { |item| item["code"].in?(beis_allowed_codes) }
+  end
+
+  def channel_of_delivery_code_select_options
+    data = channel_of_delivery_codes
+    data.collect { |item|
+      OpenStruct.new(code: item["code"], name: "#{item["code"]}: #{item["name"]}")
+    }.compact.sort_by(&:code).unshift(OpenStruct.new(code: "", name: "Please select a value"))
   end
 end

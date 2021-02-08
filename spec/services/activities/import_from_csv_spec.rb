@@ -53,7 +53,6 @@ RSpec.describe Activities::ImportFromCsv do
       "DFID policy marker - Disability" => "",
       "DFID policy marker - Disaster Risk Reduction" => "0",
       "DFID policy marker - Nutrition" => "",
-      "Flow" => "10",
       "Aid type" => "B03",
       "Free Standing Technical Cooperation" => "1",
       "Aims/Objectives (DP Definition)" => "Foo bar baz",
@@ -126,7 +125,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.parent_present"))
     end
 
-    it "does not fail when the acitvity and import row has no implementing organiation" do
+    it "does not fail when the activity and import row has no implementing organisation" do
       existing_activity_attributes["Implementing organisation name"] = nil
       existing_activity_attributes["Implementing organisation reference"] = nil
       existing_activity_attributes["Implementing organisation sector"] = nil
@@ -180,7 +179,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.policy_marker_disability).to eq("not_assessed")
       expect(existing_activity.policy_marker_disaster_risk_reduction).to eq("not_targeted")
       expect(existing_activity.policy_marker_nutrition).to eq("not_assessed")
-      expect(existing_activity.flow).to eq(existing_activity_attributes["Flow"])
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
       expect(existing_activity.fstc_applies).to eq(true)
       expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives (DP Definition)"])
@@ -258,7 +256,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_create"))
     end
 
-    it "does not fail when the row has no implementing organiation" do
+    it "does not fail when the row has no implementing organisation" do
       new_activity_attributes["Implementing organisation name"] = nil
       new_activity_attributes["Implementing organisation reference"] = nil
       new_activity_attributes["Implementing organisation sector"] = nil
@@ -318,7 +316,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.sector_category).to eq("112")
       expect(new_activity.channel_of_delivery_code).to eq(new_activity_attributes["Channel of delivery code"])
       expect(new_activity.collaboration_type).to eq(new_activity_attributes["Collaboration type (Bi/Multi Marker)"])
-      expect(new_activity.flow).to eq(new_activity_attributes["Flow"])
       expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
       expect(new_activity.fstc_applies).to eq(true)
       expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (DP Definition)"])
@@ -574,8 +571,8 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_sector"))
     end
 
-    it "has an error if the 'Channel of delivery code' is invalid" do
-      new_activity_attributes["Channel of delivery code"] = "abc123"
+    it "has an error if the 'Channel of delivery code' is invalid for BEIS" do
+      new_activity_attributes["Channel of delivery code"] = "21019"
 
       expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
@@ -586,7 +583,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.csv_row).to eq(2)
       expect(subject.errors.first.csv_column).to eq("Channel of delivery code")
       expect(subject.errors.first.column).to eq(:channel_of_delivery_code)
-      expect(subject.errors.first.value).to eq("abc123")
+      expect(subject.errors.first.value).to eq("21019")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
     end
 
@@ -606,16 +603,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
     end
 
-    it "allows the value of 'Channel of delivery code' to be 'N/A' (case insensitive)" do
-      new_activity_attributes["Channel of delivery code"] = "n/A"
-
-      expect { subject.import([new_activity_attributes]) }.to change { Activity.count }
-
-      new_activity = Activity.order(:created_at).last
-
-      expect(new_activity.channel_of_delivery_code).to eq("n/A")
-    end
-
     it "has an error if the Collaboration type option is invalid" do
       new_activity_attributes["Collaboration type (Bi/Multi Marker)"] = "99"
 
@@ -630,22 +617,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:collaboration_type)
       expect(subject.errors.first.value).to eq("99")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_collaboration_type"))
-    end
-
-    it "has an error if the Flow option is invalid" do
-      new_activity_attributes["Flow"] = "1"
-
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
-
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
-
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Flow")
-      expect(subject.errors.first.column).to eq(:flow)
-      expect(subject.errors.first.value).to eq("1")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_flow"))
     end
 
     it "has an error if the Aid Type option is invalid" do

@@ -13,7 +13,7 @@ RSpec.feature "Users can choose a recipient country" do
     end
 
     context "with JavaScript disabled" do
-      scenario "countries are choosen from a select box" do
+      scenario "countries are chosen from a select box" do
         expect(page).to have_select(t("form.label.activity.recipient_country"))
       end
 
@@ -25,7 +25,7 @@ RSpec.feature "Users can choose a recipient country" do
     end
 
     context "with JavaScript enabled", js: true do
-      scenario "countries are choosen from an autocomplete" do
+      scenario "countries are chosen from an autocomplete" do
         expect(page).not_to have_select(t("form.label.activity.recipient_country"))
         expect(page).to have_field(t("form.label.activity.recipient_country"))
         expect(page).to have_css("input.autocomplete__input")

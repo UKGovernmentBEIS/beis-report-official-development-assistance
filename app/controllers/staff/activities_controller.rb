@@ -2,11 +2,12 @@
 
 class Staff::ActivitiesController < Staff::BaseController
   include Secured
+  after_action :verify_authorized, except: [:index, :historic]
+  after_action :verify_policy_scoped, only: [:index, :historic]
 
   def index
     @organisation_id = organisation_id
-    @activities = policy_scope(Activity.where(organisation: organisation_id))
-    authorize @activities
+    @activities = policy_scope(Activity.where(organisation: organisation_id)).current
     @activity_presenters = @activities.includes(:organisation).order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
   end
 
@@ -17,7 +18,7 @@ class Staff::ActivitiesController < Staff::BaseController
     @activities = @activity.child_activities.order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
 
     @transactions = policy_scope(Transaction).where(parent_activity: @activity).order("date DESC")
-    @budgets = policy_scope(Budget).where(parent_activity: @activity).order("period_start_date DESC")
+    @budgets = policy_scope(Budget).where(parent_activity: @activity).order("financial_year DESC")
     @planned_disbursements = policy_scope(@activity.latest_planned_disbursements)
 
     respond_to do |format|
@@ -38,6 +39,12 @@ class Staff::ActivitiesController < Staff::BaseController
     @activity.create_activity key: "activity.create", owner: current_user
 
     redirect_to activity_step_path(@activity.id, :blank)
+  end
+
+  def historic
+    @organisation_id = organisation_id
+    @historic_activities = policy_scope(Activity.where(organisation: organisation_id)).historic
+    @historic_activity_presenters = @historic_activities.includes(:organisation).order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
   end
 
   private

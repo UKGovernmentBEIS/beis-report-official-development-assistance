@@ -22,6 +22,13 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#flow" do
+    it "always returns the default ODA flow type, code '10'" do
+      activity = Activity.new
+      expect(activity.flow).to eq "10"
+    end
+  end
+
   describe "scopes" do
     describe ".funds" do
       it "only returns fund level activities" do
@@ -86,6 +93,11 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "validations" do
+    it { should validate_attribute(:planned_start_date).with(:date_within_boundaries) }
+    it { should validate_attribute(:planned_end_date).with(:date_within_boundaries) }
+    it { should validate_attribute(:actual_start_date).with(:date_within_boundaries) }
+    it { should validate_attribute(:actual_end_date).with(:date_within_boundaries) }
+
     context "overall activity state" do
       context "when the activity form is a draft" do
         subject { build(:activity, :at_identifier_step, form_state: "blank") }
@@ -419,26 +431,6 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when planned_start_date is not blank" do
-      let(:activity) { build(:activity) }
-
-      it "does not allow a planned_start_date more than 10 years ago" do
-        activity = build(:activity, planned_start_date: 11.years.ago)
-        expect(activity.valid?).to be_falsey
-        expect(activity.errors[:planned_start_date]).to include "Date must be between 10 years ago and 25 years in the future"
-      end
-
-      it "does not allow a planned_start_date more than 25 years in the future" do
-        activity = build(:activity, planned_start_date: 26.years.from_now)
-        expect(activity.valid?).to be_falsey
-      end
-
-      it "allows a planned_start_date between 10 years ago and 25 years in the future" do
-        activity = build(:activity, planned_start_date: Date.today)
-        expect(activity.valid?).to be_truthy
-      end
-    end
-
     context "when planned_end_date is not blank" do
       let(:activity) { build(:activity) }
 
@@ -446,40 +438,6 @@ RSpec.describe Activity, type: :model do
         activity = build(:activity, planned_start_date: Date.today, planned_end_date: Date.yesterday)
         expect(activity.valid?).to be_falsey
         expect(activity.errors[:planned_end_date]).to include "Planned end date must be after planned start date"
-      end
-    end
-
-    context "when the actual_start_date is not blank" do
-      it "allows todays date" do
-        activity = build(:activity, actual_start_date: Date.today)
-        expect(activity.valid?).to be_truthy
-      end
-
-      it "allows dates in the past" do
-        activity = build(:activity, actual_start_date: 1.year.ago)
-        expect(activity.valid?).to be_truthy
-      end
-
-      it "does not allow a date in the future" do
-        activity = build(:activity, actual_start_date: 1.day.from_now)
-        expect(activity.valid?).to be_falsey
-      end
-    end
-
-    context "when the actual_end_date is not blank" do
-      it "allows todays date" do
-        activity = build(:activity, actual_end_date: Date.today)
-        expect(activity.valid?).to be_truthy
-      end
-
-      it "allows dates in the past" do
-        activity = build(:activity, actual_end_date: 1.year.ago)
-        expect(activity.valid?).to be_truthy
-      end
-
-      it "does not allow a date in the future" do
-        activity = build(:activity, actual_end_date: 1.day.from_now)
-        expect(activity.valid?).to be_falsey
       end
     end
 
@@ -649,13 +607,6 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when flow is blank" do
-      subject(:activity) { build(:activity, flow: nil) }
-      it "should not be valid" do
-        expect(activity.valid?(:flow_step)).to be_falsey
-      end
-    end
-
     context "when any of the policy markers is blank on levels C or D" do
       subject(:activity) { build(:project_activity, policy_marker_gender: nil) }
       it "should not be valid" do
@@ -779,6 +730,38 @@ RSpec.describe Activity, type: :model do
         it "should not require the presence of neither total applications nor total awards" do
           expect(activity.valid?(:total_applications_and_awards_step)).to be_truthy
         end
+      end
+    end
+
+    describe "channel_of_delivery_code" do
+      it "is not required for a fund" do
+        expect(build(:fund_activity, channel_of_delivery_code: nil)).to be_valid
+      end
+
+      it "is not required for a programme" do
+        expect(build(:programme_activity, channel_of_delivery_code: nil)).to be_valid
+      end
+
+      it "is required to be a BEIS-allowed code for a project" do
+        activity = build(:project_activity, channel_of_delivery_code: nil)
+        expect(activity).to be_invalid
+
+        activity.channel_of_delivery_code = "12004"
+        expect(activity).to be_invalid
+
+        activity.channel_of_delivery_code = "11000"
+        expect(activity).to be_valid
+      end
+
+      it "is required to be a BEIS-allowed code for a third party project" do
+        activity = build(:third_party_project_activity, channel_of_delivery_code: nil)
+        expect(activity).to be_invalid
+
+        activity.channel_of_delivery_code = "12004"
+        expect(activity).to be_invalid
+
+        activity.channel_of_delivery_code = "11000"
+        expect(activity).to be_valid
       end
     end
   end
@@ -1421,6 +1404,26 @@ RSpec.describe Activity, type: :model do
         activity = Activity.new(programme_status: "spend_in_progress")
         expect(activity.iati_status).to eql "2"
       end
+    end
+  end
+
+  describe ".hierarchically_grouped_projects" do
+    before do
+      first_project = create(:project_activity, roda_identifier_fragment: "zzxx")
+      create(:third_party_project_activity, roda_identifier_fragment: "ww", parent: first_project)
+
+      _second_project = create(:project_activity, roda_identifier_fragment: "mmnn")
+
+      third_project = create(:project_activity, roda_identifier_fragment: "aabb")
+      (1..3).each do |i|
+        create(:third_party_project_activity, roda_identifier_fragment: "cc#{3 - i}", parent: third_project)
+      end
+    end
+
+    it "returns projects followed by their third-party project children" do
+      result = Activity.all.hierarchically_grouped_projects
+
+      expect(result.map(&:roda_identifier_fragment)).to eq(["aabb", "cc0", "cc1", "cc2", "mmnn", "zzxx", "ww"])
     end
   end
 end

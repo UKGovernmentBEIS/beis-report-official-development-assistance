@@ -104,12 +104,10 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def flow
-    return if super.blank?
     I18n.t("activity.flow.#{super}")
   end
 
   def flow_with_code
-    return if flow.blank?
     "#{flow} (#{to_model.flow})"
   end
 
@@ -235,5 +233,12 @@ class ActivityPresenter < SimpleDelegator
   def variance_for_report_financial_quarter(report:)
     return if super.blank?
     "%.2f" % super
+  end
+
+  def channel_of_delivery_code
+    item = channel_of_delivery_codes.find { |item| item["code"] == super }
+    return if item.blank?
+
+    "#{item["code"]}: #{item["name"]}"
   end
 end
