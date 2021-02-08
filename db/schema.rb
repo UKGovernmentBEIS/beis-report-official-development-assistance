@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 2021_02_02_192712) do
     t.integer "fund_pillar"
     t.integer "programme_status"
     t.string "channel_of_delivery_code"
+    t.integer "source_fund_code"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
