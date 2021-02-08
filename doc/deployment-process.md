@@ -44,7 +44,7 @@ The heading should link to a Github URL at the bottom of the file, which shows t
    Let the team know about the release. This is posted in Slack under #beis-roda. Typical form is:
 
    ```
-   @here :badger: Release N of RODA going to production :badger:
+   @here :badgerbadgerbadger: Release N of RODA going to production :badgerbadgerbadger:
    ```
 
 1. Manually merge to master to release
