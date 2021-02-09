@@ -61,6 +61,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Static pages
+  get "/pages/*id" => "pages#show", :as => :page, :format => false
+
   # Authentication
   get "auth/oauth2/callback" => "auth0#callback"
   get "auth/failure" => "auth0#failure"
