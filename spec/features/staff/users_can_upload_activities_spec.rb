@@ -20,7 +20,8 @@ RSpec.feature "users can upload activities" do
   scenario "downloading the CSV template" do
     click_link t("action.activity.download.button")
 
-    rows = CSV.parse(page.body, headers: false).first
+    csv_data = page.body.delete_prefix("\uFEFF")
+    rows = CSV.parse(csv_data, headers: false).first
 
     expect(rows).to match_array([
       "Activity Status",
