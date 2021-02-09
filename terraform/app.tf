@@ -35,6 +35,11 @@ resource "cloudfoundry_app" "beis-roda-app" {
     "GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW" = var.google_tag_manager_environment_preview
   }
   # routes need to be declared with the app for blue green deployments to work
-  routes { route = cloudfoundry_route.beis-roda-route.id }
+  routes {
+    route = cloudfoundry_route.beis-roda-route.id
+  }
+  routes {
+    route = cloudfoundry_route.beis-roda-custom-domain-route.id
+  }
 
 }
