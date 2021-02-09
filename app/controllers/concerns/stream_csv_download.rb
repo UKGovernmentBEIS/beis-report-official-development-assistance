@@ -1,4 +1,5 @@
 module StreamCsvDownload
+  extend ActiveSupport::Concern
   include ActionController::Live
 
   def stream_csv_download(filename:, headers:)
