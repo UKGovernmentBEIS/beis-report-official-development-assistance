@@ -12,14 +12,14 @@ class ExportActivityToCsv
     values = columns.values.map(&:call)
     values = values.push(previous_quarter_actuals) if previous_report.present?
     values = values.concat(next_twelve_quarter_forecasts)
-    values.to_csv
+    values
   end
 
   def headers
     values = columns.keys
     values = values.push(previous_quarter_actuals_header) if previous_report.present?
     values = values.concat(next_twelve_quarter_forecasts_headers)
-    values.to_csv
+    values
   end
 
   def previous_quarter_actuals

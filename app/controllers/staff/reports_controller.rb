@@ -4,7 +4,7 @@ require "csv"
 
 class Staff::ReportsController < Staff::BaseController
   include Secured
-  include ActionController::Live
+  include StreamCsvDownload
 
   def index
     if current_user.service_owner?
@@ -149,12 +149,13 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def send_csv
-    response.headers["Content-Type"] = "text/csv"
-    response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(@report_presenter.fund.title)}-#{ERB::Util.url_encode(@report_presenter.financial_quarter_and_year)}-#{ERB::Util.url_encode(@report.description)}.csv"
-    response.stream.write ExportActivityToCsv.new(report: @report).headers
-    @report_activities.each do |activity|
-      response.stream.write ExportActivityToCsv.new(activity: activity, report: @report).call
+    filename = "#{ERB::Util.url_encode(@report_presenter.fund.title)}-#{ERB::Util.url_encode(@report_presenter.financial_quarter_and_year)}-#{ERB::Util.url_encode(@report.description)}.csv"
+    headers = ExportActivityToCsv.new(report: @report).headers
+
+    stream_csv_download(filename: filename, headers: headers) do |csv|
+      @report_activities.each do |activity|
+        csv << ExportActivityToCsv.new(activity: activity, report: @report).call
+      end
     end
-    response.stream.close
   end
 end

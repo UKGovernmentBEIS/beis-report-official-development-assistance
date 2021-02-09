@@ -491,6 +491,10 @@
 - Add links to the guidance across the site
 - Users can report Channel of delivery code through the activity form
 
+## [unreleased]
+
+- Serve CSV downloads encoded in UTF-8, prefixed with a byte order mark
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-31...HEAD
 [release-31]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-30...release-31
 [release-30]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-29...release-30

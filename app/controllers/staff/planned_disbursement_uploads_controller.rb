@@ -4,6 +4,7 @@ require "csv"
 
 class Staff::PlannedDisbursementUploadsController < Staff::BaseController
   include Secured
+  include StreamCsvDownload
 
   before_action :authorize_report
 
@@ -12,16 +13,13 @@ class Staff::PlannedDisbursementUploadsController < Staff::BaseController
   end
 
   def show
-    response.headers["Content-Type"] = "text/csv"
-    response.headers["Content-Disposition"] = "attachment; filename=forecasts.csv"
-
     generator = ImportPlannedDisbursements::Generator.new
 
-    response.stream.write(CSV.generate_line(generator.column_headings))
-    @report.reportable_activities.each do |activity|
-      response.stream.write(CSV.generate_line(generator.csv_row(activity)))
+    stream_csv_download(filename: "forecasts.csv", headers: generator.column_headings) do |csv|
+      @report.reportable_activities.each do |activity|
+        csv << generator.csv_row(activity)
+      end
     end
-    response.stream.close
   end
 
   def update
