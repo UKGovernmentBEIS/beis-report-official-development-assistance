@@ -25,6 +25,23 @@ script/server
 script/test
 ```
 
+## Running backing services with Docker compose
+
+If you prefer not to install the backing services (Postgres and Redis) with
+Homebrew via the scripts above, run them in the background with Docker and
+then use standard rails commands to interact with the application (you will need
+Docker installed on your device):
+
+````
+docker-compose -f backing-services-docker-compose.yml up -d
+````
+
+To stop the backing services:
+
+````
+docker-compose -f backing-services-docker-compose.yml down
+````
+
 ## Architecture decision records
 
 We use ADRs to document architectural decisions that we make. They can be found in doc/architecture/decisions and contributed to with the [adr-tools](https://github.com/npryce/adr-tools).
