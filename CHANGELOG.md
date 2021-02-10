@@ -494,6 +494,7 @@
 ## [unreleased]
 
 - Serve CSV downloads encoded in UTF-8, prefixed with a byte order mark
+- Show textarea content with wrapper HTML on the Activity details page
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-31...HEAD
 [release-31]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-30...release-31
