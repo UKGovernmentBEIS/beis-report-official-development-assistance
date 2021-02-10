@@ -39,6 +39,7 @@ en:
       button:
         create: Add organisation
     organisation:
+      create_programme: Add level B activity
       button:
         choose_extending_organisation: Choose extending organisation
         create_activity: Add activity

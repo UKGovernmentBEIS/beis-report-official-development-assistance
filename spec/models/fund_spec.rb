@@ -9,8 +9,16 @@ RSpec.describe Fund do
       expect(fund.id).to eq(1)
     end
 
+    it "initializes successfully when the code was provided as a string" do
+      fund = described_class.new("1")
+
+      expect(fund.name).to eq("Newton Fund")
+      expect(fund.id).to eq(1)
+    end
+
     it "raises and error when the code does not exist" do
       expect { described_class.new(99) }.to raise_error("Fund::InvalidFund")
+      expect { described_class.new("99") }.to raise_error("Fund::InvalidFund")
     end
   end
 
