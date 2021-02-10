@@ -13,6 +13,51 @@ RSpec.feature "BEIS users can create a programme level activity" do
     expect(page).to have_content t("action.programme.create.success")
   end
 
+  context "via a delivery partner's organisation page" do
+    let!(:delivery_partner) { create(:delivery_partner_organisation) }
+
+    before do
+      create(:fund_activity, :gcrf)
+      create(:fund_activity, :newton)
+    end
+
+    Fund.all.each do |source_fund|
+      context "with #{source_fund.name} as the funding source" do
+        scenario "reaches the 'roda_identifier' form step, with a newly created programme-level activity" do
+          visit organisations_path
+
+          within ".govuk-table__row##{delivery_partner.id}" do
+            click_on t("default.link.show")
+          end
+
+          click_on t("form.button.activity.new_with_source_fund", name: source_fund.name)
+
+          expect(page).to have_content t("form.label.activity.delivery_partner_identifier")
+
+          programme = Activity.programme.first
+          expected_parent_activity = Fund.new(source_fund.id).activity
+
+          expect(programme.form_state).to eq("identifier")
+          expect(programme.parent).to eq(expected_parent_activity)
+          expect(programme.source_fund).to eq(source_fund)
+
+          fill_in "activity[delivery_partner_identifier]", with: "foo"
+          click_button t("form.button.activity.submit")
+
+          expect(page).to have_content t("form.label.activity.roda_identifier_fragment", level: "programme")
+        end
+      end
+    end
+  end
+
+  it "cannot create a programme from the BEIS organisation page" do
+    visit organisation_path(user.organisation)
+
+    Fund.all.each do |source_fund|
+      expect(page).to have_no_content(t("form.button.activity.new_with_source_fund", name: source_fund.name))
+    end
+  end
+
   context "validations" do
     scenario "validation errors work as expected" do
       parent = create(:fund_activity, :gcrf, organisation: user.organisation)
