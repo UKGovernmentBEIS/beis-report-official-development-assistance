@@ -1,11 +1,4 @@
-RSpec.feature "Users can create a fund level activity" do
-  context "when the user is not logged in" do
-    it "redirects the user to the root path" do
-      visit activity_step_path(double(Activity, id: "123"), :identifier)
-      expect(current_path).to eq(root_path)
-    end
-  end
-
+RSpec.feature "BEIS users can create a fund level activity" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
@@ -309,24 +302,6 @@ RSpec.feature "Users can create a fund level activity" do
         expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
         expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [fund.id]
       end
-    end
-  end
-
-  context "when the user does NOT belong to BEIS" do
-    let(:user) { create(:delivery_partner_user) }
-    before { authenticate!(user: user) }
-
-    it "does not allow them to see funds" do
-      fund_activity = create(:fund_activity)
-
-      visit organisation_path(user.organisation)
-
-      expect(page).not_to have_content(fund_activity.title)
-    end
-
-    it "does not let them create a fund level activity" do
-      visit organisation_path(user.organisation)
-      expect(page).not_to have_button(t("page_content.organisation.button.create_activity"))
     end
   end
 end

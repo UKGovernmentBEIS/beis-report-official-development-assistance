@@ -1,4 +1,4 @@
-RSpec.feature "Users can create a programme activity" do
+RSpec.feature "BEIS users can create a programme activity" do
   let(:user) { create(:beis_user) }
 
   context "when signed in" do
