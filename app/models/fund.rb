@@ -31,6 +31,14 @@ class Fund
     id == MAPPINGS["NF"]
   end
 
+  def activity
+    Activity.fund.find_by!(source_fund_code: id)
+  end
+
+  def ==(other)
+    self.class == other.class && id == other.id
+  end
+
   class << self
     def from_activity(activity)
       raise InvalidActivity unless activity.fund?
