@@ -14,6 +14,14 @@ RSpec.describe Fund do
     end
   end
 
+  describe ".MAPPINGS" do
+    it "contains a mapping for every entry in the 'fund_types' codelist" do
+      codelist = Codelist.new(type: "fund_types", source: "beis")
+
+      expect(described_class::MAPPINGS.values).to eql(codelist.values_for("code"))
+    end
+  end
+
   describe ".from_activity" do
     let(:fund) { described_class.from_activity(activity) }
 
@@ -55,6 +63,18 @@ RSpec.describe Fund do
       it "should raise an error" do
         expect { fund }.to raise_error("Fund::InvalidFund")
       end
+    end
+  end
+
+  describe ".all" do
+    it "returns a Fund for every entry in the 'fund_types' codelist" do
+      codelist = Codelist.new(type: "fund_types", source: "beis")
+
+      funds = described_class.all
+      expect(funds.size).to eq(codelist.list.size)
+
+      ids = funds.map(&:id)
+      expect(ids).to eq(codelist.values_for("code"))
     end
   end
 
