@@ -64,7 +64,7 @@
     %dt.govuk-summary-list__key
       = t("summary.label.activity.description")
     %dd.govuk-summary-list__value
-      = activity_presenter.description
+      = simple_format(activity_presenter.description, class: "govuk-body")
     %dd.govuk-summary-list__actions
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :purpose)
         = a11y_action_link(I18n.t("default.link.#{activity_presenter.call_to_action(:description)}"), activity_step_path(activity_presenter, :purpose), I18n.t("summary.label.activity.description").downcase)
@@ -74,7 +74,7 @@
       %dt.govuk-summary-list__key
         = t("summary.label.activity.objectives")
       %dd.govuk-summary-list__value
-        = activity_presenter.objectives
+        = simple_format(activity_presenter.objectives, class: "govuk-body")
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :objectives)
           = a11y_action_link(I18n.t("default.link.#{activity_presenter.call_to_action(:objectives)}"), activity_step_path(activity_presenter, :objectives), I18n.t("summary.label.activity.objectives").downcase)
