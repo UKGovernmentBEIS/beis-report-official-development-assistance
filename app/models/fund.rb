@@ -41,7 +41,7 @@ class Fund
     end
 
     def all
-      valid_codes.map { |c| new(code) }
+      valid_codes.map { |code| new(code) }
     end
 
     def codelist
