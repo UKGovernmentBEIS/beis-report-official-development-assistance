@@ -58,6 +58,26 @@ RSpec.describe CreateTransaction do
       it_behaves_like "sanitises monetary field"
     end
 
+    context "when the description is blank" do
+      it "sets a default description" do
+        activity = create(:activity, title: "Some activity")
+        attributes = ActionController::Parameters.new(date: Date.parse("2020-04-01")).permit!
+
+        result = described_class.new(activity: activity).call(attributes: attributes)
+
+        expect(result.object.description).to eq "Q1 2020-2021 spend on Some activity"
+      end
+    end
+
+    context "when the date and description is blank" do
+      it "does not set the default description" do
+        attributes = ActionController::Parameters.new.permit!
+        result = described_class.new(activity: activity).call(attributes: attributes)
+
+        expect(result.object.description).to eq nil
+      end
+    end
+
     context "when unknown attributes are passed in" do
       it "raises an error" do
         attributes = ActionController::Parameters.new(foo: "bar").permit!
