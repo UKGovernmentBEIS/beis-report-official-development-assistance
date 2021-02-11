@@ -9,8 +9,16 @@ RSpec.describe Fund do
       expect(fund.id).to eq(1)
     end
 
+    it "initializes successfully when the code was provided as a string" do
+      fund = described_class.new("1")
+
+      expect(fund.name).to eq("Newton Fund")
+      expect(fund.id).to eq(1)
+    end
+
     it "raises and error when the code does not exist" do
       expect { described_class.new(99) }.to raise_error("Fund::InvalidFund")
+      expect { described_class.new("99") }.to raise_error("Fund::InvalidFund")
     end
   end
 
@@ -109,6 +117,39 @@ RSpec.describe Fund do
       let(:id) { Fund::MAPPINGS["GCRF"] }
 
       it { is_expected.to be false }
+    end
+  end
+
+  describe "#==" do
+    it "is true when the instances have the same id" do
+      instance_1 = described_class.new(1)
+      instance_2 = described_class.new(1)
+
+      expect(instance_1 == instance_2).to be_truthy
+    end
+  end
+
+  describe "#activity" do
+    let(:fund) { described_class.new(id) }
+
+    context "when the fund is GCRF" do
+      let(:id) { Fund::MAPPINGS["GCRF"] }
+
+      it "returns the GCRF fund-level Activity for the current Fund" do
+        fund_activity = create(:fund_activity, :gcrf)
+
+        expect(fund.activity).to eq(fund_activity)
+      end
+    end
+
+    context "when the fund is Newton Fund" do
+      let(:id) { Fund::MAPPINGS["NF"] }
+
+      it "returns the Newton fund-level Activity for the current Fund" do
+        fund_activity = create(:fund_activity, :newton)
+
+        expect(fund.activity).to eq(fund_activity)
+      end
     end
   end
 end
