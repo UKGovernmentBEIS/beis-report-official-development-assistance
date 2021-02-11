@@ -15,6 +15,10 @@ Rails.application.routes.draw do
       end
     end
     resources :organisations, except: [:destroy] do
+      resources :source_funds do
+        resources :children, only: :create, controller: :fund_children
+      end
+
       resources :activities, except: [:index, :destroy] do
         get "financials" => "activity_financials#show"
         get "details" => "activity_details#show"

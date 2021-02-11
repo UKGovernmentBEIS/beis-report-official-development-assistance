@@ -24,6 +24,8 @@ class Staff::OrganisationsController < Staff::BaseController
       user: current_user
     )
 
+    @source_funds = Fund.all
+
     respond_to do |format|
       format.html
       format.xml do

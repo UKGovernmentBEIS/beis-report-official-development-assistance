@@ -7,11 +7,9 @@ RSpec.feature "Users can view fund level activities" do
     end
   end
 
-  context "when the user is authenticated" do
+  context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
-    before do
-      authenticate!(user: user)
-    end
+    before { authenticate!(user: user) }
 
     scenario "can view a fund level activity" do
       fund_activity = create(:activity, level: :fund, organisation: user.organisation)
@@ -42,6 +40,24 @@ RSpec.feature "Users can view fund level activities" do
 
         expect(page).to have_content("Untitled (#{activity.id})")
       end
+    end
+  end
+
+  context "when the user does NOT belong to BEIS" do
+    let(:user) { create(:delivery_partner_user) }
+    before { authenticate!(user: user) }
+
+    it "does not allow them to see funds" do
+      fund_activity = create(:fund_activity)
+
+      visit organisation_path(user.organisation)
+
+      expect(page).not_to have_content(fund_activity.title)
+    end
+
+    it "does not let them create a fund level activity" do
+      visit organisation_path(user.organisation)
+      expect(page).not_to have_button(t("page_content.organisation.button.create_activity"))
     end
   end
 end

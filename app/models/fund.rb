@@ -10,7 +10,7 @@ class Fund
   }
 
   def initialize(id)
-    @code = self.class.codelist.find { |c| c["code"] == id }
+    @code = self.class.codelist.find { |c| c["code"] == id.to_i }
 
     raise InvalidFund if @code.nil?
   end
@@ -29,6 +29,14 @@ class Fund
 
   def newton?
     id == MAPPINGS["NF"]
+  end
+
+  def activity
+    Activity.fund.find_by!(source_fund_code: id)
+  end
+
+  def ==(other)
+    self.class == other.class && id == other.id
   end
 
   class << self
