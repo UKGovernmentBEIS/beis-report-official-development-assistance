@@ -12,13 +12,13 @@ jobs:
         uses: peter-evans/create-or-update-comment@v1
         with:
           comment-id: ${{ github.event.comment.id }}
-          reactions: +1
+          reactions: "+1"
       - name: Checkout the latest code
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
           fetch-depth: 0
       - name: Automatic Rebase
         uses: cirrus-actions/rebase@1.4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
