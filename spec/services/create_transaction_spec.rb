@@ -78,6 +78,24 @@ RSpec.describe CreateTransaction do
       end
     end
 
+    context "when the transaction type is not set" do
+      it "sets the default transaction type" do
+        attributes = ActionController::Parameters.new.permit!
+        result = described_class.new(activity: activity).call(attributes: attributes)
+
+        expect(result.object.transaction_type).to eq CreateTransaction::DEFAULT_TRANSACTION_TYPE
+      end
+    end
+
+    context "when the transaction type is set" do
+      it "sets the default transaction type" do
+        attributes = ActionController::Parameters.new({transaction_type: 2}).permit!
+        result = described_class.new(activity: activity).call(attributes: attributes)
+
+        expect(result.object.transaction_type).to eq "2"
+      end
+    end
+
     context "when unknown attributes are passed in" do
       it "raises an error" do
         attributes = ActionController::Parameters.new(foo: "bar").permit!
