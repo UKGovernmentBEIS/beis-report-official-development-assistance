@@ -40,8 +40,6 @@ class ImportTransactions
   end
 
   class RowImporter
-    TRANSACTION_TYPE_DISBURSEMENT = "3"
-
     attr_reader :errors
 
     def initialize(report, uploader, row)
@@ -98,7 +96,7 @@ class ImportTransactions
       organisation = @activity.providing_organisation
 
       attrs[:currency] = organisation.default_currency
-      attrs[:transaction_type] = TRANSACTION_TYPE_DISBURSEMENT
+      attrs[:transaction_type] = Transaction::DEFAULT_TRANSACTION_TYPE
       attrs[:providing_organisation_reference] = organisation.iati_reference
       attrs[:providing_organisation_name] = organisation.name
       attrs[:providing_organisation_type] = organisation.organisation_type

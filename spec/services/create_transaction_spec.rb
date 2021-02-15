@@ -83,7 +83,7 @@ RSpec.describe CreateTransaction do
         attributes = ActionController::Parameters.new.permit!
         result = described_class.new(activity: activity).call(attributes: attributes)
 
-        expect(result.object.transaction_type).to eq CreateTransaction::DEFAULT_TRANSACTION_TYPE
+        expect(result.object.transaction_type).to eq Transaction::DEFAULT_TRANSACTION_TYPE
       end
     end
 

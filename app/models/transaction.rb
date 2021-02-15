@@ -1,6 +1,9 @@
 class Transaction < ApplicationRecord
   include PublicActivity::Common
 
+  TRANSACTION_TYPE_DISBURSEMENT = "3"
+  DEFAULT_TRANSACTION_TYPE = TRANSACTION_TYPE_DISBURSEMENT
+
   strip_attributes only: [:providing_organisation_reference, :receiving_organisation_reference]
 
   belongs_to :parent_activity, class_name: "Activity"
