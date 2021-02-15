@@ -42,6 +42,8 @@ jobs:
           TF_VAR_google_tag_manager_container_id: ${{ secrets.STAGING_GOOGLE_TAG_MANAGER_CONTAINER_ID }}
           TF_VAR_google_tag_manager_environment_auth: ${{ secrets.STAGING_GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH }}
           TF_VAR_google_tag_manager_environment_preview: ${{ secrets.STAGING_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW }}
+          TF_VAR_custom_domain: ${{ secrets.STAGING_CUSTOM_DOMAIN }}
+          TF_VAR_custom_hostname: ${{ secrets.STAGING_CUSTOM_HOSTNAME }}
         run: |
           script/deploy-terraform
         if: github.ref == 'refs/heads/develop'
@@ -64,6 +66,8 @@ jobs:
           TF_VAR_google_tag_manager_container_id: ${{ secrets.PROD_GOOGLE_TAG_MANAGER_CONTAINER_ID }}
           TF_VAR_google_tag_manager_environment_auth: ${{ secrets.PROD_GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH }}
           TF_VAR_google_tag_manager_environment_preview: ${{ secrets.PROD_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW }}
+          TF_VAR_custom_domain: ${{ secrets.PROD_CUSTOM_DOMAIN }}
+          TF_VAR_custom_hostname: ${{ secrets.PROD_CUSTOM_HOSTNAME }}
         run: |
           script/deploy-terraform
         if: github.ref == 'refs/heads/master'
