@@ -29,6 +29,43 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe ".new_child" do
+    let(:parent_activity) { create(:fund_activity, :newton) }
+    let(:delivery_partner_organisation) { create(:delivery_partner_organisation) }
+
+    before do
+      allow_any_instance_of(ActivityDefaults).to receive(:call).and_return(
+        title: "a returned value",
+        form_state: "form_state"
+      )
+    end
+
+    it "initialises a new activity with the attribute hash from ActivityDefaults" do
+      activity = Activity.new_child(
+        parent_activity: parent_activity,
+        delivery_partner_organisation: delivery_partner_organisation
+      )
+
+      expect(activity).to be_an_instance_of(Activity)
+      expect(activity.title).to eq "a returned value"
+      expect(activity.form_state).to eq "form_state"
+    end
+
+    it "accepts a block that can override any default values" do
+      parent_activity = create(:fund_activity, :newton)
+      delivery_partner_organisation = create(:delivery_partner_organisation)
+
+      activity = Activity.new_child(
+        parent_activity: parent_activity,
+        delivery_partner_organisation: delivery_partner_organisation
+      ) { |a|
+        a.form_state = "overridden"
+      }
+
+      expect(activity.form_state).to eq "overridden"
+    end
+  end
+
   describe "scopes" do
     describe ".funds" do
       it "only returns fund level activities" do
