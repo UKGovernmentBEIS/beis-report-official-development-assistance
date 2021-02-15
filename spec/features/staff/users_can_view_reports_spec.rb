@@ -90,6 +90,85 @@ RSpec.feature "Users can view reports" do
       expect(header).to match(/Legacy%20Report/)
     end
 
+    context "when they download a CSV for all reports" do
+      let!(:programme) { create(:programme_activity) }
+      scenario "reports are sorted by DP" do
+        first_dp_org = create(:delivery_partner_organisation, name: "a-delivery-partner")
+        create(:report, :active, organisation: first_dp_org, fund: programme.parent)
+        create(:project_activity, organisation: first_dp_org, parent: programme, delivery_partner_identifier: "a-dp-01")
+
+        second_dp_org = create(:delivery_partner_organisation, name: "b-delivery-partner")
+        create(:report, :active, organisation: second_dp_org, fund: programme.parent)
+        create(:project_activity, organisation: second_dp_org, parent: programme, delivery_partner_identifier: "b-dp-01")
+
+        visit reports_path
+
+        click_on t("action.report.download.reports")
+        document = CSV.parse(page.body, headers: true)
+        dp_id_column = document.map { |column| column["Delivery partner identifier"] }
+
+        expect(dp_id_column).to eq(["a-dp-01", "b-dp-01"])
+      end
+
+      scenario "activities in the report are sorted by hierarchy level" do
+        dp_org = create(:delivery_partner_organisation)
+        create(:report, :submitted, organisation: dp_org, fund: programme.parent)
+        project = create(:project_activity, organisation: dp_org, parent: programme)
+        create(:third_party_project_activity, organisation: dp_org, parent: project)
+
+        visit reports_path
+
+        click_on t("action.report.download.reports")
+        document = CSV.parse(page.body, headers: true)
+        level_column = document.map { |column| column["Level"] }
+
+        expect(level_column).to eq(["Project (level C)", "Third-party project (level D)"])
+      end
+
+      scenario "all relevant reports are included in the CSV file" do
+        first_dp_org = create(:delivery_partner_organisation)
+        create(:report, :in_review, organisation: first_dp_org, fund: programme.parent)
+        first_dp_org_project = create(:project_activity, organisation: first_dp_org, parent: programme, delivery_partner_identifier: "first-dp-01")
+
+        second_dp_org = create(:delivery_partner_organisation)
+        create(:report, :awaiting_changes, organisation: second_dp_org, fund: programme.parent)
+        second_dp_org_project = create(:project_activity, organisation: second_dp_org, parent: programme, delivery_partner_identifier: "second-dp-01")
+
+        third_dp_org = create(:delivery_partner_organisation)
+        create(:report, :approved, organisation: third_dp_org, fund: programme.parent)
+        third_dp_org_project = create(:project_activity, organisation: third_dp_org, parent: programme, delivery_partner_identifier: "third-dp-01")
+
+        visit reports_path
+
+        click_on t("action.report.download.reports")
+        document = CSV.parse(page.body, headers: true)
+        dp_id_column = document.map { |column| column["Delivery partner identifier"] }
+
+        expect(page.response_headers["Content-Type"]).to include("text/csv")
+        expect(page.response_headers["Content-Disposition"]).to match("Reports.csv")
+
+        expect(dp_id_column).to have_content(first_dp_org_project.delivery_partner_identifier)
+        expect(dp_id_column).to have_content(second_dp_org_project.delivery_partner_identifier)
+        expect(dp_id_column).not_to have_content(third_dp_org_project.delivery_partner_identifier)
+      end
+
+      scenario "they get an error if one or more reports are from a different quarter" do
+        first_dp_org = create(:delivery_partner_organisation)
+        create(:report, :active, organisation: first_dp_org, fund: programme.parent, financial_quarter: 1)
+        create(:project_activity, organisation: first_dp_org, parent: programme)
+
+        second_dp_org = create(:delivery_partner_organisation)
+        create(:report, :active, organisation: second_dp_org, fund: programme.parent, financial_quarter: 2)
+        create(:project_activity, organisation: second_dp_org, parent: programme)
+
+        visit reports_path
+
+        click_on t("action.report.download.reports")
+
+        expect(page).to have_content t("action.report.download.failure")
+      end
+    end
+
     context "if the report description is empty" do
       scenario "the report csv has a filename made up of the fund name & report financial year & quarter" do
         report = create(:report, :active, description: "", financial_quarter: 4, financial_year: 2019)
