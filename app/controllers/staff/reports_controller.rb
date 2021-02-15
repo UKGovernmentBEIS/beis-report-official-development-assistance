@@ -8,7 +8,20 @@ class Staff::ReportsController < Staff::BaseController
 
   def index
     if current_user.service_owner?
-      reports_for_service_owner
+
+      respond_to do |format|
+        format.html do
+          reports_for_service_owner
+        end
+        format.csv do
+          if reports_have_same_quarter?
+            send_all_reports_csv
+          else
+            flash[:error] = t("action.report.download.failure")
+            redirect_to action: "index"
+          end
+        end
+      end
     else
       reports_for_delivery_partner
     end
@@ -155,6 +168,30 @@ class Staff::ReportsController < Staff::BaseController
     stream_csv_download(filename: filename, headers: headers) do |csv|
       @report_activities.each do |activity|
         csv << ExportActivityToCsv.new(activity: activity, report: @report).call
+      end
+    end
+  end
+
+  def downloadable_reports_for_beis_users
+    [active_reports_with_organisations, submitted_reports_with_organisations, in_review_reports_with_organisations, awaiting_changes_reports_with_organisations].sum.sort_by { |report| report.organisation.name }
+  end
+
+  def report_activities_sorted_by_level(report)
+    Activity.includes(:organisation).projects_and_third_party_projects_for_report(report).sort_by { |a| a.level }
+  end
+
+  def reports_have_same_quarter?
+    downloadable_reports_for_beis_users.map(&:financial_quarter).uniq.length == 1
+  end
+
+  def send_all_reports_csv
+    report_sample = downloadable_reports_for_beis_users.first
+    headers = ExportActivityToCsv.new(report: report_sample).headers
+    stream_csv_download(filename: "Reports.csv", headers: headers) do |csv|
+      downloadable_reports_for_beis_users.each do |report|
+        report_activities_sorted_by_level(report).each do |activity|
+          csv << ExportActivityToCsv.new(activity: activity, report: report).call
+        end
       end
     end
   end
