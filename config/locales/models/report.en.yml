@@ -122,6 +122,7 @@ en:
           button: Confirm submission
       download:
         button: Download report as CSV file
+        reports: Download all reports as CSV
       in_review:
         confirm:
           button: Confirm
