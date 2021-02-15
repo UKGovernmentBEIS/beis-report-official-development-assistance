@@ -102,7 +102,7 @@ class ImportTransactions
       attrs[:providing_organisation_type] = organisation.organisation_type
 
       presenter = ReportPresenter.new(@report)
-      attrs[:description] = "#{presenter.financial_quarter_and_year} spend on #{@activity.description}"
+      attrs[:description] = "#{presenter.financial_quarter_and_year} spend on #{@activity.title}"
     end
   end
 
