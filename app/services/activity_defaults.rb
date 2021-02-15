@@ -1,9 +1,14 @@
 class ActivityDefaults
+  class InvalidParentActivity < RuntimeError; end
+  class InvalidDeliveryPartnerOrganisation < RuntimeError; end
+
   attr_reader :parent_activity, :delivery_partner_organisation
 
   def initialize(parent_activity:, delivery_partner_organisation:)
     @parent_activity = parent_activity
     @delivery_partner_organisation = delivery_partner_organisation
+
+    check_params!
   end
 
   def call
@@ -62,5 +67,13 @@ class ActivityDefaults
     parent_step_index = Activity::FORM_STEPS.index(:parent)
 
     Activity::FORM_STEPS[parent_step_index + 1].to_s
+  end
+
+  def check_params!
+    raise InvalidParentActivity unless parent_activity.is_a?(Activity)
+    raise InvalidParentActivity if parent_activity.third_party_project?
+
+    raise InvalidDeliveryPartnerOrganisation unless delivery_partner_organisation.is_a?(Organisation)
+    raise InvalidDeliveryPartnerOrganisation if delivery_partner_organisation.service_owner?
   end
 end

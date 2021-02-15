@@ -151,4 +151,26 @@ RSpec.describe ActivityDefaults do
       end
     end
   end
+
+  describe "#initialize" do
+    it "raises an exception if parent_activity parameter is not an instance of Activity" do
+      expect { described_class.new(parent_activity: Class.new, delivery_partner_organisation: delivery_partner_organisation) }
+        .to raise_error(described_class::InvalidParentActivity)
+    end
+
+    it "raises an exception if parent_activity is a third-party project" do
+      expect { described_class.new(parent_activity: third_party_project, delivery_partner_organisation: delivery_partner_organisation) }
+        .to raise_error(described_class::InvalidParentActivity)
+    end
+
+    it "raises an exception if delivery_partner_organisation parameter is not an instance of Organisation" do
+      expect { described_class.new(parent_activity: programme, delivery_partner_organisation: Class.new) }
+        .to raise_error(described_class::InvalidDeliveryPartnerOrganisation)
+    end
+
+    it "raises an exception if delivery_partner_organisation is BEIS" do
+      expect { described_class.new(parent_activity: fund, delivery_partner_organisation: beis) }
+        .to raise_error(described_class::InvalidDeliveryPartnerOrganisation)
+    end
+  end
 end
