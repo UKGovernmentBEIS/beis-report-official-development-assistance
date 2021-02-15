@@ -123,6 +123,7 @@ en:
       download:
         button: Download report as CSV file
         reports: Download all reports as CSV
+        failure: Reports could not be downloaded
       in_review:
         confirm:
           button: Confirm
