@@ -1,8 +1,6 @@
 class CreateTransaction
   attr_accessor :activity, :report, :transaction
 
-  DEFAULT_TRANSACTION_TYPE = "3"
-
   def initialize(activity:, report: nil)
     self.activity = activity
     self.report = report || Report.editable_for_activity(activity)
@@ -16,7 +14,7 @@ class CreateTransaction
     convert_and_assign_value(transaction, attributes[:value])
 
     transaction.description = default_description if transaction.description.nil?
-    transaction.transaction_type = DEFAULT_TRANSACTION_TYPE if transaction.transaction_type.nil?
+    transaction.transaction_type = Transaction::DEFAULT_TRANSACTION_TYPE if transaction.transaction_type.nil?
 
     unless activity.organisation.service_owner?
       transaction.report = report
