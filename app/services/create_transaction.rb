@@ -15,6 +15,9 @@ class CreateTransaction
 
     transaction.description = default_description if transaction.description.nil?
     transaction.transaction_type = Transaction::DEFAULT_TRANSACTION_TYPE if transaction.transaction_type.nil?
+    transaction.providing_organisation_name = activity.providing_organisation.name
+    transaction.providing_organisation_type = activity.providing_organisation.organisation_type
+    transaction.providing_organisation_reference = activity.providing_organisation.iati_reference
 
     unless activity.organisation.service_owner?
       transaction.report = report

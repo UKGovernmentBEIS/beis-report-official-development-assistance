@@ -96,6 +96,15 @@ RSpec.describe CreateTransaction do
       end
     end
 
+    it "sets the providing organisation from the activity" do
+      attributes = ActionController::Parameters.new.permit!
+      result = described_class.new(activity: activity).call(attributes: attributes)
+
+      expect(result.object.providing_organisation_name).to eq activity.providing_organisation.name
+      expect(result.object.providing_organisation_type).to eq activity.providing_organisation.organisation_type
+      expect(result.object.providing_organisation_reference).to eq activity.providing_organisation.iati_reference
+    end
+
     context "when unknown attributes are passed in" do
       it "raises an error" do
         attributes = ActionController::Parameters.new(foo: "bar").permit!
