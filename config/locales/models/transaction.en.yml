@@ -10,6 +10,7 @@ en:
         success: Transaction sucessfully deleted
       download:
         button: Download CSV template
+        hint_html: "<p class='govuk-body'>This CSV contains activity data related to your current report.</p><p class='govuk-body'>Edit it to add the actual spend amounts for your organisation's activities, then upload it through the form.</p>"
       upload:
         button: Upload and continue
         file_missing_or_invalid: Please upload a valid CSV file
@@ -18,7 +19,7 @@ en:
   form:
     label:
       transaction:
-        csv_file: Transaction spreadsheet
+        csv_file: Upload CSV spreadsheet
         currency: Currency
         description: Describe the transaction
         disbursement_channel: Disbursement channel (optional)
