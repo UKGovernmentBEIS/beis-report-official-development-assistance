@@ -12,7 +12,7 @@ class Staff::OrganisationsController < Staff::BaseController
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
 
-    @funds = funds_for_organisation_programmes(organisation_id: organisation.id)
+    @organisation_funds = funds_for_organisation_programmes(organisation_id: organisation.id)
 
     @project_activities = iati_publishable_project_activities(
       organisation: organisation,
@@ -24,7 +24,7 @@ class Staff::OrganisationsController < Staff::BaseController
       user: current_user
     )
 
-    @source_funds = Fund.all
+    @funds = Activity.fund.where(form_state: "complete").order(:title)
 
     respond_to do |format|
       format.html do

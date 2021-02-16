@@ -14,12 +14,12 @@
         %h2.govuk-heading-m
           = t("create_programme", scope: "page_content.organisation")
 
-        - @source_funds.each do |source|
-          = link_to t("form.button.activity.new_with_source_fund", name: source.name),
-            organisation_source_fund_children_path(@organisation_presenter, source.id),
+        - @funds.each do |fund|
+          = link_to t("form.button.activity.new_child", name: fund.title),
+            organisation_activity_children_path(@organisation_presenter, fund.id),
             method: :post, class: "govuk-button govuk-!-margin-right-4"
 
-  - if policy(@organisation_presenter).download? && @funds.any?
+  - if policy(@organisation_presenter).download? && @organisation_funds.any?
     .govuk-grid-row
       .govuk-grid-column-full.download-projects
         %h2.govuk-heading-m
@@ -27,7 +27,7 @@
         %div.govuk-body
           = t("page_content.organisation.download.programmes.explanation")
 
-        - @funds.each do |fund|
+        - @organisation_funds.each do |fund|
           = link_to t("page_content.organisation.download.programmes.button", fund_title: fund.title),
               organisation_path(@organisation_presenter, format: :xml, level: :programme, fund_id: fund.id),
               class: "govuk-button"
