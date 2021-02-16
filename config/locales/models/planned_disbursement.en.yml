@@ -10,6 +10,7 @@ en:
         success: Forecasted spend successfully deleted
       download:
         button: Download CSV template
+        hint_html: "<p class='govuk-body'>This CSV contains activity data related to your current report.</p><p class='govuk-body'>Edit it to add the forecast spend amounts for your organisation's activities, then upload it through the form.</p>"
       upload:
         button: Upload and continue
         file_missing_or_invalid: Please upload a valid CSV file
@@ -18,13 +19,15 @@ en:
   form:
     label:
       planned_disbursement:
-        csv_file: Forecast spreadsheet
+        csv_file: Upload CSV spreadsheet
+        csv_file_recover_from_error: Re-upload CSV spreadsheet
         value: Forecasted spend amount
     legend:
       planned_disbursement:
     hint:
       planned_disbursement:
         csv_file: Upload a spreadsheet containing forecast information in CSV format.
+        csv_file_recover_from_error_html: Upload a spreadsheet containing forecast information in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
         receiving_organisation: The organisation receiving the money from this transaction.
         receiving_organisation_reference_html: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
   table:
