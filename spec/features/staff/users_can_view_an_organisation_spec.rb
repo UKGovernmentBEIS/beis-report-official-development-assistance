@@ -65,6 +65,16 @@ RSpec.feature "Users can view an organisation" do
 
         expect(page).to have_current_path(organisations_path)
       end
+
+      scenario "cannot add a child activity" do
+        gcrf = create(:fund_activity, :gcrf)
+        create(:programme_activity, parent: gcrf, extending_organisation: other_organisation)
+        _report = create(:report, :active, fund: gcrf, organisation: other_organisation)
+
+        visit organisation_path(other_organisation)
+
+        expect(page).to_not have_link(t("action.activity.add_child"), exact: true)
+      end
     end
   end
 
@@ -127,6 +137,23 @@ RSpec.feature "Users can view an organisation" do
       within("h1") do
         expect(page).to have_content(programme.title)
       end
+    end
+
+    scenario "can create a new child activity for a given programme" do
+      gcrf = create(:fund_activity, :gcrf)
+      programme = create(:programme_activity, parent: gcrf, extending_organisation: organisation)
+      _report = create(:report, :active, fund: gcrf, organisation: organisation)
+
+      visit organisation_path(organisation)
+
+      within(id: programme.id) do
+        click_link t("action.activity.add_child")
+      end
+
+      fill_in "activity[delivery_partner_identifier]", with: "foo"
+      click_button t("form.button.activity.submit")
+
+      expect(page).to have_content t("form.label.activity.roda_identifier_fragment", level: "programme")
     end
 
     scenario "does not see a back link on their organisation home page" do

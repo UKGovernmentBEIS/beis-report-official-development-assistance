@@ -2,6 +2,7 @@
 en:
   action:
     activity:
+      add_child: Add child activity
       download:
         button: Download activity CSV template
       upload:

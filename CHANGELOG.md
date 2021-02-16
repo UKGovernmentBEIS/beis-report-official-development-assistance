@@ -520,7 +520,7 @@
 - Remove Data Migrate gem and run data migrations manually
 - Activities can recursively total the transactions for all of their children
 - Add an attribute to `Organisation` to record the short name, `beis_organisation_reference`,
-and populate it via a data migration
+- Delivery partners can add level C activities, automatically parented to an existing level B
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-34...HEAD
 [release-34]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-33...release-34
