@@ -1,6 +1,6 @@
 .govuk-grid-row
   .govuk-grid-column-two-thirds
-    = form_for @report_presenter, url: report_activity_upload_path(@report_presenter) do |f|
+    = form_for Report.new, url: upload_activity_upload_path do |f|
 
       = f.govuk_file_field :activity_csv,
         label: { text: t("form.label.activity.csv_file") },

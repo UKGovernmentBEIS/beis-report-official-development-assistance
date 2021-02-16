@@ -6,18 +6,14 @@ class Staff::ActivityUploadsController < Staff::BaseController
   include Secured
   include StreamCsvDownload
 
-  before_action :authorize_report
-
   def new
-    @report_presenter = ReportPresenter.new(@report)
   end
 
   def show
     stream_csv_download(filename: "activities.csv", headers: csv_headers)
   end
 
-  def update
-    @report_presenter = ReportPresenter.new(@report)
+  def create
     rows = parse_activities_from_upload
 
     if rows.blank?
@@ -33,11 +29,6 @@ class Staff::ActivityUploadsController < Staff::BaseController
     if @errors.empty?
       flash.now[:notice] = t("action.activity.upload.success")
     end
-  end
-
-  private def authorize_report
-    @report = Report.find(params[:report_id])
-    authorize @report, :show?
   end
 
   private def csv_headers

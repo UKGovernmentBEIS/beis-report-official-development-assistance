@@ -1,6 +1,5 @@
 .govuk-grid-row
   .govuk-grid-column-full.page-actions
-    = link_to t("action.activity.upload.link"), new_report_activity_upload_path(@report_presenter), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
     = link_to t("action.planned_disbursement.upload.link"), new_report_planned_disbursement_upload_path(@report_presenter), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
     = link_to t("action.transaction.upload.link"), new_report_transaction_upload_path(@report_presenter), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
 
@@ -12,7 +11,6 @@
 
     - if policy(@report_presenter).request_changes?
       = link_to t("action.report.request_changes.button"), edit_report_state_path(@report_presenter, request_changes: true), class: "govuk-button govuk-!-margin-left-4"
-
 
     - if policy(@report_presenter).approve?
       = link_to t("action.report.approve.button"), edit_report_state_path(@report_presenter), class: "govuk-button govuk-!-margin-left-4"

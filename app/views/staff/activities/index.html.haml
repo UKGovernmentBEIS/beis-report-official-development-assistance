@@ -8,8 +8,11 @@
 
   .govuk-grid-row
     .govuk-grid-column-full.page-actions
+
+      = link_to t("action.activity.upload.link"), new_upload_activity_upload_path, class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
+
       = form_tag(organisation_activities_path(@organisation_id), method: "post") do
-        = submit_tag t("page_content.organisation.button.create_activity"), class: "govuk-button"
+        = submit_tag t("page_content.organisation.button.create_activity"), class: "govuk-button govuk-!-margin-left-4"
 
   - if current_user.service_owner?
     = render partial: "staff/shared/activities/filter", locals: { organisation_id: @organisation_id }
