@@ -9,11 +9,7 @@ class UpdateActivityAsProgramme
   def call
     activity.extending_organisation = service_owner
 
-    activity.parent = begin
-                        Activity.fund.find(parent_id)
-                      rescue ActiveRecord::RecordNotFound
-                        nil
-                      end
+    set_parent_and_fund
 
     activity.form_state = "parent"
     activity.level = :programme
@@ -28,5 +24,20 @@ class UpdateActivityAsProgramme
 
   def service_owner
     Organisation.find_by_service_owner(true)
+  end
+
+  private
+
+  def fetch_source_fund_from_parent(parent)
+    return if parent.nil?
+
+    Fund.from_activity(parent)
+  end
+
+  def set_parent_and_fund
+    parent = Activity.fund.find_by_id(parent_id)
+
+    activity.parent = parent
+    activity.source_fund = fetch_source_fund_from_parent(parent)
   end
 end

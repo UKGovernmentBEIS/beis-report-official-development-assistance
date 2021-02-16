@@ -8,6 +8,7 @@ FactoryBot.define do
     description { Faker::Lorem.paragraph }
     sector_category { "111" }
     sector { "11110" }
+    source_fund_code { Fund::MAPPINGS["NF"] }
     programme_status { 7 }
     planned_start_date { Date.today }
     planned_end_date { Date.tomorrow }
@@ -58,6 +59,7 @@ FactoryBot.define do
       trait :gcrf do
         roda_identifier_fragment { "GCRF" }
         title { "Global Challenges Research Fund (GCRF)" }
+        source_fund_code { Fund::MAPPINGS["GCRF"] }
 
         initialize_with do
           Activity.find_or_initialize_by(roda_identifier_fragment: "GCRF")
@@ -67,6 +69,7 @@ FactoryBot.define do
       trait :newton do
         roda_identifier_fragment { "NF" }
         title { "Newton Fund" }
+        source_fund_code { Fund::MAPPINGS["NF"] }
 
         initialize_with do
           Activity.find_or_initialize_by(roda_identifier_fragment: "NF")
@@ -89,10 +92,12 @@ FactoryBot.define do
       association :reporting_organisation, factory: :beis_organisation
 
       trait :newton_funded do
+        source_fund_code { Fund::MAPPINGS["NF"] }
         parent factory: [:fund_activity, :newton]
       end
 
       trait :gcrf_funded do
+        source_fund_code { Fund::MAPPINGS["GCRF"] }
         parent factory: [:fund_activity, :gcrf]
       end
     end
@@ -134,10 +139,12 @@ FactoryBot.define do
       end
 
       trait :newton_funded do
+        source_fund_code { Fund::MAPPINGS["NF"] }
         parent factory: [:programme_activity, :newton_funded]
       end
 
       trait :gcrf_funded do
+        source_fund_code { Fund::MAPPINGS["GCRF"] }
         parent factory: [:programme_activity, :gcrf_funded]
       end
     end
@@ -168,10 +175,12 @@ FactoryBot.define do
       association :reporting_organisation, factory: :beis_organisation
 
       trait :newton_funded do
+        source_fund_code { Fund::MAPPINGS["NF"] }
         parent factory: [:project_activity, :newton_funded]
       end
 
       trait :gcrf_funded do
+        source_fund_code { Fund::MAPPINGS["GCRF"] }
         parent factory: [:project_activity, :gcrf_funded]
       end
     end
@@ -375,6 +384,7 @@ FactoryBot.define do
   trait :level_form_state do
     form_state { "level" }
     level { nil }
+    source_fund_code { nil }
     delivery_partner_identifier { nil }
     title { nil }
     description { nil }
@@ -410,6 +420,7 @@ FactoryBot.define do
   trait :parent_form_state do
     form_state { "parent" }
     level { "programme" }
+    source_fund_code { nil }
     delivery_partner_identifier { nil }
     title { nil }
     description { nil }

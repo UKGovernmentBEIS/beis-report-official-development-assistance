@@ -491,7 +491,16 @@
 - Add links to the guidance across the site
 - Users can report Channel of delivery code through the activity form
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-31...HEAD
+## [release-32] - 2021-02-16
+
+- Serve CSV downloads encoded in UTF-8, prefixed with a byte order mark
+- Show textarea content with wrapper HTML on the Activity details page
+- BEIS users can create a programme-level activity associated with a source fund
+
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-32...HEAD
+[release-32]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-31...release-32
 [release-31]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-30...release-31
 [release-30]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-29...release-30
 [release-29]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-28...release-29

@@ -1,0 +1,24 @@
+name: Automatic Rebase
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  rebase:
+    name: Rebase
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add reaction
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ github.event.comment.id }}
+          reactions: "+1"
+      - name: Checkout the latest code
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+          fetch-depth: 0
+      - name: Automatic Rebase
+        uses: cirrus-actions/rebase@1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}

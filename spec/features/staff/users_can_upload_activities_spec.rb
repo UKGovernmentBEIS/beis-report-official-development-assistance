@@ -2,7 +2,7 @@ RSpec.feature "users can upload activities" do
   let(:organisation) { create(:organisation) }
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
-  let!(:project) { create(:programme_activity, organisation: organisation, roda_identifier_fragment: "B-PROG", parent: create(:fund_activity, roda_identifier_fragment: "A-FUND")) }
+  let!(:project) { create(:programme_activity, :newton_funded, organisation: organisation, roda_identifier_fragment: "B-PROG", parent: create(:fund_activity, roda_identifier_fragment: "A-FUND")) }
 
   let! :report do
     create(:report,
@@ -20,7 +20,8 @@ RSpec.feature "users can upload activities" do
   scenario "downloading the CSV template" do
     click_link t("action.activity.download.button")
 
-    rows = CSV.parse(page.body, headers: false).first
+    csv_data = page.body.delete_prefix("\uFEFF")
+    rows = CSV.parse(csv_data, headers: false).first
 
     expect(rows).to match_array([
       "Activity Status",

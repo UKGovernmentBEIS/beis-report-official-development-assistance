@@ -5,7 +5,7 @@ RSpec.feature "Users can create a project" do
 
     context "when viewing a project" do
       scenario "a new third party project can be added to the project" do
-        project = create(:project_activity, organisation: user.organisation)
+        project = create(:project_activity, :gcrf_funded, organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: project.associated_fund)
 
         visit activities_path
@@ -26,7 +26,7 @@ RSpec.feature "Users can create a project" do
       end
 
       scenario "the activity saves its identifier as read-only `transparency_identifier`" do
-        project = create(:project_activity, organisation: user.organisation)
+        project = create(:project_activity, :gcrf_funded, organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: project.associated_fund)
         identifier = "3rd-party-proj"
 
@@ -44,7 +44,7 @@ RSpec.feature "Users can create a project" do
       end
 
       scenario "third party project creation is tracked with public_activity" do
-        project = create(:project_activity, organisation: user.organisation)
+        project = create(:project_activity, :gcrf_funded, organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: project.associated_fund)
 
         PublicActivity.with_tracking do

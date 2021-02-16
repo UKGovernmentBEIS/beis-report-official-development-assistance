@@ -22,6 +22,7 @@ en:
   form:
     button:
       activity:
+        new_with_source_fund: Add child activity to %{name}
         submit: Continue
     link:
       activity:

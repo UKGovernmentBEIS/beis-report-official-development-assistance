@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe UpdateActivityAsThirdPartyProject do
   let(:beis) { create(:beis_organisation) }
   let(:activity) { create(:third_party_project_activity, :blank_form_state) }
-  let(:parent) { create(:project_activity) }
+  let(:parent) { create(:project_activity, :newton_funded) }
 
   describe "#call" do
     let(:result) {
@@ -27,6 +27,10 @@ RSpec.describe UpdateActivityAsThirdPartyProject do
 
     it "sets the parent Activity to the project" do
       expect(result.parent).to eq(parent)
+    end
+
+    it "sets the source fund code to the project" do
+      expect(result.source_fund_code).to eq(1)
     end
 
     it "sets the initial form_state" do
