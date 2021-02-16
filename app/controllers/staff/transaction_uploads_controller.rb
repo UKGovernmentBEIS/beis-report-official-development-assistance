@@ -23,6 +23,7 @@ class Staff::TransactionUploadsController < Staff::BaseController
   def update
     @report_presenter = ReportPresenter.new(@report)
     upload = CsvFileUpload.new(params[:report], :transaction_csv)
+    @success = false
 
     if upload.valid?
       importer = ImportTransactions.new(report: @report, uploader: current_user)
@@ -30,6 +31,7 @@ class Staff::TransactionUploadsController < Staff::BaseController
       @errors = importer.errors
 
       if @errors.empty?
+        @success = true
         flash.now[:notice] = t("action.transaction.upload.success")
       end
     else
