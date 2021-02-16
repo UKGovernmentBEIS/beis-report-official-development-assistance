@@ -27,7 +27,14 @@ class Staff::OrganisationsController < Staff::BaseController
     @source_funds = Fund.all
 
     respond_to do |format|
-      format.html
+      format.html do
+        @grouped_programmes = Activity.programme
+          .includes(:parent, :extending_organisation)
+          .where(extending_organisation: organisation)
+          .order(:roda_identifier_compound)
+          .group_by(&:parent)
+      end
+
       format.xml do
         @activities = case level
         when "programme"
