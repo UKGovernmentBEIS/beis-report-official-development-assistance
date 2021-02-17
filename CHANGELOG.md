@@ -504,6 +504,7 @@
 - The default type for a transaction is Disbursement, set during creation and import
 - The providing organisation for a transaction is set from the activity
 - Show a list of programmes grouped by fund on the organisation pages
+- Publish terms of service on RODA
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-32...HEAD
 [release-32]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-31...release-32
