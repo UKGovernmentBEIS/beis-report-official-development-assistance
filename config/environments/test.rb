@@ -64,6 +64,7 @@ Rails.application.configure do
     Bullet.add_whitelist type: :unused_eager_loading, class_name: "Transaction", association: :provider
     Bullet.add_whitelist type: :unused_eager_loading, class_name: "Transaction", association: :receiver
     Bullet.add_whitelist type: :unused_eager_loading, class_name: "Activity", association: :parent
+    Bullet.add_whitelist type: :unused_eager_loading, class_name: "Report", association: :fund
   end
 
   config.hosts = [
