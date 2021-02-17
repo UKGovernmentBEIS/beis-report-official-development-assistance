@@ -44,7 +44,7 @@ RSpec.feature "users can upload planned disbursements" do
   scenario "not uploading a file" do
     click_button t("action.planned_disbursement.upload.button")
     expect(PlannedDisbursement.count).to eq(0)
-    expect(page).to have_text(t("action.planned_disbursement.upload.file_missing"))
+    expect(page).to have_text(t("action.planned_disbursement.upload.file_missing_or_invalid"))
   end
 
   scenario "uploading a valid set of forecasts" do
@@ -84,27 +84,38 @@ RSpec.feature "users can upload planned disbursements" do
   scenario "uploading a set of forecasts with encoding errors" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
-    upload_csv <<~CSV
-      Activity RODA Identifier | FC 2021/22 FY Q2 | FC 2021/22 FY Q3 | FC 2021/22 FY Q4
-      #{ids[0]}                | 10               | �20              | 30
-      #{ids[1]}                | 40               | �50              | 60
+    file = Tempfile.new("forecasts.csv")
+    csv = <<~CSV
+      Activity RODA Identifier,FC 2021/22 FY Q2,FC 2021/22 FY Q3,FC 2021/22 FY Q4
+      #{ids[0]},10,\xA320,30
+      #{ids[1]},40,\xA350,60
     CSV
+    file.write(csv)
+    file.close
+
+    attach_file "report[planned_disbursement_csv]", file.path
+    click_button t("action.planned_disbursement.upload.button")
+
+    file.unlink
 
     expect(PlannedDisbursement.count).to eq(0)
 
-    within "//tbody/tr[1]" do
-      expect(page).to have_xpath("td[1]", text: "FC 2021/22 FY Q3")
-      expect(page).to have_xpath("td[2]", text: "2")
-      expect(page).to have_xpath("td[3]", text: "�20")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.planned_disbursement.invalid_characters"))
-    end
+    expect(page).to have_content(t("action.planned_disbursement.upload.file_missing_or_invalid"))
+  end
 
-    within "//tbody/tr[2]" do
-      expect(page).to have_xpath("td[1]", text: "FC 2021/22 FY Q3")
-      expect(page).to have_xpath("td[2]", text: "3")
-      expect(page).to have_xpath("td[3]", text: "�50")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.planned_disbursement.invalid_characters"))
-    end
+  scenario "uploading a set of forecasts with a BOM at the start of the file" do
+    ids = [project, sibling_project].map(&:roda_identifier)
+    bom = "\uFEFF"
+
+    upload_csv bom + <<~CSV
+      Activity RODA Identifier | FC 2021/22 FY Q2 | FC 2021/22 FY Q3 | FC 2021/22 FY Q4
+      #{ids[0]}                | 10               | 20               | 30
+      #{ids[1]}                | 40               | 50               | 60
+    CSV
+
+    expect(PlannedDisbursement.count).to eq(6)
+    expect(page).to have_text(t("action.planned_disbursement.upload.success"))
+    expect(page).not_to have_xpath("//tbody/tr")
   end
 
   def upload_csv(content)

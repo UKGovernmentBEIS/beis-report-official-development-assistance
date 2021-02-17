@@ -63,13 +63,13 @@ RSpec.feature "users can upload activities" do
   scenario "not uploading a file" do
     click_button t("action.activity.upload.button")
 
-    expect(page).to have_text(t("action.activity.upload.file_missing"))
+    expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
   end
 
   scenario "uploading an empty file" do
     upload_csv(Activities::ImportFromCsv.column_headings.join(", "))
 
-    expect(page).to have_text(t("action.activity.upload.file_missing"))
+    expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
   end
 
   scenario "uploading a valid set of activities" do
@@ -81,6 +81,23 @@ RSpec.feature "users can upload activities" do
     expect(Activity.count - old_count).to eq(2)
     expect(page).to have_text(t("action.activity.upload.success"))
     expect(page).not_to have_xpath("//tbody/tr")
+  end
+
+  scenario "uploading a set of activities with a BOM at the start" do
+    freeze_time do
+      attach_file "report[activity_csv]", File.new("spec/fixtures/csv/excel_upload.csv").path
+      click_button t("action.activity.upload.button")
+
+      expect(page).to have_text(t("action.activity.upload.success"))
+      expect(page).not_to have_xpath("//tbody/tr")
+
+      new_activites = Activity.where(created_at: DateTime.now)
+
+      expect(new_activites.count).to eq(2)
+
+      expect(new_activites[0].transparency_identifier).to eq("1234")
+      expect(new_activites[1].transparency_identifier).to eq("1235")
+    end
   end
 
   scenario "uploading an invalid set of activities" do
