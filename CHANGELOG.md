@@ -500,6 +500,9 @@
 ## [unreleased]
 
 - BEIS users can download a CSV report for all DPs
+- Transaction description is populated from the financial quarter and year and from the activity's title
+- The default type for a transaction is Disbursement, set during creation and import
+- The providing organisation for a transaction is set from the activity
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-32...HEAD
 [release-32]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-31...release-32

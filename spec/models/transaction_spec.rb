@@ -68,4 +68,18 @@ RSpec.describe Transaction, type: :model do
       end
     end
   end
+
+  describe "#financial_quarter_and_year" do
+    it "returns the financial quarter and year that the transaction's date occurs in" do
+      transaction = build(:transaction, date: Date.parse("2020-04-01"))
+
+      expect(transaction.financial_quarter_and_year).to eq("Q1 2020-2021")
+    end
+
+    it "returns nil if the date is nil" do
+      transaction = build(:transaction, date: nil)
+
+      expect(transaction.financial_quarter_and_year).to eq(nil)
+    end
+  end
 end
