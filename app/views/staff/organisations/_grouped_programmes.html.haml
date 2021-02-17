@@ -7,11 +7,11 @@
       - grouped_programmes.each do |fund, activities|
         - if activities.any?
           %table{id: fund.id, class: "govuk-table"}
-            %caption{class: "govuk-table__caption govuk-table__caption--s"}
+            %caption{class: "govuk-table__caption govuk-table__caption--m govuk-!-margin-top-4"}
               = fund.title
             %thead{class: "govuk-table__head"}
               %tr{class: "govuk-table__row"}
-                %th{scope: "col", class: "govuk-table__header"}
+                %th{scope: "col", class: "govuk-table__header govuk-!-width-one-half"}
                   = Activity.human_attribute_name(:title)
                 %th{scope: "col", class: "govuk-table__header"}
                   = Activity.human_attribute_name(:roda_identifier_compound)
