@@ -499,6 +499,8 @@
 
 ## [unreleased]
 
+- BEIS users can download a CSV report for all DPs
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-32...HEAD
 [release-32]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-31...release-32
 [release-31]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-30...release-31
