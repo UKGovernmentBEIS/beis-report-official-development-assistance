@@ -101,7 +101,7 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
-    data_migrate (6.6.1)
+    data_migrate (6.6.0)
       rails (>= 5.0)
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
@@ -162,7 +162,7 @@ GEM
       ruby_parser (~> 3.5)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (1.8.9)
+    i18n (1.8.8)
       concurrent-ruby (~> 1.0)
     i18n-tasks (0.9.33)
       activesupport (>= 4.0.2)
