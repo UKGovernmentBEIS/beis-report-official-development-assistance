@@ -1,0 +1,162 @@
+= content_for :page_title_prefix, t("terms_of_service.title")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full.app-visitor-welcome
+      %h1.govuk-heading-xl
+        = t("terms_of_service.title")
+
+      %h2.govuk-heading-m
+        All users
+
+      %h3.govuk-heading-s
+        Using the Service
+
+      %p.govuk-body
+        By accessing and using the Report Official Development Assistance (RODA) website (the 'Service') you, as the user, are confirming that you accept and will abide by these terms and conditions ('General Terms').
+        This takes effect from the date you first use the Service. If you do not agree to these General Terms, you must not use the Service.
+
+      %p.govuk-body
+        We may update or amend these General Terms from time to time. If we do so, we will post the revised document here with an updated effective date. Each time you wish to use the Service,
+        please check these General Terms to ensure that you understand the General Terms that apply at that time. If we make significant changes to these General Terms,
+        we may notify you by other means such as sending an email or posting a notice on our home page. However, we make no guarantee that we will issue any such notice in respect of any change
+        to these General Terms.
+
+      %h3.govuk-heading-s
+        Information about us
+
+      %p.govuk-body
+        This Service is operated by
+        = link_to "the Department for Business, Energy and Industrial Strategy", "https://www.gov.uk/government/organisations/department-for-business-energy-and-industrial-strategy", class: "govuk-link"
+        ('we', 'our', or 'us'). You can contact us using the following email address:
+        = link_to "RODAsupport@odamanagement.org", "mailto:RODAsupport@odamanagement.org", class: "govuk-link"
+
+      %h3.govuk-heading-s
+        Validity of these General Terms
+
+      %p.govuk-body
+        If any of these General Terms are held to be invalid, unenforceable or illegal for any reason, the remaining terms and conditions will still apply.
+
+      %h3.govuk-heading-s
+        Applicable law and jurisdiction
+
+      %p.govuk-body
+        These General Terms are governed by the laws of England and Wales. Any dispute arising under or in connection with these General Terms will be subject to the exclusive jurisdiction of the courts of England and Wales.
+
+      %h3.govuk-heading-s
+        Approving user accounts
+
+      %p.govuk-body
+        The RODA service team is responsible for assessing all requests for RODA user accounts for the purposes of publishing or managing Official Development Assistance (ODA) data.
+        Accounts will only be created for staff working within BEIS or a delivery partner organisation. If the RODA team detects or is alerted to any account held by or used by parties outside of BEIS
+        or a delivery partner organisation then that account will be suspended immediately.
+
+      %h3.govuk-heading-s
+        Access to the Service
+
+      %p.govuk-body
+        We may update and change the Service from time to time.
+
+      %p.govuk-body
+        We will not be liable to you for any loss or damage, whether in contract, tort (including negligence), breach of statutory duty, or otherwise, even if foreseeable,
+        if for any reason the Service is unavailable at any time or for any period. From time to time, we may restrict access to all or some parts of the Service to users who have registered with us.
+
+      %p.govuk-body
+        If you choose, or are provided with, a user identification code, password or any other piece of information as part of our security procedures, you must treat such information as confidential,
+        and you must not disclose it to any third party. We have the right to disable any user identification code, password or other piece of information as part of our security procedures,
+        whether chosen by you or allocated by us, at any time, if in our reasonable opinion you have failed to comply with any of the provisions of these General Terms.
+
+      %p.govuk-body
+        If you know or suspect that anyone other than you knows your user identification code or password, you must promptly notify us at
+        = link_to "RODAsupport@odamanagement.org", "mailto:RODAsupport@odamanagement.org", class: "govuk-link"
+
+      %p.govuk-body
+        We reserve the right to restrict or deny you access to all or some parts of the Service if, in our opinion, you have failed to comply with these General Terms.
+
+      %p.govuk-body
+        We retain the right to withdraw without notice listings that breach these General Terms and to withdraw the access of users who breach them.
+
+      %h3.govuk-heading-s
+        Data and privacy
+
+      %p.govuk-body
+        BEIS is the Data Controller for the Service (as such term is defined in the General Data Protection Regulation (EU) 2016/679). All data is collected, processed and stored in accordance with the
+        = link_to "Privacy Policy", "https://www.report-official-development-assistance.service.gov.uk/pages/privacy_policy", class: "govuk-link"
+        For the avoidance of doubt, this includes the publication of the data under an
+        = link_to "Open Government Licence v3.0", "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/", class: "govuk-link"
+
+      %p.govuk-body
+        Delivery Partner organisations are responsible for the accuracy and completeness of the data contained in their submitted reports. We have a responsibility to assure and review submitted data before it is approved for use outside of the Service.
+        Delivery Partner organisations are required to respond within a reasonable time to any data quality issues we may raise during the assurance review.
+
+      %p.govuk-body
+        The Service also collects cookies. Please see our
+        = link_to "Cookie Policy", "https://www.report-official-development-assistance.service.gov.uk/pages/cookie_statement", class: "govuk-link"
+        for more information.
+
+      %h3.govuk-heading-s
+        Acceptable use
+
+      %p.govuk-body
+        The service should be used to report and manage ODA data. Please see the
+        = link_to "BEIS ODA Help Centre", "https://beisodahelp.zendesk.com/hc/en-gb", class: "govuk-link"
+        for more information about the data reporting and assurance processes
+
+      %h3.govuk-heading-s
+        Unacceptable use
+
+      %p.govuk-body
+        Users must not:
+
+      %ul.govuk-list.govuk-list--bullet
+        %li Deliberately input misleading or incorrect data into the Service
+        %li Deliberately use the Service to report activities that are not ODA eligible without good reason
+        %li You must not misuse the Service by knowingly introducing viruses, trojans, worms, logic bombs or other material that is malicious or technologically harmful.
+        %li You must not attempt to gain unauthorised access to the Service, the server on which the Service is stored or any server, computer or database connected to the Service.
+        %li You must not attack the Service via a denial-of-service attack or a distributed denial-of service attack.
+        %li Each of these acts is a criminal offence under the Computer Misuse Act 1990. We will report any such offence to the relevant law enforcement authorities and co-operate with them to determine your identity. In the event of such a breach your right to use the Service will cease immediately.
+
+      %h3.govuk-heading-s
+        Disclaimer and Liability
+
+      %p.govuk-body
+        We make every effort to check and test material at all stages of production. We cannot accept any responsibility for any loss,
+        disruption or damage to your data or your computer system which may occur whilst using material from the Service.
+
+      %p.govuk-body
+        The content of this Service includes both content created by us (included but not limited to content that helps you use the Service) and third-party content (included but not limited to activity and financial data you input).
+        We do not guarantee that the views, instructions and/or assertions expressed in third-party content are our own.
+
+      %p.govuk-body
+        The content we create for the Service is advice and should be followed when adding content. You should verify any information on the Service yourself
+        and use your own judgement before doing or not doing anything on the basis of the content.
+
+      %p.govuk-body
+        We publish most of the content that is input by you, so it is your responsibility to inform us if you wish to redact any content from the public domain and why.
+        We take no responsibility for any action or dealings that may arise from published data, and may direct queries about data to you where applicable.
+        Any redactions need to be requested before the reporting window is closed. Once an activity is published to IATI it can't be removed.
+
+      %p.govuk-body
+        Unless expressly stated in writing by us, the Service and material relating to government information, products and services (or to third-party information, products and services) is provided 'as is',
+        without any representation or endorsement made and without warranty of any kind, whether express or implied, including but not limited to the implied warranties of satisfactory quality,
+        fitness for a particular purpose, non-infringement, compatibility, security and accuracy.
+
+      %p.govuk-body
+        Although we make reasonable efforts to update the information on the Service, we make no representations, warranties or guarantees, whether express or implied,
+        that the content on the Service is accurate, complete or up to date.
+
+      %p.govuk-body
+        Where the Service contains links to other sites and resources provided by third parties, such links should not be interpreted as
+        approval by us of those linked websites or any information you may obtain from them. We have no control over the contents of those sites or resources.
+
+      %p.govuk-body
+        In no event will we be liable for any loss or damage, whether in contract, tort (including negligence), breach of statutory duty or otherwise, even if foreseeable,
+        arising under or in connection with:
+
+      %ul.govuk-list.govuk-list--bullet
+        %li the use of the Service, including any action you may take as a result of relying on any information/materials provided on the Service, or any linked website or service, or for any such loss or damage suffered by you as a result of you taking such action including, without limitation, indirect or consequential loss or damage;
+        %li any dealings you have with third parties that take place using, or are facilitated by, the Service.
+
+      %p.govuk-body
+        These General Terms were last amended on 25 January 2021.
+
