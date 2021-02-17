@@ -1,7 +1,7 @@
 RSpec.describe PagesController, "#show" do
   render_views
 
-  %w[accessibility_statement cookie_statement privacy_policy].each do |page|
+  %w[accessibility_statement cookie_statement privacy_policy terms_of_service].each do |page|
     context "GET /pages/#{page}" do
       subject { get :show, params: {id: page} }
 
