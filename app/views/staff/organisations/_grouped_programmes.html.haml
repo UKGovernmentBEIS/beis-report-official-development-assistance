@@ -1,0 +1,28 @@
+- if grouped_programmes.any?
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("page_content.organisation.programmes")
+
+      - grouped_programmes.each do |fund, activities|
+        - if activities.any?
+          %table{id: fund.id, class: "govuk-table"}
+            %caption{class: "govuk-table__caption govuk-table__caption--m govuk-!-margin-top-4"}
+              = fund.title
+            %thead{class: "govuk-table__head"}
+              %tr{class: "govuk-table__row"}
+                %th{scope: "col", class: "govuk-table__header govuk-!-width-one-half"}
+                  = Activity.human_attribute_name(:title)
+                %th{scope: "col", class: "govuk-table__header"}
+                  = Activity.human_attribute_name(:roda_identifier_compound)
+                %th{scope: "col", class: "govuk-table__header"}
+
+            %tbody{class: "govuk-table__body"}
+              - activities.each do |activity|
+                %tr{class: "govuk-table__row", id: activity.id}
+                  %td{scope: "row", class: "govuk-table__cell"}
+                    = activity.title
+                  %td{class: "govuk-table__cell"}
+                    = activity.roda_identifier_compound
+                  %td{class: "govuk-table__cell"}
+                    = link_to(t("default.link.view"), organisation_activity_details_path(activity.extending_organisation, activity), class: "govuk-link")
