@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ImportTransactions do
-  let(:project) { create(:project_activity, description: "Example Project") }
+  let(:project) { create(:project_activity, title: "Example Project", description: "Longer description") }
 
   let(:reporter_organisation) { project.organisation }
   let(:reporter) { create(:delivery_partner_user, organisation: reporter_organisation) }
@@ -295,7 +295,7 @@ RSpec.describe ImportTransactions do
 
   describe "importing multiple transactions" do
     let :sibling_project do
-      create(:project_activity, organisation: project.organisation, parent: project.parent, description: "Sibling Project")
+      create(:project_activity, organisation: project.organisation, parent: project.parent, title: "Sibling Project")
     end
 
     let :first_transaction_row do
