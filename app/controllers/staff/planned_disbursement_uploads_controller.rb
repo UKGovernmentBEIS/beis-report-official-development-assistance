@@ -24,34 +24,24 @@ class Staff::PlannedDisbursementUploadsController < Staff::BaseController
 
   def update
     @report_presenter = ReportPresenter.new(@report)
-    rows = parse_planned_disbursements_from_upload
+    upload = CsvFileUpload.new(params[:report], :planned_disbursement_csv)
 
-    if rows.nil?
+    if upload.valid?
+      importer = ImportPlannedDisbursements.new(uploader: current_user)
+      importer.import(upload.rows)
+      @errors = importer.errors
+
+      if @errors.empty?
+        flash.now[:notice] = t("action.planned_disbursement.upload.success")
+      end
+    else
       @errors = []
-      flash.now[:error] = t("action.planned_disbursement.upload.file_missing")
-      return
-    end
-
-    importer = ImportPlannedDisbursements.new(uploader: current_user)
-    importer.import(rows)
-    @errors = importer.errors
-
-    if @errors.empty?
-      flash.now[:notice] = t("action.planned_disbursement.upload.success")
+      flash.now[:error] = t("action.planned_disbursement.upload.file_missing_or_invalid")
     end
   end
 
   private def authorize_report
     @report = Report.find(params[:report_id])
     authorize @report, :show?
-  end
-
-  private def parse_planned_disbursements_from_upload
-    file = params[:report]&.fetch(:planned_disbursement_csv, nil)
-    return nil unless file
-
-    CSV.parse(file.read, headers: true)
-  rescue
-    nil
   end
 end

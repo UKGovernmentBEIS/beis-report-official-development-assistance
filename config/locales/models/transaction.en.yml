@@ -12,7 +12,7 @@ en:
         button: Download CSV template
       upload:
         button: Upload and continue
-        file_missing: Please upload a valid CSV file
+        file_missing_or_invalid: Please upload a valid CSV file
         link: Upload actuals
         success: The transactions were successfully imported.
   form:
