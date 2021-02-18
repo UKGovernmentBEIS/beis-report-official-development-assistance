@@ -497,9 +497,20 @@
 - Show textarea content with wrapper HTML on the Activity details page
 - BEIS users can create a programme-level activity associated with a source fund
 
+## [release-33] - 2021-02-18
+
+- BEIS users can download a CSV report for all DPs
+- Transaction description is populated from the financial quarter and year and from the activity's title
+- The default type for a transaction is Disbursement, set during creation and import
+- The providing organisation for a transaction is set from the activity
+- Show a list of programmes grouped by fund on the organisation pages
+- Publish terms of service on RODA
+- Add RODA ID column to the activity import template
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-32...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-33...HEAD
+[release-33]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-32...release-33
 [release-32]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-31...release-32
 [release-31]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-30...release-31
 [release-30]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-29...release-30

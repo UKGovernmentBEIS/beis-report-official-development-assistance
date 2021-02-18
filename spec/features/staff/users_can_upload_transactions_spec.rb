@@ -52,7 +52,7 @@ RSpec.feature "users can upload transactions" do
   scenario "not uploading a file" do
     click_button t("action.transaction.upload.button")
     expect(Transaction.count).to eq(0)
-    expect(page).to have_text(t("action.transaction.upload.file_missing"))
+    expect(page).to have_text(t("action.transaction.upload.file_missing_or_invalid"))
   end
 
   scenario "uploading a valid set of transactions" do
@@ -99,27 +99,39 @@ RSpec.feature "users can upload transactions" do
   scenario "uploading a set of transactions with encoding errors" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
-    upload_csv <<~CSV
-      Activity RODA Identifier | Date       | Value  | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
-      #{ids[0]}                | 1/4/2020   | �20    | Example University          | 80                          |
-      #{ids[1]}                | 2/4/2020   | �30    | Example Foundation          | 60                          |
+    csv = <<~CSV
+      Activity RODA Identifier,Date,Value,Receiving Organisation Name,Receiving Organisation Type,Receiving Organisation IATI Reference
+      #{ids[0]},1/4/2020,\xA320,Example University,80
+      #{ids[1]},2/4/2020,\xA330,Example Foundation,60
     CSV
+
+    file = Tempfile.new("transactions.csv")
+    file.write(csv)
+    file.close
+
+    attach_file "report[transaction_csv]", file.path
+    click_button t("action.transaction.upload.button")
+
+    file.unlink
 
     expect(Transaction.count).to eq(0)
 
-    within "//tbody/tr[1]" do
-      expect(page).to have_xpath("td[1]", text: "Value")
-      expect(page).to have_xpath("td[2]", text: "2")
-      expect(page).to have_xpath("td[3]", text: "�20")
-      expect(page).to have_xpath("td[4]", text: I18n.t("importer.errors.transaction.invalid_characters"))
-    end
+    expect(page).to have_content(t("action.planned_disbursement.upload.file_missing_or_invalid"))
+  end
 
-    within "//tbody/tr[2]" do
-      expect(page).to have_xpath("td[1]", text: "Value")
-      expect(page).to have_xpath("td[2]", text: "3")
-      expect(page).to have_xpath("td[3]", text: "�30")
-      expect(page).to have_xpath("td[4]", text: I18n.t("importer.errors.transaction.invalid_characters"))
-    end
+  scenario "uploading a valid set of transactions with a BOM at the start of the file" do
+    ids = [project, sibling_project].map(&:roda_identifier)
+    bom = "\uFEFF"
+
+    upload_csv bom + <<~CSV
+      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1/4/2020   | 20    | Example University          | 80                          |
+      #{ids[1]}                | 2/4/2020   | 30    | Example Foundation          | 60                          |
+    CSV
+
+    expect(Transaction.count).to eq(2)
+    expect(page).to have_text(t("action.transaction.upload.success"))
+    expect(page).not_to have_xpath("//tbody/tr")
   end
 
   def upload_csv(content)

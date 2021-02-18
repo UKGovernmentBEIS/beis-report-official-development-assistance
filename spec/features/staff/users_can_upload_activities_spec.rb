@@ -24,6 +24,7 @@ RSpec.feature "users can upload activities" do
     rows = CSV.parse(csv_data, headers: false).first
 
     expect(rows).to match_array([
+      "RODA ID",
       "Activity Status",
       "Actual end date", "Actual start date",
       "Aid type",
@@ -62,13 +63,13 @@ RSpec.feature "users can upload activities" do
   scenario "not uploading a file" do
     click_button t("action.activity.upload.button")
 
-    expect(page).to have_text(t("action.activity.upload.file_missing"))
+    expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
   end
 
   scenario "uploading an empty file" do
     upload_csv(Activities::ImportFromCsv.column_headings.join(", "))
 
-    expect(page).to have_text(t("action.activity.upload.file_missing"))
+    expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
   end
 
   scenario "uploading a valid set of activities" do
@@ -80,6 +81,23 @@ RSpec.feature "users can upload activities" do
     expect(Activity.count - old_count).to eq(2)
     expect(page).to have_text(t("action.activity.upload.success"))
     expect(page).not_to have_xpath("//tbody/tr")
+  end
+
+  scenario "uploading a set of activities with a BOM at the start" do
+    freeze_time do
+      attach_file "report[activity_csv]", File.new("spec/fixtures/csv/excel_upload.csv").path
+      click_button t("action.activity.upload.button")
+
+      expect(page).to have_text(t("action.activity.upload.success"))
+      expect(page).not_to have_xpath("//tbody/tr")
+
+      new_activites = Activity.where(created_at: DateTime.now)
+
+      expect(new_activites.count).to eq(2)
+
+      expect(new_activites[0].transparency_identifier).to eq("1234")
+      expect(new_activites[1].transparency_identifier).to eq("1235")
+    end
   end
 
   scenario "uploading an invalid set of activities" do
@@ -104,6 +122,23 @@ RSpec.feature "users can upload activities" do
       expect(page).to have_xpath("td[3]", text: "")
       expect(page).to have_xpath("td[4]", text: t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion"))
     end
+  end
+
+  scenario "updating an existing activity" do
+    activity_to_update = create(:project_activity) { |activity|
+      activity.implementing_organisations = [
+        create(:implementing_organisation, activity: activity),
+      ]
+    }
+
+    upload_csv <<~CSV
+      RODA ID                               | Title     | Channel of delivery code                       | Sector | Recipient Country |
+      #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | BR                |
+    CSV
+
+    expect(page).to have_text(t("action.activity.upload.success"))
+
+    expect(activity_to_update.reload.title).to eq("New Title")
   end
 
   def upload_csv(content)

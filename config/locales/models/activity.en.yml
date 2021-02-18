@@ -6,7 +6,7 @@ en:
         button: Download activity CSV template
       upload:
         button: Upload and continue
-        file_missing: Please upload a valid CSV file
+        file_missing_or_invalid: Please upload a valid CSV file
         link: Upload activities
         success: The activities were successfully imported.
   document_title:
@@ -408,6 +408,7 @@ en:
   activerecord:
     attributes:
       activity:
+        roda_identifier_compound: RODA identifier
         sector: Focus area
         sector_category: Focus area category
     errors:

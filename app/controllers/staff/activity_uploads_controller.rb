@@ -18,20 +18,19 @@ class Staff::ActivityUploadsController < Staff::BaseController
 
   def update
     @report_presenter = ReportPresenter.new(@report)
-    rows = parse_activities_from_upload
+    upload = CsvFileUpload.new(params[:report], :activity_csv)
 
-    if rows.blank?
+    if upload.valid?
+      importer = Activities::ImportFromCsv.new(organisation: current_user.organisation)
+      importer.import(upload.rows)
+      @errors = importer.errors
+
+      if @errors.empty?
+        flash.now[:notice] = t("action.activity.upload.success")
+      end
+    else
       @errors = []
-      flash.now[:error] = t("action.activity.upload.file_missing")
-      return
-    end
-
-    importer = Activities::ImportFromCsv.new(organisation: current_user.organisation)
-    importer.import(rows)
-    @errors = importer.errors
-
-    if @errors.empty?
-      flash.now[:notice] = t("action.activity.upload.success")
+      flash.now[:error] = t("action.activity.upload.file_missing_or_invalid")
     end
   end
 
@@ -41,15 +40,6 @@ class Staff::ActivityUploadsController < Staff::BaseController
   end
 
   private def csv_headers
-    Activities::ImportFromCsv.column_headings
-  end
-
-  private def parse_activities_from_upload
-    file = params[:report]&.fetch(:activity_csv, nil)
-    return nil unless file
-
-    CSV.parse(file.read, headers: true)
-  rescue
-    nil
+    ["RODA ID"] + Activities::ImportFromCsv.column_headings
   end
 end
