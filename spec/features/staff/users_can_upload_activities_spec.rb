@@ -24,6 +24,7 @@ RSpec.feature "users can upload activities" do
     rows = CSV.parse(csv_data, headers: false).first
 
     expect(rows).to match_array([
+      "RODA ID",
       "Activity Status",
       "Actual end date", "Actual start date",
       "Aid type",
@@ -104,6 +105,23 @@ RSpec.feature "users can upload activities" do
       expect(page).to have_xpath("td[3]", text: "")
       expect(page).to have_xpath("td[4]", text: t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion"))
     end
+  end
+
+  scenario "updating an existing activity" do
+    activity_to_update = create(:project_activity) { |activity|
+      activity.implementing_organisations = [
+        create(:implementing_organisation, activity: activity),
+      ]
+    }
+
+    upload_csv <<~CSV
+      RODA ID                               | Title     | Channel of delivery code                       | Sector | Recipient Country |
+      #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | BR                |
+    CSV
+
+    expect(page).to have_text(t("action.activity.upload.success"))
+
+    expect(activity_to_update.reload.title).to eq("New Title")
   end
 
   def upload_csv(content)
