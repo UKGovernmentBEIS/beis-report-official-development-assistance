@@ -41,7 +41,7 @@ class Staff::ActivityUploadsController < Staff::BaseController
   end
 
   private def csv_headers
-    Activities::ImportFromCsv.column_headings
+    ["RODA ID"] + Activities::ImportFromCsv.column_headings
   end
 
   private def parse_activities_from_upload
