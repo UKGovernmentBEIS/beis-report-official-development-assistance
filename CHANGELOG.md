@@ -505,6 +505,7 @@
 - The providing organisation for a transaction is set from the activity
 - Show a list of programmes grouped by fund on the organisation pages
 - Publish terms of service on RODA
+- Add RODA ID column to the activity import template
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-32...HEAD
 [release-32]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-31...release-32
