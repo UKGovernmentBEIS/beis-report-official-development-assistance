@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_02_192712) do
+ActiveRecord::Schema.define(version: 2021_02_16_140931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -223,6 +223,8 @@ ActiveRecord::Schema.define(version: 2021_02_02_192712) do
     t.uuid "parent_activity_id"
     t.boolean "ingested", default: false
     t.uuid "report_id"
+    t.integer "financial_quarter"
+    t.integer "financial_year"
     t.index ["parent_activity_id"], name: "index_transactions_on_parent_activity_id"
     t.index ["report_id"], name: "index_transactions_on_report_id"
   end
