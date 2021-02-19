@@ -581,24 +581,6 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when activity is not a fund" do
-      context "and is 'ingested: false'" do
-        context "and the collaboration_type is blank" do
-          subject(:activity) { build(:programme_activity, collaboration_type: nil, ingested: false) }
-          it "should not be valid" do
-            expect(activity.valid?(:collaboration_type_step)).to be_falsey
-          end
-        end
-      end
-
-      context "but the activity is 'ingested:true'" do
-        subject(:activity) { build(:programme_activity, collaboration_type: nil, ingested: true) }
-        it "should be valid" do
-          expect(activity.valid?(:collaboration_type_step)).to be_truthy
-        end
-      end
-    end
-
     context "when activity is a fund and collaboration_type is blank" do
       subject(:activity) { build(:fund_activity, collaboration_type: nil) }
       it "should be valid" do
@@ -717,17 +699,6 @@ RSpec.describe Activity, type: :model do
         subject(:activity) { build(:project_activity, call_present: true, total_awards: nil) }
         it "should not be valid" do
           expect(activity.valid?(:total_applications_and_awards_step)).to be_falsey
-        end
-      end
-
-      context "when the activity is 'ingested:true'" do
-        subject(:activity) { build(:project_activity, ingested: true, call_present: nil, total_applications: nil, total_awards: nil) }
-        it "should not require the presence of 'call_present'" do
-          expect(activity.valid?(:call_present_step)).to be_truthy
-        end
-
-        it "should not require the presence of neither total applications nor total awards" do
-          expect(activity.valid?(:total_applications_and_awards_step)).to be_truthy
         end
       end
     end
