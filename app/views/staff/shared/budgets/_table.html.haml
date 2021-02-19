@@ -15,5 +15,5 @@
             = budget.financial_year
           %td.govuk-table__cell= budget.value
           %td.govuk-table__cell
-            - if policy(budget).create?
+            - if policy(budget).edit?
               = a11y_action_link(t('default.link.edit'), edit_activity_budget_path(budget.parent_activity_id, budget), t("table.body.budget.edit_noun"))
