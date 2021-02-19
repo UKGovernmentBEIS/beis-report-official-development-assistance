@@ -52,9 +52,9 @@ RSpec.describe CreateBudget do
 
     context "when attributes are passed in" do
       it "sets the attributes passed in as budget attributes" do
-        attributes = ActionController::Parameters.new(status: "foo").permit!
+        attributes = ActionController::Parameters.new(funding_type: "1").permit!
         result = described_class.new(activity: activity).call(attributes: attributes)
-        expect(result.object.status).to eq("foo")
+        expect(result.object.funding_type).to eq(1)
       end
 
       subject { described_class.new(activity: activity) }

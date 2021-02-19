@@ -535,6 +535,7 @@ and populate it via a data migration
 
 - Include 12 previous quarters of actual spend in the report CSV
 - Include 20 following quarters of forecast spend in the report CSV
+- Budgets do not collect IATI fields as they are set by default
 
 ## [unreleased]
 

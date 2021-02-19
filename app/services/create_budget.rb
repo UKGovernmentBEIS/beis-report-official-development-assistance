@@ -10,6 +10,9 @@ class CreateBudget
     budget.parent_activity = activity
     budget.assign_attributes(attributes)
 
+    budget.budget_type = 1
+    budget.status = 2
+
     convert_and_assign_value(budget, attributes[:value])
 
     unless activity.organisation.service_owner?
