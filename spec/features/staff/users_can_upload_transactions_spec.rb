@@ -30,7 +30,8 @@ RSpec.feature "users can upload transactions" do
         "Activity Name" => project.title,
         "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
         "Activity RODA Identifier" => project.roda_identifier,
-        "Date" => nil,
+        "Financial Quarter" => report.financial_quarter.to_s,
+        "Financial Year" => report.financial_year.to_s,
         "Value" => nil,
         "Receiving Organisation Name" => nil,
         "Receiving Organisation Type" => nil,
@@ -40,7 +41,8 @@ RSpec.feature "users can upload transactions" do
         "Activity Name" => sibling_project.title,
         "Activity Delivery Partner Identifier" => sibling_project.delivery_partner_identifier,
         "Activity RODA Identifier" => sibling_project.roda_identifier,
-        "Date" => nil,
+        "Financial Quarter" => report.financial_quarter.to_s,
+        "Financial Year" => report.financial_year.to_s,
         "Value" => nil,
         "Receiving Organisation Name" => nil,
         "Receiving Organisation Type" => nil,
@@ -59,9 +61,9 @@ RSpec.feature "users can upload transactions" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
-      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
-      #{ids[0]}                | 1/4/2020   | 20    | Example University          | 80                          |
-      #{ids[1]}                | 2/4/2020   | 30    | Example Foundation          | 60                          |
+      Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1                 | 2020           | 20    | Example University          | 80                          |
+      #{ids[1]}                | 1                 | 2020           | 30    | Example Foundation          | 60                          |
     CSV
 
     expect(Transaction.count).to eq(2)
@@ -73,9 +75,9 @@ RSpec.feature "users can upload transactions" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
-      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
-      #{ids[0]}                | 1/4/2020   | 0     | Example University          | 80                          |
-      #{ids[1]}                | 2/4/2020   | 30    | Example Foundation          | 61                          |
+      Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1                 | 2020           | 0     | Example University          | 80                          |
+      #{ids[1]}                | 1                 | 2020           | 30    | Example Foundation          | 61                          |
     CSV
 
     expect(Transaction.count).to eq(0)
@@ -100,9 +102,9 @@ RSpec.feature "users can upload transactions" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     csv = <<~CSV
-      Activity RODA Identifier,Date,Value,Receiving Organisation Name,Receiving Organisation Type,Receiving Organisation IATI Reference
-      #{ids[0]},1/4/2020,\xA320,Example University,80
-      #{ids[1]},2/4/2020,\xA330,Example Foundation,60
+      Activity RODA Identifier,Financial Quarter,Financial Year,,Value,Receiving Organisation Name,Receiving Organisation Type,Receiving Organisation IATI Reference
+      #{ids[0]},1,2020,\xA320,Example University,80
+      #{ids[1]},1,2020,\xA330,Example Foundation,60
     CSV
 
     file = Tempfile.new("transactions.csv")
@@ -124,9 +126,9 @@ RSpec.feature "users can upload transactions" do
     bom = "\uFEFF"
 
     upload_csv bom + <<~CSV
-      Activity RODA Identifier | Date       | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
-      #{ids[0]}                | 1/4/2020   | 20    | Example University          | 80                          |
-      #{ids[1]}                | 2/4/2020   | 30    | Example Foundation          | 60                          |
+      Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1                 | 2020           | 20    | Example University          | 80                          |
+      #{ids[1]}                | 2                 | 2020           | 30    | Example Foundation          | 60                          |
     CSV
 
     expect(Transaction.count).to eq(2)
