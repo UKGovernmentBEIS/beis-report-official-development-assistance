@@ -20,9 +20,9 @@ class Transaction < ApplicationRecord
   before_save :set_financial_quarter_from_date
 
   def financial_quarter_and_year
-    return nil if date.blank?
-
-    FinancialQuarter.for_date(date).to_s
+    if financial_year.present? && financial_quarter.present?
+      FinancialQuarter.new(financial_year, financial_quarter).to_s
+    end
   end
 
   private

@@ -8,10 +8,4 @@ class TransactionPresenter < SimpleDelegator
     return if super.blank?
     ActionController::Base.helpers.number_to_currency(super, unit: "£")
   end
-
-  def financial_quarter_and_year
-    return nil if date.blank?
-
-    FinancialQuarter.for_date(to_model.date).to_s
-  end
 end
