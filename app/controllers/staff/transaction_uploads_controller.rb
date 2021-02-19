@@ -52,6 +52,8 @@ class Staff::TransactionUploadsController < Staff::BaseController
       activity.title,
       activity.delivery_partner_identifier,
       activity.roda_identifier,
+      @report.financial_quarter.to_s,
+      @report.financial_year.to_s,
     ]
   end
 end
