@@ -2,28 +2,17 @@
   %table.govuk-table.budgets
     %thead.govuk-table__head
       %tr.govuk-table__row
-        %th.govuk-table__header
-          =t("table.header.budget.budget_type")
-        %th.govuk-table__header
-          =t("table.header.budget.status")
-        %th.govuk-table__header
-          =t("table.header.budget.period_start_date")
-        %th.govuk-table__header
-          =t("table.header.budget.period_end_date")
-        %th.govuk-table__header
-          =t("table.header.budget.currency")
-        %th.govuk-table__header
+        %th{ scope: "col", class: ["govuk-table__header", "govuk-!-width-one-half"] }
+          =t("table.header.budget.financial_year")
+        %th{ scope: "col", class: ["govuk-table__header", "govuk-!-width-one-quarter"] }
           =t("table.header.budget.value")
-        %th.govuk-table__header
+        %th{ scope: "col", class: ["govuk-table__header", "govuk-!-width-one-quarter"] }
 
     %tbody.govuk-table__body
       - budgets.each do |budget|
         %tr.govuk-table__row{id: budget.id}
-          %td.govuk-table__cell= budget.budget_type
-          %td.govuk-table__cell= budget.status
-          %td.govuk-table__cell= budget.period_start_date
-          %td.govuk-table__cell= budget.period_end_date
-          %td.govuk-table__cell= budget.currency
+          %td{ scope: "row", class: "govuk-table__cell" }
+            = budget.financial_year
           %td.govuk-table__cell= budget.value
           %td.govuk-table__cell
             - if policy(budget).create?
