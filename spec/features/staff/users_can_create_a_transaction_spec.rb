@@ -73,7 +73,7 @@ RSpec.feature "Users can create a transaction" do
 
         expect(page).to_not have_content(t("action.transaction.create.success"))
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.blank")
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.date.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.financial_year.blank"))
         expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
         expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
       end
@@ -93,7 +93,7 @@ RSpec.feature "Users can create a transaction" do
 
         expect(page).to_not have_content(t("action.transaction.create.success"))
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.not_a_number")
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.date.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.financial_year.blank"))
         expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
         expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
       end
@@ -214,20 +214,6 @@ RSpec.feature "Users can create a transaction" do
     end
 
     context "Date validation" do
-      scenario "When the date is in the future" do
-        activity = create(:programme_activity, :with_report, organisation: user.organisation)
-
-        visit activities_path
-
-        click_on(activity.title)
-
-        click_on(t("page_content.transactions.button.create"))
-
-        fill_in_transaction_form(date_day: 0o1, date_month: 0o1, date_year: 2100, expectations: false)
-
-        expect(page).to have_content "Date must not be in the future"
-      end
-
       scenario "When the date is in the past" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
@@ -254,7 +240,7 @@ RSpec.feature "Users can create a transaction" do
 
         fill_in_transaction_form(date_day: "", date_month: "", date_year: "", expectations: false)
 
-        expect(page).to have_content t("activerecord.errors.models.transaction.attributes.date.blank")
+        expect(page).to have_content t("activerecord.errors.models.transaction.attributes.financial_year.blank")
       end
     end
 

@@ -129,12 +129,6 @@ RSpec.describe ImportTransactions do
       it "does not import any transactions" do
         expect(report.transactions.count).to eq(0)
       end
-
-      it "returns an error" do
-        expect(importer.errors).to eq([
-          ImportTransactions::Error.new(0, "Date", "", t("activerecord.errors.models.transaction.attributes.date.blank")),
-        ])
-      end
     end
 
     context "when the Date is invalid" do
@@ -393,7 +387,6 @@ RSpec.describe ImportTransactions do
 
         expect(errors).to eq([
           ImportTransactions::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.transaction.invalid_iati_organisation_type")),
-          ImportTransactions::Error.new(2, "Date", third_transaction_row["Date"], t("activerecord.errors.models.transaction.attributes.date.not_in_future")),
           ImportTransactions::Error.new(2, "Value", "0", t("activerecord.errors.models.transaction.attributes.value.other_than")),
         ])
       end
