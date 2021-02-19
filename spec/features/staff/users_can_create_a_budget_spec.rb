@@ -140,7 +140,6 @@ RSpec.describe "Users can create a budget" do
   def fill_in_and_submit_budget_form
     choose("budget[funding_type]", option: "1")
     select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
-    select "Pound Sterling", from: "budget[currency]"
     fill_in "budget[value]", with: "1000.00"
     click_button t("default.button.submit")
   end

@@ -550,7 +550,7 @@
 ## [unreleased]
 
 - Display the RODA Identifer anywhere we have an activity table with an "Identifier" column
-- Budgets do not collect IATI fields as they are set by default
+- Budgets do not collect IATI fields or currency as they are set by default
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-38...HEAD
 [release-38]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...release-38
