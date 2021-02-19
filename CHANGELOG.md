@@ -535,13 +535,13 @@ and populate it via a data migration
 
 - Include 12 previous quarters of actual spend in the report CSV
 - Include 20 following quarters of forecast spend in the report CSV
-- Budgets do not collect IATI fields as they are set by default
 
 ## [unreleased]
 
 - Skip rows where the value is 0 when importing transactions
 - Update sector code list
 - Show sector code and name in the application
+- Budgets do not collect IATI fields or currency as they are set by default
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...HEAD
 [release-37]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37

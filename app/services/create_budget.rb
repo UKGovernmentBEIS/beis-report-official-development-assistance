@@ -12,6 +12,7 @@ class CreateBudget
 
     budget.budget_type = 1
     budget.status = 2
+    budget.currency = activity.organisation.default_currency
 
     convert_and_assign_value(budget, attributes[:value])
 
