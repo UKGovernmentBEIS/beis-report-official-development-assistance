@@ -74,6 +74,10 @@ en:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_in_future: Date must not be in the future
               blank: Enter a date the transaction was made
+            financial_quarter:
+              inclusion: Enter a financial quarter between 1 and 4
+            financial_year:
+              blank: Enter a financial year the transaction was made
             value:
               less_than_or_equal_to: Value must be less than or equal to 99,999,999,999.00
               other_than: Value must not be zero
