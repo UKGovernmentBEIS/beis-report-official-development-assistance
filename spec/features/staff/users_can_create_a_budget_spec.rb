@@ -70,9 +70,6 @@ RSpec.describe "Users can create a budget" do
         click_button t("default.button.submit")
 
         expect(page).to have_content("There is a problem")
-        expect(page).to have_content(t("activerecord.errors.models.budget.attributes.budget_type.blank"))
-        expect(page).to have_content(t("activerecord.errors.models.budget.attributes.status.blank"))
-        expect(page).to have_content(t("activerecord.errors.models.budget.attributes.funding_type.blank"))
         expect(page).to have_content(t("activerecord.errors.models.budget.attributes.financial_year.blank"))
         expect(page).to have_content t("activerecord.errors.models.budget.attributes.value.blank")
       end
@@ -89,12 +86,8 @@ RSpec.describe "Users can create a budget" do
 
         click_on(t("page_content.budgets.button.create"))
 
-        click_button t("default.button.submit")
-
-        choose("budget[budget_type]", option: "1")
-        choose("budget[status]", option: "1")
+        select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
         choose("budget[funding_type]", option: "1")
-        select "Pound Sterling", from: "budget[currency]"
         fill_in "budget[value]", with: "10000000000000.00"
         click_button t("default.button.submit")
 
@@ -145,8 +138,6 @@ RSpec.describe "Users can create a budget" do
   end
 
   def fill_in_and_submit_budget_form
-    choose("budget[budget_type]", option: "1")
-    choose("budget[status]", option: "1")
     choose("budget[funding_type]", option: "1")
     select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
     select "Pound Sterling", from: "budget[currency]"

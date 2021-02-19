@@ -14,12 +14,13 @@ RSpec.describe "Users can edit a budget" do
       end
 
       fill_in "budget[value]", with: "20"
-      choose("budget[budget_type]", option: "2")
       click_on t("default.button.submit")
 
       expect(page).to have_content(t("action.budget.update.success"))
-      expect(page).to have_content("20.00")
-      expect(page).to have_content("Updated")
+
+      within("##{budget.id}") do
+        expect(page).to have_content("20.00")
+      end
     end
   end
 
@@ -37,12 +38,12 @@ RSpec.describe "Users can edit a budget" do
       end
 
       fill_in "budget[value]", with: "20"
-      choose("budget[budget_type]", option: "2")
       click_on t("default.button.submit")
 
       expect(page).to have_content(t("action.budget.update.success"))
-      expect(page).to have_content("20.00")
-      expect(page).to have_content("Updated")
+      within("##{budget.id}") do
+        expect(page).to have_content("20.00")
+      end
     end
 
     scenario "budget update is tracked with public_activity" do
@@ -57,7 +58,6 @@ RSpec.describe "Users can edit a budget" do
         end
 
         fill_in "budget[value]", with: "20"
-        choose("budget[budget_type]", option: "2")
         click_on t("default.button.submit")
 
         budget = Budget.last
