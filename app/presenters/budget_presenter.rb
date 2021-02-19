@@ -19,6 +19,11 @@ class BudgetPresenter < SimpleDelegator
     I18n.l(super)
   end
 
+  def financial_year
+    return if super.blank?
+    "FY #{super}"
+  end
+
   def value
     ActionController::Base.helpers.number_to_currency(super, unit: "£")
   end

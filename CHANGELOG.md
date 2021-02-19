@@ -542,6 +542,7 @@ and populate it via a data migration
 - Update sector code list
 - Show sector code and name in the application
 - Budgets do not collect IATI fields or currency as they are set by default
+- Budgets tables do not show IATI fields and only show the financial year
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...HEAD
 [release-37]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37
