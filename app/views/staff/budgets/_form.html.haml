@@ -12,6 +12,6 @@
   options: { selected: f.object.financial_year, prompt: t("form.prompt.budget.financial_year") },
   label: { size: "m", tag: "h2" }
 
-= f.govuk_text_field :value
+= f.govuk_text_field :value, class: "govuk-input govuk-input--width-10"
 
 = f.govuk_submit t("default.button.submit")
