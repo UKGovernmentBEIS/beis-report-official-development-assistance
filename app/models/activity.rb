@@ -396,7 +396,7 @@ class Activity < ApplicationRecord
   end
 
   def requires_call_dates?
-    !ingested? && is_project?
+    is_project?
   end
 
   def comment_for_report(report_id:)
@@ -404,11 +404,11 @@ class Activity < ApplicationRecord
   end
 
   def requires_collaboration_type?
-    !ingested? && !fund?
+    !fund?
   end
 
   def requires_policy_markers?
-    !ingested? && is_project?
+    is_project?
   end
 
   def is_project?
