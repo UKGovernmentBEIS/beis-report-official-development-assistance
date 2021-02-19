@@ -32,9 +32,9 @@ module FormHelper
     end
   end
 
-  def list_of_financial_years
+  def list_of_financial_years(years = FinancialYear.next_ten)
     @list_of_financial_years ||= begin
-      FinancialYear.next_ten.map { |year| OpenStruct.new(id: year.to_i, name: year.to_s) }
+      years.map { |year| OpenStruct.new(id: year.to_i, name: year.to_s) }
     end
   end
 
