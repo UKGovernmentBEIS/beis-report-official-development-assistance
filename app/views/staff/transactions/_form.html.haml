@@ -2,7 +2,21 @@
 
 = f.govuk_text_field :value, width: 'one-third'
 
-= f.govuk_date_field :date, legend: {  size: "s" }
+= f.govuk_fieldset legend: { text: nil } do
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      = f.govuk_collection_radio_buttons :financial_quarter,
+        list_of_financial_quarters,
+        :id,
+        :name,
+        inline: true,
+        legend: { text: "Financial quarter" , tag: :h2 }
+    .govuk-grid-column-one-third
+      = f.govuk_collection_select :financial_year,
+        list_of_financial_years(FinancialYear.previous_ten),
+        :id,
+        :name,
+        label: { text: "Financial year", tag: :h2, size: "m" }
 
 = f.govuk_fieldset legend: { text: t("form.legend.transaction.receiving_organisation") } do
   %span.govuk-hint= t("form.hint.transaction.receiving_organisation")

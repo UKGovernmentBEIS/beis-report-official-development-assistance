@@ -22,7 +22,6 @@ RSpec.feature "Users can create a transaction" do
 
       expect(page).to have_content t("page_title.transaction.new")
       expect(page).to have_content t("form.label.transaction.value")
-      expect(page).to have_content t("form.legend.transaction.date")
       expect(page).to have_content t("form.legend.transaction.receiving_organisation")
     end
 
@@ -73,7 +72,6 @@ RSpec.feature "Users can create a transaction" do
 
         expect(page).to_not have_content(t("action.transaction.create.success"))
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.blank")
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.financial_year.blank"))
         expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
         expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
       end
@@ -93,7 +91,6 @@ RSpec.feature "Users can create a transaction" do
 
         expect(page).to_not have_content(t("action.transaction.create.success"))
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.not_a_number")
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.financial_year.blank"))
         expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
         expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
       end
@@ -110,9 +107,8 @@ RSpec.feature "Users can create a transaction" do
         click_on(t("page_content.transactions.button.create"))
 
         fill_in "transaction[value]", with: "100000000000"
-        fill_in "transaction[date(3i)]", with: "1"
-        fill_in "transaction[date(2i)]", with: "1"
-        fill_in "transaction[date(1i)]", with: "2020"
+        choose "4", name: "transaction[financial_quarter]"
+        select "2019-2020", from: "transaction[financial_year]"
         click_on(t("default.button.submit"))
 
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.less_than_or_equal_to")
@@ -128,9 +124,8 @@ RSpec.feature "Users can create a transaction" do
         click_on(t("page_content.transactions.button.create"))
 
         fill_in "transaction[value]", with: "0"
-        fill_in "transaction[date(3i)]", with: "1"
-        fill_in "transaction[date(2i)]", with: "1"
-        fill_in "transaction[date(1i)]", with: "2020"
+        choose "4", name: "transaction[financial_quarter]"
+        select "2019-2020", from: "transaction[financial_year]"
         click_on(t("default.button.submit"))
 
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.other_than")
@@ -146,9 +141,8 @@ RSpec.feature "Users can create a transaction" do
         click_on(t("page_content.transactions.button.create"))
 
         fill_in "transaction[value]", with: "-500000"
-        fill_in "transaction[date(3i)]", with: "1"
-        fill_in "transaction[date(2i)]", with: "1"
-        fill_in "transaction[date(1i)]", with: "2020"
+        choose "4", name: "transaction[financial_quarter]"
+        select "2019-2020", from: "transaction[financial_year]"
         fill_in "transaction[receiving_organisation_name]", with: "Company"
         select "Government", from: "transaction[receiving_organisation_type]"
         click_on(t("default.button.submit"))
@@ -210,37 +204,6 @@ RSpec.feature "Users can create a transaction" do
         fill_in_transaction_form(value: "123,000,000", expectations: false)
 
         expect(page).to have_content "£123,000,000"
-      end
-    end
-
-    context "Date validation" do
-      scenario "When the date is in the past" do
-        activity = create(:programme_activity, :with_report, organisation: user.organisation)
-
-        visit activities_path
-
-        click_on(activity.title)
-
-        click_on(t("page_content.transactions.button.create"))
-
-        fill_in_transaction_form(date_day: 0o1, date_month: 0o1, date_year: 2.years.ago, expectations: false)
-
-        expect(page).to_not have_content "Date must not be in the future"
-        expect(page).to have_content t("action.transaction.create.success")
-      end
-
-      scenario "When the date is nil" do
-        activity = create(:programme_activity, :with_report, organisation: user.organisation)
-
-        visit activities_path
-
-        click_on(activity.title)
-
-        click_on(t("page_content.transactions.button.create"))
-
-        fill_in_transaction_form(date_day: "", date_month: "", date_year: "", expectations: false)
-
-        expect(page).to have_content t("activerecord.errors.models.transaction.attributes.financial_year.blank")
       end
     end
 
