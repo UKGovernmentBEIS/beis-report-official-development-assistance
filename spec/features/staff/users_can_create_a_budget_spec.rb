@@ -18,6 +18,16 @@ RSpec.describe "Users can create a budget" do
         expect(page).to have_content(t("action.budget.create.success"))
       end
 
+      scenario "a new budget has it's funding type set to that of it's parent activity's source fund" do
+        activity = create(:programme_activity, :gcrf_funded, organisation: user.organisation)
+
+        visit activities_path
+        click_on(activity.title)
+        click_on(t("page_content.budgets.button.create"))
+
+        expect(page.has_checked_field?("budget-funding-type-#{activity.source_fund_code}-field")).to be_truthy
+      end
+
       scenario "budget creation is tracked with public_activity" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
 
