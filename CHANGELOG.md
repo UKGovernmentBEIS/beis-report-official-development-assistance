@@ -506,6 +506,7 @@
 - Show a list of programmes grouped by fund on the organisation pages
 - Publish terms of service on RODA
 - Add RODA ID column to the activity import template
+- Only tell robots to index the production site
 
 ## [unreleased]
 

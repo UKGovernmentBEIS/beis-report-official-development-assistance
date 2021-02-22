@@ -33,6 +33,7 @@ resource "cloudfoundry_app" "beis-roda-app" {
     "GOOGLE_TAG_MANAGER_CONTAINER_ID"        = var.google_tag_manager_container_id
     "GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH"    = var.google_tag_manager_environment_auth
     "GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW" = var.google_tag_manager_environment_preview
+    "ROBOT_NOINDEX"                          = var.robot_noindex
   }
   # routes need to be declared with the app for blue green deployments to work
   routes {
