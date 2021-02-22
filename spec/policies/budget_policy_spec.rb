@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe BudgetPolicy do
-  let(:budget) { create(:budget, parent_activity: activity) }
+  let(:budget) { create(:budget, parent_activity: activity, funding_type: 1) }
+  let(:fund) { Fund.new(1) }
 
   subject { described_class.new(user, budget) }
 
@@ -10,6 +11,8 @@ RSpec.describe BudgetPolicy do
 
     context "when the activity has no level" do
       let(:activity) { CreateActivity.new(organisation_id: user.organisation.id).call }
+
+      before { activity.update(source_fund: fund) }
 
       it { is_expected.to permit_action(:show) }
 
@@ -69,6 +72,8 @@ RSpec.describe BudgetPolicy do
 
     context "when the activity has no level" do
       let(:activity) { CreateActivity.new(organisation_id: user.organisation.id).call }
+
+      before { activity.update(source_fund: fund) }
 
       it { is_expected.to permit_action(:show) }
 
