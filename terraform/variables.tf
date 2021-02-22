@@ -105,3 +105,9 @@ variable "custom_hostname" {
   type        = string
   description = "Custom hostname (prepended to custom_domain for the app and cdn-route)"
 }
+
+variable "robot_noindex" {
+  type        = string
+  description = "should robots be able to index the site?"
+  default     = "false"
+}
