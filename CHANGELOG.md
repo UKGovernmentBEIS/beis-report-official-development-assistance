@@ -552,6 +552,7 @@
 - Display the RODA Identifer anywhere we have an activity table with an "Identifier" column
 - Budgets do not collect IATI fields or currency as they are set by default
 - Budgets tables do not show IATI fields and only show the financial year
+- Budgets funding type must be the same as the parent activity
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-38...HEAD
 [release-38]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...release-38

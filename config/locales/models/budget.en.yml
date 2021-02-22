@@ -65,5 +65,8 @@ en:
               blank: Enter a budget status
             funding_type:
               blank: Select a funding type
+              source_fund:
+                1: You cannot assign GCRF budget to a Newton funded activity
+                2: You cannot assign Newton budget to a GCRF funded activity.
             financial_year:
               blank: Select a financial year
