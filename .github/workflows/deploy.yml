@@ -44,6 +44,7 @@ jobs:
           TF_VAR_google_tag_manager_environment_preview: ${{ secrets.STAGING_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW }}
           TF_VAR_custom_domain: ${{ secrets.STAGING_CUSTOM_DOMAIN }}
           TF_VAR_custom_hostname: ${{ secrets.STAGING_CUSTOM_HOSTNAME }}
+          TF_VAR_robot_noindex: "true"
         run: |
           script/deploy-terraform
         if: github.ref == 'refs/heads/develop'
@@ -68,6 +69,7 @@ jobs:
           TF_VAR_google_tag_manager_environment_preview: ${{ secrets.PROD_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW }}
           TF_VAR_custom_domain: ${{ secrets.PROD_CUSTOM_DOMAIN }}
           TF_VAR_custom_hostname: ${{ secrets.PROD_CUSTOM_HOSTNAME }}
+          TF_VAR_robot_noindex: "false"
         run: |
           script/deploy-terraform
         if: github.ref == 'refs/heads/master'
