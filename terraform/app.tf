@@ -18,7 +18,9 @@ resource "cloudfoundry_app" "beis-roda-app" {
     "RAILS_ENV"                              = "production"
     "DATA_MIGRATE"                           = var.data_migrate
     "SECRET_KEY_BASE"                        = var.secret_key_base
-    "DOMAIN"                                 = var.domain
+    "DOMAIN"                                 = "https://${var.custom_hostname}.${var.custom_domain}"
+    "CANONICAL_HOSTNAME"                     = "${var.custom_hostname}.${var.custom_domain}"
+    "ADDITIONAL_HOSTNAMES"                   = var.additional_hostnames
     "AUTH0_CLIENT_ID"                        = var.auth0_client_id
     "AUTH0_CLIENT_SECRET"                    = var.auth0_client_secret
     "AUTH0_DOMAIN"                           = var.auth0_domain

@@ -130,5 +130,6 @@ Rails.application.configure do
   # This whitelists the hosts the application can trust when using `url_for` and related helpers
   hosts = []
   hosts << URI(ENV["DOMAIN"])&.host if ENV["DOMAIN"].present?
+  hosts += ENV["ADDITIONAL_HOSTNAMES"].split(",") if ENV["ADDITIONAL_HOSTNAMES"].present?
   config.hosts = hosts.compact
 end
