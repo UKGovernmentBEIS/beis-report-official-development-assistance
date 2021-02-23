@@ -21,9 +21,16 @@ class FinancialYear
 
     def next_ten
       this_financial_year = for_date(Date.today).to_i
-      tenth_year = this_financial_year.to_i + 9
+      tenth_year = this_financial_year + 9
 
       (this_financial_year..tenth_year).map { |year| new(year) }
+    end
+
+    def previous_ten
+      this_financial_year = for_date(Date.today).to_i
+      first_year = this_financial_year - 9
+
+      (first_year..this_financial_year).map { |year| new(year) }
     end
   end
 

@@ -41,8 +41,9 @@ class CreateTransaction
   end
 
   def default_description
-    return nil unless transaction.date.present?
+    quarter = transaction.financial_quarter_and_year
+    return nil unless quarter.present?
 
-    "#{transaction.financial_quarter_and_year} spend on #{activity.title}"
+    "#{quarter} spend on #{activity.title}"
   end
 end

@@ -23,7 +23,8 @@ RSpec.describe ImportTransactions do
     let :transaction_row do
       {
         "Activity RODA Identifier" => project.roda_identifier,
-        "Date" => "8/9/2020",
+        "Financial Quarter" => "4",
+        "Financial Year" => "2019",
         "Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
         "Receiving Organisation Type" => "80",
@@ -44,7 +45,8 @@ RSpec.describe ImportTransactions do
 
       expect(transaction).to have_attributes(
         parent_activity: project,
-        date: Date.new(2020, 9, 8),
+        financial_quarter: 4,
+        financial_year: 2019,
         value: 50.0,
         receiving_organisation_name: "Example University",
         receiving_organisation_type: "80",
@@ -121,9 +123,9 @@ RSpec.describe ImportTransactions do
       end
     end
 
-    context "when the Date is blank" do
+    context "when the Financial Quarter is blank" do
       let :transaction_row do
-        super().merge("Date" => "")
+        super().merge("Financial Quarter" => "")
       end
 
       it "does not import any transactions" do
@@ -132,14 +134,14 @@ RSpec.describe ImportTransactions do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportTransactions::Error.new(0, "Date", "", t("activerecord.errors.models.transaction.attributes.date.blank")),
+          ImportTransactions::Error.new(0, "Financial Quarter", "", t("activerecord.errors.models.transaction.attributes.financial_quarter.inclusion")),
         ])
       end
     end
 
-    context "when the Date is invalid" do
+    context "when the Financial Year is blank" do
       let :transaction_row do
-        super().merge("Date" => "99/4/2020")
+        super().merge("Financial Year" => "")
       end
 
       it "does not import any transactions" do
@@ -148,20 +150,24 @@ RSpec.describe ImportTransactions do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportTransactions::Error.new(0, "Date", "99/4/2020", t("importer.errors.transaction.invalid_date")),
+          ImportTransactions::Error.new(0, "Financial Year", "", t("activerecord.errors.models.transaction.attributes.financial_year.blank")),
         ])
       end
+    end
 
-      context "two-digit date" do
-        let :transaction_row do
-          super().merge("Date" => "21/10/15")
-        end
+    context "when the Financial Quarter is invalid" do
+      let :transaction_row do
+        super().merge("Financial Quarter" => "5")
+      end
 
-        it "returns an error" do
-          expect(importer.errors).to eq([
-            ImportTransactions::Error.new(0, "Date", "21/10/15", t("activerecord.errors.models.transaction.attributes.date.between", min: 10, max: 25)),
-          ])
-        end
+      it "does not import any transactions" do
+        expect(report.transactions.count).to eq(0)
+      end
+
+      it "returns an error" do
+        expect(importer.errors).to eq([
+          ImportTransactions::Error.new(0, "Financial Quarter", "5", t("activerecord.errors.models.transaction.attributes.financial_quarter.inclusion")),
+        ])
       end
     end
 
@@ -301,7 +307,8 @@ RSpec.describe ImportTransactions do
     let :first_transaction_row do
       {
         "Activity RODA Identifier" => sibling_project.roda_identifier,
-        "Date" => "8/9/2020",
+        "Financial Quarter" => "3",
+        "Financial Year" => "2020",
         "Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
         "Receiving Organisation Type" => "80",
@@ -311,7 +318,8 @@ RSpec.describe ImportTransactions do
     let :second_transaction_row do
       {
         "Activity RODA Identifier" => project.roda_identifier,
-        "Date" => "10/9/2020",
+        "Financial Quarter" => "3",
+        "Financial Year" => "2020",
         "Value" => "150.00",
         "Receiving Organisation Name" => "Example Corporation",
         "Receiving Organisation Type" => "70",
@@ -321,7 +329,8 @@ RSpec.describe ImportTransactions do
     let :third_transaction_row do
       {
         "Activity RODA Identifier" => sibling_project.roda_identifier,
-        "Date" => "25/12/2019",
+        "Financial Quarter" => "3",
+        "Financial Year" => "2019",
         "Value" => "£5,000",
         "Receiving Organisation Name" => "Example Foundation",
         "Receiving Organisation Type" => "60",
@@ -381,7 +390,7 @@ RSpec.describe ImportTransactions do
       end
 
       let :third_transaction_row do
-        super().merge("Date" => 6.months.from_now.strftime("%-d/%-m/%Y"), "Value" => "0")
+        super().merge("Financial Quarter" => "5", "Value" => "0")
       end
 
       it "does not import any transactions" do
@@ -393,7 +402,7 @@ RSpec.describe ImportTransactions do
 
         expect(errors).to eq([
           ImportTransactions::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.transaction.invalid_iati_organisation_type")),
-          ImportTransactions::Error.new(2, "Date", third_transaction_row["Date"], t("activerecord.errors.models.transaction.attributes.date.not_in_future")),
+          ImportTransactions::Error.new(2, "Financial Quarter", third_transaction_row["Financial Quarter"], t("activerecord.errors.models.transaction.attributes.financial_quarter.inclusion")),
           ImportTransactions::Error.new(2, "Value", "0", t("activerecord.errors.models.transaction.attributes.value.other_than")),
         ])
       end

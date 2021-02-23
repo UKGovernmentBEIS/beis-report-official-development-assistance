@@ -26,9 +26,8 @@ RSpec.feature "Users can edit a transaction" do
 
       fill_in_transaction_form(
         value: "2000.51",
-        date_day: "1",
-        date_month: "1",
-        date_year: "2020",
+        financial_quarter: "4",
+        financial_year: "2019-2020",
       )
 
       expect(page).to have_content(t("action.transaction.update.success"))
@@ -48,9 +47,8 @@ RSpec.feature "Users can edit a transaction" do
 
         fill_in_transaction_form(
           value: "2000.51",
-          date_day: "1",
-          date_month: "1",
-          date_year: "2020",
+          financial_quarter: "4",
+          financial_year: "2019-2020",
         )
 
         auditable_event = PublicActivity::Activity.find_by(trackable_id: transaction.id)
