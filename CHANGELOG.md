@@ -512,6 +512,7 @@
 
 - Clicking a link when signed-out should take you to the right place
 - Accept financial quarters instead of dates when inputting transactions
+- Redirect old domains to canonical one
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-33...HEAD
 [release-33]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-32...release-33
