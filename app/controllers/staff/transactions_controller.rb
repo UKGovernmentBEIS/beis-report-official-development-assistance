@@ -8,6 +8,10 @@ class Staff::TransactionsController < Staff::BaseController
     @transaction = Transaction.new
     @transaction.parent_activity = @activity
 
+    @report = Report.editable_for_activity(@activity)
+    @transaction.financial_quarter = @report&.financial_quarter
+    @transaction.financial_year = @report&.financial_year
+
     authorize @transaction
   end
 
@@ -69,7 +73,8 @@ class Staff::TransactionsController < Staff::BaseController
   def transaction_params
     params.require(:transaction).permit(
       :value,
-      :date,
+      :financial_quarter,
+      :financial_year,
       :receiving_organisation_name,
       :receiving_organisation_reference,
       :receiving_organisation_type
