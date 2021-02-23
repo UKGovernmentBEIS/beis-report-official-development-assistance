@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # If the DOMAIN env var is present, and the request doesn't come from that
+  # hostname, redirect us to the canonical hostname with the path and query string present
+  if ENV["CANONICAL_HOSTNAME"].present?
+    constraints(host: Regexp.new("^(?!#{ENV["CANONICAL_HOSTNAME"]})")) do
+      match "/(*path)" => redirect(host: ENV["CANONICAL_HOSTNAME"]), :via => [:all]
+    end
+  end
+
   scope module: "public" do
     get "health_check" => "base#health_check"
     root to: "visitors#index"
