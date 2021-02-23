@@ -5,3 +5,7 @@
 .date-fieldset {
   margin: 0 0 30px;
 }
+
+.upload-form .govuk-label {
+  @extend %govuk-heading-m;
+}
