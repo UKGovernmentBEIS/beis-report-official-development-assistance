@@ -69,6 +69,10 @@ class FinancialQuarter
     quarter
   end
 
+  def to_hash
+    {financial_quarter: quarter, financial_year: financial_year.start_year}
+  end
+
   def pred
     if quarter == 1
       FinancialQuarter.new(financial_year.start_year - 1, 4)

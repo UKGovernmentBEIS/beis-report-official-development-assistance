@@ -29,6 +29,13 @@ RSpec.describe FinancialQuarter do
     expect(financial_quarter.end_date).to eq(Date.parse("2021-03-31"))
   end
 
+  describe "#to_hash" do
+    it "returns parameters suitable for querying ActiveRecord models" do
+      quarter = FinancialQuarter.new(2017, 3)
+      expect(quarter.to_hash).to eq(financial_quarter: 3, financial_year: 2017)
+    end
+  end
+
   describe "#pred" do
     it "returns the following quarter" do
       quarter = FinancialQuarter.new(2020, 2)

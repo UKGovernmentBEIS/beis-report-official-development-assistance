@@ -89,15 +89,7 @@ class Report < ApplicationRecord
   end
 
   def previous
-    quarter, year = financial_quarter, financial_year
-
-    quarter -= 1
-
-    if quarter == 0
-      quarter = 4
-      year -= 1
-    end
-
-    Report.find_by(fund: fund, organisation: organisation, financial_quarter: quarter, financial_year: year)
+    previous_quarter = own_financial_quarter.pred
+    Report.find_by(fund: fund, organisation: organisation, **previous_quarter)
   end
 end

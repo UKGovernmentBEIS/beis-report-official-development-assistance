@@ -1233,12 +1233,14 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "#actual_total_for_report_financial_quarter" do
+    let(:current_quarter) { FinancialQuarter.for_date(Date.today) }
+
     it "returns the total of all the activity's transactions scoped to a report" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
-      create(:transaction, parent_activity: project, value: 100.20, report: report, date: Date.today)
-      create(:transaction, parent_activity: project, value: 50.00, report: report, date: Date.today)
-      create(:transaction, parent_activity: project, value: 210, report: report, date: 4.months.ago)
+      create(:transaction, parent_activity: project, value: 100.20, report: report, **current_quarter)
+      create(:transaction, parent_activity: project, value: 50.00, report: report, **current_quarter)
+      create(:transaction, parent_activity: project, value: 210, report: report, **current_quarter.pred)
 
       expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(150.20)
     end
@@ -1246,8 +1248,8 @@ RSpec.describe Activity, type: :model do
     it "does not include the totals for any transactions outside the report's date range" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
-      create(:transaction, parent_activity: project, value: 100.20, report: report, date: 6.months.ago)
-      create(:transaction, parent_activity: project, value: 210, report: report, date: 4.months.ago)
+      create(:transaction, parent_activity: project, value: 100.20, report: report, **current_quarter.pred.pred)
+      create(:transaction, parent_activity: project, value: 210, report: report, **current_quarter.pred)
 
       expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(0)
     end

@@ -242,7 +242,8 @@ RSpec.feature "Users can view reports" do
         report = Report.for_activity(activity).in_historical_order.first
         report_presenter = ReportPresenter.new(report)
 
-        _actual_value = create(:transaction, parent_activity: activity, report: report, date: report.created_at, value: 1100)
+        report_quarter = report.own_financial_quarter
+        _actual_value = create(:transaction, parent_activity: activity, report: report, value: 1100, **report_quarter)
 
         travel_to quarter_two_2019 do
           visit reports_path
