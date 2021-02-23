@@ -62,7 +62,7 @@ class FinancialQuarter
   end
 
   def to_s
-    "Q#{quarter} #{financial_year}"
+    "FQ#{quarter} #{financial_year}"
   end
 
   def to_i

@@ -1,5 +1,6 @@
 class Transaction < ApplicationRecord
   include PublicActivity::Common
+  include HasFinancialQuarter
 
   TRANSACTION_TYPE_DISBURSEMENT = "3"
   DEFAULT_TRANSACTION_TYPE = TRANSACTION_TYPE_DISBURSEMENT
@@ -20,12 +21,6 @@ class Transaction < ApplicationRecord
 
   before_validation :set_financial_quarter_from_date
 
-  def financial_quarter_and_year
-    if financial_year.present? && financial_quarter.present?
-      FinancialQuarter.new(financial_year, financial_quarter).to_s
-    end
-  end
-
   private
 
   def set_financial_quarter_from_date
@@ -37,8 +32,7 @@ class Transaction < ApplicationRecord
       self.financial_quarter = quarter.quarter
       self.financial_year = quarter.financial_year.start_year
     elsif has_quarter && !has_date
-      quarter = FinancialQuarter.new(financial_year, financial_quarter)
-      self.date = quarter.end_date
+      self.date = own_financial_quarter.end_date
     end
   end
 end

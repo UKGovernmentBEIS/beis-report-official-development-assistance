@@ -59,9 +59,9 @@ RSpec.describe FinancialQuarter do
       may_date = Date.new(2020, 5, 16)
       june_date = Date.new(2020, 6, 19)
 
-      expect(FinancialQuarter.for_date(april_date).to_s).to eq("Q1 2020-2021")
-      expect(FinancialQuarter.for_date(may_date).to_s).to eq("Q1 2020-2021")
-      expect(FinancialQuarter.for_date(june_date).to_s).to eq("Q1 2020-2021")
+      expect(FinancialQuarter.for_date(april_date).to_s).to eq("FQ1 2020-2021")
+      expect(FinancialQuarter.for_date(may_date).to_s).to eq("FQ1 2020-2021")
+      expect(FinancialQuarter.for_date(june_date).to_s).to eq("FQ1 2020-2021")
     end
 
     it "returns Q2 for dates in July, August and September" do
@@ -69,9 +69,9 @@ RSpec.describe FinancialQuarter do
       august_date = Date.new(2020, 8, 16)
       september_date = Date.new(2020, 9, 23)
 
-      expect(FinancialQuarter.for_date(july_date).to_s).to eq("Q2 2020-2021")
-      expect(FinancialQuarter.for_date(august_date).to_s).to eq("Q2 2020-2021")
-      expect(FinancialQuarter.for_date(september_date).to_s).to eq("Q2 2020-2021")
+      expect(FinancialQuarter.for_date(july_date).to_s).to eq("FQ2 2020-2021")
+      expect(FinancialQuarter.for_date(august_date).to_s).to eq("FQ2 2020-2021")
+      expect(FinancialQuarter.for_date(september_date).to_s).to eq("FQ2 2020-2021")
     end
 
     it "returns Q3 for dates in October, November and December" do
@@ -79,9 +79,9 @@ RSpec.describe FinancialQuarter do
       november_date = Date.new(2020, 11, 5)
       december_date = Date.new(2020, 12, 25)
 
-      expect(FinancialQuarter.for_date(october_date).to_s).to eq("Q3 2020-2021")
-      expect(FinancialQuarter.for_date(november_date).to_s).to eq("Q3 2020-2021")
-      expect(FinancialQuarter.for_date(december_date).to_s).to eq("Q3 2020-2021")
+      expect(FinancialQuarter.for_date(october_date).to_s).to eq("FQ3 2020-2021")
+      expect(FinancialQuarter.for_date(november_date).to_s).to eq("FQ3 2020-2021")
+      expect(FinancialQuarter.for_date(december_date).to_s).to eq("FQ3 2020-2021")
     end
 
     it "returns Q4 for dates in January, February and March" do
@@ -89,9 +89,9 @@ RSpec.describe FinancialQuarter do
       february_date = Date.new(2021, 2, 15)
       march_date = Date.new(2021, 3, 27)
 
-      expect(FinancialQuarter.for_date(january_date).to_s).to eq("Q4 2020-2021")
-      expect(FinancialQuarter.for_date(february_date).to_s).to eq("Q4 2020-2021")
-      expect(FinancialQuarter.for_date(march_date).to_s).to eq("Q4 2020-2021")
+      expect(FinancialQuarter.for_date(january_date).to_s).to eq("FQ4 2020-2021")
+      expect(FinancialQuarter.for_date(february_date).to_s).to eq("FQ4 2020-2021")
+      expect(FinancialQuarter.for_date(march_date).to_s).to eq("FQ4 2020-2021")
     end
   end
 end

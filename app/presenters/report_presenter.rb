@@ -11,11 +11,6 @@ class ReportPresenter < SimpleDelegator
     I18n.l(super)
   end
 
-  def financial_quarter_and_year
-    return nil if financial_quarter.nil? || financial_year.nil?
-    "FQ#{financial_quarter} #{financial_year}-#{financial_year + 1}"
-  end
-
   def filename_for_report_download
     filename(purpose: "report")
   end

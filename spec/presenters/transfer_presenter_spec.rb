@@ -5,7 +5,7 @@ RSpec.describe TransferPresenter do
 
   describe "#financial_quarter_and_year" do
     it "returns the financial quarter and year" do
-      expect(described_class.new(transfer).financial_quarter_and_year).to eq("Q1 2020-2021")
+      expect(described_class.new(transfer).financial_quarter_and_year).to eq("FQ1 2020-2021")
     end
   end
 

@@ -1,5 +1,6 @@
 class Report < ApplicationRecord
   include PublicActivity::Common
+  include HasFinancialQuarter
 
   attr_readonly :financial_quarter, :financial_year
 

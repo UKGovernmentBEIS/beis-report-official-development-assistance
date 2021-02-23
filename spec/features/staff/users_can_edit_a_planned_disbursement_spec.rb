@@ -37,7 +37,7 @@ RSpec.describe "Users can edit a planned disbursement" do
           click_on "Edit"
         end
 
-        expect(page).to have_content("Edit forecasted spend for Q2 2018-2019")
+        expect(page).to have_content("Edit forecasted spend for FQ2 2018-2019")
       end
     end
 

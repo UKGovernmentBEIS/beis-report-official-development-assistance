@@ -65,7 +65,7 @@ RSpec.describe CreateTransaction do
 
         result = described_class.new(activity: activity).call(attributes: attributes)
 
-        expect(result.object.description).to eq "Q1 2020-2021 spend on Some activity"
+        expect(result.object.description).to eq "FQ1 2020-2021 spend on Some activity"
       end
     end
 

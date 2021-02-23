@@ -1,5 +1,6 @@
 class PlannedDisbursement < ApplicationRecord
   include PublicActivity::Common
+  include HasFinancialQuarter
 
   attr_readonly :parent_activity_id,
     :financial_quarter,
