@@ -69,12 +69,6 @@ variable "docker_image" {
   type        = string
   description = "docker image to use"
 }
-
-variable "domain" {
-  type        = string
-  description = "The canonical domain for the application to be served from"
-}
-
 variable "additional_hostnames" {
   type        = string
   description = "Additional hostnames for the application to be allowed to use (comma seperated)"
