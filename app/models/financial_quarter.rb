@@ -28,6 +28,10 @@ class FinancialQuarter
     end
   end
 
+  def ==(other)
+    quarter == other.quarter && financial_year == other.financial_year
+  end
+
   def start_date
     @start_date ||= Date.new(calendar_year, start_month, 1)
   end
@@ -63,5 +67,21 @@ class FinancialQuarter
 
   def to_i
     quarter
+  end
+
+  def pred
+    if quarter == 1
+      FinancialQuarter.new(financial_year.start_year - 1, 4)
+    else
+      FinancialQuarter.new(financial_year.start_year, quarter - 1)
+    end
+  end
+
+  def succ
+    if quarter == 4
+      FinancialQuarter.new(financial_year.start_year + 1, 1)
+    else
+      FinancialQuarter.new(financial_year.start_year, quarter + 1)
+    end
   end
 end

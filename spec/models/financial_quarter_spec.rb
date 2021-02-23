@@ -29,6 +29,30 @@ RSpec.describe FinancialQuarter do
     expect(financial_quarter.end_date).to eq(Date.parse("2021-03-31"))
   end
 
+  describe "#pred" do
+    it "returns the following quarter" do
+      quarter = FinancialQuarter.new(2020, 2)
+      expect(quarter.pred).to eq(FinancialQuarter.new(2020, 1))
+    end
+
+    it "returns a quarter in the pred year" do
+      quarter = FinancialQuarter.new(2020, 1)
+      expect(quarter.pred).to eq(FinancialQuarter.new(2019, 4))
+    end
+  end
+
+  describe "#succ" do
+    it "returns the following quarter" do
+      quarter = FinancialQuarter.new(2020, 1)
+      expect(quarter.succ).to eq(FinancialQuarter.new(2020, 2))
+    end
+
+    it "returns a quarter in the following year" do
+      quarter = FinancialQuarter.new(2020, 4)
+      expect(quarter.succ).to eq(FinancialQuarter.new(2021, 1))
+    end
+  end
+
   describe ".from_date" do
     it "returns Q1 for dates in April, May and June" do
       april_date = Date.new(2020, 4, 1)
