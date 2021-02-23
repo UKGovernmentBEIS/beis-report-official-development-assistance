@@ -72,7 +72,12 @@ variable "docker_image" {
 
 variable "domain" {
   type        = string
-  description = "Domain used in email links"
+  description = "The canonical domain for the application to be served from"
+}
+
+variable "additional_hostnames" {
+  type        = string
+  description = "Additional hostnames for the application to be allowed to use (comma seperated)"
 }
 
 variable "google_tag_manager_container_id" {
