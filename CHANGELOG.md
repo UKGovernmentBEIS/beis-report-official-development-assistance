@@ -508,14 +508,17 @@
 - Add RODA ID column to the activity import template
 - Only tell robots to index the production site
 
-## [unreleased]
+## [release-34] - 2021-02-24
 
 - Clicking a link when signed-out should take you to the right place
 - Accept financial quarters instead of dates when inputting transactions
 - Redirect old domains to canonical one
 - Overhaul the interface for uploading financial data (actuals and forecasts)
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-33...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-34...HEAD
+[release-34]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-33...release-34
 [release-33]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-32...release-33
 [release-32]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-31...release-32
 [release-31]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-30...release-31
