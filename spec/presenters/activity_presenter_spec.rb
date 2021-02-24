@@ -567,7 +567,7 @@ RSpec.describe ActivityPresenter do
     it "returns the planned disbursement total per report as a formatted number" do
       project = create(:project_activity)
       reporting_cycle = ReportingCycle.new(project, 3, 2020)
-      forecast = PlannedDisbursementHistory.new(project, 4, 2020)
+      forecast = PlannedDisbursementHistory.new(project, financial_quarter: 4, financial_year: 2020)
 
       reporting_cycle.tick
       forecast.set_value(200.20)
@@ -584,7 +584,7 @@ RSpec.describe ActivityPresenter do
     it "returns the variance per report as a formatted number" do
       project = create(:project_activity)
       reporting_cycle = ReportingCycle.new(project, 3, 2019)
-      forecast = PlannedDisbursementHistory.new(project, 4, 2019)
+      forecast = PlannedDisbursementHistory.new(project, financial_quarter: 4, financial_year: 2019)
 
       reporting_cycle.tick
       forecast.set_value(1500)

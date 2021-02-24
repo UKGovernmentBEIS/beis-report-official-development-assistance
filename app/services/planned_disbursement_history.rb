@@ -3,7 +3,7 @@ class PlannedDisbursementHistory
 
   attr_reader :financial_year, :financial_quarter
 
-  def initialize(activity, financial_quarter, financial_year, user: nil)
+  def initialize(activity, financial_quarter:, financial_year:, user: nil)
     @activity = activity
     @financial_quarter = financial_quarter.to_i
     @financial_year = financial_year.to_i

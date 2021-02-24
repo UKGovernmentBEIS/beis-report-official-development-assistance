@@ -60,11 +60,15 @@ RSpec.describe ExportActivityToCsv do
   end
 
   describe "#next_twelve_quarter_forecasts" do
+    def history_for_quarter(quarter, year)
+      PlannedDisbursementHistory.new(project, financial_quarter: quarter, financial_year: year)
+    end
+
     it "gets the forecasted total for the next twelve quarters" do
       quarters = report.next_twelve_financial_quarters
-      q1_forecast = PlannedDisbursementHistory.new(project, *quarters[0])
-      q3_forecast = PlannedDisbursementHistory.new(project, *quarters[2])
-      q11_forecast = PlannedDisbursementHistory.new(project, *quarters[10])
+      q1_forecast = history_for_quarter(*quarters[0])
+      q3_forecast = history_for_quarter(*quarters[2])
+      q11_forecast = history_for_quarter(*quarters[10])
 
       q1_forecast.set_value(1000)
       q3_forecast.set_value(500)

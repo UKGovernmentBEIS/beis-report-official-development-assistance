@@ -11,7 +11,7 @@ RSpec.describe PlannedDisbursementOverview do
   before do
     [2017, 2018].each do |year|
       (1..4).each do |quarter|
-        history = PlannedDisbursementHistory.new(activity, quarter, year)
+        history = PlannedDisbursementHistory.new(activity, financial_quarter: quarter, financial_year: year)
         histories[[year, quarter]] = history
       end
     end
@@ -293,7 +293,7 @@ RSpec.describe PlannedDisbursementOverview do
 
     context "when there are forecasts for multiple activities" do
       let(:project) { create(:project_activity, parent: activity.parent, organisation: delivery_partner) }
-      let(:project_history) { PlannedDisbursementHistory.new(project, 1, 2019) }
+      let(:project_history) { PlannedDisbursementHistory.new(project, financial_quarter: 1, financial_year: 2019) }
       let(:project_overview) { PlannedDisbursementOverview.new(project) }
 
       before do

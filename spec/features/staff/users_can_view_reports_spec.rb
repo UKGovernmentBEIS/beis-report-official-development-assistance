@@ -233,7 +233,7 @@ RSpec.feature "Users can view reports" do
 
         activity = create(:project_activity, organisation: delivery_partner_user.organisation)
         reporting_cycle = ReportingCycle.new(activity, 4, 2018)
-        forecast = PlannedDisbursementHistory.new(activity, 1, 2019)
+        forecast = PlannedDisbursementHistory.new(activity, financial_quarter: 1, financial_year: 2019)
 
         reporting_cycle.tick
         forecast.set_value(1000)

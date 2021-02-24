@@ -1259,7 +1259,7 @@ RSpec.describe Activity, type: :model do
     let(:project) { create(:project_activity) }
 
     it "returns the activity's planned disbursement value for a report's financial quarter" do
-      forecast = PlannedDisbursementHistory.new(project, 3, 2020)
+      forecast = PlannedDisbursementHistory.new(project, financial_quarter: 3, financial_year: 2020)
       reporting_cycle = ReportingCycle.new(project, 2, 2020)
 
       reporting_cycle.tick
@@ -1272,8 +1272,8 @@ RSpec.describe Activity, type: :model do
     end
 
     it "does not include totals for any planned disbursements outside the report's date range" do
-      q3_forecast = PlannedDisbursementHistory.new(project, 3, 2020)
-      q4_forecast = PlannedDisbursementHistory.new(project, 4, 2020)
+      q3_forecast = PlannedDisbursementHistory.new(project, financial_quarter: 3, financial_year: 2020)
+      q4_forecast = PlannedDisbursementHistory.new(project, financial_quarter: 4, financial_year: 2020)
       reporting_cycle = ReportingCycle.new(project, 2, 2020)
 
       reporting_cycle.tick
@@ -1287,7 +1287,7 @@ RSpec.describe Activity, type: :model do
     end
 
     it "only counts the latest revision value for a planned disbursement" do
-      forecast = PlannedDisbursementHistory.new(project, 3, 2020)
+      forecast = PlannedDisbursementHistory.new(project, financial_quarter: 3, financial_year: 2020)
       reporting_cycle = ReportingCycle.new(project, 1, 2020)
 
       reporting_cycle.tick
@@ -1313,7 +1313,7 @@ RSpec.describe Activity, type: :model do
 
     let(:project) { create(:project_activity) }
     let(:reporting_cycle) { ReportingCycle.new(project, 2, 2020) }
-    let(:forecast) { PlannedDisbursementHistory.new(project, 3, 2020) }
+    let(:forecast) { PlannedDisbursementHistory.new(project, financial_quarter: 3, financial_year: 2020) }
 
     it "returns the variance between #actual_total_for_report_financial_quarter and #forecasted_total_for_report_financial_quarter" do
       reporting_cycle.tick
