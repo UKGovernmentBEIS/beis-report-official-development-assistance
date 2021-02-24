@@ -38,7 +38,6 @@ We should avoid manual deployments but the following instructions will allow you
   or create a tfvars file eg `terraform/staging.tfvars` with the following:
   ```
   environment = "[TF SPACE]"
-  data_migrate= "true"
   auth0_client_id= "[REDACTED]"
   auth0_client_secret= "[REDACTED]"
   auth0_domain= "[REDACTED]"
