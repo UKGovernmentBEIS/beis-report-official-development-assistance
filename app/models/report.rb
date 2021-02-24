@@ -76,9 +76,4 @@ class Report < ApplicationRecord
   def reportable_activities
     Activity.current.projects_and_third_party_projects_for_report(self).with_roda_identifier
   end
-
-  def previous
-    previous_quarter = own_financial_quarter.pred
-    Report.find_by(fund: fund, organisation: organisation, **previous_quarter)
-  end
 end

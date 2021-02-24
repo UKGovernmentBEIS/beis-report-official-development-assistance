@@ -10,26 +10,31 @@ class ExportActivityToCsv
 
   def call
     values = columns.values.map(&:call)
-    values = values.push(previous_quarter_actuals) if previous_report.present?
-    values = values.concat(next_twelve_quarter_forecasts)
+    values.concat(previous_twelve_quarter_actuals)
+    values.concat(next_twelve_quarter_forecasts)
     values
   end
 
   def headers
     values = columns.keys
-    values = values.push(previous_quarter_actuals_header) if previous_report.present?
-    values = values.concat(next_twelve_quarter_forecasts_headers)
+    values.concat(previous_twelve_quarter_actuals_headers)
+    values.concat(next_twelve_quarter_forecasts_headers)
     values
   end
 
-  def previous_quarter_actuals
-    activity_presenter.actual_total_for_report_financial_quarter(report: previous_report)
+  def previous_twelve_quarter_actuals
+    transaction_quarters = TransactionOverview.new(activity_presenter, report_presenter).all_quarters
+
+    previous_report_quarters.map do |quarter|
+      value = transaction_quarters.value_for(**quarter)
+      "%.2f" % value
+    end
   end
 
   def next_twelve_quarter_forecasts
     forecast_quarters = PlannedDisbursementOverview.new(activity_presenter).snapshot(report_presenter).all_quarters
 
-    report_presenter.own_financial_quarter.following(12).map do |quarter|
+    following_report_quarters.map do |quarter|
       value = forecast_quarters.value_for(**quarter)
       "%.2f" % value
     end
@@ -125,19 +130,19 @@ class ExportActivityToCsv
     report_financial_quarter ? report_financial_quarter + " actuals" : "Actuals"
   end
 
-  private def previous_report
-    @_previous_report ||= report.previous
+  def previous_report_quarters
+    report.own_financial_quarter.preceding(12)
   end
 
-  private def previous_report_presenter
-    @previous_report_presenter ||= ReportPresenter.new(previous_report)
+  def following_report_quarters
+    report.own_financial_quarter.following(12)
   end
 
-  private def previous_quarter_actuals_header
-    "#{previous_report_presenter.financial_quarter_and_year} actuals"
+  private def previous_twelve_quarter_actuals_headers
+    previous_report_quarters.map { |quarter| "#{quarter} actuals" }
   end
 
   private def next_twelve_quarter_forecasts_headers
-    report_presenter.own_financial_quarter.following(12).map { |quarter| "#{quarter} forecast" }
+    following_report_quarters.map { |quarter| "#{quarter} forecast" }
   end
 end

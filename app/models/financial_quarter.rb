@@ -89,6 +89,11 @@ class FinancialQuarter
     end
   end
 
+  def preceding(n)
+    quarter = self
+    (1..n).map { quarter = quarter.pred }.reverse
+  end
+
   def following(n)
     quarter = self
     (1..n).map { quarter = quarter.succ }

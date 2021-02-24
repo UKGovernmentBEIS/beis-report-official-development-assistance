@@ -60,6 +60,21 @@ RSpec.describe FinancialQuarter do
     end
   end
 
+  describe "#preceding" do
+    it "returns the preceding N financial quarters" do
+      quarter = FinancialQuarter.new(2017, 2)
+      expect(quarter.preceding(7)).to eq([
+        FinancialQuarter.new(2015, 3),
+        FinancialQuarter.new(2015, 4),
+        FinancialQuarter.new(2016, 1),
+        FinancialQuarter.new(2016, 2),
+        FinancialQuarter.new(2016, 3),
+        FinancialQuarter.new(2016, 4),
+        FinancialQuarter.new(2017, 1),
+      ])
+    end
+  end
+
   describe "#following" do
     it "returns the following N financial quarters" do
       quarter = FinancialQuarter.new(2017, 2)

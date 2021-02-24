@@ -6,6 +6,21 @@ RSpec.describe ExportActivityToCsv do
   let(:report) { Report.for_activity(project).first }
   let(:export_service) { ExportActivityToCsv.new(activity: project, report: report) }
 
+  let(:previous_twelve_quarter_actuals_headers) {
+    [
+      "FQ1 2017-2018 actuals", "FQ2 2017-2018 actuals", "FQ3 2017-2018 actuals", "FQ4 2017-2018 actuals",
+      "FQ1 2018-2019 actuals", "FQ2 2018-2019 actuals", "FQ3 2018-2019 actuals", "FQ4 2018-2019 actuals",
+      "FQ1 2019-2020 actuals", "FQ2 2019-2020 actuals", "FQ3 2019-2020 actuals", "FQ4 2019-2020 actuals",
+    ]
+  }
+  let(:previous_twelve_quarter_actuals_values) {
+    [
+      "420.00", "430.00", "440.00", "450.00",
+      "460.00", "470.00", "480.00", "490.00",
+      "500.00", "510.00", "520.00", "530.00",
+    ]
+  }
+
   let(:next_twelve_quarter_forecast_headers) {
     [
       "FQ2 2020-2021 forecast", "FQ3 2020-2021 forecast", "FQ4 2020-2021 forecast", "FQ1 2021-2022 forecast",
@@ -22,7 +37,7 @@ RSpec.describe ExportActivityToCsv do
   }
 
   before do
-    allow(export_service).to receive(:previous_quarter_actuals).and_return("10.00")
+    allow(export_service).to receive(:previous_twelve_quarter_actuals).and_return(previous_twelve_quarter_actuals_values)
     allow(export_service).to receive(:next_twelve_quarter_forecasts).and_return(next_twelve_quarter_forecast_values)
   end
 
@@ -40,27 +55,14 @@ RSpec.describe ExportActivityToCsv do
       expect(export_service.call.take(3)).to eq ["Value A", "Value B", "Value C"]
     end
 
-    it "includes the forecasts for the next twelve quarters" do
-      expect(export_service.headers.drop(3).take(12)).to eq(next_twelve_quarter_forecast_headers)
-      expect(export_service.call.drop(3).take(12)).to eq(next_twelve_quarter_forecast_values)
+    it "includes the actuals for the previous twelve quarters" do
+      expect(export_service.headers.drop(3).take(12)).to eq(previous_twelve_quarter_actuals_headers)
+      expect(export_service.call.drop(3).take(12)).to eq(previous_twelve_quarter_actuals_values)
     end
 
-    context "when there is a report for the previous quarter" do
-      before do
-        fund = report.fund
-        organisation = report.organisation
-        travel_to_quarter(4, 2019) { Report.create(fund: fund, organisation: organisation) }
-      end
-
-      it "includes the actual spend for the previous quarter" do
-        expect(export_service.headers.take(4)).to eq ["Header A", "Header B", "Header C", "FQ4 2019-2020 actuals"]
-        expect(export_service.call.take(4)).to eq ["Value A", "Value B", "Value C", "10.00"]
-      end
-
-      it "includes the forecasts for the next twelve quarters" do
-        expect(export_service.headers.drop(4).take(12)).to eq(next_twelve_quarter_forecast_headers)
-        expect(export_service.call.drop(4).take(12)).to eq(next_twelve_quarter_forecast_values)
-      end
+    it "includes the forecasts for the next twelve quarters" do
+      expect(export_service.headers.drop(15).take(12)).to eq(next_twelve_quarter_forecast_headers)
+      expect(export_service.call.drop(15).take(12)).to eq(next_twelve_quarter_forecast_values)
     end
   end
 
@@ -71,6 +73,25 @@ RSpec.describe ExportActivityToCsv do
 
     it "includes the BEIS identifier" do
       expect(export_service.call).to include("GCRF_AHRC_NS_AH1001")
+    end
+  end
+
+  describe "#previous_twelve_quarter_actuals" do
+    let(:previous_quarter_report) { travel_to_quarter(4, 2019) { create(:report) } }
+    let(:previous_year_report) { travel_to_quarter(4, 2018) { create(:report) } }
+
+    it "gets the actual totals for the previous twelve quarters" do
+      create(:transaction, parent_activity: project, report: previous_quarter_report, financial_quarter: 4, financial_year: 2019, value: 20)
+      create(:transaction, parent_activity: project, report: previous_quarter_report, financial_quarter: 1, financial_year: 2019, value: 40)
+      create(:transaction, parent_activity: project, report: previous_year_report, financial_quarter: 3, financial_year: 2017, value: 80)
+
+      totals = ExportActivityToCsv.new(activity: project, report: report).previous_twelve_quarter_actuals
+
+      expect(totals).to eq [
+        "0.00", "0.00", "80.00", "0.00",
+        "0.00", "0.00", "0.00", "0.00",
+        "40.00", "0.00", "0.00", "20.00",
+      ]
     end
   end
 
@@ -92,29 +113,6 @@ RSpec.describe ExportActivityToCsv do
         "0.00", "0.00", "0.00", "0.00",
         "0.00", "0.00", "300.00", "0.00",
       ]
-    end
-  end
-
-  describe "#previous_quarter_actuals" do
-    it "gets the actuals for the previous quarter" do
-      activity = create(:project_activity)
-      organisation = activity.organisation
-      fund = activity.associated_fund
-
-      travel_to_quarter(1, 2019) do
-        previous_report = Report.new(fund: fund, organisation: organisation, state: :active)
-        create(:transaction, report: previous_report, parent_activity: activity, value: 666.66)
-        previous_report.approved!
-      end
-
-      travel_to_quarter(2, 2019) do
-        current_report = Report.new(fund: fund, organisation: organisation, state: :active)
-        create(:transaction, report: current_report, parent_activity: activity, value: 10000.00)
-
-        exporter = ExportActivityToCsv.new(activity: activity, report: current_report)
-
-        expect(exporter.call).to include "666.66"
-      end
     end
   end
 
