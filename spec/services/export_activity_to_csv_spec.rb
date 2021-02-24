@@ -60,15 +60,11 @@ RSpec.describe ExportActivityToCsv do
   end
 
   describe "#next_twelve_quarter_forecasts" do
-    def history_for_quarter(quarter, year)
-      PlannedDisbursementHistory.new(project, financial_quarter: quarter, financial_year: year)
-    end
-
     it "gets the forecasted total for the next twelve quarters" do
-      quarters = report.next_twelve_financial_quarters
-      q1_forecast = history_for_quarter(*quarters[0])
-      q3_forecast = history_for_quarter(*quarters[2])
-      q11_forecast = history_for_quarter(*quarters[10])
+      quarters = report.own_financial_quarter.following(12)
+      q1_forecast = PlannedDisbursementHistory.new(project, **quarters[0])
+      q3_forecast = PlannedDisbursementHistory.new(project, **quarters[2])
+      q11_forecast = PlannedDisbursementHistory.new(project, **quarters[10])
 
       q1_forecast.set_value(1000)
       q3_forecast.set_value(500)
@@ -121,9 +117,9 @@ RSpec.describe ExportActivityToCsv do
 
       expect(headers).to eql [
         "Header A", "Header B", "Header C",
-        "Q2 2020", "Q3 2020", "Q4 2020", "Q1 2021",
-        "Q2 2021", "Q3 2021", "Q4 2021", "Q1 2022",
-        "Q2 2022", "Q3 2022", "Q4 2022", "Q1 2023",
+        "FQ2 2020-2021 forecast", "FQ3 2020-2021 forecast", "FQ4 2020-2021 forecast", "FQ1 2021-2022 forecast",
+        "FQ2 2021-2022 forecast", "FQ3 2021-2022 forecast", "FQ4 2021-2022 forecast", "FQ1 2022-2023 forecast",
+        "FQ2 2022-2023 forecast", "FQ3 2022-2023 forecast", "FQ4 2022-2023 forecast", "FQ1 2023-2024 forecast",
       ]
     end
 
@@ -149,9 +145,9 @@ RSpec.describe ExportActivityToCsv do
       headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
       expect(headers.to_csv).to include [
-        "Q2 2020", "Q3 2020", "Q4 2020", "Q1 2021",
-        "Q2 2021", "Q3 2021", "Q4 2021", "Q1 2022",
-        "Q2 2022", "Q3 2022", "Q4 2022", "Q1 2023",
+        "FQ2 2020-2021 forecast", "FQ3 2020-2021 forecast", "FQ4 2020-2021 forecast", "FQ1 2021-2022 forecast",
+        "FQ2 2021-2022 forecast", "FQ3 2021-2022 forecast", "FQ4 2021-2022 forecast", "FQ1 2022-2023 forecast",
+        "FQ2 2022-2023 forecast", "FQ3 2022-2023 forecast", "FQ4 2022-2023 forecast", "FQ1 2023-2024 forecast",
       ].to_csv
     end
 

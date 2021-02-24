@@ -77,17 +77,6 @@ class Report < ApplicationRecord
     Activity.current.projects_and_third_party_projects_for_report(self).with_roda_identifier
   end
 
-  def next_twelve_financial_quarters
-    quarter, year = financial_quarter, financial_year
-
-    (1..12).map do
-      year += 1 if quarter == 4
-      quarter = (quarter % 4) + 1
-
-      [quarter, year]
-    end
-  end
-
   def previous
     previous_quarter = own_financial_quarter.pred
     Report.find_by(fund: fund, organisation: organisation, **previous_quarter)

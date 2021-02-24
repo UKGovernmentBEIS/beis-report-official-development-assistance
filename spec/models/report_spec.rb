@@ -156,18 +156,6 @@ RSpec.describe Report, type: :model do
     end
   end
 
-  describe "#next_twelve_financial_quarters" do
-    it "returns an array with the next twelve financial quarters from the date of the report" do
-      report = travel_to(Date.parse("1 April 2020")) { create(:report) }
-
-      expect(report.next_twelve_financial_quarters).to eq [
-        [2, 2020], [3, 2020], [4, 2020], [1, 2021],
-        [2, 2021], [3, 2021], [4, 2021], [1, 2022],
-        [2, 2022], [3, 2022], [4, 2022], [1, 2023],
-      ]
-    end
-  end
-
   describe "#previous" do
     it "returns the report for the previous quarter" do
       report = travel_to(Date.parse("1 April 2020")) { create(:report) }

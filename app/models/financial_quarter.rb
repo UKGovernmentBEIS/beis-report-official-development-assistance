@@ -88,4 +88,9 @@ class FinancialQuarter
       FinancialQuarter.new(financial_year.start_year, quarter + 1)
     end
   end
+
+  def following(n)
+    quarter = self
+    (1..n).map { quarter = quarter.succ }
+  end
 end

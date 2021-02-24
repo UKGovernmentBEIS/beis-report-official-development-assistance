@@ -60,6 +60,21 @@ RSpec.describe FinancialQuarter do
     end
   end
 
+  describe "#following" do
+    it "returns the following N financial quarters" do
+      quarter = FinancialQuarter.new(2017, 2)
+      expect(quarter.following(7)).to eq([
+        FinancialQuarter.new(2017, 3),
+        FinancialQuarter.new(2017, 4),
+        FinancialQuarter.new(2018, 1),
+        FinancialQuarter.new(2018, 2),
+        FinancialQuarter.new(2018, 3),
+        FinancialQuarter.new(2018, 4),
+        FinancialQuarter.new(2019, 1),
+      ])
+    end
+  end
+
   describe ".from_date" do
     it "returns Q1 for dates in April, May and June" do
       april_date = Date.new(2020, 4, 1)

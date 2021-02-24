@@ -27,9 +27,9 @@ class ExportActivityToCsv
   end
 
   def next_twelve_quarter_forecasts
-    report_presenter.next_twelve_financial_quarters.map do |quarter, year|
+    report_presenter.own_financial_quarter.following(12).map do |quarter|
       overview = PlannedDisbursementOverview.new(activity_presenter)
-      value = overview.snapshot(report_presenter).value_for(financial_quarter: quarter, financial_year: year)
+      value = overview.snapshot(report_presenter).value_for(**quarter)
       "%.2f" % value
     end
   end
@@ -137,6 +137,6 @@ class ExportActivityToCsv
   end
 
   private def next_twelve_quarter_forecasts_headers
-    report_presenter.next_twelve_financial_quarters.map { |quarter, year| "Q#{quarter} #{year}" }
+    report_presenter.own_financial_quarter.following(12).map { |quarter| "#{quarter} forecast" }
   end
 end
