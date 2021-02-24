@@ -517,6 +517,8 @@
 
 ## [unreleased]
 
+- Remove Data Migrate gem and run data migrations manually
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-34...HEAD
 [release-34]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-33...release-34
 [release-33]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-32...release-33
