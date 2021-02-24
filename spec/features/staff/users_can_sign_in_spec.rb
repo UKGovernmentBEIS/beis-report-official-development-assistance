@@ -23,7 +23,7 @@ RSpec.feature "Users can sign in with Auth0" do
       uid: user.identifier, name: user.name, email: user.email
     )
 
-    visit dashboard_path
+    visit root_path
     expect(page).to have_content(t("start_page.title"))
 
     expect(page).to have_content(t("header.link.sign_in"))
@@ -31,6 +31,20 @@ RSpec.feature "Users can sign in with Auth0" do
 
     expect(page).to have_content(user.organisation.name)
     expect(page).to have_content(t("header.link.sign_out"))
+  end
+
+  scenario "a user is redirected to a link they originally requested" do
+    user = create(:administrator)
+
+    visit reports_path
+
+    mock_successful_authentication(
+      uid: user.identifier, name: user.name, email: user.email
+    )
+
+    click_on t("header.link.sign_in")
+
+    expect(current_path).to eq(reports_path)
   end
 
   scenario "any user lands on their organisation page" do
@@ -50,7 +64,7 @@ RSpec.feature "Users can sign in with Auth0" do
   end
 
   scenario "protected pages cannot be visited unless signed in" do
-    visit dashboard_path
+    visit root_path
 
     expect(page).to have_content(t("start_page.title"))
   end
@@ -62,7 +76,7 @@ RSpec.feature "Users can sign in with Auth0" do
         uid: "an-unknown-identifier", name: user.name, email: user.email
       )
 
-      visit dashboard_path
+      visit root_path
 
       expect(page).to have_content(t("header.link.sign_in"))
       click_on t("header.link.sign_in")
@@ -78,7 +92,7 @@ RSpec.feature "Users can sign in with Auth0" do
     end
 
     it "displays the error message so they can try to correct the problem themselves" do
-      visit dashboard_path
+      visit root_path
 
       expect(page).to have_content(t("header.link.sign_in"))
       click_on t("header.link.sign_in")
@@ -114,7 +128,7 @@ RSpec.feature "Users can sign in with Auth0" do
         uid: "deactivated-user", name: user.name, email: user.email
       )
 
-      visit dashboard_path
+      visit root_path
 
       expect(page).to have_content(t("header.link.sign_in"))
       click_on t("header.link.sign_in")

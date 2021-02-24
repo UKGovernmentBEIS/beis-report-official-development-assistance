@@ -61,7 +61,7 @@ RSpec.describe CreateTransaction do
     context "when the description is blank" do
       it "sets a default description" do
         activity = create(:activity, title: "Some activity")
-        attributes = ActionController::Parameters.new(date: Date.parse("2020-04-01")).permit!
+        attributes = ActionController::Parameters.new(financial_quarter: 1, financial_year: 2020).permit!
 
         result = described_class.new(activity: activity).call(attributes: attributes)
 

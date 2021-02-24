@@ -37,13 +37,14 @@ jobs:
           TF_VAR_skylight_access_token: ${{ secrets.SKYLIGHT_ACCESS_TOKEN }}
           TF_VAR_skylight_env: ${{ secrets.SKYLIGHT_ENV }}
           TF_VAR_skylight_enable_sidekiq: ${{ secrets.SKYLIGHT_ENABLE_SIDEKIQ }}
-          TF_VAR_domain: ${{ secrets.STAGING_DOMAIN }}
+          TF_VAR_additional_hostnames: ${{ secrets.STAGING_ADDITIONAL_HOSTNAMES }}
           TF_VAR_papertrail_destination: ${{ secrets.STAGING_PAPERTRAIL_DESTINATION }}
           TF_VAR_google_tag_manager_container_id: ${{ secrets.STAGING_GOOGLE_TAG_MANAGER_CONTAINER_ID }}
           TF_VAR_google_tag_manager_environment_auth: ${{ secrets.STAGING_GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH }}
           TF_VAR_google_tag_manager_environment_preview: ${{ secrets.STAGING_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW }}
           TF_VAR_custom_domain: ${{ secrets.STAGING_CUSTOM_DOMAIN }}
           TF_VAR_custom_hostname: ${{ secrets.STAGING_CUSTOM_HOSTNAME }}
+          TF_VAR_robot_noindex: "true"
         run: |
           script/deploy-terraform
         if: github.ref == 'refs/heads/develop'
@@ -61,13 +62,14 @@ jobs:
           TF_VAR_skylight_access_token: ${{ secrets.SKYLIGHT_ACCESS_TOKEN }}
           TF_VAR_skylight_env: ${{ secrets.SKYLIGHT_ENV }}
           TF_VAR_skylight_enable_sidekiq: ${{ secrets.SKYLIGHT_ENABLE_SIDEKIQ }}
-          TF_VAR_domain: ${{ secrets.PROD_DOMAIN }}
+          TF_VAR_additional_hostnames: ${{ secrets.PROD_ADDITIONAL_HOSTNAMES }}
           TF_VAR_papertrail_destination: ${{ secrets.PROD_PAPERTRAIL_DESTINATION }}
           TF_VAR_google_tag_manager_container_id: ${{ secrets.PROD_GOOGLE_TAG_MANAGER_CONTAINER_ID }}
           TF_VAR_google_tag_manager_environment_auth: ${{ secrets.PROD_GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH }}
           TF_VAR_google_tag_manager_environment_preview: ${{ secrets.PROD_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW }}
           TF_VAR_custom_domain: ${{ secrets.PROD_CUSTOM_DOMAIN }}
           TF_VAR_custom_hostname: ${{ secrets.PROD_CUSTOM_HOSTNAME }}
+          TF_VAR_robot_noindex: "false"
         run: |
           script/deploy-terraform
         if: github.ref == 'refs/heads/master'

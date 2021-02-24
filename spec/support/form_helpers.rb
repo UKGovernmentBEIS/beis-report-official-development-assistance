@@ -431,15 +431,13 @@ module FormHelpers
 
   def fill_in_transaction_form(expectations: true,
     value: "1000.01",
-    date_year: "2020",
-    date_month: "1",
-    date_day: "2",
+    financial_quarter: "4",
+    financial_year: "2019-2020",
     receiving_organisation: OpenStruct.new(name: "Example receiver", reference: "GB-COH-123", type: "Private Sector"))
 
     fill_in "transaction[value]", with: value
-    fill_in "transaction[date(3i)]", with: date_day
-    fill_in "transaction[date(2i)]", with: date_month
-    fill_in "transaction[date(1i)]", with: date_year
+    choose financial_quarter, name: "transaction[financial_quarter]"
+    select financial_year, from: "transaction[financial_year]"
     fill_in "transaction[receiving_organisation_name]", with: receiving_organisation.name
     select receiving_organisation.type, from: "transaction[receiving_organisation_type]"
     fill_in "transaction[receiving_organisation_reference]", with: receiving_organisation.reference
@@ -448,7 +446,8 @@ module FormHelpers
 
     if expectations
       within ".transactions" do
-        expect(page).to have_content financial_quarter_and_year_from_date_input_fields(year: date_year, month: date_month, day: date_day)
+        start_year = financial_year.split("-").first.to_i
+        expect(page).to have_content(FinancialQuarter.new(start_year, financial_quarter).to_s)
         expect(page).to have_content(ActionController::Base.helpers.number_to_currency(value, unit: "£"))
         expect(page).to have_content(receiving_organisation.name)
       end
@@ -481,11 +480,6 @@ module FormHelpers
 
   def localise_date_from_input_fields(year:, month:, day:)
     I18n.l(Date.parse("#{year}-#{month}-#{day}"))
-  end
-
-  def financial_quarter_and_year_from_date_input_fields(year:, month:, day:)
-    date = Date.parse("#{year}-#{month}-#{day}")
-    TransactionPresenter.new(Transaction.new(date: date)).financial_quarter_and_year
   end
 
   private def activity_level(level)

@@ -69,10 +69,9 @@ variable "docker_image" {
   type        = string
   description = "docker image to use"
 }
-
-variable "domain" {
+variable "additional_hostnames" {
   type        = string
-  description = "Domain used in email links"
+  description = "Additional hostnames for the application to be allowed to use (comma seperated)"
 }
 
 variable "google_tag_manager_container_id" {
@@ -104,4 +103,10 @@ variable "custom_domain" {
 variable "custom_hostname" {
   type        = string
   description = "Custom hostname (prepended to custom_domain for the app and cdn-route)"
+}
+
+variable "robot_noindex" {
+  type        = string
+  description = "should robots be able to index the site?"
+  default     = "false"
 }

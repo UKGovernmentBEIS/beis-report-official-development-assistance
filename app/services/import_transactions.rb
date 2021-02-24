@@ -1,5 +1,3 @@
-require "date"
-
 class ImportTransactions
   Error = Struct.new(:row, :column, :value, :message) {
     def csv_row
@@ -104,7 +102,8 @@ class ImportTransactions
   class Converter
     FIELDS = {
       activity: "Activity RODA Identifier",
-      date: "Date",
+      financial_quarter: "Financial Quarter",
+      financial_year: "Financial Year",
       value: "Value",
       receiving_organisation_name: "Receiving Organisation Name",
       receiving_organisation_type: "Receiving Organisation Type",
@@ -155,13 +154,6 @@ class ImportTransactions
 
     def convert_activity(id)
       Activity.by_roda_identifier(id)
-    end
-
-    def convert_date(date)
-      return nil unless date.present?
-      Date.strptime(date, "%d/%m/%Y")
-    rescue ArgumentError
-      raise I18n.t("importer.errors.transaction.invalid_date")
     end
 
     def convert_value(value)

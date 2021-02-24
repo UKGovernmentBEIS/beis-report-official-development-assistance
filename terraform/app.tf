@@ -18,7 +18,9 @@ resource "cloudfoundry_app" "beis-roda-app" {
     "RAILS_ENV"                              = "production"
     "DATA_MIGRATE"                           = var.data_migrate
     "SECRET_KEY_BASE"                        = var.secret_key_base
-    "DOMAIN"                                 = var.domain
+    "DOMAIN"                                 = "https://${var.custom_hostname}.${var.custom_domain}"
+    "CANONICAL_HOSTNAME"                     = "${var.custom_hostname}.${var.custom_domain}"
+    "ADDITIONAL_HOSTNAMES"                   = var.additional_hostnames
     "AUTH0_CLIENT_ID"                        = var.auth0_client_id
     "AUTH0_CLIENT_SECRET"                    = var.auth0_client_secret
     "AUTH0_DOMAIN"                           = var.auth0_domain
@@ -33,6 +35,7 @@ resource "cloudfoundry_app" "beis-roda-app" {
     "GOOGLE_TAG_MANAGER_CONTAINER_ID"        = var.google_tag_manager_container_id
     "GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH"    = var.google_tag_manager_environment_auth
     "GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW" = var.google_tag_manager_environment_preview
+    "ROBOT_NOINDEX"                          = var.robot_noindex
   }
   # routes need to be declared with the app for blue green deployments to work
   routes {

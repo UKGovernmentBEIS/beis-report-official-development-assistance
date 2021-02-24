@@ -10,6 +10,7 @@ en:
         success: Transaction sucessfully deleted
       download:
         button: Download CSV template
+        hint_html: "<p class='govuk-body'>This CSV contains activity data related to your current report.</p><p class='govuk-body'>Edit it to add the actual spend amounts for your organisation's activities, then upload it through the form.</p>"
       upload:
         button: Upload and continue
         file_missing_or_invalid: Please upload a valid CSV file
@@ -18,7 +19,8 @@ en:
   form:
     label:
       transaction:
-        csv_file: Transaction spreadsheet
+        csv_file: Upload CSV spreadsheet
+        csv_file_recover_from_error: Re-upload CSV spreadsheet
         currency: Currency
         description: Describe the transaction
         disbursement_channel: Disbursement channel (optional)
@@ -38,6 +40,7 @@ en:
     hint:
       transaction:
         csv_file: Upload a spreadsheet containing transaction information in CSV format.
+        csv_file_recover_from_error_html: Upload a spreadsheet containing transaction information in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
         date: If you're reporting quarterly data, select the last day of the quarter. For example, 31 12 2020
         description: For example, 2020 quarter one spend on the Early Career Research Network project.
         disbursement_channel: The channel through which the funds will flow for this transaction.
@@ -74,6 +77,10 @@ en:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_in_future: Date must not be in the future
               blank: Enter a date the transaction was made
+            financial_quarter:
+              inclusion: Enter a financial quarter between 1 and 4
+            financial_year:
+              blank: Enter a financial year the transaction was made
             value:
               less_than_or_equal_to: Value must be less than or equal to 99,999,999,999.00
               other_than: Value must not be zero

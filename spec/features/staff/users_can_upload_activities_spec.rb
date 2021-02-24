@@ -95,8 +95,7 @@ RSpec.feature "users can upload activities" do
 
       expect(new_activites.count).to eq(2)
 
-      expect(new_activites[0].transparency_identifier).to eq("1234")
-      expect(new_activites[1].transparency_identifier).to eq("1235")
+      expect(new_activites.pluck(:transparency_identifier)).to match_array(["1234", "1235"])
     end
   end
 

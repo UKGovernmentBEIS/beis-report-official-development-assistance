@@ -17,6 +17,10 @@ module Secured
       # Is Redis available as a session_store?
       Rails.logger.info(Redis.new(url: ENV["REDIS_URL"]).ping)
     end
-    redirect_to "/" if session[:userinfo].blank?
+
+    if session[:userinfo].blank?
+      session[:redirect_path] = request.env["PATH_INFO"]
+      redirect_to "/"
+    end
   end
 end
