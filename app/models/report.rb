@@ -73,7 +73,7 @@ class Report < ApplicationRecord
   end
 
   def reportable_activities
-    Activity.projects_and_third_party_projects_for_report(self).with_roda_identifier
+    Activity.current.projects_and_third_party_projects_for_report(self).with_roda_identifier
   end
 
   def next_twelve_financial_quarters
