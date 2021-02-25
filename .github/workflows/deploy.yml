@@ -26,7 +26,6 @@ jobs:
       - name: Deploy terraform to staging
         env:
           TF_VAR_environment: "staging"
-          TF_VAR_data_migrate: ${{ secrets.STAGING_DATA_MIGRATE }}
           TF_VAR_secret_key_base: ${{ secrets.STAGING_SECRET_KEY_BASE }}
           TF_VAR_auth0_client_id: ${{ secrets.STAGING_AUTH0_CLIENT_ID }}
           TF_VAR_auth0_client_secret: ${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}
@@ -51,7 +50,6 @@ jobs:
       - name: Deploy terraform to production
         env:
           TF_VAR_environment: "prod"
-          TF_VAR_data_migrate: ${{ secrets.PROD_DATA_MIGRATE }}
           TF_VAR_secret_key_base: ${{ secrets.PROD_SECRET_KEY_BASE }}
           TF_VAR_auth0_client_id: ${{ secrets.PROD_AUTH0_CLIENT_ID }}
           TF_VAR_auth0_client_secret: ${{ secrets.PROD_AUTH0_CLIENT_SECRET }}

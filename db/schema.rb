@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_19_121229) do
+ActiveRecord::Schema.define(version: 2021_02_24_105843) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -135,9 +135,6 @@ ActiveRecord::Schema.define(version: 2021_02_19_121229) do
     t.index ["activity_id"], name: "index_comments_on_activity_id"
     t.index ["owner_id"], name: "index_comments_on_owner_id"
     t.index ["report_id"], name: "index_comments_on_report_id"
-  end
-
-  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
   end
 
   create_table "implementing_organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

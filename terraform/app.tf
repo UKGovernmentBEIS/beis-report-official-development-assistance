@@ -16,7 +16,6 @@ resource "cloudfoundry_app" "beis-roda-app" {
     "RAILS_LOG_TO_STDOUT"                    = "true"
     "RAILS_SERVE_STATIC_FILES"               = "enabled"
     "RAILS_ENV"                              = "production"
-    "DATA_MIGRATE"                           = var.data_migrate
     "SECRET_KEY_BASE"                        = var.secret_key_base
     "DOMAIN"                                 = "https://${var.custom_hostname}.${var.custom_domain}"
     "CANONICAL_HOSTNAME"                     = "${var.custom_hostname}.${var.custom_domain}"
