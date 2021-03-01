@@ -33,6 +33,7 @@ en:
         organisation_type: Organisation type
         language_code: Language code
         default_currency: Default currency
+        beis_organisation_reference: Short name
   page_content:
     organisation_details: Organisation details
     organisations:

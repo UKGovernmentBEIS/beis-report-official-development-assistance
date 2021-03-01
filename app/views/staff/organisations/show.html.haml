@@ -79,6 +79,11 @@
             = t("summary.label.organisation.default_currency")
           %dd.govuk-summary-list__value
             = t("generic.default_currency.#{@organisation_presenter.default_currency}")
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("summary.label.organisation.beis_organisation_reference")
+          %dd.govuk-summary-list__value
+            = @organisation_presenter.beis_organisation_reference
 
       - if policy(:organisation).edit?
         = link_to t("page_content.organisation.button.edit_details"), edit_organisation_path(@organisation_presenter), class: "govuk-button"
