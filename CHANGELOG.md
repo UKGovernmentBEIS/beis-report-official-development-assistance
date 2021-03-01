@@ -518,6 +518,7 @@
 ## [unreleased]
 
 - Remove Data Migrate gem and run data migrations manually
+- Activities can recursively total the transactions for all of their children
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-34...HEAD
 [release-34]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-33...release-34
