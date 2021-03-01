@@ -8,8 +8,6 @@ class Staff::ActivityChildrenController < Staff::BaseController
     authorize @activity
 
     @activities = @activity.child_activities.includes([:organisation, :parent]).order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
-
-    render "staff/activities/children"
   end
 
   def create
