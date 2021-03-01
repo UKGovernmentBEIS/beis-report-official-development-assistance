@@ -75,7 +75,7 @@ group :test do
   gem "rails-controller-testing"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
-  gem "webmock", "~> 3.11"
+  gem "webmock", "~> 3.12"
 end
 
 group :production do
