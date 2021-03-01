@@ -1471,38 +1471,74 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    describe "#total_spend_to_date" do
+    describe "#total_spend" do
       before do
         create(:transaction, value: 100, parent_activity: fund)
+        create(:transaction, value: 100, parent_activity: fund, financial_year: 2020, financial_quarter: 1)
 
         create(:transaction, value: 100, parent_activity: programme1)
+        create(:transaction, value: 100, parent_activity: programme1, financial_year: 2020, financial_quarter: 1)
+
         create(:transaction, value: 100, parent_activity: programme2)
+        create(:transaction, value: 100, parent_activity: programme2, financial_year: 2020, financial_quarter: 1)
 
         create(:transaction, value: 50, parent_activity: programme1_projects[0])
+        create(:transaction, value: 50, parent_activity: programme1_projects[0], financial_year: 2020, financial_quarter: 1)
+
         create(:transaction, value: 50, parent_activity: programme1_projects[1])
+        create(:transaction, value: 50, parent_activity: programme1_projects[1], financial_year: 2020, financial_quarter: 1)
 
         create(:transaction, value: 100, parent_activity: programme2_projects[0])
+        create(:transaction, value: 100, parent_activity: programme2_projects[0], financial_year: 2020, financial_quarter: 1)
+
         create(:transaction, value: 100, parent_activity: programme2_projects[1])
+        create(:transaction, value: 100, parent_activity: programme2_projects[1], financial_year: 2020, financial_quarter: 1)
 
         create(:transaction, value: 100, parent_activity: programme1_third_party_project)
+        create(:transaction, value: 100, parent_activity: programme1_third_party_project, financial_year: 2020, financial_quarter: 1)
+
         create(:transaction, value: 100, parent_activity: programme2_third_party_project)
+        create(:transaction, value: 100, parent_activity: programme2_third_party_project, financial_year: 2020, financial_quarter: 1)
       end
 
-      it "returns the total spend for a fund" do
-        expect(fund.total_spend_to_date).to eq(800)
+      context "when quarter is not specified" do
+        it "returns the total spend for a fund" do
+          expect(fund.total_spend).to eq(1600)
+        end
+
+        it "returns the total spend for a programme" do
+          expect(programme1.total_spend).to eq(600)
+          expect(programme2.total_spend).to eq(800)
+        end
+
+        it "returns the total spend for a project" do
+          expect(programme1_projects[0].total_spend).to eq(300)
+          expect(programme1_projects[1].total_spend).to eq(100)
+
+          expect(programme2_projects[0].total_spend).to eq(200)
+          expect(programme2_projects[1].total_spend).to eq(400)
+        end
       end
 
-      it "returns the total spend for a programme" do
-        expect(programme1.total_spend_to_date).to eq(300)
-        expect(programme2.total_spend_to_date).to eq(400)
-      end
+      context "when quarter is specified" do
+        let(:quarter) { FinancialQuarter.new(2020, 1) }
 
-      it "returns the total spend for a project" do
-        expect(programme1_projects[0].total_spend_to_date).to eq(150)
-        expect(programme1_projects[1].total_spend_to_date).to eq(50)
+        it "returns the total spend for a fund" do
+          expect(fund.total_spend(quarter)).to eq(800)
+        end
 
-        expect(programme2_projects[0].total_spend_to_date).to eq(100)
-        expect(programme2_projects[1].total_spend_to_date).to eq(200)
+        it "returns the total spend for a programme" do
+          expect(programme1.total_spend(quarter)).to eq(300)
+          expect(programme2.total_spend(quarter)).to eq(400)
+        end
+
+        it "returns the total spend for a project" do
+          expect(programme1_projects[0].total_spend(quarter)).to eq(150)
+          expect(programme1_projects[1].total_spend(quarter)).to eq(50)
+
+          expect(programme2_projects[0].total_spend(quarter)).to eq(100)
+          expect(programme2_projects[1].total_spend(quarter)).to eq(200)
+        end
       end
     end
   end

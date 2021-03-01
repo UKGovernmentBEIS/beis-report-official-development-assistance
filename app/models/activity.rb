@@ -247,9 +247,19 @@ class Activity < ApplicationRecord
     Activity.find_by_sql([sql, id])
   end
 
-  def total_spend_to_date
+  def total_spend(financial_quarter = nil)
     activity_ids = descendants.pluck(:id).append(id)
-    Transaction.where(parent_activity_id: activity_ids).sum(:value)
+
+    transactions = Transaction.where(parent_activity_id: activity_ids)
+
+    if financial_quarter
+      transactions = transactions.where(
+        financial_year: financial_quarter.financial_year.to_i,
+        financial_quarter: financial_quarter.to_i
+      )
+    end
+
+    transactions.sum(:value)
   end
 
   def valid?(context = nil)
