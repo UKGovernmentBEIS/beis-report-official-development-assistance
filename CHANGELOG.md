@@ -525,6 +525,7 @@
 ## [unreleased]
 
 - Fix inconsistencies with activity tab display and their ARIA hints
+- Edit BEIS organisation reference (short name) via forms
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-35...HEAD
 [release-35]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-34...release-35
