@@ -89,8 +89,8 @@ RSpec.feature "Users can view activities" do
 
       expect(page).to have_content(current_project.title)
       expect(page).to have_content(current_project.delivery_partner_identifier)
-      expect(page).to have_content(another_current_project.title)
       expect(page).to have_content(another_current_project.delivery_partner_identifier)
+
       expect(page).to_not have_content(historic_project.title)
       expect(page).to_not have_content(historic_project.delivery_partner_identifier)
     end
