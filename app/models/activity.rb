@@ -247,6 +247,11 @@ class Activity < ApplicationRecord
     Activity.find_by_sql([sql, id])
   end
 
+  def total_spend_to_date
+    activity_ids = descendants.pluck(:id).append(id)
+    Transaction.where(parent_activity_id: activity_ids).sum(:value)
+  end
+
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
     super(context)

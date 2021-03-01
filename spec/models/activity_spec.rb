@@ -1425,7 +1425,7 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#descendants" do
+  context "with descendants" do
     let!(:fund) { create(:fund_activity) }
     let!(:programme1) { create(:programme_activity, parent: fund) }
     let!(:programme2) { create(:programme_activity, parent: fund) }
@@ -1434,39 +1434,76 @@ RSpec.describe Activity, type: :model do
     let!(:programme1_third_party_project) { create(:third_party_project_activity, parent: programme1_projects[0]) }
     let!(:programme2_third_party_project) { create(:third_party_project_activity, parent: programme2_projects[1]) }
 
-    it "returns all of the activities in a fund" do
-      expect(fund.descendants).to match_array([
-        programme1,
-        programme2,
-        programme1_projects,
-        programme2_projects,
-        programme1_third_party_project,
-        programme2_third_party_project,
-      ].flatten)
+    describe "#descendants" do
+      it "returns all of the activities in a fund" do
+        expect(fund.descendants).to match_array([
+          programme1,
+          programme2,
+          programme1_projects,
+          programme2_projects,
+          programme1_third_party_project,
+          programme2_third_party_project,
+        ].flatten)
+      end
+
+      it "returns all the activities in a programme" do
+        expect(programme1.descendants).to match_array([
+          programme1_projects,
+          programme1_third_party_project,
+        ].flatten)
+
+        expect(programme2.descendants).to match_array([
+          programme2_projects,
+          programme2_third_party_project,
+        ].flatten)
+      end
+
+      it "returns all the activities in a project" do
+        expect(programme1_projects[0].descendants).to match_array([
+          programme1_third_party_project,
+        ].flatten)
+        expect(programme1_projects[1].descendants).to eq([])
+
+        expect(programme2_projects[0].descendants).to eq([])
+        expect(programme2_projects[1].descendants).to match_array([
+          programme2_third_party_project,
+        ].flatten)
+      end
     end
 
-    it "returns all the activities in a programme" do
-      expect(programme1.descendants).to match_array([
-        programme1_projects,
-        programme1_third_party_project,
-      ].flatten)
+    describe "#total_spend_to_date" do
+      before do
+        create(:transaction, value: 100, parent_activity: fund)
 
-      expect(programme2.descendants).to match_array([
-        programme2_projects,
-        programme2_third_party_project,
-      ].flatten)
-    end
+        create(:transaction, value: 100, parent_activity: programme1)
+        create(:transaction, value: 100, parent_activity: programme2)
 
-    it "returns all the activities in a project" do
-      expect(programme1_projects[0].descendants).to match_array([
-        programme1_third_party_project,
-      ].flatten)
-      expect(programme1_projects[1].descendants).to eq([])
+        create(:transaction, value: 50, parent_activity: programme1_projects[0])
+        create(:transaction, value: 50, parent_activity: programme1_projects[1])
 
-      expect(programme2_projects[0].descendants).to eq([])
-      expect(programme2_projects[1].descendants).to match_array([
-        programme2_third_party_project,
-      ].flatten)
+        create(:transaction, value: 100, parent_activity: programme2_projects[0])
+        create(:transaction, value: 100, parent_activity: programme2_projects[1])
+
+        create(:transaction, value: 100, parent_activity: programme1_third_party_project)
+        create(:transaction, value: 100, parent_activity: programme2_third_party_project)
+      end
+
+      it "returns the total spend for a fund" do
+        expect(fund.total_spend_to_date).to eq(800)
+      end
+
+      it "returns the total spend for a programme" do
+        expect(programme1.total_spend_to_date).to eq(300)
+        expect(programme2.total_spend_to_date).to eq(400)
+      end
+
+      it "returns the total spend for a project" do
+        expect(programme1_projects[0].total_spend_to_date).to eq(150)
+        expect(programme1_projects[1].total_spend_to_date).to eq(50)
+
+        expect(programme2_projects[0].total_spend_to_date).to eq(100)
+        expect(programme2_projects[1].total_spend_to_date).to eq(200)
+      end
     end
   end
 end
