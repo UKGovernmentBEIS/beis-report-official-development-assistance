@@ -128,8 +128,12 @@ class ExportActivityToCsv
     @_previous_report ||= report.previous
   end
 
+  private def previous_report_presenter
+    @previous_report_presenter ||= ReportPresenter.new(previous_report)
+  end
+
   private def previous_quarter_actuals_header
-    "Q#{previous_report.financial_quarter} #{previous_report.financial_year}-#{previous_report.financial_year + 1} actuals"
+    "#{previous_report_presenter.financial_quarter_and_year} actuals"
   end
 
   private def next_twelve_quarter_forecasts_headers

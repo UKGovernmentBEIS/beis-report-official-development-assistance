@@ -160,7 +160,7 @@ RSpec.describe ExportActivityToCsv do
 
       headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
-      expect(headers).to include("Q4 2019-2020 actuals")
+      expect(headers).to include("FQ4 2019-2020 actuals")
     end
   end
 end
