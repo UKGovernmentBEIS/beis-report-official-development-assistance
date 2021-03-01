@@ -13,6 +13,6 @@ class ReportPresenter < SimpleDelegator
 
   def financial_quarter_and_year
     return nil if financial_quarter.nil? || financial_year.nil?
-    "Q#{financial_quarter} #{financial_year}-#{financial_year + 1}"
+    "FQ#{financial_quarter} #{financial_year}-#{financial_year + 1}"
   end
 end

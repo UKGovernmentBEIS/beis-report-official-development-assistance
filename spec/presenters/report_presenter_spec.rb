@@ -20,11 +20,11 @@ RSpec.describe ReportPresenter do
   end
 
   describe "#financial_quarter_and_year" do
-    it "returns the formatted financial quarter and year e.g. Q1 2020-2021" do
+    it "returns the formatted financial quarter and year e.g. FQ1 2020-2021" do
       report = build(:report, financial_quarter: 1, financial_year: 2020)
       result = described_class.new(report).financial_quarter_and_year
 
-      expect(result).to eql "Q1 2020-2021"
+      expect(result).to eql "FQ1 2020-2021"
     end
 
     it "returns nil when the report has no financial quarter or year" do
