@@ -187,7 +187,9 @@ class Staff::ReportsController < Staff::BaseController
   def send_all_reports_csv
     report_sample = downloadable_reports_for_beis_users.first
     headers = ExportActivityToCsv.new(report: report_sample).headers
-    stream_csv_download(filename: "Reports.csv", headers: headers) do |csv|
+    filename = "#{ReportPresenter.new(report_sample).financial_quarter_and_year}-All-Reports.csv"
+
+    stream_csv_download(filename: filename, headers: headers) do |csv|
       downloadable_reports_for_beis_users.each do |report|
         report_activities_sorted_by_level(report).each do |activity|
           csv << ExportActivityToCsv.new(activity: activity, report: report).call

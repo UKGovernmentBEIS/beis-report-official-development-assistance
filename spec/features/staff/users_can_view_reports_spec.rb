@@ -145,7 +145,7 @@ RSpec.feature "Users can view reports" do
         dp_id_column = document.map { |column| column["Delivery partner identifier"] }
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
-        expect(page.response_headers["Content-Disposition"]).to match("Reports.csv")
+        expect(page.response_headers["Content-Disposition"]).to match("-All-Reports.csv")
 
         expect(dp_id_column).to have_content(first_dp_org_project.delivery_partner_identifier)
         expect(dp_id_column).to have_content(second_dp_org_project.delivery_partner_identifier)
