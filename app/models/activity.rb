@@ -232,6 +232,21 @@ class Activity < ApplicationRecord
     find_by(roda_identifier_compound: identifier)
   end
 
+  def descendants
+    sql = <<~SQL
+      WITH RECURSIVE descendants AS (
+        SELECT activities.*
+            FROM activities
+            WHERE parent_id = ?
+        UNION
+            SELECT activities.*
+                FROM activities
+                INNER JOIN descendants ON descendants.id = activities.parent_id
+      ) SELECT * FROM descendants
+    SQL
+    Activity.find_by_sql([sql, id])
+  end
+
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
     super(context)

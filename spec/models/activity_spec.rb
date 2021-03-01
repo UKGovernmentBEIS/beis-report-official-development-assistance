@@ -1424,4 +1424,49 @@ RSpec.describe Activity, type: :model do
       expect(activity.reload.source_fund_code).to eq(2)
     end
   end
+
+  describe "#descendants" do
+    let!(:fund) { create(:fund_activity) }
+    let!(:programme1) { create(:programme_activity, parent: fund) }
+    let!(:programme2) { create(:programme_activity, parent: fund) }
+    let!(:programme1_projects) { create_list(:project_activity, 2, parent: programme1) }
+    let!(:programme2_projects) { create_list(:project_activity, 2, parent: programme2) }
+    let!(:programme1_third_party_project) { create(:third_party_project_activity, parent: programme1_projects[0]) }
+    let!(:programme2_third_party_project) { create(:third_party_project_activity, parent: programme2_projects[1]) }
+
+    it "returns all of the activities in a fund" do
+      expect(fund.descendants).to match_array([
+        programme1,
+        programme2,
+        programme1_projects,
+        programme2_projects,
+        programme1_third_party_project,
+        programme2_third_party_project,
+      ].flatten)
+    end
+
+    it "returns all the activities in a programme" do
+      expect(programme1.descendants).to match_array([
+        programme1_projects,
+        programme1_third_party_project,
+      ].flatten)
+
+      expect(programme2.descendants).to match_array([
+        programme2_projects,
+        programme2_third_party_project,
+      ].flatten)
+    end
+
+    it "returns all the activities in a project" do
+      expect(programme1_projects[0].descendants).to match_array([
+        programme1_third_party_project,
+      ].flatten)
+      expect(programme1_projects[1].descendants).to eq([])
+
+      expect(programme2_projects[0].descendants).to eq([])
+      expect(programme2_projects[1].descendants).to match_array([
+        programme2_third_party_project,
+      ].flatten)
+    end
+  end
 end
