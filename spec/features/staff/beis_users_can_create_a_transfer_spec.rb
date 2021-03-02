@@ -6,7 +6,8 @@ RSpec.feature "BEIS users can create a transfer" do
   let(:created_transfer) { Transfer.last }
 
   before do
-    visit new_activity_transfer_path(source_activity)
+    visit organisation_activity_path(source_activity.organisation, source_activity)
+    click_on "Transfer fund"
   end
 
   scenario "successfully creates a transfer" do

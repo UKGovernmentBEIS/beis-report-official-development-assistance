@@ -32,3 +32,15 @@
               locals: { activity: @activity, planned_disbursements: @planned_disbursement_presenters }
             = render partial: "staff/shared/activities/transactions",
               locals: { activity: @activity, transaction_presenters: @transaction_presenters }
+
+      - if current_user.organisation.service_owner?
+        .govuk-grid-row
+          .govuk-grid-column-full
+            .panel
+              %h2.govuk-heading-l
+                = t("page_title.transfer.index")
+
+              %p.govuk-body
+                Transfer funds to another delivery partner activity
+
+              = link_to "Transfer fund", new_activity_transfer_path(@activity), class: "govuk-button"

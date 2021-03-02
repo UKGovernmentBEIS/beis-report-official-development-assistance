@@ -5,6 +5,7 @@ en:
       new: Transfer
       edit: Edit transfer
       confirm: Are these transfer details correct?
+      index: Transfers
   action:
     transfer:
       create:
