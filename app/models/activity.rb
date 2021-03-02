@@ -228,6 +228,15 @@ class Activity < ApplicationRecord
     where(programme_status: ["completed", "stopped", "cancelled"])
   }
 
+  def self.new_child(parent_activity:, delivery_partner_organisation:, &block)
+    attributes = ActivityDefaults.new(
+      parent_activity: parent_activity,
+      delivery_partner_organisation: delivery_partner_organisation
+    ).call
+
+    new(attributes, &block)
+  end
+
   def self.by_roda_identifier(identifier)
     find_by(roda_identifier_compound: identifier)
   end

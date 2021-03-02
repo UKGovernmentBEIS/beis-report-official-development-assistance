@@ -3,7 +3,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
   before { authenticate!(user: user) }
 
   scenario "successfully creates a programme" do
-    fund = create(:fund_activity, :newton, organisation: user.organisation)
+    fund = create(:fund_activity, :newton)
 
     visit activities_path
     click_on(t("page_content.organisation.button.create_activity"))
@@ -21,8 +21,8 @@ RSpec.feature "BEIS users can create a programme level activity" do
       create(:fund_activity, :newton)
     end
 
-    Fund.all.each do |source_fund|
-      context "with #{source_fund.name} as the funding source" do
+    Activity.fund.each do |fund|
+      context "with #{fund.title} as the funding source" do
         scenario "reaches the 'roda_identifier' form step, with a newly created programme-level activity" do
           visit organisations_path
 
@@ -30,16 +30,15 @@ RSpec.feature "BEIS users can create a programme level activity" do
             click_on t("default.link.show")
           end
 
-          click_on t("form.button.activity.new_with_source_fund", name: source_fund.name)
+          click_on t("form.button.activity.new_child", name: fund.title)
 
           expect(page).to have_content t("form.label.activity.delivery_partner_identifier")
 
           programme = Activity.programme.first
-          expected_parent_activity = Fund.new(source_fund.id).activity
 
           expect(programme.form_state).to eq("identifier")
-          expect(programme.parent).to eq(expected_parent_activity)
-          expect(programme.source_fund).to eq(source_fund)
+          expect(programme.parent).to eq(fund)
+          expect(programme.source_fund).to eq(fund.source_fund)
 
           fill_in "activity[delivery_partner_identifier]", with: "foo"
           click_button t("form.button.activity.submit")
@@ -50,11 +49,18 @@ RSpec.feature "BEIS users can create a programme level activity" do
     end
   end
 
-  it "cannot create a programme from the BEIS organisation page" do
-    visit organisation_path(user.organisation)
+  context "via the service_owner's organisation page" do
+    before do
+      create(:fund_activity, :gcrf)
+      create(:fund_activity, :newton)
+    end
 
-    Fund.all.each do |source_fund|
-      expect(page).to have_no_content(t("form.button.activity.new_with_source_fund", name: source_fund.name))
+    it "has no links to create new child activities" do
+      visit organisation_path(user.organisation)
+
+      Activity.fund.each do |fund|
+        expect(page).to have_no_content(t("form.button.activity.new_child", name: fund.title))
+      end
     end
   end
 
@@ -215,7 +221,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
       choose "GDI not applicable"
       click_button t("form.button.activity.submit")
-      expect(page). to have_content t("form.label.activity.collaboration_type")
+      expect(page).to have_content t("form.label.activity.collaboration_type")
 
       # Collaboration_type has a pre-selected option
       click_button t("form.button.activity.submit")
