@@ -34,6 +34,13 @@ RSpec.feature "BEIS users can create a transfer" do
     expect(created_transfer.financial_quarter).to eq(transfer.financial_quarter)
     expect(created_transfer.financial_year).to eq(transfer.financial_year)
     expect(created_transfer.value).to eq(transfer.value)
+
+    within "#transfers" do
+      expect(page).to have_content(transfer.destination.roda_identifier)
+      expect(page).to have_content(transfer.destination.organisation.name)
+      expect(page).to have_content(FinancialQuarter.new(2020, 1).to_s)
+      expect(page).to have_content("£1,234.00")
+    end
   end
 
   scenario "allows a transfer to be changed before creating" do

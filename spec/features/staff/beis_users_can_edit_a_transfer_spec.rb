@@ -5,10 +5,11 @@ RSpec.feature "BEIS users can edit a transfer" do
   let(:source_activity) { create(:activity) }
   let(:destination_activity) { create(:activity) }
 
-  let(:transfer) { create(:transfer, source: source_activity, destination: destination_activity) }
+  let!(:transfer) { create(:transfer, source: source_activity, destination: destination_activity) }
 
   before do
-    visit edit_activity_transfer_path(source_activity.id, transfer.id)
+    visit organisation_activity_path(source_activity.organisation, source_activity)
+    find("a[href='#{edit_activity_transfer_path(source_activity.id, transfer.id)}']").click
   end
 
   scenario "it shows the transfer details" do
