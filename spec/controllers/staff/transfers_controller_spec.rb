@@ -7,12 +7,19 @@ RSpec.describe Staff::TransfersController do
   end
 
   let(:activity) { create(:activity) }
+  let(:transfer) { create(:transfer) }
 
   context "when loggged in as a beis user" do
     let(:user) { create(:beis_user) }
 
     describe "#new" do
       before { get :new, params: {activity_id: activity.id} }
+
+      it { should respond_with 200 }
+    end
+
+    describe "#edit" do
+      before { get :edit, params: {activity_id: activity.id, id: transfer.id} }
 
       it { should respond_with 200 }
     end
@@ -23,6 +30,12 @@ RSpec.describe Staff::TransfersController do
 
     describe "#new" do
       before { get :new, params: {activity_id: activity.id} }
+
+      it { should respond_with 401 }
+    end
+
+    describe "#edit" do
+      before { get :edit, params: {activity_id: activity.id, id: transfer.id} }
 
       it { should respond_with 401 }
     end

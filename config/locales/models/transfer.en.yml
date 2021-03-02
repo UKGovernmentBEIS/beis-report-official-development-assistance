@@ -3,11 +3,14 @@ en:
   page_title:
     transfer:
       new: Transfer
+      edit: Edit transfer
       confirm: Are these transfer details correct?
   action:
     transfer:
       create:
         success: Transfer successfully recorded
+      update:
+        success: Transfer successfully updated
   fields:
     transfer:
       destination: Receiving activity

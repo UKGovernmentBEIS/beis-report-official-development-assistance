@@ -29,7 +29,7 @@
             %td.govuk-table__cell
               = @transfer_presenter.value
 
-      = form_with model: @transfer, url: activity_transfers_path(@source_activity) do |f|
+      = form_with model: @transfer, url: @confirmation_url do |f|
         = f.hidden_field :confirm, value: 1
         = f.hidden_field :destination, value: @transfer.destination.roda_identifier
         = f.hidden_field :financial_quarter

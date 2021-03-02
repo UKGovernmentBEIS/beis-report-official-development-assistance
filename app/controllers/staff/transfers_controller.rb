@@ -11,6 +11,12 @@ class Staff::TransfersController < Staff::BaseController
     authorize @transfer
   end
 
+  def edit
+    @transfer = Transfer.find(params[:id])
+    @destination_roda_identifier = @transfer.destination.roda_identifier
+    authorize @transfer
+  end
+
   def create
     @transfer = Transfer.new
 
@@ -21,14 +27,30 @@ class Staff::TransfersController < Staff::BaseController
     @transfer.assign_attributes(transfer_params)
 
     if params[:transfer][:confirm]
-      confirm_or_edit
+      confirm_or_edit(t("action.transfer.create.success"))
     else
+      @confirmation_url = activity_transfers_path(@source_activity)
+      show_confirmation_or_errors
+    end
+  end
+
+  def update
+    @transfer = Transfer.find(params[:id])
+    authorize @transfer
+
+    @transfer.destination = destination_activity
+    @transfer.assign_attributes(transfer_params)
+
+    if params[:transfer][:confirm]
+      confirm_or_edit(t("action.transfer.update.success"))
+    else
+      @confirmation_url = activity_transfer_path(@transfer.source, @transfer)
       show_confirmation_or_errors
     end
   end
 
   def destination_roda_identifier
-    params.dig(:transfer, :destination)
+    @destination_roda_identifier || params.dig(:transfer, :destination)
   end
 
   private
@@ -54,12 +76,12 @@ class Staff::TransfersController < Staff::BaseController
     @destination_activity ||= Activity.by_roda_identifier(destination_roda_identifier)
   end
 
-  def confirm_or_edit
+  def confirm_or_edit(success_message)
     if params[:commit] == "No"
-      render :new
+      render edit_or_new
     else
       @transfer.save
-      flash[:notice] = t("action.transfer.create.success")
+      flash[:notice] = success_message
       redirect_to organisation_activity_path(source_activity.organisation, source_activity)
     end
   end
@@ -69,7 +91,11 @@ class Staff::TransfersController < Staff::BaseController
       @transfer_presenter = TransferPresenter.new(@transfer)
       render :confirm
     else
-      render :new
+      render edit_or_new
     end
+  end
+
+  def edit_or_new
+    action_name == "create" ? :new : :edit
   end
 end
