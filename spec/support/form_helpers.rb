@@ -482,6 +482,23 @@ module FormHelpers
     I18n.l(Date.parse("#{year}-#{month}-#{day}"))
   end
 
+  def fill_in_transfer_form(destination: create(:activity), financial_quarter: 1, financial_year: 2020, value: 1234)
+    transfer = build(
+      :transfer,
+      destination: destination,
+      financial_quarter: financial_quarter,
+      financial_year: financial_year,
+      value: value
+    )
+
+    fill_in "transfer[destination]", with: transfer.destination.roda_identifier
+    choose transfer.financial_quarter.to_s, name: "transfer[financial_quarter]"
+    select transfer.financial_year, from: "transfer[financial_year]"
+    fill_in "transfer[value]", with: transfer.value
+
+    transfer
+  end
+
   private def activity_level(level)
     t("page_content.activity.level.#{level}")
   end
