@@ -1,4 +1,6 @@
 class ReportingCycle
+  attr_reader :report
+
   def initialize(activity, financial_quarter, financial_year)
     @activity = activity
     @financial_quarter = financial_quarter
