@@ -27,9 +27,10 @@ class ExportActivityToCsv
   end
 
   def next_twelve_quarter_forecasts
+    forecast_quarters = PlannedDisbursementOverview.new(activity_presenter).snapshot(report_presenter).all_quarters
+
     report_presenter.own_financial_quarter.following(12).map do |quarter|
-      overview = PlannedDisbursementOverview.new(activity_presenter)
-      value = overview.snapshot(report_presenter).value_for(**quarter)
+      value = forecast_quarters.value_for(**quarter)
       "%.2f" % value
     end
   end

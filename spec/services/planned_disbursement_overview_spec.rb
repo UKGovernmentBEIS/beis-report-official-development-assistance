@@ -134,13 +134,13 @@ RSpec.describe PlannedDisbursementOverview do
 
     shared_examples_for "forecast report history" do
       it "returns the forecast values for all quarters" do
-        forecasts = forecast_values(overview.snapshot(report).all_quarters)
+        forecasts = forecast_values(overview.snapshot(report).all_quarters.as_records)
         expect(forecasts).to eq(expected_values)
       end
 
       it "returns the forecast value for a particular quarter" do
         expected_values.each do |quarter, year, amount|
-          value = overview.snapshot(report).value_for(financial_quarter: quarter, financial_year: year)
+          value = overview.snapshot(report).all_quarters.value_for(financial_quarter: quarter, financial_year: year)
           expect(value).to eq(amount)
         end
       end
@@ -179,7 +179,7 @@ RSpec.describe PlannedDisbursementOverview do
       it_should_behave_like "forecast report history"
 
       it "returns zero for the value of a quarter that was revised to zero in that report" do
-        value = overview.snapshot(report).value_for(financial_quarter: 3, financial_year: 2018)
+        value = overview.snapshot(report).all_quarters.value_for(financial_quarter: 3, financial_year: 2018)
         expect(value).to eq(0)
       end
     end
