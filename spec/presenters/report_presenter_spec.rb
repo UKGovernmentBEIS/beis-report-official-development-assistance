@@ -34,4 +34,55 @@ RSpec.describe ReportPresenter do
       expect(result).to be_nil
     end
   end
+
+  context "generating filenames" do
+    let(:report) {
+      build(:report,
+        financial_quarter: 1,
+        financial_year: 2020,
+        fund: build(:fund_activity, :gcrf),
+        organisation: build(:organisation, beis_organisation_reference: "BOR"),
+        description: "My report")
+    }
+
+    describe "#filename_for_report_download" do
+      it "returns the URL-encoded filename for the downloadable report" do
+        result = described_class.new(report).filename_for_report_download
+
+        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-My report.csv"
+      end
+    end
+
+    describe "#filename_for_activities_template" do
+      it "returns the URL-encoded filename for the activities template CSV dowload" do
+        result = described_class.new(report).filename_for_activities_template
+
+        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-activities_upload.csv"
+      end
+    end
+
+    describe "#filename_for_transactions_template" do
+      it "returns the URL-encoded filename for the transactions template CSV dowload" do
+        result = described_class.new(report).filename_for_transactions_template
+
+        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-transactions_upload.csv"
+      end
+    end
+
+    describe "#filename_for_forecasts_template" do
+      it "returns the URL-encoded filename for the transactions template CSV dowload" do
+        result = described_class.new(report).filename_for_forecasts_template
+
+        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-forecasts_upload.csv"
+      end
+    end
+
+    describe "#filename_for_all_reports_download" do
+      it "returns the URL-encoded filename for the aggregated download of all reports" do
+        result = described_class.new(report).filename_for_all_reports_download
+
+        expect(result).to eql "FQ1 2020-2021-All-Reports.csv"
+      end
+    end
+  end
 end
