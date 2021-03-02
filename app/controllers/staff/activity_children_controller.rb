@@ -23,6 +23,8 @@ class Staff::ActivityChildrenController < Staff::BaseController
 
     activity.save!
 
+    activity.create_activity key: "activity.create", owner: current_user
+
     redirect_to activity_step_path(activity.id, activity.form_state)
   end
 end
