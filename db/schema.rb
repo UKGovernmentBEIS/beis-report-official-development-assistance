@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_19_121229) do
+ActiveRecord::Schema.define(version: 2021_02_25_171343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -137,9 +137,6 @@ ActiveRecord::Schema.define(version: 2021_02_19_121229) do
     t.index ["report_id"], name: "index_comments_on_report_id"
   end
 
-  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
-  end
-
   create_table "implementing_organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "reference"
@@ -159,6 +156,7 @@ ActiveRecord::Schema.define(version: 2021_02_19_121229) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "service_owner", default: false
     t.string "iati_reference"
+    t.string "beis_organisation_reference"
     t.index ["iati_reference"], name: "index_organisations_on_iati_reference", unique: true
   end
 

@@ -7,7 +7,6 @@ ruby "2.6.3"
 gem "auth0", "~> 5.0"
 gem "acts_as_tree"
 gem "bootsnap", ">= 1.1.0", require: false
-gem "data_migrate"
 gem "govuk_design_system_formbuilder", "~> 2.1.9"
 gem "haml-rails"
 gem "high_voltage"
@@ -76,7 +75,7 @@ group :test do
   gem "rails-controller-testing"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
-  gem "webmock", "~> 3.11"
+  gem "webmock", "~> 3.12"
 end
 
 group :production do

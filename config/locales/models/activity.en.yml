@@ -2,6 +2,7 @@
 en:
   action:
     activity:
+      add_child: Add child activity
       download:
         button: Download activity CSV template
       upload:
@@ -22,7 +23,7 @@ en:
   form:
     button:
       activity:
-        new_with_source_fund: Add child activity to %{name}
+        new_child: Add child activity to %{name}
         submit: Continue
     link:
       activity:

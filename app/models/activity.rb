@@ -228,8 +228,47 @@ class Activity < ApplicationRecord
     where(programme_status: ["completed", "stopped", "cancelled"])
   }
 
+  def self.new_child(parent_activity:, delivery_partner_organisation:, &block)
+    attributes = ActivityDefaults.new(
+      parent_activity: parent_activity,
+      delivery_partner_organisation: delivery_partner_organisation
+    ).call
+
+    new(attributes, &block)
+  end
+
   def self.by_roda_identifier(identifier)
     find_by(roda_identifier_compound: identifier)
+  end
+
+  def descendants
+    sql = <<~SQL
+      WITH RECURSIVE descendants AS (
+        SELECT activities.*
+            FROM activities
+            WHERE parent_id = ?
+        UNION
+            SELECT activities.*
+                FROM activities
+                INNER JOIN descendants ON descendants.id = activities.parent_id
+      ) SELECT * FROM descendants
+    SQL
+    Activity.find_by_sql([sql, id])
+  end
+
+  def total_spend(financial_quarter = nil)
+    activity_ids = descendants.pluck(:id).append(id)
+
+    transactions = Transaction.where(parent_activity_id: activity_ids)
+
+    if financial_quarter
+      transactions = transactions.where(
+        financial_year: financial_quarter.financial_year.to_i,
+        financial_quarter: financial_quarter.to_i
+      )
+    end
+
+    transactions.sum(:value)
   end
 
   def valid?(context = nil)

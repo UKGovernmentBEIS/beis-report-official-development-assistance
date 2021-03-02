@@ -515,9 +515,17 @@
 - Redirect old domains to canonical one
 - Overhaul the interface for uploading financial data (actuals and forecasts)
 
+## [release-35] - 2021-03-02
+
+- Remove Data Migrate gem and run data migrations manually
+- Activities can recursively total the transactions for all of their children
+- Add an attribute to `Organisation` to record the short name, `beis_organisation_reference`,
+- Delivery partners can add level C activities, automatically parented to an existing level B
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-34...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-35...HEAD
+[release-35]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-34...release-35
 [release-34]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-33...release-34
 [release-33]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-32...release-33
 [release-32]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-31...release-32

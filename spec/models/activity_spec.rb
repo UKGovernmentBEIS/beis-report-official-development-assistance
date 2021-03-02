@@ -29,6 +29,43 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe ".new_child" do
+    let(:parent_activity) { create(:fund_activity, :newton) }
+    let(:delivery_partner_organisation) { create(:delivery_partner_organisation) }
+
+    before do
+      allow_any_instance_of(ActivityDefaults).to receive(:call).and_return(
+        title: "a returned value",
+        form_state: "form_state"
+      )
+    end
+
+    it "initialises a new activity with the attribute hash from ActivityDefaults" do
+      activity = Activity.new_child(
+        parent_activity: parent_activity,
+        delivery_partner_organisation: delivery_partner_organisation
+      )
+
+      expect(activity).to be_an_instance_of(Activity)
+      expect(activity.title).to eq "a returned value"
+      expect(activity.form_state).to eq "form_state"
+    end
+
+    it "accepts a block that can override any default values" do
+      parent_activity = create(:fund_activity, :newton)
+      delivery_partner_organisation = create(:delivery_partner_organisation)
+
+      activity = Activity.new_child(
+        parent_activity: parent_activity,
+        delivery_partner_organisation: delivery_partner_organisation
+      ) { |a|
+        a.form_state = "overridden"
+      }
+
+      expect(activity.form_state).to eq "overridden"
+    end
+  end
+
   describe "scopes" do
     describe ".funds" do
       it "only returns fund level activities" do
@@ -1422,6 +1459,124 @@ RSpec.describe Activity, type: :model do
       activity.save
 
       expect(activity.reload.source_fund_code).to eq(2)
+    end
+  end
+
+  context "with descendants" do
+    let!(:fund) { create(:fund_activity) }
+    let!(:programme1) { create(:programme_activity, parent: fund) }
+    let!(:programme2) { create(:programme_activity, parent: fund) }
+    let!(:programme1_projects) { create_list(:project_activity, 2, parent: programme1) }
+    let!(:programme2_projects) { create_list(:project_activity, 2, parent: programme2) }
+    let!(:programme1_third_party_project) { create(:third_party_project_activity, parent: programme1_projects[0]) }
+    let!(:programme2_third_party_project) { create(:third_party_project_activity, parent: programme2_projects[1]) }
+
+    describe "#descendants" do
+      it "returns all of the activities in a fund" do
+        expect(fund.descendants).to match_array([
+          programme1,
+          programme2,
+          programme1_projects,
+          programme2_projects,
+          programme1_third_party_project,
+          programme2_third_party_project,
+        ].flatten)
+      end
+
+      it "returns all the activities in a programme" do
+        expect(programme1.descendants).to match_array([
+          programme1_projects,
+          programme1_third_party_project,
+        ].flatten)
+
+        expect(programme2.descendants).to match_array([
+          programme2_projects,
+          programme2_third_party_project,
+        ].flatten)
+      end
+
+      it "returns all the activities in a project" do
+        expect(programme1_projects[0].descendants).to match_array([
+          programme1_third_party_project,
+        ].flatten)
+        expect(programme1_projects[1].descendants).to eq([])
+
+        expect(programme2_projects[0].descendants).to eq([])
+        expect(programme2_projects[1].descendants).to match_array([
+          programme2_third_party_project,
+        ].flatten)
+      end
+    end
+
+    describe "#total_spend" do
+      before do
+        create(:transaction, value: 100, parent_activity: fund)
+        create(:transaction, value: 100, parent_activity: fund, financial_year: 2020, financial_quarter: 1)
+
+        create(:transaction, value: 100, parent_activity: programme1)
+        create(:transaction, value: 100, parent_activity: programme1, financial_year: 2020, financial_quarter: 1)
+
+        create(:transaction, value: 100, parent_activity: programme2)
+        create(:transaction, value: 100, parent_activity: programme2, financial_year: 2020, financial_quarter: 1)
+
+        create(:transaction, value: 50, parent_activity: programme1_projects[0])
+        create(:transaction, value: 50, parent_activity: programme1_projects[0], financial_year: 2020, financial_quarter: 1)
+
+        create(:transaction, value: 50, parent_activity: programme1_projects[1])
+        create(:transaction, value: 50, parent_activity: programme1_projects[1], financial_year: 2020, financial_quarter: 1)
+
+        create(:transaction, value: 100, parent_activity: programme2_projects[0])
+        create(:transaction, value: 100, parent_activity: programme2_projects[0], financial_year: 2020, financial_quarter: 1)
+
+        create(:transaction, value: 100, parent_activity: programme2_projects[1])
+        create(:transaction, value: 100, parent_activity: programme2_projects[1], financial_year: 2020, financial_quarter: 1)
+
+        create(:transaction, value: 100, parent_activity: programme1_third_party_project)
+        create(:transaction, value: 100, parent_activity: programme1_third_party_project, financial_year: 2020, financial_quarter: 1)
+
+        create(:transaction, value: 100, parent_activity: programme2_third_party_project)
+        create(:transaction, value: 100, parent_activity: programme2_third_party_project, financial_year: 2020, financial_quarter: 1)
+      end
+
+      context "when quarter is not specified" do
+        it "returns the total spend for a fund" do
+          expect(fund.total_spend).to eq(1600)
+        end
+
+        it "returns the total spend for a programme" do
+          expect(programme1.total_spend).to eq(600)
+          expect(programme2.total_spend).to eq(800)
+        end
+
+        it "returns the total spend for a project" do
+          expect(programme1_projects[0].total_spend).to eq(300)
+          expect(programme1_projects[1].total_spend).to eq(100)
+
+          expect(programme2_projects[0].total_spend).to eq(200)
+          expect(programme2_projects[1].total_spend).to eq(400)
+        end
+      end
+
+      context "when quarter is specified" do
+        let(:quarter) { FinancialQuarter.new(2020, 1) }
+
+        it "returns the total spend for a fund" do
+          expect(fund.total_spend(quarter)).to eq(800)
+        end
+
+        it "returns the total spend for a programme" do
+          expect(programme1.total_spend(quarter)).to eq(300)
+          expect(programme2.total_spend(quarter)).to eq(400)
+        end
+
+        it "returns the total spend for a project" do
+          expect(programme1_projects[0].total_spend(quarter)).to eq(150)
+          expect(programme1_projects[1].total_spend(quarter)).to eq(50)
+
+          expect(programme2_projects[0].total_spend(quarter)).to eq(100)
+          expect(programme2_projects[1].total_spend(quarter)).to eq(200)
+        end
+      end
     end
   end
 end

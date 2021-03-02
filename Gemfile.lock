@@ -75,7 +75,7 @@ GEM
       msgpack (~> 1.0)
     brakeman (5.0.0)
     builder (3.2.4)
-    bullet (6.1.3)
+    bullet (6.1.4)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     byebug (11.1.3)
@@ -101,8 +101,6 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
-    data_migrate (6.6.0)
-      rails (>= 5.0)
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
     database_cleaner-active_record (2.0.0)
@@ -212,7 +210,7 @@ GEM
     mini_portile2 (2.5.0)
     mini_racer (0.3.1)
       libv8 (~> 8.4.255)
-    minitest (5.14.3)
+    minitest (5.14.4)
     monetize (1.10.0)
       money (~> 6.12)
     money (6.14.0)
@@ -429,13 +427,13 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     unicode-display_width (1.6.1)
-    uniform_notifier (1.13.2)
+    uniform_notifier (1.14.1)
     web-console (4.1.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webmock (3.11.2)
+    webmock (3.12.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -463,7 +461,6 @@ DEPENDENCIES
   capybara (>= 2.15)
   climate_control
   coveralls
-  data_migrate
   database_cleaner
   dotenv-rails
   factory_bot_rails
@@ -515,7 +512,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 1.3.0)
   web-console (>= 3.3.0)
-  webmock (~> 3.11)
+  webmock (~> 3.12)
   wicked
 
 RUBY VERSION

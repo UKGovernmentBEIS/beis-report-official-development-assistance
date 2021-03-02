@@ -14,7 +14,7 @@ class Staff::TransactionUploadsController < Staff::BaseController
 
   def show
     stream_csv_download(filename: "transactions.csv", headers: csv_headers) do |csv|
-      @report.reportable_activities.each do |activity|
+      reportable_activities.each do |activity|
         csv << csv_row(activity)
       end
     end
@@ -57,5 +57,9 @@ class Staff::TransactionUploadsController < Staff::BaseController
       @report.financial_quarter.to_s,
       @report.financial_year.to_s,
     ]
+  end
+
+  def reportable_activities
+    @report.reportable_activities.hierarchically_grouped_projects
   end
 end

@@ -32,15 +32,15 @@ Homebrew via the scripts above, run them in the background with Docker and
 then use standard rails commands to interact with the application (you will need
 Docker installed on your device):
 
-````
+```
 docker-compose -f backing-services-docker-compose.yml up -d
-````
+```
 
 To stop the backing services:
 
-````
+```
 docker-compose -f backing-services-docker-compose.yml down
-````
+```
 
 ## Architecture decision records
 
@@ -71,11 +71,14 @@ Schema migrations are applied automatically on deployment via the docker-entrypo
 
 ### Data / One-off tasks
 
-We use the [data-migrate](https://github.com/ilyakatz/data-migrate) gem to make changes to data that do not require schema changes.
+When running a live service sometimes you're required to change existing data in some way. We do this in a similar way to database migrations, using Data Migrations
 
-This can be useful if we need to fix missing data fields or improve the quality of data. For example upcasing all values of a certain field at the same time as adding in validation for the same.
+The migrations are stored in the db/data folder.
 
-Data migrations are applied automatically on deployment via the docker-entrypoint.sh.
+- To generate a migration: rails g data_migration add_this_to_that
+- To run the data migration: rails runner db/data/$FILENAME_OF_THE_GENERATED_MIGRATION
+
+When the new code deploys, you'll need to run your migration on the live service by [running a live console](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/develop/doc/console-access.md).
 
 ## Access
 
@@ -97,8 +100,6 @@ The DNS for the service is hosted and managed by [dxw](https://dxw.com) the
 source for which is maintained in this private repo:
 
 [https://github.com/dxw/beis-roda-dns](https://github.com/dxw/beis-roda-dns)
-
-
 
 ## Source
 

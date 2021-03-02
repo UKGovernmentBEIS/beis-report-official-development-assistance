@@ -8,12 +8,6 @@ variable "papertrail_destination" {
   description = "Where to send logs hostname:port"
 }
 
-variable "data_migrate" {
-  type        = string
-  description = "should data migrations be run automatically on start"
-  default     = "true"
-}
-
 variable "secret_key_base" {
   type        = string
   description = "secret key base for rails apps"
