@@ -2,7 +2,7 @@
   .govuk-grid-column-full
     %h2.govuk-heading-m
       = t("page_content.activity.third_party_projects")
-    - if policy(:third_party_project).create?
+    - if ThirdPartyProjectPolicy.new(current_user, activity).create?
       = form_tag(organisation_activity_children_path(activity.organisation, activity), method: "post") do
         = submit_tag t("action.activity.add_child"), class: "govuk-button"
 

@@ -25,6 +25,19 @@ RSpec.feature "Users can create a third-party project" do
         expect(third_party_project.organisation).to eq user.organisation
       end
 
+      context "without an editable report" do
+        scenario "a new third party project cannot be added" do
+          project = create(:project_activity, :gcrf_funded, organisation: user.organisation)
+
+          visit activities_path
+
+          click_on(project.title)
+          click_on t("tabs.activity.children")
+
+          expect(page).to have_no_button t("action.activity.add_child")
+        end
+      end
+
       scenario "the activity saves its identifier as read-only `transparency_identifier`" do
         project = create(:project_activity, :gcrf_funded, organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: project.associated_fund)
