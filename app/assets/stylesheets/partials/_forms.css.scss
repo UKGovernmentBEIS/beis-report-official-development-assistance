@@ -9,3 +9,7 @@
 .upload-form .govuk-label {
   @extend %govuk-heading-m;
 }
+
+.uppercase-input input {
+  text-transform: uppercase;
+}
