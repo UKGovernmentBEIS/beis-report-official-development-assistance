@@ -10,10 +10,8 @@ RSpec.describe Transfer do
     it { should validate_presence_of(:source) }
     it { should validate_presence_of(:destination) }
     it { should validate_presence_of(:value) }
-    it { should validate_presence_of(:date) }
-
-    it { should validate_attribute(:date).with(:date_not_in_future) }
-    it { should validate_attribute(:date).with(:date_within_boundaries) }
+    it { should validate_presence_of(:financial_year) }
+    it { should validate_presence_of(:financial_quarter) }
 
     it { should validate_numericality_of(:value).is_less_than_or_equal_to(99_999_999_999.00) }
     it { should validate_numericality_of(:value).is_other_than(0) }

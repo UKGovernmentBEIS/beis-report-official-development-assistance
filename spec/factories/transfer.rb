@@ -3,7 +3,8 @@ FactoryBot.define do
     association :source, factory: :activity
     association :destination, factory: :activity
 
-    date { Date.today }
+    financial_quarter { 1 }
+    financial_year { Date.today.year }
     value { BigDecimal("110.01") }
   end
 end
