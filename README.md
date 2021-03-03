@@ -84,17 +84,26 @@ When the new code deploys, you'll need to run your migration on the live service
 
 ### Staging
 
-The app is currently hosted on GPaaS: [https://beis-roda-staging.london.cloudapps.digital](https://beis-roda-staging.london.cloudapps.digital)
+The app is currently hosted on GPaaS: [https://staging.report-official-development-assistance.service.gov.uk](https://staging.report-official-development-assistance.service.gov.uk)
 
 The `develop` branch is deployed to staging after a successful build via GitHub Actions.
 
+### Training and Penetration testing
+
+The app has a training and or penetration testing environment: [http://training.report-official-development-assistance.service.gov.uk](https://training.report-official-development-assistance.service.gov.uk)
+
+The environment must be manually deployed, see [the
+documentation](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/develop/terraform/README.md) for more
+information.
+
 ### Production
 
-The app is currently hosted on GPaaS: [https://beis-roda-prod.london.cloudapps.digital](https://beis-roda-prod.london.cloudapps.digital)
+The app is currently hosted on GPaaS: [https://www.report-official-development-assistance.service.gov.uk](https://www.report-official-development-assistance.service.gov.uk)
 
 The `master` branch is deployed to production after a successful build via GitHub Actions.
 
 ## DNS
+
 
 The DNS for the service is hosted and managed by [dxw](https://dxw.com) the
 source for which is maintained in this private repo:
