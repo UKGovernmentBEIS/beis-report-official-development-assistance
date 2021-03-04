@@ -162,7 +162,7 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def send_csv
-    filename = "#{@report_presenter.fund.title}-#{@report_presenter.financial_quarter_and_year}-#{@report.description}.csv"
+    filename = "#{@report_presenter.financial_quarter_and_year}-#{@report_presenter.fund.roda_identifier_fragment}-#{@report.organisation.beis_organisation_reference}-#{@report.description}.csv"
     headers = ExportActivityToCsv.new(report: @report).headers
 
     stream_csv_download(filename: filename, headers: headers) do |csv|
