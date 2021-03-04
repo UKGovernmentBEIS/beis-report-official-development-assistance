@@ -13,7 +13,10 @@ class Staff::TransactionUploadsController < Staff::BaseController
   end
 
   def show
-    stream_csv_download(filename: "transactions.csv", headers: csv_headers) do |csv|
+    @report_presenter = ReportPresenter.new(@report)
+    filename = "#{@report_presenter.financial_quarter_and_year}-#{@report_presenter.fund.roda_identifier_fragment}-#{@report.organisation.beis_organisation_reference}_transactions_upload.csv"
+
+    stream_csv_download(filename: filename, headers: csv_headers) do |csv|
       reportable_activities.each do |activity|
         csv << csv_row(activity)
       end
