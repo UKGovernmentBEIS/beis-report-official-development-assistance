@@ -128,7 +128,7 @@ RSpec.describe ExportActivityToCsv do
 
       headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
-      expect(headers).to include "Q1 2020-2021 actuals"
+      expect(headers).to include "FQ1 2020-2021 actuals"
     end
 
     it "uses the current report financial quarter to generate the forecast total column" do
@@ -136,7 +136,7 @@ RSpec.describe ExportActivityToCsv do
 
       headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
-      expect(headers).to include "Q1 2020-2021 forecast"
+      expect(headers).to include "FQ1 2020-2021 forecast"
     end
 
     it "includes the next twelve financial quarters as headers" do
@@ -160,7 +160,7 @@ RSpec.describe ExportActivityToCsv do
 
       headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
-      expect(headers).to include("Q4 2019-2020 actuals")
+      expect(headers).to include("FQ4 2019-2020 actuals")
     end
   end
 end

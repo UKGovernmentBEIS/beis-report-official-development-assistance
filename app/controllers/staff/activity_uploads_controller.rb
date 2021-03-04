@@ -13,7 +13,10 @@ class Staff::ActivityUploadsController < Staff::BaseController
   end
 
   def show
-    stream_csv_download(filename: "activities.csv", headers: csv_headers)
+    @report_presenter = ReportPresenter.new(@report)
+    filename = @report_presenter.filename_for_activities_template
+
+    stream_csv_download(filename: filename, headers: csv_headers)
   end
 
   def update
