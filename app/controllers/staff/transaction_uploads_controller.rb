@@ -14,7 +14,7 @@ class Staff::TransactionUploadsController < Staff::BaseController
 
   def show
     @report_presenter = ReportPresenter.new(@report)
-    filename = "#{@report_presenter.financial_quarter_and_year}-#{@report_presenter.fund.roda_identifier_fragment}-#{@report.organisation.beis_organisation_reference}_transactions_upload.csv"
+    filename = @report_presenter.filename_for_transactions_template
 
     stream_csv_download(filename: filename, headers: csv_headers) do |csv|
       reportable_activities.each do |activity|
