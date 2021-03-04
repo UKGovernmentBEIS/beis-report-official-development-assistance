@@ -17,7 +17,7 @@ class ReportPresenter < SimpleDelegator
   end
 
   def filename_for_report_download
-    filename(purpose: description)
+    filename(purpose: "report")
   end
 
   def filename_for_activities_template

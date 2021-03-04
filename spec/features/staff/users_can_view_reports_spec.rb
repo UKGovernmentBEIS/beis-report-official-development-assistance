@@ -75,7 +75,7 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "can download a CSV of the report" do
-      report = create(:report, :active, description: "Legacy Report")
+      report = create(:report, :active)
 
       visit reports_path
 
@@ -87,7 +87,7 @@ RSpec.feature "Users can view reports" do
 
       expect(page.response_headers["Content-Type"]).to include("text/csv")
       header = page.response_headers["Content-Disposition"]
-      expect(header).to match(/Legacy%20Report/)
+      expect(header).to match(/#{ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv")}\z/)
     end
 
     context "when they download a CSV for all reports" do
@@ -300,7 +300,7 @@ RSpec.feature "Users can view reports" do
       end
 
       scenario "can download a CSV of their own report" do
-        report = create(:report, :active, organisation: delivery_partner_user.organisation, description: "Legacy Report")
+        report = create(:report, :active, organisation: delivery_partner_user.organisation)
 
         visit reports_path
 
@@ -314,7 +314,7 @@ RSpec.feature "Users can view reports" do
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
         header = page.response_headers["Content-Disposition"]
-        expect(header).to match(/Legacy%20Report/)
+        expect(header).to match(ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv"))
       end
     end
 

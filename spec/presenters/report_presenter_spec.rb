@@ -49,7 +49,7 @@ RSpec.describe ReportPresenter do
       it "returns the URL-encoded filename for the downloadable report" do
         result = described_class.new(report).filename_for_report_download
 
-        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-My report.csv"
+        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-report.csv"
       end
     end
 
