@@ -8,9 +8,9 @@ RSpec.describe ExportActivityToCsv do
 
   let(:previous_twelve_quarter_actuals_headers) {
     [
-      "FQ1 2017-2018 actuals", "FQ2 2017-2018 actuals", "FQ3 2017-2018 actuals", "FQ4 2017-2018 actuals",
-      "FQ1 2018-2019 actuals", "FQ2 2018-2019 actuals", "FQ3 2018-2019 actuals", "FQ4 2018-2019 actuals",
-      "FQ1 2019-2020 actuals", "FQ2 2019-2020 actuals", "FQ3 2019-2020 actuals", "FQ4 2019-2020 actuals",
+      "ACT FQ1 2017-2018", "ACT FQ2 2017-2018", "ACT FQ3 2017-2018", "ACT FQ4 2017-2018",
+      "ACT FQ1 2018-2019", "ACT FQ2 2018-2019", "ACT FQ3 2018-2019", "ACT FQ4 2018-2019",
+      "ACT FQ1 2019-2020", "ACT FQ2 2019-2020", "ACT FQ3 2019-2020", "ACT FQ4 2019-2020",
     ]
   }
   let(:previous_twelve_quarter_actuals_values) {
@@ -23,11 +23,11 @@ RSpec.describe ExportActivityToCsv do
 
   let(:next_twenty_quarter_forecast_headers) {
     [
-      "FQ2 2020-2021 forecast", "FQ3 2020-2021 forecast", "FQ4 2020-2021 forecast", "FQ1 2021-2022 forecast",
-      "FQ2 2021-2022 forecast", "FQ3 2021-2022 forecast", "FQ4 2021-2022 forecast", "FQ1 2022-2023 forecast",
-      "FQ2 2022-2023 forecast", "FQ3 2022-2023 forecast", "FQ4 2022-2023 forecast", "FQ1 2023-2024 forecast",
-      "FQ2 2023-2024 forecast", "FQ3 2023-2024 forecast", "FQ4 2023-2024 forecast", "FQ1 2024-2025 forecast",
-      "FQ2 2024-2025 forecast", "FQ3 2024-2025 forecast", "FQ4 2024-2025 forecast", "FQ1 2025-2026 forecast",
+      "FC FQ2 2020-2021", "FC FQ3 2020-2021", "FC FQ4 2020-2021", "FC FQ1 2021-2022",
+      "FC FQ2 2021-2022", "FC FQ3 2021-2022", "FC FQ4 2021-2022", "FC FQ1 2022-2023",
+      "FC FQ2 2022-2023", "FC FQ3 2022-2023", "FC FQ4 2022-2023", "FC FQ1 2023-2024",
+      "FC FQ2 2023-2024", "FC FQ3 2023-2024", "FC FQ4 2023-2024", "FC FQ1 2024-2025",
+      "FC FQ2 2024-2025", "FC FQ3 2024-2025", "FC FQ4 2024-2025", "FC FQ1 2025-2026",
     ]
   }
   let(:next_twenty_quarter_forecast_values) {
@@ -128,7 +128,7 @@ RSpec.describe ExportActivityToCsv do
 
       headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
-      expect(headers).to include "FQ1 2020-2021 actuals"
+      expect(headers).to include "ACT FQ1 2020-2021"
     end
 
     it "uses the current report financial quarter to generate the forecast total column" do
@@ -136,7 +136,7 @@ RSpec.describe ExportActivityToCsv do
 
       headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
 
-      expect(headers).to include "FQ1 2020-2021 forecast"
+      expect(headers).to include "FC FQ1 2020-2021"
     end
   end
 end

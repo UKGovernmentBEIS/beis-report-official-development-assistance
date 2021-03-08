@@ -123,11 +123,11 @@ class ExportActivityToCsv
   end
 
   private def forecast_header
-    report_financial_quarter ? report_financial_quarter + " forecast" : "Forecast"
+    ["FC", report_financial_quarter].reject(&:blank?).join(" ")
   end
 
   private def actuals_header
-    report_financial_quarter ? report_financial_quarter + " actuals" : "Actuals"
+    ["ACT", report_financial_quarter].reject(&:blank?).join(" ")
   end
 
   def previous_report_quarters
@@ -139,10 +139,10 @@ class ExportActivityToCsv
   end
 
   private def previous_twelve_quarter_actuals_headers
-    previous_report_quarters.map { |quarter| "#{quarter} actuals" }
+    previous_report_quarters.map { |quarter| "ACT #{quarter}" }
   end
 
   private def next_twenty_quarter_forecasts_headers
-    following_report_quarters.map { |quarter| "#{quarter} forecast" }
+    following_report_quarters.map { |quarter| "FC #{quarter}" }
   end
 end
