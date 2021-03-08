@@ -13,6 +13,35 @@ class ReportPresenter < SimpleDelegator
 
   def financial_quarter_and_year
     return nil if financial_quarter.nil? || financial_year.nil?
-    "Q#{financial_quarter} #{financial_year}-#{financial_year + 1}"
+    "FQ#{financial_quarter} #{financial_year}-#{financial_year + 1}"
+  end
+
+  def filename_for_report_download
+    filename(purpose: "report")
+  end
+
+  def filename_for_activities_template
+    filename(purpose: "activities_upload")
+  end
+
+  def filename_for_transactions_template
+    filename(purpose: "transactions_upload")
+  end
+
+  def filename_for_forecasts_template
+    filename(purpose: "forecasts_upload")
+  end
+
+  def filename_for_all_reports_download
+    financial_quarter_and_year + "-All-Reports.csv"
+  end
+
+  private def filename(purpose:)
+    [
+      financial_quarter_and_year,
+      fund.roda_identifier_fragment,
+      organisation.beis_organisation_reference,
+      purpose,
+    ].compact.join("-") + ".csv"
   end
 end

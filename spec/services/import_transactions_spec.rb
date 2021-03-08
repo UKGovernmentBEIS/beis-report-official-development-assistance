@@ -50,7 +50,7 @@ RSpec.describe ImportTransactions do
         value: 50.0,
         receiving_organisation_name: "Example University",
         receiving_organisation_type: "80",
-        description: "Q4 1999-2000 spend on Example Project",
+        description: "FQ4 1999-2000 spend on Example Project",
       )
     end
 
@@ -352,19 +352,19 @@ RSpec.describe ImportTransactions do
 
     it "assigns each transaction to the correct report" do
       expect(report.transactions.pluck(:description)).to contain_exactly(
-        "Q4 1999-2000 spend on Example Project",
-        "Q4 1999-2000 spend on Sibling Project",
-        "Q4 1999-2000 spend on Sibling Project",
+        "FQ4 1999-2000 spend on Example Project",
+        "FQ4 1999-2000 spend on Sibling Project",
+        "FQ4 1999-2000 spend on Sibling Project",
       )
     end
 
     it "assigns each transaction to the correct activity" do
       expect(project.transactions.pluck(:description)).to eq([
-        "Q4 1999-2000 spend on Example Project",
+        "FQ4 1999-2000 spend on Example Project",
       ])
       expect(sibling_project.transactions.pluck(:description)).to eq([
-        "Q4 1999-2000 spend on Sibling Project",
-        "Q4 1999-2000 spend on Sibling Project",
+        "FQ4 1999-2000 spend on Sibling Project",
+        "FQ4 1999-2000 spend on Sibling Project",
       ])
     end
 

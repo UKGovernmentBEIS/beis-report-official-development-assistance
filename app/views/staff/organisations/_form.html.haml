@@ -1,5 +1,7 @@
 = f.govuk_error_summary
 = f.govuk_text_field :name
+.uppercase-input
+  = f.govuk_text_field :beis_organisation_reference
 = f.govuk_collection_select :organisation_type,
                      organisation_type_options,
                      :code,

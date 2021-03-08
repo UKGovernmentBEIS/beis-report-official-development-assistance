@@ -8,8 +8,6 @@ class Staff::ActivityChildrenController < Staff::BaseController
     authorize @activity
 
     @activities = @activity.child_activities.includes([:organisation, :parent]).order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
-
-    render "staff/activities/children"
   end
 
   def create
@@ -24,6 +22,8 @@ class Staff::ActivityChildrenController < Staff::BaseController
     authorize activity
 
     activity.save!
+
+    activity.create_activity key: "activity.create", owner: current_user
 
     redirect_to activity_step_path(activity.id, activity.form_state)
   end

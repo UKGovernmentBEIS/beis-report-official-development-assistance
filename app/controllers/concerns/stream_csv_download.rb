@@ -4,7 +4,7 @@ module StreamCsvDownload
 
   def stream_csv_download(filename:, headers:)
     response.headers["Content-Type"] = "text/csv"
-    response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
+    response.headers["Content-Disposition"] = "attachment; filename=#{ERB::Util.url_encode(filename)}"
 
     writer = Writer.new(response.stream)
     writer << headers

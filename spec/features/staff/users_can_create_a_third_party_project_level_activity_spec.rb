@@ -1,4 +1,4 @@
-RSpec.feature "Users can create a project" do
+RSpec.feature "Users can create a third-party project" do
   context "when the user does NOT belong to BEIS" do
     let(:user) { create(:delivery_partner_user) }
     before { authenticate!(user: user) }
@@ -13,9 +13,9 @@ RSpec.feature "Users can create a project" do
         click_on(project.title)
         click_on t("tabs.activity.children")
 
-        click_on(t("page_content.organisation.button.create_activity"))
+        click_on(t("action.activity.add_child"))
 
-        fill_in_activity_form(level: "third_party_project", parent: project)
+        fill_in_activity_form(level: "third_party_project", parent: project, skip_level_and_parent_steps: true)
 
         expect(page).to have_content t("action.third_party_project.create.success")
         expect(project.child_activities.count).to eq 1
@@ -23,6 +23,19 @@ RSpec.feature "Users can create a project" do
         third_party_project = project.child_activities.last
 
         expect(third_party_project.organisation).to eq user.organisation
+      end
+
+      context "without an editable report" do
+        scenario "a new third party project cannot be added" do
+          project = create(:project_activity, :gcrf_funded, organisation: user.organisation)
+
+          visit activities_path
+
+          click_on(project.title)
+          click_on t("tabs.activity.children")
+
+          expect(page).to have_no_button t("action.activity.add_child")
+        end
       end
 
       scenario "the activity saves its identifier as read-only `transparency_identifier`" do
@@ -35,9 +48,9 @@ RSpec.feature "Users can create a project" do
         click_on(project.title)
         click_on t("tabs.activity.children")
 
-        click_on(t("page_content.organisation.button.create_activity"))
+        click_on(t("action.activity.add_child"))
 
-        fill_in_activity_form(level: "third_party_project", roda_identifier_fragment: identifier, parent: project)
+        fill_in_activity_form(level: "third_party_project", roda_identifier_fragment: identifier, parent: project, skip_level_and_parent_steps: true)
 
         activity = Activity.find_by(roda_identifier_fragment: identifier)
         expect(activity.transparency_identifier).to eql("GB-GOV-13-#{project.parent.parent.roda_identifier_fragment}-#{project.parent.roda_identifier_fragment}-#{project.roda_identifier_fragment}#{activity.roda_identifier_fragment}")
@@ -53,9 +66,9 @@ RSpec.feature "Users can create a project" do
           click_on(project.title)
           click_on t("tabs.activity.children")
 
-          click_on(t("page_content.organisation.button.create_activity"))
+          click_on(t("action.activity.add_child"))
 
-          fill_in_activity_form(level: "third_party_project", delivery_partner_identifier: "my-unique-identifier", parent: project)
+          fill_in_activity_form(level: "third_party_project", delivery_partner_identifier: "my-unique-identifier", parent: project, skip_level_and_parent_steps: true)
 
           third_party_project = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
           auditable_events = PublicActivity::Activity.where(trackable_id: third_party_project.id)
@@ -72,9 +85,13 @@ RSpec.feature "Users can create a project" do
         _report = create(:report, state: :active, organisation: user.organisation, fund: newton_fund)
 
         visit activities_path
-        click_on(t("page_content.organisation.button.create_activity"))
 
-        fill_in_activity_form(level: "third_party_project", parent: newton_project)
+        click_on(newton_project.title)
+        click_on t("tabs.activity.children")
+
+        click_on(t("action.activity.add_child"))
+
+        fill_in_activity_form(level: "third_party_project", parent: newton_project, skip_level_and_parent_steps: true)
       end
     end
   end

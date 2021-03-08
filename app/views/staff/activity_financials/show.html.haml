@@ -1,0 +1,70 @@
+= content_for :page_title_prefix, t("document_title.activity.financials", name: @activity.title)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        = @activity.title
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      - if @activity.project? || @activity.third_party_project?
+        - if policy(:project).download? || policy(:third_party_project).download?
+          = link_to t("default.button.download_as_xml"), organisation_activity_path(@activity.organisation, @activity, format: :xml), class: "govuk-button"
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      .govuk-tabs
+        = render "staff/shared/activities/tab_nav"
+
+        .govuk-tabs__panel
+          %h2.govuk-heading-l
+            = t("page_title.activity.financials")
+
+          - if @activity.fund? && policy(:fund).create?
+            = render partial: "staff/shared/activities/budgets",
+              locals: { activity: @activity, budget_presenters: @budget_presenters }
+
+          - else
+            = render partial: "staff/shared/activities/budgets",
+              locals: { activity: @activity, budget_presenters: @budget_presenters }
+            = render partial: "staff/shared/activities/planned_disbursements",
+              locals: { activity: @activity, planned_disbursements: @planned_disbursement_presenters }
+            = render partial: "staff/shared/activities/transactions",
+              locals: { activity: @activity, transaction_presenters: @transaction_presenters }
+
+      - if current_user.organisation.service_owner?
+        .govuk-grid-row
+          .govuk-grid-column-full
+            .panel#transfers
+              %h2.govuk-heading-l
+                = t("page_title.transfer.index")
+
+              %p.govuk-body
+                Transfer funds to another delivery partner activity
+
+              = link_to "Transfer fund", new_activity_transfer_path(@activity), class: "govuk-button"
+
+              - if @transfers.count > 0
+                %table.govuk-table
+                  %thead.govuk-table__head
+                    %tr.govuk-table__row
+                      %th.govuk-table__header{scope: "col"}
+                        =t("fields.transfer.financial_quarter_and_year")
+                      %th.govuk-table__header{scope: "col"}
+                        =t("fields.transfer.receiving_organisation")
+                      %th.govuk-table__header{scope: "col"}
+                        =t("fields.transfer.destination")
+                      %th.govuk-table__header{scope: "col"}
+                        =t("fields.transfer.transfer_amount")
+                      %th.govuk-table__header{scope: "col"}
+                  %tbody.govuk-table__body
+                    - @transfers.each do |transfer|
+                      %tr.govuk-table__row
+                        %td.govuk-table__cell= transfer.financial_quarter_and_year
+                        %td.govuk-table__cell= transfer.destination.organisation.name
+                        %td.govuk-table__cell= transfer.destination.roda_identifier
+                        %td.govuk-table__cell= transfer.value
+                        %td.govuk-table__cell= link_to "Edit", edit_activity_transfer_path(@activity.id, transfer.id)
+
+

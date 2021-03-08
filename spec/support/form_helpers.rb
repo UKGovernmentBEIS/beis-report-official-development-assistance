@@ -1,6 +1,7 @@
 module FormHelpers
   include ActivityHelper
   def fill_in_activity_form(
+    level:,
     delivery_partner_identifier: "A-Unique-Identifier",
     roda_identifier_fragment: "RODA-ID",
     title: "My Aid Activity",
@@ -53,22 +54,24 @@ module FormHelpers
     oda_eligibility: "Eligible",
     oda_eligibility_lead: Faker::Name.name,
     channel_of_delivery_code: "11000",
-    level:,
     parent: nil,
-    uk_dp_named_contact: Faker::Name.name
+    uk_dp_named_contact: Faker::Name.name,
+    skip_level_and_parent_steps: false
   )
 
-    expect(page).to have_content t("form.legend.activity.level")
-    expect(page).to have_content t("form.hint.activity.level")
-    expect(page).to have_content t("form.hint.activity.level_step.#{level}")
-    choose custom_capitalisation(t("page_content.activity.level.#{level}"))
-    click_button t("form.button.activity.submit")
-
-    if parent.present?
-      expect(page).to have_content t("form.legend.activity.parent", parent_level: t("page_content.activity.level.#{level}", level: parent.level), level: t("page_content.activity.level.#{level}"))
-      expect(page).to have_content t("form.hint.activity.parent", parent_level: t("page_content.activity.level.#{parent.level}"), level: t("page_content.activity.level.#{level}"))
-      choose parent.title
+    unless skip_level_and_parent_steps
+      expect(page).to have_content t("form.legend.activity.level")
+      expect(page).to have_content t("form.hint.activity.level")
+      expect(page).to have_content t("form.hint.activity.level_step.#{level}")
+      choose custom_capitalisation(t("page_content.activity.level.#{level}"))
       click_button t("form.button.activity.submit")
+
+      if parent.present?
+        expect(page).to have_content t("form.legend.activity.parent", parent_level: t("page_content.activity.level.#{level}", level: parent.level), level: t("page_content.activity.level.#{level}"))
+        expect(page).to have_content t("form.hint.activity.parent", parent_level: t("page_content.activity.level.#{parent.level}"), level: t("page_content.activity.level.#{level}"))
+        choose parent.title
+        click_button t("form.button.activity.submit")
+      end
     end
 
     expect(page).to have_content t("form.label.activity.delivery_partner_identifier")
@@ -480,6 +483,23 @@ module FormHelpers
 
   def localise_date_from_input_fields(year:, month:, day:)
     I18n.l(Date.parse("#{year}-#{month}-#{day}"))
+  end
+
+  def fill_in_transfer_form(destination: create(:activity), financial_quarter: 1, financial_year: 2020, value: 1234)
+    transfer = build(
+      :transfer,
+      destination: destination,
+      financial_quarter: financial_quarter,
+      financial_year: financial_year,
+      value: value
+    )
+
+    fill_in "transfer[destination]", with: transfer.destination.roda_identifier
+    choose transfer.financial_quarter.to_s, name: "transfer[financial_quarter]"
+    select transfer.financial_year, from: "transfer[financial_year]"
+    fill_in "transfer[value]", with: transfer.value
+
+    transfer
   end
 
   private def activity_level(level)

@@ -13,9 +13,11 @@ class Staff::PlannedDisbursementUploadsController < Staff::BaseController
   end
 
   def show
+    @report_presenter = ReportPresenter.new(@report)
     generator = ImportPlannedDisbursements::Generator.new
+    filename = @report_presenter.filename_for_forecasts_template
 
-    stream_csv_download(filename: "forecasts.csv", headers: generator.column_headings) do |csv|
+    stream_csv_download(filename: filename, headers: generator.column_headings) do |csv|
       @report.reportable_activities.each do |activity|
         csv << generator.csv_row(activity)
       end

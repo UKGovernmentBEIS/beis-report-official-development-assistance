@@ -68,6 +68,7 @@ Rails.application.routes.draw do
       resource :extending_organisations, only: [:edit, :update]
       resources :implementing_organisations, only: [:new, :create, :edit, :update]
       resources :comments, only: [:new, :create, :edit, :update]
+      resources :transfers, except: [:index]
     end
   end
 

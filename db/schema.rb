@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_25_171343) do
-
+ActiveRecord::Schema.define(version: 2021_03_01_082933) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -230,7 +229,8 @@ ActiveRecord::Schema.define(version: 2021_02_25_171343) do
     t.uuid "source_id", null: false
     t.uuid "destination_id", null: false
     t.decimal "value", precision: 13, scale: 2, null: false
-    t.date "date"
+    t.integer "financial_year"
+    t.integer "financial_quarter"
     t.index ["destination_id"], name: "index_transfers_on_destination_id"
     t.index ["source_id"], name: "index_transfers_on_source_id"
   end

@@ -14,6 +14,7 @@ en:
         iati_reference: International Aid Transparency Initiative (IATI) reference
         default_currency: Default currency
         language_code: Language code
+        beis_organisation_reference: Short name
     legend:
       organisation:
     hint:
@@ -33,6 +34,7 @@ en:
         organisation_type: Organisation type
         language_code: Language code
         default_currency: Default currency
+        beis_organisation_reference: Short name
   page_content:
     organisation_details: Organisation details
     organisations:
@@ -82,3 +84,6 @@ en:
               blank: Enter a language code
             organisation_type:
               blank: Enter an organisation type
+            beis_organisation_reference:
+              blank: Enter an organisation short name
+              format: Short names must be between 2 and 10 letters long, and must contain only uppercase letters
