@@ -523,7 +523,7 @@
 and populate it via a data migration
 - Delivery partners can add level C activities, automatically parented to an existing level B
 
-## [unreleased]
+## [release-36] - 2021-03-08
 
 - Fix inconsistencies with activity tab display and their ARIA hints
 - Edit BEIS organisation reference (short name) via forms
@@ -531,7 +531,10 @@ and populate it via a data migration
 - Delivery partners can add level D activities, automatically parented to an existing level C
 - Downloaded files have more descriptive filenames, using financial quarter, source fund, and organisation short name
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-35...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...HEAD
+[release-36]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-35...release-36
 [release-35]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-34...release-35
 [release-34]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-33...release-34
 [release-33]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-32...release-33
