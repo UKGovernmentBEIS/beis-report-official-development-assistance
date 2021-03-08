@@ -21,24 +21,28 @@ RSpec.describe ExportActivityToCsv do
     ]
   }
 
-  let(:next_twelve_quarter_forecast_headers) {
+  let(:next_twenty_quarter_forecast_headers) {
     [
       "FQ2 2020-2021 forecast", "FQ3 2020-2021 forecast", "FQ4 2020-2021 forecast", "FQ1 2021-2022 forecast",
       "FQ2 2021-2022 forecast", "FQ3 2021-2022 forecast", "FQ4 2021-2022 forecast", "FQ1 2022-2023 forecast",
       "FQ2 2022-2023 forecast", "FQ3 2022-2023 forecast", "FQ4 2022-2023 forecast", "FQ1 2023-2024 forecast",
+      "FQ2 2023-2024 forecast", "FQ3 2023-2024 forecast", "FQ4 2023-2024 forecast", "FQ1 2024-2025 forecast",
+      "FQ2 2024-2025 forecast", "FQ3 2024-2025 forecast", "FQ4 2024-2025 forecast", "FQ1 2025-2026 forecast",
     ]
   }
-  let(:next_twelve_quarter_forecast_values) {
+  let(:next_twenty_quarter_forecast_values) {
     [
       "20.00", "30.00", "40.00", "50.00",
       "60.00", "70.00", "80.00", "90.00",
       "100.00", "110.00", "120.00", "130.00",
+      "140.00", "150.00", "160.00", "170.00",
+      "180.00", "190.00", "200.00", "210.00",
     ]
   }
 
   before do
     allow(export_service).to receive(:previous_twelve_quarter_actuals).and_return(previous_twelve_quarter_actuals_values)
-    allow(export_service).to receive(:next_twelve_quarter_forecasts).and_return(next_twelve_quarter_forecast_values)
+    allow(export_service).to receive(:next_twenty_quarter_forecasts).and_return(next_twenty_quarter_forecast_values)
   end
 
   describe "with arbitrary columns" do
@@ -60,9 +64,9 @@ RSpec.describe ExportActivityToCsv do
       expect(export_service.call.drop(3).take(12)).to eq(previous_twelve_quarter_actuals_values)
     end
 
-    it "includes the forecasts for the next twelve quarters" do
-      expect(export_service.headers.drop(15).take(12)).to eq(next_twelve_quarter_forecast_headers)
-      expect(export_service.call.drop(15).take(12)).to eq(next_twelve_quarter_forecast_values)
+    it "includes the forecasts for the next twenty quarters" do
+      expect(export_service.headers.drop(15).take(20)).to eq(next_twenty_quarter_forecast_headers)
+      expect(export_service.call.drop(15).take(20)).to eq(next_twenty_quarter_forecast_values)
     end
   end
 
@@ -95,21 +99,23 @@ RSpec.describe ExportActivityToCsv do
     end
   end
 
-  describe "#next_twelve_quarter_forecasts" do
-    it "gets the forecasted total for the next twelve quarters" do
-      quarters = report.own_financial_quarter.following(12)
+  describe "#next_twenty_quarter_forecasts" do
+    it "gets the forecasted total for the next twenty quarters" do
+      quarters = report.own_financial_quarter.following(20)
       q1_forecast = PlannedDisbursementHistory.new(project, **quarters[0])
       q3_forecast = PlannedDisbursementHistory.new(project, **quarters[2])
-      q11_forecast = PlannedDisbursementHistory.new(project, **quarters[10])
+      q19_forecast = PlannedDisbursementHistory.new(project, **quarters[18])
 
       q1_forecast.set_value(1000)
       q3_forecast.set_value(500)
-      q11_forecast.set_value(300)
+      q19_forecast.set_value(300)
 
-      totals = ExportActivityToCsv.new(activity: project, report: report).next_twelve_quarter_forecasts
+      totals = ExportActivityToCsv.new(activity: project, report: report).next_twenty_quarter_forecasts
 
       expect(totals).to eq [
         "1000.00", "0.00", "500.00", "0.00",
+        "0.00", "0.00", "0.00", "0.00",
+        "0.00", "0.00", "0.00", "0.00",
         "0.00", "0.00", "0.00", "0.00",
         "0.00", "0.00", "300.00", "0.00",
       ]
