@@ -9,17 +9,17 @@ class ExportActivityToCsv
   end
 
   def call
-    values = columns.values.map(&:call)
-    values.concat(previous_twelve_quarter_actuals)
-    values.concat(next_twenty_quarter_forecasts)
-    values
+    metadata_columns.values.map(&:call) +
+      previous_twelve_quarter_actuals +
+      next_twenty_quarter_forecasts +
+      variance_columns.values.map(&:call)
   end
 
   def headers
-    values = columns.keys
-    values.concat(previous_twelve_quarter_actuals_headers)
-    values.concat(next_twenty_quarter_forecasts_headers)
-    values
+    metadata_columns.keys +
+      previous_twelve_quarter_actuals_headers +
+      next_twenty_quarter_forecasts_headers +
+      variance_columns.keys
   end
 
   def previous_twelve_quarter_actuals
@@ -40,8 +40,8 @@ class ExportActivityToCsv
     end
   end
 
-  private def columns
-    @_columns ||= {
+  private def metadata_columns
+    @_metadata_columns ||= {
       "RODA identifier" => -> { activity_presenter.roda_identifier },
       # RODA ID fragment
       # Parent RODA ID
@@ -100,11 +100,13 @@ class ExportActivityToCsv
       # Implementing organisation reference
       # Implementing organisation sector
       "Tied status" => -> { activity_presenter.tied_status_with_code },
+    }
+  end
 
+  private def variance_columns
+    @_variance_columns ||= {
       # Additional headers specific to export CSV =============================
-      forecast_header => -> { activity_presenter.forecasted_total_for_report_financial_quarter(report: report) },
-      actuals_header => -> { activity_presenter.actual_total_for_report_financial_quarter(report: report) },
-      "Variance" => -> { activity_presenter.variance_for_report_financial_quarter(report: report) },
+      "VAR #{report_financial_quarter}" => -> { activity_presenter.variance_for_report_financial_quarter(report: report) },
       "Comment" => -> { activity_presenter.comment_for_report(report_id: report.id)&.comment },
       "Link to activity in RODA" => -> { activity_presenter.link_to_roda },
     }
@@ -131,11 +133,13 @@ class ExportActivityToCsv
   end
 
   def previous_report_quarters
-    report.own_financial_quarter.preceding(12)
+    quarter = report.own_financial_quarter
+    quarter.preceding(11) + [quarter]
   end
 
   def following_report_quarters
-    report.own_financial_quarter.following(20)
+    quarter = report.own_financial_quarter
+    [quarter] + quarter.following(19)
   end
 
   private def previous_twelve_quarter_actuals_headers
