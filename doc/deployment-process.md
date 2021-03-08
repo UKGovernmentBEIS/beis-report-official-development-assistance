@@ -61,6 +61,7 @@ The heading should link to a Github URL at the bottom of the file, which shows t
 1. Production smoke test
    Once the code has been deployed to production, carry out a quick smoke test to confirm that the changes have been successfully deployed.
 1. [Run any data migrations](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance#data--one-off-tasks) that are meant to be run as part of the release
+1. Move all the Trello cards from "Awaiting deployment" to "Done"
 
 ## Staging
 
