@@ -11,14 +11,14 @@ class ExportActivityToCsv
   def call
     values = columns.values.map(&:call)
     values.concat(previous_twelve_quarter_actuals)
-    values.concat(next_twelve_quarter_forecasts)
+    values.concat(next_twenty_quarter_forecasts)
     values
   end
 
   def headers
     values = columns.keys
     values.concat(previous_twelve_quarter_actuals_headers)
-    values.concat(next_twelve_quarter_forecasts_headers)
+    values.concat(next_twenty_quarter_forecasts_headers)
     values
   end
 
@@ -31,7 +31,7 @@ class ExportActivityToCsv
     end
   end
 
-  def next_twelve_quarter_forecasts
+  def next_twenty_quarter_forecasts
     forecast_quarters = PlannedDisbursementOverview.new(activity_presenter).snapshot(report_presenter).all_quarters
 
     following_report_quarters.map do |quarter|
@@ -135,14 +135,14 @@ class ExportActivityToCsv
   end
 
   def following_report_quarters
-    report.own_financial_quarter.following(12)
+    report.own_financial_quarter.following(20)
   end
 
   private def previous_twelve_quarter_actuals_headers
     previous_report_quarters.map { |quarter| "#{quarter} actuals" }
   end
 
-  private def next_twelve_quarter_forecasts_headers
+  private def next_twenty_quarter_forecasts_headers
     following_report_quarters.map { |quarter| "#{quarter} forecast" }
   end
 end
