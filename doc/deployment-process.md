@@ -39,7 +39,7 @@ The heading should link to a Github URL at the bottom of the file, which shows t
    have the same name)
 1. Confirm the release candidate and perform any prerequisites
    - Confirm the release with any relevant people (product owner, delivery manager, etc)
-   - Think about any dependencies that also need considering: dependent parts of the service that also need updating; environment variables that need changing/adding; third-party services that need to be set up/updated
+   - Think about any dependencies that also need considering: dependent parts of the service that also need updating; environment variables that need changing/adding; third-party services that need to be set up/updated; data migrations to be run
 1. Announce the release
    Let the team know about the release. This is posted in Slack under #beis-roda. Typical form is:
 
@@ -60,6 +60,7 @@ The heading should link to a Github URL at the bottom of the file, which shows t
    ```
 1. Production smoke test
    Once the code has been deployed to production, carry out a quick smoke test to confirm that the changes have been successfully deployed.
+1. [Run any data migrations](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance#data--one-off-tasks) that are meant to be run as part of the release
 
 ## Staging
 
