@@ -5,7 +5,8 @@
         = t("page_title.activity.upload")
 
   .govuk-grid-row
-    .govuk-grid-column-full.page-actions
-      = link_to t("action.activity.download.button"), report_activity_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
+    .govuk-grid-column-two-thirds
+      %p.govuk-body.govuk-heading-m
+        = link_to t("action.activity.download.button"), report_activity_upload_path(@report_presenter, format: :csv), class: "govuk-link"
 
   = render partial: "upload_form"
