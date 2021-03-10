@@ -4,3 +4,10 @@ node_modules/
 config/master.key
 config/credentials.yml.enc
 terraform/
+
+# CSV files left in the root
+/*.csv
+
+# SQL files
+**/*.sql
+
