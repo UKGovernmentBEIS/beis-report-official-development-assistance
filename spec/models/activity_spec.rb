@@ -892,20 +892,6 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#has_accountable_organisation?" do
-    it "returns true if all accountable_organisation fields are present" do
-      activity = build(:fund_activity)
-
-      expect(activity.has_accountable_organisation?).to be true
-    end
-  end
-
-  it "returns false if all accountable_organisation fields are not present" do
-    activity = build(:activity)
-
-    expect(activity.has_accountable_organisation?).to be false
-  end
-
   describe "#has_extending_organisation?" do
     it "returns true if all extending_organisation fields are present" do
       activity = build(:fund_activity)

@@ -303,12 +303,6 @@ class Activity < ApplicationRecord
     organisation.default_currency
   end
 
-  def has_accountable_organisation?
-    accountable_organisation_reference.present? &&
-      accountable_organisation_name.present? &&
-      accountable_organisation_type.present?
-  end
-
   def has_extending_organisation?
     extending_organisation.present?
   end
