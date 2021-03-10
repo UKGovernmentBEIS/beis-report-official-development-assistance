@@ -533,6 +533,9 @@ and populate it via a data migration
 
 ## [unreleased]
 
+- Include 12 previous quarters of actual spend in the report CSV
+- Include 20 following quarters of forecast spend in the report CSV
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...HEAD
 [release-36]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-35...release-36
 [release-35]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-34...release-35
