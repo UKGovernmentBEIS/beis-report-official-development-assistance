@@ -948,30 +948,6 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    describe "#funding_organisation" do
-      let!(:beis) { create(:beis_organisation) }
-
-      it "returns BEIS if the activity is a programme" do
-        project = build(:programme_activity)
-        expect(project.funding_organisation).to eql beis
-      end
-
-      it "returns BEIS if the activity is a project" do
-        project = build(:project_activity)
-        expect(project.funding_organisation).to eql beis
-      end
-
-      it "returns BEIS if the activity is a third party project" do
-        project = build(:third_party_project_activity)
-        expect(project.funding_organisation).to eql beis
-      end
-
-      it "returns nil if the activity is a fund" do
-        fund = build(:fund_activity)
-        expect(fund.funding_organisation).to be_nil
-      end
-    end
-
     context "when the activity is a third-party project" do
       context "when the activity organisation is a government type" do
         it "returns BEIS" do
@@ -991,6 +967,30 @@ RSpec.describe Activity, type: :model do
           expect(third_party_project.providing_organisation).to eql non_government_delivery_partner
         end
       end
+    end
+  end
+
+  describe "#funding_organisation" do
+    let!(:beis) { create(:beis_organisation) }
+
+    it "returns BEIS if the activity is a programme" do
+      project = build(:programme_activity)
+      expect(project.funding_organisation).to eql beis
+    end
+
+    it "returns BEIS if the activity is a project" do
+      project = build(:project_activity)
+      expect(project.funding_organisation).to eql beis
+    end
+
+    it "returns BEIS if the activity is a third party project" do
+      project = build(:third_party_project_activity)
+      expect(project.funding_organisation).to eql beis
+    end
+
+    it "returns nil if the activity is a fund" do
+      fund = build(:fund_activity)
+      expect(fund.funding_organisation).to be_nil
     end
   end
 
