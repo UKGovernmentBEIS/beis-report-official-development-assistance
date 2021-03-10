@@ -4,6 +4,23 @@ node_modules/
 config/master.key
 config/credentials.yml.enc
 terraform/
+.sass-cache/
+log/
+tmp/
+coverage/
+spec/examples.txt
+.byebug_history
+**/.git/
+
+# Mac finder artifacts
+.DS_Store
+
+# Editor artifacts
+**.swp
+**.orig
+/*.tmproj
+.idea
+/nbproject/
 
 # CSV files left in the root
 /*.csv
