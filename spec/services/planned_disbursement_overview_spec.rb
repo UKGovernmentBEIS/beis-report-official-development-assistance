@@ -11,7 +11,7 @@ RSpec.describe PlannedDisbursementOverview do
   before do
     [2017, 2018].each do |year|
       (1..4).each do |quarter|
-        history = PlannedDisbursementHistory.new(activity, quarter, year)
+        history = PlannedDisbursementHistory.new(activity, financial_quarter: quarter, financial_year: year)
         histories[[year, quarter]] = history
       end
     end
@@ -134,13 +134,13 @@ RSpec.describe PlannedDisbursementOverview do
 
     shared_examples_for "forecast report history" do
       it "returns the forecast values for all quarters" do
-        forecasts = forecast_values(overview.snapshot(report).all_quarters)
+        forecasts = forecast_values(overview.snapshot(report).all_quarters.as_records)
         expect(forecasts).to eq(expected_values)
       end
 
       it "returns the forecast value for a particular quarter" do
         expected_values.each do |quarter, year, amount|
-          value = overview.snapshot(report).value_for(financial_quarter: quarter, financial_year: year)
+          value = overview.snapshot(report).all_quarters.value_for(financial_quarter: quarter, financial_year: year)
           expect(value).to eq(amount)
         end
       end
@@ -179,7 +179,7 @@ RSpec.describe PlannedDisbursementOverview do
       it_should_behave_like "forecast report history"
 
       it "returns zero for the value of a quarter that was revised to zero in that report" do
-        value = overview.snapshot(report).value_for(financial_quarter: 3, financial_year: 2018)
+        value = overview.snapshot(report).all_quarters.value_for(financial_quarter: 3, financial_year: 2018)
         expect(value).to eq(0)
       end
     end
@@ -293,7 +293,7 @@ RSpec.describe PlannedDisbursementOverview do
 
     context "when there are forecasts for multiple activities" do
       let(:project) { create(:project_activity, parent: activity.parent, organisation: delivery_partner) }
-      let(:project_history) { PlannedDisbursementHistory.new(project, 1, 2019) }
+      let(:project_history) { PlannedDisbursementHistory.new(project, financial_quarter: 1, financial_year: 2019) }
       let(:project_overview) { PlannedDisbursementOverview.new(project) }
 
       before do

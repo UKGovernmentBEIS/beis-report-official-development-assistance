@@ -28,6 +28,10 @@ class FinancialQuarter
     end
   end
 
+  def ==(other)
+    quarter == other.quarter && financial_year == other.financial_year
+  end
+
   def start_date
     @start_date ||= Date.new(calendar_year, start_month, 1)
   end
@@ -58,10 +62,40 @@ class FinancialQuarter
   end
 
   def to_s
-    "Q#{quarter} #{financial_year}"
+    "FQ#{quarter} #{financial_year}"
   end
 
   def to_i
     quarter
+  end
+
+  def to_hash
+    {financial_quarter: quarter, financial_year: financial_year.start_year}
+  end
+
+  def pred
+    if quarter == 1
+      FinancialQuarter.new(financial_year.start_year - 1, 4)
+    else
+      FinancialQuarter.new(financial_year.start_year, quarter - 1)
+    end
+  end
+
+  def succ
+    if quarter == 4
+      FinancialQuarter.new(financial_year.start_year + 1, 1)
+    else
+      FinancialQuarter.new(financial_year.start_year, quarter + 1)
+    end
+  end
+
+  def preceding(n)
+    quarter = self
+    (1..n).map { quarter = quarter.pred }.reverse
+  end
+
+  def following(n)
+    quarter = self
+    (1..n).map { quarter = quarter.succ }
   end
 end

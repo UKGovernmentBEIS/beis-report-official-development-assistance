@@ -63,22 +63,37 @@ class PlannedDisbursementOverview
     end
 
     def all_quarters
-      relation = @overview.latest_values_relation.merge(Report.historically_up_to(@report))
-      Snapshot.non_zero_forecasts_from(relation)
+      AllQuarters.new(all_quarters_relation)
     end
 
     def value_for_report_quarter
-      lookup_value_for_quarter(@report.financial_quarter, @report.financial_year)
-    end
-
-    def value_for(financial_quarter:, financial_year:)
-      lookup_value_for_quarter(financial_quarter, financial_year)
+      quarter, year = @report.financial_quarter, @report.financial_year
+      all_quarters_relation.where(financial_quarter: quarter, financial_year: year).sum(:value)
     end
 
     private
 
-    def lookup_value_for_quarter(quarter, year)
-      all_quarters.where(financial_quarter: quarter, financial_year: year).sum(:value)
+    def all_quarters_relation
+      relation = @overview.latest_values_relation.merge(Report.historically_up_to(@report))
+      Snapshot.non_zero_forecasts_from(relation)
+    end
+  end
+
+  class AllQuarters
+    def initialize(relation)
+      @index = Hash.new { |hash, key| hash[key] = [] }
+
+      relation.each do |record|
+        @index[[record.financial_quarter, record.financial_year]] << record
+      end
+    end
+
+    def as_records
+      @index.values.reduce(&:concat)
+    end
+
+    def value_for(financial_quarter:, financial_year:)
+      @index.fetch([financial_quarter, financial_year], []).map(&:value).sum
     end
   end
 end

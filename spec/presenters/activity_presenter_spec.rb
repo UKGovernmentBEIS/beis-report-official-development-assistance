@@ -554,8 +554,9 @@ RSpec.describe ActivityPresenter do
     it "returns the transaction total scoped to report as a formatted number" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
-      _transaction_in_report_scope = create(:transaction, parent_activity: project, report: report, value: 100.20, date: Date.today)
-      _transaction_outside_report_scope = create(:transaction, parent_activity: project, report: report, value: 300, date: Date.today - 4.months)
+      current_quarter = FinancialQuarter.for_date(Date.today)
+      _transaction_in_report_scope = create(:transaction, parent_activity: project, report: report, value: 100.20, **current_quarter)
+      _transaction_outside_report_scope = create(:transaction, parent_activity: project, report: report, value: 300, **current_quarter.pred)
 
       expect(described_class.new(project).actual_total_for_report_financial_quarter(report: report))
         .to eq "100.20"
@@ -566,7 +567,7 @@ RSpec.describe ActivityPresenter do
     it "returns the planned disbursement total per report as a formatted number" do
       project = create(:project_activity)
       reporting_cycle = ReportingCycle.new(project, 3, 2020)
-      forecast = PlannedDisbursementHistory.new(project, 4, 2020)
+      forecast = PlannedDisbursementHistory.new(project, financial_quarter: 4, financial_year: 2020)
 
       reporting_cycle.tick
       forecast.set_value(200.20)
@@ -583,14 +584,14 @@ RSpec.describe ActivityPresenter do
     it "returns the variance per report as a formatted number" do
       project = create(:project_activity)
       reporting_cycle = ReportingCycle.new(project, 3, 2019)
-      forecast = PlannedDisbursementHistory.new(project, 4, 2019)
+      forecast = PlannedDisbursementHistory.new(project, financial_quarter: 4, financial_year: 2019)
 
       reporting_cycle.tick
       forecast.set_value(1500)
 
       reporting_cycle.tick
       report = Report.for_activity(project).in_historical_order.first
-      _transaction = create(:transaction, parent_activity: project, report: report, value: 200, date: report.created_at)
+      _transaction = create(:transaction, parent_activity: project, report: report, value: 200, **report.own_financial_quarter)
 
       expect(described_class.new(project).variance_for_report_financial_quarter(report: report))
         .to eq "-1300.00"

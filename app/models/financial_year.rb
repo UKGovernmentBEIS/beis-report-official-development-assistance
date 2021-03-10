@@ -34,6 +34,10 @@ class FinancialYear
     end
   end
 
+  def ==(other)
+    start_year == other.start_year
+  end
+
   def start_date
     Date.new(start_year, 4, 1)
   end

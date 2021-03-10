@@ -422,7 +422,7 @@ class Activity < ApplicationRecord
   end
 
   def actual_total_for_report_financial_quarter(report:)
-    transactions.where(report: report, date: report.created_at.all_quarter).sum(:value)
+    TransactionOverview.new(self, report).value_for_report_quarter
   end
 
   def forecasted_total_for_report_financial_quarter(report:)
