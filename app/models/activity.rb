@@ -340,6 +340,36 @@ class Activity < ApplicationRecord
     service_owner
   end
 
+  def accountable_organisation
+    return service_owner if fund? || programme?
+
+    extending_organisation.is_government? ? service_owner : extending_organisation
+  end
+
+  def accountable_organisation_name
+    accountable_organisation.name
+  end
+
+  def accountable_organisation_name=(_)
+    # NO OP
+  end
+
+  def accountable_organisation_type
+    accountable_organisation.organisation_type
+  end
+
+  def accountable_organisation_type=(_)
+    # NO OP
+  end
+
+  def accountable_organisation_reference
+    accountable_organisation.iati_reference
+  end
+
+  def accountable_organisation_reference=(_)
+    # NO OP
+  end
+
   def service_owner
     Organisation.find_by(service_owner: true)
   end

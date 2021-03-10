@@ -9,6 +9,10 @@ FactoryBot.define do
 
     factory :delivery_partner_organisation do
       service_owner { false }
+
+      trait :non_government do
+        organisation_type { "22" }
+      end
     end
 
     factory :beis_organisation do

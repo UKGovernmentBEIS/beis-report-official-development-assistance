@@ -44,12 +44,6 @@ RSpec.describe ActivityDefaults do
         expect(subject[:reporting_organisation_id]).to eq(beis.id)
       end
 
-      it "sets the accountable organisation attributes to BEIS" do
-        expect(subject[:accountable_organisation_name]).to eq(beis.name)
-        expect(subject[:accountable_organisation_reference]).to eq(beis.iati_reference)
-        expect(subject[:accountable_organisation_type]).to eq(beis.organisation_type)
-      end
-
       it "sets the form_state to 'identifier', as we already have the level and parent" do
         expect(subject[:form_state]).to eq("identifier")
       end
@@ -82,22 +76,6 @@ RSpec.describe ActivityDefaults do
         expect(subject[:reporting_organisation_id]).to eq(beis.id)
       end
 
-      it "sets the accountable organisation attributes to BEIS" do
-        expect(subject[:accountable_organisation_name]).to eq(beis.name)
-        expect(subject[:accountable_organisation_reference]).to eq(beis.iati_reference)
-        expect(subject[:accountable_organisation_type]).to eq(beis.organisation_type)
-      end
-
-      context "with a non-government delivery partner organisation" do
-        let(:delivery_partner_organisation) { create(:delivery_partner_organisation, organisation_type: "70") }
-
-        it "sets the accountable organisation attributes to the delivery partner organisation" do
-          expect(subject[:accountable_organisation_name]).to eq(delivery_partner_organisation.name)
-          expect(subject[:accountable_organisation_reference]).to eq(delivery_partner_organisation.iati_reference)
-          expect(subject[:accountable_organisation_type]).to eq(delivery_partner_organisation.organisation_type)
-        end
-      end
-
       it "sets the form_state to 'identifier', as we already have the level and parent" do
         expect(subject[:form_state]).to eq("identifier")
       end
@@ -128,22 +106,6 @@ RSpec.describe ActivityDefaults do
 
       it "sets the reporting organisation to BEIS" do
         expect(subject[:reporting_organisation_id]).to eq(beis.id)
-      end
-
-      it "sets the accountable organisation attributes to BEIS" do
-        expect(subject[:accountable_organisation_name]).to eq(beis.name)
-        expect(subject[:accountable_organisation_reference]).to eq(beis.iati_reference)
-        expect(subject[:accountable_organisation_type]).to eq(beis.organisation_type)
-      end
-
-      context "with a non-government delivery partner organisation" do
-        let(:delivery_partner_organisation) { create(:delivery_partner_organisation, organisation_type: "70") }
-
-        it "sets the accountable organisation attributes to the delivery partner organisation" do
-          expect(subject[:accountable_organisation_name]).to eq(delivery_partner_organisation.name)
-          expect(subject[:accountable_organisation_reference]).to eq(delivery_partner_organisation.iati_reference)
-          expect(subject[:accountable_organisation_type]).to eq(delivery_partner_organisation.organisation_type)
-        end
       end
 
       it "sets the form_state to 'identifier', as we already have the level and parent" do
