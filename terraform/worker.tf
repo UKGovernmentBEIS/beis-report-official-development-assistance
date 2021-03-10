@@ -9,6 +9,10 @@ resource "cloudfoundry_app" "beis-roda-worker" {
   disk_quota        = 3072
   timeout           = 120
   docker_image      = "thedxw/beis-report-official-development-assistance:${var.docker_image}"
+  docker_credentials = {
+    username = "${var.docker_username}"
+    password = "${var.docker_password}"
+  }
   service_binding { service_instance = cloudfoundry_service_instance.beis-roda-redis.id }
   service_binding { service_instance = cloudfoundry_service_instance.beis-roda-postgres.id }
   service_binding { service_instance = cloudfoundry_user_provided_service.papertrail.id }
