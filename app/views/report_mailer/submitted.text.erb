@@ -1,15 +1,4 @@
-BEIS have received your report.
-
-* Report: <%= @report_presenter.email_title %>
-* Link to report: <%= report_url(@report_presenter) %>
-
-# What happens next?
-
-BEIS will review the data you have submitted and contact you with any questions or requests for changes.
-
-Review and final approval normally takes 3 to 4 weeks.
-
-We will send another confirmation when your report is approved.
+<%= render partial: "submitted_#{@role}" %>
 
 # Help and support
 
