@@ -103,6 +103,8 @@ en:
           subject: "%{application_name} - Your report has been submitted"
         service_owner:
           subject: "%{application_name} - A delivery partner has submitted a report"
+      approved:
+        subject: "%{application_name} - Your report has been approved"
   action:
     report:
       activate:

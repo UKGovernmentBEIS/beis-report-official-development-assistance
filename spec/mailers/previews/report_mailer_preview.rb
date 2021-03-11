@@ -23,4 +23,11 @@ class ReportMailerPreview < ActionMailer::Preview
       report: FactoryBot.build_stubbed(:report, :submitted, id: SecureRandom.uuid)
     ).submitted
   end
+
+  def approved
+    ReportMailer.with(
+      user: FactoryBot.build(:administrator),
+      report: FactoryBot.build_stubbed(:report, :approved, id: SecureRandom.uuid)
+    ).approved
+  end
 end
