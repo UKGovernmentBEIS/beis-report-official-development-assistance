@@ -8,9 +8,18 @@ class ReportMailerPreview < ActionMailer::Preview
     ).activated
   end
 
-  def submitted
+  def submitted_delivery_partner
+    organisation = FactoryBot.build(:organisation)
+
     ReportMailer.with(
-      user: FactoryBot.build(:administrator),
+      user: FactoryBot.build(:administrator, organisation: organisation),
+      report: FactoryBot.build_stubbed(:report, :submitted, id: SecureRandom.uuid, organisation: organisation)
+    ).submitted
+  end
+
+  def submitted_service_owner
+    ReportMailer.with(
+      user: FactoryBot.build(:beis_user),
       report: FactoryBot.build_stubbed(:report, :submitted, id: SecureRandom.uuid)
     ).submitted
   end

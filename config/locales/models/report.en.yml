@@ -99,7 +99,10 @@ en:
       activated:
         subject: "%{application_name} - A report has been activated"
       submitted:
-        subject: "%{application_name} - Your report has been submitted"
+        delivery_partner:
+          subject: "%{application_name} - Your report has been submitted"
+        service_owner:
+          subject: "%{application_name} - A delivery partner has submitted a report"
   action:
     report:
       activate:
