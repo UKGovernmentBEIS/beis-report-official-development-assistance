@@ -98,6 +98,8 @@ en:
     report:
       activated:
         subject: "%{application_name} - A report has been activated"
+      submitted:
+        subject: "%{application_name} - Your report has been submitted"
   action:
     report:
       activate:
