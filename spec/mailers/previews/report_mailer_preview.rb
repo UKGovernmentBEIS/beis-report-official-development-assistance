@@ -30,4 +30,11 @@ class ReportMailerPreview < ActionMailer::Preview
       report: FactoryBot.build_stubbed(:report, :approved, id: SecureRandom.uuid)
     ).approved
   end
+
+  def awaiting_changes
+    ReportMailer.with(
+      user: FactoryBot.build(:administrator),
+      report: FactoryBot.build_stubbed(:report, :approved, id: SecureRandom.uuid)
+    ).awaiting_changes
+  end
 end

@@ -105,6 +105,8 @@ en:
           subject: "%{application_name} - A delivery partner has submitted a report"
       approved:
         subject: "%{application_name} - Your report has been approved"
+      awaiting_changes:
+        subject: "%{application_name} - A report is awaiting changes"
   action:
     report:
       activate:

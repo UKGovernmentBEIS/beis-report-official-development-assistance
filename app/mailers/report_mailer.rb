@@ -35,4 +35,13 @@ class ReportMailer < ApplicationMailer
       to: @user.email,
       subject: t("mailer.report.approved.subject", application_name: t("app.title")))
   end
+
+  def awaiting_changes
+    @report_presenter = ReportPresenter.new(params[:report])
+    @user = params[:user]
+
+    view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
+      to: @user.email,
+      subject: t("mailer.report.awaiting_changes.subject", application_name: t("app.title")))
+  end
 end
