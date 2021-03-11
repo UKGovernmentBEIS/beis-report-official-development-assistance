@@ -26,4 +26,13 @@ class ReportMailer < ApplicationMailer
       raise ArgumentError, "User must either be a service owner or belong to the organisation making the report"
     end
   end
+
+  def approved
+    @report_presenter = ReportPresenter.new(params[:report])
+    @user = params[:user]
+
+    view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
+      to: @user.email,
+      subject: t("mailer.report.approved.subject", application_name: t("app.title")))
+  end
 end

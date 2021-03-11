@@ -77,4 +77,25 @@ RSpec.describe ReportMailer, type: :mailer do
       end
     end
   end
+
+  describe "#approved" do
+    let(:mail) { ReportMailer.with(user: user, report: report).approved }
+
+    it "sends the email to the user's email address" do
+      expect(mail.to).to eq([user.email])
+    end
+
+    it "has the correct title" do
+      expect(mail.subject).to eq("Report your Official Development Assistance - Your report has been approved")
+    end
+
+    it "contains the report's details" do
+      expect(mail.body).to include("Report: FQ4 2020-2021 GCRF ABC")
+      expect(mail.body).to include("Link to report: http://test.local/reports/#{report.id}")
+    end
+
+    it "contains the expected body" do
+      expect(mail.body).to include("BEIS have approved your report.")
+    end
+  end
 end
