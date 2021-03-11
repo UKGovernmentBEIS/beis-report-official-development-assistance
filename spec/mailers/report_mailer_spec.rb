@@ -23,4 +23,21 @@ RSpec.describe ReportMailer, type: :mailer do
       expect(mail.body).to include("Link to report: http://test.local/reports/#{report.id}")
     end
   end
+
+  describe "#submitted" do
+    let(:mail) { ReportMailer.with(user: user, report: report).submitted }
+
+    it "sends the email to the user's email address" do
+      expect(mail.to).to eq([user.email])
+    end
+
+    it "has the correct title" do
+      expect(mail.subject).to eq("Report your Official Development Assistance - Your report has been submitted")
+    end
+
+    it "contains the report's details" do
+      expect(mail.body).to include("Report: FQ4 2020-2021 GCRF ABC")
+      expect(mail.body).to include("Link to report: http://test.local/reports/#{report.id}")
+    end
+  end
 end
