@@ -538,6 +538,8 @@ and populate it via a data migration
 
 ## [unreleased]
 
+- Skip rows where the value is 0 when importing transactions
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...HEAD
 [release-37]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37
 [release-36]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-35...release-36

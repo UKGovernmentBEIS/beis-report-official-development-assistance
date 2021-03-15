@@ -211,10 +211,8 @@ RSpec.describe ImportTransactions do
         expect(report.transactions.count).to eq(0)
       end
 
-      it "returns an error" do
-        expect(importer.errors).to eq([
-          ImportTransactions::Error.new(0, "Value", "0", t("activerecord.errors.models.transaction.attributes.value.other_than")),
-        ])
+      it "does not return an error" do
+        expect(importer.errors).to eq([])
       end
     end
 
@@ -370,7 +368,7 @@ RSpec.describe ImportTransactions do
 
     context "when any row is not valid" do
       let :third_transaction_row do
-        super().merge("Value" => "0")
+        super().merge("Value" => "fish")
       end
 
       it "does not import any transactions" do
@@ -379,18 +377,18 @@ RSpec.describe ImportTransactions do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportTransactions::Error.new(2, "Value", "0", t("activerecord.errors.models.transaction.attributes.value.other_than")),
+          ImportTransactions::Error.new(2, "Value", "fish", t("importer.errors.transaction.non_numeric_value")),
         ])
       end
     end
 
     context "when there are multiple errors" do
       let :first_transaction_row do
-        super().merge("Receiving Organisation Type" => "81")
+        super().merge("Receiving Organisation Type" => "81", "Value" => "fish")
       end
 
       let :third_transaction_row do
-        super().merge("Financial Quarter" => "5", "Value" => "0")
+        super().merge("Financial Quarter" => "5")
       end
 
       it "does not import any transactions" do
@@ -400,10 +398,11 @@ RSpec.describe ImportTransactions do
       it "returns all the errors" do
         errors = importer.errors.sort_by { |error| [error.row, error.column] }
 
+        expect(errors.size).to eq(3)
         expect(errors).to eq([
           ImportTransactions::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.transaction.invalid_iati_organisation_type")),
+          ImportTransactions::Error.new(0, "Value", "fish", t("importer.errors.transaction.non_numeric_value")),
           ImportTransactions::Error.new(2, "Financial Quarter", third_transaction_row["Financial Quarter"], t("activerecord.errors.models.transaction.attributes.financial_quarter.inclusion")),
-          ImportTransactions::Error.new(2, "Value", "0", t("activerecord.errors.models.transaction.attributes.value.other_than")),
         ])
       end
     end

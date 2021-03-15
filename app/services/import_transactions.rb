@@ -49,6 +49,8 @@ class ImportTransactions
 
     def import_row
       @converter = Converter.new(@row)
+      return if @converter.zero_value_transaction?
+
       @errors.update(@converter.errors)
 
       authorise_activity
@@ -180,6 +182,10 @@ class ImportTransactions
       raise message unless valid_codes.include?(code)
 
       code
+    end
+
+    def zero_value_transaction?
+      @attributes[:value].present? && @attributes[:value].zero?
     end
   end
 end
