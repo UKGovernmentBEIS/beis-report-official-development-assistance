@@ -44,7 +44,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
         new_user = User.where(email: new_user_email).first
 
-        expect(new_user).to be_sent_email.with_personalisations(
+        expect(new_user).to have_received_email.with_personalisations(
           "name" => new_user_name,
           "link" => "https://testdomain/lo/reset?ticket=123#",
           "service_url" => "test.local"
