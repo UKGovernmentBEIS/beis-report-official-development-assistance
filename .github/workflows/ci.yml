@@ -27,3 +27,7 @@ jobs:
       - name: Prepare Docker cache
         run: mkdir -p /tmp/docker-save && docker save beis-report-official-development-assistance_test:latest -o /tmp/docker-save/snapshot.tar && ls -lh /tmp/docker-save
         if: always() && steps.cache-docker.outputs.cache-hit != 'true'
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
