@@ -11,6 +11,11 @@ class ReportPresenter < SimpleDelegator
     I18n.l(super)
   end
 
+  def email_title
+    return nil if financial_quarter_and_year.nil? || fund.nil? || organisation.nil?
+    "#{financial_quarter_and_year} #{fund.roda_identifier_fragment} #{organisation.beis_organisation_reference}"
+  end
+
   def filename_for_report_download
     filename(purpose: "report")
   end

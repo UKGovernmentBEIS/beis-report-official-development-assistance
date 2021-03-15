@@ -94,6 +94,10 @@ en:
         complete: This report is approved
       variance: "%{report_financial_quarter} %{report_description} variance"
       budgets: "%{report_financial_quarter} %{report_description} budgets"
+  mailer:
+    report:
+      activated:
+        subject: "%{application_name} - A report has been activated"
   action:
     report:
       activate:
