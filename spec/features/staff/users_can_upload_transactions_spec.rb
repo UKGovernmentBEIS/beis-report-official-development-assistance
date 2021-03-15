@@ -32,7 +32,7 @@ RSpec.feature "users can upload transactions" do
         "Activity RODA Identifier" => project.roda_identifier,
         "Financial Quarter" => report.financial_quarter.to_s,
         "Financial Year" => report.financial_year.to_s,
-        "Value" => nil,
+        "Value" => "0.00",
         "Receiving Organisation Name" => nil,
         "Receiving Organisation Type" => nil,
         "Receiving Organisation IATI Reference" => nil,
@@ -43,7 +43,7 @@ RSpec.feature "users can upload transactions" do
         "Activity RODA Identifier" => sibling_project.roda_identifier,
         "Financial Quarter" => report.financial_quarter.to_s,
         "Financial Year" => report.financial_year.to_s,
-        "Value" => nil,
+        "Value" => "0.00",
         "Receiving Organisation Name" => nil,
         "Receiving Organisation Type" => nil,
         "Receiving Organisation IATI Reference" => nil,
@@ -71,12 +71,26 @@ RSpec.feature "users can upload transactions" do
     expect(page).not_to have_xpath("//tbody/tr")
   end
 
+  scenario "uploading a valid set of transactions including zero values" do
+    ids = [project, sibling_project].map(&:roda_identifier)
+
+    upload_csv <<~CSV
+      Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1                 | 2020           | 0.00  | Example University          | 80                          |
+      #{ids[1]}                | 1                 | 2020           | 30    | Example Foundation          | 60                          |
+    CSV
+
+    expect(Transaction.count).to eq(1)
+    expect(page).to have_text(t("action.transaction.upload.success"))
+    expect(page).not_to have_xpath("//tbody/tr")
+  end
+
   scenario "uploading an invalid set of transactions" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
       Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
-      #{ids[0]}                | 1                 | 2020           | 0     | Example University          | 80                          |
+      #{ids[0]}                | 1                 | 2020           | fish  | Example University          | 80                          |
       #{ids[1]}                | 1                 | 2020           | 30    | Example Foundation          | 61                          |
     CSV
 
@@ -86,8 +100,8 @@ RSpec.feature "users can upload transactions" do
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[1]", text: "Value")
       expect(page).to have_xpath("td[2]", text: "2")
-      expect(page).to have_xpath("td[3]", text: "0")
-      expect(page).to have_xpath("td[4]", text: t("activerecord.errors.models.transaction.attributes.value.other_than"))
+      expect(page).to have_xpath("td[3]", text: "fish")
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.transaction.non_numeric_value"))
     end
 
     within "//tbody/tr[2]" do
