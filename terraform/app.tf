@@ -29,6 +29,7 @@ resource "cloudfoundry_app" "beis-roda-app" {
     "AUTH0_DOMAIN"                           = var.auth0_domain
     "NOTIFY_KEY"                             = var.notify_key
     "NOTIFY_WELCOME_EMAIL_TEMPLATE"          = var.notify_welcome_email_template
+    "NOTIFY_VIEW_TEMPLATE"                   = var.notify_view_template
     "ROLLBAR_ENV"                            = "paas-${var.environment}"
     "ROLLBAR_ACCESS_TOKEN"                   = var.rollbar_access_token
     "ROLLBAR_DISABLED"                       = var.rollbar_disabled
