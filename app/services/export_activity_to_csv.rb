@@ -9,33 +9,39 @@ class ExportActivityToCsv
   end
 
   def call
-    values = columns.values.map(&:call)
-    values = values.push(previous_quarter_actuals) if previous_report.present?
-    values = values.concat(next_twelve_quarter_forecasts)
-    values
+    metadata_columns.values.map(&:call) +
+      previous_twelve_quarter_actuals +
+      next_twenty_quarter_forecasts +
+      variance_columns.values.map(&:call)
   end
 
   def headers
-    values = columns.keys
-    values = values.push(previous_quarter_actuals_header) if previous_report.present?
-    values = values.concat(next_twelve_quarter_forecasts_headers)
-    values
+    metadata_columns.keys +
+      previous_twelve_quarter_actuals_headers +
+      next_twenty_quarter_forecasts_headers +
+      variance_columns.keys
   end
 
-  def previous_quarter_actuals
-    activity_presenter.actual_total_for_report_financial_quarter(report: previous_report)
-  end
+  def previous_twelve_quarter_actuals
+    transaction_quarters = TransactionOverview.new(activity_presenter, report_presenter).all_quarters
 
-  def next_twelve_quarter_forecasts
-    report_presenter.next_twelve_financial_quarters.map do |quarter, year|
-      overview = PlannedDisbursementOverview.new(activity_presenter)
-      value = overview.snapshot(report_presenter).value_for(financial_quarter: quarter, financial_year: year)
+    previous_report_quarters.map do |quarter|
+      value = transaction_quarters.value_for(**quarter)
       "%.2f" % value
     end
   end
 
-  private def columns
-    @_columns ||= {
+  def next_twenty_quarter_forecasts
+    forecast_quarters = PlannedDisbursementOverview.new(activity_presenter).snapshot(report_presenter).all_quarters
+
+    following_report_quarters.map do |quarter|
+      value = forecast_quarters.value_for(**quarter)
+      "%.2f" % value
+    end
+  end
+
+  private def metadata_columns
+    @_metadata_columns ||= {
       "RODA identifier" => -> { activity_presenter.roda_identifier },
       # RODA ID fragment
       # Parent RODA ID
@@ -94,11 +100,13 @@ class ExportActivityToCsv
       # Implementing organisation reference
       # Implementing organisation sector
       "Tied status" => -> { activity_presenter.tied_status_with_code },
+    }
+  end
 
+  private def variance_columns
+    @_variance_columns ||= {
       # Additional headers specific to export CSV =============================
-      forecast_header => -> { activity_presenter.forecasted_total_for_report_financial_quarter(report: report) },
-      actuals_header => -> { activity_presenter.actual_total_for_report_financial_quarter(report: report) },
-      "Variance" => -> { activity_presenter.variance_for_report_financial_quarter(report: report) },
+      "VAR #{report_financial_quarter}" => -> { activity_presenter.variance_for_report_financial_quarter(report: report) },
       "Comment" => -> { activity_presenter.comment_for_report(report_id: report.id)&.comment },
       "Link to activity in RODA" => -> { activity_presenter.link_to_roda },
     }
@@ -117,26 +125,28 @@ class ExportActivityToCsv
   end
 
   private def forecast_header
-    report_financial_quarter ? report_financial_quarter + " forecast" : "Forecast"
+    ["FC", report_financial_quarter].reject(&:blank?).join(" ")
   end
 
   private def actuals_header
-    report_financial_quarter ? report_financial_quarter + " actuals" : "Actuals"
+    ["ACT", report_financial_quarter].reject(&:blank?).join(" ")
   end
 
-  private def previous_report
-    @_previous_report ||= report.previous
+  def previous_report_quarters
+    quarter = report.own_financial_quarter
+    quarter.preceding(11) + [quarter]
   end
 
-  private def previous_report_presenter
-    @previous_report_presenter ||= ReportPresenter.new(previous_report)
+  def following_report_quarters
+    quarter = report.own_financial_quarter
+    [quarter] + quarter.following(19)
   end
 
-  private def previous_quarter_actuals_header
-    "#{previous_report_presenter.financial_quarter_and_year} actuals"
+  private def previous_twelve_quarter_actuals_headers
+    previous_report_quarters.map { |quarter| "ACT #{quarter}" }
   end
 
-  private def next_twelve_quarter_forecasts_headers
-    report_presenter.next_twelve_financial_quarters.map { |quarter, year| "Q#{quarter} #{year}" }
+  private def next_twenty_quarter_forecasts_headers
+    following_report_quarters.map { |quarter| "FC #{quarter}" }
   end
 end

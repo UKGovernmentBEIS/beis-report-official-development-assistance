@@ -77,14 +77,19 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
   private def history_for_create
     PlannedDisbursementHistory.new(
       @activity,
-      planned_disbursement_params[:financial_quarter],
-      planned_disbursement_params[:financial_year],
+      financial_quarter: planned_disbursement_params[:financial_quarter],
+      financial_year: planned_disbursement_params[:financial_year],
       user: current_user
     )
   end
 
   private def history_for_update
-    PlannedDisbursementHistory.new(@activity, params[:quarter], params[:year], user: current_user)
+    PlannedDisbursementHistory.new(
+      @activity,
+      financial_quarter: params[:quarter],
+      financial_year: params[:year],
+      user: current_user
+    )
   end
 
   private def planned_disbursement_params

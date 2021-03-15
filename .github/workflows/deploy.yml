@@ -25,6 +25,8 @@ jobs:
         run: script/docker-push
       - name: Deploy terraform to staging
         env:
+          TF_VAR_docker_username: ${{ secrets.DOCKER_USERNAME }}
+          TF_VAR_docker_password: ${{ secrets.DOCKER_PASSWORD }}
           TF_VAR_environment: "staging"
           TF_VAR_secret_key_base: ${{ secrets.STAGING_SECRET_KEY_BASE }}
           TF_VAR_auth0_client_id: ${{ secrets.STAGING_AUTH0_CLIENT_ID }}
@@ -49,6 +51,8 @@ jobs:
         if: github.ref == 'refs/heads/develop'
       - name: Deploy terraform to production
         env:
+          TF_VAR_docker_username: ${{ secrets.DOCKER_USERNAME }}
+          TF_VAR_docker_password: ${{ secrets.DOCKER_PASSWORD }}
           TF_VAR_environment: "prod"
           TF_VAR_secret_key_base: ${{ secrets.PROD_SECRET_KEY_BASE }}
           TF_VAR_auth0_client_id: ${{ secrets.PROD_AUTH0_CLIENT_ID }}

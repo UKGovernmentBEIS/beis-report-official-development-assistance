@@ -156,33 +156,6 @@ RSpec.describe Report, type: :model do
     end
   end
 
-  describe "#next_twelve_financial_quarters" do
-    it "returns an array with the next twelve financial quarters from the date of the report" do
-      report = travel_to(Date.parse("1 April 2020")) { create(:report) }
-
-      expect(report.next_twelve_financial_quarters).to eq [
-        [2, 2020], [3, 2020], [4, 2020], [1, 2021],
-        [2, 2021], [3, 2021], [4, 2021], [1, 2022],
-        [2, 2022], [3, 2022], [4, 2022], [1, 2023],
-      ]
-    end
-  end
-
-  describe "#previous" do
-    it "returns the report for the previous quarter" do
-      report = travel_to(Date.parse("1 April 2020")) { create(:report) }
-      previous_report = travel_to(Date.parse("1 January 2020")) { create(:report, :approved, organisation: report.organisation, fund: report.fund) }
-
-      expect(report.previous).to eql previous_report
-    end
-
-    it "returns nil when there is no previous report" do
-      report = travel_to(Date.parse("1 April 2020")) { create(:report) }
-
-      expect(report.previous).to be_nil
-    end
-  end
-
   describe "reportable_activities" do
     let!(:report) { create(:report) }
     let!(:programme) { create(:programme_activity, parent: report.fund, organisation: report.organisation) }

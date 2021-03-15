@@ -63,6 +63,17 @@ variable "docker_image" {
   type        = string
   description = "docker image to use"
 }
+
+variable "docker_username" {
+  type        = string
+  description = "docker username"
+}
+
+variable "docker_password" {
+  type        = string
+  description = "docker password"
+}
+
 variable "additional_hostnames" {
   type        = string
   description = "Additional hostnames for the application to be allowed to use (comma seperated)"

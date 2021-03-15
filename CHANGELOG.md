@@ -531,9 +531,15 @@ and populate it via a data migration
 - Delivery partners can add level D activities, automatically parented to an existing level C
 - Downloaded files have more descriptive filenames, using financial quarter, source fund, and organisation short name
 
+## [release-37] - 2021-03-15
+
+- Include 12 previous quarters of actual spend in the report CSV
+- Include 20 following quarters of forecast spend in the report CSV
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37
 [release-36]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-35...release-36
 [release-35]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-34...release-35
 [release-34]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-33...release-34

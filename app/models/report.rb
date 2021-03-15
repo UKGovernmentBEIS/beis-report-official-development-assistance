@@ -1,5 +1,6 @@
 class Report < ApplicationRecord
   include PublicActivity::Common
+  include HasFinancialQuarter
 
   attr_readonly :financial_quarter, :financial_year
 
@@ -74,29 +75,5 @@ class Report < ApplicationRecord
 
   def reportable_activities
     Activity.current.projects_and_third_party_projects_for_report(self).with_roda_identifier
-  end
-
-  def next_twelve_financial_quarters
-    quarter, year = financial_quarter, financial_year
-
-    (1..12).map do
-      year += 1 if quarter == 4
-      quarter = (quarter % 4) + 1
-
-      [quarter, year]
-    end
-  end
-
-  def previous
-    quarter, year = financial_quarter, financial_year
-
-    quarter -= 1
-
-    if quarter == 0
-      quarter = 4
-      year -= 1
-    end
-
-    Report.find_by(fund: fund, organisation: organisation, financial_quarter: quarter, financial_year: year)
   end
 end

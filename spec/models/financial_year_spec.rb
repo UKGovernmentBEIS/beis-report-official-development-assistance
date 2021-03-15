@@ -21,7 +21,7 @@ RSpec.describe FinancialYear do
     year = FinancialYear.new("2020")
 
     expect(year.quarters.count).to eq(4)
-    expect(year.quarters.map { |q| q.to_s }).to eq(["Q1 2020-2021", "Q2 2020-2021", "Q3 2020-2021", "Q4 2020-2021"])
+    expect(year.quarters.map { |q| q.to_s }).to eq(["FQ1 2020-2021", "FQ2 2020-2021", "FQ3 2020-2021", "FQ4 2020-2021"])
   end
 
   describe ".for_date" do

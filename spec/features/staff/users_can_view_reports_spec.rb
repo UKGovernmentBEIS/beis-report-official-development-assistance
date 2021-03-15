@@ -233,7 +233,7 @@ RSpec.feature "Users can view reports" do
 
         activity = create(:project_activity, organisation: delivery_partner_user.organisation)
         reporting_cycle = ReportingCycle.new(activity, 4, 2018)
-        forecast = PlannedDisbursementHistory.new(activity, 1, 2019)
+        forecast = PlannedDisbursementHistory.new(activity, financial_quarter: 1, financial_year: 2019)
 
         reporting_cycle.tick
         forecast.set_value(1000)
@@ -242,7 +242,8 @@ RSpec.feature "Users can view reports" do
         report = Report.for_activity(activity).in_historical_order.first
         report_presenter = ReportPresenter.new(report)
 
-        _actual_value = create(:transaction, parent_activity: activity, report: report, date: report.created_at, value: 1100)
+        report_quarter = report.own_financial_quarter
+        _actual_value = create(:transaction, parent_activity: activity, report: report, value: 1100, **report_quarter)
 
         travel_to quarter_two_2019 do
           visit reports_path

@@ -1,12 +1,16 @@
 # Create the web app.
 
 resource "cloudfoundry_app" "beis-roda-app" {
-  name                       = "beis-roda-${var.environment}"
-  space                      = cloudfoundry_space.space.id
-  instances                  = 2
-  disk_quota                 = 3072
-  timeout                    = 120
-  docker_image               = "thedxw/beis-report-official-development-assistance:${var.docker_image}"
+  name         = "beis-roda-${var.environment}"
+  space        = cloudfoundry_space.space.id
+  instances    = 2
+  disk_quota   = 3072
+  timeout      = 120
+  docker_image = "thedxw/beis-report-official-development-assistance:${var.docker_image}"
+  docker_credentials = {
+    username = "${var.docker_username}"
+    password = "${var.docker_password}"
+  }
   strategy                   = "blue-green-v2"
   health_check_http_endpoint = "/health_check"
   service_binding { service_instance = cloudfoundry_service_instance.beis-roda-redis.id }

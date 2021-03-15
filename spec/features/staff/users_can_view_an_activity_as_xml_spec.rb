@@ -284,8 +284,8 @@ RSpec.feature "Users can view an activity as XML" do
 
         it "only includes the latest values for planned disbursements" do
           reporting_cycle = ReportingCycle.new(activity, 1, 2019)
-          q2_planned_disbursement = PlannedDisbursementHistory.new(activity, 2, 2020)
-          q3_planned_disbursement = PlannedDisbursementHistory.new(activity, 3, 2020)
+          q2_planned_disbursement = PlannedDisbursementHistory.new(activity, financial_quarter: 2, financial_year: 2020)
+          q3_planned_disbursement = PlannedDisbursementHistory.new(activity, financial_quarter: 3, financial_year: 2020)
 
           reporting_cycle.tick
           q2_planned_disbursement.set_value(10)

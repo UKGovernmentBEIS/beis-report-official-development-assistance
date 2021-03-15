@@ -1,5 +1,5 @@
 RSpec.describe PlannedDisbursementHistory do
-  let(:history) { PlannedDisbursementHistory.new(activity, 3, 2020) }
+  let(:history) { PlannedDisbursementHistory.new(activity, financial_quarter: 3, financial_year: 2020) }
   let(:reporting_cycle) { ReportingCycle.new(activity, 1, 2015) }
 
   def history_entries
@@ -162,12 +162,12 @@ RSpec.describe PlannedDisbursementHistory do
     end
 
     it "raises an error when reporting forecasts for the quarter of the current report" do
-      history = PlannedDisbursementHistory.new(activity, 1, 2015)
+      history = PlannedDisbursementHistory.new(activity, financial_quarter: 1, financial_year: 2015)
       expect { history.set_value(10) }.to raise_error(PlannedDisbursementHistory::SequenceError)
     end
 
     it "raises an error when reporting forecasts for a quarter earlier than the current report" do
-      history = PlannedDisbursementHistory.new(activity, 4, 2014)
+      history = PlannedDisbursementHistory.new(activity, financial_quarter: 4, financial_year: 2014)
       expect { history.set_value(10) }.to raise_error(PlannedDisbursementHistory::SequenceError)
     end
 

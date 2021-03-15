@@ -62,15 +62,15 @@ class ImportPlannedDisbursements
       if match
         year = match[1].to_i
         quarter = match[2].to_i
-        import_forecast(activity, quarter, year, value, header: key)
+        import_forecast(activity, FinancialQuarter.new(year, quarter), value, header: key)
       elsif !COLUMN_HEADINGS.include?(key) && @warned_columns.add?(key)
         @errors << Error.new(-1, key, "", I18n.t("importer.errors.planned_disbursement.unrecognised_column"))
       end
     end
   end
 
-  def import_forecast(activity, quarter, year, value, header:)
-    history = PlannedDisbursementHistory.new(activity, quarter, year, user: @uploader)
+  def import_forecast(activity, financial_quarter, value, header:)
+    history = PlannedDisbursementHistory.new(activity, user: @uploader, **financial_quarter)
     history.set_value(value)
   rescue ConvertFinancialValue::Error
     @errors << Error.new(@current_index, header, value, I18n.t("importer.errors.planned_disbursement.non_numeric_value"))
