@@ -67,16 +67,6 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "scopes" do
-    describe ".funds" do
-      it "only returns fund level activities" do
-        fund_activity = create(:fund_activity)
-        other_activiy = create(:programme_activity)
-
-        expect(Activity.funds).to include(fund_activity)
-        expect(Activity.funds).not_to include(other_activiy)
-      end
-    end
-
     describe ".programmes" do
       it "only returns programme level activities" do
         programme_activity = create(:programme_activity)

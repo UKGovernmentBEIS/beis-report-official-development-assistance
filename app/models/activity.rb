@@ -208,7 +208,6 @@ class Activity < ApplicationRecord
     no_longer_eligible: 2,
   }
 
-  scope :funds, -> { where(level: :fund) }
   scope :programmes, -> { where(level: :programme) }
   scope :publishable_to_iati, -> { where(form_state: :complete, publish_to_iati: true) }
   scope :with_roda_identifier, -> { where.not(roda_identifier_compound: nil) }
