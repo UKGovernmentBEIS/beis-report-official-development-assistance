@@ -45,11 +45,10 @@ data:
   status: active
 - code: '11230'
   category: '112'
-  name: Basic life skills for youth and adults
-  description: Formal and non-formal education for basic life skills for young people
-    and adults (adults education); literacy and numeracy training. Excludes health
-    education (12261) and activities related to prevention of noncommunicable diseases.
-    (123xx).
+  name: Basic life skills for adults
+  description: Formal and non-formal education for basic life skills for adults (adults
+    education); literacy and numeracy training. Excludes health education (12261)
+    and activities related to prevention of noncommunicable diseases. (123xx).
   status: active
 - code: '11231'
   category: '112'
@@ -70,31 +69,36 @@ data:
   category: '112'
   name: School feeding
   description: Provision of meals or snacks at school; other uses of food for the
-    achievement of educational outcomes including “take-home” food rations provided
+    achievement of educational outcomes including 'take-home' food rations provided
     as economic incentives to families (or foster families, or other child care institutions)
-    in return for a child’s regular attendance at school; food provided to adults
+    in return for a child's regular attendance at school; food provided to adults
     or youth who attend literacy or vocational training programmes; food for pre-school
-    activities with an educational component. These activities may help reduce children’s
+    activities with an educational component. These activities may help reduce children's
     hunger during the school day if provision of food/meals contains bioavailable
     nutrients to address specific nutrition needs and have nutrition expected outcomes
     in school children, or if the rationale mainstream nutrition or expected outcome
     is nutrition-linked.
   status: active
+- code: '11260'
+  category: '112'
+  name: Lower secondary education
+  description: Second cycle systematic instruction at junior level.
+  status: active
 - code: '11320'
   category: '113'
-  name: Secondary education
-  description: Second cycle systematic instruction at both junior and senior levels.
+  name: Upper Secondary Education (modified and includes data from 11322)
+  description: Second cycle systematic instruction at senior levels.
   status: active
 - code: '11321'
   category: '113'
   name: Lower secondary education
   description: Second cycle systematic instruction at junior level.
-  status: active
+  status: withdrawn
 - code: '11322'
   category: '113'
   name: Upper secondary education
   description: Second cycle systematic instruction at senior level.
-  status: active
+  status: withdrawn
 - code: '11330'
   category: '113'
   name: Vocational training
@@ -173,10 +177,10 @@ data:
   category: '122'
   name: Infectious disease control
   description: Immunisation; prevention and control of infectious and parasite diseases,
-    except malaria (12262), tuberculosis (12263), HIV/AIDS and other STDs (13040).
-    It includes diarrheal diseases, vector-borne diseases (e.g. river blindness and
-    guinea worm), viral diseases, mycosis, helminthiasis, zoonosis, diseases by other
-    bacteria and viruses, pediculosis, etc.
+    except malaria (12262), tuberculosis (12263), COVID-19 (12264), HIV/AIDS and other
+    STDs (13040). It includes diarrheal diseases, vector-borne diseases (e.g. river
+    blindness and guinea worm), viral diseases, mycosis, helminthiasis, zoonosis,
+    diseases by other bacteria and viruses, pediculosis, etc.
   status: active
 - code: '12261'
   category: '122'
@@ -195,6 +199,12 @@ data:
   category: '122'
   name: Tuberculosis control
   description: Immunisation, prevention and control of tuberculosis.
+  status: active
+- code: '12264'
+  category: '122'
+  name: COVID-19 control
+  description: All activities related to COVID-19 control e.g. information, education
+    and communication; testing; prevention; immunisation, treatment, care.
   status: active
 - code: '12281'
   category: '122'
@@ -427,7 +437,7 @@ data:
     of organised crime, with or without law enforcement powers, e.g. anti-corruption
     commissions and monitoring bodies, special investigation services, institutions
     and initiatives of integrity and ethics oversight, specialised NGOs, other civil
-    society and citizens’ organisations directly concerned with corruption.
+    society and citizens' organisations directly concerned with corruption.
   status: active
 - code: '15114'
   category: '151'
@@ -581,7 +591,6 @@ data:
 - code: '15137'
   category: '151'
   name: Prisons
-  description:
   status: active
 - code: '15140'
   category: '151'
@@ -617,7 +626,7 @@ data:
   name: Democratic participation and civil society
   description: Support to the exercise of democracy and diverse forms of participation
     of citizens beyond elections (15151); direct democracy instruments such as referenda
-    and citizens’ initiatives; support to organisations to represent and advocate
+    and citizens' initiatives; support to organisations to represent and advocate
     for their members, to monitor, engage and hold governments to account, and to
     help citizens learn to act in the public sphere; curricula and teaching for civic
     education at various levels. (This purpose code is restricted to activities targeting
@@ -636,7 +645,7 @@ data:
   name: Legislatures and political parties
   description: Assistance to strengthen key functions of legislatures/ parliaments
     including subnational assemblies and councils (representation; oversight; legislation),
-    such as improving the capacity of legislative bodies, improving legislatures’
+    such as improving the capacity of legislative bodies, improving legislatures'
     committees and administrative procedures,; research and information management
     systems; providing training programmes for legislators and support personnel.
     Assistance to political parties and strengthening of party systems.
@@ -659,7 +668,6 @@ data:
 - code: '15155'
   category: '151'
   name: Tax policy and administration support
-  description:
   status: active
 - code: '15156'
   category: '151'
@@ -715,8 +723,8 @@ data:
   status: withdrawn
 - code: '15170'
   category: '151'
-  name: Women’s rights organisations and movements, and government institutions
-  description: Support for feminist, women-led and women’s rights organisations and
+  name: Women's rights organisations and movements, and government institutions
+  description: Support for feminist, women-led and women's rights organisations and
     movements, and institutions (governmental and non-govermental) at all levels to
     enhance their effectiveness, influence and substainability (activities and core-funding).
     These organisations exist to bring about transformative change for gender equality
@@ -772,7 +780,7 @@ data:
     excluded from ODA).• Assistance to migrants for their sustainable reintegration
     in their country of origin (use code 93010 for pre-departure assistance provided
     in donor countries in the context of voluntary returns). Activities that pursue
-    first and foremost providers’ interest are excluded from ODA. Activities addressing
+    first and foremost providers' interest are excluded from ODA. Activities addressing
     the root causes of forced displacement and irregular migration should not be coded
     here, but under their relevant sector of intervention. In addition, use code 15136
     for support to countries' authorities for immigration affairs and services (optional),
@@ -984,16 +992,14 @@ data:
 - code: '16065'
   category: '160'
   name: Recreation and sport
-  description:
   status: active
 - code: '16066'
   category: '160'
   name: Culture
-  description:
   status: active
 - code: '16070'
   category: '160'
-  name: Labour Rights
+  name: Labour rights
   description: Advocacy for international labour standards, labour law, fundamental
     principles and rights at work (child labour, forced labour, non-discrimination
     in the workplace, freedom of association and collective bargaining); formalisation
@@ -1001,7 +1007,7 @@ data:
   status: active
 - code: '16080'
   category: '160'
-  name: Social Dialogue
+  name: Social dialogue
   description: Capacity building and advice in support of social dialogue; support
     to social dialogue institutions, bodies and mechanisms; capacity building of workers'
     and employers' organisations.
@@ -1086,7 +1092,6 @@ data:
 - code: '21081'
   category: '210'
   name: Education and training in transport and storage
-  description:
   status: active
 - code: '22010'
   category: '220'
@@ -1098,7 +1103,6 @@ data:
 - code: '22011'
   category: '220'
   name: Communications policy, planning and administration
-  description:
   status: active
 - code: '22012'
   category: '220'
@@ -1163,12 +1167,10 @@ data:
 - code: '23062'
   category: '230'
   name: Gas-fired power plants
-  description:
   status: withdrawn
 - code: '23063'
   category: '230'
   name: Coal-fired power plants
-  description:
   status: withdrawn
 - code: '23064'
   category: '230'
@@ -1183,7 +1185,6 @@ data:
 - code: '23066'
   category: '230'
   name: Geothermal energy
-  description:
   status: withdrawn
 - code: '23067'
   category: '230'
@@ -1230,7 +1231,6 @@ data:
 - code: '23111'
   category: '231'
   name: Energy sector policy, planning and administration
-  description:
   status: active
 - code: '23112'
   category: '231'
@@ -1396,7 +1396,6 @@ data:
 - code: '23641'
   category: '236'
   name: Retail distribution of liquid or solid fossil fuels
-  description:
   status: active
 - code: '23642'
   category: '236'
@@ -1435,11 +1434,10 @@ data:
 - code: '24081'
   category: '240'
   name: Education/training in banking and financial services
-  description:
   status: active
 - code: '25010'
   category: '250'
-  name: Business Policy and Administration
+  name: Business policy and administration
   description: Public sector policies and institution support to the business environment
     and investment climate, including business regulations, property rights, non-discrimination,
     investment promotion, competition policy, enterprises law, private-public partnerships.
@@ -1464,13 +1462,13 @@ data:
   status: active
 - code: '25040'
   category: '250'
-  name: Responsible Business Conduct
+  name: Responsible business conduct
   description: Support to policy reform, implementation and enforcement of responsible
     business conduct (RBC) principles and standards as well as facilitation of responsible
     business practices by companies. Includes establishing and enforcing a legal and
     regulatory framework to protect stakeholder rights and the environment, rewarding
     best performers; exemplifying RBC in government economic activities, such as state-owned
-    enterprises’ operations or public procurement; support to the implementation of
+    enterprises' operations or public procurement; support to the implementation of
     the OECD Guidelines for MNEs, including disclosure, human rights, employment and
     industrial relations, environment, combating bribery, consumer interests, science
     and technology, competition and taxation.
@@ -1542,7 +1540,6 @@ data:
 - code: '31181'
   category: '311'
   name: Agricultural education/training
-  description:
   status: active
 - code: '31182'
   category: '311'
@@ -1573,7 +1570,7 @@ data:
 - code: '31194'
   category: '311'
   name: Agricultural co-operatives
-  description: Including farmers’ organisations.
+  description: Including farmers' organisations.
   status: active
 - code: '31195'
   category: '311'
@@ -1602,7 +1599,6 @@ data:
 - code: '31281'
   category: '312'
   name: Forestry education/training
-  description:
   status: active
 - code: '31282'
   category: '312'
@@ -1613,7 +1609,6 @@ data:
 - code: '31291'
   category: '312'
   name: Forestry services
-  description:
   status: active
 - code: '31310'
   category: '313'
@@ -1631,7 +1626,6 @@ data:
 - code: '31381'
   category: '313'
   name: Fishery education/training
-  description:
   status: active
 - code: '31382'
   category: '313'
@@ -1653,7 +1647,6 @@ data:
 - code: '32120'
   category: '321'
   name: Industrial development
-  description:
   status: active
 - code: '32130'
   category: '321'
@@ -1670,7 +1663,6 @@ data:
 - code: '32140'
   category: '321'
   name: Cottage industries and handicraft
-  description:
   status: active
 - code: '32161'
   category: '321'
@@ -1698,12 +1690,10 @@ data:
 - code: '32165'
   category: '321'
   name: Fertilizer plants
-  description:
   status: active
 - code: '32166'
   category: '321'
   name: Cement/lime/plaster
-  description:
   status: active
 - code: '32167'
   category: '321'
@@ -1725,7 +1715,6 @@ data:
 - code: '32170'
   category: '321'
   name: Non-ferrous metal industries
-  description:
   status: active
 - code: '32171'
   category: '321'
@@ -1852,7 +1841,7 @@ data:
 - code: '33140'
   category: '331'
   name: Multilateral trade negotiations
-  description: Support developing countries’ effective participation in multilateral
+  description: Support developing countries' effective participation in multilateral
     trade negotiations, including training of negotiators, assessing impacts of negotiations;
     accession to the World Trade Organisation (WTO) and other multilateral trade-related
     organisations.
@@ -1874,7 +1863,6 @@ data:
 - code: '33210'
   category: '332'
   name: Tourism policy and administrative management
-  description:
   status: active
 - code: '41010'
   category: '410'
@@ -1891,7 +1879,7 @@ data:
   status: active
 - code: '41030'
   category: '410'
-  name: Bio-diversity
+  name: Biodiversity
   description: Including natural reserves and actions in the surrounding areas; other
     measures to protect endangered or vulnerable species and their habitats (e.g.
     wetlands preservation).
@@ -1911,7 +1899,6 @@ data:
 - code: '41081'
   category: '410'
   name: Environmental education/training
-  description:
   status: active
 - code: '41082'
   category: '410'
@@ -1923,7 +1910,6 @@ data:
 - code: '43010'
   category: '430'
   name: Multisector aid
-  description:
   status: active
 - code: '43030'
   category: '430'
@@ -1963,6 +1949,14 @@ data:
   description: Regional development planning; promotion of decentralised and multi-sectoral
     competence for planning, co-ordination and management; land management; land use
     planning; geographical information systems.
+  status: active
+- code: '43042'
+  category: '430'
+  name: Rural development
+  description: Integrated rural development projects; implementation of regional development
+    and measures (including natural reserve management); land settlement and resettlement
+    activities [excluding resettlement of refugees and internally displaced persons
+    (72010)]; functional integration of rural and urban areas.
   status: active
 - code: '43050'
   category: '430'
@@ -2054,7 +2048,6 @@ data:
 - code: '60020'
   category: '600'
   name: Debt forgiveness
-  description:
   status: active
 - code: '60030'
   category: '600'
@@ -2065,7 +2058,6 @@ data:
 - code: '60040'
   category: '600'
   name: Rescheduling and refinancing
-  description:
   status: active
 - code: '60061'
   category: '600'
@@ -2152,7 +2144,7 @@ data:
     delivery of humanitarian aid; restoring pre-existing essential infrastructure
     and facilities (e.g. water and sanitation, shelter, health care services, education);
     rehabilitation of basic agricultural inputs and livestock. Excludes longer-term
-    reconstruction (“build back better”) which is reportable against relevant sectors.
+    reconstruction ('build back better') which is reportable against relevant sectors.
   status: active
 - code: '74010'
   category: '740'
@@ -2178,7 +2170,6 @@ data:
 - code: '91010'
   category: '910'
   name: Administrative costs (non-sector allocable)
-  description:
   status: active
 - code: '92010'
   category: '920'
@@ -2188,7 +2179,6 @@ data:
 - code: '92020'
   category: '920'
   name: Support to international NGOs
-  description:
   status: withdrawn
 - code: '92030'
   category: '920'
@@ -2237,7 +2227,7 @@ data:
   description: 'Costs incurred in donor countries for basic assistance to asylum seekers
     and refugees from developing countries, up to 12 months: temporary sustenance
     other than food and shelter (code 93011), training (93012) and health (93013),
-    i.e. cash “pocket money” to cover subsistence costs and assistance in the asylum
+    i.e. cash ''pocket money'' to cover subsistence costs and assistance in the asylum
     procedure: translation of documents, legal and administrative counselling, interpretation
     services.'
   status: active
