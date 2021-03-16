@@ -158,7 +158,7 @@ RSpec.feature "BEIS users can create a fund level activity" do
       click_button t("form.button.activity.submit")
       expect(page).to have_content t("activerecord.errors.models.activity.attributes.sector.blank")
 
-      choose "Primary education"
+      choose "Primary education (11220)"
       click_button t("form.button.activity.submit")
 
       # Skip the programme_status step, and go straight to the date step

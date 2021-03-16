@@ -8,7 +8,7 @@ module FormHelpers
     description: Faker::Lorem.paragraph,
     objectives: Faker::Lorem.paragraph,
     sector_category: "Basic Education",
-    sector: "Primary education",
+    sector: "Primary education (11220)",
     call_present: "true",
     call_open_date_day: "1",
     call_open_date_month: "10",
