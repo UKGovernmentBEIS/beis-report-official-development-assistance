@@ -48,11 +48,23 @@ to do one.
 - download a copy of the Terraform variables from the RODA 1Password vault;
   they're in the item "pentest.tfvars" -- save them to a file named
   `pentest.tfvars` in the current directory
-- build and push a new docker image if needed `cf app` can tell you what image
-  is currently being used [DockerHub has a list of existing docker images you
-  can
-  use](https://hub.docker.com/repository/docker/thedxw/beis-report-official-development-assistance/tags?page=1),
-  eg. `1508-ffa43b1944e37d4bd583e1a083a74779abc7a9a7`
+- find the Docker image ID for the image you want to deploy, for example to find
+  the image currently on production, run:
+
+  ```
+  cf login -a api.london.cloud.service.gov.uk
+  cf app beis-roda-prod
+  ```
+
+  This will contain a line like:
+
+  ```
+  docker image: thedxw/beis-report-official-development-assistance:<IMAGE ID>
+  ```
+
+  Copy the image ID and set it as the value for the `docker_image` variable in
+  `pentest.tfvars`.
+
 - `terraform init`
 - switch workspace to the right environment `terraform workspace select
   $TF_VAR_environment` You can view available workspaces with `terraform
