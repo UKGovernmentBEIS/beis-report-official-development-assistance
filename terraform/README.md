@@ -30,11 +30,21 @@ to do one.
   - `develop` for staging or other testing environments
   - `master` for production
 - `cd` to the application's `terraform` directory
-- export environment variables for AWS credentials These can be found in the
-  RODA 1password vault Your local `~/.aws/credentials` should include the values
-  for `aws_access_key` and `aws_secret_access_key`
-- export environment variables for PaaS credentials `export CF_USER=<your paas
-  email>` `export CF_PASSWORD=<your paas password>`
+- set environment variables for your AWS and CF credentials by creating a file
+  named `deploy-credentials.sh` containing the following:
+
+  ```
+  export AWS_ACCESS_KEY='...'
+  export AWS_SECRET_ACCESS_KEY='...'
+  export CF_USER='...'
+  export CF_PASSWORD='...'
+  ```
+
+  **Make sure you do not commit this file to git, as it contains security
+  credentials.** You can find the AWS credentials in the RODA 1Password vault,
+  in the item "terraform state S3 bucket credentials". The CF credentials should
+  be your username and password for GPaaS. Once set, load these variables into
+  your shell by running `source deploy-credentials.sh`
 - build and push a new docker image if needed `cf app` can tell you what image
   is currently being used [DockerHub has a list of existing docker images you
   can
@@ -70,3 +80,5 @@ to do one.
 - `terraform apply` to deploy if using a tfvars file you will need to provide it
   with `-var-file`
 - If changes are not applied you can run `cf restage <app>`
+- delete the `deploy-credentials.sh` file so that you don't leave plaintext
+  credentials on disk
