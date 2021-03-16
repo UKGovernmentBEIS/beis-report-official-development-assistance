@@ -18,35 +18,27 @@ data:
   status: active
 - code: '112'
   name: Basic Education
-  description:
   status: active
 - code: '113'
   name: Secondary Education
-  description:
   status: active
 - code: '114'
   name: Post-Secondary Education
-  description:
   status: active
 - code: '121'
   name: Health, General
-  description:
   status: active
 - code: '122'
   name: Basic Health
-  description:
   status: active
 - code: '123'
   name: Non-communicable diseases (NCDs)
-  description:
   status: active
 - code: '130'
   name: Population Policies/Programmes & Reproductive Health
-  description:
   status: active
 - code: '140'
   name: Water Supply & Sanitation
-  description:
   status: active
 - code: '151'
   name: Government & Civil Society-general
@@ -59,7 +51,6 @@ data:
   status: active
 - code: '160'
   name: Other Social Infrastructure & Services
-  description:
   status: active
 - code: '210'
   name: Transport & Storage
@@ -68,7 +59,6 @@ data:
   status: active
 - code: '220'
   name: Communications
-  description:
   status: active
 - code: '230'
   name: ENERGY GENERATION AND SUPPLY
@@ -78,67 +68,51 @@ data:
   status: withdrawn
 - code: '231'
   name: Energy Policy
-  description:
   status: active
 - code: '232'
   name: Energy generation, renewable sources
-  description:
   status: active
 - code: '233'
   name: Energy generation, non-renewable sources
-  description:
   status: active
 - code: '234'
   name: Hybrid energy plants
-  description:
   status: active
 - code: '235'
   name: Nuclear energy plants
-  description:
   status: active
 - code: '236'
   name: Energy distribution
-  description:
   status: active
 - code: '240'
   name: Banking & Financial Services
-  description:
   status: active
 - code: '250'
   name: Business & Other Services
-  description:
   status: active
 - code: '311'
   name: Agriculture
-  description:
   status: active
 - code: '312'
   name: Forestry
-  description:
   status: active
 - code: '313'
   name: Fishing
-  description:
   status: active
 - code: '321'
   name: Industry
-  description:
   status: active
 - code: '322'
   name: Mineral Resources & Mining
-  description:
   status: active
 - code: '323'
   name: Construction
-  description:
   status: active
 - code: '331'
   name: Trade Policies & Regulations
-  description:
   status: active
 - code: '332'
   name: Tourism
-  description:
   status: active
 - code: '410'
   name: General Environment Protection
@@ -147,7 +121,6 @@ data:
   status: active
 - code: '430'
   name: Other Multisector
-  description:
   status: active
 - code: '510'
   name: General Budget Support
@@ -155,8 +128,7 @@ data:
     be included in the respective sectors.
   status: active
 - code: '520'
-  name: Developmental Food Aid/Food Security Assistance
-  description:
+  name: Development Food Assistance
   status: active
 - code: '530'
   name: Other Commodity Assistance
@@ -164,7 +136,6 @@ data:
   status: active
 - code: '600'
   name: Action Relating to Debt
-  description:
   status: active
 - code: '720'
   name: Emergency Response
@@ -180,11 +151,10 @@ data:
   status: active
 - code: '740'
   name: Disaster Prevention & Preparedness
-  description: See codes 41050 and 15220 for prevention of floods and conflicts.
+  description: See code 43060 for disaster risk reduction.
   status: active
 - code: '910'
   name: Administrative Costs of Donors
-  description:
   status: active
 - code: '920'
   name: SUPPORT TO NON- GOVERNMENTAL ORGANISATIONS (NGOs)
@@ -192,7 +162,6 @@ data:
   status: withdrawn
 - code: '930'
   name: Refugees in Donor Countries
-  description:
   status: active
 - code: '998'
   name: Unallocated / Unspecified

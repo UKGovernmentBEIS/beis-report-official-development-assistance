@@ -72,6 +72,7 @@ module CodelistHelper
 
   def sector_radio_options(category: nil)
     options = Codelist.new(type: "sector").to_objects_with_categories
+    options.each { |option| option.name = "#{option.name} (#{option.code})" }
     if category.present?
       options.filter { |sector| sector.category == category.to_s }
     else

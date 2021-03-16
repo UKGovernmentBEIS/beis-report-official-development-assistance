@@ -139,8 +139,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       # Don't provide a sector
       click_button t("form.button.activity.submit")
       expect(page).to have_content t("activerecord.errors.models.activity.attributes.sector.blank")
-
-      choose "Primary education"
+      choose "Primary education (11220)"
       click_button t("form.button.activity.submit")
       expect(page).to have_content t("form.legend.activity.programme_status", level: "programme (level B)")
 
