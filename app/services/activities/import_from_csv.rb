@@ -425,8 +425,6 @@ module Activities
       end
 
       def convert_channel_of_delivery_code(channel_of_delivery_code)
-        raise I18n.t("importer.errors.activity.invalid_channel_of_delivery_code") if channel_of_delivery_code.blank?
-
         validate_channel_of_delivery_code(
           channel_of_delivery_code,
           "channel_of_delivery_code",
