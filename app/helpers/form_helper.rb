@@ -68,6 +68,9 @@ module FormHelper
       policy = Pundit.policy(user, level.to_sym)
       policy.create? || policy.update?
     }
+
+    authorised_levels = authorised_levels.reject { |level| level == "fund" }
+
     authorised_levels.keys.map do |level|
       OpenStruct.new(
         level: level,
