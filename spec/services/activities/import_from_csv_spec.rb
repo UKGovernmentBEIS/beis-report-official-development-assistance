@@ -201,6 +201,7 @@ RSpec.describe Activities::ImportFromCsv do
 
     it "ignores any blank columns" do
       existing_activity_attributes["Title"] = ""
+      existing_activity_attributes["Channel of delivery code"] = ""
 
       expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity.title }
       expect(subject.errors.count).to eq(0)
@@ -588,20 +589,25 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
     end
 
-    it "has an error if the 'Channel of delivery code' is empty" do
-      new_activity_attributes["Channel of delivery code"] = ""
+    context "when the activity is a project" do
+      let(:programme) { create(:programme_activity) }
 
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+      it "has an error if the 'Channel of delivery code' is empty" do
+        new_activity_attributes["Parent RODA ID"] = programme.roda_identifier_compound
+        new_activity_attributes["Channel of delivery code"] = ""
 
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
+        expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Channel of delivery code")
-      expect(subject.errors.first.column).to eq(:channel_of_delivery_code)
-      expect(subject.errors.first.value).to eq("")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"))
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(1)
+        expect(subject.errors.first.csv_row).to eq(2)
+        expect(subject.errors.first.csv_column).to eq("Channel of delivery code")
+        expect(subject.errors.first.column).to eq(:channel_of_delivery_code)
+        expect(subject.errors.first.value).to eq("")
+        expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.channel_of_delivery_code"))
+      end
     end
 
     it "has an error if the Collaboration type option is invalid" do
