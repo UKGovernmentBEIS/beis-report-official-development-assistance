@@ -1,32 +1,40 @@
 - name: Department for Business, Energy and Industrial Strategy
+  short_name: BEIS
   reference: GB-GOV-13
   type: 10
   service_owner: true
 - name: UK Space Agency
+  short_name: UKSA
   reference: GB-GOV-EA31
   type: 10
   service_owner: false
 - name: Met Office
+  short_name: MO
   reference: GB-GOV-EA46
   type: 10
   service_owner: false
 - name: British Council
+  short_name: BC
   reference: GB-GOV-OT313
   type: 10
   service_owner: false
 - name: Academy of Medical Sciences
+  short_name: AMS
   reference: GB-COH-03520281
   type: 22
   service_owner: false
 - name: Royal Society
+  short_name: RS
   reference: GB-COH-RC000519
   type: 22
   service_owner: false
 - name: British Academy
+  short_name: BA
   reference: GB-COH-RC000053
   type: 22
   service_owner: false
 - name: Royal Academy of Engineering
+  short_name: RAE
   reference: GB-CHC-293074
   type: 22
   service_owner: false
