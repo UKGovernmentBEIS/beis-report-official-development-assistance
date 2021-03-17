@@ -541,6 +541,7 @@ and populate it via a data migration
 - Skip rows where the value is 0 when importing transactions
 - Update sector code list
 - Show sector code and name in the application
+- BEIS users can no longer create funds
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...HEAD
 [release-37]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37
