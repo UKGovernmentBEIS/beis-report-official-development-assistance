@@ -892,20 +892,6 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#has_accountable_organisation?" do
-    it "returns true if all accountable_organisation fields are present" do
-      activity = build(:fund_activity)
-
-      expect(activity.has_accountable_organisation?).to be true
-    end
-  end
-
-  it "returns false if all accountable_organisation fields are not present" do
-    activity = build(:activity)
-
-    expect(activity.has_accountable_organisation?).to be false
-  end
-
   describe "#has_extending_organisation?" do
     it "returns true if all extending_organisation fields are present" do
       activity = build(:fund_activity)
@@ -962,30 +948,6 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    describe "#funding_organisation" do
-      let!(:beis) { create(:beis_organisation) }
-
-      it "returns BEIS if the activity is a programme" do
-        project = build(:programme_activity)
-        expect(project.funding_organisation).to eql beis
-      end
-
-      it "returns BEIS if the activity is a project" do
-        project = build(:project_activity)
-        expect(project.funding_organisation).to eql beis
-      end
-
-      it "returns BEIS if the activity is a third party project" do
-        project = build(:third_party_project_activity)
-        expect(project.funding_organisation).to eql beis
-      end
-
-      it "returns nil if the activity is a fund" do
-        fund = build(:fund_activity)
-        expect(fund.funding_organisation).to be_nil
-      end
-    end
-
     context "when the activity is a third-party project" do
       context "when the activity organisation is a government type" do
         it "returns BEIS" do
@@ -1004,6 +966,101 @@ RSpec.describe Activity, type: :model do
           third_party_project = build(:third_party_project_activity, organisation: non_government_delivery_partner)
           expect(third_party_project.providing_organisation).to eql non_government_delivery_partner
         end
+      end
+    end
+  end
+
+  describe "#funding_organisation" do
+    let!(:beis) { create(:beis_organisation) }
+
+    it "returns BEIS if the activity is a programme" do
+      project = build(:programme_activity)
+      expect(project.funding_organisation).to eql beis
+    end
+
+    it "returns BEIS if the activity is a project" do
+      project = build(:project_activity)
+      expect(project.funding_organisation).to eql beis
+    end
+
+    it "returns BEIS if the activity is a third party project" do
+      project = build(:third_party_project_activity)
+      expect(project.funding_organisation).to eql beis
+    end
+
+    it "returns nil if the activity is a fund" do
+      fund = build(:fund_activity)
+      expect(fund.funding_organisation).to be_nil
+    end
+  end
+
+  describe "#accountable_organisation" do
+    let(:beis) { build_stubbed(:beis_organisation) }
+    let(:delivery_partner) { build_stubbed(:delivery_partner_organisation) }
+
+    before do
+      allow_any_instance_of(Activity).to receive(:service_owner).and_return(beis)
+    end
+
+    it "returns BEIS if the activity is a fund" do
+      activity = build_stubbed(:fund_activity)
+      expect(activity.accountable_organisation).to eql beis
+    end
+
+    it "returns BEIS if the activity is a programme" do
+      activity = build_stubbed(:programme_activity, extending_organisation: delivery_partner)
+      expect(activity.accountable_organisation).to eql beis
+    end
+
+    it "returns BEIS if the activity is a project" do
+      activity = build_stubbed(:project_activity, extending_organisation: delivery_partner)
+      expect(activity.accountable_organisation).to eql beis
+    end
+
+    it "returns BEIS if the activity is a third-party project" do
+      activity = build_stubbed(:third_party_project_activity, extending_organisation: delivery_partner)
+      expect(activity.accountable_organisation).to eql beis
+    end
+
+    context "with a non-government delivery partner organisation" do
+      let(:delivery_partner) { build_stubbed(:delivery_partner_organisation, :non_government) }
+
+      it "returns the delivery partner if the activity is a project" do
+        activity = build_stubbed(:project_activity, extending_organisation: delivery_partner)
+        expect(activity.accountable_organisation).to eql delivery_partner
+      end
+
+      it "returns the delivery partner if the activity is a third-party project" do
+        activity = build_stubbed(:third_party_project_activity, extending_organisation: delivery_partner)
+        expect(activity.accountable_organisation).to eql delivery_partner
+      end
+    end
+  end
+
+  describe "accountable_organisation_* getters" do
+    let(:beis) { build_stubbed(:beis_organisation) }
+    let(:delivery_partner) { build_stubbed(:delivery_partner_organisation, :non_government) }
+    let(:activity) { build_stubbed(:project_activity, extending_organisation: delivery_partner) }
+
+    before do
+      allow_any_instance_of(Activity).to receive(:service_owner).and_return(beis)
+    end
+
+    describe "#accountable_organisation_name" do
+      it "delegates to accountable_organisation.name" do
+        expect(activity.accountable_organisation_name).to eql activity.accountable_organisation.name
+      end
+    end
+
+    describe "#accountable_organisation_name" do
+      it "delegates to accountable_organisation.organisation_type" do
+        expect(activity.accountable_organisation_type).to eql activity.accountable_organisation.organisation_type
+      end
+    end
+
+    describe "#accountable_organisation_reference" do
+      it "delegates to accountable_organisation.iati_reference" do
+        expect(activity.accountable_organisation_reference).to eql activity.accountable_organisation.iati_reference
       end
     end
   end

@@ -303,12 +303,6 @@ class Activity < ApplicationRecord
     organisation.default_currency
   end
 
-  def has_accountable_organisation?
-    accountable_organisation_reference.present? &&
-      accountable_organisation_name.present? &&
-      accountable_organisation_type.present?
-  end
-
   def has_extending_organisation?
     extending_organisation.present?
   end
@@ -344,6 +338,36 @@ class Activity < ApplicationRecord
     return nil if fund?
 
     service_owner
+  end
+
+  def accountable_organisation
+    return service_owner if fund? || programme?
+
+    extending_organisation.is_government? ? service_owner : extending_organisation
+  end
+
+  def accountable_organisation_name
+    accountable_organisation.name
+  end
+
+  def accountable_organisation_name=(_)
+    # NO OP
+  end
+
+  def accountable_organisation_type
+    accountable_organisation.organisation_type
+  end
+
+  def accountable_organisation_type=(_)
+    # NO OP
+  end
+
+  def accountable_organisation_reference
+    accountable_organisation.iati_reference
+  end
+
+  def accountable_organisation_reference=(_)
+    # NO OP
   end
 
   def service_owner

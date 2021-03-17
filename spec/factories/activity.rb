@@ -48,9 +48,6 @@ FactoryBot.define do
 
     factory :fund_activity do
       level { :fund }
-      accountable_organisation_name { "Department for Business, Energy and Industrial Strategy" }
-      accountable_organisation_reference { "GB-GOV-13" }
-      accountable_organisation_type { "10" }
 
       association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :beis_organisation
@@ -83,9 +80,6 @@ FactoryBot.define do
       objectives { Faker::Lorem.paragraph }
       country_delivery_partners { ["National Council for the State Funding Agencies (CONFAP)"] }
       collaboration_type { "1" }
-      accountable_organisation_name { "Department for Business, Energy and Industrial Strategy" }
-      accountable_organisation_reference { "GB-GOV-13" }
-      accountable_organisation_type { "10" }
 
       association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :delivery_partner_organisation
@@ -120,9 +114,6 @@ FactoryBot.define do
       policy_marker_disability { "not_assessed" }
       policy_marker_disaster_risk_reduction { "not_assessed" }
       policy_marker_nutrition { "not_assessed" }
-      accountable_organisation_name { "Department for Business, Energy and Industrial Strategy" }
-      accountable_organisation_reference { "GB-GOV-13" }
-      accountable_organisation_type { "10" }
 
       association :extending_organisation, factory: :delivery_partner_organisation
       association :reporting_organisation, factory: :beis_organisation
@@ -167,9 +158,6 @@ FactoryBot.define do
       policy_marker_disability { "not_assessed" }
       policy_marker_disaster_risk_reduction { "not_assessed" }
       policy_marker_nutrition { "not_assessed" }
-      accountable_organisation_name { "Department for Business, Energy and Industrial Strategy" }
-      accountable_organisation_reference { "GB-GOV-13" }
-      accountable_organisation_type { "10" }
 
       association :extending_organisation, factory: :delivery_partner_organisation
       association :reporting_organisation, factory: :beis_organisation

@@ -21,10 +21,6 @@ class ActivityDefaults
       extending_organisation_id: extending_organisation.id,
       reporting_organisation_id: reporting_organisation.id,
 
-      accountable_organisation_name: accountable_organisation.name,
-      accountable_organisation_reference: accountable_organisation.iati_reference,
-      accountable_organisation_type: accountable_organisation.organisation_type,
-
       form_state: form_state,
     }
   end
@@ -55,12 +51,6 @@ class ActivityDefaults
 
   def reporting_organisation
     service_owner
-  end
-
-  def accountable_organisation
-    return service_owner if level == "programme"
-
-    delivery_partner_organisation.is_government? ? service_owner : delivery_partner_organisation
   end
 
   def form_state
