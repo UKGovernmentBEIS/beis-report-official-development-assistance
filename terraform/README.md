@@ -12,8 +12,8 @@ Deploys will happen automatically from Github Actions
 
 ## Manual Deployment
 
-We should avoid manual deployments but the following instructions will allow you
-to do one.
+We avoid manual deployments on production and staging, but require them on our
+training environment (pentest).
 
 ### Setup
 
