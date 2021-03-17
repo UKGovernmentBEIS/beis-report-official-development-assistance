@@ -1,5 +1,0 @@
-- if ENV['GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH'].present?
-  / Google Tag Manager (noscript)
-  %noscript
-    %iframe{ src: "https://www.googletagmanager.com/ns.html?id=#{ENV['GOOGLE_TAG_MANAGER_CONTAINER_ID']}&gtm_auth=#{ENV['GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH']}&gtm_preview=env-6&gtm_cookies_win=x", height: "0", width: "0", style: "display:none;visibility:hidden" }
-  / End Google Tag Manager (noscript)
