@@ -520,7 +520,7 @@
 - Remove Data Migrate gem and run data migrations manually
 - Activities can recursively total the transactions for all of their children
 - Add an attribute to `Organisation` to record the short name, `beis_organisation_reference`,
-and populate it via a data migration
+  and populate it via a data migration
 - Delivery partners can add level C activities, automatically parented to an existing level B
 
 ## [release-36] - 2021-03-08
@@ -542,6 +542,7 @@ and populate it via a data migration
 - Update sector code list
 - Show sector code and name in the application
 - BEIS users can no longer create funds
+- Send emails when the status of reports has changed
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...HEAD
 [release-37]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37

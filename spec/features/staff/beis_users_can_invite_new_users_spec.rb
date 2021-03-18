@@ -15,7 +15,6 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
     before do
       stub_auth0_token_request
-      stub_welcome_email_delivery
     end
 
     context "when the user belongs to BEIS" do
@@ -32,11 +31,24 @@ RSpec.feature "BEIS users can invite new users to the service" do
           email: new_user_email,
           auth0_identifier: auth0_identifier
         )
+        stub_auth0_post_password_change(
+          auth0_identifier: auth0_identifier
+        )
 
-        create_user(organisation, new_user_name, new_user_email)
+        perform_enqueued_jobs do
+          create_user(organisation, new_user_name, new_user_email)
+        end
 
         expect(page).to have_content(organisation.name)
         expect(page).not_to have_content(second_organisation.name)
+
+        new_user = User.where(email: new_user_email).first
+
+        expect(new_user).to have_received_email.with_personalisations(
+          "name" => new_user_name,
+          "link" => "https://testdomain/lo/reset?ticket=123#",
+          "service_url" => "test.local"
+        )
       end
 
       scenario "user creation is tracked with public_activity" do

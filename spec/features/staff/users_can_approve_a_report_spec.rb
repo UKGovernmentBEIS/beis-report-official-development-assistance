@@ -1,20 +1,29 @@
 RSpec.feature "Users can approve reports" do
   context "signed in as a BEIS user" do
     let(:beis_user) { create(:beis_user) }
+    let(:organisation) { create(:organisation, users: create_list(:delivery_partner_user, 3)) }
 
     before do
       authenticate!(user: beis_user)
     end
 
     scenario "they can mark a report as approved" do
-      report = create(:report, state: :in_review)
+      report = create(:report, state: :in_review, organisation: organisation)
 
-      visit report_path(report)
-      click_link t("action.report.approve.button")
-      click_button t("action.report.approve.confirm.button")
+      perform_enqueued_jobs do
+        visit report_path(report)
+        click_link t("action.report.approve.button")
+        click_button t("action.report.approve.confirm.button")
+      end
 
       expect(page).to have_content "approved"
       expect(report.reload.state).to eql "approved"
+
+      expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count)
+
+      organisation.users.each do |user|
+        expect(user).to have_received_email.with_subject(t("mailer.report.approved.subject", application_name: t("app.title")))
+      end
     end
 
     scenario "a new report is created for the delivery partner and level A activity" do

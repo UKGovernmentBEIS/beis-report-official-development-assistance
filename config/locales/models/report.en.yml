@@ -94,6 +94,19 @@ en:
         complete: This report is approved
       variance: "%{report_financial_quarter} %{report_description} variance"
       budgets: "%{report_financial_quarter} %{report_description} budgets"
+  mailer:
+    report:
+      activated:
+        subject: "%{application_name} - A report has been activated"
+      submitted:
+        delivery_partner:
+          subject: "%{application_name} - Your report has been submitted"
+        service_owner:
+          subject: "%{application_name} - A delivery partner has submitted a report"
+      approved:
+        subject: "%{application_name} - Your report has been approved"
+      awaiting_changes:
+        subject: "%{application_name} - A report is awaiting changes"
   action:
     report:
       activate:

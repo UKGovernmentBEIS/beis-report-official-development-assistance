@@ -4,7 +4,6 @@ RSpec.describe CreateUser do
   let(:user) { build(:administrator) }
   before(:each) do
     stub_auth0_token_request
-    stub_welcome_email_delivery
   end
 
   describe "#call" do
@@ -20,14 +19,9 @@ RSpec.describe CreateUser do
     it "sends a welcome email to the user" do
       stub_auth0_create_user_request(email: user.email)
 
-      mail_server = double(SendWelcomeEmail)
-      expect(SendWelcomeEmail).to receive(:new)
-        .with(user: user)
-        .and_return(mail_server)
-
-      expect(mail_server).to receive(:call)
-
-      described_class.new(user: user, organisation: build_stubbed(:organisation)).call
+      expect {
+        described_class.new(user: user, organisation: build_stubbed(:organisation)).call
+      }.to have_enqueued_mail(UserMailer, :welcome).with(args: [user])
     end
 
     context "when an organisation is provided" do
