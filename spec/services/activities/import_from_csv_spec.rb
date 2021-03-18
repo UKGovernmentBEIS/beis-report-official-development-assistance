@@ -606,7 +606,7 @@ RSpec.describe Activities::ImportFromCsv do
         expect(subject.errors.first.csv_column).to eq("Channel of delivery code")
         expect(subject.errors.first.column).to eq(:channel_of_delivery_code)
         expect(subject.errors.first.value).to eq("")
-        expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.channel_of_delivery_code"))
+        expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.channel_of_delivery_code.invalid"))
       end
     end
 
