@@ -23,8 +23,5 @@
 
           = render partial: "staff/shared/activities/activity", locals: { activity_presenter: ActivityPresenter.new(@activity) }
 
-          - if @activity.programme? && policy(:programme).create?
-            = render partial: "staff/shared/activities/extending_organisation", locals: { activity: @activity }
-
           - if @activity.project? || @activity.third_party_project?
             = render partial: "staff/shared/activities/implementing_organisations", locals: { activity: @activity, implementing_organisation_presenters: @implementing_organisation_presenters }

@@ -136,7 +136,6 @@ class Activity < ApplicationRecord
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
   validates :actual_start_date, :actual_end_date, date_not_in_future: true
   validates :planned_end_date, end_date_after_start_date: true, if: :planned_start_date?
-  validates :extending_organisation_id, presence: true, on: :update_extending_organisation
   validates :call_open_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :call_close_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}, allow_nil: true
