@@ -31,16 +31,6 @@ class Staff::ActivitiesController < Staff::BaseController
     end
   end
 
-  def create
-    @activity = CreateActivity.new(organisation_id: organisation_id).call
-
-    authorize @activity
-
-    @activity.create_activity key: "activity.create", owner: current_user
-
-    redirect_to activity_step_path(@activity.id, :blank)
-  end
-
   def historic
     @organisation_id = organisation_id
     @historic_activities = policy_scope(Activity.where(organisation: organisation_id)).historic
