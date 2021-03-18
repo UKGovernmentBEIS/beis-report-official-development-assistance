@@ -695,11 +695,6 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when saving in the update_extending_organisation context" do
-      subject { build(:activity) }
-      it { should validate_presence_of(:extending_organisation_id).on(:update_extending_organisation) }
-    end
-
     context "when the activity is neither a fund nor a programme" do
       context "when call_present is blank" do
         subject(:activity) { build(:project_activity, call_present: nil) }
