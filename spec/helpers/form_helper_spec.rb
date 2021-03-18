@@ -82,8 +82,19 @@ RSpec.describe FormHelper, type: :helper do
       it "tells Pundit to return only the levels of activity a user can create or update" do
         user = create(:delivery_partner_user)
         result = helper.create_activity_level_options(user: user)
-        expect(result.detect { |options| options.name.eql?("Project (level C)") }).to be_truthy
-        expect(result.detect { |options| options.name.eql?("Third-party project (level D)") }).to be_truthy
+
+        expect(result).to eq([
+          OpenStruct.new(
+            level: "project",
+            name: "Project (level C)",
+            description: t("form.hint.activity.level_step.project")
+          ),
+          OpenStruct.new(
+            level: "third_party_project",
+            name: "Third-party project (level D)",
+            description: t("form.hint.activity.level_step.third_party_project")
+          )
+        ])
       end
     end
   end
