@@ -15,7 +15,7 @@ RSpec.feature "Users can create a third-party project" do
 
         click_on(t("action.activity.add_child"))
 
-        fill_in_activity_form(level: "third_party_project", parent: project, skip_level_and_parent_steps: true)
+        fill_in_activity_form(level: "third_party_project", parent: project)
 
         expect(page).to have_content t("action.third_party_project.create.success")
         expect(project.child_activities.count).to eq 1
@@ -50,7 +50,7 @@ RSpec.feature "Users can create a third-party project" do
 
         click_on(t("action.activity.add_child"))
 
-        fill_in_activity_form(level: "third_party_project", roda_identifier_fragment: identifier, parent: project, skip_level_and_parent_steps: true)
+        fill_in_activity_form(level: "third_party_project", roda_identifier_fragment: identifier, parent: project)
 
         activity = Activity.find_by(roda_identifier_fragment: identifier)
         expect(activity.transparency_identifier).to eql("GB-GOV-13-#{project.parent.parent.roda_identifier_fragment}-#{project.parent.roda_identifier_fragment}-#{project.roda_identifier_fragment}#{activity.roda_identifier_fragment}")
@@ -68,7 +68,7 @@ RSpec.feature "Users can create a third-party project" do
 
           click_on(t("action.activity.add_child"))
 
-          fill_in_activity_form(level: "third_party_project", delivery_partner_identifier: "my-unique-identifier", parent: project, skip_level_and_parent_steps: true)
+          fill_in_activity_form(level: "third_party_project", delivery_partner_identifier: "my-unique-identifier", parent: project)
 
           third_party_project = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
           auditable_events = PublicActivity::Activity.where(trackable_id: third_party_project.id)
@@ -91,7 +91,7 @@ RSpec.feature "Users can create a third-party project" do
 
         click_on(t("action.activity.add_child"))
 
-        fill_in_activity_form(level: "third_party_project", parent: newton_project, skip_level_and_parent_steps: true)
+        fill_in_activity_form(level: "third_party_project", parent: newton_project)
       end
     end
   end
