@@ -6,11 +6,6 @@
       %h1.govuk-heading-xl
         = t("page_title.activity.index")
 
-  .govuk-grid-row
-    .govuk-grid-column-full.page-actions
-      = form_tag(organisation_activities_path(@organisation_id), method: "post") do
-        = submit_tag t("page_content.organisation.button.create_activity"), class: "govuk-button"
-
   - if current_user.service_owner?
     = render partial: "staff/shared/activities/filter", locals: { organisation_id: @organisation_id }
 

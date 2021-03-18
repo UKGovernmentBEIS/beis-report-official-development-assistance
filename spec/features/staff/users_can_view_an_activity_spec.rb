@@ -141,7 +141,6 @@ RSpec.feature "Users can view an activity" do
         expect(page).to have_content "Child activities"
       end
       expect(page).to have_content activity.title
-      expect(page).to have_button t("page_content.organisation.button.create_activity")
     end
 
     scenario "the activity details tab can be viewed" do
