@@ -89,11 +89,6 @@ RSpec.describe FormHelper, type: :helper do
             name: "Project (level C)",
             description: t("form.hint.activity.level_step.project")
           ),
-          OpenStruct.new(
-            level: "third_party_project",
-            name: "Third-party project (level D)",
-            description: t("form.hint.activity.level_step.third_party_project")
-          )
         ])
       end
     end
