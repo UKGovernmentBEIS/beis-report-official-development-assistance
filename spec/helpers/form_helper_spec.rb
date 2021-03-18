@@ -83,13 +83,7 @@ RSpec.describe FormHelper, type: :helper do
         user = create(:delivery_partner_user)
         result = helper.create_activity_level_options(user: user)
 
-        expect(result).to eq([
-          OpenStruct.new(
-            level: "project",
-            name: "Project (level C)",
-            description: t("form.hint.activity.level_step.project")
-          ),
-        ])
+        expect(result).to eq([])
       end
     end
   end

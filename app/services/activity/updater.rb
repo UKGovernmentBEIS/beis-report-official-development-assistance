@@ -39,7 +39,6 @@ class Activity
 
       case activity.level.to_sym
       when :programme then UpdateActivityAsProgramme.new(activity: activity, parent_id: parent_id).call
-      when :project then UpdateActivityAsProject.new(activity: activity, parent_id: parent_id).call
       end
     end
 
