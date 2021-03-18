@@ -44,39 +44,4 @@ module FormHelper
       OpenStruct.new(id: "false", name: t("form.user.active.inactive")),
     ]
   end
-
-  def scoped_parent_activities(activity:, user:)
-    activities = case activity.level.to_sym
-    when :fund
-      Activity.none
-    when :programme
-      FindFundActivities.new(organisation: activity.organisation, user: user)
-        .call
-    when :project
-      FindProgrammeActivities.new(organisation: activity.organisation, user: user)
-        .call(eager_load_parent: false)
-    when :third_party_project
-      FindProjectActivities.new(organisation: activity.organisation, user: user)
-        .call(eager_load_parent: false)
-    end
-
-    activities.where(form_state: "complete")
-  end
-
-  def create_activity_level_options(user:)
-    authorised_levels = Activity.levels.select { |level|
-      policy = Pundit.policy(user, level.to_sym)
-      policy.create? || policy.update?
-    }
-
-    authorised_levels = authorised_levels.reject { |level| level == "fund" || level == "third_party_project" || level == "project" }
-
-    authorised_levels.keys.map do |level|
-      OpenStruct.new(
-        level: level,
-        name: custom_capitalisation(I18n.t("page_content.activity.level.#{level}")),
-        description: I18n.t("form.hint.activity.level_step.#{level}")
-      )
-    end
-  end
 end
