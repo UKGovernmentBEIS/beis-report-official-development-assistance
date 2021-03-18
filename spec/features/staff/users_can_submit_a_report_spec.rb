@@ -1,6 +1,8 @@
 RSpec.feature "Users can submit a report" do
   context "as a Delivery partner user" do
-    let(:delivery_partner_user) { create(:delivery_partner_user) }
+    let!(:service_owner) { create(:beis_user) }
+    let(:organisation) { create(:organisation, users: create_list(:delivery_partner_user, 2)) }
+    let(:delivery_partner_user) { create(:delivery_partner_user, organisation: organisation) }
 
     before do
       authenticate!(user: delivery_partner_user)
@@ -11,15 +13,25 @@ RSpec.feature "Users can submit a report" do
         report = create(:report, :active, organisation: delivery_partner_user.organisation)
         report_presenter = ReportPresenter.new(report)
 
-        visit report_path(report)
-        click_link t("action.report.submit.button")
+        perform_enqueued_jobs do
+          visit report_path(report)
+          click_link t("action.report.submit.button")
 
-        click_button t("action.report.submit.confirm.button")
+          click_button t("action.report.submit.confirm.button")
+        end
 
         expect(page).to have_content t("action.report.submit.complete.title",
           report_organisation: report.organisation.name,
           report_financial_quarter: report_presenter.financial_quarter_and_year)
         expect(report.reload.state).to eql "submitted"
+
+        expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count + 1)
+
+        expect(service_owner).to have_received_email.with_subject(t("mailer.report.submitted.service_owner.subject", application_name: t("app.title")))
+
+        organisation.users.each do |user|
+          expect(user).to have_received_email.with_subject(t("mailer.report.submitted.delivery_partner.subject", application_name: t("app.title")))
+        end
       end
 
       scenario "a report submission is recorded in the audit log" do

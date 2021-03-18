@@ -520,7 +520,7 @@
 - Remove Data Migrate gem and run data migrations manually
 - Activities can recursively total the transactions for all of their children
 - Add an attribute to `Organisation` to record the short name, `beis_organisation_reference`,
-and populate it via a data migration
+  and populate it via a data migration
 - Delivery partners can add level C activities, automatically parented to an existing level B
 
 ## [release-36] - 2021-03-08
@@ -536,10 +536,21 @@ and populate it via a data migration
 - Include 12 previous quarters of actual spend in the report CSV
 - Include 20 following quarters of forecast spend in the report CSV
 
+## [release-38] - 2021-03-18
+
+- Skip rows where the value is 0 when importing transactions
+- Update sector code list
+- Show sector code and name in the application
+- BEIS users can no longer create funds
+- Send emails when the status of reports has changed
+- BEIS users can no longer edit a programme's extending organisation
+- Allow importing into existing activities without repeating the Channel of delivery code in the uploaded spreadsheet
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...HEAD
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-38...HEAD
+[release-38]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...release-38
+[release-37]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37
 [release-36]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-35...release-36
 [release-35]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-34...release-35
 [release-34]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-33...release-34

@@ -62,6 +62,8 @@ class Staff::ReportsStateController < Staff::BaseController
       report.update!(state: state)
       report.create_activity key: "report.state.changed_to.#{state}", owner: current_user
       find_or_create_new_report(organisation_id: report.organisation.id, fund_id: report.fund.id) if state == "approved"
+
+      Report::SendStateChangeEmails.new(report).send!
     end
 
     @report_presenter = ReportPresenter.new(report)

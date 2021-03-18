@@ -6,7 +6,7 @@ class ChannelOfDeliveryCodeValidator < ActiveModel::Validator
 
     unless activity.channel_of_delivery_code.in?(valid_codes)
       activity.errors.add(:channel_of_delivery_code,
-        I18n.t("activerecord.errors.models.activity.attributes.channel_of_delivery_code"))
+        I18n.t("activerecord.errors.models.activity.attributes.channel_of_delivery_code.invalid"))
     end
   end
 end

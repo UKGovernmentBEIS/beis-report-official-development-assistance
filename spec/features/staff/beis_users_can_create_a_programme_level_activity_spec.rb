@@ -139,8 +139,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       # Don't provide a sector
       click_button t("form.button.activity.submit")
       expect(page).to have_content t("activerecord.errors.models.activity.attributes.sector.blank")
-
-      choose "Primary education"
+      choose "Primary education (11220)"
       click_button t("form.button.activity.submit")
       expect(page).to have_content t("form.legend.activity.programme_status", level: "programme (level B)")
 
@@ -273,21 +272,29 @@ RSpec.feature "BEIS users can create a programme level activity" do
     end
 
     scenario "failing to select a country shows an error message" do
+      fund = create(:fund_activity, :gcrf)
+
       visit activities_path
       click_on(t("page_content.organisation.button.create_activity"))
 
-      choose custom_capitalisation(t("page_content.activity.level.fund"))
+      choose custom_capitalisation(t("page_content.activity.level.programme"))
+      click_button t("form.button.activity.submit")
+      choose fund.title
       click_button t("form.button.activity.submit")
       fill_in "activity[delivery_partner_identifier]", with: "no-country-selected"
       click_button t("form.button.activity.submit")
-      fill_in "activity[roda_identifier_fragment]", with: "roda-identifier"
+      fill_in "activity[roda_identifier_fragment]", with: "roda-id"
       click_button t("form.button.activity.submit")
       fill_in "activity[title]", with: "My title"
       fill_in "activity[description]", with: "My description"
       click_button t("form.button.activity.submit")
+      fill_in "activity[objectives]", with: "My objectives"
+      click_button t("form.button.activity.submit")
       choose "Basic Education"
       click_button t("form.button.activity.submit")
       choose "School feeding"
+      click_button t("form.button.activity.submit")
+      choose "Delivery"
       click_button t("form.button.activity.submit")
       fill_in "activity[planned_start_date(3i)]", with: "01"
       fill_in "activity[planned_start_date(2i)]", with: "01"

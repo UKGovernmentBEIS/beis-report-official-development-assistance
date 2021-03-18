@@ -257,7 +257,6 @@ module Activities
         "DFID policy marker - Disability",
         "DFID policy marker - Disaster Risk Reduction",
         "DFID policy marker - Nutrition",
-        "Channel of delivery code",
         "Implementing organisation reference",
         "BEIS ID",
         "UK DP Named Contact (NF)",
@@ -425,8 +424,6 @@ module Activities
       end
 
       def convert_channel_of_delivery_code(channel_of_delivery_code)
-        raise I18n.t("importer.errors.activity.invalid_channel_of_delivery_code") if channel_of_delivery_code.blank?
-
         validate_channel_of_delivery_code(
           channel_of_delivery_code,
           "channel_of_delivery_code",

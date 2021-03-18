@@ -1,0 +1,16 @@
+You have an active report, ready for you to submit your data.
+
+* Report: <%= @report_presenter.email_title %>
+* Deadline for submission: <%= @report_presenter.deadline %>
+* Link to report: <%= report_url(@report_presenter) %>
+
+# What happens next?
+
+Now the report is active you can access the report and update your data.
+
+You will need to provide your data and submit the report to BEIS before the reporting deadline of <%= @report_presenter.deadline %>.
+
+<%= render partial: "footer" %>
+
+
+

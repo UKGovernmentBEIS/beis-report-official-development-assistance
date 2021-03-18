@@ -136,7 +136,6 @@ class Activity < ApplicationRecord
   validates :planned_start_date, :planned_end_date, :actual_start_date, :actual_end_date, date_within_boundaries: true
   validates :actual_start_date, :actual_end_date, date_not_in_future: true
   validates :planned_end_date, end_date_after_start_date: true, if: :planned_start_date?
-  validates :extending_organisation_id, presence: true, on: :update_extending_organisation
   validates :call_open_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :call_close_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}, allow_nil: true
@@ -208,7 +207,6 @@ class Activity < ApplicationRecord
     no_longer_eligible: 2,
   }
 
-  scope :funds, -> { where(level: :fund) }
   scope :programmes, -> { where(level: :programme) }
   scope :publishable_to_iati, -> { where(form_state: :complete, publish_to_iati: true) }
   scope :with_roda_identifier, -> { where.not(roda_identifier_compound: nil) }
@@ -303,12 +301,6 @@ class Activity < ApplicationRecord
     organisation.default_currency
   end
 
-  def has_accountable_organisation?
-    accountable_organisation_reference.present? &&
-      accountable_organisation_name.present? &&
-      accountable_organisation_type.present?
-  end
-
   def has_extending_organisation?
     extending_organisation.present?
   end
@@ -344,6 +336,36 @@ class Activity < ApplicationRecord
     return nil if fund?
 
     service_owner
+  end
+
+  def accountable_organisation
+    return service_owner if fund? || programme?
+
+    extending_organisation.is_government? ? service_owner : extending_organisation
+  end
+
+  def accountable_organisation_name
+    accountable_organisation.name
+  end
+
+  def accountable_organisation_name=(_)
+    # NO OP
+  end
+
+  def accountable_organisation_type
+    accountable_organisation.organisation_type
+  end
+
+  def accountable_organisation_type=(_)
+    # NO OP
+  end
+
+  def accountable_organisation_reference
+    accountable_organisation.iati_reference
+  end
+
+  def accountable_organisation_reference=(_)
+    # NO OP
   end
 
   def service_owner

@@ -38,6 +38,11 @@ variable "notify_welcome_email_template" {
   description = "Notify welcome email template"
 }
 
+variable "notify_view_template" {
+  type        = string
+  description = "Notify welcome email template"
+}
+
 variable "rollbar_access_token" {
   type        = string
   description = "Rollbar access token"

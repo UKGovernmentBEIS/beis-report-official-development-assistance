@@ -43,10 +43,11 @@ end
 RSpec.configure do |config|
   config.include ActionView::Helpers::TranslationHelper
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include ActiveJob::TestHelper
 
   config.include AuthenticationHelpers
   config.include Auth0Helpers
-  config.include EmailHelpers
+  config.include CustomEmailMatchers
   config.include FormHelpers
   config.include ActivityHelpers
   config.include StripAttributes::Matchers

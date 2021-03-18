@@ -44,6 +44,7 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+  config.action_mailer.default_options = {from: "hello@example.com"}
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
@@ -54,6 +55,8 @@ Rails.application.configure do
   # Set a css_compressor so sassc-rails does not overwrite the compressor
   # See https://github.com/DFE-Digital/dfe-teachers-payment-service/commit/74ec587cfbe9aa6d0df01a72e99d70ffe9024748
   config.assets.css_compressor = nil
+
+  config.active_job.queue_adapter = :test
 
   config.after_initialize do
     Bullet.enable = true

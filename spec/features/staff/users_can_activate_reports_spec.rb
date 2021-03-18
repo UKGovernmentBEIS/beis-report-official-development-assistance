@@ -1,20 +1,29 @@
 RSpec.feature "Users can activate reports" do
   context "signed in as a BEIS user" do
     let(:beis_user) { create(:beis_user) }
+    let(:organisation) { create(:organisation, users: build_list(:administrator, 3)) }
 
     before do
       authenticate!(user: beis_user)
     end
 
     scenario "they can activate a report" do
-      report = create(:report, state: :inactive)
+      perform_enqueued_jobs do
+        report = create(:report, state: :inactive, organisation: organisation)
 
-      visit report_path(report)
-      click_link t("action.report.activate.button")
-      click_button t("action.report.activate.confirm.button")
+        visit report_path(report)
+        click_link t("action.report.activate.button")
+        click_button t("action.report.activate.confirm.button")
 
-      expect(page).to have_content "complete"
-      expect(report.reload.state).to eql "active"
+        expect(page).to have_content "complete"
+        expect(report.reload.state).to eql "active"
+
+        expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count)
+
+        organisation.users.each do |user|
+          expect(user).to have_received_email.with_subject(t("mailer.report.activated.subject", application_name: t("app.title")))
+        end
+      end
     end
 
     scenario "they see a warning when the report is not valid i.e. has no description" do

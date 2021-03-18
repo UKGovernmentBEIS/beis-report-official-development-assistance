@@ -91,15 +91,6 @@ RSpec.describe Codelist do
         expect(list.first.name).to eq("Active code")
       end
     end
-
-    it "does not add any duplicate-named items to the list" do
-      list = Codelist.new(type: "sector").to_objects(
-        with_empty_item: false
-      )
-      grouped_by_name = list.group_by { |item| item["name"] }
-      duplicate_groups = grouped_by_name.values.select { |a| a.size > 1 }.flatten
-      expect(duplicate_groups.count).to eql(0)
-    end
   end
 
   describe "#to_objects_with_description" do

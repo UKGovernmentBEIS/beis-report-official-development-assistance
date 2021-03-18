@@ -12,9 +12,8 @@
   - if activity.funding_organisation.present?
     %participating-org{"ref" => activity.funding_organisation.iati_reference, "type" => activity.funding_organisation.organisation_type, "role" => 1}
       %narrative= activity.funding_organisation.name
-  - if activity.has_accountable_organisation?
-    %participating-org{"ref" => activity.accountable_organisation_reference, "type" => activity.accountable_organisation_type, "role" => 2}
-      %narrative= activity.accountable_organisation_name
+  %participating-org{"ref" => activity.accountable_organisation_reference, "type" => activity.accountable_organisation_type, "role" => 2}
+    %narrative= activity.accountable_organisation_name
   - if activity.has_extending_organisation?
     %participating-org{"ref" => activity.extending_organisation.iati_reference, "type" => activity.extending_organisation.organisation_type, "role" => 3}
       %narrative= activity.extending_organisation.name

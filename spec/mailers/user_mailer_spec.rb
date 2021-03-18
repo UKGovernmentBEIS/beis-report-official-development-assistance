@@ -24,7 +24,7 @@ RSpec.describe UserMailer, type: :mailer do
       expect(mail.to).to eq([user.email])
 
       headers = JSON.parse(mail.to_json)["header"]
-      personalisation_header = headers[4]
+      personalisation_header = headers.find { |h| h["name"] == "personalisation" }
       name = personalisation_header["unparsed_value"]["name"]
       link = personalisation_header["unparsed_value"]["link"]
       service_url = personalisation_header["unparsed_value"]["service_url"]
