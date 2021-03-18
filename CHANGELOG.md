@@ -544,6 +544,7 @@
 - BEIS users can no longer create funds
 - Send emails when the status of reports has changed
 - BEIS users can no longer edit a programme's extending organisation
+- Allow importing into existing activities without repeating the Channel of delivery code in the uploaded spreadsheet
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...HEAD
 [release-37]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37
