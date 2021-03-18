@@ -257,7 +257,6 @@ module Activities
         "DFID policy marker - Disability",
         "DFID policy marker - Disaster Risk Reduction",
         "DFID policy marker - Nutrition",
-        "Channel of delivery code",
         "Implementing organisation reference",
         "BEIS ID",
         "UK DP Named Contact (NF)",
