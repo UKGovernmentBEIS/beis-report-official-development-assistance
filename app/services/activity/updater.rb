@@ -32,7 +32,6 @@ class Activity
 
     def set_level
       activity.assign_attributes(level: params_for("level"))
-      UpdateActivityAsFund.new(activity: activity).call if activity.fund?
     end
 
     def set_parent
