@@ -545,6 +545,7 @@
 - Send emails when the status of reports has changed
 - BEIS users can no longer edit a programme's extending organisation
 - Allow importing into existing activities without repeating the Channel of delivery code in the uploaded spreadsheet
+- Add the GOV.UK Cookie banner and settings
 
 ## [unreleased]
 
