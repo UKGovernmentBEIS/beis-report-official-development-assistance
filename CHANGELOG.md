@@ -543,6 +543,7 @@
 - Show sector code and name in the application
 - BEIS users can no longer create funds
 - Send emails when the status of reports has changed
+- BEIS users can no longer edit a programme's extending organisation
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...HEAD
 [release-37]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37

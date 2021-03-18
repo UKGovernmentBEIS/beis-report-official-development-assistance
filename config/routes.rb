@@ -65,7 +65,6 @@ Rails.application.routes.draw do
     resources :activities, only: [], concerns: [:transactionable, :budgetable, :disbursement_plannable] do
       resource :redaction, only: [:edit, :update], controller: :activity_redactions
       resources :steps, controller: "activity_forms"
-      resource :extending_organisations, only: [:edit, :update]
       resources :implementing_organisations, only: [:new, :create, :edit, :update]
       resources :comments, only: [:new, :create, :edit, :update]
       resources :transfers, except: [:index]

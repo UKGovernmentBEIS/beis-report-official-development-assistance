@@ -18,7 +18,6 @@ en:
       details: Activity %{name} — Details
       financials: Activity %{name} — Financials
       children: Activity %{name} — Child activities
-      extending_organisation: What extending organisation should be added to %{name}?
       comments: Activity %{name} — Comments
   form:
     button:
@@ -325,11 +324,6 @@ en:
       budgets: Budgets
       button:
         create: Add activity
-      extending_organisation:
-        button:
-          edit: Choose extending organisation
-        heading: Extending organisation
-        hint: The extending organisation will be able to create and report project (level C) information against this programme (level B)
       implementing_organisation:
         button:
           new: Add implementing organisation
@@ -469,8 +463,6 @@ en:
               blank: Select a benefitting region or country
             aid_type:
               blank: Select the aid type
-            extending_organisation_id:
-              blank: Select an extending organisation
             fstc_applies:
               inclusion: You must select "Yes" or "No"
             gcrf_challenge_area:
