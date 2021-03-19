@@ -10,7 +10,7 @@ class CreateActivity
     activity.organisation = Organisation.find(organisation_id)
     activity.reporting_organisation = activity.organisation
 
-    activity.form_state = "level"
+    activity.form_state = "identifier"
 
     activity.save!
     activity

@@ -89,7 +89,7 @@ RSpec.describe ActivityPolicy do
     let(:user) { create(:delivery_partner_user) }
 
     context "when the activity has no level" do
-      let(:activity) { create(:activity, :blank_form_state, level: nil) }
+      let(:activity) { create(:activity, :at_identifier_step, level: nil) }
 
       context "and does not belong to the same organisation as the user" do
         it { is_expected.to forbid_action(:edit) }
@@ -111,7 +111,7 @@ RSpec.describe ActivityPolicy do
     end
 
     context "when the activity has a level but no parent" do
-      let(:activity) { create(:activity, :blank_form_state, level: :project) }
+      let(:activity) { create(:activity, :at_identifier_step, level: :project, parent: nil) }
 
       context "and does not belong to the same organisation as the user" do
         it { is_expected.to forbid_action(:edit) }

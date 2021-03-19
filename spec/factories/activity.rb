@@ -308,10 +308,6 @@ FactoryBot.define do
     oda_eligibility_lead { nil }
   end
 
-  trait :nil_form_state do
-    form_state { nil }
-  end
-
   trait :at_collaboration_type_step do
     form_state { "collaboration_type" }
     collaboration_type { nil }
@@ -367,69 +363,6 @@ FactoryBot.define do
     extending_organisation_id { nil }
     parent { nil }
     level { nil }
-    oda_eligibility_lead { nil }
-  end
-
-  trait :level_form_state do
-    form_state { "level" }
-    level { nil }
-    source_fund_code { nil }
-    delivery_partner_identifier { nil }
-    title { nil }
-    description { nil }
-    objectives { nil }
-    sector { nil }
-    call_present { nil }
-    programme_status { nil }
-    country_delivery_partners { nil }
-    planned_start_date { nil }
-    planned_end_date { nil }
-    actual_start_date { nil }
-    actual_end_date { nil }
-    geography { nil }
-    recipient_region { nil }
-    recipient_country { nil }
-    intended_beneficiaries { nil }
-    gdi { nil }
-    collaboration_type { nil }
-    aid_type { nil }
-    policy_marker_gender { nil }
-    policy_marker_climate_change_adaptation { nil }
-    policy_marker_climate_change_mitigation { nil }
-    policy_marker_biodiversity { nil }
-    policy_marker_desertification { nil }
-    policy_marker_disability { nil }
-    policy_marker_disaster_risk_reduction { nil }
-    policy_marker_nutrition { nil }
-    extending_organisation_id { nil }
-    parent { nil }
-    oda_eligibility_lead { nil }
-  end
-
-  trait :parent_form_state do
-    form_state { "parent" }
-    level { "programme" }
-    source_fund_code { nil }
-    delivery_partner_identifier { nil }
-    title { nil }
-    description { nil }
-    objectives { nil }
-    sector { nil }
-    programme_status { nil }
-    country_delivery_partners { nil }
-    planned_start_date { nil }
-    planned_end_date { nil }
-    actual_start_date { nil }
-    actual_end_date { nil }
-    geography { nil }
-    recipient_region { nil }
-    recipient_country { nil }
-    intended_beneficiaries { nil }
-    gdi { nil }
-    collaboration_type { nil }
-    aid_type { nil }
-    extending_organisation_id { nil }
-    parent { nil }
     oda_eligibility_lead { nil }
   end
 

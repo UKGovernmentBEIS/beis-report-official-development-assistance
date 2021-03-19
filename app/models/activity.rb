@@ -16,9 +16,6 @@ class Activity < ApplicationRecord
   }
 
   FORM_STEPS = [
-    :blank,
-    :level,
-    :parent,
     :identifier,
     :roda_identifier,
     :purpose,
@@ -53,8 +50,6 @@ class Activity < ApplicationRecord
   ]
 
   VALIDATION_STEPS = [
-    :level_step,
-    :parent_step,
     :identifier_step,
     :roda_identifier_step,
     :purpose_step,

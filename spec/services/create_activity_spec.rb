@@ -19,7 +19,7 @@ RSpec.describe CreateActivity do
     end
 
     it "sets the level form_state as the next outstanding step" do
-      expect(result.form_state).to eq("level")
+      expect(result.form_state).to eq("identifier")
     end
   end
 end
