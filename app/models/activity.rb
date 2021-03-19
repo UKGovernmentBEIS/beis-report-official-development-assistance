@@ -123,6 +123,7 @@ class Activity < ApplicationRecord
   validates :policy_marker_disaster_risk_reduction, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :policy_marker_nutrition, presence: true, on: :policy_markers_step, if: :requires_policy_markers?
   validates :gcrf_challenge_area, presence: true, on: :gcrf_challenge_area_step, if: :is_gcrf_funded?
+  validates :gcrf_strategic_area, presence: true, on: :gcrf_strategic_area_step, if: :is_gcrf_funded?
   validates :oda_eligibility, presence: true, on: :oda_eligibility_step
   validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :is_project?
   validates :uk_dp_named_contact, presence: true, on: :uk_dp_named_contact_step, if: :is_project?
