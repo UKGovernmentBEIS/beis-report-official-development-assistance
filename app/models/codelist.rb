@@ -38,6 +38,22 @@ class Codelist
     end
   end
 
+  def hash_of_coded_names
+    coded_values = {}
+    list.each do |code|
+      coded_values[ActiveSupport::Inflector.parameterize(code["name"], separator: "_")] = code["code"]
+    end
+    coded_values
+  end
+
+  def hash_of_named_codes
+    coded_values = {}
+    list.each do |code|
+      coded_values[code["code"].to_s] = code["name"]
+    end
+    coded_values
+  end
+
   def to_objects(with_empty_item: true)
     objects = list.collect { |item|
       next if item["status"] == "withdrawn"
