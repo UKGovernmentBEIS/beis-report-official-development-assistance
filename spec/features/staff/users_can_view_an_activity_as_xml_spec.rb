@@ -241,7 +241,7 @@ RSpec.feature "Users can view an activity as XML" do
           visit organisation_activity_path(organisation, activity, format: :xml)
 
           expect(xml.xpath("//iati-activity/budget/@type").text).to eq("1")
-          expect(xml.xpath("//iati-activity/budget/@status").text).to eq("1")
+          expect(xml.xpath("//iati-activity/budget/@status").text).to eq("2")
           expect(xml.xpath("//iati-activity/budget/value").text).to eq("110.01")
         end
       end

@@ -10,8 +10,6 @@ class CreateBudget
     budget.parent_activity = activity
     budget.assign_attributes(attributes)
 
-    budget.budget_type = :original
-    budget.status = :committed
     budget.currency = activity.organisation.default_currency
 
     convert_and_assign_value(budget, attributes[:value])

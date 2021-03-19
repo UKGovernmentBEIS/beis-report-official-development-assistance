@@ -8,8 +8,6 @@ RSpec.describe Budget do
   end
 
   describe "validations" do
-    it { should validate_presence_of(:status) }
-    it { should validate_presence_of(:budget_type) }
     it { should validate_presence_of(:funding_type) }
     it { should validate_presence_of(:value) }
     it { should validate_presence_of(:currency) }

@@ -5,9 +5,7 @@ class Budget < ApplicationRecord
   belongs_to :report, optional: true
 
   validates_presence_of :report, unless: -> { parent_activity&.organisation&.service_owner? }
-  validates_presence_of :budget_type,
-    :status,
-    :value,
+  validates_presence_of :value,
     :currency,
     :funding_type,
     :financial_year
@@ -15,8 +13,8 @@ class Budget < ApplicationRecord
   validates :funding_type, inclusion: {in: ->(_) { valid_funding_type_codes }}
   validate :funding_type_must_match_source_fund, unless: -> { parent_activity&.source_fund_code.blank? }
 
-  BUDGET_TYPES = {"1": "original", "2": "updated"}
-  STATUSES = {"1": "indicative", "2": "committed"}
+  IATI_TYPES = Codelist.new(type: "budget_type", source: "iati").hash_of_coded_names
+  IATI_STATUSES = Codelist.new(type: "budget_status", source: "iati").hash_of_coded_names
 
   def financial_year
     return nil if self[:financial_year].nil?
@@ -30,6 +28,14 @@ class Budget < ApplicationRecord
 
   def period_end_date
     financial_year&.end_date
+  end
+
+  def iati_type
+    IATI_TYPES.fetch("original")
+  end
+
+  def iati_status
+    IATI_STATUSES.fetch("committed")
   end
 
   private def funding_type_must_match_source_fund

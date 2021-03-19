@@ -92,7 +92,7 @@ RSpec.shared_examples "valid activity XML" do
     budget = create(:budget, parent_activity: activity)
     visit organisation_activity_path(organisation, activity, format: :xml)
     expect(xml.at("iati-activity/budget/@type").text).to eq("1")
-    expect(xml.at("iati-activity/budget/@status").text).to eq("1")
+    expect(xml.at("iati-activity/budget/@status").text).to eq("2")
     expect(xml.at("iati-activity/budget/value").text).to eq(budget.value.to_s)
     expect(xml.at("iati-activity/budget/value/@currency").text).to eq(budget.currency)
     expect(xml.at("iati-activity/budget/period-start/@iso-date").text).to eq(budget.period_start_date.strftime("%Y-%m-%d"))
