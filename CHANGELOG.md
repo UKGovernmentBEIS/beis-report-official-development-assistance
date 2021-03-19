@@ -548,6 +548,8 @@
 
 ## [unreleased]
 
+- Display the RODA Identifer anywhere we have an activity table with an "Identifier" column
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-38...HEAD
 [release-38]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...release-38
 [release-37]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37
