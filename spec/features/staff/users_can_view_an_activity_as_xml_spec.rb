@@ -260,12 +260,23 @@ RSpec.feature "Users can view an activity as XML" do
         end
 
         it "has the correct transaction XML" do
-          _transaction = create(:transaction, parent_activity: activity)
+          transaction = create(:transaction, parent_activity: activity)
+
+          visit organisation_activity_path(organisation, activity, format: :xml)
+
+          expect(xml.xpath("//iati-activity/transaction/transaction-type/@code").text).to eq("1")
+          expect(xml.xpath("//iati-activity/transaction/receiver-org/narrative").text).to eq(transaction.receiving_organisation_name)
+          expect(xml.xpath("//iati-activity/transaction/value").text).to eq("110.01")
+        end
+
+        it "omits the receiving organisation if one is not present" do
+          _transaction = create(:transaction, :without_receiving_organisation, parent_activity: activity)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
           expect(xml.xpath("//iati-activity/transaction/transaction-type/@code").text).to eq("1")
           expect(xml.xpath("//iati-activity/transaction/value").text).to eq("110.01")
+          expect(xml.xpath("//iati-activity/transaction/receiver-org").count).to eq(0)
         end
       end
 
