@@ -127,6 +127,7 @@ en:
         call_close_date: Call close date
         channel_of_delivery_code: Channel of delivery code
         country_delivery_partners: Country delivery partner
+        gcrf_strategic_area: What GCRF Strategic area does your activity relate to?
         gcrf_challenge_area: GCRF challenge area
         fund_pillar: What Newton Fund Pillar does this activity fall under?
         gdi: Is your activity affected by the Global Development Impact (GDI) policy?
@@ -173,6 +174,7 @@ en:
         country_delivery_partners: "Please provide up to ten country delivery partners. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
         fund_pillar: The Newton Fund largely comprises three pillar activities, which all activities must fall under. Use 'Not applicable' for delivery, other non-programme/project lines.
         delivery_partner_identifier: This could be the reference you use in your internal systems
+        gcrf_strategic_area: Select no more than two areas.
         gcrf_challenge_area: Select the most relevant GCRF challenge area for this activity. For broad programme calls, please select the challenge area most commonly represented across the individual projects within the programme. If the activity is a delivery line, you may select 'Not applicable'.
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
         objectives: Please refrain from using any abbreviations
@@ -378,6 +380,7 @@ en:
         country_delivery_partners: Country delivery partner
         covid19_related: Is this activity related to Covid-19?
         dates: What are the start and end dates for the %{level}?
+        gcrf_strategic_area: What GCRF Strategic area does your activity relate to?
         gcrf_challenge_area: GCRF challenge area
         fund_pillar: What Newton Fund Pillar does this activity fall under?
         gdi: GDI
@@ -465,6 +468,8 @@ en:
               blank: Select the aid type
             fstc_applies:
               inclusion: You must select "Yes" or "No"
+            gcrf_strategic_area:
+              blank: Choose a GCRF strategic area
             gcrf_challenge_area:
               blank: Select a GCRF challenge area
             channel_of_delivery_code:

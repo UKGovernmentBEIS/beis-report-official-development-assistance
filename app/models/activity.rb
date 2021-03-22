@@ -44,6 +44,7 @@ class Activity < ApplicationRecord
     :fstc_applies,
     :policy_markers,
     :covid19_related,
+    :gcrf_strategic_area,
     :gcrf_challenge_area,
     :channel_of_delivery_code,
     :oda_eligibility,

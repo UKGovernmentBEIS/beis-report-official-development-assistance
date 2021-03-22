@@ -53,6 +53,18 @@ RSpec.describe Staff::ActivityFormsController do
           it { is_expected.to render_current_step }
         end
       end
+
+      context "gcrf_strategic_area step" do
+        subject { get_step :gcrf_strategic_area }
+
+        it { is_expected.to skip_to_next_step }
+
+        context "when activity is the GCRF fund" do
+          let(:activity) { create(:project_activity, organisation: organisation, parent: fund, source_fund_code: Fund::MAPPINGS["GCRF"]) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
     end
 
     context "when editing a project" do
