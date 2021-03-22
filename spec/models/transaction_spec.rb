@@ -6,8 +6,6 @@ RSpec.describe Transaction, type: :model do
   describe "validations" do
     it { should validate_presence_of(:value) }
     it { should validate_presence_of(:financial_year) }
-    it { should validate_presence_of(:receiving_organisation_name) }
-    it { should validate_presence_of(:receiving_organisation_type) }
 
     it { should validate_attribute(:date).with(:date_within_boundaries) }
 
@@ -26,6 +24,63 @@ RSpec.describe Transaction, type: :model do
       it "should not validate the prescence of report" do
         transaction = build_stubbed(:transaction, parent_activity: activity, report: nil)
         expect(transaction.valid?).to be true
+      end
+    end
+
+    describe "organisation validation" do
+      subject do
+        build(:transaction,
+          receiving_organisation_name: receiving_organisation_name,
+          receiving_organisation_type: receiving_organisation_type,
+          receiving_organisation_reference: receiving_organisation_reference)
+      end
+
+      context "when there is no organisation specified" do
+        let(:receiving_organisation_name) { nil }
+        let(:receiving_organisation_type) { nil }
+        let(:receiving_organisation_reference) { nil }
+
+        it { should be_valid }
+      end
+
+      context "when the receiving organisation name is present, but not the type" do
+        let(:receiving_organisation_name) { Faker::Company.name }
+        let(:receiving_organisation_type) { nil }
+        let(:receiving_organisation_reference) { nil }
+
+        it { should be_invalid }
+      end
+
+      context "when the receiving organisation type is present, but not the name" do
+        let(:receiving_organisation_name) { nil }
+        let(:receiving_organisation_type) { "70" }
+        let(:receiving_organisation_reference) { nil }
+
+        it { should be_invalid }
+      end
+
+      context "when the receiving organisation reference is present, but not the name and type" do
+        let(:receiving_organisation_name) { nil }
+        let(:receiving_organisation_type) { nil }
+        let(:receiving_organisation_reference) { "ABC-123" }
+
+        it { should be_invalid }
+      end
+
+      context "when the receiving organisation reference is present, but not the type" do
+        let(:receiving_organisation_name) { Faker::Company.name }
+        let(:receiving_organisation_type) { nil }
+        let(:receiving_organisation_reference) { "ABC-123" }
+
+        it { should be_invalid }
+      end
+
+      context "when the receiving organisation reference is present, but not the name" do
+        let(:receiving_organisation_name) { nil }
+        let(:receiving_organisation_type) { "70" }
+        let(:receiving_organisation_reference) { "ABC-123" }
+
+        it { should be_invalid }
       end
     end
   end
