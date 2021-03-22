@@ -9,37 +9,19 @@ en:
   form:
     label:
       budget:
-        currency: Currency
         value: Budget amount
         financial_year: Financial year
-        budget_type_options:
-          original: The original budget allocated to the activity
-          updated: The updated budget for an activity
-        status_options:
-          committed: Committed - A binding agreement for the described budget
-          indicative: Indicative - A non-binding estimate for the described budget
     legend:
       budget:
-        budget_type: Budget type
-        status: Budget status
-        period_end_date: Period end date
-        period_start_date: Period start date
         funding_type: Funding type
-    hint:
-      budget:
-        period_end_date: Period end date must not be more than one year after the period start date. For example, 11 3 2021
-        period_start_date: For example, 11 3 2020
     prompt:
       budget:
         financial_year: Select a financial year
   table:
     header:
       budget:
-        budget_type: Type
-        status: Status
-        period_start_date: Start date
-        period_end_date: End date
-        currency: Currency
+        financial_year: Financial year
+        funding_type: Funding type
         value: Budget amount
     body:
       budget:
@@ -83,5 +65,8 @@ en:
               blank: Enter a budget status
             funding_type:
               blank: Select a funding type
+              source_fund:
+                1: You cannot assign GCRF budget to a Newton funded activity
+                2: You cannot assign Newton budget to a GCRF funded activity.
             financial_year:
               blank: Select a financial year

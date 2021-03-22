@@ -13,6 +13,7 @@ class Budget < ApplicationRecord
     :financial_year
   validates :value, numericality: {other_than: 0, less_than_or_equal_to: 99_999_999_999.00}
   validates :funding_type, inclusion: {in: ->(_) { valid_funding_type_codes }}
+  validate :funding_type_must_match_source_fund, unless: -> { parent_activity&.source_fund_code.blank? }
 
   BUDGET_TYPES = {"1": "original", "2": "updated"}
   STATUSES = {"1": "indicative", "2": "committed"}
@@ -29,6 +30,13 @@ class Budget < ApplicationRecord
 
   def period_end_date
     financial_year&.end_date
+  end
+
+  private def funding_type_must_match_source_fund
+    return unless parent_activity.present?
+    unless funding_type == parent_activity.source_fund_code
+      errors.add(:funding_type, I18n.t("activerecord.errors.models.budget.attributes.funding_type.source_fund.#{parent_activity.source_fund_code}"))
+    end
   end
 
   class << self

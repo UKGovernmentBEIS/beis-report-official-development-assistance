@@ -16,6 +16,18 @@ RSpec.describe Budget do
     it { should validate_presence_of(:financial_year) }
 
     describe ".funding_type" do
+      context "when the parent activity is Newton funded" do
+        subject { build(:budget, parent_activity: build(:programme_activity, :newton_funded)) }
+        it { is_expected.not_to allow_value("2").for(:funding_type) }
+        it { is_expected.to allow_value("1").for(:funding_type) }
+      end
+
+      context "when the parent activity is GCRF funded" do
+        subject { build(:budget, parent_activity: build(:programme_activity, :gcrf_funded)) }
+        it { is_expected.not_to allow_value("1").for(:funding_type) }
+        it { is_expected.to allow_value("2").for(:funding_type) }
+      end
+
       it { is_expected.to allow_value("1").for(:funding_type) }
       it { is_expected.not_to allow_value("").for(:funding_type) }
       it { is_expected.not_to allow_value("9999").for(:funding_type) }

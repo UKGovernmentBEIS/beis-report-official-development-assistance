@@ -1,16 +1,4 @@
 = f.govuk_error_summary
-= f.govuk_collection_radio_buttons :budget_type,
-  list_of_budget_types,
-  :id,
-  :name,
-  legend: { tag: :h2 }
-
-= f.govuk_collection_radio_buttons :status,
-  list_of_budget_statuses,
-  :id,
-  :name,
-  legend: { tag: :h2 }
-
 = f.govuk_collection_radio_buttons :funding_type,
   list_of_funding_types,
   :code,
@@ -24,10 +12,6 @@
   options: { selected: f.object.financial_year, prompt: t("form.prompt.budget.financial_year") },
   label: { size: "m", tag: "h2" }
 
-= f.govuk_collection_select :currency,
-                               currency_select_options,
-                               :code,
-                               :name
-= f.govuk_text_field :value
+= f.govuk_text_field :value, class: "govuk-input govuk-input--width-10"
 
 = f.govuk_submit t("default.button.submit")

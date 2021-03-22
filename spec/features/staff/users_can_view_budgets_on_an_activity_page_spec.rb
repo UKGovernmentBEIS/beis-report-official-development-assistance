@@ -148,10 +148,10 @@ RSpec.feature "Users can view budgets on an activity page" do
 
       scenario "a delivery partner can edit/create a budget" do
         programme_activity = create(:programme_activity, extending_organisation: user.organisation, organisation: user.organisation)
+        report = create(:report, state: :active, organisation: user.organisation, fund: programme_activity.associated_fund)
         project_activity = create(:project_activity, parent: programme_activity, organisation: user.organisation)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: project_activity.associated_fund)
 
-        budget = create(:budget, parent_activity: project_activity)
+        budget = create(:budget, parent_activity: project_activity, report_id: report.id)
 
         visit activities_path
 
@@ -168,11 +168,7 @@ RSpec.feature "Users can view budgets on an activity page" do
   end
 
   def budget_information_is_shown_on_page(budget_presenter)
-    expect(page).to have_content(budget_presenter.budget_type)
-    expect(page).to have_content(budget_presenter.status)
-    expect(page).to have_content(budget_presenter.period_start_date)
-    expect(page).to have_content(budget_presenter.period_end_date)
-    expect(page).to have_content(budget_presenter.currency)
+    expect(page).to have_content(budget_presenter.financial_year)
     expect(page).to have_content(budget_presenter.value)
   end
 end
