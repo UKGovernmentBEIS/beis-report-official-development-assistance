@@ -69,7 +69,7 @@ RSpec.feature "Users can view reports" do
       visit report_budgets_path(report)
 
       within "##{budget.id}" do
-        expect(page).to have_content budget.parent_activity.delivery_partner_identifier
+        expect(page).to have_content budget.parent_activity.roda_identifier
         expect(page).to have_content budget.value
       end
     end
@@ -270,7 +270,7 @@ RSpec.feature "Users can view reports" do
         visit report_budgets_path(report)
 
         within "##{budget.id}" do
-          expect(page).to have_content budget.parent_activity.delivery_partner_identifier
+          expect(page).to have_content budget.parent_activity.roda_identifier
           expect(page).to have_content budget.value
           expect(page).to have_link t("default.link.edit"), href: edit_activity_budget_path(budget.parent_activity, budget)
         end

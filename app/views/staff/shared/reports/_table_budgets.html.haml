@@ -15,7 +15,7 @@
     %tbody.govuk-table__body
       - budgets.each do |budget|
         %tr.govuk-table__row{id: budget.id}
-          %td.govuk-table__cell= budget.parent_activity.delivery_partner_identifier
+          %td.govuk-table__cell= budget.parent_activity.roda_identifier
           %td.govuk-table__cell= budget.period_start_date
           %td.govuk-table__cell= budget.period_end_date
           %td.govuk-table__cell= budget.value

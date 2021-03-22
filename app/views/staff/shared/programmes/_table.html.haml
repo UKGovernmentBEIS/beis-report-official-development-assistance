@@ -14,5 +14,5 @@
     - programmes.each do |programme|
       %tr.govuk-table__row{id: programme.id}
         %td.govuk-table__cell= link_to programme.display_title, organisation_activity_path(programme.organisation, programme), class: "govuk-link govuk-link--no-visited-state"
-        %td.govuk-table__cell= programme.delivery_partner_identifier
+        %td.govuk-table__cell= programme.roda_identifier
         %td.govuk-table__cell= programme.parent_title
