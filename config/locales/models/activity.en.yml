@@ -249,6 +249,7 @@ en:
           label: Free-Standing Technical Cooperation applies?
           "false": "No"
           "true": "Yes"
+        gcrf_strategic_area: GCRF strategic area
         gcrf_challenge_area: GCRF challenge area
         fund_pillar: Fund pillar
         gdi: GDI

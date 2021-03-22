@@ -579,6 +579,17 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on t("tabs.activity.details")
 
   if activity.is_gcrf_funded?
+    within(".gcrf_strategic_area") do
+      click_on(t("default.link.edit"))
+      expect(page).to have_current_path(
+        activity_step_path(activity, :gcrf_strategic_area)
+      )
+    end
+    click_on(t("default.link.back"))
+    click_on t("tabs.activity.details")
+  end
+
+  if activity.is_gcrf_funded?
     within(".gcrf_challenge_area") do
       click_on(t("default.link.edit"))
       expect(page).to have_current_path(

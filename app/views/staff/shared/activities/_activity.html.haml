@@ -256,6 +256,16 @@
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:gdi)}"), activity_step_path(activity_presenter, :gdi), t("summary.label.activity.gdi"))
 
   - if activity_presenter.is_gcrf_funded?
+    .govuk-summary-list__row.gcrf_strategic_area
+      %dt.govuk-summary-list__key
+        = t("summary.label.activity.gcrf_strategic_area")
+      %dd.govuk-summary-list__value
+        = activity_presenter.gcrf_strategic_area
+      %dd.govuk-summary-list__actions
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :gcrf_strategic_area)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:gcrf_strategic_area)}"), activity_step_path(activity_presenter, :gcrf_strategic_area), t("summary.label.activity.gcrf_strategic_area"))
+
+  - if activity_presenter.is_gcrf_funded?
     .govuk-summary-list__row.gcrf_challenge_area
       %dt.govuk-summary-list__key
         = t("summary.label.activity.gcrf_challenge_area")
