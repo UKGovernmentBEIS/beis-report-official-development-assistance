@@ -136,6 +136,10 @@ module CodelistHelper
     }.compact.sort_by(&:code)
   end
 
+  def gcrf_strategic_area_options
+    Codelist.new(type: "gcrf_strategic_area", source: "beis").to_objects_with_description
+  end
+
   def gcrf_challenge_area_options
     data = Codelist.new(type: "gcrf_challenge_area", source: "beis")
     data.collect { |item|
