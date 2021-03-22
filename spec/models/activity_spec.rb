@@ -641,6 +641,18 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when gcrf_strategic_area has too many values" do
+      let(:source_fund_code) { Fund::MAPPINGS["NF"] }
+      let(:strategic_areas) { %w[1 2 3] }
+      subject { build(:programme_activity, source_fund_code: source_fund_code, gcrf_strategic_area: strategic_areas) }
+
+      context "with a GCRF funded activity" do
+        let(:source_fund_code) { Fund::MAPPINGS["GCRF"] }
+
+        it { is_expected.to be_invalid(:gcrf_strategic_area_step) }
+      end
+    end
+
     context "when gcrf_challenge_area is blank" do
       let(:source_fund_code) { Fund::MAPPINGS["NF"] }
       subject { build(:programme_activity, source_fund_code: source_fund_code, gcrf_challenge_area: nil) }

@@ -228,6 +228,13 @@ RSpec.feature "BEIS users can create a programme level activity" do
       click_button t("form.button.activity.submit")
       expect(page).to have_content t("activerecord.errors.models.activity.attributes.gcrf_strategic_area.blank")
 
+      # Select too many GCRF strategic areas
+      check "Resilient Futures"
+      check "Coherence and Impact"
+      check "International Partnerships"
+      click_button t("form.button.activity.submit")
+      expect(page).to have_content t("activerecord.errors.models.activity.attributes.gcrf_strategic_area.too_long")
+
       # GCRF strategic area (GCRF)
       check "Resilient Futures"
       click_button t("form.button.activity.submit")

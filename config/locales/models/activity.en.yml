@@ -470,6 +470,7 @@ en:
               inclusion: You must select "Yes" or "No"
             gcrf_strategic_area:
               blank: Choose a GCRF strategic area
+              too_long: Choose a maximum of 2 GCRF strategic areas
             gcrf_challenge_area:
               blank: Select a GCRF challenge area
             channel_of_delivery_code:
