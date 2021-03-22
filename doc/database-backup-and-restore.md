@@ -70,50 +70,22 @@ You will need to be a user of the services GPaaS account. You're OK if you can s
 
 ### PaaS to local
 
-In this example we will overwrite our local development database with the
-contents of the production database and add the local users so we can sign in to
-the application.
-
----
-
-### Prerequisites
+#### Prerequisites
 
 - Cloud Foundry (`cf`) tool installed
 - Credentials for the BEIS Government Platform as a Service (GPaaS) account
 - [GPaaS Conduit plugin installed](#installing-the-cf-conduit-plugin)
 
-1. Login and select the production space:
-   ```
-   cf login
-   ```
-1. List the backing services and note the name of the postgres service, this
-   should be `beis-roda-prod-postgres` but we should confirm:
-   ```
-   cf services
-   ```
-1. Create a new backup of production data locally using cf conduit:
-   ```
-   cf conduit POSTGRES_SERVICE_NAME -- pg_dump --file PROD_DATA_FILE_NAME.sql --no-acl --no-owner
-   ```
-1. Destroy the existing local database in postgres and create a new empty one:
-   ```
-   psql -d postgres
-     > DROP DATABASE "roda-development";
-     > CREATE DATABASE "roda-development";
-     > \q
-   ```
-1. Add production data to the new local database
-   ```
-   psql -d roda-development < PROD_DATA_FILE_NAME.sql
-   ```
-1. Add the local development users to the data we just imported using
-   the Rails console, so that we can login to the application locally:
-   ```
-   bundle exec rails console
-   ```
-   ```
-   load File.join(Rails.root, "db", "seeds", "development_users.rb")
-   ```
+To overwrite your local development environment with the contents of a
+live environment, and seed the database with the local users, you can
+run this command:
+
+```bash
+bin/db-restore ENVIRONMENT
+```
+
+(Where `ENVIRONMENT` is one of `pentest`, `prod` or `staging` - default is
+`staging`)
 
 ## Installing the CF Conduit plugin
 
