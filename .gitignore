@@ -10,14 +10,47 @@
 # http://github.com/RailsApps/rails-composer/issues
 #----------------------------------------------------------------------------
 
+## Sensitive files
+#
+# To override these ignored files on a case-by-case basis,
+# instead of adding a rule to this file, force add them:
+#
+# ```
+# git add path/to/file --force
+# ```
+#
+# This reduces the risk of accidentally committing files that happen to match
+# the ignore pattern exception, or a file being removed and readded
+# unintentionally in the future.
+#
+.env
+.env.*
+*.bks*
+*.csv*
+*.crt*
+*.db*
+*.dex*
+*.dump*
+*.key*
+*.numbers*
+*.ods*
+*.ots*
+*.pem*
+*.sql*
+*.sqlite3*
+*.tfstate*
+*.tfvars*
+*.tsv*
+*.xlr*
+*.xls*
+*.xml*
+
 # bundler state
 /.bundle
 /vendor/bundle/
 /vendor/ruby/
 
 # minimal Rails specific artifacts
-db/*.sqlite3
-/db/*.sqlite3-journal
 /log/*
 /tmp/*
 
@@ -78,16 +111,11 @@ pickle-email-*.html
 **.swp
 
 # Environment files that may contain sensitive data
-.env
 .powenv
 
 # tilde files are usually backup files from a text editor
 *~
 
-# Remove the master key added in Rails 5.2 incase it is used
-config/master.key
-
-.env.*
 !.env.example
 !.env.test
 
@@ -95,14 +123,7 @@ config/master.key
 /node_modules
 
 docker-compose.env
-*.tfvars
 terraform/.terraform/*
 
 # debug
 .byebug_history
-
-# CSV left in root
-/*.csv
-
-# SQL files
-**/*.sql
