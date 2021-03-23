@@ -33,23 +33,42 @@ class ImportPlannedDisbursements
 
   attr_reader :errors
 
-  def initialize(uploader:)
+  def initialize(uploader: nil, report: nil)
+    if uploader && report
+      raise ArgumentError, "Importing forecasts for arbitrary users and reports is forbidden"
+    end
+
     @uploader = uploader
+    @report = report
     @errors = []
     @warned_columns = Set.new
   end
 
   def import(forecasts)
+    latest_report = find_latest_report_in_selected_series
+
     ActiveRecord::Base.transaction do
+      log_report_not_latest_error(latest_report) unless [nil, @report].include?(latest_report)
+
       forecasts.each_with_index do |row, index|
         @current_index = index
         import_row(row)
       end
+
       raise ActiveRecord::Rollback unless @errors.empty?
     end
   end
 
   private
+
+  def find_latest_report_in_selected_series
+    return nil unless @report
+
+    Report
+      .where(fund: @report.fund_id, organisation: @report.organisation_id)
+      .in_historical_order
+      .first
+  end
 
   def import_row(row)
     roda_identifier = row[RODA_ID_KEY]
@@ -70,7 +89,7 @@ class ImportPlannedDisbursements
   end
 
   def import_forecast(activity, financial_quarter, value, header:)
-    history = PlannedDisbursementHistory.new(activity, user: @uploader, **financial_quarter)
+    history = PlannedDisbursementHistory.new(activity, user: @uploader, report: @report, **financial_quarter)
     history.set_value(value)
   rescue ConvertFinancialValue::Error
     @errors << Error.new(@current_index, header, value, I18n.t("importer.errors.planned_disbursement.non_numeric_value"))
@@ -81,16 +100,53 @@ class ImportPlannedDisbursements
 
   def lookup_activity(roda_identifier)
     activity = Activity.by_roda_identifier(roda_identifier)
-    policy = ActivityPolicy.new(@uploader, activity)
 
     if activity.nil?
       @errors << Error.new(@current_index, RODA_ID_KEY, roda_identifier, I18n.t("importer.errors.planned_disbursement.unknown_identifier"))
       nil
-    elsif !policy.create?
+    elsif unauthorized_upload?(activity)
       @errors << Error.new(@current_index, RODA_ID_KEY, roda_identifier, I18n.t("importer.errors.planned_disbursement.unauthorised"))
+      nil
+    elsif activity_unrelated_to_report?(activity)
+      @errors << Error.new(@current_index, RODA_ID_KEY, roda_identifier, "The activity is not related to the report, which belongs to #{report_fund} and #{report_organisation}.")
       nil
     else
       activity
     end
+  end
+
+  def unauthorized_upload?(activity)
+    return false unless @uploader
+
+    policy = ActivityPolicy.new(@uploader, activity)
+    !policy.create?
+  end
+
+  def activity_unrelated_to_report?(activity)
+    return false unless @report
+    !Report.for_activity(activity).where(id: @report.id).exists?
+  end
+
+  def log_report_not_latest_error(latest_report)
+    message = [
+      "The report #{@report.id} (#{report_organisation}, #{quarter @report} for #{report_fund},",
+      "#{@report.state}) is not the latest for that organisation and fund.",
+      "The latest is #{latest_report.id}, for #{quarter latest_report} (#{latest_report.state}).",
+    ]
+
+    @errors << Error.new(nil, nil, nil, message.join(" "))
+  end
+
+  def quarter(report)
+    quarter = report.own_financial_quarter
+    quarter ? quarter.to_s : "Historic Report"
+  end
+
+  def report_fund
+    @report.fund.roda_identifier
+  end
+
+  def report_organisation
+    @report.organisation.name
   end
 end
