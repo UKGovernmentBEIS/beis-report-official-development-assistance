@@ -1010,6 +1010,31 @@ RSpec.describe Activity, type: :model do
     end
   end
 
+  describe "#gcrf_strategic_area" do
+    it "returns nil if the activity is a fund" do
+      fund = build(:fund_activity)
+      expect(fund.gcrf_strategic_area).to be_nil
+    end
+
+    it "returns the attribute’s value if the activity is a programme" do
+      programme = build(:programme_activity, gcrf_strategic_area: ["1"])
+      expect(programme.gcrf_strategic_area).to eql ["1"]
+    end
+
+    it "returns the programme’s attribute value if the activity is a project" do
+      programme = build(:programme_activity, gcrf_strategic_area: ["2"])
+      project = build(:project_activity, parent: programme, gcrf_strategic_area: nil)
+      expect(project.gcrf_strategic_area).to eql ["2"]
+    end
+
+    it "returns the programme’s attribute value if the activity is a third party project" do
+      programme = build(:programme_activity, gcrf_strategic_area: ["3"])
+      project = build(:project_activity, parent: programme, gcrf_strategic_area: nil)
+      third_party_project = build(:third_party_project_activity, parent: project, gcrf_strategic_area: nil)
+      expect(third_party_project.gcrf_strategic_area).to eql ["3"]
+    end
+  end
+
   describe "#accountable_organisation" do
     let(:beis) { build_stubbed(:beis_organisation) }
     let(:delivery_partner) { build_stubbed(:delivery_partner_organisation) }

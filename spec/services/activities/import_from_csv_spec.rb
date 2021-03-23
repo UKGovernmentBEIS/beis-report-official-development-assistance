@@ -6,7 +6,7 @@ RSpec.describe Activities::ImportFromCsv do
 
   # NB: 'let!' to prevent `to change { Activity.count }` from giving confusing results
   let!(:existing_activity) do
-    create(:activity) do |activity|
+    create(:programme_activity) do |activity|
       activity.implementing_organisations = [
         create(:implementing_organisation, activity: activity),
       ]

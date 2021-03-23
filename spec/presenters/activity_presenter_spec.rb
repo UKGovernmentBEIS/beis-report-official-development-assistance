@@ -416,7 +416,7 @@ RSpec.describe ActivityPresenter do
 
   describe "#gcrf_strategic_area" do
     it "returns the code list description values for the stored integers" do
-      activity = build(:activity, gcrf_strategic_area: %w[1 3])
+      activity = build(:programme_activity, gcrf_strategic_area: %w[1 3])
       result = described_class.new(activity)
 
       expect(result.gcrf_strategic_area).to eql "UKRI Collective Fund (2017 allocation) and Resilient Futures"

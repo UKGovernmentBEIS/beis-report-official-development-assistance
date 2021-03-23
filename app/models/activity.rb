@@ -340,6 +340,15 @@ class Activity < ApplicationRecord
     service_owner
   end
 
+  def gcrf_strategic_area
+    case level
+    when "fund" then nil
+    when "programme" then attributes["gcrf_strategic_area"]
+    when "project" then parent.attributes["gcrf_strategic_area"]
+    when "third_party_project" then parent.parent.attributes["gcrf_strategic_area"]
+    end
+  end
+
   def accountable_organisation
     return service_owner if fund? || programme?
 
