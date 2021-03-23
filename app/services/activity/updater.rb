@@ -35,11 +35,7 @@ class Activity
     end
 
     def set_parent
-      parent_id = params_for("parent")
-
-      case activity.level.to_sym
-      when :programme then UpdateActivityAsProgramme.new(activity: activity, parent_id: parent_id).call
-      end
+      # NO OP
     end
 
     def set_identifier
