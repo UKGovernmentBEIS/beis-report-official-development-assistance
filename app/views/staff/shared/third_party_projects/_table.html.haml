@@ -18,7 +18,7 @@
       - third_party_projects.each do |project|
         %tr.govuk-table__row{id: project.id}
           %td.govuk-table__cell= link_to project.display_title, organisation_activity_path(project.organisation, project), class: "govuk-link govuk-link--no-visited-state"
-          %td.govuk-table__cell= project.delivery_partner_identifier
+          %td.govuk-table__cell= project.roda_identifier
           %td.govuk-table__cell= project.parent_title
           - if policy(:third_party_project).redact_from_iati?
             %td.govuk-table__cell

@@ -1,0 +1,87 @@
+#!/bin/bash
+
+# bin/restore: Restore the local database from staging/production.
+
+set -e
+
+ENVIRONMENT_NAME="${1:-staging}"
+environments="pentest prod staging"
+
+# Check `ENVIRONMENT_NAME` is one we expect
+if ! echo "$environments"| grep -w "$ENVIRONMENT_NAME" > /dev/null; then
+    echo "The environment name must be one of the following: $environments"
+    exit 1
+fi
+
+# Make sure we're in the root of the project
+cd "$(dirname "$0")/.."
+
+# Check prerequisites are installed
+if ! command -v cf > /dev/null; then
+    echo "The Cloud Foundry (cf) tool is not installed. See https://docs.cloud.service.gov.uk/get_started.html#set-up-the-cloud-foundry-command-line for how to get started"
+    exit 1
+fi
+
+if ! cf plugins | grep -q "conduit"; then
+    echo "The cf conduit plugin is not installed. See https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/develop/doc/database-backup-and-restore.md#installing-the-cf-conduit-plugin for installation instructions."
+    exit 1
+fi
+
+# exit with this by default, if it is not set later
+exit_code=0
+
+# Create a unique filename, so we can delete it later
+timestamp=$(date +"%Y%m%d%I%M%S")
+filename="/tmp/dump-$timestamp.sql"
+
+# Cleanup on exit, no matter what happens
+cleanup () {
+    echo "==> Cleaning up..."
+    rm "$filename" &> /dev/null
+    exit "$exit_code"
+}
+
+# register the cleanup function for all these signal types
+trap cleanup EXIT ERR INT TERM
+
+echo "==> Logging into GOV.UK PaaS..."
+
+cf login -s "$ENVIRONMENT_NAME"
+
+# Set the Postgres service name, depending on our environment
+service="beis-roda-${ENVIRONMENT_NAME}-postgres"
+
+echo "==> Running pg_dump on ${service} on ${ENVIRONMENT_NAME}"
+
+cf conduit "$service" -- \
+    pg_dump \
+        --file "$filename" \
+        --no-acl \
+        --no-owner \
+        --exclude-table="users"
+
+echo "==> Destroying the existing local database"
+
+# Check the user wants to continue before blowing away the development data
+echo "THIS WILL DELETE ALL DATA IN YOUR DEVELOPMENT ENVIRONMENT."
+echo "Are you sure you want to continue? (y to continue)"
+read -p "" -r delete_data
+
+if [ "$delete_data" == "y" ]; then
+    echo "==> Dropping and recreating the roda-development database..."
+    psql -c '\set AUTOCOMMIT on\n DROP DATABASE "roda-development"; CREATE DATABASE "roda-development";' -d postgres
+
+    echo "==> Restoring the data from the backup..."
+    psql -d roda-development < "$filename"
+
+    echo "==> Removing extraneous Postgres extensions..."
+    psql -d roda-development -c 'DROP extension citext; DROP extension postgis; DROP extension "uuid-ossp";'
+
+    echo "==> Running the migrations..."
+    bundle exec rails db:migrate
+
+    echo "==> Seeding development users..."
+    rails runner 'load File.join(Rails.root, "db", "seeds", "development_users.rb")'
+fi
+
+exit_code=$?

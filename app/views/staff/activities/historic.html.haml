@@ -50,7 +50,7 @@
               - @historic_activity_presenters.each do |activity|
                 %tr.govuk-table__row{ id: activity.id }
                   %td.govuk-table__cell= activity.display_title
-                  %td.govuk-table__cell= activity.delivery_partner_identifier
+                  %td.govuk-table__cell= activity.roda_identifier
                   %td.govuk-table__cell= activity.level
                   %td.govuk-table__cell
                     = a11y_action_link t("table.body.activity.view_activity"),

@@ -18,6 +18,16 @@ RSpec.describe "Users can create a budget" do
         expect(page).to have_content(t("action.budget.create.success"))
       end
 
+      scenario "a new budget has it's funding type set to that of it's parent activity's source fund" do
+        activity = create(:programme_activity, :gcrf_funded, organisation: user.organisation)
+
+        visit activities_path
+        click_on(activity.title)
+        click_on(t("page_content.budgets.button.create"))
+
+        expect(page.has_checked_field?("budget-funding-type-#{activity.source_fund_code}-field")).to be_truthy
+      end
+
       scenario "budget creation is tracked with public_activity" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
 
@@ -70,9 +80,6 @@ RSpec.describe "Users can create a budget" do
         click_button t("default.button.submit")
 
         expect(page).to have_content("There is a problem")
-        expect(page).to have_content(t("activerecord.errors.models.budget.attributes.budget_type.blank"))
-        expect(page).to have_content(t("activerecord.errors.models.budget.attributes.status.blank"))
-        expect(page).to have_content(t("activerecord.errors.models.budget.attributes.funding_type.blank"))
         expect(page).to have_content(t("activerecord.errors.models.budget.attributes.financial_year.blank"))
         expect(page).to have_content t("activerecord.errors.models.budget.attributes.value.blank")
       end
@@ -89,12 +96,8 @@ RSpec.describe "Users can create a budget" do
 
         click_on(t("page_content.budgets.button.create"))
 
-        click_button t("default.button.submit")
-
-        choose("budget[budget_type]", option: "1")
-        choose("budget[status]", option: "1")
+        select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
         choose("budget[funding_type]", option: "1")
-        select "Pound Sterling", from: "budget[currency]"
         fill_in "budget[value]", with: "10000000000000.00"
         click_button t("default.button.submit")
 
@@ -145,11 +148,8 @@ RSpec.describe "Users can create a budget" do
   end
 
   def fill_in_and_submit_budget_form
-    choose("budget[budget_type]", option: "1")
-    choose("budget[status]", option: "1")
     choose("budget[funding_type]", option: "1")
     select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
-    select "Pound Sterling", from: "budget[currency]"
     fill_in "budget[value]", with: "1000.00"
     click_button t("default.button.submit")
   end

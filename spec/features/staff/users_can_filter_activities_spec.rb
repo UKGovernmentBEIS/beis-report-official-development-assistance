@@ -21,13 +21,13 @@ RSpec.feature "Users can filter activities" do
       visit activities_path
 
       expect(page).to have_content programme.title
-      expect(page).to have_content programme.delivery_partner_identifier
+      expect(page).to have_content programme.roda_identifier
 
       select delivery_partner_organisation.name, from: "organisation_id"
       click_on t("filters.activity.submit")
 
       expect(page).to have_content project.title
-      expect(page).to have_content project.delivery_partner_identifier
+      expect(page).to have_content project.roda_identifier
     end
 
     scenario "they will see Current activities if they filter while on the 'Current' tab" do
@@ -41,9 +41,9 @@ RSpec.feature "Users can filter activities" do
       click_on t("filters.activity.submit")
 
       expect(page).to have_content current_project.title
-      expect(page).to have_content current_project.delivery_partner_identifier
+      expect(page).to have_content current_project.roda_identifier
       expect(page).to_not have_content historic_project.title
-      expect(page).to_not have_content historic_project.delivery_partner_identifier
+      expect(page).to_not have_content historic_project.roda_identifier
     end
 
     scenario "they will see Historic activities if they filter while on the 'Historic' tab" do
@@ -57,9 +57,9 @@ RSpec.feature "Users can filter activities" do
       click_on t("filters.activity.submit")
 
       expect(page).to have_content historic_project.title
-      expect(page).to have_content historic_project.delivery_partner_identifier
+      expect(page).to have_content historic_project.roda_identifier
       expect(page).to_not have_content current_project.title
-      expect(page).to_not have_content current_project.delivery_partner_identifier
+      expect(page).to_not have_content current_project.roda_identifier
     end
   end
 

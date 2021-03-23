@@ -18,7 +18,7 @@ RSpec.feature "Users can view an activity" do
         visit organisation_activity_children_path(fund.organisation, fund)
 
         expect(page).to have_content programme.title
-        expect(page).to have_content programme.delivery_partner_identifier
+        expect(page).to have_content programme.roda_identifier
       end
 
       scenario "the child programme activities are ordered by created_at (oldest first)" do
@@ -63,13 +63,13 @@ RSpec.feature "Users can view an activity" do
 
         within("##{project.id}") do
           expect(page).to have_link project.title, href: organisation_activity_path(project.organisation, project)
-          expect(page).to have_content project.delivery_partner_identifier
+          expect(page).to have_content project.roda_identifier
           expect(page).to have_content project.parent.title
         end
 
         within("##{another_project.id}") do
           expect(page).to have_link another_project.title, href: organisation_activity_path(another_project.organisation, another_project)
-          expect(page).to have_content another_project.delivery_partner_identifier
+          expect(page).to have_content another_project.roda_identifier
           expect(page).to have_content another_project.parent.title
         end
       end
@@ -100,7 +100,7 @@ RSpec.feature "Users can view an activity" do
 
         within("##{third_party_project.id}") do
           expect(page).to have_link third_party_project.title, href: organisation_activity_path(third_party_project.organisation, third_party_project)
-          expect(page).to have_content third_party_project.delivery_partner_identifier
+          expect(page).to have_content third_party_project.roda_identifier
           expect(page).to have_content third_party_project.parent.title
         end
       end
@@ -154,7 +154,7 @@ RSpec.feature "Users can view an activity" do
       end
       activity_presenter = ActivityPresenter.new(activity)
 
-      expect(page).to have_content activity_presenter.delivery_partner_identifier
+      expect(page).to have_content activity_presenter.roda_identifier
       expect(page).to have_content activity_presenter.sector
       expect(page).to have_content activity_presenter.title
       expect(page).to have_content activity_presenter.description

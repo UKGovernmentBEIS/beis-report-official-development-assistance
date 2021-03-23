@@ -545,10 +545,19 @@
 - Send emails when the status of reports has changed
 - BEIS users can no longer edit a programme's extending organisation
 - Allow importing into existing activities without repeating the Channel of delivery code in the uploaded spreadsheet
+- Add the GOV.UK Cookie banner and settings
+
+## [release-39] - 2021-03-23
+
+- Display the RODA Identifier anywhere we have an activity table with an "Identifier" column
+- Budgets do not collect IATI fields or currency as they are set by default
+- Budgets tables do not show IATI fields and only show the financial year
+- Budgets funding type must be the same as the parent activity
 
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-38...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-39...HEAD
+[release-39]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-38...release-39
 [release-38]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...release-38
 [release-37]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37
 [release-36]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-35...release-36

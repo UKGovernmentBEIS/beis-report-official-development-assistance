@@ -32,5 +32,5 @@
             -elsif policy(:comment).create?
               = a11y_action_link(t("table.body.report.add_comment"), new_activity_comment_path(activity, report_id: @report.id), t("table.body.report.comment").downcase)
           %td.govuk-table__cell
-            = a11y_action_link(t('default.link.view'), organisation_activity_path(activity.organisation, activity), activity.delivery_partner_identifier)
+            = a11y_action_link(t('default.link.view'), organisation_activity_path(activity.organisation, activity), activity.roda_identifier)
 
