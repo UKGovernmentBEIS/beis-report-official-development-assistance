@@ -2,12 +2,12 @@ RSpec.feature "users can upload activities" do
   let(:organisation) { create(:organisation) }
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
-  let!(:project) { create(:programme_activity, :newton_funded, organisation: organisation, roda_identifier_fragment: "B-PROG", parent: create(:fund_activity, roda_identifier_fragment: "A-FUND")) }
+  let!(:programme) { create(:programme_activity, :newton_funded, organisation: organisation, roda_identifier_fragment: "B-PROG", parent: create(:fund_activity, roda_identifier_fragment: "A-FUND")) }
 
   let! :report do
     create(:report,
       state: :active,
-      fund: project.associated_fund,
+      fund: programme.associated_fund,
       organisation: organisation)
   end
 
@@ -125,7 +125,7 @@ RSpec.feature "users can upload activities" do
   end
 
   scenario "updating an existing activity" do
-    activity_to_update = create(:project_activity) { |activity|
+    activity_to_update = create(:programme_activity) { |activity|
       activity.implementing_organisations = [
         create(:implementing_organisation, activity: activity),
       ]
