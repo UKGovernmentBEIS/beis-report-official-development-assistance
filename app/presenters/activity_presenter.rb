@@ -169,6 +169,13 @@ class ActivityPresenter < SimpleDelegator
     end
   end
 
+  def gcrf_strategic_area
+    return if super.blank?
+    gcrf_strategic_area_options.select { |area| super.include?(area.code.to_s) }
+      .map(&:description)
+      .to_sentence
+  end
+
   def gcrf_challenge_area
     return if super.blank?
     I18n.t(super, scope: "form.label.activity.gcrf_challenge_area_options")

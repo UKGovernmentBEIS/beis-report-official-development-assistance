@@ -55,6 +55,7 @@ class ExportActivityToCsv
       "Recipient country" => -> { activity_presenter.recipient_country },
       "Intended beneficiaries" => -> { activity_presenter.intended_beneficiaries },
       "GDI" => -> { activity_presenter.gdi },
+      "GCRF Strategic Area" => -> { activity_presenter.gcrf_strategic_area },
       "GCRF Challenge Area" => -> { activity_presenter.gcrf_challenge_area },
       "Fund Pillar" => -> { activity_presenter.fund_pillar },
       "SDG 1" => -> { activity_presenter.sdg_1 },

@@ -1,0 +1,7 @@
+= render layout: "wrapper" do |f|
+  = f.govuk_collection_check_boxes :gcrf_strategic_area,
+    gcrf_strategic_area_options,
+    :code,
+    :description,
+    legend: { tag: 'h1', size: 'xl', text: t("form.legend.activity.gcrf_strategic_area") },
+    hint: { text: t("form.hint.activity.gcrf_strategic_area") }

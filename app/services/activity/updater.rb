@@ -104,6 +104,13 @@ class Activity
       activity.assign_attributes(intended_beneficiaries: intended_beneficiaries)
     end
 
+    def set_gcrf_strategic_area
+      gcrf_strategic_area = activity_params
+        .permit(gcrf_strategic_area: [])
+        .fetch("gcrf_strategic_area", []).reject(&:blank?)
+      activity.assign_attributes(gcrf_strategic_area: gcrf_strategic_area)
+    end
+
     def set_aid_type
       activity.assign_attributes(aid_type: params_for("aid_type"))
       if can_infer_fstc?(activity.aid_type)

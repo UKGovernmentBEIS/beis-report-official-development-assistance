@@ -50,6 +50,7 @@ module FormHelpers
     policy_marker_disaster_risk_reduction: "Not assessed",
     policy_marker_nutrition: "Not assessed",
     covid19_related: "4",
+    gcrf_strategic_area: "Academies Collective Fund",
     gcrf_challenge_area: "1",
     oda_eligibility: "Eligible",
     oda_eligibility_lead: Faker::Name.name,
@@ -295,6 +296,13 @@ module FormHelpers
     expect(page).to have_content t("form.legend.activity.covid19_related")
     choose("activity[covid19_related]", option: covid19_related)
     click_button t("form.button.activity.submit")
+
+    if level == "programme" && (parent&.is_gcrf_funded? || parent&.roda_identifier_fragment == "GCRF")
+      expect(page).to have_content t("form.legend.activity.gcrf_strategic_area")
+      expect(page).to have_content t("form.hint.activity.gcrf_strategic_area")
+      check gcrf_strategic_area
+      click_button t("form.button.activity.submit")
+    end
 
     if parent&.is_gcrf_funded? || parent&.roda_identifier_fragment == "GCRF"
       expect(page).to have_content t("form.legend.activity.gcrf_challenge_area")

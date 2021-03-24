@@ -329,6 +329,15 @@ RSpec.feature "Users can edit an activity" do
         expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
       end
 
+      it "does not show an edit link for the GCRF strategic area" do
+        activity = create(:project_activity, :gcrf_funded, organisation: user.organisation, parent: create(:programme_activity, :gcrf_funded))
+
+        visit organisation_activity_details_path(activity.organisation, activity)
+        within(".gcrf_strategic_area") do
+          expect(page).to_not have_content t("default.link.edit")
+        end
+      end
+
       context "when the project does not have a RODA identifier" do
         let(:fund) { create(:fund_activity, roda_identifier_fragment: "AAA") }
         let(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "BBB") }
@@ -422,6 +431,15 @@ RSpec.feature "Users can edit an activity" do
 
         click_button t("form.button.activity.submit")
         expect(page).to have_content(t("action.third_party_project.update.success"))
+      end
+    end
+
+    it "does not show an edit link for the GCRF strategic area" do
+      activity = create(:project_activity, :gcrf_funded, organisation: user.organisation, parent: create(:programme_activity, :gcrf_funded))
+
+      visit organisation_activity_details_path(activity.organisation, activity)
+      within(".gcrf_strategic_area") do
+        expect(page).to_not have_content t("default.link.edit")
       end
     end
 
@@ -577,6 +595,17 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   end
   click_on(t("default.link.back"))
   click_on t("tabs.activity.details")
+
+  if activity.is_gcrf_funded? && activity.programme?
+    within(".gcrf_strategic_area") do
+      click_on(t("default.link.edit"))
+      expect(page).to have_current_path(
+        activity_step_path(activity, :gcrf_strategic_area)
+      )
+    end
+    click_on(t("default.link.back"))
+    click_on t("tabs.activity.details")
+  end
 
   if activity.is_gcrf_funded?
     within(".gcrf_challenge_area") do

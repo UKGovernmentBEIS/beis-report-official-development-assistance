@@ -43,6 +43,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.fund?
     when :gcrf_challenge_area
       skip_step unless @activity.is_gcrf_funded?
+    when :gcrf_strategic_area
+      skip_step unless @activity.is_gcrf_funded? && @activity.programme?
     when :fund_pillar
       skip_step unless @activity.is_newton_funded?
     when :channel_of_delivery_code

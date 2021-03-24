@@ -217,6 +217,7 @@ module Activities
         delivery_partner_identifier: "Delivery partner identifier",
         roda_identifier_fragment: "RODA ID Fragment",
         gdi: "GDI",
+        gcrf_strategic_area: "GCRF Strategic Area",
         gcrf_challenge_area: "GCRF Challenge Area",
         sdg_1: "SDG 1",
         sdg_2: "SDG 2",
@@ -357,6 +358,14 @@ module Activities
         raise I18n.t("importer.errors.activity.invalid_gcrf_challenge_area") unless valid_codes.include?(gcrf_challenge_area)
 
         gcrf_challenge_area.to_i
+      end
+
+      def convert_gcrf_strategic_area(gcrf_strategic_area)
+        gcrf_strategic_area.split("|").map do |code|
+          valid_codes = gcrf_strategic_area_options.map { |area| area.code.to_s }
+          raise I18n.t("importer.errors.activity.invalid_gcrf_strategic_area") unless valid_codes.include?(code)
+          code
+        end
       end
 
       def convert_sustainable_development_goal(goal)
