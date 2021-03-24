@@ -32,17 +32,10 @@ class Activity
 
     def set_level
       activity.assign_attributes(level: params_for("level"))
-      UpdateActivityAsFund.new(activity: activity).call if activity.fund?
     end
 
     def set_parent
-      parent_id = params_for("parent")
-
-      case activity.level.to_sym
-      when :programme then UpdateActivityAsProgramme.new(activity: activity, parent_id: parent_id).call
-      when :project then UpdateActivityAsProject.new(activity: activity, parent_id: parent_id).call
-      when :third_party_project then UpdateActivityAsThirdPartyProject.new(activity: activity, parent_id: parent_id).call
-      end
+      # NO OP
     end
 
     def set_identifier

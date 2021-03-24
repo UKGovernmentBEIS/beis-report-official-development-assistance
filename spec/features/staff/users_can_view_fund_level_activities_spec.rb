@@ -29,7 +29,6 @@ RSpec.feature "Users can view fund level activities" do
       visit organisation_activity_children_path(fund_activity.organisation, fund_activity)
 
       expect(page).to have_link activity_presenter.display_title
-      expect(page).to have_button t("page_content.organisation.button.create_activity")
     end
 
     context "when the activity is partially complete and doesn't have a title" do
