@@ -504,3 +504,4 @@ en:
         cannot_update:
           fragment_present: There is an existing RODA ID present, but there is a fragment specified too, which will overwrite the existing fragment. Please remove the fragement from this row and try again.
           parent_present: There is an existing RODA ID present, but there is a parent activity specified too, which will overwrite the existing parent. Please remove the parent ID from this row and try again.
+        unauthorised: You are not authorised to report against this activity
