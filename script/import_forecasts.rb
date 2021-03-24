@@ -25,11 +25,16 @@ unless organisation
   exit 1
 end
 
+def zero_option_to_nil(options, field)
+  value = options.fetch(field)
+  value == 0 ? nil : value
+end
+
 report = Report.find_by(
   fund: fund,
   organisation: organisation,
-  financial_quarter: options.fetch(:quarter),
-  financial_year: options.fetch(:year)
+  financial_quarter: zero_option_to_nil(options, :quarter),
+  financial_year: zero_option_to_nil(options, :year),
 )
 
 unless report
