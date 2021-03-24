@@ -553,9 +553,10 @@
 - Budgets do not collect IATI fields or currency as they are set by default
 - Budgets tables do not show IATI fields and only show the financial year
 - Budgets funding type must be the same as the parent activity
-- Users can report the strategic area under which the GCRF allocation was made
 
 ## [unreleased]
+
+- Users can report the strategic area under which the GCRF allocation was made
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-39...HEAD
 [release-39]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-38...release-39
