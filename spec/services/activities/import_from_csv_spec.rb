@@ -756,6 +756,26 @@ RSpec.describe Activities::ImportFromCsv do
         expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.implementing_organisation.attributes.organisation_type.inclusion"))
       end
     end
+
+    context "when the parent activity is a fund" do
+      let(:beis_organisation) { create(:beis_organisation) }
+      let!(:parent_activity) { create(:fund_activity, :newton, organisation: beis_organisation) }
+
+      it "creates a programme level activity correctly" do
+        expect { subject.import([new_activity_attributes]) }.to change { Activity.count }.by(1)
+
+        expect(subject.created.count).to eq(1)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(0)
+
+        new_activity = Activity.order(:created_at).last
+
+        expect(new_activity.level).to eq("programme")
+        expect(new_activity.organisation).to eq(beis_organisation)
+        expect(new_activity.extending_organisation).to eq(organisation)
+      end
+    end
   end
 
   context "when updating and importing" do
