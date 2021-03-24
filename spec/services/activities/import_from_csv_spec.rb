@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Activities::ImportFromCsv do
   let(:organisation) { create(:organisation) }
-  let(:parent_activity) { create(:fund_activity, :newton) }
+  let(:parent_activity) { create(:programme_activity, :newton_funded) }
 
   # NB: 'let!' to prevent `to change { Activity.count }` from giving confusing results
   let!(:existing_activity) do
@@ -69,7 +69,7 @@ RSpec.describe Activities::ImportFromCsv do
     existing_activity_attributes.merge({
       "RODA ID" => "",
       "RODA ID Fragment" => "234566",
-      "Parent RODA ID" => parent_activity.roda_identifier_fragment,
+      "Parent RODA ID" => parent_activity.roda_identifier_compound,
       "Transparency identifier" => "23232332323",
     })
   end
@@ -290,7 +290,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(new_activity.parent).to eq(parent_activity)
       expect(new_activity.source_fund_code).to eq(1)
-      expect(new_activity.level).to eq("programme")
+      expect(new_activity.level).to eq("project")
       expect(new_activity.roda_identifier_compound).to eq(expected_roda_identifier_compound)
       expect(new_activity.transparency_identifier).to eq(new_activity_attributes["Transparency identifier"])
       expect(new_activity.title).to eq(new_activity_attributes["Title"])
