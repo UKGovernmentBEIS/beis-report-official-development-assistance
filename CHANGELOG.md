@@ -560,10 +560,15 @@
 - Bring back script for importing forecast data into an in-review/approved report
 - Make receiving organisation optional
 
+## [release-41] - 2021-03-26
+
+- Bump Mimemagic version to 0.3.8
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-40...HEAD
-[release-39]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-39...release-40
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-41...HEAD
+[release-41]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-40...release-41
+[release-40]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-39...release-40
 [release-39]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-38...release-39
 [release-38]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...release-38
 [release-37]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37
