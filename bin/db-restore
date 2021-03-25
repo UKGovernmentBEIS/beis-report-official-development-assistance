@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bin/restore: Restore the local database from staging/production.
+# bin/db-restore: Restore the local database from staging/production.
 
 set -e
 
@@ -58,7 +58,9 @@ cf conduit "$service" -- \
         --file "$filename" \
         --no-acl \
         --no-owner \
-        --exclude-table="users"
+        --exclude-table-data="users" \
+        --exclude-table="ar_internal_metadata" \
+        --exclude-table="spatial_ref_sys"
 
 echo "==> Destroying the existing local database"
 
@@ -72,16 +74,19 @@ if [ "$delete_data" == "y" ]; then
     psql -c '\set AUTOCOMMIT on\n DROP DATABASE "roda-development"; CREATE DATABASE "roda-development";' -d postgres
 
     echo "==> Restoring the data from the backup..."
-    psql -d roda-development < "$filename"
+    psql -d roda-development -f "$filename"
 
     echo "==> Removing extraneous Postgres extensions..."
     psql -d roda-development -c 'DROP extension citext; DROP extension postgis; DROP extension "uuid-ossp";'
 
-    echo "==> Running the migrations..."
+    echo "==> Setting database environment..."
+    bundle exec rails db:environment:set RAILS_ENV=development
+
+    echo "==> Running database migrations..."
     bundle exec rails db:migrate
 
     echo "==> Seeding development users..."
-    rails runner 'load File.join(Rails.root, "db", "seeds", "development_users.rb")'
+    bundle exec rails runner 'load File.join(Rails.root, "db", "seeds", "development_users.rb")'
 fi
 
 exit_code=$?
