@@ -28,3 +28,4 @@ spec/examples.txt
 # SQL files
 **/*.sql
 
+bin/db-restore
