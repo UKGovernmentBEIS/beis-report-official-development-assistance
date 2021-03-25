@@ -35,7 +35,7 @@ class ImportPlannedDisbursements
     end
 
     def csv_row(activity)
-      forecast_values = Array.new(FORECAST_QUARTERS)
+      forecast_values = Array.new(FORECAST_QUARTERS, "")
 
       [
         activity.title,
@@ -103,6 +103,7 @@ class ImportPlannedDisbursements
   end
 
   def import_forecast(activity, financial_quarter, value, header:)
+    return if value.blank?
     history = PlannedDisbursementHistory.new(activity, user: @uploader, report: @report, **financial_quarter)
     history.set_value(value)
   rescue ConvertFinancialValue::Error
