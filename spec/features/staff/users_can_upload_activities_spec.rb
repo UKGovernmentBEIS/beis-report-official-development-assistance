@@ -41,6 +41,7 @@ RSpec.feature "users can upload activities" do
       "DFID policy marker - Gender", "DFID policy marker - Nutrition",
       "Delivery partner identifier",
       "Free Standing Technical Cooperation",
+      "GCRF Strategic Area",
       "GCRF Challenge Area",
       "GDI",
       "Intended Beneficiaries",

@@ -172,6 +172,10 @@ class ImportTransactions
       )
     end
 
+    def convert_receiving_organisation_name(name)
+      name.presence
+    end
+
     def validate_from_codelist(code, type, message)
       return nil if code.blank?
 

@@ -6,14 +6,18 @@ module Activities
       end
 
       def csv_column
-        Converter::FIELDS[column] || ImplementingOrganisationBuilder::FIELDS[column] || column.to_s
+        column_to_csv_column_mapping[column] || ImplementingOrganisationBuilder::FIELDS[column] || column.to_s
+      end
+
+      def column_to_csv_column_mapping
+        Converter::FIELDS.merge(parent_id: "Parent RODA ID")
       end
     }
 
     attr_reader :errors, :created, :updated
 
     def self.column_headings
-      Converter::FIELDS.values
+      ["Parent RODA ID"] + Converter::FIELDS.values
     end
 
     def initialize(organisation:)
@@ -119,26 +123,23 @@ module Activities
 
       def initialize(organisation, row)
         @organisation = organisation
-        @activity = Activity.new
         @errors = {}
         @row = row
         @converter = Converter.new(row)
+        @parent_activity = fetch_parent(@row["Parent RODA ID"])
         @errors.update(@converter.errors)
       end
 
       def create
-        return unless @converter.errors.blank?
+        return unless @errors.blank?
 
-        @activity.organisation = @organisation
-        @activity.reporting_organisation = @organisation
-
-        beis = Organisation.find_by(service_owner: true)
-        @activity.accountable_organisation_name = beis.name
-        @activity.accountable_organisation_reference = beis.iati_reference
-        @activity.accountable_organisation_type = beis.organisation_type
-
+        @activity = Activity.new_child(
+          parent_activity: @parent_activity,
+          delivery_partner_organisation: @organisation
+        ) { |a|
+          a.form_state = "complete"
+        }
         @activity.assign_attributes(@converter.to_h)
-        @activity.level = calculate_level
         @activity.cache_roda_identifier
 
         implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
@@ -156,8 +157,13 @@ module Activities
         implementing_organisation_builder.add_errors(@errors) if @activity.implementing_organisations.any?
       end
 
-      def calculate_level
-        @activity&.parent&.child_level
+      private def fetch_parent(roda_id)
+        parent = Activity.by_roda_identifier(roda_id)
+
+        @errors[:parent_id] = [roda_id, I18n.t("importer.errors.activity.parent_not_found")] if parent.nil?
+        @errors[:parent_id] = [roda_id, I18n.t("importer.errors.activity.invalid_parent")] if parent.present? && !parent.form_steps_completed?
+
+        parent
       end
     end
 
@@ -210,8 +216,8 @@ module Activities
         intended_beneficiaries: "Intended Beneficiaries",
         delivery_partner_identifier: "Delivery partner identifier",
         roda_identifier_fragment: "RODA ID Fragment",
-        parent_id: "Parent RODA ID",
         gdi: "GDI",
+        gcrf_strategic_area: "GCRF Strategic Area",
         gcrf_challenge_area: "GCRF Challenge Area",
         sdg_1: "SDG 1",
         sdg_2: "SDG 2",
@@ -287,8 +293,6 @@ module Activities
         attributes[:recipient_region] ||= inferred_region
         attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
         attributes[:sector_category] = get_sector_category(attributes[:sector])
-        attributes[:form_state] = "complete"
-        attributes[:source_fund_code] = @parent&.source_fund_code
 
         attributes
       end
@@ -356,6 +360,14 @@ module Activities
         gcrf_challenge_area.to_i
       end
 
+      def convert_gcrf_strategic_area(gcrf_strategic_area)
+        gcrf_strategic_area.split("|").map do |code|
+          valid_codes = gcrf_strategic_area_options.map { |area| area.code.to_s }
+          raise I18n.t("importer.errors.activity.invalid_gcrf_strategic_area") unless valid_codes.include?(code)
+          code
+        end
+      end
+
       def convert_sustainable_development_goal(goal)
         raise I18n.t("importer.errors.activity.invalid_sdg_goal") unless sdg_options.keys.map(&:to_s).include?(goal.to_s)
 
@@ -372,15 +384,6 @@ module Activities
             I18n.t("importer.errors.activity.invalid_intended_beneficiaries")
           )
         end
-      end
-
-      def convert_parent_id(roda_id)
-        @parent = Activity.by_roda_identifier(roda_id)
-
-        raise I18n.t("importer.errors.activity.parent_not_found") if @parent.nil?
-        raise I18n.t("importer.errors.activity.invalid_parent") unless @parent.form_steps_completed?
-
-        @parent.id
       end
 
       def convert_covid19_related(covid19_related)

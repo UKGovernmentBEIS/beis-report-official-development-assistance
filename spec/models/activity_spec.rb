@@ -622,6 +622,37 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when gcrf_strategic_area is blank" do
+      let(:source_fund_code) { Fund::MAPPINGS["NF"] }
+      subject { build(:programme_activity, source_fund_code: source_fund_code, gcrf_strategic_area: nil) }
+
+      it { is_expected.to be_valid(:gcrf_strategic_area_step) }
+
+      context "with a GCRF funded activity" do
+        let(:source_fund_code) { Fund::MAPPINGS["GCRF"] }
+
+        it { is_expected.to be_invalid(:gcrf_strategic_area_step) }
+      end
+
+      context "for a fund" do
+        subject { build(:fund_activity, :gcrf, gcrf_strategic_area: nil) }
+
+        it { is_expected.to be_valid(:gcrf_strategic_area_step) }
+      end
+    end
+
+    context "when gcrf_strategic_area has too many values" do
+      let(:source_fund_code) { Fund::MAPPINGS["NF"] }
+      let(:strategic_areas) { %w[1 2 3] }
+      subject { build(:programme_activity, source_fund_code: source_fund_code, gcrf_strategic_area: strategic_areas) }
+
+      context "with a GCRF funded activity" do
+        let(:source_fund_code) { Fund::MAPPINGS["GCRF"] }
+
+        it { is_expected.to be_invalid(:gcrf_strategic_area_step) }
+      end
+    end
+
     context "when gcrf_challenge_area is blank" do
       let(:source_fund_code) { Fund::MAPPINGS["NF"] }
       subject { build(:programme_activity, source_fund_code: source_fund_code, gcrf_challenge_area: nil) }
@@ -976,6 +1007,31 @@ RSpec.describe Activity, type: :model do
     it "returns nil if the activity is a fund" do
       fund = build(:fund_activity)
       expect(fund.funding_organisation).to be_nil
+    end
+  end
+
+  describe "#gcrf_strategic_area" do
+    it "returns nil if the activity is a fund" do
+      fund = build(:fund_activity)
+      expect(fund.gcrf_strategic_area).to be_nil
+    end
+
+    it "returns the attribute’s value if the activity is a programme" do
+      programme = build(:programme_activity, gcrf_strategic_area: ["1"])
+      expect(programme.gcrf_strategic_area).to eql ["1"]
+    end
+
+    it "returns the programme’s attribute value if the activity is a project" do
+      programme = build(:programme_activity, gcrf_strategic_area: ["2"])
+      project = build(:project_activity, parent: programme, gcrf_strategic_area: nil)
+      expect(project.gcrf_strategic_area).to eql ["2"]
+    end
+
+    it "returns the programme’s attribute value if the activity is a third party project" do
+      programme = build(:programme_activity, gcrf_strategic_area: ["3"])
+      project = build(:project_activity, parent: programme, gcrf_strategic_area: nil)
+      third_party_project = build(:third_party_project_activity, parent: project, gcrf_strategic_area: nil)
+      expect(third_party_project.gcrf_strategic_area).to eql ["3"]
     end
   end
 

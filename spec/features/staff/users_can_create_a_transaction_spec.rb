@@ -72,8 +72,6 @@ RSpec.feature "Users can create a transaction" do
 
         expect(page).to_not have_content(t("action.transaction.create.success"))
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.blank")
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
       end
     end
 
@@ -91,8 +89,6 @@ RSpec.feature "Users can create a transaction" do
 
         expect(page).to_not have_content(t("action.transaction.create.success"))
         expect(page).to have_content t("activerecord.errors.models.transaction.attributes.value.not_a_number")
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
-        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
       end
     end
 
@@ -204,6 +200,60 @@ RSpec.feature "Users can create a transaction" do
         fill_in_transaction_form(value: "123,000,000", expectations: false)
 
         expect(page).to have_content "£123,000,000"
+      end
+    end
+
+    context "organisation validation" do
+      it "shows an error when the organisation type is blank, but not the name" do
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
+
+        visit activities_path
+
+        click_on(activity.title)
+
+        click_on(t("page_content.transactions.button.create"))
+
+        fill_in_transaction_form(
+          receiving_organisation: OpenStruct.new(name: "Example receiver", reference: "GB-COH-123", type: nil),
+          expectations: false
+        )
+
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
+      end
+
+      it "shows an error when the organisation name is blank, but not the type" do
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
+
+        visit activities_path
+
+        click_on(activity.title)
+
+        click_on(t("page_content.transactions.button.create"))
+
+        fill_in_transaction_form(
+          receiving_organisation: OpenStruct.new(name: nil, reference: "GB-COH-123", type: "Private Sector"),
+          expectations: false
+        )
+
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
+      end
+
+      it "shows errors if the organisation reference is present, but not the name or reference" do
+        activity = create(:programme_activity, :with_report, organisation: user.organisation)
+
+        visit activities_path
+
+        click_on(activity.title)
+
+        click_on(t("page_content.transactions.button.create"))
+
+        fill_in_transaction_form(
+          receiving_organisation: OpenStruct.new(name: nil, reference: "GB-COH-123", type: nil),
+          expectations: false
+        )
+
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_name.blank"))
+        expect(page).to have_content(t("activerecord.errors.models.transaction.attributes.receiving_organisation_type.blank"))
       end
     end
 

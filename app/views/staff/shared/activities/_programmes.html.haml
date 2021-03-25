@@ -2,8 +2,4 @@
   .govuk-grid-column-full
     %h2.govuk-heading-m
       = t("page_content.organisation.programmes")
-
-    = form_tag(organisation_activities_path(current_user.organisation), method: "post") do
-      = submit_tag t("page_content.organisation.button.create_activity"), class: "govuk-button"
-
     = render partial: "staff/shared/programmes/table", locals: { programmes: activities }

@@ -23,7 +23,7 @@ Rails.application.routes.draw do
       end
     end
     resources :organisations, except: [:destroy] do
-      resources :activities, except: [:index, :destroy] do
+      resources :activities, except: [:index, :create, :destroy] do
         get "financials" => "activity_financials#show"
         get "details" => "activity_details#show"
 

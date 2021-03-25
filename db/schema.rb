@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_16_102910) do
+ActiveRecord::Schema.define(version: 2021_03_24_161847) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -37,7 +38,6 @@ ActiveRecord::Schema.define(version: 2021_03_16_102910) do
     t.uuid "reporting_organisation_id"
     t.string "previous_identifier"
     t.string "sector_category"
-    t.string "legacy_iati_xml"
     t.boolean "publish_to_iati", default: true
     t.uuid "parent_id"
     t.string "transparency_identifier"
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 2021_03_16_102910) do
     t.integer "programme_status"
     t.string "channel_of_delivery_code"
     t.integer "source_fund_code"
+    t.string "gcrf_strategic_area", array: true
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"

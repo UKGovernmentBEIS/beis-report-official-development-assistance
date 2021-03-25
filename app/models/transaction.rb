@@ -10,11 +10,9 @@ class Transaction < ApplicationRecord
   belongs_to :parent_activity, class_name: "Activity"
   belongs_to :report, optional: true
 
+  validates_with TransactionOrganisationValidator
   validates_presence_of :report, unless: -> { parent_activity&.organisation&.service_owner? }
-  validates_presence_of :value,
-    :financial_year,
-    :receiving_organisation_name,
-    :receiving_organisation_type
+  validates_presence_of :value, :financial_year
   validates :value, numericality: {other_than: 0, less_than_or_equal_to: 99_999_999_999.00}
   validates :date, date_within_boundaries: true
   validates :financial_quarter, inclusion: {in: 1..4}

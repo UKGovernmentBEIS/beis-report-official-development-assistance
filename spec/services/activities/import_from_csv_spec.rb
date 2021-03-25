@@ -2,11 +2,11 @@ require "rails_helper"
 
 RSpec.describe Activities::ImportFromCsv do
   let(:organisation) { create(:organisation) }
-  let(:parent_activity) { create(:fund_activity, :newton) }
+  let(:parent_activity) { create(:programme_activity, :newton_funded) }
 
   # NB: 'let!' to prevent `to change { Activity.count }` from giving confusing results
   let!(:existing_activity) do
-    create(:activity) do |activity|
+    create(:programme_activity) do |activity|
       activity.implementing_organisations = [
         create(:implementing_organisation, activity: activity),
       ]
@@ -25,6 +25,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Intended Beneficiaries" => "KH|KP|ID",
       "Delivery partner identifier" => "1234567890",
       "GDI" => "1",
+      "GCRF Strategic Area" => "1|3",
       "GCRF Challenge Area" => "4",
       "SDG 1" => "1",
       "SDG 2" => "2",
@@ -68,7 +69,7 @@ RSpec.describe Activities::ImportFromCsv do
     existing_activity_attributes.merge({
       "RODA ID" => "",
       "RODA ID Fragment" => "234566",
-      "Parent RODA ID" => parent_activity.roda_identifier_fragment,
+      "Parent RODA ID" => parent_activity.roda_identifier_compound,
       "Transparency identifier" => "23232332323",
     })
   end
@@ -152,6 +153,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.recipient_country).to eq(existing_activity_attributes["Recipient Country"])
       expect(existing_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
       expect(existing_activity.gdi).to eq("1")
+      expect(existing_activity.gcrf_strategic_area).to eq(["1", "3"])
       expect(existing_activity.gcrf_challenge_area).to eq(4)
       expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Delivery partner identifier"])
       expect(existing_activity.fund_pillar).to eq(existing_activity_attributes["Newton Fund Pillar"].to_i)
@@ -288,7 +290,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       expect(new_activity.parent).to eq(parent_activity)
       expect(new_activity.source_fund_code).to eq(1)
-      expect(new_activity.level).to eq("programme")
+      expect(new_activity.level).to eq("project")
       expect(new_activity.roda_identifier_compound).to eq(expected_roda_identifier_compound)
       expect(new_activity.transparency_identifier).to eq(new_activity_attributes["Transparency identifier"])
       expect(new_activity.title).to eq(new_activity_attributes["Title"])
@@ -752,6 +754,26 @@ RSpec.describe Activities::ImportFromCsv do
         expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 
         expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.implementing_organisation.attributes.organisation_type.inclusion"))
+      end
+    end
+
+    context "when the parent activity is a fund" do
+      let(:beis_organisation) { create(:beis_organisation) }
+      let!(:parent_activity) { create(:fund_activity, :newton, organisation: beis_organisation) }
+
+      it "creates a programme level activity correctly" do
+        expect { subject.import([new_activity_attributes]) }.to change { Activity.count }.by(1)
+
+        expect(subject.created.count).to eq(1)
+        expect(subject.updated.count).to eq(0)
+
+        expect(subject.errors.count).to eq(0)
+
+        new_activity = Activity.order(:created_at).last
+
+        expect(new_activity.level).to eq("programme")
+        expect(new_activity.organisation).to eq(beis_organisation)
+        expect(new_activity.extending_organisation).to eq(organisation)
       end
     end
   end

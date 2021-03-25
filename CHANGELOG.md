@@ -554,9 +554,16 @@
 - Budgets tables do not show IATI fields and only show the financial year
 - Budgets funding type must be the same as the parent activity
 
+## [release-40] - 2021-03-25
+
+- Users can report the strategic area under which the GCRF allocation was made
+- Bring back script for importing forecast data into an in-review/approved report
+- Make receiving organisation optional
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-39...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-40...HEAD
+[release-39]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-39...release-40
 [release-39]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-38...release-39
 [release-38]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-37...release-38
 [release-37]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-36...release-37

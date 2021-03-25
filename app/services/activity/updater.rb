@@ -32,17 +32,10 @@ class Activity
 
     def set_level
       activity.assign_attributes(level: params_for("level"))
-      UpdateActivityAsFund.new(activity: activity).call if activity.fund?
     end
 
     def set_parent
-      parent_id = params_for("parent")
-
-      case activity.level.to_sym
-      when :programme then UpdateActivityAsProgramme.new(activity: activity, parent_id: parent_id).call
-      when :project then UpdateActivityAsProject.new(activity: activity, parent_id: parent_id).call
-      when :third_party_project then UpdateActivityAsThirdPartyProject.new(activity: activity, parent_id: parent_id).call
-      end
+      # NO OP
     end
 
     def set_identifier
@@ -109,6 +102,13 @@ class Activity
         .permit(intended_beneficiaries: [])
         .fetch("intended_beneficiaries", []).drop(1)
       activity.assign_attributes(intended_beneficiaries: intended_beneficiaries)
+    end
+
+    def set_gcrf_strategic_area
+      gcrf_strategic_area = activity_params
+        .permit(gcrf_strategic_area: [])
+        .fetch("gcrf_strategic_area", []).reject(&:blank?)
+      activity.assign_attributes(gcrf_strategic_area: gcrf_strategic_area)
     end
 
     def set_aid_type
