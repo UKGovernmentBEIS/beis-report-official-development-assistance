@@ -10,6 +10,7 @@ class ImportPlannedDisbursements
 
   RODA_ID_KEY = "Activity RODA Identifier"
   FORECAST_COLUMN_HEADER = /FC +(\d{4})\/\d{2} +FY +Q([1-4])/
+  FORECAST_QUARTERS = 20
 
   COLUMN_HEADINGS = [
     "Activity Name",
@@ -18,16 +19,29 @@ class ImportPlannedDisbursements
   ]
 
   class Generator
+    def initialize(report)
+      @report = report
+    end
+
     def column_headings
-      COLUMN_HEADINGS
+      reportable_quarters = @report.own_financial_quarter.following(FORECAST_QUARTERS)
+
+      quarter_headers = reportable_quarters.map { |quarter|
+        year = quarter.financial_year.start_year
+        "FC #{year}/#{(year + 1) % 100} FY Q#{quarter.quarter}"
+      }
+
+      COLUMN_HEADINGS + quarter_headers
     end
 
     def csv_row(activity)
+      forecast_values = Array.new(FORECAST_QUARTERS)
+
       [
         activity.title,
         activity.delivery_partner_identifier,
         activity.roda_identifier,
-      ]
+      ] + forecast_values
     end
   end
 

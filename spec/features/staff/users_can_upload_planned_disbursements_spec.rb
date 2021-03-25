@@ -21,24 +21,42 @@ RSpec.feature "users can upload planned disbursements" do
     click_link t("action.planned_disbursement.upload.link")
   end
 
-  scenario "downloading a CSV template with activities for the current report" do
-    click_link t("action.planned_disbursement.download.button")
+  describe "downloading a CSV template with activities for the current report" do
+    before do
+      click_link t("action.planned_disbursement.download.button")
+      @csv_data = page.body.delete_prefix("\uFEFF")
+    end
 
-    csv_data = page.body.delete_prefix("\uFEFF")
-    rows = CSV.parse(csv_data, headers: true).map(&:to_h)
+    it "lists the name and ID of all reportable activities" do
+      rows = CSV.parse(@csv_data, headers: true).map(&:to_h)
+      activity_data = rows.map { |row| row.reject { |key, _| key =~ /^FC / } }
 
-    expect(rows).to match_array([
-      {
-        "Activity Name" => project.title,
-        "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
-        "Activity RODA Identifier" => project.roda_identifier,
-      },
-      {
-        "Activity Name" => sibling_project.title,
-        "Activity Delivery Partner Identifier" => sibling_project.delivery_partner_identifier,
-        "Activity RODA Identifier" => sibling_project.roda_identifier,
-      },
-    ])
+      expect(activity_data).to match_array([
+        {
+          "Activity Name" => project.title,
+          "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
+          "Activity RODA Identifier" => project.roda_identifier,
+        },
+        {
+          "Activity Name" => sibling_project.title,
+          "Activity Delivery Partner Identifier" => sibling_project.delivery_partner_identifier,
+          "Activity RODA Identifier" => sibling_project.roda_identifier,
+        },
+      ])
+    end
+
+    it "incldues headings for all reportable quarters" do
+      headings = CSV.parse(@csv_data).first.to_a
+
+      expect(headings).to eq([
+        "Activity Name", "Activity Delivery Partner Identifier", "Activity RODA Identifier",
+        "FC 2021/22 FY Q2", "FC 2021/22 FY Q3", "FC 2021/22 FY Q4", "FC 2022/23 FY Q1",
+        "FC 2022/23 FY Q2", "FC 2022/23 FY Q3", "FC 2022/23 FY Q4", "FC 2023/24 FY Q1",
+        "FC 2023/24 FY Q2", "FC 2023/24 FY Q3", "FC 2023/24 FY Q4", "FC 2024/25 FY Q1",
+        "FC 2024/25 FY Q2", "FC 2024/25 FY Q3", "FC 2024/25 FY Q4", "FC 2025/26 FY Q1",
+        "FC 2025/26 FY Q2", "FC 2025/26 FY Q3", "FC 2025/26 FY Q4", "FC 2026/27 FY Q1",
+      ])
+    end
   end
 
   scenario "not uploading a file" do
