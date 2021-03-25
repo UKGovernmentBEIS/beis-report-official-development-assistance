@@ -6,7 +6,8 @@
     %narrative=transaction.description
   %provider-org{"provider-activity-id" => "", "type" => transaction.providing_organisation_type, "ref" => transaction.providing_organisation_reference}
     %narrative=transaction.providing_organisation_name
-  %receiver-org{"receiver-activity-id" => "", "type" => transaction.receiving_organisation_type, "ref" => transaction.receiving_organisation_reference}
-    %narrative=transaction.receiving_organisation_name
+  - if transaction.receiving_organisation_name.present?
+    %receiver-org{"receiver-activity-id" => "", "type" => transaction.receiving_organisation_type, "ref" => transaction.receiving_organisation_reference}
+      %narrative=transaction.receiving_organisation_name
   - if transaction.disbursement_channel.present?
     %disbursement-channel{"code" => transaction.disbursement_channel}

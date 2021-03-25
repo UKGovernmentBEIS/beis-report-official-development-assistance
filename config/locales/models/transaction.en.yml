@@ -36,7 +36,7 @@ en:
       transaction:
         date: Date of transaction
         providing_organisation: Providing organisation
-        receiving_organisation: Receiving organisation
+        receiving_organisation: Receiving organisation (optional)
     hint:
       transaction:
         csv_file: Upload a spreadsheet containing transaction information in CSV format.

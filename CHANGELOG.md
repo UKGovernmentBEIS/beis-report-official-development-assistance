@@ -553,6 +553,7 @@
 - Budgets do not collect IATI fields or currency as they are set by default
 - Budgets tables do not show IATI fields and only show the financial year
 - Budgets funding type must be the same as the parent activity
+- Make receiving organisation optional
 
 ## [unreleased]
 

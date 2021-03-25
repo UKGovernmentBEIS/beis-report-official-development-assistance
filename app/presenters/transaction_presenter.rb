@@ -8,4 +8,10 @@ class TransactionPresenter < SimpleDelegator
     return if super.blank?
     ActionController::Base.helpers.number_to_currency(super, unit: "£")
   end
+
+  def receiving_organisation_name
+    return "N/A" if super.blank?
+
+    super
+  end
 end

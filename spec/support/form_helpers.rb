@@ -450,7 +450,7 @@ module FormHelpers
     choose financial_quarter, name: "transaction[financial_quarter]"
     select financial_year, from: "transaction[financial_year]"
     fill_in "transaction[receiving_organisation_name]", with: receiving_organisation.name
-    select receiving_organisation.type, from: "transaction[receiving_organisation_type]"
+    select receiving_organisation.type, from: "transaction[receiving_organisation_type]" if receiving_organisation.type.present?
     fill_in "transaction[receiving_organisation_reference]", with: receiving_organisation.reference
 
     click_on(t("default.button.submit"))

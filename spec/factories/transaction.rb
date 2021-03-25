@@ -20,5 +20,11 @@ FactoryBot.define do
 
     association :parent_activity, factory: :activity
     association :report
+
+    trait :without_receiving_organisation do
+      receiving_organisation_name { nil }
+      receiving_organisation_reference { nil }
+      receiving_organisation_type { nil }
+    end
   end
 end

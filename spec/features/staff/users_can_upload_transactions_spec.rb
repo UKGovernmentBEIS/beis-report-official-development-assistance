@@ -71,6 +71,20 @@ RSpec.feature "users can upload transactions" do
     expect(page).not_to have_xpath("//tbody/tr")
   end
 
+  scenario "uploading a valid set of transactions with no organisation data" do
+    ids = [project, sibling_project].map(&:roda_identifier)
+
+    upload_csv <<~CSV
+      Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1                 | 2020           | 20    |                             |                             |
+      #{ids[1]}                | 1                 | 2020           | 30    |                             |                             |
+    CSV
+
+    expect(Transaction.count).to eq(2)
+    expect(page).to have_text(t("action.transaction.upload.success"))
+    expect(page).not_to have_xpath("//tbody/tr")
+  end
+
   scenario "uploading a valid set of transactions including zero values" do
     ids = [project, sibling_project].map(&:roda_identifier)
 

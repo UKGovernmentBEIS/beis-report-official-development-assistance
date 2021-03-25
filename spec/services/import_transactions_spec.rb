@@ -295,6 +295,34 @@ RSpec.describe ImportTransactions do
         expect(transaction.receiving_organisation_reference).to eq("Rec-Org-IATI-Ref")
       end
     end
+
+    context "when the Receiving Organisation fields are blank" do
+      let :transaction_row do
+        super().merge(
+          "Receiving Organisation Name" => "",
+          "Receiving Organisation Type" => "",
+          "Receiving Organisation IATI Reference" => ""
+        )
+      end
+
+      it "imports a single transaction" do
+        expect(report.transactions.count).to eq(1)
+      end
+
+      it "assigns the attributes from the row data" do
+        transaction = report.transactions.first
+
+        expect(transaction).to have_attributes(
+          parent_activity: project,
+          financial_quarter: 4,
+          financial_year: 2019,
+          value: 50.0,
+          receiving_organisation_name: nil,
+          receiving_organisation_type: nil,
+          description: "FQ4 1999-2000 spend on Example Project",
+        )
+      end
+    end
   end
 
   describe "importing multiple transactions" do
