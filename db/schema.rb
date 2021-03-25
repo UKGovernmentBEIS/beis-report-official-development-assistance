@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_19_154548) do
+ActiveRecord::Schema.define(version: 2021_03_24_161847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -38,7 +38,6 @@ ActiveRecord::Schema.define(version: 2021_03_19_154548) do
     t.uuid "reporting_organisation_id"
     t.string "previous_identifier"
     t.string "sector_category"
-    t.string "legacy_iati_xml"
     t.boolean "publish_to_iati", default: true
     t.uuid "parent_id"
     t.string "transparency_identifier"
