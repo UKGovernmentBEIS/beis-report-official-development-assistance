@@ -32,7 +32,7 @@ class Staff::ReportsController < Staff::BaseController
     authorize @report
 
     @report_presenter = ReportPresenter.new(@report)
-    @report_activities = Activity.includes(:parent, {parent: :parent}).projects_and_third_party_projects_for_report(@report)
+    @report_activities = Activity.projects_and_third_party_projects_for_report(@report)
 
     respond_to do |format|
       format.html do
@@ -177,7 +177,7 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def report_activities_sorted_by_level(report)
-    Activity.includes(:organisation, :parent, {parent: :parent}).projects_and_third_party_projects_for_report(report).sort_by { |a| a.level }
+    Activity.includes(:organisation).projects_and_third_party_projects_for_report(report).sort_by { |a| a.level }
   end
 
   def reports_have_same_quarter?
