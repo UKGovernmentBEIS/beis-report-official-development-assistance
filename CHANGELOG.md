@@ -563,6 +563,7 @@
 ## [release-41] - 2021-03-26
 
 - Bump Mimemagic version to 0.3.8
+- GCRF Strategic area is collected at level C and D
 
 ## [unreleased]
 
