@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_24_161847) do
+ActiveRecord::Schema.define(version: 2021_03_26_054912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2021_03_24_161847) do
     t.string "recipient_region"
     t.string "aid_type"
     t.string "form_state"
-    t.string "level"
+    t.string "level", null: false
     t.uuid "extending_organisation_id"
     t.string "recipient_country"
     t.string "geography"

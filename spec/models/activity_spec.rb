@@ -759,11 +759,38 @@ RSpec.describe Activity, type: :model do
         expect(activity).to be_valid
       end
     end
+
+    describe "parent association" do
+      subject { Activity.new(level: level) }
+
+      context "with a fund" do
+        let(:level) { "fund" }
+
+        it { is_expected.to_not validate_presence_of :parent }
+      end
+
+      context "with a programme" do
+        let(:level) { "programme" }
+
+        it { is_expected.to validate_presence_of :parent }
+      end
+
+      context "with a project" do
+        let(:level) { "project" }
+
+        it { is_expected.to validate_presence_of :parent }
+      end
+
+      context "with a third-party project" do
+        let(:level) { "third_party_project" }
+
+        it { is_expected.to validate_presence_of :parent }
+      end
+    end
   end
 
   describe "associations" do
     it { should belong_to(:organisation) }
-    it { should belong_to(:parent).optional }
     it { should have_many(:child_activities).with_foreign_key("parent_id") }
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
     it { should have_many(:implementing_organisations) }

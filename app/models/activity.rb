@@ -85,8 +85,8 @@ class Activity < ApplicationRecord
 
   strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
 
-  validates :level, presence: true, on: :level_step
-  validates :parent, presence: true, on: :parent_step, unless: proc { |activity| activity.fund? }
+  validates :level, presence: true
+  validates :parent, presence: true, unless: proc { |activity| activity.fund? }
   validates :delivery_partner_identifier, presence: true, on: :identifier_step
   validates_with RodaIdentifierValidator, on: :roda_identifier_step
   validates :title, :description, presence: true, on: :purpose_step

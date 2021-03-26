@@ -8,7 +8,7 @@ class ActivityPolicy < ApplicationPolicy
 
   def create?
     if beis_user?
-      return true if record.fund? || record.programme? || record.level.nil?
+      return true if record.fund? || record.programme?
     end
     return false if editable_report_for_organisation.nil?
     record.organisation == user.organisation
@@ -22,9 +22,6 @@ class ActivityPolicy < ApplicationPolicy
     return true if beis_user? && record.organisation == user.organisation
 
     if delivery_partner_user?
-      return true if record.level.nil? && record.organisation == user.organisation
-      return true if record.parent.nil? && record.organisation == user.organisation
-
       return false if record.organisation != user.organisation
       return false if record.fund? || record.programme?
       return false if editable_report_for_organisation_and_fund.nil?
