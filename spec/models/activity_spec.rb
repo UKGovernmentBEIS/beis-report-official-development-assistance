@@ -766,6 +766,7 @@ RSpec.describe Activity, type: :model do
       context "with a fund" do
         let(:level) { "fund" }
 
+        it { is_expected.to validate_absence_of :parent }
         it { is_expected.to_not validate_presence_of :parent }
       end
 
@@ -773,18 +774,21 @@ RSpec.describe Activity, type: :model do
         let(:level) { "programme" }
 
         it { is_expected.to validate_presence_of :parent }
+        it { is_expected.to_not validate_absence_of :parent }
       end
 
       context "with a project" do
         let(:level) { "project" }
 
         it { is_expected.to validate_presence_of :parent }
+        it { is_expected.to_not validate_absence_of :parent }
       end
 
       context "with a third-party project" do
         let(:level) { "third_party_project" }
 
         it { is_expected.to validate_presence_of :parent }
+        it { is_expected.to_not validate_absence_of :parent }
       end
     end
   end
