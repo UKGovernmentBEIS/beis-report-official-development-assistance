@@ -297,14 +297,12 @@ module FormHelpers
     choose("activity[covid19_related]", option: covid19_related)
     click_button t("form.button.activity.submit")
 
-    if level == "programme" && (parent&.is_gcrf_funded? || parent&.roda_identifier_fragment == "GCRF")
+    if parent&.is_gcrf_funded? || parent&.roda_identifier_fragment == "GCRF"
       expect(page).to have_content t("form.legend.activity.gcrf_strategic_area")
       expect(page).to have_content t("form.hint.activity.gcrf_strategic_area")
       check gcrf_strategic_area
       click_button t("form.button.activity.submit")
-    end
 
-    if parent&.is_gcrf_funded? || parent&.roda_identifier_fragment == "GCRF"
       expect(page).to have_content t("form.legend.activity.gcrf_challenge_area")
       expect(page).to have_content t("form.hint.activity.gcrf_challenge_area")
       choose("activity[gcrf_challenge_area]", option: gcrf_challenge_area)
