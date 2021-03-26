@@ -136,7 +136,7 @@ class Activity < ApplicationRecord
   validates :planned_end_date, end_date_after_start_date: true, if: :planned_start_date?
   validates :call_open_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :call_close_date, presence: true, on: :call_dates_step, if: :call_present?
-  validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}, allow_nil: true
+  validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}
 
   acts_as_tree
   belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"
