@@ -61,7 +61,7 @@ RSpec.feature "users can upload planned disbursements" do
     it "puts no value in all forecast columns by default" do
       rows = CSV.parse(@csv_data, headers: true).map(&:to_h)
 
-      expect(rows.first).to eq({
+      expect(rows).to include({
         "Activity Name" => project.title,
         "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
         "Activity RODA Identifier" => project.roda_identifier,
