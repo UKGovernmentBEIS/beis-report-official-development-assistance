@@ -1,4 +1,8 @@
 class BudgetPresenter < SimpleDelegator
+  def budget_type
+    Codelist.new(type: "budget_type", source: "beis").hash_of_named_codes.fetch(super.to_s)
+  end
+
   def iati_type
     return if super.blank?
     Codelist.new(type: "budget_type", source: "iati").hash_of_named_codes.fetch(super)
