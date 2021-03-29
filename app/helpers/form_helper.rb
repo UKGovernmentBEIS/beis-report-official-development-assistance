@@ -14,12 +14,6 @@ module FormHelper
     end
   end
 
-  def list_of_budget_types
-    @list_of_budget_types ||= begin
-      Budget::BUDGET_TYPES.map { |id, name| OpenStruct.new(id: id, name: t("form.label.budget.budget_type_options.#{name}")) }
-    end
-  end
-
   def list_of_financial_quarters
     @list_of_financial_quarters ||= begin
       FinancialQuarter::QUARTERS.map { |id| OpenStruct.new(id: id, name: "Q#{id}") }

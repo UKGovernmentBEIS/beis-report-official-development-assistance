@@ -185,4 +185,8 @@ module CodelistHelper
       OpenStruct.new(name: "#{item["code"]}: #{item["name"]}", code: item["code"])
     }
   end
+
+  def budget_type_options
+    Codelist.new(type: "budget_type", source: "beis").to_objects_with_description
+  end
 end

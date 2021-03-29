@@ -144,6 +144,54 @@ RSpec.describe "Users can create a budget" do
 
         expect(page).to have_content(t("action.budget.create.success"))
       end
+
+      scenario "successfully creates a transferred budget" do
+        fund_activity = create(:fund_activity)
+        programme_activity = create(:programme_activity,
+          parent: fund_activity,
+          extending_organisation: user.organisation)
+        project_activity = create(:project_activity,
+          parent: programme_activity,
+          organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
+
+        visit activities_path
+
+        click_on(project_activity.title)
+
+        click_on(t("page_content.budgets.button.create"))
+
+        choose("Transferred")
+        select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
+        fill_in "budget[value]", with: "1000.00"
+        click_button t("default.button.submit")
+
+        expect(page).to have_content(t("action.budget.create.success"))
+      end
+
+      scenario "successfully creates an external budget" do
+        fund_activity = create(:fund_activity)
+        programme_activity = create(:programme_activity,
+          parent: fund_activity,
+          extending_organisation: user.organisation)
+        project_activity = create(:project_activity,
+          parent: programme_activity,
+          organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
+
+        visit activities_path
+
+        click_on(project_activity.title)
+
+        click_on(t("page_content.budgets.button.create"))
+
+        choose("External Offical Development Assistance")
+        select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
+        fill_in "budget[value]", with: "1000.00"
+        click_button t("default.button.submit")
+
+        expect(page).to have_content(t("action.budget.create.success"))
+      end
     end
   end
 
