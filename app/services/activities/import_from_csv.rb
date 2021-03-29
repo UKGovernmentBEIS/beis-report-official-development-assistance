@@ -263,14 +263,6 @@ module Activities
       }
 
       ALLOWED_BLANK_FIELDS = [
-        "DFID policy marker - Gender",
-        "DFID policy marker - Climate Change - Adaptation",
-        "DFID policy marker - Climate Change - Mitigation",
-        "DFID policy marker - Biodiversity",
-        "DFID policy marker - Desertification",
-        "DFID policy marker - Disability",
-        "DFID policy marker - Disaster Risk Reduction",
-        "DFID policy marker - Nutrition",
         "Implementing organisation reference",
         "BEIS ID",
         "UK DP Named Contact (NF)",
