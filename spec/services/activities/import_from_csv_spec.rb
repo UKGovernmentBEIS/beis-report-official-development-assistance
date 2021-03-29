@@ -289,6 +289,44 @@ RSpec.describe Activities::ImportFromCsv do
 
         expect(existing_activity.reload.recipient_region).to eq("789")
       end
+
+      it "has the expected errors if the activity is invalid and no implementing organisation" do
+        existing_activity.sector_category = nil
+        existing_activity.save(validate: false)
+
+        attributes["Title"] = "New Title"
+        attributes["Recipient Country"] = "SO"
+
+        subject.import([attributes])
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+        expect(subject.errors.count).to eq(1)
+
+        expect(subject.errors.first.message).to eq("Select a category")
+      end
+
+      it "has the expected errors if the activity is invalid and the implementing organisation is invalid" do
+        attributes["Title"] = "New Title"
+        attributes["Recipient Country"] = "SO"
+        attributes["Implementing organisation name"] = "Some Organisation"
+
+        existing_activity.implementing_organisations.delete_all
+
+        existing_activity.sector_category = nil
+        existing_activity.save(validate: false)
+
+        subject.import([attributes])
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(0)
+        expect(subject.errors.count).to eq(2)
+
+        expect(subject.errors.map(&:message)).to match_array([
+          "Select a category",
+          "Implementing organisation sector can't be blank",
+        ])
+      end
     end
   end
 
