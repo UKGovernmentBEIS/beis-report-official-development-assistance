@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe BudgetPolicy do
-  let(:budget) { create(:budget, parent_activity: activity, funding_type: 1) }
+  let(:budget) { create(:budget, parent_activity: activity, budget_type: 1) }
 
   subject { described_class.new(user, budget) }
 

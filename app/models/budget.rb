@@ -14,8 +14,8 @@ class Budget < ApplicationRecord
     :currency,
     :financial_year
   validates :value, numericality: {other_than: 0, less_than_or_equal_to: 99_999_999_999.00}
-  validates :funding_type, inclusion: {in: BUDGET_TYPES.values}
-  validate :direct_budget_type_must_match_source_fund, if: -> { DIRECT_BUDGET_TYPES.include?(funding_type) }
+  validates :budget_type, inclusion: {in: BUDGET_TYPES.values}
+  validate :direct_budget_type_must_match_source_fund, if: -> { DIRECT_BUDGET_TYPES.include?(budget_type) }
 
   def financial_year
     return nil if self[:financial_year].nil?
@@ -41,8 +41,8 @@ class Budget < ApplicationRecord
 
   private def direct_budget_type_must_match_source_fund
     return unless parent_activity&.source_fund_code.present?
-    unless funding_type == parent_activity.source_fund_code
-      errors.add(:funding_type, I18n.t("activerecord.errors.models.budget.attributes.funding_type.source_fund.#{parent_activity.source_fund_code}"))
+    unless budget_type == parent_activity.source_fund_code
+      errors.add(:budget_type, I18n.t("activerecord.errors.models.budget.attributes.funding_type.source_fund.#{parent_activity.source_fund_code}"))
     end
   end
 end

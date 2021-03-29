@@ -13,7 +13,7 @@ en:
         financial_year: Financial year
     legend:
       budget:
-        funding_type: Funding type
+        budget_type: Type
     prompt:
       budget:
         financial_year: Select a financial year
@@ -21,7 +21,7 @@ en:
     header:
       budget:
         financial_year: Financial year
-        funding_type: Funding type
+        budget_type: Type
         value: Budget amount
     body:
       budget:

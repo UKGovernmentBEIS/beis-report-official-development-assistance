@@ -25,7 +25,7 @@ RSpec.describe "Users can create a budget" do
         click_on(activity.title)
         click_on(t("page_content.budgets.button.create"))
 
-        expect(page.has_checked_field?("budget-funding-type-#{activity.source_fund_code}-field")).to be_truthy
+        expect(page.has_checked_field?("budget-budget-type-#{activity.source_fund_code}-field")).to be_truthy
       end
 
       scenario "budget creation is tracked with public_activity" do
@@ -97,7 +97,7 @@ RSpec.describe "Users can create a budget" do
         click_on(t("page_content.budgets.button.create"))
 
         select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
-        choose("budget[funding_type]", option: "1")
+        choose("budget[budget_type]", option: "1")
         fill_in "budget[value]", with: "10000000000000.00"
         click_button t("default.button.submit")
 
@@ -196,7 +196,7 @@ RSpec.describe "Users can create a budget" do
   end
 
   def fill_in_and_submit_budget_form
-    choose("budget[funding_type]", option: "1")
+    choose("Direct (Newton fund)")
     select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
     fill_in "budget[value]", with: "1000.00"
     click_button t("default.button.submit")
