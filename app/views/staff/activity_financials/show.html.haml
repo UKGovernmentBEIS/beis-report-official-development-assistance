@@ -28,6 +28,11 @@
               %dl.govuk-summary-list.financial-summary
                 .govuk-summary-list__row
                   %dt.govuk-summary-list__key
+                    Total budget to date
+                  %dd.govuk-summary-list__value
+                    = @activity.total_budget
+                .govuk-summary-list__row
+                  %dt.govuk-summary-list__key
                     Total spend to date
                   %dd.govuk-summary-list__value
                     = @activity.total_spend
