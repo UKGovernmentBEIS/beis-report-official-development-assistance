@@ -19,7 +19,7 @@ en:
       organisation:
     hint:
       organisation:
-        iati_reference_html: Machine-readable identification string for the organisation. <a href="https://reference.iatistandard.org/organisation-identifiers/" target="_blank" class="govuk-link">See International Aid Transparency Initiative (IATI) for detailed documentation (Opens in new window).</a>
+        iati_reference_html: Machine-readable identification string for the organisation. %{link}.
         default_currency: Default currency for all financial values in this activity report
         language_code: Default language of text in this organisation
   table:
