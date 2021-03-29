@@ -30,14 +30,6 @@ class Activity
       activity.assign_attributes(programme_status: DEFAULT_PROGRAMME_STATUS_FOR_FUNDS)
     end
 
-    def set_level
-      activity.assign_attributes(level: params_for("level"))
-    end
-
-    def set_parent
-      # NO OP
-    end
-
     def set_identifier
       assign_attributes_for_step("delivery_partner_identifier")
     end

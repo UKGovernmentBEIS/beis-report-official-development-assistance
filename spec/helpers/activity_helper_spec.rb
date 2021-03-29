@@ -38,17 +38,6 @@ RSpec.describe ActivityHelper, type: :helper do
       end
     end
 
-    context "when the activity form hasn't been started" do
-      it "shows no steps" do
-        activity = build(:activity, :nil_form_state)
-        all_steps = Activity::FORM_STEPS
-
-        all_steps.each do |step|
-          expect(helper.step_is_complete_or_next?(activity: activity, step: step)).to be(false)
-        end
-      end
-    end
-
     context "when the activity form has been completed" do
       it "shows all steps" do
         activity = build(:activity, form_state: "complete")
@@ -56,16 +45,6 @@ RSpec.describe ActivityHelper, type: :helper do
 
         all_steps.each do |step|
           expect(helper.step_is_complete_or_next?(activity: activity, step: step)).to be(true)
-        end
-      end
-    end
-
-    context "when the activity is a fund" do
-      context "and is at the indetifer step i.e. the parent step has been skipped" do
-        it "returns true" do
-          activity = build(:activity, :level_form_state, level: :fund, parent: nil)
-
-          expect(helper.step_is_complete_or_next?(activity: activity, step: :identifier)).to be(true)
         end
       end
     end

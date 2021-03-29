@@ -330,7 +330,7 @@ RSpec.describe Activities::ImportFromCsv do
 
     context "with a parent activity that is incomplete" do
       it "doesn't allow the new activity to be created" do
-        parent_activity.update!(form_state: "level")
+        parent_activity.update!(form_state: "identifier")
 
         expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
 

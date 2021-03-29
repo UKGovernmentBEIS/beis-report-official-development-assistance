@@ -8,33 +8,6 @@ RSpec.describe ActivityPolicy do
 
   context "as a BEIS user" do
     let(:user) { create(:beis_user) }
-    let(:activity) { CreateActivity.new(organisation_id: user.organisation.id).call }
-
-    it { is_expected.to permit_action(:create) }
-
-    context "when the activity has no level" do
-      let(:activity) { CreateActivity.new(organisation_id: create(:delivery_partner_organisation).id).call }
-
-      context "and the activity does not belong to the same organisation as the user" do
-        it { is_expected.to permit_action(:show) }
-
-        it { is_expected.to forbid_action(:edit) }
-        it { is_expected.to forbid_action(:update) }
-        it { is_expected.to forbid_action(:destroy) }
-      end
-
-      context "and the activity belongs to the same organisation as the user" do
-        before do
-          activity.update(organisation: user.organisation)
-        end
-
-        it { is_expected.to permit_action(:show) }
-        it { is_expected.to permit_action(:edit) }
-        it { is_expected.to permit_action(:update) }
-
-        it { is_expected.to forbid_action(:destroy) }
-      end
-    end
 
     context "when the activity is a fund" do
       let(:activity) { create(:fund_activity, organisation: user.organisation) }
@@ -87,50 +60,6 @@ RSpec.describe ActivityPolicy do
 
   context "as a Delivery partner user" do
     let(:user) { create(:delivery_partner_user) }
-
-    context "when the activity has no level" do
-      let(:activity) { create(:activity, :blank_form_state, level: nil) }
-
-      context "and does not belong to the same organisation as the user" do
-        it { is_expected.to forbid_action(:edit) }
-        it { is_expected.to forbid_action(:update) }
-        it { is_expected.to forbid_action(:destroy) }
-      end
-
-      context "and belongs to the same organisation as the user" do
-        before do
-          activity.update(organisation: user.organisation)
-        end
-
-        it { is_expected.to permit_action(:show) }
-        it { is_expected.to permit_action(:edit) }
-        it { is_expected.to permit_action(:update) }
-
-        it { is_expected.to forbid_action(:destroy) }
-      end
-    end
-
-    context "when the activity has a level but no parent" do
-      let(:activity) { create(:activity, :blank_form_state, level: :project) }
-
-      context "and does not belong to the same organisation as the user" do
-        it { is_expected.to forbid_action(:edit) }
-        it { is_expected.to forbid_action(:update) }
-        it { is_expected.to forbid_action(:destroy) }
-      end
-
-      context "and belongs to the same organisation as the user" do
-        before do
-          activity.update(organisation: user.organisation)
-        end
-
-        it { is_expected.to permit_action(:show) }
-        it { is_expected.to permit_action(:edit) }
-        it { is_expected.to permit_action(:update) }
-
-        it { is_expected.to forbid_action(:destroy) }
-      end
-    end
 
     context "when the activity is a fund" do
       let(:activity) { create(:fund_activity) }

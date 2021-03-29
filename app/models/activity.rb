@@ -16,9 +16,6 @@ class Activity < ApplicationRecord
   }
 
   FORM_STEPS = [
-    :blank,
-    :level,
-    :parent,
     :identifier,
     :roda_identifier,
     :purpose,
@@ -53,8 +50,6 @@ class Activity < ApplicationRecord
   ]
 
   VALIDATION_STEPS = [
-    :level_step,
-    :parent_step,
     :identifier_step,
     :roda_identifier_step,
     :purpose_step,
@@ -90,8 +85,9 @@ class Activity < ApplicationRecord
 
   strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
 
-  validates :level, presence: true, on: :level_step
-  validates :parent, presence: true, on: :parent_step, unless: proc { |activity| activity.fund? }
+  validates :level, presence: true
+  validates :parent, absence: true, if: proc { |activity| activity.fund? }
+  validates :parent, presence: true, unless: proc { |activity| activity.fund? }
   validates :delivery_partner_identifier, presence: true, on: :identifier_step
   validates_with RodaIdentifierValidator, on: :roda_identifier_step
   validates :title, :description, presence: true, on: :purpose_step
@@ -140,7 +136,7 @@ class Activity < ApplicationRecord
   validates :planned_end_date, end_date_after_start_date: true, if: :planned_start_date?
   validates :call_open_date, presence: true, on: :call_dates_step, if: :call_present?
   validates :call_close_date, presence: true, on: :call_dates_step, if: :call_present?
-  validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}, allow_nil: true
+  validates :form_state, inclusion: {in: FORM_STATE_VALIDATION_LIST}
 
   acts_as_tree
   belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"

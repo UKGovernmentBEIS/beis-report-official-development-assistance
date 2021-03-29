@@ -126,11 +126,6 @@ RSpec.describe Activity, type: :model do
     it { should validate_attribute(:actual_end_date).with(:date_within_boundaries) }
 
     context "overall activity state" do
-      context "when the activity form is a draft" do
-        subject { build(:activity, :at_identifier_step, form_state: "blank") }
-        it { should be_valid }
-      end
-
       context "when the activity form is final" do
         subject { build(:activity, :at_identifier_step, form_state: "complete") }
         it { should be_invalid }
@@ -156,29 +151,6 @@ RSpec.describe Activity, type: :model do
         subject(:activity) { build(:activity, form_state: "purpose") }
         it "should be valid" do
           expect(activity.valid?).to be_truthy
-        end
-      end
-    end
-
-    context "when the level is blank" do
-      subject(:activity) { build(:activity, level: nil) }
-      it "should not be valid" do
-        expect(activity.valid?(:level_step)).to be_falsey
-      end
-    end
-
-    context "when the parent is blank" do
-      context "when the activity is a fund" do
-        subject(:activity) { build(:activity, :level_form_state, level: :fund) }
-        it "should be valid" do
-          expect(activity.valid?(:parent_step)).to be_truthy
-        end
-      end
-
-      context "when the activity is not a fund" do
-        subject(:activity) { build(:activity, :blank_form_state) }
-        it "should not be valid" do
-          expect(activity.valid?(:parent_step)).to be_falsey
         end
       end
     end
@@ -787,11 +759,42 @@ RSpec.describe Activity, type: :model do
         expect(activity).to be_valid
       end
     end
+
+    describe "parent association" do
+      subject { Activity.new(level: level) }
+
+      context "with a fund" do
+        let(:level) { "fund" }
+
+        it { is_expected.to validate_absence_of :parent }
+        it { is_expected.to_not validate_presence_of :parent }
+      end
+
+      context "with a programme" do
+        let(:level) { "programme" }
+
+        it { is_expected.to validate_presence_of :parent }
+        it { is_expected.to_not validate_absence_of :parent }
+      end
+
+      context "with a project" do
+        let(:level) { "project" }
+
+        it { is_expected.to validate_presence_of :parent }
+        it { is_expected.to_not validate_absence_of :parent }
+      end
+
+      context "with a third-party project" do
+        let(:level) { "third_party_project" }
+
+        it { is_expected.to validate_presence_of :parent }
+        it { is_expected.to_not validate_absence_of :parent }
+      end
+    end
   end
 
   describe "associations" do
     it { should belong_to(:organisation) }
-    it { should belong_to(:parent).optional }
     it { should have_many(:child_activities).with_foreign_key("parent_id") }
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
     it { should have_many(:implementing_organisations) }
@@ -1432,12 +1435,6 @@ RSpec.describe Activity, type: :model do
       expect(programme.is_gcrf_funded?).to be_falsey
     end
 
-    it "returns false if activity does not yet have a level" do
-      programme = build(:programme_activity, :level_form_state)
-
-      expect(programme.is_gcrf_funded?).to be_falsey
-    end
-
     it "returns false if activity is a fund" do
       fund = build(:fund_activity)
 
@@ -1454,12 +1451,6 @@ RSpec.describe Activity, type: :model do
 
     it "returns false if activity is not associated with the Newton fund" do
       programme = build(:programme_activity, :gcrf_funded)
-
-      expect(programme.is_newton_funded?).to be_falsey
-    end
-
-    it "returns false if activity does not yet have a level" do
-      programme = build(:programme_activity, :level_form_state)
 
       expect(programme.is_newton_funded?).to be_falsey
     end

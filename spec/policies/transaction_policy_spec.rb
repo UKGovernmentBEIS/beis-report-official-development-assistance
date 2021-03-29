@@ -8,17 +8,6 @@ RSpec.describe TransactionPolicy do
   context "when signed in as a BEIS user" do
     let(:user) { create(:beis_user) }
 
-    context "when the activity has no level" do
-      let(:activity) { CreateActivity.new(organisation_id: user.organisation.id).call }
-
-      it { is_expected.to permit_action(:show) }
-
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:edit) }
-      it { is_expected.to forbid_action(:update) }
-      it { is_expected.to forbid_action(:destroy) }
-    end
-
     context "when the activity is a fund" do
       let(:activity) { create(:fund_activity, organisation: user.organisation) }
 
@@ -65,17 +54,6 @@ RSpec.describe TransactionPolicy do
 
   context "when signed in as a Delivery partner user" do
     let(:user) { create(:delivery_partner_user) }
-
-    context "when the activity has no level" do
-      let(:activity) { CreateActivity.new(organisation_id: user.organisation.id).call }
-
-      it { is_expected.to permit_action(:show) }
-
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:edit) }
-      it { is_expected.to forbid_action(:update) }
-      it { is_expected.to forbid_action(:destroy) }
-    end
 
     context "when the activity is a fund" do
       let(:activity) { create(:fund_activity, organisation: user.organisation) }

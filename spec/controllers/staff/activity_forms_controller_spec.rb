@@ -13,12 +13,6 @@ RSpec.describe Staff::ActivityFormsController do
     context "when editing a fund" do
       let(:activity) { create(:fund_activity, organisation: organisation) }
 
-      context "parent step" do
-        subject { get_step :parent }
-
-        it { is_expected.to skip_to_next_step }
-      end
-
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }
 
@@ -35,12 +29,6 @@ RSpec.describe Staff::ActivityFormsController do
     context "when editing a programme" do
       let(:fund) { create(:fund_activity) }
       let(:activity) { create(:programme_activity, organisation: organisation, parent: fund) }
-
-      context "parent step" do
-        subject { get_step :parent }
-
-        it { is_expected.to render_current_step }
-      end
 
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }
@@ -72,12 +60,6 @@ RSpec.describe Staff::ActivityFormsController do
       let(:programme) { create(:programme_activity, parent: fund) }
       let(:activity) { create(:project_activity, organisation: organisation, parent: programme) }
 
-      context "parent step" do
-        subject { get_step :parent }
-
-        it { is_expected.to render_current_step }
-      end
-
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }
 
@@ -96,12 +78,6 @@ RSpec.describe Staff::ActivityFormsController do
       let(:programme) { create(:programme_activity, parent: fund) }
       let(:project) { create(:project_activity, parent: programme) }
       let(:activity) { create(:third_party_project_activity, organisation: organisation, parent: project) }
-
-      context "parent step" do
-        subject { get_step :parent }
-
-        it { is_expected.to render_current_step }
-      end
 
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }

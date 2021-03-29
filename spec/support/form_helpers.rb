@@ -56,24 +56,8 @@ module FormHelpers
     oda_eligibility_lead: Faker::Name.name,
     channel_of_delivery_code: "11000",
     parent: nil,
-    uk_dp_named_contact: Faker::Name.name,
-    skip_level_and_parent_steps: false
+    uk_dp_named_contact: Faker::Name.name
   )
-
-    unless skip_level_and_parent_steps
-      expect(page).to have_content t("form.legend.activity.level")
-      expect(page).to have_content t("form.hint.activity.level")
-      expect(page).to have_content t("form.hint.activity.level_step.#{level}")
-      choose custom_capitalisation(t("page_content.activity.level.#{level}"))
-      click_button t("form.button.activity.submit")
-
-      if parent.present?
-        expect(page).to have_content t("form.legend.activity.parent", parent_level: t("page_content.activity.level.#{level}", level: parent.level), level: t("page_content.activity.level.#{level}"))
-        expect(page).to have_content t("form.hint.activity.parent", parent_level: t("page_content.activity.level.#{parent.level}"), level: t("page_content.activity.level.#{level}"))
-        choose parent.title
-        click_button t("form.button.activity.submit")
-      end
-    end
 
     expect(page).to have_content t("form.label.activity.delivery_partner_identifier")
     expect(page).to have_content t("form.hint.activity.delivery_partner_identifier")

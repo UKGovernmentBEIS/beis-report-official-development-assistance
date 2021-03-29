@@ -295,7 +295,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     visit organisation_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: fund.title)
 
-    fill_in_activity_form(delivery_partner_identifier: identifier, level: "programme", parent: fund, skip_level_and_parent_steps: true)
+    fill_in_activity_form(delivery_partner_identifier: identifier, level: "programme", parent: fund)
 
     activity = Activity.find_by(delivery_partner_identifier: identifier)
     expect(activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
@@ -310,7 +310,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     visit organisation_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: fund.title)
 
-    fill_in_activity_form(roda_identifier_fragment: identifier, level: "programme", parent: fund, skip_level_and_parent_steps: true)
+    fill_in_activity_form(roda_identifier_fragment: identifier, level: "programme", parent: fund)
 
     activity = Activity.find_by(roda_identifier_fragment: identifier)
     expect(activity.transparency_identifier).to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{activity.roda_identifier_fragment}")
@@ -323,7 +323,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       visit organisation_path(delivery_partner)
       click_on t("form.button.activity.new_child", name: fund.title)
 
-      fill_in_activity_form(delivery_partner_identifier: "my-unique-identifier", level: "programme", parent: fund, skip_level_and_parent_steps: true)
+      fill_in_activity_form(delivery_partner_identifier: "my-unique-identifier", level: "programme", parent: fund)
 
       programme = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
       auditable_events = PublicActivity::Activity.where(trackable_id: programme.id)
@@ -340,7 +340,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     visit organisation_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: newton_fund.title)
 
-    fill_in_activity_form(level: "programme", roda_identifier_fragment: identifier, parent: newton_fund, skip_level_and_parent_steps: true)
+    fill_in_activity_form(level: "programme", roda_identifier_fragment: identifier, parent: newton_fund)
 
     expect(page).to have_content t("action.programme.create.success")
     activity = Activity.find_by(roda_identifier_fragment: identifier)
@@ -354,7 +354,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     visit organisation_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: other_fund.title)
 
-    fill_in_activity_form(level: "programme", roda_identifier_fragment: identifier, parent: other_fund, skip_level_and_parent_steps: true)
+    fill_in_activity_form(level: "programme", roda_identifier_fragment: identifier, parent: other_fund)
 
     expect(page).to have_content t("action.programme.create.success")
     activity = Activity.find_by(roda_identifier_fragment: identifier)
@@ -368,6 +368,6 @@ RSpec.feature "BEIS users can create a programme level activity" do
     visit organisation_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: newton_fund.title)
 
-    fill_in_activity_form(level: "programme", parent: newton_fund, skip_level_and_parent_steps: true)
+    fill_in_activity_form(level: "programme", parent: newton_fund)
   end
 end

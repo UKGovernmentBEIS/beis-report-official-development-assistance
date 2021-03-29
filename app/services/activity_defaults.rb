@@ -54,9 +54,7 @@ class ActivityDefaults
   end
 
   def form_state
-    parent_step_index = Activity::FORM_STEPS.index(:parent)
-
-    Activity::FORM_STEPS[parent_step_index + 1].to_s
+    Activity::FORM_STEPS.first.to_s
   end
 
   def check_params!

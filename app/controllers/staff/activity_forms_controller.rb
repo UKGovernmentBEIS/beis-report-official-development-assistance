@@ -10,12 +10,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     authorize @activity
 
     case step
-    when :parent
-      skip_step if @activity.fund?
     when :roda_identifier
       skip_step unless @activity.can_set_roda_identifier?
-    when :blank
-      skip_step
     when :objectives
       skip_step if @activity.fund?
     when :programme_status
