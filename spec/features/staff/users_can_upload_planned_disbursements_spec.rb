@@ -21,24 +21,77 @@ RSpec.feature "users can upload planned disbursements" do
     click_link t("action.planned_disbursement.upload.link")
   end
 
-  scenario "downloading a CSV template with activities for the current report" do
-    click_link t("action.planned_disbursement.download.button")
+  describe "downloading a CSV template with activities for the current report" do
+    before do
+      click_link t("action.planned_disbursement.download.button")
+      @csv_data = page.body.delete_prefix("\uFEFF")
+    end
 
-    csv_data = page.body.delete_prefix("\uFEFF")
-    rows = CSV.parse(csv_data, headers: true).map(&:to_h)
+    it "lists the name and ID of all reportable activities" do
+      rows = CSV.parse(@csv_data, headers: true).map(&:to_h)
+      activity_data = rows.map { |row| row.reject { |key, _| key =~ /^FC / } }
 
-    expect(rows).to match_array([
-      {
+      expect(activity_data).to match_array([
+        {
+          "Activity Name" => project.title,
+          "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
+          "Activity RODA Identifier" => project.roda_identifier,
+        },
+        {
+          "Activity Name" => sibling_project.title,
+          "Activity Delivery Partner Identifier" => sibling_project.delivery_partner_identifier,
+          "Activity RODA Identifier" => sibling_project.roda_identifier,
+        },
+      ])
+    end
+
+    it "incldues headings for all reportable quarters" do
+      headings = CSV.parse(@csv_data).first.to_a
+
+      expect(headings).to eq([
+        "Activity Name", "Activity Delivery Partner Identifier", "Activity RODA Identifier",
+        "FC 2021/22 FY Q2", "FC 2021/22 FY Q3", "FC 2021/22 FY Q4", "FC 2022/23 FY Q1",
+        "FC 2022/23 FY Q2", "FC 2022/23 FY Q3", "FC 2022/23 FY Q4", "FC 2023/24 FY Q1",
+        "FC 2023/24 FY Q2", "FC 2023/24 FY Q3", "FC 2023/24 FY Q4", "FC 2024/25 FY Q1",
+        "FC 2024/25 FY Q2", "FC 2024/25 FY Q3", "FC 2024/25 FY Q4", "FC 2025/26 FY Q1",
+        "FC 2025/26 FY Q2", "FC 2025/26 FY Q3", "FC 2025/26 FY Q4", "FC 2026/27 FY Q1",
+      ])
+    end
+
+    it "puts no value in all forecast columns by default" do
+      rows = CSV.parse(@csv_data, headers: true).map(&:to_h)
+
+      expect(rows.first).to eq({
         "Activity Name" => project.title,
         "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
         "Activity RODA Identifier" => project.roda_identifier,
-      },
-      {
-        "Activity Name" => sibling_project.title,
-        "Activity Delivery Partner Identifier" => sibling_project.delivery_partner_identifier,
-        "Activity RODA Identifier" => sibling_project.roda_identifier,
-      },
-    ])
+
+        "FC 2021/22 FY Q2" => "",
+        "FC 2021/22 FY Q3" => "",
+        "FC 2021/22 FY Q4" => "",
+        "FC 2022/23 FY Q1" => "",
+
+        "FC 2022/23 FY Q2" => "",
+        "FC 2022/23 FY Q3" => "",
+        "FC 2022/23 FY Q4" => "",
+        "FC 2023/24 FY Q1" => "",
+
+        "FC 2023/24 FY Q2" => "",
+        "FC 2023/24 FY Q3" => "",
+        "FC 2023/24 FY Q4" => "",
+        "FC 2024/25 FY Q1" => "",
+
+        "FC 2024/25 FY Q2" => "",
+        "FC 2024/25 FY Q3" => "",
+        "FC 2024/25 FY Q4" => "",
+        "FC 2025/26 FY Q1" => "",
+
+        "FC 2025/26 FY Q2" => "",
+        "FC 2025/26 FY Q3" => "",
+        "FC 2025/26 FY Q4" => "",
+        "FC 2026/27 FY Q1" => "",
+      })
+    end
   end
 
   scenario "not uploading a file" do
@@ -79,6 +132,20 @@ RSpec.feature "users can upload planned disbursements" do
       expect(page).to have_xpath("td[3]", text: "not a number")
       expect(page).to have_xpath("td[4]", text: t("importer.errors.planned_disbursement.non_numeric_value"))
     end
+  end
+
+  scenario "uploading a partially completed template" do
+    ids = [project, sibling_project].map(&:roda_identifier)
+
+    upload_csv <<~CSV
+      Activity RODA Identifier | FC 2021/22 FY Q2 | FC 2021/22 FY Q3 | FC 2021/22 FY Q4
+      #{ids[0]}                | 10               |                  |
+      #{ids[1]}                | 40               |                  | 60
+    CSV
+
+    expect(PlannedDisbursement.count).to eq(3)
+    expect(page).to have_text(t("action.planned_disbursement.upload.success"))
+    expect(page).not_to have_xpath("//tbody/tr")
   end
 
   scenario "uploading a set of forecasts with encoding errors" do
