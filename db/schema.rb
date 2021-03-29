@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_26_085937) do
-
+ActiveRecord::Schema.define(version: 2021_03_29_133046) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -55,14 +54,14 @@ ActiveRecord::Schema.define(version: 2021_03_26_085937) do
     t.integer "oda_eligibility", default: 1, null: false
     t.boolean "fstc_applies"
     t.integer "covid19_related", default: 0
-    t.integer "policy_marker_gender"
-    t.integer "policy_marker_climate_change_adaptation"
-    t.integer "policy_marker_climate_change_mitigation"
-    t.integer "policy_marker_biodiversity"
-    t.integer "policy_marker_desertification"
-    t.integer "policy_marker_disability"
-    t.integer "policy_marker_disaster_risk_reduction"
-    t.integer "policy_marker_nutrition"
+    t.integer "policy_marker_gender", default: 1000
+    t.integer "policy_marker_climate_change_adaptation", default: 1000
+    t.integer "policy_marker_climate_change_mitigation", default: 1000
+    t.integer "policy_marker_biodiversity", default: 1000
+    t.integer "policy_marker_desertification", default: 1000
+    t.integer "policy_marker_disability", default: 1000
+    t.integer "policy_marker_disaster_risk_reduction", default: 1000
+    t.integer "policy_marker_nutrition", default: 1000
     t.integer "sdg_1"
     t.integer "sdg_2"
     t.integer "sdg_3"
