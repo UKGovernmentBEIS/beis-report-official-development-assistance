@@ -571,6 +571,7 @@
 - Only set provided variables when updating via the CSV upload
 - Refactor handling of implementing organisations
 - Set all activity policy marker fields to `not_assessed` by default
+- Add total spend and total budget to the activity financials page
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-41...HEAD
 [release-41]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-40...release-41
