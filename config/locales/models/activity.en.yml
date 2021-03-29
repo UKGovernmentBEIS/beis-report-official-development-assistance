@@ -186,7 +186,7 @@ en:
         roda_identifier_fragment: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.
         roda_identifier_fragment_with_parent_html: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.<br><br>The RODA identifier for this activity's parent is <strong>%{identifier}</strong>.
         sdgs_apply: For broad programme calls, please select the SDG most commonly represented across the individual projects within the programme. If unable, or if the activity is a delivery line, you may select 'N/A'.
-        sector_category: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the <a href='https://www.oecd.org/dac/stats/documentupload/2015%20CRS%20purpose%20codes%20EN_updated%20April%202016.pdf' target='_blank' class='govuk-link'>CRS purpose codes</a>
+        sector_category_html: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the %{link}
         title: A short title that explains the purpose of the %{level}
         level: Select the type of activity
         level_step:
