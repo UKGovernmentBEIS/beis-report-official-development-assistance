@@ -87,7 +87,7 @@ module Activities
         @activity = find_activity_by_roda_id(row["RODA ID"])
         @organisation = organisation
         @row = row
-        @converter = Converter.new(row)
+        @converter = Converter.new(row, :update)
         @errors.update(@converter.errors)
       end
 
@@ -269,9 +269,10 @@ module Activities
         "NF Partner Country DP",
       ]
 
-      def initialize(row)
+      def initialize(row, method = :create)
         @row = row
         @errors = {}
+        @method = method
         @attributes = convert_to_attributes
       end
 
@@ -284,17 +285,28 @@ module Activities
       end
 
       def convert_to_attributes
-        attributes = FIELDS.each_with_object({}) { |(attr_name, column_name), attrs|
+        attributes = fields.each_with_object({}) { |(attr_name, column_name), attrs|
           attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name]) if field_should_be_converted?(column_name)
         }
 
-        attributes[:geography] = infer_geography(attributes)
-        attributes[:requires_additional_benefitting_countries] = (@row["Recipient Country"] && @row["Intended Beneficiaries"]).present?
-        attributes[:recipient_region] ||= inferred_region
-        attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
-        attributes[:sector_category] = get_sector_category(attributes[:sector])
+        if @method == :create
+          attributes[:requires_additional_benefitting_countries] = (@row["Recipient Country"] && @row["Intended Beneficiaries"]).present?
+          attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
+        end
+
+        attributes[:geography] = infer_geography(attributes) if (attributes[:recipient_region] || attributes[:recipient_country]).present?
+        attributes[:recipient_region] ||= inferred_region if attributes[:recipient_country].present?
+        attributes[:sector_category] = get_sector_category(attributes[:sector]) if attributes[:sector].present?
 
         attributes
+      end
+
+      def fields
+        return FIELDS if @method == :create
+
+        columns_to_update = @row.to_h.reject { |_k, v| v.blank? }.keys
+        converter_keys = FIELDS.select { |_k, v| columns_to_update.include?(v) }.keys
+        FIELDS.slice(*converter_keys)
       end
 
       def field_should_be_converted?(column_name)
@@ -500,7 +512,11 @@ module Activities
       end
 
       def infer_geography(attributes)
-        attributes[:recipient_region].present? ? :recipient_region : :recipient_country
+        if attributes[:recipient_region].present?
+          :recipient_region
+        elsif attributes[:recipient_country].present?
+          :recipient_country
+        end
       end
 
       def inferred_region
