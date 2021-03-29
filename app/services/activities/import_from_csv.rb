@@ -96,18 +96,22 @@ module Activities
 
         @activity.assign_attributes(@converter.to_h)
 
-        implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
-        implementing_organisation = implementing_organisation_builder.build
+        if row["Implementing organisation name"].present? || row["Implementing organisation sector"].present?
+          implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
+          implementing_organisation = implementing_organisation_builder.organisation
 
-        @activity.implementing_organisations = [implementing_organisation] if implementing_organisation.valid?
+          if implementing_organisation.valid?
+            @activity.implementing_organisations = [implementing_organisation]
+          else
+            implementing_organisation_builder.add_errors(@errors)
+          end
+        end
 
         return if @activity.save
 
         @activity.errors.each do |attr_name, message|
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
         end
-
-        implementing_organisation_builder.add_errors(@errors)
       end
 
       def find_activity_by_roda_id(roda_id)
@@ -144,7 +148,7 @@ module Activities
 
         implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
         if row["Implementing organisation name"].present? || row["Implementing organisation sector"].present?
-          implementing_organisation = implementing_organisation_builder.build
+          implementing_organisation = implementing_organisation_builder.organisation
           @activity.implementing_organisations = [implementing_organisation]
         end
 
@@ -181,20 +185,24 @@ module Activities
         @row = row
       end
 
-      def build
-        ImplementingOrganisation.find_or_initialize_by(
-          activity_id: activity.id
-        ) { |implementing_organisation|
-          implementing_organisation.name = row["Implementing organisation name"]
-          implementing_organisation.reference = row["Implementing organisation reference"]
-          implementing_organisation.organisation_type = row["Implementing organisation sector"]
-        }
+      def organisation
+        @organisation ||= begin
+          ImplementingOrganisation.find_or_initialize_by(
+            activity_id: activity.id
+          ) { |implementing_organisation|
+            implementing_organisation.name = row["Implementing organisation name"]
+            implementing_organisation.reference = row["Implementing organisation reference"]
+            implementing_organisation.organisation_type = row["Implementing organisation sector"]
+          }
+        end
       end
 
       def add_errors(errors)
+        return if organisation.valid?
+
         errors.delete(:implementing_organisations)
 
-        implementing_organisation_errors = @activity.implementing_organisations.first.errors.messages
+        implementing_organisation_errors = organisation.errors.messages
         errors["implementing_organisation_name"] = [row["Implementing organisation name"], implementing_organisation_errors[:name].first] if implementing_organisation_errors[:name].any?
         errors["implementing_organisation_organisation_type"] = [row["Implementing organisation sector"], implementing_organisation_errors[:organisation_type].first] if implementing_organisation_errors[:organisation_type].any?
         errors
