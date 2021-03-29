@@ -568,6 +568,7 @@
 ## [unreleased]
 
 - Add headings for the next 20 financial quarters to the forecast CSV upload template
+- Only set provided variables when updating via the CSV upload
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-41...HEAD
 [release-41]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-40...release-41

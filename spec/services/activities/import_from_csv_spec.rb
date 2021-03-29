@@ -168,7 +168,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.planned_end_date).to eq(DateTime.parse(existing_activity_attributes["Planned end date"]))
       expect(existing_activity.actual_start_date).to eq(DateTime.parse(existing_activity_attributes["Actual start date"]))
       expect(existing_activity.actual_end_date).to eq(DateTime.parse(existing_activity_attributes["Actual end date"]))
-      expect(existing_activity.call_present).to eq(true)
       expect(existing_activity.sector).to eq(existing_activity_attributes["Sector"])
       expect(existing_activity.sector_category).to eq("112")
       expect(existing_activity.channel_of_delivery_code).to eq(existing_activity_attributes["Channel of delivery code"])
@@ -178,9 +177,9 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.policy_marker_climate_change_mitigation).to eq("significant_objective")
       expect(existing_activity.policy_marker_biodiversity).to eq("principal_objective")
       expect(existing_activity.policy_marker_desertification).to eq("not_assessed")
-      expect(existing_activity.policy_marker_disability).to eq("not_assessed")
+      expect(existing_activity.policy_marker_disability).to eq(nil)
       expect(existing_activity.policy_marker_disaster_risk_reduction).to eq("not_targeted")
-      expect(existing_activity.policy_marker_nutrition).to eq("not_assessed")
+      expect(existing_activity.policy_marker_nutrition).to eq(nil)
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
       expect(existing_activity.fstc_applies).to eq(true)
       expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives (DP Definition)"])
@@ -239,6 +238,57 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.created.count).to eq(0)
       expect(subject.updated.count).to eq(0)
       expect(subject.errors.count).to eq(1)
+    end
+
+    context "when carrying out a partial update" do
+      let!(:old_activity_attributes) { existing_activity.attributes }
+
+      let(:attributes) do
+        attributes = existing_activity_attributes.map { |k, _v| [k, ""] }.to_h
+        attributes["RODA ID"] = existing_activity.roda_identifier_compound
+        attributes
+      end
+      let(:changed_attributes) do
+        (existing_activity.reload.attributes.to_a - old_activity_attributes.to_a).to_h.except("updated_at")
+      end
+
+      it "allows a partial update without a sector code" do
+        attributes["Title"] = "New Title"
+        attributes["Description"] = "Here is a description"
+
+        subject.import([attributes])
+
+        expect(subject.updated.count).to eq(1)
+
+        expect(changed_attributes).to eq(
+          "title" => "New Title",
+          "description" => "Here is a description"
+        )
+      end
+
+      it "infers the geography" do
+        existing_activity.geography = "recipient_country"
+        existing_activity.save
+
+        attributes["Recipient Region"] = 789
+
+        subject.import([attributes])
+
+        expect(existing_activity.reload.geography).to eq("recipient_region")
+      end
+
+      it "infers the region if it is not present" do
+        existing_activity.recipient_region = nil
+        existing_activity.save
+
+        attributes["Recipient Country"] = "KH"
+
+        subject.import([attributes])
+
+        expect(subject.updated.count).to eq(1)
+
+        expect(existing_activity.reload.recipient_region).to eq("789")
+      end
     end
   end
 
