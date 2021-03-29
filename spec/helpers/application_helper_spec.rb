@@ -38,4 +38,10 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
     end
   end
+
+  describe "#link_to_new_window" do
+    it "returns a link with text appended to let the user know it will open in a new window" do
+      expect(helper.link_to_new_window("Data dictionary", "http://data.dictionary")).to eql(link_to("Data dictionary (opens in new window)", "http://data.dictionary", class: "govuk-link", target: "_blank"))
+    end
+  end
 end

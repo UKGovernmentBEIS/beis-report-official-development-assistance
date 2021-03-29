@@ -19,4 +19,8 @@ module ApplicationHelper
       link_to("#{text} #{raw(span)}".html_safe, href, class: "govuk-link")
     end
   end
+
+  def link_to_new_window(text, href)
+    link_to("#{text} (opens in new window)", href, class: "govuk-link", target: "_blank")
+  end
 end
