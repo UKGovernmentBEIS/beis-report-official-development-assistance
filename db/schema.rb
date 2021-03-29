@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_29_133046) do
+ActiveRecord::Schema.define(version: 2021_03_29_102404) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -107,7 +108,6 @@ ActiveRecord::Schema.define(version: 2021_03_29_133046) do
 
   create_table "budgets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "budget_type"
-    t.string "status"
     t.date "period_start_date"
     t.date "period_end_date"
     t.decimal "value", precision: 13, scale: 2

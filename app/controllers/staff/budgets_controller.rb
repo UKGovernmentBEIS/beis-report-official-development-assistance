@@ -62,7 +62,6 @@ class Staff::BudgetsController < Staff::BaseController
   def budget_params
     params.require(:budget).permit(
       :budget_type,
-      :status,
       :value,
       :financial_year,
       :currency,
