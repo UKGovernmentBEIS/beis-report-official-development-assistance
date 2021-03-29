@@ -614,4 +614,12 @@ RSpec.describe ActivityPresenter do
       expect(result.channel_of_delivery_code).to eq("20000: Non-Governmental Organisation (NGO) and Civil Society")
     end
   end
+
+  describe "#total_spend" do
+    it "returns the value to two decimal places with a currency symbol" do
+      activity = build(:programme_activity)
+      create(:transaction, parent_activity: activity, value: 20)
+      expect(described_class.new(activity).total_spend).to eq("£20.00")
+    end
+  end
 end

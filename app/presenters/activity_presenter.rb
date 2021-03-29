@@ -248,4 +248,8 @@ class ActivityPresenter < SimpleDelegator
 
     "#{item["code"]}: #{item["name"]}"
   end
+
+  def total_spend
+    ActionController::Base.helpers.number_to_currency(super, unit: "£")
+  end
 end

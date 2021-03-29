@@ -21,6 +21,17 @@
           %h2.govuk-heading-l
             = t("page_title.activity.financials")
 
+          .govuk-grid-row
+            .govuk-grid-column-one-half
+              %h3.govuk-heading-m
+                Summary
+              %dl.govuk-summary-list.financial-summary
+                .govuk-summary-list__row
+                  %dt.govuk-summary-list__key
+                    Total spend to date
+                  %dd.govuk-summary-list__value
+                    = @activity.total_spend
+
           - if @activity.fund? && policy(:fund).create?
             = render partial: "staff/shared/activities/budgets",
               locals: { activity: @activity, budget_presenters: @budget_presenters }

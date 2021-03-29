@@ -119,14 +119,19 @@ RSpec.feature "Users can view an activity" do
       end
     end
 
-    scenario "the activity financials can be viewed" do
+    scenario "the financial summary and activity financials can be viewed" do
       activity = create(:programme_activity, organisation: user.organisation)
-      transaction = create(:transaction, parent_activity: activity)
+      transaction = create(:transaction, parent_activity: activity, value: 10)
       budget = create(:budget, parent_activity: activity)
+
+      create(:transaction, parent_activity: activity, value: 50)
 
       visit organisation_activity_financials_path(activity.organisation, activity)
       within ".govuk-tabs__list-item--selected" do
         expect(page).to have_content "Financials"
+      end
+      within ".financial-summary" do
+        expect(page).to have_content "Total spend to date £60.00"
       end
       expect(page).to have_content transaction.value
       expect(page).to have_content budget.value
