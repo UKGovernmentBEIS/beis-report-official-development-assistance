@@ -60,37 +60,36 @@ RSpec.feature "users can upload planned disbursements" do
 
     it "puts no value in all forecast columns by default" do
       rows = CSV.parse(@csv_data, headers: true).map(&:to_h)
+      expect(rows.size).to eq(2)
 
-      expect(rows).to include({
-        "Activity Name" => project.title,
-        "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
-        "Activity RODA Identifier" => project.roda_identifier,
+      rows.each do |row|
+        expect(row).to match hash_including(
+          "FC 2021/22 FY Q2" => "",
+          "FC 2021/22 FY Q3" => "",
+          "FC 2021/22 FY Q4" => "",
+          "FC 2022/23 FY Q1" => "",
 
-        "FC 2021/22 FY Q2" => "",
-        "FC 2021/22 FY Q3" => "",
-        "FC 2021/22 FY Q4" => "",
-        "FC 2022/23 FY Q1" => "",
+          "FC 2022/23 FY Q2" => "",
+          "FC 2022/23 FY Q3" => "",
+          "FC 2022/23 FY Q4" => "",
+          "FC 2023/24 FY Q1" => "",
 
-        "FC 2022/23 FY Q2" => "",
-        "FC 2022/23 FY Q3" => "",
-        "FC 2022/23 FY Q4" => "",
-        "FC 2023/24 FY Q1" => "",
+          "FC 2023/24 FY Q2" => "",
+          "FC 2023/24 FY Q3" => "",
+          "FC 2023/24 FY Q4" => "",
+          "FC 2024/25 FY Q1" => "",
 
-        "FC 2023/24 FY Q2" => "",
-        "FC 2023/24 FY Q3" => "",
-        "FC 2023/24 FY Q4" => "",
-        "FC 2024/25 FY Q1" => "",
+          "FC 2024/25 FY Q2" => "",
+          "FC 2024/25 FY Q3" => "",
+          "FC 2024/25 FY Q4" => "",
+          "FC 2025/26 FY Q1" => "",
 
-        "FC 2024/25 FY Q2" => "",
-        "FC 2024/25 FY Q3" => "",
-        "FC 2024/25 FY Q4" => "",
-        "FC 2025/26 FY Q1" => "",
-
-        "FC 2025/26 FY Q2" => "",
-        "FC 2025/26 FY Q3" => "",
-        "FC 2025/26 FY Q4" => "",
-        "FC 2026/27 FY Q1" => "",
-      })
+          "FC 2025/26 FY Q2" => "",
+          "FC 2025/26 FY Q3" => "",
+          "FC 2025/26 FY Q4" => "",
+          "FC 2026/27 FY Q1" => "",
+        )
+      end
     end
   end
 
