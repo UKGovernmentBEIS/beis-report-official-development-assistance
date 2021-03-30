@@ -565,7 +565,7 @@
 - Bump Mimemagic version to 0.3.8
 - GCRF Strategic area is collected at level C and D
 
-## [unreleased]
+## [release-42] - 2021-03-30
 
 - Add headings for the next 20 financial quarters to the forecast CSV upload template
 - Only set provided variables when updating via the CSV upload
@@ -573,7 +573,10 @@
 - Set all activity policy marker fields to `not_assessed` by default
 - Add total spend and total budget to the activity financials page
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-41...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-42...HEAD
+[release-42]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-41...release-42
 [release-41]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-40...release-41
 [release-40]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-39...release-40
 [release-39]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-38...release-39
