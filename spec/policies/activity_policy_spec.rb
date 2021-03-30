@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ActivityPolicy do
-  let(:report) { create(:report, organisation: user.organisation) }
+  let!(:report) { create(:report, organisation: user.organisation, fund: activity.associated_fund, state: :approved) }
   let(:user) { build_stubbed(:beis_user) }
 
   subject { described_class.new(user, activity) }
@@ -117,10 +117,6 @@ RSpec.describe ActivityPolicy do
         end
 
         context "and there is no editable report for the users organisation" do
-          before do
-            report.update(state: :approved)
-          end
-
           it { is_expected.to permit_action(:show) }
 
           it { is_expected.to forbid_action(:create) }
@@ -135,28 +131,13 @@ RSpec.describe ActivityPolicy do
             report.update(state: :active)
           end
 
-          context "and the associated fund is not the same as the activity" do
-            it { is_expected.to permit_action(:show) }
+          it { is_expected.to permit_action(:show) }
+          it { is_expected.to permit_action(:create) }
+          it { is_expected.to permit_action(:edit) }
+          it { is_expected.to permit_action(:update) }
 
-            it { is_expected.to forbid_action(:edit) }
-            it { is_expected.to forbid_action(:update) }
-            it { is_expected.to forbid_action(:destroy) }
-            it { is_expected.to forbid_action(:redact_from_iati) }
-          end
-
-          context "and the associated fund is the same as the activity" do
-            before do
-              report.update(fund: activity.associated_fund)
-            end
-
-            it { is_expected.to permit_action(:show) }
-            it { is_expected.to permit_action(:create) }
-            it { is_expected.to permit_action(:edit) }
-            it { is_expected.to permit_action(:update) }
-
-            it { is_expected.to forbid_action(:destroy) }
-            it { is_expected.to forbid_action(:redact_from_iati) }
-          end
+          it { is_expected.to forbid_action(:destroy) }
+          it { is_expected.to forbid_action(:redact_from_iati) }
         end
       end
     end
@@ -179,10 +160,6 @@ RSpec.describe ActivityPolicy do
         end
 
         context "and there is no editable report for the users organisation" do
-          before do
-            report.update(state: :approved)
-          end
-
           it { is_expected.to permit_action(:show) }
 
           it { is_expected.to forbid_action(:create) }
@@ -197,28 +174,13 @@ RSpec.describe ActivityPolicy do
             report.update(state: :active)
           end
 
-          context "and the associated fund is not the same as the activity" do
-            it { is_expected.to permit_action(:show) }
+          it { is_expected.to permit_action(:show) }
+          it { is_expected.to permit_action(:create) }
+          it { is_expected.to permit_action(:edit) }
+          it { is_expected.to permit_action(:update) }
 
-            it { is_expected.to forbid_action(:edit) }
-            it { is_expected.to forbid_action(:update) }
-            it { is_expected.to forbid_action(:destroy) }
-            it { is_expected.to forbid_action(:redact_from_iati) }
-          end
-
-          context "and the associated fund is the same as the activity" do
-            before do
-              report.update(fund: activity.associated_fund)
-            end
-
-            it { is_expected.to permit_action(:show) }
-            it { is_expected.to permit_action(:create) }
-            it { is_expected.to permit_action(:edit) }
-            it { is_expected.to permit_action(:update) }
-
-            it { is_expected.to forbid_action(:destroy) }
-            it { is_expected.to forbid_action(:redact_from_iati) }
-          end
+          it { is_expected.to forbid_action(:destroy) }
+          it { is_expected.to forbid_action(:redact_from_iati) }
         end
       end
     end
