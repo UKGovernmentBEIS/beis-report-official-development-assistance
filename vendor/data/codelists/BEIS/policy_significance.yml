@@ -2,24 +2,20 @@
 attributes:
   category-codelist:
   name: PolicySignificance
-  complete: '1'
+  complete: "1"
 data:
-  - code: '0'
+  - code: "1000"
+    name: Not assessed
+    desctiption: The activity has not been examined as yet
+  - code: "0"
     name: Not targeted
     description: The score “not targeted” means that the activity was examined but found not to target the policy objective
-  - code: '1'
+  - code: "1"
     name: Significant objective
     description: Significant (secondary) policy objectives are those which, although important, were not the prime motivation for undertaking the activity
-  - code: '2'
+  - code: "2"
     name: Principal objective
     description: Principal (primary) policy objectives are those which can be identified as being fundamental in the design and impact of the activity and which are an explicit objective of the activity. They may be selected by answering the question “Would the activity have been undertaken without this objective?”
-  - code: '3'
-    name: Principal objective AND in support of an action programme
-    description: For desertification-related aid only
-  - code: '4'
-    name: Explicit primary objective
-    description: ''
 metadata:
-  url: https://iatistandard.org/en/iati-standard/203/codelists/policysignificance/
   name: Policy Markers
-  description: ''
+  description: ""
