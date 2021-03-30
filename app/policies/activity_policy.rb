@@ -14,6 +14,15 @@ class ActivityPolicy < ApplicationPolicy
     record.organisation == user.organisation
   end
 
+  def create_child?
+    return record.fund? if beis_user?
+
+    return false if record.third_party_project?
+    return false unless editable_report?
+
+    record.extending_organisation == user.organisation
+  end
+
   def edit?
     update?
   end
@@ -50,6 +59,11 @@ class ActivityPolicy < ApplicationPolicy
   private
 
   def editable_report?
-    Report.editable.for_activity(record).exists?
+    fund = record.associated_fund
+
+    Report.editable.where(
+      fund: fund,
+      organisation: [record.extending_organisation, record.organisation]
+    ).exists?
   end
 end

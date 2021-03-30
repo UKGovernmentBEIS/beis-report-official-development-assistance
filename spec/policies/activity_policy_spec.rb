@@ -19,6 +19,8 @@ RSpec.describe ActivityPolicy do
 
       it { is_expected.to forbid_action(:destroy) }
       it { is_expected.to forbid_action(:redact_from_iati) }
+
+      it { is_expected.to permit_action(:create_child) }
     end
 
     context "when the activity is a programme" do
@@ -31,6 +33,8 @@ RSpec.describe ActivityPolicy do
 
       it { is_expected.to forbid_action(:destroy) }
       it { is_expected.to forbid_action(:redact_from_iati) }
+
+      it { is_expected.to forbid_action(:create_child) }
     end
 
     context "when the activity is a project" do
@@ -43,6 +47,8 @@ RSpec.describe ActivityPolicy do
       it { is_expected.to forbid_action(:edit) }
       it { is_expected.to forbid_action(:update) }
       it { is_expected.to forbid_action(:destroy) }
+
+      it { is_expected.to forbid_action(:create_child) }
     end
 
     context "when the activity is a third-party project" do
@@ -55,6 +61,8 @@ RSpec.describe ActivityPolicy do
       it { is_expected.to forbid_action(:edit) }
       it { is_expected.to forbid_action(:update) }
       it { is_expected.to forbid_action(:destroy) }
+
+      it { is_expected.to forbid_action(:create_child) }
     end
   end
 
@@ -70,6 +78,8 @@ RSpec.describe ActivityPolicy do
       it { is_expected.to forbid_action(:update) }
       it { is_expected.to forbid_action(:destroy) }
       it { is_expected.to forbid_action(:redact_from_iati) }
+
+      it { is_expected.to forbid_action(:create_child) }
     end
 
     context "when the activity is a programme" do
@@ -82,6 +92,8 @@ RSpec.describe ActivityPolicy do
         it { is_expected.to forbid_action(:update) }
         it { is_expected.to forbid_action(:destroy) }
         it { is_expected.to forbid_action(:redact_from_iati) }
+
+        it { is_expected.to forbid_action(:create_child) }
       end
 
       context "and the users organisation is the extending organisation" do
@@ -96,6 +108,16 @@ RSpec.describe ActivityPolicy do
         it { is_expected.to forbid_action(:update) }
         it { is_expected.to forbid_action(:destroy) }
         it { is_expected.to forbid_action(:redact_from_iati) }
+
+        it { is_expected.to forbid_action(:create_child) }
+
+        context "and there is an editable report for the users organisation" do
+          before do
+            report.update(state: :active)
+          end
+
+          it { is_expected.to permit_action(:create_child) }
+        end
       end
     end
 
@@ -109,6 +131,8 @@ RSpec.describe ActivityPolicy do
         it { is_expected.to forbid_action(:update) }
         it { is_expected.to forbid_action(:destroy) }
         it { is_expected.to forbid_action(:redact_from_iati) }
+
+        it { is_expected.to forbid_action(:create_child) }
       end
 
       context "and the users organisation is the extending organisation" do
@@ -124,6 +148,8 @@ RSpec.describe ActivityPolicy do
           it { is_expected.to forbid_action(:update) }
           it { is_expected.to forbid_action(:destroy) }
           it { is_expected.to forbid_action(:redact_from_iati) }
+
+          it { is_expected.to forbid_action(:create_child) }
         end
 
         context "and there is an editable report for the users organisation" do
@@ -138,6 +164,8 @@ RSpec.describe ActivityPolicy do
 
           it { is_expected.to forbid_action(:destroy) }
           it { is_expected.to forbid_action(:redact_from_iati) }
+
+          it { is_expected.to permit_action(:create_child) }
         end
       end
     end
@@ -152,6 +180,8 @@ RSpec.describe ActivityPolicy do
         it { is_expected.to forbid_action(:update) }
         it { is_expected.to forbid_action(:destroy) }
         it { is_expected.to forbid_action(:redact_from_iati) }
+
+        it { is_expected.to forbid_action(:create_child) }
       end
 
       context "and the users organisation is the extending organisation" do
@@ -167,6 +197,8 @@ RSpec.describe ActivityPolicy do
           it { is_expected.to forbid_action(:update) }
           it { is_expected.to forbid_action(:destroy) }
           it { is_expected.to forbid_action(:redact_from_iati) }
+
+          it { is_expected.to forbid_action(:create_child) }
         end
 
         context "and there is an editable report for the users organisation" do
@@ -181,6 +213,8 @@ RSpec.describe ActivityPolicy do
 
           it { is_expected.to forbid_action(:destroy) }
           it { is_expected.to forbid_action(:redact_from_iati) }
+
+          it { is_expected.to forbid_action(:create_child) }
         end
       end
     end
