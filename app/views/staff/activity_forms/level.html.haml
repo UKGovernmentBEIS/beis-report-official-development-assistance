@@ -1,9 +1,0 @@
-= render layout: "wrapper" do |f|
-  = f.hidden_field :level, value: nil
-  = f.govuk_collection_radio_buttons :level,
-    create_activity_level_options(user: current_user),
-    :level,
-    :name,
-    :description,
-    legend: { tag: 'h1', size: 'xl', text: t("form.legend.activity.level") },
-    hint: { text: t("form.hint.activity.level") }

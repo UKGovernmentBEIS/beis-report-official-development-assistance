@@ -7,3 +7,16 @@
     }
   }
 }
+
+.financial-summary {
+  .govuk-summary-list__key {
+    @include govuk-media-query($from: desktop) {
+      width: 50%;
+    }
+  }
+  .govuk-summary-list__value {
+    @include govuk-media-query($from: desktop) {
+      text-align: right;
+    }
+  }
+}

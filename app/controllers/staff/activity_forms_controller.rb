@@ -10,12 +10,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     authorize @activity
 
     case step
-    when :parent
-      skip_step if @activity.fund?
     when :roda_identifier
       skip_step unless @activity.can_set_roda_identifier?
-    when :blank
-      skip_step
     when :objectives
       skip_step if @activity.fund?
     when :programme_status
@@ -41,10 +37,8 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step unless @activity.is_project?
     when :sustainable_development_goals
       skip_step if @activity.fund?
-    when :gcrf_challenge_area
+    when :gcrf_challenge_area, :gcrf_strategic_area
       skip_step unless @activity.is_gcrf_funded?
-    when :gcrf_strategic_area
-      skip_step unless @activity.is_gcrf_funded? && @activity.programme?
     when :fund_pillar
       skip_step unless @activity.is_newton_funded?
     when :channel_of_delivery_code

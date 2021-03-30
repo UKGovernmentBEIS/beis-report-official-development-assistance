@@ -416,7 +416,7 @@ RSpec.describe ActivityPresenter do
 
   describe "#gcrf_strategic_area" do
     it "returns the code list description values for the stored integers" do
-      activity = build(:programme_activity, gcrf_strategic_area: %w[1 3])
+      activity = build(:activity, gcrf_strategic_area: %w[1 3])
       result = described_class.new(activity)
 
       expect(result.gcrf_strategic_area).to eql "UKRI Collective Fund (2017 allocation) and Resilient Futures"
@@ -612,6 +612,22 @@ RSpec.describe ActivityPresenter do
       activity = build(:project_activity, channel_of_delivery_code: "20000")
       result = described_class.new(activity)
       expect(result.channel_of_delivery_code).to eq("20000: Non-Governmental Organisation (NGO) and Civil Society")
+    end
+  end
+
+  describe "#total_spend" do
+    it "returns the value to two decimal places with a currency symbol" do
+      activity = build(:programme_activity)
+      create(:transaction, parent_activity: activity, value: 20)
+      expect(described_class.new(activity).total_spend).to eq("£20.00")
+    end
+  end
+
+  describe "#total_budget" do
+    it "returns the value to two decimal places with a currency symbol" do
+      activity = build(:programme_activity)
+      create(:budget, parent_activity: activity, value: 50)
+      expect(described_class.new(activity).total_budget).to eq("£50.00")
     end
   end
 end

@@ -120,6 +120,28 @@ RSpec.describe ImportPlannedDisbursements do
     end
   end
 
+  context "when the data includes empty cells" do
+    before do
+      importer.import([
+        {
+          "Activity RODA Identifier" => project.roda_identifier,
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "",
+          "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793",
+        },
+      ])
+    end
+
+    it "reports no errors" do
+      expect(importer.errors).to eq([])
+    end
+
+    it "imports the forecasts, ignoring blank cells" do
+      expect(forecast_values).to eq([
+        [4, 2020, 310_793.0],
+      ])
+    end
+  end
+
   context "when the data includes unrecognised columns" do
     before do
       importer.import([

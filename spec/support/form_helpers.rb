@@ -56,24 +56,8 @@ module FormHelpers
     oda_eligibility_lead: Faker::Name.name,
     channel_of_delivery_code: "11000",
     parent: nil,
-    uk_dp_named_contact: Faker::Name.name,
-    skip_level_and_parent_steps: false
+    uk_dp_named_contact: Faker::Name.name
   )
-
-    unless skip_level_and_parent_steps
-      expect(page).to have_content t("form.legend.activity.level")
-      expect(page).to have_content t("form.hint.activity.level")
-      expect(page).to have_content t("form.hint.activity.level_step.#{level}")
-      choose custom_capitalisation(t("page_content.activity.level.#{level}"))
-      click_button t("form.button.activity.submit")
-
-      if parent.present?
-        expect(page).to have_content t("form.legend.activity.parent", parent_level: t("page_content.activity.level.#{level}", level: parent.level), level: t("page_content.activity.level.#{level}"))
-        expect(page).to have_content t("form.hint.activity.parent", parent_level: t("page_content.activity.level.#{parent.level}"), level: t("page_content.activity.level.#{level}"))
-        choose parent.title
-        click_button t("form.button.activity.submit")
-      end
-    end
 
     expect(page).to have_content t("form.label.activity.delivery_partner_identifier")
     expect(page).to have_content t("form.hint.activity.delivery_partner_identifier")
@@ -297,14 +281,12 @@ module FormHelpers
     choose("activity[covid19_related]", option: covid19_related)
     click_button t("form.button.activity.submit")
 
-    if level == "programme" && (parent&.is_gcrf_funded? || parent&.roda_identifier_fragment == "GCRF")
+    if parent&.is_gcrf_funded? || parent&.roda_identifier_fragment == "GCRF"
       expect(page).to have_content t("form.legend.activity.gcrf_strategic_area")
       expect(page).to have_content t("form.hint.activity.gcrf_strategic_area")
       check gcrf_strategic_area
       click_button t("form.button.activity.submit")
-    end
 
-    if parent&.is_gcrf_funded? || parent&.roda_identifier_fragment == "GCRF"
       expect(page).to have_content t("form.legend.activity.gcrf_challenge_area")
       expect(page).to have_content t("form.hint.activity.gcrf_challenge_area")
       choose("activity[gcrf_challenge_area]", option: gcrf_challenge_area)

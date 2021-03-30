@@ -13,26 +13,8 @@ RSpec.describe Staff::ActivityFormsController do
     context "when editing a fund" do
       let(:activity) { create(:fund_activity, organisation: organisation) }
 
-      context "parent step" do
-        subject { get_step :parent }
-
-        it { is_expected.to skip_to_next_step }
-      end
-
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }
-
-        it { is_expected.to skip_to_next_step }
-
-        context "when activity is the GCRF fund" do
-          let(:activity) { create(:fund_activity, :gcrf, organisation: organisation) }
-
-          it { is_expected.to skip_to_next_step }
-        end
-      end
-
-      context "gcrf_strategic_area step" do
-        subject { get_step :gcrf_strategic_area }
 
         it { is_expected.to skip_to_next_step }
 
@@ -47,12 +29,6 @@ RSpec.describe Staff::ActivityFormsController do
     context "when editing a programme" do
       let(:fund) { create(:fund_activity) }
       let(:activity) { create(:programme_activity, organisation: organisation, parent: fund) }
-
-      context "parent step" do
-        subject { get_step :parent }
-
-        it { is_expected.to render_current_step }
-      end
 
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }
@@ -72,7 +48,7 @@ RSpec.describe Staff::ActivityFormsController do
         it { is_expected.to skip_to_next_step }
 
         context "when activity is the GCRF fund" do
-          let(:activity) { create(:programme_activity, organisation: organisation, parent: fund, source_fund_code: Fund::MAPPINGS["GCRF"]) }
+          let(:activity) { create(:project_activity, organisation: organisation, parent: fund, source_fund_code: Fund::MAPPINGS["GCRF"]) }
 
           it { is_expected.to render_current_step }
         end
@@ -84,12 +60,6 @@ RSpec.describe Staff::ActivityFormsController do
       let(:programme) { create(:programme_activity, parent: fund) }
       let(:activity) { create(:project_activity, organisation: organisation, parent: programme) }
 
-      context "parent step" do
-        subject { get_step :parent }
-
-        it { is_expected.to render_current_step }
-      end
-
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }
 
@@ -99,18 +69,6 @@ RSpec.describe Staff::ActivityFormsController do
           let(:activity) { create(:project_activity, organisation: organisation, parent: programme, source_fund_code: Fund::MAPPINGS["GCRF"]) }
 
           it { is_expected.to render_current_step }
-        end
-      end
-
-      context "gcrf_strategic_area step" do
-        subject { get_step :gcrf_strategic_area }
-
-        it { is_expected.to skip_to_next_step }
-
-        context "when activity is associated with the GCRF fund" do
-          let(:activity) { create(:project_activity, organisation: organisation, parent: programme, source_fund_code: Fund::MAPPINGS["GCRF"]) }
-
-          it { is_expected.to skip_to_next_step }
         end
       end
     end
@@ -121,12 +79,6 @@ RSpec.describe Staff::ActivityFormsController do
       let(:project) { create(:project_activity, parent: programme) }
       let(:activity) { create(:third_party_project_activity, organisation: organisation, parent: project) }
 
-      context "parent step" do
-        subject { get_step :parent }
-
-        it { is_expected.to render_current_step }
-      end
-
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }
 
@@ -136,18 +88,6 @@ RSpec.describe Staff::ActivityFormsController do
           let(:activity) { create(:project_activity, organisation: organisation, parent: programme, source_fund_code: Fund::MAPPINGS["GCRF"]) }
 
           it { is_expected.to render_current_step }
-        end
-      end
-
-      context "gcrf_strategic_area step" do
-        subject { get_step :gcrf_strategic_area }
-
-        it { is_expected.to skip_to_next_step }
-
-        context "when activity is associated with the GCRF fund" do
-          let(:activity) { create(:project_activity, organisation: organisation, parent: programme, source_fund_code: Fund::MAPPINGS["GCRF"]) }
-
-          it { is_expected.to skip_to_next_step }
         end
       end
     end

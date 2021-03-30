@@ -61,22 +61,6 @@ RSpec.feature "Users can edit an activity" do
       end
     end
 
-    context "before the activity has a level" do
-      it "shows add link on the level step" do
-        activity = create(:activity, :level_form_state, organisation: user.organisation)
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-
-        within(".level") do
-          expect(page).to have_content(t("default.link.add"))
-        end
-
-        within(".parent") do
-          expect(page).not_to have_content(t("default.link.add"))
-        end
-      end
-    end
-
     context "when the activity is a fund level activity" do
       it "does not show the parent field" do
         activity = create(:fund_activity, organisation: user.organisation)
@@ -247,39 +231,6 @@ RSpec.feature "Users can edit an activity" do
 
         expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
       end
-
-      context "when the activity was left at the parent step" do
-        it "shows add link on the parent step" do
-          activity = create(:programme_activity, :parent_form_state, organisation: user.organisation)
-
-          visit organisation_activity_details_path(activity.organisation, activity)
-          within(".parent") do
-            expect(page).to have_content(t("default.link.add"))
-          end
-          within(".identifier") do
-            expect(page).not_to have_content(t("default.link.add"))
-          end
-        end
-      end
-
-      # Changing the level means the IATI identifier we construct changes
-      # If this is changed after publishing to IATI the effect will be a branch
-      # new IATI publiciation.
-      context "when the activity has a level and a parent" do
-        it "it cannot be edited" do
-          activity = create(:programme_activity, organisation: user.organisation)
-
-          visit organisation_activity_details_path(activity.organisation, activity)
-
-          within(".level") do
-            expect(page).not_to have_content(t("default.link.add"))
-          end
-
-          within(".parent") do
-            expect(page).not_to have_content(t("default.link.add"))
-          end
-        end
-      end
     end
   end
 
@@ -327,15 +278,6 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_path(activity.organisation, activity)
 
         expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
-      end
-
-      it "does not show an edit link for the GCRF strategic area" do
-        activity = create(:project_activity, :gcrf_funded, organisation: user.organisation, parent: create(:programme_activity, :gcrf_funded))
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-        within(".gcrf_strategic_area") do
-          expect(page).to_not have_content t("default.link.edit")
-        end
       end
 
       context "when the project does not have a RODA identifier" do
@@ -431,15 +373,6 @@ RSpec.feature "Users can edit an activity" do
 
         click_button t("form.button.activity.submit")
         expect(page).to have_content(t("action.third_party_project.update.success"))
-      end
-    end
-
-    it "does not show an edit link for the GCRF strategic area" do
-      activity = create(:project_activity, :gcrf_funded, organisation: user.organisation, parent: create(:programme_activity, :gcrf_funded))
-
-      visit organisation_activity_details_path(activity.organisation, activity)
-      within(".gcrf_strategic_area") do
-        expect(page).to_not have_content t("default.link.edit")
       end
     end
 
@@ -596,7 +529,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(t("default.link.back"))
   click_on t("tabs.activity.details")
 
-  if activity.is_gcrf_funded? && activity.programme?
+  if activity.is_gcrf_funded?
     within(".gcrf_strategic_area") do
       click_on(t("default.link.edit"))
       expect(page).to have_current_path(

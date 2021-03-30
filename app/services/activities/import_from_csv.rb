@@ -87,7 +87,7 @@ module Activities
         @activity = find_activity_by_roda_id(row["RODA ID"])
         @organisation = organisation
         @row = row
-        @converter = Converter.new(row)
+        @converter = Converter.new(row, :update)
         @errors.update(@converter.errors)
       end
 
@@ -96,18 +96,22 @@ module Activities
 
         @activity.assign_attributes(@converter.to_h)
 
-        implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
-        implementing_organisation = implementing_organisation_builder.build
+        if row["Implementing organisation name"].present? || row["Implementing organisation sector"].present?
+          implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
+          implementing_organisation = implementing_organisation_builder.organisation
 
-        @activity.implementing_organisations = [implementing_organisation] if implementing_organisation.valid?
+          if implementing_organisation.valid?
+            @activity.implementing_organisations = [implementing_organisation]
+          else
+            implementing_organisation_builder.add_errors(@errors)
+          end
+        end
 
         return if @activity.save
 
         @activity.errors.each do |attr_name, message|
           @errors[attr_name] ||= [@converter.raw(attr_name), message]
         end
-
-        implementing_organisation_builder.add_errors(@errors)
       end
 
       def find_activity_by_roda_id(roda_id)
@@ -144,7 +148,7 @@ module Activities
 
         implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
         if row["Implementing organisation name"].present? || row["Implementing organisation sector"].present?
-          implementing_organisation = implementing_organisation_builder.build
+          implementing_organisation = implementing_organisation_builder.organisation
           @activity.implementing_organisations = [implementing_organisation]
         end
 
@@ -181,20 +185,24 @@ module Activities
         @row = row
       end
 
-      def build
-        ImplementingOrganisation.find_or_initialize_by(
-          activity_id: activity.id
-        ) { |implementing_organisation|
-          implementing_organisation.name = row["Implementing organisation name"]
-          implementing_organisation.reference = row["Implementing organisation reference"]
-          implementing_organisation.organisation_type = row["Implementing organisation sector"]
-        }
+      def organisation
+        @organisation ||= begin
+          ImplementingOrganisation.find_or_initialize_by(
+            activity_id: activity.id
+          ) { |implementing_organisation|
+            implementing_organisation.name = row["Implementing organisation name"]
+            implementing_organisation.reference = row["Implementing organisation reference"]
+            implementing_organisation.organisation_type = row["Implementing organisation sector"]
+          }
+        end
       end
 
       def add_errors(errors)
+        return if organisation.valid?
+
         errors.delete(:implementing_organisations)
 
-        implementing_organisation_errors = @activity.implementing_organisations.first.errors.messages
+        implementing_organisation_errors = organisation.errors.messages
         errors["implementing_organisation_name"] = [row["Implementing organisation name"], implementing_organisation_errors[:name].first] if implementing_organisation_errors[:name].any?
         errors["implementing_organisation_organisation_type"] = [row["Implementing organisation sector"], implementing_organisation_errors[:organisation_type].first] if implementing_organisation_errors[:organisation_type].any?
         errors
@@ -255,23 +263,16 @@ module Activities
       }
 
       ALLOWED_BLANK_FIELDS = [
-        "DFID policy marker - Gender",
-        "DFID policy marker - Climate Change - Adaptation",
-        "DFID policy marker - Climate Change - Mitigation",
-        "DFID policy marker - Biodiversity",
-        "DFID policy marker - Desertification",
-        "DFID policy marker - Disability",
-        "DFID policy marker - Disaster Risk Reduction",
-        "DFID policy marker - Nutrition",
         "Implementing organisation reference",
         "BEIS ID",
         "UK DP Named Contact (NF)",
         "NF Partner Country DP",
       ]
 
-      def initialize(row)
+      def initialize(row, method = :create)
         @row = row
         @errors = {}
+        @method = method
         @attributes = convert_to_attributes
       end
 
@@ -284,17 +285,28 @@ module Activities
       end
 
       def convert_to_attributes
-        attributes = FIELDS.each_with_object({}) { |(attr_name, column_name), attrs|
+        attributes = fields.each_with_object({}) { |(attr_name, column_name), attrs|
           attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name]) if field_should_be_converted?(column_name)
         }
 
-        attributes[:geography] = infer_geography(attributes)
-        attributes[:requires_additional_benefitting_countries] = (@row["Recipient Country"] && @row["Intended Beneficiaries"]).present?
-        attributes[:recipient_region] ||= inferred_region
-        attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
-        attributes[:sector_category] = get_sector_category(attributes[:sector])
+        if @method == :create
+          attributes[:requires_additional_benefitting_countries] = (@row["Recipient Country"] && @row["Intended Beneficiaries"]).present?
+          attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
+        end
+
+        attributes[:geography] = infer_geography(attributes) if (attributes[:recipient_region] || attributes[:recipient_country]).present?
+        attributes[:recipient_region] ||= inferred_region if attributes[:recipient_country].present?
+        attributes[:sector_category] = get_sector_category(attributes[:sector]) if attributes[:sector].present?
 
         attributes
+      end
+
+      def fields
+        return FIELDS if @method == :create
+
+        columns_to_update = @row.to_h.reject { |_k, v| v.blank? }.keys
+        converter_keys = FIELDS.select { |_k, v| columns_to_update.include?(v) }.keys
+        FIELDS.slice(*converter_keys)
       end
 
       def field_should_be_converted?(column_name)
@@ -500,7 +512,11 @@ module Activities
       end
 
       def infer_geography(attributes)
-        attributes[:recipient_region].present? ? :recipient_region : :recipient_country
+        if attributes[:recipient_region].present?
+          :recipient_region
+        elsif attributes[:recipient_country].present?
+          :recipient_country
+        end
       end
 
       def inferred_region
