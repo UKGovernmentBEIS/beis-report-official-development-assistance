@@ -1646,5 +1646,36 @@ RSpec.describe Activity, type: :model do
         end
       end
     end
+
+    describe "#total_budget" do
+      before do
+        create(:budget, value: 100, parent_activity: fund)
+        create(:budget, value: 100, parent_activity: programme1)
+        create(:budget, value: 100, parent_activity: programme2)
+        create(:budget, value: 50, parent_activity: programme1_projects[0])
+        create(:budget, value: 50, parent_activity: programme1_projects[1])
+        create(:budget, value: 100, parent_activity: programme2_projects[0])
+        create(:budget, value: 100, parent_activity: programme2_projects[1])
+        create(:budget, value: 100, parent_activity: programme1_third_party_project)
+        create(:budget, value: 100, parent_activity: programme2_third_party_project)
+      end
+
+      it "returns the total budget for a fund" do
+        expect(fund.total_budget).to eq(800)
+      end
+
+      it "returns the total budget for a programme" do
+        expect(programme1.total_budget).to eq(300)
+        expect(programme2.total_budget).to eq(400)
+      end
+
+      it "returns the total budget for a project" do
+        expect(programme1_projects[0].total_budget).to eq(150)
+        expect(programme1_projects[1].total_budget).to eq(50)
+
+        expect(programme2_projects[0].total_budget).to eq(100)
+        expect(programme2_projects[1].total_budget).to eq(200)
+      end
+    end
   end
 end

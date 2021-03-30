@@ -270,6 +270,11 @@ class Activity < ApplicationRecord
     transactions.sum(:value)
   end
 
+  def total_budget
+    activity_ids = descendants.pluck(:id).append(id)
+    Budget.where(parent_activity_id: activity_ids).sum(:value)
+  end
+
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
     super(context)
