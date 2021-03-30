@@ -10,7 +10,7 @@ RSpec.describe ActivityPolicy do
     let(:user) { create(:beis_user) }
 
     context "when the activity is a fund" do
-      let(:activity) { create(:fund_activity, organisation: user.organisation) }
+      let(:activity) { create(:fund_activity, organisation: user.organisation, extending_organisation: user.organisation) }
 
       it { is_expected.to permit_action(:show) }
       it { is_expected.to permit_action(:create) }
@@ -102,7 +102,7 @@ RSpec.describe ActivityPolicy do
     context "when the activity is a project" do
       let(:activity) { create(:project_activity) }
 
-      context "and the activity does not belong to the same organisation as the user" do
+      context "and the users organisation is not the extending organisation" do
         it { is_expected.to forbid_action(:show) }
         it { is_expected.to forbid_action(:create) }
         it { is_expected.to forbid_action(:edit) }
@@ -111,12 +111,16 @@ RSpec.describe ActivityPolicy do
         it { is_expected.to forbid_action(:redact_from_iati) }
       end
 
-      context "and the activity belongs to the same organisation as the user" do
+      context "and the users organisation is the extending organisation" do
         before do
-          activity.update(organisation: user.organisation)
+          activity.update(organisation: user.organisation, extending_organisation: user.organisation)
         end
 
-        context "when there is no editable report for the users organisation" do
+        context "and there is no editable report for the users organisation" do
+          before do
+            report.update(state: :approved)
+          end
+
           it { is_expected.to permit_action(:show) }
 
           it { is_expected.to forbid_action(:create) }
@@ -126,7 +130,7 @@ RSpec.describe ActivityPolicy do
           it { is_expected.to forbid_action(:redact_from_iati) }
         end
 
-        context "when there is an editable report for the users organisation" do
+        context "and there is an editable report for the users organisation" do
           before do
             report.update(state: :active)
           end
