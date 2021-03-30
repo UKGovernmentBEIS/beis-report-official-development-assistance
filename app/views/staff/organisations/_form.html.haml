@@ -7,7 +7,7 @@
                      :code,
                      :name
 = f.govuk_text_field :iati_reference,
-                      hint: { text: t("form.hint.organisation.iati_reference_html", link: link_to_new_window("See International Aid Transparency Initiative (IATI) for detailed documentation", "https://reference.iatistandard.org/organisation-identifiers/")) }
+                      hint: { text: t("form.hint.organisation.iati_reference_html", link: link_to_new_tab("See International Aid Transparency Initiative (IATI) for detailed documentation", "https://reference.iatistandard.org/organisation-identifiers/")) }
 = f.govuk_collection_select :language_code,
                      language_code_options,
                      :code,

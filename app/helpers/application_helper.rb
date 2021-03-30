@@ -20,7 +20,7 @@ module ApplicationHelper
     end
   end
 
-  def link_to_new_window(text, href)
-    link_to("#{text} (opens in new window)", href, class: "govuk-link", target: "_blank")
+  def link_to_new_tab(text, href)
+    link_to("#{text} (opens in new tab)", href, class: "govuk-link", target: "_blank", rel: "noreferrer noopener")
   end
 end
