@@ -4,4 +4,7 @@
       label: { text: t("form.label.activity.title", level: custom_capitalisation(t("page_content.activity.level.#{f.object.level}"))) },
       hint: { text: t("form.hint.activity.title", level: t("page_content.activity.level.#{f.object.level}")) }
 
-    = f.govuk_text_area :description, rows: 5
+    = f.govuk_text_area :description,
+                        rows: 5,
+                        hint: { text: t("form.hint.activity.description") }
+

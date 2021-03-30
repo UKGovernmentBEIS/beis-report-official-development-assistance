@@ -576,6 +576,7 @@
 ## [unreleased]
 
 - Data dictionary link opens in a new window/tab by default
+- Add supporting hint text about the soft limits to title and description
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-42...HEAD
 [release-42]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-41...release-42
