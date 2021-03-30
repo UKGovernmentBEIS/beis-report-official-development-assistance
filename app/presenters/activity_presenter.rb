@@ -243,10 +243,11 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def channel_of_delivery_code
-    item = channel_of_delivery_codes.find { |item| item["code"] == super }
+    item = channel_of_delivery_codes.find { |item| item.code == super }
+
     return if item.blank?
 
-    "#{item["code"]}: #{item["name"]}"
+    item.name
   end
 
   def total_spend

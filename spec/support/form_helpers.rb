@@ -295,7 +295,7 @@ module FormHelpers
 
     if level == "project" || level == "third_party_project"
       expect(page).to have_content t("form.legend.activity.channel_of_delivery_code")
-      select channel_of_delivery_code, from: "activity[channel_of_delivery_code]"
+      choose("activity[channel_of_delivery_code]", option: channel_of_delivery_code)
       click_button t("form.button.activity.submit")
     end
 

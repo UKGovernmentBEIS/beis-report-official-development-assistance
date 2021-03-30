@@ -179,13 +179,10 @@ module CodelistHelper
     iati_data = Codelist.new(type: "channel_of_delivery_code")
     beis_allowed_codes = beis_allowed_channel_of_delivery_codes
 
-    iati_data.select { |item| item["code"].in?(beis_allowed_codes) }
-  end
-
-  def channel_of_delivery_code_select_options
-    data = channel_of_delivery_codes
-    data.collect { |item|
-      OpenStruct.new(code: item["code"], name: "#{item["code"]}: #{item["name"]}")
-    }.compact.sort_by(&:code).unshift(OpenStruct.new(code: "", name: "Please select a value"))
+    iati_data.select { |item|
+      item["code"].in?(beis_allowed_codes)
+    }.map { |item|
+      OpenStruct.new(name: "#{item["code"]}: #{item["name"]}", code: item["code"])
+    }
   end
 end
