@@ -178,7 +178,7 @@ en:
         gcrf_challenge_area: Select the most relevant GCRF challenge area for this activity. For broad programme calls, please select the challenge area most commonly represented across the individual projects within the programme. If the activity is a delivery line, you may select 'Not applicable'.
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
         objectives: Please refrain from using any abbreviations
-        intended_beneficiaries: You can select up to 10 different countries
+        intended_beneficiaries: Select all that apply
         oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
         oda_eligibility_lead: This will be used by us as a first point of contact for anything ODA related.
         planned_end_date: For example, 28 11 2020
