@@ -1,5 +1,4 @@
-%budget{"type" => budget.budget_type, "status" => budget.status}
+%budget{"type" => budget.iati_type, "status" => budget.iati_status}
   %period-start{"iso-date" => budget.period_start_date}/
   %period-end{"iso-date" => budget.period_end_date}/
   %value{"value-date" => budget.period_start_date, "currency" => budget.currency}= budget.value.to_s
-

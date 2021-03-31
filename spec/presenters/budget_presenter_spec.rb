@@ -4,14 +4,20 @@ RSpec.describe BudgetPresenter do
   let(:budget) { build_stubbed(:budget, financial_year: 2020, value: "20") }
 
   describe "#budget_type" do
-    it "returns the I18n string for the budget_type" do
-      expect(described_class.new(budget).budget_type).to eq("Original")
+    it "returns the name of the budget type" do
+      expect(described_class.new(budget).budget_type).to eq("Direct (Newton fund)")
     end
   end
 
-  describe "#status" do
-    it "returns the I18n string for the status" do
-      expect(described_class.new(budget).status).to eq("Indicative")
+  describe "#iati_type" do
+    it "returns the name of the IATI budget type" do
+      expect(described_class.new(budget).iati_type).to eq("Original")
+    end
+  end
+
+  describe "#iati_status" do
+    it "returns the name of the IATI budete status" do
+      expect(described_class.new(budget).iati_status).to eq("Committed")
     end
   end
 

@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_29_133046) do
+ActiveRecord::Schema.define(version: 2021_03_29_134730) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -106,8 +107,6 @@ ActiveRecord::Schema.define(version: 2021_03_29_133046) do
   end
 
   create_table "budgets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "budget_type"
-    t.string "status"
     t.date "period_start_date"
     t.date "period_end_date"
     t.decimal "value", precision: 13, scale: 2
@@ -117,6 +116,7 @@ ActiveRecord::Schema.define(version: 2021_03_29_133046) do
     t.uuid "report_id"
     t.integer "funding_type"
     t.integer "financial_year"
+    t.integer "budget_type"
     t.index ["parent_activity_id"], name: "index_budgets_on_parent_activity_id"
     t.index ["report_id"], name: "index_budgets_on_report_id"
   end
