@@ -573,7 +573,7 @@
 - Set all activity policy marker fields to `not_assessed` by default
 - Add total spend and total budget to the activity financials page
 
-## [unreleased]
+## [release-43] - 2021-04-01
 
 - Data dictionary link opens in a new window/tab by default
 - Add supporting hint text about the soft limits to title and description
@@ -583,7 +583,10 @@
 - Remove limit on the number of intended beneficiaries
 - Introduce `create_child?` check in ActivityPolicy
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-42...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-43...HEAD
+[release-43]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-42...release-43
 [release-42]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-41...release-42
 [release-41]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-40...release-41
 [release-40]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-39...release-40
