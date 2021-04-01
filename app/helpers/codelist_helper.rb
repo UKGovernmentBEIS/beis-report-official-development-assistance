@@ -97,17 +97,17 @@ module CodelistHelper
     FSTC_FROM_AID_TYPE_CODE.key?(aid_type_code)
   end
 
-  def policy_markers_select_options
+  def policy_markers_radio_options
     options = Codelist.new(type: "policy_significance", source: "beis")
-      .to_objects(with_empty_item: false)
+      .to_objects_with_description
       .sort_by { |c| c.code.to_i }
 
     options.rotate(-1)
   end
 
-  def policy_markers_desertification_select_options
+  def policy_markers_desertification_radio_options
     options = Codelist.new(type: "policy_significance_desertification", source: "beis")
-      .to_objects(with_empty_item: false)
+      .to_objects_with_description
       .sort_by { |c| c.code.to_i }
 
     options.rotate(-1)

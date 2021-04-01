@@ -89,9 +89,9 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
-    describe "#policy_markers_select_options" do
+    describe "#policy_markers_radio_options" do
       it "returns the options for policy markers with not assessed at the first option" do
-        options = helper.policy_markers_select_options
+        options = helper.policy_markers_radio_options
 
         expect(options.length).to eq 4
         expect(options.first.name).to eq("Not assessed")
@@ -101,9 +101,9 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
-    describe "#policy_markers_desertification_select_options" do
+    describe "#policy_markers_desertification_radio_options" do
       it "returns the options for policy markers with not assessed at the first option" do
-        options = helper.policy_markers_desertification_select_options
+        options = helper.policy_markers_desertification_radio_options
 
         expect(options.length).to eq 5
         expect(options.first.name).to eq("Not assessed")

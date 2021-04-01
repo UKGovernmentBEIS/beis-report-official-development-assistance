@@ -6,7 +6,7 @@ attributes:
 data:
   - code: "1000"
     name: Not assessed
-    desctiption: The activity has not been examined as yet
+    description: The activity has not been examined as yet
   - code: "0"
     name: Not targeted
     description: The score “not targeted” means that the activity was examined but found not to target the policy objective

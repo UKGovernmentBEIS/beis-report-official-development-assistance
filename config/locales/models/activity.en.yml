@@ -62,14 +62,6 @@ en:
           eligible: Eligible
           no_longer_eligible: No longer eligible
         oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
-        policy_marker_gender: Gender
-        policy_marker_climate_change_adaptation: Climate change - Adaptation
-        policy_marker_climate_change_mitigation: Climate change - Mitigation
-        policy_marker_biodiversity: Biodiversity
-        policy_marker_desertification: Desertification
-        policy_marker_disability: Disability
-        policy_marker_disaster_risk_reduction: Disaster Risk Reduction
-        policy_marker_nutrition: Nutrition Policy
         region: Recipient region
         actual_end_date: Actual end date
         actual_start_date: Actual start date
@@ -139,15 +131,15 @@ en:
         parent: Select the parent activity
         planned_end_date: Planned end date
         planned_start_date: Planned start date
+        policy_marker_gender: Gender
+        policy_marker_climate_change_adaptation: Climate change - Adaptation
+        policy_marker_climate_change_mitigation: Climate change - Mitigation
+        policy_marker_biodiversity: Biodiversity
+        policy_marker_desertification: Desertification
+        policy_marker_disability: Disability
+        policy_marker_disaster_risk_reduction: Disaster Risk Reduction
+        policy_marker_nutrition: Nutrition Policy
         policy_markers:
-          gender: Gender
-          climate_change_adaptation: Climate change - Adaptation
-          climate_change_mitigation: Climate change - Mitigation
-          biodiversity: Biodiversity
-          desertification: Desertification
-          disability: Disability
-          disaster_risk_reduction: Disaster Risk Reduction
-          nutrition: Nutrition Policy
           responses:
             not_assessed: Not assessed
             not_targeted: Not targeted
