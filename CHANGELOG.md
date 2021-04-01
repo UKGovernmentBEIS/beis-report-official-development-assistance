@@ -580,6 +580,7 @@
 - Change channel of delivery code to radio buttons
 - Collect transferred and external budget types
 - Show the type of budget in the application
+- Remove limit on the number of intended beneficiaries
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-42...HEAD
 [release-42]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-41...release-42

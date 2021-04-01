@@ -58,36 +58,6 @@ RSpec.feature "users can add benefitting countries as intended beneficiaries" do
         expect(activity.intended_beneficiaries).to eq(["GM", "ID", "YE"])
         expect(page).to have_current_path(activity_step_path(activity, :gdi))
       end
-
-      scenario "the user will not be able to select more than 10 intended beneficiaries" do
-        visit activity_step_path(activity, :geography)
-        choose "Country"
-        click_button t("form.button.activity.submit")
-        expect(page).to have_select(t("form.label.activity.recipient_country"))
-
-        select "Burundi"
-        click_button t("form.button.activity.submit")
-        expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
-        choose "Yes"
-        click_button t("form.button.activity.submit")
-
-        expect(page).to have_content t("form.legend.activity.intended_beneficiaries")
-        check "Comoros"
-        check "Eritrea"
-        check "Ethiopia"
-        check "Kenya"
-        check "Madagascar"
-        check "Mozambique"
-        check "Somalia"
-        check "Sudan"
-        check "Tanzania"
-        check "Uganda"
-        check "Zambia"
-        click_button t("form.button.activity.submit")
-
-        expect(page).to have_content t("activerecord.errors.models.activity.attributes.intended_beneficiaries.too_long")
-        expect(activity.intended_beneficiaries).to be_nil
-      end
     end
   end
 end
