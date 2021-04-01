@@ -475,7 +475,7 @@ module FormHelpers
     I18n.l(Date.parse("#{year}-#{month}-#{day}"))
   end
 
-  def fill_in_transfer_form(destination: create(:activity), financial_quarter: 1, financial_year: 2020, value: 1234)
+  def fill_in_transfer_form(destination: create(:activity), financial_quarter: FinancialQuarter.for_date(Date.today).to_i, financial_year: FinancialYear.for_date(Date.today).to_i, value: 1234)
     transfer = build(
       :transfer,
       destination: destination,
