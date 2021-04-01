@@ -11,14 +11,19 @@ RSpec.feature "BEIS users can create a transfer" do
   end
 
   scenario "successfully creates a transfer" do
-    transfer = fill_in_transfer_form
+    quarter = FinancialQuarter.for_date(Date.today)
+
+    transfer = fill_in_transfer_form(
+      financial_quarter: quarter.to_i,
+      financial_year: quarter.financial_year.to_i
+    )
 
     click_on t("form.button.transfer.submit")
 
     expect(page).to have_content(t("page_title.transfer.confirm"))
     expect(page).to have_content(transfer.destination.title)
     expect(page).to have_content(transfer.destination.organisation.name)
-    expect(page).to have_content(FinancialQuarter.new(2020, 1).to_s)
+    expect(page).to have_content(quarter.to_s)
     expect(page).to have_content("£1,234.00")
 
     expect {
@@ -38,7 +43,7 @@ RSpec.feature "BEIS users can create a transfer" do
     within "#transfers" do
       expect(page).to have_content(transfer.destination.roda_identifier)
       expect(page).to have_content(transfer.destination.organisation.name)
-      expect(page).to have_content(FinancialQuarter.new(2020, 1).to_s)
+      expect(page).to have_content(quarter.to_s)
       expect(page).to have_content("£1,234.00")
     end
   end

@@ -1,0 +1,16 @@
+data:
+  - code: 1
+    name: Direct (Newton fund)
+    description: Budget allocated directly from the Newton funded parent activity
+  - code: 2
+    name: Direct (Global Challenges Research Fund)
+    description: Budget allocated directly from the GCRF funded parent activity
+  - code: 3
+    name: Transferred
+    description: Budget allocated to an acitvity from a transfer
+  - code: 4
+    name: External Offical Development Assistance
+    description: Budget allocated from an external organistion that is still considered ODA funding
+  - code: 5
+    name: External non Official Development Assistance
+    description: Budget allocated from an external organistion that is NOT considered ODA funding

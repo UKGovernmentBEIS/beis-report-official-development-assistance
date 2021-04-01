@@ -103,7 +103,7 @@ class Activity < ApplicationRecord
   validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
   validates :recipient_country, presence: true, on: :country_step, if: :recipient_country?
   validates :requires_additional_benefitting_countries, inclusion: {in: [true, false], message: I18n.t("activerecord.errors.models.activity.attributes.requires_additional_benefitting_countries.blank")}, on: :requires_additional_benefitting_countries_step
-  validates :intended_beneficiaries, presence: true, length: {maximum: 10}, on: :intended_beneficiaries_step, if: :requires_additional_benefitting_countries?
+  validates :intended_beneficiaries, presence: true, on: :intended_beneficiaries_step, if: :requires_additional_benefitting_countries?
   validates :gdi, presence: true, on: :gdi_step
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
   validates :covid19_related, presence: true, on: :covid19_related_step

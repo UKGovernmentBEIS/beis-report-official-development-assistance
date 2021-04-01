@@ -107,6 +107,7 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
+    deep_merge (1.2.1)
     diff-lcs (1.4.4)
     docile (1.3.2)
     domain_name (0.5.20190701)
@@ -136,10 +137,11 @@ GEM
     foreman (0.87.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    govuk_design_system_formbuilder (2.2.0)
+    govuk_design_system_formbuilder (2.3.0)
       actionview (>= 5.2)
       activemodel (>= 5.2)
       activesupport (>= 5.2)
+      deep_merge (~> 1.2.1)
     haml (5.1.2)
       temple (>= 0.8.0)
       tilt
@@ -160,7 +162,7 @@ GEM
       ruby_parser (~> 3.5)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (1.8.9)
+    i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     i18n-tasks (0.9.34)
       activesupport (>= 4.0.2)
@@ -181,7 +183,7 @@ GEM
     launchy (2.5.0)
       addressable (~> 2.7)
     libv8 (8.4.255.0)
-    listen (3.5.0)
+    listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     lograge (0.11.2)
@@ -463,7 +465,7 @@ DEPENDENCIES
   faker
   fakeredis
   foreman
-  govuk_design_system_formbuilder (~> 2.2.0)
+  govuk_design_system_formbuilder (~> 2.3.0)
   haml-rails
   high_voltage
   html2haml

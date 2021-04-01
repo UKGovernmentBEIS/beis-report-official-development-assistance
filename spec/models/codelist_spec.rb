@@ -42,6 +42,24 @@ RSpec.describe Codelist do
     end
   end
 
+  describe "#hash_of_coded_names" do
+    it "returns a simple hash of names and codes" do
+      coded_tied_status = {"partially_tied" => "3", "tied" => "4", "untied" => "5"}
+      expect(Codelist.new(type: "tied_status", source: "iati").hash_of_coded_names).to eq(coded_tied_status)
+    end
+
+    it "handles names with spaces" do
+      expect(Codelist.new(type: "aid_type", source: "iati").hash_of_coded_names.fetch("general_budget_support")).to eq "A01"
+    end
+  end
+
+  describe "#hash_of_named_codes" do
+    it "returns a simple hash of codes to names" do
+      coded_tied_status = {"3" => "Partially tied", "4" => "Tied", "5" => "Untied"}
+      expect(Codelist.new(type: "tied_status", source: "iati").hash_of_named_codes).to eq(coded_tied_status)
+    end
+  end
+
   describe "to_objects" do
     it "formats the data from a codelist to an array of objects for use in govuk form builder" do
       expect(Codelist.new(type: "default_currency").to_objects)

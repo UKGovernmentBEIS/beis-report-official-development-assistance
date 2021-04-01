@@ -295,7 +295,7 @@ module FormHelpers
 
     if level == "project" || level == "third_party_project"
       expect(page).to have_content t("form.legend.activity.channel_of_delivery_code")
-      select channel_of_delivery_code, from: "activity[channel_of_delivery_code]"
+      choose("activity[channel_of_delivery_code]", option: channel_of_delivery_code)
       click_button t("form.button.activity.submit")
     end
 
@@ -475,7 +475,7 @@ module FormHelpers
     I18n.l(Date.parse("#{year}-#{month}-#{day}"))
   end
 
-  def fill_in_transfer_form(destination: create(:activity), financial_quarter: 1, financial_year: 2020, value: 1234)
+  def fill_in_transfer_form(destination: create(:activity), financial_quarter: FinancialQuarter.for_date(Date.today).to_i, financial_year: FinancialYear.for_date(Date.today).to_i, value: 1234)
     transfer = build(
       :transfer,
       destination: destination,

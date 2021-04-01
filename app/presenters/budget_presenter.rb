@@ -1,12 +1,16 @@
 class BudgetPresenter < SimpleDelegator
   def budget_type
-    return if super.blank?
-    I18n.t("page_content.budget.budget_type.#{super}")
+    Codelist.new(type: "budget_type", source: "beis").hash_of_named_codes.fetch(super.to_s)
   end
 
-  def status
+  def iati_type
     return if super.blank?
-    I18n.t("page_content.budget.status.#{super}")
+    Codelist.new(type: "budget_type", source: "iati").hash_of_named_codes.fetch(super)
+  end
+
+  def iati_status
+    return if super.blank?
+    Codelist.new(type: "budget_status", source: "iati").hash_of_named_codes.fetch(super)
   end
 
   def period_start_date

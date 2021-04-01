@@ -1,8 +1,9 @@
 = f.govuk_error_summary
-= f.govuk_collection_radio_buttons :funding_type,
-  list_of_funding_types,
+= f.govuk_collection_radio_buttons :budget_type,
+  budget_type_options,
   :code,
   :name,
+  :description,
   legend: { tag: :h2 }
 
 = f.govuk_collection_select :financial_year,

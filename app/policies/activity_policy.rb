@@ -10,8 +10,17 @@ class ActivityPolicy < ApplicationPolicy
     if beis_user?
       return true if record.fund? || record.programme?
     end
-    return false if editable_report_for_organisation.nil?
+    return false unless editable_report?
     record.organisation == user.organisation
+  end
+
+  def create_child?
+    return record.fund? if beis_user?
+
+    return false if record.third_party_project?
+    return false unless editable_report?
+
+    record.extending_organisation == user.organisation
   end
 
   def edit?
@@ -24,7 +33,7 @@ class ActivityPolicy < ApplicationPolicy
     if delivery_partner_user?
       return false if record.organisation != user.organisation
       return false if record.fund? || record.programme?
-      return false if editable_report_for_organisation_and_fund.nil?
+      return false unless editable_report?
       return true
     end
     false
@@ -47,12 +56,14 @@ class ActivityPolicy < ApplicationPolicy
     end
   end
 
-  private def editable_report_for_organisation
-    Report.editable.find_by(organisation: record.organisation)
-  end
+  private
 
-  private def editable_report_for_organisation_and_fund
-    fund = record.parent.associated_fund
-    Report.editable.find_by(organisation: record.organisation, fund: fund)
+  def editable_report?
+    fund = record.associated_fund
+
+    Report.editable.where(
+      fund: fund,
+      organisation: [record.extending_organisation, record.organisation]
+    ).exists?
   end
 end

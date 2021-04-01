@@ -2,17 +2,20 @@
   %table.govuk-table.budgets
     %thead.govuk-table__head
       %tr.govuk-table__row
-        %th{ scope: "col", class: ["govuk-table__header", "govuk-!-width-one-half"] }
+        %th{ scope: "col", class: ["govuk-table__header"] }
           =t("table.header.budget.financial_year")
-        %th{ scope: "col", class: ["govuk-table__header", "govuk-!-width-one-quarter"] }
+        %th{ scope: "col", class: ["govuk-table__header"] }
+          Type
+        %th{ scope: "col", class: ["govuk-table__header"] }
           =t("table.header.budget.value")
-        %th{ scope: "col", class: ["govuk-table__header", "govuk-!-width-one-quarter"] }
+        %th{ scope: "col", class: ["govuk-table__header"] }
 
     %tbody.govuk-table__body
       - budgets.each do |budget|
         %tr.govuk-table__row{id: budget.id}
           %td{ scope: "row", class: "govuk-table__cell" }
             = budget.financial_year
+          %td.govuk-table__cell= budget.budget_type
           %td.govuk-table__cell= budget.value
           %td.govuk-table__cell
             - if policy(budget).edit?
