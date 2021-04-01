@@ -586,6 +586,7 @@
 ## [unreleased]
 
 - Change policy markers to radio buttons
+- The activity upload UI looks similar to the actuals and forecasts upload UI
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-43...HEAD
 [release-43]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-42...release-43
