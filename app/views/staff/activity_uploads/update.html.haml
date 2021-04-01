@@ -11,4 +11,5 @@
       .govuk-grid-column-full
         = render partial: "error_table"
 
-  = render partial: "upload_form"
+  - unless @success
+    = render partial: "upload_form"

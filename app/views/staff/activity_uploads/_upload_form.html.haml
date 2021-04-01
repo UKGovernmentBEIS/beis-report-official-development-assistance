@@ -1,9 +1,9 @@
 .govuk-grid-row
-  .govuk-grid-column-two-thirds
+  .govuk-grid-column-full
     = form_for @report_presenter, url: report_activity_upload_path(@report_presenter) do |f|
 
       = f.govuk_file_field :activity_csv,
-        label: { text: t("form.label.activity.csv_file") },
-        hint: { text: t("form.hint.activity.csv_file") }
+        label: { text: t("form.label.activity.csv_file_recover_from_error") },
+        hint: { text: t("form.hint.activity.csv_file_recover_from_error_html", link: report_activity_upload_path(@report_presenter, format: :csv)) }
 
       = f.govuk_submit t("action.activity.upload.button")
