@@ -136,7 +136,7 @@ RSpec.feature "Users can view an activity as XML" do
             policy_marker_gender: "not_targeted",
             policy_marker_biodiversity: "significant_objective",
             policy_marker_disability: "principal_objective",
-            policy_marker_desertification: "principal_objective_and_in_support",
+            policy_marker_desertification: "principal_objective_and_in_support_of_an_action_programme",
             policy_marker_nutrition: "not_assessed",
             policy_marker_climate_change_adaptation: "not_assessed",
             policy_marker_climate_change_mitigation: "not_assessed",
