@@ -89,9 +89,21 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
-    describe "#policy_markers_select_options" do
-      it "returns the options for policy markers, prepending the BEIS custom option" do
-        options = helper.policy_markers_select_options
+    describe "#policy_markers_radio_options" do
+      it "returns the options for policy markers with not assessed at the first option" do
+        options = helper.policy_markers_radio_options
+
+        expect(options.length).to eq 4
+        expect(options.first.name).to eq("Not assessed")
+        expect(options.first.code).to eq("1000")
+        expect(options.last.name).to eq("Principal objective")
+        expect(options.last.code).to eq("2")
+      end
+    end
+
+    describe "#policy_markers_desertification_radio_options" do
+      it "returns the options for policy markers with not assessed at the first option" do
+        options = helper.policy_markers_desertification_radio_options
 
         expect(options.length).to eq 5
         expect(options.first.name).to eq("Not assessed")

@@ -139,7 +139,11 @@ class Activity
     end
 
     def policy_markers_from_params(param)
-      policy_markers_iati_codes_to_enum(params_for(param))
+      if param == "policy_marker_desertification"
+        policy_markers_desertification_iati_codes_to_enum(params_for(param))
+      else
+        policy_markers_iati_codes_to_enum(params_for(param))
+      end
     end
 
     def activity_params

@@ -62,14 +62,6 @@ en:
           eligible: Eligible
           no_longer_eligible: No longer eligible
         oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
-        policy_marker_gender: Gender
-        policy_marker_climate_change_adaptation: Climate change - Adaptation
-        policy_marker_climate_change_mitigation: Climate change - Mitigation
-        policy_marker_biodiversity: Biodiversity
-        policy_marker_desertification: Desertification
-        policy_marker_disability: Disability
-        policy_marker_disaster_risk_reduction: Disaster Risk Reduction
-        policy_marker_nutrition: Nutrition Policy
         region: Recipient region
         actual_end_date: Actual end date
         actual_start_date: Actual start date
@@ -139,21 +131,21 @@ en:
         parent: Select the parent activity
         planned_end_date: Planned end date
         planned_start_date: Planned start date
+        policy_marker_gender: Gender
+        policy_marker_climate_change_adaptation: Climate change - Adaptation
+        policy_marker_climate_change_mitigation: Climate change - Mitigation
+        policy_marker_biodiversity: Biodiversity
+        policy_marker_desertification: Desertification
+        policy_marker_disability: Disability
+        policy_marker_disaster_risk_reduction: Disaster Risk Reduction
+        policy_marker_nutrition: Nutrition Policy
         policy_markers:
-          gender: Gender
-          climate_change_adaptation: Climate change - Adaptation
-          climate_change_mitigation: Climate change - Mitigation
-          biodiversity: Biodiversity
-          desertification: Desertification
-          disability: Disability
-          disaster_risk_reduction: Disaster Risk Reduction
-          nutrition: Nutrition Policy
           responses:
             not_assessed: Not assessed
             not_targeted: Not targeted
             significant_objective: Significant objective
             principal_objective: Principal objective
-            principal_objective_and_in_support: Principal objective AND in support of an action programme
+            principal_objective_and_in_support_of_an_action_programme: Principal objective AND in support of an action programme
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
         requires_additional_benefitting_countries: Does this activity have other benefitting countries?
@@ -203,7 +195,7 @@ en:
             not_targeted: The activity was examined but found not to target the policy objective
             significant_objective: Significant (secondary) policy objectives are those which, although important, were not the prime motivation for undertaking the activity
             principal_objective: Fundamental in the design and impact of the activity and which is an explicit objective of the activity. May be selected by answering the question "Would the activity have been undertaken without this objective?"
-            principal_objective_and_in_support: For desertification-related aid only
+            principal_objective_and_in_support_of_an_action_programme: For desertification-related aid only
           gender: Gender equality is explicitly promoted in activity documentation through specific measures for this activity
           climate_change_adaptation: This activity intends to reduce the vulnerability of human or natural systems to the impacts of climate change and climate related risks, by maintaining or increasing adaptive capacity and resilience
           climate_change_mitigation: This activity contributes to the objective of stabilisation of greenhouse gas (GHG) concentrations in the atmosphere at a level that would prevent dangerous anthropogenic interference with the climate system by promoting efforts to reduce or limit GHG emissions or to enhance GHG sequestration

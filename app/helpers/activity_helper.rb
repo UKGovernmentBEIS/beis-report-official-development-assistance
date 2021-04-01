@@ -29,4 +29,8 @@ module ActivityHelper
   def policy_markers_iati_codes_to_enum(code)
     Activity::POLICY_MARKER_CODES.key(code.to_i)
   end
+
+  def policy_markers_desertification_iati_codes_to_enum(code)
+    Activity::DESERTIFICATION_POLICY_MARKER_CODES.key(code.to_i)
+  end
 end
