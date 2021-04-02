@@ -7,7 +7,7 @@ ruby "2.6.3"
 gem "auth0", "~> 5.0"
 gem "acts_as_tree"
 gem "bootsnap", ">= 1.1.0", require: false
-gem "govuk_design_system_formbuilder", "~> 2.3.0"
+gem "govuk_design_system_formbuilder", "~> 2.4.0"
 gem "haml-rails"
 gem "high_voltage"
 gem "ipaddr"
