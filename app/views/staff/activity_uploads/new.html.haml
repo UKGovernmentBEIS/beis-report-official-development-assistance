@@ -1,3 +1,5 @@
+= content_for :page_title_prefix, t("page_title.activity.upload")
+
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
@@ -5,7 +7,18 @@
         = t("page_title.activity.upload")
 
   .govuk-grid-row
-    .govuk-grid-column-full.page-actions
-      = link_to t("action.activity.download.button"), report_activity_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
+    .govuk-grid-column-two-thirds
+      %h2.govuk-heading-m
+        = link_to t("action.activity.download.button"), report_activity_upload_path(@report_presenter, format: :csv), class: "govuk-link"
 
-  = render partial: "upload_form"
+      %p.govuk-body
+        = t("action.activity.download.hint_html")
+
+      .govuk-body.upload-form
+        = form_for @report_presenter, url: report_activity_upload_path(@report_presenter) do |f|
+
+          = f.govuk_file_field :activity_csv,
+            label: { text: t("form.label.activity.csv_file") },
+            hint: { text: t("form.hint.activity.csv_file") }
+
+          = f.govuk_submit t("action.activity.upload.button")
