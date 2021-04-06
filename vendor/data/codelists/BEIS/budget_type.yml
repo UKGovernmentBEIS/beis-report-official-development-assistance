@@ -7,10 +7,10 @@ data:
     description: Budget allocated directly from the GCRF funded parent activity
   - code: 3
     name: Transferred
-    description: Budget allocated to an acitvity from a transfer
+    description: Budget allocated to an activity from a transfer
   - code: 4
-    name: External Offical Development Assistance
-    description: Budget allocated from an external organistion that is still considered ODA funding
+    name: External Official Development Assistance
+    description: Budget allocated from an external organisation that is still considered ODA funding
   - code: 5
     name: External non Official Development Assistance
-    description: Budget allocated from an external organistion that is NOT considered ODA funding
+    description: Budget allocated from an external organisation that is NOT considered ODA funding

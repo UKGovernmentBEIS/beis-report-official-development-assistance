@@ -185,7 +185,7 @@ RSpec.describe "Users can create a budget" do
 
         click_on(t("page_content.budgets.button.create"))
 
-        choose("External Offical Development Assistance")
+        choose("External Official Development Assistance")
         select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
         fill_in "budget[value]", with: "1000.00"
         click_button t("default.button.submit")
