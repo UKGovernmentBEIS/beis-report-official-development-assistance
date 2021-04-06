@@ -171,7 +171,7 @@ class ActivityPresenter < SimpleDelegator
 
   def gcrf_strategic_area
     return if super.blank?
-    gcrf_strategic_area_options.select { |area| super.include?(area.code.to_s) }
+    gcrf_strategic_area_options.select { |area| super.include?(area.code) }
       .map(&:description)
       .to_sentence
   end
