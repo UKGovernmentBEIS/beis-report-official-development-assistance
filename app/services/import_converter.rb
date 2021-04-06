@@ -32,7 +32,9 @@ class ImportConverter
     tuples = []
 
     @row.each do |header, value|
+      next if value.blank?
       year, quarter = match_quarter(header, TRANSACTION_HEADER_PATTERNS)
+
       if year && quarter && value.strip != "0"
         tuples << identifier_tuple + [year, quarter, value]
       end
