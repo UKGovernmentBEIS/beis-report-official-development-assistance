@@ -3,6 +3,8 @@ require "optparse"
 require_relative "../config/environment"
 require_relative "../app/services/import_converter"
 
+BYTE_ORDER_MARK = "\uFEFF".encode(Encoding::UTF_8)
+
 parser = OptionParser.new { |args|
   args.on "-i", "--input FILE"
   args.on "-o", "--output FILE"
@@ -13,7 +15,9 @@ options = {}
 parser.parse!(into: options)
 
 level = options.fetch(:level).upcase
-rows = CSV.read(options.fetch(:input), headers: true)
+input_data = File.read(options.fetch(:input))
+input_data.delete_prefix!(BYTE_ORDER_MARK)
+rows = CSV.parse(input_data, headers: true)
 
 output = options.fetch(:output)
 transaction_output = CSV.open("#{output}_transactions.csv", "w")
