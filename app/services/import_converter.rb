@@ -76,7 +76,7 @@ class ImportConverter
       when LEVEL_D then ""
     end
 
-    id_parts = @row.values_at("Parent RODA ID", "RODA ID Fragment")
+    id_parts = ["Parent RODA ID", "RODA ID Fragment"].map { |key| @row.fetch(key) }
     [id_parts.join(separator)]
   end
 
