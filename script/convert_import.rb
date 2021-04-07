@@ -1,5 +1,6 @@
 require "csv"
 require "optparse"
+require_relative "../config/environment"
 require_relative "../app/services/import_converter"
 
 parser = OptionParser.new { |args|
