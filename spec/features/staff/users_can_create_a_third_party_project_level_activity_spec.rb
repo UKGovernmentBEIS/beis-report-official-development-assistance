@@ -4,6 +4,16 @@ RSpec.feature "Users can create a third-party project" do
     before { authenticate!(user: user) }
 
     context "when viewing a project" do
+      scenario "a new third party project cannot be added to the programme when a report does not exist" do
+        project = create(:project_activity, :gcrf_funded, organisation: user.organisation)
+
+        visit activities_path
+        click_on project.title
+        click_on t("tabs.activity.children")
+
+        expect(page).to_not have_button(t("action.activity.add_child"))
+      end
+
       scenario "a new third party project can be added to the project" do
         project = create(:project_activity, :gcrf_funded, organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: project.associated_fund)

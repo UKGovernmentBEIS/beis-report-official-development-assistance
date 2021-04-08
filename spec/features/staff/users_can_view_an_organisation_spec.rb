@@ -156,6 +156,17 @@ RSpec.feature "Users can view an organisation" do
       expect(page).to have_content t("form.label.activity.roda_identifier_fragment", level: "programme")
     end
 
+    scenario "cannot add a new child activity when a report does not exist" do
+      gcrf = create(:fund_activity, :gcrf)
+      programme = create(:programme_activity, parent: gcrf, extending_organisation: organisation)
+
+      visit organisation_path(organisation)
+
+      within(id: programme.id) do
+        expect(page).to_not have_link(t("action.activity.add_child"))
+      end
+    end
+
     scenario "does not see a back link on their organisation home page" do
       visit organisation_path(organisation)
 

@@ -29,7 +29,7 @@ class Staff::OrganisationsController < Staff::BaseController
     respond_to do |format|
       format.html do
         @grouped_programmes = Activity.programme
-          .includes(:parent, :extending_organisation)
+          .includes(:extending_organisation, :organisation, parent: [:parent])
           .where(extending_organisation: organisation)
           .order(:roda_identifier_compound)
           .group_by(&:parent)
