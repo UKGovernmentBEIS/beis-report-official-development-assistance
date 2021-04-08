@@ -588,6 +588,7 @@
 - Change policy markers to radio buttons
 - The activity upload UI looks similar to the actuals and forecasts upload UI
 - Hide "Add child" buttons when users cannot create a child
+- Activity importer checks permissions to create or update an activity
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-43...HEAD
 [release-43]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-42...release-43
