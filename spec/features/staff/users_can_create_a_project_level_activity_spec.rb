@@ -4,6 +4,16 @@ RSpec.feature "Users can create a project" do
     before { authenticate!(user: user) }
 
     context "when viewing a programme" do
+      scenario "a new project cannot be added to the programme when a report does not exist" do
+        programme = create(:programme_activity, :newton_funded, organisation: user.organisation, extending_organisation: user.organisation)
+
+        visit activities_path
+        click_on programme.title
+        click_on t("tabs.activity.children")
+
+        expect(page).to_not have_button(t("page_content.organisation.button.create_activity"))
+      end
+
       scenario "a new project can be added to the programme" do
         programme = create(:programme_activity, :newton_funded, organisation: user.organisation, extending_organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
