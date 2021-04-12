@@ -20,8 +20,10 @@ module Activities
       ["Parent RODA ID"] + Converter::FIELDS.values
     end
 
-    def initialize(organisation:)
-      @organisation = organisation
+    def initialize(uploader:, delivery_partner_organisation:)
+      @uploader = uploader
+      @uploader_organisation = uploader.organisation
+      @delivery_partner_organisation = delivery_partner_organisation
       @errors = []
       @created = []
       @updated = []
@@ -51,7 +53,7 @@ module Activities
 
     def create_activity(row, index)
       if row["RODA ID Fragment"].present? && row["Parent RODA ID"].present?
-        creator = ActivityCreator.new(@organisation, row)
+        creator = ActivityCreator.new(row: row, uploader: @uploader, delivery_partner_organisation: @delivery_partner_organisation)
         creator.create
         created << creator.activity unless creator.errors.any?
 
@@ -67,7 +69,7 @@ module Activities
       elsif row["Parent RODA ID"].present?
         add_error(index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
       else
-        updater = ActivityUpdater.new(row, @organisation)
+        updater = ActivityUpdater.new(row: row, uploader: @uploader, delivery_partner_organisation: @delivery_partner_organisation)
         updater.update
         updated << updater.activity unless updater.errors.any?
 
@@ -82,12 +84,19 @@ module Activities
     class ActivityUpdater
       attr_reader :errors, :activity, :row
 
-      def initialize(row, organisation)
+      def initialize(row:, uploader:, delivery_partner_organisation:)
         @errors = {}
         @activity = find_activity_by_roda_id(row["RODA ID"])
-        @organisation = organisation
+        @uploader = uploader
+        @delivery_partner_organisation = delivery_partner_organisation
         @row = row
         @converter = Converter.new(row, :update)
+
+        if @activity && !ActivityPolicy.new(@uploader, @activity).update?
+          @errors[:roda_identifier_fragment] = [nil, I18n.t("importer.errors.activity.unauthorised")]
+          return
+        end
+
         @errors.update(@converter.errors)
       end
 
@@ -125,12 +134,19 @@ module Activities
     class ActivityCreator
       attr_reader :errors, :row, :activity
 
-      def initialize(organisation, row)
-        @organisation = organisation
+      def initialize(row:, uploader:, delivery_partner_organisation:)
+        @uploader = uploader
+        @delivery_partner_organisation = delivery_partner_organisation
         @errors = {}
         @row = row
         @converter = Converter.new(row)
         @parent_activity = fetch_parent(@row["Parent RODA ID"])
+
+        if @parent_activity && !ActivityPolicy.new(@uploader, @parent_activity).create_child?
+          @errors[:parent_id] = [nil, I18n.t("importer.errors.activity.unauthorised")]
+          return
+        end
+
         @errors.update(@converter.errors)
       end
 
@@ -139,7 +155,7 @@ module Activities
 
         @activity = Activity.new_child(
           parent_activity: @parent_activity,
-          delivery_partner_organisation: @organisation
+          delivery_partner_organisation: @delivery_partner_organisation
         ) { |a|
           a.form_state = "complete"
         }
