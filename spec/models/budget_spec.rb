@@ -54,6 +54,12 @@ RSpec.describe Budget do
           expect(subject.providing_organisation_id).to eql(service_owner.id)
         end
       end
+
+      context "when the budget type is Transferred" do
+        subject { build(:budget, budget_type: Budget::BUDGET_TYPES["transferred"], parent_activity: build(:programme_activity)) }
+
+        it { is_expected.not_to allow_value(nil).for(:providing_organisation_id) }
+      end
     end
 
     context "when the activity belongs to a delivery partner" do
