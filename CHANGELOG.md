@@ -592,6 +592,8 @@
 
 ## [unreleased]
 
+- Allow forecasts to have negative values
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-44...HEAD
 [release-44]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-43...release-44
 [release-43]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-42...release-43
