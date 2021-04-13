@@ -30,6 +30,14 @@ RSpec.describe PlannedDisbursementHistory do
       ])
     end
 
+    it "creates an original with a negative value" do
+      history.set_value(-10)
+
+      expect(history_entries).to eq([
+        ["original", nil, nil, -10],
+      ])
+    end
+
     it "does not create an original entry with a zero value" do
       history.set_value(0)
       expect(history_entries).to eq([])
@@ -55,6 +63,16 @@ RSpec.describe PlannedDisbursementHistory do
       ])
     end
 
+    it "adds a revision with a negative value" do
+      history.set_value(10)
+      history.set_value(-20)
+
+      expect(history_entries).to eq([
+        ["original", nil, nil, 10],
+        ["revised", nil, nil, -20],
+      ])
+    end
+
     it "modifies the revision on all further updates" do
       history.set_value(10)
       history.set_value(20)
@@ -74,6 +92,17 @@ RSpec.describe PlannedDisbursementHistory do
       expect(history_entries).to eq([
         ["original", nil, nil, 10],
         ["revised", nil, nil, 0],
+      ])
+    end
+
+    it "modifies the revision with a negative value" do
+      history.set_value(10)
+      history.set_value(20)
+      history.set_value(-30)
+
+      expect(history_entries).to eq([
+        ["original", nil, nil, 10],
+        ["revised", nil, nil, -30],
       ])
     end
 

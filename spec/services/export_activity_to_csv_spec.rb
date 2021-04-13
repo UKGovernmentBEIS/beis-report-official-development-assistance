@@ -104,13 +104,13 @@ RSpec.describe ExportActivityToCsv do
       q19_forecast = PlannedDisbursementHistory.new(project, **quarters[18])
 
       q1_forecast.set_value(1000)
-      q3_forecast.set_value(500)
+      q3_forecast.set_value(-500)
       q19_forecast.set_value(300)
 
       totals = ExportActivityToCsv.new(activity: project, report: report).next_twenty_quarter_forecasts
 
       expect(totals).to eq [
-        "0.00", "1000.00", "0.00", "500.00",
+        "0.00", "1000.00", "0.00", "-500.00",
         "0.00", "0.00", "0.00", "0.00",
         "0.00", "0.00", "0.00", "0.00",
         "0.00", "0.00", "0.00", "0.00",

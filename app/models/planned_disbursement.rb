@@ -22,5 +22,4 @@ class PlannedDisbursement < ApplicationRecord
     :providing_organisation_reference,
     :financial_quarter,
     :financial_year
-  validates :value, inclusion: {in: 0..99_999_999_999.00}
 end
