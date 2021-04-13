@@ -53,6 +53,13 @@ RSpec.describe Codelist do
     end
   end
 
+  describe "#hash_of_integer_coded_names" do
+    it "returns a simple hash of names and codes, with codes as integers" do
+      coded_tied_status = {"partially_tied" => 3, "tied" => 4, "untied" => 5}
+      expect(Codelist.new(type: "tied_status", source: "iati").hash_of_integer_coded_names).to eq(coded_tied_status)
+    end
+  end
+
   describe "#hash_of_named_codes" do
     it "returns a simple hash of codes to names" do
       coded_tied_status = {"3" => "Partially tied", "4" => "Tied", "5" => "Untied"}

@@ -244,8 +244,8 @@ RSpec.feature "Users can edit an activity" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        expect(page).not_to have_content("Edit")
-        expect(page).not_to have_content("Add")
+        expect(page).not_to have_link(t("default.link.edit"))
+        expect(page).not_to have_link(t("default.link.add"))
       end
 
       scenario "it does not show the Publish to Iati field" do
@@ -258,6 +258,17 @@ RSpec.feature "Users can edit an activity" do
     end
 
     context "when the activity is a project" do
+      it "does not show edit/add actions if there is no report" do
+        activity = create(:project_activity, organisation: user.organisation)
+
+        visit organisation_activity_details_path(activity.organisation, activity)
+
+        within ".activity-details" do
+          expect(page).not_to have_link(t("default.link.edit"))
+          expect(page).not_to have_link(t("default.link.add"))
+        end
+      end
+
       it "shows an update success message" do
         activity = create(:project_activity, organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)

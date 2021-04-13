@@ -17,13 +17,6 @@ module CodelistHelper
     "G01" => false,
   }
 
-  ALLOWED_POLICY_MARKERS_SIGNIFICANCES = [
-    "0",
-    "1",
-    "2",
-    "3",
-  ]
-
   def default_currency_options
     Codelist.new(type: "default_currency").to_objects
   end
@@ -104,12 +97,20 @@ module CodelistHelper
     FSTC_FROM_AID_TYPE_CODE.key?(aid_type_code)
   end
 
-  def policy_markers_select_options
-    objects = Codelist.new(type: "policy_markers").to_objects(with_empty_item: false)
-    not_assessed_option = OpenStruct.new(name: "Not assessed", code: "1000")
+  def policy_markers_radio_options
+    options = Codelist.new(type: "policy_significance", source: "beis")
+      .to_objects_with_description
+      .sort_by { |c| c.code.to_i }
 
-    filtered_list = objects.select { |object| ALLOWED_POLICY_MARKERS_SIGNIFICANCES.include?(object.code) }.sort_by(&:code)
-    filtered_list.unshift(not_assessed_option)
+    options.rotate(-1)
+  end
+
+  def policy_markers_desertification_radio_options
+    options = Codelist.new(type: "policy_significance_desertification", source: "beis")
+      .to_objects_with_description
+      .sort_by { |c| c.code.to_i }
+
+    options.rotate(-1)
   end
 
   def programme_status_radio_options

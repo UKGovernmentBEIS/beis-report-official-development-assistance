@@ -4,7 +4,8 @@ en:
     activity:
       add_child: Add child activity
       download:
-        button: Download activity CSV template
+        button: Download CSV template
+        hint_html: "<p class='govuk-body'>This CSV contains all the columns that can be used to create or update activities related to your current report.</p><p class='govuk-body'>Edit it to add the values for your organisation's activities, then upload it through the form.</p>"
       upload:
         button: Upload and continue
         file_missing_or_invalid: Please upload a valid CSV file
@@ -62,14 +63,6 @@ en:
           eligible: Eligible
           no_longer_eligible: No longer eligible
         oda_eligibility_lead: Who is the ODA Eligibility Contact for this activity?
-        policy_marker_gender: Gender
-        policy_marker_climate_change_adaptation: Climate change - Adaptation
-        policy_marker_climate_change_mitigation: Climate change - Mitigation
-        policy_marker_biodiversity: Biodiversity
-        policy_marker_desertification: Desertification
-        policy_marker_disability: Disability
-        policy_marker_disaster_risk_reduction: Disaster Risk Reduction
-        policy_marker_nutrition: Nutrition Policy
         region: Recipient region
         actual_end_date: Actual end date
         actual_start_date: Actual start date
@@ -116,7 +109,8 @@ en:
           "true": "Yes"
           "false": "No"
         uk_dp_named_contact: Who is the UK delivery partner named contact for this activity?
-        csv_file: Activity spreadsheet
+        csv_file: Upload CSV spreadsheet
+        csv_file_recover_from_error: Re-upload CSV spreadsheet
     legend:
       activity:
         aid_type: What is the aid type?
@@ -139,21 +133,21 @@ en:
         parent: Select the parent activity
         planned_end_date: Planned end date
         planned_start_date: Planned start date
+        policy_marker_gender: Gender
+        policy_marker_climate_change_adaptation: Climate change - Adaptation
+        policy_marker_climate_change_mitigation: Climate change - Mitigation
+        policy_marker_biodiversity: Biodiversity
+        policy_marker_desertification: Desertification
+        policy_marker_disability: Disability
+        policy_marker_disaster_risk_reduction: Disaster Risk Reduction
+        policy_marker_nutrition: Nutrition Policy
         policy_markers:
-          gender: Gender
-          climate_change_adaptation: Climate change - Adaptation
-          climate_change_mitigation: Climate change - Mitigation
-          biodiversity: Biodiversity
-          desertification: Desertification
-          disability: Disability
-          disaster_risk_reduction: Disaster Risk Reduction
-          nutrition: Nutrition Policy
           responses:
             not_assessed: Not assessed
             not_targeted: Not targeted
             significant_objective: Significant objective
             principal_objective: Principal objective
-            principal_objective_and_in_support: Principal objective AND in support of an action programme
+            principal_objective_and_in_support_of_an_action_programme: Principal objective AND in support of an action programme
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
         requires_additional_benefitting_countries: Does this activity have other benefitting countries?
@@ -203,7 +197,7 @@ en:
             not_targeted: The activity was examined but found not to target the policy objective
             significant_objective: Significant (secondary) policy objectives are those which, although important, were not the prime motivation for undertaking the activity
             principal_objective: Fundamental in the design and impact of the activity and which is an explicit objective of the activity. May be selected by answering the question "Would the activity have been undertaken without this objective?"
-            principal_objective_and_in_support: For desertification-related aid only
+            principal_objective_and_in_support_of_an_action_programme: For desertification-related aid only
           gender: Gender equality is explicitly promoted in activity documentation through specific measures for this activity
           climate_change_adaptation: This activity intends to reduce the vulnerability of human or natural systems to the impacts of climate change and climate related risks, by maintaining or increasing adaptive capacity and resilience
           climate_change_mitigation: This activity contributes to the objective of stabilisation of greenhouse gas (GHG) concentrations in the atmosphere at a level that would prevent dangerous anthropogenic interference with the climate system by promoting efforts to reduce or limit GHG emissions or to enhance GHG sequestration
@@ -223,7 +217,8 @@ en:
             "D01": "Experts, consultants, teachers, academics, researchers, volunteers and contributions to public and private bodies for sending experts to developing countries."
             "D02": "Provision of technical assistance in recipient countries outside of project described in project-type interventions (C01). This includes conferences, workshops and seminars but does not include activities such as scholarships/training described in (E01)"
             "G01": "Costs of development assistance programmes not already included under other ODA items as an integral part of the costs of delivering or implementing the aid provided. This includes delivery costs and in-house agency staff and contractors but not donor experts and consultants"
-        csv_file: Upload a spreadsheet containing activity information in CSV format.
+        csv_file: Upload a spreadsheet containing activity data in CSV format.
+        csv_file_recover_from_error_html: Upload a spreadsheet containing activity data in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
       organisation:
         hint: The organisation this activity is associated with
   summary:
@@ -509,3 +504,4 @@ en:
         cannot_update:
           fragment_present: There is an existing RODA ID present, but there is a fragment specified too, which will overwrite the existing fragment. Please remove the fragement from this row and try again.
           parent_present: There is an existing RODA ID present, but there is a parent activity specified too, which will overwrite the existing parent. Please remove the parent ID from this row and try again.
+        unauthorised: You are not authorised to report against this activity

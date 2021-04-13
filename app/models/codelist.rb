@@ -46,6 +46,12 @@ class Codelist
     coded_values
   end
 
+  def hash_of_integer_coded_names
+    hash_of_coded_names.map { |key, value|
+      [key, value.to_i]
+    }.to_h
+  end
+
   def hash_of_named_codes
     coded_values = {}
     list.each do |code|

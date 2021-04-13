@@ -1,3 +1,5 @@
+= content_for :page_title_prefix, t("page_title.activity.upload")
+
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
@@ -9,4 +11,5 @@
       .govuk-grid-column-full
         = render partial: "error_table"
 
-  = render partial: "upload_form"
+  - unless @success
+    = render partial: "upload_form"

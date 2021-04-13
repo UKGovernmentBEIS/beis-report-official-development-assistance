@@ -7,13 +7,8 @@ class Activity < ApplicationRecord
   CAPITAL_SPEND_PERCENTAGE = 0
   DEFAULT_FLOW_TYPE = "10"
 
-  POLICY_MARKER_CODES = {
-    not_targeted: 0,
-    significant_objective: 1,
-    principal_objective: 2,
-    principal_objective_and_in_support: 3,
-    not_assessed: 1000,
-  }
+  POLICY_MARKER_CODES = Codelist.new(type: "policy_significance", source: "beis").hash_of_integer_coded_names
+  DESERTIFICATION_POLICY_MARKER_CODES = Codelist.new(type: "policy_significance_desertification", source: "beis").hash_of_integer_coded_names
 
   FORM_STEPS = [
     :identifier,
@@ -191,7 +186,7 @@ class Activity < ApplicationRecord
 
   enum policy_marker_biodiversity: POLICY_MARKER_CODES, _prefix: :biodiversity
 
-  enum policy_marker_desertification: POLICY_MARKER_CODES, _prefix: :desertification
+  enum policy_marker_desertification: DESERTIFICATION_POLICY_MARKER_CODES, _prefix: :desertification
 
   enum policy_marker_disability: POLICY_MARKER_CODES, _prefix: :disability
 

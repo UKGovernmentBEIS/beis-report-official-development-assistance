@@ -2,12 +2,12 @@ RSpec.feature "users can upload activities" do
   let(:organisation) { create(:organisation) }
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
-  let!(:project) { create(:programme_activity, :newton_funded, organisation: organisation, roda_identifier_fragment: "B-PROG", parent: create(:fund_activity, roda_identifier_fragment: "A-FUND")) }
+  let!(:programme) { create(:programme_activity, :newton_funded, extending_organisation: organisation, roda_identifier_fragment: "B-PROG", parent: create(:fund_activity, roda_identifier_fragment: "A-FUND")) }
 
-  let! :report do
+  let!(:report) do
     create(:report,
       state: :active,
-      fund: project.associated_fund,
+      fund: programme.associated_fund,
       organisation: organisation)
   end
 
@@ -124,12 +124,43 @@ RSpec.feature "users can upload activities" do
     end
   end
 
+  context "uploading a set of activities the user doesn't have permission to modify" do
+    let(:another_organisation) { create(:organisation) }
+    let!(:another_programme) { create(:programme_activity, parent: programme.associated_fund, extending_organisation: another_organisation, roda_identifier_fragment: "BB-PROG") }
+    let!(:existing_activity) { create(:project_activity, parent: programme, roda_identifier_fragment: "EX42") }
+
+    it "prevents creating or updating" do
+      old_count = Activity.count
+
+      attach_file "report[activity_csv]", File.new("spec/fixtures/csv/unpermitted_activities_upload.csv").path
+      click_button t("action.activity.upload.button")
+
+      expect(Activity.count - old_count).to eq(0)
+      expect(page).not_to have_text(t("action.activity.upload.success"))
+
+      within "//tbody/tr[1]" do
+        expect(page).to have_xpath("td[1]", text: "Parent RODA ID")
+        expect(page).to have_xpath("td[2]", text: "2")
+        expect(page).to have_xpath("td[3]", text: "")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.unauthorised"))
+      end
+
+      within "//tbody/tr[2]" do
+        expect(page).to have_xpath("td[1]", text: "RODA ID Fragment")
+        expect(page).to have_xpath("td[2]", text: "3")
+        expect(page).to have_xpath("td[3]", text: "")
+        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.unauthorised"))
+      end
+    end
+  end
+
   scenario "updating an existing activity" do
-    activity_to_update = create(:project_activity) { |activity|
+    activity_to_update = create(:project_activity, :gcrf_funded, organisation: organisation) { |activity|
       activity.implementing_organisations = [
         create(:implementing_organisation, activity: activity),
       ]
     }
+    create(:report, state: :active, fund: activity_to_update.associated_fund, organisation: organisation)
 
     upload_csv <<~CSV
       RODA ID                               | Title     | Channel of delivery code                       | Sector | Recipient Country |

@@ -2,7 +2,8 @@ require "rails_helper"
 
 RSpec.describe Activities::ImportFromCsv do
   let(:organisation) { create(:organisation) }
-  let(:parent_activity) { create(:programme_activity, :newton_funded) }
+  let(:uploader) { create(:delivery_partner_user, organisation: organisation) }
+  let(:parent_activity) { create(:programme_activity, :newton_funded, extending_organisation: organisation) }
 
   # NB: 'let!' to prevent `to change { Activity.count }` from giving confusing results
   let!(:existing_activity) do
@@ -74,9 +75,15 @@ RSpec.describe Activities::ImportFromCsv do
     })
   end
 
-  subject { described_class.new(organisation: organisation) }
+  subject { described_class.new(uploader: uploader, delivery_partner_organisation: organisation) }
 
   context "when updating an existing activity" do
+    let(:activity_policy_double) { instance_double("ActivityPolicy", update?: true) }
+
+    before do
+      allow(ActivityPolicy).to receive(:new).and_return(activity_policy_double)
+    end
+
     it "has an error if an Activity does not exist" do
       existing_activity_attributes["RODA ID"] = "FAKE RODA ID"
 
@@ -153,7 +160,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.recipient_country).to eq(existing_activity_attributes["Recipient Country"])
       expect(existing_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
       expect(existing_activity.gdi).to eq("1")
-      expect(existing_activity.gcrf_strategic_area).to eq(["1", "3"])
+      expect(existing_activity.gcrf_strategic_area).to eq([1, 3])
       expect(existing_activity.gcrf_challenge_area).to eq(4)
       expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Delivery partner identifier"])
       expect(existing_activity.fund_pillar).to eq(existing_activity_attributes["Newton Fund Pillar"].to_i)
@@ -328,9 +335,25 @@ RSpec.describe Activities::ImportFromCsv do
         ])
       end
     end
+
+    context "when you don't have permission to update the existing activities" do
+      let(:activity_policy_double) { instance_double("ActivityPolicy", update?: false) }
+
+      it "doesn't update the activity and reports the error" do
+        subject.import([existing_activity_attributes])
+        expect(subject.updated.count).to eq(0)
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.unauthorised"))
+      end
+    end
   end
 
   context "when creating a new activity" do
+    let(:activity_policy_double) { instance_double("ActivityPolicy", create_child?: true) }
+
+    before do
+      allow(ActivityPolicy).to receive(:new).with(uploader, parent_activity).and_return(activity_policy_double)
+    end
+
     it "returns an error when the ID and fragments are not present" do
       existing_activity_attributes["RODA ID"] = ""
 
@@ -680,10 +703,8 @@ RSpec.describe Activities::ImportFromCsv do
     end
 
     context "when the activity is a project" do
-      let(:programme) { create(:programme_activity) }
-
       it "has an error if the 'Channel of delivery code' is empty" do
-        new_activity_attributes["Parent RODA ID"] = programme.roda_identifier_compound
+        new_activity_attributes["Parent RODA ID"] = parent_activity.roda_identifier_compound
         new_activity_attributes["Channel of delivery code"] = ""
 
         expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
@@ -848,6 +869,7 @@ RSpec.describe Activities::ImportFromCsv do
     context "when the parent activity is a fund" do
       let(:beis_organisation) { create(:beis_organisation) }
       let!(:parent_activity) { create(:fund_activity, :newton, organisation: beis_organisation) }
+      let(:uploader) { create(:beis_user) }
 
       it "creates a programme level activity correctly" do
         expect { subject.import([new_activity_attributes]) }.to change { Activity.count }.by(1)
@@ -864,9 +886,25 @@ RSpec.describe Activities::ImportFromCsv do
         expect(new_activity.extending_organisation).to eq(organisation)
       end
     end
+
+    context "when uploading new activities that you don't have permission for" do
+      let(:activity_policy_double) { instance_double("ActivityPolicy", create_child?: false) }
+
+      it "doesn't create the activity and reports the error" do
+        subject.import([new_activity_attributes])
+        expect(subject.created.count).to eq(0)
+        expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.unauthorised"))
+      end
+    end
   end
 
   context "when updating and importing" do
+    let(:activity_policy_double) { instance_double("ActivityPolicy", create_child?: true, update?: true) }
+
+    before do
+      allow(ActivityPolicy).to receive(:new).and_return(activity_policy_double)
+    end
+
     it "creates and imports activities" do
       rows = [existing_activity_attributes, new_activity_attributes]
       expect { subject.import(rows) }.to change { Activity.count }.by(1)

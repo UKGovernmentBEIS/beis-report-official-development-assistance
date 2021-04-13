@@ -247,33 +247,33 @@ module FormHelpers
     if level == "project" || level == "third_party_project"
       expect(page).to have_content t("page_title.activity_form.show.policy_markers")
       expect(page).to have_content t("form.hint.activity.policy_markers.title")
-      expect(page).to have_content("Explanation of responses")
       expect(page).to have_content t("form.legend.activity.policy_markers.responses.not_assessed")
       expect(page).to have_content t("form.hint.activity.policy_markers.responses.not_assessed")
 
-      expect(page).to have_content t("form.legend.activity.policy_markers.gender")
-      select policy_marker_gender, from: "activity[policy_marker_gender]"
+      expect(page).to have_content t("form.legend.activity.policy_marker_gender")
+      choose(policy_marker_gender, name: "activity[policy_marker_gender]")
 
-      expect(page).to have_content t("form.legend.activity.policy_markers.climate_change_adaptation")
-      select policy_marker_climate_change_adaptation, from: "activity[policy_marker_climate_change_adaptation]"
+      expect(page).to have_content t("form.legend.activity.policy_marker_climate_change_adaptation")
+      choose(policy_marker_climate_change_adaptation, name: "activity[policy_marker_climate_change_adaptation]")
 
-      expect(page).to have_content t("form.legend.activity.policy_markers.climate_change_mitigation")
-      select policy_marker_climate_change_mitigation, from: "activity[policy_marker_climate_change_mitigation]"
+      expect(page).to have_content t("form.legend.activity.policy_marker_climate_change_mitigation")
+      choose(policy_marker_climate_change_mitigation, name: "activity[policy_marker_climate_change_mitigation]")
 
-      expect(page).to have_content t("form.legend.activity.policy_markers.biodiversity")
-      select policy_marker_biodiversity, from: "activity[policy_marker_biodiversity]"
+      expect(page).to have_content t("form.legend.activity.policy_marker_biodiversity")
+      choose(policy_marker_biodiversity, name: "activity[policy_marker_biodiversity]")
 
-      expect(page).to have_content t("form.legend.activity.policy_markers.desertification")
-      select policy_marker_desertification, from: "activity[policy_marker_desertification]"
+      expect(page).to have_content t("form.legend.activity.policy_marker_desertification")
+      choose(policy_marker_desertification, name: "activity[policy_marker_desertification]")
 
-      expect(page).to have_content t("form.legend.activity.policy_markers.disability")
-      select policy_marker_disability, from: "activity[policy_marker_disability]"
+      expect(page).to have_content t("form.legend.activity.policy_marker_disability")
+      choose(policy_marker_disability, name: "activity[policy_marker_disability]")
 
-      expect(page).to have_content t("form.legend.activity.policy_markers.disaster_risk_reduction")
-      select policy_marker_disaster_risk_reduction, from: "activity[policy_marker_disaster_risk_reduction]"
+      expect(page).to have_content t("form.legend.activity.policy_marker_disaster_risk_reduction")
+      choose(policy_marker_disaster_risk_reduction, name: "activity[policy_marker_disaster_risk_reduction]")
 
-      expect(page).to have_content t("form.legend.activity.policy_markers.nutrition")
-      select policy_marker_nutrition, from: "activity[policy_marker_nutrition]"
+      expect(page).to have_content t("form.legend.activity.policy_marker_nutrition")
+      choose(policy_marker_nutrition, name: "activity[policy_marker_nutrition]")
+
       click_button t("form.button.activity.submit")
     end
 

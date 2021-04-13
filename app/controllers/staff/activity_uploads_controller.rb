@@ -22,13 +22,15 @@ class Staff::ActivityUploadsController < Staff::BaseController
   def update
     @report_presenter = ReportPresenter.new(@report)
     upload = CsvFileUpload.new(params[:report], :activity_csv)
+    @success = false
 
     if upload.valid?
-      importer = Activities::ImportFromCsv.new(organisation: current_user.organisation)
+      importer = Activities::ImportFromCsv.new(uploader: current_user, delivery_partner_organisation: current_user.organisation)
       importer.import(upload.rows)
       @errors = importer.errors
 
       if @errors.empty?
+        @success = true
         flash.now[:notice] = t("action.activity.upload.success")
       end
     else
