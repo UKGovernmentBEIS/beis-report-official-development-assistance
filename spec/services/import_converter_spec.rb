@@ -9,8 +9,8 @@ RSpec.describe ImportConverter do
   describe "transaction data" do
     let :input_row do
       {
-        "Parent RODA ID" => "AAA-BBB",
-        "RODA ID Fragment" => "CCC",
+        "Parent RODA ID" => "AAA-BBB ",
+        "RODA ID Fragment" => " CCC",
         "Act 2020/21 Q1" => "90",
         "Act 2020/21 FY Q2 (Jul, Aug, Sep)" => "70",
         "Q3 2020-2021 actuals" => "50",
