@@ -583,14 +583,17 @@
 - Remove limit on the number of intended beneficiaries
 - Introduce `create_child?` check in ActivityPolicy
 
-## [unreleased]
+## [release-44] - 2021-04-13
 
 - Change policy markers to radio buttons
 - The activity upload UI looks similar to the actuals and forecasts upload UI
 - Hide "Add child" buttons when users cannot create a child
 - Activity importer checks permissions to create or update an activity
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-43...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-44...HEAD
+[release-44]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-43...release-44
 [release-43]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-42...release-43
 [release-42]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-41...release-42
 [release-41]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-40...release-41
