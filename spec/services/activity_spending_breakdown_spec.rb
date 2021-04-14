@@ -41,6 +41,12 @@ RSpec.describe ActivitySpendingBreakdown do
       "FQ1 2020-2021 actual spend", "FQ1 2020-2021 actual refund", "FQ1 2020-2021 actual net",
       "FQ2 2020-2021 actual spend", "FQ2 2020-2021 actual refund", "FQ2 2020-2021 actual net",
       "FQ3 2020-2021 actual spend", "FQ3 2020-2021 actual refund", "FQ3 2020-2021 actual net",
+
+      "FQ4 2020-2021 forecast",
+      "FQ1 2021-2022 forecast",
+      "FQ2 2021-2022 forecast",
+      "FQ3 2021-2022 forecast",
+      "FQ4 2021-2022 forecast",
     ])
   end
 
@@ -186,6 +192,30 @@ RSpec.describe ActivitySpendingBreakdown do
           "FQ3 2020-2021 actual net" => "-10.00",
         )
       end
+    end
+  end
+
+  describe "upcoming forecast columns" do
+    before do
+      quarters = report.own_financial_quarter.following(5)
+
+      q1_forecast = PlannedDisbursementHistory.new(project, **quarters[1])
+      q2_forecast = PlannedDisbursementHistory.new(project, **quarters[2])
+      q3_forecast = PlannedDisbursementHistory.new(project, **quarters[3])
+
+      q1_forecast.set_value(10)
+      q2_forecast.set_value(20)
+      q3_forecast.set_value(40)
+    end
+
+    it "includes forecasts for the next few quarters" do
+      expect(breakdown.combined_hash).to include(
+        "FQ4 2020-2021 forecast" => "0.00",
+        "FQ1 2021-2022 forecast" => "10.00",
+        "FQ2 2021-2022 forecast" => "20.00",
+        "FQ3 2021-2022 forecast" => "40.00",
+        "FQ4 2021-2022 forecast" => "0.00"
+      )
     end
   end
 end

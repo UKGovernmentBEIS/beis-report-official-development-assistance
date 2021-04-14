@@ -1,6 +1,7 @@
 class ActivitySpendingBreakdown
   RECENT_QUARTERS = 7
   OLDER_QUARTERS = 13
+  UPCOMING_QUARTERS = 5
 
   Actuals = Struct.new(:spend, :refund) {
     def net
@@ -27,6 +28,7 @@ class ActivitySpendingBreakdown
       .merge(metadata)
       .merge(old_quarters_net_spending)
       .merge(recent_quarters_detailed_spending)
+      .merge(upcoming_quarters_forecasts)
   end
 
   def identifiers
@@ -62,6 +64,14 @@ class ActivitySpendingBreakdown
     }.to_h
   end
 
+  def upcoming_quarters_forecasts
+    forecasts = PlannedDisbursementOverview.new(@activity).snapshot(@report).all_quarters
+
+    upcoming_quarters.map { |quarter|
+      ["#{quarter} forecast", format_amount(forecasts.value_for(**quarter))]
+    }.to_h
+  end
+
   private
 
   def format_amount(value)
@@ -82,6 +92,10 @@ class ActivitySpendingBreakdown
   def previous_quarters
     count = RECENT_QUARTERS + OLDER_QUARTERS
     financial_quarter.preceding(count - 1) + [financial_quarter]
+  end
+
+  def upcoming_quarters
+    financial_quarter.following(UPCOMING_QUARTERS)
   end
 
   def financial_quarter
