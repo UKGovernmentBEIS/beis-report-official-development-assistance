@@ -13,3 +13,8 @@
 .uppercase-input input {
   text-transform: uppercase;
 }
+
+.guidance {
+  @extend %govuk-body-s;
+  margin-top: govuk-spacing(2);
+}
