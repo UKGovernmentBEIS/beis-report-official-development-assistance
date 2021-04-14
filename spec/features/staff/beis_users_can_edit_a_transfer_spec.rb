@@ -67,6 +67,9 @@ RSpec.feature "BEIS users can edit a transfer" do
   scenario "the user can see validation errors" do
     non_existent_activity = build(:activity)
 
+    roda_identifier = "GCRF-BLOB-424434434"
+    allow(non_existent_activity).to receive(:roda_identifier) { roda_identifier }
+
     fill_in_transfer_form(destination: non_existent_activity, value: nil)
 
     click_on t("default.button.submit")
@@ -74,6 +77,6 @@ RSpec.feature "BEIS users can edit a transfer" do
     expect(page).to have_content(t("activerecord.errors.models.transfer.attributes.destination.required"))
     expect(page).to have_content(t("activerecord.errors.models.transfer.attributes.value.blank"))
 
-    expect(page).to have_field("transfer[destination]", with: non_existent_activity.roda_identifier)
+    expect(page).to have_field("transfer[destination]", with: roda_identifier)
   end
 end
