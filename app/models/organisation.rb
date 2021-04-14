@@ -32,4 +32,8 @@ class Organisation < ApplicationRecord
   def is_government?
     %w[10 11].include?(organisation_type)
   end
+
+  def self.service_owner
+    Organisation.find_by(service_owner: true)
+  end
 end
