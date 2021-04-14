@@ -1,4 +1,12 @@
 class ActivitySpendingBreakdown
+  RECENT_QUARTERS = 7
+
+  Actuals = Struct.new(:spend, :refund) {
+    def net
+      spend - refund
+    end
+  }
+
   def initialize(activity:, report:)
     @activity = activity
     @activity_presenter = ActivityPresenter.new(activity)
@@ -14,7 +22,9 @@ class ActivitySpendingBreakdown
   end
 
   def combined_hash
-    identifiers.merge(metadata)
+    identifiers
+      .merge(metadata)
+      .merge(recent_quarters_detailed_spending)
   end
 
   def identifiers
@@ -32,5 +42,74 @@ class ActivitySpendingBreakdown
       "Programme status" => @activity_presenter.programme_status,
       "ODA eligibility" => @activity_presenter.oda_eligibility,
     }
+  end
+
+  def recent_quarters_detailed_spending
+    previous_quarters_actuals.flat_map { |quarter, actual|
+      [
+        ["#{quarter} actual spend", format_amount(actual.spend)],
+        ["#{quarter} actual refund", format_amount(actual.refund)],
+        ["#{quarter} actual net", format_amount(actual.net)],
+      ]
+    }.to_h
+  end
+
+  private
+
+  def format_amount(value)
+    "%.2f" % value
+  end
+
+  def previous_quarters_actuals
+    @_previous_quarters_actuals ||= begin
+      transactions = ActivityTransactions.new(@activity, @report)
+
+      previous_quarters.map do |quarter|
+        key = [quarter.financial_year.start_year, quarter.quarter]
+        [quarter, transactions.index[key]]
+      end
+    end
+  end
+
+  def previous_quarters
+    count = RECENT_QUARTERS
+    financial_quarter.preceding(count - 1) + [financial_quarter]
+  end
+
+  def financial_quarter
+    @_financial_quarter ||= @report.own_financial_quarter
+  end
+
+  class ActivityTransactions
+    attr_reader :index
+
+    def initialize(activity, report)
+      @activity = activity
+      @report = report
+      @index = Hash.new { |hash, key| hash[key] = Actuals.new(0, 0) }
+
+      load_transaction_data
+    end
+
+    private
+
+    def load_transaction_data
+      report_activity_transactions.each do |txn|
+        key = [txn.financial_year, txn.financial_quarter]
+
+        if txn.value < 0
+          @index[key].refund += txn.value.abs
+        else
+          @index[key].spend += txn.value
+        end
+      end
+    end
+
+    def report_activity_transactions
+      Transaction
+        .joins(:report)
+        .where(parent_activity_id: @activity.id)
+        .merge(Report.historically_up_to(@report))
+    end
   end
 end
