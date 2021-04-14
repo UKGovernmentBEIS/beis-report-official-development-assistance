@@ -1,2 +1,4 @@
 .govuk-grid-column-one-third.page-actions
   = link_to t("action.report.download.button"), report_path(report_presenter, format: :csv), class: "govuk-link"
+  %br
+  = link_to t("action.report.spending_download.button"), report_spending_breakdown_path(report_presenter, format: :csv), class: "govuk-link"
