@@ -594,6 +594,7 @@
 
 - Allow forecasts to have negative values
 - Add links to Guidance for all Activity fields that have guidance
+- Create a [pattern library](doc/patterns.md) for developers
 
 ## [unreleased]
 
