@@ -20,6 +20,20 @@ RSpec.describe ActivitySpendingBreakdown do
       "Programme status",
       "ODA eligibility",
 
+      "FQ4 2015-2016 actual net",
+      "FQ1 2016-2017 actual net",
+      "FQ2 2016-2017 actual net",
+      "FQ3 2016-2017 actual net",
+      "FQ4 2016-2017 actual net",
+      "FQ1 2017-2018 actual net",
+      "FQ2 2017-2018 actual net",
+      "FQ3 2017-2018 actual net",
+      "FQ4 2017-2018 actual net",
+      "FQ1 2018-2019 actual net",
+      "FQ2 2018-2019 actual net",
+      "FQ3 2018-2019 actual net",
+      "FQ4 2018-2019 actual net",
+
       "FQ1 2019-2020 actual spend", "FQ1 2019-2020 actual refund", "FQ1 2019-2020 actual net",
       "FQ2 2019-2020 actual spend", "FQ2 2019-2020 actual refund", "FQ2 2019-2020 actual net",
       "FQ3 2019-2020 actual spend", "FQ3 2019-2020 actual refund", "FQ3 2019-2020 actual net",
@@ -42,6 +56,58 @@ RSpec.describe ActivitySpendingBreakdown do
       "Programme status" => presenter.programme_status,
       "ODA eligibility" => presenter.oda_eligibility
     )
+  end
+
+  describe "net spending columns" do
+    context "with a positive transaction" do
+      before do
+        create_transaction(2018, 3, 50)
+      end
+
+      it "includes the transaction" do
+        expect(breakdown.combined_hash).to include(
+          "FQ3 2018-2019 actual net" => "50.00"
+        )
+      end
+
+      it "includes a zero value for quarters with no transactions" do
+        expect(breakdown.combined_hash).to include(
+          "FQ4 2018-2019 actual net" => "0.00"
+        )
+      end
+    end
+
+    context "with multiple positive transactions" do
+      before do
+        create_transaction(2018, 2, 80)
+        create_transaction(2018, 2, 160)
+
+        create_transaction(2018, 3, 10)
+        create_transaction(2018, 3, 20)
+        create_transaction(2018, 3, 40)
+      end
+
+      it "includes the sum of the transaction values by quarter" do
+        expect(breakdown.combined_hash).to include(
+          "FQ2 2018-2019 actual net" => "240.00",
+          "FQ3 2018-2019 actual net" => "70.00",
+        )
+      end
+    end
+
+    context "with positive and negative transactions" do
+      before do
+        create_transaction(2018, 3, 10)
+        create_transaction(2018, 3, -20)
+        create_transaction(2018, 3, 40)
+      end
+
+      it "includes the sum of the transaction values" do
+        expect(breakdown.combined_hash).to include(
+          "FQ3 2018-2019 actual net" => "30.00",
+        )
+      end
+    end
   end
 
   describe "detailed spending columns" do

@@ -1,5 +1,6 @@
 class ActivitySpendingBreakdown
   RECENT_QUARTERS = 7
+  OLDER_QUARTERS = 13
 
   Actuals = Struct.new(:spend, :refund) {
     def net
@@ -24,6 +25,7 @@ class ActivitySpendingBreakdown
   def combined_hash
     identifiers
       .merge(metadata)
+      .merge(old_quarters_net_spending)
       .merge(recent_quarters_detailed_spending)
   end
 
@@ -44,8 +46,14 @@ class ActivitySpendingBreakdown
     }
   end
 
+  def old_quarters_net_spending
+    previous_quarters_actuals.take(OLDER_QUARTERS).map { |quarter, actual|
+      ["#{quarter} actual net", format_amount(actual.net)]
+    }.to_h
+  end
+
   def recent_quarters_detailed_spending
-    previous_quarters_actuals.flat_map { |quarter, actual|
+    previous_quarters_actuals.drop(OLDER_QUARTERS).flat_map { |quarter, actual|
       [
         ["#{quarter} actual spend", format_amount(actual.spend)],
         ["#{quarter} actual refund", format_amount(actual.refund)],
@@ -72,7 +80,7 @@ class ActivitySpendingBreakdown
   end
 
   def previous_quarters
-    count = RECENT_QUARTERS
+    count = RECENT_QUARTERS + OLDER_QUARTERS
     financial_quarter.preceding(count - 1) + [financial_quarter]
   end
 
