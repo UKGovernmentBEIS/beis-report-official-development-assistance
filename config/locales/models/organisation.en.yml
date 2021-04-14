@@ -44,7 +44,6 @@ en:
       create_programme: Add level B activity
       button:
         choose_extending_organisation: Choose extending organisation
-        create_activity: Add activity
         edit: Edit organisation
         edit_details: Edit details
       details: Organisation details

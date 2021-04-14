@@ -11,7 +11,7 @@ RSpec.feature "Users can create a project" do
         click_on programme.title
         click_on t("tabs.activity.children")
 
-        expect(page).to_not have_button(t("page_content.organisation.button.create_activity"))
+        expect(page).to have_no_button(t("action.activity.add_child"))
       end
 
       scenario "a new project can be added to the programme" do
@@ -21,7 +21,7 @@ RSpec.feature "Users can create a project" do
         visit activities_path
         click_on programme.title
         click_on t("tabs.activity.children")
-        click_on t("page_content.organisation.button.create_activity")
+        click_on t("action.activity.add_child")
 
         fill_in_activity_form(level: "project", parent: programme)
 
@@ -38,7 +38,7 @@ RSpec.feature "Users can create a project" do
         _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 
         visit organisation_activity_children_path(programme.extending_organisation, programme)
-        click_on t("page_content.organisation.button.create_activity")
+        click_on t("action.activity.add_child")
 
         fill_in_activity_form(level: "project", parent: programme)
 
@@ -55,7 +55,7 @@ RSpec.feature "Users can create a project" do
         identifier = "a-project"
 
         visit organisation_activity_children_path(programme.extending_organisation, programme)
-        click_on t("page_content.organisation.button.create_activity")
+        click_on t("action.activity.add_child")
 
         fill_in_activity_form(roda_identifier_fragment: identifier, level: "project", parent: programme)
 
@@ -68,7 +68,7 @@ RSpec.feature "Users can create a project" do
         _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 
         visit organisation_activity_children_path(programme.extending_organisation, programme)
-        click_on t("page_content.organisation.button.create_activity")
+        click_on t("action.activity.add_child")
 
         fill_in "activity[delivery_partner_identifier]", with: "no-country-selected"
         click_button t("form.button.activity.submit")
@@ -103,7 +103,7 @@ RSpec.feature "Users can create a project" do
 
         PublicActivity.with_tracking do
           visit organisation_activity_children_path(programme.extending_organisation, programme)
-          click_on t("page_content.organisation.button.create_activity")
+          click_on t("action.activity.add_child")
 
           fill_in_activity_form(level: "project", delivery_partner_identifier: "my-unique-identifier", parent: programme)
 
@@ -124,7 +124,7 @@ RSpec.feature "Users can create a project" do
           identifier = "newton-project"
 
           visit organisation_activity_children_path(newton_programme.extending_organisation, newton_programme)
-          click_on t("page_content.organisation.button.create_activity")
+          click_on t("action.activity.add_child")
 
           fill_in_activity_form(level: "project", roda_identifier_fragment: identifier, parent: newton_programme)
 
@@ -139,7 +139,7 @@ RSpec.feature "Users can create a project" do
           identifier = "newton-project"
 
           visit organisation_activity_children_path(newton_programme.extending_organisation, newton_programme)
-          click_on t("page_content.organisation.button.create_activity")
+          click_on t("action.activity.add_child")
 
           fill_in_activity_form(level: "project", roda_identifier_fragment: identifier, parent: newton_programme, country_delivery_partners: nil)
 
@@ -155,7 +155,7 @@ RSpec.feature "Users can create a project" do
           _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 
           visit organisation_activity_children_path(programme.extending_organisation, programme)
-          click_on t("page_content.organisation.button.create_activity")
+          click_on t("action.activity.add_child")
 
           # Test is done in this method:
           fill_in_activity_form(level: "project", parent: programme, aid_type: "D02")
@@ -171,7 +171,7 @@ RSpec.feature "Users can create a project" do
           _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 
           visit organisation_activity_children_path(programme.extending_organisation, programme)
-          click_on t("page_content.organisation.button.create_activity")
+          click_on t("action.activity.add_child")
 
           # Test is done in this method:
           fill_in_activity_form(level: "project", parent: programme, aid_type: "C01", fstc_applies: false)

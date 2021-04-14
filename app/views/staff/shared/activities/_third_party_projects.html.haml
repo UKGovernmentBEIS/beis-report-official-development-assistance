@@ -2,8 +2,9 @@
   .govuk-grid-column-full
     %h2.govuk-heading-m
       = t("page_content.activity.third_party_projects")
-    - if ThirdPartyProjectPolicy.new(current_user, activity).create?
-      = form_tag(organisation_activity_children_path(activity.organisation, activity), method: "post") do
-        = submit_tag t("action.activity.add_child"), class: "govuk-button"
+    - if policy(activity).create_child?
+      = button_to t("action.activity.add_child"),
+          organisation_activity_children_path(activity.extending_organisation, activity),
+          class: "govuk-button"
 
     = render partial: '/staff/shared/third_party_projects/table', locals: { third_party_projects: activities }
