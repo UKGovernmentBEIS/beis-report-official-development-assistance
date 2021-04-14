@@ -61,7 +61,7 @@ RSpec.feature "Users can view project level activities" do
       visit organisation_activity_path(project.organisation, project)
 
       expect(page).to have_content project.title
-      expect(page).to_not have_content t("page_content.organisation.button.create_activity")
+      expect(page).to have_no_button t("action.activity.add_child")
     end
 
     scenario "can download a project as XML" do

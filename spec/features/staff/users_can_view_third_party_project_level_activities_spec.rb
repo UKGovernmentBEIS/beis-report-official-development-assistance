@@ -45,7 +45,7 @@ RSpec.feature "Users can view third-party project level activities" do
       visit organisation_activity_path(third_party_project.organisation, third_party_project)
 
       expect(page).to have_content third_party_project.title
-      expect(page).to_not have_content t("page_content.organisation.button.create_activity")
+      expect(page).to have_no_button t("action.activity.add_child")
     end
 
     scenario "can download a third-party project as XML" do
