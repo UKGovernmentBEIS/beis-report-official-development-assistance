@@ -91,7 +91,7 @@ GEM
     climate_control (1.0.0)
     coderay (1.1.3)
     concurrent-ruby (1.1.8)
-    connection_pool (2.2.2)
+    connection_pool (2.2.4)
     coveralls (0.8.23)
       json (>= 1.8, < 3)
       simplecov (~> 0.16.1)
@@ -266,8 +266,8 @@ GEM
     pundit-matchers (1.6.0)
       rspec-rails (>= 3.0.0)
     racc (1.5.2)
-    rack (2.0.9)
-    rack-protection (2.0.8.1)
+    rack (2.2.3)
+    rack-protection (2.1.0)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -310,7 +310,7 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    redis (4.2.5)
+    redis (4.1.4)
     redis-actionpack (5.2.0)
       actionpack (>= 5, < 7)
       redis-rack (>= 2.1.0, < 3)
@@ -378,11 +378,11 @@ GEM
     sexp_processor (4.13.0)
     shoulda-matchers (4.5.1)
       activesupport (>= 4.2.0)
-    sidekiq (5.2.8)
+    sidekiq (5.2.9)
       connection_pool (~> 2.2, >= 2.2.2)
-      rack (< 2.1.0)
+      rack (~> 2.0)
       rack-protection (>= 1.5.0)
-      redis (>= 3.3.5, < 5)
+      redis (>= 3.3.5, < 4.2)
     simplecov (0.16.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -490,7 +490,7 @@ DEPENDENCIES
   rails (~> 6.0.3)
   rails-controller-testing
   rails_layout
-  redis (~> 4.2)
+  redis (< 4.2)
   redis-actionpack
   redis-namespace
   redis-store
