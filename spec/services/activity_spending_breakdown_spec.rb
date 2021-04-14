@@ -11,6 +11,8 @@ RSpec.describe ActivitySpendingBreakdown do
   end
 
   it "generates columns in the given order" do
+    breakdown = ActivitySpendingBreakdown.new(report: report)
+
     expect(breakdown.headers).to eq([
       "RODA identifier",
       "BEIS identifier",

@@ -9,14 +9,18 @@ class ActivitySpendingBreakdown
     end
   }
 
-  def initialize(activity:, report:)
+  def initialize(activity: nil, report:)
     @activity = activity
     @activity_presenter = ActivityPresenter.new(activity)
     @report = report
   end
 
   def headers
-    combined_hash.keys
+    identifiers.keys +
+      metadata.keys +
+      old_quarters_net_spending_headers +
+      recent_quarters_detailed_spending_headers +
+      upcoming_quarters_forecasts_headers
   end
 
   def values
@@ -26,32 +30,51 @@ class ActivitySpendingBreakdown
   def combined_hash
     identifiers
       .merge(metadata)
+      .map { |key, value| [key, value.call] }.to_h
       .merge(old_quarters_net_spending)
       .merge(recent_quarters_detailed_spending)
       .merge(upcoming_quarters_forecasts)
   end
 
+  private
+
   def identifiers
     {
-      "RODA identifier" => @activity.roda_identifier,
-      "BEIS identifier" => @activity.beis_id,
-      "Delivery partner identifier" => @activity.delivery_partner_identifier,
+      "RODA identifier" => -> { @activity.roda_identifier },
+      "BEIS identifier" => -> { @activity.beis_id },
+      "Delivery partner identifier" => -> { @activity.delivery_partner_identifier },
     }
   end
 
   def metadata
     {
-      "Title" => @activity_presenter.display_title,
-      "Description" => @activity_presenter.description,
-      "Programme status" => @activity_presenter.programme_status,
-      "ODA eligibility" => @activity_presenter.oda_eligibility,
+      "Title" => -> { @activity_presenter.display_title },
+      "Description" => -> { @activity_presenter.description },
+      "Programme status" => -> { @activity_presenter.programme_status },
+      "ODA eligibility" => -> { @activity_presenter.oda_eligibility },
     }
+  end
+
+  def old_quarters_net_spending_headers
+    previous_quarters.take(OLDER_QUARTERS).map do |quarter|
+      "#{quarter} actual net"
+    end
   end
 
   def old_quarters_net_spending
     previous_quarters_actuals.take(OLDER_QUARTERS).map { |quarter, actual|
       ["#{quarter} actual net", format_amount(actual.net)]
     }.to_h
+  end
+
+  def recent_quarters_detailed_spending_headers
+    previous_quarters.drop(OLDER_QUARTERS).flat_map do |quarter|
+      [
+        "#{quarter} actual spend",
+        "#{quarter} actual refund",
+        "#{quarter} actual net",
+      ]
+    end
   end
 
   def recent_quarters_detailed_spending
@@ -64,6 +87,12 @@ class ActivitySpendingBreakdown
     }.to_h
   end
 
+  def upcoming_quarters_forecasts_headers
+    upcoming_quarters.map do |quarter|
+      "#{quarter} forecast"
+    end
+  end
+
   def upcoming_quarters_forecasts
     forecasts = PlannedDisbursementOverview.new(@activity).snapshot(@report).all_quarters
 
@@ -71,8 +100,6 @@ class ActivitySpendingBreakdown
       ["#{quarter} forecast", format_amount(forecasts.value_for(**quarter))]
     }.to_h
   end
-
-  private
 
   def format_amount(value)
     "%.2f" % value
