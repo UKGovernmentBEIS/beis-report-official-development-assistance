@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-ruby "2.6.3"
+ruby "2.7.3"
 
 gem "auth0", "~> 5.1"
 gem "acts_as_tree"
