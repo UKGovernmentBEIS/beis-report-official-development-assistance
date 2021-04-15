@@ -118,8 +118,8 @@ module Activities
 
         return if @activity.save
 
-        @activity.errors.each do |attr_name, message|
-          @errors[attr_name] ||= [@converter.raw(attr_name), message]
+        @activity.errors.each do |error|
+          @errors[error.attribute] ||= [@converter.raw(error.attribute), error.message]
         end
       end
 
@@ -170,8 +170,8 @@ module Activities
 
         return if @activity.save(context: Activity::VALIDATION_STEPS)
 
-        @activity.errors.each do |attr_name, message|
-          @errors[attr_name] ||= [@converter.raw(attr_name), message]
+        @activity.errors.each do |error|
+          @errors[error.attribute] ||= [@converter.raw(error.attribute), error.message]
         end
 
         implementing_organisation_builder.add_errors(@errors) if @activity.implementing_organisations.any?
