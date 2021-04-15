@@ -590,12 +590,15 @@
 - Hide "Add child" buttons when users cannot create a child
 - Activity importer checks permissions to create or update an activity
 
-## [unreleased]
+## [release-45] - 2021-04-15
 
 - Allow forecasts to have negative values
 - Add links to Guidance for all Activity fields that have guidance
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-44...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-45...HEAD
+[release-45]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-44...release-45
 [release-44]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-43...release-44
 [release-43]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-42...release-43
 [release-42]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-41...release-42
