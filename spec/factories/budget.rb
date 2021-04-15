@@ -25,10 +25,14 @@ FactoryBot.define do
 
     trait :external_official_development_assistance do
       budget_type { Budget::BUDGET_TYPES["external_official_development_assistance"] }
+      providing_organisation_name { Faker::Company.name }
+      providing_organisation_type { "Other NGO" }
     end
 
     trait :external_non_official_development_assistance do
       budget_type { Budget::BUDGET_TYPES["external_non_official_development_assistance"] }
+      providing_organisation_name { Faker::Company.name }
+      providing_organisation_type { "Other NGO" }
     end
   end
 end

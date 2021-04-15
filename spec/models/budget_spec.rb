@@ -43,9 +43,9 @@ RSpec.describe Budget do
     end
 
     describe "providing organisation" do
-      context "when the budget_type is a direct type" do
-        let(:another_org) { create(:delivery_partner_organisation) }
+      let(:another_org) { create(:delivery_partner_organisation) }
 
+      context "when the budget_type is a direct type" do
         subject { build(:budget, providing_organisation_id: another_org.id, parent_activity: build(:programme_activity)) }
 
         it "sets the providing_organisation_id to that of the service_owner" do
@@ -53,12 +53,52 @@ RSpec.describe Budget do
 
           expect(subject.providing_organisation_id).to eql(service_owner.id)
         end
+
+        it "discards any input to the _name and _type attributes" do
+          subject.providing_organisation_name = "Etc"
+          subject.providing_organisation_type = "International ONG"
+
+          subject.valid?
+
+          expect(subject.providing_organisation_name).to be_nil
+          expect(subject.providing_organisation_type).to be_nil
+        end
       end
 
       context "when the budget type is Transferred" do
         subject { build(:budget, budget_type: Budget::BUDGET_TYPES["transferred"], parent_activity: build(:programme_activity)) }
 
         it { is_expected.not_to allow_value(nil).for(:providing_organisation_id) }
+
+        it "does not set the providing_organisation_id to that of the service owner" do
+          subject.valid?
+
+          expect(subject.providing_organisation_id).not_to eql(service_owner.id)
+        end
+
+        it "discards any input to the _name and _type attributes" do
+          subject.providing_organisation_name = "Etc"
+          subject.providing_organisation_type = "International ONG"
+
+          subject.valid?
+
+          expect(subject.providing_organisation_name).to be_nil
+          expect(subject.providing_organisation_type).to be_nil
+        end
+      end
+
+      context "when the budget_type is external" do
+        subject { build(:budget, budget_type: Budget::BUDGET_TYPES["external"], parent_activity: build(:programme_activity)) }
+
+        it { is_expected.not_to allow_value(nil).for(:providing_organisation_name) }
+        it { is_expected.not_to allow_value(nil).for(:providing_organisation_type) }
+
+        it "discards any input to the providing_organisation_id" do
+          subject.providing_organisation_id = another_org.id
+          subject.valid?
+
+          expect(subject.providing_organisation_id).to be_nil
+        end
       end
     end
 

@@ -27,6 +27,8 @@ class Budget < ApplicationRecord
   validate :direct_budget_type_must_match_source_fund, if: -> { DIRECT_BUDGET_TYPES.include?(budget_type) }
   validates_presence_of :providing_organisation_id, if: -> { (DIRECT_BUDGET_TYPES + TRANSFERRED_BUDGET_TYPES).include?(budget_type) }
   validate :direct_budget_providing_org_must_be_beis, if: -> { DIRECT_BUDGET_TYPES.include?(budget_type) }
+  validates_presence_of :providing_organisation_name, unless: -> { (DIRECT_BUDGET_TYPES + TRANSFERRED_BUDGET_TYPES).include?(budget_type) }
+  validates_presence_of :providing_organisation_type, unless: -> { (DIRECT_BUDGET_TYPES + TRANSFERRED_BUDGET_TYPES).include?(budget_type) }
 
   def financial_year
     return nil if self[:financial_year].nil?
@@ -64,6 +66,15 @@ class Budget < ApplicationRecord
   private def infer_and_assign_providing_org_attrs
     if DIRECT_BUDGET_TYPES.include?(budget_type)
       self.providing_organisation_id = Organisation.service_owner.id
+      self.providing_organisation_name = nil
+      self.providing_organisation_type = nil
+      self.providing_organisation_reference = nil
+    elsif TRANSFERRED_BUDGET_TYPES.include?(budget_type)
+      self.providing_organisation_name = nil
+      self.providing_organisation_type = nil
+      self.providing_organisation_reference = nil
+    else
+      self.providing_organisation_id = nil
     end
   end
 end
