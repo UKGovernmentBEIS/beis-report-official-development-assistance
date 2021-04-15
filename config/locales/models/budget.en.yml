@@ -31,6 +31,7 @@ en:
         financial_year: Financial year
         budget_type: Type
         value: Budget amount
+        providing_organisation: Providing organisation
     body:
       budget:
         edit_noun: budget
