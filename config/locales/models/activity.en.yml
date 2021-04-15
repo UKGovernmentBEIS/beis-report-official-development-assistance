@@ -377,14 +377,13 @@ en:
         country_delivery_partners: Country delivery partner
         covid19_related: Is this activity related to Covid-19?
         dates: What are the start and end dates for the %{level}?
-        gcrf_strategic_area: What GCRF Strategic area does your activity relate to?
-        gcrf_challenge_area: GCRF challenge area
         fund_pillar: What Newton Fund Pillar does this activity fall under?
+        fstc_applies: Does Free-Standing Technical Cooperation (FSTC) apply to this activity?
+        gcrf_challenge_area: GCRF challenge area
+        gcrf_strategic_area: What GCRF Strategic area does your activity relate to?
         gdi: GDI
         geography: Will the benefitting recipient be a region or country?
-        delivery_partner_identifier: Enter your unique identifier
-        roda_identifier: Enter your unique RODA identifier
-        requires_additional_benefitting_countries: Additional benefitting countries
+        identifier: Enter your unique identifier
         intended_beneficiaries: What are the intended beneficiaries?
         level: Hierarchy level
         objectives: Aims/Objectives
@@ -395,11 +394,14 @@ en:
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
         region: What region will benefit from this activity?
+        requires_additional_benefitting_countries: Additional benefitting countries
+        roda_identifier: Enter your unique RODA identifier
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
         sustainable_development_goals: Sustainable Development Goals
         total_applications_and_awards: Applications and awards
         uk_dp_named_contact: Who is the UK delivery partner named contact for this activity?
+        wicked_finish: ""
   activerecord:
     attributes:
       activity:
