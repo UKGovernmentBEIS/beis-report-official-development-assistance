@@ -10,6 +10,6 @@
         = msg[:title]
       %div{class: "govuk-error-summary__body"}
         %ul{class: "govuk-list govuk-error-summary__list"}
-          - msg[:errors].each do |attribute, error|
+          - msg[:errors].each do |error|
             %li
-              = error
+              = error.message

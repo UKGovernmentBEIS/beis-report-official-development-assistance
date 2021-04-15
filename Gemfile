@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-ruby "2.6.3"
+ruby "2.7.3"
 
 gem "auth0", "~> 5.1"
 gem "acts_as_tree"
@@ -22,8 +22,8 @@ gem "puma", "~> 5.2"
 gem "public_activity", "~> 1.5"
 gem "pundit"
 gem "rollbar"
-gem "rails", "~> 6.0.3"
-gem "redis", "~> 4.2"
+gem "rails", "~> 6.1.3"
+gem "redis", "< 4.2"
 gem "redis-namespace"
 gem "redis-actionpack"
 gem "redis-store"
