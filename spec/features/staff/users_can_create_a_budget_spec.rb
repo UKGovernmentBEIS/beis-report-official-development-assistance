@@ -18,7 +18,7 @@ RSpec.describe "Users can create a budget" do
         expect(page).to have_content(t("action.budget.create.success"))
       end
 
-      scenario "a new budget has it's funding type set to that of it's parent activity's source fund" do
+      scenario "a new budget has its funding type set to that of its parent activity's source fund" do
         activity = create(:programme_activity, :gcrf_funded, organisation: user.organisation)
 
         visit activities_path
@@ -108,14 +108,20 @@ RSpec.describe "Users can create a budget" do
 
   context "when the user does NOT belong to BEIS" do
     let(:user) { create(:delivery_partner_user) }
+    let(:fund_activity) { create(:fund_activity) }
+    let(:programme_activity) {
+      create(:programme_activity,
+        parent: fund_activity,
+        extending_organisation: user.organisation)
+    }
+    let!(:project_activity) {
+      create(:project_activity,
+        parent: programme_activity,
+        organisation: user.organisation)
+    }
 
     context "on a programme level activity" do
       scenario "they can view but not create budgets" do
-        fund_activity = create(:fund_activity)
-        programme_activity = create(:programme_activity,
-          parent: fund_activity,
-          extending_organisation: user.organisation)
-
         visit organisation_activity_path(user.organisation, programme_activity)
 
         expect(page).to have_content(t("page_content.activity.budgets"))
@@ -124,14 +130,7 @@ RSpec.describe "Users can create a budget" do
     end
 
     context "on a project level activity" do
-      scenario "successfully creates a budget" do
-        fund_activity = create(:fund_activity)
-        programme_activity = create(:programme_activity,
-          parent: fund_activity,
-          extending_organisation: user.organisation)
-        project_activity = create(:project_activity,
-          parent: programme_activity,
-          organisation: user.organisation)
+      scenario "successfully creates a direct budget by default" do
         _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
 
         visit activities_path
@@ -146,13 +145,6 @@ RSpec.describe "Users can create a budget" do
       end
 
       scenario "successfully creates a transferred budget" do
-        fund_activity = create(:fund_activity)
-        programme_activity = create(:programme_activity,
-          parent: fund_activity,
-          extending_organisation: user.organisation)
-        project_activity = create(:project_activity,
-          parent: programme_activity,
-          organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
 
         visit activities_path
@@ -170,13 +162,6 @@ RSpec.describe "Users can create a budget" do
       end
 
       scenario "successfully creates an external budget" do
-        fund_activity = create(:fund_activity)
-        programme_activity = create(:programme_activity,
-          parent: fund_activity,
-          extending_organisation: user.organisation)
-        project_activity = create(:project_activity,
-          parent: programme_activity,
-          organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
 
         visit activities_path
