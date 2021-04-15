@@ -16,6 +16,8 @@ ARG RAILS_ENV
 ENV RAILS_ENV ${RAILS_ENV:-production}
 ENV NODE_ENV ${RAILS_ENV:-production}
 
+RUN echo "\nexport PATH=/usr/local/bin:\$PATH\n\n# Stop here if non-interactive shell\n[[ \$- == *i* ]] || return\n\ncd /app" >> ~/.bashrc
+
 # ------------------------------------------------------------------------------
 # dependencies
 # ------------------------------------------------------------------------------
