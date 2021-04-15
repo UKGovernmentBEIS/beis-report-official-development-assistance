@@ -8,16 +8,17 @@
       %h1.govuk-heading-xl
         = @organisation_presenter.name
 
-  - if policy(:programme).create? && !@organisation_presenter.service_owner?
+  - if @funds.any? { |fund| policy(fund).create_child? }
     .govuk-grid-row
       .govuk-grid-column-full
         %h2.govuk-heading-m
           = t("create_programme", scope: "page_content.organisation")
 
         - @funds.each do |fund|
-          = button_to t("form.button.activity.new_child", name: fund.title),
-              organisation_activity_children_path(@organisation_presenter, fund),
-              class: "govuk-button govuk-!-margin-right-4"
+          - if policy(fund).create_child?
+            = button_to t("form.button.activity.new_child", name: fund.title),
+                organisation_activity_children_path(@organisation_presenter, fund),
+                class: "govuk-button govuk-!-margin-right-4"
 
   - if policy(@organisation_presenter).download? && @organisation_funds.any?
     .govuk-grid-row

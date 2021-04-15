@@ -62,8 +62,8 @@ class ActivityPolicy < ApplicationPolicy
     fund = record.associated_fund
 
     Report.editable.where(
-      fund: fund,
-      organisation: [record.extending_organisation, record.organisation]
+      fund_id: fund.id,
+      organisation_id: [record.extending_organisation_id, record.organisation_id]
     ).exists?
   end
 end

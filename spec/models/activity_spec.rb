@@ -77,8 +77,8 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    describe ".publishable_to_iati?" do
-      it "only returns activities with a `form_state` of :complete and/or `publish_to_iati` of true" do
+    describe ".publishable_to_iati" do
+      it "only returns activities where form_state is 'complete' and `publish_to_iati` is true" do
         complete_activity = create(:fund_activity)
         _incomplete_activity = create(:fund_activity, :at_purpose_step)
         _complete_redacted_activity = create(:fund_activity, publish_to_iati: false)
@@ -102,15 +102,17 @@ RSpec.describe Activity, type: :model do
         another_project = create(:project_activity, parent: another_programme, organisation: organisation)
         another_third_party_project = create(:third_party_project_activity, parent: another_project, organisation: organisation)
 
-        expect(Activity.projects_and_third_party_projects_for_report(report)).to include third_party_project
-        expect(Activity.projects_and_third_party_projects_for_report(report)).to include project
+        result = Activity.projects_and_third_party_projects_for_report(report)
 
-        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include fund
-        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include programme
-        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include another_fund
-        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include another_programme
-        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include another_project
-        expect(Activity.projects_and_third_party_projects_for_report(report)).not_to include another_third_party_project
+        expect(result).to include third_party_project
+        expect(result).to include project
+
+        expect(result).not_to include fund
+        expect(result).not_to include programme
+        expect(result).not_to include another_fund
+        expect(result).not_to include another_programme
+        expect(result).not_to include another_project
+        expect(result).not_to include another_third_party_project
       end
     end
   end
@@ -904,7 +906,7 @@ RSpec.describe Activity, type: :model do
       expect(activity.form_steps_completed?).to be_falsey
     end
 
-    it "is false when the form_stat is nil " do
+    it "is false when the form_state is nil" do
       activity = build(:activity, form_state: nil)
 
       expect(activity.form_steps_completed?).to be_falsey

@@ -53,10 +53,5 @@ RSpec.feature "Users can view fund level activities" do
 
       expect(page).not_to have_content(fund_activity.title)
     end
-
-    it "does not let them create a fund level activity" do
-      visit organisation_path(user.organisation)
-      expect(page).not_to have_button(t("page_content.organisation.button.create_activity"))
-    end
   end
 end

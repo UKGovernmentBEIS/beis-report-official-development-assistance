@@ -105,7 +105,7 @@ RSpec.feature "users can upload planned disbursements" do
     upload_csv <<~CSV
       Activity RODA Identifier | FC 2021/22 FY Q2 | FC 2021/22 FY Q3 | FC 2021/22 FY Q4
       #{ids[0]}                | 10               | 20               | 30
-      #{ids[1]}                | 40               | 50               | 60
+      #{ids[1]}                | 40               | -50              | 60
     CSV
 
     expect(PlannedDisbursement.count).to eq(6)

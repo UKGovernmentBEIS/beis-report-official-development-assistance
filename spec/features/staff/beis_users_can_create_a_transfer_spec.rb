@@ -80,12 +80,16 @@ RSpec.feature "BEIS users can create a transfer" do
 
   scenario "show an error when the destination RODA ID is incorrect" do
     non_existent_activity = build(:activity)
+
+    roda_identifier = "GCRF-BLOB-424434434"
+    allow(non_existent_activity).to receive(:roda_identifier) { roda_identifier }
+
     fill_in_transfer_form(destination: non_existent_activity)
 
     click_on t("form.button.transfer.submit")
 
     expect(page).to have_content(t("activerecord.errors.models.transfer.attributes.destination.required"))
-    expect(page).to have_field("transfer[destination]", with: non_existent_activity.roda_identifier)
+    expect(page).to have_field("transfer[destination]", with: roda_identifier)
   end
 
   scenario "shows errors when required fields are blank" do
