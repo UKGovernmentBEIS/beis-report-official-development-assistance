@@ -5,15 +5,17 @@ class ActivitySearch
   end
 
   def results
-    activities.where(roda_identifier_compound: @query).or(
-      activities.where(roda_identifier_fragment: @query)
-    ).or(
-      activities.where(delivery_partner_identifier: @query)
-    ).or(
-      activities.where(beis_identifier: @query)
-    ).or(
-      activities.where(previous_identifier: @query)
-    )
+    search_fields = [
+      :roda_identifier_compound,
+      :roda_identifier_fragment,
+      :delivery_partner_identifier,
+      :beis_identifier,
+      :previous_identifier,
+    ]
+
+    search_fields
+      .map { |field| activities.where(field => @query) }
+      .reduce { |a, b| a.or(b) }
   end
 
   private
