@@ -608,6 +608,7 @@
 ## [unreleased]
 
 - Link to the Service performance Zendesk article in the footer
+- Add functionality to search for activities by identifiers and title
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-46...HEAD
 [release-46]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-45...release-46
