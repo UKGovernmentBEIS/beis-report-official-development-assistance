@@ -3,7 +3,31 @@
 require "rails_helper"
 
 RSpec.describe ActivityPresenter do
+  RSpec.shared_examples "a code translator" do |field, args, field_type|
+    let(:field) { field }
+    let(:args) { args.reverse_merge(source: "iati") }
+    let(:field_type) { field_type }
+
+    def cast_code_to_field(code)
+      return code if field_type.nil?
+      return code.to_i if field_type == "Integer"
+      return [code] if field_type == "Array"
+    end
+
+    it "has translations for all of the codes" do
+      Codelist.new(**args).each do |code|
+        activity = build(:activity)
+        code = cast_code_to_field(code["code"])
+        activity.write_attribute(field, code)
+
+        expect(described_class.new(activity).send(field)).to_not match(/translation missing/)
+      end
+    end
+  end
+
   describe "#aid_type" do
+    it_behaves_like "a code translator", "aid_type", {type: "aid_type"}
+
     context "when the aid_type exists" do
       it "returns the locale value for the code" do
         activity = build(:activity, aid_type: "a01")
@@ -46,6 +70,8 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#covid19_related" do
+    it_behaves_like "a code translator", "covid19_related", {type: "covid19_related_research", source: "beis"}
+
     it "returns the locale value for the code" do
       activity = build(:activity, covid19_related: 3)
       result = described_class.new(activity).covid19_related
@@ -54,6 +80,8 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#sector" do
+    it_behaves_like "a code translator", "sector", {type: "sector"}
+
     context "when the sector exists" do
       it "returns the locale value for the code" do
         activity = build(:activity, sector: "11110")
@@ -144,6 +172,8 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#programme_status" do
+    it_behaves_like "a code translator", "programme_status", {type: "programme_status", source: "beis"}
+
     context "when the programme status exists" do
       it "returns the locale value for the code" do
         activity = build(:activity, programme_status: "spend_in_progress")
@@ -234,6 +264,8 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#recipient_region" do
+    it_behaves_like "a code translator", "recipient_region", {type: "recipient_region"}
+
     context "when the aid_type recipient_region" do
       it "returns the locale value for the code" do
         activity = build(:activity, recipient_region: "489")
@@ -252,6 +284,8 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#recipient_country" do
+    it_behaves_like "a code translator", "recipient_country", {type: "recipient_country"}
+
     context "when there is a recipient_country" do
       it "returns the locale value for the code" do
         activity = build(:activity, recipient_country: "CL")
@@ -288,6 +322,8 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#intended_beneficiaries" do
+    it_behaves_like "a code translator", "intended_beneficiaries", {type: "recipient_country"}, "Array"
+
     context "when there are other benefitting countries" do
       it "returns the locale value for the codes of the countries" do
         activity = build(:activity, intended_beneficiaries: ["AR", "EC", "BR"])
@@ -298,6 +334,8 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#gdi" do
+    it_behaves_like "a code translator", "gdi", {type: "gdi"}
+
     context "when gdi exists" do
       it "returns the locale value for the code" do
         activity = build(:activity, gdi: "3")
@@ -316,6 +354,8 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#collaboration_type" do
+    it_behaves_like "a code translator", "collaboration_type", {type: "collaboration_type"}
+
     context "when collaboration_type exists" do
       it "returns the locale value for the code" do
         activity = build(:activity, collaboration_type: "1")
@@ -349,6 +389,8 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#policy_marker_gender" do
+    it_behaves_like "a code translator", "policy_marker_gender", {type: "policy_significance", source: "beis"}, "Integer"
+
     context "when gender exists" do
       it "returns the locale value for the code" do
         activity = build(:activity, policy_marker_gender: "not_targeted")
@@ -424,6 +466,8 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#gcrf_challenge_area" do
+    it_behaves_like "a code translator", "gcrf_challenge_area", {type: "gcrf_challenge_area", source: "beis"}, "Integer"
+
     it "returns the locale value for the stored integer" do
       activity = build(:activity, gcrf_challenge_area: 2)
       result = described_class.new(activity)
@@ -433,6 +477,8 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#oda_eligibility" do
+    it_behaves_like "a code translator", "oda_eligibility", {type: "oda_eligibility", source: "beis"}, "Integer"
+
     context "when the activity is ODA eligible" do
       it "returns the locale value for this option" do
         activity = build(:project_activity, oda_eligibility: 1)

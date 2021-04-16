@@ -340,6 +340,7 @@ en:
       "11182": Educational research
       "11220": Primary education
       "11230": Basic life skills for youth and adults
+      "11260": Lower secondary education"
       "11231": Basic life skills for youth
       "11232": Primary education equivalent for adults
       "11240": Early childhood education
@@ -354,6 +355,7 @@ en:
       "12181": Medical education/training
       "12182": Medical research
       "12191": Medical services
+      "12196": Health statistics and data
       "12220": Basic health care
       "12230": Basic health infrastructure
       "12240": Basic nutrition
@@ -361,6 +363,7 @@ en:
       "12261": Health education
       "12262": Malaria control
       "12263": Tuberculosis control
+      "12264": COVID-19 control
       "12281": Health personnel development
       "12310": NCDs control, general
       "12320": Tobacco use control
@@ -373,6 +376,7 @@ en:
       "13030": Family planning
       "13040": STD control including HIV/AIDS
       "13081": Personnel development for population and reproductive health
+      "13096": Population statistics and data
       "14010": Water sector policy and administrative management
       "14015": Water resources conservation (including data collection)
       "14020": Water supply and sanitation - large systems
@@ -431,6 +435,7 @@ en:
       "15180": Ending violence against women and girls
       "15185": Local government administration
       "15190": Facilitation of orderly, safe, regular and responsible migration and mobility
+      "15196": Government and civil society statistics and data
       "15210": Security system management and reform
       "15220": Civilian peace-building, conflict prevention and resolution
       "15230": Participation in international peacekeeping operations
@@ -502,6 +507,8 @@ en:
       "23210": Energy generation, renewable sources - multiple technologies
       "23220": Hydro-electric power plants
       "23230": Solar energy
+      "23231": Solar energy for isolated grids and standalone systems
+      "23232": Solar energy - thermal applications
       "23240": Wind energy
       "23250": Marine energy
       "23260": Geothermal energy
@@ -517,7 +524,10 @@ en:
       "23610": Heat plants
       "23620": District heating and cooling
       "23630": Electric power transmission and distribution
+      "23631": Electric power transmission and distribution (isolated mini-grids)
       "23640": Gas distribution
+      "23641": Retail distribution of liquid or solid fossil fuels
+      "23642": Electric mobility infrastructures
       "24010": Financial policy and administrative management
       "24020": Monetary institutions
       "24030": Formal sector financial intermediaries
@@ -573,6 +583,8 @@ en:
       "32170": Non-ferrous metal industries
       "32171": Engineering
       "32172": Transport equipment industry
+      "32173": Modern biofuels manufacturing
+      "32174": Clean cooking appliances manufacturing
       "32182": Technological research and development
       "32210": Mineral/mining policy and administrative management
       "32220": Mineral prospection and exploration
@@ -625,6 +637,8 @@ en:
       "60062": Other debt swap
       "60063": Debt buy-back
       "72010": Material relief assistance and services
+      "72011": Basic Health Care Services in Emergencies
+      "72012": Education in emergencies
       "72040": Emergency food assistance
       "72050": Relief co-ordination and support services
       "73010": Immediate post-emergency reconstruction and rehabilitation
