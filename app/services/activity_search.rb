@@ -1,5 +1,9 @@
 class ActivitySearch
-  def initialize(user:, query:)
+  include ActiveModel::Model
+
+  attr_reader :query
+
+  def initialize(user: nil, query: nil)
     @user = user
     @query = query.to_s.strip
   end

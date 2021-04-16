@@ -70,6 +70,8 @@ Rails.application.routes.draw do
       resources :comments, only: [:new, :create, :edit, :update]
       resources :transfers, except: [:index]
     end
+
+    resource :search, only: [:show]
   end
 
   # Static pages

@@ -8,6 +8,8 @@
       %h1.govuk-heading-xl
         = @organisation_presenter.name
 
+  = render partial: "staff/searches/form"
+
   - if @funds.any? { |fund| policy(fund).create_child? }
     .govuk-grid-row
       .govuk-grid-column-full
