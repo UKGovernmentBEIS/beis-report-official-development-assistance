@@ -33,6 +33,14 @@ RSpec.describe ActivitySearch do
       end
     end
 
+    describe "searching for RODA identifier fragment ignoring case" do
+      let(:query) { "FRAGMENT" }
+
+      it "returns all activities with that fragment" do
+        expect(activity_search.results).to match_array [alice_project, bob_third_party_project]
+      end
+    end
+
     describe "searching for delivery partner identifiers" do
       let(:query) { alice_project.delivery_partner_identifier }
 

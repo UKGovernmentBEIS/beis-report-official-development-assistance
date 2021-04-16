@@ -14,7 +14,7 @@ class ActivitySearch
     ]
 
     search_fields
-      .map { |field| activities.where(field => @query) }
+      .map { |field| activities.where("LOWER(#{field}) = ?", @query.downcase) }
       .reduce { |a, b| a.or(b) }
   end
 
