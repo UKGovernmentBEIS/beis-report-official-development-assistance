@@ -190,7 +190,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
       expect(existing_activity.fstc_applies).to eq(true)
       expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives (DP Definition)"])
-      expect(existing_activity.beis_id).to eq(existing_activity_attributes["BEIS ID"])
+      expect(existing_activity.beis_identifier).to eq(existing_activity_attributes["BEIS ID"])
       expect(existing_activity.uk_dp_named_contact).to eq(existing_activity_attributes["UK DP Named Contact"])
 
       expect(existing_activity.implementing_organisations.count).to eql(1)
@@ -434,7 +434,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
       expect(new_activity.fstc_applies).to eq(true)
       expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (DP Definition)"])
-      expect(new_activity.beis_id).to eq(new_activity_attributes["BEIS ID"])
+      expect(new_activity.beis_identifier).to eq(new_activity_attributes["BEIS ID"])
       expect(new_activity.uk_dp_named_contact).to eq(new_activity_attributes["UK DP Named Contact"])
       expect(new_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
     end

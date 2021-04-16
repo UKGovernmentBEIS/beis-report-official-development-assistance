@@ -46,7 +46,7 @@ class ExportActivityToCsv
       # RODA ID fragment
       # Parent RODA ID
       "Transparency identifier" => -> { activity_presenter.transparency_identifier },
-      "BEIS identifier" => -> { activity_presenter.beis_id },
+      "BEIS identifier" => -> { activity_presenter.beis_identifier },
       "Level" => -> { activity_presenter.level },
       # Other UK DPs
       # DP 'Brand'
