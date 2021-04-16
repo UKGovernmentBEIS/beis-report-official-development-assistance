@@ -72,6 +72,19 @@ RSpec.describe ActivitySearch do
         expect(activity_search.results).to match_array [programme]
       end
     end
+
+    describe "searching by title" do
+      let(:query) { "Search" }
+
+      before do
+        alice_third_party_project.update!(title: "Research and development")
+        bob_project.update!(title: "Search and rescue")
+      end
+
+      it "returns the matching activities" do
+        expect(activity_search.results).to match_array [alice_third_party_project, bob_project]
+      end
+    end
   end
 
   context "for delivery partners" do
@@ -130,6 +143,19 @@ RSpec.describe ActivitySearch do
 
       it "returns nothing" do
         expect(activity_search.results).to match_array []
+      end
+    end
+
+    describe "searching by title" do
+      let(:query) { "Search" }
+
+      before do
+        alice_third_party_project.update!(title: "Research and development")
+        bob_project.update!(title: "Search and rescue")
+      end
+
+      it "returns only the user's own activities" do
+        expect(activity_search.results).to match_array [alice_third_party_project]
       end
     end
   end
