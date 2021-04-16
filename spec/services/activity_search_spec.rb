@@ -32,6 +32,38 @@ RSpec.describe ActivitySearch do
         expect(activity_search.results).to match_array [alice_project, bob_third_party_project]
       end
     end
+
+    describe "searching for delivery partner identifiers" do
+      let(:query) { alice_project.delivery_partner_identifier }
+
+      it "returns the matching activities" do
+        expect(activity_search.results).to match_array [alice_project]
+      end
+    end
+
+    describe "searching for BEIS identifiers" do
+      let(:query) { programme.beis_identifier }
+
+      before do
+        programme.update!(beis_identifier: "programme-id")
+      end
+
+      it "returns the matching activities" do
+        expect(activity_search.results).to match_array [programme]
+      end
+    end
+
+    describe "searching for previous identifiers" do
+      let(:query) { programme.previous_identifier }
+
+      before do
+        programme.update!(previous_identifier: "programme-id")
+      end
+
+      it "returns the matching activities" do
+        expect(activity_search.results).to match_array [programme]
+      end
+    end
   end
 
   context "for delivery partners" do
@@ -50,6 +82,46 @@ RSpec.describe ActivitySearch do
 
       it "returns only the user's own activities" do
         expect(activity_search.results).to match_array [alice_project]
+      end
+    end
+
+    describe "searching for their own delivery partner identifiers" do
+      let(:query) { alice_project.delivery_partner_identifier }
+
+      it "returns the matching activities" do
+        expect(activity_search.results).to match_array [alice_project]
+      end
+    end
+
+    describe "searching for another delivery partner's identifiers" do
+      let(:query) { bob_project.delivery_partner_identifier }
+
+      it "returns nothing" do
+        expect(activity_search.results).to match_array []
+      end
+    end
+
+    describe "searching for their own project's BEIS identifiers" do
+      let(:query) { alice_project.beis_identifier }
+
+      before do
+        alice_project.update!(beis_identifier: "programme-id")
+      end
+
+      it "returns the matching activities" do
+        expect(activity_search.results).to match_array [alice_project]
+      end
+    end
+
+    describe "searching for a programme's BEIS identifiers" do
+      let(:query) { programme.beis_identifier }
+
+      before do
+        programme.update!(beis_identifier: "programme-id")
+      end
+
+      it "returns nothing" do
+        expect(activity_search.results).to match_array []
       end
     end
   end
