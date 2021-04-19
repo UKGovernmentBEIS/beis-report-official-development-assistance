@@ -6,9 +6,8 @@ class Staff::ActivitiesController < Staff::BaseController
   after_action :verify_policy_scoped, only: [:index, :historic]
 
   def index
-    @organisation_id = organisation_id
-    @activities = policy_scope(Activity.where(organisation: organisation_id)).current
-    @activity_presenters = @activities.includes(:organisation).order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
+    @organisation = Organisation.find(organisation_id)
+    @grouped_programmes = fetch_grouped_programmes_for(@organisation)
   end
 
   def show
@@ -58,5 +57,18 @@ class Staff::ActivitiesController < Staff::BaseController
 
   def fund_id
     params[:fund_id]
+  end
+
+  def fetch_grouped_programmes_for(organisation)
+    activities = policy_scope(
+      Activity.programme
+        .current
+        .includes(:organisation, parent: [:parent, :organisation], child_activities: [:child_activities, :organisation, :parent])
+    )
+    unless organisation.service_owner?
+      activities = activities.where(extending_organisation: organisation)
+    end
+    activities.order(:roda_identifier_compound)
+      .group_by(&:parent)
   end
 end

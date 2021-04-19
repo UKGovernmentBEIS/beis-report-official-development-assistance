@@ -9,6 +9,7 @@ RSpec.feature "Users can view budgets on an activity page" do
     context "when the activity is fund_level" do
       scenario "budget information is shown on the page" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
+        create(:programme_activity, parent: fund_activity)
         budget = create(:budget, parent_activity: fund_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
@@ -21,6 +22,7 @@ RSpec.feature "Users can view budgets on an activity page" do
 
       scenario "budgets are shown in period date order, newest first" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
+        create(:programme_activity, parent: fund_activity)
         budget_1 = create(:budget, parent_activity: fund_activity, financial_year: 2020)
         budget_2 = create(:budget, parent_activity: fund_activity, financial_year: 2019)
         budget_3 = create(:budget, parent_activity: fund_activity, financial_year: 2018)

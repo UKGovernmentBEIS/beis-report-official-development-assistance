@@ -1,0 +1,12 @@
+- activity_presenter = ActivityPresenter.new(activity)
+%tr{class: "govuk-table__row", id: activity_presenter.id}
+  %td{scope: "row", class: "govuk-table__cell"}
+    = activity_presenter.display_title
+  %td{class: "govuk-table__cell"}
+    = activity_presenter.roda_identifier
+  %td{class: "govuk-table__cell"}
+    = activity_presenter.level
+  %td{class: "govuk-table__cell"}
+    = a11y_action_link t("table.body.activity.view_activity"),
+                       organisation_activity_path(activity_presenter.organisation_id, activity_presenter),
+                       activity_presenter.title

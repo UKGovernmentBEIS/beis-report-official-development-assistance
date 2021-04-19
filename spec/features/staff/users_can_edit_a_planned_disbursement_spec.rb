@@ -71,7 +71,8 @@ RSpec.describe "Users can edit a planned disbursement" do
 
     scenario "the action is recorded with public_activity" do
       PublicActivity.with_tracking do
-        project = create(:project_activity, organisation: user.organisation)
+        programme = create(:programme_activity, extending_organisation: user.organisation)
+        project = create(:project_activity, organisation: user.organisation, parent: programme)
         editable_report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
         planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report, financial_year: editable_report.financial_year + 1)
 
