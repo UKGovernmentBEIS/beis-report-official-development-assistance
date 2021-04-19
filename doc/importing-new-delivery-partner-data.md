@@ -88,7 +88,7 @@ cf ssh beis-roda-prod
 - run a rails console
 
 ```
-cd /app && /usr/local/bin/ruby bin/rails console --sandbox
+bin/rails console --sandbox
 ```
 
 - locate your account
@@ -109,10 +109,10 @@ me.update(organisation_id: "organisation_id")
 ```
 - quit the console
 
-- run the import 
+- run the import
 
 ```
-cd /app && /usr/local/bin/ruby bin/rails activities:import CSV=FILENAME ORGANISATION_ID=ORGANISATION_ID UPLOADER_EMAIL=youremail
+bin/rails activities:import CSV=FILENAME ORGANISATION_ID=ORGANISATION_ID UPLOADER_EMAIL=youremail
 ```
 
 - smoke test the activities in production after each level is imported
@@ -137,7 +137,7 @@ cf ssh beis-roda-prod
 - run a rails console
 
 ```
-cd /app && /usr/local/bin/ruby bin/rails console
+bin/rails console
 ```
 
 - get the `organisation` id for the delivery partner
@@ -232,17 +232,17 @@ cf login
 cf ssh beis-roda-prod
 ```
 
-- run the import 
+- run the import
 
 ```
-cd /app && /usr/local/bin/ruby script/import_forecasts.rb  -f FUND NAME -o ORGANISATION NAME -q 3 -y 2020 -i FILENAME.csv
+script/import_forecasts.rb  -f FUND NAME -o ORGANISATION NAME -q 3 -y 2020 -i FILENAME.csv
 ```
 
 FUND NAME and ORGANISATION NAME are the strings used for
 `Activity.roda_identifier` and
 `Organisation.name` e.g. "NF" and "Academy of Medical Science".
 
-## Actual spend 
+## Actual spend
 
 We only import actual data:
 
@@ -286,7 +286,7 @@ cf ssh beis-roda-prod
 - run a rails console
 
 ```
-cd /app && /usr/local/bin/ruby bin/rails console
+bin/rails console
 ```
 
 - locate your account
