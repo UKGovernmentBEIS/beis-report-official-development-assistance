@@ -601,6 +601,7 @@
 - Bump Ruby and Rails versions
 - Update Rails configuration files with v6.1 settings
 - Add tests to guard against missing Activity field translations
+- Provide a breakdown of spend, refund and net values as a report CSV download
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-45...HEAD
 [release-45]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-44...release-45

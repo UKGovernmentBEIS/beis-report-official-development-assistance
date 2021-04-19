@@ -90,6 +90,22 @@ RSpec.feature "Users can view reports" do
       expect(header).to match(/#{ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv")}\z/)
     end
 
+    scenario "can download a spending breakdown CSV of the report" do
+      report = create(:report, :active)
+
+      visit reports_path
+
+      within "##{report.id}" do
+        click_on t("default.link.show")
+      end
+
+      click_on t("action.report.spending_download.button")
+
+      expect(page.response_headers["Content-Type"]).to include("text/csv")
+      header = page.response_headers["Content-Disposition"]
+      expect(header).to match(/#{ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv")}\z/)
+    end
+
     context "when they download a CSV for all reports" do
       let!(:programme) { create(:programme_activity) }
       scenario "reports are sorted by DP" do
@@ -310,6 +326,24 @@ RSpec.feature "Users can view reports" do
         end
 
         click_on t("action.report.download.button")
+
+        expect(page.response_headers["Content-Type"]).to include("text/csv")
+
+        expect(page.response_headers["Content-Type"]).to include("text/csv")
+        header = page.response_headers["Content-Disposition"]
+        expect(header).to match(ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv"))
+      end
+
+      scenario "can download a spending breakdown CSV of their own report" do
+        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+
+        visit reports_path
+
+        within "##{report.id}" do
+          click_on t("default.link.show")
+        end
+
+        click_on t("action.report.spending_download.button")
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
 
