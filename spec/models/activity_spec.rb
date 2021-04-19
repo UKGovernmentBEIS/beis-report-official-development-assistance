@@ -1650,33 +1650,81 @@ RSpec.describe Activity, type: :model do
     end
 
     describe "#total_budget" do
-      before do
-        create(:budget, value: 100, parent_activity: fund)
-        create(:budget, value: 100, parent_activity: programme1)
-        create(:budget, value: 100, parent_activity: programme2)
-        create(:budget, value: 50, parent_activity: programme1_projects[0])
-        create(:budget, value: 50, parent_activity: programme1_projects[1])
-        create(:budget, value: 100, parent_activity: programme2_projects[0])
-        create(:budget, value: 100, parent_activity: programme2_projects[1])
-        create(:budget, value: 100, parent_activity: programme1_third_party_project)
-        create(:budget, value: 100, parent_activity: programme2_third_party_project)
+      def create_budget(parent_activity:, type: :direct_newton)
+        create(:budget, type, value: rand(100..200), parent_activity: parent_activity)
       end
 
+      let!(:fund_budget) { create_budget(parent_activity: fund) }
+      let!(:programme1_direct_budget) { create_budget(parent_activity: programme1) }
+      let!(:programme2_direct_budget) do
+        [
+          create_budget(parent_activity: programme2),
+          create_budget(parent_activity: programme2),
+        ]
+      end
+      let!(:programme1_project_0_direct_budget) { create_budget(parent_activity: programme1_projects[0]) }
+      let!(:programme1_project_1_direct_budget) { create_budget(parent_activity: programme1_projects[1]) }
+      let!(:programme2_project_0_direct_budget) { create_budget(parent_activity: programme2_projects[0]) }
+      let!(:programme2_project_1_direct_budget) { create_budget(parent_activity: programme2_projects[1]) }
+      let!(:programme1_project_0_third_party_project_budget) { create_budget(parent_activity: programme1_third_party_project) }
+      let!(:programme2_project_1_third_party_project_budget) { create_budget(parent_activity: programme2_third_party_project) }
+
+      let!(:external_oda_budget) { create_budget(parent_activity: programme2_projects[1], type: :external_official_development_assistance) }
+      let!(:external_non_oda_budget) { create_budget(parent_activity: programme1_third_party_project, type: :external_non_official_development_assistance) }
+
       it "returns the total budget for a fund" do
-        expect(fund.total_budget).to eq(800)
+        total_budget = [
+          fund_budget,
+          programme1_direct_budget,
+          *programme2_direct_budget,
+          programme1_project_0_direct_budget,
+          programme1_project_1_direct_budget,
+          programme2_project_0_direct_budget,
+          programme2_project_1_direct_budget,
+          programme1_project_0_third_party_project_budget,
+          programme2_project_1_third_party_project_budget,
+        ].sum(&:value)
+
+        expect(fund.total_budget).to eq(total_budget)
       end
 
       it "returns the total budget for a programme" do
-        expect(programme1.total_budget).to eq(300)
-        expect(programme2.total_budget).to eq(400)
+        programme1_total_budget = [
+          programme1_direct_budget,
+          programme1_project_0_direct_budget,
+          programme1_project_1_direct_budget,
+          programme1_project_0_third_party_project_budget,
+        ].sum(&:value)
+
+        programme2_total_budget = [
+          *programme2_direct_budget,
+          programme2_project_0_direct_budget,
+          programme2_project_1_direct_budget,
+          programme2_project_1_third_party_project_budget,
+        ].sum(&:value)
+
+        expect(programme1.total_budget).to eq(programme1_total_budget)
+        expect(programme2.total_budget).to eq(programme2_total_budget)
       end
 
       it "returns the total budget for a project" do
-        expect(programme1_projects[0].total_budget).to eq(150)
-        expect(programme1_projects[1].total_budget).to eq(50)
+        programme1_project_0_total_budget = [
+          programme1_project_0_direct_budget,
+          programme1_project_0_third_party_project_budget,
+        ].sum(&:value)
+        programme1_project_1_total_budget = programme1_project_1_direct_budget.value
 
-        expect(programme2_projects[0].total_budget).to eq(100)
-        expect(programme2_projects[1].total_budget).to eq(200)
+        programme2_project_0_total_budget = programme2_project_0_direct_budget.value
+        programme2_project_1_total_budget = [
+          programme2_project_1_direct_budget,
+          programme2_project_1_third_party_project_budget,
+        ].sum(&:value)
+
+        expect(programme1_projects[0].total_budget).to eq(programme1_project_0_total_budget)
+        expect(programme1_projects[1].total_budget).to eq(programme1_project_1_total_budget)
+
+        expect(programme2_projects[0].total_budget).to eq(programme2_project_0_total_budget)
+        expect(programme2_projects[1].total_budget).to eq(programme2_project_1_total_budget)
       end
     end
   end
