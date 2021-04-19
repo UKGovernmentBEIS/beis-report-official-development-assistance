@@ -1727,5 +1727,86 @@ RSpec.describe Activity, type: :model do
         expect(programme2_projects[1].total_budget).to eq(programme2_project_1_total_budget)
       end
     end
+
+    describe "#total_forecasted" do
+      def create_forecast(parent_activity:)
+        create(:planned_disbursement, value: rand(100..200), parent_activity: parent_activity)
+      end
+
+      let!(:fund_forecast) { create_forecast(parent_activity: fund) }
+      let!(:programme1_forecast) do
+        [
+          create_forecast(parent_activity: programme1),
+          create_forecast(parent_activity: programme1),
+        ]
+      end
+      let!(:programme2_forecast) do
+        [
+          create_forecast(parent_activity: programme2),
+          create_forecast(parent_activity: programme2),
+        ]
+      end
+      let!(:programme1_project_0_forecast) { create_forecast(parent_activity: programme1_projects[0]) }
+      let!(:programme1_project_1_forecast) { create_forecast(parent_activity: programme1_projects[1]) }
+      let!(:programme2_project_0_forecast) { create_forecast(parent_activity: programme2_projects[0]) }
+      let!(:programme2_project_1_forecast) { create_forecast(parent_activity: programme2_projects[1]) }
+      let!(:programme1_project_0_third_party_project_forecast) { create_forecast(parent_activity: programme1_third_party_project) }
+      let!(:programme2_project_1_third_party_project_forecast) { create_forecast(parent_activity: programme2_third_party_project) }
+
+      it "returns the total forecasted spend for a fund" do
+        total_forecasted = [
+          fund_forecast,
+          *programme1_forecast,
+          *programme2_forecast,
+          programme1_project_0_forecast,
+          programme1_project_1_forecast,
+          programme2_project_0_forecast,
+          programme2_project_1_forecast,
+          programme1_project_0_third_party_project_forecast,
+          programme2_project_1_third_party_project_forecast,
+        ].sum(&:value)
+
+        expect(fund.total_forecasted).to eq(total_forecasted)
+      end
+
+      it "returns total forecasted spend for a programme" do
+        programme1_total_forecasted = [
+          *programme1_forecast,
+          programme1_project_0_forecast,
+          programme1_project_1_forecast,
+          programme1_project_0_third_party_project_forecast,
+        ].sum(&:value)
+
+        programme2_total_forecasted = [
+          *programme2_forecast,
+          programme2_project_0_forecast,
+          programme2_project_1_forecast,
+          programme2_project_1_third_party_project_forecast,
+        ].sum(&:value)
+
+        expect(programme1.total_forecasted).to eq(programme1_total_forecasted)
+        expect(programme2.total_forecasted).to eq(programme2_total_forecasted)
+      end
+
+      it "returns foral forecasted spend for a project" do
+        programme1_project_0_forecasted = [
+          programme1_project_0_forecast,
+          programme1_project_0_third_party_project_forecast,
+        ].sum(&:value)
+
+        programme1_project_1_forecasted = programme1_project_1_forecast.value
+        programme2_project_0_forecasted = programme2_project_0_forecast.value
+
+        programme2_project_1_forecasted = [
+          programme2_project_1_forecast,
+          programme2_project_1_third_party_project_forecast,
+        ].sum(&:value)
+
+        expect(programme1_projects[0].total_forecasted).to eq(programme1_project_0_forecasted)
+        expect(programme1_projects[1].total_forecasted).to eq(programme1_project_1_forecasted)
+        expect(programme2_projects[0].total_forecasted).to eq(programme2_project_0_forecasted)
+        expect(programme2_projects[1].total_forecasted).to eq(programme2_project_1_forecasted)
+      end
+    end
   end
 end

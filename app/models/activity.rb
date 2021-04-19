@@ -270,6 +270,11 @@ class Activity < ApplicationRecord
     Budget.direct_or_transferred.where(parent_activity_id: activity_ids).sum(:value)
   end
 
+  def total_forecasted
+    activity_ids = descendants.pluck(:id).append(id)
+    PlannedDisbursement.where(parent_activity_id: activity_ids).sum(:value)
+  end
+
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
     super(context)
