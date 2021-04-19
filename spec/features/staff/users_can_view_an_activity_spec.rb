@@ -126,6 +126,7 @@ RSpec.feature "Users can view an activity" do
 
       create(:transaction, parent_activity: activity, value: 50)
       create(:budget, parent_activity: activity, value: 55)
+      create(:planned_disbursement, parent_activity: activity, value: 70)
 
       visit organisation_activity_financials_path(activity.organisation, activity)
       within ".govuk-tabs__list-item--selected" do
@@ -134,6 +135,7 @@ RSpec.feature "Users can view an activity" do
       within ".financial-summary" do
         expect(page).to have_content "Total spend to date £60.00"
         expect(page).to have_content "Total budget to date £65.00"
+        expect(page).to have_content "Total forecasted spend to date £70.00"
       end
       expect(page).to have_content transaction.value
       expect(page).to have_content budget.value
