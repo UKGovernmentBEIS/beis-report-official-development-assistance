@@ -7,5 +7,27 @@ FactoryBot.define do
     ingested { false }
     association :parent_activity, factory: :activity
     association :report, factory: :report
+
+    trait :direct_newton do
+      budget_type { Budget::BUDGET_TYPES["direct_newton_fund"] }
+      association :parent_activity, factory: [:fund_activity, :newton]
+    end
+
+    trait :direct_gcrf do
+      budget_type { Budget::BUDGET_TYPES["direct_global_challenges_research_fund"] }
+      association :parent_activity, factory: [:fund_activity, :gcrf]
+    end
+
+    trait :transferred do
+      budget_type { Budget::BUDGET_TYPES["transferred"] }
+    end
+
+    trait :external_official_development_assistance do
+      budget_type { Budget::BUDGET_TYPES["external_official_development_assistance"] }
+    end
+
+    trait :external_non_official_development_assistance do
+      budget_type { Budget::BUDGET_TYPES["external_non_official_development_assistance"] }
+    end
   end
 end

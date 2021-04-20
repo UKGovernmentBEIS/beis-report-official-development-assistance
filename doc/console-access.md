@@ -22,17 +22,13 @@ You must have have been given 'Space developer' access to the intended space, fo
     ```
     $ cf ssh beis-roda-prod
     ```
-3. Navigate to the application
+3. Run the intended commands
     ```
-    $ cd /app
-    ```
-4. Run the intended commands
-    ```
-    $ /usr/local/bin/ruby bin/rails c
+    $ bin/rails c
     ```
 
     or
 
     ```
-    $ /usr/local/bin/ruby bin/rake db:seed
+    $ bin/rails db:seed
     ```

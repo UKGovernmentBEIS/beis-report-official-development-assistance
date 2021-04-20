@@ -137,6 +137,8 @@ en:
         button: Download report as CSV file
         reports: Download all reports as CSV
         failure: Reports could not be downloaded
+      spending_download:
+        button: Download spending breakdown as CSV file
       in_review:
         confirm:
           button: Confirm
@@ -161,7 +163,7 @@ en:
         report:
           attributes:
             description:
-              blank: Report decription cannot be blank
+              blank: Report description cannot be blank
             fund:
               level: Activity must be a Fund (level A) activity
             deadline:

@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # base
 # ------------------------------------------------------------------------------
-FROM ruby:2.6.3 AS base
+FROM ruby:2.7.3 AS base
 MAINTAINER dxw <rails@dxw.com>
 
 RUN apt-get update && apt-get install -qq -y \
@@ -16,6 +16,8 @@ ARG RAILS_ENV
 ENV RAILS_ENV ${RAILS_ENV:-production}
 ENV NODE_ENV ${RAILS_ENV:-production}
 
+RUN echo "\nexport PATH=/usr/local/bin:\$PATH\n\n# Stop here if non-interactive shell\n[[ \$- == *i* ]] || return\n\ncd /app" >> ~/.bashrc
+
 # ------------------------------------------------------------------------------
 # dependencies
 # ------------------------------------------------------------------------------
@@ -27,13 +29,13 @@ WORKDIR ${DEPS_HOME}
 # End
 
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
-        && apt-get install -y nodejs
+  && apt-get install -y nodejs
 
 # Install Ruby dependencies
 COPY Gemfile ${DEPS_HOME}/Gemfile
 COPY Gemfile.lock ${DEPS_HOME}/Gemfile.lock
 
-RUN gem update --system 3.0.3
+RUN gem update --system 3.2.16
 RUN gem update rake 13.0.1
 RUN gem install bundler -v 2.1.4
 

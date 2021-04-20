@@ -87,8 +87,8 @@ class ImportTransactions
       result = creator.call(attributes: attrs)
       return unless result
 
-      result.object.errors.each do |attr_name, message|
-        @errors[attr_name] ||= [@converter.raw(attr_name), message]
+      result.object.errors.each do |error|
+        @errors[error.attribute] ||= [@converter.raw(error.attribute), error.message]
       end
     end
 

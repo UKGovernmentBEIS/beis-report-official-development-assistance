@@ -6,7 +6,7 @@ class ActivityPresenter < SimpleDelegator
 
   def aid_type
     return if super.blank?
-    I18n.t("activity.aid_type.#{super.downcase}")
+    translate("activity.aid_type.#{super.downcase}")
   end
 
   def aid_type_with_code
@@ -15,12 +15,12 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def covid19_related
-    I18n.t("activity.covid19_related.#{super}")
+    translate("activity.covid19_related.#{super}")
   end
 
   def sector
     return if super.blank?
-    I18n.t("activity.sector.#{super}")
+    translate("activity.sector.#{super}")
   end
 
   def sector_with_code
@@ -30,7 +30,7 @@ class ActivityPresenter < SimpleDelegator
 
   def call_present
     return if super.nil?
-    I18n.t("activity.call_present.#{super}")
+    translate("activity.call_present.#{super}")
   end
 
   def call_open_date
@@ -45,7 +45,7 @@ class ActivityPresenter < SimpleDelegator
 
   def programme_status
     return if super.blank?
-    I18n.t("activity.programme_status.#{super}")
+    translate("activity.programme_status.#{super}")
   end
 
   def planned_start_date
@@ -70,41 +70,41 @@ class ActivityPresenter < SimpleDelegator
 
   def geography
     return if super.blank?
-    I18n.t("activity.geography.#{super}")
+    translate("activity.geography.#{super}")
   end
 
   def recipient_region
     return if super.blank?
-    I18n.t("activity.recipient_region.#{super}")
+    translate("activity.recipient_region.#{super}")
   end
 
   def recipient_country
     return if super.blank?
-    I18n.t("activity.recipient_country.#{super}")
+    translate("activity.recipient_country.#{super}")
   end
 
   def requires_additional_benefitting_countries
     return if super.nil?
-    I18n.t("activity.requires_additional_benefitting_countries.#{super}")
+    translate("activity.requires_additional_benefitting_countries.#{super}")
   end
 
   def intended_beneficiaries
     return if super.blank?
-    super.map { |item| I18n.t("activity.recipient_country.#{item}") }.to_sentence
+    super.map { |item| translate("activity.recipient_country.#{item}") }.to_sentence
   end
 
   def gdi
     return if super.blank?
-    I18n.t("activity.gdi.#{super}")
+    translate("activity.gdi.#{super}")
   end
 
   def collaboration_type
     return if super.blank?
-    I18n.t("activity.collaboration_type.#{super}")
+    translate("activity.collaboration_type.#{super}")
   end
 
   def flow
-    I18n.t("activity.flow.#{super}")
+    translate("activity.flow.#{super}")
   end
 
   def flow_with_code
@@ -113,42 +113,42 @@ class ActivityPresenter < SimpleDelegator
 
   def policy_marker_gender
     return if super.blank?
-    I18n.t("activity.policy_markers.#{super}")
+    translate("activity.policy_markers.#{super}")
   end
 
   def policy_marker_climate_change_adaptation
     return if super.blank?
-    I18n.t("activity.policy_markers.#{super}")
+    translate("activity.policy_markers.#{super}")
   end
 
   def policy_marker_climate_change_mitigation
     return if super.blank?
-    I18n.t("activity.policy_markers.#{super}")
+    translate("activity.policy_markers.#{super}")
   end
 
   def policy_marker_biodiversity
     return if super.blank?
-    I18n.t("activity.policy_markers.#{super}")
+    translate("activity.policy_markers.#{super}")
   end
 
   def policy_marker_desertification
     return if super.blank?
-    I18n.t("activity.policy_markers.#{super}")
+    translate("activity.policy_markers.#{super}")
   end
 
   def policy_marker_disability
     return if super.blank?
-    I18n.t("activity.policy_markers.#{super}")
+    translate("activity.policy_markers.#{super}")
   end
 
   def policy_marker_disaster_risk_reduction
     return if super.blank?
-    I18n.t("activity.policy_markers.#{super}")
+    translate("activity.policy_markers.#{super}")
   end
 
   def policy_marker_nutrition
     return if super.blank?
-    I18n.t("activity.policy_markers.#{super}")
+    translate("activity.policy_markers.#{super}")
   end
 
   def sustainable_development_goals
@@ -161,7 +161,7 @@ class ActivityPresenter < SimpleDelegator
       html = "<ol class=\"govuk-list govuk-list--number\">"
 
       goals.each do |goal|
-        html += "<li>" + I18n.t("form.label.activity.sdg_options.#{goal}") + "</li>"
+        html += "<li>" + translate("form.label.activity.sdg_options.#{goal}") + "</li>"
       end
 
       html += "</ol>"
@@ -183,7 +183,7 @@ class ActivityPresenter < SimpleDelegator
 
   def oda_eligibility
     return if super.blank?
-    I18n.t("activity.oda_eligibility.#{super}")
+    translate("activity.oda_eligibility.#{super}")
   end
 
   def call_to_action(attribute)
@@ -206,21 +206,21 @@ class ActivityPresenter < SimpleDelegator
 
   def level
     return if super.blank?
-    activity_level = I18n.t("page_content.activity.level.#{super}")
+    activity_level = translate("page_content.activity.level.#{super}")
     custom_capitalisation(activity_level)
   end
 
   def tied_status_with_code
-    "#{I18n.t("activity.tied_status.#{tied_status}")} (#{tied_status})"
+    "#{translate("activity.tied_status.#{tied_status}")} (#{tied_status})"
   end
 
   def finance_with_code
-    "#{I18n.t("activity.finance.#{finance}")} (#{finance})"
+    "#{translate("activity.finance.#{finance}")} (#{finance})"
   end
 
   def fund_pillar
     return if super.blank?
-    I18n.t("page_content.activity.fund_pillar.#{super}")
+    translate("page_content.activity.fund_pillar.#{super}")
   end
 
   def link_to_roda
@@ -256,5 +256,15 @@ class ActivityPresenter < SimpleDelegator
 
   def total_budget
     ActionController::Base.helpers.number_to_currency(super, unit: "£")
+  end
+
+  def total_forecasted
+    ActionController::Base.helpers.number_to_currency(super, unit: "£")
+  end
+
+  private
+
+  def translate(reference)
+    I18n.t(reference)
   end
 end

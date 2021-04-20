@@ -594,10 +594,21 @@
 
 - Allow forecasts to have negative values
 - Add links to Guidance for all Activity fields that have guidance
+- Create a [pattern library](doc/patterns.md) for developers
+
+## [release-46] - 2021-04-20
+
+- Bump Ruby and Rails versions
+- Update Rails configuration files with v6.1 settings
+- Add tests to guard against missing Activity field translations
+- Provide a breakdown of spend, refund and net values as a report CSV download
+- Only include transferred and direct budget in budget calculations
+- Show an activity's total forecasted spend to date against an activity
 
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-45...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-46...HEAD
+[release-46]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-45...release-46
 [release-45]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-44...release-45
 [release-44]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-43...release-44
 [release-43]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-42...release-43

@@ -267,7 +267,12 @@ class Activity < ApplicationRecord
 
   def total_budget
     activity_ids = descendants.pluck(:id).append(id)
-    Budget.where(parent_activity_id: activity_ids).sum(:value)
+    Budget.direct_or_transferred.where(parent_activity_id: activity_ids).sum(:value)
+  end
+
+  def total_forecasted
+    activity_ids = descendants.pluck(:id).append(id)
+    PlannedDisbursement.where(parent_activity_id: activity_ids).sum(:value)
   end
 
   def valid?(context = nil)
