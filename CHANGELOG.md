@@ -611,6 +611,7 @@
 - Add functionality to search for activities by identifiers and title
 - Record providing organisation for budgets
 - Migrate to Webpacker for compiling JavaScript
+- Show activities in an collapsable and expandable tree view table
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-46...HEAD
 [release-46]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-45...release-46
