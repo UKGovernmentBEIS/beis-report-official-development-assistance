@@ -7,7 +7,7 @@ class Staff::ActivitiesController < Staff::BaseController
 
   def index
     @organisation = Organisation.find(organisation_id)
-    @grouped_programmes = fetch_grouped_programmes_for(@organisation)
+    @grouped_programmes = fetch_grouped_programmes_for(@organisation, :current)
   end
 
   def show
@@ -31,9 +31,8 @@ class Staff::ActivitiesController < Staff::BaseController
   end
 
   def historic
-    @organisation_id = organisation_id
-    @historic_activities = policy_scope(Activity.where(organisation: organisation_id)).historic
-    @historic_activity_presenters = @historic_activities.includes(:organisation).order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
+    @organisation = Organisation.find(organisation_id)
+    @grouped_programmes = fetch_grouped_programmes_for(@organisation, :historic)
   end
 
   private
@@ -59,11 +58,14 @@ class Staff::ActivitiesController < Staff::BaseController
     params[:fund_id]
   end
 
-  def fetch_grouped_programmes_for(organisation)
+  def fetch_grouped_programmes_for(organisation, scope)
     activities = policy_scope(
-      Activity.programme
-        .current
-        .includes(:organisation, parent: [:parent, :organisation], child_activities: [:child_activities, :organisation, :parent])
+      Activity.includes(
+        :organisation,
+        parent: [:parent, :organisation],
+        child_activities: [:child_activities, :organisation, :parent]
+      ).programme
+       .send(scope)
     )
     unless organisation.service_owner?
       activities = activities.where(extending_organisation: organisation)

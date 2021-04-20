@@ -50,8 +50,10 @@ RSpec.feature "Users can filter activities" do
 
     scenario "they will see Historic activities if they filter while on the 'Historic' tab" do
       delivery_partner_organisation = create(:delivery_partner_organisation)
-      current_project = create(:project_activity, organisation: delivery_partner_organisation)
-      historic_project = create(:project_activity, organisation: delivery_partner_organisation, programme_status: "cancelled")
+      current_programme = create(:programme_activity, extending_organisation: delivery_partner_organisation)
+      current_project = create(:project_activity, organisation: delivery_partner_organisation, parent: current_programme)
+      historic_programme = create(:programme_activity, extending_organisation: delivery_partner_organisation, programme_status: "cancelled")
+      historic_project = create(:project_activity, organisation: delivery_partner_organisation, programme_status: "cancelled", parent: historic_programme)
 
       visit historic_activities_path
 

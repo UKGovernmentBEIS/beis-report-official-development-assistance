@@ -101,7 +101,7 @@ RSpec.feature "Users can view activities" do
     scenario "they can choose to see a list of historic activities" do
       current_programme = create(:programme_activity, extending_organisation: user.organisation)
       current_project = create(:project_activity, organisation: user.organisation, parent: current_programme)
-      historic_programme = create(:programme_activity, extending_organisation: user.organisation)
+      historic_programme = create(:programme_activity, extending_organisation: user.organisation, programme_status: "completed")
       historic_project = create(:project_activity, organisation: user.organisation, programme_status: "completed", parent: historic_programme)
       another_historic_project = create(:project_activity, organisation: user.organisation, programme_status: "stopped", parent: historic_programme)
 
