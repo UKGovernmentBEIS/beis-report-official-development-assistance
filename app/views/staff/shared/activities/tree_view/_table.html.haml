@@ -3,7 +3,7 @@
     .govuk-grid-column-full
       - grouped_programmes.each do |fund, programmes|
         - if programmes.any?
-          %table{id: fund.id, class: "govuk-table"}
+          %table{id: fund.id, class: "govuk-table", data: {module: "table-tree-view"}}
             %caption{class: "govuk-table__caption govuk-table__caption--m govuk-!-margin-top-4"}
               - if current_user.service_owner?
                 = link_to(fund.title,  organisation_activity_path(fund.organisation, fund), class: "govuk-link")

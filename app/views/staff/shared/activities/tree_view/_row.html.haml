@@ -1,7 +1,8 @@
 - activity_presenter = ActivityPresenter.new(activity)
-%tr{class: "govuk-table__row", id: activity_presenter.id}
-  %td{scope: "row", class: "govuk-table__cell"}
-    = activity_presenter.display_title
+%tr{class: "govuk-table__row table-tree-view__#{activity.level}", id: "activity-#{activity_presenter.id}", data: {child_of: !parent.fund? && "activity-#{parent.id}", parent: is_parent}}
+  %td{scope: "row", class: "govuk-table__cell table-tree-view__parent-title"}
+    %span.table-tree-view__parent-button
+      = activity_presenter.display_title
   %td{class: "govuk-table__cell"}
     = activity_presenter.roda_identifier
   %td{class: "govuk-table__cell"}
