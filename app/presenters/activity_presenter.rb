@@ -258,6 +258,10 @@ class ActivityPresenter < SimpleDelegator
     ActionController::Base.helpers.number_to_currency(super, unit: "£")
   end
 
+  def total_forecasted
+    ActionController::Base.helpers.number_to_currency(super, unit: "£")
+  end
+
   private
 
   def translate(reference)

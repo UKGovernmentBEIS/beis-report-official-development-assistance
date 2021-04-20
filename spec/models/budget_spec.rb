@@ -64,6 +64,21 @@ RSpec.describe Budget do
     end
   end
 
+  describe "scopes" do
+    describe ".direct_or_transferred" do
+      it "returns only direct or transferred Budgets" do
+        newton_fund_budget = create(:budget, :direct_newton)
+        gcrf_fund_budget = create(:budget, :direct_gcrf)
+        transferred_budget = create(:budget, :transferred)
+
+        _external_oda_budget = create(:budget, :external_official_development_assistance)
+        _external_non_oda_budget = create(:budget, :external_non_official_development_assistance)
+
+        expect(Budget.direct_or_transferred).to match_array([newton_fund_budget, gcrf_fund_budget, transferred_budget])
+      end
+    end
+  end
+
   context "value must be between 0.01 and 99,999,999,999.00 (100 billion minus one)" do
     it "allows the maximum possible value" do
       budget = build(:budget, value: 99_999_999_999.00)

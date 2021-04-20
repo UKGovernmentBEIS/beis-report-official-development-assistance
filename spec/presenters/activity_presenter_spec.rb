@@ -676,4 +676,12 @@ RSpec.describe ActivityPresenter do
       expect(described_class.new(activity).total_budget).to eq("£50.00")
     end
   end
+
+  describe "#total_forecasted" do
+    it "returns the value to two decimal places with a currency symbol" do
+      activity = build(:programme_activity)
+      create(:planned_disbursement, parent_activity: activity, value: 50)
+      expect(described_class.new(activity).total_forecasted).to eq("£50.00")
+    end
+  end
 end
