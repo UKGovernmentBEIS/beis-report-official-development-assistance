@@ -176,7 +176,7 @@ RSpec.describe "Users can create a planned disbursement" do
       project = create(:project_activity, parent: programme)
 
       visit activities_path
-      within "##{programme.id}" do
+      within "#activity-#{programme.id}" do
         click_on t("table.body.activity.view_activity")
       end
       click_on t("tabs.activity.children")

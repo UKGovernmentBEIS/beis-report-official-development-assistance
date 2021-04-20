@@ -1,0 +1,84 @@
+$table-tree-view-gutter: 1.5em;
+
+.table-tree-view__programme .table-tree-view__parent-title {
+  padding-left: $table-tree-view-gutter;
+}
+.table-tree-view__project .table-tree-view__parent-title {
+  padding-left: $table-tree-view-gutter * 2;
+}
+.table-tree-view__third_party_project .table-tree-view__parent-title {
+  padding-left: $table-tree-view-gutter * 3;
+}
+
+.js-enabled {
+  [data-child-of] {
+    display: none;
+
+    &.table-tree-view__child--expanded {
+      display: table-row;
+    }
+  }
+
+  button.table-tree-view__parent-button {
+    @include govuk-font($size: 19);
+    @include govuk-typography-common;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding: 0;
+    border-width: 0;
+    color: inherit;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    -webkit-appearance: none;
+    position: relative;
+
+    &:focus {
+      @include govuk-focused-text;
+    }
+
+    // Remove default button focus outline in Firefox
+    &::-moz-focus-inner {
+      padding: 0;
+      border: 0;
+    }
+
+    .table-tree-view__icon {
+      position: absolute;
+      top: 50%;
+      left: -25px;
+      width: 16px;
+      height: 16px;
+      margin-top: -9px;
+
+      &:before, &:after {
+        content: "";
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 25%;
+        height: 25%;
+        margin: auto;
+        border: 2px solid transparent;
+        background-color: govuk-colour("black");
+      }
+
+      &:before {
+        width: 100%;
+      }
+
+      &:after {
+        height: 100%;
+      }
+    }
+  }
+
+  .table-tree-view__parent--expanded > .table-tree-view__parent-title > .table-tree-view__parent-button > .table-tree-view__icon:after {
+    content: " ";
+    display: none;
+  }
+}

@@ -119,7 +119,7 @@ RSpec.feature "Users can view activities" do
 
       visit activities_path
 
-      within("##{project.id}") do
+      within("#activity-#{project.id}") do
         expect(page).to have_link project.title, href: organisation_activity_path(project.organisation, project)
         expect(page).to have_content project.roda_identifier
       end
@@ -132,8 +132,8 @@ RSpec.feature "Users can view activities" do
 
       visit activities_path
 
-      expect(page.find("table tbody tr:nth-child(2)")[:id]).to have_content(another_project.id)
-      expect(page.find("table tbody tr:nth-child(3)")[:id]).to have_content(project.id)
+      expect(page.find("table tbody tr:nth-child(2)")[:id]).to have_content("activity-#{another_project.id}")
+      expect(page.find("table tbody tr:nth-child(3)")[:id]).to have_content("activity-#{project.id}")
     end
 
     scenario "they do not see a Publish to Iati column & status against projects" do
@@ -259,6 +259,33 @@ RSpec.feature "Users can view activities" do
           expect(page).to have_content("29 Jan 2020")
         end
       end
+    end
+
+    scenario "they can expand and collapse the rows to see child activities", js: true do
+      programme = create(:programme_activity, extending_organisation: user.organisation)
+      project = create(:project_activity, organisation: user.organisation, parent: programme)
+      third_party_project = create(:third_party_project_activity, organisation: user.organisation, parent: project)
+
+      visit activities_path
+
+      expect(page).to have_content(programme.title)
+      expect(page).to have_content(programme.roda_identifier)
+
+      expect(page).not_to have_css("#activity-#{project.id}", visible: true)
+      expect(page).not_to have_css("#activity-#{third_party_project.id}", visible: true)
+
+      click_on programme.title
+      expect(page).to have_css("#activity-#{project.id}", visible: true)
+      expect(page).not_to have_css("#activity-#{third_party_project.id}", visible: true)
+
+      click_on project.title
+      expect(page).to have_css("#activity-#{project.id}", visible: true)
+      expect(page).to have_css("#activity-#{third_party_project.id}", visible: true)
+
+      # Users can hide the expanded rows by clicking the parent activity
+      click_on programme.title
+      expect(page).not_to have_css("#activity-#{project.id}", visible: true)
+      expect(page).not_to have_css("#activity-#{third_party_project.id}", visible: true)
     end
   end
 end

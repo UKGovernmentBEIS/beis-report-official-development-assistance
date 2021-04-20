@@ -109,7 +109,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         budget_presenter = BudgetPresenter.new(budget)
 
         visit activities_path
-        within "##{project_activity.id}" do
+        within "#activity-#{project_activity.id}" do
           click_link t("table.body.activity.view_activity")
         end
         click_link t("tabs.activity.details")
