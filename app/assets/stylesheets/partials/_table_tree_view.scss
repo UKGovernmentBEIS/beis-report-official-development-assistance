@@ -45,40 +45,21 @@ $table-tree-view-gutter: 1.5em;
     }
 
     .table-tree-view__icon {
-      position: absolute;
-      top: 50%;
-      left: -25px;
-      width: 16px;
-      height: 16px;
-      margin-top: -9px;
-
-      &:before, &:after {
-        content: "";
-        box-sizing: border-box;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        width: 25%;
-        height: 25%;
-        margin: auto;
-        border: 2px solid transparent;
-        background-color: govuk-colour("black");
-      }
-
       &:before {
-        width: 100%;
-      }
-
-      &:after {
-        height: 100%;
+        content: "";
+        position: absolute;
+        top: 50%;
+        bottom: 0;
+        left: -25px;
+        margin: auto;
+        margin-top: -8px;
+        color: $govuk-link-colour;
+        @include govuk-shape-arrow($direction: right, $base: 14px);
       }
     }
   }
 
-  .table-tree-view__parent--expanded > .table-tree-view__parent-title > .table-tree-view__parent-button > .table-tree-view__icon:after {
-    content: " ";
-    display: none;
+  .table-tree-view__parent--expanded > .table-tree-view__parent-title > .table-tree-view__parent-button > .table-tree-view__icon:before {
+    @include govuk-shape-arrow($direction: down, $base: 14px);
   }
 }
