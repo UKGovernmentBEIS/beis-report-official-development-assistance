@@ -13,6 +13,8 @@ Money spent for an activity. `Transaction` in the code.
 
 Money allocated for an activity.
 
+RODA currently recognises three types of budgets: direct, transferred, and external. Direct budgets are subtyped by the associated fund (GCRF or Newton).
+
 ## Codelists
 
 Originally designating the specific codes (and their metadata) used by IATI. These are public, they have official versions, and must be used when preparing data to be reported to IATI. Stored in the `vendor` folder.
@@ -80,6 +82,11 @@ A record of the financials relating to an organisation's activities during a spe
 
 Actuals are what money the organisation spent during the financial quarter relevant to the report.
 
+## SID
+Statistics on International Development
+
+"This publication provides statistics about the amount of Official Development Assistance (ODA) the UK provided in [year], including UK ODA as a percentage of Gross National Income (GNI) (the ODA:GNI ratio) and various other breakdowns of ODA spend.""
+
 ## Third-party project
 Also "level D"
 
@@ -87,4 +94,4 @@ An activity that is done on behalf of a DP by a third party, such as an universi
 
 ## Transfer
 
-TBD
+A way to record money that is being moved from one activity to another.
