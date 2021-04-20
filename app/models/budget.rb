@@ -5,9 +5,15 @@ class Budget < ApplicationRecord
   IATI_STATUSES = Codelist.new(type: "budget_status", source: "iati").hash_of_coded_names
   BUDGET_TYPES = Codelist.new(type: "budget_type", source: "beis").hash_of_coded_names
   DIRECT_BUDGET_TYPES = [BUDGET_TYPES["direct_newton_fund"], BUDGET_TYPES["direct_global_challenges_research_fund"]]
+  TRANSFERRED_BUDGET_TYPE = BUDGET_TYPES["transferred"]
 
   belongs_to :parent_activity, class_name: "Activity"
   belongs_to :report, optional: true
+
+  scope :direct_or_transferred, -> {
+    budget_types = DIRECT_BUDGET_TYPES + [TRANSFERRED_BUDGET_TYPE]
+    where(budget_type: budget_types)
+  }
 
   validates_presence_of :report, unless: -> { parent_activity&.organisation&.service_owner? }
   validates_presence_of :value,
