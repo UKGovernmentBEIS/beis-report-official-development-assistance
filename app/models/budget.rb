@@ -24,11 +24,21 @@ class Budget < ApplicationRecord
     :financial_year
   validates :value, numericality: {other_than: 0, less_than_or_equal_to: 99_999_999_999.00}
   validates :budget_type, inclusion: {in: BUDGET_TYPES.values}
-  validate :direct_budget_type_must_match_source_fund, if: -> { direct_budget? }
-  validates_presence_of :providing_organisation_id, if: -> { direct_budget? || transferred_budget? }
-  validate :direct_budget_providing_org_must_be_beis, if: -> { direct_budget? }
-  validates_presence_of :providing_organisation_name, unless: -> { direct_budget? || transferred_budget? }
-  validates_presence_of :providing_organisation_type, unless: -> { direct_budget? || transferred_budget? }
+
+  with_options if: -> { direct_budget? } do |direct_budget|
+    direct_budget.validate :direct_budget_type_must_match_source_fund
+    direct_budget.validate :direct_budget_providing_org_must_be_beis
+    direct_budget.validates :providing_organisation_id, presence: true
+  end
+
+  with_options if: -> { transferred_budget? } do |transferred_budget|
+    transferred_budget.validates :providing_organisation_id, presence: true
+  end
+
+  with_options if: -> { external_budget? } do |external_budget|
+    external_budget.validates :providing_organisation_name, presence: true
+    external_budget.validates :providing_organisation_type, presence: true
+  end
 
   def financial_year
     return nil if self[:financial_year].nil?
@@ -84,5 +94,9 @@ class Budget < ApplicationRecord
 
   private def transferred_budget?
     TRANSFERRED_BUDGET_TYPES.include?(budget_type)
+  end
+
+  private def external_budget?
+    !direct_budget? && !transferred_budget?
   end
 end
