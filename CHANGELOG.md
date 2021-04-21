@@ -607,6 +607,8 @@
 
 ## [unreleased]
 
+- Link to the Service performance Zendesk article in the footer
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-46...HEAD
 [release-46]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-45...release-46
 [release-45]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-44...release-45
