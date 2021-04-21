@@ -228,17 +228,17 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def actual_total_for_report_financial_quarter(report:)
-    return if super.blank?
+    return if report.own_financial_quarter.blank? || super.blank?
     "%.2f" % super
   end
 
   def forecasted_total_for_report_financial_quarter(report:)
-    return if super.blank?
+    return if report.own_financial_quarter.blank? || super.blank?
     "%.2f" % super
   end
 
   def variance_for_report_financial_quarter(report:)
-    return if super.blank?
+    return if report.own_financial_quarter.blank? || super.blank?
     "%.2f" % super
   end
 
