@@ -1,3 +1,5 @@
+= render partial: "budget_types"
+
 = f.govuk_error_summary
 = f.govuk_collection_radio_buttons :budget_type,
   budget_type_options,
@@ -5,6 +7,25 @@
   :name,
   :description,
   legend: { tag: :h2 }
+
+#providing-org-transferred.js-hidden
+  = f.govuk_collection_radio_buttons :providing_organisation_id,
+    list_of_delivery_partners,
+    :id,
+    :name,
+    legend: { tag: :h2 }
+
+#providing-org-external.js-hidden
+  = f.govuk_fieldset legend: { text: t("form.legend.budget.providing_organisation") } do
+    %span.govuk-hint= t("form.hint.budget.providing_organisation")
+    = f.govuk_text_field :providing_organisation_name
+
+    = f.govuk_collection_select :providing_organisation_type,
+                        organisation_type_options,
+                        :code,
+                        :name
+
+    = f.govuk_text_field :providing_organisation_reference
 
 = f.govuk_collection_select :financial_year,
   list_of_financial_years,

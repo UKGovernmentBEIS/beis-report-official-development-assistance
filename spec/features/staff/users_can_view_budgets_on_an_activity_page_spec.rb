@@ -171,5 +171,6 @@ RSpec.feature "Users can view budgets on an activity page" do
     expect(page).to have_content(budget_presenter.budget_type)
     expect(page).to have_content(budget_presenter.financial_year)
     expect(page).to have_content(budget_presenter.value)
+    expect(page).to have_content(budget_presenter.providing_organisation_name)
   end
 end
