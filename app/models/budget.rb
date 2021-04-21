@@ -9,6 +9,7 @@ class Budget < ApplicationRecord
 
   belongs_to :parent_activity, class_name: "Activity"
   belongs_to :report, optional: true
+  belongs_to :providing_organisation, class_name: "Organisation", optional: true
 
   scope :direct_or_transferred, -> {
     budget_types = DIRECT_BUDGET_TYPES + [TRANSFERRED_BUDGET_TYPE]
