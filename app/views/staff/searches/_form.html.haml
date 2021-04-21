@@ -1,0 +1,12 @@
+.govuk-grid-row
+  .govuk-grid-column-full
+    %h2.govuk-heading-m
+      = t("form.activity_search.heading")
+
+    = form_with model: ActivitySearch.new, url: search_path, method: "get" do |f|
+      = f.govuk_text_field :query,
+        name: :query,
+        label: { text: t("form.activity_search.query") },
+        hint: { text: t("form.activity_search.hint") },
+        width: 20
+      = f.govuk_submit t("form.activity_search.submit")

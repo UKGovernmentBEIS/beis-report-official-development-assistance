@@ -1,0 +1,33 @@
+= content_for :page_title_prefix, t("page_title.activity_search.show")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        = t("page_content.activity_search.heading", query: @activity_search.query)
+
+      - if @activity_search.results.any?
+        %table.govuk-table
+          %thead.govuk-table__head
+            %tr.govuk-table__row
+              %th.govuk-table__header{scope: "col"}
+                = t("page_content.activity_search.table.title")
+              %th.govuk-table__header{scope: "col"}
+                = t("page_content.activity_search.table.roda_identifier")
+              %th.govuk-table__header{scope: "col"}
+                = t("page_content.activity_search.table.delivery_partner_identifier")
+          %tbody.govuk-table__body
+            - @activity_search.results.each do |activity|
+              %tr.govuk-table__row
+                %td.govuk-table__cell
+                  = a11y_action_link activity.title,
+                    organisation_activity_path(activity.organisation_id, activity)
+                %td.govuk-table__cell
+                  = activity.roda_identifier
+                %td.govuk-table__cell
+                  = activity.delivery_partner_identifier
+      - else
+        %p.govuk-body
+          = t("page_content.activity_search.no_results")
+
+  = render partial: "form"

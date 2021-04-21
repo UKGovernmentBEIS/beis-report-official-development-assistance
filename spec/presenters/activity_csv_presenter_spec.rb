@@ -19,18 +19,18 @@ RSpec.describe ActivityCsvPresenter do
     end
   end
 
-  describe "#beis_id" do
+  describe "#beis_identifier" do
     it "returns an empty string if the BEIS ID is nil otherwise the value" do
-      activity = Activity.new(beis_id: nil)
-      result = described_class.new(activity).beis_id
+      activity = Activity.new(beis_identifier: nil)
+      result = described_class.new(activity).beis_identifier
 
       expect(result).to eq ""
 
-      fake_beis_id = "GCRF_AHRC_NS_AH1001"
-      activity.beis_id = fake_beis_id
-      result = described_class.new(activity).beis_id
+      fake_beis_identifier = "GCRF_AHRC_NS_AH1001"
+      activity.beis_identifier = fake_beis_identifier
+      result = described_class.new(activity).beis_identifier
 
-      expect(result).to eq fake_beis_id
+      expect(result).to eq fake_beis_identifier
     end
   end
 

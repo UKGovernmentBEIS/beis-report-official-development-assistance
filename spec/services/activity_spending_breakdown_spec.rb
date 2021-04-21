@@ -57,7 +57,7 @@ RSpec.describe ActivitySpendingBreakdown do
 
     expect(breakdown.combined_hash).to include(
       "RODA identifier" => project.roda_identifier,
-      "BEIS identifier" => project.beis_id,
+      "BEIS identifier" => project.beis_identifier,
       "Delivery partner identifier" => project.delivery_partner_identifier,
       "Title" => project.title,
       "Description" => project.description,

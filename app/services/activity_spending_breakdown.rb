@@ -41,7 +41,7 @@ class ActivitySpendingBreakdown
   def identifiers
     {
       "RODA identifier" => -> { @activity.roda_identifier },
-      "BEIS identifier" => -> { @activity.beis_id },
+      "BEIS identifier" => -> { @activity.beis_identifier },
       "Delivery partner identifier" => -> { @activity.delivery_partner_identifier },
     }
   end
