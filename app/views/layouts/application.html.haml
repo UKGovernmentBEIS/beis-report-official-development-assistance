@@ -18,6 +18,7 @@
     = stylesheet_link_tag 'application', media: 'all'
     /[if lt IE 9]
     = javascript_include_tag 'application'
+    = javascript_pack_tag 'application'
     = csrf_meta_tags
   %body{class: 'govuk-template__body app-body-class'}
     %script
