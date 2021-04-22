@@ -16,7 +16,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/docker-save
-          key: docker-save-${{ hashFiles('Dockerfile', 'Gemfile.lock', 'package-lock.json') }}
+          key: docker-save-${{ hashFiles('Dockerfile', 'Gemfile.lock', 'yarn.lock') }}
       - name: Load cached Docker image
         run: docker load -i /tmp/docker-save/snapshot.tar || true
         if: steps.cache-docker.outputs.cache-hit == 'true'
