@@ -18,12 +18,11 @@
 function toggleProvidingOrgFields() {
   // Detect which budget type is currently selected
   var budgetTypeRadios = document.querySelectorAll('input[name="budget[budget_type]"].govuk-radios__input');
-  var selectedBudgetType = Array.from(budgetTypeRadios).find((node) => node.checked)?.value;
+  var selectedBudgetType = Array.from(budgetTypeRadios).find((node) => node.checked);
 
-  if (selectedBudgetType === undefined)
-    return;
+  if (!selectedBudgetType) return;
 
-  var budgetType = parseInt(selectedBudgetType, 10);
+  var budgetType = parseInt(selectedBudgetType.value, 10);
 
   if (TRANSFERRED_BUDGET_TYPES.includes(budgetType)) { // transferred
     document.querySelector("#providing-org-transferred").classList.remove("js-hidden");
