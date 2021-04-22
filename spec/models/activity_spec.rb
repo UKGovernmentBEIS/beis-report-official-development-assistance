@@ -1824,5 +1824,31 @@ RSpec.describe Activity, type: :model do
         expect(programme2_projects[1].total_forecasted).to eq(programme2_project_1_forecasted)
       end
     end
+
+    describe "#own_and_descendants_transactions" do
+      let!(:fund_transaction) { create(:transaction, value: 100, parent_activity: fund) }
+      let!(:programme1_transaction) { create(:transaction, value: 100, parent_activity: programme1) }
+      let!(:programme2_transaction) { create(:transaction, value: 100, parent_activity: programme2) }
+      let!(:programme1_projects1_transaction) { create(:transaction, value: 50, parent_activity: programme1_projects[0]) }
+      let!(:programme1_projects2_transaction) { create(:transaction, value: 50, parent_activity: programme1_projects[1]) }
+      let!(:programme2_projects1_transaction) { create(:transaction, value: 100, parent_activity: programme2_projects[0]) }
+      let!(:programme2_projects2_transaction) { create(:transaction, value: 100, parent_activity: programme2_projects[1]) }
+      let!(:programme1_tpp_transaction) { create(:transaction, value: 100, parent_activity: programme1_third_party_project) }
+      let!(:programme2_tpp_transaction) { create(:transaction, value: 100, parent_activity: programme2_third_party_project) }
+
+      it "returns all the transactions belonging to the activity and to the descendant activities" do
+        expect(fund.own_and_descendants_transactions.pluck(:id)).to match_array([
+          fund_transaction.id,
+          programme1_transaction.id,
+          programme2_transaction.id,
+          programme1_projects1_transaction.id,
+          programme1_projects2_transaction.id,
+          programme2_projects1_transaction.id,
+          programme2_projects2_transaction.id,
+          programme1_tpp_transaction.id,
+          programme2_tpp_transaction.id,
+        ])
+      end
+    end
   end
 end

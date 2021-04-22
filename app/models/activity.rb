@@ -250,9 +250,7 @@ class Activity < ApplicationRecord
   end
 
   def total_spend(financial_quarter = nil)
-    activity_ids = descendants.pluck(:id).append(id)
-
-    transactions = Transaction.where(parent_activity_id: activity_ids)
+    transactions = own_and_descendants_transactions
 
     if financial_quarter
       transactions = transactions.where(
@@ -272,6 +270,11 @@ class Activity < ApplicationRecord
   def total_forecasted
     activity_ids = descendants.pluck(:id).append(id)
     PlannedDisbursement.where(parent_activity_id: activity_ids).sum(:value)
+  end
+
+  def own_and_descendants_transactions
+    activity_ids = descendants.pluck(:id).append(id)
+    Transaction.where(parent_activity_id: activity_ids)
   end
 
   def valid?(context = nil)
