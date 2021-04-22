@@ -15,5 +15,14 @@
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 
+import accessibleAutocomplete from "accessible-autocomplete"
+import GOVUKFrontend from "govuk-frontend"
+import Rails from "@rails/ujs"
+
 import cookieConsent from "../src/cookie-consent"
 import toggleProvidingOrgFields from "../src/toggle-providing-org-fields"
+
+Rails.start()
+window.accessibleAutocomplete = accessibleAutocomplete
+
+document.addEventListener("DOMContentLoaded", () => GOVUKFrontend.initAll())
