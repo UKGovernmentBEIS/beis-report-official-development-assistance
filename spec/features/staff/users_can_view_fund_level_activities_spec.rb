@@ -13,6 +13,7 @@ RSpec.feature "Users can view fund level activities" do
 
     scenario "can view a fund level activity" do
       fund_activity = create(:activity, level: :fund, organisation: user.organisation)
+      create(:programme_activity, parent: fund_activity)
 
       visit activities_path
       click_on fund_activity.title
@@ -33,7 +34,7 @@ RSpec.feature "Users can view fund level activities" do
 
     context "when the activity is partially complete and doesn't have a title" do
       scenario "it to show a meaningful link to the activity" do
-        activity = create(:activity, :at_purpose_step, organisation: user.organisation, title: nil)
+        activity = create(:programme_activity, :at_purpose_step, organisation: user.organisation, title: nil)
 
         visit activities_path
 

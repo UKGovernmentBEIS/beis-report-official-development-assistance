@@ -20,9 +20,13 @@ import GOVUKFrontend from "govuk-frontend"
 import Rails from "@rails/ujs"
 
 import cookieConsent from "../src/cookie-consent"
+import initTableTreeView from "../src/table-tree-view"
 import toggleProvidingOrgFields from "../src/toggle-providing-org-fields"
 
 Rails.start()
 window.accessibleAutocomplete = accessibleAutocomplete
 
-document.addEventListener("DOMContentLoaded", () => GOVUKFrontend.initAll())
+document.addEventListener("DOMContentLoaded", () => {
+  GOVUKFrontend.initAll()
+  initTableTreeView()
+})
