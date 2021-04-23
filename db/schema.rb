@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_16_123920) do
+ActiveRecord::Schema.define(version: 2021_04_22_092826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -35,7 +35,6 @@ ActiveRecord::Schema.define(version: 2021_04_16_123920) do
     t.uuid "extending_organisation_id"
     t.string "recipient_country"
     t.string "geography"
-    t.uuid "reporting_organisation_id"
     t.string "previous_identifier"
     t.string "sector_category"
     t.boolean "publish_to_iati", default: true
@@ -82,7 +81,6 @@ ActiveRecord::Schema.define(version: 2021_04_16_123920) do
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
     t.index ["parent_id"], name: "index_activities_on_parent_id"
-    t.index ["reporting_organisation_id"], name: "index_activities_on_reporting_organisation_id"
     t.index ["roda_identifier_compound"], name: "index_activities_on_roda_identifier_compound"
     t.index ["transparency_identifier"], name: "index_activities_on_transparency_identifier", unique: true
   end
@@ -253,7 +251,6 @@ ActiveRecord::Schema.define(version: 2021_04_16_123920) do
 
   add_foreign_key "activities", "activities", column: "parent_id", on_delete: :restrict
   add_foreign_key "activities", "organisations", column: "extending_organisation_id"
-  add_foreign_key "activities", "organisations", column: "reporting_organisation_id"
   add_foreign_key "activities", "organisations", on_delete: :restrict
   add_foreign_key "budgets", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "budgets", "organisations", column: "providing_organisation_id"

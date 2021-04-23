@@ -19,7 +19,6 @@ class ActivityDefaults
 
       organisation_id: organisation.id,
       extending_organisation_id: extending_organisation.id,
-      reporting_organisation_id: reporting_organisation.id,
 
       form_state: form_state,
     }
@@ -47,10 +46,6 @@ class ActivityDefaults
 
   def extending_organisation
     delivery_partner_organisation
-  end
-
-  def reporting_organisation
-    service_owner
   end
 
   def form_state
