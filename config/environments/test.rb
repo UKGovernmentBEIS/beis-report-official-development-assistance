@@ -78,10 +78,12 @@ Rails.application.configure do
     Bullet.raise = true # raise an error if n+1 query occurs
     Bullet.add_whitelist type: :unused_eager_loading, class_name: "User", association: :organisation
     Bullet.add_whitelist type: :unused_eager_loading, class_name: "Activity", association: :organisation
+    Bullet.add_whitelist type: :unused_eager_loading, class_name: "Activity", association: :child_activities
     Bullet.add_whitelist type: :unused_eager_loading, class_name: "Transaction", association: :provider
     Bullet.add_whitelist type: :unused_eager_loading, class_name: "Transaction", association: :receiver
     Bullet.add_whitelist type: :unused_eager_loading, class_name: "Activity", association: :parent
     Bullet.add_whitelist type: :unused_eager_loading, class_name: "Report", association: :fund
+    Bullet.add_whitelist type: :unused_eager_loading, class_name: "Budget", association: :providing_organisation
   end
 
   config.hosts = [

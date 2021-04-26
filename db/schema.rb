@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_06_094816) do
+ActiveRecord::Schema.define(version: 2021_04_16_123920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 2021_04_06_094816) do
     t.boolean "sdgs_apply", default: false, null: false
     t.text "objectives"
     t.string "oda_eligibility_lead"
-    t.string "beis_id"
+    t.string "beis_identifier"
     t.string "uk_dp_named_contact"
     t.string "country_delivery_partners", array: true
     t.integer "gcrf_challenge_area"
@@ -117,7 +117,12 @@ ActiveRecord::Schema.define(version: 2021_04_06_094816) do
     t.integer "funding_type"
     t.integer "financial_year"
     t.integer "budget_type"
+    t.uuid "providing_organisation_id"
+    t.string "providing_organisation_name"
+    t.string "providing_organisation_type"
+    t.string "providing_organisation_reference"
     t.index ["parent_activity_id"], name: "index_budgets_on_parent_activity_id"
+    t.index ["providing_organisation_id"], name: "index_budgets_on_providing_organisation_id"
     t.index ["report_id"], name: "index_budgets_on_report_id"
   end
 
@@ -251,6 +256,7 @@ ActiveRecord::Schema.define(version: 2021_04_06_094816) do
   add_foreign_key "activities", "organisations", column: "reporting_organisation_id"
   add_foreign_key "activities", "organisations", on_delete: :restrict
   add_foreign_key "budgets", "activities", column: "parent_activity_id", on_delete: :cascade
+  add_foreign_key "budgets", "organisations", column: "providing_organisation_id"
   add_foreign_key "planned_disbursements", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "transactions", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "transfers", "activities", column: "destination_id", on_delete: :restrict

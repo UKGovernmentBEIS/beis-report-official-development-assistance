@@ -7,8 +7,8 @@
         = t("page_title.activity.index")
 
   - if current_user.service_owner?
-    = render partial: "staff/shared/activities/filter", locals: { organisation_id: @organisation_id }
+    = render partial: "staff/shared/activities/filter", locals: { organisation_id: @organisation.id }
 
   .govuk-grid-row.activity-page
     .govuk-grid-column-full
-      = render partial: "staff/shared/activities/table", locals: { activities: @activity_presenters }
+      = render partial: "staff/shared/activities/table", locals: { activities: @grouped_programmes }

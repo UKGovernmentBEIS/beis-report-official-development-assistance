@@ -1,0 +1,13 @@
+- activity_presenter = ActivityPresenter.new(activity)
+%tr{class: "govuk-table__row table-tree-view__#{activity.level}", id: "activity-#{activity_presenter.id}", data: {child_of: !parent.fund? && "activity-#{parent.id}", parent: is_parent}}
+  %td{scope: "row", class: "govuk-table__cell table-tree-view__parent-title"}
+    %span.table-tree-view__parent-button
+      = activity_presenter.display_title
+  %td{class: "govuk-table__cell"}
+    = activity_presenter.roda_identifier
+  %td{class: "govuk-table__cell"}
+    = activity_presenter.level
+  %td{class: "govuk-table__cell"}
+    = a11y_action_link t("table.body.activity.view_activity"),
+                       organisation_activity_path(activity_presenter.organisation_id, activity_presenter),
+                       activity_presenter.title

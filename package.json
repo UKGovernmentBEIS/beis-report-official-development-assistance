@@ -3,7 +3,9 @@
   "private": true,
   "dependencies": {
     "accessible-autocomplete": "^2.0.2",
-    "govuk-frontend": "^3.11.0"
+    "govuk-frontend": "^3.11.0",
+    "@rails/ujs": "^6.0.0",
+    "@rails/webpacker": "5.2.1"
   },
   "description": "## Getting started",
   "version": "1.0.0",
@@ -23,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/issues"
   },
-  "homepage": "https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance#readme"
+  "homepage": "https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance#readme",
+  "devDependencies": {
+    "webpack-dev-server": "^3.11.2"
+  }
 }

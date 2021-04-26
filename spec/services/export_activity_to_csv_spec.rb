@@ -69,7 +69,7 @@ RSpec.describe ExportActivityToCsv do
 
   context "when the project has a BEIS identifier" do
     before do
-      project.update!(beis_id: "GCRF_AHRC_NS_AH1001")
+      project.update!(beis_identifier: "GCRF_AHRC_NS_AH1001")
     end
 
     it "includes the BEIS identifier" do

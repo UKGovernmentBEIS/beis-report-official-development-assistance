@@ -9,6 +9,8 @@
         %th{ scope: "col", class: ["govuk-table__header"] }
           =t("table.header.budget.value")
         %th{ scope: "col", class: ["govuk-table__header"] }
+          =t("table.header.budget.providing_organisation")
+        %th{ scope: "col", class: ["govuk-table__header"] }
 
     %tbody.govuk-table__body
       - budgets.each do |budget|
@@ -17,6 +19,7 @@
             = budget.financial_year
           %td.govuk-table__cell= budget.budget_type
           %td.govuk-table__cell= budget.value
+          %td.govuk-table__cell= budget.providing_organisation_name
           %td.govuk-table__cell
             - if policy(budget).edit?
               = a11y_action_link(t('default.link.edit'), edit_activity_budget_path(budget.parent_activity_id, budget), t("table.body.budget.edit_noun"))

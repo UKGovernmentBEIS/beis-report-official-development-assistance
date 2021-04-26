@@ -11,18 +11,27 @@ en:
       budget:
         value: Budget amount
         financial_year: Financial year
+        providing_organisation_name: Providing organisation name
+        providing_organisation_type: Providing organisation type
+        providing_organisation_reference: International Aid Transparency Initiative (IATI) Reference (optional)
     legend:
       budget:
         budget_type: Type
+        providing_organisation: Providing organisation
+        providing_organisation_id: Providing organisation
     prompt:
       budget:
         financial_year: Select a financial year
+    hint:
+      budget:
+        providing_organisation: The organisation where the budget is coming from.
   table:
     header:
       budget:
         financial_year: Financial year
         budget_type: Type
         value: Budget amount
+        providing_organisation: Providing organisation
     body:
       budget:
         edit_noun: budget
@@ -63,3 +72,9 @@ en:
                 2: You cannot assign Newton budget to a GCRF funded activity.
             financial_year:
               blank: Select a financial year
+            providing_organisation_id:
+              blank: Select the organisation that provides the transferred budget
+            providing_organisation_name:
+              blank: Enter the name of the providing organisation
+            providing_organisation_type:
+              blank: Select the type of the providing organisation

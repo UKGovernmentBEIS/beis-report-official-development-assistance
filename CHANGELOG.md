@@ -605,9 +605,18 @@
 - Only include transferred and direct budget in budget calculations
 - Show an activity's total forecasted spend to date against an activity
 
+## [release-47] - 2021-04-23
+
+- Link to the Service performance Zendesk article in the footer
+- Add functionality to search for activities by identifiers and title
+- Record providing organisation for budgets
+- Migrate to Webpacker for compiling JavaScript
+- Show activities in an collapsable and expandable tree view table
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-46...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...HEAD
+[release-47]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-46...release-47
 [release-46]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-45...release-46
 [release-45]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-44...release-45
 [release-44]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-43...release-44

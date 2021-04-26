@@ -36,4 +36,10 @@ class BudgetPresenter < SimpleDelegator
     return if super.blank?
     I18n.t("generic.default_currency.#{super.downcase}")
   end
+
+  def providing_organisation_name
+    return super if super.present?
+
+    providing_organisation&.name
+  end
 end

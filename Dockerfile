@@ -29,7 +29,8 @@ WORKDIR ${DEPS_HOME}
 # End
 
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
-  && apt-get install -y nodejs
+  && apt-get install -y nodejs \
+  && npm install --global yarn
 
 # Install Ruby dependencies
 COPY Gemfile ${DEPS_HOME}/Gemfile
@@ -56,10 +57,8 @@ RUN bundle install --retry 3 --jobs 4
 
 # Install JavaScript dependencies
 COPY package.json ${DEPS_HOME}/package.json
-COPY package-lock.json ${DEPS_HOME}/package-lock.json
-
-RUN npm set progress=false && npm config set depth 0
-RUN npm install
+COPY yarn.lock ${DEPS_HOME}/yarn.lock
+RUN yarn install
 #end
 
 # ------------------------------------------------------------------------------

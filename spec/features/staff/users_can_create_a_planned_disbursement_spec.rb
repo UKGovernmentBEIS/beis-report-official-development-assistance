@@ -5,7 +5,8 @@ RSpec.describe "Users can create a planned disbursement" do
     before { authenticate!(user: user) }
 
     scenario "they can add a planned disbursement" do
-      project = create(:project_activity, :with_report, organisation: user.organisation)
+      programme = create(:programme_activity, extending_organisation: user.organisation)
+      project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
       visit activities_path
       click_on project.title
 
@@ -22,7 +23,8 @@ RSpec.describe "Users can create a planned disbursement" do
     end
 
     scenario "they can go back if they try to add a planned disbursement in error" do
-      project = create(:project_activity, :with_report, organisation: user.organisation)
+      programme = create(:programme_activity, extending_organisation: user.organisation)
+      project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
       visit activities_path
       click_on project.title
 
@@ -36,7 +38,8 @@ RSpec.describe "Users can create a planned disbursement" do
     context "when we are in the first quarter" do
       scenario "the current financial quarter and year are pre selected" do
         travel_to_quarter(1, 2019) do
-          project = create(:project_activity, :with_report, organisation: user.organisation)
+          programme = create(:programme_activity, extending_organisation: user.organisation)
+          project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
           visit activities_path
           click_on project.title
           click_on t("page_content.planned_disbursements.button.create")
@@ -50,7 +53,8 @@ RSpec.describe "Users can create a planned disbursement" do
     context "when we are in the fourth quarter" do
       scenario "the current financial quarter and year are pre selected" do
         travel_to_quarter(4, 2019) do
-          project = create(:project_activity, :with_report, organisation: user.organisation)
+          programme = create(:programme_activity, extending_organisation: user.organisation)
+          project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
           visit activities_path
           click_on project.title
           click_on t("page_content.planned_disbursements.button.create")
@@ -62,7 +66,8 @@ RSpec.describe "Users can create a planned disbursement" do
     end
 
     scenario "the action is recorded with public_activity" do
-      activity = create(:project_activity, :with_report, organisation: user.organisation)
+      programme = create(:programme_activity, extending_organisation: user.organisation)
+      activity = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
 
       PublicActivity.with_tracking do
         visit activities_path
@@ -92,7 +97,7 @@ RSpec.describe "Users can create a planned disbursement" do
 
     scenario "the planned disbursement is associated with the currently active report" do
       fund = create(:fund_activity)
-      programme = create(:programme_activity, parent: fund)
+      programme = create(:programme_activity, parent: fund, extending_organisation: user.organisation)
       project = create(:project_activity, organisation: user.organisation, parent: programme)
       report = create(:report, :active, fund: fund, organisation: project.organisation)
 
@@ -108,7 +113,8 @@ RSpec.describe "Users can create a planned disbursement" do
     end
 
     scenario "they cannot add a planned disbursement when no editable report exists" do
-      project = create(:project_activity, :with_report, organisation: user.organisation)
+      programme = create(:programme_activity, extending_organisation: user.organisation)
+      project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
       Report.update_all(state: :approved)
 
       visit activities_path
@@ -120,7 +126,8 @@ RSpec.describe "Users can create a planned disbursement" do
 
     scenario "they receive an error message if the forecast is not in the future" do
       travel_to_quarter(3, 2020) do
-        project = create(:project_activity, :with_report, organisation: user.organisation)
+        programme = create(:programme_activity, extending_organisation: user.organisation)
+        project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
         visit activities_path
         click_on project.title
 
@@ -139,7 +146,8 @@ RSpec.describe "Users can create a planned disbursement" do
     end
 
     scenario "they receive an error message if the value is not a valid number" do
-      project = create(:project_activity, :with_report, organisation: user.organisation)
+      programme = create(:programme_activity, extending_organisation: user.organisation)
+      project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
       visit activities_path
       click_on project.title
 
@@ -168,7 +176,7 @@ RSpec.describe "Users can create a planned disbursement" do
       project = create(:project_activity, parent: programme)
 
       visit activities_path
-      within "##{programme.id}" do
+      within "#activity-#{programme.id}" do
         click_on t("table.body.activity.view_activity")
       end
       click_on t("tabs.activity.children")

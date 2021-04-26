@@ -32,12 +32,12 @@ gem "sass-rails", "~> 6.0"
 gem "sidekiq", "~> 5.2"
 gem "skylight"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
-gem "uglifier", ">= 1.3.0"
+gem "webpacker"
 gem "wicked"
 gem "strip_attributes"
 
 # Authentication
-gem "omniauth-auth0", "~> 2.4"
+gem "omniauth-auth0", "~> 3.0"
 gem "omniauth-rails_csrf_protection", "~> 1.0.0"
 
 group :development, :test do

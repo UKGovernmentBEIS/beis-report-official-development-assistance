@@ -151,8 +151,8 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
     # We expect to see BEIS separately on this page
     within(".user-organisations") do
-      beis_id = Organisation.find_by(service_owner: true).id
-      expect(page).to have_css("input[type='radio'][value='#{beis_id}']:first-child")
+      beis_identifier = Organisation.find_by(service_owner: true).id
+      expect(page).to have_css("input[type='radio'][value='#{beis_identifier}']:first-child")
       expect(page).to have_css(".govuk-radios__divider:nth-child(2)")
     end
 
