@@ -153,7 +153,7 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def report_activities_sorted_by_level(report)
-    Activity.includes(:organisation).projects_and_third_party_projects_for_report(report).sort_by { |a| a.level }
+    Activity.includes(:organisation, :implementing_organisations).projects_and_third_party_projects_for_report(report).sort_by { |a| a.level }
   end
 
   def reports_have_same_quarter?

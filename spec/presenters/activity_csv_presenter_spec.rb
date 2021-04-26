@@ -41,7 +41,7 @@ RSpec.describe ActivityCsvPresenter do
                                                                           "Chinese Academy of Sciences",
                                                                           "National Research Foundation",])
         result = described_class.new(activity).country_delivery_partners
-        expect(result).to eql("National Council for the State Funding Agencies (CONFAP) | Chinese Academy of Sciences | National Research Foundation")
+        expect(result).to eql("National Council for the State Funding Agencies (CONFAP)|Chinese Academy of Sciences|National Research Foundation")
       end
     end
 
@@ -51,6 +51,24 @@ RSpec.describe ActivityCsvPresenter do
         result = described_class.new(activity).country_delivery_partners
         expect(result).to be_nil
       end
+    end
+  end
+
+  describe "#implementing_organisations" do
+    it "is blank when there are no implementing organisations" do
+      activity = build(:project_activity)
+      result = described_class.new(activity).implementing_organisations
+
+      expect(result).to be_nil
+    end
+
+    it "shows a list of implementing organisations seperated by the pipe symbol" do
+      implementing_organisation_one = build(:implementing_organisation)
+      implementing_organisation_two = build(:implementing_organisation)
+      activity = create(:project_activity, implementing_organisations: [implementing_organisation_one, implementing_organisation_two])
+      result = described_class.new(activity).implementing_organisations
+
+      expect(result).to eql("#{implementing_organisation_one.name}|#{implementing_organisation_two.name}")
     end
   end
 end
