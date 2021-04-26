@@ -8,13 +8,10 @@ class FindThirdPartyProjectActivities
     @user = user
   end
 
-  def call(eager_load_parent: true)
-    eager_load_associations = [:organisation]
-    eager_load_associations << :parent if eager_load_parent
-
+  def call
     third_party_projects = ThirdPartyProjectPolicy::Scope.new(user, Activity.third_party_project)
       .resolve
-      .includes(eager_load_associations)
+      .includes(:organisation, :extending_organisation, :implementing_organisations, :budgets, :parent)
       .order("created_at ASC")
 
     third_party_projects = if organisation.service_owner
