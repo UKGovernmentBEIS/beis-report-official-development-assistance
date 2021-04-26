@@ -11,8 +11,10 @@ RSpec.describe Staff::ActivityFormsController do
 
   describe "#show" do
     context "when editing a programme" do
+      let(:user) { create(:beis_user) }
+
       let(:fund) { create(:fund_activity) }
-      let(:activity) { create(:programme_activity, organisation: organisation, parent: fund) }
+      let(:activity) { create(:programme_activity, parent: fund) }
 
       context "gcrf_challenge_area step" do
         subject { get_step :gcrf_challenge_area }

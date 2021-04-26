@@ -475,7 +475,10 @@ en:
             channel_of_delivery_code:
               invalid: Please select a valid Channel of delivery code
             organisation_id:
-              invalid: Funds must be associated with the Service Owner Organisation
+              fund:
+                invalid: Funds must be associated with the Service Owner Organisation
+              programme:
+                invalid: Programmes must be associated with the Service Owner Organisation
   importer:
     errors:
       activity:

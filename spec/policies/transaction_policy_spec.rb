@@ -66,10 +66,9 @@ RSpec.describe TransactionPolicy do
     end
 
     context "when the activity is a programme" do
-      let(:activity) { create(:programme_activity, organisation: user.organisation) }
+      let(:activity) { create(:programme_activity) }
 
-      it { is_expected.to permit_action(:show) }
-
+      it { is_expected.to forbid_action(:show) }
       it { is_expected.to forbid_action(:create) }
       it { is_expected.to forbid_action(:edit) }
       it { is_expected.to forbid_action(:update) }

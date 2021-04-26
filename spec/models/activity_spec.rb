@@ -92,13 +92,13 @@ RSpec.describe Activity, type: :model do
       it "only returns projects and third party projects that are for the reports organisation and fund" do
         organisation = create(:delivery_partner_organisation)
         fund = create(:fund_activity)
-        programme = create(:programme_activity, parent: fund, organisation: organisation)
+        programme = create(:programme_activity, parent: fund)
         project = create(:project_activity, parent: programme, organisation: organisation)
         third_party_project = create(:third_party_project_activity, parent: project, organisation: organisation)
         report = create(:report, organisation: third_party_project.organisation, fund: fund)
 
         another_fund = create(:fund_activity)
-        another_programme = create(:programme_activity, parent: another_fund, organisation: organisation)
+        another_programme = create(:programme_activity, parent: another_fund)
         another_project = create(:project_activity, parent: another_programme, organisation: organisation)
         another_third_party_project = create(:third_party_project_activity, parent: another_project, organisation: organisation)
 
@@ -135,6 +135,22 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when activity is a fund" do
+      subject { build(:fund_activity, organisation: organisation) }
+
+      context "when the organisation is a delivery partner" do
+        let(:organisation) { build(:delivery_partner_organisation) }
+
+        it { should be_invalid }
+      end
+
+      context "when the organisation is the service owner" do
+        let(:organisation) { build(:beis_organisation) }
+
+        it { should be_valid }
+      end
+    end
+
+    context "when activity is a programme" do
       subject { build(:fund_activity, organisation: organisation) }
 
       context "when the organisation is a delivery partner" do

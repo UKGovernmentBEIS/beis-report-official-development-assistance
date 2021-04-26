@@ -215,7 +215,7 @@ RSpec.feature "Users can view an activity" do
     before { authenticate!(user: user) }
 
     scenario "a programme activity does not link to its parent activity" do
-      activity = create(:programme_activity, organisation: user.organisation)
+      activity = create(:programme_activity, extending_organisation: user.organisation)
       parent_activity = activity.parent
 
       visit organisation_activity_details_path(activity.organisation, activity)

@@ -13,8 +13,8 @@ RSpec.describe Staff::TransactionUploadsController do
     let(:report) { create(:report, organisation: organisation, state: :active, fund: fund) }
 
     let!(:fund) { create(:fund_activity, roda_identifier_fragment: "A") }
-    let!(:programme_a) { create(:programme_activity, parent: fund, organisation: report.organisation, roda_identifier_fragment: "A", created_at: rand(0..60).minutes.ago) }
-    let!(:programme_b) { create(:programme_activity, parent: fund, organisation: report.organisation, roda_identifier_fragment: "B", created_at: rand(0..60).minutes.ago) }
+    let!(:programme_a) { create(:programme_activity, parent: fund, roda_identifier_fragment: "A", created_at: rand(0..60).minutes.ago) }
+    let!(:programme_b) { create(:programme_activity, parent: fund, roda_identifier_fragment: "B", created_at: rand(0..60).minutes.ago) }
     let!(:project_c) { create(:project_activity, parent: programme_a, organisation: report.organisation, roda_identifier_fragment: "C", created_at: rand(0..60).minutes.ago) }
     let!(:project_d) { create(:project_activity, parent: programme_b, organisation: report.organisation, roda_identifier_fragment: "D", created_at: rand(0..60).minutes.ago) }
     let!(:third_party_project_e) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier_fragment: "E", created_at: rand(0..60).minutes.ago) }

@@ -249,7 +249,7 @@ RSpec.feature "Users can edit an activity" do
       end
 
       scenario "it does not show the Publish to Iati field" do
-        activity = create(:programme_activity, organisation: user.organisation)
+        activity = create(:programme_activity)
 
         visit organisation_activity_path(activity.organisation, activity)
 
