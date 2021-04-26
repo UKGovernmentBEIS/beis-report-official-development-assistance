@@ -41,7 +41,7 @@ RSpec.describe ActivityCsvPresenter do
                                                                           "Chinese Academy of Sciences",
                                                                           "National Research Foundation",])
         result = described_class.new(activity).country_delivery_partners
-        expect(result).to eql("National Council for the State Funding Agencies (CONFAP) | Chinese Academy of Sciences | National Research Foundation")
+        expect(result).to eql("National Council for the State Funding Agencies (CONFAP)|Chinese Academy of Sciences|National Research Foundation")
       end
     end
 
