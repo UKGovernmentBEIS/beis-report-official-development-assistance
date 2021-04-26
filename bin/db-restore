@@ -4,6 +4,7 @@
 
 set -e
 
+ORGANISATION_NAME="beis-report-official-development-assistance"
 ENVIRONMENT_NAME="${1:-staging}"
 environments="pentest prod staging"
 
@@ -46,7 +47,9 @@ trap cleanup EXIT ERR INT TERM
 
 echo "==> Logging into GOV.UK PaaS..."
 
-cf login -s "$ENVIRONMENT_NAME"
+if ! cf target -o "$ORGANISATION_NAME" -s "$ENVIRONMENT_NAME" &>/dev/null;  then
+  cf login -o "$ORGANISATION_NAME" -s "$ENVIRONMENT_NAME"
+fi
 
 # Set the Postgres service name, depending on our environment
 service="beis-roda-${ENVIRONMENT_NAME}-postgres"
