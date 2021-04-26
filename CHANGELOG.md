@@ -615,6 +615,8 @@
 
 ## [unreleased]
 
+- Remove Reporting Organisation from activities
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...HEAD
 [release-47]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-46...release-47
 [release-46]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-45...release-46

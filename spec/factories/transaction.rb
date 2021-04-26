@@ -11,7 +11,7 @@ FactoryBot.define do
 
     # Government organisation
     providing_organisation_name { "Department for Business, Energy & Industrial Strategy" }
-    providing_organisation_reference { "GB-GOV-13" }
+    providing_organisation_reference { Organisation::SERVICE_OWNER_IATI_REFERENCE }
     providing_organisation_type { "10" }
     # Private organisation
     receiving_organisation_name { Faker::Company.name }
