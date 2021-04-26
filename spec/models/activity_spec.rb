@@ -1850,5 +1850,49 @@ RSpec.describe Activity, type: :model do
         ])
       end
     end
+
+    describe "#reportable_transactions_for_level" do
+      context "when the activity is a programme" do
+        it "sums up the transactions of the activity and child activities by financial quarter" do
+          organisation = create(:delivery_partner_organisation)
+          programme = create(:programme_activity, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
+          projects = create_list(:project_activity, 2, parent: programme)
+          third_party_project = create(:third_party_project_activity, parent: projects[0])
+
+          create(:transaction, value: 1000, parent_activity: programme, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 1000, parent_activity: programme, financial_year: 2018, financial_quarter: 2)
+          create(:transaction, value: 500, parent_activity: projects[0], financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 500, parent_activity: projects[0], financial_year: 2020, financial_quarter: 1)
+
+          create(:transaction, value: 500, parent_activity: projects[1], financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 500, parent_activity: projects[1], financial_year: 2020, financial_quarter: 1)
+
+          create(:transaction, value: 200, parent_activity: third_party_project, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 200, parent_activity: third_party_project, financial_year: 2020, financial_quarter: 1)
+
+          reportable_transactions = programme.reportable_transactions_for_level
+          expect(reportable_transactions.map(&:value)).to eql([1200, 1000, 2200])
+          expect(reportable_transactions.map(&:date)).to eql([FinancialQuarter.new(2020, 1).end_date, FinancialQuarter.new(2018, 2).end_date, FinancialQuarter.new(2018, 1).end_date])
+        end
+      end
+
+      context "when the activity is a project or third-party project" do
+        it "returns all the transactions with that activity only" do
+          organisation = create(:delivery_partner_organisation)
+          project = create(:project_activity, :with_transparency_identifier, organisation: organisation)
+          third_party_project = create(:third_party_project_activity, parent: project, organisation: organisation)
+
+          project_transaction_1 = create(:transaction, value: 1000, parent_activity: project)
+          project_transaction_2 = create(:transaction, value: 1000, parent_activity: project)
+          project_transaction_3 = create(:transaction, value: 500, parent_activity: project)
+          project_transaction_4 = create(:transaction, value: 500, parent_activity: project)
+
+          third_party_project_transaction = create(:transaction, value: 500, parent_activity: third_party_project)
+
+          expect(project.reportable_transactions_for_level).to match_array([project_transaction_1, project_transaction_2, project_transaction_3, project_transaction_4])
+          expect(third_party_project.reportable_transactions_for_level).to match_array([third_party_project_transaction])
+        end
+      end
+    end
   end
 end

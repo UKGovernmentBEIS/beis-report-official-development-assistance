@@ -277,6 +277,20 @@ class Activity < ApplicationRecord
     Transaction.where(parent_activity_id: activity_ids)
   end
 
+  def reportable_transactions_for_level
+    if programme?
+      spend_by_financial_quarter(own_and_descendants_transactions.order("date DESC"))
+    else
+      transactions.order("date DESC")
+    end
+  end
+
+  private def spend_by_financial_quarter(reportable_transactions)
+    reportable_transactions.group_by(&:own_financial_quarter).map do |financial_quarter, actuals|
+      Transaction.new(date: financial_quarter.end_date, value: actuals.sum(&:value), transaction_type: Transaction::DEFAULT_TRANSACTION_TYPE)
+    end
+  end
+
   def valid?(context = nil)
     context = VALIDATION_STEPS if context.nil? && form_steps_completed?
     super(context)
