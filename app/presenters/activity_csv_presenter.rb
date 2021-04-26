@@ -12,4 +12,9 @@ class ActivityCsvPresenter < ActivityPresenter
     return if super.blank?
     super.join(" | ")
   end
+
+  def implementing_organisations
+    return if super.empty?
+    super.pluck(:name).join("|")
+  end
 end

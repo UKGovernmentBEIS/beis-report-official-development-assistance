@@ -97,9 +97,7 @@ class ExportActivityToCsv
       "Free Standing Technical Cooperation" => -> { activity_presenter.fstc_applies },
       "Disaster Risk Reduction" => -> { activity_presenter.policy_marker_disaster_risk_reduction },
       "Nutrition policy" => -> { activity_presenter.policy_marker_nutrition },
-      # Implementing organisation name
-      # Implementing organisation reference
-      # Implementing organisation sector
+      "Implementing organisations" => -> { activity_presenter.implementing_organisations },
       "Tied status" => -> { activity_presenter.tied_status_with_code },
     }
   end

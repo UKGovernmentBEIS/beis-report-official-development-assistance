@@ -614,6 +614,7 @@
 - Show activities in an collapsable and expandable tree view table
 
 ## [unreleased]
+- implementing organisations are shown in the report csv file.
 
 - Remove Reporting Organisation from activities
 - Add new category to GCRF strategic area options
