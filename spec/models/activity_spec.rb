@@ -800,7 +800,6 @@ RSpec.describe Activity, type: :model do
     it { should have_many(:child_activities).with_foreign_key("parent_id") }
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
     it { should have_many(:implementing_organisations) }
-    it { should belong_to(:reporting_organisation).with_foreign_key("reporting_organisation_id") }
     it { should have_many(:budgets) }
     it { should have_many(:transactions) }
     it { should have_many(:source_transfers) }
@@ -1148,51 +1147,68 @@ RSpec.describe Activity, type: :model do
 
   describe "#transparency_identifier" do
     context "when the activity is a fund" do
-      it "returns a composite identifier formed with the reporting organisation" do
-        fund = create(:fund_activity, roda_identifier_fragment: "GCRF-1", reporting_organisation: create(:beis_organisation))
-        expect(fund.transparency_identifier).to eql("GB-GOV-13-GCRF-1")
+      it "returns a composite identifier formed with the service owner" do
+        fund = create(:fund_activity, roda_identifier_fragment: "GCRF-1")
+
+        expected_identifier = [
+          Organisation::SERVICE_OWNER_IATI_REFERENCE,
+          fund.roda_identifier_fragment,
+        ].join("-")
+
+        expect(fund.transparency_identifier).to eql(expected_identifier)
       end
     end
 
     context "when the activity is a programme" do
-      context "when the reporting organisation is a government organisation" do
-        it "returns an identifier with the reporting organisation, fund and programme" do
-          government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
-          programme = create(:programme_activity, organisation: government_organisation)
-          fund = programme.parent
+      it "returns an identifier with the service owner, fund and programme" do
+        programme = create(:programme_activity)
+        fund = programme.parent
 
-          expect(programme.transparency_identifier)
-            .to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{programme.roda_identifier_fragment}")
-        end
+        expected_identifier = [
+          Organisation::SERVICE_OWNER_IATI_REFERENCE,
+          fund.roda_identifier_fragment,
+          programme.roda_identifier_fragment,
+        ].join("-")
+
+        expect(programme.transparency_identifier)
+          .to eql(expected_identifier)
       end
     end
 
     context "when the activity is a project" do
-      context "when the reporting organisation is a government organisation" do
-        it "returns an identifier with the reporting organisation, fund, programme and project" do
-          government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
-          project = create(:project_activity, organisation: government_organisation, reporting_organisation: government_organisation)
-          programme = project.parent
-          fund = programme.parent
+      it "returns an identifier with the service owner, fund, programme and project" do
+        project = create(:project_activity)
+        programme = project.parent
+        fund = programme.parent
 
-          expect(project.transparency_identifier)
-            .to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{project.roda_identifier_fragment}")
-        end
+        expected_identifier = [
+          Organisation::SERVICE_OWNER_IATI_REFERENCE,
+          fund.roda_identifier_fragment,
+          programme.roda_identifier_fragment,
+          project.roda_identifier_fragment,
+        ].join("-")
+
+        expect(project.transparency_identifier)
+          .to eql(expected_identifier)
       end
     end
 
     context "when the activity is a third-party project" do
-      context "when the reporting organisation is a government organisation" do
-        it "returns an identifier with the reporting organisation, fund, programme, project and third-party project" do
-          government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
-          third_party_project = create(:third_party_project_activity, organisation: government_organisation, reporting_organisation: government_organisation)
-          project = third_party_project.parent
-          programme = project.parent
-          fund = programme.parent
+      it "returns an identifier with the service owner, fund, programme, project and third-party project" do
+        third_party_project = create(:third_party_project_activity)
+        project = third_party_project.parent
+        programme = project.parent
+        fund = programme.parent
 
-          expect(third_party_project.transparency_identifier)
-            .to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{project.roda_identifier_fragment}#{third_party_project.roda_identifier_fragment}")
-        end
+        project_identifier = [
+          Organisation::SERVICE_OWNER_IATI_REFERENCE,
+          fund.roda_identifier_fragment,
+          programme.roda_identifier_fragment,
+          project.roda_identifier_fragment,
+        ].join("-")
+
+        expect(third_party_project.transparency_identifier)
+          .to eql("#{project_identifier}#{third_party_project.roda_identifier_fragment}")
       end
     end
   end

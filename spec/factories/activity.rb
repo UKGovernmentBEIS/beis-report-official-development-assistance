@@ -34,7 +34,6 @@ FactoryBot.define do
     form_state { "complete" }
 
     association :organisation, factory: :organisation
-    association :reporting_organisation, factory: :beis_organisation
 
     before(:create) do |activity|
       activity.cache_roda_identifier
@@ -52,7 +51,6 @@ FactoryBot.define do
 
       association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :beis_organisation
-      association :reporting_organisation, factory: :beis_organisation
 
       trait :gcrf do
         roda_identifier_fragment { "GCRF" }
@@ -84,7 +82,6 @@ FactoryBot.define do
 
       association :organisation, factory: :beis_organisation
       association :extending_organisation, factory: :delivery_partner_organisation
-      association :reporting_organisation, factory: :beis_organisation
 
       trait :newton_funded do
         source_fund_code { Fund::MAPPINGS["NF"] }
@@ -117,7 +114,6 @@ FactoryBot.define do
       policy_marker_nutrition { "not_assessed" }
 
       association :extending_organisation, factory: :delivery_partner_organisation
-      association :reporting_organisation, factory: :beis_organisation
 
       factory :project_activity_with_implementing_organisations do
         transient do
@@ -161,7 +157,6 @@ FactoryBot.define do
       policy_marker_nutrition { "not_assessed" }
 
       association :extending_organisation, factory: :delivery_partner_organisation
-      association :reporting_organisation, factory: :beis_organisation
 
       trait :newton_funded do
         source_fund_code { Fund::MAPPINGS["NF"] }

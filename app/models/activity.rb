@@ -141,7 +141,6 @@ class Activity < ApplicationRecord
   belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
   has_many :implementing_organisations, dependent: :destroy
   validates_associated :implementing_organisations
-  belongs_to :reporting_organisation, foreign_key: "reporting_organisation_id", class_name: "Organisation"
 
   has_many :budgets, foreign_key: "parent_activity_id"
   has_many :transactions, foreign_key: "parent_activity_id"
@@ -412,7 +411,7 @@ class Activity < ApplicationRecord
     self.roda_identifier_compound = compound
 
     self.transparency_identifier ||= [
-      reporting_organisation.iati_reference,
+      Organisation::SERVICE_OWNER_IATI_REFERENCE,
       compound.gsub(/[^a-z0-9-]+/i, "-"),
     ].join("-")
 

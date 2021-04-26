@@ -36,6 +36,7 @@ class Staff::OrganisationsController < Staff::BaseController
       end
 
       format.xml do
+        @reporting_organisation = Organisation.service_owner
         @activities = case level
         when "programme"
           return [] unless fund_id.present?
@@ -51,6 +52,7 @@ class Staff::OrganisationsController < Staff::BaseController
         else
           []
         end
+
         response.headers["Content-Disposition"] = "attachment; filename=\"#{organisation.iati_reference}.xml\""
       end
     end

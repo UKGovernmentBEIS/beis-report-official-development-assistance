@@ -8,7 +8,7 @@ RSpec.describe "Factory" do
 
         result = Organisation.where(
           name: "Department for Business, Energy and Industrial Strategy",
-          iati_reference: "GB-GOV-13",
+          iati_reference: Organisation::SERVICE_OWNER_IATI_REFERENCE,
           service_owner: true
         )
 

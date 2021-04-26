@@ -25,6 +25,8 @@ class Staff::ActivitiesController < Staff::BaseController
         redirect_to organisation_activity_financials_path(@activity.organisation, @activity)
       end
       format.xml do |_format|
+        @reporting_organisation = Organisation.service_owner
+
         response.headers["Content-Disposition"] = "attachment; filename=\"#{@activity.transparency_identifier}.xml\""
       end
     end
