@@ -618,6 +618,7 @@
 - Remove Reporting Organisation from activities
 - Add new category to GCRF strategic area options
 - Fix bug that prevented historical reports from being accessed
+- Sum programme and child activity transactions by financial quarter in IATI XML
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...HEAD
 [release-47]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-46...release-47

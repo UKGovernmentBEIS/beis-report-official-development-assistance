@@ -171,6 +171,57 @@ RSpec.feature "Users can view an organisation as XML" do
 
         expect(xml.xpath("/iati-activities/iati-activity").count).to eq(1)
       end
+
+      context "when downloading programme level activities" do
+        it "sums up the total transactions of all the programmes and their child activities by quarter" do
+          programme = create(:programme_activity, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
+          other_programme = create(:programme_activity, parent: programme.parent, extending_organisation: organisation)
+
+          activity_projects = create_list(:project_activity, 2, parent: programme)
+          activity_third_party_project = create(:third_party_project_activity, parent: activity_projects[0])
+
+          create(:transaction, value: 100, parent_activity: programme, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 100, parent_activity: programme, financial_year: 2018, financial_quarter: 2)
+          create(:transaction, value: 100, parent_activity: other_programme, financial_year: 2019, financial_quarter: 3)
+
+          create(:transaction, value: 50, parent_activity: activity_projects[0], financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 50, parent_activity: activity_projects[0], financial_year: 2020, financial_quarter: 1)
+
+          create(:transaction, value: 50, parent_activity: activity_projects[1], financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 50, parent_activity: activity_projects[1], financial_year: 2020, financial_quarter: 1)
+
+          create(:transaction, value: 100, parent_activity: activity_third_party_project, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 100, parent_activity: activity_third_party_project, financial_year: 2020, financial_quarter: 1)
+
+          visit organisation_path(organisation, format: :xml, level: :programme, fund_id: programme.associated_fund.id)
+          xml = Nokogiri::XML::Document.parse(page.body)
+
+          expect(xml.xpath("//iati-activity/transaction/value").map(&:text)).to eql(["200.0", "100.0", "300.0", "100.0"])
+          expect(xml.xpath("//iati-activity/transaction/transaction-date/@iso-date").map(&:text)).to eql(["2020-06-30", "2018-09-30", "2018-06-30", "2019-12-31"])
+        end
+      end
+
+      context "when downloading project level activities" do
+        it "includes all transactions for those projects only" do
+          project = create(:project_activity, :with_transparency_identifier, organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
+          other_project = create(:project_activity, parent: project.parent, organisation: organisation)
+
+          third_party_project = create(:third_party_project_activity, parent: project)
+
+          create(:transaction, value: 100, parent_activity: project, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 150, parent_activity: project, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 200, parent_activity: other_project, financial_year: 2019, financial_quarter: 3)
+
+          create(:transaction, value: 99, parent_activity: third_party_project, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 77, parent_activity: third_party_project, financial_year: 2020, financial_quarter: 1)
+
+          visit organisation_path(organisation, format: :xml, level: :project)
+          xml = Nokogiri::XML::Document.parse(page.body)
+
+          expect(xml.xpath("//iati-activity/transaction/value").map(&:text)).to eql(["100.0", "150.0", "200.0"])
+          expect(xml.xpath("//iati-activity/transaction/transaction-date/@iso-date").map(&:text)).to eql(["2018-06-30", "2018-06-30", "2019-12-31"])
+        end
+      end
     end
   end
 
