@@ -616,6 +616,7 @@
 ## [unreleased]
 
 - Remove Reporting Organisation from activities
+- Add new category to GCRF strategic area options
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...HEAD
 [release-47]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-46...release-47
