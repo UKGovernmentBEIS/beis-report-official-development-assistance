@@ -626,6 +626,7 @@
 - Add BEIS contact info to the IATI XML
 - Validate that activities have the correct organisation
 - Deleting a forecast doesn't delete data from approved reports
+- Handle the case of forecasts for past financial quarters during bulk importing
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...HEAD
 [release-48]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...release-48
