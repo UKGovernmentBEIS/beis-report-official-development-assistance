@@ -2,7 +2,7 @@ RSpec.feature "Users can provide the geography for an activity" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
-    let(:activity) { create(:activity, :at_geography_step, organisation: user.organisation) }
+    let(:activity) { create(:project_activity, :at_geography_step, organisation: user.organisation) }
 
     scenario "they are asked to choose the geography" do
       visit activity_step_path(activity, :geography)
@@ -59,7 +59,7 @@ RSpec.feature "Users can provide the geography for an activity" do
 
     context "with a completed activity" do
       scenario "they can change the geography from region to country" do
-        activity = create(:activity,
+        activity = create(:project_activity,
           geography: :recipient_region,
           recipient_country: nil,
           organisation: user.organisation)
@@ -86,7 +86,7 @@ RSpec.feature "Users can provide the geography for an activity" do
       end
 
       scenario "they can change the geography from country to region" do
-        activity = create(:activity,
+        activity = create(:project_activity,
           geography: :recipient_country,
           recipient_region: nil,
           recipient_country: "AG",

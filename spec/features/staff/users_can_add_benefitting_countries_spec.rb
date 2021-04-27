@@ -2,7 +2,7 @@ RSpec.feature "users can add benefitting countries as intended beneficiaries" do
   context "when the user is signed as a BEIS user" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
-    let(:activity) { create(:activity, :at_geography_step, organisation: user.organisation, intended_beneficiaries: nil) }
+    let(:activity) { create(:project_activity, :at_geography_step, organisation: user.organisation, intended_beneficiaries: nil) }
 
     context "after choosing either country or region on the geography step" do
       scenario "the user will be asked if there are other benefitting countries to be added" do

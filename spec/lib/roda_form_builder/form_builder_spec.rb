@@ -4,7 +4,7 @@ class TestHelper < ActionView::Base; end
 
 RSpec.describe RodaFormBuilder::FormBuilder do
   let(:helper) { TestHelper.new(ActionView::LookupContext.new(nil), {}, nil) }
-  let(:resource) { build(:activity) }
+  let(:resource) { build(:project_activity) }
   let(:builder) { described_class.new :activity, resource, helper, {} }
   let(:guidance) { double("GuidanceUrl", to_s: url) }
 

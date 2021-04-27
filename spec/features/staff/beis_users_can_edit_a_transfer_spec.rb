@@ -65,7 +65,7 @@ RSpec.feature "BEIS users can edit a transfer" do
   end
 
   scenario "the user can see validation errors" do
-    non_existent_activity = build(:activity)
+    non_existent_activity = build(:project_activity)
 
     roda_identifier = "GCRF-BLOB-424434434"
     allow(non_existent_activity).to receive(:roda_identifier) { roda_identifier }

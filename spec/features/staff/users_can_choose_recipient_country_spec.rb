@@ -4,7 +4,7 @@ RSpec.feature "Users can choose a recipient country" do
   context "when the user is signed as a BEIS user" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
-    let(:activity) { create(:activity, :at_geography_step, organisation: user.organisation) }
+    let(:activity) { create(:project_activity, :at_geography_step, organisation: user.organisation) }
 
     before do
       visit activity_step_path(activity, :geography)

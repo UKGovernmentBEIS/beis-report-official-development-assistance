@@ -12,7 +12,7 @@ RSpec.feature "Users can view fund level activities" do
     before { authenticate!(user: user) }
 
     scenario "can view a fund level activity" do
-      fund_activity = create(:activity, level: :fund, organisation: user.organisation)
+      fund_activity = create(:fund_activity)
       create(:programme_activity, parent: fund_activity)
 
       visit activities_path

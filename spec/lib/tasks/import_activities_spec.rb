@@ -68,7 +68,7 @@ RSpec.describe "rake activities:import", type: :task do
 
     context "When there are no errors from the importer" do
       let(:importer) do
-        double(:importer, errors: [], created: build_list(:activity, 3), updated: build_list(:activity, 2))
+        double(:importer, errors: [], created: build_list(:project_activity, 3), updated: build_list(:project_activity, 2))
       end
 
       it "outputs the number of activities imported and updated" do
