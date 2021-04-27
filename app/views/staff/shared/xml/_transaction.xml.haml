@@ -2,10 +2,12 @@
   %transaction-type{"code" => transaction.transaction_type}
   %transaction-date{"iso-date" => transaction.date}
   %value{"currency" => transaction.currency, "value-date" => transaction.date}=transaction.value
-  %description
-    %narrative=transaction.description
-  %provider-org{"provider-activity-id" => "", "type" => transaction.providing_organisation_type, "ref" => transaction.providing_organisation_reference}
-    %narrative=transaction.providing_organisation_name
+  - if transaction.description.present?
+    %description
+      %narrative=transaction.description
+  - if transaction.providing_organisation_name.present?
+    %provider-org{"provider-activity-id" => "", "type" => transaction.providing_organisation_type, "ref" => transaction.providing_organisation_reference}
+      %narrative=transaction.providing_organisation_name
   - if transaction.receiving_organisation_name.present?
     %receiver-org{"receiver-activity-id" => "", "type" => transaction.receiving_organisation_type, "ref" => transaction.receiving_organisation_reference}
       %narrative=transaction.receiving_organisation_name

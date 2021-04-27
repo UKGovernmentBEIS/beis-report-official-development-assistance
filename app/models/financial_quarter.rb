@@ -32,6 +32,14 @@ class FinancialQuarter
     quarter == other.quarter && financial_year == other.financial_year
   end
 
+  def eql?(other)
+    self == other
+  end
+
+  def hash
+    to_s.hash
+  end
+
   def start_date
     @start_date ||= Date.new(calendar_year, start_month, 1)
   end

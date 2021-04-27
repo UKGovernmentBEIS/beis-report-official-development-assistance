@@ -9,13 +9,10 @@ class FindProgrammeActivities
     @fund_id = fund_id
   end
 
-  def call(eager_load_parent: true)
-    eager_load_associations = [:organisation]
-    eager_load_associations << :parent if eager_load_parent
-
+  def call
     programmes = ProgrammePolicy::Scope.new(user, Activity.programme)
       .resolve
-      .includes(eager_load_associations)
+      .includes(:organisation, :extending_organisation, :implementing_organisations, :budgets, :parent)
       .order("created_at ASC")
 
     return programmes if organisation.service_owner
