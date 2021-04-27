@@ -613,14 +613,18 @@
 - Migrate to Webpacker for compiling JavaScript
 - Show activities in an collapsable and expandable tree view table
 
-## [unreleased]
+## [release-48] - 2021-04-27
+
 - Implementing organisations are shown in the report csv file
 - Remove Reporting Organisation from activities
 - Add new category to GCRF strategic area options
 - Fix bug that prevented historical reports from being accessed
 - Sum programme and child activity transactions by financial quarter in IATI XML
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...HEAD
+[release-48]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...release-48
 [release-47]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-46...release-47
 [release-46]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-45...release-46
 [release-45]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-44...release-45
