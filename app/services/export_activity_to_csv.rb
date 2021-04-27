@@ -23,6 +23,8 @@ class ExportActivityToCsv
   end
 
   def previous_twelve_quarter_actuals
+    return [] if report.own_financial_quarter.nil?
+
     transaction_quarters = TransactionOverview.new(activity_presenter, report_presenter).all_quarters
 
     previous_report_quarters.map do |quarter|
@@ -32,6 +34,8 @@ class ExportActivityToCsv
   end
 
   def next_twenty_quarter_forecasts
+    return [] if report.own_financial_quarter.nil?
+
     forecast_quarters = PlannedDisbursementOverview.new(activity_presenter).snapshot(report_presenter).all_quarters
 
     following_report_quarters.map do |quarter|
@@ -103,6 +107,8 @@ class ExportActivityToCsv
   end
 
   private def variance_columns
+    return {} if report.own_financial_quarter.nil?
+
     @_variance_columns ||= {
       # Additional headers specific to export CSV =============================
       "VAR #{report_financial_quarter}" => -> { activity_presenter.variance_for_report_financial_quarter(report: report) },
@@ -132,11 +138,15 @@ class ExportActivityToCsv
   end
 
   def previous_report_quarters
+    return [] if report.own_financial_quarter.nil?
+
     quarter = report.own_financial_quarter
     quarter.preceding(11) + [quarter]
   end
 
   def following_report_quarters
+    return [] if report.own_financial_quarter.nil?
+
     quarter = report.own_financial_quarter
     [quarter] + quarter.following(19)
   end

@@ -211,6 +211,34 @@ RSpec.feature "Users can view reports" do
         expect(page).to have_content t("table.body.report.no_reports")
       end
     end
+
+    context "when there are legacy ingested reports" do
+      let(:activity) { create(:project_activity) }
+      let!(:report) { create(:report, :active, fund: activity.associated_fund, organisation: activity.organisation, financial_quarter: nil, financial_year: nil) }
+
+      before do
+        visit reports_path
+        within "##{report.id}" do
+          click_on t("default.link.show")
+        end
+      end
+
+      it "they can be viewed" do
+        expect(page).to have_content "Variance"
+
+        visit report_budgets_path(report)
+
+        expect(page).to have_content "Budgets"
+      end
+
+      it "they can be downloaded as CSV" do
+        click_on "Download report as CSV file"
+      end
+
+      it "the spending breakdown can be downloaded" do
+        click_on "Download spending breakdown as CSV file"
+      end
+    end
   end
 
   context "as a delivery partner user" do
