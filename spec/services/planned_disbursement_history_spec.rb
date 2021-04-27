@@ -123,57 +123,6 @@ RSpec.describe PlannedDisbursementHistory do
         ["original", nil, nil, 10],
       ])
     end
-
-    context "when deleting a report" do
-      it "deletes the original planned disbursement when there is only one entry" do
-        history.set_value(10)
-
-        history.clear!
-
-        expect(history_entries).to eq([])
-      end
-
-      it "deletes the original and revised entries when a forecast has been revised" do
-        history.set_value(10)
-        history.set_value(5)
-
-        history.clear!
-
-        expect(history_entries).to eq([])
-      end
-
-      it "deletes the original and revised entries when a forecast has been revised multiple times" do
-        history.set_value(10)
-        history.set_value(5)
-        history.set_value(7)
-
-        history.clear!
-
-        expect(history_entries).to eq([])
-      end
-
-      it "creates a public activity record for each deleted entry" do
-        PublicActivity.with_tracking do
-          history.set_value(10)
-          history.set_value(5)
-
-          old_entries = history.all_entries
-
-          expect { history.clear! }.to change { PublicActivity::Activity.where(key: "planned_disbursement.destroy").count }.by(2)
-
-          activities = PublicActivity::Activity.where(key: "planned_disbursement.destroy").order(created_at: :desc)
-
-          first_activity = activities.first
-          second_activity = activities.second
-
-          expect(first_activity.trackable_id).to eq(old_entries.first.id)
-          expect(first_activity.parameters).to eq({associated_activity_id: activity.id})
-
-          expect(second_activity.trackable_id).to eq(old_entries.last.id)
-          expect(second_activity.parameters).to eq({associated_activity_id: activity.id})
-        end
-      end
-    end
   end
 
   context "for a level C activity, owned by a delivery partner" do
@@ -266,6 +215,18 @@ RSpec.describe PlannedDisbursementHistory do
       ])
     end
 
+    it "deleting a forecast adds a revision with a zero value when the original is part of an approved report" do
+      history.set_value(10)
+      reporting_cycle.tick
+
+      history.clear
+
+      expect(history_entries).to eq([
+        ["original", 1, 2015, 10],
+        ["revised", 2, 2015, 0],
+      ])
+    end
+
     it "edits a revision when it belongs to the current report" do
       history.set_value(10)
       reporting_cycle.tick
@@ -285,6 +246,19 @@ RSpec.describe PlannedDisbursementHistory do
 
       history.set_value(20)
       history.set_value(0)
+
+      expect(history_entries).to eq([
+        ["original", 1, 2015, 10],
+        ["revised", 2, 2015, 0],
+      ])
+    end
+
+    it "deleting a forecast edits a revision with a zero value when it belongs to the current report" do
+      history.set_value(10)
+      reporting_cycle.tick
+
+      history.set_value(20)
+      history.clear
 
       expect(history_entries).to eq([
         ["original", 1, 2015, 10],
