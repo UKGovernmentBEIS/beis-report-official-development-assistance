@@ -16,7 +16,7 @@ RSpec.describe ActivityPresenter do
 
     it "has translations for all of the codes" do
       Codelist.new(**args).each do |code|
-        activity = build(:activity)
+        activity = build(:project_activity)
         code = cast_code_to_field(code["code"])
         activity.write_attribute(field, code)
 
@@ -30,13 +30,13 @@ RSpec.describe ActivityPresenter do
 
     context "when the aid_type exists" do
       it "returns the locale value for the code" do
-        activity = build(:activity, aid_type: "a01")
+        activity = build(:project_activity, aid_type: "a01")
         result = described_class.new(activity).aid_type
         expect(result).to eql("General budget support")
       end
 
       it "returns the locale value when the code is upper case" do
-        activity = build(:activity, aid_type: "A01")
+        activity = build(:project_activity, aid_type: "A01")
         result = described_class.new(activity).aid_type
         expect(result).to eql("General budget support")
       end
@@ -44,7 +44,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity does not have an aid_type set" do
       it "returns nil" do
-        activity = build(:activity, :at_identifier_step)
+        activity = build(:project_activity, :at_identifier_step)
         result = described_class.new(activity)
         expect(result.aid_type).to be_nil
       end
@@ -54,7 +54,7 @@ RSpec.describe ActivityPresenter do
   describe "#aid_type_with_code" do
     context "when the aid_type exists" do
       it "returns the locale value for the code with the code in brackets" do
-        activity = build(:activity, aid_type: "A01")
+        activity = build(:project_activity, aid_type: "A01")
         result = described_class.new(activity).aid_type_with_code
         expect(result).to eql("General budget support (A01)")
       end
@@ -62,7 +62,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity does not have an aid_type set" do
       it "returns nil" do
-        activity = build(:activity, :at_identifier_step)
+        activity = build(:project_activity, :at_identifier_step)
         result = described_class.new(activity)
         expect(result.aid_type_with_code).to be_nil
       end
@@ -73,7 +73,7 @@ RSpec.describe ActivityPresenter do
     it_behaves_like "a code translator", "covid19_related", {type: "covid19_related_research", source: "beis"}
 
     it "returns the locale value for the code" do
-      activity = build(:activity, covid19_related: 3)
+      activity = build(:project_activity, covid19_related: 3)
       result = described_class.new(activity).covid19_related
       expect(result).to eql("New activity that will somewhat focus on COVID-19")
     end
@@ -84,7 +84,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the sector exists" do
       it "returns the locale value for the code" do
-        activity = build(:activity, sector: "11110")
+        activity = build(:project_activity, sector: "11110")
         result = described_class.new(activity).sector
         expect(result).to eql("Education policy and administrative management")
       end
@@ -92,7 +92,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity does not have a sector set" do
       it "returns nil" do
-        activity = build(:activity, sector: nil)
+        activity = build(:project_activity, sector: nil)
         result = described_class.new(activity)
         expect(result.sector).to be_nil
       end
@@ -102,7 +102,7 @@ RSpec.describe ActivityPresenter do
   describe "#sector_with_code" do
     context "when the sector exists" do
       it "returns the locale value for the code with the code in brackets" do
-        activity = build(:activity, sector: "11110")
+        activity = build(:project_activity, sector: "11110")
         result = described_class.new(activity).sector_with_code
         expect(result).to eql("Education policy and administrative management (11110)")
       end
@@ -110,7 +110,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity does not have a sector set" do
       it "returns nil" do
-        activity = build(:activity, sector: nil)
+        activity = build(:project_activity, sector: nil)
         result = described_class.new(activity)
         expect(result.sector_with_code).to be_nil
       end
@@ -176,7 +176,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the programme status exists" do
       it "returns the locale value for the code" do
-        activity = build(:activity, programme_status: "spend_in_progress")
+        activity = build(:project_activity, programme_status: "spend_in_progress")
         result = described_class.new(activity).programme_status
         expect(result).to eql("Spend in progress")
       end
@@ -184,7 +184,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity does not have a programme status set" do
       it "returns nil" do
-        activity = build(:activity, programme_status: nil)
+        activity = build(:project_activity, programme_status: nil)
         result = described_class.new(activity)
         expect(result.programme_status).to be_nil
       end
@@ -194,7 +194,7 @@ RSpec.describe ActivityPresenter do
   describe "#planned_start_date" do
     context "when the planned start date exists" do
       it "returns a human readable date" do
-        activity = build(:activity, planned_start_date: "2020-02-25")
+        activity = build(:project_activity, planned_start_date: "2020-02-25")
         result = described_class.new(activity).planned_start_date
         expect(result).to eql("25 Feb 2020")
       end
@@ -202,7 +202,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the planned start date does not exist" do
       it "returns nil" do
-        activity = build(:activity, planned_start_date: nil)
+        activity = build(:project_activity, planned_start_date: nil)
         result = described_class.new(activity)
         expect(result.planned_start_date).to be_nil
       end
@@ -212,7 +212,7 @@ RSpec.describe ActivityPresenter do
   describe "#planned_end_date" do
     context "when the planned end date exists" do
       it "returns a human readable date" do
-        activity = build(:activity, planned_end_date: "2021-04-03")
+        activity = build(:project_activity, planned_end_date: "2021-04-03")
         result = described_class.new(activity).planned_end_date
         expect(result).to eql("3 Apr 2021")
       end
@@ -220,7 +220,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the planned end date does not exist" do
       it "returns nil" do
-        activity = build(:activity, planned_end_date: nil)
+        activity = build(:project_activity, planned_end_date: nil)
         result = described_class.new(activity)
         expect(result.planned_end_date).to be_nil
       end
@@ -230,7 +230,7 @@ RSpec.describe ActivityPresenter do
   describe "#actual_start_date" do
     context "when the actual start date exists" do
       it "returns a human readable date" do
-        activity = build(:activity, actual_start_date: "2020-11-06")
+        activity = build(:project_activity, actual_start_date: "2020-11-06")
         result = described_class.new(activity).actual_start_date
         expect(result).to eql("6 Nov 2020")
       end
@@ -238,7 +238,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the actual start date does not exist" do
       it "returns nil" do
-        activity = build(:activity, actual_start_date: nil)
+        activity = build(:project_activity, actual_start_date: nil)
         result = described_class.new(activity)
         expect(result.actual_start_date).to be_nil
       end
@@ -248,7 +248,7 @@ RSpec.describe ActivityPresenter do
   describe "#actual_end_date" do
     context "when the actual end date exists" do
       it "returns a human readable date" do
-        activity = build(:activity, actual_end_date: "2029-05-27")
+        activity = build(:project_activity, actual_end_date: "2029-05-27")
         result = described_class.new(activity).actual_end_date
         expect(result).to eql("27 May 2029")
       end
@@ -256,7 +256,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the actual end date does not exist" do
       it "returns nil" do
-        activity = build(:activity, actual_end_date: nil)
+        activity = build(:project_activity, actual_end_date: nil)
         result = described_class.new(activity)
         expect(result.actual_end_date).to be_nil
       end
@@ -268,7 +268,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the aid_type recipient_region" do
       it "returns the locale value for the code" do
-        activity = build(:activity, recipient_region: "489")
+        activity = build(:project_activity, recipient_region: "489")
         result = described_class.new(activity).recipient_region
         expect(result).to eql("South America, regional")
       end
@@ -276,7 +276,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity does not have a recipient_region set" do
       it "returns nil" do
-        activity = build(:activity, recipient_region: nil)
+        activity = build(:project_activity, recipient_region: nil)
         result = described_class.new(activity)
         expect(result.recipient_region).to be_nil
       end
@@ -288,7 +288,7 @@ RSpec.describe ActivityPresenter do
 
     context "when there is a recipient_country" do
       it "returns the locale value for the code" do
-        activity = build(:activity, recipient_country: "CL")
+        activity = build(:project_activity, recipient_country: "CL")
         result = described_class.new(activity).recipient_country
         expect(result).to eq t("activity.recipient_country.#{activity.recipient_country}")
       end
@@ -296,7 +296,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity does not have a recipient_country set" do
       it "returns nil" do
-        activity = build(:activity, recipient_country: nil)
+        activity = build(:project_activity, recipient_country: nil)
         result = described_class.new(activity)
         expect(result.recipient_country).to be_nil
       end
@@ -326,7 +326,7 @@ RSpec.describe ActivityPresenter do
 
     context "when there are other benefitting countries" do
       it "returns the locale value for the codes of the countries" do
-        activity = build(:activity, intended_beneficiaries: ["AR", "EC", "BR"])
+        activity = build(:project_activity, intended_beneficiaries: ["AR", "EC", "BR"])
         result = described_class.new(activity).intended_beneficiaries
         expect(result).to eql("Argentina, Ecuador, and Brazil")
       end
@@ -338,7 +338,7 @@ RSpec.describe ActivityPresenter do
 
     context "when gdi exists" do
       it "returns the locale value for the code" do
-        activity = build(:activity, gdi: "3")
+        activity = build(:project_activity, gdi: "3")
         result = described_class.new(activity).gdi
         expect(result).to eql("Yes - China and India")
       end
@@ -346,7 +346,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity does not have a gdi set" do
       it "returns nil" do
-        activity = build(:activity, gdi: nil)
+        activity = build(:project_activity, gdi: nil)
         result = described_class.new(activity)
         expect(result.gdi).to be_nil
       end
@@ -358,7 +358,7 @@ RSpec.describe ActivityPresenter do
 
     context "when collaboration_type exists" do
       it "returns the locale value for the code" do
-        activity = build(:activity, collaboration_type: "1")
+        activity = build(:project_activity, collaboration_type: "1")
         result = described_class.new(activity).collaboration_type
         expect(result).to eql("Bilateral")
       end
@@ -366,7 +366,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity does not have a collaboration_type set" do
       it "returns nil" do
-        activity = build(:activity, collaboration_type: nil)
+        activity = build(:project_activity, collaboration_type: nil)
         result = described_class.new(activity)
         expect(result.collaboration_type).to be_nil
       end
@@ -375,7 +375,7 @@ RSpec.describe ActivityPresenter do
 
   describe "#flow" do
     it "returns the locale value for the default ODA code" do
-      activity = build(:activity)
+      activity = build(:project_activity)
       result = described_class.new(activity).flow
       expect(result).to eql("ODA")
     end
@@ -383,7 +383,7 @@ RSpec.describe ActivityPresenter do
 
   describe "#flow_with_code" do
     it "returns the default flow string & code number" do
-      fund = create(:activity)
+      fund = create(:project_activity)
       expect(described_class.new(fund).flow_with_code).to eql("ODA (10)")
     end
   end
@@ -393,7 +393,7 @@ RSpec.describe ActivityPresenter do
 
     context "when gender exists" do
       it "returns the locale value for the code" do
-        activity = build(:activity, policy_marker_gender: "not_targeted")
+        activity = build(:project_activity, policy_marker_gender: "not_targeted")
         result = described_class.new(activity).policy_marker_gender
         expect(result).to eql("Not targeted")
       end
@@ -401,7 +401,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the value is the BEIS custom value" do
       it "returns the locale value for the custom code" do
-        activity = build(:activity, policy_marker_gender: "not_assessed")
+        activity = build(:project_activity, policy_marker_gender: "not_assessed")
         result = described_class.new(activity).policy_marker_gender
         expect(result).to eql("Not assessed")
       end
@@ -409,7 +409,7 @@ RSpec.describe ActivityPresenter do
 
     context "when the activity does not have a gender set" do
       it "returns nil" do
-        activity = build(:activity, policy_marker_gender: nil)
+        activity = build(:project_activity, policy_marker_gender: nil)
         result = described_class.new(activity)
         expect(result.policy_marker_gender).to be_nil
       end
@@ -418,21 +418,21 @@ RSpec.describe ActivityPresenter do
 
   describe "#sustainable_development_goals" do
     it "returns 'Not applicable' when the user selects that SDGs do not apply (sdgs_apply is false)" do
-      activity = build(:activity, sdgs_apply: false)
+      activity = build(:project_activity, sdgs_apply: false)
       result = described_class.new(activity).sustainable_development_goals
 
       expect(result).to eq("Not applicable")
     end
 
     it "leaves the field blank when the SDG form step has not been filled yet" do
-      activity = build(:activity, sdgs_apply: false, form_state: nil)
+      activity = build(:project_activity, sdgs_apply: false, form_state: nil)
       result = described_class.new(activity).sustainable_development_goals
 
       expect(result).to be_nil
     end
 
     it "when there is a single SDG, return its name" do
-      activity = build(:activity, sdgs_apply: true, sdg_1: 5)
+      activity = build(:project_activity, sdgs_apply: true, sdg_1: 5)
       result = described_class.new(activity)
 
       items = Nokogiri::HTML(result.sustainable_development_goals).css("ol > li")
@@ -440,7 +440,7 @@ RSpec.describe ActivityPresenter do
     end
 
     it "when there are multiple SDGs, return their names, separated by a slash" do
-      activity = build(:activity, sdgs_apply: true, sdg_1: 5, sdg_2: 1)
+      activity = build(:project_activity, sdgs_apply: true, sdg_1: 5, sdg_2: 1)
       result = described_class.new(activity)
 
       items = Nokogiri::HTML(result.sustainable_development_goals).css("ol > li")
@@ -449,7 +449,7 @@ RSpec.describe ActivityPresenter do
     end
 
     it "when there are no SDGs return nil" do
-      activity = build(:activity, sdgs_apply: true, sdg_1: nil, sdg_2: nil, sdg_3: nil)
+      activity = build(:project_activity, sdgs_apply: true, sdg_1: nil, sdg_2: nil, sdg_3: nil)
       result = described_class.new(activity)
 
       expect(result.sustainable_development_goals).to be_nil
@@ -458,7 +458,7 @@ RSpec.describe ActivityPresenter do
 
   describe "#gcrf_strategic_area" do
     it "returns the code list description values for the stored integers" do
-      activity = build(:activity, gcrf_strategic_area: %w[1 3])
+      activity = build(:project_activity, gcrf_strategic_area: %w[1 3])
       result = described_class.new(activity)
 
       expect(result.gcrf_strategic_area).to eql "UKRI Collective Fund (2017 allocation) and Resilient Futures"
@@ -469,7 +469,7 @@ RSpec.describe ActivityPresenter do
     it_behaves_like "a code translator", "gcrf_challenge_area", {type: "gcrf_challenge_area", source: "beis"}, "Integer"
 
     it "returns the locale value for the stored integer" do
-      activity = build(:activity, gcrf_challenge_area: 2)
+      activity = build(:project_activity, gcrf_challenge_area: 2)
       result = described_class.new(activity)
 
       expect(result.gcrf_challenge_area).to eql "Sustainable health and well being"
@@ -506,17 +506,17 @@ RSpec.describe ActivityPresenter do
 
   describe "#call_to_action" do
     it "returns 'edit' if the desired attribute is present" do
-      activity = build(:activity, title: "My title")
+      activity = build(:project_activity, title: "My title")
       expect(described_class.new(activity).call_to_action(:title)).to eql("edit")
     end
 
     it "returns 'edit' if the desired attribute is 'false'" do
-      activity = build(:activity, fstc_applies: false)
+      activity = build(:project_activity, fstc_applies: false)
       expect(described_class.new(activity).call_to_action(:title)).to eql("edit")
     end
 
     it "returns 'add' if the desired attribute is not present" do
-      activity = build(:activity, title: nil)
+      activity = build(:project_activity, title: nil)
       expect(described_class.new(activity).call_to_action(:title)).to eql("add")
     end
   end
@@ -524,14 +524,14 @@ RSpec.describe ActivityPresenter do
   describe "#display_title" do
     context "when the title is nil" do
       it "returns a default display_title" do
-        activity = create(:activity, :at_purpose_step, title: nil)
+        activity = create(:project_activity, :at_purpose_step, title: nil)
         expect(described_class.new(activity).display_title).to eql("Untitled (#{activity.id})")
       end
     end
 
     context "when the title is present" do
       it "returns the title" do
-        activity = build(:activity)
+        activity = build(:project_activity)
         expect(described_class.new(activity).display_title).to eql(activity.title)
       end
     end
@@ -586,14 +586,14 @@ RSpec.describe ActivityPresenter do
 
   describe "#tied_status_with_code" do
     it "returns the tied status string & code number" do
-      fund = create(:activity)
+      fund = create(:project_activity)
       expect(described_class.new(fund).tied_status_with_code).to eql("Untied (5)")
     end
   end
 
   describe "#finance_with_code" do
     it "returns the finance string & code number" do
-      fund = create(:activity)
+      fund = create(:project_activity)
       expect(described_class.new(fund).finance_with_code).to eql("Standard grant (110)")
     end
   end

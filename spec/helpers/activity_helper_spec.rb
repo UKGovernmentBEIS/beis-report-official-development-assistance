@@ -6,12 +6,12 @@ RSpec.describe ActivityHelper, type: :helper do
   describe "#step_is_complete_or_next?" do
     context "when the activity has passed the identification step" do
       it "returns true for the purpose fields" do
-        activity = build(:activity, :at_roda_identifier_step)
+        activity = build(:project_activity, :at_roda_identifier_step)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "purpose")).to be(true)
       end
 
       it "returns false for the next fields following the purpose field" do
-        activity = build(:activity, :at_identifier_step)
+        activity = build(:project_activity, :at_identifier_step)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "sector")).to be(false)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "programme_status")).to be(false)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "dates")).to be(false)
@@ -23,7 +23,7 @@ RSpec.describe ActivityHelper, type: :helper do
 
     context "when the activity has passed the region step" do
       it "returns true for the previous field and only for the next field" do
-        activity = build(:activity, :at_region_step)
+        activity = build(:project_activity, :at_region_step)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "purpose")).to be(true)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "sector")).to be(true)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "programme_status")).to be(true)
@@ -33,14 +33,14 @@ RSpec.describe ActivityHelper, type: :helper do
       end
 
       it "returns false for the next fields" do
-        activity = build(:activity, :at_region_step)
+        activity = build(:project_activity, :at_region_step)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "aid_type")).to be(false)
       end
     end
 
     context "when the activity form has been completed" do
       it "shows all steps" do
-        activity = build(:activity, form_state: "complete")
+        activity = build(:project_activity, form_state: "complete")
         all_steps = Activity::FORM_STEPS
 
         all_steps.each do |step|

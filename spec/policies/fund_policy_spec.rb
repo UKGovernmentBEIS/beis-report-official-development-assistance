@@ -3,8 +3,7 @@ require "rails_helper"
 RSpec.describe FundPolicy do
   subject { described_class.new(user, activity) }
 
-  let(:organisation) { create(:organisation) }
-  let(:activity) { create(:fund_activity, organisation: organisation) }
+  let(:activity) { create(:fund_activity) }
 
   context "as a user that belongs to BEIS" do
     let(:user) { build_stubbed(:beis_user) }

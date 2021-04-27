@@ -131,7 +131,6 @@ RSpec.feature "Users can view an activity as XML" do
       context "when the activity has policy markers" do
         let(:activity) {
           create(:project_activity,
-            organisation: organisation,
             delivery_partner_identifier: "IND-ENT-IFIER",
             policy_marker_gender: "not_targeted",
             policy_marker_biodiversity: "significant_objective",
@@ -216,19 +215,19 @@ RSpec.feature "Users can view an activity as XML" do
       end
 
       context "when the activity is a project activity" do
-        let(:activity) { create(:project_activity_with_implementing_organisations, :with_transparency_identifier, organisation: organisation) }
+        let(:activity) { create(:project_activity_with_implementing_organisations, :with_transparency_identifier) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
       end
 
       context "when the activity has budgets" do
-        let(:activity) { create(:project_activity, organisation: organisation) }
+        let(:activity) { create(:project_activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it "only includes budgets which belong to the activity" do
           _budget = create(:budget, parent_activity: activity)
-          _other_budget = create(:budget, parent_activity: create(:activity))
+          _other_budget = create(:budget)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
@@ -247,12 +246,12 @@ RSpec.feature "Users can view an activity as XML" do
       end
 
       context "when the activity has transactions" do
-        let(:activity) { create(:project_activity, organisation: organisation) }
+        let(:activity) { create(:project_activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it "only includes transactions which belong to the activity" do
           _transaction = create(:transaction, parent_activity: activity)
-          _other_transaction = create(:transaction, parent_activity: create(:activity))
+          _other_transaction = create(:transaction)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
@@ -281,12 +280,12 @@ RSpec.feature "Users can view an activity as XML" do
       end
 
       context "when the activity has planned disbursements" do
-        let(:activity) { create(:project_activity, organisation: organisation) }
+        let(:activity) { create(:project_activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it "only includes planned disbursements which belong to the activity" do
           _planned_disbursement = create(:planned_disbursement, parent_activity: activity)
-          _other_planned_disbursement = create(:planned_disbursement, parent_activity: create(:activity))
+          _other_planned_disbursement = create(:planned_disbursement)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 

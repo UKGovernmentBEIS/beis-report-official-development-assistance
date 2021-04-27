@@ -6,7 +6,7 @@ RSpec.feature "Users can edit an activity" do
     before { authenticate!(user: user) }
 
     it "shows the Publish to Iati field" do
-      activity = create(:third_party_project_activity, organisation: user.organisation)
+      activity = create(:third_party_project_activity)
 
       visit organisation_activity_path(activity.organisation, activity)
       click_on t("tabs.activity.details")
@@ -15,7 +15,7 @@ RSpec.feature "Users can edit an activity" do
     end
 
     it "allows the user to redact the activity from Iati" do
-      activity = create(:third_party_project_activity, organisation: user.organisation)
+      activity = create(:third_party_project_activity)
 
       visit organisation_activity_path(activity.organisation, activity)
       click_on t("tabs.activity.details")
@@ -34,8 +34,8 @@ RSpec.feature "Users can edit an activity" do
     end
 
     it "also redacts any child third-party projects when a project is redacted" do
-      project_activity = create(:project_activity, organisation: user.organisation)
-      third_party_project_activity = create(:third_party_project_activity, parent: project_activity, organisation: user.organisation)
+      project_activity = create(:project_activity)
+      third_party_project_activity = create(:third_party_project_activity, parent: project_activity)
 
       visit organisation_activity_path(project_activity.organisation, project_activity)
       click_on t("tabs.activity.details")
@@ -249,7 +249,7 @@ RSpec.feature "Users can edit an activity" do
       end
 
       scenario "it does not show the Publish to Iati field" do
-        activity = create(:programme_activity, organisation: user.organisation)
+        activity = create(:programme_activity)
 
         visit organisation_activity_path(activity.organisation, activity)
 

@@ -7,7 +7,7 @@ RSpec.describe Activities::ImportFromCsv do
 
   # NB: 'let!' to prevent `to change { Activity.count }` from giving confusing results
   let!(:existing_activity) do
-    create(:activity) do |activity|
+    create(:project_activity) do |activity|
       activity.implementing_organisations = [
         create(:implementing_organisation, activity: activity),
       ]
@@ -229,7 +229,7 @@ RSpec.describe Activities::ImportFromCsv do
     end
 
     it "has an error and does not update any other activities if a region does not exist" do
-      activity_2 = create(:activity)
+      activity_2 = create(:project_activity)
       invalid_activity_attributes = existing_activity_attributes.merge({
         "RODA ID" => activity_2.roda_identifier_compound,
         "Recipient Region" => "111111",

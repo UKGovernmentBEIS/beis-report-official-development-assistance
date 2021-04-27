@@ -6,7 +6,7 @@ RSpec.describe Staff::TransfersController do
     allow(controller).to receive(:logged_in_using_omniauth?).and_return(true)
   end
 
-  let(:activity) { create(:activity) }
+  let(:activity) { create(:programme_activity) }
   let(:transfer) { create(:transfer) }
 
   context "when loggged in as a beis user" do

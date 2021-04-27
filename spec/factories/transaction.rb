@@ -18,7 +18,7 @@ FactoryBot.define do
     receiving_organisation_reference { "GB-COH-{#{Faker::Number.number(digits: 6)}}" }
     receiving_organisation_type { "70" }
 
-    association :parent_activity, factory: :activity
+    association :parent_activity, factory: :project_activity
     association :report
 
     trait :without_receiving_organisation do

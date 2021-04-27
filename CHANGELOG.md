@@ -624,6 +624,7 @@
 ## [unreleased]
 
 - Add BEIS contact info to the IATI XML
+- Validate that activities have the correct organisation
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...HEAD
 [release-48]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...release-48

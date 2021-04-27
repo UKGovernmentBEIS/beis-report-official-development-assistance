@@ -5,7 +5,7 @@ RSpec.feature "Users can create a project" do
 
     context "when viewing a programme" do
       scenario "a new project cannot be added to the programme when a report does not exist" do
-        programme = create(:programme_activity, :newton_funded, organisation: user.organisation, extending_organisation: user.organisation)
+        programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
 
         visit activities_path
         click_on programme.title
@@ -15,7 +15,7 @@ RSpec.feature "Users can create a project" do
       end
 
       scenario "a new project can be added to the programme" do
-        programme = create(:programme_activity, :newton_funded, organisation: user.organisation, extending_organisation: user.organisation)
+        programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 
         visit activities_path
@@ -116,7 +116,7 @@ RSpec.feature "Users can create a project" do
       end
 
       context "when creating a project that is Newton funded" do
-        let(:newton_fund) { create(:fund_activity, :newton, organisation: user.organisation) }
+        let(:newton_fund) { create(:fund_activity, :newton) }
 
         scenario "'country_delivery_partners' can be present" do
           newton_programme = create(:programme_activity, extending_organisation: user.organisation, parent: newton_fund)

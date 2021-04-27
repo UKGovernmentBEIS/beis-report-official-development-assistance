@@ -167,7 +167,7 @@ RSpec.describe ExportActivityToCsv do
     it "uses the current report financial quarter to generate the actuals total column" do
       report = travel_to(Date.parse("1 April 2020")) { Report.new }
 
-      headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
+      headers = ExportActivityToCsv.new(activity: build(:project_activity), report: report).headers
 
       expect(headers).to include "ACT FQ1 2020-2021"
     end
@@ -175,7 +175,7 @@ RSpec.describe ExportActivityToCsv do
     it "uses the current report financial quarter to generate the forecast total column" do
       report = travel_to_quarter(1, 2020) { Report.new }
 
-      headers = ExportActivityToCsv.new(activity: build(:activity), report: report).headers
+      headers = ExportActivityToCsv.new(activity: build(:project_activity), report: report).headers
 
       expect(headers).to include "FC FQ1 2020-2021"
     end

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :transfer do
-    association :source, factory: :activity
-    association :destination, factory: :activity
+    association :source, factory: :project_activity
+    association :destination, factory: :project_activity
 
     financial_quarter { 1 }
     financial_year { Date.today.year }
