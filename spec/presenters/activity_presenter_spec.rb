@@ -383,7 +383,7 @@ RSpec.describe ActivityPresenter do
 
   describe "#flow_with_code" do
     it "returns the default flow string & code number" do
-      fund = create(:activity)
+      fund = create(:project_activity)
       expect(described_class.new(fund).flow_with_code).to eql("ODA (10)")
     end
   end
@@ -524,7 +524,7 @@ RSpec.describe ActivityPresenter do
   describe "#display_title" do
     context "when the title is nil" do
       it "returns a default display_title" do
-        activity = create(:activity, :at_purpose_step, title: nil)
+        activity = create(:project_activity, :at_purpose_step, title: nil)
         expect(described_class.new(activity).display_title).to eql("Untitled (#{activity.id})")
       end
     end
@@ -586,14 +586,14 @@ RSpec.describe ActivityPresenter do
 
   describe "#tied_status_with_code" do
     it "returns the tied status string & code number" do
-      fund = create(:activity)
+      fund = create(:project_activity)
       expect(described_class.new(fund).tied_status_with_code).to eql("Untied (5)")
     end
   end
 
   describe "#finance_with_code" do
     it "returns the finance string & code number" do
-      fund = create(:activity)
+      fund = create(:project_activity)
       expect(described_class.new(fund).finance_with_code).to eql("Standard grant (110)")
     end
   end

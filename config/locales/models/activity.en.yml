@@ -474,6 +474,8 @@ en:
               blank: Select a GCRF challenge area
             channel_of_delivery_code:
               invalid: Please select a valid Channel of delivery code
+            organisation_id:
+              invalid: Funds must be associated with the Service Owner Organisation
   importer:
     errors:
       activity:

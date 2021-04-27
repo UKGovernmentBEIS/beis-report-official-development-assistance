@@ -2,8 +2,8 @@ RSpec.feature "BEIS users can edit a transfer" do
   let(:user) { create(:beis_user) }
   before { authenticate!(user: user) }
 
-  let(:source_activity) { create(:activity) }
-  let(:destination_activity) { create(:activity) }
+  let(:source_activity) { create(:project_activity) }
+  let(:destination_activity) { create(:project_activity) }
 
   let!(:transfer) { create(:transfer, source: source_activity, destination: destination_activity) }
 

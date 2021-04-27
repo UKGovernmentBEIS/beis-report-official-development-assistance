@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe EndDateAfterStartDateValidator do
-  subject { build(:activity) }
+  subject { build(:fund_activity) }
 
   context "when the planned start date is the same as the planned end date" do
     it "is valid" do

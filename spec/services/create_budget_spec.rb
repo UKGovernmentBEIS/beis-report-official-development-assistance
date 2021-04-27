@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe CreateBudget do
   let!(:service_owner) { create(:beis_organisation) }
-  let(:activity) { create(:activity) }
+  let(:activity) { create(:project_activity) }
 
   describe "#call" do
     it "sets the activity as the one this budget belongs to" do

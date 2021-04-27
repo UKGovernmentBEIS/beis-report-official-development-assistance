@@ -228,7 +228,7 @@ RSpec.feature "Users can view an activity as XML" do
 
         it "only includes budgets which belong to the activity" do
           _budget = create(:budget, parent_activity: activity)
-          _other_budget = create(:budget, parent_activity: create(:activity))
+          _other_budget = create(:budget)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
@@ -252,7 +252,7 @@ RSpec.feature "Users can view an activity as XML" do
 
         it "only includes transactions which belong to the activity" do
           _transaction = create(:transaction, parent_activity: activity)
-          _other_transaction = create(:transaction, parent_activity: create(:activity))
+          _other_transaction = create(:transaction)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
@@ -286,7 +286,7 @@ RSpec.feature "Users can view an activity as XML" do
 
         it "only includes planned disbursements which belong to the activity" do
           _planned_disbursement = create(:planned_disbursement, parent_activity: activity)
-          _other_planned_disbursement = create(:planned_disbursement, parent_activity: create(:activity))
+          _other_planned_disbursement = create(:planned_disbursement)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 

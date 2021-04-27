@@ -57,10 +57,9 @@ RSpec.describe BudgetPolicy do
     let(:user) { create(:delivery_partner_user) }
 
     context "when the activity is a fund" do
-      let(:activity) { create(:fund_activity, organisation: user.organisation) }
+      let(:activity) { create(:fund_activity) }
 
-      it { is_expected.to permit_action(:show) }
-
+      it { is_expected.to forbid_action(:show) }
       it { is_expected.to forbid_action(:create) }
       it { is_expected.to forbid_action(:edit) }
       it { is_expected.to forbid_action(:update) }

@@ -91,13 +91,13 @@ RSpec.describe Activity, type: :model do
     describe ".projects_and_third_party_projects_for_report" do
       it "only returns projects and third party projects that are for the reports organisation and fund" do
         organisation = create(:delivery_partner_organisation)
-        fund = create(:fund_activity, organisation: organisation)
+        fund = create(:fund_activity)
         programme = create(:programme_activity, parent: fund, organisation: organisation)
         project = create(:project_activity, parent: programme, organisation: organisation)
         third_party_project = create(:third_party_project_activity, parent: project, organisation: organisation)
         report = create(:report, organisation: third_party_project.organisation, fund: fund)
 
-        another_fund = create(:fund_activity, organisation: organisation)
+        another_fund = create(:fund_activity)
         another_programme = create(:programme_activity, parent: another_fund, organisation: organisation)
         another_project = create(:project_activity, parent: another_programme, organisation: organisation)
         another_third_party_project = create(:third_party_project_activity, parent: another_project, organisation: organisation)
@@ -134,23 +134,39 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when activity is a fund" do
+      subject { build(:fund_activity, organisation: organisation) }
+
+      context "when the organisation is a delivery partner" do
+        let(:organisation) { build(:delivery_partner_organisation) }
+
+        it { should be_invalid }
+      end
+
+      context "when the organisation is the service owner" do
+        let(:organisation) { build(:beis_organisation) }
+
+        it { should be_valid }
+      end
+    end
+
     context "#form_state" do
       context "when the form_state is set to a value we expect" do
-        subject(:activity) { build(:activity) }
+        subject(:activity) { build(:project_activity) }
         it "should be valid" do
           expect(activity.valid?).to be_truthy
         end
       end
 
       context "when form_state is set to a value not included in the validation list" do
-        subject(:activity) { build(:activity, form_state: "completed") }
+        subject(:activity) { build(:project_activity, form_state: "completed") }
         it "should not be valid" do
           expect(activity.valid?).to be_falsey
         end
       end
 
       context "when form_state is set to a value included in the validation list" do
-        subject(:activity) { build(:activity, form_state: "purpose") }
+        subject(:activity) { build(:project_activity, form_state: "purpose") }
         it "should be valid" do
           expect(activity.valid?).to be_truthy
         end
@@ -391,49 +407,49 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when programme status is blank" do
-      subject(:activity) { build(:activity, programme_status: nil) }
+      subject(:activity) { build(:project_activity, programme_status: nil) }
       it "should not be valid" do
         expect(activity.valid?(:programme_status_step)).to be_falsey
       end
     end
 
     context "when planned_start_date is blank but actual_start_date is not nil" do
-      subject(:activity) { build(:activity, planned_start_date: nil) }
+      subject(:activity) { build(:project_activity, planned_start_date: nil) }
       it "should be valid" do
         expect(activity.valid?(:dates_step)).to be_truthy
       end
     end
 
     context "when actual_start_date is blank but planned_start_date is not nil" do
-      subject(:activity) { build(:activity, actual_start_date: nil) }
+      subject(:activity) { build(:project_activity, actual_start_date: nil) }
       it "should be valid" do
         expect(activity.valid?(:dates_step)).to be_truthy
       end
     end
 
     context "when planned_end_date is blank" do
-      subject(:activity) { build(:activity, planned_end_date: nil) }
+      subject(:activity) { build(:project_activity, planned_end_date: nil) }
       it "should be valid" do
         expect(activity.valid?(:dates_step)).to be_truthy
       end
     end
 
     context "when actual_start_date is blank" do
-      subject(:activity) { build(:activity, actual_start_date: nil) }
+      subject(:activity) { build(:project_activity, actual_start_date: nil) }
       it "should be valid" do
         expect(activity.valid?(:dates_step)).to be_truthy
       end
     end
 
     context "when actual_end_date is blank" do
-      subject(:activity) { build(:activity, actual_end_date: nil) }
+      subject(:activity) { build(:project_activity, actual_end_date: nil) }
       it "should be valid" do
         expect(activity.valid?(:dates_step)).to be_truthy
       end
     end
 
     context "when planned_end_date is not blank" do
-      let(:activity) { build(:activity) }
+      let(:activity) { build(:project_activity) }
 
       it "does not allow planned_end_date to be earlier than planned_start_date" do
         activity = build(:activity, planned_start_date: Date.today, planned_end_date: Date.yesterday)
@@ -467,7 +483,7 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when geography is blank" do
-      subject(:activity) { build(:activity, geography: nil) }
+      subject(:activity) { build(:project_activity, geography: nil) }
       it "should not be valid" do
         expect(activity.valid?(:geography_step)).to be_falsey
       end
@@ -475,7 +491,7 @@ RSpec.describe Activity, type: :model do
 
     context "when geography is recipient_region" do
       context "and recipient_region and recipient_contry are blank" do
-        subject { build(:activity) }
+        subject { build(:project_activity) }
         it { should validate_presence_of(:recipient_region).on(:region_step) }
         it { should_not validate_presence_of(:recipient_country).on(:country_step) }
       end
@@ -483,28 +499,28 @@ RSpec.describe Activity, type: :model do
 
     context "when geography is recipient_country" do
       context "and recipient_region and recipient_country are blank" do
-        subject { build(:activity, geography: :recipient_country) }
+        subject { build(:project_activity, geography: :recipient_country) }
         it { should validate_presence_of(:recipient_country).on(:country_step) }
         it { should_not validate_presence_of(:recipient_region).on(:region_step) }
       end
     end
 
     context "when requires_additional_benefitting_countries is blank when required" do
-      subject(:activity) { build(:activity, geography: :recipient_country, requires_additional_benefitting_countries: nil) }
+      subject(:activity) { build(:project_activity, geography: :recipient_country, requires_additional_benefitting_countries: nil) }
       it "should not be valid" do
         expect(activity.valid?(:requires_additional_benefitting_countries_step)).to be_falsey
       end
     end
 
     context "when intended_beneficiaries is blank" do
-      subject(:activity) { build(:activity, intended_beneficiaries: nil) }
+      subject(:activity) { build(:project_activity, intended_beneficiaries: nil) }
       it "should not be valid" do
         expect(activity.valid?(:intended_beneficiaries_step)).to be_falsey
       end
     end
 
     context "when gdi is blank" do
-      subject(:activity) { build(:activity, gdi: nil) }
+      subject(:activity) { build(:project_activity, gdi: nil) }
       it "should not be valid" do
         expect(activity.valid?(:gdi_step)).to be_falsey
       end
@@ -548,7 +564,7 @@ RSpec.describe Activity, type: :model do
       end
 
       it "is not required if the activity is a fund" do
-        activity = build(:activity, level: :fund, fund_pillar: nil)
+        activity = build(:fund_activity, fund_pillar: nil)
 
         expect(activity.valid?(:fund_pillar_step)).to be_truthy
       end
@@ -763,9 +779,11 @@ RSpec.describe Activity, type: :model do
     end
 
     describe "parent association" do
-      subject { Activity.new(level: level) }
+      let(:organisation) { build(:delivery_partner_organisation) }
+      subject { Activity.new(level: level, organisation: organisation) }
 
       context "with a fund" do
+        let(:organisation) { build(:beis_organisation) }
         let(:level) { "fund" }
 
         it { is_expected.to validate_absence_of :parent }
@@ -1215,12 +1233,12 @@ RSpec.describe Activity, type: :model do
 
   describe "#iati_identifier" do
     it "returns the previous_identifier if it exists" do
-      activity = create(:activity, previous_identifier: "previous-id", transparency_identifier: "transparency-id")
+      activity = create(:project_activity, previous_identifier: "previous-id", transparency_identifier: "transparency-id")
       expect(activity.iati_identifier).to eq("previous-id")
     end
 
     it "returns the transparency_identifier if previous_identifier is not set" do
-      activity = create(:activity, previous_identifier: nil, transparency_identifier: "transparency-id")
+      activity = create(:project_activity, previous_identifier: nil, transparency_identifier: "transparency-id")
       expect(activity.iati_identifier).to eq("transparency-id")
     end
   end
@@ -1540,7 +1558,7 @@ RSpec.describe Activity, type: :model do
 
   describe "#source_fund=" do
     it "sets the source fund code" do
-      activity = build(:activity)
+      activity = build(:project_activity)
       activity.source_fund = Fund.new(Fund::MAPPINGS["GCRF"])
       activity.save
 

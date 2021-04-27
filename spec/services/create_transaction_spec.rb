@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe CreateTransaction do
   let!(:service_owner) { create(:beis_organisation) }
-  let(:activity) { create(:activity) }
+  let(:activity) { create(:project_activity) }
 
   describe "#call" do
     it "sets the parent activity as the one this transaction belongs to" do
@@ -61,7 +61,7 @@ RSpec.describe CreateTransaction do
 
     context "when the description is blank" do
       it "sets a default description" do
-        activity = create(:activity, title: "Some activity")
+        activity = create(:project_activity, title: "Some activity")
         attributes = ActionController::Parameters.new(financial_quarter: 1, financial_year: 2020).permit!
 
         result = described_class.new(activity: activity).call(attributes: attributes)

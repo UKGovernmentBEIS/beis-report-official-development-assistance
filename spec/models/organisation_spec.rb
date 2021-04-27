@@ -59,7 +59,7 @@ RSpec.describe Organisation, type: :model do
   describe "service_owner?" do
     context "when an organisation is has been flagged as BEIS" do
       it "should return true" do
-        beis_organisation = create(:organisation, service_owner: true)
+        beis_organisation = create(:beis_organisation)
 
         result = beis_organisation.service_owner?
 

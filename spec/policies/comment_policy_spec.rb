@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe CommentPolicy do
-  let(:activity) { create(:fund_activity, organisation: user.organisation) }
+  let(:activity) { create(:fund_activity) }
   let(:report) { create(:report, :active, fund: activity, organisation: user.organisation) }
   let(:comment) { create(:comment, activity: activity, report: report, owner: user) }
 

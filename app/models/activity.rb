@@ -83,6 +83,7 @@ class Activity < ApplicationRecord
   validates :level, presence: true
   validates :parent, absence: true, if: proc { |activity| activity.fund? }
   validates :parent, presence: true, unless: proc { |activity| activity.fund? }
+  validates :organisation, service_owner: true, if: proc { |activity| activity.fund? }
   validates :delivery_partner_identifier, presence: true, on: :identifier_step
   validates_with RodaIdentifierValidator, on: :roda_identifier_step
   validates :title, :description, presence: true, on: :purpose_step

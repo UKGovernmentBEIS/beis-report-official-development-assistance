@@ -31,7 +31,7 @@ RSpec.describe User, type: :model do
   describe "#service_owner?" do
     context "when the user organisation is a service owner" do
       it "returns true" do
-        organisation = build_stubbed(:organisation, service_owner: true)
+        organisation = build_stubbed(:beis_organisation)
         result = described_class.new(organisation: organisation).service_owner?
         expect(result).to be true
       end
@@ -49,7 +49,7 @@ RSpec.describe User, type: :model do
   describe "#delivery_partner?" do
     context "when the user organisation is a service owner" do
       it "returns false" do
-        organisation = build_stubbed(:organisation, service_owner: true)
+        organisation = build_stubbed(:beis_organisation)
         result = described_class.new(organisation: organisation).delivery_partner?
         expect(result).to be false
       end

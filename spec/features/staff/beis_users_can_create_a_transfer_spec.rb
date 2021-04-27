@@ -2,7 +2,7 @@ RSpec.feature "BEIS users can create a transfer" do
   let(:user) { create(:beis_user) }
   before { authenticate!(user: user) }
 
-  let(:source_activity) { create(:activity) }
+  let(:source_activity) { create(:project_activity) }
   let(:created_transfer) { Transfer.last }
 
   before do
@@ -79,7 +79,7 @@ RSpec.feature "BEIS users can create a transfer" do
   end
 
   scenario "show an error when the destination RODA ID is incorrect" do
-    non_existent_activity = build(:activity)
+    non_existent_activity = build(:project_activity)
 
     roda_identifier = "GCRF-BLOB-424434434"
     allow(non_existent_activity).to receive(:roda_identifier) { roda_identifier }

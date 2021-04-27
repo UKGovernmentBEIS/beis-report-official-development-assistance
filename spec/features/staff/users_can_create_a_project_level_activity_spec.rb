@@ -116,7 +116,7 @@ RSpec.feature "Users can create a project" do
       end
 
       context "when creating a project that is Newton funded" do
-        let(:newton_fund) { create(:fund_activity, :newton, organisation: user.organisation) }
+        let(:newton_fund) { create(:fund_activity, :newton) }
 
         scenario "'country_delivery_partners' can be present" do
           newton_programme = create(:programme_activity, extending_organisation: user.organisation, parent: newton_fund)

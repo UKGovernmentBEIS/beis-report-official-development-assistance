@@ -1,7 +1,7 @@
 RSpec.feature "Users can view activities" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
-      activity = create(:activity)
+      activity = create(:programme_activity)
       visit organisation_activity_path(activity.organisation, activity)
       expect(current_path).to eq(root_path)
     end

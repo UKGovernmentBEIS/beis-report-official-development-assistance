@@ -1,7 +1,7 @@
 RSpec.feature "Users can view an activity" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
-      activity = create(:activity)
+      activity = create(:project_activity)
       visit organisation_activity_path(activity.organisation, activity)
       expect(current_path).to eq(root_path)
     end
@@ -182,10 +182,11 @@ RSpec.feature "Users can view an activity" do
 
     scenario "a fund activity has human readable date format" do
       travel_to Time.zone.local(2020, 1, 29) do
-        activity = create(:activity, planned_start_date: Date.new(2020, 2, 3),
-                                     planned_end_date: Date.new(2024, 6, 22),
-                                     actual_start_date: Date.new(2020, 1, 2),
-                                     actual_end_date: Date.new(2020, 1, 29))
+        activity = create(:project_activity,
+          planned_start_date: Date.new(2020, 2, 3),
+          planned_end_date: Date.new(2024, 6, 22),
+          actual_start_date: Date.new(2020, 1, 2),
+          actual_end_date: Date.new(2020, 1, 29))
 
         visit organisation_activity_path(user.organisation, activity)
         click_on t("tabs.activity.details")

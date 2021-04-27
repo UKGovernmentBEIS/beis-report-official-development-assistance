@@ -12,7 +12,7 @@ RSpec.describe Staff::TransactionUploadsController do
   describe "#show" do
     let(:report) { create(:report, organisation: organisation, state: :active, fund: fund) }
 
-    let!(:fund) { create(:fund_activity, organisation: organisation, roda_identifier_fragment: "A") }
+    let!(:fund) { create(:fund_activity, roda_identifier_fragment: "A") }
     let!(:programme_a) { create(:programme_activity, parent: fund, organisation: report.organisation, roda_identifier_fragment: "A", created_at: rand(0..60).minutes.ago) }
     let!(:programme_b) { create(:programme_activity, parent: fund, organisation: report.organisation, roda_identifier_fragment: "B", created_at: rand(0..60).minutes.ago) }
     let!(:project_c) { create(:project_activity, parent: programme_a, organisation: report.organisation, roda_identifier_fragment: "C", created_at: rand(0..60).minutes.ago) }
