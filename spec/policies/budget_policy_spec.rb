@@ -31,7 +31,7 @@ RSpec.describe BudgetPolicy do
     end
 
     context "when the activity is a project" do
-      let(:activity) { create(:project_activity, organisation: user.organisation) }
+      let(:activity) { create(:project_activity) }
 
       it { is_expected.to permit_action(:show) }
 
@@ -42,7 +42,7 @@ RSpec.describe BudgetPolicy do
     end
 
     context "when the activity is a third party project" do
-      let(:activity) { create(:third_party_project_activity, organisation: user.organisation) }
+      let(:activity) { create(:third_party_project_activity) }
 
       it { is_expected.to permit_action(:show) }
 

@@ -5,6 +5,10 @@ class OrganisationValidator < ActiveModel::Validator
       activity.errors.add(error_message(level: "fund")) unless activity.organisation.service_owner?
     when "programme"
       activity.errors.add(error_message(level: "programme")) unless activity.organisation.service_owner?
+    when "project"
+      activity.errors.add(error_message(level: "project")) unless activity.organisation.delivery_partner?
+    when "third_party_project"
+      activity.errors.add(error_message(level: "third_party_project")) unless activity.organisation.delivery_partner?
     end
   end
 

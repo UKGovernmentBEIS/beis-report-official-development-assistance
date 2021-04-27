@@ -479,6 +479,10 @@ en:
                 invalid: Funds must be associated with the Service Owner Organisation
               programme:
                 invalid: Programmes must be associated with the Service Owner Organisation
+              project:
+                invalid: Projects must be associated with a Delivery Partner Organisation
+              third_party_project:
+                invalid: Third Party Projects must be associated with a Delivery Partner Organisation
   importer:
     errors:
       activity:

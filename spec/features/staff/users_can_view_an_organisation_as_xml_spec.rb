@@ -8,7 +8,7 @@ RSpec.feature "Users can view an organisation as XML" do
     context "when the user is viewing the BEIS organisation show page" do
       scenario "they cannot download the organisation's projects as XML" do
         beis = user.organisation
-        _project = create(:project_activity, organisation: beis)
+        _programme = create(:programme_activity, organisation: beis)
 
         visit organisation_path(beis)
 

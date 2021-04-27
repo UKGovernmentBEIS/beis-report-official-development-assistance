@@ -134,38 +134,6 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when activity is a fund" do
-      subject { build(:fund_activity, organisation: organisation) }
-
-      context "when the organisation is a delivery partner" do
-        let(:organisation) { build(:delivery_partner_organisation) }
-
-        it { should be_invalid }
-      end
-
-      context "when the organisation is the service owner" do
-        let(:organisation) { build(:beis_organisation) }
-
-        it { should be_valid }
-      end
-    end
-
-    context "when activity is a programme" do
-      subject { build(:fund_activity, organisation: organisation) }
-
-      context "when the organisation is a delivery partner" do
-        let(:organisation) { build(:delivery_partner_organisation) }
-
-        it { should be_invalid }
-      end
-
-      context "when the organisation is the service owner" do
-        let(:organisation) { build(:beis_organisation) }
-
-        it { should be_valid }
-      end
-    end
-
     context "#form_state" do
       context "when the form_state is set to a value we expect" do
         subject(:activity) { build(:project_activity) }

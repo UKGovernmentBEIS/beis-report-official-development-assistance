@@ -142,7 +142,7 @@ RSpec.feature "Users can view an activity" do
     end
 
     scenario "the activity child activities can be viewed in a tab" do
-      activity = create(:project_activity, organisation: user.organisation)
+      activity = create(:project_activity)
 
       visit organisation_activity_children_path(activity.organisation, activity)
 
@@ -153,7 +153,7 @@ RSpec.feature "Users can view an activity" do
     end
 
     scenario "the activity details tab can be viewed" do
-      activity = create(:project_activity, organisation: user.organisation)
+      activity = create(:project_activity)
 
       visit organisation_activity_details_path(activity.organisation, activity)
 
