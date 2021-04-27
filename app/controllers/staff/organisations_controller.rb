@@ -36,6 +36,7 @@ class Staff::OrganisationsController < Staff::BaseController
       end
 
       format.xml do
+        @reporting_organisation = Organisation.service_owner
         @activities = case level
         when "programme"
           return [] unless fund_id.present?
@@ -51,6 +52,7 @@ class Staff::OrganisationsController < Staff::BaseController
         else
           []
         end
+
         response.headers["Content-Disposition"] = "attachment; filename=\"#{organisation.iati_reference}.xml\""
       end
     end
@@ -109,21 +111,21 @@ class Staff::OrganisationsController < Staff::BaseController
       organisation: organisation,
       user: current_user,
       fund_id: fund_id
-    ).call(eager_load_parent: false)
+    ).call
   end
 
   private def iati_publishable_project_activities(organisation:, user:)
     FindProjectActivities.new(
       organisation: organisation,
       user: current_user
-    ).call(eager_load_parent: false).publishable_to_iati
+    ).call.publishable_to_iati
   end
 
   private def iati_publishable_third_party_project_activities(organisation:, user:)
     FindThirdPartyProjectActivities.new(
       organisation: organisation,
       user: current_user
-    ).call(eager_load_parent: false).publishable_to_iati
+    ).call.publishable_to_iati
   end
 
   private def id

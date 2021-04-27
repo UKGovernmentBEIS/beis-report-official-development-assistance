@@ -4,6 +4,7 @@
 
 set -e
 
+ORGANISATION_NAME="beis-report-official-development-assistance"
 ENVIRONMENT_NAME="${1:-staging}"
 environments="pentest prod staging"
 
@@ -32,7 +33,7 @@ exit_code=0
 
 # Create a unique filename, so we can delete it later
 timestamp=$(date +"%Y%m%d%I%M%S")
-filename="/tmp/dump-$timestamp.sql"
+filename="/tmp/dump-$timestamp.tar"
 
 # Cleanup on exit, no matter what happens
 cleanup () {
@@ -46,7 +47,9 @@ trap cleanup EXIT ERR INT TERM
 
 echo "==> Logging into GOV.UK PaaS..."
 
-cf login -s "$ENVIRONMENT_NAME"
+if ! cf target -o "$ORGANISATION_NAME" -s "$ENVIRONMENT_NAME" &>/dev/null;  then
+  cf login -o "$ORGANISATION_NAME" -s "$ENVIRONMENT_NAME"
+fi
 
 # Set the Postgres service name, depending on our environment
 service="beis-roda-${ENVIRONMENT_NAME}-postgres"
@@ -58,6 +61,7 @@ cf conduit "$service" -- \
         --file "$filename" \
         --no-acl \
         --no-owner \
+        --format=t \
         --exclude-table-data="users" \
         --exclude-table="ar_internal_metadata" \
         --exclude-table="spatial_ref_sys"
@@ -74,7 +78,7 @@ if [ "$delete_data" == "y" ]; then
     psql -c '\set AUTOCOMMIT on\n DROP DATABASE "roda-development"; CREATE DATABASE "roda-development";' -d postgres
 
     echo "==> Restoring the data from the backup..."
-    psql -d roda-development -f "$filename"
+    pg_restore -d roda-development --no-owner --clean "$filename"
 
     echo "==> Removing extraneous Postgres extensions..."
     psql -d roda-development -c 'DROP extension citext; DROP extension postgis; DROP extension "uuid-ossp";'

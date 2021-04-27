@@ -88,6 +88,13 @@ RSpec.describe Organisation, type: :model do
     end
   end
 
+  describe ".service_owner" do
+    let!(:service_owner) { create(:beis_organisation) }
+    it "returns the service owner" do
+      expect(Organisation.service_owner).to eq(service_owner)
+    end
+  end
+
   describe ".sorted_by_name" do
     it "should sort name name a->z" do
       a_organisation = create(:organisation, name: "A", created_at: 3.days.ago)

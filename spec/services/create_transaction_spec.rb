@@ -1,6 +1,7 @@
 require "rails_helper"
 
 RSpec.describe CreateTransaction do
+  let!(:service_owner) { create(:beis_organisation) }
   let(:activity) { create(:activity) }
 
   describe "#call" do

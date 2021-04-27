@@ -10,6 +10,11 @@ class ActivityCsvPresenter < ActivityPresenter
 
   def country_delivery_partners
     return if super.blank?
-    super.join(" | ")
+    super.join("|")
+  end
+
+  def implementing_organisations
+    return if super.empty?
+    super.pluck(:name).join("|")
   end
 end

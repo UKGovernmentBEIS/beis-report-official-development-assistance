@@ -40,10 +40,6 @@ RSpec.describe ActivityDefaults do
         expect(subject[:extending_organisation_id]).to eq(delivery_partner_organisation.id)
       end
 
-      it "sets the reporting organisation to BEIS" do
-        expect(subject[:reporting_organisation_id]).to eq(beis.id)
-      end
-
       it "sets the form_state to 'identifier', as we already have the level and parent" do
         expect(subject[:form_state]).to eq("identifier")
       end
@@ -72,10 +68,6 @@ RSpec.describe ActivityDefaults do
         expect(subject[:extending_organisation_id]).to eq(delivery_partner_organisation.id)
       end
 
-      it "sets the reporting organisation to BEIS" do
-        expect(subject[:reporting_organisation_id]).to eq(beis.id)
-      end
-
       it "sets the form_state to 'identifier', as we already have the level and parent" do
         expect(subject[:form_state]).to eq("identifier")
       end
@@ -102,10 +94,6 @@ RSpec.describe ActivityDefaults do
 
       it "sets the extending organisation to the delivery partner organisation" do
         expect(subject[:extending_organisation_id]).to eq(delivery_partner_organisation.id)
-      end
-
-      it "sets the reporting organisation to BEIS" do
-        expect(subject[:reporting_organisation_id]).to eq(beis.id)
       end
 
       it "sets the form_state to 'identifier', as we already have the level and parent" do

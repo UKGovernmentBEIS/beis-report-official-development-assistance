@@ -117,11 +117,15 @@ class ActivitySpendingBreakdown
   end
 
   def previous_quarters
+    return [] if financial_quarter.nil?
+
     count = RECENT_QUARTERS + OLDER_QUARTERS
     financial_quarter.preceding(count - 1) + [financial_quarter]
   end
 
   def upcoming_quarters
+    return [] if financial_quarter.nil?
+
     financial_quarter.following(UPCOMING_QUARTERS)
   end
 

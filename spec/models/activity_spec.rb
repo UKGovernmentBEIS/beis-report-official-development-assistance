@@ -800,7 +800,6 @@ RSpec.describe Activity, type: :model do
     it { should have_many(:child_activities).with_foreign_key("parent_id") }
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
     it { should have_many(:implementing_organisations) }
-    it { should belong_to(:reporting_organisation).with_foreign_key("reporting_organisation_id") }
     it { should have_many(:budgets) }
     it { should have_many(:transactions) }
     it { should have_many(:source_transfers) }
@@ -1148,51 +1147,68 @@ RSpec.describe Activity, type: :model do
 
   describe "#transparency_identifier" do
     context "when the activity is a fund" do
-      it "returns a composite identifier formed with the reporting organisation" do
-        fund = create(:fund_activity, roda_identifier_fragment: "GCRF-1", reporting_organisation: create(:beis_organisation))
-        expect(fund.transparency_identifier).to eql("GB-GOV-13-GCRF-1")
+      it "returns a composite identifier formed with the service owner" do
+        fund = create(:fund_activity, roda_identifier_fragment: "GCRF-1")
+
+        expected_identifier = [
+          Organisation::SERVICE_OWNER_IATI_REFERENCE,
+          fund.roda_identifier_fragment,
+        ].join("-")
+
+        expect(fund.transparency_identifier).to eql(expected_identifier)
       end
     end
 
     context "when the activity is a programme" do
-      context "when the reporting organisation is a government organisation" do
-        it "returns an identifier with the reporting organisation, fund and programme" do
-          government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
-          programme = create(:programme_activity, organisation: government_organisation)
-          fund = programme.parent
+      it "returns an identifier with the service owner, fund and programme" do
+        programme = create(:programme_activity)
+        fund = programme.parent
 
-          expect(programme.transparency_identifier)
-            .to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{programme.roda_identifier_fragment}")
-        end
+        expected_identifier = [
+          Organisation::SERVICE_OWNER_IATI_REFERENCE,
+          fund.roda_identifier_fragment,
+          programme.roda_identifier_fragment,
+        ].join("-")
+
+        expect(programme.transparency_identifier)
+          .to eql(expected_identifier)
       end
     end
 
     context "when the activity is a project" do
-      context "when the reporting organisation is a government organisation" do
-        it "returns an identifier with the reporting organisation, fund, programme and project" do
-          government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
-          project = create(:project_activity, organisation: government_organisation, reporting_organisation: government_organisation)
-          programme = project.parent
-          fund = programme.parent
+      it "returns an identifier with the service owner, fund, programme and project" do
+        project = create(:project_activity)
+        programme = project.parent
+        fund = programme.parent
 
-          expect(project.transparency_identifier)
-            .to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{project.roda_identifier_fragment}")
-        end
+        expected_identifier = [
+          Organisation::SERVICE_OWNER_IATI_REFERENCE,
+          fund.roda_identifier_fragment,
+          programme.roda_identifier_fragment,
+          project.roda_identifier_fragment,
+        ].join("-")
+
+        expect(project.transparency_identifier)
+          .to eql(expected_identifier)
       end
     end
 
     context "when the activity is a third-party project" do
-      context "when the reporting organisation is a government organisation" do
-        it "returns an identifier with the reporting organisation, fund, programme, project and third-party project" do
-          government_organisation = build(:organisation, iati_reference: "GB-GOV-13")
-          third_party_project = create(:third_party_project_activity, organisation: government_organisation, reporting_organisation: government_organisation)
-          project = third_party_project.parent
-          programme = project.parent
-          fund = programme.parent
+      it "returns an identifier with the service owner, fund, programme, project and third-party project" do
+        third_party_project = create(:third_party_project_activity)
+        project = third_party_project.parent
+        programme = project.parent
+        fund = programme.parent
 
-          expect(third_party_project.transparency_identifier)
-            .to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{project.roda_identifier_fragment}#{third_party_project.roda_identifier_fragment}")
-        end
+        project_identifier = [
+          Organisation::SERVICE_OWNER_IATI_REFERENCE,
+          fund.roda_identifier_fragment,
+          programme.roda_identifier_fragment,
+          project.roda_identifier_fragment,
+        ].join("-")
+
+        expect(third_party_project.transparency_identifier)
+          .to eql("#{project_identifier}#{third_party_project.roda_identifier_fragment}")
       end
     end
   end
@@ -1806,6 +1822,76 @@ RSpec.describe Activity, type: :model do
         expect(programme1_projects[1].total_forecasted).to eq(programme1_project_1_forecasted)
         expect(programme2_projects[0].total_forecasted).to eq(programme2_project_0_forecasted)
         expect(programme2_projects[1].total_forecasted).to eq(programme2_project_1_forecasted)
+      end
+    end
+
+    describe "#own_and_descendants_transactions" do
+      let!(:fund_transaction) { create(:transaction, value: 100, parent_activity: fund) }
+      let!(:programme1_transaction) { create(:transaction, value: 100, parent_activity: programme1) }
+      let!(:programme2_transaction) { create(:transaction, value: 100, parent_activity: programme2) }
+      let!(:programme1_projects1_transaction) { create(:transaction, value: 50, parent_activity: programme1_projects[0]) }
+      let!(:programme1_projects2_transaction) { create(:transaction, value: 50, parent_activity: programme1_projects[1]) }
+      let!(:programme2_projects1_transaction) { create(:transaction, value: 100, parent_activity: programme2_projects[0]) }
+      let!(:programme2_projects2_transaction) { create(:transaction, value: 100, parent_activity: programme2_projects[1]) }
+      let!(:programme1_tpp_transaction) { create(:transaction, value: 100, parent_activity: programme1_third_party_project) }
+      let!(:programme2_tpp_transaction) { create(:transaction, value: 100, parent_activity: programme2_third_party_project) }
+
+      it "returns all the transactions belonging to the activity and to the descendant activities" do
+        expect(fund.own_and_descendants_transactions.pluck(:id)).to match_array([
+          fund_transaction.id,
+          programme1_transaction.id,
+          programme2_transaction.id,
+          programme1_projects1_transaction.id,
+          programme1_projects2_transaction.id,
+          programme2_projects1_transaction.id,
+          programme2_projects2_transaction.id,
+          programme1_tpp_transaction.id,
+          programme2_tpp_transaction.id,
+        ])
+      end
+    end
+
+    describe "#reportable_transactions_for_level" do
+      context "when the activity is a programme" do
+        it "sums up the transactions of the activity and child activities by financial quarter" do
+          organisation = create(:delivery_partner_organisation)
+          programme = create(:programme_activity, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
+          projects = create_list(:project_activity, 2, parent: programme)
+          third_party_project = create(:third_party_project_activity, parent: projects[0])
+
+          create(:transaction, value: 1000, parent_activity: programme, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 1000, parent_activity: programme, financial_year: 2018, financial_quarter: 2)
+          create(:transaction, value: 500, parent_activity: projects[0], financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 500, parent_activity: projects[0], financial_year: 2020, financial_quarter: 1)
+
+          create(:transaction, value: 500, parent_activity: projects[1], financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 500, parent_activity: projects[1], financial_year: 2020, financial_quarter: 1)
+
+          create(:transaction, value: 200, parent_activity: third_party_project, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 200, parent_activity: third_party_project, financial_year: 2020, financial_quarter: 1)
+
+          reportable_transactions = programme.reportable_transactions_for_level
+          expect(reportable_transactions.map(&:value)).to eql([1200, 1000, 2200])
+          expect(reportable_transactions.map(&:date)).to eql([FinancialQuarter.new(2020, 1).end_date, FinancialQuarter.new(2018, 2).end_date, FinancialQuarter.new(2018, 1).end_date])
+        end
+      end
+
+      context "when the activity is a project or third-party project" do
+        it "returns all the transactions with that activity only" do
+          organisation = create(:delivery_partner_organisation)
+          project = create(:project_activity, :with_transparency_identifier, organisation: organisation)
+          third_party_project = create(:third_party_project_activity, parent: project, organisation: organisation)
+
+          project_transaction_1 = create(:transaction, value: 1000, parent_activity: project)
+          project_transaction_2 = create(:transaction, value: 1000, parent_activity: project)
+          project_transaction_3 = create(:transaction, value: 500, parent_activity: project)
+          project_transaction_4 = create(:transaction, value: 500, parent_activity: project)
+
+          third_party_project_transaction = create(:transaction, value: 500, parent_activity: third_party_project)
+
+          expect(project.reportable_transactions_for_level).to match_array([project_transaction_1, project_transaction_2, project_transaction_3, project_transaction_4])
+          expect(third_party_project.reportable_transactions_for_level).to match_array([third_party_project_transaction])
+        end
       end
     end
   end

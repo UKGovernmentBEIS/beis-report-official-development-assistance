@@ -1,6 +1,8 @@
 class Organisation < ApplicationRecord
   include PublicActivity::Common
 
+  SERVICE_OWNER_IATI_REFERENCE = "GB-GOV-13"
+
   strip_attributes only: [:iati_reference]
   has_many :users
   has_many :funds
@@ -34,6 +36,6 @@ class Organisation < ApplicationRecord
   end
 
   def self.service_owner
-    Organisation.find_by(service_owner: true)
+    find_by(iati_reference: SERVICE_OWNER_IATI_REFERENCE)
   end
 end
