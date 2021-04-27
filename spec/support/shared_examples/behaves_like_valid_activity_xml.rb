@@ -117,4 +117,13 @@ RSpec.shared_examples "valid activity XML" do
     expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/@ref").text).to eq planned_disbursement_presenter.providing_organisation_reference
     expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/narrative").text).to eq planned_disbursement_presenter.providing_organisation_name
   end
+
+  it "contains the contact information" do
+    visit organisation_activity_path(organisation, activity, format: :xml)
+
+    expect(xml.at("iati-activity/contact-info/@type").text).to eq("1")
+    expect(xml.at("iati-activity/contact-info/email").text).to eq(I18n.t("contact_info.email"))
+    expect(xml.at("iati-activity/contact-info/website").text).to eq(I18n.t("contact_info.website"))
+    expect(xml.at("iati-activity/contact-info/mailing-address/narrative").text).to eq(I18n.t("contact_info.mailing_address"))
+  end
 end
