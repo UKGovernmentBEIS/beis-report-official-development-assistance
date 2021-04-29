@@ -308,4 +308,112 @@ RSpec.describe PlannedDisbursementOverview do
       end
     end
   end
+
+  context "for a set of activities across different levels" do
+    let!(:programme) { create(:programme_activity) }
+    let(:organisation) { create(:delivery_partner_organisation) }
+
+    let!(:project_1) { create(:project_activity, parent: programme, organisation: organisation) }
+    let!(:third_party_project_1) { create(:third_party_project_activity, parent: project_1, organisation: organisation) }
+    let!(:third_party_project_2) { create(:third_party_project_activity, parent: project_1, organisation: organisation) }
+
+    let!(:project_2) { create(:project_activity, parent: programme, organisation: organisation) }
+    let!(:third_party_project_3) { create(:third_party_project_activity, parent: project_2, organisation: organisation) }
+    let!(:third_party_project_4) { create(:third_party_project_activity, parent: project_2, organisation: organisation) }
+
+    let(:reporting_cycle) { ReportingCycle.new(project_1, 1, 2022) }
+    let(:overview) { PlannedDisbursementOverview.new([programme.id] + programme.descendants.pluck(:id)) }
+
+    let :forecasts do
+      Hash.new do |hash, key|
+        activity, year, quarter = key
+        hash[key] = PlannedDisbursementHistory.new(activity, financial_year: year, financial_quarter: quarter)
+      end
+    end
+
+    def forecast_values
+      overview.latest_values.map do |entry|
+        [entry.parent_activity, entry.financial_year, entry.financial_quarter, entry.value]
+      end
+    end
+
+    it "returns the forecasts for a programme" do
+      forecasts[[programme, 2023, 1]].set_value(50)
+
+      expect(forecast_values).to match_array([
+        [programme, 2023, 1, 50],
+      ])
+    end
+
+    it "returns forecasts for a programme and its descendants" do
+      reporting_cycle.tick
+
+      forecasts[[programme, 2023, 1]].set_value(10)
+
+      forecasts[[project_1, 2023, 2]].set_value(20)
+      forecasts[[third_party_project_1, 2023, 3]].set_value(40)
+      forecasts[[third_party_project_2, 2023, 4]].set_value(80)
+
+      forecasts[[project_2, 2024, 1]].set_value(160)
+      forecasts[[third_party_project_3, 2024, 2]].set_value(320)
+      forecasts[[third_party_project_4, 2024, 3]].set_value(640)
+
+      expect(forecast_values).to match_array([
+        [programme, 2023, 1, 10],
+
+        [project_1, 2023, 2, 20],
+        [third_party_project_1, 2023, 3, 40],
+        [third_party_project_2, 2023, 4, 80],
+
+        [project_2, 2024, 1, 160],
+        [third_party_project_3, 2024, 2, 320],
+        [third_party_project_4, 2024, 3, 640],
+      ])
+    end
+
+    it "returns only the latest version of a programme's forecast" do
+      forecasts[[programme, 2023, 1]].set_value(10)
+      forecasts[[programme, 2023, 1]].set_value(20)
+
+      expect(forecast_values).to match_array([
+        [programme, 2023, 1, 20],
+      ])
+    end
+
+    it "returns the latest version when it's revised during a single report" do
+      reporting_cycle.tick
+      forecasts[[project_2, 2023, 1]].set_value(10)
+      forecasts[[project_2, 2023, 1]].set_value(20)
+
+      expect(forecast_values).to match_array([
+        [project_2, 2023, 1, 20],
+      ])
+    end
+
+    it "returns the latest version when it's revised in separate reports" do
+      reporting_cycle.tick
+      forecasts[[project_2, 2023, 1]].set_value(10)
+      reporting_cycle.tick
+      forecasts[[project_2, 2023, 1]].set_value(20)
+
+      expect(forecast_values).to match_array([
+        [project_2, 2023, 1, 20],
+      ])
+    end
+
+    it "returns the latest version across multiple levels" do
+      reporting_cycle.tick
+      forecasts[[programme, 2023, 1]].set_value(10)
+      forecasts[[project_2, 2023, 1]].set_value(20)
+
+      reporting_cycle.tick
+      forecasts[[programme, 2023, 1]].set_value(40)
+      forecasts[[project_2, 2023, 1]].set_value(80)
+
+      expect(forecast_values).to match_array([
+        [programme, 2023, 1, 40],
+        [project_2, 2023, 1, 80],
+      ])
+    end
+  end
 end
