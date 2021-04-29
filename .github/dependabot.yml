@@ -1,0 +1,36 @@
+version: 2
+updates:
+- package-ecosystem: bundler
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  versioning-strategy: increase
+  ignore:
+  - dependency-name: jquery-rails
+    versions:
+    - "> 4.3.5"
+  - dependency-name: parser
+    versions:
+    - "> 2.6.3.0"
+  - dependency-name: puma
+    versions:
+    - ">= 5.0.a, < 5.1"
+  - dependency-name: puma
+    versions:
+    - ">= 5.1.a, < 5.2"
+  - dependency-name: sassc
+    versions:
+    - ">= 2.1.a, < 2.2"
+  - dependency-name: sassc
+    versions:
+    - ">= 2.2.a, < 2.3"
+  - dependency-name: shoulda-matchers
+    versions:
+    - ">= 4.4.a, < 4.5"
+  - dependency-name: sidekiq
+    versions:
+    - ">= 6.a, < 7"
+  - dependency-name: puma
+    versions:
+    - 5.2.0
