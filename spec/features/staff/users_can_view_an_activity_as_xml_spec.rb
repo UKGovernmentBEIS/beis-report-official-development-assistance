@@ -282,10 +282,12 @@ RSpec.feature "Users can view an activity as XML" do
       context "when the activity has planned disbursements" do
         let(:activity) { create(:project_activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
+        let(:reporting_cycle) { ReportingCycle.new(activity, 1, 2019) }
 
         it "only includes planned disbursements which belong to the activity" do
-          _planned_disbursement = create(:planned_disbursement, parent_activity: activity)
-          _other_planned_disbursement = create(:planned_disbursement)
+          reporting_cycle.tick
+          PlannedDisbursementHistory.new(activity, financial_quarter: 1, financial_year: 2020).set_value(10)
+          PlannedDisbursementHistory.new(create(:programme_activity), financial_quarter: 1, financial_year: 2020).set_value(10)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
@@ -293,7 +295,6 @@ RSpec.feature "Users can view an activity as XML" do
         end
 
         it "only includes the latest values for planned disbursements" do
-          reporting_cycle = ReportingCycle.new(activity, 1, 2019)
           q2_planned_disbursement = PlannedDisbursementHistory.new(activity, financial_quarter: 2, financial_year: 2020)
           q3_planned_disbursement = PlannedDisbursementHistory.new(activity, financial_quarter: 3, financial_year: 2020)
 
@@ -311,7 +312,10 @@ RSpec.feature "Users can view an activity as XML" do
         end
 
         it "has the period end date when one is supplied" do
-          planned_disbursement = create(:planned_disbursement, parent_activity: activity, period_start_date: Date.today, period_end_date: Date.today + 3.months)
+          reporting_cycle.tick
+          quarter = FinancialQuarter.for_date(Date.today)
+          PlannedDisbursementHistory.new(activity, **quarter).set_value(10)
+          planned_disbursement = PlannedDisbursementOverview.new(activity).latest_values.first
           planned_disbursement_presenter = PlannedDisbursementXmlPresenter.new(planned_disbursement)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
@@ -322,7 +326,9 @@ RSpec.feature "Users can view an activity as XML" do
 
         context "when the planned disbursment receiving organisation type is 0" do
           it "does not output attributes on the receiving organisation element" do
-            _planned_disbursement = create(:planned_disbursement, parent_activity: activity, receiving_organisation_type: "0")
+            reporting_cycle.tick
+            PlannedDisbursementHistory.new(activity, **FinancialQuarter.for_date(Date.today)).set_value(10)
+            PlannedDisbursement.update_all(receiving_organisation_type: "0")
 
             visit organisation_activity_path(organisation, activity, format: :xml)
 

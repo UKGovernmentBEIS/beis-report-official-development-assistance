@@ -8,8 +8,10 @@ RSpec.describe "Users can delete a planned disbursement" do
       PublicActivity.with_tracking do
         organisation = user.organisation
         project = create(:project_activity, organisation: user.organisation)
-        editable_report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
-        planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report, financial_year: editable_report.financial_year + 1)
+
+        ReportingCycle.new(project, 1, 2018).tick
+        PlannedDisbursementHistory.new(project, financial_quarter: 2, financial_year: 2018).set_value(50)
+        planned_disbursement = PlannedDisbursementOverview.new(project).latest_values.last
 
         visit organisation_activity_path(organisation, project)
 
