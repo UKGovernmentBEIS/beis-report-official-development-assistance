@@ -1,6 +1,15 @@
 require "rails_helper"
 
 RSpec.describe PlannedDisbursement, type: :model do
+  before do
+    @default_scopes = PlannedDisbursement.default_scopes
+    PlannedDisbursement.default_scopes = []
+  end
+
+  after do
+    PlannedDisbursement.default_scopes = @default_scopes
+  end
+
   let(:activity) { build(:project_activity) }
 
   describe "validations" do
