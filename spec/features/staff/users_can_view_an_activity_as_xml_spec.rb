@@ -328,7 +328,7 @@ RSpec.feature "Users can view an activity as XML" do
           it "does not output attributes on the receiving organisation element" do
             reporting_cycle.tick
             PlannedDisbursementHistory.new(activity, **FinancialQuarter.for_date(Date.today)).set_value(10)
-            PlannedDisbursement.update_all(receiving_organisation_type: "0")
+            PlannedDisbursement.unscoped.update_all(receiving_organisation_type: "0")
 
             visit organisation_activity_path(organisation, activity, format: :xml)
 

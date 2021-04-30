@@ -51,6 +51,7 @@ class PlannedDisbursementOverview
 
   def historical_entries
     PlannedDisbursement
+      .unscoped
       .select(LATEST_ENTRY_PER_ACTIVITY_AND_QUARTER)
       .where(parent_activity_id: activity_ids)
       .order(parent_activity_id: :asc, financial_year: :asc, financial_quarter: :asc)
@@ -62,7 +63,7 @@ class PlannedDisbursementOverview
 
   class Snapshot
     def self.non_zero_forecasts_from(relation)
-      PlannedDisbursement.from(relation, :planned_disbursements).where.not(value: 0)
+      PlannedDisbursement.unscoped.from(relation, :planned_disbursements).where.not(value: 0)
     end
 
     def initialize(overview, report)

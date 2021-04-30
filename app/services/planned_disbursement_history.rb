@@ -47,7 +47,7 @@ class PlannedDisbursementHistory
   end
 
   def entries
-    entries = PlannedDisbursement.where(series_attributes)
+    entries = PlannedDisbursement.unscoped.where(series_attributes)
 
     if record_history?
       entries.joins(:report).merge(Report.in_historical_order)
@@ -99,7 +99,7 @@ class PlannedDisbursementHistory
       report: report
     )
 
-    entry = PlannedDisbursement.create!(attributes)
+    entry = PlannedDisbursement.unscoped.create!(attributes)
     entry.create_activity(key: "planned_disbursement.create", owner: @user)
   end
 
