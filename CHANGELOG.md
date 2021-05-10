@@ -627,6 +627,7 @@
 - Validate that activities have the correct organisation
 - Deleting a forecast doesn't delete data from approved reports
 - Handle the case of forecasts for past financial quarters during bulk importing
+- Fix a typo in the email notification sent to BEIS when a DP submits a report
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...HEAD
 [release-48]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...release-48
