@@ -17,19 +17,12 @@ RSpec.describe "Users can delete a planned disbursement" do
           click_on "Edit"
         end
 
-        expect {
-          click_on t("default.button.delete")
-        }.to change {
-          PlannedDisbursement.count
-        }.by(-1)
+        click_on t("default.button.delete")
 
         expect(page).to have_title t("document_title.activity.financials", name: project.title)
         expect(page).to have_content t("action.planned_disbursement.destroy.success")
 
         expect(page).to_not have_selector "##{planned_disbursement.id}"
-
-        auditable_event = PublicActivity::Activity.find_by(trackable_id: planned_disbursement.id, parameters: {associated_activity_id: project.id})
-        expect(auditable_event).to_not be_nil
       end
     end
   end

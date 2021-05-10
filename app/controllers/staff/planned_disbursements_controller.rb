@@ -68,7 +68,7 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
     history = history_for_update
     authorize history.latest_entry
 
-    history.clear!
+    history.clear
 
     flash[:notice] = t("action.planned_disbursement.destroy.success")
     redirect_to organisation_activity_path(@activity.organisation, @activity)
