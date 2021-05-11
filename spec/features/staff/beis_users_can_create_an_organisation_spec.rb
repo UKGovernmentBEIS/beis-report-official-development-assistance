@@ -19,11 +19,22 @@ RSpec.feature "BEIS users can create organisations" do
 
       expect(page).to have_content(t("page_title.organisation.new"))
       fill_in "organisation[name]", with: "My New Organisation"
+      fill_in "organisation[beis_organisation_reference]", with: "MNO"
       fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
       select "Government", from: "organisation[organisation_type]"
       select "Czech", from: "organisation[language_code]"
       select "Zloty", from: "organisation[default_currency]"
       click_button t("default.button.submit")
+
+      organisation = Organisation.order("created_at ASC").last
+
+      expect(organisation.name).to eq("My New Organisation")
+      expect(organisation.beis_organisation_reference).to eq("MNO")
+      expect(organisation.iati_reference).to eq("CZH-GOV-1234")
+      expect(organisation.organisation_type).to eq("10")
+      expect(organisation.language_code).to eq("cs")
+      expect(organisation.default_currency).to eq("PLN")
+      expect(organisation.role).to eq("delivery_partner")
     end
 
     scenario "organisation creation is tracked with public_activity" do

@@ -133,7 +133,9 @@ class Staff::OrganisationsController < Staff::BaseController
   end
 
   private def organisation_params
-    params.require(:organisation).permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference, :beis_organisation_reference)
+    params.require(:organisation)
+      .permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference, :beis_organisation_reference)
+      .merge(role: "delivery_partner")
   end
 
   private def level
