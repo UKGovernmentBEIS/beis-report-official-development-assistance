@@ -105,6 +105,10 @@ module Activities
 
         @activity.assign_attributes(@converter.to_h)
 
+        if @activity.sdg_1 || @activity.sdg_2 || @activity.sdg_3
+          @activity.sdgs_apply = true
+        end
+
         if row["Implementing organisation name"].present? || row["Implementing organisation sector"].present?
           implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
           implementing_organisation = implementing_organisation_builder.organisation
@@ -161,6 +165,10 @@ module Activities
         }
         @activity.assign_attributes(@converter.to_h)
         @activity.cache_roda_identifier
+
+        if @activity.sdg_1 || @activity.sdg_2 || @activity.sdg_3
+          @activity.sdgs_apply = true
+        end
 
         implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
         if row["Implementing organisation name"].present? || row["Implementing organisation sector"].present?
