@@ -24,11 +24,8 @@ class PlannedDisbursementHistory
     end
   end
 
-  def clear!
-    entries.each do |entry|
-      entry.create_activity(key: "planned_disbursement.destroy", owner: @user, parameters: {associated_activity_id: @activity.id})
-      entry.destroy
-    end
+  def clear
+    set_value(0)
   end
 
   def all_entries

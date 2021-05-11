@@ -23,9 +23,8 @@ RSpec.feature "Users can view programme level activities" do
     it "shows the programme level activity" do
       authenticate!(user: user)
 
-      fund_activity = create(:fund_activity, organisation: user.organisation)
+      fund_activity = create(:fund_activity)
       programme_activity = create(:programme_activity,
-        organisation: user.organisation,
         parent: fund_activity,
         extending_organisation: user.organisation)
       project = create(:project_activity, parent: programme_activity, organisation: user.organisation)

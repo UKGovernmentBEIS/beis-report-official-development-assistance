@@ -68,7 +68,7 @@ RSpec.feature "Users can view project level activities" do
       fund = create(:fund_activity)
       programme = create(:programme_activity)
       fund.child_activities << programme
-      project = create(:project_activity, organisation: user.organisation, transparency_identifier: "GB-GOV-13-PROJECT")
+      project = create(:project_activity, transparency_identifier: "GB-GOV-13-PROJECT")
       programme.child_activities << project
 
       visit organisation_activity_path(project.organisation, project)

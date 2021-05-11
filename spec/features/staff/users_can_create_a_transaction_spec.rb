@@ -275,12 +275,12 @@ RSpec.feature "Users can create a transaction" do
   context "when they are a government delivery partner organisation user" do
     before { authenticate!(user: user) }
     let(:user) { create(:delivery_partner_user) }
+    let(:beis_user) { create(:beis_user) }
 
     scenario "they cannot create transactions on a programme" do
-      fund_activity = create(:fund_activity, :with_report, organisation: user.organisation)
+      fund_activity = create(:fund_activity, :with_report)
       programme_activity = create(:programme_activity,
         parent: fund_activity,
-        organisation: user.organisation,
         extending_organisation: user.organisation)
 
       visit organisation_activity_path(programme_activity.organisation, programme_activity)

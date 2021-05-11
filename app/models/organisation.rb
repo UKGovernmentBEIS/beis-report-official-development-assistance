@@ -38,4 +38,8 @@ class Organisation < ApplicationRecord
   def self.service_owner
     find_by(iati_reference: SERVICE_OWNER_IATI_REFERENCE)
   end
+
+  def delivery_partner?
+    !service_owner?
+  end
 end

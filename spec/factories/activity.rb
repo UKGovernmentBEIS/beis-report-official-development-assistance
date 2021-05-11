@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :activity do
+  factory :__activity do
     title { Faker::Lorem.sentence }
     delivery_partner_identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
     roda_identifier_fragment { Faker::Alphanumeric.alpha(number: 5) }

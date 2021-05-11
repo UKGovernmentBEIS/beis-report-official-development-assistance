@@ -2,7 +2,7 @@ RSpec.feature "Users can delete a transaction" do
   let(:delivery_partner_user) { create(:delivery_partner_user) }
   let(:beis_user) { create(:beis_user) }
 
-  let!(:activity) { create(:programme_activity, organisation: delivery_partner_user.organisation) }
+  let!(:activity) { create(:programme_activity) }
   let!(:report) { create(:report, :active, organisation: delivery_partner_user.organisation, fund: activity.associated_fund) }
   let!(:transaction) { create(:transaction, parent_activity: activity, report: report) }
 
@@ -33,7 +33,9 @@ RSpec.feature "Users can delete a transaction" do
   context "when signed in as a delivery partner" do
     before { authenticate!(user: delivery_partner_user) }
 
-    scenario "deleting a transaction on a programme" do
+    let!(:activity) { create(:project_activity, organisation: delivery_partner_user.organisation) }
+
+    scenario "deleting a transaction on a project" do
       PublicActivity.with_tracking do
         visit organisation_activity_path(activity.organisation, activity)
 

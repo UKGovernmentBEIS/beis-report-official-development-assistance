@@ -120,6 +120,27 @@ RSpec.describe ImportPlannedDisbursements do
     end
   end
 
+  context "when the data includes a forecast in the past" do
+    before do
+      importer.import([
+        {
+          "Activity RODA Identifier" => project.roda_identifier,
+          "FC 2015/16 FY Q3 (Oct, Nov, Dec)" => "200436",
+        },
+      ])
+    end
+
+    it "reports an error" do
+      expect(importer.errors).to eq([
+        ImportPlannedDisbursements::Error.new(0, "FC 2015/16 FY Q3 (Oct, Nov, Dec)", "FC 2015/16 FY Q3 (Oct, Nov, Dec)", t("importer.errors.planned_disbursement.in_the_past")),
+      ])
+    end
+
+    it "does not import any forecasts" do
+      expect(forecast_values).to eq([])
+    end
+  end
+
   context "when the data includes empty cells" do
     before do
       importer.import([

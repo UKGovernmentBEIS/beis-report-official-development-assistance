@@ -29,7 +29,7 @@ RSpec.describe "Users can view planned disbursements" do
     before { authenticate!(user: beis_user) }
 
     scenario "they can view planned disbursements on projects" do
-      project = create(:project_activity, organisation: beis_user.organisation)
+      project = create(:project_activity)
       planned_disbursement = create(:planned_disbursement, parent_activity: project)
 
       visit organisation_activity_path(beis_user.organisation, project)
@@ -39,7 +39,7 @@ RSpec.describe "Users can view planned disbursements" do
     end
 
     scenario "they can view planned disbursements on third-party projects" do
-      third_party_project = create(:third_party_project_activity, organisation: beis_user.organisation)
+      third_party_project = create(:third_party_project_activity)
       planned_disbursement = create(:planned_disbursement, parent_activity: third_party_project)
 
       visit organisation_activity_path(beis_user.organisation, third_party_project)

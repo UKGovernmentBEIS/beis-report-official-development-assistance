@@ -42,9 +42,9 @@ RSpec.describe PlannedDisbursementOverview do
       expect { overview.snapshot(Report.new).all_quarters }.to raise_error(TypeError)
     end
 
-    context "when a forecast has been revised with a zero value" do
+    context "when a forecast has been deleted" do
       before do
-        histories[[2017, 2]].set_value(0)
+        histories[[2017, 2]].clear
       end
 
       it "omits that forecast from the result set" do
@@ -112,9 +112,9 @@ RSpec.describe PlannedDisbursementOverview do
       ])
     end
 
-    context "when a forecast has been revised with a zero value" do
+    context "when a forecast has been deleted" do
       before do
-        histories[[2018, 4]].set_value(0)
+        histories[[2018, 4]].clear
       end
 
       it "omits that forecast from the result set" do

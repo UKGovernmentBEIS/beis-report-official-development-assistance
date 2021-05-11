@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe PlannedDisbursement, type: :model do
-  let(:activity) { build(:activity) }
+  let(:activity) { build(:project_activity) }
 
   describe "validations" do
     it { should validate_presence_of(:planned_disbursement_type) }

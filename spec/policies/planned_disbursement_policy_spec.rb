@@ -30,7 +30,7 @@ RSpec.describe PlannedDisbursementPolicy do
     end
 
     context "when the activity is a project" do
-      let(:activity) { create(:project_activity, organisation: user.organisation) }
+      let(:activity) { create(:project_activity) }
 
       it { is_expected.to permit_action(:show) }
 
@@ -41,7 +41,7 @@ RSpec.describe PlannedDisbursementPolicy do
     end
 
     context "when the activity is a third party project" do
-      let(:activity) { create(:third_party_project_activity, organisation: user.organisation) }
+      let(:activity) { create(:third_party_project_activity) }
 
       it { is_expected.to permit_action(:show) }
 
@@ -56,10 +56,9 @@ RSpec.describe PlannedDisbursementPolicy do
     let(:user) { create(:delivery_partner_user) }
 
     context "when the activity is a fund" do
-      let(:activity) { create(:fund_activity, organisation: user.organisation) }
+      let(:activity) { create(:fund_activity) }
 
-      it { is_expected.to permit_action(:show) }
-
+      it { is_expected.to forbid_action(:show) }
       it { is_expected.to forbid_action(:create) }
       it { is_expected.to forbid_action(:edit) }
       it { is_expected.to forbid_action(:update) }
@@ -67,10 +66,9 @@ RSpec.describe PlannedDisbursementPolicy do
     end
 
     context "when the activity is a programme" do
-      let(:activity) { create(:programme_activity, organisation: user.organisation) }
+      let(:activity) { create(:programme_activity) }
 
-      it { is_expected.to permit_action(:show) }
-
+      it { is_expected.to forbid_action(:show) }
       it { is_expected.to forbid_action(:create) }
       it { is_expected.to forbid_action(:edit) }
       it { is_expected.to forbid_action(:update) }

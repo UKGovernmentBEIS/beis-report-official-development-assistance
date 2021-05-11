@@ -8,7 +8,7 @@ RSpec.feature "Users can view an organisation as XML" do
     context "when the user is viewing the BEIS organisation show page" do
       scenario "they cannot download the organisation's projects as XML" do
         beis = user.organisation
-        _project = create(:project_activity, organisation: beis)
+        _programme = create(:programme_activity, organisation: beis)
 
         visit organisation_path(beis)
 
@@ -140,7 +140,8 @@ RSpec.feature "Users can view an organisation as XML" do
       end
 
       scenario "the XML file does not contain fund or programme activities in the organisation" do
-        _fund = create(:fund_activity, organisation: organisation)
+        beis = create(:beis_organisation)
+        _fund = create(:fund_activity, organisation: beis)
         _programme = create(:programme_activity, extending_organisation: organisation)
 
         visit organisation_path(organisation, format: :xml)
@@ -218,7 +219,7 @@ RSpec.feature "Users can view an organisation as XML" do
           visit organisation_path(organisation, format: :xml, level: :project)
           xml = Nokogiri::XML::Document.parse(page.body)
 
-          expect(xml.xpath("//iati-activity/transaction/value").map(&:text)).to eql(["100.0", "150.0", "200.0"])
+          expect(xml.xpath("//iati-activity/transaction/value").map(&:text)).to match_array(["100.0", "150.0", "200.0"])
           expect(xml.xpath("//iati-activity/transaction/transaction-date/@iso-date").map(&:text)).to eql(["2018-06-30", "2018-06-30", "2019-12-31"])
         end
       end

@@ -7,7 +7,7 @@ RSpec.describe Activities::ImportFromCsv do
 
   # NB: 'let!' to prevent `to change { Activity.count }` from giving confusing results
   let!(:existing_activity) do
-    create(:activity) do |activity|
+    create(:project_activity) do |activity|
       activity.implementing_organisations = [
         create(:implementing_organisation, activity: activity),
       ]
@@ -192,6 +192,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives (DP Definition)"])
       expect(existing_activity.beis_identifier).to eq(existing_activity_attributes["BEIS ID"])
       expect(existing_activity.uk_dp_named_contact).to eq(existing_activity_attributes["UK DP Named Contact"])
+      expect(existing_activity.sdgs_apply).to eql(true)
 
       expect(existing_activity.implementing_organisations.count).to eql(1)
       expect(existing_activity.implementing_organisations.first.name).to eq(existing_activity_attributes["Implementing organisation name"])
@@ -229,7 +230,7 @@ RSpec.describe Activities::ImportFromCsv do
     end
 
     it "has an error and does not update any other activities if a region does not exist" do
-      activity_2 = create(:activity)
+      activity_2 = create(:project_activity)
       invalid_activity_attributes = existing_activity_attributes.merge({
         "RODA ID" => activity_2.roda_identifier_compound,
         "Recipient Region" => "111111",
@@ -437,6 +438,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.beis_identifier).to eq(new_activity_attributes["BEIS ID"])
       expect(new_activity.uk_dp_named_contact).to eq(new_activity_attributes["UK DP Named Contact"])
       expect(new_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
+      expect(new_activity.sdgs_apply).to eql(true)
     end
 
     context "with a parent activity that is incomplete" do

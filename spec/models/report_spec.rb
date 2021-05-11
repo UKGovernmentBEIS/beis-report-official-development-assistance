@@ -158,7 +158,7 @@ RSpec.describe Report, type: :model do
 
   describe "reportable_activities" do
     let!(:report) { create(:report) }
-    let!(:programme) { create(:programme_activity, parent: report.fund, organisation: report.organisation) }
+    let!(:programme) { create(:programme_activity, parent: report.fund) }
     let!(:project_a) { create(:project_activity, parent: programme, organisation: report.organisation) }
     let!(:project_b) { create(:project_activity, parent: programme, organisation: report.organisation) }
     let!(:third_party_project) { create(:third_party_project_activity, parent: project_b, organisation: report.organisation) }

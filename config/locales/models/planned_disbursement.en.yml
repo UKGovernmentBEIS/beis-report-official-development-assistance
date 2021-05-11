@@ -68,3 +68,4 @@ en:
         unknown_identifier: Identifier is not recognised
         invalid_characters: This cell contains invalid characters
         unrecognised_column: The column heading is not recognised
+        in_the_past: The forecast must be for a future financial quarter

@@ -30,6 +30,15 @@
   %activity-date{"iso-date" => activity.planned_end_date, type: "3"}/
   - if activity.actual_end_date?
     %activity-date{"iso-date" => activity.actual_end_date, type: "4"}/
+  %contact-info{"type" => "1"}
+    %organisation
+      %narrative= I18n.t("contact_info.organisation")
+    %department
+      %narrative= I18n.t("contact_info.department")
+    %email= I18n.t("contact_info.email")
+    %website= I18n.t("contact_info.website")
+    %mailing-address
+      %narrative= I18n.t("contact_info.mailing_address")
   - if activity.recipient_country?
     %recipient-country{"code" => activity.recipient_country}
       %narrative= country_name_from_code(activity.recipient_country)
