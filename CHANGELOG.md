@@ -632,6 +632,8 @@
 
 ## [unreleased]
 
+- Replace the broken sector code hint link with an easier to maintain BEIS Zendesk link
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...HEAD
 [release-49]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...release-49
 [release-48]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...release-48
