@@ -621,7 +621,7 @@
 - Fix bug that prevented historical reports from being accessed
 - Sum programme and child activity transactions by financial quarter in IATI XML
 
-## [unreleased]
+## [release-49] - 2021-05-11
 
 - Add BEIS contact info to the IATI XML
 - Validate that activities have the correct organisation
@@ -630,7 +630,10 @@
 - Fix a typo in the email notification sent to BEIS when a DP submits a report
 - Infer the value of `sdgs_apply` when importing new or existing activities from CSV
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...HEAD
+[release-49]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...release-49
 [release-48]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...release-48
 [release-47]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-46...release-47
 [release-46]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-45...release-46
