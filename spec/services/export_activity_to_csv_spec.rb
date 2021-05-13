@@ -74,6 +74,13 @@ RSpec.describe ExportActivityToCsv do
     expect(export_service.call[column_position]).to eql("GCRF")
   end
 
+  it "includes the delivery partner's short_name in the export" do
+    expect(export_service.headers).to include("Delivery partner short name")
+
+    column_position = export_service.headers.index("Delivery partner short name")
+    expect(export_service.call[column_position]).to eql project.extending_organisation.beis_organisation_reference
+  end
+
   context "when the project has a BEIS identifier" do
     before do
       project.update!(beis_identifier: "GCRF_AHRC_NS_AH1001")
