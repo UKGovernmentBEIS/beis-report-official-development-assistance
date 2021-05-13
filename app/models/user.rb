@@ -16,6 +16,8 @@ class User < ApplicationRecord
     organisation_id: :organisation,
   }.freeze
 
+  scope :active, -> { where(active: true) }
+
   def role_name
     I18n.t("activerecord.attributes.user.roles.#{role}")
   end
