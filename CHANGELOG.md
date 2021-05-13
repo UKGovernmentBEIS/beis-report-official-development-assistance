@@ -634,6 +634,7 @@
 
 - Replace the broken sector code hint link with an easier to maintain BEIS Zendesk link
 - Include 'source fund' and 'delivery partner short name' in CSV export
+- Prevent report mailer from sending emails to inactive users
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...HEAD
 [release-49]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...release-49
