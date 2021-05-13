@@ -7,11 +7,25 @@ RSpec.describe Organisation, type: :model do
     it { should validate_presence_of(:language_code) }
     it { should validate_presence_of(:default_currency) }
     it { should validate_presence_of(:iati_reference) }
-    it { should validate_presence_of(:beis_organisation_reference) }
 
     it { should validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
     it { should validate_uniqueness_of(:name).ignoring_case_sensitivity }
     it { should validate_uniqueness_of(:beis_organisation_reference).ignoring_case_sensitivity }
+
+    context "when the organisation is a service owner" do
+      subject { build(:beis_organisation) }
+      it { should validate_presence_of(:beis_organisation_reference) }
+    end
+
+    context "when the organisation is a delivery partner" do
+      subject { build(:delivery_partner_organisation) }
+      it { should validate_presence_of(:beis_organisation_reference) }
+    end
+
+    context "when the organisation is a matched effort provider" do
+      subject { build(:matched_effort_provider) }
+      it { should_not validate_presence_of(:beis_organisation_reference) }
+    end
 
     describe "sanitation" do
       it { should strip_attribute(:iati_reference) }
@@ -139,10 +153,10 @@ RSpec.describe Organisation, type: :model do
 
   describe "#ensure_beis_organisation_reference_is_uppercase" do
     it "converts the value of beis_organisation_reference to uppercase" do
-      organisation = build(:delivery_partner_organisation, beis_organisation_reference: "testme")
+      organisation = build(:delivery_partner_organisation, beis_organisation_reference: "test")
 
       expect(organisation.valid?).to be_truthy
-      expect(organisation.beis_organisation_reference).to eql "TESTME"
+      expect(organisation.beis_organisation_reference).to eql "TEST"
     end
   end
 end

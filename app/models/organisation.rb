@@ -21,10 +21,11 @@ class Organisation < ApplicationRecord
     uniqueness: {case_sensitive: false},
     presence: true,
     format: {with: /\A[a-zA-Z]{2,}-[a-zA-Z]{3}-.+\z/, message: I18n.t("activerecord.errors.models.organisation.attributes.iati_reference.format")}
+  validates :beis_organisation_reference, uniqueness: {case_sensitive: false}
   validates :beis_organisation_reference,
     presence: true,
-    uniqueness: {case_sensitive: false},
-    format: {with: /\A[A-Z]{2,10}\z/, message: I18n.t("activerecord.errors.models.organisation.attributes.beis_organisation_reference.format")}
+    unless: proc { |organisation| organisation.matched_effort_provider? },
+    format: {with: /\A[A-Z]{2,5}\z/, message: I18n.t("activerecord.errors.models.organisation.attributes.beis_organisation_reference.format")}
 
   scope :sorted_by_name, -> { order(name: :asc) }
   scope :delivery_partners, -> { sorted_by_name.where(role: "delivery_partner") }

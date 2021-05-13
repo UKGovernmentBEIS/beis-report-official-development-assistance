@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :__organisation do
     sequence(:name) { |n| "#{Faker::Company.name} #{n}" }
-    beis_organisation_reference { Faker::Alphanumeric.alpha(number: 10).upcase! }
+    beis_organisation_reference { Faker::Alphanumeric.alpha(number: 5).upcase! }
     iati_reference { "GB-GOV-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
     organisation_type { "10" }
     default_currency { "GBP" }

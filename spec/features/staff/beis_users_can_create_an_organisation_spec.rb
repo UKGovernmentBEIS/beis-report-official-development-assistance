@@ -26,6 +26,8 @@ RSpec.feature "BEIS users can create organisations" do
       select "Zloty", from: "organisation[default_currency]"
       click_button t("default.button.submit")
 
+      expect(page).to have_content(t("action.organisation.create.success"))
+
       organisation = Organisation.order("created_at ASC").last
 
       expect(organisation.name).to eq("My New Organisation")
@@ -46,7 +48,6 @@ RSpec.feature "BEIS users can create organisations" do
 
       expect(page).to have_content(t("page_title.organisation.matched_effort_provider.new"))
       fill_in "organisation[name]", with: "My New Organisation"
-      fill_in "organisation[beis_organisation_reference]", with: "MNO"
       fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
       select "Government", from: "organisation[organisation_type]"
       select "Czech", from: "organisation[language_code]"
@@ -55,8 +56,9 @@ RSpec.feature "BEIS users can create organisations" do
 
       organisation = Organisation.order("created_at ASC").last
 
+      expect(page).to have_content(t("action.organisation.create.success"))
+
       expect(organisation.name).to eq("My New Organisation")
-      expect(organisation.beis_organisation_reference).to eq("MNO")
       expect(organisation.iati_reference).to eq("CZH-GOV-1234")
       expect(organisation.organisation_type).to eq("10")
       expect(organisation.language_code).to eq("cs")
