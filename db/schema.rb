@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_11_121941) do
+ActiveRecord::Schema.define(version: 2021_05_13_085444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -156,6 +156,7 @@ ActiveRecord::Schema.define(version: 2021_05_11_121941) do
     t.string "iati_reference"
     t.string "beis_organisation_reference"
     t.integer "role"
+    t.boolean "active", default: true
     t.index ["iati_reference"], name: "index_organisations_on_iati_reference", unique: true
   end
 

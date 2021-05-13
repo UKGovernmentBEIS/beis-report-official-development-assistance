@@ -135,7 +135,7 @@ class Staff::OrganisationsController < Staff::BaseController
 
   private def organisation_params
     params.require(:organisation)
-      .permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference, :beis_organisation_reference, :role)
+      .permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference, :beis_organisation_reference, :role, :active)
   end
 
   private def level

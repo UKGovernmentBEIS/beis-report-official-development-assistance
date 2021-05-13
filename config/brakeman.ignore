@@ -3,13 +3,13 @@
     {
       "warning_type": "Mass Assignment",
       "warning_code": 105,
-      "fingerprint": "3cf80b586f3e0c8a93c52132b54e6b1c401197f838a086bd63eba5a09efbd729",
+      "fingerprint": "e80a1115847632e735c8ffb37ac93551e98904cd2d90ce636b8b7cbb1c1c5353",
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
       "file": "app/controllers/staff/organisations_controller.rb",
       "line": 138,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
-      "code": "params.require(:organisation).permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference, :beis_organisation_reference, :role)",
+      "code": "params.require(:organisation).permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference, :beis_organisation_reference, :role, :active)",
       "render_path": null,
       "location": {
         "type": "method",
@@ -18,7 +18,7 @@
       },
       "user_input": ":role",
       "confidence": "Medium",
-      "note": "Role in this context does not give a user a specific role, so there is no risk of privilege escalation (which I think is what this warning is getting at)"
+      "note": ""
     },
     {
       "warning_type": "Mass Assignment",
@@ -41,6 +41,6 @@
       "note": "The only role that currently exists is administrator so there is no risk of privilege escalation at the moment."
     }
   ],
-  "updated": "2021-05-13 16:24:46 +0100",
+  "updated": "2021-05-13 16:42:16 +0100",
   "brakeman_version": "5.0.1"
 }

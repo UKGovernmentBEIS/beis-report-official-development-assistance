@@ -15,8 +15,12 @@ en:
         default_currency: Default currency
         language_code: Language code
         beis_organisation_reference: Short name
+        active:
+          true: Active
+          false: Inactive
     legend:
       organisation:
+        active: What is the status of the organisation?
     hint:
       organisation:
         iati_reference_html: Machine-readable identification string for the organisation. %{link}.

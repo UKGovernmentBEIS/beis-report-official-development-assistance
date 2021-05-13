@@ -17,4 +17,11 @@
                      default_currency_options,
                      :code,
                      :name
+- if f.object.role == "matched_effort_provider"
+  = f.govuk_collection_radio_buttons :active,
+    organisation_active_options,
+    :id,
+    :name,
+    inline: true,
+    legend: -> { tag.legend(t("form.legend.organisation.active"), class: "govuk-fieldset__legend") }
 = f.govuk_submit t("default.button.submit")

@@ -27,6 +27,7 @@ RSpec.feature "BEIS users can create organisations" do
       click_button t("default.button.submit")
 
       expect(page).to have_content(t("action.organisation.create.success"))
+      expect(page).to_not have_field("organisation[active]", type: "radio")
 
       organisation = Organisation.order("created_at ASC").last
 
@@ -37,6 +38,7 @@ RSpec.feature "BEIS users can create organisations" do
       expect(organisation.language_code).to eq("cs")
       expect(organisation.default_currency).to eq("PLN")
       expect(organisation.role).to eq("delivery_partner")
+      expect(organisation.active).to eq(true)
     end
 
     scenario "successfully creating a matched effort provider organisation" do
@@ -47,11 +49,15 @@ RSpec.feature "BEIS users can create organisations" do
       click_link t("page_content.organisations.matched_effort_providers.button.create")
 
       expect(page).to have_content(t("page_title.organisation.matched_effort_provider.new"))
+      expect(page).to have_field("organisation[active]", type: "radio")
+
       fill_in "organisation[name]", with: "My New Organisation"
       fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
       select "Government", from: "organisation[organisation_type]"
       select "Czech", from: "organisation[language_code]"
       select "Zloty", from: "organisation[default_currency]"
+      choose t("form.label.organisation.active.true"), name: "organisation[active]"
+
       click_button t("default.button.submit")
 
       organisation = Organisation.order("created_at ASC").last
@@ -64,6 +70,7 @@ RSpec.feature "BEIS users can create organisations" do
       expect(organisation.language_code).to eq("cs")
       expect(organisation.default_currency).to eq("PLN")
       expect(organisation.role).to eq("matched_effort_provider")
+      expect(organisation.active).to eq(true)
     end
 
     scenario "organisation creation is tracked with public_activity" do
