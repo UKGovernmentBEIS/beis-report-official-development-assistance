@@ -2,7 +2,7 @@ require "rails_helper"
 require "csv"
 
 RSpec.describe ExportActivityToCsv do
-  let(:project) { travel_to_quarter(1, 2020) { create(:project_activity, :with_report) } }
+  let(:project) { travel_to_quarter(1, 2020) { create(:project_activity, :gcrf_funded, :with_report) } }
   let(:report) { Report.for_activity(project).in_historical_order.first }
   let(:export_service) { ExportActivityToCsv.new(activity: project, report: report) }
 
@@ -65,6 +65,20 @@ RSpec.describe ExportActivityToCsv do
       expect(export_service.headers.drop(15).take(20)).to eq(next_twenty_quarter_forecast_headers)
       expect(export_service.call.drop(15).take(20)).to eq(next_twenty_quarter_forecast_values)
     end
+  end
+
+  it "includes the source fund name in the export" do
+    expect(export_service.headers).to include("Source fund")
+
+    column_position = export_service.headers.index("Source fund")
+    expect(export_service.call[column_position]).to eql("GCRF")
+  end
+
+  it "includes the delivery partner's short_name in the export" do
+    expect(export_service.headers).to include("Delivery partner short name")
+
+    column_position = export_service.headers.index("Delivery partner short name")
+    expect(export_service.call[column_position]).to eql project.extending_organisation.beis_organisation_reference
   end
 
   context "when the project has a BEIS identifier" do
