@@ -3,10 +3,8 @@ data:
     description: Core
   - code: 1
     description: UKRI Collective Fund (2017 allocation)
-  - code: 2
-    description: Academies Collective Fund
   - code: 3
-    description: Resilient Futures
+    description: "Academies Collective Fund: Resilient Futures"
   - code: 4
     description: Coherence and Impact
   - code: 5
