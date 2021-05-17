@@ -461,7 +461,7 @@ RSpec.describe ActivityPresenter do
       activity = build(:project_activity, gcrf_strategic_area: %w[1 3])
       result = described_class.new(activity)
 
-      expect(result.gcrf_strategic_area).to eql "UKRI Collective Fund (2017 allocation) and Resilient Futures"
+      expect(result.gcrf_strategic_area).to eql "UKRI Collective Fund (2017 allocation) and Academies Collective Fund: Resilient Futures"
     end
   end
 
