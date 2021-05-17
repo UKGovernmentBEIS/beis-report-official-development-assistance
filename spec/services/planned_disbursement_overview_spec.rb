@@ -1,19 +1,15 @@
 RSpec.describe PlannedDisbursementOverview do
   let(:overview) { PlannedDisbursementOverview.new(activity) }
-  let(:histories) { {} }
 
-  def forecast_values(records)
-    records.map do |entry|
-      [entry.financial_quarter, entry.financial_year, entry.value]
+  let :histories do
+    Hash.new do |hash, (year, quarter)|
+      hash[[year, quarter]] = PlannedDisbursementHistory.new(activity, financial_quarter: quarter, financial_year: year)
     end
   end
 
-  before do
-    [2017, 2018].each do |year|
-      (1..4).each do |quarter|
-        history = PlannedDisbursementHistory.new(activity, financial_quarter: quarter, financial_year: year)
-        histories[[year, quarter]] = history
-      end
+  def forecast_values(records)
+    records.map do |entry|
+      [entry.financial_year, entry.financial_quarter, entry.value]
     end
   end
 
@@ -32,9 +28,9 @@ RSpec.describe PlannedDisbursementOverview do
       forecasts = forecast_values(overview.latest_values)
 
       expect(forecasts).to eq([
-        [1, 2017, 10],
-        [2, 2017, 20],
-        [3, 2017, 40],
+        [2017, 1, 10],
+        [2017, 2, 20],
+        [2017, 3, 40],
       ])
     end
 
@@ -51,8 +47,8 @@ RSpec.describe PlannedDisbursementOverview do
         forecasts = forecast_values(overview.latest_values)
 
         expect(forecasts).to eq([
-          [1, 2017, 10],
-          [3, 2017, 40],
+          [2017, 1, 10],
+          [2017, 3, 40],
         ])
       end
     end
@@ -101,14 +97,14 @@ RSpec.describe PlannedDisbursementOverview do
       forecasts = forecast_values(overview.latest_values)
 
       expect(forecasts).to eq([
-        [1, 2017, 10],
-        [2, 2017, 60],
-        [3, 2017, 100],
-        [4, 2017, 70],
-        [1, 2018, 110],
-        [2, 2018, 120],
-        [3, 2018, 130],
-        [4, 2018, 140],
+        [2017, 1, 10],
+        [2017, 2, 60],
+        [2017, 3, 100],
+        [2017, 4, 70],
+        [2018, 1, 110],
+        [2018, 2, 120],
+        [2018, 3, 130],
+        [2018, 4, 140],
       ])
     end
 
@@ -121,13 +117,13 @@ RSpec.describe PlannedDisbursementOverview do
         forecasts = forecast_values(overview.latest_values)
 
         expect(forecasts).to eq([
-          [1, 2017, 10],
-          [2, 2017, 60],
-          [3, 2017, 100],
-          [4, 2017, 70],
-          [1, 2018, 110],
-          [2, 2018, 120],
-          [3, 2018, 130],
+          [2017, 1, 10],
+          [2017, 2, 60],
+          [2017, 3, 100],
+          [2017, 4, 70],
+          [2018, 1, 110],
+          [2018, 2, 120],
+          [2018, 3, 130],
         ])
       end
     end
@@ -139,7 +135,7 @@ RSpec.describe PlannedDisbursementOverview do
       end
 
       it "returns the forecast value for a particular quarter" do
-        expected_values.each do |quarter, year, amount|
+        expected_values.each do |year, quarter, amount|
           value = overview.snapshot(report).all_quarters.value_for(financial_quarter: quarter, financial_year: year)
           expect(value).to eq(amount)
         end
@@ -151,11 +147,11 @@ RSpec.describe PlannedDisbursementOverview do
 
       let(:expected_values) {
         [
-          [1, 2017, 10],
-          [4, 2017, 20],
-          [1, 2018, 30],
-          [3, 2018, 40],
-          [4, 2018, 50],
+          [2017, 1, 10],
+          [2017, 4, 20],
+          [2018, 1, 30],
+          [2018, 3, 40],
+          [2018, 4, 50],
         ]
       }
 
@@ -167,12 +163,12 @@ RSpec.describe PlannedDisbursementOverview do
 
       let(:expected_values) {
         [
-          [1, 2017, 10],
-          [2, 2017, 60],
-          [4, 2017, 70],
-          [1, 2018, 30],
-          [2, 2018, 80],
-          [4, 2018, 50],
+          [2017, 1, 10],
+          [2017, 2, 60],
+          [2017, 4, 70],
+          [2018, 1, 30],
+          [2018, 2, 80],
+          [2018, 4, 50],
         ]
       }
 
@@ -188,13 +184,13 @@ RSpec.describe PlannedDisbursementOverview do
       6.times { reporting_cycle.tick }
 
       expected_values = [
-        [1, 2017, 10],
-        [2, 2017, 60],
-        [3, 2017, 100],
-        [4, 2017, 70],
+        [2017, 1, 10],
+        [2017, 2, 60],
+        [2017, 3, 100],
+        [2017, 4, 70],
       ]
 
-      expected_values.each do |quarter, year, amount|
+      expected_values.each do |year, quarter, amount|
         report = Report.for_activity(activity).find_by(financial_year: year, financial_quarter: quarter)
         expect(overview.snapshot(report).value_for_report_quarter).to eq(amount)
       end
@@ -210,11 +206,11 @@ RSpec.describe PlannedDisbursementOverview do
 
       let(:expected_values) {
         [
-          [1, 2017, 10],
-          [4, 2017, 20],
-          [1, 2018, 30],
-          [3, 2018, 40],
-          [4, 2018, 50],
+          [2017, 1, 10],
+          [2017, 4, 20],
+          [2018, 1, 30],
+          [2018, 3, 40],
+          [2018, 4, 50],
         ]
       }
 
@@ -230,12 +226,12 @@ RSpec.describe PlannedDisbursementOverview do
 
       before do
         Report.where(id: reports.first.id).update_all(financial_quarter: 1)
-        quarters = Report.in_historical_order.map { |r| [r.financial_quarter, r.financial_year] }
+        quarters = Report.in_historical_order.map { |r| [r.financial_year, r.financial_quarter] }
 
         expect(quarters).to eq([
-          [1, 2016],
-          [1, 2016],
-          [4, 2015],
+          [2016, 1],
+          [2016, 1],
+          [2015, 4],
         ])
       end
 
@@ -243,14 +239,14 @@ RSpec.describe PlannedDisbursementOverview do
         forecasts = forecast_values(overview.latest_values)
 
         expect(forecasts).to eq([
-          [1, 2017, 10],
-          [2, 2017, 60],
-          [3, 2017, 100],
-          [4, 2017, 70],
-          [1, 2018, 110],
-          [2, 2018, 120],
-          [3, 2018, 130],
-          [4, 2018, 140],
+          [2017, 1, 10],
+          [2017, 2, 60],
+          [2017, 3, 100],
+          [2017, 4, 70],
+          [2018, 1, 110],
+          [2018, 2, 120],
+          [2018, 3, 130],
+          [2018, 4, 140],
         ])
       end
 
@@ -259,14 +255,14 @@ RSpec.describe PlannedDisbursementOverview do
 
         let(:expected_values) {
           [
-            [1, 2017, 10],
-            [2, 2017, 60],
-            [3, 2017, 100],
-            [4, 2017, 70],
-            [1, 2018, 110],
-            [2, 2018, 120],
-            [3, 2018, 130],
-            [4, 2018, 140],
+            [2017, 1, 10],
+            [2017, 2, 60],
+            [2017, 3, 100],
+            [2017, 4, 70],
+            [2018, 1, 110],
+            [2018, 2, 120],
+            [2018, 3, 130],
+            [2018, 4, 140],
           ]
         }
 
@@ -278,12 +274,12 @@ RSpec.describe PlannedDisbursementOverview do
 
         let(:expected_values) {
           [
-            [1, 2017, 10],
-            [2, 2017, 60],
-            [4, 2017, 70],
-            [1, 2018, 30],
-            [2, 2018, 80],
-            [4, 2018, 50],
+            [2017, 1, 10],
+            [2017, 2, 60],
+            [2017, 4, 70],
+            [2018, 1, 30],
+            [2018, 2, 80],
+            [2018, 4, 50],
           ]
         }
 
@@ -303,7 +299,7 @@ RSpec.describe PlannedDisbursementOverview do
 
       it "only includes forecasts for the given activity" do
         expect(forecast_values(project_overview.latest_values)).to eq([
-          [1, 2019, 200],
+          [2019, 1, 200],
         ])
 
         expect(overview.latest_values).to all(satisfy { |forecast|
