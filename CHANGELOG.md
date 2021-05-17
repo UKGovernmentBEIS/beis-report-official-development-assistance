@@ -636,6 +636,7 @@
 - Include 'source fund' and 'delivery partner short name' in CSV export
 - Prevent report mailer from sending emails to inactive users
 - Merge Academies Collective Fund and Resilient Futures GCRF strategic areas into one
+- Show organisation short name on organisations index page
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...HEAD
 [release-49]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...release-49
