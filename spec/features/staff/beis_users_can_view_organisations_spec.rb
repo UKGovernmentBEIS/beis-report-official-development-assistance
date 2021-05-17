@@ -18,6 +18,7 @@ RSpec.feature "BEIS users can view other organisations" do
       expect(page).to have_content(t("page_title.organisation.index"))
       expect(page).to have_content(user.organisation.name)
       expect(page).to have_content(another_organisation.name)
+      expect(page).to have_content(another_organisation.beis_organisation_reference)
     end
   end
 end
