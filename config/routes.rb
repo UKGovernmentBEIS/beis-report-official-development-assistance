@@ -22,7 +22,13 @@ Rails.application.routes.draw do
         get "historic" => "activities#historic"
       end
     end
-    resources :organisations, except: [:destroy] do
+    resources :organisations, except: [:destroy, :index] do
+      constraints role: /delivery_partners|matched_effort_providers/o do
+        collection do
+          get "(:role)", to: "organisations#index", defaults: {role: "delivery_partners"}, as: ""
+        end
+      end
+
       resources :activities, except: [:index, :create, :destroy] do
         get "financials" => "activity_financials#show"
         get "details" => "activity_details#show"
