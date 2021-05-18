@@ -6,6 +6,40 @@ RSpec.feature "BEIS users can view other organisations" do
     end
   end
 
+  RSpec.shared_examples "lists delivery partner organisations" do
+    scenario "it lists delivery partner organisations" do
+      expect(page).to have_content(t("page_title.organisation.index"))
+      expect(page).to have_content(t("page_title.organisations.delivery_partners"))
+
+      expect(page.find("li.govuk-tabs__list-item--selected a.govuk-tabs__tab")).to have_text(t("tabs.organisations.delivery_partners"))
+
+      delivery_partner_organisations.each do |organisation|
+        expect(page).to have_content(organisation.beis_organisation_reference)
+        expect(page).to have_content(organisation.name)
+      end
+
+      matched_effort_provider_organisations.each do |organisation|
+        expect(page).to_not have_content(organisation.name)
+      end
+    end
+  end
+
+  RSpec.shared_examples "lists matched effort provider organisations" do
+    scenario "it lists matched effort provider organisations" do
+      expect(page).to have_content(t("page_title.organisation.index"))
+      expect(page.find("li.govuk-tabs__list-item--selected a.govuk-tabs__tab")).to have_text(t("tabs.organisations.matched_effort_providers"))
+      expect(page).to have_content(t("page_title.organisations.matched_effort_providers"))
+
+      matched_effort_provider_organisations.each do |organisation|
+        expect(page).to have_content(organisation.name)
+      end
+
+      delivery_partner_organisations.each do |organisation|
+        expect(page).to_not have_content(organisation.name)
+      end
+    end
+  end
+
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
 
@@ -24,33 +58,28 @@ RSpec.feature "BEIS users can view other organisations" do
       context "the role is 'delivery_partners'" do
         let(:role) { "delivery_partners" }
 
-        scenario "it lists delivery partner organisations" do
-          expect(page).to have_content(t("page_title.organisation.index"))
+        include_examples "lists delivery partner organisations"
 
-          delivery_partner_organisations.each do |organisation|
-            expect(page).to have_content(organisation.name)
+        context "when viewing the matched effort providers tab" do
+          before do
+            click_on t("tabs.organisations.matched_effort_providers")
           end
 
-          matched_effort_provider_organisations.each do |organisation|
-            expect(page).to_not have_content(organisation.name)
-          end
+          include_examples "lists matched effort provider organisations"
         end
       end
 
       context "the role is 'matched_effort_providers'" do
         let(:role) { "matched_effort_providers" }
 
-        scenario "it lists matched effort provider organisations" do
-          expect(page).to have_content(t("page_title.organisation.index"))
+        include_examples "lists matched effort provider organisations"
 
-          matched_effort_provider_organisations.each do |organisation|
-            expect(page).to have_content(organisation.name)
-            expect(page).to have_content(organisation.beis_organisation_reference)
+        context "when viewing the delivery partner organisations tab" do
+          before do
+            click_on t("tabs.organisations.delivery_partners")
           end
 
-          delivery_partner_organisations.each do |organisation|
-            expect(page).to_not have_content(organisation.name)
-          end
+          include_examples "lists delivery partner organisations"
         end
       end
     end
@@ -60,18 +89,7 @@ RSpec.feature "BEIS users can view other organisations" do
         visit organisations_path
       end
 
-      scenario "it lists delivery partner organisations" do
-        expect(page).to have_content(t("page_title.organisation.index"))
-
-        delivery_partner_organisations.each do |organisation|
-          expect(page).to have_content(organisation.name)
-          expect(page).to have_content(organisation.beis_organisation_reference)
-        end
-
-        matched_effort_provider_organisations.each do |organisation|
-          expect(page).to_not have_content(organisation.name)
-        end
-      end
+      include_examples "lists delivery partner organisations"
     end
   end
 end

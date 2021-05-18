@@ -1,20 +1,35 @@
+.govuk-grid-row
+  .govuk-grid-column-full
+    .govuk-tabs
+      %h2.govuk-tabs__title
+        Organisations
 
-%table.govuk-table.organisations
-  %thead.govuk-table__head
-    %tr.govuk-table__row
-      %th.govuk-table__header
-        =t("table.header.organisation.name")
-      %th.govuk-table__header
-        =t("table.header.organisation.beis_organisation_reference")
-      %th.govuk-table__header
+      %ul.govuk-tabs__list
+        - ["delivery_partners", "matched_effort_providers"].each do |role|
+          %li{ class: "govuk-tabs__list-item #{role == @role ? "govuk-tabs__list-item--selected" : ""}"}
+            = link_to t("tabs.organisations.#{role}"), organisations_path(role: role), { class: "govuk-tabs__tab", role: "tab", aria: { controls: "current", selected: (role == @role) } }
 
-  %tbody.govuk-table__body
-    - organisations.each do |organisation|
-      %tr.govuk-table__row{id: organisation.id}
-        %td.govuk-table__cell= organisation.name
-        %td.govuk-table__cell= organisation.beis_organisation_reference
-        %td.govuk-table__cell
-          - if policy(organisation).show?
-            = a11y_action_link(t("default.link.show"), organisation_path(organisation), organisation.name)
-          - if policy(organisation).edit?
-            = a11y_action_link(t("default.link.edit"), edit_organisation_path(organisation), organisation.name)
+      .govuk-tabs__panel
+        %h2.govuk-heading-l
+          = t("page_title.organisations.#{@role}")
+
+        - unless organisations.empty?
+          %table.govuk-table.organisations
+            %thead.govuk-table__head
+              %tr.govuk-table__row
+                %th.govuk-table__header
+                  =t("table.header.organisation.name")
+                %th.govuk-table__header
+                  =t("table.header.organisation.beis_organisation_reference")
+                %th.govuk-table__header
+
+            %tbody.govuk-table__body
+              - organisations.each do |organisation|
+                %tr.govuk-table__row{id: organisation.id}
+                  %td.govuk-table__cell= organisation.name
+                  %td.govuk-table__cell= organisation.beis_organisation_reference
+                  %td.govuk-table__cell
+                    - if policy(organisation).show?
+                      = a11y_action_link(t("default.link.show"), organisation_path(organisation), organisation.name)
+                    - if policy(organisation).edit?
+                      = a11y_action_link(t("default.link.edit"), edit_organisation_path(organisation), organisation.name)

@@ -2,7 +2,8 @@
 
 class Staff::OrganisationsController < Staff::BaseController
   def index
-    @organisations = policy_scope(Organisation).where(role: params[:role].singularize)
+    @role = params[:role]
+    @organisations = policy_scope(Organisation).where(role: @role.singularize)
     authorize @organisations
   end
 
