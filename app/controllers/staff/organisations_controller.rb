@@ -60,7 +60,7 @@ class Staff::OrganisationsController < Staff::BaseController
   end
 
   def new
-    @organisation = Organisation.new
+    @organisation = Organisation.new(role: params[:role].singularize)
     authorize @organisation
   end
 
@@ -135,8 +135,7 @@ class Staff::OrganisationsController < Staff::BaseController
 
   private def organisation_params
     params.require(:organisation)
-      .permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference, :beis_organisation_reference)
-      .merge(role: "delivery_partner")
+      .permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference, :beis_organisation_reference, :role)
   end
 
   private def level

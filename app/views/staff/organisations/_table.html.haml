@@ -13,6 +13,9 @@
         %h2.govuk-heading-l
           = t("page_title.organisations.#{@role}")
 
+        - if policy(Organisation).new?
+          = link_to(t("page_content.organisations.#{@role}.button.create"), new_organisation_path(role: @role), class: "govuk-button")
+
         - unless organisations.empty?
           %table.govuk-table.organisations
             %thead.govuk-table__head

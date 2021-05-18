@@ -22,13 +22,13 @@ Rails.application.routes.draw do
         get "historic" => "activities#historic"
       end
     end
-    resources :organisations, except: [:destroy, :index] do
-      constraints role: /delivery_partners|matched_effort_providers/o do
-        collection do
-          get "(:role)", to: "organisations#index", defaults: {role: "delivery_partners"}, as: ""
-        end
-      end
 
+    constraints role: /delivery_partners|matched_effort_providers/ do
+      get "organisations/(:role)", to: "organisations#index", defaults: {role: "delivery_partners"}, as: :organisations
+      get "organisations/(:role)/new", to: "organisations#new", as: :new_organisation
+    end
+
+    resources :organisations, except: [:destroy, :index, :new] do
       resources :activities, except: [:index, :create, :destroy] do
         get "financials" => "activity_financials#show"
         get "details" => "activity_details#show"
