@@ -67,7 +67,7 @@ RSpec.describe Organisation, type: :model do
       end
     end
 
-    context "when an organisation is not flagged as BEIS" do
+    context "when an organisation is a delivery partner" do
       it " should return false" do
         other_organisation = create(:delivery_partner_organisation)
 
@@ -77,11 +77,11 @@ RSpec.describe Organisation, type: :model do
       end
     end
 
-    context "when an organisation is not deliberately flagged as BEIS" do
-      it "should default to false" do
-        new_organisation = create(:delivery_partner_organisation)
+    context "when an organisation is a matched effort provider" do
+      it "should return false" do
+        other_organisation = create(:matched_effort_provider)
 
-        result = new_organisation.service_owner?
+        result = other_organisation.service_owner?
 
         expect(result).to eq(false)
       end

@@ -15,6 +15,10 @@ FactoryBot.define do
       end
     end
 
+    factory :matched_effort_provider do
+      role { "matched_effort_provider" }
+    end
+
     factory :beis_organisation do
       name { "Department for Business, Energy and Industrial Strategy" }
       iati_reference { Organisation::SERVICE_OWNER_IATI_REFERENCE }

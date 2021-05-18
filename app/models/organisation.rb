@@ -9,6 +9,7 @@ class Organisation < ApplicationRecord
 
   enum role: {
     delivery_partner: 0,
+    matched_effort_provider: 1,
     service_owner: 99,
   }
 
