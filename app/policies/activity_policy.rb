@@ -23,6 +23,14 @@ class ActivityPolicy < ApplicationPolicy
     record.extending_organisation == user.organisation
   end
 
+  def create_transfer?
+    return beis_user? if record.fund? || record.programme?
+
+    if delivery_partner_user?
+      record.organisation == user.organisation && Report.editable.for_activity(record).exists?
+    end
+  end
+
   def edit?
     update?
   end
