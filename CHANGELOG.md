@@ -638,6 +638,7 @@
 - Merge Academies Collective Fund and Resilient Futures GCRF strategic areas into one
 - Show organisation short name on organisations index page
 - Total budget should only total budgets from a specific activity
+- Allow organisations of type "Matched Effort Provider" to be created
 
 ## [unreleased]
 
