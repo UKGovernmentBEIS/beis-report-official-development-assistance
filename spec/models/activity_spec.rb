@@ -1683,7 +1683,7 @@ RSpec.describe Activity, type: :model do
         end
       end
 
-      context "when there are mutiple direct budgets for an activity" do
+      context "when there are multiple direct budgets for an activity" do
         let!(:direct_newton_budgets) do
           create_list(:budget, 5, :direct_newton, value: rand(100..200), parent_activity: activity)
         end
