@@ -630,7 +630,7 @@
 - Fix a typo in the email notification sent to BEIS when a DP submits a report
 - Infer the value of `sdgs_apply` when importing new or existing activities from CSV
 
-## [unreleased]
+## [release-50] - 2021-05-18
 
 - Replace the broken sector code hint link with an easier to maintain BEIS Zendesk link
 - Include 'source fund' and 'delivery partner short name' in CSV export
@@ -639,7 +639,10 @@
 - Show organisation short name on organisations index page
 - Total budget should only total budgets from a specific activity
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...HEAD
+[release-50]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...release-50
 [release-49]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...release-49
 [release-48]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...release-48
 [release-47]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-46...release-47
