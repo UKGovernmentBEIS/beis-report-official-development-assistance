@@ -637,6 +637,7 @@
 - Prevent report mailer from sending emails to inactive users
 - Merge Academies Collective Fund and Resilient Futures GCRF strategic areas into one
 - Show organisation short name on organisations index page
+- Total budget should only total budgets from a specific activity
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...HEAD
 [release-49]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...release-49
