@@ -20,6 +20,7 @@ class Organisation < ApplicationRecord
   validates :iati_reference,
     uniqueness: {case_sensitive: false},
     presence: true,
+    unless: proc { |organisation| organisation.matched_effort_provider? },
     format: {with: /\A[a-zA-Z]{2,}-[a-zA-Z]{3}-.+\z/, message: I18n.t("activerecord.errors.models.organisation.attributes.iati_reference.format")}
   validates :beis_organisation_reference, uniqueness: {case_sensitive: false}
   validates :beis_organisation_reference,
