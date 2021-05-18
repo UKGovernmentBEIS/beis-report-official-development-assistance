@@ -264,8 +264,7 @@ class Activity < ApplicationRecord
   end
 
   def total_budget
-    activity_ids = descendants.pluck(:id).append(id)
-    Budget.direct_or_transferred.where(parent_activity_id: activity_ids).sum(:value)
+    Budget.direct_or_transferred.where(parent_activity_id: id).sum(:value)
   end
 
   def total_forecasted

@@ -1668,81 +1668,33 @@ RSpec.describe Activity, type: :model do
     end
 
     describe "#total_budget" do
-      def create_budget(parent_activity:, type: :direct_newton)
-        create(:budget, type, value: rand(100..200), parent_activity: parent_activity)
+      let(:activity) { programme1 }
+
+      let!(:external_oda_budget) { create(:budget, :external_official_development_assistance, value: rand(100..200), parent_activity: activity) }
+      let!(:external_non_oda_budget) { create(:budget, :external_non_official_development_assistance, value: rand(100..200), parent_activity: activity) }
+
+      context "when there is one direct budget for an activity" do
+        let!(:budget) do
+          create(:budget, :direct_newton, value: rand(100..200), parent_activity: activity)
+        end
+
+        it "only includes the direct budget in the calculations" do
+          expect(activity.total_budget).to eq(budget.value)
+        end
       end
 
-      let!(:fund_budget) { create_budget(parent_activity: fund) }
-      let!(:programme1_direct_budget) { create_budget(parent_activity: programme1) }
-      let!(:programme2_direct_budget) do
-        [
-          create_budget(parent_activity: programme2),
-          create_budget(parent_activity: programme2),
-        ]
-      end
-      let!(:programme1_project_0_direct_budget) { create_budget(parent_activity: programme1_projects[0]) }
-      let!(:programme1_project_1_direct_budget) { create_budget(parent_activity: programme1_projects[1]) }
-      let!(:programme2_project_0_direct_budget) { create_budget(parent_activity: programme2_projects[0]) }
-      let!(:programme2_project_1_direct_budget) { create_budget(parent_activity: programme2_projects[1]) }
-      let!(:programme1_project_0_third_party_project_budget) { create_budget(parent_activity: programme1_third_party_project) }
-      let!(:programme2_project_1_third_party_project_budget) { create_budget(parent_activity: programme2_third_party_project) }
+      context "when there are multiple direct budgets for an activity" do
+        let!(:direct_newton_budgets) do
+          create_list(:budget, 5, :direct_newton, value: rand(100..200), parent_activity: activity)
+        end
+        let!(:transferred_budget) { create(:budget, :transferred, value: rand(100..200), parent_activity: activity) }
 
-      let!(:external_oda_budget) { create_budget(parent_activity: programme2_projects[1], type: :external_official_development_assistance) }
-      let!(:external_non_oda_budget) { create_budget(parent_activity: programme1_third_party_project, type: :external_non_official_development_assistance) }
-
-      it "returns the total budget for a fund" do
-        total_budget = [
-          fund_budget,
-          programme1_direct_budget,
-          *programme2_direct_budget,
-          programme1_project_0_direct_budget,
-          programme1_project_1_direct_budget,
-          programme2_project_0_direct_budget,
-          programme2_project_1_direct_budget,
-          programme1_project_0_third_party_project_budget,
-          programme2_project_1_third_party_project_budget,
-        ].sum(&:value)
-
-        expect(fund.total_budget).to eq(total_budget)
-      end
-
-      it "returns the total budget for a programme" do
-        programme1_total_budget = [
-          programme1_direct_budget,
-          programme1_project_0_direct_budget,
-          programme1_project_1_direct_budget,
-          programme1_project_0_third_party_project_budget,
-        ].sum(&:value)
-
-        programme2_total_budget = [
-          *programme2_direct_budget,
-          programme2_project_0_direct_budget,
-          programme2_project_1_direct_budget,
-          programme2_project_1_third_party_project_budget,
-        ].sum(&:value)
-
-        expect(programme1.total_budget).to eq(programme1_total_budget)
-        expect(programme2.total_budget).to eq(programme2_total_budget)
-      end
-
-      it "returns the total budget for a project" do
-        programme1_project_0_total_budget = [
-          programme1_project_0_direct_budget,
-          programme1_project_0_third_party_project_budget,
-        ].sum(&:value)
-        programme1_project_1_total_budget = programme1_project_1_direct_budget.value
-
-        programme2_project_0_total_budget = programme2_project_0_direct_budget.value
-        programme2_project_1_total_budget = [
-          programme2_project_1_direct_budget,
-          programme2_project_1_third_party_project_budget,
-        ].sum(&:value)
-
-        expect(programme1_projects[0].total_budget).to eq(programme1_project_0_total_budget)
-        expect(programme1_projects[1].total_budget).to eq(programme1_project_1_total_budget)
-
-        expect(programme2_projects[0].total_budget).to eq(programme2_project_0_total_budget)
-        expect(programme2_projects[1].total_budget).to eq(programme2_project_1_total_budget)
+        it "sums all of the direct and transferred budget" do
+          expect(activity.total_budget).to eq([
+            *direct_newton_budgets,
+            transferred_budget,
+          ].sum(&:value))
+        end
       end
     end
 
