@@ -10,7 +10,7 @@ class RemoveAccountableOrganisationFromActivity < ActiveRecord::Migration[6.0]
     add_column :activities, :accountable_organisation_reference, :string
     add_column :activities, :accountable_organisation_type, :string
 
-    service_owner = Organisation.find_by(service_owner: true)
+    service_owner = Organisation.service_owner
 
     Activity.update_all(
       accountable_organisation_name: service_owner.name,

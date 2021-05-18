@@ -1,4 +1,4 @@
-beis = Organisation.find_by(service_owner: true)
+beis = Organisation.service_owner
 
 gcrf_fund_params = FactoryBot.build(:fund_activity,
   roda_identifier_fragment: "GCRF",

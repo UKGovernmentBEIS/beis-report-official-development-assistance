@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ActivityHelper, type: :helper do
-  let(:organisation) { create(:organisation) }
+  let(:organisation) { create(:delivery_partner_organisation) }
 
   describe "#step_is_complete_or_next?" do
     context "when the activity has passed the identification step" do

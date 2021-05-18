@@ -33,8 +33,6 @@ FactoryBot.define do
 
     form_state { "complete" }
 
-    association :organisation, factory: :organisation
-
     before(:create) do |activity|
       activity.cache_roda_identifier
     end
@@ -113,6 +111,7 @@ FactoryBot.define do
       policy_marker_disaster_risk_reduction { "not_assessed" }
       policy_marker_nutrition { "not_assessed" }
 
+      association :organisation, factory: :delivery_partner_organisation
       association :extending_organisation, factory: :delivery_partner_organisation
 
       factory :project_activity_with_implementing_organisations do
@@ -156,6 +155,7 @@ FactoryBot.define do
       policy_marker_disaster_risk_reduction { "not_assessed" }
       policy_marker_nutrition { "not_assessed" }
 
+      association :organisation, factory: :delivery_partner_organisation
       association :extending_organisation, factory: :delivery_partner_organisation
 
       trait :newton_funded do

@@ -50,7 +50,7 @@ RSpec.describe ImportTransactions do
         value: 50.0,
         receiving_organisation_name: "Example University",
         receiving_organisation_type: "80",
-        description: "FQ4 1999-2000 spend on Example Project",
+        description: "FQ4 1999-2000 spend on Example Project"
       )
     end
 
@@ -71,12 +71,12 @@ RSpec.describe ImportTransactions do
       expect(transaction).to have_attributes(
         providing_organisation_name: project.providing_organisation.name,
         providing_organisation_type: project.providing_organisation.organisation_type,
-        providing_organisation_reference: project.providing_organisation.iati_reference,
+        providing_organisation_reference: project.providing_organisation.iati_reference
       )
     end
 
     context "when the reporter is not authorised to report on the Activity" do
-      let(:reporter_organisation) { create(:organisation) }
+      let(:reporter_organisation) { create(:delivery_partner_organisation) }
 
       it "does not import any transactions" do
         expect(report.transactions.count).to eq(0)
@@ -319,7 +319,7 @@ RSpec.describe ImportTransactions do
           value: 50.0,
           receiving_organisation_name: nil,
           receiving_organisation_type: nil,
-          description: "FQ4 1999-2000 spend on Example Project",
+          description: "FQ4 1999-2000 spend on Example Project"
         )
       end
     end
@@ -380,7 +380,7 @@ RSpec.describe ImportTransactions do
       expect(report.transactions.pluck(:description)).to contain_exactly(
         "FQ4 1999-2000 spend on Example Project",
         "FQ4 1999-2000 spend on Sibling Project",
-        "FQ4 1999-2000 spend on Sibling Project",
+        "FQ4 1999-2000 spend on Sibling Project"
       )
     end
 

@@ -337,7 +337,7 @@ RSpec.feature "Users can view reports" do
       end
 
       scenario "cannot view a report belonging to another delivery partner" do
-        another_report = create(:report, organisation: create(:organisation))
+        another_report = create(:report, organisation: create(:delivery_partner_organisation))
 
         visit report_path(another_report)
 

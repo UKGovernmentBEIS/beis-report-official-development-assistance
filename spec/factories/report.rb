@@ -4,7 +4,7 @@ FactoryBot.define do
     state { :inactive }
 
     association :fund, factory: :fund_activity
-    association :organisation
+    association :organisation, factory: :delivery_partner_organisation
 
     trait :active do
       state { :active }

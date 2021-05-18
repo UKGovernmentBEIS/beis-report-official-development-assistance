@@ -14,7 +14,7 @@ RSpec.describe Report, type: :model do
   end
 
   describe ".editable_for_activity" do
-    let!(:organisation) { create(:organisation) }
+    let!(:organisation) { create(:delivery_partner_organisation) }
     let!(:project) { create(:project_activity, organisation: organisation) }
     let!(:project_in_another_fund) { create(:project_activity, organisation: organisation) }
 
@@ -157,7 +157,7 @@ RSpec.describe Report, type: :model do
   end
 
   describe "reportable_activities" do
-    let!(:report) { create(:report) }
+    let!(:report) { create(:report, organisation: build(:delivery_partner_organisation)) }
     let!(:programme) { create(:programme_activity, parent: report.fund) }
     let!(:project_a) { create(:project_activity, parent: programme, organisation: report.organisation) }
     let!(:project_b) { create(:project_activity, parent: programme, organisation: report.organisation) }

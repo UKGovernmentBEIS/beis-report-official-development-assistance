@@ -1,7 +1,7 @@
 RSpec.describe OrganisationHelper do
   describe "#organisation_page_back_link" do
-    let(:organisation) { create(:organisation) }
-    let(:other_organisation) { create(:organisation) }
+    let(:organisation) { create(:delivery_partner_organisation) }
+    let(:other_organisation) { create(:delivery_partner_organisation) }
 
     let(:user) { create(:administrator, organisation: organisation) }
 

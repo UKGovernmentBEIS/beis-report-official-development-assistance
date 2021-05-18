@@ -1,5 +1,5 @@
 RSpec.feature "users can upload planned disbursements" do
-  let(:organisation) { create(:organisation) }
+  let(:organisation) { create(:delivery_partner_organisation) }
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
   let!(:project) { create(:project_activity, organisation: organisation) }
@@ -87,7 +87,7 @@ RSpec.feature "users can upload planned disbursements" do
           "FC 2025/26 FY Q2" => "",
           "FC 2025/26 FY Q3" => "",
           "FC 2025/26 FY Q4" => "",
-          "FC 2026/27 FY Q1" => "",
+          "FC 2026/27 FY Q1" => ""
         )
       end
     end

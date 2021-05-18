@@ -10,7 +10,7 @@ RSpec.feature "BEIS users can view other organisations" do
     let(:user) { create(:beis_user) }
 
     scenario "all organisations can be viewed" do
-      another_organisation = create(:organisation)
+      another_organisation = create(:delivery_partner_organisation)
       authenticate!(user: user)
 
       visit organisations_path

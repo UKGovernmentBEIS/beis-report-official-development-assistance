@@ -19,31 +19,31 @@ RSpec.describe Organisation, type: :model do
 
     describe "#iati_reference" do
       it "returns true if it does matches a known structure XX-XXX-" do
-        organisation = build(:organisation, iati_reference: "GB-GOV-13")
+        organisation = build(:delivery_partner_organisation, iati_reference: "GB-GOV-13")
         result = organisation.valid?
         expect(result).to eq(true)
       end
 
       it "returns true if it does match an unexpected value of the same XX-XXX- structure" do
-        organisation = build(:organisation, iati_reference: "GB-COH-1234567asdfghj")
+        organisation = build(:delivery_partner_organisation, iati_reference: "GB-COH-1234567asdfghj")
         result = organisation.valid?
         expect(result).to eq(true)
       end
 
       it "returns true if the country code is 3 characters long" do
-        organisation = build(:organisation, iati_reference: "CZH-COH-111")
+        organisation = build(:delivery_partner_organisation, iati_reference: "CZH-COH-111")
         result = organisation.valid?
         expect(result).to eq(true)
       end
 
       it "returns false if it doesn't match the structure XX-XXX-" do
-        organisation = build(:organisation, iati_reference: "1234")
+        organisation = build(:delivery_partner_organisation, iati_reference: "1234")
         result = organisation.valid?
         expect(result).to eq(false)
       end
 
       it "returns an error message if it is invalid" do
-        organisation = build(:organisation, iati_reference: "1234")
+        organisation = build(:delivery_partner_organisation, iati_reference: "1234")
         organisation.valid?
         expect(organisation.errors.messages[:iati_reference]).to include(
           t("activerecord.errors.models.organisation.attributes.iati_reference.format")
@@ -69,7 +69,7 @@ RSpec.describe Organisation, type: :model do
 
     context "when an organisation is not flagged as BEIS" do
       it " should return false" do
-        other_organisation = create(:organisation, service_owner: false)
+        other_organisation = create(:delivery_partner_organisation)
 
         result = other_organisation.service_owner?
 
@@ -79,7 +79,7 @@ RSpec.describe Organisation, type: :model do
 
     context "when an organisation is not deliberately flagged as BEIS" do
       it "should default to false" do
-        new_organisation = create(:organisation)
+        new_organisation = create(:delivery_partner_organisation)
 
         result = new_organisation.service_owner?
 
@@ -97,9 +97,9 @@ RSpec.describe Organisation, type: :model do
 
   describe ".sorted_by_name" do
     it "should sort name name a->z" do
-      a_organisation = create(:organisation, name: "A", created_at: 3.days.ago)
-      b_organisation = create(:organisation, name: "B", created_at: 1.days.ago)
-      c_organisation = create(:organisation, name: "C", created_at: 2.days.ago)
+      a_organisation = create(:delivery_partner_organisation, name: "A", created_at: 3.days.ago)
+      b_organisation = create(:delivery_partner_organisation, name: "B", created_at: 1.days.ago)
+      c_organisation = create(:delivery_partner_organisation, name: "C", created_at: 2.days.ago)
 
       result = Organisation.sorted_by_name
 
@@ -122,24 +122,24 @@ RSpec.describe Organisation, type: :model do
 
   describe "#is_government?" do
     it "should be true for a Government organisation_type" do
-      organisation = create(:organisation, organisation_type: 10)
+      organisation = create(:delivery_partner_organisation, organisation_type: 10)
       expect(organisation.is_government?).to eq true
     end
 
     it "should be true for a Government organisation_type" do
-      organisation = create(:organisation, organisation_type: 11)
+      organisation = create(:delivery_partner_organisation, organisation_type: 11)
       expect(organisation.is_government?).to eq true
     end
 
     it "should be false for an NGO organisation_type" do
-      organisation = create(:organisation, organisation_type: 21)
+      organisation = create(:delivery_partner_organisation, organisation_type: 21)
       expect(organisation.is_government?).to eq false
     end
   end
 
   describe "#ensure_beis_organisation_reference_is_uppercase" do
     it "converts the value of beis_organisation_reference to uppercase" do
-      organisation = build(:organisation, beis_organisation_reference: "testme")
+      organisation = build(:delivery_partner_organisation, beis_organisation_reference: "testme")
 
       expect(organisation.valid?).to be_truthy
       expect(organisation.beis_organisation_reference).to eql "TESTME"

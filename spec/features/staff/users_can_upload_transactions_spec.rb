@@ -1,5 +1,5 @@
 RSpec.feature "users can upload transactions" do
-  let(:organisation) { create(:organisation) }
+  let(:organisation) { create(:delivery_partner_organisation) }
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
   let!(:project) { create(:project_activity, organisation: organisation) }

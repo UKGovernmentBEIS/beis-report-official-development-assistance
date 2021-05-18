@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe FindProgrammeActivities do
   let(:user) { create(:beis_user) }
   let(:service_owner) { create(:beis_organisation) }
-  let(:other_organisation) { create(:organisation) }
+  let(:other_organisation) { create(:delivery_partner_organisation) }
 
   let!(:extending_organisation_programme) { create(:programme_activity, extending_organisation: other_organisation) }
   let!(:other_programme) { create(:programme_activity) }

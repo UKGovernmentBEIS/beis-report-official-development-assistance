@@ -14,11 +14,10 @@ class FindThirdPartyProjectActivities
       .includes(:organisation, :extending_organisation, :implementing_organisations, :budgets, :parent)
       .order("created_at ASC")
 
-    third_party_projects = if organisation.service_owner
+    if organisation.service_owner?
       third_party_projects.all
     else
       third_party_projects.where(organisation_id: organisation.id)
     end
-    third_party_projects
   end
 end

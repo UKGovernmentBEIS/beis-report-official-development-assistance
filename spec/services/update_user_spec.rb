@@ -14,7 +14,7 @@ RSpec.describe UpdateUser do
     it "returns a successful result" do
       stub_auth0_update_user_request(auth0_identifier: "auth0|1234", email: user.email, name: user.name)
 
-      result = described_class.new(user: user, organisation: build_stubbed(:organisation)).call
+      result = described_class.new(user: user, organisation: build_stubbed(:delivery_partner_organisation)).call
 
       expect(result.success?).to eq(true)
       expect(result.failure?).to eq(false)
@@ -24,7 +24,7 @@ RSpec.describe UpdateUser do
       it "associates the user to it" do
         stub_auth0_update_user_request(auth0_identifier: "auth0|1234", email: user.email, name: user.name)
 
-        organisation = create(:organisation)
+        organisation = create(:delivery_partner_organisation)
 
         described_class.new(
           user: user,
@@ -42,13 +42,13 @@ RSpec.describe UpdateUser do
       end
 
       it "returns a failed result" do
-        result = described_class.new(user: user, organisation: build_stubbed(:organisation)).call
+        result = described_class.new(user: user, organisation: build_stubbed(:delivery_partner_organisation)).call
         expect(result.failure?).to eq(true)
       end
 
       it "does not save the user" do
         expect {
-          described_class.new(user: user, organisation: build_stubbed(:organisation)).call
+          described_class.new(user: user, organisation: build_stubbed(:delivery_partner_organisation)).call
         }.to_not change { user.reload }
       end
 
@@ -56,7 +56,7 @@ RSpec.describe UpdateUser do
         expect(Rails.logger).to receive(:error)
           .with("Error updating user #{user.email} to Auth0 during UpdateUser with .")
 
-        described_class.new(user: user, organisation: build_stubbed(:organisation)).call
+        described_class.new(user: user, organisation: build_stubbed(:delivery_partner_organisation)).call
       end
     end
   end
