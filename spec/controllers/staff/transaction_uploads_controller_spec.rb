@@ -9,6 +9,66 @@ RSpec.describe Staff::TransactionUploadsController do
     allow(controller).to receive(:logged_in_using_omniauth?).and_return(true)
   end
 
+  describe "#new" do
+    render_views
+
+    let(:report) { create(:report, organisation: organisation, state: state) }
+
+    context "with an active report" do
+      let(:state) { :active }
+
+      it "shows the upload button" do
+        get :new, params: {report_id: report.id}
+
+        expect(response.body).to include(t("action.transaction.upload.button"))
+      end
+    end
+
+    context "with a report awaiting changes" do
+      let(:state) { :awaiting_changes }
+
+      it "shows the upload button" do
+        get :new, params: {report_id: report.id}
+
+        expect(response.body).to include(t("action.transaction.upload.button"))
+      end
+    end
+
+    context "with a report in review" do
+      let(:state) { :in_review }
+
+      it "doesn't show the upload button" do
+        get :new, params: {report_id: report.id}
+
+        expect(response.body).to_not include(t("action.transaction.upload.button"))
+      end
+    end
+
+    context "as a BEIS user" do
+      let(:user) { create(:beis_user) }
+
+      context "with an active report" do
+        let(:state) { :active }
+
+        it "doesn't show the upload button" do
+          get :new, params: {report_id: report.id}
+
+          expect(response.body).to_not include(t("action.transaction.upload.button"))
+        end
+      end
+
+      context "with a report awaiting changes" do
+        let(:state) { :awaiting_changes }
+
+        it "doesn't show the upload button" do
+          get :new, params: {report_id: report.id}
+
+          expect(response.body).to_not include(t("action.transaction.upload.button"))
+        end
+      end
+    end
+  end
+
   describe "#show" do
     let(:report) { create(:report, organisation: organisation, state: :active, fund: fund) }
 

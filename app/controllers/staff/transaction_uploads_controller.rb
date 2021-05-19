@@ -26,7 +26,7 @@ class Staff::TransactionUploadsController < Staff::BaseController
   end
 
   def update
-    authorize report, :show?
+    authorize report, :upload?
 
     @report_presenter = ReportPresenter.new(report)
     upload = CsvFileUpload.new(params[:report], :transaction_csv)

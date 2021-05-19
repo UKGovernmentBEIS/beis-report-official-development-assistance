@@ -52,9 +52,14 @@ en:
             </p>
   label:
     report:
-     state:
-       inactive: Inactive
-       active: Active
+      state:
+        active: Active
+        approved: Approved
+        awaiting_changes: Awaiting changes
+        in_review: In review
+        inactive: Inactive
+        submitted: Submitted
+
   form:
     label:
       report:
