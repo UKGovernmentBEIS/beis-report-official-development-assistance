@@ -1,4 +1,6 @@
 class FinancialYear
+  include Comparable
+
   class InvalidYear < StandardError; end
 
   attr_reader :start_year, :end_year
@@ -32,6 +34,10 @@ class FinancialYear
 
       (first_year..this_financial_year).map { |year| new(year) }
     end
+  end
+
+  def <=>(other)
+    start_year <=> other.start_year
   end
 
   def ==(other)

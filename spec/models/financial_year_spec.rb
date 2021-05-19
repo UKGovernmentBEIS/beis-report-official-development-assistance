@@ -39,4 +39,16 @@ RSpec.describe FinancialYear do
       end
     end
   end
+
+  describe "#<=>" do
+    let(:oldest_year) { FinancialYear.new(2019) }
+    let(:middle_year) { FinancialYear.new(2020) }
+    let(:latest_year) { FinancialYear.new(2021) }
+
+    it "compares the years chronologically" do
+      years = [middle_year, latest_year, oldest_year]
+
+      expect(years.sort).to match_array([oldest_year, middle_year, latest_year])
+    end
+  end
 end
