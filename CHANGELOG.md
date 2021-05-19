@@ -638,10 +638,12 @@
 - Merge Academies Collective Fund and Resilient Futures GCRF strategic areas into one
 - Show organisation short name on organisations index page
 - Total budget should only total budgets from a specific activity
-- Allow organisations of type "Matched Effort Provider" to be created
-- Stop forecast totals double-counting multiple versions of the same forecast
 
 ## [unreleased]
+
+- Allow organisations of type "Matched Effort Provider" to be created
+- Stop forecast totals double-counting multiple versions of the same forecast
+- Update the request an account link
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...HEAD
 [release-50]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...release-50
