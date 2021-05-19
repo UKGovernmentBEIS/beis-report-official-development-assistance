@@ -44,6 +44,10 @@ class ReportPolicy < ApplicationPolicy
     end
   end
 
+  def upload?
+    ["active", "awaiting_changes"].include?(record.state) && record.organisation == user.organisation
+  end
+
   def download?
     show?
   end
