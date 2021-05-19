@@ -1,5 +1,5 @@
 module CustomEmailMatchers
-  class HaveRecievedEmail
+  class HaveReceivedEmail
     def matches?(user)
       @user = user
       email_sent? && has_subject? && has_personalisations?
@@ -52,6 +52,6 @@ module CustomEmailMatchers
   end
 
   def have_received_email
-    HaveRecievedEmail.new
+    HaveReceivedEmail.new
   end
 end

@@ -113,6 +113,8 @@ class ExportActivityToCsv
       # Additional headers specific to export CSV =============================
       "VAR #{report_financial_quarter}" => -> { activity_presenter.variance_for_report_financial_quarter(report: report) },
       "Comment" => -> { activity_presenter.comment_for_report(report_id: report.id)&.comment },
+      "Source fund" => -> { activity_presenter.source_fund&.name },
+      "Delivery partner short name" => -> { activity_presenter.extending_organisation&.beis_organisation_reference },
       "Link to activity in RODA" => -> { activity_presenter.link_to_roda },
     }
   end

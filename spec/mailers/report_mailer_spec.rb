@@ -22,6 +22,16 @@ RSpec.describe ReportMailer, type: :mailer do
       expect(mail.body).to include("Deadline for submission: 1 Jan 2021")
       expect(mail.body).to include("Link to report: http://test.local/reports/#{report.id}")
     end
+
+    context "when the user is inactive" do
+      before do
+        user.update!(active: false)
+      end
+
+      it "should raise an error" do
+        expect { mail.body }.to raise_error(ArgumentError, "User must be active to receive report-related emails")
+      end
+    end
   end
 
   describe "#submitted" do
@@ -76,6 +86,14 @@ RSpec.describe ReportMailer, type: :mailer do
         expect { mail.body }.to raise_error(ArgumentError, "User must either be a service owner or belong to the organisation making the report")
       end
     end
+
+    context "when the user is inactive" do
+      let(:user) { create(:administrator, organisation: organisation, active: false) }
+
+      it "should raise an error" do
+        expect { mail.body }.to raise_error(ArgumentError, "User must be active to receive report-related emails")
+      end
+    end
   end
 
   describe "#approved" do
@@ -97,6 +115,16 @@ RSpec.describe ReportMailer, type: :mailer do
     it "contains the expected body" do
       expect(mail.body).to include("BEIS have approved your report.")
     end
+
+    context "when the user is inactive" do
+      before do
+        user.update!(active: false)
+      end
+
+      it "should raise an error" do
+        expect { mail.body }.to raise_error(ArgumentError, "User must be active to receive report-related emails")
+      end
+    end
   end
 
   describe "#awaiting_changes" do
@@ -117,6 +145,16 @@ RSpec.describe ReportMailer, type: :mailer do
 
     it "contains the expected body" do
       expect(mail.body).to include("BEIS have reviewed your report and requested changes.")
+    end
+
+    context "when the user is inactive" do
+      before do
+        user.update!(active: false)
+      end
+
+      it "should raise an error" do
+        expect { mail.body }.to raise_error(ArgumentError, "User must be active to receive report-related emails")
+      end
     end
   end
 end

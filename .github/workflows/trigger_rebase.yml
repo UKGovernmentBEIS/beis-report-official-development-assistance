@@ -1,0 +1,42 @@
+name: Trigger Rebase
+
+on:
+  push:
+    branches:
+      - develop
+env:
+  AUTO_REBASE_PERSONAL_ACCESS_TOKEN: ${{ secrets.AUTO_REBASE_PERSONAL_ACCESS_TOKEN }}
+jobs:
+  fetch_all_prs_awaiting_automerge:
+    runs-on: ubuntu-latest
+    outputs:
+      pr_numbers: ${{ steps.get-all-awaiting-pr-numbers.outputs.pr_numbers }}
+    steps:
+      - name: Get all awaiting PR numbers
+        id: get-all-awaiting-pr-numbers
+        run: |
+          PR_NUMBERS=$(curl https://api.github.com/repos/UKGovernmentBEIS/beis-report-official-development-assistance/pulls\?state\=open | jq -c '.[] | select(.auto_merge!=null) | .number | [.]')
+          echo "::set-output name=pr_numbers::$PR_NUMBERS"
+  trigger_rebase_action:
+    if: ${{ needs.fetch_all_prs_awaiting_automerge.outputs.pr_numbers != '' }}
+    strategy:
+      matrix:
+        pr_number: ${{ fromJson(needs.fetch_all_prs_awaiting_automerge.outputs.pr_numbers) }}
+    needs: fetch_all_prs_awaiting_automerge
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the latest ref for ${{ matrix.pr_number }}
+        run: |
+          PR_DATA=$(curl https://api.github.com/repos/UKGovernmentBEIS/beis-report-official-development-assistance/pulls/${{ matrix.pr_number }})
+          printf 'ref=%q\n' "$(echo "$PR_DATA" | jq -r .head.ref)" >> "$GITHUB_ENV"
+      - name: Checkout the latest code for ${{ matrix.pr_number }}
+        uses: actions/checkout@v2
+        with:
+          token: ${{ env.AUTO_REBASE_PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
+          ref: ${{ env.ref }}
+      - name: Automatic Rebase
+        uses: dxw/rebase@master
+        env:
+          GITHUB_TOKEN: ${{ env.AUTO_REBASE_PERSONAL_ACCESS_TOKEN }}
+          PR_NUMBER: ${{ matrix.pr_number }}

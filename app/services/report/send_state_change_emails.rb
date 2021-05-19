@@ -44,11 +44,11 @@ class Report
     end
 
     def delivery_partners
-      @report.organisation.users
+      @report.organisation.users.active
     end
 
     def service_owners
-      Organisation.find_by(service_owner: true).users
+      Organisation.find_by(service_owner: true).users.active
     end
   end
 end

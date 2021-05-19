@@ -5,14 +5,14 @@
       %th.govuk-table__header
         =t("table.header.organisation.name")
       %th.govuk-table__header
-        =t("table.header.organisation.iati_reference")
+        =t("table.header.organisation.beis_organisation_reference")
       %th.govuk-table__header
 
   %tbody.govuk-table__body
     - organisations.each do |organisation|
       %tr.govuk-table__row{id: organisation.id}
         %td.govuk-table__cell= organisation.name
-        %td.govuk-table__cell= organisation.iati_reference
+        %td.govuk-table__cell= organisation.beis_organisation_reference
         %td.govuk-table__cell
           - if policy(organisation).show?
             = a11y_action_link(t("default.link.show"), organisation_path(organisation), organisation.name)
