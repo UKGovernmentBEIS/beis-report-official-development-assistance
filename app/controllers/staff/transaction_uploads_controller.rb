@@ -6,14 +6,16 @@ class Staff::TransactionUploadsController < Staff::BaseController
   include Secured
   include StreamCsvDownload
 
-  before_action :authorize_report
-
   def new
-    @report_presenter = ReportPresenter.new(@report)
+    authorize report, :show?
+
+    @report_presenter = ReportPresenter.new(report)
   end
 
   def show
-    @report_presenter = ReportPresenter.new(@report)
+    authorize report, :show?
+
+    @report_presenter = ReportPresenter.new(report)
     filename = @report_presenter.filename_for_transactions_template
 
     stream_csv_download(filename: filename, headers: csv_headers) do |csv|
@@ -24,12 +26,14 @@ class Staff::TransactionUploadsController < Staff::BaseController
   end
 
   def update
-    @report_presenter = ReportPresenter.new(@report)
+    authorize report, :show?
+
+    @report_presenter = ReportPresenter.new(report)
     upload = CsvFileUpload.new(params[:report], :transaction_csv)
     @success = false
 
     if upload.valid?
-      importer = ImportTransactions.new(report: @report, uploader: current_user)
+      importer = ImportTransactions.new(report: report, uploader: current_user)
       importer.import(upload.rows)
       @errors = importer.errors
 
@@ -43,9 +47,8 @@ class Staff::TransactionUploadsController < Staff::BaseController
     end
   end
 
-  private def authorize_report
-    @report = Report.find(params[:report_id])
-    authorize @report, :show?
+  private def report
+    @_report ||= Report.find(params[:report_id])
   end
 
   private def csv_headers
@@ -57,13 +60,13 @@ class Staff::TransactionUploadsController < Staff::BaseController
       activity.title,
       activity.delivery_partner_identifier,
       activity.roda_identifier,
-      @report.financial_quarter.to_s,
-      @report.financial_year.to_s,
+      report.financial_quarter.to_s,
+      report.financial_year.to_s,
       "%.2f" % 0,
     ]
   end
 
   def reportable_activities
-    @report.reportable_activities.hierarchically_grouped_projects
+    report.reportable_activities.hierarchically_grouped_projects
   end
 end
