@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe OrganisationPolicy do
   subject { described_class.new(user, organisation) }
 
-  let(:organisation) { create(:organisation) }
+  let(:organisation) { create(:delivery_partner_organisation) }
 
   context "as user that belongs to BEIS" do
     let(:user) { build_stubbed(:beis_user) }
@@ -29,7 +29,7 @@ RSpec.describe OrganisationPolicy do
     end
 
     context "when the user does NOT belong to that organisation" do
-      let(:user) { build_stubbed(:delivery_partner_user, organisation: create(:organisation)) }
+      let(:user) { build_stubbed(:delivery_partner_user, organisation: create(:delivery_partner_organisation)) }
 
       it { is_expected.to forbid_action(:index) }
       it { is_expected.to forbid_action(:show) }

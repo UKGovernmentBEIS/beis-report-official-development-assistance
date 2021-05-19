@@ -6,7 +6,7 @@ FactoryBot.define do
     role { :administrator }
     active { true }
 
-    organisation
+    organisation factory: :beis_organisation
 
     factory :beis_user do
       organisation factory: :beis_organisation

@@ -12,27 +12,72 @@ RSpec.feature "BEIS users can create organisations" do
       authenticate!(user: user)
     end
 
-    scenario "successfully creating an organisation" do
+    scenario "successfully creating a delivery partner organisation" do
       visit organisation_path(user.organisation)
       click_link t("page_title.organisation.index")
-      click_link t("page_content.organisations.button.create")
+      click_link t("page_content.organisations.delivery_partners.button.create")
 
-      expect(page).to have_content(t("page_title.organisation.new"))
+      expect(page).to have_content(t("page_title.organisation.delivery_partner.new"))
       fill_in "organisation[name]", with: "My New Organisation"
+      fill_in "organisation[beis_organisation_reference]", with: "MNO"
       fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
       select "Government", from: "organisation[organisation_type]"
       select "Czech", from: "organisation[language_code]"
       select "Zloty", from: "organisation[default_currency]"
       click_button t("default.button.submit")
+
+      expect(page).to have_content(t("action.organisation.create.success"))
+      expect(page).to_not have_field("organisation[active]", type: "radio")
+
+      organisation = Organisation.order("created_at ASC").last
+
+      expect(organisation.name).to eq("My New Organisation")
+      expect(organisation.beis_organisation_reference).to eq("MNO")
+      expect(organisation.iati_reference).to eq("CZH-GOV-1234")
+      expect(organisation.organisation_type).to eq("10")
+      expect(organisation.language_code).to eq("cs")
+      expect(organisation.default_currency).to eq("PLN")
+      expect(organisation.role).to eq("delivery_partner")
+      expect(organisation.active).to eq(true)
+    end
+
+    scenario "successfully creating a matched effort provider organisation" do
+      visit organisation_path(user.organisation)
+      click_link t("page_title.organisation.index")
+      click_link t("tabs.organisations.matched_effort_providers")
+
+      click_link t("page_content.organisations.matched_effort_providers.button.create")
+
+      expect(page).to have_content(t("page_title.organisation.matched_effort_provider.new"))
+      expect(page).to have_field("organisation[active]", type: "radio")
+
+      fill_in "organisation[name]", with: "My New Organisation"
+      select "Government", from: "organisation[organisation_type]"
+      select "Czech", from: "organisation[language_code]"
+      select "Zloty", from: "organisation[default_currency]"
+      choose t("form.label.organisation.active.true"), name: "organisation[active]"
+
+      click_button t("default.button.submit")
+
+      organisation = Organisation.order("created_at ASC").last
+
+      expect(page).to have_content(t("action.organisation.create.success"))
+
+      expect(organisation.name).to eq("My New Organisation")
+      expect(organisation.organisation_type).to eq("10")
+      expect(organisation.language_code).to eq("cs")
+      expect(organisation.default_currency).to eq("PLN")
+      expect(organisation.role).to eq("matched_effort_provider")
+      expect(organisation.active).to eq(true)
     end
 
     scenario "organisation creation is tracked with public_activity" do
       PublicActivity.with_tracking do
         visit organisation_path(user.organisation)
         click_link t("page_title.organisation.index")
-        click_link t("page_content.organisations.button.create")
+        click_link t("page_content.organisations.delivery_partners.button.create")
 
-        expect(page).to have_content(t("page_title.organisation.new"))
+        expect(page).to have_content(t("page_title.organisation.delivery_partner.new"))
         fill_in "organisation[name]", with: "My New Organisation"
         fill_in "organisation[beis_organisation_reference]", with: "mno"
         fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
@@ -52,9 +97,9 @@ RSpec.feature "BEIS users can create organisations" do
     scenario "presence validation works as expected" do
       visit organisation_path(user.organisation)
       click_link t("page_title.organisation.index")
-      click_link t("page_content.organisations.button.create")
+      click_link t("page_content.organisations.delivery_partners.button.create")
 
-      expect(page).to have_content(t("page_title.organisation.new"))
+      expect(page).to have_content(t("page_title.organisation.delivery_partner.new"))
       fill_in "organisation[name]", with: "My New Organisation"
 
       click_button t("default.button.submit")

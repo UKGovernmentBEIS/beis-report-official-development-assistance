@@ -388,7 +388,7 @@ class Activity < ApplicationRecord
   end
 
   def service_owner
-    Organisation.find_by(service_owner: true)
+    Organisation.service_owner
   end
 
   def parent_level

@@ -70,7 +70,7 @@ RSpec.describe "Users can create a comment" do
     end
 
     context "when the report is editable but does not belong to this user's organisation" do
-      let(:report) { create(:report, :active, fund: activity.associated_fund, organisation: create(:organisation)) }
+      let(:report) { create(:report, :active, fund: activity.associated_fund, organisation: create(:delivery_partner_organisation)) }
       scenario "the user cannot add a comment" do
         visit report_path(report)
         expect(page).to have_content t("not_authorised.default")

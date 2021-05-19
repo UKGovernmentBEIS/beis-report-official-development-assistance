@@ -14,7 +14,7 @@ class FindProjectActivities
       .includes(:organisation, :extending_organisation, :implementing_organisations, :budgets, :parent)
       .order("created_at ASC")
 
-    projects = if organisation.service_owner
+    projects = if organisation.service_owner?
       projects.all
     else
       projects.where(organisation_id: organisation.id)

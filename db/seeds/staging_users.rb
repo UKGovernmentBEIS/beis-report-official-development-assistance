@@ -10,7 +10,7 @@ delivery_partner = User.find_or_create_by(
   identifier: "auth0|5e554c1b37de640d5dd3ea61",
   role: :administrator
 )
-beis = Organisation.find_by(service_owner: true)
+beis = Organisation.service_owner
 administrator.organisation = beis
 administrator.save
 

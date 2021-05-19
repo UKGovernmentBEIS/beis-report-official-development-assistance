@@ -1,4 +1,5 @@
 = f.govuk_error_summary
+= f.hidden_field :role
 = f.govuk_text_field :name
 .uppercase-input
   = f.govuk_text_field :beis_organisation_reference
@@ -6,8 +7,9 @@
                      organisation_type_options,
                      :code,
                      :name
-= f.govuk_text_field :iati_reference,
-                      hint: { text: t("form.hint.organisation.iati_reference_html", link: link_to_new_tab("See International Aid Transparency Initiative (IATI) for detailed documentation", "https://reference.iatistandard.org/organisation-identifiers/")) }
+- if f.object.role != "matched_effort_provider"
+  = f.govuk_text_field :iati_reference,
+                        hint: { text: t("form.hint.organisation.iati_reference_html", link: link_to_new_tab("See International Aid Transparency Initiative (IATI) for detailed documentation", "https://reference.iatistandard.org/organisation-identifiers/")) }
 = f.govuk_collection_select :language_code,
                      language_code_options,
                      :code,
@@ -16,4 +18,11 @@
                      default_currency_options,
                      :code,
                      :name
+- if f.object.role == "matched_effort_provider"
+  = f.govuk_collection_radio_buttons :active,
+    organisation_active_options,
+    :id,
+    :name,
+    inline: true,
+    legend: -> { tag.legend(t("form.legend.organisation.active"), class: "govuk-fieldset__legend") }
 = f.govuk_submit t("default.button.submit")

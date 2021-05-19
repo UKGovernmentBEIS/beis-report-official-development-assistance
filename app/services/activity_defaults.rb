@@ -1,5 +1,6 @@
 class ActivityDefaults
   class InvalidParentActivity < RuntimeError; end
+
   class InvalidDeliveryPartnerOrganisation < RuntimeError; end
 
   attr_reader :parent_activity, :delivery_partner_organisation
@@ -27,7 +28,7 @@ class ActivityDefaults
   private
 
   def service_owner
-    @_service_owner ||= Organisation.find_by(service_owner: true)
+    @_service_owner ||= Organisation.service_owner
   end
 
   def level

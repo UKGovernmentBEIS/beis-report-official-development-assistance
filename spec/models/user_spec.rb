@@ -39,7 +39,7 @@ RSpec.describe User, type: :model do
 
     context "when the user organisation is NOT a service owner" do
       it "returns false" do
-        organisation = build_stubbed(:organisation, service_owner: false)
+        organisation = build_stubbed(:delivery_partner_organisation)
         result = described_class.new(organisation: organisation).service_owner?
         expect(result).to be false
       end
@@ -57,7 +57,7 @@ RSpec.describe User, type: :model do
 
     context "when the user organisation is NOT a service owner" do
       it "returns true" do
-        organisation = build_stubbed(:organisation, service_owner: false)
+        organisation = build_stubbed(:delivery_partner_organisation)
         result = described_class.new(organisation: organisation).delivery_partner?
         expect(result).to be true
       end

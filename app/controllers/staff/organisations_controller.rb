@@ -2,7 +2,8 @@
 
 class Staff::OrganisationsController < Staff::BaseController
   def index
-    @organisations = policy_scope(Organisation)
+    @role = params[:role]
+    @organisations = policy_scope(Organisation).where(role: @role.singularize)
     authorize @organisations
   end
 
@@ -59,7 +60,7 @@ class Staff::OrganisationsController < Staff::BaseController
   end
 
   def new
-    @organisation = Organisation.new
+    @organisation = Organisation.new(role: params[:role].singularize)
     authorize @organisation
   end
 
@@ -133,7 +134,8 @@ class Staff::OrganisationsController < Staff::BaseController
   end
 
   private def organisation_params
-    params.require(:organisation).permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference, :beis_organisation_reference)
+    params.require(:organisation)
+      .permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference, :beis_organisation_reference, :role, :active)
   end
 
   private def level

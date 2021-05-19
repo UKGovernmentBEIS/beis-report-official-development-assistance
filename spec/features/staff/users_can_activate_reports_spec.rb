@@ -1,7 +1,7 @@
 RSpec.feature "Users can activate reports" do
   context "signed in as a BEIS user" do
     let(:beis_user) { create(:beis_user) }
-    let(:organisation) { create(:organisation, users: build_list(:administrator, 3)) }
+    let(:organisation) { create(:delivery_partner_organisation, users: build_list(:administrator, 3)) }
 
     before do
       authenticate!(user: beis_user)

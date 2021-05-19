@@ -15,7 +15,7 @@ class FindProgrammeActivities
       .includes(:organisation, :extending_organisation, :implementing_organisations, :budgets, :parent)
       .order("created_at ASC")
 
-    return programmes if organisation.service_owner
+    return programmes if organisation.service_owner?
 
     query_conditions = {extending_organisation_id: organisation.id}
     query_conditions[:parent_id] = fund_id if fund_id.present?

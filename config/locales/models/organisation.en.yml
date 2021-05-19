@@ -15,8 +15,12 @@ en:
         default_currency: Default currency
         language_code: Language code
         beis_organisation_reference: Short name
+        active:
+          true: Active
+          false: Inactive
     legend:
       organisation:
+        active: What is the status of the organisation?
     hint:
       organisation:
         iati_reference_html: Machine-readable identification string for the organisation. %{link}.
@@ -28,6 +32,10 @@ en:
         name: Name
         iati_reference: International Aid Transparency Initiative (IATI) reference
         beis_organisation_reference: Short name
+  tabs:
+    organisations:
+      delivery_partners: Delivery partners
+      matched_effort_providers: Matched effort providers
   summary:
     label:
       organisation:
@@ -39,8 +47,12 @@ en:
   page_content:
     organisation_details: Organisation details
     organisations:
-      button:
-        create: Add organisation
+      delivery_partners:
+        button:
+          create: Add delivery partner organisation
+      matched_effort_providers:
+        button:
+          create: Add matched effort provider organisation
     organisation:
       create_programme: Add level B activity
       button:
@@ -66,8 +78,14 @@ en:
     organisation:
       edit: Edit organisation
       index: Organisations
-      new: Create a new organisation
       show: Organisation %{name}
+      delivery_partner:
+        new: Create a new delivery partner organisation
+      matched_effort_provider:
+        new: Create a new matched effort provider organisation
+    organisations:
+      delivery_partners: Delivery partners
+      matched_effort_providers: Matched effort providers
   activerecord:
     errors:
       models:

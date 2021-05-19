@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe ReportMailer, type: :mailer do
   let(:fund) { create(:fund_activity, :gcrf) }
-  let(:organisation) { create(:organisation, beis_organisation_reference: "ABC") }
+  let(:organisation) { create(:delivery_partner_organisation, beis_organisation_reference: "ABC") }
   let(:user) { create(:administrator) }
   let(:report) { create(:report, financial_quarter: 4, financial_year: 2020, deadline: DateTime.parse("2021-01-01"), fund: fund, organisation: organisation) }
 
@@ -80,7 +80,7 @@ RSpec.describe ReportMailer, type: :mailer do
     end
 
     context "when the user is a delivery partner in a different organisation" do
-      let(:user) { create(:administrator) }
+      let(:user) { create(:administrator, organisation: build(:delivery_partner_organisation)) }
 
       it "should raise an error" do
         expect { mail.body }.to raise_error(ArgumentError, "User must either be a service owner or belong to the organisation making the report")

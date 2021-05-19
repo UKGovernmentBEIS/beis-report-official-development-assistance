@@ -1,10 +1,10 @@
-=content_for :page_title_prefix, t("page_title.organisation.new")
+=content_for :page_title_prefix, t("page_title.organisation.#{@organisation.role}.new")
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
-        = t("page_title.organisation.new")
+        = t("page_title.organisation.#{@organisation.role}.new")
 
       = form_with model: @organisation, url: organisations_path do |f|
         = render partial: "form", locals: { f: f }

@@ -1,7 +1,7 @@
 RSpec.feature "Users can view fund level activities" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
-      organisation = create(:organisation)
+      organisation = create(:delivery_partner_organisation)
       visit organisation_path(organisation)
       expect(current_path).to eq(root_path)
     end

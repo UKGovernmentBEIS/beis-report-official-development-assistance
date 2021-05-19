@@ -86,7 +86,7 @@ class Staff::UsersController < Staff::BaseController
   end
 
   private def service_owner
-    Organisation.find_by(service_owner: true)
+    Organisation.service_owner
   end
 
   private def delivery_partners
