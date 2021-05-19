@@ -1,6 +1,7 @@
 class PlannedDisbursementOverview
-  LATEST_ENTRY_PER_QUARTER = <<~SQL
+  LATEST_ENTRY_PER_ACTIVITY_AND_QUARTER = <<~SQL
     DISTINCT ON (
+      planned_disbursements.parent_activity_id,
       planned_disbursements.financial_year,
       planned_disbursements.financial_quarter
     )
@@ -34,11 +35,14 @@ class PlannedDisbursementOverview
   private
 
   def record_history?
-    !@activity.organisation.service_owner?
+    @activity.is_a?(Array) || !@activity.organisation.service_owner?
   end
 
   def latest_with_report_versioning
-    historical_entries.joins(:report).merge(Report.in_historical_order)
+    historical_entries
+      .left_outer_joins(:report)
+      .merge(Report.in_historical_order)
+      .order(planned_disbursement_type: :desc)
   end
 
   def latest_unversioned
@@ -47,14 +51,19 @@ class PlannedDisbursementOverview
 
   def historical_entries
     PlannedDisbursement
-      .select(LATEST_ENTRY_PER_QUARTER)
-      .where(parent_activity_id: @activity.id)
-      .order(financial_year: :asc, financial_quarter: :asc)
+      .unscoped
+      .select(LATEST_ENTRY_PER_ACTIVITY_AND_QUARTER)
+      .where(parent_activity_id: activity_ids)
+      .order(parent_activity_id: :asc, financial_year: :asc, financial_quarter: :asc)
+  end
+
+  def activity_ids
+    [*@activity].map(&:to_param)
   end
 
   class Snapshot
     def self.non_zero_forecasts_from(relation)
-      PlannedDisbursement.from(relation, :planned_disbursements).where.not(value: 0)
+      PlannedDisbursement.unscoped.from(relation, :planned_disbursements).where.not(value: 0)
     end
 
     def initialize(overview, report)

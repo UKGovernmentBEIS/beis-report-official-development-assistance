@@ -95,7 +95,7 @@ RSpec.feature "users can upload planned disbursements" do
 
   scenario "not uploading a file" do
     click_button t("action.planned_disbursement.upload.button")
-    expect(PlannedDisbursement.count).to eq(0)
+    expect(PlannedDisbursement.unscoped.count).to eq(0)
     expect(page).to have_text(t("action.planned_disbursement.upload.file_missing_or_invalid"))
   end
 
@@ -108,7 +108,7 @@ RSpec.feature "users can upload planned disbursements" do
       #{ids[1]}                | 40               | -50              | 60
     CSV
 
-    expect(PlannedDisbursement.count).to eq(6)
+    expect(PlannedDisbursement.unscoped.count).to eq(6)
     expect(page).to have_text(t("action.planned_disbursement.upload.success"))
     expect(page).not_to have_xpath("//tbody/tr")
   end
@@ -122,7 +122,7 @@ RSpec.feature "users can upload planned disbursements" do
       #{ids[1]}                | 40               | not a number     | 60
     CSV
 
-    expect(PlannedDisbursement.count).to eq(0)
+    expect(PlannedDisbursement.unscoped.count).to eq(0)
     expect(page).not_to have_text(t("action.planned_disbursement.upload.success"))
 
     within "//tbody/tr[1]" do
@@ -142,7 +142,7 @@ RSpec.feature "users can upload planned disbursements" do
       #{ids[1]}                | 40               |                  | 60
     CSV
 
-    expect(PlannedDisbursement.count).to eq(3)
+    expect(PlannedDisbursement.unscoped.count).to eq(3)
     expect(page).to have_text(t("action.planned_disbursement.upload.success"))
     expect(page).not_to have_xpath("//tbody/tr")
   end
@@ -164,7 +164,7 @@ RSpec.feature "users can upload planned disbursements" do
 
     file.unlink
 
-    expect(PlannedDisbursement.count).to eq(0)
+    expect(PlannedDisbursement.unscoped.count).to eq(0)
 
     expect(page).to have_content(t("action.planned_disbursement.upload.file_missing_or_invalid"))
   end
@@ -179,7 +179,7 @@ RSpec.feature "users can upload planned disbursements" do
       #{ids[1]}                | 40               | 50               | 60
     CSV
 
-    expect(PlannedDisbursement.count).to eq(6)
+    expect(PlannedDisbursement.unscoped.count).to eq(6)
     expect(page).to have_text(t("action.planned_disbursement.upload.success"))
     expect(page).not_to have_xpath("//tbody/tr")
   end

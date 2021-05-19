@@ -2,6 +2,14 @@ class PlannedDisbursement < ApplicationRecord
   include PublicActivity::Common
   include HasFinancialQuarter
 
+  DIRECT_ACCESS_WARNING = "The PlannedDisbursement model should not be accessed \
+directly; please use the PlannedDisbursementHistory and PlannedDisbursementOverview \
+services to create forecasts. See doc/forecasts-and-versioning.md for more information."
+
+  default_scope do
+    raise TypeError, DIRECT_ACCESS_WARNING
+  end
+
   attr_readonly :parent_activity_id,
     :financial_quarter,
     :financial_year,

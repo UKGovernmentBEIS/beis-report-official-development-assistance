@@ -100,7 +100,9 @@ RSpec.shared_examples "valid activity XML" do
   end
 
   it "contains the planned disbursement XML" do
-    planned_disbursement = create(:planned_disbursement, parent_activity: activity)
+    ReportingCycle.new(activity, 2, 2020).tick
+    PlannedDisbursementHistory.new(activity, financial_year: 2020, financial_quarter: 3).set_value(20)
+    planned_disbursement = PlannedDisbursementOverview.new(activity).latest_values.first
     planned_disbursement_presenter = PlannedDisbursementXmlPresenter.new(planned_disbursement)
 
     visit organisation_activity_path(organisation, activity, format: :xml)

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe PlannedDisbursementPresenter do
-  let(:planned_disbursement) { build_stubbed(:planned_disbursement) }
+  let(:planned_disbursement) { PlannedDisbursement.unscoped.new(value: 100_000) }
 
   describe "#value" do
     it "returns the value to two decimal places with a currency symbol" do

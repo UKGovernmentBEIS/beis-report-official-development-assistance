@@ -3,7 +3,7 @@
 class Staff::PlannedDisbursementsController < Staff::BaseController
   def new
     @activity = Activity.find(params["activity_id"])
-    @planned_disbursement = PlannedDisbursement.new
+    @planned_disbursement = PlannedDisbursement.unscoped.new
     @planned_disbursement.parent_activity = @activity
     pre_fill_financial_quarter_and_year
 
@@ -19,13 +19,13 @@ class Staff::PlannedDisbursementsController < Staff::BaseController
     begin
       history.set_value(planned_disbursement_params[:value])
     rescue PlannedDisbursementHistory::SequenceError
-      @planned_disbursement = PlannedDisbursement.new(planned_disbursement_params)
+      @planned_disbursement = PlannedDisbursement.unscoped.new(planned_disbursement_params)
       @planned_disbursement.parent_activity = @activity
       @planned_disbursement.errors.add(:financial_quarter, :in_the_past)
       render :new
       return
     rescue ConvertFinancialValue::Error
-      @planned_disbursement = PlannedDisbursement.new(planned_disbursement_params)
+      @planned_disbursement = PlannedDisbursement.unscoped.new(planned_disbursement_params)
       @planned_disbursement.parent_activity = @activity
       @planned_disbursement.errors.add(:value, :not_a_number)
       render :new

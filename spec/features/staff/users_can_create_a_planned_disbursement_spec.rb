@@ -78,7 +78,7 @@ RSpec.describe "Users can create a planned disbursement" do
 
         fill_in_planned_disbursement_form_for_activity(activity)
 
-        planned_disbursement = PlannedDisbursement.last
+        planned_disbursement = PlannedDisbursementOverview.new(activity).latest_values.last
         auditable_event = PublicActivity::Activity.last
         expect(auditable_event.key).to eq "planned_disbursement.create"
         expect(auditable_event.owner_id).to eq user.id
@@ -108,7 +108,7 @@ RSpec.describe "Users can create a planned disbursement" do
 
       fill_in_planned_disbursement_form_for_activity(project)
 
-      planned_disbursement = PlannedDisbursement.last
+      planned_disbursement = PlannedDisbursementOverview.new(project).latest_values.last
       expect(planned_disbursement.report).to eq(report)
     end
 

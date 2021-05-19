@@ -639,6 +639,7 @@
 - Show organisation short name on organisations index page
 - Total budget should only total budgets from a specific activity
 - Allow organisations of type "Matched Effort Provider" to be created
+- Stop forecast totals double-counting multiple versions of the same forecast
 
 ## [unreleased]
 

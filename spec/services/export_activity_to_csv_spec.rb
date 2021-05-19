@@ -145,10 +145,10 @@ RSpec.describe ExportActivityToCsv do
       create(:transaction, parent_activity: project, **report_quarter, report: report, value: 20)
       create(:transaction, parent_activity: project, **report_quarter, report: next_quarter_report, value: 40)
 
-      create(:planned_disbursement, parent_activity: project, **report_quarter, report: previous_year_report, value: 50)
-      create(:planned_disbursement, parent_activity: project, **report_quarter, report: previous_quarter_report, value: 100)
-      create(:planned_disbursement, parent_activity: project, **report_quarter.succ, report: report, value: 250)
-      create(:planned_disbursement, parent_activity: project, **report_quarter.succ.succ, report: next_quarter_report, value: 350)
+      PlannedDisbursementHistory.new(project, report: previous_year_report, **report_quarter).set_value(50)
+      PlannedDisbursementHistory.new(project, report: previous_quarter_report, **report_quarter).set_value(100)
+      PlannedDisbursementHistory.new(project, report: report, **report_quarter.succ).set_value(250)
+      PlannedDisbursementHistory.new(project, report: next_quarter_report, **report_quarter.succ.succ).set_value(350)
 
       allow(export_service).to receive(:metadata_columns).and_return({})
     end

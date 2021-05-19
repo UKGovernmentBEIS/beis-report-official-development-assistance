@@ -1,11 +1,17 @@
 RSpec.describe "Users can view planned disbursements" do
+  def create_planned_disbursement(activity)
+    ReportingCycle.new(activity, 1, 2018).tick
+    PlannedDisbursementHistory.new(activity, financial_quarter: 2, financial_year: 2018).set_value(20)
+    PlannedDisbursementOverview.new(activity).latest_values.last
+  end
+
   context "when signed in as a delivery partner" do
     let(:user) { create(:delivery_partner_user) }
     before { authenticate!(user: user) }
 
     scenario "they can view planned disbursements on projects" do
       project = create(:project_activity, organisation: user.organisation)
-      planned_disbursement = create(:planned_disbursement, parent_activity: project)
+      planned_disbursement = create_planned_disbursement(project)
 
       visit organisation_activity_path(user.organisation, project)
 
@@ -15,7 +21,7 @@ RSpec.describe "Users can view planned disbursements" do
 
     scenario "they can view planned disbursements on third-party projects" do
       third_party_project = create(:third_party_project_activity, organisation: user.organisation)
-      planned_disbursement = create(:planned_disbursement, parent_activity: third_party_project)
+      planned_disbursement = create_planned_disbursement(third_party_project)
 
       visit organisation_activity_path(user.organisation, third_party_project)
 
@@ -30,7 +36,7 @@ RSpec.describe "Users can view planned disbursements" do
 
     scenario "they can view planned disbursements on projects" do
       project = create(:project_activity)
-      planned_disbursement = create(:planned_disbursement, parent_activity: project)
+      planned_disbursement = create_planned_disbursement(project)
 
       visit organisation_activity_path(beis_user.organisation, project)
 
@@ -40,7 +46,7 @@ RSpec.describe "Users can view planned disbursements" do
 
     scenario "they can view planned disbursements on third-party projects" do
       third_party_project = create(:third_party_project_activity)
-      planned_disbursement = create(:planned_disbursement, parent_activity: third_party_project)
+      planned_disbursement = create_planned_disbursement(third_party_project)
 
       visit organisation_activity_path(beis_user.organisation, third_party_project)
 
