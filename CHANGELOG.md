@@ -644,6 +644,7 @@
 - Allow organisations of type "Matched Effort Provider" to be created
 - Stop forecast totals double-counting multiple versions of the same forecast
 - Update the request an account link
+- Allow DP users to create transfers and associate them with the current report
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...HEAD
 [release-50]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...release-50
