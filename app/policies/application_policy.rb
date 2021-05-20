@@ -32,10 +32,10 @@ class ApplicationPolicy
   end
 
   protected def beis_user?
-    user.organisation.service_owner?
+    user.service_owner?
   end
 
   protected def delivery_partner_user?
-    !beis_user?
+    user.delivery_partner?
   end
 end
