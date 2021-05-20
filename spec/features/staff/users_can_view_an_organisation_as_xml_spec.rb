@@ -181,23 +181,23 @@ RSpec.feature "Users can view an organisation as XML" do
           activity_projects = create_list(:project_activity, 2, parent: programme)
           activity_third_party_project = create(:third_party_project_activity, parent: activity_projects[0])
 
-          create(:transaction, value: 100, parent_activity: programme, financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 100, parent_activity: programme, financial_year: 2018, financial_quarter: 2)
-          create(:transaction, value: 100, parent_activity: other_programme, financial_year: 2019, financial_quarter: 3)
+          create(:transaction, value: 10, parent_activity: programme, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 20, parent_activity: programme, financial_year: 2018, financial_quarter: 2)
+          create(:transaction, value: 40, parent_activity: other_programme, financial_year: 2019, financial_quarter: 3)
 
-          create(:transaction, value: 50, parent_activity: activity_projects[0], financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 50, parent_activity: activity_projects[0], financial_year: 2020, financial_quarter: 1)
+          create(:transaction, value: 80, parent_activity: activity_projects[0], financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 160, parent_activity: activity_projects[0], financial_year: 2020, financial_quarter: 1)
 
-          create(:transaction, value: 50, parent_activity: activity_projects[1], financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 50, parent_activity: activity_projects[1], financial_year: 2020, financial_quarter: 1)
+          create(:transaction, value: 320, parent_activity: activity_projects[1], financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 640, parent_activity: activity_projects[1], financial_year: 2020, financial_quarter: 1)
 
-          create(:transaction, value: 100, parent_activity: activity_third_party_project, financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 100, parent_activity: activity_third_party_project, financial_year: 2020, financial_quarter: 1)
+          create(:transaction, value: 1280, parent_activity: activity_third_party_project, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 2560, parent_activity: activity_third_party_project, financial_year: 2020, financial_quarter: 1)
 
           visit organisation_path(organisation, format: :xml, level: :programme, fund_id: programme.associated_fund.id)
           xml = Nokogiri::XML::Document.parse(page.body)
 
-          expect(xml.xpath("//iati-activity/transaction/value").map(&:text)).to eql(["200.0", "100.0", "300.0", "100.0"])
+          expect(xml.xpath("//iati-activity/transaction/value").map(&:text)).to eql(["3360.0", "20.0", "1690.0", "40.0"])
           expect(xml.xpath("//iati-activity/transaction/transaction-date/@iso-date").map(&:text)).to eql(["2020-06-30", "2018-09-30", "2018-06-30", "2019-12-31"])
         end
       end
