@@ -1,9 +1,10 @@
-RSpec.feature "BEIS users can create a transfer" do
-  let(:user) { create(:beis_user) }
+RSpec.feature "Delivery partner users can create a transfer" do
+  let(:user) { create(:delivery_partner_user) }
   before { authenticate!(user: user) }
 
-  let(:source_activity) { create(:programme_activity) }
+  let(:source_activity) { create(:project_activity, organisation: user.organisation) }
   let(:created_transfer) { Transfer.last }
+  let!(:report) { Report.for_activity(source_activity).create(state: "active") }
 
   before do
     visit organisation_activity_path(source_activity.organisation, source_activity)
@@ -35,6 +36,7 @@ RSpec.feature "BEIS users can create a transfer" do
     expect(page).to have_content(t("action.transfer.create.success"))
 
     expect(created_transfer.source).to eq(source_activity)
+    expect(created_transfer.report).to eq(report)
     expect(created_transfer.destination).to eq(transfer.destination)
     expect(created_transfer.financial_quarter).to eq(transfer.financial_quarter)
     expect(created_transfer.financial_year).to eq(transfer.financial_year)

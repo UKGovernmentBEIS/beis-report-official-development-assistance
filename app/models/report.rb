@@ -2,6 +2,8 @@ class Report < ApplicationRecord
   include PublicActivity::Common
   include HasFinancialQuarter
 
+  EDITABLE_STATES = %w[active awaiting_changes]
+
   attr_readonly :financial_quarter, :financial_year
 
   validates_presence_of :description, on: [:edit, :activate]
@@ -49,7 +51,7 @@ class Report < ApplicationRecord
   end
 
   scope :editable, -> do
-    where(state: [:active, :awaiting_changes])
+    where(state: EDITABLE_STATES)
   end
 
   scope :for_activity, ->(activity) do
@@ -64,6 +66,10 @@ class Report < ApplicationRecord
     super(attributes)
     self.financial_quarter = FinancialQuarter.for_date(Date.today).to_i
     self.financial_year = FinancialYear.for_date(Date.today).to_i
+  end
+
+  def editable?
+    state.in?(EDITABLE_STATES)
   end
 
   def activity_must_be_a_fund

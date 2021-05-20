@@ -21,6 +21,7 @@ RSpec.describe ActivityPolicy do
       it { is_expected.to forbid_action(:redact_from_iati) }
 
       it { is_expected.to permit_action(:create_child) }
+      it { is_expected.to permit_action(:create_transfer) }
     end
 
     context "when the activity is a programme" do
@@ -35,6 +36,7 @@ RSpec.describe ActivityPolicy do
       it { is_expected.to forbid_action(:redact_from_iati) }
 
       it { is_expected.to forbid_action(:create_child) }
+      it { is_expected.to permit_action(:create_transfer) }
     end
 
     context "when the activity is a project" do
@@ -49,6 +51,7 @@ RSpec.describe ActivityPolicy do
       it { is_expected.to forbid_action(:destroy) }
 
       it { is_expected.to forbid_action(:create_child) }
+      it { is_expected.to forbid_action(:create_transfer) }
     end
 
     context "when the activity is a third-party project" do
@@ -63,6 +66,7 @@ RSpec.describe ActivityPolicy do
       it { is_expected.to forbid_action(:destroy) }
 
       it { is_expected.to forbid_action(:create_child) }
+      it { is_expected.to forbid_action(:create_transfer) }
     end
   end
 
@@ -80,6 +84,7 @@ RSpec.describe ActivityPolicy do
       it { is_expected.to forbid_action(:redact_from_iati) }
 
       it { is_expected.to forbid_action(:create_child) }
+      it { is_expected.to forbid_action(:create_transfer) }
     end
 
     context "when the activity is a programme" do
@@ -94,6 +99,7 @@ RSpec.describe ActivityPolicy do
         it { is_expected.to forbid_action(:redact_from_iati) }
 
         it { is_expected.to forbid_action(:create_child) }
+        it { is_expected.to forbid_action(:create_transfer) }
       end
 
       context "and the users organisation is the extending organisation" do
@@ -110,6 +116,7 @@ RSpec.describe ActivityPolicy do
         it { is_expected.to forbid_action(:redact_from_iati) }
 
         it { is_expected.to forbid_action(:create_child) }
+        it { is_expected.to forbid_action(:create_transfer) }
 
         context "and there is an editable report for the users organisation" do
           before do
@@ -117,6 +124,7 @@ RSpec.describe ActivityPolicy do
           end
 
           it { is_expected.to permit_action(:create_child) }
+          it { is_expected.to forbid_action(:create_transfer) }
         end
       end
     end
@@ -133,6 +141,7 @@ RSpec.describe ActivityPolicy do
         it { is_expected.to forbid_action(:redact_from_iati) }
 
         it { is_expected.to forbid_action(:create_child) }
+        it { is_expected.to forbid_action(:create_transfer) }
       end
 
       context "and the users organisation is the extending organisation" do
@@ -150,6 +159,7 @@ RSpec.describe ActivityPolicy do
           it { is_expected.to forbid_action(:redact_from_iati) }
 
           it { is_expected.to forbid_action(:create_child) }
+          it { is_expected.to forbid_action(:create_transfer) }
         end
 
         context "and there is an editable report for the users organisation" do
@@ -166,6 +176,7 @@ RSpec.describe ActivityPolicy do
           it { is_expected.to forbid_action(:redact_from_iati) }
 
           it { is_expected.to permit_action(:create_child) }
+          it { is_expected.to permit_action(:create_transfer) }
         end
       end
     end
@@ -182,6 +193,7 @@ RSpec.describe ActivityPolicy do
         it { is_expected.to forbid_action(:redact_from_iati) }
 
         it { is_expected.to forbid_action(:create_child) }
+        it { is_expected.to forbid_action(:create_transfer) }
       end
 
       context "and the users organisation is the extending organisation" do
@@ -199,6 +211,7 @@ RSpec.describe ActivityPolicy do
           it { is_expected.to forbid_action(:redact_from_iati) }
 
           it { is_expected.to forbid_action(:create_child) }
+          it { is_expected.to forbid_action(:create_transfer) }
         end
 
         context "and there is an editable report for the users organisation" do
@@ -215,6 +228,7 @@ RSpec.describe ActivityPolicy do
           it { is_expected.to forbid_action(:redact_from_iati) }
 
           it { is_expected.to forbid_action(:create_child) }
+          it { is_expected.to permit_action(:create_transfer) }
         end
       end
     end
