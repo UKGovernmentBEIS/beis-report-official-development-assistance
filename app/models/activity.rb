@@ -286,6 +286,18 @@ class Activity < ApplicationRecord
     end
   end
 
+  def reportable_planned_disbursements_for_level
+    return latest_planned_disbursements unless programme?
+
+    activity_ids = descendants.pluck(:id).append(id)
+    planned_disbursements = PlannedDisbursementOverview.new(activity_ids).latest_values.group_by(&:own_financial_quarter)
+    quarters = planned_disbursements.keys.sort.reverse
+
+    quarters.map do |quarter|
+      PlannedDisbursementAggregate.new(quarter, planned_disbursements[quarter])
+    end
+  end
+
   private def spend_by_financial_quarter(reportable_transactions)
     reportable_transactions.group_by(&:own_financial_quarter).map do |financial_quarter, actuals|
       Transaction.new(date: financial_quarter.end_date, value: actuals.sum(&:value), transaction_type: Transaction::DEFAULT_TRANSACTION_TYPE)

@@ -174,6 +174,40 @@ RSpec.feature "Users can view an organisation as XML" do
       end
 
       context "when downloading programme level activities" do
+        def forecast(activity, year, quarter)
+          PlannedDisbursementHistory.new(activity, financial_year: year, financial_quarter: quarter)
+        end
+
+        it "sums up the total forecasts of all the programmes and their child activities by quarter" do
+          programme = create(:programme_activity, extending_organisation: organisation)
+
+          project_1 = create(:project_activity, parent: programme, organisation: organisation)
+          third_party_project_1 = create(:third_party_project_activity, parent: project_1, organisation: organisation)
+          _third_party_project_2 = create(:third_party_project_activity, parent: project_1, organisation: organisation)
+
+          project_2 = create(:project_activity, parent: programme, organisation: organisation)
+          third_party_project_3 = create(:third_party_project_activity, parent: project_2, organisation: organisation)
+          third_party_project_4 = create(:third_party_project_activity, parent: project_2, organisation: organisation)
+
+          ReportingCycle.new(project_1, 2, 2021).tick
+
+          # forecasts for Q3 2021
+          forecast(programme, 2021, 3).set_value(10)
+          forecast(project_1, 2021, 3).set_value(20)
+          forecast(third_party_project_3, 2021, 3).set_value(40)
+
+          # forecasts for Q4 2021
+          forecast(project_2, 2021, 4).set_value(80)
+          forecast(third_party_project_1, 2021, 4).set_value(160)
+          forecast(third_party_project_4, 2021, 4).set_value(320)
+
+          visit organisation_path(organisation, format: :xml, level: :programme, fund_id: programme.associated_fund.id)
+          xml = Nokogiri::XML::Document.parse(page.body)
+
+          expect(xml.xpath("//iati-activity/planned-disbursement/period-start/@iso-date").map(&:text)).to eql(["2022-01-01", "2021-10-01"])
+          expect(xml.xpath("//iati-activity/planned-disbursement/value").map(&:text)).to eql(["560.00", "70.00"])
+        end
+
         it "sums up the total transactions of all the programmes and their child activities by quarter" do
           programme = create(:programme_activity, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
           other_programme = create(:programme_activity, parent: programme.parent, extending_organisation: organisation)
