@@ -648,6 +648,7 @@
 - Add some useful stats to our healthcheck endpoint
 - Prevent uploading transactions if the report is not editable
 - Prevent uploading activities, transactions and planned disbursements if the report is not editable
+- Sum programme and child activity forecasts by financial quarter in IATI XML
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...HEAD
 [release-50]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...release-50
