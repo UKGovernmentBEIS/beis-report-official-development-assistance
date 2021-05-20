@@ -8,32 +8,12 @@ class ApplicationPolicy
     @record = record
   end
 
-  def index?
-    user.administrator?
-  end
-
-  def show?
-    user.administrator?
-  end
-
-  def create?
-    user.administrator?
-  end
-
   def new?
     create?
   end
 
-  def update?
-    user.administrator?
-  end
-
   def edit?
     update?
-  end
-
-  def destroy?
-    user.administrator?
   end
 
   class Scope
