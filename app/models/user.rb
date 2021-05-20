@@ -22,13 +22,7 @@ class User < ApplicationRecord
     I18n.t("activerecord.attributes.user.roles.#{role}")
   end
 
-  def service_owner?
-    organisation.service_owner?
-  end
-
-  def delivery_partner?
-    !service_owner?
-  end
+  delegate :service_owner?, :delivery_partner?, to: :organisation
 
   private
 

@@ -20,47 +20,16 @@ RSpec.describe User, type: :model do
     it { is_expected.to belong_to(:organisation) }
   end
 
+  describe "delegations" do
+    it { is_expected.to delegate_method(:service_owner?).to(:organisation) }
+    it { is_expected.to delegate_method(:delivery_partner?).to(:organisation) }
+  end
+
   describe "#role_name" do
     it "returns the human readable role name of the user" do
       user = described_class.new(role: :administrator)
 
       expect(user.role_name).to eql "Administrator"
-    end
-  end
-
-  describe "#service_owner?" do
-    context "when the user organisation is a service owner" do
-      it "returns true" do
-        organisation = build_stubbed(:beis_organisation)
-        result = described_class.new(organisation: organisation).service_owner?
-        expect(result).to be true
-      end
-    end
-
-    context "when the user organisation is NOT a service owner" do
-      it "returns false" do
-        organisation = build_stubbed(:delivery_partner_organisation)
-        result = described_class.new(organisation: organisation).service_owner?
-        expect(result).to be false
-      end
-    end
-  end
-
-  describe "#delivery_partner?" do
-    context "when the user organisation is a service owner" do
-      it "returns false" do
-        organisation = build_stubbed(:beis_organisation)
-        result = described_class.new(organisation: organisation).delivery_partner?
-        expect(result).to be false
-      end
-    end
-
-    context "when the user organisation is NOT a service owner" do
-      it "returns true" do
-        organisation = build_stubbed(:delivery_partner_organisation)
-        result = described_class.new(organisation: organisation).delivery_partner?
-        expect(result).to be true
-      end
     end
   end
 end
