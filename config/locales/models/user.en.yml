@@ -21,7 +21,6 @@ en:
       user:
         active: What is the user's status?
         organisation_id: What organisation does this user belong to?
-        role: Role
     hint:
       user:
         active: Deactivated users cannot log in
@@ -36,7 +35,6 @@ en:
     header:
       user:
         name: Full name
-        role: Role
         email: Email address
         organisation: Organisation
         active: Active?
@@ -44,7 +42,6 @@ en:
     label:
       user:
         name: Full name
-        role: Role
         email: Email address
         identifier: Identifier
         organisation: Organisation
@@ -67,10 +64,6 @@ en:
     attributes:
       user:
         organisation_ids: Organisations
-        roles:
-          administrator: Administrator
-          delivery_partner: Delivery partner
-          fund_manager: Fund manager
     errors:
       models:
         user:

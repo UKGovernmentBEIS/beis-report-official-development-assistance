@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_18_171318) do
+ActiveRecord::Schema.define(version: 2021_05_20_134602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -244,12 +244,10 @@ ActiveRecord::Schema.define(version: 2021_05_18_171318) do
     t.string "email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "role"
     t.uuid "organisation_id"
     t.boolean "active", default: true
     t.index ["identifier"], name: "index_users_on_identifier"
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
-    t.index ["role"], name: "index_users_on_role"
   end
 
   add_foreign_key "activities", "activities", column: "parent_id", on_delete: :restrict

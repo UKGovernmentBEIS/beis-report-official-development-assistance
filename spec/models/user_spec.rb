@@ -24,12 +24,4 @@ RSpec.describe User, type: :model do
     it { is_expected.to delegate_method(:service_owner?).to(:organisation) }
     it { is_expected.to delegate_method(:delivery_partner?).to(:organisation) }
   end
-
-  describe "#role_name" do
-    it "returns the human readable role name of the user" do
-      user = described_class.new(role: :administrator)
-
-      expect(user.role_name).to eql "Administrator"
-    end
-  end
 end

@@ -3,7 +3,6 @@ FactoryBot.define do
     identifier { SecureRandom.uuid }
     name { Faker::Name.name }
     email { Faker::Internet.email }
-    role { :administrator }
     active { true }
 
     organisation factory: :beis_organisation

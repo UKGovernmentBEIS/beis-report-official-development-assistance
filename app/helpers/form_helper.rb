@@ -8,10 +8,6 @@ module FormHelper
     @list_of_delivery_partners ||= Organisation.delivery_partners
   end
 
-  def list_of_user_roles
-    @list_of_user_roles ||= User.roles.map { |id, name| OpenStruct.new(id: id, name: t("activerecord.attributes.user.roles.#{name}")) }
-  end
-
   def list_of_financial_quarters
     @list_of_financial_quarters ||= FinancialQuarter::QUARTERS.map { |id| OpenStruct.new(id: id, name: "Q#{id}") }
   end
