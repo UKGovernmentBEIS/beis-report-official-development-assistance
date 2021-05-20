@@ -14,6 +14,6 @@ beis = Organisation.service_owner
 administrator.organisation = beis
 administrator.save
 
-other_organisation = Organisation.where(service_owner: false).first
+other_organisation = Organisation.find_by(role: :delivery_partner)
 delivery_partner.organisation = other_organisation
 delivery_partner.save
