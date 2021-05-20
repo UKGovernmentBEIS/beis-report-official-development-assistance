@@ -41,7 +41,7 @@ class Staff::OrganisationsController < Staff::BaseController
         @activities = case level
         when "programme"
           return [] unless fund_id.present?
-          @programmes_for_organisation_and_fund = publishable_programme_activities(
+          publishable_programme_activities(
             organisation: organisation,
             user: current_user,
             fund_id: fund_id
