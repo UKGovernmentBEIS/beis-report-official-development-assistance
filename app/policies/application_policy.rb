@@ -8,32 +8,12 @@ class ApplicationPolicy
     @record = record
   end
 
-  def index?
-    user.administrator?
-  end
-
-  def show?
-    user.administrator?
-  end
-
-  def create?
-    user.administrator?
-  end
-
   def new?
     create?
   end
 
-  def update?
-    user.administrator?
-  end
-
   def edit?
     update?
-  end
-
-  def destroy?
-    user.administrator?
   end
 
   class Scope
@@ -52,10 +32,10 @@ class ApplicationPolicy
   end
 
   protected def beis_user?
-    user.organisation.service_owner?
+    user.service_owner?
   end
 
   protected def delivery_partner_user?
-    !beis_user?
+    user.delivery_partner?
   end
 end

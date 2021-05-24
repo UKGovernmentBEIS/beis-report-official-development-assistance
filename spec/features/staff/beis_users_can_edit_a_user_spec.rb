@@ -58,23 +58,6 @@ RSpec.feature "BEIS users can editing other users" do
     expect(page).to have_content(updated_name)
   end
 
-  scenario "the role can be changed" do
-    administrator_user = create(:beis_user)
-    authenticate!(user: administrator_user)
-
-    visit organisation_path(administrator_user.organisation)
-    click_on t("page_title.users.index")
-
-    expect(page).to have_content(user.name)
-
-    find("tr", text: user.name).click_link("Edit")
-
-    choose "Administrator"
-    click_on "Submit"
-
-    expect(user.reload.role).to eql("administrator")
-  end
-
   scenario "an active user can be deactivated" do
     administrator_user = create(:beis_user)
     authenticate!(user: administrator_user)

@@ -4,8 +4,6 @@
       %th.govuk-table__header
         = t("table.header.user.name")
       %th.govuk-table__header
-        = t("table.header.user.role")
-      %th.govuk-table__header
         = t("table.header.user.email")
       %th.govuk-table__header
         = t("table.header.user.organisation")
@@ -17,7 +15,6 @@
     - users.each do |user|
       %tr.govuk-table__row
         %td.govuk-table__cell= user.name
-        %td.govuk-table__cell= user.role_name
         %td.govuk-table__cell= user.email
         %td.govuk-table__cell.organisation= user.organisation.name
         %td.govuk-table__cell= t("form.user.active.#{user.active}")

@@ -22,11 +22,6 @@
             = @user.email
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
-            = t("summary.label.user.role")
-          %dd.govuk-summary-list__value
-            = @user.role_name
-        .govuk-summary-list__row
-          %dt.govuk-summary-list__key
             = t("summary.label.user.organisation")
           %dd.govuk-summary-list__value
             = @user.organisation.name

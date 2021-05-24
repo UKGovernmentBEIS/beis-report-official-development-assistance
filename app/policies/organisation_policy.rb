@@ -27,14 +27,4 @@ class OrganisationPolicy < ApplicationPolicy
   private def associated_user?
     user.organisation.eql?(record)
   end
-
-  class Scope < Scope
-    def resolve
-      if user.administrator?
-        scope.all
-      else
-        scope.where(id: user.organisation_id)
-      end
-    end
-  end
 end
