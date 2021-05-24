@@ -651,6 +651,7 @@
 - Sum programme and child activity forecasts by financial quarter in IATI XML
 - Remove unused 'role' from User model
 - Open external links in the footer in new tabs
+- Use consistent naming for China (People's Republic of) when selecting and showing recipient country and intended beneficiaries
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...HEAD
 [release-50]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...release-50
