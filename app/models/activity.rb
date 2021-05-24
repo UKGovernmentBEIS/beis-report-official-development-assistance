@@ -269,7 +269,6 @@ class Activity < ApplicationRecord
 
   def total_forecasted
     activity_ids = descendants.pluck(:id).append(id)
-    # PlannedDisbursement.where(parent_activity_id: activity_ids).sum(:value)
     overview = PlannedDisbursementOverview.new(activity_ids)
     overview.latest_values.sum(:value)
   end
@@ -284,6 +283,18 @@ class Activity < ApplicationRecord
       spend_by_financial_quarter(own_and_descendants_transactions.order("date DESC"))
     else
       transactions.order("date DESC")
+    end
+  end
+
+  def reportable_planned_disbursements_for_level
+    return latest_planned_disbursements unless programme?
+
+    activity_ids = descendants.pluck(:id).append(id)
+    planned_disbursements = PlannedDisbursementOverview.new(activity_ids).latest_values.group_by(&:own_financial_quarter)
+    quarters = planned_disbursements.keys.sort.reverse
+
+    quarters.map do |quarter|
+      PlannedDisbursementAggregate.new(quarter, planned_disbursements[quarter])
     end
   end
 

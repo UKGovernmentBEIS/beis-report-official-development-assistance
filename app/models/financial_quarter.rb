@@ -1,4 +1,6 @@
 class FinancialQuarter
+  include Comparable
+
   attr_reader :financial_year, :quarter
 
   QUARTERS = (1..4).to_a
@@ -25,6 +27,14 @@ class FinancialQuarter
       end
 
       new(year, quarter)
+    end
+  end
+
+  def <=>(other)
+    if financial_year == other.financial_year
+      quarter <=> other.quarter
+    else
+      financial_year <=> other.financial_year
     end
   end
 

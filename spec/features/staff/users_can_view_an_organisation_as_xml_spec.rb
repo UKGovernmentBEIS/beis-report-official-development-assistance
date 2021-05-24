@@ -174,6 +174,40 @@ RSpec.feature "Users can view an organisation as XML" do
       end
 
       context "when downloading programme level activities" do
+        def forecast(activity, year, quarter)
+          PlannedDisbursementHistory.new(activity, financial_year: year, financial_quarter: quarter)
+        end
+
+        it "sums up the total forecasts of all the programmes and their child activities by quarter" do
+          programme = create(:programme_activity, extending_organisation: organisation)
+
+          project_1 = create(:project_activity, parent: programme, organisation: organisation)
+          third_party_project_1 = create(:third_party_project_activity, parent: project_1, organisation: organisation)
+          _third_party_project_2 = create(:third_party_project_activity, parent: project_1, organisation: organisation)
+
+          project_2 = create(:project_activity, parent: programme, organisation: organisation)
+          third_party_project_3 = create(:third_party_project_activity, parent: project_2, organisation: organisation)
+          third_party_project_4 = create(:third_party_project_activity, parent: project_2, organisation: organisation)
+
+          ReportingCycle.new(project_1, 2, 2021).tick
+
+          # forecasts for Q3 2021
+          forecast(programme, 2021, 3).set_value(10)
+          forecast(project_1, 2021, 3).set_value(20)
+          forecast(third_party_project_3, 2021, 3).set_value(40)
+
+          # forecasts for Q4 2021
+          forecast(project_2, 2021, 4).set_value(80)
+          forecast(third_party_project_1, 2021, 4).set_value(160)
+          forecast(third_party_project_4, 2021, 4).set_value(320)
+
+          visit organisation_path(organisation, format: :xml, level: :programme, fund_id: programme.associated_fund.id)
+          xml = Nokogiri::XML::Document.parse(page.body)
+
+          expect(xml.xpath("//iati-activity/planned-disbursement/period-start/@iso-date").map(&:text)).to eql(["2022-01-01", "2021-10-01"])
+          expect(xml.xpath("//iati-activity/planned-disbursement/value").map(&:text)).to eql(["560.00", "70.00"])
+        end
+
         it "sums up the total transactions of all the programmes and their child activities by quarter" do
           programme = create(:programme_activity, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
           other_programme = create(:programme_activity, parent: programme.parent, extending_organisation: organisation)
@@ -181,23 +215,23 @@ RSpec.feature "Users can view an organisation as XML" do
           activity_projects = create_list(:project_activity, 2, parent: programme)
           activity_third_party_project = create(:third_party_project_activity, parent: activity_projects[0])
 
-          create(:transaction, value: 100, parent_activity: programme, financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 100, parent_activity: programme, financial_year: 2018, financial_quarter: 2)
-          create(:transaction, value: 100, parent_activity: other_programme, financial_year: 2019, financial_quarter: 3)
+          create(:transaction, value: 10, parent_activity: programme, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 20, parent_activity: programme, financial_year: 2018, financial_quarter: 2)
+          create(:transaction, value: 40, parent_activity: other_programme, financial_year: 2019, financial_quarter: 3)
 
-          create(:transaction, value: 50, parent_activity: activity_projects[0], financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 50, parent_activity: activity_projects[0], financial_year: 2020, financial_quarter: 1)
+          create(:transaction, value: 80, parent_activity: activity_projects[0], financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 160, parent_activity: activity_projects[0], financial_year: 2020, financial_quarter: 1)
 
-          create(:transaction, value: 50, parent_activity: activity_projects[1], financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 50, parent_activity: activity_projects[1], financial_year: 2020, financial_quarter: 1)
+          create(:transaction, value: 320, parent_activity: activity_projects[1], financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 640, parent_activity: activity_projects[1], financial_year: 2020, financial_quarter: 1)
 
-          create(:transaction, value: 100, parent_activity: activity_third_party_project, financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 100, parent_activity: activity_third_party_project, financial_year: 2020, financial_quarter: 1)
+          create(:transaction, value: 1280, parent_activity: activity_third_party_project, financial_year: 2018, financial_quarter: 1)
+          create(:transaction, value: 2560, parent_activity: activity_third_party_project, financial_year: 2020, financial_quarter: 1)
 
           visit organisation_path(organisation, format: :xml, level: :programme, fund_id: programme.associated_fund.id)
           xml = Nokogiri::XML::Document.parse(page.body)
 
-          expect(xml.xpath("//iati-activity/transaction/value").map(&:text)).to eql(["200.0", "100.0", "300.0", "100.0"])
+          expect(xml.xpath("//iati-activity/transaction/value").map(&:text)).to eql(["3360.0", "20.0", "1690.0", "40.0"])
           expect(xml.xpath("//iati-activity/transaction/transaction-date/@iso-date").map(&:text)).to eql(["2020-06-30", "2018-09-30", "2018-06-30", "2019-12-31"])
         end
       end
