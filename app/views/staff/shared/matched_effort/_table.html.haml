@@ -1,0 +1,19 @@
+%table.govuk-table.implementing_organisations
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header
+        =t("table.header.matched_effort.providing_organisation")
+      %th.govuk-table__header
+        =t("table.header.matched_effort.funding_type")
+      %th.govuk-table__header
+        =t("table.header.matched_effort.category")
+      %th.govuk-table__header
+        =t("table.header.matched_effort.amount")
+
+  %tbody.govuk-table__body
+    - matched_efforts.each do |matched_effort|
+      %tr.govuk-table__row
+        %td.govuk-table__cell= matched_effort.organisation.name
+        %td.govuk-table__cell= matched_effort.funding_type
+        %td.govuk-table__cell= matched_effort.category
+        %td.govuk-table__cell= matched_effort.committed_amount

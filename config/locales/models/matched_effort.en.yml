@@ -9,3 +9,12 @@ en:
               invalid: must be a matched effort provider
             category:
               invalid: "'%{category}' is not valid for the funding type '%{funding_type}'"
+  page_title:
+    matched_effort: Matched effort
+  table:
+    header:
+      matched_effort:
+        providing_organisation: Providing organisation
+        funding_type: Funding type
+        category: Category
+        amount: Amount

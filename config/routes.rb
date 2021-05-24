@@ -36,6 +36,7 @@ Rails.application.routes.draw do
         resource :children, controller: :activity_children, only: [:show, :create]
 
         get "comments" => "activity_comments#show"
+        get "other_funding" => "activity_other_funding#show"
       end
     end
 
