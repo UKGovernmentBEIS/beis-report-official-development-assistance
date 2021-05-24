@@ -6,21 +6,25 @@ class Staff::ActivityUploadsController < Staff::BaseController
   include Secured
   include StreamCsvDownload
 
-  before_action :authorize_report
-
   def new
-    @report_presenter = ReportPresenter.new(@report)
+    authorize report, :show?
+
+    @report_presenter = ReportPresenter.new(report)
   end
 
   def show
-    @report_presenter = ReportPresenter.new(@report)
+    authorize report, :show?
+
+    @report_presenter = ReportPresenter.new(report)
     filename = @report_presenter.filename_for_activities_template
 
     stream_csv_download(filename: filename, headers: csv_headers)
   end
 
   def update
-    @report_presenter = ReportPresenter.new(@report)
+    authorize report, :upload?
+
+    @report_presenter = ReportPresenter.new(report)
     upload = CsvFileUpload.new(params[:report], :activity_csv)
     @success = false
 
@@ -39,9 +43,8 @@ class Staff::ActivityUploadsController < Staff::BaseController
     end
   end
 
-  private def authorize_report
-    @report = Report.find(params[:report_id])
-    authorize @report, :show?
+  private def report
+    @_report ||= Report.find(params[:report_id])
   end
 
   private def csv_headers

@@ -176,4 +176,26 @@ RSpec.describe Report, type: :model do
       expect(report.reportable_activities).not_to include(cancelled_project)
     end
   end
+
+  describe "#editable?" do
+    all_report_states = Report.states.keys
+    editable_states = Report::EDITABLE_STATES
+    readonly_states = all_report_states - editable_states
+
+    editable_states.each do |state|
+      it "is false when the report is #{state}", state: state do |example|
+        report = Report.new(state: example.metadata[:state])
+
+        expect(report.editable?).to be_truthy
+      end
+    end
+
+    readonly_states.each do |state|
+      it "is true when the report is #{state}", state: state do |example|
+        report = Report.new(state: example.metadata[:state])
+
+        expect(report.editable?).to be_falsey
+      end
+    end
+  end
 end

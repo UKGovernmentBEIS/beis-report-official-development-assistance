@@ -19,11 +19,17 @@
       %p.govuk-body
         = t("action.transaction.download.hint_html")
 
-      .govuk-body.upload-form
-        = form_for @report_presenter, url: report_transaction_upload_path(@report_presenter) do |f|
+      - if policy(@report_presenter).upload?
+        .govuk-body.upload-form
+          = form_for @report_presenter, url: report_transaction_upload_path(@report_presenter) do |f|
 
-          = f.govuk_file_field :transaction_csv,
-            label: { text: t("form.label.transaction.csv_file") },
-            hint: { text: t("form.hint.transaction.csv_file") }
+            = f.govuk_file_field :transaction_csv,
+              label: { text: t("form.label.transaction.csv_file") },
+              hint: { text: t("form.hint.transaction.csv_file") }
 
-          = f.govuk_submit t("action.transaction.upload.button")
+            = f.govuk_submit t("action.transaction.upload.button")
+      - else
+        %h2.govuk-heading-m= t("form.label.transaction.csv_file")
+
+        %p.govuk-body
+          = "This report is #{@report_presenter.state.downcase}, so CSV upload is unavailable."
