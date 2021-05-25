@@ -655,6 +655,8 @@
 
 ## [unreleased]
 
+- Sort the users list by name within each organisation
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-51...HEAD
 [release-51]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...release-51
 [release-50]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...release-50
