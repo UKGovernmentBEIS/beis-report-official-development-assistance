@@ -1,0 +1,9 @@
+---
+en:
+  activerecord:
+    errors:
+      models:
+        matched_effort:
+          attributes:
+            organisation:
+              invalid: must be a matched effort provider

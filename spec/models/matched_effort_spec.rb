@@ -16,5 +16,21 @@ RSpec.describe MatchedEffort, type: :model do
     it { should validate_presence_of(:currency) }
     it { should validate_presence_of(:exchange_rate) }
     it { should validate_presence_of(:date_of_exchange_rate) }
+
+    describe "organisation validations" do
+      subject { build(:matched_effort, organisation: organisation) }
+
+      context "when organisation is a matched effort provider" do
+        let(:organisation) { create(:matched_effort_provider) }
+
+        it { should be_valid }
+      end
+
+      context "when organisation is not a matched effort provider" do
+        let(:organisation) { create(:delivery_partner_organisation) }
+
+        it { should be_invalid }
+      end
+    end
   end
 end
