@@ -87,9 +87,6 @@ RSpec.describe "Users can create a matched effort" do
 
       expect(page).to have_content("Organisation can't be blank")
       expect(page).to have_content("Category can't be blank")
-      expect(page).to have_content("Committed amount can't be blank")
-      expect(page).to have_content("Exchange rate can't be blank")
-      expect(page).to have_content("Date of exchange rate can't be blank")
     end
   end
 end

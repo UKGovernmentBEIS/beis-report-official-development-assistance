@@ -10,7 +10,7 @@ class MatchedEffort < ApplicationRecord
   enum funding_type: FUNDING_TYPE_CODES.hash_of_coded_names
   enum category: CATEGORY_CODES.hash_of_coded_names
 
-  validates_presence_of :organisation_id, :funding_type, :committed_amount, :currency, :exchange_rate, :date_of_exchange_rate
+  validates_presence_of :organisation_id, :funding_type
   validates_presence_of :category, if: -> { in_kind? || reciprocal? }
 
   validates_with MatchedEffortOrganisationValidator, if: -> { organisation_id.present? }

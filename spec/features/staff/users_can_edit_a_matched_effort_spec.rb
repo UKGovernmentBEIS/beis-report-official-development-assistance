@@ -40,13 +40,12 @@ RSpec.describe "Users can create a matched effort" do
     end
 
     scenario "they see errors when a required field is missing" do
-      matched_effort.committed_amount = ""
-
-      fill_in_matched_effort_form(matched_effort)
+      select("", from: "matched_effort[organisation_id]")
+      click_on t("default.button.submit")
 
       expect(page).to_not have_content(t("action.matched_effort.update.success"))
 
-      expect(page).to have_content("Committed amount can't be blank")
+      expect(page).to have_content("Organisation can't be blank")
     end
 
     scenario "they can delete a matched effort" do
