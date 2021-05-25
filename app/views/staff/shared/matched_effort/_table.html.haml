@@ -9,6 +9,7 @@
         =t("table.header.matched_effort.category")
       %th.govuk-table__header
         =t("table.header.matched_effort.amount")
+      %th.govuk-table__header
 
   %tbody.govuk-table__body
     - matched_efforts.each do |matched_effort|
@@ -17,3 +18,5 @@
         %td.govuk-table__cell= matched_effort.funding_type
         %td.govuk-table__cell= matched_effort.category
         %td.govuk-table__cell= matched_effort.committed_amount
+        %td.govuk-table__cell
+          = link_to t("default.link.edit"), edit_activity_matched_effort_path(@activity, matched_effort), class: "govuk-link"

@@ -6,6 +6,13 @@ class Staff::MatchedEffortsController < Staff::BaseController
     @matched_effort = MatchedEffort.new
   end
 
+  def edit
+    @activity = Activity.find(params[:activity_id])
+    authorize @activity
+
+    @matched_effort = MatchedEffort.find(params[:id])
+  end
+
   def create
     @activity = Activity.find(params[:activity_id])
     authorize @activity
@@ -18,6 +25,22 @@ class Staff::MatchedEffortsController < Staff::BaseController
       redirect_to organisation_activity_other_funding_path(@activity.organisation, @activity)
     else
       render :new
+    end
+  end
+
+  def update
+    @activity = Activity.find(params[:activity_id])
+    authorize @activity
+
+    @matched_effort = MatchedEffort.find(params[:id])
+    @matched_effort.assign_attributes(matched_effort_params)
+
+    if @matched_effort.valid?
+      @matched_effort.save
+      flash[:notice] = t("action.matched_effort.update.success")
+      redirect_to organisation_activity_other_funding_path(@activity.organisation, @activity)
+    else
+      render :edit
     end
   end
 

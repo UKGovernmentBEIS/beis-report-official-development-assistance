@@ -79,26 +79,5 @@ RSpec.describe "Users can create a matched effort" do
       expect(page).to have_content("Exchange rate can't be blank")
       expect(page).to have_content("Date of exchange rate can't be blank")
     end
-
-    def fill_in_matched_effort_form(template = build(:matched_effort))
-      select template.organisation.name, from: "matched_effort[organisation_id]"
-
-      page.find(:xpath, "//input[@value='#{template.funding_type}']").set(true)
-      page.find(:xpath, "//input[@value='#{template.category}']").set(true)
-
-      fill_in "matched_effort[committed_amount]", with: template.committed_amount
-
-      within "#matched-effort-currency-field" do
-        find("option[value='#{template.currency}']").select_option
-      end
-
-      fill_in "matched_effort[exchange_rate]", with: template.exchange_rate
-      fill_in "matched_effort[date_of_exchange_rate(3i)]", with: template.date_of_exchange_rate.day
-      fill_in "matched_effort[date_of_exchange_rate(2i)]", with: template.date_of_exchange_rate.month
-      fill_in "matched_effort[date_of_exchange_rate(1i)]", with: template.date_of_exchange_rate.year
-      fill_in "matched_effort[notes]", with: template.notes
-
-      click_on t("default.button.submit")
-    end
   end
 end

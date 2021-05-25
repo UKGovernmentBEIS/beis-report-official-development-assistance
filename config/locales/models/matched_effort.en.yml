@@ -13,6 +13,7 @@ en:
     matched_effort:
       index: Matched effort
       new: Add new matched effort
+      edit: Edit a matched effort
   table:
     header:
       matched_effort:
@@ -44,3 +45,5 @@ en:
     matched_effort:
       create:
         success: The matched effort has been successfully created
+      update:
+        success: The matched effort has been successfully updated
