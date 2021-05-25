@@ -29,6 +29,16 @@ RSpec.describe "Users can create a matched effort" do
       expect(matched_effort.notes).to eq("Here are some new notes")
     end
 
+    scenario "updating is tracked with PublicActivity" do
+      PublicActivity.with_tracking do
+        fill_in_matched_effort_form(matched_effort)
+
+        auditable_event = PublicActivity::Activity.last
+        expect(auditable_event.key).to eq "matched_effort.update"
+        expect(auditable_event.owner_id).to eq user.id
+      end
+    end
+
     scenario "they see errors when a required field is missing" do
       matched_effort.committed_amount = ""
 
@@ -40,11 +50,17 @@ RSpec.describe "Users can create a matched effort" do
     end
 
     scenario "they can delete a matched effort" do
-      expect {
-        click_on t("default.button.delete")
-      }.to change { MatchedEffort.count }.by(-1)
+      PublicActivity.with_tracking do
+        expect {
+          click_on t("default.button.delete")
+        }.to change { MatchedEffort.count }.by(-1)
 
-      expect(page).to have_content(t("action.matched_effort.destroy.success"))
+        expect(page).to have_content(t("action.matched_effort.destroy.success"))
+
+        auditable_event = PublicActivity::Activity.last
+        expect(auditable_event.key).to eq "matched_effort.destroy"
+        expect(auditable_event.owner_id).to eq user.id
+      end
     end
   end
 end

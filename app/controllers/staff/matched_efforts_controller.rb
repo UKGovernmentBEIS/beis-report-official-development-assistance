@@ -21,6 +21,8 @@ class Staff::MatchedEffortsController < Staff::BaseController
 
     if @matched_effort.valid?
       @matched_effort.save
+      @matched_effort.create_activity key: "matched_effort.create", owner: current_user
+
       flash[:notice] = t("action.matched_effort.create.success")
       redirect_to organisation_activity_other_funding_path(@activity.organisation, @activity)
     else
@@ -38,6 +40,8 @@ class Staff::MatchedEffortsController < Staff::BaseController
 
     if @matched_effort.valid?
       @matched_effort.save
+      @matched_effort.create_activity key: "matched_effort.update", owner: current_user
+
       flash[:notice] = t("action.matched_effort.update.success")
       redirect_to organisation_activity_other_funding_path(@activity.organisation, @activity)
     else
@@ -51,6 +55,7 @@ class Staff::MatchedEffortsController < Staff::BaseController
 
     authorize @matched_effort
 
+    @matched_effort.create_activity key: "matched_effort.destroy", owner: current_user
     @matched_effort.destroy
 
     flash[:notice] = t("action.matched_effort.destroy.success")
