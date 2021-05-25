@@ -16,6 +16,9 @@
             = t("page_title.activity.other_funding")
 
           %h3.govuk-heading-m
-            = t("page_title.matched_effort")
+            = t("page_title.matched_effort.index")
+
+          - if policy(@activity).create?
+            = link_to(t("page_content.matched_effort.button.create"), new_activity_matched_effort_path(@activity), class: "govuk-button")
 
           = render partial: "staff/shared/matched_effort/table", locals: { matched_efforts: @matched_efforts }

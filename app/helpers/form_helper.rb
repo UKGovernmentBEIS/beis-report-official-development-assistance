@@ -4,6 +4,13 @@ module FormHelper
       [OpenStruct.new(name: "", id: ""), Organisation.sorted_by_name].flatten
   end
 
+  def list_of_matched_effort_providers
+    @list_of_matched_effort_providers ||= [
+      OpenStruct.new(name: "", id: ""),
+      Organisation.matched_effort_providers.active,
+    ].flatten
+  end
+
   def list_of_delivery_partners
     @list_of_delivery_partners ||= Organisation.delivery_partners
   end

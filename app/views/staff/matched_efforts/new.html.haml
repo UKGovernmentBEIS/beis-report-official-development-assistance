@@ -1,0 +1,37 @@
+= content_for :page_title_prefix, t("page_title.matched_effort.new")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.matched_effort.new")
+
+      = form_with model: @matched_effort, url: activity_matched_efforts_path(@activity) do |f|
+        = f.hidden_field :activity_id, value: @activity.id
+        = f.govuk_collection_select :organisation_id,
+                     list_of_matched_effort_providers,
+                     :id,
+                     :name,
+                     { include_blank: true }
+        = f.govuk_radio_buttons_fieldset(:funding_type, legend: -> { tag.legend(t("form.legend.matched_effort.funding_type"), class: "govuk-fieldset__legend") }) do
+          - MatchedEffort::FundingType.all.each_with_index do |funding_type, i|
+            - if funding_type.categories.count.zero?
+              = f.govuk_radio_button(:funding_type, funding_type.coded_name, label: { text: funding_type.name }, link_errors: (i == 0))
+            - else
+              = f.govuk_radio_button(:funding_type, funding_type.coded_name, label: { text: funding_type.name }, link_errors: (i == 0)) do
+                = f.govuk_radio_buttons_fieldset(:category, legend: -> { tag.legend(t("form.legend.matched_effort.category"), class: "govuk-fieldset__legend") }) do
+                  - funding_type.categories.each do |category|
+                    = f.govuk_radio_button :category, category.coded_name, label: { text: category.name }
+        = f.govuk_text_field :committed_amount, width: 20
+        = f.govuk_collection_select :currency,
+                     default_currency_options,
+                     :code,
+                     :name,
+                     hint: { text: t("form.hint.matched_effort.currency") }
+        = f.govuk_text_field :exchange_rate, width: 20, hint: { text: t("form.hint.matched_effort.exchange_rate") }
+        = f.govuk_date_field :date_of_exchange_rate, legend: -> { tag.legend(t("form.legend.matched_effort.date_of_exchange_rate"), class: "govuk-fieldset__legend") }
+        = f.govuk_text_area :notes
+
+        = f.govuk_submit t("default.button.submit")
+
+
