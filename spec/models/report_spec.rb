@@ -14,7 +14,7 @@ RSpec.describe Report, type: :model do
   end
 
   describe ".editable_for_activity" do
-    let!(:organisation) { create(:organisation) }
+    let!(:organisation) { create(:delivery_partner_organisation) }
     let!(:project) { create(:project_activity, organisation: organisation) }
     let!(:project_in_another_fund) { create(:project_activity, organisation: organisation) }
 
@@ -157,7 +157,7 @@ RSpec.describe Report, type: :model do
   end
 
   describe "reportable_activities" do
-    let!(:report) { create(:report) }
+    let!(:report) { create(:report, organisation: build(:delivery_partner_organisation)) }
     let!(:programme) { create(:programme_activity, parent: report.fund) }
     let!(:project_a) { create(:project_activity, parent: programme, organisation: report.organisation) }
     let!(:project_b) { create(:project_activity, parent: programme, organisation: report.organisation) }
@@ -174,6 +174,28 @@ RSpec.describe Report, type: :model do
       expect(report.reportable_activities).not_to include(programme)
       expect(report.reportable_activities).not_to include(project_in_another_fund)
       expect(report.reportable_activities).not_to include(cancelled_project)
+    end
+  end
+
+  describe "#editable?" do
+    all_report_states = Report.states.keys
+    editable_states = Report::EDITABLE_STATES
+    readonly_states = all_report_states - editable_states
+
+    editable_states.each do |state|
+      it "is false when the report is #{state}", state: state do |example|
+        report = Report.new(state: example.metadata[:state])
+
+        expect(report.editable?).to be_truthy
+      end
+    end
+
+    readonly_states.each do |state|
+      it "is true when the report is #{state}", state: state do |example|
+        report = Report.new(state: example.metadata[:state])
+
+        expect(report.editable?).to be_falsey
+      end
     end
   end
 end

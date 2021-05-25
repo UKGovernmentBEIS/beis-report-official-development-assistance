@@ -2,7 +2,8 @@
 
 class Staff::OrganisationsController < Staff::BaseController
   def index
-    @organisations = policy_scope(Organisation)
+    @role = params[:role]
+    @organisations = policy_scope(Organisation).where(role: @role.singularize)
     authorize @organisations
   end
 
@@ -40,7 +41,7 @@ class Staff::OrganisationsController < Staff::BaseController
         @activities = case level
         when "programme"
           return [] unless fund_id.present?
-          @programmes_for_organisation_and_fund = publishable_programme_activities(
+          publishable_programme_activities(
             organisation: organisation,
             user: current_user,
             fund_id: fund_id
@@ -59,7 +60,7 @@ class Staff::OrganisationsController < Staff::BaseController
   end
 
   def new
-    @organisation = Organisation.new
+    @organisation = Organisation.new(role: params[:role].singularize)
     authorize @organisation
   end
 
@@ -133,7 +134,8 @@ class Staff::OrganisationsController < Staff::BaseController
   end
 
   private def organisation_params
-    params.require(:organisation).permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference, :beis_organisation_reference)
+    params.require(:organisation)
+      .permit(:name, :organisation_type, :default_currency, :language_code, :iati_reference, :beis_organisation_reference, :role, :active)
   end
 
   private def level

@@ -91,6 +91,12 @@ RUN \
 # create tmp/pids
 RUN mkdir -p tmp/pids
 
+ARG current_sha
+ARG time_of_build
+
+ENV CURRENT_SHA=$current_sha
+ENV TIME_OF_BUILD=$time_of_build
+
 # db setup
 COPY ./docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh

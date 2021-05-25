@@ -639,9 +639,24 @@
 - Show organisation short name on organisations index page
 - Total budget should only total budgets from a specific activity
 
+## [release-51] - 2021-05-25
+
+- Allow organisations of type "Matched Effort Provider" to be created
+- Stop forecast totals double-counting multiple versions of the same forecast
+- Update the request an account link
+- Allow DP users to create transfers and associate them with the current report
+- Add some useful stats to our healthcheck endpoint
+- Prevent uploading transactions if the report is not editable
+- Prevent uploading activities, transactions and planned disbursements if the report is not editable
+- Sum programme and child activity forecasts by financial quarter in IATI XML
+- Remove unused 'role' from User model
+- Open external links in the footer in new tabs
+- Use consistent naming for China (People's Republic of) when selecting and showing recipient country and intended beneficiaries
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-51...HEAD
+[release-51]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...release-51
 [release-50]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...release-50
 [release-49]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...release-49
 [release-48]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-47...release-48

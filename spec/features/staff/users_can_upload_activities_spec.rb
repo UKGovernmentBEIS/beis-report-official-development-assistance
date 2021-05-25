@@ -1,5 +1,5 @@
 RSpec.feature "users can upload activities" do
-  let(:organisation) { create(:organisation) }
+  let(:organisation) { create(:delivery_partner_organisation) }
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
   let!(:programme) { create(:programme_activity, :newton_funded, extending_organisation: organisation, roda_identifier_fragment: "B-PROG", parent: create(:fund_activity, roda_identifier_fragment: "A-FUND")) }
@@ -125,7 +125,7 @@ RSpec.feature "users can upload activities" do
   end
 
   context "uploading a set of activities the user doesn't have permission to modify" do
-    let(:another_organisation) { create(:organisation) }
+    let(:another_organisation) { create(:delivery_partner_organisation) }
     let!(:another_programme) { create(:programme_activity, parent: programme.associated_fund, extending_organisation: another_organisation, roda_identifier_fragment: "BB-PROG") }
     let!(:existing_activity) { create(:project_activity, parent: programme, roda_identifier_fragment: "EX42") }
 

@@ -6,8 +6,5 @@
       %h1.govuk-heading-xl
         = t("page_title.organisation.index")
 
-      - if policy(Organisation).new?
-        = link_to(t("page_content.organisations.button.create"), new_organisation_path, class: "govuk-button")
-
       - if @organisations
         = render partial: "staff/organisations/table", locals: { organisations: @organisations }

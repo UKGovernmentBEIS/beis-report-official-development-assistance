@@ -22,6 +22,18 @@ RSpec.feature "Users can choose a recipient country" do
         click_button I18n.t("form.button.activity.submit")
         expect(activity.reload.recipient_region).to eq("1029") # Southern Africa
       end
+
+      scenario "the select box uses the DAC designation for China" do
+        select "China (People's Republic of)"
+        click_button I18n.t("form.button.activity.submit")
+
+        expect(activity.reload.recipient_country).to eq("CN")
+
+        visit organisation_activity_details_path(activity.organisation, activity)
+        within(".recipient_country dd.govuk-summary-list__value") do
+          expect(page).to have_content("China (People's Republic of)")
+        end
+      end
     end
 
     context "with JavaScript enabled", js: true do
@@ -38,6 +50,12 @@ RSpec.feature "Users can choose a recipient country" do
         expect(page).to have_selector "li.autocomplete__option", text: "Saint Vincent and the Grenadines", visible: true
 
         expect(page).not_to have_selector "li.autocomplete__option", text: "United Kingdom of Great Britain and Northern Ireland (the)", visible: true
+      end
+
+      scenario "the autocomplete uses the DAC designation for China" do
+        fill_in t("form.label.activity.recipient_country"), with: "china"
+
+        expect(page).to have_selector "li.autocomplete__option", text: "China (People's Republic of)", visible: true
       end
 
       scenario "clicking the autocomplete shows all available countries" do

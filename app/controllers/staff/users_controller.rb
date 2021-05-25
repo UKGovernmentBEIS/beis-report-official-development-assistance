@@ -70,7 +70,7 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :role, :organisation_id)
+    params.require(:user).permit(:name, :email, :organisation_id)
   end
 
   def id
@@ -86,7 +86,7 @@ class Staff::UsersController < Staff::BaseController
   end
 
   private def service_owner
-    Organisation.find_by(service_owner: true)
+    Organisation.service_owner
   end
 
   private def delivery_partners

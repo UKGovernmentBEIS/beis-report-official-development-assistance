@@ -56,7 +56,7 @@ RSpec.describe ImportPlannedDisbursements do
   end
 
   context "when the reporter is not authorised to report on the Activity" do
-    let(:reporter_organisation) { create(:organisation) }
+    let(:reporter_organisation) { create(:delivery_partner_organisation) }
 
     before do
       importer.import([

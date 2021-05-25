@@ -2,7 +2,7 @@ RSpec.feature "BEIS users can create a transfer" do
   let(:user) { create(:beis_user) }
   before { authenticate!(user: user) }
 
-  let(:source_activity) { create(:project_activity) }
+  let(:source_activity) { create(:programme_activity) }
   let(:created_transfer) { Transfer.last }
 
   before do

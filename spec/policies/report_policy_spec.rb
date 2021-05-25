@@ -32,6 +32,7 @@ RSpec.describe ReportPolicy do
       it { is_expected.to forbid_action(:review) }
       it { is_expected.to forbid_action(:request_changes) }
       it { is_expected.to forbid_action(:approve) }
+      it { is_expected.to forbid_action(:upload) }
     end
 
     context "when the report is active" do
@@ -43,6 +44,7 @@ RSpec.describe ReportPolicy do
       it { is_expected.to forbid_action(:request_changes) }
       it { is_expected.to forbid_action(:review) }
       it { is_expected.to forbid_action(:approve) }
+      it { is_expected.to forbid_action(:upload) }
     end
 
     context "when the report is submitted" do
@@ -55,6 +57,7 @@ RSpec.describe ReportPolicy do
       it { is_expected.to forbid_action(:submit) }
       it { is_expected.to forbid_action(:request_changes) }
       it { is_expected.to forbid_action(:approve) }
+      it { is_expected.to forbid_action(:upload) }
     end
 
     context "when the report is in review" do
@@ -67,6 +70,7 @@ RSpec.describe ReportPolicy do
       it { is_expected.to forbid_action(:activate) }
       it { is_expected.to forbid_action(:submit) }
       it { is_expected.to forbid_action(:review) }
+      it { is_expected.to forbid_action(:upload) }
     end
 
     context "when the report is awaiting changes" do
@@ -78,6 +82,7 @@ RSpec.describe ReportPolicy do
       it { is_expected.to forbid_action(:request_changes) }
       it { is_expected.to forbid_action(:review) }
       it { is_expected.to forbid_action(:approve) }
+      it { is_expected.to forbid_action(:upload) }
     end
 
     context "when the report is approved" do
@@ -89,6 +94,7 @@ RSpec.describe ReportPolicy do
       it { is_expected.to forbid_action(:request_changes) }
       it { is_expected.to forbid_action(:review) }
       it { is_expected.to forbid_action(:approve) }
+      it { is_expected.to forbid_action(:upload) }
     end
   end
 
@@ -115,6 +121,7 @@ RSpec.describe ReportPolicy do
       it { is_expected.to forbid_action(:review) }
       it { is_expected.to forbid_action(:request_changes) }
       it { is_expected.to forbid_action(:approve) }
+      it { is_expected.to forbid_action(:upload) }
 
       it { is_expected.to permit_action(:index) }
     end
@@ -134,6 +141,7 @@ RSpec.describe ReportPolicy do
         it { is_expected.to forbid_action(:review) }
         it { is_expected.to forbid_action(:request_changes) }
         it { is_expected.to forbid_action(:approve) }
+        it { is_expected.to forbid_action(:upload) }
       end
 
       context "when the report is active" do
@@ -143,6 +151,7 @@ RSpec.describe ReportPolicy do
         it { is_expected.to permit_action(:download) }
         it { is_expected.to permit_action(:change_state) }
         it { is_expected.to permit_action(:submit) }
+        it { is_expected.to permit_action(:upload) }
 
         it { is_expected.to forbid_action(:activate) }
         it { is_expected.to forbid_action(:review) }
@@ -162,6 +171,7 @@ RSpec.describe ReportPolicy do
         it { is_expected.to forbid_action(:review) }
         it { is_expected.to forbid_action(:request_changes) }
         it { is_expected.to forbid_action(:approve) }
+        it { is_expected.to forbid_action(:upload) }
       end
 
       context "when the report is in review" do
@@ -176,6 +186,7 @@ RSpec.describe ReportPolicy do
         it { is_expected.to forbid_action(:review) }
         it { is_expected.to forbid_action(:request_changes) }
         it { is_expected.to forbid_action(:approve) }
+        it { is_expected.to forbid_action(:upload) }
       end
 
       context "when the report is awaiting changes" do
@@ -185,6 +196,7 @@ RSpec.describe ReportPolicy do
         it { is_expected.to permit_action(:download) }
         it { is_expected.to permit_action(:change_state) }
         it { is_expected.to permit_action(:submit) }
+        it { is_expected.to permit_action(:upload) }
 
         it { is_expected.to forbid_action(:activate) }
         it { is_expected.to forbid_action(:review) }
@@ -204,6 +216,7 @@ RSpec.describe ReportPolicy do
         it { is_expected.to forbid_action(:request_changes) }
         it { is_expected.to forbid_action(:review) }
         it { is_expected.to forbid_action(:approve) }
+        it { is_expected.to forbid_action(:upload) }
       end
     end
   end

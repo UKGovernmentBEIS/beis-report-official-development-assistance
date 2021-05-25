@@ -1,16 +1,18 @@
 RSpec.describe "Users can edit a planned disbursement" do
   context "when signed in as a delivery partner" do
     let(:user) { create(:delivery_partner_user) }
+    let(:programme) { create(:programme_activity, extending_organisation: user.organisation) }
+    let(:project) { create(:project_activity, organisation: user.organisation, parent: programme) }
+    let(:planned_disbursement) { PlannedDisbursementOverview.new(project).latest_values.first }
 
-    before { authenticate!(user: user) }
+    before do
+      authenticate!(user: user)
+      ReportingCycle.new(project, 1, 2018).tick
+      PlannedDisbursementHistory.new(project, financial_quarter: 2, financial_year: 2018).set_value(40)
+    end
 
     scenario "they can edit a planned disbursement" do
-      organisation = user.organisation
-      project = create(:project_activity, organisation: user.organisation)
-      editable_report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
-      planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report, financial_year: editable_report.financial_year + 1)
-
-      visit organisation_activity_path(organisation, project)
+      visit organisation_activity_path(project.organisation, project)
 
       within "##{planned_disbursement.id}" do
         click_on "Edit"
@@ -26,38 +28,25 @@ RSpec.describe "Users can edit a planned disbursement" do
     end
 
     scenario "the correct financial quarter and year are selected" do
-      first_quarter_2018_2019 = "2018-04-01".to_date
-      project = create(:project_activity, organisation: user.organisation)
-      editable_report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
-      planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report, financial_quarter: 2, financial_year: 2018)
-
-      travel_to first_quarter_2018_2019 do
-        visit organisation_activity_path(project.organisation, project)
-        within "##{planned_disbursement.id}" do
-          click_on "Edit"
-        end
-
-        expect(page).to have_content("Edit forecasted spend for FQ2 2018-2019")
+      visit organisation_activity_path(project.organisation, project)
+      within "##{planned_disbursement.id}" do
+        click_on "Edit"
       end
+
+      expect(page).to have_content("Edit forecasted spend for FQ2 2018-2019")
     end
 
     scenario "they do not see the edit link when they cannot edit" do
-      activity = create(:project_activity, organisation: user.organisation)
-      planned_disbursement = create(:planned_disbursement, parent_activity: activity)
+      Report.update_all(state: :approved)
 
-      visit organisation_activity_path(activity.organisation, activity)
+      visit organisation_activity_path(project.organisation, project)
 
       expect(page).not_to have_link t("default.link.edit"),
-        href: edit_activity_planned_disbursements_path(activity, planned_disbursement.financial_year, planned_disbursement.financial_quarter)
+        href: edit_activity_planned_disbursements_path(project, planned_disbursement.financial_year, planned_disbursement.financial_quarter)
     end
 
     scenario "they receive an error message if the value is not a valid number" do
-      organisation = user.organisation
-      project = create(:project_activity, organisation: user.organisation)
-      editable_report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
-      planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report, financial_year: editable_report.financial_year + 1)
-
-      visit organisation_activity_path(organisation, project)
+      visit organisation_activity_path(project.organisation, project)
 
       within "##{planned_disbursement.id}" do
         click_on "Edit"
@@ -71,11 +60,6 @@ RSpec.describe "Users can edit a planned disbursement" do
 
     scenario "the action is recorded with public_activity" do
       PublicActivity.with_tracking do
-        programme = create(:programme_activity, extending_organisation: user.organisation)
-        project = create(:project_activity, organisation: user.organisation, parent: programme)
-        editable_report = create(:report, state: :active, organisation: project.organisation, fund: project.associated_fund)
-        planned_disbursement = create(:planned_disbursement, parent_activity: project, report: editable_report, financial_year: editable_report.financial_year + 1)
-
         visit activities_path
         click_on(project.title)
         within("##{planned_disbursement.id}") do

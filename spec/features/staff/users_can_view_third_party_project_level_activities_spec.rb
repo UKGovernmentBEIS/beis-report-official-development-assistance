@@ -61,7 +61,7 @@ RSpec.feature "Users can view third-party project level activities" do
 
       header = page.response_headers["Content-Disposition"]
       expect(header).to match(/^attachment/)
-      expect(header).to match(/filename=\"#{third_party_project.transparency_identifier}.xml\"$/)
+      expect(header).to match(/filename="#{third_party_project.transparency_identifier}.xml"$/)
     end
   end
 end

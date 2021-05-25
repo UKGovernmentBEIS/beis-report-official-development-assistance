@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_22_092826) do
+ActiveRecord::Schema.define(version: 2021_05_20_134602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -153,9 +153,10 @@ ActiveRecord::Schema.define(version: 2021_04_22_092826) do
     t.string "default_currency"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "service_owner", default: false
     t.string "iati_reference"
     t.string "beis_organisation_reference"
+    t.integer "role"
+    t.boolean "active", default: true
     t.index ["iati_reference"], name: "index_organisations_on_iati_reference", unique: true
   end
 
@@ -231,7 +232,9 @@ ActiveRecord::Schema.define(version: 2021_04_22_092826) do
     t.decimal "value", precision: 13, scale: 2, null: false
     t.integer "financial_year"
     t.integer "financial_quarter"
+    t.uuid "report_id"
     t.index ["destination_id"], name: "index_transfers_on_destination_id"
+    t.index ["report_id"], name: "index_transfers_on_report_id"
     t.index ["source_id"], name: "index_transfers_on_source_id"
   end
 
@@ -241,12 +244,10 @@ ActiveRecord::Schema.define(version: 2021_04_22_092826) do
     t.string "email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "role"
     t.uuid "organisation_id"
     t.boolean "active", default: true
     t.index ["identifier"], name: "index_users_on_identifier"
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
-    t.index ["role"], name: "index_users_on_role"
   end
 
   add_foreign_key "activities", "activities", column: "parent_id", on_delete: :restrict

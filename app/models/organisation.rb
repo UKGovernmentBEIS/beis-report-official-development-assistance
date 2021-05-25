@@ -7,6 +7,12 @@ class Organisation < ApplicationRecord
   has_many :users
   has_many :funds
 
+  enum role: {
+    delivery_partner: 0,
+    matched_effort_provider: 1,
+    service_owner: 99,
+  }
+
   validates_presence_of :organisation_type, :language_code, :default_currency
   validates :name,
     presence: true,
@@ -14,14 +20,16 @@ class Organisation < ApplicationRecord
   validates :iati_reference,
     uniqueness: {case_sensitive: false},
     presence: true,
+    unless: proc { |organisation| organisation.matched_effort_provider? },
     format: {with: /\A[a-zA-Z]{2,}-[a-zA-Z]{3}-.+\z/, message: I18n.t("activerecord.errors.models.organisation.attributes.iati_reference.format")}
+  validates :beis_organisation_reference, uniqueness: {case_sensitive: false}
   validates :beis_organisation_reference,
     presence: true,
-    uniqueness: {case_sensitive: false},
-    format: {with: /\A[A-Z]{2,10}\z/, message: I18n.t("activerecord.errors.models.organisation.attributes.beis_organisation_reference.format")}
+    unless: proc { |organisation| organisation.matched_effort_provider? },
+    format: {with: /\A[A-Z]{2,5}\z/, message: I18n.t("activerecord.errors.models.organisation.attributes.beis_organisation_reference.format")}
 
   scope :sorted_by_name, -> { order(name: :asc) }
-  scope :delivery_partners, -> { sorted_by_name.where(service_owner: false) }
+  scope :delivery_partners, -> { sorted_by_name.where(role: "delivery_partner") }
 
   before_validation :ensure_beis_organisation_reference_is_uppercase
 
@@ -37,9 +45,5 @@ class Organisation < ApplicationRecord
 
   def self.service_owner
     find_by(iati_reference: SERVICE_OWNER_IATI_REFERENCE)
-  end
-
-  def delivery_partner?
-    !service_owner?
   end
 end

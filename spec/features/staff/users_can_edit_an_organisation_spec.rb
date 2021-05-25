@@ -1,6 +1,6 @@
 RSpec.feature "Users can edit organisations" do
   let!(:beis_organisation) { create(:beis_organisation) }
-  let!(:another_organisation) { create(:organisation) }
+  let!(:another_organisation) { create(:delivery_partner_organisation) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
@@ -44,6 +44,31 @@ RSpec.feature "Users can edit organisations" do
     click_button t("default.button.submit")
     expect(page).to_not have_content t("action.organisation.update.success")
     expect(page).to have_content t("activerecord.errors.models.organisation.attributes.name.blank")
+  end
+
+  context "when the organisation is a matched effort provider organisation" do
+    let!(:another_organisation) { create(:matched_effort_provider) }
+
+    scenario "it can be set to inactive" do
+      authenticate!(user: create(:administrator, organisation: beis_organisation))
+
+      visit organisation_path(beis_organisation)
+      click_link t("page_title.organisation.index")
+      click_link t("tabs.organisations.matched_effort_providers")
+
+      within("##{another_organisation.id}") do
+        click_link t("default.link.edit")
+      end
+
+      choose t("form.label.organisation.active.false"), name: "organisation[active]"
+      expect {
+        click_button t("default.button.submit")
+      }.to change {
+        another_organisation.reload.active
+      }.from(true).to(false)
+
+      expect(page).to have_content t("action.organisation.update.success")
+    end
   end
 
   def successfully_edit_an_organisation(organisation_name: "My New Organisation")

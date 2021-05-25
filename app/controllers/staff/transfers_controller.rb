@@ -5,10 +5,11 @@ class Staff::TransfersController < Staff::BaseController
 
   def new
     @source_activity = source_activity
+
+    authorize @source_activity, :create_transfer?
+
     @transfer = Transfer.new
     @transfer.source = @source_activity
-
-    authorize @transfer
   end
 
   def edit
@@ -18,11 +19,13 @@ class Staff::TransfersController < Staff::BaseController
   end
 
   def create
+    authorize source_activity, :create_transfer?
+
     @transfer = Transfer.new
-
-    authorize @transfer
-
     @transfer.source = source_activity
+    if source_activity.project? || source_activity.third_party_project?
+      @transfer.report = Report.editable_for_activity(source_activity)
+    end
     @transfer.destination = destination_activity
     @transfer.assign_attributes(transfer_params)
 

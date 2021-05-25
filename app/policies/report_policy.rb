@@ -44,6 +44,10 @@ class ReportPolicy < ApplicationPolicy
     end
   end
 
+  def upload?
+    record.editable? && record.organisation == user.organisation
+  end
+
   def download?
     show?
   end
@@ -53,7 +57,7 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def submit?
-    return change_state? if ["active", "awaiting_changes"].include? record.state
+    return change_state? if record.editable?
   end
 
   def review?

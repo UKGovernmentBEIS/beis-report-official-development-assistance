@@ -6,38 +6,61 @@ RSpec.describe Staff::TransfersController do
     allow(controller).to receive(:logged_in_using_omniauth?).and_return(true)
   end
 
-  let(:activity) { create(:programme_activity) }
-  let(:transfer) { create(:transfer) }
+  let(:transfer) { create(:transfer, source: activity) }
 
-  context "when loggged in as a beis user" do
+  context "when logged in as a beis user" do
     let(:user) { create(:beis_user) }
 
-    describe "#new" do
-      before { get :new, params: {activity_id: activity.id} }
+    context "when the activity is a programme" do
+      let(:activity) { create(:programme_activity) }
 
-      it { should respond_with 200 }
+      describe "#new" do
+        before { get :new, params: {activity_id: activity.id} }
+
+        it { should respond_with 200 }
+      end
+
+      describe "#edit" do
+        before { get :edit, params: {activity_id: activity.id, id: transfer.id} }
+
+        it { should respond_with 200 }
+      end
     end
 
-    describe "#edit" do
-      before { get :edit, params: {activity_id: activity.id, id: transfer.id} }
+    context "when the activity is a project" do
+      let(:activity) { create(:project_activity) }
 
-      it { should respond_with 200 }
+      describe "#new" do
+        before { get :new, params: {activity_id: activity.id} }
+
+        it { should respond_with 401 }
+      end
+
+      describe "#edit" do
+        before { get :edit, params: {activity_id: activity.id, id: transfer.id} }
+
+        it { should respond_with 401 }
+      end
     end
   end
 
   context "when logged in as a delivery partner user" do
     let(:user) { create(:delivery_partner_user) }
 
-    describe "#new" do
-      before { get :new, params: {activity_id: activity.id} }
+    context "when the activity is a programme" do
+      let(:activity) { create(:programme_activity) }
 
-      it { should respond_with 401 }
-    end
+      describe "#new" do
+        before { get :new, params: {activity_id: activity.id} }
 
-    describe "#edit" do
-      before { get :edit, params: {activity_id: activity.id, id: transfer.id} }
+        it { should respond_with 401 }
+      end
 
-      it { should respond_with 401 }
+      describe "#edit" do
+        before { get :edit, params: {activity_id: activity.id, id: transfer.id} }
+
+        it { should respond_with 401 }
+      end
     end
   end
 end

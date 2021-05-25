@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "rake activities:import", type: :task do
-  let(:organisation) { create(:organisation) }
+  let(:organisation) { create(:delivery_partner_organisation) }
   let(:uploader) { create(:beis_user) }
 
   it "returns an error if the organisation is blank" do

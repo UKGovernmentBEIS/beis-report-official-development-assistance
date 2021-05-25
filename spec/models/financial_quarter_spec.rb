@@ -131,4 +131,22 @@ RSpec.describe FinancialQuarter do
       expect(FinancialQuarter.for_date(march_date).to_s).to eq("FQ4 2020-2021")
     end
   end
+
+  describe "#==" do
+    it "is true for quarters with the same year and the same quarter" do
+      expect(FinancialQuarter.new(2020, 3)).to eq(FinancialQuarter.new(2020, 3))
+    end
+  end
+
+  describe "#<=>" do
+    let(:oldest_quarter) { FinancialQuarter.new(2019, 3) }
+    let(:middle_quarter) { FinancialQuarter.new(2019, 4) }
+    let(:latest_quarter) { FinancialQuarter.new(2020, 1) }
+
+    it "compares quarters chronologically" do
+      quarters = [middle_quarter, latest_quarter, oldest_quarter]
+
+      expect(quarters.sort).to match_array([oldest_quarter, middle_quarter, latest_quarter])
+    end
+  end
 end

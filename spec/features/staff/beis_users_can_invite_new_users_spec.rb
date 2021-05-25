@@ -21,8 +21,8 @@ RSpec.feature "BEIS users can invite new users to the service" do
       let(:user) { create(:beis_user) }
 
       scenario "a new user can be created" do
-        organisation = create(:organisation)
-        second_organisation = create(:organisation)
+        organisation = create(:delivery_partner_organisation)
+        second_organisation = create(:delivery_partner_organisation)
         new_user_name = "Foo Bar"
         new_user_email = "email@example.com"
         auth0_identifier = "auth0|00991122"
@@ -53,7 +53,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
       scenario "user creation is tracked with public_activity" do
         PublicActivity.with_tracking do
-          organisation = create(:organisation)
+          organisation = create(:delivery_partner_organisation)
           new_user_name = "Foo Bar"
           new_user_email = "email@example.com"
           auth0_identifier = "auth0|00991122"
@@ -90,7 +90,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
           it "does not create the user and displays an error message" do
             stub_auth0_token_request
             new_email = "email@example.com"
-            organisation = create(:organisation)
+            organisation = create(:delivery_partner_organisation)
             stub_auth0_create_user_request_failure(email: new_email)
 
             visit new_user_path
@@ -111,7 +111,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
         context "when the email was invalid" do
           it "does not create the user and displays an invalid email message" do
             new_email = "tom"
-            organisation = create(:organisation)
+            organisation = create(:delivery_partner_organisation)
             stub_auth0_create_user_request_failure(email: new_email)
 
             visit new_user_path
@@ -151,7 +151,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
     # We expect to see BEIS separately on this page
     within(".user-organisations") do
-      beis_identifier = Organisation.find_by(service_owner: true).id
+      beis_identifier = Organisation.service_owner.id
       expect(page).to have_css("input[type='radio'][value='#{beis_identifier}']:first-child")
       expect(page).to have_css(".govuk-radios__divider:nth-child(2)")
     end

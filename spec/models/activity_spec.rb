@@ -1699,83 +1699,80 @@ RSpec.describe Activity, type: :model do
     end
 
     describe "#total_forecasted" do
-      def create_forecast(parent_activity:)
-        create(:planned_disbursement, value: rand(100..200), parent_activity: parent_activity)
+      let(:quarter) { FinancialQuarter.new(Date.today.year + 2, 3) }
+
+      def create_report(organisation, fund)
+        create(:report, organisation: organisation, fund: fund, state: :active, **quarter.pred)
       end
 
-      let!(:fund_forecast) { create_forecast(parent_activity: fund) }
-      let!(:programme1_forecast) do
-        [
-          create_forecast(parent_activity: programme1),
-          create_forecast(parent_activity: programme1),
+      before do
+        Organisation.all.each do |organisation|
+          Activity.fund.each { |fund| create_report(organisation, fund) }
+        end
+
+        forecasts = [
+          [fund, quarter, 10],
+
+          [programme1, quarter, 20],
+          [programme1, quarter.succ, 40],
+
+          [programme1_projects[0], quarter, 80],
+          [programme1_projects[1], quarter, 160],
+
+          [programme1_third_party_project, quarter, 320],
+          [programme1_third_party_project, quarter.succ, 640],
+
+          [programme2, quarter, 1280],
+          [programme2, quarter.succ, 2560],
+
+          [programme2_projects[0], quarter, 5120],
+          [programme2_projects[1], quarter, 10240],
         ]
+
+        forecasts.each do |activity, quarter, value|
+          PlannedDisbursementHistory.new(activity, **quarter).set_value(value)
+        end
       end
-      let!(:programme2_forecast) do
-        [
-          create_forecast(parent_activity: programme2),
-          create_forecast(parent_activity: programme2),
-        ]
-      end
-      let!(:programme1_project_0_forecast) { create_forecast(parent_activity: programme1_projects[0]) }
-      let!(:programme1_project_1_forecast) { create_forecast(parent_activity: programme1_projects[1]) }
-      let!(:programme2_project_0_forecast) { create_forecast(parent_activity: programme2_projects[0]) }
-      let!(:programme2_project_1_forecast) { create_forecast(parent_activity: programme2_projects[1]) }
-      let!(:programme1_project_0_third_party_project_forecast) { create_forecast(parent_activity: programme1_third_party_project) }
-      let!(:programme2_project_1_third_party_project_forecast) { create_forecast(parent_activity: programme2_third_party_project) }
 
       it "returns the total forecasted spend for a fund" do
-        total_forecasted = [
-          fund_forecast,
-          *programme1_forecast,
-          *programme2_forecast,
-          programme1_project_0_forecast,
-          programme1_project_1_forecast,
-          programme2_project_0_forecast,
-          programme2_project_1_forecast,
-          programme1_project_0_third_party_project_forecast,
-          programme2_project_1_third_party_project_forecast,
-        ].sum(&:value)
-
-        expect(fund.total_forecasted).to eq(total_forecasted)
+        expect(fund.total_forecasted).to eq([10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120, 10240].sum)
       end
 
       it "returns total forecasted spend for a programme" do
-        programme1_total_forecasted = [
-          *programme1_forecast,
-          programme1_project_0_forecast,
-          programme1_project_1_forecast,
-          programme1_project_0_third_party_project_forecast,
-        ].sum(&:value)
-
-        programme2_total_forecasted = [
-          *programme2_forecast,
-          programme2_project_0_forecast,
-          programme2_project_1_forecast,
-          programme2_project_1_third_party_project_forecast,
-        ].sum(&:value)
-
-        expect(programme1.total_forecasted).to eq(programme1_total_forecasted)
-        expect(programme2.total_forecasted).to eq(programme2_total_forecasted)
+        expect(programme1.total_forecasted).to eq([20, 40, 80, 160, 320, 640].sum)
+        expect(programme2.total_forecasted).to eq([1280, 2560, 5120, 10240].sum)
       end
 
       it "returns foral forecasted spend for a project" do
-        programme1_project_0_forecasted = [
-          programme1_project_0_forecast,
-          programme1_project_0_third_party_project_forecast,
-        ].sum(&:value)
+        expect(programme1_projects[0].total_forecasted).to eq([80, 320, 640].sum)
+        expect(programme1_projects[1].total_forecasted).to eq(160)
+        expect(programme2_projects[0].total_forecasted).to eq(5120)
+        expect(programme2_projects[1].total_forecasted).to eq(10240)
+      end
 
-        programme1_project_1_forecasted = programme1_project_1_forecast.value
-        programme2_project_0_forecasted = programme2_project_0_forecast.value
+      context "when a level A/B forecast is revised" do
+        let(:programme) { programme2 }
 
-        programme2_project_1_forecasted = [
-          programme2_project_1_forecast,
-          programme2_project_1_third_party_project_forecast,
-        ].sum(&:value)
+        before do
+          PlannedDisbursementHistory.new(programme, **quarter).set_value(20480)
+        end
 
-        expect(programme1_projects[0].total_forecasted).to eq(programme1_project_0_forecasted)
-        expect(programme1_projects[1].total_forecasted).to eq(programme1_project_1_forecasted)
-        expect(programme2_projects[0].total_forecasted).to eq(programme2_project_0_forecasted)
-        expect(programme2_projects[1].total_forecasted).to eq(programme2_project_1_forecasted)
+        it "only includes the latest version's value in the total" do
+          expect(programme.total_forecasted).to eq([20480, 2560, 5120, 10240].sum)
+        end
+      end
+
+      context "when there are versions of level C/D forecasts in older reports" do
+        let(:project) { programme1_projects[0] }
+        let(:old_report) { create(:report, organisation: project.organisation, fund: project.associated_fund, state: :approved, **quarter.pred.pred) }
+
+        before do
+          PlannedDisbursementHistory.new(project, report: old_report, **quarter).set_value(70)
+        end
+
+        it "excludes the old version from the total" do
+          expect(project.total_forecasted).to eq([80, 320, 640].sum)
+        end
       end
     end
 

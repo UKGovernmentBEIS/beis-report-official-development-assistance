@@ -47,7 +47,7 @@ class PlannedDisbursementHistory
   end
 
   def entries
-    entries = PlannedDisbursement.where(series_attributes)
+    entries = PlannedDisbursement.unscoped.where(series_attributes)
 
     if record_history?
       entries.joins(:report).merge(Report.in_historical_order)
@@ -96,10 +96,10 @@ class PlannedDisbursementHistory
     attributes = series_attributes.merge(required_attributes).merge(
       planned_disbursement_type: :original,
       value: value,
-      report: report,
+      report: report
     )
 
-    entry = PlannedDisbursement.create!(attributes)
+    entry = PlannedDisbursement.unscoped.create!(attributes)
     entry.create_activity(key: "planned_disbursement.create", owner: @user)
   end
 
@@ -109,7 +109,7 @@ class PlannedDisbursementHistory
     new_entry.update!(
       planned_disbursement_type: :revised,
       value: value,
-      report: report,
+      report: report
     )
     new_entry.create_activity(key: "planned_disbursement.create", owner: @user)
   end
@@ -133,7 +133,7 @@ class PlannedDisbursementHistory
 
   def required_attributes
     start_date, end_date = period_start_and_end_dates
-    service_owner = Organisation.find_by(service_owner: true)
+    service_owner = Organisation.service_owner
 
     {
       period_start_date: start_date,

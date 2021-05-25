@@ -16,7 +16,7 @@ class ReportMailer < ApplicationMailer
 
     @role = if @user.organisation == @report_presenter.organisation
       :delivery_partner
-    elsif @user.organisation.service_owner
+    elsif @user.organisation.service_owner?
       :service_owner
     end
 

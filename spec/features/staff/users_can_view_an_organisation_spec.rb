@@ -1,7 +1,7 @@
 RSpec.feature "Users can view an organisation" do
   context "when the user is not logged in" do
     it "redirects the user to the root path" do
-      organisation = create(:organisation)
+      organisation = create(:delivery_partner_organisation)
       visit organisation_path(organisation)
       expect(current_path).to eq(root_path)
     end
@@ -28,7 +28,7 @@ RSpec.feature "Users can view an organisation" do
     end
 
     context "viewing another organisation" do
-      let!(:other_organisation) { create(:organisation) }
+      let!(:other_organisation) { create(:delivery_partner_organisation) }
 
       scenario "can see the other organisation's page" do
         visit organisation_path(user.organisation)
@@ -40,8 +40,8 @@ RSpec.feature "Users can view an organisation" do
       end
 
       scenario "does not see activities which belong to a different organisation" do
-        other_programme = create(:programme_activity, extending_organisation: create(:organisation))
-        other_project = create(:project_activity, organisation: create(:organisation))
+        other_programme = create(:programme_activity, extending_organisation: create(:delivery_partner_organisation))
+        other_project = create(:project_activity, organisation: create(:delivery_partner_organisation))
 
         visit organisation_path(user.organisation)
         click_link t("page_title.organisation.index")

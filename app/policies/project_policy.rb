@@ -8,11 +8,11 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def create?
-    !beis_user?
+    delivery_partner_user?
   end
 
   def update?
-    !beis_user?
+    delivery_partner_user?
   end
 
   def destroy?
