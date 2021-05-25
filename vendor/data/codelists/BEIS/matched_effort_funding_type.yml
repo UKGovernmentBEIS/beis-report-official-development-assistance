@@ -1,0 +1,9 @@
+data:
+  - code: 0
+    name: In kind
+  - code: 1
+    name: Reciprocal
+  - code: 2
+    name: Co-funding
+  - code: 3
+    name: Direct

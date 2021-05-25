@@ -1,0 +1,17 @@
+data:
+  - code: 0
+    name: Staff time
+  - code: 1
+    name: Workshops
+  - code: 2
+    name: Training
+  - code: 3
+    name: Access to data
+  - code: 4
+    name: Use of facilities
+  - code: 5
+    name: Unspecified
+  - code: 6
+    name: Fellowship
+  - code: 7
+    name: Other
