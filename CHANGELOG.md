@@ -652,6 +652,7 @@
 - Remove unused 'role' from User model
 - Open external links in the footer in new tabs
 - Use consistent naming for China (People's Republic of) when selecting and showing recipient country and intended beneficiaries
+- Allow matched effort funding transactions to be created
 
 ## [unreleased]
 
