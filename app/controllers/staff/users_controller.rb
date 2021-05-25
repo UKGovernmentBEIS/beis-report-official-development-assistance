@@ -1,7 +1,7 @@
 class Staff::UsersController < Staff::BaseController
   def index
     authorize :user, :index?
-    @users = policy_scope(User).includes(:organisation).order("organisations.name")
+    @users = policy_scope(User).includes(:organisation).order("organisations.name ASC, users.name ASC")
   end
 
   def show
