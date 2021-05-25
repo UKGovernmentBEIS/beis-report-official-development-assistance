@@ -231,6 +231,14 @@ RSpec.feature "Users can edit an activity" do
 
         expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
       end
+
+      it "does not show the Channel of delivery code field" do
+        activity = create(:programme_activity, organisation: user.organisation)
+
+        visit organisation_activity_details_path(activity.organisation, activity)
+
+        expect(page).to_not have_content(t("summary.label.activity.channel_of_delivery_code"))
+      end
     end
   end
 
