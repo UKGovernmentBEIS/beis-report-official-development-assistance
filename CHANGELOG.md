@@ -656,6 +656,7 @@
 ## [unreleased]
 
 - Sort the users list by name within each organisation
+- Only show Channel of delivery code for projects and third-party projects
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-51...HEAD
 [release-51]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...release-51
