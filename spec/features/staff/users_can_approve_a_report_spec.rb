@@ -1,6 +1,6 @@
 RSpec.feature "Users can approve reports" do
   context "signed in as a BEIS user" do
-    let(:beis_user) { create(:beis_user) }
+    let!(:beis_user) { create(:beis_user) }
     let(:organisation) { create(:delivery_partner_organisation, users: create_list(:delivery_partner_user, 3)) }
 
     before do
@@ -19,10 +19,12 @@ RSpec.feature "Users can approve reports" do
       expect(page).to have_content "approved"
       expect(report.reload.state).to eql "approved"
 
-      expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count)
+      expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count + 1)
+
+      expect(beis_user).to have_received_email.with_subject(t("mailer.report.approved.service_owner.subject", application_name: t("app.title")))
 
       organisation.users.each do |user|
-        expect(user).to have_received_email.with_subject(t("mailer.report.approved.subject", application_name: t("app.title")))
+        expect(user).to have_received_email.with_subject(t("mailer.report.approved.delivery_partner.subject", application_name: t("app.title")))
       end
     end
 

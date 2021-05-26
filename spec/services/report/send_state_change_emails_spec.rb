@@ -51,12 +51,13 @@ RSpec.describe Report::SendStateChangeEmails do
   context "when the state is approved" do
     let(:state) { "approved" }
 
-    it "sends the activation emails to the active delivery partners" do
-      expect { subject.send! }.to have_enqueued_mail(ReportMailer, :approved).exactly(delivery_partners.count).times
+    it "sends the approved emails to the active delivery partners and service owners" do
+      expect { subject.send! }.to have_enqueued_mail(ReportMailer, :approved)
+        .exactly((service_owners + delivery_partners).count).times
 
       perform_enqueued_jobs
 
-      expect(recipients).to match_array(delivery_partners.pluck(:email))
+      expect(recipients).to match_array((service_owners + delivery_partners).pluck(:email))
     end
   end
 
