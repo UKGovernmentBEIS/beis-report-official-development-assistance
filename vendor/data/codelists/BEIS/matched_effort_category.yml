@@ -1,17 +1,25 @@
 data:
   - code: 0
+    funding_type: 0
     name: Staff time
   - code: 1
+    funding_type: 0
     name: Workshops
   - code: 2
+    funding_type: 0
     name: Training
   - code: 3
+    funding_type: 0
     name: Access to data
   - code: 4
+    funding_type: 0
     name: Use of facilities
   - code: 5
+    funding_type: 0
     name: Unspecified
   - code: 6
+    funding_type: 1
     name: Fellowship
   - code: 7
+    funding_type: 1
     name: Other

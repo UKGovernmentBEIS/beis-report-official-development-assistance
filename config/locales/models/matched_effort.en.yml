@@ -7,3 +7,5 @@ en:
           attributes:
             organisation:
               invalid: must be a matched effort provider
+            category:
+              invalid: "'%{category}' is not valid for the funding type '%{funding_type}'"
