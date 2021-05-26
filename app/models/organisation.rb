@@ -46,6 +46,10 @@ class Organisation < ApplicationRecord
     %w[10 11].include?(organisation_type)
   end
 
+  def is_reporter?
+    service_owner? || delivery_partner?
+  end
+
   def self.service_owner
     find_by(iati_reference: SERVICE_OWNER_IATI_REFERENCE)
   end

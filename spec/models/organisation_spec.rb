@@ -174,6 +174,28 @@ RSpec.describe Organisation, type: :model do
     end
   end
 
+  describe "#is_reporter?" do
+    it "should be true for delivery partners" do
+      organisation = build(:delivery_partner_organisation)
+      expect(organisation.is_reporter?).to eq true
+    end
+
+    it "should be true for BEIS" do
+      organisation = build(:beis_organisation)
+      expect(organisation.is_reporter?).to eq true
+    end
+
+    it "should be false for matched effort providers" do
+      organisation = build(:matched_effort_provider)
+      expect(organisation.is_reporter?).to eq false
+    end
+
+    it "should be false for external income providers" do
+      organisation = build(:external_income_provider)
+      expect(organisation.is_reporter?).to eq false
+    end
+  end
+
   describe "#ensure_beis_organisation_reference_is_uppercase" do
     it "converts the value of beis_organisation_reference to uppercase" do
       organisation = build(:delivery_partner_organisation, beis_organisation_reference: "test")
