@@ -38,5 +38,13 @@ RSpec.describe "Users can create a matched effort" do
 
       expect(page).to have_content("Committed amount can't be blank")
     end
+
+    scenario "they can delete a matched effort" do
+      expect {
+        click_on t("default.button.delete")
+      }.to change { MatchedEffort.count }.by(-1)
+
+      expect(page).to have_content(t("action.matched_effort.destroy.success"))
+    end
   end
 end

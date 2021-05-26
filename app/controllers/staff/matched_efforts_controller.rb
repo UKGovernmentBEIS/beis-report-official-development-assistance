@@ -45,6 +45,18 @@ class Staff::MatchedEffortsController < Staff::BaseController
     end
   end
 
+  def destroy
+    @activity = Activity.find(params[:activity_id])
+    @matched_effort = MatchedEffort.find(params[:id])
+
+    authorize @matched_effort
+
+    @matched_effort.destroy
+
+    flash[:notice] = t("action.matched_effort.destroy.success")
+    redirect_to organisation_activity_other_funding_path(@activity.organisation, @activity)
+  end
+
   private
 
   def matched_effort_params

@@ -47,3 +47,5 @@ en:
         success: The matched effort has been successfully created
       update:
         success: The matched effort has been successfully updated
+      destroy:
+        success: The matched effort has been successfully deleted
