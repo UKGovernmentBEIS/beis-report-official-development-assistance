@@ -1,23 +1,23 @@
 class Staff::MatchedEffortsController < Staff::BaseController
   def new
     @activity = Activity.find(params[:activity_id])
-    authorize @activity
-
     @matched_effort = MatchedEffort.new
+
+    authorize @activity
   end
 
   def edit
     @activity = Activity.find(params[:activity_id])
-    authorize @activity
-
     @matched_effort = MatchedEffort.find(params[:id])
+
+    authorize @matched_effort
   end
 
   def create
     @activity = Activity.find(params[:activity_id])
-    authorize @activity
-
     @matched_effort = MatchedEffort.new(matched_effort_params)
+
+    authorize @matched_effort
 
     if @matched_effort.valid?
       @matched_effort.save
@@ -30,9 +30,10 @@ class Staff::MatchedEffortsController < Staff::BaseController
 
   def update
     @activity = Activity.find(params[:activity_id])
-    authorize @activity
-
     @matched_effort = MatchedEffort.find(params[:id])
+
+    authorize @matched_effort
+
     @matched_effort.assign_attributes(matched_effort_params)
 
     if @matched_effort.valid?
