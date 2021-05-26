@@ -71,6 +71,36 @@ RSpec.feature "BEIS users can create organisations" do
       expect(organisation.active).to eq(true)
     end
 
+    scenario "successfully creating a external income provider organisation" do
+      visit organisation_path(user.organisation)
+      click_link t("page_title.organisation.index")
+      click_link t("tabs.organisations.external_income_providers")
+
+      click_link t("page_content.organisations.external_income_providers.button.create")
+
+      expect(page).to have_content(t("page_title.organisation.external_income_provider.new"))
+      expect(page).to have_field("organisation[active]", type: "radio")
+
+      fill_in "organisation[name]", with: "My New External Income Provider"
+      select "Other", from: "organisation[organisation_type]"
+      select "Russian", from: "organisation[language_code]"
+      select "Russian Ruble", from: "organisation[default_currency]"
+      choose t("form.label.organisation.active.true"), name: "organisation[active]"
+
+      click_button t("default.button.submit")
+
+      organisation = Organisation.order("created_at ASC").last
+
+      expect(page).to have_content(t("action.organisation.create.success"))
+
+      expect(organisation.name).to eq("My New External Income Provider")
+      expect(organisation.organisation_type).to eq("90")
+      expect(organisation.language_code).to eq("ru")
+      expect(organisation.default_currency).to eq("RUB")
+      expect(organisation.role).to eq("external_income_provider")
+      expect(organisation.active).to eq(true)
+    end
+
     scenario "organisation creation is tracked with public_activity" do
       PublicActivity.with_tracking do
         visit organisation_path(user.organisation)

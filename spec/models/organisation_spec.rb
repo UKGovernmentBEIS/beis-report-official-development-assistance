@@ -31,6 +31,13 @@ RSpec.describe Organisation, type: :model do
       it { should_not validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
     end
 
+    context "when the organisation is a external income provider" do
+      subject { build(:external_income_provider) }
+      it { should_not validate_presence_of(:beis_organisation_reference) }
+      it { should_not validate_presence_of(:iati_reference) }
+      it { should_not validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
+    end
+
     describe "sanitation" do
       it { should strip_attribute(:iati_reference) }
     end

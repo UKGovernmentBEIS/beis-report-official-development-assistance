@@ -660,6 +660,7 @@
 - Only show Channel of delivery code for projects and third-party projects
 - Send approved report email notifications to BEIS users
 - Add "sdgs_apply" to CSV export
+- Allow organisations of type "External Income Provider" to be created
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-51...HEAD
 [release-51]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...release-51

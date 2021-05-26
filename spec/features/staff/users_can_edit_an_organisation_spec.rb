@@ -71,6 +71,31 @@ RSpec.feature "Users can edit organisations" do
     end
   end
 
+  context "when the organisation is an external income provider organisation" do
+    let!(:another_organisation) { create(:external_income_provider) }
+
+    scenario "it can be set to inactive" do
+      authenticate!(user: create(:administrator, organisation: beis_organisation))
+
+      visit organisation_path(beis_organisation)
+      click_link t("page_title.organisation.index")
+      click_link t("tabs.organisations.external_income_providers")
+
+      within("##{another_organisation.id}") do
+        click_link t("default.link.edit")
+      end
+
+      choose t("form.label.organisation.active.false"), name: "organisation[active]"
+      expect {
+        click_button t("default.button.submit")
+      }.to change {
+        another_organisation.reload.active
+      }.from(true).to(false)
+
+      expect(page).to have_content t("action.organisation.update.success")
+    end
+  end
+
   def successfully_edit_an_organisation(organisation_name: "My New Organisation")
     visit organisation_path(beis_organisation)
 
