@@ -416,6 +416,24 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#sustainable_development_goals_apply" do
+    let(:activity) { build(:project_activity, sdgs_apply: sdgs_apply) }
+
+    subject { described_class.new(activity).sustainable_development_goals_apply }
+
+    context "when sdgs_apply is true" do
+      let(:sdgs_apply) { true }
+
+      it { is_expected.to eq("Yes") }
+    end
+
+    context "when sdgs_apply is false" do
+      let(:sdgs_apply) { false }
+
+      it { is_expected.to eq("No") }
+    end
+  end
+
   describe "#sustainable_development_goals" do
     it "returns 'Not applicable' when the user selects that SDGs do not apply (sdgs_apply is false)" do
       activity = build(:project_activity, sdgs_apply: false)
