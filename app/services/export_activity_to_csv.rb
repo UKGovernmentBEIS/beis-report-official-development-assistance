@@ -62,6 +62,7 @@ class ExportActivityToCsv
       "GCRF Strategic Area" => -> { activity_presenter.gcrf_strategic_area },
       "GCRF Challenge Area" => -> { activity_presenter.gcrf_challenge_area },
       "Fund Pillar" => -> { activity_presenter.fund_pillar },
+      "Sustainable Development Goals apply?" => -> { activity_presenter.sustainable_development_goals_apply },
       "SDG 1" => -> { activity_presenter.sdg_1 },
       "SDG 2" => -> { activity_presenter.sdg_2 },
       "SDG 3" => -> { activity_presenter.sdg_3 },
