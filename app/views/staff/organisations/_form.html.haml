@@ -7,7 +7,7 @@
                      organisation_type_options,
                      :code,
                      :name
-- if f.object.role != "matched_effort_provider"
+- if f.object.is_reporter?
   = f.govuk_text_field :iati_reference,
                         hint: { text: t("form.hint.organisation.iati_reference_html", link: link_to_new_tab("See International Aid Transparency Initiative (IATI) for detailed documentation", "https://reference.iatistandard.org/organisation-identifiers/")) }
 = f.govuk_collection_select :language_code,
@@ -18,7 +18,7 @@
                      default_currency_options,
                      :code,
                      :name
-- if f.object.role == "matched_effort_provider"
+- unless f.object.is_reporter?
   = f.govuk_collection_radio_buttons :active,
     organisation_active_options,
     :id,

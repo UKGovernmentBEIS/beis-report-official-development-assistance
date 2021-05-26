@@ -19,6 +19,10 @@ FactoryBot.define do
       role { "matched_effort_provider" }
     end
 
+    factory :external_income_provider do
+      role { "external_income_provider" }
+    end
+
     factory :beis_organisation do
       name { "Department for Business, Energy and Industrial Strategy" }
       iati_reference { Organisation::SERVICE_OWNER_IATI_REFERENCE }

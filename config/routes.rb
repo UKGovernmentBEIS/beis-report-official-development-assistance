@@ -23,7 +23,7 @@ Rails.application.routes.draw do
       end
     end
 
-    constraints role: /delivery_partners|matched_effort_providers/ do
+    constraints role: /delivery_partners|matched_effort_providers|external_income_providers/ do
       get "organisations/(:role)", to: "organisations#index", defaults: {role: "delivery_partners"}, as: :organisations
       get "organisations/(:role)/new", to: "organisations#new", as: :new_organisation
     end
