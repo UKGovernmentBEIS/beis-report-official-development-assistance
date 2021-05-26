@@ -150,6 +150,7 @@ class Activity < ApplicationRecord
   has_many :destination_transfers, foreign_key: "destination_id", class_name: "Transfer"
 
   has_many :comments
+  has_many :matched_efforts
 
   enum level: {
     fund: "fund",

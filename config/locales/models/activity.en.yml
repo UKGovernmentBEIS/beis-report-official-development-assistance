@@ -17,6 +17,7 @@ en:
       show: Activity %{name}
       index: Activities
       details: Activity %{name} — Details
+      other_funding: Activity %{name} - Other funding
       financials: Activity %{name} — Financials
       children: Activity %{name} — Child activities
       comments: Activity %{name} — Comments
@@ -348,6 +349,7 @@ en:
       title: Contents
       details: Details
       financials: Financials
+      other_funding: Other funding
       children: Child activities
       comments: Comments
     activities:
@@ -363,6 +365,7 @@ en:
       financials: Financials
       children: Child activities
       upload: Upload bulk activity data
+      other_funding: Other funding
     activities:
       current: Current activities
       historic: Historic activities

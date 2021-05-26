@@ -1,0 +1,51 @@
+---
+en:
+  activerecord:
+    errors:
+      models:
+        matched_effort:
+          attributes:
+            organisation:
+              invalid: must be a matched effort provider
+            category:
+              invalid: "'%{category}' is not valid for the funding type '%{funding_type}'"
+  page_title:
+    matched_effort:
+      index: Matched effort
+      new: Add new matched effort
+      edit: Edit a matched effort
+  table:
+    header:
+      matched_effort:
+        providing_organisation: Providing organisation
+        funding_type: Funding type
+        category: Category
+        amount: Amount
+  form:
+    legend:
+      matched_effort:
+        funding_type: How is the matched effort provided?
+        category: What is the subcategory of the matched effort?
+        date_of_exchange_rate: Date of exchange rate
+    label:
+      matched_effort:
+        committed_amount: Committed amount
+        currency: Amount at source
+        exchange_rate: Exchange rate
+        organisation_id: Providing organisation
+    hint:
+      matched_effort:
+        currency: All values are provided in pounds, please detail the source currency and approved exchange rate used.
+        exchange_rate: One pound equivalent in the source currency
+  page_content:
+    matched_effort:
+      button:
+        create: Add matched effort
+  action:
+    matched_effort:
+      create:
+        success: The matched effort has been successfully created
+      update:
+        success: The matched effort has been successfully updated
+      destroy:
+        success: The matched effort has been successfully deleted

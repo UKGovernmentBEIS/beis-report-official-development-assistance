@@ -138,6 +138,25 @@ RSpec.describe Organisation, type: :model do
     end
   end
 
+  describe ".matched_effort_providers" do
+    it "should contain only organisations that are matched effort providers" do
+      create_list(:delivery_partner_organisation, 3)
+      matched_effort_providers = create_list(:matched_effort_provider, 2)
+
+      expect(Organisation.matched_effort_providers).to match_array(matched_effort_providers)
+    end
+  end
+
+  describe ".active" do
+    it "should contain only active organisations" do
+      create_list(:delivery_partner_organisation, 3, active: false)
+      matched_effort_providers = create_list(:matched_effort_provider, 2, active: true)
+      delivery_partner_organisations = create_list(:delivery_partner_organisation, 3, active: true)
+
+      expect(Organisation.active).to match_array(matched_effort_providers + delivery_partner_organisations)
+    end
+  end
+
   describe "#is_government?" do
     it "should be true for a Government organisation_type" do
       organisation = create(:delivery_partner_organisation, organisation_type: 10)

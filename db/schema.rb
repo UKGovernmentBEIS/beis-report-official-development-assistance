@@ -11,7 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2021_05_20_134602) do
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -144,6 +143,22 @@ ActiveRecord::Schema.define(version: 2021_05_20_134602) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["activity_id"], name: "index_implementing_organisations_on_activity_id"
+  end
+
+  create_table "matched_efforts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "activity_id"
+    t.uuid "organisation_id"
+    t.integer "funding_type"
+    t.integer "category"
+    t.decimal "committed_amount", precision: 13, scale: 2
+    t.string "currency"
+    t.decimal "exchange_rate", precision: 14, scale: 12
+    t.date "date_of_exchange_rate"
+    t.text "notes"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id"], name: "index_matched_efforts_on_activity_id"
+    t.index ["organisation_id"], name: "index_matched_efforts_on_organisation_id"
   end
 
   create_table "organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
