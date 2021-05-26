@@ -34,7 +34,7 @@ class Report
     end
 
     def send_approved
-      send_mail_to_users(:approved)
+      send_mail_to_users(:approved, (delivery_partners + service_owners))
     end
 
     def send_mail_to_users(action, users = delivery_partners)

@@ -99,30 +99,63 @@ RSpec.describe ReportMailer, type: :mailer do
   describe "#approved" do
     let(:mail) { ReportMailer.with(user: user, report: report).approved }
 
-    it "sends the email to the user's email address" do
-      expect(mail.to).to eq([user.email])
-    end
+    context "when the user is a delivery partner in the organisation that the report belongs to" do
+      let(:user) { create(:administrator, organisation: organisation) }
 
-    it "has the correct title" do
-      expect(mail.subject).to eq("Report your Official Development Assistance - Your report has been approved")
-    end
-
-    it "contains the report's details" do
-      expect(mail.body).to include("Report: FQ4 2020-2021 GCRF ABC")
-      expect(mail.body).to include("Link to report: http://test.local/reports/#{report.id}")
-    end
-
-    it "contains the expected body" do
-      expect(mail.body).to include("BEIS have approved your report.")
-    end
-
-    context "when the user is inactive" do
-      before do
-        user.update!(active: false)
+      it "sends the email to the user's email address" do
+        expect(mail.to).to eq([user.email])
       end
 
+      it "has the correct title" do
+        expect(mail.subject).to eq("Report your Official Development Assistance - Your report has been approved")
+      end
+
+      it "contains the report's details" do
+        expect(mail.body).to include("Report: FQ4 2020-2021 GCRF ABC")
+        expect(mail.body).to include("Link to report: http://test.local/reports/#{report.id}")
+      end
+
+      it "contains the expected body" do
+        expect(mail.body).to include("BEIS have approved your report.")
+      end
+
+      context "when the user is inactive" do
+        before do
+          user.update!(active: false)
+        end
+
+        it "should raise an error" do
+          expect { mail.body }.to raise_error(ArgumentError, "User must be active to receive report-related emails")
+        end
+      end
+    end
+
+    context "when the user is a service owner" do
+      let(:user) { create(:beis_user) }
+
+      it "sends the email to the user's email address" do
+        expect(mail.to).to eq([user.email])
+      end
+
+      it "has the correct title" do
+        expect(mail.subject).to eq("Report your Official Development Assistance - A report has been approved")
+      end
+
+      it "contains the report's details" do
+        expect(mail.body).to include("Report: FQ4 2020-2021 GCRF ABC")
+        expect(mail.body).to include("Link to report: http://test.local/reports/#{report.id}")
+      end
+
+      it "contains the expected body" do
+        expect(mail.body).to include("A report has been approved.")
+      end
+    end
+
+    context "when the user is a delivery partner in a different organisation" do
+      let(:user) { create(:administrator, organisation: build(:delivery_partner_organisation)) }
+
       it "should raise an error" do
-        expect { mail.body }.to raise_error(ArgumentError, "User must be active to receive report-related emails")
+        expect { mail.body }.to raise_error(ArgumentError, "User must either be a service owner or belong to the organisation making the report")
       end
     end
   end
