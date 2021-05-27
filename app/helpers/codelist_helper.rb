@@ -82,11 +82,9 @@ module CodelistHelper
   end
 
   def aid_type_radio_options
-    options = Codelist.new(type: "aid_type").to_objects_with_description(
+    Codelist.new(type: "aid_type", source: "beis").to_objects_with_description(
       code_displayed_in_name: true,
     )
-
-    options.select { |a| ALLOWED_AID_TYPE_CODES.include?(a.code) }
   end
 
   def fstc_from_aid_type(aid_type_code)
