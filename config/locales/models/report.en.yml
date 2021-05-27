@@ -50,6 +50,11 @@ en:
             <p class="govuk-body">
             The Service Manager will send the delivery partner an email notifying them that RODA is now open and their reporting cycle has begun.  ODA PMO Finance Lead will send the commissioning email confirming the deadline and relevant service updates to DPs 2 weeks before the report submission deadline.
             </p>
+      summary:
+        editable:
+          title: Report can be changed
+          "true": "Yes"
+          "false": "No"
   label:
     report:
       state:

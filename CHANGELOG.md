@@ -664,6 +664,8 @@
 - Move Aid type question before Collaboration type question
 - Report title no longer includes the description
 - A report description is no longer required
+- Reports show a more detailed summary, including deadline, organisation and
+  description (if one is supplied)
 
 ## [unreleased]
 

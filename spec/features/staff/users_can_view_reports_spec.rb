@@ -63,6 +63,31 @@ RSpec.feature "Users can view reports" do
       expect(page).to have_content report.fund.source_fund.name
     end
 
+    scenario "the report includes a summary" do
+      report = create(:report, :active, organisation: build(:delivery_partner_organisation))
+
+      visit reports_path
+
+      within "##{report.id}" do
+        click_on t("default.link.show")
+      end
+
+      expect(page).to have_content report.description
+      expect(page).to have_content l(report.deadline)
+      expect(page).not_to have_content t("page_content.report.summary.editable.#{report.editable?}")
+      expect(page).to have_content report.organisation.name
+    end
+
+    context "when there is no report descripiton" do
+      scenario "the summary does not include the empty value" do
+        report = create(:report, :active, organisation: build(:delivery_partner_organisation), description: nil)
+
+        visit report_path(report.id)
+
+        expect(page).not_to have_content t("form.label.report.description")
+      end
+    end
+
     scenario "they can view budgets in a report" do
       report = create(:report, :active)
       budget = create(:budget, report: report)
@@ -270,6 +295,21 @@ RSpec.feature "Users can view reports" do
 
         expect(page).to have_content report.financial_quarter
         expect(page).to have_content report.fund.source_fund.name
+      end
+
+      scenario "their own report includes a summary" do
+        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+
+        visit reports_path
+
+        within "##{report.id}" do
+          click_on t("default.link.show")
+        end
+
+        expect(page).to have_content report.description
+        expect(page).to have_content l(report.deadline)
+        expect(page).to have_content t("page_content.report.summary.editable.#{report.editable?}")
+        expect(page).not_to have_content report.organisation.name
       end
 
       scenario "the report shows the total forecasted and actual spend and the variance" do
