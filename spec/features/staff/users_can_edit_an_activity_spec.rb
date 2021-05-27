@@ -73,7 +73,7 @@ RSpec.feature "Users can edit an activity" do
       it "does not show the Publish to Iati field" do
         activity = create(:fund_activity, organisation: user.organisation)
 
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
       end
@@ -227,9 +227,17 @@ RSpec.feature "Users can edit an activity" do
       it "does not show the Publish to Iati field" do
         activity = create(:programme_activity, organisation: user.organisation)
 
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
+      end
+
+      it "does not show the Channel of delivery code field" do
+        activity = create(:programme_activity, organisation: user.organisation)
+
+        visit organisation_activity_details_path(activity.organisation, activity)
+
+        expect(page).to_not have_content(t("summary.label.activity.channel_of_delivery_code"))
       end
     end
   end
@@ -251,7 +259,7 @@ RSpec.feature "Users can edit an activity" do
       scenario "it does not show the Publish to Iati field" do
         activity = create(:programme_activity)
 
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
       end
@@ -286,7 +294,7 @@ RSpec.feature "Users can edit an activity" do
       it "does not show the Publish to Iati field" do
         activity = create(:project_activity, organisation: user.organisation)
 
-        visit organisation_activity_path(activity.organisation, activity)
+        visit organisation_activity_details_path(activity.organisation, activity)
 
         expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
       end

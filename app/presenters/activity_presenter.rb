@@ -151,6 +151,10 @@ class ActivityPresenter < SimpleDelegator
     translate("activity.policy_markers.#{super}")
   end
 
+  def sustainable_development_goals_apply
+    sdgs_apply ? "Yes" : "No"
+  end
+
   def sustainable_development_goals
     if sdgs_apply == false && step_is_complete_or_next?(activity: self, step: :sustainable_development_goals)
       "Not applicable"

@@ -31,6 +31,13 @@ RSpec.describe Organisation, type: :model do
       it { should_not validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
     end
 
+    context "when the organisation is a external income provider" do
+      subject { build(:external_income_provider) }
+      it { should_not validate_presence_of(:beis_organisation_reference) }
+      it { should_not validate_presence_of(:iati_reference) }
+      it { should_not validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
+    end
+
     describe "sanitation" do
       it { should strip_attribute(:iati_reference) }
     end
@@ -138,6 +145,25 @@ RSpec.describe Organisation, type: :model do
     end
   end
 
+  describe ".matched_effort_providers" do
+    it "should contain only organisations that are matched effort providers" do
+      create_list(:delivery_partner_organisation, 3)
+      matched_effort_providers = create_list(:matched_effort_provider, 2)
+
+      expect(Organisation.matched_effort_providers).to match_array(matched_effort_providers)
+    end
+  end
+
+  describe ".active" do
+    it "should contain only active organisations" do
+      create_list(:delivery_partner_organisation, 3, active: false)
+      matched_effort_providers = create_list(:matched_effort_provider, 2, active: true)
+      delivery_partner_organisations = create_list(:delivery_partner_organisation, 3, active: true)
+
+      expect(Organisation.active).to match_array(matched_effort_providers + delivery_partner_organisations)
+    end
+  end
+
   describe "#is_government?" do
     it "should be true for a Government organisation_type" do
       organisation = create(:delivery_partner_organisation, organisation_type: 10)
@@ -152,6 +178,28 @@ RSpec.describe Organisation, type: :model do
     it "should be false for an NGO organisation_type" do
       organisation = create(:delivery_partner_organisation, organisation_type: 21)
       expect(organisation.is_government?).to eq false
+    end
+  end
+
+  describe "#is_reporter?" do
+    it "should be true for delivery partners" do
+      organisation = build(:delivery_partner_organisation)
+      expect(organisation.is_reporter?).to eq true
+    end
+
+    it "should be true for BEIS" do
+      organisation = build(:beis_organisation)
+      expect(organisation.is_reporter?).to eq true
+    end
+
+    it "should be false for matched effort providers" do
+      organisation = build(:matched_effort_provider)
+      expect(organisation.is_reporter?).to eq false
+    end
+
+    it "should be false for external income providers" do
+      organisation = build(:external_income_provider)
+      expect(organisation.is_reporter?).to eq false
     end
   end
 

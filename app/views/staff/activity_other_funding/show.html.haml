@@ -1,0 +1,25 @@
+= content_for :page_title_prefix, t("document_title.activity.other_funding", name: @activity.title)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        = @activity.title
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      .govuk-tabs
+        = render "staff/shared/activities/tab_nav"
+
+        .govuk-tabs__panel
+          %h2.govuk-heading-l
+            = t("page_title.activity.other_funding")
+
+          %h3.govuk-heading-m
+            = t("page_title.matched_effort.index")
+
+          - if policy(@activity).create?
+            = link_to(t("page_content.matched_effort.button.create"), new_activity_matched_effort_path(@activity), class: "govuk-button")
+
+          - if @matched_efforts.present?
+            = render partial: "staff/shared/matched_effort/table", locals: { matched_efforts: @matched_efforts }

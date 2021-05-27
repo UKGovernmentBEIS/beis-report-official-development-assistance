@@ -1,0 +1,11 @@
+= content_for :page_title_prefix, t("page_title.matched_effort.new")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.matched_effort.new")
+
+      = render partial: "form", locals: { activity: @activity, matched_effort: @matched_effort, path: activity_matched_efforts_path(@activity) }
+
+

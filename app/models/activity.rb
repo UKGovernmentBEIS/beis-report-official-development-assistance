@@ -29,10 +29,10 @@ class Activity < ApplicationRecord
     :requires_additional_benefitting_countries,
     :intended_beneficiaries,
     :gdi,
+    :aid_type,
     :collaboration_type,
     :sustainable_development_goals,
     :fund_pillar,
-    :aid_type,
     :fstc_applies,
     :policy_markers,
     :covid19_related,
@@ -62,9 +62,9 @@ class Activity < ApplicationRecord
     :requires_additional_benefitting_countries_step,
     :intended_beneficiaries_step,
     :gdi_step,
+    :aid_type_step,
     :collaboration_type_step,
     :sustainable_development_goals_step,
-    :aid_type_step,
     :fund_pillar_step,
     :fstc_applies_step,
     :policy_markers_step,
@@ -150,6 +150,7 @@ class Activity < ApplicationRecord
   has_many :destination_transfers, foreign_key: "destination_id", class_name: "Transfer"
 
   has_many :comments
+  has_many :matched_efforts
 
   enum level: {
     fund: "fund",

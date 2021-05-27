@@ -652,10 +652,21 @@
 - Remove unused 'role' from User model
 - Open external links in the footer in new tabs
 - Use consistent naming for China (People's Republic of) when selecting and showing recipient country and intended beneficiaries
+- Allow matched effort funding transactions to be created
+
+## [release-52] - 2021-05-27
+
+- Sort the users list by name within each organisation
+- Only show Channel of delivery code for projects and third-party projects
+- Send approved report email notifications to BEIS users
+- Add "sdgs_apply" to CSV export
+- Allow organisations of type "External Income Provider" to be created
+- Move Aid type question before Collaboration type question
 
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-51...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-52...HEAD
+[release-52]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-51...release-52
 [release-51]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...release-51
 [release-50]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...release-50
 [release-49]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-48...release-49

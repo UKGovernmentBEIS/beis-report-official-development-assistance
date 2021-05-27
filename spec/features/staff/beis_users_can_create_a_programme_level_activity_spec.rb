@@ -187,6 +187,18 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
       choose "GDI not applicable"
       click_button t("form.button.activity.submit")
+
+      # Aid type question
+      expect(page).to have_content t("form.legend.activity.aid_type")
+
+      # Don't select an aid type
+      click_button t("form.button.activity.submit")
+      expect(page).to have_content t("activerecord.errors.models.activity.attributes.aid_type.blank")
+
+      choose("activity[aid_type]", option: "B02")
+      click_button t("form.button.activity.submit")
+
+      # Collaboration type question
       expect(page).to have_content t("form.label.activity.collaboration_type")
 
       # Collaboration_type has a pre-selected option
@@ -202,14 +214,8 @@ RSpec.feature "BEIS users can create a programme level activity" do
       # Now select a primary SDG
       select "Quality Education", from: "activity[sdg_1]"
       click_button t("form.button.activity.submit")
-      expect(page).to have_content t("form.legend.activity.aid_type")
 
-      # Don't select an aid type
-      click_button t("form.button.activity.submit")
-      expect(page).to have_content t("activerecord.errors.models.activity.attributes.aid_type.blank")
-
-      choose("activity[aid_type]", option: "B02")
-      click_button t("form.button.activity.submit")
+      # FSTC question
       expect(page).to have_content t("form.legend.activity.fstc_applies")
 
       # Don't choose if fstc applies or not

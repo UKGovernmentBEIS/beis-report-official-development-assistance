@@ -36,6 +36,7 @@ en:
     organisations:
       delivery_partners: Delivery partners
       matched_effort_providers: Matched effort providers
+      external_income_providers: External income providers
   summary:
     label:
       organisation:
@@ -53,6 +54,9 @@ en:
       matched_effort_providers:
         button:
           create: Add matched effort provider organisation
+      external_income_providers:
+        button:
+          create: Add external income provider organisation
     organisation:
       create_programme: Add level B activity
       button:
@@ -83,9 +87,12 @@ en:
         new: Create a new delivery partner organisation
       matched_effort_provider:
         new: Create a new matched effort provider organisation
+      external_income_provider:
+        new: Create a new external income provider organisation
     organisations:
       delivery_partners: Delivery partners
       matched_effort_providers: Matched effort providers
+      external_income_providers: External income providers
   activerecord:
     errors:
       models:

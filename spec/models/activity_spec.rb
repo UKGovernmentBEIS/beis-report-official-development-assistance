@@ -806,6 +806,7 @@ RSpec.describe Activity, type: :model do
     it { should have_many(:transactions) }
     it { should have_many(:source_transfers) }
     it { should have_many(:destination_transfers) }
+    it { should have_many(:matched_efforts) }
   end
 
   describe "#parent_activities" do
