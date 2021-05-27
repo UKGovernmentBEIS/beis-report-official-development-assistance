@@ -84,7 +84,7 @@ en:
         complete: Report activation complete
       index: Reports
       edit: Edit report
-      show: "%{report_financial_quarter} %{report_description}"
+      show: "%{report_financial_quarter} %{report_fund} report"
       submit:
         confirm: Confirm submission of your %{report_financial_quarter} report
         complete: "%{report_financial_quarter} %{report_organisation} report submitted"

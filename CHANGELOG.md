@@ -662,6 +662,7 @@
 - Add "sdgs_apply" to CSV export
 - Allow organisations of type "External Income Provider" to be created
 - Move Aid type question before Collaboration type question
+- Report title no longer includes the description
 
 ## [unreleased]
 

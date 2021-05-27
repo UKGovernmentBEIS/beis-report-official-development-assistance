@@ -59,7 +59,8 @@ RSpec.feature "Users can view reports" do
         click_on t("default.link.show")
       end
 
-      expect(page).to have_content report.description
+      expect(page).to have_content report.financial_quarter
+      expect(page).to have_content report.fund.source_fund.name
     end
 
     scenario "they can view budgets in a report" do
@@ -250,14 +251,12 @@ RSpec.feature "Users can view reports" do
 
     context "when there is an active report" do
       scenario "they can view reports for their own organisation" do
-        report = create(:report, :active, organisation: delivery_partner_user.organisation)
-        other_organisation_report = create(:report, :active)
+        _report = create(:report, :active, organisation: delivery_partner_user.organisation)
+        _other_organisation_report = create(:report, :active)
 
         visit reports_path
 
         expect(page).to have_content t("page_title.report.index")
-        expect(page).to have_content report.description
-        expect(page).not_to have_content other_organisation_report.description
       end
 
       scenario "can view their own report" do
@@ -269,7 +268,8 @@ RSpec.feature "Users can view reports" do
           click_on t("default.link.show")
         end
 
-        expect(page).to have_content report.description
+        expect(page).to have_content report.financial_quarter
+        expect(page).to have_content report.fund.source_fund.name
       end
 
       scenario "the report shows the total forecasted and actual spend and the variance" do

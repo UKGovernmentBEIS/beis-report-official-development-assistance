@@ -4,7 +4,7 @@
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
-        = t("page_title.report.show", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+        = t("page_title.report.show", report_fund: @report_presenter.fund.source_fund.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
       %dl.govuk-summary-list.govuk-summary-list
         .govuk-summary-list__row
