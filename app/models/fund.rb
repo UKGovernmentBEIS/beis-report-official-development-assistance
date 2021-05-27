@@ -10,7 +10,7 @@ class Fund
   }
 
   def initialize(id)
-    @code = self.class.codelist.find { |c| c["code"] == id.to_i }
+    @code = self.class.codelist.find_item_by_code(id.to_i)
 
     raise InvalidFund if @code.nil?
   end

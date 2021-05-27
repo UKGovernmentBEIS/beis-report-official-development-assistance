@@ -113,6 +113,12 @@ class Codelist
     values
   end
 
+  def find_item_by_code(code)
+    return nil unless list.first.key?("code")
+
+    list.find { |c| c["code"] == code }
+  end
+
   private def fetch_codelist
     codelist = self.class.codelists[source][type]
 
