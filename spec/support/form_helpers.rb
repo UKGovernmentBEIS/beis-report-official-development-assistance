@@ -204,6 +204,11 @@ module FormHelpers
     choose "GDI not applicable"
     click_button t("form.button.activity.submit")
 
+    expect(page).to have_content t("form.legend.activity.aid_type")
+    expect(page).to have_content t("form.hint.activity.aid_type")
+    choose("activity[aid_type]", option: aid_type)
+    click_button t("form.button.activity.submit")
+
     unless level == "fund"
       expect(page).to have_content t("form.label.activity.collaboration_type")
       choose "Bilateral"
@@ -225,11 +230,6 @@ module FormHelpers
       choose("activity[fund_pillar]", option: fund_pillar)
       click_button t("form.button.activity.submit")
     end
-
-    expect(page).to have_content t("form.legend.activity.aid_type")
-    expect(page).to have_content t("form.hint.activity.aid_type")
-    choose("activity[aid_type]", option: aid_type)
-    click_button t("form.button.activity.submit")
 
     if aid_type.in?(["B02", "B03", "D01"])
       expect(page).to have_content t("form.legend.activity.fstc_applies")
