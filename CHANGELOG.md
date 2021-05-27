@@ -663,6 +663,7 @@
 - Allow organisations of type "External Income Provider" to be created
 - Move Aid type question before Collaboration type question
 - Report title no longer includes the description
+- A report description is no longer required
 
 ## [unreleased]
 

@@ -10,14 +10,14 @@ RSpec.describe "layouts/_messages" do
   context "when passed a flash message with a hash" do
     it "renders a flash message with a hash that has a title and errors" do
       errors = ActiveModel::Errors.new(build(:report))
-      errors.add(:description, :blank)
+      errors.add(:deadline, "This is an error!")
       errors.add(:fund, :level)
 
       flash[:notice] = {title: "The title", errors: errors}
       render
 
       expect(response).to include "The title"
-      expect(response).to include "Report description cannot be blank"
+      expect(response).to include "This is an error!"
       expect(response).to include "Activity must be a Fund (level A) activity"
     end
 

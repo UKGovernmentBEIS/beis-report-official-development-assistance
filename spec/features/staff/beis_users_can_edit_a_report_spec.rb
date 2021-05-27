@@ -140,24 +140,6 @@ RSpec.feature "BEIS users can edit a report" do
       end
     end
 
-    scenario "the description (Reporting Period) cannot be blank" do
-      authenticate!(user: beis_user)
-      report = create(:report)
-
-      visit reports_path
-
-      within "##{report.id}" do
-        click_on t("default.link.edit")
-      end
-
-      fill_in "report[description]", with: ""
-
-      click_on t("default.button.submit")
-
-      expect(page).to_not have_content t("action.report.update.success")
-      expect(page).to have_content t("activerecord.errors.models.report.attributes.description.blank")
-    end
-
     scenario "they see the organisation, level A activity and financial quarter for the report" do
       authenticate!(user: beis_user)
       report = create(:report)

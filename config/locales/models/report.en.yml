@@ -170,8 +170,6 @@ en:
       models:
         report:
           attributes:
-            description:
-              blank: Report description cannot be blank
             fund:
               level: Activity must be a Fund (level A) activity
             deadline:
