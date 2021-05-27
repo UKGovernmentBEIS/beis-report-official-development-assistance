@@ -1,0 +1,21 @@
+%table.govuk-table.implementing_organisations
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header
+        =t("table.header.external_income.financial_quarter")
+      %th.govuk-table__header
+        =t("table.header.external_income.providing_organisation")
+      %th.govuk-table__header
+        =t("table.header.external_income.oda_funding")
+      %th.govuk-table__header
+        =t("table.header.matched_effort.amount")
+      %th.govuk-table__header
+
+  %tbody.govuk-table__body
+    - external_incomes.each do |external_income|
+      %tr.govuk-table__row
+        %td.govuk-table__cell= external_income.financial_quarter_and_year
+        %td.govuk-table__cell= external_income.organisation.name
+        %td.govuk-table__cell= external_income.oda_funding
+        %td.govuk-table__cell= external_income.amount
+        %td.govuk-table__cell

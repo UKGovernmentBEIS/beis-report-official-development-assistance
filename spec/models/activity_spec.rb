@@ -807,6 +807,7 @@ RSpec.describe Activity, type: :model do
     it { should have_many(:source_transfers) }
     it { should have_many(:destination_transfers) }
     it { should have_many(:matched_efforts) }
+    it { should have_many(:external_incomes) }
   end
 
   describe "#parent_activities" do

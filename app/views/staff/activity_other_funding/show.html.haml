@@ -23,3 +23,9 @@
 
           - if @matched_efforts.present?
             = render partial: "staff/shared/matched_effort/table", locals: { matched_efforts: @matched_efforts }
+
+          %h3.govuk-heading-m
+            = t("page_title.external_income.index")
+
+          - if @external_incomes.present?
+            = render partial: "staff/shared/external_income/table", locals: { external_incomes: @external_incomes }
