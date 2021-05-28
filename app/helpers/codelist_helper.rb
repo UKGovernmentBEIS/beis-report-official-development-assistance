@@ -87,6 +87,13 @@ module CodelistHelper
     !fstc_from_aid_type(aid_type_code).nil?
   end
 
+  def fstc_applies_radio_options
+    [
+      OpenStruct.new(value: 0, label: I18n.t("form.label.activity.fstc_applies.false")),
+      OpenStruct.new(value: 1, label: I18n.t("form.label.activity.fstc_applies.true")),
+    ]
+  end
+
   def policy_markers_radio_options
     options = Codelist.new(type: "policy_significance", source: "beis")
       .to_objects_with_description

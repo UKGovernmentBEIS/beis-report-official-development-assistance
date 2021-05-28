@@ -166,7 +166,7 @@ RSpec.feature "Users can create a project" do
       end
 
       context "when the aid type is 'C01'" do
-        it "pre-selects Yes for the FSTC applies step but lets the user choose" do
+        it "lets the user choose the FSTC applies option" do
           programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
           _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 

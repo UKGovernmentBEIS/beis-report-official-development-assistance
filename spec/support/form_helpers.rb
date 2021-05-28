@@ -233,8 +233,8 @@ module FormHelpers
 
     if aid_type.in?(["C01", "B03"])
       expect(page).to have_content t("form.legend.activity.fstc_applies")
-      expect(page.body).to include t("form.hint.activity.fstc_applies", aid_type: aid_type)
-      choose("activity[fstc_applies]", option: fstc_applies)
+      expect(page.body).to include t("form.hint.activity.fstc_applies")
+      choose("activity[fstc_applies]", option: fstc_applies ? "1" : "0")
       click_button t("form.button.activity.submit")
     end
 
