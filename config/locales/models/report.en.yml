@@ -50,6 +50,11 @@ en:
             <p class="govuk-body">
             The Service Manager will send the delivery partner an email notifying them that RODA is now open and their reporting cycle has begun.  ODA PMO Finance Lead will send the commissioning email confirming the deadline and relevant service updates to DPs 2 weeks before the report submission deadline.
             </p>
+      summary:
+        editable:
+          title: Report can be changed
+          "true": "Yes"
+          "false": "No"
   label:
     report:
       state:
@@ -84,7 +89,7 @@ en:
         complete: Report activation complete
       index: Reports
       edit: Edit report
-      show: "%{report_financial_quarter} %{report_description}"
+      show: "%{report_financial_quarter} %{report_fund} report"
       submit:
         confirm: Confirm submission of your %{report_financial_quarter} report
         complete: "%{report_financial_quarter} %{report_organisation} report submitted"
@@ -170,8 +175,6 @@ en:
       models:
         report:
           attributes:
-            description:
-              blank: Report description cannot be blank
             fund:
               level: Activity must be a Fund (level A) activity
             deadline:

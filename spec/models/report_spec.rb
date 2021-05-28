@@ -2,7 +2,6 @@ require "rails_helper"
 
 RSpec.describe Report, type: :model do
   describe "validations" do
-    it { should validate_presence_of(:description).on([:edit, :activate]) }
     it { should validate_presence_of(:state) }
     it { should have_readonly_attribute(:financial_quarter) }
     it { should have_readonly_attribute(:financial_year) }

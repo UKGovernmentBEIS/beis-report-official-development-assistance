@@ -1,0 +1,29 @@
+%dl.govuk-summary-list.govuk-summary-list
+  - if current_user.service_owner?
+    .govuk-summary-list__row
+      %dt.govuk-summary-list__key
+        = t("form.label.report.organisation")
+      %dd.govuk-summary-list__value
+        = @report_presenter.organisation.name
+  - if @report_presenter.description.present?
+    .govuk-summary-list__row
+      %dt.govuk-summary-list__key
+        = t("form.label.report.description")
+      %dd.govuk-summary-list__value
+        = @report_presenter.description
+  .govuk-summary-list__row
+    %dt.govuk-summary-list__key
+      = t("form.label.report.deadline")
+    %dd.govuk-summary-list__value
+      = @report_presenter.deadline
+  .govuk-summary-list__row
+    %dt.govuk-summary-list__key
+      = t("form.label.report.state")
+    %dd.govuk-summary-list__value
+      = @report_presenter.state
+  - if current_user.delivery_partner?
+    .govuk-summary-list__row
+      %dt.govuk-summary-list__key
+        = t("page_content.report.summary.editable.title")
+      %dd.govuk-summary-list__value
+        = t("page_content.report.summary.editable.#{@report_presenter.editable?}")
