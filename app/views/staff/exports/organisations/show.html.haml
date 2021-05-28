@@ -1,0 +1,20 @@
+= content_for :page_title_prefix, @organisation.name
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        = t("page_title.export.organisation.show", name: @organisation.name)
+
+  .govuk-grid-row.activity-page
+    .govuk-grid-column-full
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "col"}= t("table.export.organisation.report")
+            %th.govuk-table__header{scope: "col"}= t("table.export.organisation.actions")
+        %tbody.govuk-table__body
+          %tr.govuk-table__row
+            %td.govuk-table__cell All transactions
+            %td.govuk-table__cell
+              = link_to t("table.export.organisation.download"), transactions_exports_organisation_path(@organisation, format: "csv"), class: "govuk-link"

@@ -1,0 +1,19 @@
+= content_for :page_title_prefix, t("document_title.export.index")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        = t("page_title.export.index")
+
+  .govuk-grid-row.activity-page
+    .govuk-grid-column-full
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "col"} Delivery partner
+        %tbody.govuk-table__body
+          - @organisations.each do |organisation|
+            %tr.govuk-table__row
+              %td.govuk-table__cell
+                = link_to organisation.name, exports_organisation_path(organisation), class: "govuk-link"

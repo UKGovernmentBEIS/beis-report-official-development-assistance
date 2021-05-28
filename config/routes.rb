@@ -28,6 +28,14 @@ Rails.application.routes.draw do
       get "organisations/(:role)/new", to: "organisations#new", as: :new_organisation
     end
 
+    resources :exports, only: [:index]
+
+    namespace :exports do
+      resources :organisations, only: [:show] do
+        get "transactions", on: :member
+      end
+    end
+
     resources :organisations, except: [:destroy, :index, :new] do
       resources :activities, except: [:index, :create, :destroy] do
         get "financials" => "activity_financials#show"
