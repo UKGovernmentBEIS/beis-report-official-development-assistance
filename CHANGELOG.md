@@ -669,6 +669,8 @@
 
 ## [unreleased]
 
+- add spacing between view and edit links on Organisation index page
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-52...HEAD
 [release-52]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-51...release-52
 [release-51]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...release-51

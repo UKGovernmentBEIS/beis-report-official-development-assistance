@@ -35,4 +35,4 @@
                     - if policy(organisation).show?
                       = a11y_action_link(t("default.link.show"), organisation_path(organisation), organisation.name)
                     - if policy(organisation).edit?
-                      = a11y_action_link(t("default.link.edit"), edit_organisation_path(organisation), organisation.name)
+                      = a11y_action_link(t("default.link.edit"), edit_organisation_path(organisation), organisation.name, ["govuk-!-margin-left-3"])
