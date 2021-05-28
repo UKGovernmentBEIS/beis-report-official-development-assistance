@@ -2,11 +2,6 @@
 
 module CodelistHelper
   DEVELOPING_COUNTRIES_CODE = "998"
-  FSTC_FROM_AID_TYPE_CODE = {
-    "D02" => true,
-    "E01" => true,
-    "G01" => false,
-  }
 
   def default_currency_options
     Codelist.new(type: "default_currency").to_objects
@@ -89,7 +84,7 @@ module CodelistHelper
   end
 
   def can_infer_fstc?(aid_type_code)
-    FSTC_FROM_AID_TYPE_CODE.key?(aid_type_code)
+    !fstc_from_aid_type(aid_type_code).nil?
   end
 
   def policy_markers_radio_options

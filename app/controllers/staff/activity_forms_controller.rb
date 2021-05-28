@@ -49,7 +49,7 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step unless @activity.is_project?
     when :fstc_applies
       skip_step if can_infer_fstc?(@activity.aid_type)
-      assign_default_fstc_applies_value_if_aid_type_c01
+      assign_default_fstc_applies_value
     end
 
     render_wizard
@@ -114,7 +114,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     @activity.collaboration_type = "1" if @activity.collaboration_type.nil?
   end
 
-  def assign_default_fstc_applies_value_if_aid_type_c01
-    @activity.fstc_applies = true if @activity.aid_type == "C01"
+  def assign_default_fstc_applies_value
+    @activity.fstc_applies = fstc_from_aid_type(@activity.aid_type)
   end
 end

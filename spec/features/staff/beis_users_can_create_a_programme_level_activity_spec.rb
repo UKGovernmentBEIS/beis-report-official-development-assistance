@@ -195,7 +195,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       click_button t("form.button.activity.submit")
       expect(page).to have_content t("activerecord.errors.models.activity.attributes.aid_type.blank")
 
-      choose("activity[aid_type]", option: "B02")
+      choose("activity[aid_type]", option: "C01")
       click_button t("form.button.activity.submit")
 
       # Collaboration type question
