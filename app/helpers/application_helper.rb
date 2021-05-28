@@ -11,12 +11,13 @@ module ApplicationHelper
     classes.join(" ")
   end
 
-  def a11y_action_link(text, href, context = "")
+  def a11y_action_link(text, href, context = "", classes = [])
+    css_classes = classes.append("govuk-link")
     if context.blank?
-      link_to(text, href, class: "govuk-link")
+      link_to(text, href, class: css_classes)
     else
       span = content_tag :span, context, class: "govuk-visually-hidden"
-      link_to("#{text} #{raw(span)}".html_safe, href, class: "govuk-link")
+      link_to("#{text} #{raw(span)}".html_safe, href, class: css_classes)
     end
   end
 
