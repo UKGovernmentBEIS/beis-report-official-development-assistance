@@ -2,16 +2,18 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
   include Secured
   include StreamCsvDownload
 
-  after_action :verify_authorized, except: [:show, :transactions]
+  before_action do
+    @organisation = Organisation.find(params[:id])
+    authorize :export, :show?
+  end
 
   def show
-    @organisation = organisation
   end
 
   def transactions
     respond_to do |format|
       format.csv do
-        activities = Activity.where(organisation: organisation)
+        activities = Activity.where(organisation: @organisation)
         export = QuarterlyTransactionExport.new(activities)
 
         stream_csv_download(filename: "transactions.csv", headers: export.headers) do |csv|
@@ -19,9 +21,5 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
         end
       end
     end
-  end
-
-  private def organisation
-    @_organisation ||= Organisation.find(params[:id])
   end
 end
