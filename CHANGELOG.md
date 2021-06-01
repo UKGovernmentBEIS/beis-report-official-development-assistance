@@ -667,13 +667,16 @@
 - Reports show a more detailed summary, including deadline, organisation and
   description (if one is supplied)
 
-## [unreleased]
+## [release-53] - 2021-06-01
 
 - add spacing between view and edit links on Organisation index page
 - export complete transaction history per delivery partner for BEIS users
 - Change the email address given in email notifications
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-52...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-53...HEAD
+[release-53]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-52...release-53
 [release-52]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-51...release-52
 [release-51]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...release-51
 [release-50]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-49...release-50
