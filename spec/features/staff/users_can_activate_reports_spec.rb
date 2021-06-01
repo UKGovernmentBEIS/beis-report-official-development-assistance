@@ -26,19 +26,6 @@ RSpec.feature "Users can activate reports" do
       end
     end
 
-    scenario "they see a warning when the report is not valid i.e. has no description" do
-      organisation = create(:delivery_partner_organisation)
-      fund = create(:fund_activity)
-      report = Report.new(organisation: organisation, fund: fund)
-      report.save(validate: false)
-
-      visit report_path(report)
-      click_link t("action.report.activate.button")
-      click_button t("action.report.activate.confirm.button")
-
-      expect(page).to have_content t("action.report.activate.failure")
-    end
-
     context "when the report is already active" do
       scenario "it cannot be activated again" do
         report = create(:report, state: :active)

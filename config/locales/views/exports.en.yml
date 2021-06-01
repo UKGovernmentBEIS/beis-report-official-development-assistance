@@ -1,0 +1,16 @@
+---
+en:
+  document_title:
+    export:
+      index: Exports
+  page_title:
+    export:
+      index: Exports
+      organisation:
+        show: Exports for %{name}
+  table:
+    export:
+      organisation:
+        report: Report
+        actions: Actions
+        download: Download
