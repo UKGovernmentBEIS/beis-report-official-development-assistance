@@ -1,0 +1,7 @@
+data:
+  - code: '1'
+    name: Bilateral
+  - code: '2'
+    name: Multilateral (inflows)
+  - code: '3'
+    name: Bilateral, core contributions to NGOs and other private bodies / PPPs

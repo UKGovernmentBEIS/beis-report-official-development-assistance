@@ -41,11 +41,11 @@ RSpec.describe CodelistHelper, type: :helper do
       it "returns the different options for collaboration type sorted by code" do
         options = helper.collaboration_type_radio_options
 
-        expect(options.length).to eq 7
+        expect(options.length).to eq 3
         expect(options.first.code).to eq "1"
         expect(options.first.name).to eq "Bilateral"
-        expect(options.last.code).to eq "8"
-        expect(options.last.name).to eq "Bilateral, triangular co-operation"
+        expect(options.last.code).to eq "3"
+        expect(options.last.name).to eq "Bilateral, core contributions to NGOs and other private bodies / PPPs"
       end
     end
 
