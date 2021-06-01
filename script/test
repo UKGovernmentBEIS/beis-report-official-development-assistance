@@ -28,6 +28,9 @@ else
   echo "==> Linting our shellscripts"
   bundle exec rake shellcheck
 
+  echo "==> Running Brakeman"
+  bundle exec brakeman
+
   echo "==> Running the tests..."
 
   if [ -n "$CI" ]; then
@@ -35,7 +38,4 @@ else
   else
     bundle exec rspec
   fi
-
-  echo "==> Running Brakeman"
-  bundle exec brakeman
 fi

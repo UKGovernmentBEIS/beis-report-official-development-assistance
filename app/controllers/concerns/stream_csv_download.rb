@@ -1,3 +1,5 @@
+require "csv"
+
 module StreamCsvDownload
   extend ActiveSupport::Concern
   include ActionController::Live
