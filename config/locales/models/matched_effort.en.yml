@@ -14,21 +14,12 @@ en:
       index: Matched effort
       new: Add new matched effort
       edit: Edit a matched effort
-    external_income:
-      index: External income
-      new: Add new external income
-      edit: Edit a external income
   table:
     header:
       matched_effort:
         providing_organisation: Providing organisation
         funding_type: Funding type
         category: Category
-        amount: Amount
-      external_income:
-        providing_organisation: Providing organisation
-        financial_quarter: Financial quarter
-        oda_funding: Official development assistance
         amount: Amount
   form:
     legend:
@@ -50,9 +41,6 @@ en:
     matched_effort:
       button:
         create: Add matched effort
-    external_income:
-      button:
-        create: Add external income
   action:
     matched_effort:
       create:
@@ -61,10 +49,3 @@ en:
         success: The matched effort has been successfully updated
       destroy:
         success: The matched effort has been successfully deleted
-    external_income:
-      create:
-        success: The external income has been successfully created
-      update:
-        success: The external income has been successfully updated
-      destroy:
-        success: The external income has been successfully deleted
