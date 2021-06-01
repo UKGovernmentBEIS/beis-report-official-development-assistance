@@ -82,7 +82,11 @@ Rails.application.routes.draw do
       resources :matched_efforts
     end
 
-    resources :activities, only: [], concerns: [:transactionable, :budgetable, :disbursement_plannable, :matched_effortable] do
+    concern :external_incomeable do
+      resources :external_incomes, only: [:new, :create]
+    end
+
+    resources :activities, only: [], concerns: [:transactionable, :budgetable, :disbursement_plannable, :matched_effortable, :external_incomeable] do
       resource :redaction, only: [:edit, :update], controller: :activity_redactions
       resources :steps, controller: "activity_forms"
       resources :implementing_organisations, only: [:new, :create, :edit, :update]

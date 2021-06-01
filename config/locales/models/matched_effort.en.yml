@@ -61,3 +61,10 @@ en:
         success: The matched effort has been successfully updated
       destroy:
         success: The matched effort has been successfully deleted
+    external_income:
+      create:
+        success: The external income has been successfully created
+      update:
+        success: The external income has been successfully updated
+      destroy:
+        success: The external income has been successfully deleted

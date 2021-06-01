@@ -27,5 +27,8 @@
           %h3.govuk-heading-m
             = t("page_title.external_income.index")
 
+          - if policy(@activity).create?
+            = link_to(t("page_content.external_income.button.create"), new_activity_external_income_path(@activity), class: "govuk-button")
+
           - if @external_incomes.present?
             = render partial: "staff/shared/external_income/table", locals: { external_incomes: @external_incomes }
