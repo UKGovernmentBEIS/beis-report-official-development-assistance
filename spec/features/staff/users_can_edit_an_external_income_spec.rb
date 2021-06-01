@@ -47,5 +47,19 @@ RSpec.describe "Users can edit an external income" do
 
       expect(page).to have_content("Organisation can't be blank")
     end
+
+    scenario "they can delete an external income" do
+      PublicActivity.with_tracking do
+        expect {
+          click_on t("default.button.delete")
+        }.to change { ExternalIncome.count }.by(-1)
+
+        expect(page).to have_content(t("action.external_income.destroy.success"))
+
+        auditable_event = PublicActivity::Activity.last
+        expect(auditable_event.key).to eq "external_income.destroy"
+        expect(auditable_event.owner_id).to eq user.id
+      end
+    end
   end
 end

@@ -49,6 +49,19 @@ class Staff::ExternalIncomesController < Staff::BaseController
     end
   end
 
+  def destroy
+    @activity = Activity.find(params[:activity_id])
+    @external_income = ExternalIncome.find(params[:id])
+
+    authorize @external_income
+
+    @external_income.create_activity key: "external_income.destroy", owner: current_user
+    @external_income.destroy
+
+    flash[:notice] = t("action.external_income.destroy.success")
+    redirect_to organisation_activity_other_funding_path(@activity.organisation, @activity)
+  end
+
   private
 
   def external_income_params

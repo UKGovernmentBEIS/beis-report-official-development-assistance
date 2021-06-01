@@ -83,7 +83,7 @@ Rails.application.routes.draw do
     end
 
     concern :external_incomeable do
-      resources :external_incomes, only: [:new, :create, :edit, :update]
+      resources :external_incomes, only: [:new, :create, :edit, :update, :destroy]
     end
 
     resources :activities, only: [], concerns: [:transactionable, :budgetable, :disbursement_plannable, :matched_effortable, :external_incomeable] do
