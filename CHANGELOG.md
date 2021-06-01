@@ -671,6 +671,7 @@
 
 - add spacing between view and edit links on Organisation index page
 - export complete transaction history per delivery partner for BEIS users
+- Change the email address given in email notifications
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-52...HEAD
 [release-52]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-51...release-52
