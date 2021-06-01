@@ -54,5 +54,13 @@ RSpec.describe "Users can create a external income" do
         expect(auditable_event.owner_id).to eq user.id
       end
     end
+
+    scenario "they are shown errors when required fields are left blank" do
+      click_on t("default.button.submit")
+
+      expect(page).to have_content("Organisation can't be blank")
+      expect(page).to have_content("Financial quarter can't be blank")
+      expect(page).to have_content("Amount can't be blank")
+    end
   end
 end
