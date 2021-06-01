@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  SUPPORT_EMAIL_ADDRESS = "support@beisodahelp.zendesk.com"
+
   def l(object, options = {})
     super(object, options) if object
   end
@@ -23,5 +25,9 @@ module ApplicationHelper
 
   def link_to_new_tab(text, href, css_class: "govuk-link")
     link_to("#{text} (opens in new tab)", href, class: css_class, target: "_blank", rel: "noreferrer noopener")
+  end
+
+  def support_email_link
+    mail_to(SUPPORT_EMAIL_ADDRESS, nil, class: "govuk-link")
   end
 end
