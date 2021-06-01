@@ -23,6 +23,32 @@ class Staff::ExternalIncomesController < Staff::BaseController
     end
   end
 
+  def edit
+    @activity = Activity.find(params[:activity_id])
+    @external_income = ExternalIncome.find(params[:id])
+
+    authorize @external_income
+  end
+
+  def update
+    @activity = Activity.find(params[:activity_id])
+    @external_income = ExternalIncome.find(params[:id])
+
+    authorize @external_income
+
+    @external_income.assign_attributes(external_income_params)
+
+    if @external_income.valid?
+      @external_income.save
+      @external_income.create_activity key: "external_income.update", owner: current_user
+
+      flash[:notice] = t("action.external_income.update.success")
+      redirect_to organisation_activity_other_funding_path(@activity.organisation, @activity)
+    else
+      render :edit
+    end
+  end
+
   private
 
   def external_income_params

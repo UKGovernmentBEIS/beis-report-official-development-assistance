@@ -519,6 +519,7 @@ module FormHelpers
     select template.organisation.name, from: "external_income[organisation_id]"
     fill_in "external_income[amount]", with: template.amount
     check "external_income[oda_funding]" if template.oda_funding
+    uncheck "external_income[oda_funding]" unless template.oda_funding
 
     click_on t("default.button.submit")
   end

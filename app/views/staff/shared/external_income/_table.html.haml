@@ -19,3 +19,4 @@
         %td.govuk-table__cell= external_income.oda_funding
         %td.govuk-table__cell= external_income.amount
         %td.govuk-table__cell
+          = link_to t("default.link.edit"), edit_activity_external_income_path(@activity, external_income), class: "govuk-link"
