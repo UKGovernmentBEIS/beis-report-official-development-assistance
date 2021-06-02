@@ -209,7 +209,7 @@ module FormHelpers
     choose("activity[aid_type]", option: aid_type)
     click_button t("form.button.activity.submit")
 
-    unless level == "fund"
+    unless level == "fund" || aid_type.in?(["B02", "B03"])
       expect(page).to have_content t("form.label.activity.collaboration_type")
       choose "Bilateral"
       click_button t("form.button.activity.submit")
@@ -327,8 +327,17 @@ module FormHelpers
       expect(page).not_to have_content objectives
     else
       expect(page).to have_content t("activity.programme_status.#{programme_status}")
-      expect(page).to have_content collaboration_type
       expect(page).to have_content objectives
+    end
+
+    within(".govuk-summary-list__row.collaboration_type") do
+      if aid_type == "B02"
+        expect(page).to have_content "Multilateral (inflows)"
+      elsif aid_type == "B03"
+        expect(page).to have_content "Bilateral"
+      else
+        expect(page).to have_content collaboration_type
+      end
     end
 
     # NB: Since the parent might be a fund, `is_newton_fund?` won't work here

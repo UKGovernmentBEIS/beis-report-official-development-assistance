@@ -32,6 +32,7 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step unless @activity.requires_additional_benefitting_countries?
     when :collaboration_type
       skip_step if @activity.fund?
+      skip_step if can_infer_collaboration_type?(@activity.aid_type)
       assign_default_collaboration_type_value_if_nil
     when :policy_markers
       skip_step unless @activity.is_project?
