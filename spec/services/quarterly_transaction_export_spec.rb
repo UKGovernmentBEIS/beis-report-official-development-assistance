@@ -56,7 +56,7 @@ RSpec.describe QuarterlyTransactionExport do
 
     expect(quarter_headers).to eq ["FQ1 2014-2015", "FQ2 2014-2015", "FQ3 2014-2015", "FQ4 2014-2015", "FQ1 2015-2016", "FQ2 2015-2016"]
 
-    expect(transaction_data).to eq([
+    expect(transaction_data).to match_array([
       [project.roda_identifier, "10.00", "0.00", "0.00", "0.00", "0.00", "0.00"],
       [third_party_project.roda_identifier, "0.00", "0.00", "0.00", "0.00", "0.00", "20.00"],
     ])
@@ -70,7 +70,7 @@ RSpec.describe QuarterlyTransactionExport do
 
     expect(quarter_headers).to eq ["FQ1 2014-2015"]
 
-    expect(transaction_data).to eq([
+    expect(transaction_data).to match_array([
       [project.roda_identifier, "10.00"],
       [third_party_project.roda_identifier, "0.00"],
     ])
