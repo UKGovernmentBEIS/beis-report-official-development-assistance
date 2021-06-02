@@ -39,7 +39,7 @@ module FormHelpers
     collaboration_type: "Bilateral",
     sdg_1: 1,
     fund_pillar: "1",
-    aid_type: "B02",
+    aid_type: "D01",
     fstc_applies: true,
     policy_marker_gender: "Not assessed",
     policy_marker_climate_change_adaptation: "Not targeted",
