@@ -300,6 +300,30 @@ RSpec.feature "Users can edit an activity" do
         expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
       end
 
+      scenario "the delivery partner identifier can’t be changed" do
+        activity = create(:project_activity, organisation: user.organisation)
+        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
+
+        visit organisation_activity_details_path(activity.organisation, activity)
+
+        within(".identifier") do
+          expect(page).not_to have_content(t("default.link.edit"))
+        end
+      end
+
+      context "when the project does not have a delivery partner identifier" do
+        scenario "the delivery partner identifier can be added" do
+          activity = create(:project_activity, :at_identifier_step, organisation: user.organisation)
+          _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
+
+          visit organisation_activity_details_path(activity.organisation, activity)
+
+          within(".identifier") do
+            expect(page).to have_content(t("default.link.add"))
+          end
+        end
+      end
+
       context "when the project does not have a RODA identifier" do
         let(:fund) { create(:fund_activity, roda_identifier_fragment: "AAA") }
         let(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "BBB") }
