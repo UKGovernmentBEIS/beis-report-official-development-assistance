@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_20_134602) do
+ActiveRecord::Schema.define(version: 2021_05_27_130555) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -133,6 +134,19 @@ ActiveRecord::Schema.define(version: 2021_05_20_134602) do
     t.index ["activity_id"], name: "index_comments_on_activity_id"
     t.index ["owner_id"], name: "index_comments_on_owner_id"
     t.index ["report_id"], name: "index_comments_on_report_id"
+  end
+
+  create_table "external_incomes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "activity_id"
+    t.uuid "organisation_id"
+    t.decimal "amount", precision: 13, scale: 2
+    t.integer "financial_quarter"
+    t.integer "financial_year"
+    t.boolean "oda_funding"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id"], name: "index_external_incomes_on_activity_id"
+    t.index ["organisation_id"], name: "index_external_incomes_on_organisation_id"
   end
 
   create_table "implementing_organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

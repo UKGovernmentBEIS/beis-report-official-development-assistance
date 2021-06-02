@@ -11,6 +11,13 @@ module FormHelper
     ].flatten
   end
 
+  def list_of_external_income_providers
+    @list_of_external_income_providers ||= [
+      OpenStruct.new(name: "", id: ""),
+      Organisation.external_income_providers.active,
+    ].flatten
+  end
+
   def list_of_delivery_partners
     @list_of_delivery_partners ||= Organisation.delivery_partners
   end

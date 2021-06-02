@@ -32,6 +32,7 @@ class Organisation < ApplicationRecord
   scope :sorted_by_name, -> { order(name: :asc) }
   scope :delivery_partners, -> { sorted_by_name.where(role: "delivery_partner") }
   scope :matched_effort_providers, -> { sorted_by_name.where(role: "matched_effort_provider") }
+  scope :external_income_providers, -> { sorted_by_name.where(role: "external_income_provider") }
   scope :active, -> { where(active: true) }
 
   before_validation :ensure_beis_organisation_reference_is_uppercase

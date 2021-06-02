@@ -1,15 +1,25 @@
 RSpec.feature "Users can view an activity's other funding" do
   let(:user) { create(:delivery_partner_user) }
-  let(:organisation) { create(:matched_effort_provider) }
+  let(:matched_effort_provider) { create(:matched_effort_provider) }
+  let(:external_income_provider) { create(:external_income_provider) }
   let!(:activity) { create(:project_activity, organisation: user.organisation) }
 
   let!(:matched_effort) do
     create(:matched_effort,
       activity: activity,
-      organisation: organisation,
+      organisation: matched_effort_provider,
       funding_type: "in_kind",
       category: "staff_time",
       committed_amount: 200_000)
+  end
+
+  let!(:external_income) do
+    create(:external_income,
+      activity: activity,
+      organisation: external_income_provider,
+      financial_quarter: 1,
+      financial_year: 2021,
+      amount: 150_000)
   end
 
   context "when the user is signed in as a delivery partner" do
@@ -19,10 +29,19 @@ RSpec.feature "Users can view an activity's other funding" do
       visit organisation_activity_path(activity.organisation, activity)
       click_on t("tabs.activity.other_funding")
 
-      expect(page).to have_content(organisation.name)
+      expect(page).to have_content(matched_effort_provider.name)
       expect(page).to have_content("In kind")
       expect(page).to have_content("Staff time")
       expect(page).to have_content("£200,000.00")
+    end
+
+    it "lists the external incomes" do
+      visit organisation_activity_path(activity.organisation, activity)
+      click_on t("tabs.activity.other_funding")
+
+      expect(page).to have_content(external_income_provider.name)
+      expect(page).to have_content("Q1 2021-2022")
+      expect(page).to have_content("£150,000.00")
     end
   end
 
@@ -35,7 +54,14 @@ RSpec.feature "Users can view an activity's other funding" do
       visit organisation_activity_path(activity.organisation, activity)
       click_on t("tabs.activity.other_funding")
 
-      expect(page).to have_content(organisation.name)
+      expect(page).to have_content(matched_effort_provider.name)
+    end
+
+    it "lists the external incomes" do
+      visit organisation_activity_path(activity.organisation, activity)
+      click_on t("tabs.activity.other_funding")
+
+      expect(page).to have_content(external_income_provider.name)
     end
   end
 
@@ -45,7 +71,8 @@ RSpec.feature "Users can view an activity's other funding" do
     it "does not allow the user to view the funding" do
       visit organisation_activity_other_funding_path(activity.organisation, activity)
 
-      expect(page).to_not have_content(organisation.name)
+      expect(page).to_not have_content(matched_effort_provider.name)
+      expect(page).to_not have_content(external_income_provider.name)
     end
   end
 end

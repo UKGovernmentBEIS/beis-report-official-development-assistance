@@ -513,6 +513,17 @@ module FormHelpers
     click_on t("default.button.submit")
   end
 
+  def fill_in_external_income_form(template = build(:external_income))
+    page.find(:xpath, "//input[@value='#{template.financial_quarter}']").set(true)
+    select template.financial_year, from: "external_income[financial_year]"
+    select template.organisation.name, from: "external_income[organisation_id]"
+    fill_in "external_income[amount]", with: template.amount
+    check "external_income[oda_funding]" if template.oda_funding
+    uncheck "external_income[oda_funding]" unless template.oda_funding
+
+    click_on t("default.button.submit")
+  end
+
   private def activity_level(level)
     t("page_content.activity.level.#{level}")
   end

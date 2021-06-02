@@ -1,0 +1,11 @@
+= content_for :page_title_prefix, t("page_title.external_income.new")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.external_income.new")
+
+      = render partial: "form", locals: { activity: @activity, external_income: @external_income, path: activity_external_incomes_path(@activity) }
+
+
