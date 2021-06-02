@@ -129,6 +129,14 @@ RSpec.feature "Users can edit an activity" do
           assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
         end
 
+        it "does not show an edit link for collaboration type if it can be inferred from the aid type" do
+          activity = create(:fund_activity, organisation: user.organisation, aid_type: "B02", fstc_applies: true)
+
+          visit organisation_activity_details_path(activity.organisation, activity)
+
+          assert_all_edit_links_go_to_the_correct_form_step(activity: activity)
+        end
+
         it "does not show an edit link for FSTC applies if it can be inferred from the aid type" do
           activity = create(:fund_activity, organisation: user.organisation, aid_type: "D02", fstc_applies: true)
 
@@ -604,17 +612,6 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     click_on t("tabs.activity.details")
   end
 
-  unless activity.fund?
-    within(".collaboration_type") do
-      click_on(t("default.link.edit"))
-      expect(page).to have_current_path(
-        activity_step_path(activity, :collaboration_type)
-      )
-    end
-    click_on(t("default.link.back"))
-    click_on t("tabs.activity.details")
-  end
-
   within(".aid_type") do
     click_on(t("default.link.edit"))
     expect(page).to have_current_path(
@@ -623,6 +620,23 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   end
   click_on(t("default.link.back"))
   click_on t("tabs.activity.details")
+
+  unless activity.fund?
+    if can_infer_collaboration_type?(activity.aid_type)
+      within(".collaboration_type") do
+        expect(page).to_not have_link(t("default.link.edit"))
+      end
+    else
+      within(".collaboration_type") do
+        click_on(t("default.link.edit"))
+        expect(page).to have_current_path(
+          activity_step_path(activity, :collaboration_type)
+        )
+      end
+      click_on(t("default.link.back"))
+      click_on t("tabs.activity.details")
+    end
+  end
 
   if can_infer_fstc?(activity.aid_type)
     within(".fstc_applies") do
