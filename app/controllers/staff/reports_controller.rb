@@ -126,7 +126,7 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def approved_reports(including: [])
-    approved_reports = policy_scope(Report.approved).includes([:fund] + including)
+    approved_reports = policy_scope(Report.approved.in_historical_order).includes([:fund] + including)
     authorize approved_reports
     @approved_report_presenters = approved_reports.map { |report| ReportPresenter.new(report) }
   end

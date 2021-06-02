@@ -441,6 +441,18 @@ RSpec.feature "Users can view reports" do
         expect(page).to have_content t("table.title.report.approved")
         expect(page).to have_content report.description
       end
+
+      scenario "they are displayed in historical order" do
+        old_report = create(:report, organisation: delivery_partner_user.organisation, state: :approved, financial_year: 2020)
+        new_report = create(:report, organisation: delivery_partner_user.organisation, state: :approved, financial_year: 2021)
+        oldest_report = create(:report, organisation: delivery_partner_user.organisation, state: :approved, financial_year: 2019)
+
+        visit reports_path
+
+        expect(page.find(:xpath, "//table[@id = 'approved-reports']/tbody/tr[1]")[:id]).to eq(new_report.id)
+        expect(page.find(:xpath, "//table[@id = 'approved-reports']/tbody/tr[2]")[:id]).to eq(old_report.id)
+        expect(page.find(:xpath, "//table[@id = 'approved-reports']/tbody/tr[3]")[:id]).to eq(oldest_report.id)
+      end
     end
   end
 

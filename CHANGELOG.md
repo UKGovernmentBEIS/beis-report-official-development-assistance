@@ -677,6 +677,7 @@
 
 - Allow users to add, edit and delete external income on activities
 - Only show activities with relevant statuses in the actuals upload template
+- Approved reports are displayed in historical order
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-53...HEAD
 [release-53]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-52...release-53
