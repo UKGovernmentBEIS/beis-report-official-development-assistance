@@ -180,6 +180,9 @@ class Activity < ApplicationRecord
     paused: 12,
   }
 
+  NON_CURRENT_PROGRAMME_STATUSES = ["completed", "stopped", "cancelled"]
+  UNREPORTABLE_PROGRAMME_STATUSES = NON_CURRENT_PROGRAMME_STATUSES + ["paused"]
+
   enum policy_marker_gender: POLICY_MARKER_CODES, _prefix: :gender
 
   enum policy_marker_climate_change_adaptation: POLICY_MARKER_CODES, _prefix: :climate_change_adaptation
@@ -217,8 +220,12 @@ class Activity < ApplicationRecord
   }
 
   scope :current, -> {
-                    where.not(programme_status: ["completed", "stopped", "cancelled"]).or(where(programme_status: nil))
+                    where.not(programme_status: NON_CURRENT_PROGRAMME_STATUSES).or(where(programme_status: nil))
                   }
+
+  scope :reportable, -> {
+    where(oda_eligibility: "eligible").where.not(programme_status: UNREPORTABLE_PROGRAMME_STATUSES)
+  }
 
   scope :historic, -> {
     where(programme_status: ["completed", "stopped", "cancelled"])
