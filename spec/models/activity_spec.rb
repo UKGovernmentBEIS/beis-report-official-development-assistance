@@ -115,6 +115,28 @@ RSpec.describe Activity, type: :model do
         expect(result).not_to include another_third_party_project
       end
     end
+
+    describe ".reportable" do
+      it "does not return any unreportable activities" do
+        completed_project = create(:project_activity, programme_status: "completed")
+        paused_project = create(:project_activity, programme_status: "paused")
+        ineligible_project = create(:project_activity, oda_eligibility: "never_eligible")
+
+        eligible_project = create(:project_activity, oda_eligibility: "eligible")
+        project_in_delivery = create(:project_activity, programme_status: "delivery")
+        project_spend_in_progress = create(:project_activity, programme_status: "spend_in_progress")
+
+        reportable_activities = Activity.reportable
+
+        expect(reportable_activities).to include(eligible_project)
+        expect(reportable_activities).to include(project_in_delivery)
+        expect(reportable_activities).to include(project_spend_in_progress)
+
+        expect(reportable_activities).to_not include(completed_project)
+        expect(reportable_activities).to_not include(paused_project)
+        expect(reportable_activities).to_not include(ineligible_project)
+      end
+    end
   end
 
   describe "sanitisation" do
