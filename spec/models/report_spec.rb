@@ -162,6 +162,9 @@ RSpec.describe Report, type: :model do
     let!(:project_b) { create(:project_activity, parent: programme, organisation: report.organisation) }
     let!(:third_party_project) { create(:third_party_project_activity, parent: project_b, organisation: report.organisation) }
     let!(:cancelled_project) { create(:project_activity, parent: programme, organisation: report.organisation, programme_status: "cancelled") }
+    let!(:paused_project) { create(:project_activity, parent: programme, organisation: report.organisation, programme_status: "paused") }
+    let!(:ineligible_project) { create(:project_activity, parent: programme, organisation: report.organisation, oda_eligibility: "never_eligible") }
+
     let!(:project_in_another_fund) { create(:project_activity, organisation: report.organisation) }
 
     it "returns the level C and D activities belonging to the report's fund and organisation" do
@@ -173,6 +176,8 @@ RSpec.describe Report, type: :model do
       expect(report.reportable_activities).not_to include(programme)
       expect(report.reportable_activities).not_to include(project_in_another_fund)
       expect(report.reportable_activities).not_to include(cancelled_project)
+      expect(report.reportable_activities).not_to include(paused_project)
+      expect(report.reportable_activities).not_to include(ineligible_project)
     end
   end
 
