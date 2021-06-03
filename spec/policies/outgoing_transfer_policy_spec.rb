@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe TransferPolicy do
-  let(:transfer) { create(:transfer, source: activity) }
+RSpec.describe OutgoingTransferPolicy do
+  let(:transfer) { create(:outgoing_transfer, source: activity) }
 
   subject { described_class.new(user, transfer) }
 

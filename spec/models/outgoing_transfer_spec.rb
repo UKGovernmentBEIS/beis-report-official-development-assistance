@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe Transfer do
-  subject { build(:transfer) }
+RSpec.describe OutgoingTransfer do
+  subject { build(:outgoing_transfer) }
 
   it { should belong_to(:source).class_name("Activity") }
   it { should belong_to(:destination).class_name("Activity") }
@@ -18,7 +18,7 @@ RSpec.describe Transfer do
   end
 
   describe "foreign key constraints" do
-    subject { create(:transfer) }
+    subject { create(:outgoing_transfer) }
 
     it "prevents the associated source activity from being deleted" do
       source_activity = subject.source

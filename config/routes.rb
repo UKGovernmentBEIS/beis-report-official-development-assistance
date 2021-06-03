@@ -91,7 +91,7 @@ Rails.application.routes.draw do
       resources :steps, controller: "activity_forms"
       resources :implementing_organisations, only: [:new, :create, :edit, :update]
       resources :comments, only: [:new, :create, :edit, :update]
-      resources :transfers, except: [:index]
+      resources :outgoing_transfers, except: [:index]
     end
 
     resource :search, only: [:show]

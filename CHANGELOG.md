@@ -683,6 +683,7 @@
 ## [unreleased]
 
 - Users can no longer update the delivery partner identifier
+- Rename `Transfer` to `OutgoingTransfer`
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-54...HEAD
 [release-54]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-53...release-54

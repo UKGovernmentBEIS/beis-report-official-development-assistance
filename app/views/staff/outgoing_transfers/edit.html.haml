@@ -1,4 +1,4 @@
-=content_for :page_title_prefix, t("page_title.transfer.edit")
+=content_for :page_title_prefix, t("page_title.outgoing_transfer.edit")
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
@@ -7,12 +7,12 @@
         = @transfer.source.title
 
       %h2.govuk-heading-l
-        = t("page_title.transfer.edit")
+        = t("page_title.outgoing_transfer.edit")
 
       %p.govuk-body
         Transfer funds to another delivery partner activity
 
-      = form_with model: @transfer, url: activity_transfer_path(@transfer.source, @transfer) do |f|
+      = form_with model: @transfer, url: activity_outgoing_transfer_path(@transfer.source, @transfer) do |f|
         = render partial: "form", locals: { f: f, source_activity: @transfer.source }
 
         = f.govuk_submit t("default.button.submit")

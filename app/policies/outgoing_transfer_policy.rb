@@ -1,4 +1,4 @@
-class TransferPolicy < ApplicationPolicy
+class OutgoingTransferPolicy < ApplicationPolicy
   def show?
     return true if beis_user?
 

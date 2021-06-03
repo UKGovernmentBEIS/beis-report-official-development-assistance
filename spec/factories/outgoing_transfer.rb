@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :transfer do
+  factory :outgoing_transfer do
     association :source, factory: :project_activity
     association :destination, factory: :project_activity
 

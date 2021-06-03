@@ -1,4 +1,4 @@
-class Transfer < ApplicationRecord
+class OutgoingTransfer < ApplicationRecord
   belongs_to :source, class_name: "Activity"
   belongs_to :destination, class_name: "Activity"
 

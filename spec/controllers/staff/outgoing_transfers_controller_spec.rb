@@ -1,12 +1,12 @@
 require "rails_helper"
 
-RSpec.describe Staff::TransfersController do
+RSpec.describe Staff::OutgoingTransfersController do
   before do
     allow(controller).to receive(:current_user).and_return(user)
     allow(controller).to receive(:logged_in_using_omniauth?).and_return(true)
   end
 
-  let(:transfer) { create(:transfer, source: activity) }
+  let(:transfer) { create(:outgoing_transfer, source: activity) }
 
   context "when logged in as a beis user" do
     let(:user) { create(:beis_user) }

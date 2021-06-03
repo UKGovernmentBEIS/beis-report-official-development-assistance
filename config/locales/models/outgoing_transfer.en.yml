@@ -1,41 +1,41 @@
 ---
 en:
   page_title:
-    transfer:
+    outgoing_transfer:
       new: Transfer
       edit: Edit transfer
       confirm: Are these transfer details correct?
       index: Transfers
   action:
-    transfer:
+    outgoing_transfer:
       create:
         success: Transfer successfully recorded
       update:
         success: Transfer successfully updated
   fields:
-    transfer:
+    outgoing_transfer:
       destination: Receiving activity
       receiving_organisation: Receiving organisation
       financial_quarter_and_year: Financial quarter and year
       transfer_amount: Transfer amount
   form:
     label:
-      transfer:
+      outgoing_transfer:
         destination: Enter RODA ID of the receiving activity
         financial_quarter: Financial Quarter
         financial_year: Financial Year
         value: Transfer amount
     hint:
-      transfer:
+      outgoing_transfer:
         destination: For example, GCRF-BLOB-424434434
         financial_quarter_and_year: The financial quarter in which the transfer was made
     button:
-      transfer:
+      outgoing_transfer:
         submit: Create transfer record
   activerecord:
     errors:
       models:
-        transfer:
+        outgoing_transfer:
           attributes:
             destination:
               required: Unrecognised RODA Identifier

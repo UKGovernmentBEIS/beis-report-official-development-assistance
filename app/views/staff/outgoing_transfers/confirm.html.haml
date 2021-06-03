@@ -1,31 +1,31 @@
-=content_for :page_title_prefix, t("page_title.transfer.confirm")
+=content_for :page_title_prefix, t("page_title.outgoing_transfer.confirm")
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full
       %h1.govuk-heading-xl
-        = t("page_title.transfer.confirm")
+        = t("page_title.outgoing_transfer.confirm")
 
       %table.govuk-table
         %tbody.govuk-table__body
           %tr.govuk-table__row
             %th.govuk-table__header{scope: "row"}
-              = t("fields.transfer.destination")
+              = t("fields.outgoing_transfer.destination")
             %td.govuk-table__cell
               = @transfer_presenter.destination.title
           %tr.govuk-table__row
             %th.govuk-table__header{scope: "row"}
-              = t("fields.transfer.receiving_organisation")
+              = t("fields.outgoing_transfer.receiving_organisation")
             %td.govuk-table__cell
               = @transfer_presenter.destination.organisation.name
           %tr.govuk-table__row
             %th.govuk-table__header{scope: "row"}
-              = t("fields.transfer.financial_quarter_and_year")
+              = t("fields.outgoing_transfer.financial_quarter_and_year")
             %td.govuk-table__cell
               = @transfer_presenter.financial_quarter_and_year
           %tr.govuk-table__row
             %th.govuk-table__header{scope: "row"}
-              = t("fields.transfer.transfer_amount")
+              = t("fields.outgoing_transfer.transfer_amount")
             %td.govuk-table__cell
               = @transfer_presenter.value
 
