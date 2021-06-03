@@ -3,11 +3,6 @@
 module CodelistHelper
   DEVELOPING_COUNTRIES_CODE = "998"
 
-  COLLABORATION_TYPE_FROM_AID_TYPE_CODE = {
-    "B02" => "2",
-    "B03" => "1",
-  }
-
   def default_currency_options
     Codelist.new(type: "default_currency").to_objects
   end
@@ -84,11 +79,12 @@ module CodelistHelper
   end
 
   def collaboration_type_from_aid_type(aid_type_code)
-    COLLABORATION_TYPE_FROM_AID_TYPE_CODE[aid_type_code]
+    item = aid_types.find_item_by_code(aid_type_code) || {}
+    item["collaboration_type"]
   end
 
   def can_infer_collaboration_type?(aid_type_code)
-    COLLABORATION_TYPE_FROM_AID_TYPE_CODE.key?(aid_type_code)
+    collaboration_type_from_aid_type(aid_type_code).present?
   end
 
   def fstc_from_aid_type(aid_type_code)
