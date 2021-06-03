@@ -80,6 +80,12 @@ RSpec.describe Staff::TransactionUploadsController do
     let!(:third_party_project_e) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier_fragment: "E", created_at: rand(0..60).minutes.ago) }
     let!(:third_party_project_f) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier_fragment: "F", created_at: rand(0..60).minutes.ago) }
 
+    let!(:stopped_project) { create(:project_activity, parent: programme_a, organisation: report.organisation, programme_status: "stopped",) }
+    let!(:cancelled_project) { create(:project_activity, parent: programme_b, organisation: report.organisation, programme_status: "cancelled",) }
+    let!(:completed_project) { create(:project_activity, parent: programme_a, organisation: report.organisation, programme_status: "completed",) }
+    let!(:paused_project) { create(:project_activity, parent: programme_b, organisation: report.organisation, programme_status: "paused",) }
+    let!(:ineligible_project) { create(:project_activity, parent: programme_b, organisation: report.organisation, oda_eligibility: 2,) }
+
     it "returns activities in a predictable order" do
       get :show, params: {report_id: report.id}
 
@@ -90,6 +96,20 @@ RSpec.describe Staff::TransactionUploadsController do
       expect(csv[1]["Activity RODA Identifier"]).to eq(third_party_project_e.roda_identifier_compound)
       expect(csv[2]["Activity RODA Identifier"]).to eq(third_party_project_f.roda_identifier_compound)
       expect(csv[3]["Activity RODA Identifier"]).to eq(project_d.roda_identifier_compound)
+    end
+
+    it "does not include non-reportable activities" do
+      get :show, params: {report_id: report.id}
+
+      csv = CSV.parse(response.body, headers: true)
+
+      roda_identifiers = csv.pluck("Activity RODA Identifier")
+
+      expect(roda_identifiers).to_not include(stopped_project.roda_identifier_compound)
+      expect(roda_identifiers).to_not include(cancelled_project.roda_identifier_compound)
+      expect(roda_identifiers).to_not include(completed_project.roda_identifier_compound)
+      expect(roda_identifiers).to_not include(paused_project.roda_identifier_compound)
+      expect(roda_identifiers).to_not include(ineligible_project.roda_identifier_compound)
     end
   end
 end

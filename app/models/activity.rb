@@ -151,6 +151,7 @@ class Activity < ApplicationRecord
 
   has_many :comments
   has_many :matched_efforts
+  has_many :external_incomes
 
   enum level: {
     fund: "fund",
@@ -178,6 +179,9 @@ class Activity < ApplicationRecord
     cancelled: 11,
     paused: 12,
   }
+
+  NON_CURRENT_PROGRAMME_STATUSES = ["completed", "stopped", "cancelled"]
+  UNREPORTABLE_PROGRAMME_STATUSES = NON_CURRENT_PROGRAMME_STATUSES + ["paused"]
 
   enum policy_marker_gender: POLICY_MARKER_CODES, _prefix: :gender
 
@@ -216,8 +220,12 @@ class Activity < ApplicationRecord
   }
 
   scope :current, -> {
-                    where.not(programme_status: ["completed", "stopped", "cancelled"]).or(where(programme_status: nil))
+                    where.not(programme_status: NON_CURRENT_PROGRAMME_STATUSES).or(where(programme_status: nil))
                   }
+
+  scope :reportable, -> {
+    where(oda_eligibility: "eligible").where.not(programme_status: UNREPORTABLE_PROGRAMME_STATUSES)
+  }
 
   scope :historic, -> {
     where(programme_status: ["completed", "stopped", "cancelled"])

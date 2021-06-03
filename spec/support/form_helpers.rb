@@ -231,16 +231,10 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
-    if aid_type.in?(["B02", "B03", "D01"])
+    if aid_type.in?(["C01", "B03"])
       expect(page).to have_content t("form.legend.activity.fstc_applies")
-      expect(page.body).to include t("form.hint.activity.fstc_applies", aid_type: aid_type)
-      choose("activity[fstc_applies]", option: fstc_applies)
-      click_button t("form.button.activity.submit")
-    elsif aid_type == "C01"
-      expect(page).to have_content t("form.legend.activity.fstc_applies")
-      expect(page.body).to include t("form.hint.activity.fstc_applies", aid_type: aid_type)
-      expect(find_field("activity-fstc-applies-true-field")).to be_checked
-      choose("activity[fstc_applies]", option: fstc_applies)
+      expect(page.body).to include t("form.hint.activity.fstc_applies")
+      choose("activity[fstc_applies]", option: fstc_applies ? "1" : "0")
       click_button t("form.button.activity.submit")
     end
 
@@ -351,11 +345,11 @@ module FormHelpers
     expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
 
     within(".govuk-summary-list__row.fstc_applies") do
-      if aid_type.in?(["B02", "B03", "C01", "D01"])
+      if aid_type.in?(["B03", "C01"])
         expect(page).to have_content t("summary.label.activity.fstc_applies.#{fstc_applies}")
-      elsif aid_type.in?(["D02", "E01"])
+      elsif aid_type.in?(["D01", "D02", "E01", "E02"])
         expect(page).to have_content "Yes"
-      elsif aid_type == "G01"
+      elsif aid_type.in?(["G01", "B02"])
         expect(page).to have_content "No"
       end
     end
@@ -509,6 +503,17 @@ module FormHelpers
     fill_in "matched_effort[date_of_exchange_rate(2i)]", with: template.date_of_exchange_rate.month
     fill_in "matched_effort[date_of_exchange_rate(1i)]", with: template.date_of_exchange_rate.year
     fill_in "matched_effort[notes]", with: template.notes
+
+    click_on t("default.button.submit")
+  end
+
+  def fill_in_external_income_form(template = build(:external_income))
+    page.find(:xpath, "//input[@value='#{template.financial_quarter}']").set(true)
+    select template.financial_year, from: "external_income[financial_year]"
+    select template.organisation.name, from: "external_income[organisation_id]"
+    fill_in "external_income[amount]", with: template.amount
+    check "external_income[oda_funding]" if template.oda_funding
+    uncheck "external_income[oda_funding]" unless template.oda_funding
 
     click_on t("default.button.submit")
   end

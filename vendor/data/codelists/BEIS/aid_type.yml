@@ -1,0 +1,96 @@
+---
+attributes:
+  category-codelist: AidType-category
+  name: AidType
+  complete: "1"
+data:
+  - category: B
+    code: B02
+    name: Core contributions to multilateral institutions
+    description:
+      These funds are classified as multilateral ODA (all other categories
+      fall under bilateral ODA). The recipient multilateral institution pools contributions
+      so that they lose their identity and become an integral part of its financial
+      assets. See Annex 2 of the DAC Directives for a comprehensive list of agencies
+      core contributions to which may be reported under B02 (Section I. Multilateral
+      institutions).
+    ftsc_applies: false
+  - category: B
+    code: B03
+    name:
+      Contributions to specific-purpose programmes and funds managed by international
+      organisations (multilateral, INGO)
+    description:
+      In addition to their core-funded operations, international organisations
+      set up and raise funds for specific programmes and funds with clearly identified
+      sectoral, thematic or geographical focus. Donors’ bilateral contributions to such
+      programmes and funds are recorded here, e.g. “UNICEF girls’ education”, “Education
+      For All Fast Track Initiative”, various trust funds, including for reconstruction
+      (e.g. Afghanistan Reconstruction Trust Fund).
+  - category: C
+    code: C01
+    name: Project-type interventions
+    description:
+      A project is a set of inputs, activities and outputs, agreed with the
+      partner country*, to reach specific objectives/outcomes within a defined time
+      frame, with a defined budget and a defined geographical area. Projects can vary
+      significantly in terms of objectives, complexity, amounts involved and duration.
+      There are smaller projects that might involve modest financial resources and last
+      only a few months, whereas large projects might involve more significant amounts,
+      entail successive phases and last for many years. A large project with a number
+      of different components is sometimes referred to as a programme, but should nevertheless
+      be recorded here. Feasibility studies, appraisals and evaluations are included
+      (whether designed as part of projects/programmes or dedicated funding arrangements).
+      Aid channelled through NGOs or multilaterals is also recorded here. This includes
+      payments for NGOs and multilaterals to implement donors’ projects and programmes,
+      and funding of specified NGOs projects. By contrast, core funding of NGOs and
+      multilaterals as well as contributions to specific-purpose funds managed by international
+      organisations are recorded under B. * In the cases of equity investments, humanitarian
+      aid or aid channelled through NGOs, projects are recorded here even if there was
+      no direct agreement between the donor and the partner country.
+  - category: D
+    code: D01
+    name: Donor country personnel
+    description:
+      Experts, consultants, teachers, academics, researchers, volunteers
+      and contributions to public and private bodies for sending experts to developing
+      countries.
+    ftsc_applies: true
+  - category: D
+    code: D02
+    name: Other technical assistance
+    description:
+      Provision, outside projects as described in category C01, of technical
+      assistance in recipient countries (excluding technical assistance performed by
+      donor experts reported under D01, and scholarships/training in donor country reported
+      under E01). This includes training and research; language training; south-south
+      studies; research studies; collaborative research between donor and recipient
+      universities and organisations); local scholarships; development-oriented social
+      and cultural programmes. This category also covers ad hoc contributions such as
+      conferences, seminars and workshops, exchange visits, publications, etc.
+    ftsc_applies: true
+  - category: E
+    code: E01
+    name: Scholarships/training in donor country
+    description: Financial aid awards for individual students and contributions to trainees.
+    ftsc_applies: true
+  - category: E
+    code: E02
+    name: Imputed student costs
+    description: Indirect (“imputed”) costs of tuition in donor countries.
+    ftsc_applies: true
+  - category: G
+    code: G01
+    name: Administrative costs not included elsewhere
+    description:
+      Administrative costs of development assistance programmes not already
+      included under other ODA items as an integral part of the costs of delivering
+      or implementing the aid provided. This category covers situation analyses and
+      auditing activities. As regards the salaries component of administrative costs,
+      it relates to in-house agency staff and contractors only; costs associated with
+      donor experts/consultants are to be reported under category C or D01.
+    ftsc_applies: false
+metadata:
+  url: http://www.oecd.org/dac/stats/dacandcrscodelists.htm
+  name: Aid Type
+  description: ""

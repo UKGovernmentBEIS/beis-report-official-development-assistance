@@ -673,9 +673,17 @@
 - export complete transaction history per delivery partner for BEIS users
 - Change the email address given in email notifications
 
+## [release-54] - 2021-06-03
+
+- Allow users to add, edit and delete external income on activities
+- Only show activities with relevant statuses in the actuals upload template
+- Approved reports are displayed in historical order
+- Update the logic to auto populate the FSTC applies field
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-53...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-54...HEAD
+[release-54]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-53...release-54
 [release-53]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-52...release-53
 [release-52]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-51...release-52
 [release-51]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-50...release-51

@@ -154,6 +154,15 @@ RSpec.describe Organisation, type: :model do
     end
   end
 
+  describe ".external_income_providers" do
+    it "should contain only organisations that are external income providers" do
+      create_list(:delivery_partner_organisation, 3)
+      matched_effort_providers = create_list(:matched_effort_provider, 2)
+
+      expect(Organisation.matched_effort_providers).to match_array(matched_effort_providers)
+    end
+  end
+
   describe ".active" do
     it "should contain only active organisations" do
       create_list(:delivery_partner_organisation, 3, active: false)

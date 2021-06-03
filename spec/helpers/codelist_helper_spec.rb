@@ -83,7 +83,7 @@ RSpec.describe CodelistHelper, type: :helper do
       it "returns the aid type with the code appended to the name" do
         options = helper.aid_type_radio_options
 
-        expect(options.length).to eq 7
+        expect(options.length).to eq 8
         expect(options.first.name).to eq "Core contributions to multilateral institutions (B02)"
         expect(options.last.name).to eq "Administrative costs not included elsewhere (G01)"
       end
@@ -123,42 +123,35 @@ RSpec.describe CodelistHelper, type: :helper do
       end
     end
 
-    describe "#fstc_from_aid_type" do
-      it "returns nil if the aid type is not set" do
-        expect(helper.fstc_from_aid_type(nil)).to be_nil
+    context "When using aid types to infer Free Standing Technical Cooperation" do
+      let(:codelist) { double("Codelist", list: list) }
+      let(:list) do
+        [
+          {"code" => "A", "ftsc_applies" => true},
+          {"code" => "B", "ftsc_applies" => false},
+          {"code" => "C"},
+        ]
       end
 
-      it "returns true for D02" do
-        expect(helper.fstc_from_aid_type("D02")).to eql true
+      before do
+        allow_any_instance_of(Codelist).to receive(:list).and_return(list)
       end
 
-      it "returns true for E01" do
-        expect(helper.fstc_from_aid_type("E01")).to eql true
-      end
-
-      it "returns false for G01" do
-        expect(helper.fstc_from_aid_type("G01")).to eql false
-      end
-
-      it "returns nil for any other aid type" do
-        expect(helper.fstc_from_aid_type("B02")).to be_nil
-      end
-    end
-
-    describe "#can_infer_fstc?" do
-      it "returns false if the aid type is not set" do
-        expect(helper.can_infer_fstc?(nil)).to eql false
-      end
-
-      it "returns true for aid types 'D02', 'E01', 'G01'" do
-        %w[D02 E01 G01].each do |at|
-          expect(helper.can_infer_fstc?(at)).to eql true
+      describe "#fstc_from_aid_type" do
+        it "returns nil if the aid type is not set" do
+          expect(helper.fstc_from_aid_type(nil)).to be_nil
         end
-      end
 
-      it "returns false for any other aid type" do
-        (CodelistHelper::ALLOWED_AID_TYPE_CODES - %w[D02 E01 G01]).each do |at|
-          expect(helper.can_infer_fstc?(at)).to eql false
+        it "returns true if ftsc_applies is true" do
+          expect(helper.fstc_from_aid_type("A")).to eql true
+        end
+
+        it "returns false if ftsc_applies is false" do
+          expect(helper.fstc_from_aid_type("B")).to eql false
+        end
+
+        it "returns nil if ftsc_applies is nil" do
+          expect(helper.fstc_from_aid_type("C")).to be_nil
         end
       end
     end

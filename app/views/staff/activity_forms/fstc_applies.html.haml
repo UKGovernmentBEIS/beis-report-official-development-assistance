@@ -1,6 +1,3 @@
 = render layout: "wrapper" do |f|
   = f.govuk_error_summary
-  = f.govuk_radio_buttons_fieldset(:fstc_applies, legend: { text: t("form.legend.activity.fstc_applies"), size: "xl", tag: "h1" }, hint: -> { t("form.hint.activity.fstc_applies", aid_type: @activity.aid_type).html_safe }) do
-    = f.hidden_field :fstc_applies, value: nil
-    = f.govuk_radio_button :fstc_applies, :true, label: { text: t("form.label.activity.fstc_applies.true") }
-    = f.govuk_radio_button :fstc_applies, :false, label: { text: t("form.label.activity.fstc_applies.false") }
+  = f.govuk_collection_radio_buttons :fstc_applies, fstc_applies_radio_options, :value, :label, legend: { text: t("form.legend.activity.fstc_applies"), size: "xl", tag: "h1" }, hint: -> { t("form.hint.activity.fstc_applies").html_safe }

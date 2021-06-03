@@ -1,0 +1,30 @@
+---
+en:
+  page_title:
+    external_income:
+      index: External income
+      new: Add new external income
+      edit: Edit an external income
+  table:
+    header:
+      external_income:
+        providing_organisation: Providing organisation
+        financial_quarter: Financial quarter
+        oda_funding: Official development assistance
+        amount: Amount
+  form:
+    label:
+      external_income:
+        organisation_id: Providing organisation
+  page_content:
+    external_income:
+      button:
+        create: Add external income
+  action:
+    external_income:
+      create:
+        success: The external income has been successfully created
+      update:
+        success: The external income has been successfully updated
+      destroy:
+        success: The external income has been successfully deleted

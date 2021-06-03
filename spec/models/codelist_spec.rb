@@ -155,4 +155,49 @@ RSpec.describe Codelist do
       expect { codelist.values_for("words") }.to raise_error "Codelist::KeyNotFound"
     end
   end
+
+  describe "#find_item_by_code" do
+    let(:codelist) { Codelist.new(type: "aid_type") }
+
+    subject { codelist.find_item_by_code("A01") }
+
+    context "when there is no key called `code` in the codelist" do
+      before do
+        allow(codelist).to receive(:list) do
+          [
+            {"foo" => "bar"},
+            {"foo" => "baz"},
+          ]
+        end
+      end
+
+      it { is_expected.to be_nil }
+    end
+
+    context "when there is a key called `code` in the codelist" do
+      before do
+        allow(codelist).to receive(:list) do
+          [
+            {"code" => "A01"},
+            {"code" => "B01"},
+          ]
+        end
+      end
+
+      it { is_expected.to eq({"code" => "A01"}) }
+    end
+
+    context "when no key exists" do
+      before do
+        allow(codelist).to receive(:list) do
+          [
+            {"code" => "B01"},
+            {"code" => "C01"},
+          ]
+        end
+      end
+
+      it { is_expected.to be_nil }
+    end
+  end
 end
