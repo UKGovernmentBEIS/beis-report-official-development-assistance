@@ -672,6 +672,7 @@
 - add spacing between view and edit links on Organisation index page
 - export complete transaction history per delivery partner for BEIS users
 - Change the email address given in email notifications
+- Update the logic to auto populate the FSTC applies field
 
 ## [unreleased]
 

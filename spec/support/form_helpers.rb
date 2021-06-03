@@ -231,16 +231,10 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
-    if aid_type.in?(["B02", "B03", "D01"])
+    if aid_type.in?(["C01", "B03"])
       expect(page).to have_content t("form.legend.activity.fstc_applies")
-      expect(page.body).to include t("form.hint.activity.fstc_applies", aid_type: aid_type)
-      choose("activity[fstc_applies]", option: fstc_applies)
-      click_button t("form.button.activity.submit")
-    elsif aid_type == "C01"
-      expect(page).to have_content t("form.legend.activity.fstc_applies")
-      expect(page.body).to include t("form.hint.activity.fstc_applies", aid_type: aid_type)
-      expect(find_field("activity-fstc-applies-true-field")).to be_checked
-      choose("activity[fstc_applies]", option: fstc_applies)
+      expect(page.body).to include t("form.hint.activity.fstc_applies")
+      choose("activity[fstc_applies]", option: fstc_applies ? "1" : "0")
       click_button t("form.button.activity.submit")
     end
 
@@ -351,11 +345,11 @@ module FormHelpers
     expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
 
     within(".govuk-summary-list__row.fstc_applies") do
-      if aid_type.in?(["B02", "B03", "C01", "D01"])
+      if aid_type.in?(["B03", "C01"])
         expect(page).to have_content t("summary.label.activity.fstc_applies.#{fstc_applies}")
-      elsif aid_type.in?(["D02", "E01"])
+      elsif aid_type.in?(["D01", "D02", "E01", "E02"])
         expect(page).to have_content "Yes"
-      elsif aid_type == "G01"
+      elsif aid_type.in?(["G01", "B02"])
         expect(page).to have_content "No"
       end
     end

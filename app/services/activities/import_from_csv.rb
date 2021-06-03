@@ -530,7 +530,7 @@ module Activities
 
       def get_sector_category(sector_code)
         codelist = Codelist.new(type: "sector")
-        sector = codelist.find { |list_item| list_item["code"] == sector_code }
+        sector = codelist.find_item_by_code(sector_code)
 
         sector["category"] if sector
       end

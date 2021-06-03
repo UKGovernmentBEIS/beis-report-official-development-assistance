@@ -195,7 +195,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       click_button t("form.button.activity.submit")
       expect(page).to have_content t("activerecord.errors.models.activity.attributes.aid_type.blank")
 
-      choose("activity[aid_type]", option: "B02")
+      choose("activity[aid_type]", option: "C01")
       click_button t("form.button.activity.submit")
 
       # Collaboration type question
@@ -222,7 +222,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       click_button t("form.button.activity.submit")
       expect(page).to have_content t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion")
 
-      choose("activity[fstc_applies]", option: true)
+      choose("activity[fstc_applies]", option: 1)
       click_button t("form.button.activity.submit")
 
       # Covid19-related has a default and can't be set to blank so we skip

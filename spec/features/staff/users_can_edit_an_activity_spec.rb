@@ -1,5 +1,6 @@
 RSpec.feature "Users can edit an activity" do
   include ActivityHelper
+  include CodelistHelper
 
   context "when signed in as a BEIS user" do
     let(:user) { create(:beis_user) }
@@ -590,7 +591,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(t("default.link.back"))
   click_on t("tabs.activity.details")
 
-  if activity.aid_type.in?(["D02", "E01", "G01"])
+  if can_infer_fstc?(activity.aid_type)
     within(".fstc_applies") do
       expect(page).to_not have_link(t("default.link.edit"))
     end

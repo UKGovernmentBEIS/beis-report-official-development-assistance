@@ -2,20 +2,6 @@
 
 module CodelistHelper
   DEVELOPING_COUNTRIES_CODE = "998"
-  ALLOWED_AID_TYPE_CODES = [
-    "B02",
-    "B03",
-    "C01",
-    "D01",
-    "D02",
-    "E01",
-    "G01",
-  ]
-  FSTC_FROM_AID_TYPE_CODE = {
-    "D02" => true,
-    "E01" => true,
-    "G01" => false,
-  }
 
   def default_currency_options
     Codelist.new(type: "default_currency").to_objects
@@ -81,20 +67,31 @@ module CodelistHelper
     Codelist.new(type: "sector").to_objects_with_categories(include_withdrawn: true)
   end
 
+  def aid_types
+    @aid_types ||= Codelist.new(type: "aid_type", source: "beis")
+  end
+
   def aid_type_radio_options
-    options = Codelist.new(type: "aid_type").to_objects_with_description(
+    aid_types.to_objects_with_description(
       code_displayed_in_name: true,
     )
-
-    options.select { |a| ALLOWED_AID_TYPE_CODES.include?(a.code) }
   end
 
   def fstc_from_aid_type(aid_type_code)
-    FSTC_FROM_AID_TYPE_CODE[aid_type_code]
+    item = aid_types.find_item_by_code(aid_type_code) || {}
+
+    item["ftsc_applies"]
   end
 
   def can_infer_fstc?(aid_type_code)
-    FSTC_FROM_AID_TYPE_CODE.key?(aid_type_code)
+    !fstc_from_aid_type(aid_type_code).nil?
+  end
+
+  def fstc_applies_radio_options
+    [
+      OpenStruct.new(value: 0, label: I18n.t("form.label.activity.fstc_applies.false")),
+      OpenStruct.new(value: 1, label: I18n.t("form.label.activity.fstc_applies.true")),
+    ]
   end
 
   def policy_markers_radio_options
