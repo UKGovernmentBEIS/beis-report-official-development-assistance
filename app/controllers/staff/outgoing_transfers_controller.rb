@@ -1,4 +1,4 @@
-class Staff::TransfersController < Staff::BaseController
+class Staff::OutgoingTransfersController < Staff::BaseController
   include Secured
 
   helper_method :destination_roda_identifier
@@ -8,12 +8,12 @@ class Staff::TransfersController < Staff::BaseController
 
     authorize @source_activity, :create_transfer?
 
-    @transfer = Transfer.new
+    @transfer = OutgoingTransfer.new
     @transfer.source = @source_activity
   end
 
   def edit
-    @transfer = Transfer.find(params[:id])
+    @transfer = OutgoingTransfer.find(params[:id])
     @destination_roda_identifier = @transfer.destination.roda_identifier
     authorize @transfer
   end
@@ -21,7 +21,7 @@ class Staff::TransfersController < Staff::BaseController
   def create
     authorize source_activity, :create_transfer?
 
-    @transfer = Transfer.new
+    @transfer = OutgoingTransfer.new
     @transfer.source = source_activity
     if source_activity.project? || source_activity.third_party_project?
       @transfer.report = Report.editable_for_activity(source_activity)
@@ -29,31 +29,31 @@ class Staff::TransfersController < Staff::BaseController
     @transfer.destination = destination_activity
     @transfer.assign_attributes(transfer_params)
 
-    if params[:transfer][:confirm]
-      confirm_or_edit(t("action.transfer.create.success"))
+    if params[:outgoing_transfer][:confirm]
+      confirm_or_edit(t("action.outgoing_transfer.create.success"))
     else
-      @confirmation_url = activity_transfers_path(@source_activity)
+      @confirmation_url = activity_outgoing_transfers_path(@source_activity)
       show_confirmation_or_errors
     end
   end
 
   def update
-    @transfer = Transfer.find(params[:id])
+    @transfer = OutgoingTransfer.find(params[:id])
     authorize @transfer
 
     @transfer.destination = destination_activity
     @transfer.assign_attributes(transfer_params)
 
-    if params[:transfer][:confirm]
-      confirm_or_edit(t("action.transfer.update.success"))
+    if params[:outgoing_transfer][:confirm]
+      confirm_or_edit(t("action.outgoing_transfer.update.success"))
     else
-      @confirmation_url = activity_transfer_path(@transfer.source, @transfer)
+      @confirmation_url = activity_outgoing_transfer_path(@transfer.source, @transfer)
       show_confirmation_or_errors
     end
   end
 
   def destination_roda_identifier
-    @destination_roda_identifier || params.dig(:transfer, :destination)
+    @destination_roda_identifier || params.dig(:outgoing_transfer, :destination)
   end
 
   private
@@ -63,7 +63,7 @@ class Staff::TransfersController < Staff::BaseController
   end
 
   def transfer_params
-    params.require(:transfer)
+    params.require(:outgoing_transfer)
       .permit(
         :financial_quarter,
         :financial_year,
@@ -91,7 +91,7 @@ class Staff::TransfersController < Staff::BaseController
 
   def show_confirmation_or_errors
     if @transfer.valid?
-      @transfer_presenter = TransferPresenter.new(@transfer)
+      @transfer_presenter = OutgoingTransferPresenter.new(@transfer)
       render :confirm
     else
       render edit_or_new

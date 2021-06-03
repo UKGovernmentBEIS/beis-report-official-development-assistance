@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_27_130555) do
+ActiveRecord::Schema.define(version: 2021_06_02_125359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -189,6 +189,18 @@ ActiveRecord::Schema.define(version: 2021_05_27_130555) do
     t.index ["iati_reference"], name: "index_organisations_on_iati_reference", unique: true
   end
 
+  create_table "outgoing_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "source_id", null: false
+    t.uuid "destination_id", null: false
+    t.decimal "value", precision: 13, scale: 2, null: false
+    t.integer "financial_year"
+    t.integer "financial_quarter"
+    t.uuid "report_id"
+    t.index ["destination_id"], name: "index_outgoing_transfers_on_destination_id"
+    t.index ["report_id"], name: "index_outgoing_transfers_on_report_id"
+    t.index ["source_id"], name: "index_outgoing_transfers_on_source_id"
+  end
+
   create_table "planned_disbursements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "planned_disbursement_type"
     t.date "period_start_date"
@@ -255,18 +267,6 @@ ActiveRecord::Schema.define(version: 2021_05_27_130555) do
     t.index ["report_id"], name: "index_transactions_on_report_id"
   end
 
-  create_table "transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "source_id", null: false
-    t.uuid "destination_id", null: false
-    t.decimal "value", precision: 13, scale: 2, null: false
-    t.integer "financial_year"
-    t.integer "financial_quarter"
-    t.uuid "report_id"
-    t.index ["destination_id"], name: "index_transfers_on_destination_id"
-    t.index ["report_id"], name: "index_transfers_on_report_id"
-    t.index ["source_id"], name: "index_transfers_on_source_id"
-  end
-
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "identifier"
     t.string "name"
@@ -284,9 +284,9 @@ ActiveRecord::Schema.define(version: 2021_05_27_130555) do
   add_foreign_key "activities", "organisations", on_delete: :restrict
   add_foreign_key "budgets", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "budgets", "organisations", column: "providing_organisation_id"
+  add_foreign_key "outgoing_transfers", "activities", column: "destination_id", on_delete: :restrict
+  add_foreign_key "outgoing_transfers", "activities", column: "source_id", on_delete: :restrict
   add_foreign_key "planned_disbursements", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "transactions", "activities", column: "parent_activity_id", on_delete: :cascade
-  add_foreign_key "transfers", "activities", column: "destination_id", on_delete: :restrict
-  add_foreign_key "transfers", "activities", column: "source_id", on_delete: :restrict
   add_foreign_key "users", "organisations", on_delete: :restrict
 end

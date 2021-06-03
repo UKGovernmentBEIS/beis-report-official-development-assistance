@@ -146,8 +146,8 @@ class Activity < ApplicationRecord
   has_many :budgets, foreign_key: "parent_activity_id"
   has_many :transactions, foreign_key: "parent_activity_id"
 
-  has_many :source_transfers, foreign_key: "source_id", class_name: "Transfer"
-  has_many :destination_transfers, foreign_key: "destination_id", class_name: "Transfer"
+  has_many :source_transfers, foreign_key: "source_id", class_name: "OutgoingTransfer"
+  has_many :destination_transfers, foreign_key: "destination_id", class_name: "OutgoingTransfer"
 
   has_many :comments
   has_many :matched_efforts
