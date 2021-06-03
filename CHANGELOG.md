@@ -682,6 +682,8 @@
 
 ## [unreleased]
 
+- Users can no longer update the delivery partner identifier
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-54...HEAD
 [release-54]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-53...release-54
 [release-53]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-52...release-53

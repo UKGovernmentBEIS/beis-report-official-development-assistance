@@ -68,6 +68,8 @@ module Activities
         add_error(index, :roda_identifier_fragment, row["RODA ID Fragment"], I18n.t("importer.errors.activity.cannot_update.fragment_present")) && return
       elsif row["Parent RODA ID"].present?
         add_error(index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
+      elsif row["Delivery Partner Identifier"].present?
+        add_error(index, :delivery_partner_identifier, row["Delivery Partner Identifier"], I18n.t("importer.errors.activity.cannot_update.delivery_partner_identifier_present")) && return
       else
         updater = ActivityUpdater.new(row: row, uploader: @uploader, delivery_partner_organisation: @delivery_partner_organisation)
         updater.update

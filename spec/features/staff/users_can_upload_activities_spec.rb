@@ -172,6 +172,29 @@ RSpec.feature "users can upload activities" do
     expect(activity_to_update.reload.title).to eq("New Title")
   end
 
+  scenario "attempting to change the delivery partner identifier of an existing activity" do
+    activity_to_update = create(:project_activity, :gcrf_funded, organisation: organisation) { |activity|
+      activity.implementing_organisations = [
+        create(:implementing_organisation, activity: activity),
+      ]
+    }
+    create(:report, state: :active, fund: activity_to_update.associated_fund, organisation: organisation)
+
+    upload_csv <<~CSV
+      RODA ID                               | Title     | Channel of delivery code                       | Sector | Recipient Country | Delivery Partner Identifier |
+      #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | BR                | new-id-oh-no                |
+    CSV
+
+    expect(page).not_to have_text(t("action.activity.upload.success"))
+
+    within "//tbody/tr[1]" do
+      expect(page).to have_xpath("td[1]", text: "Delivery partner identifier")
+      expect(page).to have_xpath("td[2]", text: "2")
+      expect(page).to have_xpath("td[3]", text: "new-id-oh-no")
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.cannot_update.delivery_partner_identifier_present"))
+    end
+  end
+
   def upload_csv(content)
     file = Tempfile.new("new_activities.csv")
     file.write(content.gsub(/ *\| */, ","))

@@ -50,6 +50,8 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :fstc_applies
       skip_step if can_infer_fstc?(@activity.aid_type)
       assign_default_fstc_applies_value
+    when :identifier
+      skip_step if @activity.delivery_partner_identifier.present?
     end
 
     render_wizard

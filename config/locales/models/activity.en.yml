@@ -168,7 +168,7 @@ en:
         call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
         country_delivery_partners: "Please provide up to ten country delivery partners. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
         fund_pillar: The Newton Fund largely comprises three pillar activities, which all activities must fall under. Use 'Not applicable' for delivery, other non-programme/project lines.
-        delivery_partner_identifier: This could be the reference you use in your internal systems
+        delivery_partner_identifier: This should be the reference you use to identify this activity in your internal systems and other third-party services. Once set, this value cannot be changed, see the guidance below for more information and support.
         gcrf_strategic_area: Select no more than two areas.
         gcrf_challenge_area: Select the most relevant GCRF challenge area for this activity. For broad programme calls, please select the challenge area most commonly represented across the individual projects within the programme. If the activity is a delivery line, you may select 'Not applicable'.
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
@@ -516,6 +516,7 @@ en:
         parent_not_found: The parent activity cannot be found
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:
-          fragment_present: There is an existing RODA ID present, but there is a fragment specified too, which will overwrite the existing fragment. Please remove the fragement from this row and try again.
+          fragment_present: There is an existing RODA ID present, but there is a fragment specified too, which will overwrite the existing fragment. Please remove the fragment from this row and try again.
           parent_present: There is an existing RODA ID present, but there is a parent activity specified too, which will overwrite the existing parent. Please remove the parent ID from this row and try again.
+          delivery_partner_identifier_present: The delivery partner identifier cannot be changed. Please remove the DP identifier from this row and try again.
         unauthorised: You are not authorised to report against this activity
