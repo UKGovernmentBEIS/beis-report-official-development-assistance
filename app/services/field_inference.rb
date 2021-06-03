@@ -16,7 +16,6 @@ class FieldInference
   end
 
   def assign(model, attr_name, value)
-    model[attr_name] = value
     Updater.new(@rules, model).assign(attr_name.to_s, value)
   end
 
@@ -45,9 +44,8 @@ class FieldInference
     end
 
     def assign(attr_name, value)
-      rules_for_source(attr_name, value).each do |rule|
-        @model[rule.target.name] = rule.target.value
-      end
+      @model[attr_name] = value
+      rules_for_source(attr_name, value).each { |rule| assign(*rule.target) }
     end
 
     def rules_for_source(attr_name, value)

@@ -44,4 +44,64 @@ RSpec.describe FieldInference do
       end
     end
   end
+
+  describe "when one field change cascades into another" do
+    before do
+      activity.aid_type = "C01"
+      activity.collaboration_type = "3"
+      activity.channel_of_delivery_code = "51000"
+
+      subject.on(:aid_type, "B02").fix(:collaboration_type, "2")
+      subject.on(:collaboration_type, "2").fix(:channel_of_delivery_code, "40000")
+    end
+
+    describe "when a matching value is set" do
+      before do
+        subject.assign(activity, :aid_type, "B02")
+      end
+
+      it "sets the value of the source field" do
+        expect(activity.aid_type).to eq("B02")
+      end
+
+      it "fixes the value of the immediately dependent field" do
+        expect(activity.collaboration_type).to eq("2")
+      end
+
+      it "fixes the value of the descendant field" do
+        expect(activity.channel_of_delivery_code).to eq("40000")
+      end
+
+      it "does not allow edits to any downstream field" do
+        expect(subject).not_to be_editable(activity, :collaboration_type)
+        expect(subject).not_to be_editable(activity, :channel_of_delivery_code)
+      end
+    end
+
+    describe "when a matching value is set further down the chain" do
+      before do
+        subject.assign(activity, :collaboration_type, "2")
+      end
+
+      it "sets the value of the source field" do
+        expect(activity.collaboration_type).to eq("2")
+      end
+
+      it "does not change the value of the parent field" do
+        expect(activity.aid_type).to eq("C01")
+      end
+
+      it "fixes the value of the descendant field" do
+        expect(activity.channel_of_delivery_code).to eq("40000")
+      end
+
+      it "allows edits to the source field" do
+        expect(subject).to be_editable(activity, :collaboration_type)
+      end
+
+      it "does not allow edits to the dependent field" do
+        expect(subject).not_to be_editable(activity, :channel_of_delivery_code)
+      end
+    end
+  end
 end
