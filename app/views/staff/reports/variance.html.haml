@@ -1,19 +1,8 @@
 =content_for :page_title_prefix, t("page_title.report.variance",report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
-  .govuk-grid-row
-    .govuk-grid-column-two-thirds
-      %h1.govuk-heading-xl
-        = t("page_title.report.show", report_fund: @report_presenter.fund.source_fund.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
-    - if policy(@report_presenter).download?
-      = render partial: "staff/reports/download", locals: { report_presenter: @report_presenter }
-
-    .govuk-grid-column-two-thirds
-      = render partial: "staff/reports/summary"
-
-    .govuk-grid-column-full
-      = render partial: "staff/reports/actions", locals: { report_presenter: @report_presenter }
+  = render "staff/reports/meta"
 
   .govuk-grid-row
     .govuk-grid-column-full
