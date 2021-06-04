@@ -13,7 +13,6 @@
       = render partial: "staff/reports/summary"
 
     .govuk-grid-column-full
-
       = render partial: "staff/reports/actions", locals: { report_presenter: @report_presenter }
 
   .govuk-grid-row
@@ -22,15 +21,7 @@
         %h2.govuk-tabs__title
           Contents
 
-        %ul.govuk-tabs__list
-          %li.govuk-tabs__list-item
-            = link_to t("tabs.report.variance"),
-              report_variance_path(@report),
-              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "financials", selected: false } }
-          %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
-            = link_to t("tabs.report.budgets"),
-              report_budgets_path(@report),
-              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "details", selected: true } }
+        = render partial: "staff/reports/tab_list", locals: { active_tab: "budgets" }
 
         .govuk-tabs__panel
           %h2.govuk-heading-l
