@@ -282,7 +282,7 @@
       %dd.govuk-summary-list__value
         = activity_presenter.collaboration_type
       %dd.govuk-summary-list__actions
-        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :collaboration_type)
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :collaboration_type) && !can_infer_collaboration_type?(@activity.aid_type)
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:collaboration_type)}"), activity_step_path(activity_presenter, :collaboration_type), t("summary.label.activity.collaboration_type"))
 
   - unless activity_presenter.fund?

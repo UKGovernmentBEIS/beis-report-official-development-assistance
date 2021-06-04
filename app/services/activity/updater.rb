@@ -105,6 +105,9 @@ class Activity
 
     def set_aid_type
       activity.assign_attributes(aid_type: params_for("aid_type"))
+      if can_infer_collaboration_type?(activity.aid_type)
+        activity.collaboration_type = collaboration_type_from_aid_type(activity.aid_type)
+      end
       if can_infer_fstc?(activity.aid_type)
         activity.fstc_applies = fstc_from_aid_type(activity.aid_type)
       end

@@ -42,7 +42,8 @@ module CodelistHelper
   end
 
   def collaboration_type_radio_options
-    Codelist.new(type: "collaboration_type").to_objects(with_empty_item: false).sort_by(&:code)
+    codelist = Codelist.new(type: "collaboration_type", source: "beis")
+    codelist.to_objects(with_empty_item: false).sort_by(&:code)
   end
 
   def sector_category_radio_options
@@ -75,6 +76,15 @@ module CodelistHelper
     aid_types.to_objects_with_description(
       code_displayed_in_name: true,
     )
+  end
+
+  def collaboration_type_from_aid_type(aid_type_code)
+    item = aid_types.find_item_by_code(aid_type_code) || {}
+    item["collaboration_type"]
+  end
+
+  def can_infer_collaboration_type?(aid_type_code)
+    collaboration_type_from_aid_type(aid_type_code).present?
   end
 
   def fstc_from_aid_type(aid_type_code)

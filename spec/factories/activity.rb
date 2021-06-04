@@ -21,7 +21,7 @@ FactoryBot.define do
     intended_beneficiaries { ["CU", "DM", "DO"] }
     gdi { "4" }
     fstc_applies { true }
-    aid_type { "B02" }
+    aid_type { "D01" }
     level { :fund }
     publish_to_iati { true }
     gcrf_strategic_area { ["1", "2"] }

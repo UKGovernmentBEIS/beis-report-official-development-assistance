@@ -31,10 +31,10 @@ RSpec.feature "Users can add a collaboration type for an activity" do
 
       expect(find_field("activity-collaboration-type-2-field")).to be_checked
 
-      choose "Private Sector Outflows"
+      choose "Bilateral, core contributions to NGOs and other private bodies / PPPs"
       click_button t("form.button.activity.submit")
 
-      expect(programme.reload.collaboration_type).to eq("6")
+      expect(programme.reload.collaboration_type).to eq("3")
     end
   end
 end

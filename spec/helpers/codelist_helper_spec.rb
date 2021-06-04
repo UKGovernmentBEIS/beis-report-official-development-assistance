@@ -41,11 +41,11 @@ RSpec.describe CodelistHelper, type: :helper do
       it "returns the different options for collaboration type sorted by code" do
         options = helper.collaboration_type_radio_options
 
-        expect(options.length).to eq 7
+        expect(options.length).to eq 3
         expect(options.first.code).to eq "1"
         expect(options.first.name).to eq "Bilateral"
-        expect(options.last.code).to eq "8"
-        expect(options.last.name).to eq "Bilateral, triangular co-operation"
+        expect(options.last.code).to eq "3"
+        expect(options.last.name).to eq "Bilateral, core contributions to NGOs and other private bodies / PPPs"
       end
     end
 
@@ -120,6 +120,40 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.length).to eq 143
         expect(options.first.name).to eq("Afghanistan")
         expect(options.last.name).to eq("Zimbabwe")
+      end
+    end
+
+    describe "#collaboration_type_from_aid_type" do
+      it "returns nil if the aid type is not set" do
+        expect(helper.collaboration_type_from_aid_type(nil)).to be_nil
+      end
+
+      it "returns Multilateral for B02" do
+        expect(helper.collaboration_type_from_aid_type("B02")).to eq("2")
+      end
+
+      it "returns Bilateral for B02" do
+        expect(helper.collaboration_type_from_aid_type("B03")).to eq("1")
+      end
+
+      it "returns nil for any other aid type" do
+        expect(helper.collaboration_type_from_aid_type("C01")).to be_nil
+      end
+    end
+
+    describe "#can_infer_collaboration_type?" do
+      it "returns false if the aid type is not set" do
+        expect(helper.can_infer_collaboration_type?(nil)).to eql false
+      end
+
+      it "returns true for aid types 'B02', B03'" do
+        %w[B02 B03].each do |at|
+          expect(helper.can_infer_collaboration_type?(at)).to eql true
+        end
+      end
+
+      it "returns false for any other aid type" do
+        expect(helper.can_infer_collaboration_type?("C01")).to eql false
       end
     end
 
