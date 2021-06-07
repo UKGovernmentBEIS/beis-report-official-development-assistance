@@ -3,13 +3,11 @@ module Transfers
   include Secured
 
   included do
-    helper_method :destination_roda_identifier
+    before_action :can_create_transfer?
   end
 
   def new
     @source_activity = source_activity
-
-    authorize @source_activity, :create_transfer?
 
     @transfer = transfer_model.new
     @transfer.source = @source_activity
@@ -22,8 +20,6 @@ module Transfers
   end
 
   def create
-    authorize source_activity, :create_transfer?
-
     @transfer = transfer_model.new
     @transfer.source = source_activity
     if source_activity.project? || source_activity.third_party_project?
