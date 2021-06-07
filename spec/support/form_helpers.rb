@@ -487,7 +487,7 @@ module FormHelpers
       value: value
     )
 
-    fill_in "#{type}[destination]", with: transfer.destination.roda_identifier
+    fill_in "#{type}[destination_roda_identifier]", with: transfer.destination.roda_identifier
     choose transfer.financial_quarter.to_s, name: "#{type}[financial_quarter]"
     select transfer.financial_year, from: "#{type}[financial_year]"
     fill_in "#{type}[value]", with: transfer.value

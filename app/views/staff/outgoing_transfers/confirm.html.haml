@@ -31,7 +31,8 @@
 
       = form_with model: @transfer, url: @confirmation_url do |f|
         = f.hidden_field :confirm, value: 1
-        = f.hidden_field :destination, value: @transfer.destination.roda_identifier
+        = f.hidden_field :source_id
+        = f.hidden_field :destination_roda_identifier, value: @transfer.destination_roda_identifier
         = f.hidden_field :financial_quarter
         = f.hidden_field :financial_year
         = f.hidden_field :value

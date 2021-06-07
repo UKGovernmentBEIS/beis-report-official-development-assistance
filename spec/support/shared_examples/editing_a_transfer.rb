@@ -2,7 +2,7 @@ RSpec.shared_examples "editing a transfer" do
   scenario "it shows the transfer details" do
     expect(page).to have_content(t("page_title.#{transfer_type}.edit"))
 
-    expect(page).to have_field("#{transfer_type}[destination]", with: transfer.destination.roda_identifier)
+    expect(page).to have_field("#{transfer_type}[destination_roda_identifier]", with: transfer.destination.roda_identifier)
     expect(page).to have_field("#{transfer_type}[financial_quarter]", with: transfer.financial_quarter, checked: true)
     expect(page).to have_selector("option[value='#{transfer.financial_year}'][selected='selected']")
     expect(page).to have_field("#{transfer_type}[value]", with: transfer.value)
@@ -64,6 +64,6 @@ RSpec.shared_examples "editing a transfer" do
     expect(page).to have_content(t("activerecord.errors.models.#{transfer_type}.attributes.destination.required"))
     expect(page).to have_content(t("activerecord.errors.models.#{transfer_type}.attributes.value.blank"))
 
-    expect(page).to have_field("#{transfer_type}[destination]", with: roda_identifier)
+    expect(page).to have_field("#{transfer_type}[destination_roda_identifier]", with: roda_identifier)
   end
 end

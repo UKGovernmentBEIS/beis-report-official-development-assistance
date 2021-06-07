@@ -59,7 +59,7 @@ RSpec.shared_examples "creating a transfer" do
     click_on "No"
 
     expect(page).to have_content(t("page_title.#{transfer_type}.new"))
-    expect(page).to have_field("#{transfer_type}[destination]", with: transfer.destination.roda_identifier)
+    expect(page).to have_field("#{transfer_type}[destination_roda_identifier]", with: transfer.destination.roda_identifier)
     expect(page).to have_field("#{transfer_type}[financial_quarter]", with: transfer.financial_quarter, checked: true)
     expect(page).to have_selector("option[value='#{transfer.financial_year}'][selected='selected']")
     expect(page).to have_field("#{transfer_type}[value]", with: transfer.value)
@@ -90,7 +90,7 @@ RSpec.shared_examples "creating a transfer" do
     click_on t("form.button.#{transfer_type}.submit")
 
     expect(page).to have_content(t("activerecord.errors.models.#{transfer_type}.attributes.destination.required"))
-    expect(page).to have_field("#{transfer_type}[destination]", with: roda_identifier)
+    expect(page).to have_field("#{transfer_type}[destination_roda_identifier]", with: roda_identifier)
   end
 
   scenario "shows errors when required fields are blank" do
