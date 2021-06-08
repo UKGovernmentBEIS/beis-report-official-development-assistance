@@ -13,7 +13,8 @@ RSpec.feature "BEIS users can edit a transfer" do
     let(:transfer_type) { "incoming_transfer" }
 
     before do
-      visit edit_activity_incoming_transfer_path(target_activity.id, transfer.id)
+      visit organisation_activity_path(target_activity.organisation, target_activity)
+      find("a[href='#{edit_activity_incoming_transfer_path(target_activity.id, transfer.id)}']").click
     end
   end
 end

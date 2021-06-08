@@ -10,7 +10,7 @@
         = t("page_title.incoming_transfer.new")
 
       %p.govuk-body
-        Record a transfer from another activity
+        = t("intro.incoming_transfer")
 
       = form_with model: @transfer, url: activity_incoming_transfers_path(destination_activity) do |f|
         = render partial: "form", locals: { f: f }

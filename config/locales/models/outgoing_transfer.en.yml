@@ -6,6 +6,8 @@ en:
       edit: Edit transfer
       confirm: Are these transfer details correct?
       index: Transfers
+  intro:
+    outgoing_transfer: Transfer funds to another delivery partner activity
   action:
     outgoing_transfer:
       create:
@@ -32,6 +34,7 @@ en:
     button:
       outgoing_transfer:
         submit: Create transfer record
+        create: Record outgoing transfer
   activerecord:
     errors:
       models:

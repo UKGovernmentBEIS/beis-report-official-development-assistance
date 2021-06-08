@@ -3,12 +3,8 @@ RSpec.shared_examples "creating a transfer" do
   let(:transfer_model) { transfer_type == "outgoing_transfer" ? OutgoingTransfer : IncomingTransfer }
 
   before do
-    if transfer_type == "outgoing_transfer"
-      visit organisation_activity_path(target_activity.organisation, target_activity)
-      click_on "Transfer fund"
-    else
-      visit new_activity_incoming_transfer_path(target_activity)
-    end
+    visit organisation_activity_path(target_activity.organisation, target_activity)
+    click_on t("form.button.#{transfer_type}.create")
   end
 
   scenario "successfully creates a transfer" do
@@ -57,13 +53,17 @@ RSpec.shared_examples "creating a transfer" do
       expect(created_transfer.report).to eq(report)
     end
 
-    within "#transfers" do
+    within "##{transfer_type.pluralize}" do
       if transfer_type == "outgoing_transfer"
         expect(page).to have_content(transfer.destination.roda_identifier)
         expect(page).to have_content(transfer.destination.organisation.name)
-        expect(page).to have_content(quarter.to_s)
-        expect(page).to have_content("£1,234.00")
+      else
+        expect(page).to have_content(transfer.source.roda_identifier)
+        expect(page).to have_content(transfer.source.organisation.name)
       end
+
+      expect(page).to have_content(quarter.to_s)
+      expect(page).to have_content("£1,234.00")
     end
   end
 
