@@ -182,4 +182,88 @@ RSpec.describe FieldInference do
       end
     end
   end
+
+  describe "when two fields restrict another to a single value" do
+    before do
+      activity.aid_type = nil
+      activity.channel_of_delivery_code = nil
+      activity.collaboration_type = "3"
+
+      subject.on(:aid_type, "D02").restrict(:collaboration_type, ["1", "2"])
+      subject.on(:channel_of_delivery_code, "40000").restrict(:collaboration_type, ["2", "3"])
+    end
+
+    describe "when a single matching value is assigned" do
+      before do
+        subject.assign(activity, :aid_type, "D02")
+      end
+
+      it "sets the value of the source field" do
+        expect(activity.aid_type).to eq("D02")
+      end
+
+      it "does not change the dependent field" do
+        expect(activity.collaboration_type).to eq("3")
+      end
+
+      it "allows edits to the dependent field" do
+        expect(subject).to be_editable(activity, :collaboration_type)
+      end
+
+      it "restricts the allowed values for the dependent field" do
+        expect(subject.allowed_values(activity, :collaboration_type)).to eq ["1", "2"]
+      end
+    end
+
+    describe "when both matching values are assigned" do
+      before do
+        subject.assign(activity, :aid_type, "D02")
+        subject.assign(activity, :channel_of_delivery_code, "40000")
+      end
+
+      it "sets the value of the source fields" do
+        expect(activity.aid_type).to eq("D02")
+        expect(activity.channel_of_delivery_code).to eq("40000")
+      end
+
+      it "fixes the value of the dependent field" do
+        expect(activity.collaboration_type).to eq("2")
+      end
+
+      it "does not allow edits to the dependent field" do
+        expect(subject).not_to be_editable(activity, :collaboration_type)
+      end
+
+      it "restricts the allowed values for the dependent field" do
+        expect(subject.allowed_values(activity, :collaboration_type)).to eq ["2"]
+      end
+    end
+  end
+
+  describe "when two fields restrict another to non-overlapping sets" do
+    before do
+      activity.aid_type = nil
+      activity.channel_of_delivery_code = nil
+      activity.collaboration_type = nil
+
+      subject.on(:aid_type, "D02").restrict(:collaboration_type, ["1", "2"])
+      subject.on(:channel_of_delivery_code, "51000").restrict(:collaboration_type, ["3"])
+    end
+
+    it "allows one matching value to be assigned" do
+      subject.assign(activity, :channel_of_delivery_code, "51000")
+      expect(activity.collaboration_type).to eq("3")
+    end
+
+    it "blocks two matching fields from being assigned" do
+      subject.assign(activity, :aid_type, "D02")
+
+      expect { subject.assign(activity, :channel_of_delivery_code, "51000") }.to raise_error(
+        FieldInference::Conflict,
+        'Cannot set `channel_of_delivery_code` to "51000": ' \
+        "would change the value of `collaboration_type` which is " \
+        'restricted to ["1", "2"] because `aid_type` is "D02"'
+      )
+    end
+  end
 end

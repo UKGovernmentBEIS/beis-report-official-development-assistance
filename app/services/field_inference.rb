@@ -82,8 +82,13 @@ class FieldInference
       check_for_conflicts(attr_name, value)
       @model[attr_name] = value
 
-      @parent.rules_for_source(attr_name, value).each do |rule|
-        assign(rule.target.name, rule.target.value) if rule.fix?
+      targets = @parent.rules_for_source(attr_name, value)
+        .map { |rule| rule.target.name }
+        .uniq
+
+      targets.each do |attr_name|
+        allowed = @parent.allowed_values(@model, attr_name)
+        assign(attr_name, allowed.first) if allowed.size <= 1
       end
     end
 
@@ -91,10 +96,13 @@ class FieldInference
       rules = @parent.rules_for_target(@model, attr_name)
 
       rules.each do |rule|
-        next if rule.target.value == value
+        next if rule.allowed_values.include?(value)
+
+        fixed = rule.fix? ? "fixed" : "restricted"
+        value = rule.fix? ? rule.target.value : rule.target.allowed
 
         raise Conflict, "would change the value of `#{rule.target.name}` " \
-          "which is fixed to #{rule.target.value.inspect} because " \
+          "which is #{fixed} to #{value.inspect} because " \
           "`#{rule.source.name}` is #{rule.source.value.inspect}"
       end
     end
