@@ -45,6 +45,33 @@ RSpec.describe FieldInference do
     end
   end
 
+  describe "when two fields fix the value of another" do
+    before do
+      activity.aid_type = nil
+      activity.collaboration_type = nil
+      activity.fstc_applies = nil
+
+      subject.on(:aid_type, "B01").fix(:fstc_applies, false)
+      subject.on(:collaboration_type, "2").fix(:fstc_applies, true)
+    end
+
+    it "allows one matching value to be assigned" do
+      subject.assign(activity, :aid_type, "B01")
+      expect(activity.fstc_applies).to eq(false)
+    end
+
+    it "blocks two matching fields from setting different values of the dependent" do
+      subject.assign(activity, :aid_type, "B01")
+
+      expect { subject.assign(activity, :collaboration_type, "2") }.to raise_error(
+        FieldInference::Conflict,
+        'Cannot set `collaboration_type` to "2": ' \
+        "would change the value of `fstc_applies` which is fixed to false " \
+        'because `aid_type` is "B01"'
+      )
+    end
+  end
+
   describe "when one field change cascades into another" do
     before do
       activity.aid_type = "C01"
