@@ -1,0 +1,18 @@
+%table.govuk-table
+  %caption.govuk-table__caption= "List of activities successfully #{action} from your CSV file"
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header{scope: "col"} RODA Identifier
+      %th.govuk-table__header{scope: "col"} Title
+      %th.govuk-table__header{scope: "col"} State
+      %th.govuk-table__header{scope: "col"} Link
+  %tbody.govuk-table__body
+    - activities.each do |activity|
+      - activity_presenter = ActivityPresenter.new(activity)
+      %tr.govuk-table__row
+        %td.govuk-table__cell= activity_presenter.roda_identifier
+        %td.govuk-table__cell= activity_presenter.title
+        %td.govuk-table__cell= activity_presenter.programme_status
+        %td.govuk-table__cell
+          = link_to "View", organisation_activity_path(activity.organisation, activity)
+

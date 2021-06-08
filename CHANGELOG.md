@@ -685,6 +685,7 @@
 - Users can no longer update the delivery partner identifier
 - Rename `Transfer` to `OutgoingTransfer`
 - Infer the collaboration type when aid type is B02 or B03
+- Show the user the activities that they've just uploaded
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-54...HEAD
 [release-54]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-53...release-54

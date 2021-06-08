@@ -81,7 +81,15 @@ RSpec.feature "users can upload activities" do
 
     expect(Activity.count - old_count).to eq(2)
     expect(page).to have_text(t("action.activity.upload.success"))
-    expect(page).not_to have_xpath("//tbody/tr")
+    expect(page).to have_text("List of activities successfully created")
+
+    within "//tbody/tr[1]" do
+      expect(page).to have_xpath("td[2]", text: "Programme - Award (round 5)")
+    end
+
+    within "//tbody/tr[2]" do
+      expect(page).to have_xpath("td[2]", text: "Isolation and redesign of single-celled examples")
+    end
   end
 
   scenario "uploading a set of activities with a BOM at the start" do
@@ -90,13 +98,12 @@ RSpec.feature "users can upload activities" do
       click_button t("action.activity.upload.button")
 
       expect(page).to have_text(t("action.activity.upload.success"))
-      expect(page).not_to have_xpath("//tbody/tr")
 
-      new_activites = Activity.where(created_at: DateTime.now)
+      new_activities = Activity.where(created_at: DateTime.now)
 
-      expect(new_activites.count).to eq(2)
+      expect(new_activities.count).to eq(2)
 
-      expect(new_activites.pluck(:transparency_identifier)).to match_array(["1234", "1235"])
+      expect(new_activities.pluck(:transparency_identifier)).to match_array(["1234", "1235"])
     end
   end
 
@@ -168,8 +175,13 @@ RSpec.feature "users can upload activities" do
     CSV
 
     expect(page).to have_text(t("action.activity.upload.success"))
+    expect(page).to have_text("List of activities successfully updated")
 
     expect(activity_to_update.reload.title).to eq("New Title")
+
+    within "//tbody/tr[1]" do
+      expect(page).to have_xpath("td[2]", text: "New Title")
+    end
   end
 
   scenario "attempting to change the delivery partner identifier of an existing activity" do
