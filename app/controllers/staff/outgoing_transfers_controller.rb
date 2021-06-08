@@ -35,4 +35,8 @@ class Staff::OutgoingTransfersController < Staff::BaseController
         :destination_roda_identifier,
       )
   end
+
+  def target_activity
+    source_activity
+  end
 end

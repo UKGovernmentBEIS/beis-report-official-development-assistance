@@ -17,8 +17,8 @@ module Transfers
 
   def create
     @transfer = transfer_model.new
-    if source_activity.project? || source_activity.third_party_project?
-      @transfer.report = Report.editable_for_activity(source_activity)
+    if target_activity.project? || target_activity.third_party_project?
+      @transfer.report = Report.editable_for_activity(target_activity)
     end
     @transfer.assign_attributes(transfer_params)
 
@@ -52,7 +52,7 @@ module Transfers
     else
       @transfer.save
       flash[:notice] = success_message
-      redirect_to organisation_activity_path(source_activity.organisation, source_activity)
+      redirect_to organisation_activity_path(target_activity.organisation, target_activity)
     end
   end
 
@@ -71,9 +71,9 @@ module Transfers
 
   def set_confirmation_url
     @confirmation_url = if action_name == "create"
-      send("activity_#{transfer_type.to_s.pluralize}_path", @source_activity)
+      send("activity_#{transfer_type.to_s.pluralize}_path", target_activity)
     else
-      send("activity_#{transfer_type}_path", @transfer.source, @transfer)
+      send("activity_#{transfer_type}_path", target_activity, @transfer)
     end
   end
 
