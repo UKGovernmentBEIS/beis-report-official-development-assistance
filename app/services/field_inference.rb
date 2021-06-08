@@ -1,11 +1,19 @@
 class FieldInference
   Conflict = Class.new(StandardError)
 
-  Field = Struct.new(:name, :value)
+  Field = Struct.new(:name, :value, :allowed)
 
   Rule = Struct.new(:source, :target) {
-    def forbit_edit?(model, attr_name)
+    def match?(model)
       model[source.name] == source.value
+    end
+
+    def allowed_values
+      target.allowed || [target.value]
+    end
+
+    def fix?
+      target.allowed.nil?
     end
   }
 
@@ -23,8 +31,19 @@ class FieldInference
     raise Conflict, "Cannot set `#{attr_name}` to #{value.inspect}: #{conflict.message}"
   end
 
+  def allowed_values(model, attr_name)
+    allowed = rules_for_target(model, attr_name.to_s).map(&:allowed_values)
+
+    if allowed.empty?
+      nil
+    else
+      allowed.compact.reduce(:&)
+    end
+  end
+
   def editable?(model, attr_name)
-    rules_for_target(attr_name).none? { |rule| rule.forbit_edit?(model, attr_name) }
+    allowed = allowed_values(model, attr_name)
+    allowed.nil? || allowed.size > 1
   end
 
   def rules_for_source(attr_name, value)
@@ -32,8 +51,8 @@ class FieldInference
     @rules.select { |rule| rule.source == field }
   end
 
-  def rules_for_target(attr_name)
-    @rules.select { |rule| rule.target.name == attr_name.to_s }
+  def rules_for_target(model, attr_name)
+    @rules.select { |rule| rule.match?(model) && rule.target.name == attr_name }
   end
 
   class Selector
@@ -44,6 +63,11 @@ class FieldInference
 
     def fix(attr_name, value)
       target = Field.new(attr_name.to_s, value)
+      @rules << Rule.new(@source, target)
+    end
+
+    def restrict(attr_name, values)
+      target = Field.new(attr_name.to_s, nil, values)
       @rules << Rule.new(@source, target)
     end
   end
@@ -57,14 +81,17 @@ class FieldInference
     def assign(attr_name, value)
       check_for_conflicts(attr_name, value)
       @model[attr_name] = value
-      @parent.rules_for_source(attr_name, value).each { |rule| assign(*rule.target) }
+
+      @parent.rules_for_source(attr_name, value).each do |rule|
+        assign(rule.target.name, rule.target.value) if rule.fix?
+      end
     end
 
     def check_for_conflicts(attr_name, value)
-      rules = @parent.rules_for_target(attr_name).reject { |r| r.target.value == value }
+      rules = @parent.rules_for_target(@model, attr_name)
 
       rules.each do |rule|
-        next unless @model[rule.source.name] == rule.source.value
+        next if rule.target.value == value
 
         raise Conflict, "would change the value of `#{rule.target.name}` " \
           "which is fixed to #{rule.target.value.inspect} because " \

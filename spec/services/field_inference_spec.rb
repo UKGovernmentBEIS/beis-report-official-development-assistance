@@ -131,4 +131,55 @@ RSpec.describe FieldInference do
       end
     end
   end
+
+  describe "when one field restricts the value of another" do
+    before do
+      activity.collaboration_type = "3"
+      subject.on(:aid_type, "B02").restrict(:collaboration_type, ["1", "2"])
+    end
+
+    describe "when a matching value is assigned" do
+      before do
+        subject.assign(activity, :aid_type, "B02")
+      end
+
+      it "sets the value of the source field" do
+        expect(activity.aid_type).to eq("B02")
+      end
+
+      it "does not change the dependent field" do
+        expect(activity.collaboration_type).to eq("3")
+      end
+
+      it "allows edits to the dependent field" do
+        expect(subject).to be_editable(activity, :collaboration_type)
+      end
+
+      it "restricts the allowed values for the dependent field" do
+        expect(subject.allowed_values(activity, :collaboration_type)).to eq ["1", "2"]
+      end
+    end
+
+    describe "when a non-matching value is assigned" do
+      before do
+        subject.assign(activity, :aid_type, "C01")
+      end
+
+      it "sets the value of the source field" do
+        expect(activity.aid_type).to eq("C01")
+      end
+
+      it "does not change the dependent field" do
+        expect(activity.collaboration_type).to eq("3")
+      end
+
+      it "allows edits to the dependent field" do
+        expect(subject).to be_editable(activity, :collaboration_type)
+      end
+
+      it "does not restrict the allowed values for the dependent field" do
+        expect(subject.allowed_values(activity, :collaboration_type)).to be_nil
+      end
+    end
+  end
 end
