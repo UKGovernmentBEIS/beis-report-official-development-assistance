@@ -2,18 +2,18 @@
 en:
   page_title:
     outgoing_transfer:
-      new: Transfer
-      edit: Edit transfer
+      new: Outgoing Transfer
+      edit: Edit outgoing transfer
       confirm: Are these transfer details correct?
-      index: Transfers
+      index: Outgoing Transfers
   intro:
     outgoing_transfer: Transfer funds to another delivery partner activity
   action:
     outgoing_transfer:
       create:
-        success: Transfer successfully recorded
+        success: Outgoing transfer successfully recorded
       update:
-        success: Transfer successfully updated
+        success: Outgoing transfer successfully updated
   fields:
     outgoing_transfer:
       destination: Receiving activity
