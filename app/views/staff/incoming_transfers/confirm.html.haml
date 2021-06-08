@@ -1,0 +1,42 @@
+=content_for :page_title_prefix, t("page_title.incoming_transfer.confirm")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        = t("page_title.incoming_transfer.confirm")
+
+      %table.govuk-table
+        %tbody.govuk-table__body
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "row"}
+              = t("fields.incoming_transfer.source")
+            %td.govuk-table__cell
+              = @transfer_presenter.source.title
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "row"}
+              = t("fields.incoming_transfer.source_organisation")
+            %td.govuk-table__cell
+              = @transfer_presenter.source.organisation.name
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "row"}
+              = t("fields.incoming_transfer.financial_quarter_and_year")
+            %td.govuk-table__cell
+              = @transfer_presenter.financial_quarter_and_year
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "row"}
+              = t("fields.incoming_transfer.transfer_amount")
+            %td.govuk-table__cell
+              = @transfer_presenter.value
+
+      = form_with model: @transfer, url: @confirmation_url do |f|
+        = f.hidden_field :confirm, value: 1
+        = f.hidden_field :destination_id
+        = f.hidden_field :source_roda_identifier, value: @transfer.source_roda_identifier
+        = f.hidden_field :financial_quarter
+        = f.hidden_field :financial_year
+        = f.hidden_field :value
+
+        = f.govuk_submit "Yes"
+        = f.govuk_submit "No", secondary: true
+

@@ -478,16 +478,22 @@ module FormHelpers
     I18n.l(Date.parse("#{year}-#{month}-#{day}"))
   end
 
-  def fill_in_transfer_form(type:, destination: create(:project_activity), financial_quarter: FinancialQuarter.for_date(Date.today).to_i, financial_year: FinancialYear.for_date(Date.today).to_i, value: 1234)
+  def fill_in_transfer_form(type:, destination: create(:project_activity), source: create(:project_activity), financial_quarter: FinancialQuarter.for_date(Date.today).to_i, financial_year: FinancialYear.for_date(Date.today).to_i, value: 1234)
     transfer = build(
       type,
       destination: destination,
+      source: source,
       financial_quarter: financial_quarter,
       financial_year: financial_year,
       value: value
     )
 
-    fill_in "#{type}[destination_roda_identifier]", with: transfer.destination.roda_identifier
+    if type == "outgoing_transfer"
+      fill_in "outgoing_transfer[destination_roda_identifier]", with: transfer.destination.roda_identifier
+    else
+      fill_in "incoming_transfer[source_roda_identifier]", with: transfer.source.roda_identifier
+    end
+
     choose transfer.financial_quarter.to_s, name: "#{type}[financial_quarter]"
     select transfer.financial_year, from: "#{type}[financial_year]"
     fill_in "#{type}[value]", with: transfer.value

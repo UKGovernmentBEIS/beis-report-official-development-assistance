@@ -7,6 +7,8 @@ RSpec.feature "Delivery partner users can edit a transfer" do
     let(:destination_activity) { create(:project_activity) }
     let(:report) { Report.for_activity(source_activity).create(state: "active") }
 
+    let(:target_activity) { source_activity }
+
     let!(:transfer) { create(:outgoing_transfer, report: report, source: source_activity, destination: destination_activity) }
 
     let(:transfer_type) { "outgoing_transfer" }
