@@ -49,8 +49,8 @@
           - else
             = render partial: "staff/shared/activities/budgets",
               locals: { activity: @activity, budget_presenters: @budget_presenters }
-            = render partial: "staff/shared/activities/planned_disbursements",
-              locals: { activity: @activity, planned_disbursements: @planned_disbursement_presenters }
+            = render partial: "staff/shared/activities/forecasts",
+              locals: { activity: @activity, forecasts: @forecast_presenters }
             = render partial: "staff/shared/activities/transactions",
               locals: { activity: @activity, transaction_presenters: @transaction_presenters }
 

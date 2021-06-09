@@ -279,31 +279,31 @@ RSpec.feature "Users can view an activity as XML" do
         end
       end
 
-      context "when the activity has planned disbursements" do
+      context "when the activity has forecasts" do
         let(:activity) { create(:project_activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
         let(:reporting_cycle) { ReportingCycle.new(activity, 1, 2019) }
 
-        it "only includes planned disbursements which belong to the activity" do
+        it "only includes forecasts (as planned-disbursement nodes) which belong to the activity" do
           reporting_cycle.tick
-          PlannedDisbursementHistory.new(activity, financial_quarter: 1, financial_year: 2020).set_value(10)
-          PlannedDisbursementHistory.new(create(:programme_activity), financial_quarter: 1, financial_year: 2020).set_value(10)
+          ForecastHistory.new(activity, financial_quarter: 1, financial_year: 2020).set_value(10)
+          ForecastHistory.new(create(:programme_activity), financial_quarter: 1, financial_year: 2020).set_value(10)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
           expect(xml.xpath("//iati-activity/planned-disbursement").count).to eq(1)
         end
 
-        it "only includes the latest values for planned disbursements" do
-          q2_planned_disbursement = PlannedDisbursementHistory.new(activity, financial_quarter: 2, financial_year: 2020)
-          q3_planned_disbursement = PlannedDisbursementHistory.new(activity, financial_quarter: 3, financial_year: 2020)
+        it "only includes the latest values for forecasts" do
+          q2_forecast = ForecastHistory.new(activity, financial_quarter: 2, financial_year: 2020)
+          q3_forecast = ForecastHistory.new(activity, financial_quarter: 3, financial_year: 2020)
 
           reporting_cycle.tick
-          q2_planned_disbursement.set_value(10)
-          q3_planned_disbursement.set_value(20)
+          q2_forecast.set_value(10)
+          q3_forecast.set_value(20)
 
           reporting_cycle.tick
-          q2_planned_disbursement.set_value(30)
+          q2_forecast.set_value(30)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
@@ -314,21 +314,21 @@ RSpec.feature "Users can view an activity as XML" do
         it "has the period end date when one is supplied" do
           reporting_cycle.tick
           quarter = FinancialQuarter.for_date(Date.today)
-          PlannedDisbursementHistory.new(activity, **quarter).set_value(10)
-          planned_disbursement = PlannedDisbursementOverview.new(activity).latest_values.first
-          planned_disbursement_presenter = PlannedDisbursementXmlPresenter.new(planned_disbursement)
+          ForecastHistory.new(activity, **quarter).set_value(10)
+          forecast = ForecastOverview.new(activity).latest_values.first
+          forecast_presenter = ForecastXmlPresenter.new(forecast)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
-          expect(xml.xpath("//iati-activity/planned-disbursement/period-start/@iso-date").text).to eq planned_disbursement_presenter.period_start_date
-          expect(xml.xpath("//iati-activity/planned-disbursement/period-end/@iso-date").text).to eq planned_disbursement_presenter.period_end_date
+          expect(xml.xpath("//iati-activity/planned-disbursement/period-start/@iso-date").text).to eq forecast_presenter.period_start_date
+          expect(xml.xpath("//iati-activity/planned-disbursement/period-end/@iso-date").text).to eq forecast_presenter.period_end_date
         end
 
-        context "when the planned disbursment receiving organisation type is 0" do
+        context "when the forecast receiving organisation type is 0" do
           it "does not output attributes on the receiving organisation element" do
             reporting_cycle.tick
-            PlannedDisbursementHistory.new(activity, **FinancialQuarter.for_date(Date.today)).set_value(10)
-            PlannedDisbursement.unscoped.update_all(receiving_organisation_type: "0")
+            ForecastHistory.new(activity, **FinancialQuarter.for_date(Date.today)).set_value(10)
+            Forecast.unscoped.update_all(receiving_organisation_type: "0")
 
             visit organisation_activity_path(organisation, activity, format: :xml)
 

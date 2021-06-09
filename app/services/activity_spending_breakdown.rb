@@ -94,7 +94,7 @@ class ActivitySpendingBreakdown
   end
 
   def upcoming_quarters_forecasts
-    forecasts = PlannedDisbursementOverview.new(@activity).snapshot(@report).all_quarters
+    forecasts = ForecastOverview.new(@activity).snapshot(@report).all_quarters
 
     upcoming_quarters.map { |quarter|
       ["#{quarter} forecast", format_amount(forecasts.value_for(**quarter))]

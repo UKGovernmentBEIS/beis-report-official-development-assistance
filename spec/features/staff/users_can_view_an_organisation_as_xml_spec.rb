@@ -175,7 +175,7 @@ RSpec.feature "Users can view an organisation as XML" do
 
       context "when downloading programme level activities" do
         def forecast(activity, year, quarter)
-          PlannedDisbursementHistory.new(activity, financial_year: year, financial_quarter: quarter)
+          ForecastHistory.new(activity, financial_year: year, financial_quarter: quarter)
         end
 
         it "sums up the total forecasts of all the programmes and their child activities by quarter" do

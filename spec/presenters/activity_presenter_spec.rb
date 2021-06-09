@@ -637,10 +637,10 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#forecasted_total_for_report_financial_quarter" do
-    it "returns the planned disbursement total per report as a formatted number" do
+    it "returns the forecast total per report as a formatted number" do
       project = create(:project_activity)
       reporting_cycle = ReportingCycle.new(project, 3, 2020)
-      forecast = PlannedDisbursementHistory.new(project, financial_quarter: 4, financial_year: 2020)
+      forecast = ForecastHistory.new(project, financial_quarter: 4, financial_year: 2020)
 
       reporting_cycle.tick
       forecast.set_value(200.20)
@@ -657,7 +657,7 @@ RSpec.describe ActivityPresenter do
     it "returns the variance per report as a formatted number" do
       project = create(:project_activity)
       reporting_cycle = ReportingCycle.new(project, 3, 2019)
-      forecast = PlannedDisbursementHistory.new(project, financial_quarter: 4, financial_year: 2019)
+      forecast = ForecastHistory.new(project, financial_quarter: 4, financial_year: 2019)
 
       reporting_cycle.tick
       forecast.set_value(1500)
@@ -700,7 +700,7 @@ RSpec.describe ActivityPresenter do
       activity = build(:programme_activity)
 
       ReportingCycle.new(activity, 3, 2019).tick
-      PlannedDisbursementHistory.new(activity, financial_quarter: 4, financial_year: 2019).set_value(50)
+      ForecastHistory.new(activity, financial_quarter: 4, financial_year: 2019).set_value(50)
 
       expect(described_class.new(activity).total_forecasted).to eq("£50.00")
     end

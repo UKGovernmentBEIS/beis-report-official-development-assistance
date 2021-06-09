@@ -20,7 +20,7 @@ Check whether the activity has any associated entities that would be deleted alo
 activity.children.count
 Budget.where(parent_activity_id: activity.id).count
 Transaction.where(parent_activity_id: activity.id).count
-PlannedDisbursement.where(parent_activity_id: activity.id).count
+Forecast.where(parent_activity_id: activity.id).count
 
 Comment.where(activity_id: activity.id).count
 ImplementingOrganisation.where(activity_id: activity.id).count

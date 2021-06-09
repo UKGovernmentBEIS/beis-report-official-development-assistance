@@ -1378,8 +1378,8 @@ RSpec.describe Activity, type: :model do
   describe "#forecasted_total_for_report_financial_quarter" do
     let(:project) { create(:project_activity) }
 
-    it "returns the activity's planned disbursement value for a report's financial quarter" do
-      forecast = PlannedDisbursementHistory.new(project, financial_quarter: 3, financial_year: 2020)
+    it "returns the activity's forecast value for a report's financial quarter" do
+      forecast = ForecastHistory.new(project, financial_quarter: 3, financial_year: 2020)
       reporting_cycle = ReportingCycle.new(project, 2, 2020)
 
       reporting_cycle.tick
@@ -1391,9 +1391,9 @@ RSpec.describe Activity, type: :model do
       expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(1000.00)
     end
 
-    it "does not include totals for any planned disbursements outside the report's date range" do
-      q3_forecast = PlannedDisbursementHistory.new(project, financial_quarter: 3, financial_year: 2020)
-      q4_forecast = PlannedDisbursementHistory.new(project, financial_quarter: 4, financial_year: 2020)
+    it "does not include totals for any forecasts outside the report's date range" do
+      q3_forecast = ForecastHistory.new(project, financial_quarter: 3, financial_year: 2020)
+      q4_forecast = ForecastHistory.new(project, financial_quarter: 4, financial_year: 2020)
       reporting_cycle = ReportingCycle.new(project, 2, 2020)
 
       reporting_cycle.tick
@@ -1406,8 +1406,8 @@ RSpec.describe Activity, type: :model do
       expect(project.forecasted_total_for_report_financial_quarter(report: report)).to eq(2000.00)
     end
 
-    it "only counts the latest revision value for a planned disbursement" do
-      forecast = PlannedDisbursementHistory.new(project, financial_quarter: 3, financial_year: 2020)
+    it "only counts the latest revision value for a forecast" do
+      forecast = ForecastHistory.new(project, financial_quarter: 3, financial_year: 2020)
       reporting_cycle = ReportingCycle.new(project, 1, 2020)
 
       reporting_cycle.tick
@@ -1433,7 +1433,7 @@ RSpec.describe Activity, type: :model do
 
     let(:project) { create(:project_activity) }
     let(:reporting_cycle) { ReportingCycle.new(project, 2, 2020) }
-    let(:forecast) { PlannedDisbursementHistory.new(project, financial_quarter: 3, financial_year: 2020) }
+    let(:forecast) { ForecastHistory.new(project, financial_quarter: 3, financial_year: 2020) }
 
     it "returns the variance between #actual_total_for_report_financial_quarter and #forecasted_total_for_report_financial_quarter" do
       reporting_cycle.tick
@@ -1754,7 +1754,7 @@ RSpec.describe Activity, type: :model do
         ]
 
         forecasts.each do |activity, quarter, value|
-          PlannedDisbursementHistory.new(activity, **quarter).set_value(value)
+          ForecastHistory.new(activity, **quarter).set_value(value)
         end
       end
 
@@ -1778,7 +1778,7 @@ RSpec.describe Activity, type: :model do
         let(:programme) { programme2 }
 
         before do
-          PlannedDisbursementHistory.new(programme, **quarter).set_value(20480)
+          ForecastHistory.new(programme, **quarter).set_value(20480)
         end
 
         it "only includes the latest version's value in the total" do
@@ -1791,7 +1791,7 @@ RSpec.describe Activity, type: :model do
         let(:old_report) { create(:report, organisation: project.organisation, fund: project.associated_fund, state: :approved, **quarter.pred.pred) }
 
         before do
-          PlannedDisbursementHistory.new(project, report: old_report, **quarter).set_value(70)
+          ForecastHistory.new(project, report: old_report, **quarter).set_value(70)
         end
 
         it "excludes the old version from the total" do

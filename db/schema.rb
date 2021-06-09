@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_02_125359) do
+ActiveRecord::Schema.define(version: 2021_06_03_141843) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -149,6 +149,31 @@ ActiveRecord::Schema.define(version: 2021_06_02_125359) do
     t.index ["organisation_id"], name: "index_external_incomes_on_organisation_id"
   end
 
+  create_table "forecasts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "forecast_type"
+    t.date "period_start_date"
+    t.date "period_end_date"
+    t.decimal "value", precision: 13, scale: 2
+    t.string "currency"
+    t.string "providing_organisation_name"
+    t.string "providing_organisation_type"
+    t.string "providing_organisation_reference"
+    t.string "receiving_organisation_name"
+    t.string "receiving_organisation_type"
+    t.string "receiving_organisation_reference"
+    t.boolean "ingested", default: false
+    t.uuid "parent_activity_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "report_id"
+    t.integer "financial_quarter", null: false
+    t.integer "financial_year", null: false
+    t.index ["parent_activity_id", "financial_year", "financial_quarter", "forecast_type"], name: "unique_type_per_unversioned_item", unique: true, where: "(report_id IS NULL)"
+    t.index ["parent_activity_id", "financial_year", "financial_quarter", "report_id"], name: "unique_report_per_versioned_item", unique: true, where: "(report_id IS NOT NULL)"
+    t.index ["parent_activity_id"], name: "index_forecasts_on_parent_activity_id"
+    t.index ["report_id"], name: "index_forecasts_on_report_id"
+  end
+
   create_table "implementing_organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "reference"
@@ -199,31 +224,6 @@ ActiveRecord::Schema.define(version: 2021_06_02_125359) do
     t.index ["destination_id"], name: "index_outgoing_transfers_on_destination_id"
     t.index ["report_id"], name: "index_outgoing_transfers_on_report_id"
     t.index ["source_id"], name: "index_outgoing_transfers_on_source_id"
-  end
-
-  create_table "planned_disbursements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "planned_disbursement_type"
-    t.date "period_start_date"
-    t.date "period_end_date"
-    t.decimal "value", precision: 13, scale: 2
-    t.string "currency"
-    t.string "providing_organisation_name"
-    t.string "providing_organisation_type"
-    t.string "providing_organisation_reference"
-    t.string "receiving_organisation_name"
-    t.string "receiving_organisation_type"
-    t.string "receiving_organisation_reference"
-    t.boolean "ingested", default: false
-    t.uuid "parent_activity_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.uuid "report_id"
-    t.integer "financial_quarter", null: false
-    t.integer "financial_year", null: false
-    t.index ["parent_activity_id", "financial_year", "financial_quarter", "planned_disbursement_type"], name: "unique_type_per_unversioned_item", unique: true, where: "(report_id IS NULL)"
-    t.index ["parent_activity_id", "financial_year", "financial_quarter", "report_id"], name: "unique_report_per_versioned_item", unique: true, where: "(report_id IS NOT NULL)"
-    t.index ["parent_activity_id"], name: "index_planned_disbursements_on_parent_activity_id"
-    t.index ["report_id"], name: "index_planned_disbursements_on_report_id"
   end
 
   create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -286,7 +286,7 @@ ActiveRecord::Schema.define(version: 2021_06_02_125359) do
   add_foreign_key "budgets", "organisations", column: "providing_organisation_id"
   add_foreign_key "outgoing_transfers", "activities", column: "destination_id", on_delete: :restrict
   add_foreign_key "outgoing_transfers", "activities", column: "source_id", on_delete: :restrict
-  add_foreign_key "planned_disbursements", "activities", column: "parent_activity_id", on_delete: :cascade
+  add_foreign_key "forecasts", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "transactions", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "users", "organisations", on_delete: :restrict
 end
