@@ -78,25 +78,6 @@ module CodelistHelper
     )
   end
 
-  def collaboration_type_from_aid_type(aid_type_code)
-    item = aid_types.find_item_by_code(aid_type_code) || {}
-    item["collaboration_type"]
-  end
-
-  def can_infer_collaboration_type?(aid_type_code)
-    collaboration_type_from_aid_type(aid_type_code).present?
-  end
-
-  def fstc_from_aid_type(aid_type_code)
-    item = aid_types.find_item_by_code(aid_type_code) || {}
-
-    item["ftsc_applies"]
-  end
-
-  def can_infer_fstc?(aid_type_code)
-    !fstc_from_aid_type(aid_type_code).nil?
-  end
-
   def fstc_applies_radio_options
     [
       OpenStruct.new(value: 0, label: I18n.t("form.label.activity.fstc_applies.false")),

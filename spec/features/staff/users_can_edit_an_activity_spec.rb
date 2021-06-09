@@ -622,11 +622,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on t("tabs.activity.details")
 
   unless activity.fund?
-    if can_infer_collaboration_type?(activity.aid_type)
-      within(".collaboration_type") do
-        expect(page).to_not have_link(t("default.link.edit"))
-      end
-    else
+    if Activity::Inference.service.editable?(activity, :collaboration_type)
       within(".collaboration_type") do
         click_on(t("default.link.edit"))
         expect(page).to have_current_path(
@@ -635,14 +631,14 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       end
       click_on(t("default.link.back"))
       click_on t("tabs.activity.details")
+    else
+      within(".collaboration_type") do
+        expect(page).to_not have_link(t("default.link.edit"))
+      end
     end
   end
 
-  if can_infer_fstc?(activity.aid_type)
-    within(".fstc_applies") do
-      expect(page).to_not have_link(t("default.link.edit"))
-    end
-  else
+  if Activity::Inference.service.editable?(activity, :fstc_applies)
     within(".fstc_applies") do
       click_on(t("default.link.edit"))
       expect(page).to have_current_path(
@@ -651,6 +647,10 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     end
     click_on(t("default.link.back"))
     click_on t("tabs.activity.details")
+  else
+    within(".fstc_applies") do
+      expect(page).to_not have_link(t("default.link.edit"))
+    end
   end
 
   within(".covid19_related") do

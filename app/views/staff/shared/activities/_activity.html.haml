@@ -282,7 +282,7 @@
       %dd.govuk-summary-list__value
         = activity_presenter.collaboration_type
       %dd.govuk-summary-list__actions
-        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :collaboration_type) && !can_infer_collaboration_type?(@activity.aid_type)
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :collaboration_type) && Activity::Inference.service.editable?(@activity, :collaboration_type)
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:collaboration_type)}"), activity_step_path(activity_presenter, :collaboration_type), t("summary.label.activity.collaboration_type"))
 
   - unless activity_presenter.fund?
@@ -321,7 +321,7 @@
       - unless activity_presenter.fstc_applies.to_s.blank?
         = t("summary.label.activity.fstc_applies.#{activity_presenter.fstc_applies}")
     %dd.govuk-summary-list__actions
-      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :fstc_applies) && !can_infer_fstc?(@activity.aid_type)
+      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :fstc_applies) && Activity::Inference.service.editable?(@activity, :fstc_applies)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:fstc_applies)}"), activity_step_path(activity_presenter, :fstc_applies), t("summary.label.activity.fstc_applies"))
 
   - if activity_presenter.project? || activity_presenter.third_party_project?
