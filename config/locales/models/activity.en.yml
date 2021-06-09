@@ -21,6 +21,7 @@ en:
       financials: Activity %{name} — Financials
       children: Activity %{name} — Child activities
       comments: Activity %{name} — Comments
+      transfers: Activity %{name} — Transfers
   form:
     button:
       activity:
@@ -352,6 +353,7 @@ en:
       other_funding: Other funding
       children: Child activities
       comments: Comments
+      transfers: Transfers
     activities:
       current: Current
       historic: Historic
@@ -366,6 +368,7 @@ en:
       children: Child activities
       upload: Upload bulk activity data
       other_funding: Other funding
+      transfers: Transfers
     activities:
       current: Current activities
       historic: Historic activities

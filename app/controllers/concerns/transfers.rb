@@ -52,7 +52,7 @@ module Transfers
     else
       @transfer.save
       flash[:notice] = success_message
-      redirect_to organisation_activity_path(target_activity.organisation, target_activity)
+      redirect_to organisation_activity_transfers_path(target_activity.organisation, target_activity)
     end
   end
 

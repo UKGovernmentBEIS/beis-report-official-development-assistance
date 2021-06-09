@@ -16,7 +16,5 @@ class Staff::ActivityFinancialsController < Staff::BaseController
     @budget_presenters = @budgets.includes(:parent_activity, :providing_organisation).map { |budget| BudgetPresenter.new(budget) }
     @forecast_presenters = @forecasts.map { |forecast| ForecastPresenter.new(forecast) }
     @implementing_organisation_presenters = activity.implementing_organisations.map { |implementing_organisation| ImplementingOrganisationPresenter.new(implementing_organisation) }
-    @outgoing_transfers = policy_scope(OutgoingTransfer.where(source: activity)).map { |transfer| TransferPresenter.new(transfer) }
-    @incoming_transfers = policy_scope(IncomingTransfer.where(destination: activity)).map { |transfer| TransferPresenter.new(transfer) }
   end
 end

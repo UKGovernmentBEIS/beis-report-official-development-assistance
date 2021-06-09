@@ -3,7 +3,7 @@ RSpec.shared_examples "creating a transfer" do
   let(:transfer_model) { transfer_type == "outgoing_transfer" ? OutgoingTransfer : IncomingTransfer }
 
   before do
-    visit organisation_activity_path(target_activity.organisation, target_activity)
+    visit organisation_activity_transfers_path(target_activity.organisation, target_activity)
     click_on t("form.button.#{transfer_type}.create")
   end
 

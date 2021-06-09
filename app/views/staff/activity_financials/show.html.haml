@@ -53,7 +53,3 @@
               locals: { activity: @activity, forecasts: @forecast_presenters }
             = render partial: "staff/shared/activities/transactions",
               locals: { activity: @activity, transaction_presenters: @transaction_presenters }
-
-      = render partial: "staff/shared/transfers/index", locals: { activity: @activity, transfer_type: "outgoing_transfer", transfers: @outgoing_transfers }
-      = render partial: "staff/shared/transfers/index", locals: { activity: @activity, transfer_type: "incoming_transfer", transfers: @incoming_transfers }
-
