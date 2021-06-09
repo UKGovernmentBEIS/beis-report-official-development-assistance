@@ -201,9 +201,9 @@ RSpec.describe ActivitySpendingBreakdown do
     before do
       quarters = report.own_financial_quarter.following(5)
 
-      q1_forecast = PlannedDisbursementHistory.new(project, **quarters[1])
-      q2_forecast = PlannedDisbursementHistory.new(project, **quarters[2])
-      q3_forecast = PlannedDisbursementHistory.new(project, **quarters[3])
+      q1_forecast = ForecastHistory.new(project, **quarters[1])
+      q2_forecast = ForecastHistory.new(project, **quarters[2])
+      q3_forecast = ForecastHistory.new(project, **quarters[3])
 
       q1_forecast.set_value(10)
       q2_forecast.set_value(20)

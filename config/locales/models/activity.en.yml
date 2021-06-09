@@ -260,7 +260,7 @@ en:
         level: Level
         organisation: Organisation
         parent: Parent activity
-        planned_disbursements: Forecasted spend
+        forecasts: Forecasted spend
         planned_end_date: Planned end date
         planned_start_date: Planned start date
         policy_marker_gender: Gender
@@ -338,7 +338,7 @@ en:
         programme: programme (level B)
         project: project (level C)
         third_party_project: third-party project (level D)
-      planned_disbursements: Forecasted spend
+      forecasts: Forecasted spend
       projects: Projects (level C)
       recipient_country:
         default_selection_value: Select a recipient country

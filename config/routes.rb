@@ -52,7 +52,7 @@ Rails.application.routes.draw do
       resource :spending_breakdown, only: [:show], path: "spending"
       resource :state, only: [:edit, :update], controller: :reports_state
       resource :activity_upload, only: [:new, :show, :update]
-      resource :planned_disbursement_upload, only: [:new, :show, :update]
+      resource :forecast_upload, only: [:new, :show, :update]
       resource :transaction_upload, only: [:new, :show, :update]
       get "variance" => "report_variance#show"
       get "budgets" => "report_budgets#show"
@@ -66,13 +66,13 @@ Rails.application.routes.draw do
       resources :budgets, only: [:new, :create, :show, :edit, :update]
     end
 
-    concern :disbursement_plannable do
-      resources :planned_disbursements, only: [:new, :create] do
+    concern :forecastable do
+      resources :forecasts, only: [:new, :create] do
         collection do
           constraints year: /\d{4}/, quarter: /[1-4]/ do
-            get ":year/:quarter", to: "planned_disbursements#edit", as: "edit"
-            patch ":year/:quarter", to: "planned_disbursements#update", as: "update"
-            delete ":year/:quarter", to: "planned_disbursements#destroy", as: "destroy"
+            get ":year/:quarter", to: "forecasts#edit", as: "edit"
+            patch ":year/:quarter", to: "forecasts#update", as: "update"
+            delete ":year/:quarter", to: "forecasts#destroy", as: "destroy"
           end
         end
       end
@@ -86,7 +86,7 @@ Rails.application.routes.draw do
       resources :external_incomes, only: [:new, :create, :edit, :update, :destroy]
     end
 
-    resources :activities, only: [], concerns: [:transactionable, :budgetable, :disbursement_plannable, :matched_effortable, :external_incomeable] do
+    resources :activities, only: [], concerns: [:transactionable, :budgetable, :forecastable, :matched_effortable, :external_incomeable] do
       resource :redaction, only: [:edit, :update], controller: :activity_redactions
       resources :steps, controller: "activity_forms"
       resources :implementing_organisations, only: [:new, :create, :edit, :update]

@@ -2,5 +2,5 @@
 %iati-activities{"version" => "#{IATI_VERSION.gsub('_', '.')}",
 "generated-datetime" => "#{Time.now.strftime("%Y-%m-%dT%H:%M:%S")}"}
   - @activities.each do |activity|
-    = render partial: "staff/shared/xml/activity", locals: { activity: activity, reporting_organisation: @reporting_organisation, transactions: activity.reportable_transactions_for_level, budgets: activity.budgets, planned_disbursements: activity.reportable_planned_disbursements_for_level }
+    = render partial: "staff/shared/xml/activity", locals: { activity: activity, reporting_organisation: @reporting_organisation, transactions: activity.reportable_transactions_for_level, budgets: activity.budgets, forecasts: activity.reportable_forecasts_for_level }
 

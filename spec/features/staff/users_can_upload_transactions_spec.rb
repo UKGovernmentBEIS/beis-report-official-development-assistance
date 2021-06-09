@@ -146,7 +146,7 @@ RSpec.feature "users can upload transactions" do
 
     expect(Transaction.count).to eq(0)
 
-    expect(page).to have_content(t("action.planned_disbursement.upload.file_missing_or_invalid"))
+    expect(page).to have_content(t("action.forecast.upload.file_missing_or_invalid"))
   end
 
   scenario "uploading a valid set of transactions with a BOM at the start of the file" do

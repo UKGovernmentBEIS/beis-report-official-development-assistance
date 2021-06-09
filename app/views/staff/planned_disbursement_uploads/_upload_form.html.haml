@@ -1,9 +1,0 @@
-.govuk-grid-row
-  .govuk-grid-column-full
-    = form_for @report_presenter, url: report_planned_disbursement_upload_path(@report_presenter) do |f|
-
-      = f.govuk_file_field :planned_disbursement_csv,
-        label: { text: t("form.label.planned_disbursement.csv_file_recover_from_error") },
-        hint: { text: t("form.hint.planned_disbursement.csv_file_recover_from_error_html", link: report_planned_disbursement_upload_path(@report_presenter, format: :csv)) }
-
-      = f.govuk_submit t("action.planned_disbursement.upload.button")

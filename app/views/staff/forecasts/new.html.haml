@@ -1,0 +1,11 @@
+=content_for :page_title_prefix, t("page_title.forecast.new")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.forecast.new")
+
+      = form_with model: @forecast, url: activity_forecasts_path(@activity) do |f|
+        = render partial: "form", locals: { f: f }
+        = link_to t("form.link.activity.back"), organisation_activity_financials_path(@activity.organisation, @activity), class: "govuk-button govuk-button--secondary", "data-module": "govuk-button", role: "button"

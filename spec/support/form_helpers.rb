@@ -450,7 +450,7 @@ module FormHelpers
     end
   end
 
-  def fill_in_planned_disbursement_form(
+  def fill_in_forecast_form(
     financial_quarter: "Q2",
     financial_year: "2020-2021",
     value: "100000"
@@ -459,16 +459,16 @@ module FormHelpers
     choose financial_quarter
     select financial_year, from: "Financial year"
 
-    fill_in "planned_disbursement[value]", with: value
+    fill_in "forecast[value]", with: value
 
     click_on(t("default.button.submit"))
   end
 
-  def fill_in_planned_disbursement_form_for_activity(activity)
+  def fill_in_forecast_form_for_activity(activity)
     report = Report.editable_for_activity(activity)
     year = report.financial_year
 
-    fill_in_planned_disbursement_form(
+    fill_in_forecast_form(
       financial_quarter: "Q#{report.financial_quarter}",
       financial_year: "#{year + 1}-#{year + 2}"
     )
