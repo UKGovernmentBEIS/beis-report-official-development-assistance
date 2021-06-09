@@ -28,3 +28,7 @@
 
         %p.govuk-body
           = "This report is #{@report_presenter.state.downcase}, so CSV upload is unavailable."
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      = link_to "Back to report", report_path(@report_presenter)

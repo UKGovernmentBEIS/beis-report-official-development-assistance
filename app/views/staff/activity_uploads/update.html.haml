@@ -18,3 +18,7 @@
       = render partial: "success_table", locals: { action: "updated", activities: @activities[:updated] }
   - else
     = render partial: "upload_form"
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      = link_to "Back to report", report_path(@report_presenter), class: "govuk-link"
