@@ -75,7 +75,7 @@ if [ "$delete_data" == "y" ]; then
     psql -c '\set AUTOCOMMIT on\n DROP DATABASE "roda-development"; CREATE DATABASE "roda-development";' -d postgres
 
     echo "==> Restoring the data from the backup..."
-    pg_restore -d roda-development --no-owner --clean "$filename"
+    pg_restore -d roda-development --no-owner --clean "$filename" || true
 
     echo "==> Removing extraneous Postgres extensions..."
     psql -d roda-development -c 'DROP extension citext; DROP extension postgis; DROP extension "uuid-ossp";'
