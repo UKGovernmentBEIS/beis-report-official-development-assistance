@@ -223,6 +223,11 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(first_item.code).to eql "11000"
         expect(first_item.name).to eql "11000: Donor Government"
       end
+
+      it "returns a restricted list for activities with Bilateral collaboration_type" do
+        project = create(:project_activity, collaboration_type: "3")
+        expect(helper.channel_of_delivery_codes(project).map(&:code)).to eq ["20000", "51000"]
+      end
     end
   end
 end
