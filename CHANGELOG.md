@@ -680,14 +680,18 @@
 - Approved reports are displayed in historical order
 - Update the logic to auto populate the FSTC applies field
 
-## [unreleased]
+## [release-55] - 2021-06-10
 
 - Users can no longer update the delivery partner identifier
 - Rename `Transfer` to `OutgoingTransfer`
 - Infer the collaboration type when aid type is B02 or B03
 - Show the user the activities that they've just uploaded
+- Allow Incoming Transfers to be recorded against an activity
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-54...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-55...HEAD
+[release-55]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-54...release-55
 [release-54]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-53...release-54
 [release-53]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-52...release-53
 [release-52]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-51...release-52
