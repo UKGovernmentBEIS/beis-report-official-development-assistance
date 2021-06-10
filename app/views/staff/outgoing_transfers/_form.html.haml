@@ -1,0 +1,6 @@
+= f.govuk_error_summary
+
+= f.hidden_field :source_id, value: source_activity.id
+= f.govuk_text_field :destination_roda_identifier, label: { size: 'm' }, value: destination_roda_identifier
+
+= render partial: "staff/shared/transfers/form", locals: { f: f }

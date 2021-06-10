@@ -36,7 +36,7 @@ class ExportActivityToCsv
   def next_twenty_quarter_forecasts
     return [] if report.own_financial_quarter.nil?
 
-    forecast_quarters = PlannedDisbursementOverview.new(activity_presenter).snapshot(report_presenter).all_quarters
+    forecast_quarters = ForecastOverview.new(activity_presenter).snapshot(report_presenter).all_quarters
 
     following_report_quarters.map do |quarter|
       value = forecast_quarters.value_for(**quarter)

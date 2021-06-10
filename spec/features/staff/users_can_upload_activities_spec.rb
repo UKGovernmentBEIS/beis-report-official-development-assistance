@@ -81,7 +81,15 @@ RSpec.feature "users can upload activities" do
 
     expect(Activity.count - old_count).to eq(2)
     expect(page).to have_text(t("action.activity.upload.success"))
-    expect(page).not_to have_xpath("//tbody/tr")
+    expect(page).to have_text("List of activities successfully created")
+
+    within "//tbody/tr[1]" do
+      expect(page).to have_xpath("td[2]", text: "Programme - Award (round 5)")
+    end
+
+    within "//tbody/tr[2]" do
+      expect(page).to have_xpath("td[2]", text: "Isolation and redesign of single-celled examples")
+    end
   end
 
   scenario "uploading a set of activities with a BOM at the start" do
@@ -90,13 +98,12 @@ RSpec.feature "users can upload activities" do
       click_button t("action.activity.upload.button")
 
       expect(page).to have_text(t("action.activity.upload.success"))
-      expect(page).not_to have_xpath("//tbody/tr")
 
-      new_activites = Activity.where(created_at: DateTime.now)
+      new_activities = Activity.where(created_at: DateTime.now)
 
-      expect(new_activites.count).to eq(2)
+      expect(new_activities.count).to eq(2)
 
-      expect(new_activites.pluck(:transparency_identifier)).to match_array(["1234", "1235"])
+      expect(new_activities.pluck(:transparency_identifier)).to match_array(["1234", "1235"])
     end
   end
 
@@ -168,8 +175,36 @@ RSpec.feature "users can upload activities" do
     CSV
 
     expect(page).to have_text(t("action.activity.upload.success"))
+    expect(page).to have_text("List of activities successfully updated")
 
     expect(activity_to_update.reload.title).to eq("New Title")
+
+    within "//tbody/tr[1]" do
+      expect(page).to have_xpath("td[2]", text: "New Title")
+    end
+  end
+
+  scenario "attempting to change the delivery partner identifier of an existing activity" do
+    activity_to_update = create(:project_activity, :gcrf_funded, organisation: organisation) { |activity|
+      activity.implementing_organisations = [
+        create(:implementing_organisation, activity: activity),
+      ]
+    }
+    create(:report, state: :active, fund: activity_to_update.associated_fund, organisation: organisation)
+
+    upload_csv <<~CSV
+      RODA ID                               | Title     | Channel of delivery code                       | Sector | Recipient Country | Delivery Partner Identifier |
+      #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | BR                | new-id-oh-no                |
+    CSV
+
+    expect(page).not_to have_text(t("action.activity.upload.success"))
+
+    within "//tbody/tr[1]" do
+      expect(page).to have_xpath("td[1]", text: "Delivery partner identifier")
+      expect(page).to have_xpath("td[2]", text: "2")
+      expect(page).to have_xpath("td[3]", text: "new-id-oh-no")
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.cannot_update.delivery_partner_identifier_present"))
+    end
   end
 
   def upload_csv(content)

@@ -104,10 +104,8 @@ class Activity
     end
 
     def set_aid_type
-      activity.assign_attributes(aid_type: params_for("aid_type"))
-      if can_infer_fstc?(activity.aid_type)
-        activity.fstc_applies = fstc_from_aid_type(activity.aid_type)
-      end
+      inference = Activity::Inference.service
+      inference.assign(activity, :aid_type, params_for("aid_type"))
     end
 
     def set_policy_markers

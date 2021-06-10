@@ -1,0 +1,19 @@
+=content_for :page_title_prefix, t("page_title.outgoing_transfer.new")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = @source_activity.title
+
+      %h2.govuk-heading-l
+        = t("page_title.outgoing_transfer.new")
+
+      %p.govuk-body
+        = t("intro.outgoing_transfer")
+
+      = form_with model: @transfer, url: activity_outgoing_transfers_path(@source_activity) do |f|
+        = render partial: "form", locals: { f: f, source_activity: @source_activity }
+
+        = f.govuk_submit t("form.button.outgoing_transfer.submit")
+        = link_to t("form.link.activity.back"), organisation_activity_path(@source_activity.organisation, @source_activity), class: "govuk-button govuk-button--secondary", "data-module": "govuk-button", role: "button"

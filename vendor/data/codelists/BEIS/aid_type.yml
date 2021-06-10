@@ -15,6 +15,7 @@ data:
       core contributions to which may be reported under B02 (Section I. Multilateral
       institutions).
     ftsc_applies: false
+    collaboration_type: "2"
   - category: B
     code: B03
     name:
@@ -27,6 +28,7 @@ data:
       programmes and funds are recorded here, e.g. “UNICEF girls’ education”, “Education
       For All Fast Track Initiative”, various trust funds, including for reconstruction
       (e.g. Afghanistan Reconstruction Trust Fund).
+    collaboration_type: "1"
   - category: C
     code: C01
     name: Project-type interventions

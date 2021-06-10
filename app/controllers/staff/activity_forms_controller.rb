@@ -32,6 +32,7 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step unless @activity.requires_additional_benefitting_countries?
     when :collaboration_type
       skip_step if @activity.fund?
+      skip_step unless Activity::Inference.service.editable?(@activity, :collaboration_type)
       assign_default_collaboration_type_value_if_nil
     when :policy_markers
       skip_step unless @activity.is_project?
@@ -48,8 +49,9 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :uk_dp_named_contact
       skip_step unless @activity.is_project?
     when :fstc_applies
-      skip_step if can_infer_fstc?(@activity.aid_type)
-      assign_default_fstc_applies_value
+      skip_step unless Activity::Inference.service.editable?(@activity, :fstc_applies)
+    when :identifier
+      skip_step if @activity.delivery_partner_identifier.present?
     end
 
     render_wizard
@@ -112,9 +114,5 @@ class Staff::ActivityFormsController < Staff::BaseController
   def assign_default_collaboration_type_value_if_nil
     # This allows us to pre-select a specific radio button on collaboration_type form step (value "Bilateral" in this case)
     @activity.collaboration_type = "1" if @activity.collaboration_type.nil?
-  end
-
-  def assign_default_fstc_applies_value
-    @activity.fstc_applies = fstc_from_aid_type(@activity.aid_type)
   end
 end

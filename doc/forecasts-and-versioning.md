@@ -1,6 +1,6 @@
 # Forecasts and versioning
 
-_Foercasts_, also called _planned disbursements_ throughout the codebase,
+_Forecasts_, also called _planned disbursements_ in an IATI context,
 represent plans or predictions about money that will be spent in the future. A
 forecast relates to an _activity_ and to a _financial quarter_ (represented by
 the `parent_activity_id`, `financial_year` and `financial_quarter` attributes),
@@ -22,16 +22,16 @@ any approved or other non-editable reports.
 Therefore forecast information is _versioned_. Normally in Rails, a database
 record, represented by an instance of an ActiveRecord model class, corresponds
 to a single real-world entity in the problem domain. For forecasts, the
-`planned_disbursements` table should be thought of more as a low-level
+`forecasts` table should be thought of more as a low-level
 implementation of a higher-level data structure, and as such the
-`PlannedDisbursement` model should not be used directly. This document explains
+`Forecast` model should not be used directly. This document explains
 how to work with forecast data, and how the underlying storage implementation
 works.
 
 
 ## Working with forecasts
 
-The `PlannedDisbursement` class should not be accessed directly. In general,
+The `Forecast` class should not be accessed directly. In general,
 querying this class will return multiple versions of the same logical forecast,
 leading to meaningless output. Creating/updating/deleting these records directly
 can result in the versioning data structure being broken. Instead, we have
@@ -41,10 +41,10 @@ services for accessing this data that provide the required semantics.
 
 Most code we write should not need to concern itself with versioning. When
 storing forecasts, we just want to say what the value for a given activity and
-quarter is. To do that, use the `PlannedDisbursementHistory` class:
+quarter is. To do that, use the `ForecastHistory` class:
 
 ```rb
-history = PlannedDisbursementHistory.new(
+history = ForecastHistory.new(
   activity,
   financial_quarter: 3,
   financial_year: 2022,
@@ -57,11 +57,11 @@ If you have a `FinancialQuarter` object, you can use that as a parameter:
 
 ```rb
 quarter = FinancialQuarter.new(2022, 3)
-history = PlannedDisbursementHistory.new(activity, user: current_user, **quarter)
+history = ForecastHistory.new(activity, user: current_user, **quarter)
 history.set_value(50_000)
 ```
 
-`PlannedDisbursementHistory#set_value` uses `ConvertFinancialValue` internally
+`ForecastHistory#set_value` uses `ConvertFinancialValue` internally
 so it can handle strings including formatting, such as `"£50,000"`. If `user` is
 passed, the policies are checked to make sure the requested action is allowed.
 
@@ -70,7 +70,7 @@ historical data, and links the forecast to the current editable `Report` that
 contains `activity`. The forecast must relate to a quarter _in the future_
 relative to the report's date, i.e. the Q3 2022 report may contain forecasts for
 Q4 2022 onwards. Violations of this rule will raise
-`PlannedDisbursementHistory::SequenceError`.
+`ForecastHistory::SequenceError`.
 
 If you're creating forecast data in tests, you will need to make sure a `Report`
 exists for this data to be added to. Tests relating to forecasts often need to
@@ -100,23 +100,23 @@ quarters without using `travel_to` to move the system clock.
 
 ### Querying forecasts
 
-To read forecast data for an activity, use the `PlannedDisbursementOverview`
+To read forecast data for an activity, use the `ForecastOverview`
 class:
 
 ```rb
-overview = PlannedDisbursementOverview.new(activity)
+overview = ForecastOverview.new(activity)
 forecasts = overview.latest_values
 ```
 
-`PlannedDisbursementOverview#latest_values` returns a relation of
-`PlannedDisbursement` objects representing the current versions of the forecasts
+`ForecastOverview#latest_values` returns a relation of
+`Forecast` objects representing the current versions of the forecasts
 for the given `activity`, for each quarter with spending planned. It does not
 return any forecasts whose value is `0`, since that represents there being no
-spending planned, so calling `PlannedDisbursementHistory#set_value(0)` has the
+spending planned, so calling `ForecastHistory#set_value(0)` has the
 effect of deleting a forecast -- it just does it non-destructively, without
 deleting historical data.
 
-Accessing the `PlannedDisbursement` class directly to perform queries will in
+Accessing the `Forecast` class directly to perform queries will in
 general return multiple versions of the same forecast -- records for the same
 activity and quarter. So, for example, summing over these to get the total
 forecast for an activity is incorrect, because it will count some values that
@@ -124,11 +124,11 @@ have been superseded by later versions. Instead, call
 `overview.latest_values.sum(:value)` to make sure you only count the latest
 version of the forecasts.
 
-`PlannedDisbursementOverview` can also be given an array of `Activity` IDs, for
+`ForecastOverview` can also be given an array of `Activity` IDs, for
 when you want to get all the forecasts for a set of activities:
 
 ```rb
-overview = PlannedDisbursementOverview.new(activity_ids)
+overview = ForecastOverview.new(activity_ids)
 forecasts = overview.latest_values
 ```
 
@@ -137,7 +137,7 @@ certain `Report`, for example when exporting the report as CSV. This is done
 using the `snapshot` method:
 
 ```rb
-overview = PlannedDisbursementOverview.new(activity_ids)
+overview = ForecastOverview.new(activity_ids)
 snapshot = overview.snapshot(Report.last).all_quarters
 ```
 
@@ -230,8 +230,8 @@ report:
 
 This series of values for the forecast "rocket fuel in Q1 2025" represent the
 _versions_ of the forecast as captured in each subsequent report, and this is
-what we store in the `planned_disbursements` table. In general, a
-`PlannedDisbursement` has:
+what we store in the `forecasts` table. In general, a
+`Forecast` has:
 
 - `parent_activity` - the `Activity` which it concerns
 - `financial_quarter`, `financial_year` - the time period when the spending will
@@ -241,7 +241,7 @@ what we store in the `planned_disbursements` table. In general, a
 
 The `parent_activity`, `financial_year` and `financial_quarter` represent the
 _subject_ of the forecast, the thing we plan to spend money on. All the
-`planned_disbursements` records with equal values for these fields represent
+`forecasts` records with equal values for these fields represent
 different versions of the same logical forecast. The database ensures that only
 one version of a logical report exists for the same report.
 
@@ -250,16 +250,16 @@ version with value £81,000 is linked to the last report in the series, so it is
 the current version of this forecast. Storing all the versions just means we can
 reconstruct the data from any previous report, as it was when it was submitted.
 
-The `PlannedDisbursementHistory` service deals with storing updates to a
+The `ForecastHistory` service deals with storing updates to a
 forecast non-destructively. Remember its interface:
 
 ```rb
 quarter = FinancialQuarter.new(2022, 3)
-history = PlannedDisbursementHistory.new(activity, user: current_user, **quarter)
+history = ForecastHistory.new(activity, user: current_user, **quarter)
 history.set_value(50_000)
 ```
 
-The `set_value` method checks to see whether a `planned_disbursements` record
+The `set_value` method checks to see whether a `forecasts` record
 exists in the current _editable_ report for `activity`, relating to the given
 activity and quarter. If there is one, then we can modify that record's `value`
 because the report has not yet been approved and therefore committed to history.
@@ -347,14 +347,14 @@ so we do not use the same versioning model. Instead, the versioning for
 forecasts is much simpler.
 
 A _logical forecast_ still relates to a certain activity and quarter. When
-`PlannedDisbursementHistory#set_value` is called, we check whether any records
+`ForecastHistory#set_value` is called, we check whether any records
 exist for that activity and quarter. If not, we create one with
-`planned_disbursement_type = :original`. If such a record already exists, we
-create a second one with `planned_disbursement_type = :revised`. And if a
+`forecast_type = :original`. If such a record already exists, we
+create a second one with `forecast_type = :revised`. And if a
 revised record already exists then we modify its `value`. As such, at most two
 records will exist for a given activity and quarter.
 
-The `PlannedDisbursementOverview` class deals with the different versioning
+The `ForecastOverview` class deals with the different versioning
 schemes at different levels, including if you pass a set of IDs for activities
 at various levels. Its `latest_values` method will always return the current
 versions for each activity.

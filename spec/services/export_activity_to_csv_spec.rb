@@ -113,9 +113,9 @@ RSpec.describe ExportActivityToCsv do
   describe "#next_twenty_quarter_forecasts" do
     it "gets the forecasted total for the next twenty quarters" do
       quarters = report.own_financial_quarter.following(20)
-      q1_forecast = PlannedDisbursementHistory.new(project, **quarters[0])
-      q3_forecast = PlannedDisbursementHistory.new(project, **quarters[2])
-      q19_forecast = PlannedDisbursementHistory.new(project, **quarters[18])
+      q1_forecast = ForecastHistory.new(project, **quarters[0])
+      q3_forecast = ForecastHistory.new(project, **quarters[2])
+      q19_forecast = ForecastHistory.new(project, **quarters[18])
 
       q1_forecast.set_value(1000)
       q3_forecast.set_value(-500)
@@ -145,10 +145,10 @@ RSpec.describe ExportActivityToCsv do
       create(:transaction, parent_activity: project, **report_quarter, report: report, value: 20)
       create(:transaction, parent_activity: project, **report_quarter, report: next_quarter_report, value: 40)
 
-      PlannedDisbursementHistory.new(project, report: previous_year_report, **report_quarter).set_value(50)
-      PlannedDisbursementHistory.new(project, report: previous_quarter_report, **report_quarter).set_value(100)
-      PlannedDisbursementHistory.new(project, report: report, **report_quarter.succ).set_value(250)
-      PlannedDisbursementHistory.new(project, report: next_quarter_report, **report_quarter.succ.succ).set_value(350)
+      ForecastHistory.new(project, report: previous_year_report, **report_quarter).set_value(50)
+      ForecastHistory.new(project, report: previous_quarter_report, **report_quarter).set_value(100)
+      ForecastHistory.new(project, report: report, **report_quarter.succ).set_value(250)
+      ForecastHistory.new(project, report: next_quarter_report, **report_quarter.succ.succ).set_value(350)
 
       allow(export_service).to receive(:metadata_columns).and_return({})
     end

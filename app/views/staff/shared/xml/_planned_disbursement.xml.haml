@@ -1,7 +1,7 @@
-%planned-disbursement{"type" => planned_disbursement.planned_disbursement_type}
-  %period-start{"iso-date" => planned_disbursement.period_start_date}
-  - if planned_disbursement.period_end_date.present?
-    %period-end{"iso-date" => planned_disbursement.period_end_date}
-  %value{"currency" => planned_disbursement.currency, "value-date" => planned_disbursement.period_start_date}= planned_disbursement.value
-  %provider-org{"provider-activity-id" => "", "type" => planned_disbursement.providing_organisation_type, "ref" => planned_disbursement.providing_organisation_reference}
-    %narrative=planned_disbursement.providing_organisation_name
+%planned-disbursement{"type" => forecast.forecast_type}
+  %period-start{"iso-date" => forecast.period_start_date}
+  - if forecast.period_end_date.present?
+    %period-end{"iso-date" => forecast.period_end_date}
+  %value{"currency" => forecast.currency, "value-date" => forecast.period_start_date}= forecast.value
+  %provider-org{"provider-activity-id" => "", "type" => forecast.providing_organisation_type, "ref" => forecast.providing_organisation_reference}
+    %narrative=forecast.providing_organisation_name

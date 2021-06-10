@@ -41,11 +41,11 @@ RSpec.describe CodelistHelper, type: :helper do
       it "returns the different options for collaboration type sorted by code" do
         options = helper.collaboration_type_radio_options
 
-        expect(options.length).to eq 7
+        expect(options.length).to eq 3
         expect(options.first.code).to eq "1"
         expect(options.first.name).to eq "Bilateral"
-        expect(options.last.code).to eq "8"
-        expect(options.last.name).to eq "Bilateral, triangular co-operation"
+        expect(options.last.code).to eq "3"
+        expect(options.last.name).to eq "Bilateral, core contributions to NGOs and other private bodies / PPPs"
       end
     end
 
@@ -120,39 +120,6 @@ RSpec.describe CodelistHelper, type: :helper do
         expect(options.length).to eq 143
         expect(options.first.name).to eq("Afghanistan")
         expect(options.last.name).to eq("Zimbabwe")
-      end
-    end
-
-    context "When using aid types to infer Free Standing Technical Cooperation" do
-      let(:codelist) { double("Codelist", list: list) }
-      let(:list) do
-        [
-          {"code" => "A", "ftsc_applies" => true},
-          {"code" => "B", "ftsc_applies" => false},
-          {"code" => "C"},
-        ]
-      end
-
-      before do
-        allow_any_instance_of(Codelist).to receive(:list).and_return(list)
-      end
-
-      describe "#fstc_from_aid_type" do
-        it "returns nil if the aid type is not set" do
-          expect(helper.fstc_from_aid_type(nil)).to be_nil
-        end
-
-        it "returns true if ftsc_applies is true" do
-          expect(helper.fstc_from_aid_type("A")).to eql true
-        end
-
-        it "returns false if ftsc_applies is false" do
-          expect(helper.fstc_from_aid_type("B")).to eql false
-        end
-
-        it "returns nil if ftsc_applies is nil" do
-          expect(helper.fstc_from_aid_type("C")).to be_nil
-        end
       end
     end
   end

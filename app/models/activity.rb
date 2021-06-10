@@ -146,8 +146,8 @@ class Activity < ApplicationRecord
   has_many :budgets, foreign_key: "parent_activity_id"
   has_many :transactions, foreign_key: "parent_activity_id"
 
-  has_many :source_transfers, foreign_key: "source_id", class_name: "Transfer"
-  has_many :destination_transfers, foreign_key: "destination_id", class_name: "Transfer"
+  has_many :source_transfers, foreign_key: "source_id", class_name: "OutgoingTransfer"
+  has_many :destination_transfers, foreign_key: "destination_id", class_name: "OutgoingTransfer"
 
   has_many :comments
   has_many :matched_efforts
@@ -278,7 +278,7 @@ class Activity < ApplicationRecord
 
   def total_forecasted
     activity_ids = descendants.pluck(:id).append(id)
-    overview = PlannedDisbursementOverview.new(activity_ids)
+    overview = ForecastOverview.new(activity_ids)
     overview.latest_values.sum(:value)
   end
 
@@ -295,15 +295,15 @@ class Activity < ApplicationRecord
     end
   end
 
-  def reportable_planned_disbursements_for_level
-    return latest_planned_disbursements unless programme?
+  def reportable_forecasts_for_level
+    return latest_forecasts unless programme?
 
     activity_ids = descendants.pluck(:id).append(id)
-    planned_disbursements = PlannedDisbursementOverview.new(activity_ids).latest_values.group_by(&:own_financial_quarter)
-    quarters = planned_disbursements.keys.sort.reverse
+    forecasts = ForecastOverview.new(activity_ids).latest_values.group_by(&:own_financial_quarter)
+    quarters = forecasts.keys.sort.reverse
 
     quarters.map do |quarter|
-      PlannedDisbursementAggregate.new(quarter, planned_disbursements[quarter])
+      ForecastAggregate.new(quarter, forecasts[quarter])
     end
   end
 
@@ -489,15 +489,15 @@ class Activity < ApplicationRecord
   end
 
   def forecasted_total_for_report_financial_quarter(report:)
-    @forecasted_total_for_report_financial_quarter ||= PlannedDisbursementOverview.new(self).snapshot(report).value_for_report_quarter
+    @forecasted_total_for_report_financial_quarter ||= ForecastOverview.new(self).snapshot(report).value_for_report_quarter
   end
 
   def variance_for_report_financial_quarter(report:)
     @variance_for_report_financial_quarter ||= actual_total_for_report_financial_quarter(report: report) - forecasted_total_for_report_financial_quarter(report: report)
   end
 
-  def latest_planned_disbursements
-    PlannedDisbursementOverview.new(self).latest_values
+  def latest_forecasts
+    ForecastOverview.new(self).latest_values
   end
 
   def requires_call_dates?

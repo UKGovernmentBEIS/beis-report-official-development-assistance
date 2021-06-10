@@ -11,7 +11,7 @@ class Report < ApplicationRecord
   belongs_to :fund, -> { where(level: :fund) }, class_name: "Activity"
   belongs_to :organisation
   has_many :transactions
-  has_many :planned_disbursements
+  has_many :forecasts
 
   validate :activity_must_be_a_fund
   validates :deadline, date_not_in_past: true, date_within_boundaries: true, on: :edit

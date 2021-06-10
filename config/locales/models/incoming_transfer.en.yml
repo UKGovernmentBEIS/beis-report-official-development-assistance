@@ -1,0 +1,48 @@
+---
+en:
+  page_title:
+    incoming_transfer:
+      new: Incoming transfer
+      edit: Edit incoming transfer
+      confirm: Are these transfer details correct?
+      index: Incoming transfers
+  intro:
+    incoming_transfer: Record a transfer from another activity
+  action:
+    incoming_transfer:
+      create:
+        success: Incoming transfer successfully recorded
+      update:
+        success: Incoming transfer successfully updated
+  fields:
+    incoming_transfer:
+      source: Source activity
+      source_organisation: Source organisation
+      financial_quarter_and_year: Financial quarter and year
+      transfer_amount: Transfer amount
+  form:
+    label:
+      incoming_transfer:
+        source_roda_identifier: Enter RODA ID of the source activity
+        financial_quarter: Financial Quarter
+        financial_year: Financial Year
+        value: Transfer amount
+    hint:
+      incoming_transfer:
+        source_roda_identifier: For example, GCRF-BLOB-424434434
+        financial_quarter_and_year: The financial quarter in which the transfer was made
+    button:
+      incoming_transfer:
+        submit: Create transfer record
+        create: Record incoming transfer
+  activerecord:
+    errors:
+      models:
+        incoming_transfer:
+          attributes:
+            source:
+              required: Unrecognised RODA Identifier
+            financial_quarter:
+              blank: Select the financial quarter when the transfer was made
+            value:
+              blank: Enter an amount for the transfer

@@ -99,25 +99,25 @@ RSpec.shared_examples "valid activity XML" do
     expect(xml.at("iati-activity/budget/period-end/@iso-date").text).to eq(budget.period_end_date.strftime("%Y-%m-%d"))
   end
 
-  it "contains the planned disbursement XML" do
+  it "contains the forecast XML as a planned-disbursement node" do
     ReportingCycle.new(activity, 2, 2020).tick
-    PlannedDisbursementHistory.new(activity, financial_year: 2020, financial_quarter: 3).set_value(20)
-    planned_disbursement = PlannedDisbursementOverview.new(activity).latest_values.first
-    planned_disbursement_presenter = PlannedDisbursementXmlPresenter.new(planned_disbursement)
+    ForecastHistory.new(activity, financial_year: 2020, financial_quarter: 3).set_value(20)
+    forecast = ForecastOverview.new(activity).latest_values.first
+    forecast_presenter = ForecastXmlPresenter.new(forecast)
 
     visit organisation_activity_path(organisation, activity, format: :xml)
 
-    expect(xml.xpath("//iati-activity/planned-disbursement/@type").text).to eq planned_disbursement_presenter.planned_disbursement_type
-    expect(xml.xpath("//iati-activity/planned-disbursement/period-start/@iso-date").text).to eq planned_disbursement_presenter.period_start_date
+    expect(xml.xpath("//iati-activity/planned-disbursement/@type").text).to eq forecast_presenter.forecast_type
+    expect(xml.xpath("//iati-activity/planned-disbursement/period-start/@iso-date").text).to eq forecast_presenter.period_start_date
 
-    expect(xml.xpath("//iati-activity/planned-disbursement/value").text).to eq planned_disbursement_presenter.value
-    expect(xml.xpath("//iati-activity/planned-disbursement/value/@currency").text).to eq planned_disbursement_presenter.currency
-    expect(xml.xpath("//iati-activity/planned-disbursement/value/@value-date").text).to eq planned_disbursement_presenter.period_start_date
+    expect(xml.xpath("//iati-activity/planned-disbursement/value").text).to eq forecast_presenter.value
+    expect(xml.xpath("//iati-activity/planned-disbursement/value/@currency").text).to eq forecast_presenter.currency
+    expect(xml.xpath("//iati-activity/planned-disbursement/value/@value-date").text).to eq forecast_presenter.period_start_date
 
-    expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/@type").text).to eq planned_disbursement_presenter.providing_organisation_type
+    expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/@type").text).to eq forecast_presenter.providing_organisation_type
     expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/@provider-activity-id").text).to eq ""
-    expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/@ref").text).to eq planned_disbursement_presenter.providing_organisation_reference
-    expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/narrative").text).to eq planned_disbursement_presenter.providing_organisation_name
+    expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/@ref").text).to eq forecast_presenter.providing_organisation_reference
+    expect(xml.xpath("//iati-activity/planned-disbursement/provider-org/narrative").text).to eq forecast_presenter.providing_organisation_name
   end
 
   it "contains the contact information" do

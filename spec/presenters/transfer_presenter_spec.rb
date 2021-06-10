@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe TransferPresenter do
-  let(:transfer) { build_stubbed(:transfer, value: "110.01", financial_year: 2020, financial_quarter: 1) }
+  let(:transfer) { build_stubbed(:outgoing_transfer, value: "110.01", financial_year: 2020, financial_quarter: 1) }
 
   describe "#financial_quarter_and_year" do
     it "returns the financial quarter and year" do

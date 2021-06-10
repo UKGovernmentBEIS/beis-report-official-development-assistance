@@ -5,6 +5,7 @@
 Generic term for any project undertaken by an organisation with BEIS money. Top level things such as funds (of which there are only two) are also activities in the code. See also fund, programme, project, third-party project. `Activity` in the code, with distinction by the `level` attribute.
 
 ## Actual spend
+
 Also: actuals, transaction(s)
 
 Money spent for an activity. `Transaction` in the code.
@@ -22,6 +23,7 @@ Originally designating the specific codes (and their metadata) used by IATI. The
 Extended to include BEIS-specific codes and metadata, also stored in the `vendor` folder. We prefer to record any such codes in a YAML file rather than in constants.
 
 ## DP
+
 Delivery partner
 
 An organisation that collaborates with BEIS to deliver aid to one or more countries or regions.
@@ -47,11 +49,13 @@ A generic term for money associated with an activity: budgeted money, money that
 NB: BEIS RODA is a reporting tool, not an accounting system. It is not responsible for error checking.
 
 ## Forecast spend
+
 Also: planned disbursement, forecasts, forecasted spend
 
 Money anticipated to be spent for an activity during a financial quarter.
 
 ## Fund
+
 Also "level A"
 
 One of two sources of financing for development assistance projects.
@@ -67,11 +71,13 @@ TBD
 The only way of organising activities in a hierarchy that all the organisations seem to agree upon is to regard them as a four tier system, with the fund at the top as level A, and three "child" levels, B, C, and D.
 
 ## Programme
+
 Also "level B"
 
 An activity (a way of organising money, organisations, and people involved) recording how BEIS money is allocated and spent by a specific delivery partner organisation. BEIS is the organisation that manages programmes.
 
 ## Project
+
 Also "level C"
 
 An activity managed by a DP, recording how money is received and spent from BEIS on a specific activity (such an aid programme, a public health campaign etc). The DP is responsible for correctly reporting all the financial details, target areas, etc.
@@ -88,10 +94,11 @@ Statistics on International Development
 "This publication provides statistics about the amount of Official Development Assistance (ODA) the UK provided in [year], including UK ODA as a percentage of Gross National Income (GNI) (the ODA:GNI ratio) and various other breakdowns of ODA spend.""
 
 ## Third-party project
+
 Also "level D"
 
 An activity that is done on behalf of a DP by a third party, such as an university. It's the delivery partner that manages this activity and reports on the financials to BEIS, i.e. `third_party_project.extending_organisation = delivery_partner`
 
-## Transfer
+## Outgoing Transfer
 
 A way to record money that is being moved from one activity to another.

@@ -39,7 +39,7 @@ module FormHelpers
     collaboration_type: "Bilateral",
     sdg_1: 1,
     fund_pillar: "1",
-    aid_type: "B02",
+    aid_type: "D01",
     fstc_applies: true,
     policy_marker_gender: "Not assessed",
     policy_marker_climate_change_adaptation: "Not targeted",
@@ -209,7 +209,7 @@ module FormHelpers
     choose("activity[aid_type]", option: aid_type)
     click_button t("form.button.activity.submit")
 
-    unless level == "fund"
+    unless level == "fund" || aid_type.in?(["B02", "B03"])
       expect(page).to have_content t("form.label.activity.collaboration_type")
       choose "Bilateral"
       click_button t("form.button.activity.submit")
@@ -327,8 +327,17 @@ module FormHelpers
       expect(page).not_to have_content objectives
     else
       expect(page).to have_content t("activity.programme_status.#{programme_status}")
-      expect(page).to have_content collaboration_type
       expect(page).to have_content objectives
+    end
+
+    within(".govuk-summary-list__row.collaboration_type") do
+      if aid_type == "B02"
+        expect(page).to have_content "Multilateral (inflows)"
+      elsif aid_type == "B03"
+        expect(page).to have_content "Bilateral"
+      else
+        expect(page).to have_content collaboration_type
+      end
     end
 
     # NB: Since the parent might be a fund, `is_newton_fund?` won't work here
@@ -441,7 +450,7 @@ module FormHelpers
     end
   end
 
-  def fill_in_planned_disbursement_form(
+  def fill_in_forecast_form(
     financial_quarter: "Q2",
     financial_year: "2020-2021",
     value: "100000"
@@ -450,16 +459,16 @@ module FormHelpers
     choose financial_quarter
     select financial_year, from: "Financial year"
 
-    fill_in "planned_disbursement[value]", with: value
+    fill_in "forecast[value]", with: value
 
     click_on(t("default.button.submit"))
   end
 
-  def fill_in_planned_disbursement_form_for_activity(activity)
+  def fill_in_forecast_form_for_activity(activity)
     report = Report.editable_for_activity(activity)
     year = report.financial_year
 
-    fill_in_planned_disbursement_form(
+    fill_in_forecast_form(
       financial_quarter: "Q#{report.financial_quarter}",
       financial_year: "#{year + 1}-#{year + 2}"
     )
@@ -469,19 +478,25 @@ module FormHelpers
     I18n.l(Date.parse("#{year}-#{month}-#{day}"))
   end
 
-  def fill_in_transfer_form(destination: create(:project_activity), financial_quarter: FinancialQuarter.for_date(Date.today).to_i, financial_year: FinancialYear.for_date(Date.today).to_i, value: 1234)
+  def fill_in_transfer_form(type:, destination: create(:project_activity), source: create(:project_activity), financial_quarter: FinancialQuarter.for_date(Date.today).to_i, financial_year: FinancialYear.for_date(Date.today).to_i, value: 1234)
     transfer = build(
-      :transfer,
+      type,
       destination: destination,
+      source: source,
       financial_quarter: financial_quarter,
       financial_year: financial_year,
       value: value
     )
 
-    fill_in "transfer[destination]", with: transfer.destination.roda_identifier
-    choose transfer.financial_quarter.to_s, name: "transfer[financial_quarter]"
-    select transfer.financial_year, from: "transfer[financial_year]"
-    fill_in "transfer[value]", with: transfer.value
+    if type == "outgoing_transfer"
+      fill_in "outgoing_transfer[destination_roda_identifier]", with: transfer.destination.roda_identifier
+    else
+      fill_in "incoming_transfer[source_roda_identifier]", with: transfer.source.roda_identifier
+    end
+
+    choose transfer.financial_quarter.to_s, name: "#{type}[financial_quarter]"
+    select transfer.financial_year, from: "#{type}[financial_year]"
+    fill_in "#{type}[value]", with: transfer.value
 
     transfer
   end

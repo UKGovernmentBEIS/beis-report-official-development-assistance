@@ -126,7 +126,7 @@ RSpec.feature "Users can view an activity" do
 
       create(:transaction, parent_activity: activity, value: 50)
       create(:budget, parent_activity: activity, value: 55)
-      PlannedDisbursementHistory.new(activity, financial_year: 2020, financial_quarter: 3).set_value(70)
+      ForecastHistory.new(activity, financial_year: 2020, financial_quarter: 3).set_value(70)
 
       visit organisation_activity_financials_path(activity.organisation, activity)
       within ".govuk-tabs__list-item--selected" do
