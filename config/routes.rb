@@ -45,6 +45,7 @@ Rails.application.routes.draw do
 
         get "comments" => "activity_comments#show"
         get "other_funding" => "activity_other_funding#show"
+        get "transfers" => "activity_transfers#show"
       end
     end
 
@@ -92,6 +93,7 @@ Rails.application.routes.draw do
       resources :implementing_organisations, only: [:new, :create, :edit, :update]
       resources :comments, only: [:new, :create, :edit, :update]
       resources :outgoing_transfers, except: [:index]
+      resources :incoming_transfers, except: [:index]
     end
 
     resource :search, only: [:show]

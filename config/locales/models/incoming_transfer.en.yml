@@ -1,46 +1,46 @@
 ---
 en:
   page_title:
-    outgoing_transfer:
-      new: Outgoing Transfer
-      edit: Edit outgoing transfer
+    incoming_transfer:
+      new: Incoming transfer
+      edit: Edit incoming transfer
       confirm: Are these transfer details correct?
-      index: Outgoing Transfers
+      index: Incoming transfers
   intro:
-    outgoing_transfer: Transfer funds to another delivery partner activity
+    incoming_transfer: Record a transfer from another activity
   action:
-    outgoing_transfer:
+    incoming_transfer:
       create:
-        success: Outgoing transfer successfully recorded
+        success: Incoming transfer successfully recorded
       update:
-        success: Outgoing transfer successfully updated
+        success: Incoming transfer successfully updated
   fields:
-    outgoing_transfer:
-      destination: Receiving activity
-      receiving_organisation: Receiving organisation
+    incoming_transfer:
+      source: Source activity
+      source_organisation: Source organisation
       financial_quarter_and_year: Financial quarter and year
       transfer_amount: Transfer amount
   form:
     label:
-      outgoing_transfer:
-        destination_roda_identifier: Enter RODA ID of the receiving activity
+      incoming_transfer:
+        source_roda_identifier: Enter RODA ID of the source activity
         financial_quarter: Financial Quarter
         financial_year: Financial Year
         value: Transfer amount
     hint:
-      outgoing_transfer:
-        destination_roda_identifier: For example, GCRF-BLOB-424434434
+      incoming_transfer:
+        source_roda_identifier: For example, GCRF-BLOB-424434434
         financial_quarter_and_year: The financial quarter in which the transfer was made
     button:
-      outgoing_transfer:
+      incoming_transfer:
         submit: Create transfer record
-        create: Record outgoing transfer
+        create: Record incoming transfer
   activerecord:
     errors:
       models:
-        outgoing_transfer:
+        incoming_transfer:
           attributes:
-            destination:
+            source:
               required: Unrecognised RODA Identifier
             financial_quarter:
               blank: Select the financial quarter when the transfer was made

@@ -10,7 +10,7 @@
         = t("page_title.outgoing_transfer.edit")
 
       %p.govuk-body
-        Transfer funds to another delivery partner activity
+        = t("intro.outgoing_transfer")
 
       = form_with model: @transfer, url: activity_outgoing_transfer_path(@transfer.source, @transfer) do |f|
         = render partial: "form", locals: { f: f, source_activity: @transfer.source }

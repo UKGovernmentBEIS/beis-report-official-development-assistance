@@ -1,0 +1,45 @@
+.govuk-grid-row
+  .govuk-grid-column-full{id: transfer_type.pluralize }
+    %h3.govuk-heading-m
+      = t("page_title.#{transfer_type}.index")
+
+    - if policy(@activity).create_transfer?
+      %p.govuk-body
+        = t("intro.#{transfer_type}")
+
+      = link_to t("form.button.#{transfer_type}.create"), send("new_activity_#{transfer_type}_path" ,@activity), class: "govuk-button"
+
+    - if transfers.count > 0
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "col"}
+              =t("fields.#{transfer_type}.financial_quarter_and_year")
+            %th.govuk-table__header{scope: "col"}
+              - if transfer_type == "outgoing_transfer"
+                =t("fields.outgoing_transfer.receiving_organisation")
+              - else
+                =t("fields.incoming_transfer.source_organisation")
+            %th.govuk-table__header{scope: "col"}
+              - if transfer_type == "outgoing_transfer"
+                =t("fields.outgoing_transfer.destination")
+              - else
+                =t("fields.incoming_transfer.source")
+            %th.govuk-table__header{scope: "col"}
+              =t("fields.#{transfer_type}.transfer_amount")
+            %th.govuk-table__header{scope: "col"}
+        %tbody.govuk-table__body
+          - transfers.each do |transfer|
+            %tr.govuk-table__row
+              %td.govuk-table__cell= transfer.financial_quarter_and_year
+              - if transfer_type == "outgoing_transfer"
+                %td.govuk-table__cell= transfer.destination.organisation.name
+                %td.govuk-table__cell= transfer.destination.roda_identifier
+              - else
+                %td.govuk-table__cell= transfer.source.organisation.name
+                %td.govuk-table__cell= transfer.source.roda_identifier
+              %td.govuk-table__cell= transfer.value
+              %td.govuk-table__cell
+                - if policy(transfer).update?
+                  = link_to "Edit", send("edit_activity_#{transfer_type}_path", @activity.id, transfer.id)
+
