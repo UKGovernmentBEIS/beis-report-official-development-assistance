@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe OutgoingTransfer do
+RSpec.describe IncomingTransfer do
   include_examples "has transfer fields" do
-    subject { build(:outgoing_transfer) }
+    subject { build(:incoming_transfer) }
   end
 end

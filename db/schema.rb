@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_03_141843) do
-
+ActiveRecord::Schema.define(version: 2021_06_03_152129) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -184,6 +183,20 @@ ActiveRecord::Schema.define(version: 2021_06_03_141843) do
     t.index ["activity_id"], name: "index_implementing_organisations_on_activity_id"
   end
 
+  create_table "incoming_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "source_id", null: false
+    t.uuid "destination_id", null: false
+    t.uuid "report_id"
+    t.decimal "value", precision: 13, scale: 2, null: false
+    t.integer "financial_year"
+    t.integer "financial_quarter"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["destination_id"], name: "index_incoming_transfers_on_destination_id"
+    t.index ["report_id"], name: "index_incoming_transfers_on_report_id"
+    t.index ["source_id"], name: "index_incoming_transfers_on_source_id"
+  end
+
   create_table "matched_efforts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "activity_id"
     t.uuid "organisation_id"
@@ -284,6 +297,8 @@ ActiveRecord::Schema.define(version: 2021_06_03_141843) do
   add_foreign_key "activities", "organisations", on_delete: :restrict
   add_foreign_key "budgets", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "budgets", "organisations", column: "providing_organisation_id"
+  add_foreign_key "incoming_transfers", "activities", column: "destination_id", on_delete: :restrict
+  add_foreign_key "incoming_transfers", "activities", column: "source_id", on_delete: :restrict
   add_foreign_key "outgoing_transfers", "activities", column: "destination_id", on_delete: :restrict
   add_foreign_key "outgoing_transfers", "activities", column: "source_id", on_delete: :restrict
   add_foreign_key "forecasts", "activities", column: "parent_activity_id", on_delete: :cascade
