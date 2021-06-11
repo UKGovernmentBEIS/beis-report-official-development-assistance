@@ -15,3 +15,12 @@
         .govuk-tabs__panel
           %h2.govuk-heading-l
             = t("tabs.report.activities")
+
+          %p.govuk-body
+            All activities that are reportable for this report are shown below.
+
+          %p.govuk-body
+            For guidance on adding or updating activities, see the
+            = link_to_new_tab "guidance in the help centre", "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005510061-Understanding-the-Bulk-Upload-Functionality-to-Report-your-Data"
+
+          = render partial: "staff/activity_uploads/activities_table", locals: { action: "related to this report", activities: @activities }
