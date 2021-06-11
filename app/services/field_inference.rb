@@ -88,7 +88,11 @@ class FieldInference
 
       targets.each do |attr_name|
         allowed = @parent.allowed_values(@model, attr_name)
-        assign(attr_name, allowed.first) if allowed.size <= 1
+        if allowed.size <= 1
+          assign(attr_name, allowed.first)
+        elsif !allowed.include?(@model[attr_name])
+          @model[attr_name] = nil
+        end
       end
     end
 

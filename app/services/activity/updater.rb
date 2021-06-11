@@ -104,8 +104,11 @@ class Activity
     end
 
     def set_aid_type
-      inference = Activity::Inference.service
-      inference.assign(activity, :aid_type, params_for("aid_type"))
+      Activity::Inference.service.assign(activity, :aid_type, params_for("aid_type"))
+    end
+
+    def set_collaboration_type
+      Activity::Inference.service.assign(activity, :collaboration_type, params_for("collaboration_type"))
     end
 
     def set_policy_markers

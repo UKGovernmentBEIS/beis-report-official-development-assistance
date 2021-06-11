@@ -214,7 +214,7 @@ RSpec.describe CodelistHelper, type: :helper do
 
     describe "#channel_of_delivery_codes" do
       it "returns the list of items whose codes are allowed by BEIS" do
-        expect(helper.channel_of_delivery_codes.size).to eql 5
+        expect(helper.channel_of_delivery_codes.size).to eql 6
       end
 
       it "returns items with their IATI code and name" do
@@ -222,6 +222,11 @@ RSpec.describe CodelistHelper, type: :helper do
 
         expect(first_item.code).to eql "11000"
         expect(first_item.name).to eql "11000: Donor Government"
+      end
+
+      it "returns a restricted list for activities with Bilateral collaboration_type" do
+        project = create(:project_activity, collaboration_type: "3")
+        expect(helper.channel_of_delivery_codes(project).map(&:code)).to eq ["20000", "51000"]
       end
     end
   end

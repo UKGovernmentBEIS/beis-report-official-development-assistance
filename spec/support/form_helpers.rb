@@ -287,10 +287,13 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
-    if level == "project" || level == "third_party_project"
+    if (level == "project" || level == "third_party_project") && aid_type != "B02" && collaboration_type != "2"
       expect(page).to have_content t("form.legend.activity.channel_of_delivery_code")
       choose("activity[channel_of_delivery_code]", option: channel_of_delivery_code)
       click_button t("form.button.activity.submit")
+    else
+      channel_of_delivery_code = nil
+      expect(page).not_to have_content t("form.legend.activity.channel_of_delivery_code")
     end
 
     expect(page).to have_content t("form.legend.activity.oda_eligibility")
@@ -391,7 +394,7 @@ module FormHelpers
     end
     expect(page).to have_content fund_pillar if associated_fund_is_newton?(parent)
 
-    if level == "project" || level == "third_party_project"
+    if channel_of_delivery_code
       expect(page).to have_content t("summary.label.activity.channel_of_delivery_code")
       expect(page).to have_content channel_of_delivery_code
     end

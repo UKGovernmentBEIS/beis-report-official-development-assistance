@@ -134,7 +134,7 @@ RSpec.describe FieldInference do
 
   describe "when one field restricts the value of another" do
     before do
-      activity.collaboration_type = "3"
+      activity.collaboration_type = "2"
       subject.on(:aid_type, "B02").restrict(:collaboration_type, ["1", "2"])
     end
 
@@ -148,7 +148,7 @@ RSpec.describe FieldInference do
       end
 
       it "does not change the dependent field" do
-        expect(activity.collaboration_type).to eq("3")
+        expect(activity.collaboration_type).to eq("2")
       end
 
       it "allows edits to the dependent field" do
@@ -157,6 +157,17 @@ RSpec.describe FieldInference do
 
       it "restricts the allowed values for the dependent field" do
         expect(subject.allowed_values(activity, :collaboration_type)).to eq ["1", "2"]
+      end
+    end
+
+    describe "when the dependent field's current value is not allowed" do
+      before do
+        activity.collaboration_type = "3"
+        subject.assign(activity, :aid_type, "B02")
+      end
+
+      it "sets the dependent field to nil" do
+        expect(activity.collaboration_type).to be_nil
       end
     end
 
@@ -170,7 +181,7 @@ RSpec.describe FieldInference do
       end
 
       it "does not change the dependent field" do
-        expect(activity.collaboration_type).to eq("3")
+        expect(activity.collaboration_type).to eq("2")
       end
 
       it "allows edits to the dependent field" do
@@ -187,7 +198,7 @@ RSpec.describe FieldInference do
     before do
       activity.aid_type = nil
       activity.channel_of_delivery_code = nil
-      activity.collaboration_type = "3"
+      activity.collaboration_type = "2"
 
       subject.on(:aid_type, "D02").restrict(:collaboration_type, ["1", "2"])
       subject.on(:channel_of_delivery_code, "40000").restrict(:collaboration_type, ["2", "3"])
@@ -203,7 +214,7 @@ RSpec.describe FieldInference do
       end
 
       it "does not change the dependent field" do
-        expect(activity.collaboration_type).to eq("3")
+        expect(activity.collaboration_type).to eq("2")
       end
 
       it "allows edits to the dependent field" do

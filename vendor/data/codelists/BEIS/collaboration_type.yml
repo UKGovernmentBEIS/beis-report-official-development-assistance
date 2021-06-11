@@ -3,5 +3,9 @@ data:
     name: Bilateral
   - code: '2'
     name: Multilateral (inflows)
+    channel_of_delivery_code: '40000'
   - code: '3'
     name: Bilateral, core contributions to NGOs and other private bodies / PPPs
+    channel_of_delivery_code:
+      - '20000'
+      - '51000'

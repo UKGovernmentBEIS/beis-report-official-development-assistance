@@ -44,6 +44,7 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step unless @activity.is_newton_funded?
     when :channel_of_delivery_code
       skip_step unless @activity.is_project?
+      skip_step unless Activity::Inference.service.editable?(@activity, :channel_of_delivery_code)
     when :oda_eligibility_lead
       skip_step unless @activity.is_project?
     when :uk_dp_named_contact
