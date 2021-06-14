@@ -691,6 +691,7 @@
 ## [release-56] - 2021-06-15
 
 - Infer the value of `channel_of_delivery_code` from `collaboration_type`
+- Reports have an Activities tab
 
 ## [unreleased]
 
