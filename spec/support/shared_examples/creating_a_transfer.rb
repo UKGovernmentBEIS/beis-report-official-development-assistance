@@ -67,6 +67,19 @@ RSpec.shared_examples "creating a transfer" do
     end
   end
 
+  scenario "records the BEIS identifier if provided" do
+    fill_in_transfer_form(type: transfer_type, value: "1234", beis_identifier: "historic-tracker-id")
+    click_on t("form.button.#{transfer_type}.submit")
+    expect(page).to have_content("historic-tracker-id")
+
+    click_on "Yes"
+    expect(created_transfer.beis_identifier).to eq("historic-tracker-id")
+
+    within "##{transfer_type.pluralize}" do
+      expect(page).to have_content("historic-tracker-id")
+    end
+  end
+
   scenario "allows a transfer to be changed before creating" do
     transfer = fill_in_transfer_form(type: transfer_type, value: "1234")
 
