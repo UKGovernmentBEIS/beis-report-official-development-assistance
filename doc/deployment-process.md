@@ -47,7 +47,7 @@ The heading should link to a Github URL at the bottom of the file, which shows t
    @here :badgerbadger: Release N of RODA going to production :badgerbadger:
    ```
 
-1. Manually merge to master to release
+1. Manually merge develop into master in order to release
    Once the release pull request has been merged into the develop branch, the production deploy can be performed by manually merging develop into master:
    ```
    git fetch
