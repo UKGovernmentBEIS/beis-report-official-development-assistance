@@ -88,7 +88,7 @@ cf ssh beis-roda-prod
 - run a rails console
 
 ```
-bin/rails console --sandbox
+bin/rails console
 ```
 
 - locate your account
