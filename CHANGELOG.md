@@ -688,11 +688,14 @@
 - Show the user the activities that they've just uploaded
 - Allow Incoming Transfers to be recorded against an activity
 
-## [unreleased]
+## [release-56] - 2021-06-15
 
 - Infer the value of `channel_of_delivery_code` from `collaboration_type`
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-55...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-56...HEAD
+[release-56]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-55...release-56
 [release-55]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-54...release-55
 [release-54]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-53...release-54
 [release-53]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-52...release-53
