@@ -275,7 +275,7 @@ You already have the prepared file from the script run earlier.
 
 ## Import actual spend data into production
 
-- setup your user account to belong to the correct `Organisaton` i.e. the Delivery Partner
+- setup your user account to belong to the correct `Organisation` i.e. the Delivery Partner
 - connect to prod:
 
 ```
