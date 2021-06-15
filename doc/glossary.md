@@ -88,10 +88,10 @@ A record of the financials relating to an organisation's activities during a spe
 
 Actuals are what money the organisation spent during the financial quarter relevant to the report.
 
-## SID
+## SID
 Statistics on International Development
 
-"This publication provides statistics about the amount of Official Development Assistance (ODA) the UK provided in [year], including UK ODA as a percentage of Gross National Income (GNI) (the ODA:GNI ratio) and various other breakdowns of ODA spend.""
+"This publication provides statistics about the amount of Official Development Assistance (ODA) the UK provided in [year], including UK ODA as a percentage of Gross National Income (GNI) (the ODA:GNI ratio) and various other breakdowns of ODA spend."
 
 ## Third-party project
 
