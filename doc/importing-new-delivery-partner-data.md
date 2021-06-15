@@ -123,7 +123,7 @@ We do not import reports, but the forecasts and actual spend require the correct
 active report in order to run successfully.
 
 We have made the decision to run the import as though the data was collected in
-FQ3 2020-2021 (1 Oct 2020 – 31 December 2020)
+FQ3 2020-2021 (1 Oct 2020 – 31 December 2020)
 
 ### Create the report
 
