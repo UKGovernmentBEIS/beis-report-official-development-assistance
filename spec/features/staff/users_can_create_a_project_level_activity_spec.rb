@@ -149,8 +149,24 @@ RSpec.feature "Users can create a project" do
         end
       end
 
-      context "when the aid type is one of 'B02', 'B03'" do
+      context "when the aid type is 'B03'" do
         it "skips the collaboration type step and infers it from the aid type" do
+          programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
+          create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
+
+          visit organisation_activity_children_path(programme.extending_organisation, programme)
+          click_on t("action.activity.add_child")
+
+          # Test is done in this method:
+          fill_in_activity_form(level: "project", parent: programme, aid_type: "B03")
+
+          expect(page).to have_content t("action.project.create.success")
+          expect(programme.child_activities.last.collaboration_type).to eql "1"
+        end
+      end
+
+      context "when the aid type is 'B02'" do
+        it "skips the collaboration type and channel of delivery steps and infers them from the aid type" do
           programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
           create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 
@@ -162,6 +178,7 @@ RSpec.feature "Users can create a project" do
 
           expect(page).to have_content t("action.project.create.success")
           expect(programme.child_activities.last.collaboration_type).to eql "2"
+          expect(programme.child_activities.last.channel_of_delivery_code).to eql "40000"
         end
       end
 

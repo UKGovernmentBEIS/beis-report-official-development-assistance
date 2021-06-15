@@ -81,7 +81,7 @@ live environment, and seed the database with the local users, you can
 run this command:
 
 ```bash
-bin/db-restore ENVIRONMENT
+script/db-restore ENVIRONMENT
 ```
 
 (Where `ENVIRONMENT` is one of `pentest`, `prod` or `staging` - default is

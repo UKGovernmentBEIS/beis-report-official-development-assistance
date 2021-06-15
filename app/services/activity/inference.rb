@@ -23,6 +23,16 @@ class Activity
         end
       end
 
+      Codelist.new(source: "beis", type: "collaboration_type").each do |item|
+        allowed_values = item["channel_of_delivery_code"]
+        rule = service.on(:collaboration_type, item["code"])
+
+        case allowed_values
+        when String then rule.fix(:channel_of_delivery_code, allowed_values)
+        when Array then rule.restrict(:channel_of_delivery_code, allowed_values)
+        end
+      end
+
       service
     end
   end

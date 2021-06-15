@@ -1,6 +1,6 @@
 = render layout: "wrapper" do |f|
   = f.govuk_collection_radio_buttons :channel_of_delivery_code,
-                                      channel_of_delivery_codes,
+                                      channel_of_delivery_codes(@activity),
                                       :code,
                                       :name,
                                       legend: { tag: 'h1', size: 'xl', text: t("form.legend.activity.channel_of_delivery_code") }

@@ -690,6 +690,8 @@
 
 ## [unreleased]
 
+- Infer the value of `channel_of_delivery_code` from `collaboration_type`
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-55...HEAD
 [release-55]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-54...release-55
 [release-54]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-53...release-54

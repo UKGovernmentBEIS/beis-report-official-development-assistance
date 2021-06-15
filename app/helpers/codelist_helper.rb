@@ -164,12 +164,13 @@ module CodelistHelper
     Codelist.new(type: "channel_of_delivery_code", source: "beis").list
   end
 
-  def channel_of_delivery_codes
+  def channel_of_delivery_codes(activity = nil)
     iati_data = Codelist.new(type: "channel_of_delivery_code")
-    beis_allowed_codes = beis_allowed_channel_of_delivery_codes
+    inferred_codes = activity && Activity::Inference.service.allowed_values(activity, :channel_of_delivery_code)
+    allowed_codes = inferred_codes || beis_allowed_channel_of_delivery_codes
 
     iati_data.select { |item|
-      item["code"].in?(beis_allowed_codes)
+      item["code"].in?(allowed_codes)
     }.map { |item|
       OpenStruct.new(name: "#{item["code"]}: #{item["name"]}", code: item["code"])
     }
