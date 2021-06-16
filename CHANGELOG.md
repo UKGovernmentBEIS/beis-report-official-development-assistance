@@ -691,9 +691,11 @@
 ## [release-56] - 2021-06-15
 
 - Infer the value of `channel_of_delivery_code` from `collaboration_type`
-- Reports have an Activities tab
 
 ## [unreleased]
+
+- Reports have an Activities tab
+- Incoming and outgoing transfers can store the historic BEIS identifier (tracker row ID)
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-56...HEAD
 [release-56]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-55...release-56

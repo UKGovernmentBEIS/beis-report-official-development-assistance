@@ -20,6 +20,11 @@
               = @transfer_presenter.source.organisation.name
           %tr.govuk-table__row
             %th.govuk-table__header{scope: "row"}
+              = t("fields.outgoing_transfer.beis_identifier")
+            %td.govuk-table__cell
+              = @transfer_presenter.beis_identifier
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "row"}
               = t("fields.incoming_transfer.financial_quarter_and_year")
             %td.govuk-table__cell
               = @transfer_presenter.financial_quarter_and_year
@@ -33,6 +38,7 @@
         = f.hidden_field :confirm, value: 1
         = f.hidden_field :destination_id
         = f.hidden_field :source_roda_identifier, value: @transfer.source_roda_identifier
+        = f.hidden_field :beis_identifier
         = f.hidden_field :financial_quarter
         = f.hidden_field :financial_year
         = f.hidden_field :value
