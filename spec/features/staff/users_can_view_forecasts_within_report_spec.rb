@@ -16,7 +16,12 @@ RSpec.feature "Users can view forecasts in tab within a report" do
 
       expect(page).to have_content(t("page_content.tab_content.forecasts.heading"))
       expect(page).to have_link(t("action.forecast.upload.link"))
+
       # guidance with 2 links
+      expect(page).to have_content("This page shows all the new or updated forecasts")
+      expect(page).to have_link("uploading new activities")
+      expect(page).to have_link("uploading updates to activities")
+
       # forecasts per activity
     end
 

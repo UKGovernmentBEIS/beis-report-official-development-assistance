@@ -41,6 +41,13 @@ en:
     tab_content:
       forecasts:
         heading: Forecasts in this report
+        guidance_html:
+          <p class="govuk-body">
+            This page shows all the new or updated forecasts you have reported in RODA since the last reporting quarter.
+          </p>
+          <p class="govuk-body">
+            For in-depth guidance, refer to <a href="https://beisodahelp.zendesk.com/hc/en-gb/search?utf8=%E2%9C%93&query=uploading+new+activities">uploading new activities</a> and <a href="https://beisodahelp.zendesk.com/hc/en-gb/search?utf8=%E2%9C%93&query=update+activities">uploading updates to activities</a> in the help centre.
+          </p>
     report:
       activate:
         confirm: By activating this report, you will allow Delivery Partner users to add new data, and amend existing data. These changes will associate to this report only.

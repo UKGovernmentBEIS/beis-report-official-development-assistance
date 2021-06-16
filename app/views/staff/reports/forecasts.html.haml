@@ -16,6 +16,8 @@
           %h2.govuk-heading-l
             = t("page_content.tab_content.forecasts.heading")
 
+          = t("page_content.tab_content.forecasts.guidance_html")
+
           - if policy(@report_presenter).upload?
             = link_to t("action.forecast.upload.link"), new_report_forecast_upload_path(@report_presenter), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
 
