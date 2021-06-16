@@ -1,6 +1,7 @@
 # Importing delivery partner data to the application
 
 ## General
+
 We have enough confidence in our code to run this as a pair on production.
 
 If you want to gain confidence about any aspect and would get that by running
@@ -16,6 +17,7 @@ the Trello card (see below), this keeps a record of what might have been
 modified for the import and the original files.
 
 ## Cards and source files
+
 We have a Trello card for each import to be run for each
 
 - delivery partner organisation
@@ -39,6 +41,61 @@ For GCRF:
 Pick up a card as a pair and move it to 'in progress'.
 
 The steps below should be followed in order as they are dependent on each other.
+
+## Reports
+
+We do not import reports, but activities, forecasts and actual spend require the
+correct active report in order to run successfully.
+
+### Create the report
+
+- connect to prod:
+
+```
+cf login
+cf ssh beis-roda-prod
+```
+
+- run a rails console
+
+```
+bin/rails console
+```
+
+- get the `organisation` id for the delivery partner
+
+```
+organisation_id = Organisation.find_by(name: "NAME").id
+```
+
+- get the `Activity` id of the fund you are importing
+
+```
+gcrf_id = Activity.by_roda_identifier("GCRF").id
+```
+
+or
+
+```
+newton_id = Activity.by_roda_identifier("NF").id
+```
+
+- create the report, financial quarter and year are read only so we use
+  `update_all` to bypass those checks! (where `FINANCIAL_QUARTER` and `FINANCIAL_YEAR` are the Quarter/Year you want to report for)
+
+```
+report = Report.new(fund_id: FUND_ID, organisation_id: organisation_id, state: :active, description: "Onboarding data import")
+report.save!
+Report.where(id: report.id).update_all(financial_quarter: FINANCIAL_QUARTER, financial_year: FINANCIAL_YEAR)
+```
+
+- Confirm `1` is returned, one record effected
+
+- Confirm the report is now for Q3 2020:
+
+```
+report.reload
+```
 
 ## Activity
 
@@ -96,6 +153,7 @@ bin/rails console
 ```
 me = User.find_by(email: youremail)
 ```
+
 - locate the organisation id you want
 
 ```
@@ -107,6 +165,7 @@ Organisation.all.pluck(:name, :id)
 ```
 me.update(organisation_id: "organisation_id")
 ```
+
 - quit the console
 
 - run the import
@@ -116,64 +175,6 @@ bin/rails activities:import CSV=FILENAME ORGANISATION_ID=ORGANISATION_ID UPLOADE
 ```
 
 - smoke test the activities in production after each level is imported
-
-## Reports
-
-We do not import reports, but the forecasts and actual spend require the correct
-active report in order to run successfully.
-
-We have made the decision to run the import as though the data was collected in
-FQ3 2020-2021 (1 Oct 2020 – 31 December 2020)
-
-### Create the report
-
-- connect to prod:
-
-```
-cf login
-cf ssh beis-roda-prod
-```
-
-- run a rails console
-
-```
-bin/rails console
-```
-
-- get the `organisation` id for the delivery partner
-
-```
-organisation_id = Organisation.find_by(name: "NAME").id
-```
-
-- get the `Activity` id of the fund you are importing
-
-```
-gcrf_id = Activity.find_by(level: :fund, title: "Global Challenges Research Fund (GCRF)").id
-```
-
-or
-
-```
-newton_id = Activity.find_by(level: :fund, title: "Newton Fund").id
-```
-
-- create the report, financial quarter and year are read only so we use
-  `update_all` to bypass those checks!
-
-```
-report = Report.new(fund_id: FUND_ID, organisation_id: organisation_id, state: :active, description: "Onboarding data import")
-report.save!
-Report.where(id: report.id).update_all(financial_quarter: 3, financial_year: 2020)
-```
-
-- Confirm `1` is returned, one record effected
-
-- Confirm the report is now for Q3 2020:
-
-```
-report.reload
-```
 
 ## Forecasts
 
@@ -221,9 +222,9 @@ contains anything earlier, delete those columns.
 
 - copy the file over to prod
 
-````
+```
 cat FILENAME.csv | cf ssh beis-roda-prod -c "cat > FILENAME.csv"
-````
+```
 
 - connect to production:
 
@@ -294,6 +295,7 @@ bin/rails console
 ```
 me = User.find_by(email: YOUREMAIL)
 ```
+
 - locate the organisation id you want
 
 ```
@@ -314,8 +316,8 @@ me.update(organisation_id: ORGANISATION_ID)
 - click on upload actuals
 - provide the file and run the import
 
-
 ## Import completed
+
 - zip the csv file used and attach to the Trello card
 - move the Trello card to 'ready for review'
 - let the team know in Slack that the import is complete:
