@@ -31,11 +31,16 @@ en:
   tabs:
     report:
       activities: Activities
+      forecasts: Forecasts
       variance: Variance
       budgets: Budgets
+
   page_content:
     reports:
       title: Reports
+    tab_content:
+      forecasts:
+        heading: Forecasts in this report
     report:
       activate:
         confirm: By activating this report, you will allow Delivery Partner users to add new data, and amend existing data. These changes will associate to this report only.
@@ -104,6 +109,7 @@ en:
         confirm: Confirm approval of %{report_organisation} %{report_financial_quarter} report
         complete: This report is approved
       variance: "%{report_financial_quarter} %{report_description} variance"
+      forecasts: "%{report_financial_quarter} %{report_description} forecasts"
       budgets: "%{report_financial_quarter} %{report_description} budgets"
       activities: "%{report_financial_quarter} %{report_description} activities"
   mailer:
