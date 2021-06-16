@@ -13,7 +13,7 @@ RSpec.feature "users can upload activities" do
 
   before do
     authenticate!(user: user)
-    visit report_path(report)
+    visit report_activities_path(report)
     click_link t("action.activity.upload.link")
   end
 
@@ -81,7 +81,7 @@ RSpec.feature "users can upload activities" do
 
     expect(Activity.count - old_count).to eq(2)
     expect(page).to have_text(t("action.activity.upload.success"))
-    expect(page).to have_text("List of activities successfully created")
+    expect(page).to have_text("List of activities created")
 
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[2]", text: "Programme - Award (round 5)")
@@ -175,7 +175,7 @@ RSpec.feature "users can upload activities" do
     CSV
 
     expect(page).to have_text(t("action.activity.upload.success"))
-    expect(page).to have_text("List of activities successfully updated")
+    expect(page).to have_text("List of activities updated")
 
     expect(activity_to_update.reload.title).to eq("New Title")
 

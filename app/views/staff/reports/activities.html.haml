@@ -1,0 +1,33 @@
+=content_for :page_title_prefix, t("page_title.report.activities", report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+
+  = render "staff/reports/meta"
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      .govuk-tabs
+        %h2.govuk-tabs__title
+          Contents
+
+        = render partial: "staff/reports/tab_list", locals: { active_tab: "activities" }
+
+        .govuk-tabs__panel
+          %h2.govuk-heading-l
+            = t("tabs.report.activities")
+
+          %p.govuk-body
+            All activities that are reportable for this report are shown below.
+
+          %p.govuk-body
+            For guidance on adding or updating activities, see the
+            = link_to_new_tab "guidance in the help centre", "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005510061-Understanding-the-Bulk-Upload-Functionality-to-Report-your-Data"
+
+          - if policy(@report_presenter).upload?
+            %p.govuk-body
+              Large numbers of activities can be added or updated via the activities upload.
+
+            %p.govuk-body
+              = link_to t("action.activity.upload.link"), new_report_activity_upload_path(@report_presenter), class: "govuk-link"
+
+          = render partial: "staff/activity_uploads/activities_table", locals: { action: "related to this report", activities: @activities }
