@@ -17,7 +17,7 @@ RSpec.feature "users can upload forecasts" do
 
   before do
     authenticate!(user: user)
-    visit report_path(report)
+    visit report_forecasts_path(report)
     click_link t("action.forecast.upload.link")
   end
 
