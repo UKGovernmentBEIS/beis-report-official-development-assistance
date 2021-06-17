@@ -16,10 +16,14 @@ RSpec.feature "Users can view forecasts in tab within a report" do
         .latest_values
         .map { |f| ForecastPresenter.new(f) }
 
+      fail "We expect some activities to be present" if activities.none?
+
       activities.each do |activity|
         within "#activity_#{activity.id}" do
           expect(page).to have_content(activity.title)
           expect(page).to have_content(activity.roda_identifier)
+
+          fail "We expect some forecasts to be present" if forecasts.none?
 
           within ".forecasts" do
             forecasts.each do |forecast|
