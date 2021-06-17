@@ -1694,8 +1694,7 @@ RSpec.describe Activity, type: :model do
     describe "#total_budget" do
       let(:activity) { programme1 }
 
-      let!(:external_oda_budget) { create(:budget, :external_official_development_assistance, value: rand(100..200), parent_activity: activity) }
-      let!(:external_non_oda_budget) { create(:budget, :external_non_official_development_assistance, value: rand(100..200), parent_activity: activity) }
+      let!(:external_budget) { create(:budget, :other_official_development_assistance, value: rand(100..200), parent_activity: activity) }
 
       context "when there is one direct budget for an activity" do
         let!(:budget) do

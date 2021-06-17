@@ -6,8 +6,5 @@ data:
     name: Direct (Global Challenges Research Fund)
     description: Budget allocated directly from the GCRF funded parent activity
   - code: 4
-    name: External Official Development Assistance
+    name: Other official development assistance
     description: Budget allocated from an external organisation that is still considered ODA funding
-  - code: 5
-    name: External non Official Development Assistance
-    description: Budget allocated from an external organisation that is NOT considered ODA funding

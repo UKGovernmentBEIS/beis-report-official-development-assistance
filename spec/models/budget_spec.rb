@@ -22,9 +22,7 @@ RSpec.describe Budget do
         it { is_expected.not_to allow_value(9999).for(:budget_type) }
         it { is_expected.not_to allow_value("").for(:budget_type) }
 
-        it { is_expected.to allow_value(Budget::BUDGET_TYPES["direct_newton_fund"]).for(:budget_type) }
-        it { is_expected.to allow_value(4).for(:budget_type) }
-        it { is_expected.to allow_value(5).for(:budget_type) }
+        it { is_expected.to allow_value(Budget::BUDGET_TYPES["other_official_development_assistance"]).for(:budget_type) }
       end
 
       context "when the parent activity is GCRF funded" do
@@ -34,9 +32,7 @@ RSpec.describe Budget do
         it { is_expected.not_to allow_value(9999).for(:budget_type) }
         it { is_expected.not_to allow_value("").for(:budget_type) }
 
-        it { is_expected.to allow_value(Budget::BUDGET_TYPES["direct_global_challenges_research_fund"]).for(:budget_type) }
-        it { is_expected.to allow_value(4).for(:budget_type) }
-        it { is_expected.to allow_value(5).for(:budget_type) }
+        it { is_expected.to allow_value(Budget::BUDGET_TYPES["other_official_development_assistance"]).for(:budget_type) }
       end
     end
 
@@ -108,8 +104,7 @@ RSpec.describe Budget do
         newton_fund_budget = create(:budget, :direct_newton)
         gcrf_fund_budget = create(:budget, :direct_gcrf)
 
-        _external_oda_budget = create(:budget, :external_official_development_assistance)
-        _external_non_oda_budget = create(:budget, :external_non_official_development_assistance)
+        _external_budget = create(:budget, :other_official_development_assistance)
 
         expect(Budget.direct).to match_array([newton_fund_budget, gcrf_fund_budget])
       end
