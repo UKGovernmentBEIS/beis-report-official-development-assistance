@@ -27,10 +27,10 @@
           %table.govuk-table
             %thead.govuk-table__head
               %tr.govuk-table__row
-                %th.govuk-table__header{scope: "col"} Activity
-                %th.govuk-table__header{scope: "col"} RODA Identifier
-                %th.govuk-table__header{scope: "col"} Financial Quarter
-                %th.govuk-table__header{scope: "col"} Amount
+                %th.govuk-table__header{class: "govuk-!-width-one-quarter", scope: "col"} Activity
+                %th.govuk-table__header{class: "govuk-!-width-one-quarter", scope: "col"} RODA Identifier
+                %th.govuk-table__header.govuk-table__header--numeric{class: "govuk-!-width-one-quarter", scope: "col"} Financial Quarter
+                %th.govuk-table__header.govuk-table__header--numeric{class: "govuk-!-width-one-quarter", scope: "col"} Amount
             %tbody.govuk-table__body
 
               - @grouped_forecasts.each do |activity_id, forecasts|
@@ -44,9 +44,9 @@
                     %table.govuk-table.forecasts
                       - forecasts.map {|f| ForecastPresenter.new(f) }.each do |forecast|
                         %tr.govuk-table__row
-                          %td
+                          %td.govuk-table__cell--numeric
                             = forecast.financial_quarter_and_year
-                          %td
+                          %td.govuk-table__cell--numeric
                             = forecast.value
 
 
