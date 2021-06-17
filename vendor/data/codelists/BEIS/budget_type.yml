@@ -5,9 +5,6 @@ data:
   - code: 2
     name: Direct (Global Challenges Research Fund)
     description: Budget allocated directly from the GCRF funded parent activity
-  - code: 3
-    name: Transferred
-    description: Budget allocated to an activity from a transfer
   - code: 4
     name: External Official Development Assistance
     description: Budget allocated from an external organisation that is still considered ODA funding

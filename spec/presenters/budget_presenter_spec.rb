@@ -52,12 +52,5 @@ RSpec.describe BudgetPresenter do
 
       expect(described_class.new(budget).providing_organisation_name).to eql("Some NGO")
     end
-
-    it "returns the name of the providing_organisation for transferred budgets" do
-      budget.budget_type = 3
-      budget.providing_organisation = build_stubbed(:delivery_partner_organisation, name: "British Academy")
-
-      expect(described_class.new(budget).providing_organisation_name).to eql("British Academy")
-    end
   end
 end

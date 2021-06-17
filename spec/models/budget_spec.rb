@@ -23,7 +23,6 @@ RSpec.describe Budget do
         it { is_expected.not_to allow_value("").for(:budget_type) }
 
         it { is_expected.to allow_value(Budget::BUDGET_TYPES["direct_newton_fund"]).for(:budget_type) }
-        it { is_expected.to allow_value(3).for(:budget_type) }
         it { is_expected.to allow_value(4).for(:budget_type) }
         it { is_expected.to allow_value(5).for(:budget_type) }
       end
@@ -36,7 +35,6 @@ RSpec.describe Budget do
         it { is_expected.not_to allow_value("").for(:budget_type) }
 
         it { is_expected.to allow_value(Budget::BUDGET_TYPES["direct_global_challenges_research_fund"]).for(:budget_type) }
-        it { is_expected.to allow_value(3).for(:budget_type) }
         it { is_expected.to allow_value(4).for(:budget_type) }
         it { is_expected.to allow_value(5).for(:budget_type) }
       end
@@ -52,28 +50,6 @@ RSpec.describe Budget do
           subject.valid?
 
           expect(subject.providing_organisation_id).to eql(service_owner.id)
-        end
-
-        it "discards any input to the _name and _type attributes" do
-          subject.providing_organisation_name = "Etc"
-          subject.providing_organisation_type = "International ONG"
-
-          subject.valid?
-
-          expect(subject.providing_organisation_name).to be_nil
-          expect(subject.providing_organisation_type).to be_nil
-        end
-      end
-
-      context "when the budget type is Transferred" do
-        subject { build(:budget, budget_type: Budget::BUDGET_TYPES["transferred"], parent_activity: build(:programme_activity)) }
-
-        it { is_expected.not_to allow_value(nil).for(:providing_organisation_id) }
-
-        it "does not set the providing_organisation_id to that of the service owner" do
-          subject.valid?
-
-          expect(subject.providing_organisation_id).not_to eql(service_owner.id)
         end
 
         it "discards any input to the _name and _type attributes" do
@@ -127,16 +103,15 @@ RSpec.describe Budget do
   end
 
   describe "scopes" do
-    describe ".direct_or_transferred" do
-      it "returns only direct or transferred Budgets" do
+    describe ".direct" do
+      it "returns only direct Budgets" do
         newton_fund_budget = create(:budget, :direct_newton)
         gcrf_fund_budget = create(:budget, :direct_gcrf)
-        transferred_budget = create(:budget, :transferred)
 
         _external_oda_budget = create(:budget, :external_official_development_assistance)
         _external_non_oda_budget = create(:budget, :external_non_official_development_assistance)
 
-        expect(Budget.direct_or_transferred).to match_array([newton_fund_budget, gcrf_fund_budget, transferred_budget])
+        expect(Budget.direct).to match_array([newton_fund_budget, gcrf_fund_budget])
       end
     end
   end

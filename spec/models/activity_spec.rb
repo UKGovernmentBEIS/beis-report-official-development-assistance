@@ -1711,12 +1711,10 @@ RSpec.describe Activity, type: :model do
         let!(:direct_newton_budgets) do
           create_list(:budget, 5, :direct_newton, value: rand(100..200), parent_activity: activity)
         end
-        let!(:transferred_budget) { create(:budget, :transferred, value: rand(100..200), parent_activity: activity) }
 
-        it "sums all of the direct and transferred budget" do
+        it "sums all of the direct budget" do
           expect(activity.total_budget).to eq([
             *direct_newton_budgets,
-            transferred_budget,
           ].sum(&:value))
         end
       end

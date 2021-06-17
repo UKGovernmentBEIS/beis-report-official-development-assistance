@@ -5,15 +5,13 @@ class Budget < ApplicationRecord
   IATI_STATUSES = Codelist.new(type: "budget_status", source: "iati").hash_of_coded_names
   BUDGET_TYPES = Codelist.new(type: "budget_type", source: "beis").hash_of_coded_names
   DIRECT_BUDGET_TYPES = [BUDGET_TYPES["direct_newton_fund"], BUDGET_TYPES["direct_global_challenges_research_fund"]]
-  TRANSFERRED_BUDGET_TYPES = [BUDGET_TYPES["transferred"]]
 
   belongs_to :parent_activity, class_name: "Activity"
   belongs_to :report, optional: true
   belongs_to :providing_organisation, class_name: "Organisation", optional: true
 
-  scope :direct_or_transferred, -> {
-    budget_types = DIRECT_BUDGET_TYPES + TRANSFERRED_BUDGET_TYPES
-    where(budget_type: budget_types)
+  scope :direct, -> {
+    where(budget_type: DIRECT_BUDGET_TYPES)
   }
 
   before_validation :infer_and_assign_providing_org_attrs
@@ -29,10 +27,6 @@ class Budget < ApplicationRecord
     direct_budget.validate :direct_budget_type_must_match_source_fund
     direct_budget.validate :direct_budget_providing_org_must_be_beis
     direct_budget.validates :providing_organisation_id, presence: true
-  end
-
-  with_options if: -> { transferred_budget? } do |transferred_budget|
-    transferred_budget.validates :providing_organisation_id, presence: true
   end
 
   with_options if: -> { external_budget? } do |external_budget|
@@ -79,10 +73,6 @@ class Budget < ApplicationRecord
       self.providing_organisation_name = nil
       self.providing_organisation_type = nil
       self.providing_organisation_reference = nil
-    elsif transferred_budget?
-      self.providing_organisation_name = nil
-      self.providing_organisation_type = nil
-      self.providing_organisation_reference = nil
     else
       self.providing_organisation_id = nil
     end
@@ -92,11 +82,7 @@ class Budget < ApplicationRecord
     DIRECT_BUDGET_TYPES.include?(budget_type)
   end
 
-  private def transferred_budget?
-    TRANSFERRED_BUDGET_TYPES.include?(budget_type)
-  end
-
   private def external_budget?
-    !direct_budget? && !transferred_budget?
+    !direct_budget?
   end
 end
