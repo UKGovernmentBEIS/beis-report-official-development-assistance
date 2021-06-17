@@ -8,6 +8,7 @@ class Staff::ReportForecastsController < Staff::BaseController
     authorize @report
 
     @report_presenter = ReportPresenter.new(@report)
+    @report_activities = @report.reportable_activities
 
     render "staff/reports/forecasts"
   end

@@ -21,3 +21,22 @@
           - if policy(@report_presenter).upload?
             = link_to t("action.forecast.upload.link"), new_report_forecast_upload_path(@report_presenter), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
 
+          %h3.govuk-heading-m
+            = t("page_content.tab_content.forecasts.per_activity_heading")
+
+          %table.govuk-table
+            %thead.govuk-table__head
+              %tr.govuk-table__row
+                %th.govuk-table__header{scope: "col"} Activity
+                %th.govuk-table__header{scope: "col"} RODA Identifier
+                %th.govuk-table__header{scope: "col"} Financial Quarter
+                %th.govuk-table__header{scope: "col"} Amount
+            %tbody.govuk-table__body
+              - @report_activities.each do |activity|
+                - activity_presenter = ActivityPresenter.new(activity)
+                %tr.govuk-table__row[activity]
+                  %td.govuk-table__cell= activity_presenter.title
+                  %td.govuk-table__cell= activity_presenter.roda_identifier
+                  %td.govuk-table__cell
+                  %td.govuk-table__cell
+

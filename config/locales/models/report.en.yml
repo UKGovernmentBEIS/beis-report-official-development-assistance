@@ -41,6 +41,7 @@ en:
     tab_content:
       forecasts:
         heading: Forecasts in this report
+        per_activity_heading: Forecast spend per activity
         guidance_html:
           <p class="govuk-body">
             This page shows all the new or updated forecasts you have reported in RODA since the last reporting quarter.
