@@ -11,10 +11,22 @@ RSpec.feature "Users can view forecasts in tab within a report" do
       expect(page).to have_content(
         t("page_content.tab_content.forecasts.per_activity_heading")
       )
+
+      forecasts = ForecastOverview.new(activities.map(&:id))
+        .latest_values
+        .map { |f| ForecastPresenter.new(f) }
+
       activities.each do |activity|
         within "#activity_#{activity.id}" do
           expect(page).to have_content(activity.title)
           expect(page).to have_content(activity.roda_identifier)
+
+          within ".forecasts" do
+            forecasts.each do |forecast|
+              expect(page).to have_content(forecast.value)
+              expect(page).to have_content(forecast.financial_quarter_and_year)
+            end
+          end
         end
       end
     end
@@ -22,11 +34,37 @@ RSpec.feature "Users can view forecasts in tab within a report" do
     scenario "the report contains a _forecasts_ tab" do
       programme = create(:programme_activity)
 
-      report = create(:report, :active, organisation: organisation, fund: programme.parent)
       project = create(:project_activity, organisation: organisation, parent: programme)
 
+      report = create(
+        :report,
+        :active,
+        organisation: organisation,
+        fund: programme.parent,
+        financial_quarter: 3,
+        financial_year: 2020,
+      )
+
       activities = 2.times.map {
-        create(:third_party_project_activity, organisation: organisation, parent: project)
+        create(
+          :third_party_project_activity,
+          organisation: organisation,
+          parent: project
+        ).tap do |activity|
+          ForecastHistory.new(
+            activity,
+            financial_quarter: 4,
+            financial_year: 2020,
+            user: user
+          ).set_value(50_000)
+
+          ForecastHistory.new(
+            activity,
+            financial_quarter: 1,
+            financial_year: 2021,
+            user: user
+          ).set_value(75_000)
+        end
       }
 
       visit report_path(report.id)

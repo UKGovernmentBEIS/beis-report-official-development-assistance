@@ -32,11 +32,21 @@
                 %th.govuk-table__header{scope: "col"} Financial Quarter
                 %th.govuk-table__header{scope: "col"} Amount
             %tbody.govuk-table__body
-              - @report_activities.each do |activity|
+
+              - @grouped_forecasts.each do |activity_id, forecasts|
+                - activity = @report_activities.find { |r| r.id == activity_id }
                 - activity_presenter = ActivityPresenter.new(activity)
+
                 %tr.govuk-table__row[activity]
                   %td.govuk-table__cell= activity_presenter.title
                   %td.govuk-table__cell= activity_presenter.roda_identifier
-                  %td.govuk-table__cell
-                  %td.govuk-table__cell
+                  %td.govuk-table__cell{ colspan: 2 }
+                    %table.govuk-table.forecasts
+                      - forecasts.map {|f| ForecastPresenter.new(f) }.each do |forecast|
+                        %tr.govuk-table__row
+                          %td
+                            = forecast.financial_quarter_and_year
+                          %td
+                            = forecast.value
+
 
