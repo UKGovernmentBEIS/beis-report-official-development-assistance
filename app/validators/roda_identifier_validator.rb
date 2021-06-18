@@ -19,7 +19,7 @@ class RodaIdentifierValidator < ActiveModel::Validator
   private
 
   def validate_for_fund(activity, fragment)
-    limit = 16
+    limit = 5
     check_size(activity, fragment, limit, :level_a_too_long)
   end
 

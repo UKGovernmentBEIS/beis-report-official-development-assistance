@@ -700,6 +700,8 @@
 
 ## [unreleased]
 
+- Reduce the maximum length of a fund's RODA identifier to 5 characters
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-57...HEAD
 [release-57]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-56...release-57
 [release-56]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-55...release-56
