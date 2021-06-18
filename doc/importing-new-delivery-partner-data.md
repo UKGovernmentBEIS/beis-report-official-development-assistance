@@ -88,7 +88,7 @@ cf ssh beis-roda-prod
 - run a rails console
 
 ```
-bin/rails console --sandbox
+bin/rails console
 ```
 
 - locate your account
@@ -123,7 +123,7 @@ We do not import reports, but the forecasts and actual spend require the correct
 active report in order to run successfully.
 
 We have made the decision to run the import as though the data was collected in
-FQ3 2020-2021 (1 Oct 2020 – 31 December 2020)
+FQ3 2020-2021 (1 Oct 2020 – 31 December 2020)
 
 ### Create the report
 
@@ -275,7 +275,7 @@ You already have the prepared file from the script run earlier.
 
 ## Import actual spend data into production
 
-- setup your user account to belong to the correct `Organisaton` i.e. the Delivery Partner
+- setup your user account to belong to the correct `Organisation` i.e. the Delivery Partner
 - connect to prod:
 
 ```

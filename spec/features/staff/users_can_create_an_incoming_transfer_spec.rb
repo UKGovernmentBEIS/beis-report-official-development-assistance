@@ -1,4 +1,4 @@
-RSpec.feature "BEIS users can create an incoming transfer" do
+RSpec.feature "Delivery partner users can create an incoming transfer" do
   let(:user) { create(:delivery_partner_user) }
   before { authenticate!(user: user) }
 

@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_03_152129) do
+ActiveRecord::Schema.define(version: 2021_06_14_155407) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -192,6 +193,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_152129) do
     t.integer "financial_quarter"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "beis_identifier"
     t.index ["destination_id"], name: "index_incoming_transfers_on_destination_id"
     t.index ["report_id"], name: "index_incoming_transfers_on_report_id"
     t.index ["source_id"], name: "index_incoming_transfers_on_source_id"
@@ -234,6 +236,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_152129) do
     t.integer "financial_year"
     t.integer "financial_quarter"
     t.uuid "report_id"
+    t.string "beis_identifier"
     t.index ["destination_id"], name: "index_outgoing_transfers_on_destination_id"
     t.index ["report_id"], name: "index_outgoing_transfers_on_report_id"
     t.index ["source_id"], name: "index_outgoing_transfers_on_source_id"

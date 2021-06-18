@@ -35,6 +35,23 @@ RSpec.feature "Users can view activities" do
       expect(page).to have_content activity.roda_identifier
     end
 
+    scenario "only delivery partners are listed" do
+      delivery_partners = create_list(:delivery_partner_organisation, 3)
+      matched_effort_provider = create(:matched_effort_provider)
+      external_income_provider = create(:external_income_provider)
+
+      visit activities_path(organisation_id: user.organisation)
+
+      within "select#organisation_id" do
+        delivery_partners.each do |delivery_partner|
+          expect(page).to have_content(delivery_partner.name)
+        end
+
+        expect(page).to_not have_content(matched_effort_provider.name)
+        expect(page).to_not have_content(external_income_provider.name)
+      end
+    end
+
     context "when an organisation id query parameter is not supplied" do
       scenario "it defaults to showing the current users organisation activities" do
         activity = create(:programme_activity, organisation: user.organisation)

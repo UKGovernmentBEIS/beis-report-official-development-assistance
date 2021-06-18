@@ -30,6 +30,7 @@ en:
         comment: Comment
   tabs:
     report:
+      activities: Activities
       variance: Variance
       budgets: Budgets
   page_content:
@@ -104,6 +105,7 @@ en:
         complete: This report is approved
       variance: "%{report_financial_quarter} %{report_description} variance"
       budgets: "%{report_financial_quarter} %{report_description} budgets"
+      activities: "%{report_financial_quarter} %{report_description} activities"
   mailer:
     report:
       activated:

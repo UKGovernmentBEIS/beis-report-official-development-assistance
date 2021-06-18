@@ -1,3 +1,7 @@
+= f.govuk_text_field :beis_identifier,
+  label: { size: 'm' },
+  hint: { text: t("form.hint.outgoing_transfer.beis_identifier") }
+
 = f.govuk_fieldset legend: { text: t("form.label.outgoing_transfer.financial_quarter") }, described_by: ["quarter-hint"] do
   %p.govuk-body
     %span.govuk-hint#quarter-hint
@@ -17,5 +21,3 @@
         :name,
         label: { text: t("form.label.outgoing_transfer.financial_year"), tag: :p, size: 's' }
   = f.govuk_text_field :value, label: { size: 'm' }
-
-
