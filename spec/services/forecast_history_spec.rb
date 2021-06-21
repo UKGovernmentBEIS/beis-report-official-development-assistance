@@ -158,6 +158,10 @@ RSpec.describe ForecastHistory do
       ])
     end
 
+    it "returns a _Forecast_" do
+      expect(history.set_value(10)).to be_a(Forecast)
+    end
+
     it "does not create an original entry with a zero value" do
       history.set_value(0)
       expect(history_entries).to eq([])
