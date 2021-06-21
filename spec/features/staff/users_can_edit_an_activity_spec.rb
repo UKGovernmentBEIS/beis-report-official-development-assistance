@@ -423,9 +423,7 @@ RSpec.feature "Users can edit an activity" do
 
         within(".policy_marker_gender") do
           click_on(t("default.link.edit"))
-          expect(page).to have_current_path(
-            activity_step_path(activity, :policy_markers)
-          )
+          expect(page.current_url).to match(activity_step_path(activity, :policy_markers, anchor: "gender"))
         end
 
         choose "activity-policy-marker-gender-significant-objective-field"

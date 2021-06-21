@@ -332,7 +332,7 @@
         = activity_presenter.policy_marker_gender
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :policy_markers)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_gender)}"), activity_step_path(activity_presenter, :policy_markers), t("summary.label.activity.policy_marker_gender"))
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_gender)}"), activity_step_path(activity_presenter, :policy_markers, anchor: "gender"), t("summary.label.activity.policy_marker_gender"))
 
     .govuk-summary-list__row.policy_marker_climate_change_adaptation
       %dt.govuk-summary-list__key
@@ -341,7 +341,7 @@
         = activity_presenter.policy_marker_climate_change_adaptation
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :policy_markers)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_climate_change_adaptation)}"), activity_step_path(activity_presenter, :policy_markers), t("summary.label.activity.policy_marker_climate_change_adaptation"))
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_climate_change_adaptation)}"), activity_step_path(activity_presenter, :policy_markers, anchor: "adaptation"), t("summary.label.activity.policy_marker_climate_change_adaptation"))
 
     .govuk-summary-list__row.policy_marker_climate_change_mitigation
       %dt.govuk-summary-list__key
@@ -350,7 +350,7 @@
         = activity_presenter.policy_marker_climate_change_mitigation
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :policy_markers)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_climate_change_mitigation)}"), activity_step_path(activity_presenter, :policy_markers), t("summary.label.activity.policy_marker_climate_change_mitigation"))
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_climate_change_mitigation)}"), activity_step_path(activity_presenter, :policy_markers, anchor: "mitigation"), t("summary.label.activity.policy_marker_climate_change_mitigation"))
 
     .govuk-summary-list__row.policy_marker_biodiversity
       %dt.govuk-summary-list__key
@@ -359,7 +359,7 @@
         = activity_presenter.policy_marker_biodiversity
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :policy_markers)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_biodiversity)}"), activity_step_path(activity_presenter, :policy_markers), t("summary.label.activity.policy_marker_biodiversity"))
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_biodiversity)}"), activity_step_path(activity_presenter, :policy_markers, anchor: "biodiversity"), t("summary.label.activity.policy_marker_biodiversity"))
 
     .govuk-summary-list__row.policy_marker_desertification
       %dt.govuk-summary-list__key
@@ -368,7 +368,7 @@
         = activity_presenter.policy_marker_desertification
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :policy_markers)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_desertification)}"), activity_step_path(activity_presenter, :policy_markers), t("summary.label.activity.policy_marker_desertification"))
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_desertification)}"), activity_step_path(activity_presenter, :policy_markers, anchor: "desertification"), t("summary.label.activity.policy_marker_desertification"))
 
     .govuk-summary-list__row.policy_marker_disability
       %dt.govuk-summary-list__key
@@ -377,7 +377,7 @@
         = activity_presenter.policy_marker_disability
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :policy_markers)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_disability)}"), activity_step_path(activity_presenter, :policy_markers), t("summary.label.activity.policy_marker_disability"))
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_disability)}"), activity_step_path(activity_presenter, :policy_markers, anchor: "disability"), t("summary.label.activity.policy_marker_disability"))
 
     .govuk-summary-list__row.policy_marker_disaster_risk_reduction
       %dt.govuk-summary-list__key
@@ -386,7 +386,7 @@
         = activity_presenter.policy_marker_disaster_risk_reduction
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :policy_markers)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_disaster_risk_reduction)}"), activity_step_path(activity_presenter, :policy_markers), t("summary.label.activity.policy_marker_disaster_risk_reduction"))
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_disaster_risk_reduction)}"), activity_step_path(activity_presenter, :policy_markers, anchor: "risk-reduction"), t("summary.label.activity.policy_marker_disaster_risk_reduction"))
 
     .govuk-summary-list__row.policy_marker_nutrition
       %dt.govuk-summary-list__key
@@ -395,7 +395,7 @@
         = activity_presenter.policy_marker_nutrition
       %dd.govuk-summary-list__actions
         - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :policy_markers)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_nutrition)}"), activity_step_path(activity_presenter, :policy_markers), t("summary.label.activity.policy_marker_nutrition"))
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:policy_marker_nutrition)}"), activity_step_path(activity_presenter, :policy_markers, anchor: "nutrition"), t("summary.label.activity.policy_marker_nutrition"))
 
   .govuk-summary-list__row.covid19_related
     %dt.govuk-summary-list__key
