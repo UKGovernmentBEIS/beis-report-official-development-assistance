@@ -39,6 +39,12 @@ class Staff::ForecastUploadsController < Staff::BaseController
       @errors = importer.errors
 
       if @errors.empty?
+        imported_forecasts = importer.imported_forecasts.compact
+        @grouped_forecasts = imported_forecasts
+          .map { |forecast| ForecastPresenter.new(forecast) }
+          .group_by { |forecast| ActivityPresenter.new(forecast.parent_activity) }
+        @total_forecast = ActionController::Base.helpers
+          .number_to_currency(imported_forecasts.sum(&:value), unit: "£")
         @success = true
         flash.now[:notice] = t("action.forecast.upload.success")
       end

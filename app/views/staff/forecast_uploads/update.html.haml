@@ -2,14 +2,20 @@
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
-    .govuk-grid-column-two-thirds
-      %h1.govuk-heading-xl
-        = t("page_title.forecast.upload")
+    - if @success
+      .govuk-grid-column-full
+        %h1.govuk-heading-xl
+          = t("importer.success.heading")
+        = render partial: "shared/forecasts/forecasts_by_activity"
+        = link_to t("importer.success.back_link"), report_forecasts_path(@report_presenter), class: "govuk-button govuk-button"
 
-  - unless @errors.empty?
-    .govuk-grid-row
+    - else
+      .govuk-grid-column-two-thirds
+        %h1.govuk-heading-xl
+          = t("page_title.forecast.upload")
+        = render partial: "upload_form"
+
+    - if @errors.any?
       .govuk-grid-column-full
         = render partial: "error_table"
 
-  - unless @success
-    = render partial: "upload_form"

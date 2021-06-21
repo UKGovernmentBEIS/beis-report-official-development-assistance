@@ -21,6 +21,18 @@ RSpec.feature "users can upload forecasts" do
     click_link t("action.forecast.upload.link")
   end
 
+  def expect_to_see_successful_upload_summary_with(count:, total:)
+    expect(page).to have_text(t("importer.success.heading"))
+    expect(page).to have_css(".forecasts tr", count: count)
+    expect(page).to have_link(
+      t("importer.success.back_link"),
+      href: report_forecasts_path(report)
+    )
+    within ".totals" do
+      expect(page).to have_content(total)
+    end
+  end
+
   describe "downloading a CSV template with activities for the current report" do
     before do
       click_link t("action.forecast.download.button")
@@ -110,7 +122,7 @@ RSpec.feature "users can upload forecasts" do
 
     expect(Forecast.unscoped.count).to eq(6)
     expect(page).to have_text(t("action.forecast.upload.success"))
-    expect(page).not_to have_xpath("//tbody/tr")
+    expect_to_see_successful_upload_summary_with(count: 6, total: "£110.00")
   end
 
   scenario "uploading an invalid set of forecasts" do
@@ -124,6 +136,10 @@ RSpec.feature "users can upload forecasts" do
 
     expect(Forecast.unscoped.count).to eq(0)
     expect(page).not_to have_text(t("action.forecast.upload.success"))
+
+    # upload info not present
+    expect(page).not_to have_text(t("importer.success.heading"))
+    expect(page).not_to have_link(t("importer.success.back_link"))
 
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[1]", text: "FC 2021/22 FY Q3")
@@ -144,7 +160,7 @@ RSpec.feature "users can upload forecasts" do
 
     expect(Forecast.unscoped.count).to eq(3)
     expect(page).to have_text(t("action.forecast.upload.success"))
-    expect(page).not_to have_xpath("//tbody/tr")
+    expect_to_see_successful_upload_summary_with(count: 3, total: "£110.00")
   end
 
   scenario "uploading a set of forecasts with encoding errors" do
@@ -181,7 +197,7 @@ RSpec.feature "users can upload forecasts" do
 
     expect(Forecast.unscoped.count).to eq(6)
     expect(page).to have_text(t("action.forecast.upload.success"))
-    expect(page).not_to have_xpath("//tbody/tr")
+    expect_to_see_successful_upload_summary_with(count: 6, total: "£210.00")
   end
 
   def upload_csv(content)

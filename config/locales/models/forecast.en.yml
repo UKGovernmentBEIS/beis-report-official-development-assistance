@@ -61,6 +61,9 @@ en:
             financial_quarter:
               in_the_past: The forecast must be for a future financial quarter
   importer:
+    success:
+      heading: Successful uploads
+      back_link: Back to report
     errors:
       forecast:
         non_numeric_value: The value must be numeric
