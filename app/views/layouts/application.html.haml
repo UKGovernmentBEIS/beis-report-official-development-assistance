@@ -9,7 +9,7 @@
     = render partial: 'shared/google_tag_manager_head'
     = render partial: 'shared/no_index' if ENV["ROBOT_NOINDEX"] == "true"
     %meta{charset: "utf-8"}/
-    %title #{content_for :page_title_prefix} — #{t('app.title')}
+    %title #{content_for :page_title_prefix} - #{t('app.title')}
     %meta{content: "width=device-width, initial-scale=1", name: "viewport"}/
     %meta{content: "blue", name: "theme-color"}/
     %link{href: asset_path("favicon.ico"), rel: "shortcut icon", type: "image/x-icon"}/
