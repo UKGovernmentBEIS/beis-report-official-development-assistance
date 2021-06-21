@@ -35,6 +35,16 @@ RSpec.feature "Users can view forecasts in tab within a report" do
       end
     end
 
+    def expect_to_see_total_of_forecasted_amounts(activities)
+      forecasts = ForecastOverview.new(activities.map(&:id)).latest_values
+
+      within ".totals" do
+        expect(page).to have_content(
+          ActionController::Base.helpers.number_to_currency(forecasts.sum(&:value), unit: "£")
+        )
+      end
+    end
+
     scenario "the report contains a _forecasts_ tab" do
       programme = create(:programme_activity)
 
@@ -85,6 +95,8 @@ RSpec.feature "Users can view forecasts in tab within a report" do
 
       # forecasts per activity
       expect_to_see_a_table_of_forecasts_grouped_by_activity(activities)
+
+      expect_to_see_total_of_forecasted_amounts(activities)
     end
 
     context "report is in a state where upload is not permissable" do
