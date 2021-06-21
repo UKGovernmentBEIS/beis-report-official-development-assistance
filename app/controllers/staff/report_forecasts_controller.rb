@@ -11,8 +11,9 @@ class Staff::ReportForecastsController < Staff::BaseController
     @report_activities = @report.reportable_activities
     @total_forecast = formatted(forecasts.sum(&:value))
     @grouped_forecasts = forecasts
+      .includes([:parent_activity])
       .map { |forecast| ForecastPresenter.new(forecast) }
-      .group_by { |forecast| forecast.parent_activity_id }
+      .group_by { |forecast| ActivityPresenter.new(forecast.parent_activity) }
 
     render "staff/reports/forecasts"
   end
