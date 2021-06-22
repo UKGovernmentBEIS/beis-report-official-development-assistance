@@ -19,16 +19,6 @@ RSpec.describe "Users can create a budget" do
         expect(page).to have_content(t("action.budget.create.success"))
       end
 
-      scenario "a new budget has its funding type set to that of its parent activity's source fund" do
-        activity = create(:programme_activity, :gcrf_funded, organisation: user.organisation)
-
-        visit activities_path
-        click_on(activity.title)
-        click_on(t("page_content.budgets.button.create"))
-
-        expect(page.has_checked_field?("budget-budget-type-#{activity.source_fund_code}-field")).to be_truthy
-      end
-
       scenario "budget creation is tracked with public_activity" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         create(:programme_activity, parent: fund_activity)
@@ -93,7 +83,7 @@ RSpec.describe "Users can create a budget" do
         click_on(t("page_content.budgets.button.create"))
 
         select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
-        choose("budget[budget_type]", option: "1")
+        choose("budget[budget_type]", option: "direct")
         fill_in "budget[value]", with: "10000000000000.00"
         click_button t("default.button.submit")
 
@@ -182,14 +172,12 @@ RSpec.describe "Users can create a budget" do
       context "without JavaScript" do
         scenario "for an external budget it shows an error if the user doesn't input a providing organisation name and type" do
           _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
-          another_org = create(:delivery_partner_organisation)
 
           visit activities_path
           click_on(project_activity.title)
           click_on(t("page_content.budgets.button.create"))
 
           choose("Other official development assistance")
-          choose(another_org.name)
           select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
           fill_in "budget[value]", with: "1000.00"
           click_button t("default.button.submit")
@@ -203,7 +191,7 @@ RSpec.describe "Users can create a budget" do
   end
 
   def fill_in_and_submit_budget_form
-    choose("Direct (Newton fund)")
+    choose(t("form.label.budget.budget_type.direct"))
     select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
     fill_in "budget[value]", with: "1000.00"
     click_button t("default.button.submit")

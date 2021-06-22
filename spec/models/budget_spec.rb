@@ -14,28 +14,6 @@ RSpec.describe Budget do
     it { should validate_presence_of(:currency) }
     it { should validate_presence_of(:financial_year) }
 
-    describe ".budget_type" do
-      context "when the parent activity is Newton funded" do
-        subject { build(:budget, parent_activity: build(:programme_activity, :newton_funded)) }
-
-        it { is_expected.not_to allow_value(Budget::BUDGET_TYPES["direct_global_challenges_research_fund"]).for(:budget_type) }
-        it { is_expected.not_to allow_value(9999).for(:budget_type) }
-        it { is_expected.not_to allow_value("").for(:budget_type) }
-
-        it { is_expected.to allow_value(Budget::BUDGET_TYPES["other_official_development_assistance"]).for(:budget_type) }
-      end
-
-      context "when the parent activity is GCRF funded" do
-        subject { build(:budget, parent_activity: build(:programme_activity, :gcrf_funded)) }
-
-        it { is_expected.not_to allow_value(Budget::BUDGET_TYPES["direct_newton_fund"]).for(:budget_type) }
-        it { is_expected.not_to allow_value(9999).for(:budget_type) }
-        it { is_expected.not_to allow_value("").for(:budget_type) }
-
-        it { is_expected.to allow_value(Budget::BUDGET_TYPES["other_official_development_assistance"]).for(:budget_type) }
-      end
-    end
-
     describe "providing organisation" do
       let(:another_org) { create(:delivery_partner_organisation) }
 
@@ -59,8 +37,8 @@ RSpec.describe Budget do
         end
       end
 
-      context "when the budget_type is external" do
-        subject { build(:budget, budget_type: Budget::BUDGET_TYPES["external"], parent_activity: build(:programme_activity)) }
+      context "when the budget_type is other_official" do
+        subject { build(:budget, :other_official_development_assistance, parent_activity: build(:programme_activity)) }
 
         it { is_expected.not_to allow_value(nil).for(:providing_organisation_name) }
         it { is_expected.not_to allow_value(nil).for(:providing_organisation_type) }
@@ -101,12 +79,11 @@ RSpec.describe Budget do
   describe "scopes" do
     describe ".direct" do
       it "returns only direct Budgets" do
-        newton_fund_budget = create(:budget, :direct_newton)
-        gcrf_fund_budget = create(:budget, :direct_gcrf)
+        direct_budget = create(:budget, :direct)
 
         _external_budget = create(:budget, :other_official_development_assistance)
 
-        expect(Budget.direct).to match_array([newton_fund_budget, gcrf_fund_budget])
+        expect(Budget.direct).to match_array([direct_budget])
       end
     end
   end

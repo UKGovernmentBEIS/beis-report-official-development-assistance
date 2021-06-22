@@ -6,9 +6,7 @@ function toggleProvidingOrgFields() {
   if (selectedBudgetType === undefined)
     return;
 
-  var budgetType = parseInt(selectedBudgetType, 10);
-
-  if (DIRECT_BUDGET_TYPES.includes(budgetType)) { // direct
+  if (selectedBudgetType === "direct") { // direct
     document.querySelector("#providing-org-external").classList.add("js-hidden");
   } else { // assume external
     document.querySelector("#providing-org-external").classList.remove("js-hidden");

@@ -1,6 +1,6 @@
 class BudgetPresenter < SimpleDelegator
   def budget_type
-    Codelist.new(type: "budget_type", source: "beis").hash_of_named_codes.fetch(super.to_s)
+    I18n.t("form.label.budget.budget_type.#{super}")
   end
 
   def iati_type
