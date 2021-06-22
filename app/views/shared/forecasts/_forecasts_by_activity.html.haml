@@ -1,0 +1,29 @@
+%table.govuk-table
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header{class: "govuk-!-width-one-quarter", scope: "col"} Activity
+      %th.govuk-table__header{class: "govuk-!-width-one-quarter", scope: "col"} RODA Identifier
+      %th.govuk-table__header.govuk-table__header--numeric{class: "govuk-!-width-one-quarter", scope: "col"} Financial Quarter
+      %th.govuk-table__header.govuk-table__header--numeric{class: "govuk-!-width-one-quarter", scope: "col"} Amount
+  %tbody.govuk-table__body
+
+    - @grouped_forecasts.each do |activity, forecasts|
+
+      %tr.govuk-table__row{ id: "activity_#{activity.id}" }
+        %td.govuk-table__cell= activity.title
+        %td.govuk-table__cell= activity.roda_identifier
+        %td.govuk-table__cell{ colspan: 2 }
+          %table.govuk-table.forecasts
+            - forecasts.each do |forecast|
+              %tr.govuk-table__row
+                %td.govuk-table__cell--numeric{class: "govuk-!-width-one-quarter", scope: "col"}
+                  = forecast.financial_quarter_and_year
+                %td.govuk-table__cell--numeric{class: "govuk-!-width-one-quarter", scope: "col"}
+                  = forecast.value
+
+    %tr.govuk-table__row.totals
+      %td.govuk-table__cell Total
+      %td.govuk-table__cell
+      %td.govuk-table__cell
+      %td.govuk-table__cell.govuk-table__cell--numeric
+        = @total_forecast

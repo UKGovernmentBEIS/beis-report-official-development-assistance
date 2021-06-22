@@ -3,6 +3,10 @@
     = link_to t("tabs.report.activities"),
       report_activities_path(@report),
       { class: "govuk-tabs__tab", role: "tab", aria: { controls: "financials", selected: false } }
+  %li{class: "govuk-tabs__list-item #{ "govuk-tabs__list-item--selected" if active_tab == "forecasts" }"}
+    = link_to t("tabs.report.forecasts"),
+      report_forecasts_path(@report),
+      { class: "govuk-tabs__tab", role: "tab", aria: { controls: "financials", selected: false } }
   %li{class: "govuk-tabs__list-item #{ "govuk-tabs__list-item--selected" if active_tab == "variance" }"}
     = link_to t("tabs.report.variance"),
       report_variance_path(@report),

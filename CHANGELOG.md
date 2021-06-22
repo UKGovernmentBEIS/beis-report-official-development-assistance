@@ -708,6 +708,10 @@
 
 ## [unreleased]
 
+- Add a Forecasts tab to the Report view, listing forecasts grouped by activity. Move 'Upload forecast' to this tab.
+- Add a list of uploaded forecasts (grouped by activity) to the upload success page
+
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-58...HEAD
 [release-58]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-57...release-58
 [release-57]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-56...release-57
