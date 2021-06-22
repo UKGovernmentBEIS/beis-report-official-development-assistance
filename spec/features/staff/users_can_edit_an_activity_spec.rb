@@ -413,6 +413,38 @@ RSpec.feature "Users can edit an activity" do
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.planned_start_date.invalid")
       end
+
+      it "the policy markers can be added" do
+        activity = create(:project_activity, organisation: user.organisation)
+        # Report needs to exist so the activity is editable
+        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
+
+        visit organisation_activity_details_path(activity.organisation, activity)
+
+        within(".policy_marker_gender") do
+          click_on(t("default.link.edit"))
+          expect(page.current_url).to match(activity_step_path(activity, :policy_markers, anchor: "gender"))
+        end
+
+        choose "activity-policy-marker-gender-significant-objective-field"
+        click_button t("form.button.activity.submit")
+
+        expect(page).to have_css(".policy_marker_gender", text: "Significant objective")
+      end
+
+      it "the existing policy marker selections are shown and preserved on edit" do
+        activity = create(:project_activity, organisation: user.organisation, policy_marker_desertification: "significant_objective")
+        # Report needs to exist so the activity is editable
+        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
+
+        visit activity_step_path(activity, :policy_markers)
+
+        expect(page.find(:css, "#activity-policy-marker-desertification-significant-objective-field")).to be_checked
+
+        click_button t("form.button.activity.submit")
+
+        expect(page).to have_css(".policy_marker_desertification", text: "Significant objective")
+      end
     end
 
     context "when the activity is a third-party project" do

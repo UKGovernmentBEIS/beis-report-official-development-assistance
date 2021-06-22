@@ -113,14 +113,14 @@ class Activity
 
     def set_policy_markers
       activity.assign_attributes(
-        policy_marker_gender: policy_markers_from_params("policy_marker_gender"),
-        policy_marker_climate_change_adaptation: policy_markers_from_params("policy_marker_climate_change_adaptation"),
-        policy_marker_climate_change_mitigation: policy_markers_from_params("policy_marker_climate_change_mitigation"),
-        policy_marker_biodiversity: policy_markers_from_params("policy_marker_biodiversity"),
-        policy_marker_desertification: policy_markers_from_params("policy_marker_desertification"),
-        policy_marker_disability: policy_markers_from_params("policy_marker_disability"),
-        policy_marker_disaster_risk_reduction: policy_markers_from_params("policy_marker_disaster_risk_reduction"),
-        policy_marker_nutrition: policy_markers_from_params("policy_marker_nutrition"),
+        policy_marker_gender: params_for("policy_marker_gender"),
+        policy_marker_climate_change_adaptation: params_for("policy_marker_climate_change_adaptation"),
+        policy_marker_climate_change_mitigation: params_for("policy_marker_climate_change_mitigation"),
+        policy_marker_biodiversity: params_for("policy_marker_biodiversity"),
+        policy_marker_desertification: params_for("policy_marker_desertification"),
+        policy_marker_disability: params_for("policy_marker_disability"),
+        policy_marker_disaster_risk_reduction: params_for("policy_marker_disaster_risk_reduction"),
+        policy_marker_nutrition: params_for("policy_marker_nutrition"),
       )
     end
 

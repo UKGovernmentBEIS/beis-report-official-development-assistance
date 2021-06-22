@@ -701,6 +701,9 @@
 ## [unreleased]
 
 - Reduce the maximum length of a fund's RODA identifier to 5 characters
+- Bugfix: existing policy marker values are correctly shown when editing an activity
+- Invalid policy marker values are highlighted when importing an activity from a CSV
+- Policy marker add/edit links go directly to the relevant form section
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-57...HEAD
 [release-57]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-56...release-57

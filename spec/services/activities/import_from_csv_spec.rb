@@ -51,7 +51,7 @@ RSpec.describe Activities::ImportFromCsv do
       "DFID policy marker - Climate Change - Adaptation" => "2",
       "DFID policy marker - Climate Change - Mitigation" => "1",
       "DFID policy marker - Biodiversity" => "2",
-      "DFID policy marker - Desertification" => "1000",
+      "DFID policy marker - Desertification" => "3",
       "DFID policy marker - Disability" => "",
       "DFID policy marker - Disaster Risk Reduction" => "0",
       "DFID policy marker - Nutrition" => "",
@@ -183,7 +183,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.policy_marker_climate_change_adaptation).to eq("principal_objective")
       expect(existing_activity.policy_marker_climate_change_mitigation).to eq("significant_objective")
       expect(existing_activity.policy_marker_biodiversity).to eq("principal_objective")
-      expect(existing_activity.policy_marker_desertification).to eq("not_assessed")
+      expect(existing_activity.policy_marker_desertification).to eq("principal_objective_and_in_support_of_an_action_programme")
       expect(existing_activity.policy_marker_disability).to eq("not_assessed")
       expect(existing_activity.policy_marker_disaster_risk_reduction).to eq("not_targeted")
       expect(existing_activity.policy_marker_nutrition).to eq("not_assessed")
@@ -246,6 +246,28 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.created.count).to eq(0)
       expect(subject.updated.count).to eq(0)
       expect(subject.errors.count).to eq(1)
+    end
+
+    it "has an error if a policy marker is invalid" do
+      existing_activity_attributes["DFID policy marker - Biodiversity"] = "3"
+      existing_activity_attributes["DFID policy marker - Desertification"] = "bogus"
+      subject.import([existing_activity_attributes])
+
+      expect(subject.errors.count).to eq(2)
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors[0].csv_row).to eq(2)
+      expect(subject.errors[0].csv_column).to eq("DFID policy marker - Biodiversity")
+      expect(subject.errors[0].column).to eq(:policy_marker_biodiversity)
+      expect(subject.errors[0].value).to eq("3")
+      expect(subject.errors[0].message).to eq(I18n.t("importer.errors.activity.invalid_policy_marker"))
+
+      expect(subject.errors[1].csv_row).to eq(2)
+      expect(subject.errors[1].csv_column).to eq("DFID policy marker - Desertification")
+      expect(subject.errors[1].column).to eq(:policy_marker_desertification)
+      expect(subject.errors[1].value).to eq("bogus")
+      expect(subject.errors[1].message).to eq(I18n.t("importer.errors.activity.invalid_policy_marker"))
     end
 
     context "when carrying out a partial update" do
