@@ -14,6 +14,9 @@ en:
         providing_organisation_name: Providing organisation name
         providing_organisation_type: Providing organisation type
         providing_organisation_reference: International Aid Transparency Initiative (IATI) Reference (optional)
+        budget_type:
+          direct: Direct
+          other_official: Other official development assistance
     legend:
       budget:
         budget_type: Type
@@ -25,6 +28,9 @@ en:
     hint:
       budget:
         providing_organisation: The organisation where the budget is coming from.
+        budget_type:
+          direct: Budget allocated directly from the parent activity
+          other_official: Budget allocated from an external organisation that is still considered ODA funding
   table:
     header:
       budget:
@@ -67,9 +73,6 @@ en:
               blank: Enter a budget status
             funding_type:
               blank: Select a funding type
-              source_fund:
-                1: You cannot assign GCRF budget to a Newton funded activity
-                2: You cannot assign Newton budget to a GCRF funded activity.
             financial_year:
               blank: Select a financial year
             providing_organisation_id:

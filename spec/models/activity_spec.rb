@@ -1694,12 +1694,11 @@ RSpec.describe Activity, type: :model do
     describe "#total_budget" do
       let(:activity) { programme1 }
 
-      let!(:external_oda_budget) { create(:budget, :external_official_development_assistance, value: rand(100..200), parent_activity: activity) }
-      let!(:external_non_oda_budget) { create(:budget, :external_non_official_development_assistance, value: rand(100..200), parent_activity: activity) }
+      let!(:external_budget) { create(:budget, :other_official_development_assistance, value: rand(100..200), parent_activity: activity) }
 
       context "when there is one direct budget for an activity" do
         let!(:budget) do
-          create(:budget, :direct_newton, value: rand(100..200), parent_activity: activity)
+          create(:budget, :direct, value: rand(100..200), parent_activity: activity)
         end
 
         it "only includes the direct budget in the calculations" do
@@ -1708,16 +1707,12 @@ RSpec.describe Activity, type: :model do
       end
 
       context "when there are multiple direct budgets for an activity" do
-        let!(:direct_newton_budgets) do
-          create_list(:budget, 5, :direct_newton, value: rand(100..200), parent_activity: activity)
+        let!(:direct_budgets) do
+          create_list(:budget, 5, :direct, value: rand(100..200), parent_activity: activity)
         end
-        let!(:transferred_budget) { create(:budget, :transferred, value: rand(100..200), parent_activity: activity) }
 
-        it "sums all of the direct and transferred budget" do
-          expect(activity.total_budget).to eq([
-            *direct_newton_budgets,
-            transferred_budget,
-          ].sum(&:value))
+        it "sums all of the direct budget" do
+          expect(activity.total_budget).to eq(direct_budgets.sum(&:value))
         end
       end
     end

@@ -182,6 +182,8 @@ module CodelistHelper
   end
 
   def budget_type_options
-    Codelist.new(type: "budget_type", source: "beis").to_objects_with_description
+    Budget.budget_types.keys.map do |key|
+      OpenStruct.new(name: t("form.label.budget.budget_type.#{key}"), code: key, description: t("form.hint.budget.budget_type.#{key}"))
+    end
   end
 end

@@ -4,7 +4,7 @@ class Staff::BudgetsController < Staff::BaseController
   def new
     @activity = Activity.find(activity_id)
     @budget = Budget.new
-    set_budget_defaults
+    @budget.parent_activity = @activity
 
     authorize @budget
   end
@@ -71,10 +71,5 @@ class Staff::BudgetsController < Staff::BaseController
       :providing_organisation_type,
       :providing_organisation_reference
     )
-  end
-
-  def set_budget_defaults
-    @budget.parent_activity = @activity
-    @budget.budget_type = @activity.source_fund_code
   end
 end
