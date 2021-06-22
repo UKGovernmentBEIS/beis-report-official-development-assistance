@@ -43,8 +43,7 @@ class Staff::ForecastUploadsController < Staff::BaseController
         @grouped_forecasts = imported_forecasts
           .map { |forecast| ForecastPresenter.new(forecast) }
           .group_by { |forecast| ActivityPresenter.new(forecast.parent_activity) }
-        @total_forecast = ActionController::Base.helpers
-          .number_to_currency(imported_forecasts.sum(&:value), unit: "£")
+        @total_forecast = TotalPresenter.new(imported_forecasts.sum(&:value)).value
         @success = true
         flash.now[:notice] = t("action.forecast.upload.success")
       end

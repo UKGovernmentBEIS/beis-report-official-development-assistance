@@ -9,7 +9,7 @@ class Staff::ReportForecastsController < Staff::BaseController
 
     @report_presenter = ReportPresenter.new(@report)
     @report_activities = @report.reportable_activities
-    @total_forecast = formatted(forecasts.sum(&:value))
+    @total_forecast = TotalPresenter.new(forecasts.sum(&:value)).value
     @grouped_forecasts = forecasts
       .includes([:parent_activity])
       .map { |forecast| ForecastPresenter.new(forecast) }
@@ -24,9 +24,5 @@ class Staff::ReportForecastsController < Staff::BaseController
     ForecastOverview
       .new(@report_activities.map(&:id))
       .latest_values
-  end
-
-  def formatted(bigdecimal)
-    ActionController::Base.helpers.number_to_currency(bigdecimal, unit: "£")
   end
 end
