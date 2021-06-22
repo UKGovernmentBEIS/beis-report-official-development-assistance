@@ -14,34 +14,6 @@ RSpec.describe Budget do
     it { should validate_presence_of(:currency) }
     it { should validate_presence_of(:financial_year) }
 
-    describe ".budget_type" do
-      context "when the parent activity is Newton funded" do
-        subject { build(:budget, parent_activity: build(:programme_activity, :newton_funded)) }
-
-        it { is_expected.not_to allow_value(Budget::BUDGET_TYPES["direct_global_challenges_research_fund"]).for(:budget_type) }
-        it { is_expected.not_to allow_value(9999).for(:budget_type) }
-        it { is_expected.not_to allow_value("").for(:budget_type) }
-
-        it { is_expected.to allow_value(Budget::BUDGET_TYPES["direct_newton_fund"]).for(:budget_type) }
-        it { is_expected.to allow_value(3).for(:budget_type) }
-        it { is_expected.to allow_value(4).for(:budget_type) }
-        it { is_expected.to allow_value(5).for(:budget_type) }
-      end
-
-      context "when the parent activity is GCRF funded" do
-        subject { build(:budget, parent_activity: build(:programme_activity, :gcrf_funded)) }
-
-        it { is_expected.not_to allow_value(Budget::BUDGET_TYPES["direct_newton_fund"]).for(:budget_type) }
-        it { is_expected.not_to allow_value(9999).for(:budget_type) }
-        it { is_expected.not_to allow_value("").for(:budget_type) }
-
-        it { is_expected.to allow_value(Budget::BUDGET_TYPES["direct_global_challenges_research_fund"]).for(:budget_type) }
-        it { is_expected.to allow_value(3).for(:budget_type) }
-        it { is_expected.to allow_value(4).for(:budget_type) }
-        it { is_expected.to allow_value(5).for(:budget_type) }
-      end
-    end
-
     describe "providing organisation" do
       let(:another_org) { create(:delivery_partner_organisation) }
 
@@ -65,30 +37,8 @@ RSpec.describe Budget do
         end
       end
 
-      context "when the budget type is Transferred" do
-        subject { build(:budget, budget_type: Budget::BUDGET_TYPES["transferred"], parent_activity: build(:programme_activity)) }
-
-        it { is_expected.not_to allow_value(nil).for(:providing_organisation_id) }
-
-        it "does not set the providing_organisation_id to that of the service owner" do
-          subject.valid?
-
-          expect(subject.providing_organisation_id).not_to eql(service_owner.id)
-        end
-
-        it "discards any input to the _name and _type attributes" do
-          subject.providing_organisation_name = "Etc"
-          subject.providing_organisation_type = "International ONG"
-
-          subject.valid?
-
-          expect(subject.providing_organisation_name).to be_nil
-          expect(subject.providing_organisation_type).to be_nil
-        end
-      end
-
-      context "when the budget_type is external" do
-        subject { build(:budget, budget_type: Budget::BUDGET_TYPES["external"], parent_activity: build(:programme_activity)) }
+      context "when the budget_type is other_official" do
+        subject { build(:budget, :other_official_development_assistance, parent_activity: build(:programme_activity)) }
 
         it { is_expected.not_to allow_value(nil).for(:providing_organisation_name) }
         it { is_expected.not_to allow_value(nil).for(:providing_organisation_type) }
@@ -127,16 +77,13 @@ RSpec.describe Budget do
   end
 
   describe "scopes" do
-    describe ".direct_or_transferred" do
-      it "returns only direct or transferred Budgets" do
-        newton_fund_budget = create(:budget, :direct_newton)
-        gcrf_fund_budget = create(:budget, :direct_gcrf)
-        transferred_budget = create(:budget, :transferred)
+    describe ".direct" do
+      it "returns only direct Budgets" do
+        direct_budget = create(:budget, :direct)
 
-        _external_oda_budget = create(:budget, :external_official_development_assistance)
-        _external_non_oda_budget = create(:budget, :external_non_official_development_assistance)
+        _external_budget = create(:budget, :other_official_development_assistance)
 
-        expect(Budget.direct_or_transferred).to match_array([newton_fund_budget, gcrf_fund_budget, transferred_budget])
+        expect(Budget.direct).to match_array([direct_budget])
       end
     end
   end

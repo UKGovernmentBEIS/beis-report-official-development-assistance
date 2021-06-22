@@ -86,19 +86,24 @@ module CodelistHelper
   end
 
   def policy_markers_radio_options
-    options = Codelist.new(type: "policy_significance", source: "beis")
-      .to_objects_with_description
-      .sort_by { |c| c.code.to_i }
+    data = Codelist.new(type: "policy_significance", source: "beis")
 
-    options.rotate(-1)
+    # all enums except desertification use the same set of names
+    Activity.policy_marker_genders.map do |name, code|
+      options = data.find { |d| d["code"] == code.to_s }
+      # we need e.g. "significant_objective" as the value and "Significant objective" as the label
+      # the code is just the connection between the enum and the BEIS codelist
+      OpenStruct.new(value: name, label: options["name"], description: options["description"])
+    end
   end
 
   def policy_markers_desertification_radio_options
-    options = Codelist.new(type: "policy_significance_desertification", source: "beis")
-      .to_objects_with_description
-      .sort_by { |c| c.code.to_i }
+    data = Codelist.new(type: "policy_significance_desertification", source: "beis")
 
-    options.rotate(-1)
+    Activity.policy_marker_desertifications.map do |name, code|
+      options = data.find { |d| d["code"] == code.to_s }
+      OpenStruct.new(value: name, label: options["name"], description: options["description"])
+    end
   end
 
   def programme_status_radio_options
@@ -177,6 +182,8 @@ module CodelistHelper
   end
 
   def budget_type_options
-    Codelist.new(type: "budget_type", source: "beis").to_objects_with_description
+    Budget.budget_types.keys.map do |key|
+      OpenStruct.new(name: t("form.label.budget.budget_type.#{key}"), code: key, description: t("form.hint.budget.budget_type.#{key}"))
+    end
   end
 end

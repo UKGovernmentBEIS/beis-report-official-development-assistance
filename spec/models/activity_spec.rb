@@ -224,7 +224,7 @@ RSpec.describe Activity, type: :model do
         end
 
         it "is valid when containing certain punctuation" do
-          fund.roda_identifier_fragment = "A-A_A/A\\123"
+          fund.roda_identifier_fragment = "A-_/\\"
           expect(fund).to be_valid(:roda_identifier_step)
         end
 
@@ -233,13 +233,13 @@ RSpec.describe Activity, type: :model do
           expect(fund).not_to be_valid(:roda_identifier_step)
         end
 
-        it "is valid up to 16 chars" do
-          fund.roda_identifier_fragment = "A" * 16
+        it "is valid up to 5 chars" do
+          fund.roda_identifier_fragment = "A" * 5
           expect(fund).to be_valid(:roda_identifier_step)
         end
 
-        it "is not valid above 16 chars" do
-          fund.roda_identifier_fragment = "A" * 17
+        it "is not valid above 6 chars" do
+          fund.roda_identifier_fragment = "A" * 7
           expect(fund).not_to be_valid(:roda_identifier_step)
         end
       end
@@ -249,7 +249,7 @@ RSpec.describe Activity, type: :model do
         let(:programme) { create(:programme_activity, parent: fund) }
 
         before do
-          fund.update!(roda_identifier_fragment: "A" * 6)
+          fund.update!(roda_identifier_fragment: "A" * 5)
         end
 
         it "is valid if blank" do
@@ -268,23 +268,23 @@ RSpec.describe Activity, type: :model do
         end
 
         it "is valid if 'A-B' is up to 18 chars" do
-          programme.roda_identifier_fragment = "B" * 11
+          programme.roda_identifier_fragment = "B" * 12
           expect(programme).to be_valid(:roda_identifier_step)
         end
 
         it "is not valid if 'A-B' exceeds 18 chars" do
-          programme.roda_identifier_fragment = "B" * 12
+          programme.roda_identifier_fragment = "B" * 13
           expect(programme).not_to be_valid(:roda_identifier_step)
         end
 
         context "when there are other activities with similar identifiers" do
           let!(:fund_a) { create(:fund_activity, roda_identifier_fragment: "AAA") }
-          let!(:programme_a) { create(:programme_activity, parent: fund_a, roda_identifier_fragment: "BBB-CCC") }
+          let!(:programme_a) { create(:programme_activity, parent: fund_a, roda_identifier_fragment: "B-CCC") }
 
-          let!(:fund_b) { create(:fund_activity, roda_identifier_fragment: "AAA-BBB") }
+          let!(:fund_b) { create(:fund_activity, roda_identifier_fragment: "AAA-B") }
 
           it "is invalid if it has the same fragment identifier as a sibling activity" do
-            programme = build(:programme_activity, parent: fund_a, roda_identifier_fragment: "BBB-CCC")
+            programme = build(:programme_activity, parent: fund_a, roda_identifier_fragment: "B-CCC")
             programme.cache_roda_identifier!
 
             expect(programme).not_to be_valid
@@ -1174,7 +1174,7 @@ RSpec.describe Activity, type: :model do
   describe "#transparency_identifier" do
     context "when the activity is a fund" do
       it "returns a composite identifier formed with the service owner" do
-        fund = create(:fund_activity, roda_identifier_fragment: "GCRF-1")
+        fund = create(:fund_activity, roda_identifier_fragment: "GCRF1")
 
         expected_identifier = [
           Organisation::SERVICE_OWNER_IATI_REFERENCE,
@@ -1252,7 +1252,7 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "#can_set_roda_identifier?" do
-    let!(:fund) { create(:fund_activity, roda_identifier_fragment: "Level/A") }
+    let!(:fund) { create(:fund_activity, roda_identifier_fragment: "Lvl/A") }
     let!(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "Level/B") }
     let!(:project) { create(:project_activity, parent: programme, roda_identifier_fragment: nil) }
 
@@ -1288,7 +1288,7 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "#cache_roda_identifier!" do
-    let!(:fund) { create(:fund_activity, roda_identifier_fragment: "Level/A") }
+    let!(:fund) { create(:fund_activity, roda_identifier_fragment: "Lvl/A") }
     let!(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "Level/B") }
     let!(:project) { create(:project_activity, parent: programme, roda_identifier_fragment: "Level/C") }
     let!(:third_party_project) { create(:third_party_project_activity, parent: project, roda_identifier_fragment: "Level/D") }
@@ -1304,17 +1304,17 @@ RSpec.describe Activity, type: :model do
 
     it "caches the compound RODA identifier on a project" do
       project.cache_roda_identifier!
-      expect(project.roda_identifier_compound).to eq("Level/A-Level/B-Level/C")
+      expect(project.roda_identifier_compound).to eq("Lvl/A-Level/B-Level/C")
     end
 
     it "caches the transparency identifier on a project" do
       project.cache_roda_identifier!
-      expect(project.transparency_identifier).to eq("GB-GOV-13-Level-A-Level-B-Level-C")
+      expect(project.transparency_identifier).to eq("GB-GOV-13-Lvl-A-Level-B-Level-C")
     end
 
     it "caches the compound RODA identifier on a third-party project" do
       third_party_project.cache_roda_identifier!
-      expect(third_party_project.roda_identifier_compound).to eq("Level/A-Level/B-Level/CLevel/D")
+      expect(third_party_project.roda_identifier_compound).to eq("Lvl/A-Level/B-Level/CLevel/D")
     end
 
     context "when the activity does not have a RODA identifier fragment" do
@@ -1694,12 +1694,11 @@ RSpec.describe Activity, type: :model do
     describe "#total_budget" do
       let(:activity) { programme1 }
 
-      let!(:external_oda_budget) { create(:budget, :external_official_development_assistance, value: rand(100..200), parent_activity: activity) }
-      let!(:external_non_oda_budget) { create(:budget, :external_non_official_development_assistance, value: rand(100..200), parent_activity: activity) }
+      let!(:external_budget) { create(:budget, :other_official_development_assistance, value: rand(100..200), parent_activity: activity) }
 
       context "when there is one direct budget for an activity" do
         let!(:budget) do
-          create(:budget, :direct_newton, value: rand(100..200), parent_activity: activity)
+          create(:budget, :direct, value: rand(100..200), parent_activity: activity)
         end
 
         it "only includes the direct budget in the calculations" do
@@ -1708,16 +1707,12 @@ RSpec.describe Activity, type: :model do
       end
 
       context "when there are multiple direct budgets for an activity" do
-        let!(:direct_newton_budgets) do
-          create_list(:budget, 5, :direct_newton, value: rand(100..200), parent_activity: activity)
+        let!(:direct_budgets) do
+          create_list(:budget, 5, :direct, value: rand(100..200), parent_activity: activity)
         end
-        let!(:transferred_budget) { create(:budget, :transferred, value: rand(100..200), parent_activity: activity) }
 
-        it "sums all of the direct and transferred budget" do
-          expect(activity.total_budget).to eq([
-            *direct_newton_budgets,
-            transferred_budget,
-          ].sum(&:value))
+        it "sums all of the direct budget" do
+          expect(activity.total_budget).to eq(direct_budgets.sum(&:value))
         end
       end
     end

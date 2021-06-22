@@ -5,7 +5,7 @@ RSpec.describe BudgetPresenter do
 
   describe "#budget_type" do
     it "returns the name of the budget type" do
-      expect(described_class.new(budget).budget_type).to eq("Direct (Newton fund)")
+      expect(described_class.new(budget).budget_type).to eq("Direct")
     end
   end
 
@@ -47,17 +47,10 @@ RSpec.describe BudgetPresenter do
 
   describe "#providing_organisation_name" do
     it "returns the providing_organisation_name for external budgets" do
-      budget.budget_type = 5
+      budget.budget_type = "other_official"
       budget.providing_organisation_name = "Some NGO"
 
       expect(described_class.new(budget).providing_organisation_name).to eql("Some NGO")
-    end
-
-    it "returns the name of the providing_organisation for transferred budgets" do
-      budget.budget_type = 3
-      budget.providing_organisation = build_stubbed(:delivery_partner_organisation, name: "British Academy")
-
-      expect(described_class.new(budget).providing_organisation_name).to eql("British Academy")
     end
   end
 end

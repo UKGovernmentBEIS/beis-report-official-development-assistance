@@ -698,9 +698,18 @@
 - Incoming and outgoing transfers can store the historic BEIS identifier (tracker row ID)
 - Hide non-DP orgs on the Activities dropdown
 
+## [release-58] - 2021-06-22
+
+- Reduce the maximum length of a fund's RODA identifier to 5 characters
+- Bugfix: existing policy marker values are correctly shown when editing an activity
+- Invalid policy marker values are highlighted when importing an activity from a CSV
+- Policy marker add/edit links go directly to the relevant form section
+- Change applicable Budget Types
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-57...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-58...HEAD
+[release-58]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-57...release-58
 [release-57]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-56...release-57
 [release-56]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-55...release-56
 [release-55]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-54...release-55

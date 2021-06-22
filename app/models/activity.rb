@@ -273,7 +273,7 @@ class Activity < ApplicationRecord
   end
 
   def total_budget
-    Budget.direct_or_transferred.where(parent_activity_id: id).sum(:value)
+    Budget.direct.where(parent_activity_id: id).sum(:value)
   end
 
   def total_forecasted

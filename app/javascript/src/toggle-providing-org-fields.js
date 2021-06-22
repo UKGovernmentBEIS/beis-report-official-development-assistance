@@ -6,17 +6,10 @@ function toggleProvidingOrgFields() {
   if (selectedBudgetType === undefined)
     return;
 
-  var budgetType = parseInt(selectedBudgetType, 10);
-
-  if (TRANSFERRED_BUDGET_TYPES.includes(budgetType)) { // transferred
-    document.querySelector("#providing-org-transferred").classList.remove("js-hidden");
+  if (selectedBudgetType === "direct") { // direct
     document.querySelector("#providing-org-external").classList.add("js-hidden");
-  } else if (DIRECT_BUDGET_TYPES.includes(budgetType)) { // direct
-    document.querySelector("#providing-org-external").classList.add("js-hidden");
-    document.querySelector("#providing-org-transferred").classList.add("js-hidden");
   } else { // assume external
     document.querySelector("#providing-org-external").classList.remove("js-hidden");
-    document.querySelector("#providing-org-transferred").classList.add("js-hidden");
   }
 }
 

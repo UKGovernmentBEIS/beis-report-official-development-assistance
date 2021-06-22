@@ -378,16 +378,31 @@ module Activities
       def convert_policy_marker(policy_marker)
         return "not_assessed" if policy_marker.blank?
 
-        policy_markers_iati_codes_to_enum(policy_marker)
+        raise I18n.t("importer.errors.activity.invalid_policy_marker") if policy_marker.to_i.to_s != policy_marker
+
+        marker = policy_markers_iati_codes_to_enum(policy_marker)
+        raise I18n.t("importer.errors.activity.invalid_policy_marker") if marker.nil?
+
+        marker
       end
       alias convert_policy_marker_gender convert_policy_marker
       alias convert_policy_marker_climate_change_adaptation convert_policy_marker
       alias convert_policy_marker_climate_change_mitigation convert_policy_marker
       alias convert_policy_marker_biodiversity convert_policy_marker
-      alias convert_policy_marker_desertification convert_policy_marker
       alias convert_policy_marker_disability convert_policy_marker
       alias convert_policy_marker_disaster_risk_reduction convert_policy_marker
       alias convert_policy_marker_nutrition convert_policy_marker
+
+      def convert_policy_marker_desertification(policy_marker)
+        return "not_assessed" if policy_marker.blank?
+
+        raise I18n.t("importer.errors.activity.invalid_policy_marker") if policy_marker.to_i.to_s != policy_marker
+
+        marker = policy_markers_desertification_iati_codes_to_enum(policy_marker)
+        raise I18n.t("importer.errors.activity.invalid_policy_marker") if marker.nil?
+
+        marker
+      end
 
       def convert_gcrf_challenge_area(gcrf_challenge_area)
         return nil if gcrf_challenge_area.blank?

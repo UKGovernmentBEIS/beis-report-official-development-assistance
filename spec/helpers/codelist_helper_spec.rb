@@ -94,10 +94,10 @@ RSpec.describe CodelistHelper, type: :helper do
         options = helper.policy_markers_radio_options
 
         expect(options.length).to eq 4
-        expect(options.first.name).to eq("Not assessed")
-        expect(options.first.code).to eq("1000")
-        expect(options.last.name).to eq("Principal objective")
-        expect(options.last.code).to eq("2")
+        expect(options.first.label).to eq("Not assessed")
+        expect(options.first.value).to eq("not_assessed")
+        expect(options.last.label).to eq("Principal objective")
+        expect(options.last.value).to eq("principal_objective")
       end
     end
 
@@ -106,10 +106,10 @@ RSpec.describe CodelistHelper, type: :helper do
         options = helper.policy_markers_desertification_radio_options
 
         expect(options.length).to eq 5
-        expect(options.first.name).to eq("Not assessed")
-        expect(options.first.code).to eq("1000")
-        expect(options.last.name).to eq("Principal objective AND in support of an action programme")
-        expect(options.last.code).to eq("3")
+        expect(options.first.label).to eq("Not assessed")
+        expect(options.first.value).to eq("not_assessed")
+        expect(options.last.label).to eq("Principal objective AND in support of an action programme")
+        expect(options.last.value).to eq("principal_objective_and_in_support_of_an_action_programme")
       end
     end
 
