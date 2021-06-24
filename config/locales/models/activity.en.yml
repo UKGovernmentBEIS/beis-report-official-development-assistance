@@ -16,12 +16,12 @@ en:
       edit: Activity %{name} - Publish to IATI
       show: Activity %{name}
       index: Activities
-      details: Activity %{name} — Details
+      details: Activity %{name} - Details
       other_funding: Activity %{name} - Other funding
-      financials: Activity %{name} — Financials
-      children: Activity %{name} — Child activities
-      comments: Activity %{name} — Comments
-      transfers: Activity %{name} — Transfers
+      financials: Activity %{name} - Financials
+      children: Activity %{name} - Child activities
+      comments: Activity %{name} - Comments
+      transfers: Activity %{name} - Transfers
   form:
     button:
       activity:
