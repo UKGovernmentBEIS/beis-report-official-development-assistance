@@ -18,6 +18,7 @@ RSpec.describe User, type: :model do
   describe "associations" do
     # This also validates that the relationship is present
     it { is_expected.to belong_to(:organisation) }
+    it { is_expected.to have_many(:historical_events) }
   end
 
   describe "delegations" do
