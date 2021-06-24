@@ -160,7 +160,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.recipient_country).to eq(existing_activity_attributes["Recipient Country"])
       expect(existing_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
       expect(existing_activity.gdi).to eq("1")
-      expect(existing_activity.gcrf_strategic_area).to eq([1, 3])
+      expect(existing_activity.gcrf_strategic_area).to eq(["1", "3"])
       expect(existing_activity.gcrf_challenge_area).to eq(4)
       expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Delivery partner identifier"])
       expect(existing_activity.fund_pillar).to eq(existing_activity_attributes["Newton Fund Pillar"].to_i)

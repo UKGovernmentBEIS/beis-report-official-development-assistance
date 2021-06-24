@@ -1,15 +1,15 @@
 data:
-  - code: 0
+  - code: "0"
     description: Core
-  - code: 1
+  - code: "1"
     description: UKRI Collective Fund (2017 allocation)
-  - code: 3
+  - code: "3"
     description: "Academies Collective Fund: Resilient Futures"
-  - code: 4
+  - code: "4"
     description: Coherence and Impact
-  - code: 5
+  - code: "5"
     description: International Partnerships
-  - code: 6
+  - code: "6"
     description: Innovation and Commercialisation
-  - code: 7
+  - code: "7"
     description: Agile response in emergencies
