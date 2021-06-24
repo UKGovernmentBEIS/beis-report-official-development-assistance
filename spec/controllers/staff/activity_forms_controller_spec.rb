@@ -79,10 +79,56 @@ RSpec.describe Staff::ActivityFormsController do
     end
   end
 
+  describe "#update" do
+    let(:history_recorder) { instance_double(HistoryRecorder, call: true) }
+
+    let(:fund) { create(:fund_activity) }
+    let(:programme) { create(:programme_activity, parent: fund) }
+    let(:activity) do
+      create(
+        :project_activity,
+        title: "Original title",
+        description: "Original description",
+        organisation: organisation,
+        parent: programme
+      )
+    end
+
+    before do
+      policy = instance_double(ActivityPolicy, update?: true)
+      allow(ActivityPolicy).to receive(:new).and_return(policy)
+      allow(HistoryRecorder).to receive(:new).and_return(history_recorder)
+    end
+
+    context "when updating 'purpose' causes #title and #description to be updated" do
+      let(:expected_changes) do
+        {
+          "title" => ["Original title", "Updated title"],
+          "description" => ["Original description", "Updated description"],
+        }
+      end
+
+      it "asks the HistoryRecorder to record the changes" do
+        put_step(:purpose, {title: "Updated title", description: "Updated description"})
+
+        expect(HistoryRecorder).to have_received(:new).with(user: user)
+        expect(history_recorder).to have_received(:call).with(
+          changes: expected_changes,
+          reference: "Update to Activity purpose",
+          activity: activity
+        )
+      end
+    end
+  end
+
   private
 
   def get_step(step)
     get :show, params: {activity_id: activity.id, id: step}
+  end
+
+  def put_step(step, activity_params)
+    put :update, params: {activity_id: activity.id, id: step, activity: activity_params}
   end
 
   RSpec::Matchers.define :skip_to_next_step do
