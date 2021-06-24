@@ -3,12 +3,12 @@
 We use terraform to create the spaces and services needed by the application and
 to deploy the application itself.
 
-We use terraform workspaces to keep the terraform state seperate for each
+We use terraform workspaces to keep the terraform state separate for each
 environment.
 
 We store our state in an s3 bucket on the PaaS in the terraform space.
 
-Deploys will happen automatically from Github Actions
+Deploys will happen automatically from Github Actions.
 
 ## Manual Deployment
 
@@ -21,7 +21,7 @@ training environment (pentest).
 - install Terraform version `0.12.x` using `tfenv`, use `tfenv list-remote` to
   see available versions. Our Terrafiles are not backwards-compatible with
   Terraform `0.11.x`
-- install the latest [cloundfoundry
+- install the latest [cloudfoundry
   provider](https://github.com/cloudfoundry-community/terraform-provider-cf/wiki#installations)
 
 ### Deployment
