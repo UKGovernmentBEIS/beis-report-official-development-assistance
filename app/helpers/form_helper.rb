@@ -19,7 +19,11 @@ module FormHelper
   end
 
   def list_of_delivery_partners
-    @list_of_delivery_partners ||= Organisation.delivery_partners.order(:name)
+    @list_of_delivery_partners ||= Organisation.delivery_partners
+  end
+
+  def list_of_reporting_organisations
+    @list_of_reporting_organisations ||= Organisation.reporters
   end
 
   def list_of_financial_quarters

@@ -135,13 +135,32 @@ RSpec.describe Organisation, type: :model do
   end
 
   describe ".delivery_partners" do
-    it "should contain only organisations that are not BEIS" do
+    it "should only contain organisations that are delivery partners" do
       beis_organisation = create(:beis_organisation)
       delivery_partner_organisation = create(:delivery_partner_organisation)
+      matched_effort_provider = create(:matched_effort_provider)
+      external_income_provider = create(:external_income_provider)
       delivery_partners = Organisation.delivery_partners
 
       expect(delivery_partners).to include(delivery_partner_organisation)
       expect(delivery_partners).not_to include(beis_organisation)
+      expect(delivery_partners).not_to include(matched_effort_provider)
+      expect(delivery_partners).not_to include(external_income_provider)
+    end
+  end
+
+  describe ".reporters" do
+    it "should only contain delivery partners and service owners" do
+      beis_organisation = create(:beis_organisation)
+      delivery_partner_organisation = create(:delivery_partner_organisation)
+      matched_effort_provider = create(:matched_effort_provider)
+      external_income_provider = create(:external_income_provider)
+      reporters = Organisation.reporters
+
+      expect(reporters).to include(delivery_partner_organisation)
+      expect(reporters).to include(beis_organisation)
+      expect(reporters).not_to include(matched_effort_provider)
+      expect(reporters).not_to include(external_income_provider)
     end
   end
 
