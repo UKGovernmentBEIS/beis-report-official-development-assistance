@@ -68,6 +68,19 @@ RSpec.describe HistoricalEvent, type: :model do
       end
     end
 
+    context "when value is a BigDecimal" do
+      let(:bigdecimal) { BigDecimal("101.10") }
+
+      let(:persisted_event) do
+        set_value_fields_to(bigdecimal)
+      end
+
+      it "should read back a bigdecimal" do
+        expect(persisted_event.new_value).to eq(bigdecimal)
+        expect(persisted_event.previous_value).to eq(bigdecimal)
+      end
+    end
+
     def set_value_fields_to(value)
       event.tap do |e|
         e.new_value = value
