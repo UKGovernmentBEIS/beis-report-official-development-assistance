@@ -22,6 +22,10 @@ module FormHelper
     @list_of_delivery_partners ||= Organisation.delivery_partners
   end
 
+  def list_of_reporting_organisations
+    @list_of_reporting_organisations ||= Organisation.reporters
+  end
+
   def list_of_financial_quarters
     @list_of_financial_quarters ||= FinancialQuarter::QUARTERS.map { |id| OpenStruct.new(id: id, name: "Q#{id}") }
   end
