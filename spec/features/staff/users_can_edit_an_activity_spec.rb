@@ -107,18 +107,24 @@ RSpec.feature "Users can edit an activity" do
       context "when the activity is complete" do
         it "editing and saving a step returns the user to the activity page details tab" do
           activity = create(:fund_activity, organisation: user.organisation)
-          description = "Some new text for the description field."
+          updated_description = "Some new text for the description field."
           visit organisation_activity_details_path(activity.organisation, activity)
 
           within(".description") do
             click_on(t("default.link.edit"))
           end
 
-          fill_in "activity[description]", with: description
+          fill_in "activity[description]", with: updated_description
           click_button t("form.button.activity.submit")
 
           expect(page).to have_content t("action.fund.update.success")
           expect(page.current_path).to eq organisation_activity_details_path(activity.organisation, activity)
+
+          expect_change_to_be_recorded_as_historical_event(
+            field: "description",
+            previous_value: activity.description,
+            new_value: updated_description
+          )
         end
 
         it "all edit links are available to take the user to the right step" do
@@ -430,6 +436,12 @@ RSpec.feature "Users can edit an activity" do
         click_button t("form.button.activity.submit")
 
         expect(page).to have_css(".policy_marker_gender", text: "Significant objective")
+
+        expect_change_to_be_recorded_as_historical_event(
+          field: "policy_marker_gender",
+          previous_value: "not_assessed",
+          new_value: "significant_objective"
+        )
       end
 
       it "the existing policy marker selections are shown and preserved on edit" do
@@ -745,5 +757,14 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
     end
     click_on(t("default.link.back"))
     click_on t("tabs.activity.details")
+  end
+end
+
+def expect_change_to_be_recorded_as_historical_event(field:, previous_value:, new_value:)
+  historical_event = HistoricalEvent.last
+  aggregate_failures do
+    expect(historical_event.value_changed).to eq(field)
+    expect(historical_event.previous_value).to eq(previous_value)
+    expect(historical_event.new_value).to eq(new_value)
   end
 end
