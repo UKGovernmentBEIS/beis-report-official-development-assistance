@@ -1,5 +1,2 @@
-class HistoricalEvent
-  def self.create(attrs)
-    # coming soon
-  end
+class HistoricalEvent < ApplicationRecord
 end

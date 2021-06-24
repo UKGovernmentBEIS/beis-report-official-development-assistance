@@ -174,6 +174,19 @@ ActiveRecord::Schema.define(version: 2021_06_24_123510) do
     t.index ["report_id"], name: "index_forecasts_on_report_id"
   end
 
+  create_table "historical_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "activity_id"
+    t.text "value_changed"
+    t.text "new_value"
+    t.text "previous_value"
+    t.text "reference"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id"], name: "index_historical_events_on_activity_id"
+    t.index ["user_id"], name: "index_historical_events_on_user_id"
+  end
+
   create_table "implementing_organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "reference"
