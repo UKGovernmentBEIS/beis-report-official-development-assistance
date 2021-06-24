@@ -149,6 +149,21 @@ RSpec.describe Organisation, type: :model do
     end
   end
 
+  describe ".reporters" do
+    it "should only contain delivery partners and service owners" do
+      beis_organisation = create(:beis_organisation)
+      delivery_partner_organisation = create(:delivery_partner_organisation)
+      matched_effort_provider = create(:matched_effort_provider)
+      external_income_provider = create(:external_income_provider)
+      reporters = Organisation.reporters
+
+      expect(reporters).to include(delivery_partner_organisation)
+      expect(reporters).to include(beis_organisation)
+      expect(reporters).not_to include(matched_effort_provider)
+      expect(reporters).not_to include(external_income_provider)
+    end
+  end
+
   describe ".matched_effort_providers" do
     it "should contain only organisations that are matched effort providers" do
       create_list(:delivery_partner_organisation, 3)
