@@ -6,6 +6,6 @@
       .govuk-form-group
         %label{ class: "govuk-label", for: :organistaion_id }
           = t("filters.activity.organisation")
-        = select_tag :organisation_id, options_from_collection_for_select(list_of_delivery_partners, :id, :name, organisation_id), { class: "govuk-select" }
+        = select_tag :organisation_id, options_from_collection_for_select(list_of_reporting_organisations, :id, :name, organisation_id), { class: "govuk-select" }
       .govuk-form-group
         = submit_tag t("filters.activity.submit"), { class: "govuk-button", data: { module: "govuk-button" } }
