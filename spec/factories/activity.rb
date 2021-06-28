@@ -24,7 +24,7 @@ FactoryBot.define do
     aid_type { "D01" }
     level { :fund }
     publish_to_iati { true }
-    gcrf_strategic_area { ["1", "2"] }
+    gcrf_strategic_area { ["17A", "RF"] }
     gcrf_challenge_area { 0 }
     oda_eligibility_lead { Faker::Name.name }
     uk_dp_named_contact { Faker::Name.name }

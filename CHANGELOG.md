@@ -711,6 +711,7 @@
 - Add a Forecasts tab to the Report view, listing forecasts grouped by activity. Move 'Upload forecast' to this tab.
 - Add a list of uploaded forecasts (grouped by activity) to the upload success page
 - Fix: include BEIS in the organisation filter on the activities page
+- Change GCRF Strategic Area codes to Alphanumeric
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-58...HEAD
 [release-58]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-57...release-58

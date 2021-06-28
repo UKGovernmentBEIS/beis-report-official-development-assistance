@@ -1,15 +1,22 @@
 data:
-  - code: 0
+  - code: "C"
+    legacy_code: "0"
     description: Core
-  - code: 1
+  - code: "17A"
+    legacy_code: "1"
     description: UKRI Collective Fund (2017 allocation)
-  - code: 3
+  - code: "RF"
+    legacy_code: "3"
     description: "Academies Collective Fund: Resilient Futures"
-  - code: 4
+  - code: "Clm"
+    legacy_code: "4"
     description: Coherence and Impact
-  - code: 5
+  - code: "IP"
+    legacy_code: "5"
     description: International Partnerships
-  - code: 6
+  - code: "InC"
+    legacy_code: "6"
     description: Innovation and Commercialisation
-  - code: 7
+  - code: "ARE"
+    legacy_code: "7"
     description: Agile response in emergencies
