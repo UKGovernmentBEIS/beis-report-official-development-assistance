@@ -706,9 +706,18 @@
 - Policy marker add/edit links go directly to the relevant form section
 - Change applicable Budget Types
 
+## [release-59] - 2021-06-29
+
+- Add a Forecasts tab to the Report view, listing forecasts grouped by activity. Move 'Upload forecast' to this tab.
+- Add a list of uploaded forecasts (grouped by activity) to the upload success page
+- Fix: include BEIS in the organisation filter on the activities page
+- Change GCRF Strategic Area codes to Alphanumeric
+- Record edits to Activities made via Wizard form, using new HistoricalEvent entity
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-58...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-59...HEAD
+[release-59]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-58...release-59
 [release-58]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-57...release-58
 [release-57]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-56...release-57
 [release-56]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-55...release-56

@@ -639,7 +639,7 @@ RSpec.describe Activity, type: :model do
 
     context "when gcrf_strategic_area has too many values" do
       let(:source_fund_code) { Fund::MAPPINGS["NF"] }
-      let(:strategic_areas) { %w[1 2 3] }
+      let(:strategic_areas) { %w[RF Clm IP] }
       subject { build(:programme_activity, source_fund_code: source_fund_code, gcrf_strategic_area: strategic_areas) }
 
       context "with a GCRF funded activity" do
@@ -830,6 +830,7 @@ RSpec.describe Activity, type: :model do
     it { should have_many(:destination_transfers) }
     it { should have_many(:matched_efforts) }
     it { should have_many(:external_incomes) }
+    it { should have_many(:historical_events) }
   end
 
   describe "#parent_activities" do

@@ -13,6 +13,22 @@ RSpec.feature "Users can filter activities" do
       expect(page).to have_select "organisation_id"
     end
 
+    scenario "the BEIS organisation is the default selection on the activities index" do
+      visit activities_path
+
+      expect(page).to have_select "organisation_id", selected: "Department for Business, Energy and Industrial Strategy"
+    end
+
+    scenario "the organisations are in alphabetical order" do
+      create(:delivery_partner_organisation, name: "Zorg")
+      create(:delivery_partner_organisation, name: "Aardvark")
+
+      visit activities_path
+
+      expect(page.all("#organisation_id option").first).to have_text("Aardvark")
+      expect(page.all("#organisation_id option").last).to have_text("Zorg")
+    end
+
     scenario "they can filter the activities to an organisation" do
       delivery_partner_organisation = create(:delivery_partner_organisation)
       programme = create(:programme_activity, extending_organisation: delivery_partner_organisation)

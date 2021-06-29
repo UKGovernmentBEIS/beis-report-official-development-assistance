@@ -72,6 +72,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     end
 
     update_form_state
+    record_history
     record_auditable_activity
 
     # `render_wizard` calls save on the object passed to it.
@@ -105,6 +106,16 @@ class Staff::ActivityFormsController < Staff::BaseController
     else
       @activity.form_state = step
     end
+  end
+
+  def record_history
+    HistoryRecorder
+      .new(user: current_user)
+      .call(
+        changes: @activity.changes,
+        reference: "Update to Activity #{step}",
+        activity: @activity
+      )
   end
 
   def record_auditable_activity

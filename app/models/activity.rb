@@ -152,6 +152,7 @@ class Activity < ApplicationRecord
   has_many :comments
   has_many :matched_efforts
   has_many :external_incomes
+  has_many :historical_events
 
   enum level: {
     fund: "fund",

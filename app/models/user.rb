@@ -2,6 +2,7 @@ class User < ApplicationRecord
   include PublicActivity::Common
 
   belongs_to :organisation
+  has_many :historical_events
   validates_presence_of :name, :email
   validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}
   validates :email, with: :email_cannot_be_changed_after_create, on: :update

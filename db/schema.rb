@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_14_155407) do
+ActiveRecord::Schema.define(version: 2021_06_24_123510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 2021_06_14_155407) do
     t.integer "programme_status"
     t.string "channel_of_delivery_code"
     t.integer "source_fund_code"
-    t.integer "gcrf_strategic_area", default: [], array: true
+    t.string "gcrf_strategic_area", default: [], array: true
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
@@ -172,6 +172,19 @@ ActiveRecord::Schema.define(version: 2021_06_14_155407) do
     t.index ["parent_activity_id", "financial_year", "financial_quarter", "report_id"], name: "unique_report_per_versioned_item", unique: true, where: "(report_id IS NOT NULL)"
     t.index ["parent_activity_id"], name: "index_forecasts_on_parent_activity_id"
     t.index ["report_id"], name: "index_forecasts_on_report_id"
+  end
+
+  create_table "historical_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "activity_id"
+    t.text "value_changed"
+    t.text "new_value"
+    t.text "previous_value"
+    t.text "reference"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id"], name: "index_historical_events_on_activity_id"
+    t.index ["user_id"], name: "index_historical_events_on_user_id"
   end
 
   create_table "implementing_organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

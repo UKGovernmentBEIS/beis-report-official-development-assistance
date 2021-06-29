@@ -101,6 +101,7 @@ class ForecastHistory
 
     entry = Forecast.unscoped.create!(attributes)
     entry.create_activity(key: "forecast.create", owner: @user)
+    entry
   end
 
   def revise_entry(entry, value, report = nil)
@@ -112,6 +113,7 @@ class ForecastHistory
       report: report
     )
     new_entry.create_activity(key: "forecast.create", owner: @user)
+    new_entry
   end
 
   def update_entry(entry, value)
@@ -121,6 +123,7 @@ class ForecastHistory
       entry.update!(value: value)
       entry.create_activity(key: "forecast.update", owner: @user)
     end
+    entry
   end
 
   def series_attributes

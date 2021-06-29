@@ -117,6 +117,10 @@ RSpec.configure do |config|
   # Prevent --bisect from locking up
   config.bisect_runner = :shell
 
+  # Add the root of the project to the load path so that we can
+  # explicitly load dependent files in isolated specs
+  $LOAD_PATH << File.expand_path("..", __dir__)
+
   # Don't generate coverage for partial test runs
   SimpleCov.start if config.files_to_run.map { |file| file.split("spec/").last.split("/").first }.uniq.size > 3
 end

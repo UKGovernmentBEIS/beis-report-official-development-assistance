@@ -45,7 +45,7 @@ class ImportForecasts
     end
   end
 
-  attr_reader :errors
+  attr_reader :errors, :imported_forecasts
 
   def initialize(uploader: nil, report: nil)
     if uploader && report
@@ -56,6 +56,7 @@ class ImportForecasts
     @report = report
     @errors = []
     @warned_columns = Set.new
+    @imported_forecasts = []
   end
 
   def import(forecasts)
@@ -95,7 +96,7 @@ class ImportForecasts
       if match
         year = match[1].to_i
         quarter = match[2].to_i
-        import_forecast(activity, FinancialQuarter.new(year, quarter), value, header: key)
+        imported_forecasts << import_forecast(activity, FinancialQuarter.new(year, quarter), value, header: key)
       elsif !COLUMN_HEADINGS.include?(key) && @warned_columns.add?(key)
         @errors << Error.new(-1, key, "", I18n.t("importer.errors.forecast.unrecognised_column"))
       end
