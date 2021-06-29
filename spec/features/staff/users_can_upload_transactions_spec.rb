@@ -19,6 +19,18 @@ RSpec.feature "users can upload transactions" do
     click_link t("action.transaction.upload.link")
   end
 
+  def expect_to_see_successful_upload_summary_with(count:, total:)
+    expect(page).to have_text(t("page_title.transaction.upload_success"))
+    expect(page).to have_css(".transactions tr", count: count)
+    expect(page).to have_link(
+      t("importer.success.transaction.back_link"),
+      href: report_actuals_path(report)
+    )
+    within ".totals" do
+      expect(page).to have_content(total)
+    end
+  end
+
   scenario "downloading a CSV template with activities for the current report" do
     click_link t("action.transaction.download.button")
 
@@ -68,7 +80,9 @@ RSpec.feature "users can upload transactions" do
 
     expect(Transaction.count).to eq(2)
     expect(page).to have_text(t("action.transaction.upload.success"))
-    expect(page).not_to have_xpath("//tbody/tr")
+    expect(page).not_to have_css("table.govuk-table.errors")
+
+    expect_to_see_successful_upload_summary_with(count: 2, total: 50)
   end
 
   scenario "uploading a valid set of transactions with no organisation data" do
@@ -82,7 +96,8 @@ RSpec.feature "users can upload transactions" do
 
     expect(Transaction.count).to eq(2)
     expect(page).to have_text(t("action.transaction.upload.success"))
-    expect(page).not_to have_xpath("//tbody/tr")
+
+    expect_to_see_successful_upload_summary_with(count: 2, total: 50)
   end
 
   scenario "uploading a valid set of transactions including zero values" do
@@ -96,7 +111,8 @@ RSpec.feature "users can upload transactions" do
 
     expect(Transaction.count).to eq(1)
     expect(page).to have_text(t("action.transaction.upload.success"))
-    expect(page).not_to have_xpath("//tbody/tr")
+
+    expect_to_see_successful_upload_summary_with(count: 1, total: 30)
   end
 
   scenario "uploading an invalid set of transactions" do
@@ -161,7 +177,8 @@ RSpec.feature "users can upload transactions" do
 
     expect(Transaction.count).to eq(2)
     expect(page).to have_text(t("action.transaction.upload.success"))
-    expect(page).not_to have_xpath("//tbody/tr")
+
+    expect_to_see_successful_upload_summary_with(count: 2, total: 50)
   end
 
   def upload_csv(content)
