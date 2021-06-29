@@ -5,7 +5,7 @@ class ImportTransactions
     end
   }
 
-  attr_reader :errors
+  attr_reader :errors, :imported_transactions
 
   def self.column_headings
     Converter::FIELDS.values
@@ -19,8 +19,11 @@ class ImportTransactions
 
   def import(transactions)
     ActiveRecord::Base.transaction do
-      transactions.each_with_index { |row, index| import_row(row, index) }
-      raise ActiveRecord::Rollback unless @errors.empty?
+      @imported_transactions = transactions.map.with_index { |row, index| import_row(row, index) }
+      unless @errors.empty?
+        @imported_transactions = []
+        raise ActiveRecord::Rollback
+      end
     end
   end
 
@@ -31,6 +34,8 @@ class ImportTransactions
     importer.errors.each do |attr_name, (value, message)|
       add_error(index, attr_name, value, message)
     end
+
+    importer.transaction
   end
 
   def add_error(row_number, column, value, message)
@@ -38,7 +43,7 @@ class ImportTransactions
   end
 
   class RowImporter
-    attr_reader :errors
+    attr_reader :errors, :transaction
 
     def initialize(report, uploader, row)
       @report = report
@@ -54,7 +59,7 @@ class ImportTransactions
       @errors.update(@converter.errors)
 
       authorise_activity
-      create_transaction
+      @transaction = create_transaction
     end
 
     private
@@ -90,6 +95,8 @@ class ImportTransactions
       result.object.errors.each do |error|
         @errors[error.attribute] ||= [@converter.raw(error.attribute), error.message]
       end
+
+      result.object
     end
 
     def assign_default_values(attrs)
