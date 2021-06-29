@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   end
 
   scope module: "staff" do
-    resource :dashboard, only: :show
+    get "home", to: "home#show"
     resources :users
     resources :activities, only: [:index] do
       collection do
