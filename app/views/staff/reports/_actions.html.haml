@@ -1,8 +1,5 @@
 .govuk-grid-row
   .govuk-grid-column-full.page-actions
-    - if policy(@report_presenter).upload?
-      = link_to t("action.transaction.upload.link"), new_report_transaction_upload_path(@report_presenter), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
-
     - if policy(@report_presenter).activate?
       = link_to t("action.report.activate.button"), edit_report_state_path(@report_presenter), class: "govuk-button govuk-!-margin-left-4"
 

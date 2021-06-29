@@ -15,7 +15,7 @@ RSpec.feature "users can upload transactions" do
 
   before do
     authenticate!(user: user)
-    visit report_path(report)
+    visit report_actuals_path(report)
     click_link t("action.transaction.upload.link")
   end
 
