@@ -716,6 +716,8 @@
 
 ## [unreleased]
 
+- Show actuals grouped by activity against a specific report
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-59...HEAD
 [release-59]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-58...release-59
 [release-58]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-57...release-58
