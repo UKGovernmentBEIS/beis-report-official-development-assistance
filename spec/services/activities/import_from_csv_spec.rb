@@ -966,6 +966,20 @@ RSpec.describe Activities::ImportFromCsv do
           activity: existing_activity
         )
       end
+
+      context "when the activity fails to update" do
+        before do
+          allow(existing_activity).to receive(:save).and_return(false)
+        end
+
+        it "doesn't record any History" do
+          rows = [existing_activity_attributes, new_activity_attributes]
+
+          subject.import(rows)
+
+          expect(history_recorder).not_to have_received(:call)
+        end
+      end
     end
 
     it "creates and imports implementing organisations" do

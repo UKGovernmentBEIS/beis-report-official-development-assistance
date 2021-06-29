@@ -122,10 +122,10 @@ module Activities
           end
         end
 
-        return set_errors unless @activity.valid?
+        changes = @activity.changes
+        return set_errors unless @activity.save
 
-        record_history
-        @activity.save
+        record_history(changes)
       end
 
       def find_activity_by_roda_id(roda_id)
@@ -137,11 +137,11 @@ module Activities
 
       private
 
-      def record_history
+      def record_history(changes)
         HistoryRecorder
           .new(user: @uploader)
           .call(
-            changes: @activity.changes,
+            changes: changes,
             reference: "Import from CSV",
             activity: @activity
           )
