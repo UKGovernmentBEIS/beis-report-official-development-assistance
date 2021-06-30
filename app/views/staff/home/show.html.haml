@@ -1,7 +1,7 @@
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full
-      %h1.govuk-heading-l
-        Home
 
       = render partial: "staff/searches/form"
+
+      = render partial: "delivery_partner_organisations_table", locals: @delivery_partner_organisaitons

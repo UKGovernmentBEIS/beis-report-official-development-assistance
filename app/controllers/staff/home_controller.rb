@@ -1,10 +1,12 @@
 class Staff::HomeController < Staff::BaseController
   def show
     authorize :home, :show?
-    redirect_if_delivery_partner
-  end
 
-  private def redirect_if_delivery_partner
-    redirect_to organisation_path(current_user.organisation) unless current_user.service_owner?
+    if current_user.service_owner?
+      @delivery_partner_organisations = Organisation.delivery_partners
+      authorize @delivery_partner_organisations
+    else
+      redirect_to organisation_path(current_user.organisation)
+    end
   end
 end
