@@ -191,7 +191,9 @@ RSpec.describe "Users can create a budget" do
   end
 
   def fill_in_and_submit_budget_form
-    choose(t("form.label.budget.budget_type.direct"))
+    # set the `have_checked_field` argument to  `visible: false`
+    # because Capybara doesn’t pick up the  radio button when using the JavaScript driver
+    expect(page).to have_checked_field("budget[budget_type]", with: "direct", visible: false)
     select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
     fill_in "budget[value]", with: "1000.00"
     click_button t("default.button.submit")
