@@ -47,7 +47,7 @@ module Transfers
   private
 
   def confirm_or_edit(success_message)
-    if params[:commit] == "No"
+    if params[:edit]
       render edit_or_new
     else
       @transfer.save
