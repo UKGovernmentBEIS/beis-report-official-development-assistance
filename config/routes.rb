@@ -57,6 +57,7 @@ Rails.application.routes.draw do
       resource :transaction_upload, only: [:new, :show, :update]
       get "variance" => "report_variance#show"
       get "forecasts" => "report_forecasts#show"
+      get "actuals" => "report_transactions#show"
       get "budgets" => "report_budgets#show"
       get "activities" => "report_activities#show"
     end

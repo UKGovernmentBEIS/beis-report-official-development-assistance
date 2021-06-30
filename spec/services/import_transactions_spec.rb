@@ -373,7 +373,8 @@ RSpec.describe ImportTransactions do
 
     it "imports all transactions successfully" do
       expect(importer.errors).to eq([])
-      expect(Transaction.count).to eq(3)
+      expect(importer.imported_transactions.count).to eq(3)
+      expect(importer.imported_transactions).to match_array(report.transactions)
     end
 
     it "assigns each transaction to the correct report" do
@@ -401,6 +402,7 @@ RSpec.describe ImportTransactions do
 
       it "does not import any transactions" do
         expect(Transaction.count).to eq(0)
+        expect(importer.imported_transactions).to eq([])
       end
 
       it "returns an error" do
