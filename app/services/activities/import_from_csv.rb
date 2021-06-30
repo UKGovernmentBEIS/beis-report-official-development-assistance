@@ -20,10 +20,11 @@ module Activities
       ["Parent RODA ID"] + Converter::FIELDS.values
     end
 
-    def initialize(uploader:, delivery_partner_organisation:)
+    def initialize(uploader:, delivery_partner_organisation:, report: nil)
       @uploader = uploader
       @uploader_organisation = uploader.organisation
       @delivery_partner_organisation = delivery_partner_organisation
+      @report = report
       @errors = []
       @created = []
       @updated = []
@@ -71,7 +72,12 @@ module Activities
       elsif row["Delivery Partner Identifier"].present?
         add_error(index, :delivery_partner_identifier, row["Delivery Partner Identifier"], I18n.t("importer.errors.activity.cannot_update.delivery_partner_identifier_present")) && return
       else
-        updater = ActivityUpdater.new(row: row, uploader: @uploader, delivery_partner_organisation: @delivery_partner_organisation)
+        updater = ActivityUpdater.new(
+          row: row,
+          uploader: @uploader,
+          delivery_partner_organisation: @delivery_partner_organisation,
+          report: @report
+        )
         updater.update
         updated << updater.activity unless updater.errors.any?
 
@@ -84,14 +90,15 @@ module Activities
     end
 
     class ActivityUpdater
-      attr_reader :errors, :activity, :row
+      attr_reader :errors, :activity, :row, :report
 
-      def initialize(row:, uploader:, delivery_partner_organisation:)
+      def initialize(row:, uploader:, delivery_partner_organisation:, report: nil)
         @errors = {}
         @activity = find_activity_by_roda_id(row["RODA ID"])
         @uploader = uploader
         @delivery_partner_organisation = delivery_partner_organisation
         @row = row
+        @report = report
         @converter = Converter.new(row, :update)
 
         if @activity && !ActivityPolicy.new(@uploader, @activity).update?
@@ -143,7 +150,8 @@ module Activities
           .call(
             changes: changes,
             reference: "Import from CSV",
-            activity: @activity
+            activity: @activity,
+            report: report
           )
       end
 

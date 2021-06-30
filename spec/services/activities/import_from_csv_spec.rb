@@ -942,6 +942,16 @@ RSpec.describe Activities::ImportFromCsv do
     end
 
     describe "recording changes" do
+      subject do
+        described_class.new(
+          uploader: uploader,
+          delivery_partner_organisation: organisation,
+          report: report
+        )
+      end
+
+      let(:report) { double("report") }
+
       let(:expected_changes) do
         {
           "attr_1" => ["old attr_1 value", "new attr_1 value"],
@@ -963,7 +973,8 @@ RSpec.describe Activities::ImportFromCsv do
         expect(history_recorder).to have_received(:call).with(
           reference: "Import from CSV",
           changes: expected_changes,
-          activity: existing_activity
+          activity: existing_activity,
+          report: report
         )
       end
 
