@@ -8,6 +8,7 @@ class HistoryRecorder
       HistoricalEvent.create(
         user: user,
         activity: activity,
+        report: report,
         reference: reference,
         value_changed: value_changed,
         previous_value: previous_value,

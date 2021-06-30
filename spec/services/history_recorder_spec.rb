@@ -25,26 +25,29 @@ RSpec.describe HistoryRecorder do
     let(:user) { double("user") }
     let(:reference) { double("reference") }
     let(:activity) { double("activity") }
+    let(:report) { double("report") }
 
     it "creates a HistoricalEvent for each change provided" do
-      recorder.call(changes: changes, activity: activity, reference: reference)
+      recorder.call(changes: changes, activity: activity, reference: reference, report: report)
 
       expect(HistoricalEvent).to have_received(:create).with(
         user: user,
         activity: activity,
+        report: report,
         reference: reference,
         value_changed: "title",
         previous_value: "Original title",
-        new_value: "Updated title",
+        new_value: "Updated title"
       )
 
       expect(HistoricalEvent).to have_received(:create).with(
         user: user,
         activity: activity,
+        report: report,
         reference: reference,
         value_changed: "description",
         previous_value: "Original description",
-        new_value: "Updated description",
+        new_value: "Updated description"
       )
     end
   end
