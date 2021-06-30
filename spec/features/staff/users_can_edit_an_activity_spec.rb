@@ -123,7 +123,9 @@ RSpec.feature "Users can edit an activity" do
           expect_change_to_be_recorded_as_historical_event(
             field: "description",
             previous_value: activity.description,
-            new_value: updated_description
+            new_value: updated_description,
+            activity: activity,
+            report: nil # no report in this scenario. Realistic or failure in setup?
           )
         end
 
@@ -423,7 +425,7 @@ RSpec.feature "Users can edit an activity" do
       it "the policy markers can be added" do
         activity = create(:project_activity, organisation: user.organisation)
         # Report needs to exist so the activity is editable
-        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
+        report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
 
         visit organisation_activity_details_path(activity.organisation, activity)
 
@@ -440,7 +442,9 @@ RSpec.feature "Users can edit an activity" do
         expect_change_to_be_recorded_as_historical_event(
           field: "policy_marker_gender",
           previous_value: "not_assessed",
-          new_value: "significant_objective"
+          new_value: "significant_objective",
+          activity: activity,
+          report: report
         )
       end
 
@@ -760,11 +764,19 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   end
 end
 
-def expect_change_to_be_recorded_as_historical_event(field:, previous_value:, new_value:)
+def expect_change_to_be_recorded_as_historical_event(
+  field:,
+  previous_value:,
+  new_value:,
+  activity:,
+  report:
+)
   historical_event = HistoricalEvent.last
   aggregate_failures do
     expect(historical_event.value_changed).to eq(field)
     expect(historical_event.previous_value).to eq(previous_value)
     expect(historical_event.new_value).to eq(new_value)
+    expect(historical_event.activity).to eq(activity)
+    expect(historical_event.report).to eq(report)
   end
 end
