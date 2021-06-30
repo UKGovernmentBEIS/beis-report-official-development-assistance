@@ -36,7 +36,7 @@
 
         - if authenticated?
           .govuk-header__content
-            %a.govuk-header__link.govuk-header__link--service-name{ href: organisation_path(current_user.organisation) }
+            %a.govuk-header__link.govuk-header__link--service-name{ href: home_path }
               = t('app.title')
 
             %button{type:'button', class:'govuk-header__menu-button govuk-js-header-toggle', aria: {label: 'Show or hide Top Level Navigation', controls: 'navigation'}}

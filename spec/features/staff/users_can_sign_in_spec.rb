@@ -13,7 +13,6 @@ RSpec.feature "Users can sign in with Auth0" do
     expect(page).to have_content(t("header.link.sign_in"))
     click_on t("header.link.sign_in")
 
-    expect(page).to have_content(user.organisation.name)
     expect(page).to have_content(t("header.link.sign_out"))
   end
 
@@ -29,7 +28,6 @@ RSpec.feature "Users can sign in with Auth0" do
     expect(page).to have_content(t("header.link.sign_in"))
     click_on t("header.link.sign_in")
 
-    expect(page).to have_content(user.organisation.name)
     expect(page).to have_content(t("header.link.sign_out"))
   end
 
@@ -47,8 +45,8 @@ RSpec.feature "Users can sign in with Auth0" do
     expect(current_path).to eq(reports_path)
   end
 
-  scenario "any user lands on their organisation page" do
-    user = create(:administrator)
+  scenario "a BEIS user lands on their home  page" do
+    user = create(:beis_user)
 
     mock_successful_authentication(
       uid: user.identifier, name: user.name, email: user.email
@@ -60,9 +58,24 @@ RSpec.feature "Users can sign in with Auth0" do
     expect(page).to have_content(t("header.link.sign_in"))
     click_on t("header.link.sign_in")
 
-    expect(page).to have_content(user.organisation.name)
+    expect(page.current_path).to eql("/home")
   end
 
+  scenario "a delivery partenr user lands on their home  page" do
+    user = create(:delivery_partner_user)
+
+    mock_successful_authentication(
+      uid: user.identifier, name: user.name, email: user.email
+    )
+
+    visit root_path
+    expect(page).to have_content(t("start_page.title"))
+
+    expect(page).to have_content(t("header.link.sign_in"))
+    click_on t("header.link.sign_in")
+
+    expect(page.current_path).to eql(organisation_path(user.organisation))
+  end
   scenario "protected pages cannot be visited unless signed in" do
     visit root_path
 
