@@ -82,4 +82,8 @@ class Report < ApplicationRecord
   def reportable_activities
     Activity.reportable.projects_and_third_party_projects_for_report(self).with_roda_identifier
   end
+
+  def activities_created
+    reportable_activities.where(created_at: financial_period)
+  end
 end

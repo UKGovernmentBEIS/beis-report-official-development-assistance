@@ -156,7 +156,7 @@ RSpec.describe Report, type: :model do
     end
   end
 
-  describe "reportable_activities" do
+  describe "#reportable_activities" do
     let!(:report) { create(:report, organisation: build(:delivery_partner_organisation)) }
     let!(:programme) { create(:programme_activity, parent: report.fund) }
     let!(:project_a) { create(:project_activity, parent: programme, organisation: report.organisation) }
@@ -179,6 +179,27 @@ RSpec.describe Report, type: :model do
       expect(report.reportable_activities).not_to include(cancelled_project)
       expect(report.reportable_activities).not_to include(paused_project)
       expect(report.reportable_activities).not_to include(ineligible_project)
+    end
+  end
+
+  describe "#activities_created" do
+    it "only returns activities created in the given reporting period" do
+      fund = create(:fund_activity)
+      programme = create(:programme_activity, parent: fund)
+
+      travel_to(Date.parse("2020-04-26")) do
+        @report = create(:report, organisation: build(:delivery_partner_organisation), fund: fund)
+        @project_in_reporting_period = create(:project_activity, parent: programme, organisation: @report.organisation)
+        @third_party_project_in_reporting_period = create(:third_party_project_activity, parent: @project_in_reporting_period, organisation: @report.organisation)
+      end
+
+      _project_outside_reporting_period = create(:project_activity, parent: programme, organisation: @report.organisation)
+      _third_party_project_outside_reporting_period = create(:third_party_project_activity, parent: @project_in_reporting_period, organisation: @report.organisation)
+
+      expect(@report.activities_created).to match_array([
+        @project_in_reporting_period,
+        @third_party_project_in_reporting_period,
+      ])
     end
   end
 
