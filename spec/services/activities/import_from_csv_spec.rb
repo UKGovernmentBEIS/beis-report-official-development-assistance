@@ -924,9 +924,11 @@ RSpec.describe Activities::ImportFromCsv do
 
   context "when updating and importing" do
     let(:activity_policy_double) { instance_double("ActivityPolicy", create_child?: true, update?: true) }
+    let(:history_recorder) { instance_double(HistoryRecorder, call: true) }
 
     before do
       allow(ActivityPolicy).to receive(:new).and_return(activity_policy_double)
+      allow(HistoryRecorder).to receive(:new).and_return(history_recorder)
     end
 
     it "creates and imports activities" do
@@ -937,6 +939,47 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.updated.count).to eq(1)
 
       expect(subject.errors.count).to eq(0)
+    end
+
+    describe "recording changes" do
+      let(:expected_changes) do
+        {
+          "attr_1" => ["old attr_1 value", "new attr_1 value"],
+          "attr_2" => ["old attr_2 value", "new attr_2 value"],
+        }
+      end
+
+      before do
+        allow(existing_activity).to receive(:changes).and_return(expected_changes)
+        allow(Activity).to receive(:by_roda_identifier).and_return(existing_activity)
+      end
+
+      it "records the changes made using the HistoryRecorder" do
+        rows = [existing_activity_attributes, new_activity_attributes]
+
+        subject.import(rows)
+
+        expect(HistoryRecorder).to have_received(:new).with(user: uploader)
+        expect(history_recorder).to have_received(:call).with(
+          reference: "Import from CSV",
+          changes: expected_changes,
+          activity: existing_activity
+        )
+      end
+
+      context "when the activity fails to update" do
+        before do
+          allow(existing_activity).to receive(:save).and_return(false)
+        end
+
+        it "doesn't record any History" do
+          rows = [existing_activity_attributes, new_activity_attributes]
+
+          subject.import(rows)
+
+          expect(history_recorder).not_to have_received(:call)
+        end
+      end
     end
 
     it "creates and imports implementing organisations" do

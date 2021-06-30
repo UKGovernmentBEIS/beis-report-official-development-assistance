@@ -122,11 +122,10 @@ module Activities
           end
         end
 
-        return if @activity.save
+        changes = @activity.changes
+        return set_errors unless @activity.save
 
-        @activity.errors.each do |error|
-          @errors[error.attribute] ||= [@converter.raw(error.attribute), error.message]
-        end
+        record_history(changes)
       end
 
       def find_activity_by_roda_id(roda_id)
@@ -134,6 +133,24 @@ module Activities
         @errors[:roda_id] ||= [roda_id, I18n.t("importer.errors.activity.not_found")] if activity.nil?
 
         activity
+      end
+
+      private
+
+      def record_history(changes)
+        HistoryRecorder
+          .new(user: @uploader)
+          .call(
+            changes: changes,
+            reference: "Import from CSV",
+            activity: @activity
+          )
+      end
+
+      def set_errors
+        @activity.errors.each do |error|
+          @errors[error.attribute] ||= [@converter.raw(error.attribute), error.message]
+        end
       end
     end
 
