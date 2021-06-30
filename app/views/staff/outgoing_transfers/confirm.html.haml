@@ -43,5 +43,6 @@
         = f.hidden_field :financial_year
         = f.hidden_field :value
 
-        = f.govuk_submit "Yes"
-        = f.govuk_submit "No", secondary: true
+        = f.govuk_submit "Yes" do
+          %button.govuk-button.govuk-button--secondary{ name: "edit" }
+            No
