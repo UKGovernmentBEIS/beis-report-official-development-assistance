@@ -44,4 +44,57 @@ RSpec.describe Staff::ActivityUploadsController do
       end
     end
   end
+
+  describe "#update" do
+    let(:report) { create(:report, organisation: organisation, state: :active) }
+    let(:file_upload) { "file upload double" }
+    let(:uploaded_rows) { double("uploaded rows") }
+    let(:upload) { instance_double(CsvFileUpload, rows: uploaded_rows, valid?: true) }
+
+    let(:importer) do
+      instance_double(
+        Activities::ImportFromCsv,
+        import: true,
+        errors: [],
+        created: double,
+        updated: double
+      )
+    end
+
+    before do
+      allow(CsvFileUpload).to receive(:new).and_return(upload)
+      allow(Activities::ImportFromCsv).to receive(:new).and_return(importer)
+    end
+
+    it "asks CsvFileUpload to prepare the uploaded activites" do
+      put :update, params: {report_id: report.id, report: file_upload}
+
+      expect(CsvFileUpload).to have_received(:new).with(file_upload, :activity_csv)
+    end
+
+    context "when upload is valid" do
+      before { allow(upload).to receive(:valid?).and_return(true) }
+
+      it "asks ImportFromCsv to import the uploaded rows" do
+        put :update, params: {report_id: report.id, report: file_upload}
+
+        expect(Activities::ImportFromCsv).to have_received(:new).with(
+          uploader: user,
+          delivery_partner_organisation: organisation
+        )
+
+        expect(importer).to have_received(:import).with(uploaded_rows)
+      end
+    end
+
+    context "when upload is NOT valid" do
+      before { allow(upload).to receive(:valid?).and_return(false) }
+
+      it "does NOT ask ImportFromCsv to import the uploaded rows" do
+        put :update, params: {report_id: report.id, report: file_upload}
+
+        expect(Activities::ImportFromCsv).not_to have_received(:new)
+      end
+    end
+  end
 end
