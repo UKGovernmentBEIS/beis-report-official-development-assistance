@@ -18,7 +18,8 @@ class Budget < ApplicationRecord
   validates_presence_of :report, unless: -> { parent_activity&.organisation&.service_owner? }
   validates_presence_of :value,
     :currency,
-    :financial_year
+    :financial_year,
+    :budget_type
   validates :value, numericality: {other_than: 0, less_than_or_equal_to: 99_999_999_999.00}
 
   with_options if: -> { direct? } do |direct_budget|
