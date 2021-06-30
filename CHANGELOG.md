@@ -719,6 +719,7 @@
 - Show actuals grouped by activity against a specific report
 - Show uploaded transactions after an upload
 - Record edits to Activities made in bulk via CSV imports, using the new Historical Event entity
+- Associate Report with HistoricalEvent when editing Activity via Wizard
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-59...HEAD
 [release-59]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-58...release-59

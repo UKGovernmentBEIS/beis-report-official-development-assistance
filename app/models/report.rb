@@ -12,6 +12,7 @@ class Report < ApplicationRecord
   belongs_to :organisation
   has_many :transactions
   has_many :forecasts
+  has_many :historical_events
 
   validate :activity_must_be_a_fund
   validates :deadline, date_not_in_past: true, date_within_boundaries: true, on: :edit

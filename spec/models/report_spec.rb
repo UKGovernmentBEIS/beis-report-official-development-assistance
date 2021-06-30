@@ -10,6 +10,7 @@ RSpec.describe Report, type: :model do
   describe "associations" do
     it { should belong_to(:fund).class_name("Activity") }
     it { should belong_to(:organisation) }
+    it { should have_many(:historical_events) }
   end
 
   describe ".editable_for_activity" do

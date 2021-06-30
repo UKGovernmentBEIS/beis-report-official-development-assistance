@@ -4,6 +4,7 @@ RSpec.describe HistoricalEvent, type: :model do
   describe "associations" do
     it { should belong_to(:activity) }
     it { should belong_to(:user) }
+    it { should belong_to(:report).optional }
   end
 
   describe "flexible 'value' fields which handle a range of data types" do
