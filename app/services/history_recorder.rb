@@ -3,7 +3,7 @@ class HistoryRecorder
     @user = user
   end
 
-  def call(changes:, reference:, activity:)
+  def call(changes:, reference:, activity:, report: nil)
     changes.each do |value_changed, (previous_value, new_value)|
       HistoricalEvent.create(
         user: user,

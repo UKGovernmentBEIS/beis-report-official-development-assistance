@@ -93,10 +93,12 @@ RSpec.describe Staff::ActivityFormsController do
         parent: programme
       )
     end
+    let(:report) { double("report") }
 
     before do
       policy = instance_double(ActivityPolicy, update?: true)
       allow(ActivityPolicy).to receive(:new).and_return(policy)
+      allow(Report).to receive(:editable_for_activity).and_return(report)
       allow(HistoryRecorder).to receive(:new).and_return(history_recorder)
     end
 
@@ -108,6 +110,12 @@ RSpec.describe Staff::ActivityFormsController do
         }
       end
 
+      it "finds the appropriate report to be associated with the changes" do
+        put_step(:purpose, {title: "Updated title", description: "Updated description"})
+
+        expect(Report).to have_received(:editable_for_activity).with(activity)
+      end
+
       it "asks the HistoryRecorder to record the changes" do
         put_step(:purpose, {title: "Updated title", description: "Updated description"})
 
@@ -115,7 +123,8 @@ RSpec.describe Staff::ActivityFormsController do
         expect(history_recorder).to have_received(:call).with(
           changes: expected_changes,
           reference: "Update to Activity purpose",
-          activity: activity
+          activity: activity,
+          report: report
         )
       end
     end
