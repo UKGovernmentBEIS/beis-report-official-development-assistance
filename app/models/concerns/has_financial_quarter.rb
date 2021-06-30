@@ -10,4 +10,9 @@ module HasFinancialQuarter
   def financial_quarter_and_year
     own_financial_quarter&.to_s
   end
+
+  def financial_period
+    return if own_financial_quarter.nil?
+    (own_financial_quarter.start_date..own_financial_quarter.end_date)
+  end
 end
