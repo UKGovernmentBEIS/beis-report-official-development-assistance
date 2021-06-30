@@ -720,6 +720,8 @@
 - Show uploaded transactions after an upload
 - Record edits to Activities made in bulk via CSV imports, using the new Historical Event entity
 - Associate Report with HistoricalEvent when editing Activity via Wizard
+- BEIS users have a home page that lets them view activities by delivery partner
+  organisation
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-59...HEAD
 [release-59]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-58...release-59

@@ -25,6 +25,10 @@ en:
     error:
       unknown: Unknown error
     warning: Warning
+  table:
+    header:
+      default:
+        action: Action
   activerecord:
     errors:
       format: "%{attribute} %{message}"

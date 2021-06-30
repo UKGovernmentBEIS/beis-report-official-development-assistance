@@ -2,8 +2,8 @@
   %ul{id: 'navigation', class: 'govuk-header__navigation', aria: { label: "Top Level Navigation"}}
     -if current_user.present? && current_user.active?
 
-      %li{ class: navigation_item_class(organisation_path(current_user.organisation)) }
-        %a{ href: organisation_path(current_user.organisation), class: 'govuk-header__link' }
+      %li{ class: navigation_item_class(home_path)}
+        %a{ href: home_path, class: 'govuk-header__link' }
           = t("page_title.home")
 
       %li{ class: navigation_item_class(reports_path) }
