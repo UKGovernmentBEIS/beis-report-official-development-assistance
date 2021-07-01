@@ -1,5 +1,6 @@
 class BudgetPresenter < SimpleDelegator
   def budget_type
+    return if super.blank?
     I18n.t("form.label.budget.budget_type.#{super}")
   end
 
