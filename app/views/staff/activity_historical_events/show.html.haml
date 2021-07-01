@@ -1,0 +1,19 @@
+= content_for :page_title_prefix, t("document_title.activity.historical_events", name: @activity.title)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        = @activity.title
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      .govuk-tabs
+        = render "staff/shared/activities/tab_nav"
+
+        .govuk-tabs__panel
+          %h2.govuk-heading-l
+            = t("page_title.activity.change_history")
+
+          %p.govuk-body
+            = t("page_content.tab_content.change_history.guidance")
