@@ -723,6 +723,8 @@
 - BEIS users have a home page that lets them view activities by delivery partner
   organisation
 - Make sure a Budget has a Budget Type
+- Delivery partner users have a home page that lets them view and search their
+  own activities
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-59...HEAD
 [release-59]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-58...release-59
