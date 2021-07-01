@@ -7,6 +7,11 @@ RSpec.describe BudgetPresenter do
     it "returns the name of the budget type" do
       expect(described_class.new(budget).budget_type).to eq("Direct")
     end
+
+    it "returns nothing when the budget type is not present" do
+      budget.budget_type = nil
+      expect(described_class.new(budget).budget_type).to eq(nil)
+    end
   end
 
   describe "#iati_type" do
