@@ -722,6 +722,7 @@
 - Associate Report with HistoricalEvent when editing Activity via Wizard
 - BEIS users have a home page that lets them view activities by delivery partner
   organisation
+- Make sure a Budget has a Budget Type
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-59...HEAD
 [release-59]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-58...release-59
