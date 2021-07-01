@@ -17,3 +17,28 @@
 
           %p.govuk-body
             = t("page_content.tab_content.change_history.guidance")
+
+          %table.govuk-table.historical-events
+            %thead.govuk-table__head
+              %tr.govuk-body-s.govuk-table__row
+                %th.govuk-table__header{scope: "col"} Reference
+                %th.govuk-table__header{scope: "col"} Property
+                %th.govuk-table__header{scope: "col"} Previous value
+                %th.govuk-table__header{scope: "col"} New value
+                %th.govuk-table__header{scope: "col"} Who
+                %th.govuk-table__header{scope: "col"} When
+                %th.govuk-table__header{scope: "col"} Report
+
+            %tbody.govuk-table__body
+              - @historical_events.each do |event|
+
+                %tr.govuk-body-xs.govuk-table__row[event]
+                  %td.govuk-table__cell.reference= event.reference
+                  %td.govuk-table__cell.property= event.value_changed
+                  %td.govuk-table__cell.previous-value= event.previous_value
+                  %td.govuk-table__cell.new-value= event.new_value
+                  %td.govuk-table__cell.user= event.user.email
+                  %td.govuk-table__cell.timestamp= event.created_at.strftime("%d/%m/%C at %R")
+                  %td.govuk-table__cell.report
+                    = link_to(event.report.financial_quarter_and_year, report_path(event.report)) if event.report
+
