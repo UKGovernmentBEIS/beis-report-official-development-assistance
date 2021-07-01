@@ -203,6 +203,32 @@ RSpec.describe Report, type: :model do
     end
   end
 
+  describe "activities_updated" do
+    it "only returns activities that have been updated during the reporting period" do
+      fund = create(:fund_activity)
+
+      report = create(:report, fund: fund)
+
+      programme = create(:programme_activity, parent: fund)
+      project_updated_in_report = create(:project_activity, parent: programme)
+      other_project_updated_in_report = create(:project_activity, parent: programme)
+      third_party_project_updated_in_report = create(:third_party_project_activity, parent: project_updated_in_report)
+
+      _project_not_updated_in_report = create(:project_activity, parent: programme)
+      _third_party_project_not_updated_in_report = create(:third_party_project_activity, parent: project_updated_in_report)
+
+      create(:historical_event, activity: project_updated_in_report, report: report)
+      create_list(:historical_event, 2, activity: other_project_updated_in_report, report: report)
+      create(:historical_event, activity: third_party_project_updated_in_report, report: report)
+
+      expect(report.activities_updated).to match_array([
+        project_updated_in_report,
+        other_project_updated_in_report,
+        third_party_project_updated_in_report,
+      ])
+    end
+  end
+
   describe "#editable?" do
     all_report_states = Report.states.keys
     editable_states = Report::EDITABLE_STATES

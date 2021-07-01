@@ -86,4 +86,8 @@ class Report < ApplicationRecord
   def activities_created
     reportable_activities.where(created_at: financial_period)
   end
+
+  def activities_updated
+    Activity.find(historical_events.pluck(:activity_id))
+  end
 end
