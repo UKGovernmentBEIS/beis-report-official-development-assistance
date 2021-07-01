@@ -24,5 +24,6 @@ class Staff::ReportForecastsController < Staff::BaseController
     ForecastOverview
       .new(@report_activities.map(&:id))
       .latest_values
+      .where(report: @report)
   end
 end
