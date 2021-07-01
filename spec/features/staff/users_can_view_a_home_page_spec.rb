@@ -17,7 +17,7 @@ RSpec.feature "users can view a home page" do
     scenario "they see the home page" do
       visit home_path
 
-      expect(page).to have_content("Home")
+      expect(page.current_path).to eql home_path
     end
   end
 
@@ -28,10 +28,10 @@ RSpec.feature "users can view a home page" do
       authenticate! user: delivery_partner_user
     end
 
-    scenario "they are redirected to their organisation show page" do
+    scenario "they are redirected to their home page" do
       visit home_path
 
-      expect(page).to have_content(delivery_partner_user.organisation.name)
+      expect(page.current_path).to eql home_path
     end
   end
 end

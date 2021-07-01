@@ -5,8 +5,9 @@ class Staff::HomeController < Staff::BaseController
     if current_user.service_owner?
       @delivery_partner_organisations = Organisation.delivery_partners
       authorize @delivery_partner_organisations
+      render :service_owner
     else
-      redirect_to organisation_path(current_user.organisation)
+      render :delivery_partner
     end
   end
 end
