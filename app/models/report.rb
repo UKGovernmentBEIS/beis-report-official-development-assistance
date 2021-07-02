@@ -97,4 +97,12 @@ class Report < ApplicationRecord
       .latest_values
       .where(report: self)
   end
+
+  def summed_transactions
+    transactions.sum(&:value)
+  end
+
+  def summed_forecasts_for_reportable_activities
+    forecasts_for_reportable_activities.sum(&:value)
+  end
 end

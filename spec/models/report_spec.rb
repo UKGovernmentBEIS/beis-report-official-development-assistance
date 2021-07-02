@@ -203,12 +203,12 @@ RSpec.describe Report, type: :model do
     end
   end
 
-  describe "#forecasts_for_reportable_activities" do
-    it "returns forecasts that have been made for reportable activities" do
-      report = create(:report, financial_quarter: 1, financial_year: 2021)
-      programme = create(:programme_activity, parent: report.fund)
+  describe "forecasts" do
+    let(:report) { create(:report, financial_quarter: 1, financial_year: 2021) }
+    let(:programme) { create(:programme_activity, parent: report.fund) }
 
-      activities = 2.times.map {
+    let!(:activities) do
+      2.times.map {
         create(
           :project_activity,
           organisation: report.organisation,
@@ -223,10 +223,20 @@ RSpec.describe Report, type: :model do
           ).set_value(50_000)
         end
       }
+    end
 
-      expect(report.forecasts_for_reportable_activities).to match_array(
-        activities.map(&:latest_forecasts).flatten
-      )
+    describe "#forecasts_for_reportable_activities" do
+      it "returns forecasts that have been made for reportable activities" do
+        expect(report.forecasts_for_reportable_activities).to match_array(
+          activities.map(&:latest_forecasts).flatten
+        )
+      end
+    end
+
+    describe "#summed_forecasts" do
+      it "sums the forecasts" do
+        expect(report.summed_forecasts_for_reportable_activities.to_i).to eq(100_000)
+      end
     end
   end
 
@@ -275,6 +285,18 @@ RSpec.describe Report, type: :model do
 
         expect(report.editable?).to be_falsey
       end
+    end
+  end
+
+  describe "#summed_transactions" do
+    it "sums all of the transactions belonging to a report" do
+      report = create(:report)
+
+      create(:transaction, report: report, value: 50)
+      create(:transaction, report: report, value: 75)
+      create(:transaction, report: report, value: 100)
+
+      expect(report.summed_transactions).to eq(225)
     end
   end
 end

@@ -9,18 +9,12 @@ class Staff::ReportTransactionsController < Staff::BaseController
 
     @report_presenter = ReportPresenter.new(@report)
     @report_activities = @report.reportable_activities
-    @total_transaction = TotalPresenter.new(transactions.sum(&:value)).value
-    @grouped_transactions = transactions
+    @total_transaction = TotalPresenter.new(@report.summed_transactions).value
+    @grouped_transactions = @report.transactions
       .includes([:parent_activity])
       .map { |forecast| TransactionPresenter.new(forecast) }
       .group_by { |forecast| ActivityPresenter.new(forecast.parent_activity) }
 
     render "staff/reports/transactions"
-  end
-
-  private
-
-  def transactions
-    @transactions ||= @report.transactions
   end
 end
