@@ -58,7 +58,7 @@ RSpec.feature "Users can sign in with Auth0" do
     expect(page).to have_content(t("header.link.sign_in"))
     click_on t("header.link.sign_in")
 
-    expect(page.current_path).to eql("/home")
+    expect(page.current_path).to eql home_path
   end
 
   scenario "a delivery partenr user lands on their home  page" do
@@ -74,7 +74,7 @@ RSpec.feature "Users can sign in with Auth0" do
     expect(page).to have_content(t("header.link.sign_in"))
     click_on t("header.link.sign_in")
 
-    expect(page.current_path).to eql(organisation_path(user.organisation))
+    expect(page.current_path).to eql home_path
   end
   scenario "protected pages cannot be visited unless signed in" do
     visit root_path

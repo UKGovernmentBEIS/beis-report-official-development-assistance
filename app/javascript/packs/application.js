@@ -16,7 +16,6 @@
 // const imagePath = (name) => images(name, true)
 
 import accessibleAutocomplete from "accessible-autocomplete"
-import GOVUKFrontend from "govuk-frontend"
 import Rails from "@rails/ujs"
 
 import cookieConsent from "../src/cookie-consent"
@@ -27,6 +26,8 @@ Rails.start()
 window.accessibleAutocomplete = accessibleAutocomplete
 
 document.addEventListener("DOMContentLoaded", () => {
+  const GOVUKFrontend = require('govuk-frontend')
   GOVUKFrontend.initAll()
+
   initTableTreeView()
 })

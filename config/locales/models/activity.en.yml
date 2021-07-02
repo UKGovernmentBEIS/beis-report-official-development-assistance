@@ -301,6 +301,7 @@ en:
         forecasted_spend_for_quarter: "%{financial_quarter_and_year} forecasted spend"
         variance_for_quarter: "%{financial_quarter_and_year} variance"
         comment: Comment
+        programme_status: Status
     body:
       activity:
         level:
