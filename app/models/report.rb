@@ -90,4 +90,11 @@ class Report < ApplicationRecord
   def activities_updated
     Activity.find(historical_events.pluck(:activity_id))
   end
+
+  def forecasts_for_reportable_activities
+    ForecastOverview
+      .new(reportable_activities.pluck(:id))
+      .latest_values
+      .where(report: self)
+  end
 end

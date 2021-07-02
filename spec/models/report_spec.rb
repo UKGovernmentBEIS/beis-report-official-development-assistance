@@ -203,6 +203,33 @@ RSpec.describe Report, type: :model do
     end
   end
 
+  describe "#forecasts_for_reportable_activities" do
+    it "returns forecasts that have been made for reportable activities" do
+      report = create(:report, financial_quarter: 1, financial_year: 2021)
+      programme = create(:programme_activity, parent: report.fund)
+
+      activities = 2.times.map {
+        create(
+          :project_activity,
+          organisation: report.organisation,
+          parent: programme
+        ).tap do |activity|
+          ForecastHistory.new(
+            activity,
+            report: report,
+            financial_quarter: 2,
+            financial_year: 2021,
+            user: create(:delivery_partner_user)
+          ).set_value(50_000)
+        end
+      }
+
+      expect(report.forecasts_for_reportable_activities).to match_array(
+        activities.map(&:latest_forecasts).flatten
+      )
+    end
+  end
+
   describe "activities_updated" do
     it "only returns activities that have been updated during the reporting period" do
       fund = create(:fund_activity)
