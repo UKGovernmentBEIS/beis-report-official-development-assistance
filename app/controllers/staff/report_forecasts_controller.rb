@@ -11,7 +11,7 @@ class Staff::ReportForecastsController < Staff::BaseController
 
     @report_presenter = ReportPresenter.new(@report)
     @report_activities = @report.reportable_activities
-    @total_forecast = TotalPresenter.new(@report.summed_forecasts_for_reportable_activities).value
+    @total_forecast = @report_presenter.summed_forecasts_for_reportable_activities
     @grouped_forecasts = forecasts
       .includes([:parent_activity])
       .map { |forecast| ForecastPresenter.new(forecast) }
