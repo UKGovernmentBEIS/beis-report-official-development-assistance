@@ -727,6 +727,7 @@
   own activities
 - Associate Report with HistoricalEvent when uploading a bulk CSV
 - Add a report summary tab
+- List an Activity's historical events in a new "Change history" tab 
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-59...HEAD
 [release-59]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-58...release-59
