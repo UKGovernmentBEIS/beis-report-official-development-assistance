@@ -29,7 +29,11 @@ class Staff::ActivityUploadsController < Staff::BaseController
     @success = false
 
     if upload.valid?
-      importer = Activities::ImportFromCsv.new(uploader: current_user, delivery_partner_organisation: current_user.organisation)
+      importer = Activities::ImportFromCsv.new(
+        uploader: current_user,
+        delivery_partner_organisation: current_user.organisation,
+        report: report
+      )
       importer.import(upload.rows)
       @errors = importer.errors
       @activities = {created: importer.created, updated: importer.updated}
