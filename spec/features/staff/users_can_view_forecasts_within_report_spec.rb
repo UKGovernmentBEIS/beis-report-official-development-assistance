@@ -7,13 +7,14 @@ RSpec.feature "Users can view forecasts in tab within a report" do
       authenticate!(user: user)
     end
 
-    def expect_to_see_a_table_of_forecasts_grouped_by_activity(activities)
+    def expect_to_see_a_table_of_forecasts_grouped_by_activity(activities, report)
       expect(page).to have_content(
         t("page_content.tab_content.forecasts.per_activity_heading")
       )
 
       forecasts = ForecastOverview.new(activities.map(&:id))
         .latest_values
+        .where(report: report)
         .map { |f| ForecastPresenter.new(f) }
 
       fail "We expect some activities to be present" if activities.none?
@@ -67,6 +68,7 @@ RSpec.feature "Users can view forecasts in tab within a report" do
         ).tap do |activity|
           ForecastHistory.new(
             activity,
+            report: report,
             financial_quarter: 4,
             financial_year: 2020,
             user: user
@@ -74,10 +76,18 @@ RSpec.feature "Users can view forecasts in tab within a report" do
 
           ForecastHistory.new(
             activity,
+            report: report,
             financial_quarter: 1,
             financial_year: 2021,
             user: user
           ).set_value(75_000)
+
+          ForecastHistory.new(
+            activity,
+            financial_quarter: 1,
+            financial_year: 2021,
+            user: user
+          ).set_value(100_000)
         end
       }
 
@@ -94,7 +104,7 @@ RSpec.feature "Users can view forecasts in tab within a report" do
       expect(page).to have_link("uploading updates to activities")
 
       # forecasts per activity
-      expect_to_see_a_table_of_forecasts_grouped_by_activity(activities)
+      expect_to_see_a_table_of_forecasts_grouped_by_activity(activities, report)
 
       expect_to_see_total_of_forecasted_amounts(activities)
     end

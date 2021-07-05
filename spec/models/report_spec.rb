@@ -156,7 +156,7 @@ RSpec.describe Report, type: :model do
     end
   end
 
-  describe "reportable_activities" do
+  describe "#reportable_activities" do
     let!(:report) { create(:report, organisation: build(:delivery_partner_organisation)) }
     let!(:programme) { create(:programme_activity, parent: report.fund) }
     let!(:project_a) { create(:project_activity, parent: programme, organisation: report.organisation) }
@@ -182,6 +182,90 @@ RSpec.describe Report, type: :model do
     end
   end
 
+  describe "#activities_created" do
+    it "only returns activities created in the given reporting period" do
+      fund = create(:fund_activity)
+      programme = create(:programme_activity, parent: fund)
+
+      travel_to(Date.parse("2020-04-26")) do
+        @report = create(:report, organisation: build(:delivery_partner_organisation), fund: fund)
+        @project_in_reporting_period = create(:project_activity, parent: programme, organisation: @report.organisation)
+        @third_party_project_in_reporting_period = create(:third_party_project_activity, parent: @project_in_reporting_period, organisation: @report.organisation)
+      end
+
+      _project_outside_reporting_period = create(:project_activity, parent: programme, organisation: @report.organisation)
+      _third_party_project_outside_reporting_period = create(:third_party_project_activity, parent: @project_in_reporting_period, organisation: @report.organisation)
+
+      expect(@report.activities_created).to match_array([
+        @project_in_reporting_period,
+        @third_party_project_in_reporting_period,
+      ])
+    end
+  end
+
+  describe "forecasts" do
+    let(:report) { create(:report, financial_quarter: 1, financial_year: 2021) }
+    let(:programme) { create(:programme_activity, parent: report.fund) }
+
+    let!(:activities) do
+      2.times.map {
+        create(
+          :project_activity,
+          organisation: report.organisation,
+          parent: programme
+        ).tap do |activity|
+          ForecastHistory.new(
+            activity,
+            report: report,
+            financial_quarter: 2,
+            financial_year: 2021,
+            user: create(:delivery_partner_user)
+          ).set_value(50_000)
+        end
+      }
+    end
+
+    describe "#forecasts_for_reportable_activities" do
+      it "returns forecasts that have been made for reportable activities" do
+        expect(report.forecasts_for_reportable_activities).to match_array(
+          activities.map(&:latest_forecasts).flatten
+        )
+      end
+    end
+
+    describe "#summed_forecasts" do
+      it "sums the forecasts" do
+        expect(report.summed_forecasts_for_reportable_activities.to_i).to eq(100_000)
+      end
+    end
+  end
+
+  describe "activities_updated" do
+    it "only returns activities that have been updated during the reporting period" do
+      fund = create(:fund_activity)
+
+      report = create(:report, fund: fund)
+
+      programme = create(:programme_activity, parent: fund)
+      project_updated_in_report = create(:project_activity, parent: programme)
+      other_project_updated_in_report = create(:project_activity, parent: programme)
+      third_party_project_updated_in_report = create(:third_party_project_activity, parent: project_updated_in_report)
+
+      _project_not_updated_in_report = create(:project_activity, parent: programme)
+      _third_party_project_not_updated_in_report = create(:third_party_project_activity, parent: project_updated_in_report)
+
+      create(:historical_event, activity: project_updated_in_report, report: report)
+      create_list(:historical_event, 2, activity: other_project_updated_in_report, report: report)
+      create(:historical_event, activity: third_party_project_updated_in_report, report: report)
+
+      expect(report.activities_updated).to match_array([
+        project_updated_in_report,
+        other_project_updated_in_report,
+        third_party_project_updated_in_report,
+      ])
+    end
+  end
+
   describe "#editable?" do
     all_report_states = Report.states.keys
     editable_states = Report::EDITABLE_STATES
@@ -201,6 +285,18 @@ RSpec.describe Report, type: :model do
 
         expect(report.editable?).to be_falsey
       end
+    end
+  end
+
+  describe "#summed_transactions" do
+    it "sums all of the transactions belonging to a report" do
+      report = create(:report)
+
+      create(:transaction, report: report, value: 50)
+      create(:transaction, report: report, value: 75)
+      create(:transaction, report: report, value: 100)
+
+      expect(report.summed_transactions).to eq(225)
     end
   end
 end

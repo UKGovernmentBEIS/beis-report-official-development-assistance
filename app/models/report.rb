@@ -82,4 +82,27 @@ class Report < ApplicationRecord
   def reportable_activities
     Activity.reportable.projects_and_third_party_projects_for_report(self).with_roda_identifier
   end
+
+  def activities_created
+    reportable_activities.where(created_at: financial_period)
+  end
+
+  def activities_updated
+    Activity.find(historical_events.pluck(:activity_id))
+  end
+
+  def forecasts_for_reportable_activities
+    ForecastOverview
+      .new(reportable_activities.pluck(:id))
+      .latest_values
+      .where(report: self)
+  end
+
+  def summed_transactions
+    transactions.sum(&:value)
+  end
+
+  def summed_forecasts_for_reportable_activities
+    forecasts_for_reportable_activities.sum(&:value)
+  end
 end
