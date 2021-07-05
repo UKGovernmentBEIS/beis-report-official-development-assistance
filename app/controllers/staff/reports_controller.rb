@@ -36,7 +36,7 @@ class Staff::ReportsController < Staff::BaseController
 
     respond_to do |format|
       format.html do
-        redirect_to report_variance_path(@report)
+        render :show
       end
       format.csv do
         send_csv
