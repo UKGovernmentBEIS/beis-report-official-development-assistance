@@ -46,6 +46,7 @@ Rails.application.routes.draw do
         get "comments" => "activity_comments#show"
         get "other_funding" => "activity_other_funding#show"
         get "transfers" => "activity_transfers#show"
+        get "historical_events" => "activity_historical_events#show"
       end
     end
 
