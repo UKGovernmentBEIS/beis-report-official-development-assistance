@@ -81,7 +81,7 @@ RSpec.feature "users can upload activities" do
 
     expect(Activity.count - old_count).to eq(2)
     expect(page).to have_text(t("action.activity.upload.success"))
-    expect(page).to have_text("List of activities created")
+    expect(page).to have_table(t("table.caption.activity.new_activities"))
 
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[2]", text: "Programme - Award (round 5)")
@@ -175,7 +175,7 @@ RSpec.feature "users can upload activities" do
     CSV
 
     expect(page).to have_text(t("action.activity.upload.success"))
-    expect(page).to have_text("List of activities updated")
+    expect(page).to have_table(t("table.caption.activity.updated_activities"))
 
     expect_change_to_be_recorded_as_historical_event(
       field: "title",

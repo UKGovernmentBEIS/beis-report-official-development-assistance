@@ -1,11 +1,12 @@
-%table.govuk-table
-  %caption.govuk-table__caption= "List of activities #{action}"
+%table{ class: "govuk-table govuk-!-margin-bottom-9" }
+  %caption.govuk-table__caption.govuk-table__caption--m
+    = table_caption
   %thead.govuk-table__head
     %tr.govuk-table__row
       %th.govuk-table__header{scope: "col"} RODA Identifier
       %th.govuk-table__header{scope: "col"} Title
-      %th.govuk-table__header{scope: "col"} State
-      %th.govuk-table__header{scope: "col"} Link
+      %th.govuk-table__header{scope: "col"} Status
+      %th.govuk-table__header{scope: "col"} Action
   %tbody.govuk-table__body
     - activities.each do |activity|
       - activity_presenter = ActivityPresenter.new(activity)
@@ -14,5 +15,5 @@
         %td.govuk-table__cell= activity_presenter.title
         %td.govuk-table__cell= activity_presenter.programme_status
         %td.govuk-table__cell
-          = link_to "View", organisation_activity_path(activity.organisation, activity)
+          = link_to "View activity", organisation_activity_path(activity.organisation, activity)
 

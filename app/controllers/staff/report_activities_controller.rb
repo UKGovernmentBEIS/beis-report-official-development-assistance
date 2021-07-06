@@ -8,9 +8,7 @@ class Staff::ReportActivitiesController < Staff::BaseController
     authorize @report
 
     @report_presenter = ReportPresenter.new(@report)
-
-    @activities = Activity::ProjectsForReportFinder.new(report: @report).call.order(:title, :roda_identifier_fragment)
-
+    @updated_activities = @report.activities_updated
     render "staff/reports/activities"
   end
 end

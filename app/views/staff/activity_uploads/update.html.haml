@@ -13,9 +13,9 @@
 
   - if @success
     - if @activities[:created].any?
-      = render partial: "activities_table", locals: { action: "created", activities: @activities[:created] }
+      = render partial: "activities_table", locals: { action: "created", activities: @activities[:created], table_caption: t("table.caption.activity.new_activities") }
     - if @activities[:updated].any?
-      = render partial: "activities_table", locals: { action: "updated", activities: @activities[:updated] }
+      = render partial: "activities_table", locals: { action: "updated", activities: @activities[:updated], table_caption: t("table.caption.activity.updated_activities") }
   - else
     = render partial: "upload_form"
 

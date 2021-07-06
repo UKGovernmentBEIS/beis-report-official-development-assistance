@@ -78,6 +78,24 @@ RSpec.feature "Users can view reports" do
       expect(page).to have_content report.organisation.name
     end
 
+    scenario "the report inclides a list of updated activities" do
+      activity = create(:third_party_project_activity)
+      report = create(:report, :active, organisation: build(:delivery_partner_organisation))
+      history_event = create(:historical_event, activity: activity, report: report)
+
+      visit reports_path
+
+      within "##{report.id}" do
+        click_on t("default.link.show")
+      end
+
+      within ".govuk-tabs" do
+        click_on "Activities"
+      end
+
+      expect(page).to have_content activity.title
+    end
+
     context "when there is no report descripiton" do
       scenario "the summary does not include the empty value" do
         report = create(:report, :active, organisation: build(:delivery_partner_organisation), description: nil)
