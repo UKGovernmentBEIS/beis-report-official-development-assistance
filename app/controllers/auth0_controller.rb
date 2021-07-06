@@ -13,7 +13,7 @@ class Auth0Controller < ApplicationController
 
     # Redirect to the URL you want after successful auth
     if current_user.active && current_user.organisation
-      redirect_path = session[:redirect_path] || organisation_path(current_user.organisation)
+      redirect_path = session[:redirect_path] || home_path
       redirect_to redirect_path
     else
       render "pages/errors/not_authorised",

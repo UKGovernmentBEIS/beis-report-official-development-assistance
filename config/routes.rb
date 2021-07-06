@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   end
 
   scope module: "staff" do
-    resource :dashboard, only: :show
+    get "home", to: "home#show"
     resources :users
     resources :activities, only: [:index] do
       collection do
@@ -46,6 +46,7 @@ Rails.application.routes.draw do
         get "comments" => "activity_comments#show"
         get "other_funding" => "activity_other_funding#show"
         get "transfers" => "activity_transfers#show"
+        get "historical_events" => "activity_historical_events#show"
       end
     end
 
@@ -57,6 +58,7 @@ Rails.application.routes.draw do
       resource :transaction_upload, only: [:new, :show, :update]
       get "variance" => "report_variance#show"
       get "forecasts" => "report_forecasts#show"
+      get "actuals" => "report_transactions#show"
       get "budgets" => "report_budgets#show"
       get "activities" => "report_activities#show"
     end

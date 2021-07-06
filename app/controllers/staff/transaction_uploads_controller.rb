@@ -38,6 +38,13 @@ class Staff::TransactionUploadsController < Staff::BaseController
       @errors = importer.errors
 
       if @errors.empty?
+        imported_transactions = importer.imported_transactions.compact
+
+        @total_transaction = TotalPresenter.new(imported_transactions.sum(&:value)).value
+        @grouped_transactions = imported_transactions
+          .map { |forecast| TransactionPresenter.new(forecast) }
+          .group_by { |forecast| ActivityPresenter.new(forecast.parent_activity) }
+
         @success = true
         flash.now[:notice] = t("action.transaction.upload.success")
       end

@@ -22,6 +22,7 @@ en:
       children: Activity %{name} - Child activities
       comments: Activity %{name} - Comments
       transfers: Activity %{name} - Transfers
+      historical_events: Activity %{name} - Change history
   form:
     button:
       activity:
@@ -301,6 +302,7 @@ en:
         forecasted_spend_for_quarter: "%{financial_quarter_and_year} forecasted spend"
         variance_for_quarter: "%{financial_quarter_and_year} variance"
         comment: Comment
+        programme_status: Status
     body:
       activity:
         level:
@@ -345,6 +347,9 @@ en:
         default_selection_value: Select a recipient country
       third_party_projects: Third-party projects (level D)
       transactions: Transactions
+    tab_content:
+      change_history:
+        guidance: Changes made to this activity
   tabs:
     activity:
       title: Contents
@@ -354,6 +359,7 @@ en:
       children: Child activities
       comments: Comments
       transfers: Transfers
+      historical_events: Change history
     activities:
       current: Current
       historic: Historic
@@ -369,6 +375,7 @@ en:
       upload: Upload bulk activity data
       other_funding: Other funding
       transfers: Transfers
+      change_history: Change history
     activities:
       current: Current activities
       historic: Historic activities

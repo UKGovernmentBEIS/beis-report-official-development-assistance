@@ -358,3 +358,33 @@ The `ForecastOverview` class deals with the different versioning
 schemes at different levels, including if you pass a set of IDs for activities
 at various levels. Its `latest_values` method will always return the current
 versions for each activity.
+
+## Deleting the forecast history
+
+__The only time we ever do this is when the parent activity is being deleted and
+so we need to delete the entire history of the forecasts__
+
+Use `unscoped` to bypass our warning on Forecasts.
+
+The steps are:
+
+Get your activity:
+
+```ruby
+activity = Activity.find("activity id")
+```
+
+Create a `ForecastOverview` for it:
+
+```ruby
+overview = ForecastOverview.new(activity)
+```
+
+Use `latest_values` to get the 'slice' of history and delete it:
+
+```ruby
+overview.latest_values.each { |forecast| Forecast.unscoped.delete(forecast.id)
+}
+```
+
+Repeat until there are no forecasts returned from `latest_values`

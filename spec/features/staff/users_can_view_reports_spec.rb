@@ -335,6 +335,8 @@ RSpec.feature "Users can view reports" do
             click_on t("default.link.show")
           end
 
+          click_on t("tabs.report.variance")
+
           expect(page).to have_content t("table.header.activity.identifier")
           expect(page).to have_content t("table.header.activity.forecasted_spend_for_quarter", financial_quarter_and_year: report_presenter.financial_quarter_and_year)
           within "##{activity.id}" do

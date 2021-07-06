@@ -14,6 +14,7 @@ RSpec.describe "Users can edit a comment" do
       context "when the report is editable" do
         scenario "the user cannot edit a comment" do
           visit report_path(report)
+          click_on t("tabs.report.variance")
           expect(page).not_to have_content t("table.body.report.edit_comment")
         end
       end
@@ -22,6 +23,7 @@ RSpec.describe "Users can edit a comment" do
         let(:report) { create(:report, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
         scenario "the user cannot edit a comment" do
           visit report_path(report)
+          click_on t("tabs.report.variance")
           expect(page).not_to have_content t("table.body.report.edit_comment")
         end
       end
@@ -33,12 +35,14 @@ RSpec.describe "Users can edit a comment" do
       context "when the report is editable" do
         scenario "the user sees 'Edit comment' in the view" do
           visit report_path(report)
+          click_on t("tabs.report.variance")
           expect(page).to have_content t("table.body.report.edit_comment")
           expect(page).to_not have_content t("table.body.report.add_comment")
         end
 
         scenario "the user can edit a comment" do
           visit report_path(report)
+          click_on t("tabs.report.variance")
           click_on t("table.body.report.edit_comment")
           fill_in "comment[comment]", with: "Amendments have been made"
           click_button t("default.button.submit")
@@ -49,6 +53,7 @@ RSpec.describe "Users can edit a comment" do
         scenario "comment update is tracked with PublicActivity" do
           PublicActivity.with_tracking do
             visit report_path(report)
+            click_on t("tabs.report.variance")
             click_on t("table.body.report.edit_comment")
             fill_in "comment[comment]", with: "Amendments have been made"
             click_button t("default.button.submit")
@@ -63,9 +68,10 @@ RSpec.describe "Users can edit a comment" do
       end
 
       context "when the report is not editable" do
-        let(:report) { create(:report, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
+        let(:report) { create(:report, :approved, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
         scenario "the user cannot edit a comment" do
           visit report_path(report)
+          click_on t("tabs.report.variance")
           expect(page).not_to have_content t("table.body.report.edit_comment")
         end
       end

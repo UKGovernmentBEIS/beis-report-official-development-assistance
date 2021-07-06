@@ -5,6 +5,7 @@ class Staff::BudgetsController < Staff::BaseController
     @activity = Activity.find(activity_id)
     @budget = Budget.new
     @budget.parent_activity = @activity
+    @budget.budget_type = "direct"
 
     authorize @budget
   end

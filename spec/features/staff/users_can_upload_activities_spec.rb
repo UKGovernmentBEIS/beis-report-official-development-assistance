@@ -177,6 +177,28 @@ RSpec.feature "users can upload activities" do
     expect(page).to have_text(t("action.activity.upload.success"))
     expect(page).to have_text("List of activities updated")
 
+    expect_change_to_be_recorded_as_historical_event(
+      field: "title",
+      previous_value: activity_to_update.title,
+      new_value: "New Title",
+      activity: activity_to_update,
+      report: report
+    )
+    expect_change_to_be_recorded_as_historical_event(
+      field: "recipient_country",
+      previous_value: activity_to_update.recipient_country,
+      new_value: "BR",
+      activity: activity_to_update,
+      report: report
+    )
+    expect_change_to_be_recorded_as_historical_event(
+      field: "geography",
+      previous_value: activity_to_update.geography,
+      new_value: "recipient_country",
+      activity: activity_to_update,
+      report: report
+    )
+
     expect(activity_to_update.reload.title).to eq("New Title")
 
     within "//tbody/tr[1]" do
@@ -204,6 +226,26 @@ RSpec.feature "users can upload activities" do
       expect(page).to have_xpath("td[2]", text: "2")
       expect(page).to have_xpath("td[3]", text: "new-id-oh-no")
       expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.cannot_update.delivery_partner_identifier_present"))
+    end
+  end
+
+  def expect_change_to_be_recorded_as_historical_event(
+    field:,
+    previous_value:,
+    new_value:,
+    activity:,
+    report:
+  )
+    historical_event = HistoricalEvent.find_by!(value_changed: field)
+
+    aggregate_failures do
+      expect(historical_event.value_changed).to eq(field)
+      expect(historical_event.previous_value).to eq(previous_value)
+      expect(historical_event.new_value).to eq(new_value)
+      expect(historical_event.reference).to eq("Import from CSV")
+      expect(historical_event.user).to eq(user)
+      expect(historical_event.activity).to eq(activity)
+      expect(historical_event.report).to eq(report)
     end
   end
 

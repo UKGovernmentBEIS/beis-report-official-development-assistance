@@ -12,6 +12,7 @@ class Report < ApplicationRecord
   belongs_to :organisation
   has_many :transactions
   has_many :forecasts
+  has_many :historical_events
 
   validate :activity_must_be_a_fund
   validates :deadline, date_not_in_past: true, date_within_boundaries: true, on: :edit
@@ -80,5 +81,28 @@ class Report < ApplicationRecord
 
   def reportable_activities
     Activity.reportable.projects_and_third_party_projects_for_report(self).with_roda_identifier
+  end
+
+  def activities_created
+    reportable_activities.where(created_at: financial_period)
+  end
+
+  def activities_updated
+    Activity.find(historical_events.pluck(:activity_id))
+  end
+
+  def forecasts_for_reportable_activities
+    ForecastOverview
+      .new(reportable_activities.pluck(:id))
+      .latest_values
+      .where(report: self)
+  end
+
+  def summed_transactions
+    transactions.sum(&:value)
+  end
+
+  def summed_forecasts_for_reportable_activities
+    forecasts_for_reportable_activities.sum(&:value)
   end
 end

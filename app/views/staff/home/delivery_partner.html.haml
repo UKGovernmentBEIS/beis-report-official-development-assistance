@@ -1,0 +1,9 @@
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-l
+        Activities
+
+      = render partial: "staff/searches/form"
+
+      = render partial: "staff/shared/activities/tree_view/table_tabbed", locals: { grouped_programmes: @grouped_programmes }

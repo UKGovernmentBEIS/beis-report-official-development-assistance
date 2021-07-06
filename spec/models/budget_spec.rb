@@ -13,6 +13,7 @@ RSpec.describe Budget do
     it { should validate_presence_of(:value) }
     it { should validate_presence_of(:currency) }
     it { should validate_presence_of(:financial_year) }
+    it { should validate_presence_of(:budget_type) }
 
     describe "providing organisation" do
       let(:another_org) { create(:delivery_partner_organisation) }

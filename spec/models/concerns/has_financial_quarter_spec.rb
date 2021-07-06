@@ -27,4 +27,13 @@ RSpec.describe HasFinancialQuarter do
       expect(result).to be_nil
     end
   end
+
+  describe "#financial_period" do
+    it "returns the period covered by the financial quarter" do
+      report = TestReport.new(1, 2020)
+
+      expect(report.financial_period.first).to eq(Date.parse("2020-04-01"))
+      expect(report.financial_period.last).to eq(Date.parse("2020-06-30"))
+    end
+  end
 end

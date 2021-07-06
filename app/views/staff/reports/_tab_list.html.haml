@@ -1,17 +1,7 @@
-%ul.govuk-tabs__list
-  %li{class: "govuk-tabs__list-item #{ "govuk-tabs__list-item--selected" if active_tab == "activities" }"}
-    = link_to t("tabs.report.activities"),
-      report_activities_path(@report),
-      { class: "govuk-tabs__tab", role: "tab", aria: { controls: "financials", selected: false } }
-  %li{class: "govuk-tabs__list-item #{ "govuk-tabs__list-item--selected" if active_tab == "forecasts" }"}
-    = link_to t("tabs.report.forecasts"),
-      report_forecasts_path(@report),
-      { class: "govuk-tabs__tab", role: "tab", aria: { controls: "financials", selected: false } }
-  %li{class: "govuk-tabs__list-item #{ "govuk-tabs__list-item--selected" if active_tab == "variance" }"}
-    = link_to t("tabs.report.variance"),
-      report_variance_path(@report),
-      { class: "govuk-tabs__tab", role: "tab", aria: { controls: "financials", selected: false } }
-  %li{class: "govuk-tabs__list-item #{ "govuk-tabs__list-item--selected" if active_tab == "budgets" }"}
-    = link_to t("tabs.report.budgets"),
-      report_budgets_path(@report),
-      { class: "govuk-tabs__tab", role: "tab", aria: { controls: "details", selected: true } }
+%ul.govuk-tabs__list{ role: "navigation", aria: { label: "Report subnavigation" } }
+  = render partial: "staff/reports/tab", locals: { name: "summary", path: report_path(@report), active_tab: active_tab }
+  = render partial: "staff/reports/tab", locals: { name: "activities", path: report_activities_path(@report), active_tab: active_tab }
+  = render partial: "staff/reports/tab", locals: { name: "forecasts", path: report_forecasts_path(@report), active_tab: active_tab }
+  = render partial: "staff/reports/tab", locals: { name: "transactions", path: report_actuals_path(@report), active_tab: active_tab }
+  = render partial: "staff/reports/tab", locals: { name: "variance", path: report_variance_path(@report), active_tab: active_tab }
+  = render partial: "staff/reports/tab", locals: { name: "budgets", path: report_budgets_path(@report), active_tab: active_tab }

@@ -36,6 +36,14 @@ class ReportPresenter < SimpleDelegator
     financial_quarter_and_year + "-All-Reports.csv"
   end
 
+  def summed_transactions
+    TotalPresenter.new(super).value
+  end
+
+  def summed_forecasts_for_reportable_activities
+    TotalPresenter.new(super).value
+  end
+
   private def filename(purpose:)
     [
       financial_quarter_and_year,

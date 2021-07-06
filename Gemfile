@@ -7,7 +7,7 @@ ruby "2.7.3"
 gem "auth0", "~> 5.1"
 gem "acts_as_tree"
 gem "bootsnap", ">= 1.1.0", require: false
-gem "govuk_design_system_formbuilder", "~> 2.6.0"
+gem "govuk_design_system_formbuilder", "~> 2.7.2"
 gem "haml-rails"
 gem "high_voltage"
 gem "ipaddr"
@@ -44,6 +44,7 @@ group :development, :test do
   gem "brakeman"
   gem "bullet"
   gem "byebug", platforms: %i[mri mingw x64_mingw]
+  gem "pry-byebug"
   gem "dotenv-rails"
   gem "factory_bot_rails"
   gem "faker"

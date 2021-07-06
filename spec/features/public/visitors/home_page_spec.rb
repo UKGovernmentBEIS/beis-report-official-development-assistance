@@ -10,7 +10,7 @@ RSpec.feature "Home page" do
 
     scenario "they are redirected to their organisation show page" do
       visit root_path
-      expect(page.current_path).to eq organisation_path(user.organisation)
+      expect(page.current_path).to eq home_path
     end
   end
 
@@ -20,7 +20,7 @@ RSpec.feature "Home page" do
 
     scenario "they are redirected to their organisation show page" do
       visit root_path
-      expect(page.current_path).to eq organisation_path(user.organisation)
+      expect(page.current_path).to eq home_path
     end
   end
 
