@@ -9,6 +9,8 @@ class Staff::ReportActivitiesController < Staff::BaseController
 
     @report_presenter = ReportPresenter.new(@report)
     @updated_activities = @report.activities_updated
+    @new_activities = @report.new_activities
+
     render "staff/reports/activities"
   end
 end

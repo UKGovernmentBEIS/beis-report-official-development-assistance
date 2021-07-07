@@ -744,6 +744,7 @@
 
 - New activities know which was their 'originating' report, and reports can list 'new' activities originating from their financial period
 - Newly updated activities are shown in a report.
+- Newly added activities are shown in a report.
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...HEAD
 [release-62]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-61...release-62

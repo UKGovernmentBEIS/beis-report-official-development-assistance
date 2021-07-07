@@ -28,4 +28,6 @@
             %p.govuk-body
               = link_to t("action.activity.upload.link"), new_report_activity_upload_path(@report_presenter), class: "govuk-button govuk-button--secondary"
 
+          = render partial: "staff/activity_uploads/activities_table", locals: { table_caption: t("table.caption.activity.new_activities_report"), activities: @new_activities }
+
           = render partial: "staff/activity_uploads/activities_table", locals: { table_caption: t("table.caption.activity.updated_activities_report"), activities: @updated_activities }
