@@ -732,6 +732,7 @@
 ## [unreleased]
 
 - Optimise `projects_and_third_party_projects_for_report` scope
+- Group Activity's Change history by "reference" and show newest first
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-60...HEAD
 [release-60]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-59...release-60

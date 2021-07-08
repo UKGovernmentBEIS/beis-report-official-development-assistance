@@ -33,17 +33,17 @@ RSpec.feature "Users can view an activity's 'Change History' within a tab" do
     def expect_to_see_change_history_with_reference(reference:, events:)
       fail "We expect to see some Historical Events!" if events.empty?
 
-      within ".historical-events" do
+      within ".historical-events .historical-event-group" do
         expect(page).to have_css(".historical_event", count: events.count)
         expect(page).to have_css(".reference", text: reference)
+        expect(page).to have_css(".user", text: events.first.user.email)
+        expect(page).to have_css(".timestamp", text: events.first.created_at.strftime("%d %b %Y at %R"))
 
         events.each do |event|
           within "#historical_event_#{event.id}" do
             expect(page).to have_css(".property", text: event.value_changed)
             expect(page).to have_css(".previous-value", text: event.previous_value)
             expect(page).to have_css(".new-value", text: event.new_value)
-            expect(page).to have_css(".user", text: event.user.email)
-            expect(page).to have_css(".timestamp", text: event.created_at.strftime("%d/%m/%C at %R"))
             if event.report
               expect(page).to have_css(
                 ".report a[href='#{report_path(event.report)}']",
