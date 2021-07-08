@@ -8,6 +8,7 @@ class Activity
       activity
         .historical_events
         .includes([:user, :report])
+        .order(created_at: :desc)
         .group_by { |event|
           {reference: event.reference,
            user: event.user&.email,
