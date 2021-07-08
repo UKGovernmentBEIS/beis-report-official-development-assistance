@@ -792,6 +792,7 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "associations" do
+    it { should belong_to(:originating_report).optional }
     it { should belong_to(:organisation) }
     it { should have_many(:child_activities).with_foreign_key("parent_id") }
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
