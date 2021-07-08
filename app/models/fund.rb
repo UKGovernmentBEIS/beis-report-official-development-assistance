@@ -2,7 +2,7 @@ class Fund
   class InvalidActivity < StandardError; end
   class InvalidFund < StandardError; end
 
-  attr_reader :id, :name
+  attr_reader :id, :name, :short_name
 
   MAPPINGS = {
     "NF" => 1,
@@ -16,6 +16,7 @@ class Fund
 
     @id = data["code"]
     @name = data["name"]
+    @short_name = data["short_name"]
   end
 
   def gcrf?

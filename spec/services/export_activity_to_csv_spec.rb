@@ -71,7 +71,7 @@ RSpec.describe ExportActivityToCsv do
     expect(export_service.headers).to include("Source fund")
 
     column_position = export_service.headers.index("Source fund")
-    expect(export_service.call[column_position]).to eql("GCRF")
+    expect(export_service.call[column_position]).to eql("Global Challenges Research Fund")
   end
 
   it "includes the delivery partner's short_name in the export" do

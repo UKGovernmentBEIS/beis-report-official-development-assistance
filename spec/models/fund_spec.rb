@@ -43,17 +43,25 @@ RSpec.describe Fund do
       it "should return '1' as the ID" do
         expect(fund.id).to eq(1)
       end
+
+      it "should return 'NF' as the short name" do
+        expect(fund.short_name).to eq("NF")
+      end
     end
 
     context "when the associated fund is GCRF" do
       let(:activity) { build(:fund_activity, :gcrf) }
 
       it "should return 'GCRF' as the name" do
-        expect(fund.name).to eq("GCRF")
+        expect(fund.name).to eq("Global Challenges Research Fund")
       end
 
       it "should return '1' as the ID" do
         expect(fund.id).to eq(2)
+      end
+
+      it "should return 'GCRF' as the short name" do
+        expect(fund.short_name).to eq("GCRF")
       end
     end
 

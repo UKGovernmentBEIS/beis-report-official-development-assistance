@@ -1,5 +1,7 @@
 data:
   - code: 1
     name: Newton Fund
+    short_name: NF
   - code: 2
-    name: GCRF
+    name: Global Challenges Research Fund
+    short_name: GCRF

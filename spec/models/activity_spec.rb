@@ -1531,7 +1531,8 @@ RSpec.describe Activity, type: :model do
 
       it "returns a GCRF fund" do
         expect(activity.source_fund).to be_a(Fund)
-        expect(activity.source_fund.name).to eq("GCRF")
+        expect(activity.source_fund.name).to eq("Global Challenges Research Fund")
+        expect(activity.source_fund.short_name).to eq("GCRF")
         expect(activity.source_fund.id).to eq(2)
       end
     end
