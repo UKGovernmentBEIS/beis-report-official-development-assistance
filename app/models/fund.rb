@@ -1,8 +1,8 @@
 class Fund
-  attr_reader :code
-
   class InvalidActivity < StandardError; end
   class InvalidFund < StandardError; end
+
+  attr_reader :id, :name
 
   MAPPINGS = {
     "NF" => 1,
@@ -10,17 +10,12 @@ class Fund
   }
 
   def initialize(id)
-    @code = self.class.codelist.find_item_by_code(id.to_i)
+    data = self.class.codelist.find_item_by_code(id.to_i)
 
-    raise InvalidFund if @code.nil?
-  end
+    raise InvalidFund if data.nil?
 
-  def id
-    code["code"]
-  end
-
-  def name
-    code["name"]
+    @id = data["code"]
+    @name = data["name"]
   end
 
   def gcrf?
