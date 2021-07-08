@@ -84,10 +84,6 @@ class Report < ApplicationRecord
     Activity::ProjectsForReportFinder.new(report: self, scope: Activity.reportable).call.with_roda_identifier
   end
 
-  def activities_created
-    reportable_activities.where(created_at: financial_period)
-  end
-
   def activities_updated
     Activity.where(id: historical_events.pluck(:activity_id))
   end

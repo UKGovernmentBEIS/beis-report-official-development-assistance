@@ -178,28 +178,6 @@ RSpec.describe Report, type: :model do
     end
   end
 
-  describe "#activities_created" do
-    let(:report) { build(:report, financial_quarter: 1, financial_year: 2020) }
-    let(:active_relation) { double("active_relation") }
-    let(:query) { double("query", where: active_relation) }
-
-    before do
-      allow(report).to receive(:reportable_activities).and_return(query)
-      allow(query).to receive(:activities_created).and_return(active_relation)
-    end
-
-    it "filters the #reportable_activities using the financial period" do
-      report.activities_created
-
-      expect(query).to have_received(:where)
-        .with(created_at: (Date.parse("01-Apr-2020")..Date.parse("30-Jun-2020")))
-    end
-
-    it "returns the active_relation" do
-      expect(report.activities_created).to eq(active_relation)
-    end
-  end
-
   describe "#forecasts_for_reportable_activities" do
     let(:report) { build(:report) }
     let(:reportable_activities) { build_stubbed_list(:project_activity, 5) }
