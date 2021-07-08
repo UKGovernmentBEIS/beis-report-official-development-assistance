@@ -16,6 +16,9 @@ class Staff::ReportVarianceController < Staff::BaseController
   private
 
   def hierarchically_grouped_projects
-    Activity.includes(:organisation).projects_and_third_party_projects_for_report(@report).hierarchically_grouped_projects
+    Activity::ProjectsForReportFinder.new(
+      scope: Activity.includes(:organisation),
+      report: @report
+    ).call.hierarchically_grouped_projects
   end
 end

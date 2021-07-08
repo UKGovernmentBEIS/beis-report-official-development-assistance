@@ -1,0 +1,16 @@
+ul.historical-events {
+  list-style-type: none;
+  padding-left: 0;
+  dl {
+    margin-bottom: 0;
+    .govuk-summary-list__row {
+      dd, dt {
+        padding-top: 0;
+
+      }
+    }
+  }
+  li {
+    margin-bottom: 3em;
+  }
+}

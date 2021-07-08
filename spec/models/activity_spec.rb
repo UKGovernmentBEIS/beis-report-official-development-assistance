@@ -88,34 +88,6 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    describe ".projects_and_third_party_projects_for_report" do
-      it "only returns projects and third party projects that are for the reports organisation and fund" do
-        organisation = create(:delivery_partner_organisation)
-        fund = create(:fund_activity)
-        programme = create(:programme_activity, parent: fund)
-        project = create(:project_activity, parent: programme, organisation: organisation)
-        third_party_project = create(:third_party_project_activity, parent: project, organisation: organisation)
-        report = create(:report, organisation: third_party_project.organisation, fund: fund)
-
-        another_fund = create(:fund_activity)
-        another_programme = create(:programme_activity, parent: another_fund)
-        another_project = create(:project_activity, parent: another_programme, organisation: organisation)
-        another_third_party_project = create(:third_party_project_activity, parent: another_project, organisation: organisation)
-
-        result = Activity.projects_and_third_party_projects_for_report(report)
-
-        expect(result).to include third_party_project
-        expect(result).to include project
-
-        expect(result).not_to include fund
-        expect(result).not_to include programme
-        expect(result).not_to include another_fund
-        expect(result).not_to include another_programme
-        expect(result).not_to include another_project
-        expect(result).not_to include another_third_party_project
-      end
-    end
-
     describe ".reportable" do
       it "does not return any unreportable activities" do
         completed_project = create(:project_activity, programme_status: "completed")

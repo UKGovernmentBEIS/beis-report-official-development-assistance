@@ -157,86 +157,92 @@ RSpec.describe Report, type: :model do
   end
 
   describe "#reportable_activities" do
-    let!(:report) { create(:report, organisation: build(:delivery_partner_organisation)) }
-    let!(:programme) { create(:programme_activity, parent: report.fund) }
-    let!(:project_a) { create(:project_activity, parent: programme, organisation: report.organisation) }
-    let!(:project_b) { create(:project_activity, parent: programme, organisation: report.organisation) }
-    let!(:third_party_project) { create(:third_party_project_activity, parent: project_b, organisation: report.organisation) }
-    let!(:cancelled_project) { create(:project_activity, parent: programme, organisation: report.organisation, programme_status: "cancelled") }
-    let!(:paused_project) { create(:project_activity, parent: programme, organisation: report.organisation, programme_status: "paused") }
-    let!(:ineligible_project) { create(:project_activity, parent: programme, organisation: report.organisation, oda_eligibility: "never_eligible") }
+    let(:report) { build(:report, financial_quarter: 1, financial_year: 2020) }
+    let(:active_relation) { double("active_relation") }
+    let(:query) { double("query", with_roda_identifier: active_relation) }
+    let(:finder) { instance_double(Activity::ProjectsForReportFinder, call: query) }
 
-    let!(:project_in_another_fund) { create(:project_activity, organisation: report.organisation) }
+    before do
+      allow(Activity::ProjectsForReportFinder).to receive(:new).and_return(finder)
+    end
 
-    it "returns the level C and D activities belonging to the report's fund and organisation" do
-      expect(report.reportable_activities).to include(project_a)
-      expect(report.reportable_activities).to include(project_b)
-      expect(report.reportable_activities).to include(third_party_project)
+    it "appends the `with_roda_identifier` scope" do
+      report.reportable_activities
 
-      expect(report.reportable_activities).not_to include(report.fund)
-      expect(report.reportable_activities).not_to include(programme)
-      expect(report.reportable_activities).not_to include(project_in_another_fund)
-      expect(report.reportable_activities).not_to include(cancelled_project)
-      expect(report.reportable_activities).not_to include(paused_project)
-      expect(report.reportable_activities).not_to include(ineligible_project)
+      expect(query).to have_received(:with_roda_identifier)
+    end
+
+    it "returns the active_relation" do
+      expect(report.reportable_activities).to eq(active_relation)
     end
   end
 
   describe "#activities_created" do
-    it "only returns activities created in the given reporting period" do
-      fund = create(:fund_activity)
-      programme = create(:programme_activity, parent: fund)
+    let(:report) { build(:report, financial_quarter: 1, financial_year: 2020) }
+    let(:active_relation) { double("active_relation") }
+    let(:query) { double("query", where: active_relation) }
 
-      travel_to(Date.parse("2020-04-26")) do
-        @report = create(:report, organisation: build(:delivery_partner_organisation), fund: fund)
-        @project_in_reporting_period = create(:project_activity, parent: programme, organisation: @report.organisation)
-        @third_party_project_in_reporting_period = create(:third_party_project_activity, parent: @project_in_reporting_period, organisation: @report.organisation)
-      end
+    before do
+      allow(report).to receive(:reportable_activities).and_return(query)
+      allow(query).to receive(:activities_created).and_return(active_relation)
+    end
 
-      _project_outside_reporting_period = create(:project_activity, parent: programme, organisation: @report.organisation)
-      _third_party_project_outside_reporting_period = create(:third_party_project_activity, parent: @project_in_reporting_period, organisation: @report.organisation)
+    it "filters the #reportable_activities using the financial period" do
+      report.activities_created
 
-      expect(@report.activities_created).to match_array([
-        @project_in_reporting_period,
-        @third_party_project_in_reporting_period,
-      ])
+      expect(query).to have_received(:where)
+        .with(created_at: (Date.parse("01-Apr-2020")..Date.parse("30-Jun-2020")))
+    end
+
+    it "returns the active_relation" do
+      expect(report.activities_created).to eq(active_relation)
     end
   end
 
-  describe "forecasts" do
-    let(:report) { create(:report, financial_quarter: 1, financial_year: 2021) }
-    let(:programme) { create(:programme_activity, parent: report.fund) }
+  describe "#forecasts_for_reportable_activities" do
+    let(:report) { build(:report) }
+    let(:reportable_activities) { build_stubbed_list(:project_activity, 5) }
+    let(:active_relation) { double("active_relation") }
+    let(:latest_values) { double("latest_values", where: active_relation) }
+    let(:overview) { instance_double(ForecastOverview, latest_values: latest_values) }
 
-    let!(:activities) do
-      2.times.map {
-        create(
-          :project_activity,
-          organisation: report.organisation,
-          parent: programme
-        ).tap do |activity|
-          ForecastHistory.new(
-            activity,
-            report: report,
-            financial_quarter: 2,
-            financial_year: 2021,
-            user: create(:delivery_partner_user)
-          ).set_value(50_000)
-        end
+    before do
+      allow(report).to receive(:reportable_activities).and_return(reportable_activities)
+      allow(ForecastOverview).to receive(:new).and_return(overview)
+    end
+
+    it "passes the correct reportable activities to the forecast overview" do
+      report.forecasts_for_reportable_activities
+
+      expect(ForecastOverview).to have_received(:new).with(reportable_activities.map(&:id))
+    end
+
+    it "passes the report to the latest_values relation" do
+      report.forecasts_for_reportable_activities
+
+      expect(latest_values).to have_received(:where).with(report: report)
+    end
+
+    it "returns an active relation" do
+      expect(report.forecasts_for_reportable_activities).to eq(active_relation)
+    end
+  end
+
+  describe "#summed_forecasts" do
+    let(:report) { build(:report) }
+
+    before do
+      expect(report).to receive(:forecasts_for_reportable_activities) {
+        [
+          double("forecast", value: 50_000),
+          double("forecast", value: 25_000),
+          double("forecast", value: 25_000),
+        ]
       }
     end
 
-    describe "#forecasts_for_reportable_activities" do
-      it "returns forecasts that have been made for reportable activities" do
-        expect(report.forecasts_for_reportable_activities).to match_array(
-          activities.map(&:latest_forecasts).flatten
-        )
-      end
-    end
-
-    describe "#summed_forecasts" do
-      it "sums the forecasts" do
-        expect(report.summed_forecasts_for_reportable_activities.to_i).to eq(100_000)
-      end
+    it "sums the forecasts" do
+      expect(report.summed_forecasts_for_reportable_activities.to_i).to eq(100_000)
     end
   end
 

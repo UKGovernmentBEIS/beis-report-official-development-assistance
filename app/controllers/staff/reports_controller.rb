@@ -32,7 +32,6 @@ class Staff::ReportsController < Staff::BaseController
     authorize @report
 
     @report_presenter = ReportPresenter.new(@report)
-    @report_activities = Activity.projects_and_third_party_projects_for_report(@report)
 
     respond_to do |format|
       format.html do
@@ -132,11 +131,13 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def send_csv
+    report_activities = Activity::ProjectsForReportFinder.new(report: @report).call
+
     filename = @report_presenter.filename_for_report_download
     headers = ExportActivityToCsv.new(report: @report).headers
 
     stream_csv_download(filename: filename, headers: headers) do |csv|
-      @report_activities.each do |activity|
+      report_activities.each do |activity|
         csv << ExportActivityToCsv.new(activity: activity, report: @report).call
       end
     end
@@ -153,10 +154,10 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def report_activities_sorted_by_level(report)
-    Activity
-      .includes(:organisation, :extending_organisation, :implementing_organisations)
-      .projects_and_third_party_projects_for_report(report)
-      .sort_by { |a| a.level }
+    Activity::ProjectsForReportFinder.new(
+      report: report,
+      scope: Activity.includes(:organisation, :extending_organisation, :implementing_organisations)
+    ).call.sort_by { |a| a.level }
   end
 
   def reports_have_same_quarter?
