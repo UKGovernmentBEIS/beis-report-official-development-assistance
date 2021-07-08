@@ -211,13 +211,11 @@ class Activity < ApplicationRecord
   scope :with_roda_identifier, -> { where.not(roda_identifier_compound: nil) }
 
   scope :projects_and_third_party_projects_for_report, ->(report) {
-    programmes = where(level: :programme, parent_id: report.fund_id)
-    projects = where(level: :project, parent_id: programmes.pluck(:id))
-    third_party_projects = where(level: :third_party_project, parent_id: projects.pluck(:id))
-
-    for_organisation = where(organisation_id: report.organisation_id)
-
-    for_organisation.merge(projects.or(third_party_projects))
+    where(
+      level: [:project, :third_party_project],
+      organisation_id: report.organisation_id,
+      source_fund_code: report.fund.source_fund_code
+    )
   }
 
   scope :current, -> {
