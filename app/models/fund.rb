@@ -4,11 +4,6 @@ class Fund
 
   attr_reader :id, :name, :short_name
 
-  MAPPINGS = {
-    "NF" => 1,
-    "GCRF" => 2,
-  }
-
   def initialize(id)
     data = self.class.codelist.find_item_by_code(id.to_i)
 
@@ -20,11 +15,11 @@ class Fund
   end
 
   def gcrf?
-    id == MAPPINGS["GCRF"]
+    short_name == "GCRF"
   end
 
   def newton?
-    id == MAPPINGS["NF"]
+    short_name == "NF"
   end
 
   def activity
@@ -39,9 +34,13 @@ class Fund
     def from_activity(activity)
       raise InvalidActivity unless activity.fund?
 
-      id = MAPPINGS.fetch(activity.roda_identifier_fragment) { raise InvalidFund }
+      by_short_name(activity.roda_identifier_fragment)
+    end
 
-      new(id)
+    def by_short_name(short_name)
+      all.find(-> { raise InvalidFund }) { |fund|
+        fund.short_name == short_name
+      }
     end
 
     def all
