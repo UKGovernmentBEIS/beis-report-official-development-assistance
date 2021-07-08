@@ -9,6 +9,16 @@ RSpec.describe ActivityDefaults do
   let(:project) { create(:project_activity, :gcrf_funded, parent: programme) }
   let(:third_party_project) { create(:third_party_project_activity, :gcrf_funded, parent: project) }
 
+  let!(:current_report) { create(:report, :active, organisation: delivery_partner_organisation, fund: fund) }
+
+  before do
+    # some reports which we don't expect to be returned as 'originating_report'
+    # for 'project' (level C)
+    _inactive = create(:report, :inactive, organisation: delivery_partner_organisation, fund: fund)
+    _other_org = create(:report, :active, organisation: create(:delivery_partner_organisation), fund: fund)
+    _other_fund = create(:report, :active, organisation: delivery_partner_organisation, fund: create(:fund_activity, :newton))
+  end
+
   describe "#call" do
     subject do
       described_class.new(
@@ -43,6 +53,10 @@ RSpec.describe ActivityDefaults do
       it "sets the form_state to 'identifier', as we already have the level and parent" do
         expect(subject[:form_state]).to eq("identifier")
       end
+
+      it "sets the originating_report id to nil, as level A does not report" do
+        expect(subject[:origination_report_id]).to be_nil
+      end
     end
 
     context "parent is a programe" do
@@ -71,6 +85,10 @@ RSpec.describe ActivityDefaults do
       it "sets the form_state to 'identifier', as we already have the level and parent" do
         expect(subject[:form_state]).to eq("identifier")
       end
+
+      it "sets the originating_report id to nil, as level B does not report" do
+        expect(subject[:origination_report_id]).to be_nil
+      end
     end
 
     context "parent is a project" do
@@ -98,6 +116,10 @@ RSpec.describe ActivityDefaults do
 
       it "sets the form_state to 'identifier', as we already have the level and parent" do
         expect(subject[:form_state]).to eq("identifier")
+      end
+
+      it "sets the originating_report id to the report for the current financial period" do
+        expect(subject[:originating_report_id]).to eq(current_report.id)
       end
     end
   end

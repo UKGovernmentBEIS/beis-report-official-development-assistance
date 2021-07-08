@@ -20,6 +20,7 @@ class ActivityDefaults
 
       organisation_id: organisation.id,
       extending_organisation_id: extending_organisation.id,
+      originating_report_id: originating_report&.id,
 
       form_state: form_state,
     }
@@ -47,6 +48,14 @@ class ActivityDefaults
 
   def extending_organisation
     delivery_partner_organisation
+  end
+
+  def originating_report
+    Report.find_by(
+      fund_id: parent_activity.associated_fund.id,
+      organisation_id: organisation.id,
+      state: Report::EDITABLE_STATES
+    )
   end
 
   def form_state
