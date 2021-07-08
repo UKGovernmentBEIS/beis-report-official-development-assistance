@@ -157,16 +157,18 @@ RSpec.describe Report, type: :model do
   end
 
   describe "#reportable_activities" do
-    let!(:report) { create(:report, organisation: build(:delivery_partner_organisation)) }
-    let!(:programme) { create(:programme_activity, parent: report.fund) }
-    let!(:project_a) { create(:project_activity, parent: programme, organisation: report.organisation) }
-    let!(:project_b) { create(:project_activity, parent: programme, organisation: report.organisation) }
-    let!(:third_party_project) { create(:third_party_project_activity, parent: project_b, organisation: report.organisation) }
-    let!(:cancelled_project) { create(:project_activity, parent: programme, organisation: report.organisation, programme_status: "cancelled") }
-    let!(:paused_project) { create(:project_activity, parent: programme, organisation: report.organisation, programme_status: "paused") }
-    let!(:ineligible_project) { create(:project_activity, parent: programme, organisation: report.organisation, oda_eligibility: "never_eligible") }
+    let(:fund) { create(:fund_activity, :newton) }
 
-    let!(:project_in_another_fund) { create(:project_activity, organisation: report.organisation) }
+    let!(:report) { create(:report, organisation: build(:delivery_partner_organisation), fund: fund) }
+    let!(:programme) { create(:programme_activity, :newton_funded, parent: fund) }
+    let!(:project_a) { create(:project_activity, :newton_funded, parent: programme, organisation: report.organisation) }
+    let!(:project_b) { create(:project_activity, :newton_funded, parent: programme, organisation: report.organisation) }
+    let!(:third_party_project) { create(:third_party_project_activity, :newton_funded, parent: project_b, organisation: report.organisation) }
+    let!(:cancelled_project) { create(:project_activity, :newton_funded, parent: programme, organisation: report.organisation, programme_status: "cancelled") }
+    let!(:paused_project) { create(:project_activity, :newton_funded, parent: programme, organisation: report.organisation, programme_status: "paused") }
+    let!(:ineligible_project) { create(:project_activity, :newton_funded, parent: programme, organisation: report.organisation, oda_eligibility: "never_eligible") }
+
+    let!(:project_in_another_fund) { create(:project_activity, :gcrf_funded, organisation: report.organisation) }
 
     it "returns the level C and D activities belonging to the report's fund and organisation" do
       expect(report.reportable_activities).to include(project_a)

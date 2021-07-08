@@ -83,12 +83,16 @@ FactoryBot.define do
 
       trait :newton_funded do
         source_fund_code { Fund::MAPPINGS["NF"] }
-        parent factory: [:fund_activity, :newton]
+        parent do
+          Activity.fund.find_by(source_fund_code: Fund::MAPPINGS["NF"]) || create(:fund_activity, :newton)
+        end
       end
 
       trait :gcrf_funded do
         source_fund_code { Fund::MAPPINGS["GCRF"] }
-        parent factory: [:fund_activity, :gcrf]
+        parent do
+          Activity.fund.find_by(source_fund_code: Fund::MAPPINGS["GCRF"]) || create(:fund_activity, :gcrf)
+        end
       end
     end
 
