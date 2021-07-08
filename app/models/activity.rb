@@ -210,14 +210,6 @@ class Activity < ApplicationRecord
   scope :publishable_to_iati, -> { where(form_state: :complete, publish_to_iati: true) }
   scope :with_roda_identifier, -> { where.not(roda_identifier_compound: nil) }
 
-  scope :projects_and_third_party_projects_for_report, ->(report) {
-    where(
-      level: [:project, :third_party_project],
-      organisation_id: report.organisation_id,
-      source_fund_code: report.fund.source_fund_code
-    )
-  }
-
   scope :current, -> {
                     where.not(programme_status: NON_CURRENT_PROGRAMME_STATUSES).or(where(programme_status: nil))
                   }

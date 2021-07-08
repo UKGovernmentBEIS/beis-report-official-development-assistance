@@ -80,7 +80,7 @@ class Report < ApplicationRecord
   end
 
   def reportable_activities
-    Activity.reportable.projects_and_third_party_projects_for_report(self).with_roda_identifier
+    Activity::ProjectsForReportFinder.new(report: self, scope: Activity.reportable).call.with_roda_identifier
   end
 
   def activities_created
