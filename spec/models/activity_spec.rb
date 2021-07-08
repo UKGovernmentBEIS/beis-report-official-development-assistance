@@ -36,7 +36,8 @@ RSpec.describe Activity, type: :model do
     before do
       allow_any_instance_of(ActivityDefaults).to receive(:call).and_return(
         title: "a returned value",
-        form_state: "form_state"
+        form_state: "form_state",
+        originating_report_id: "fda36c93-794b-4cc4-b15c-2817f00c7c25"
       )
     end
 
@@ -49,6 +50,7 @@ RSpec.describe Activity, type: :model do
       expect(activity).to be_an_instance_of(Activity)
       expect(activity.title).to eq "a returned value"
       expect(activity.form_state).to eq "form_state"
+      expect(activity.originating_report_id).to eq "fda36c93-794b-4cc4-b15c-2817f00c7c25"
     end
 
     it "accepts a block that can override any default values" do
