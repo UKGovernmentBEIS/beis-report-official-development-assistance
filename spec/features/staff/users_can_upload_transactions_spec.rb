@@ -2,9 +2,9 @@ RSpec.feature "users can upload transactions" do
   let(:organisation) { create(:delivery_partner_organisation) }
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
-  let!(:project) { create(:project_activity, organisation: organisation) }
-  let!(:sibling_project) { create(:project_activity, organisation: organisation, parent: project.parent) }
-  let!(:cousin_project) { create(:project_activity, organisation: organisation) }
+  let!(:project) { create(:project_activity, :newton_funded, organisation: organisation) }
+  let!(:sibling_project) { create(:project_activity, :newton_funded, organisation: organisation, parent: project.parent) }
+  let!(:cousin_project) { create(:project_activity, :gcrf_funded, organisation: organisation) }
 
   let! :report do
     create(:report,
