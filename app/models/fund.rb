@@ -1,34 +1,25 @@
 class Fund
-  attr_reader :code
-
   class InvalidActivity < StandardError; end
   class InvalidFund < StandardError; end
 
-  MAPPINGS = {
-    "NF" => 1,
-    "GCRF" => 2,
-  }
+  attr_reader :id, :name, :short_name
 
   def initialize(id)
-    @code = self.class.codelist.find_item_by_code(id.to_i)
+    data = self.class.codelist.find_item_by_code(id.to_i)
 
-    raise InvalidFund if @code.nil?
-  end
+    raise InvalidFund if data.nil?
 
-  def id
-    code["code"]
-  end
-
-  def name
-    code["name"]
+    @id = data["code"]
+    @name = data["name"]
+    @short_name = data["short_name"]
   end
 
   def gcrf?
-    id == MAPPINGS["GCRF"]
+    short_name == "GCRF"
   end
 
   def newton?
-    id == MAPPINGS["NF"]
+    short_name == "NF"
   end
 
   def activity
@@ -43,9 +34,13 @@ class Fund
     def from_activity(activity)
       raise InvalidActivity unless activity.fund?
 
-      id = MAPPINGS.fetch(activity.roda_identifier_fragment) { raise InvalidFund }
+      by_short_name(activity.roda_identifier_fragment)
+    end
 
-      new(id)
+    def by_short_name(short_name)
+      all.find(-> { raise InvalidFund }) { |fund|
+        fund.short_name == short_name
+      }
     end
 
     def all

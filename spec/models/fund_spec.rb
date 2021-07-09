@@ -1,32 +1,27 @@
 require "rails_helper"
 
 RSpec.describe Fund do
+  let(:newton_code) { 1 }
+  let(:gcrf_code) { 2 }
+
   describe ".initialize" do
     it "initializes successfully when the code exists" do
-      fund = described_class.new(1)
+      fund = described_class.new(newton_code)
 
       expect(fund.name).to eq("Newton Fund")
-      expect(fund.id).to eq(1)
+      expect(fund.id).to eq(newton_code)
     end
 
     it "initializes successfully when the code was provided as a string" do
-      fund = described_class.new("1")
+      fund = described_class.new(newton_code.to_s)
 
       expect(fund.name).to eq("Newton Fund")
-      expect(fund.id).to eq(1)
+      expect(fund.id).to eq(newton_code)
     end
 
     it "raises and error when the code does not exist" do
       expect { described_class.new(99) }.to raise_error("Fund::InvalidFund")
       expect { described_class.new("99") }.to raise_error("Fund::InvalidFund")
-    end
-  end
-
-  describe ".MAPPINGS" do
-    it "contains a mapping for every entry in the 'fund_types' codelist" do
-      codelist = Codelist.new(type: "fund_types", source: "beis")
-
-      expect(described_class::MAPPINGS.values).to eql(codelist.values_for("code"))
     end
   end
 
@@ -43,17 +38,25 @@ RSpec.describe Fund do
       it "should return '1' as the ID" do
         expect(fund.id).to eq(1)
       end
+
+      it "should return 'NF' as the short name" do
+        expect(fund.short_name).to eq("NF")
+      end
     end
 
     context "when the associated fund is GCRF" do
       let(:activity) { build(:fund_activity, :gcrf) }
 
       it "should return 'GCRF' as the name" do
-        expect(fund.name).to eq("GCRF")
+        expect(fund.name).to eq("Global Challenges Research Fund")
       end
 
-      it "should return '1' as the ID" do
+      it "should return '2' as the ID" do
         expect(fund.id).to eq(2)
+      end
+
+      it "should return 'GCRF' as the short name" do
+        expect(fund.short_name).to eq("GCRF")
       end
     end
 
@@ -91,13 +94,13 @@ RSpec.describe Fund do
     subject { fund.gcrf? }
 
     context "when the fund is GCRF" do
-      let(:id) { Fund::MAPPINGS["GCRF"] }
+      let(:id) { gcrf_code }
 
       it { is_expected.to be true }
     end
 
     context "when the fund is not GCRF" do
-      let(:id) { Fund::MAPPINGS["NF"] }
+      let(:id) { newton_code }
 
       it { is_expected.to be false }
     end
@@ -108,13 +111,13 @@ RSpec.describe Fund do
     subject { fund.newton? }
 
     context "when the fund is Newton" do
-      let(:id) { Fund::MAPPINGS["NF"] }
+      let(:id) { newton_code }
 
       it { is_expected.to be true }
     end
 
     context "when the fund is not Newton" do
-      let(:id) { Fund::MAPPINGS["GCRF"] }
+      let(:id) { gcrf_code }
 
       it { is_expected.to be false }
     end
@@ -122,8 +125,8 @@ RSpec.describe Fund do
 
   describe "#==" do
     it "is true when the instances have the same id" do
-      instance_1 = described_class.new(1)
-      instance_2 = described_class.new(1)
+      instance_1 = described_class.new(newton_code)
+      instance_2 = described_class.new(newton_code)
 
       expect(instance_1 == instance_2).to be_truthy
     end
@@ -133,7 +136,7 @@ RSpec.describe Fund do
     let(:fund) { described_class.new(id) }
 
     context "when the fund is GCRF" do
-      let(:id) { Fund::MAPPINGS["GCRF"] }
+      let(:id) { gcrf_code }
 
       it "returns the GCRF fund-level Activity for the current Fund" do
         fund_activity = create(:fund_activity, :gcrf)
@@ -143,7 +146,7 @@ RSpec.describe Fund do
     end
 
     context "when the fund is Newton Fund" do
-      let(:id) { Fund::MAPPINGS["NF"] }
+      let(:id) { newton_code }
 
       it "returns the Newton fund-level Activity for the current Fund" do
         fund_activity = create(:fund_activity, :newton)
