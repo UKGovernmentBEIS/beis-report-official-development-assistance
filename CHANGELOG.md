@@ -733,6 +733,7 @@
 
 - Optimise `projects_and_third_party_projects_for_report` scope
 - Group Activity's Change history by "reference" and show newest first
+- Ignore internal "changes" to Activity made by form "wizard"
 
 ## [unreleased]
 - fix guard against orphan HistoricalEvents
