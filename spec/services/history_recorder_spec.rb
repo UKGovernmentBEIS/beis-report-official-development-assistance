@@ -50,5 +50,38 @@ RSpec.describe HistoryRecorder do
         new_value: "Updated description"
       )
     end
+
+    context "when the the changes include the internal Wizard 'form_state' property" do
+      let(:changes) do
+        {
+          "objectives" => ["Original objective", "New objective"],
+          "form_state" => ["purpose", "objectives"],
+        }
+      end
+
+      it "does NOT create a HistoricalEvent for that particular property" do
+        recorder.call(changes: changes, activity: activity, reference: reference, report: report)
+
+        expect(HistoricalEvent).not_to have_received(:create).with(
+          hash_including(
+            value_changed: "form_state"
+          )
+        )
+      end
+
+      it "does create a HistoricalEvent for other properties in the batch" do
+        recorder.call(changes: changes, activity: activity, reference: reference, report: report)
+
+        expect(HistoricalEvent).to have_received(:create).with(
+          user: user,
+          activity: activity,
+          report: report,
+          reference: reference,
+          value_changed: "objectives",
+          previous_value: "Original objective",
+          new_value: "New objective"
+        )
+      end
+    end
   end
 end
