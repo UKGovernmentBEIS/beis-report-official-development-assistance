@@ -88,7 +88,7 @@ class Report < ApplicationRecord
   end
 
   def activities_updated
-    Activity.find(historical_events.pluck(:activity_id))
+    Activity.where(id: historical_events.pluck(:activity_id))
   end
 
   def forecasts_for_reportable_activities
