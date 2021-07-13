@@ -152,7 +152,7 @@ class Activity < ApplicationRecord
   has_many :comments
   has_many :matched_efforts
   has_many :external_incomes
-  has_many :historical_events
+  has_many :historical_events, dependent: :destroy
 
   enum level: {
     fund: "fund",

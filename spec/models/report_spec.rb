@@ -270,6 +270,15 @@ RSpec.describe Report, type: :model do
         third_party_project_updated_in_report,
       ])
     end
+
+    it "handles the case where there are orphaned HistoricalEvents, after an activity has been deleted" do
+      historical_event = create(:historical_event)
+      report = historical_event.report
+
+      historical_event.activity.destroy
+
+      expect(report.activities_updated.count).to eql 0
+    end
   end
 
   describe "#editable?" do

@@ -735,6 +735,8 @@
 - Group Activity's Change history by "reference" and show newest first
 
 ## [unreleased]
+- fix guard against orphan HistoricalEvents
+- delete related HistoricalEvents when their associated activity is deleted
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-61...HEAD
 [release-61]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-60...release-61
