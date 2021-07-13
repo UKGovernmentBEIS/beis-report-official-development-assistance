@@ -591,13 +591,13 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when gcrf_strategic_area is blank" do
-      let(:source_fund_code) { Fund::MAPPINGS["NF"] }
+      let(:source_fund_code) { Fund.by_short_name("NF").id }
       subject { build(:programme_activity, source_fund_code: source_fund_code, gcrf_strategic_area: nil) }
 
       it { is_expected.to be_valid(:gcrf_strategic_area_step) }
 
       context "with a GCRF funded activity" do
-        let(:source_fund_code) { Fund::MAPPINGS["GCRF"] }
+        let(:source_fund_code) { Fund.by_short_name("GCRF").id }
 
         it { is_expected.to be_invalid(:gcrf_strategic_area_step) }
       end
@@ -610,26 +610,26 @@ RSpec.describe Activity, type: :model do
     end
 
     context "when gcrf_strategic_area has too many values" do
-      let(:source_fund_code) { Fund::MAPPINGS["NF"] }
+      let(:source_fund_code) { Fund.by_short_name("NF").id }
       let(:strategic_areas) { %w[RF Clm IP] }
       subject { build(:programme_activity, source_fund_code: source_fund_code, gcrf_strategic_area: strategic_areas) }
 
       context "with a GCRF funded activity" do
-        let(:source_fund_code) { Fund::MAPPINGS["GCRF"] }
+        let(:source_fund_code) { Fund.by_short_name("GCRF").id }
 
         it { is_expected.to be_invalid(:gcrf_strategic_area_step) }
       end
     end
 
     context "when gcrf_challenge_area is blank" do
-      let(:source_fund_code) { Fund::MAPPINGS["NF"] }
+      let(:source_fund_code) { Fund.by_short_name("NF").id }
       subject { build(:programme_activity, source_fund_code: source_fund_code, gcrf_challenge_area: nil) }
 
       it { is_expected.to be_valid(:gcrf_challenge_area_step) }
       it { is_expected.to be_valid }
 
       context "with a GCRF funded activity" do
-        let(:source_fund_code) { Fund::MAPPINGS["GCRF"] }
+        let(:source_fund_code) { Fund.by_short_name("GCRF").id }
 
         it { is_expected.to be_invalid(:gcrf_challenge_area_step) }
         it { is_expected.to be_invalid }
@@ -1517,7 +1517,7 @@ RSpec.describe Activity, type: :model do
 
   describe "#source_fund" do
     context "for a Newton fund activity" do
-      let(:activity) { build(:project_activity, source_fund_code: Fund::MAPPINGS["NF"]) }
+      let(:activity) { build(:project_activity, source_fund_code: Fund.by_short_name("NF").id) }
 
       it "returns a Newton fund" do
         expect(activity.source_fund).to be_a(Fund)
@@ -1527,11 +1527,12 @@ RSpec.describe Activity, type: :model do
     end
 
     context "for a GCRF activity" do
-      let(:activity) { build(:project_activity, source_fund_code: Fund::MAPPINGS["GCRF"]) }
+      let(:activity) { build(:project_activity, source_fund_code: Fund.by_short_name("GCRF").id) }
 
       it "returns a GCRF fund" do
         expect(activity.source_fund).to be_a(Fund)
-        expect(activity.source_fund.name).to eq("GCRF")
+        expect(activity.source_fund.name).to eq("Global Challenges Research Fund")
+        expect(activity.source_fund.short_name).to eq("GCRF")
         expect(activity.source_fund.id).to eq(2)
       end
     end
@@ -1540,7 +1541,7 @@ RSpec.describe Activity, type: :model do
   describe "#source_fund=" do
     it "sets the source fund code" do
       activity = build(:project_activity)
-      activity.source_fund = Fund.new(Fund::MAPPINGS["GCRF"])
+      activity.source_fund = Fund.new(Fund.by_short_name("GCRF").id)
       activity.save
 
       expect(activity.reload.source_fund_code).to eq(2)

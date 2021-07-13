@@ -3,11 +3,15 @@
 class Staff::ActivitiesController < Staff::BaseController
   include Secured
   after_action :verify_authorized, except: [:index, :historic]
-  after_action :verify_policy_scoped, only: [:index, :historic]
+  after_action :skip_policy_scope, only: [:index, :historic]
 
   def index
     @organisation = Organisation.find(organisation_id)
-    @grouped_programmes = fetch_grouped_programmes_for(@organisation, :current)
+    @grouped_activities = Activity::GroupedActivitiesFetcher.new(
+      user: current_user,
+      organisation: @organisation,
+      scope: :current
+    ).call
   end
 
   def show
@@ -34,7 +38,11 @@ class Staff::ActivitiesController < Staff::BaseController
 
   def historic
     @organisation = Organisation.find(organisation_id)
-    @grouped_programmes = fetch_grouped_programmes_for(@organisation, :historic)
+    @grouped_activities = Activity::GroupedActivitiesFetcher.new(
+      user: current_user,
+      organisation: @organisation,
+      scope: :historic
+    ).call
   end
 
   private
@@ -58,21 +66,5 @@ class Staff::ActivitiesController < Staff::BaseController
 
   def fund_id
     params[:fund_id]
-  end
-
-  def fetch_grouped_programmes_for(organisation, scope)
-    activities = policy_scope(
-      Activity.includes(
-        :organisation,
-        parent: [:parent, :organisation],
-        child_activities: [:child_activities, :organisation, :parent]
-      ).programme
-       .send(scope)
-    )
-    unless organisation.service_owner?
-      activities = activities.where(extending_organisation: organisation)
-    end
-    activities.order(:roda_identifier_compound)
-      .group_by(&:parent)
   end
 end

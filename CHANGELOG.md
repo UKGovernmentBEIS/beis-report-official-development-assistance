@@ -734,9 +734,15 @@
 - Optimise `projects_and_third_party_projects_for_report` scope
 - Group Activity's Change history by "reference" and show newest first
 
+## [release-62] - 2021-07-13
+- Fix: guard against orphan HistoricalEvents
+- Delete related HistoricalEvents when their associated activity is deleted
+- Ignore internal "changes" to Activity made by form "wizard"
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-61...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...HEAD
+[release-62]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-61...release-62
 [release-61]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-60...release-61
 [release-60]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-59...release-60
 [release-59]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-58...release-59

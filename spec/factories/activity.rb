@@ -8,7 +8,7 @@ FactoryBot.define do
     description { Faker::Lorem.paragraph }
     sector_category { "111" }
     sector { "11110" }
-    source_fund_code { Fund::MAPPINGS["NF"] }
+    source_fund_code { Fund.by_short_name("NF").id }
     programme_status { 7 }
     planned_start_date { Date.today }
     planned_end_date { Date.tomorrow }
@@ -53,7 +53,7 @@ FactoryBot.define do
       trait :gcrf do
         roda_identifier_fragment { "GCRF" }
         title { "Global Challenges Research Fund (GCRF)" }
-        source_fund_code { Fund::MAPPINGS["GCRF"] }
+        source_fund_code { Fund.by_short_name("GCRF").id }
 
         initialize_with do
           Activity.find_or_initialize_by(roda_identifier_fragment: "GCRF")
@@ -63,7 +63,7 @@ FactoryBot.define do
       trait :newton do
         roda_identifier_fragment { "NF" }
         title { "Newton Fund" }
-        source_fund_code { Fund::MAPPINGS["NF"] }
+        source_fund_code { Fund.by_short_name("NF").id }
 
         initialize_with do
           Activity.find_or_initialize_by(roda_identifier_fragment: "NF")
@@ -82,16 +82,16 @@ FactoryBot.define do
       association :extending_organisation, factory: :delivery_partner_organisation
 
       trait :newton_funded do
-        source_fund_code { Fund::MAPPINGS["NF"] }
+        source_fund_code { Fund.by_short_name("NF").id }
         parent do
-          Activity.fund.find_by(source_fund_code: Fund::MAPPINGS["NF"]) || create(:fund_activity, :newton)
+          Activity.fund.find_by(source_fund_code: Fund.by_short_name("NF").id) || create(:fund_activity, :newton)
         end
       end
 
       trait :gcrf_funded do
-        source_fund_code { Fund::MAPPINGS["GCRF"] }
+        source_fund_code { Fund.by_short_name("GCRF").id }
         parent do
-          Activity.fund.find_by(source_fund_code: Fund::MAPPINGS["GCRF"]) || create(:fund_activity, :gcrf)
+          Activity.fund.find_by(source_fund_code: Fund.by_short_name("GCRF").id) || create(:fund_activity, :gcrf)
         end
       end
     end
@@ -130,12 +130,12 @@ FactoryBot.define do
       end
 
       trait :newton_funded do
-        source_fund_code { Fund::MAPPINGS["NF"] }
+        source_fund_code { Fund.by_short_name("NF").id }
         parent factory: [:programme_activity, :newton_funded]
       end
 
       trait :gcrf_funded do
-        source_fund_code { Fund::MAPPINGS["GCRF"] }
+        source_fund_code { Fund.by_short_name("GCRF").id }
         parent factory: [:programme_activity, :gcrf_funded]
       end
     end
@@ -163,12 +163,12 @@ FactoryBot.define do
       association :extending_organisation, factory: :delivery_partner_organisation
 
       trait :newton_funded do
-        source_fund_code { Fund::MAPPINGS["NF"] }
+        source_fund_code { Fund.by_short_name("NF").id }
         parent factory: [:project_activity, :newton_funded]
       end
 
       trait :gcrf_funded do
-        source_fund_code { Fund::MAPPINGS["GCRF"] }
+        source_fund_code { Fund.by_short_name("GCRF").id }
         parent factory: [:project_activity, :gcrf_funded]
       end
     end
