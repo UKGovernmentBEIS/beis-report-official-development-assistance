@@ -4,13 +4,25 @@ RSpec.describe UpdateTransaction do
   let(:transaction) { create(:transaction) }
 
   describe "#call" do
-    it "returns a successful result" do
-      allow(transaction).to receive(:valid?).and_return(true)
-      allow(transaction).to receive(:save).and_return(true)
+    context "when the transaction is valid" do
+      before do
+        allow(transaction).to receive(:valid?).and_return(true)
+        allow(transaction).to receive(:save).and_return(true)
+      end
 
-      result = described_class.new(transaction: transaction).call(attributes: {})
+      it "returns a successful result" do
+        result = described_class.new(transaction: transaction).call(attributes: {})
 
-      expect(result.success?).to be true
+        expect(result.success?).to be true
+      end
+
+      context "when the change is persisted successfully" do
+        it "asks the HistoryRecorder to handle the changes"
+      end
+
+      context "when the change is NOT persisted successfully" do
+        it "does NOT ask the HistoryRecorder to handle the changes"
+      end
     end
 
     context "when the transaction isn't valid" do
