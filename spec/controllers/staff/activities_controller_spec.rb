@@ -1,6 +1,16 @@
 require "rails_helper"
 
 RSpec.describe Staff::ActivitiesController do
+  context "when the user is not logged in" do
+    it "redirects the user to the root path" do
+      activity = create(:programme_activity)
+      get :index
+      expect(response).to redirect_to(root_path)
+      get :show, params: {organisation_id: activity.organisation, id: activity.id}
+      expect(response).to redirect_to(root_path)
+    end
+  end
+
   shared_examples "fetches activities" do |params|
     let(:scope) { params[:scope] }
     let(:route) { params[:route] }

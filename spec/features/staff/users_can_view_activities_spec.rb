@@ -1,12 +1,4 @@
 RSpec.feature "Users can view activities" do
-  context "when the user is not logged in" do
-    it "redirects the user to the root path" do
-      activity = create(:programme_activity)
-      visit organisation_activity_path(activity.organisation, activity)
-      expect(current_path).to eq(root_path)
-    end
-  end
-
   shared_examples "shows activities" do |params|
     let(:user) { create(params[:user_type]) }
     let(:organisation) { params[:user_type] == :beis_user ? create(:delivery_partner_organisation) : user.organisation }
