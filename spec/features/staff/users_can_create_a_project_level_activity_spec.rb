@@ -16,7 +16,7 @@ RSpec.feature "Users can create a project" do
 
       scenario "a new project can be added to the programme" do
         programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
+        report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 
         visit activities_path
         click_on programme.title
@@ -31,6 +31,10 @@ RSpec.feature "Users can create a project" do
         project = programme.child_activities.last
 
         expect(project.organisation).to eq user.organisation
+
+        # our new direct association between activity and report
+        expect(project.originating_report).to eq(report)
+        expect(report.new_activities).to eq([project])
       end
 
       scenario "a new project can be added when the program has no RODA identifier" do

@@ -138,6 +138,7 @@ class Activity < ApplicationRecord
   belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"
 
   has_many :child_activities, foreign_key: "parent_id", class_name: "Activity"
+  belongs_to :originating_report, class_name: "Report", optional: true
   belongs_to :organisation
   belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
   has_many :implementing_organisations, dependent: :destroy

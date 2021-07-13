@@ -735,11 +735,14 @@
 - Group Activity's Change history by "reference" and show newest first
 
 ## [release-62] - 2021-07-13
+
 - Fix: guard against orphan HistoricalEvents
 - Delete related HistoricalEvents when their associated activity is deleted
 - Ignore internal "changes" to Activity made by form "wizard"
 
 ## [unreleased]
+
+- New activities know which was their 'originating' report, and reports can list 'new' activities originating from their financial period
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...HEAD
 [release-62]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-61...release-62
