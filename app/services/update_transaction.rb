@@ -1,8 +1,10 @@
 class UpdateTransaction
   attr_accessor :transaction
 
-  def initialize(transaction:)
-    self.transaction = transaction
+  def initialize(transaction:, user:, report:)
+    @transaction = transaction
+    @user = user
+    @report = report
   end
 
   def call(attributes: {})
@@ -20,6 +22,8 @@ class UpdateTransaction
   end
 
   private
+
+  attr_reader :transaction, :user, :report
 
   def convert_and_assign_value(transaction, value)
     transaction.value = ConvertFinancialValue.new.convert(value.to_s)

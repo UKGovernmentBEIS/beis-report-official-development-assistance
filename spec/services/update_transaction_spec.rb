@@ -2,6 +2,12 @@ require "rails_helper"
 
 RSpec.describe UpdateTransaction do
   let(:transaction) { create(:transaction) }
+  let(:user) { double("user") }
+  let(:report) { double("report") }
+
+  let(:updater) do
+    described_class.new(transaction: transaction, user: user, report: report)
+  end
 
   describe "#call" do
     context "when the transaction is valid" do
@@ -11,7 +17,7 @@ RSpec.describe UpdateTransaction do
       end
 
       it "returns a successful result" do
-        result = described_class.new(transaction: transaction).call(attributes: {})
+        result = updater.call(attributes: {})
 
         expect(result.success?).to be true
       end
@@ -29,7 +35,7 @@ RSpec.describe UpdateTransaction do
       it "returns a failed result" do
         allow(transaction).to receive(:valid?).and_return(false)
 
-        result = described_class.new(transaction: transaction).call(attributes: {})
+        result = updater.call(attributes: {})
 
         expect(result.success?).to be false
       end
@@ -39,12 +45,12 @@ RSpec.describe UpdateTransaction do
       it "sets the attributes passed in as transaction attributes" do
         attributes = ActionController::Parameters.new(description: "foo").permit!
 
-        result = described_class.new(transaction: transaction).call(attributes: attributes)
+        result = updater.call(attributes: attributes)
 
         expect(result.object.description).to eq("foo")
       end
 
-      subject { described_class.new(transaction: transaction) }
+      subject { updater }
       it_behaves_like "sanitises monetary field"
     end
 
@@ -52,7 +58,7 @@ RSpec.describe UpdateTransaction do
       it "raises an error" do
         attributes = ActionController::Parameters.new(foo: "bar").permit!
 
-        expect { described_class.new(transaction: transaction).call(attributes: attributes) }
+        expect { updater.call(attributes: attributes) }
           .to raise_error(ActiveModel::UnknownAttributeError)
       end
     end

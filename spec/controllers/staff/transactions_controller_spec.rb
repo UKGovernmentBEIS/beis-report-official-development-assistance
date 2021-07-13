@@ -34,7 +34,11 @@ RSpec.describe Staff::TransactionsController do
 
       put :update, params: params
 
-      expect(UpdateTransaction).to have_received(:new).with(transaction: transaction)
+      expect(UpdateTransaction).to have_received(:new).with(
+        user: user,
+        transaction: transaction,
+        report: report
+      )
       expect(updater).to have_received(:call).with(
         attributes: {"value" => "200.02", "financial_quarter" => "2"}
       )

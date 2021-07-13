@@ -44,8 +44,11 @@ class Staff::TransactionsController < Staff::BaseController
     authorize @transaction
 
     @activity = activity
-    result = UpdateTransaction.new(transaction: @transaction)
-      .call(attributes: transaction_params)
+    result = UpdateTransaction.new(
+      transaction: @transaction,
+      user: current_user,
+      report: Report.editable_for_activity(@activity)
+    ).call(attributes: transaction_params)
 
     if result.success?
       @transaction.create_activity key: "transaction.update", owner: current_user
