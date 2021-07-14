@@ -49,20 +49,39 @@ en:
         receiving_organisation: The organisation receiving the money from this transaction.
         receiving_organisation_reference_html: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
   table:
+    caption:
+      transaction:
+        actuals_in_report: Actuals added to this report
     header:
       transaction:
         financial_quarter: Financial quarter
         value: Transaction amount
         receiving_organisation: Receiver
+  tabs:
+    transactions:
+      heading: Actuals
+      copy: Listed below are the actuals that have been added to this report.
+      providing:
+        heading: Providing actuals data
+        copy: Actuals data can be added by using the application interface or by uploading data.
+      upload:
+        heading: Upload data
+        copy_html:
+          <p class="govuk-body">Large numbers of actuals can be added via the actuals upload.</p>
+          <p class="govuk-body">For guidance on uploading actuals data, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload">guidance in the help centre (opens in new tab)</a>.</p>
+        warning: Ensure you use the correct template (available below) when uploading actuals data.
   page_content:
     transactions:
       button:
         create: Add a transaction
+        upload: Upload actuals data
+        download_template: Download actuals data template
       edit_noun: transaction
       table:
         headers:
           providing_organisation: Provider
           receiving_organisation: Receiver
+
   page_title:
     transaction:
       edit: Edit transaction

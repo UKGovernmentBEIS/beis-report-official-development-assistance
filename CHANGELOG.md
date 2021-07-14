@@ -758,6 +758,7 @@
 
 ## [unreleased]
 - Show the financial quarter of the actuals spend on the Report view
+- Content and layout improvements to the actual spend tab on Report
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-63...HEAD
 [release-63]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...release-63

@@ -374,6 +374,18 @@ RSpec.feature "Users can view reports" do
         end
       end
 
+      scenario "they see helpful content about uploading acutals spend data and a link to the template on the actuals tab" do
+        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+
+        visit report_actuals_path(report)
+
+        expect(page.html).to include t("tabs.transactions.upload.copy_html")
+        expect(page).to have_link t("page_content.transactions.button.download_template"),
+          href: report_transaction_upload_path(report, format: :csv)
+        expect(page).to have_link "guidance in the help centre (opens in new tab)",
+          href: "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload"
+      end
+
       scenario "they can view and edit budgets in a report" do
         activity = create(:project_activity, organisation: delivery_partner_user.organisation)
         report = create(:report, :active, organisation: delivery_partner_user.organisation, fund: activity.associated_fund)
