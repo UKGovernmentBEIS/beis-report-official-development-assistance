@@ -1,6 +1,4 @@
 class UpdateTransaction
-  attr_accessor :transaction
-
   def initialize(transaction:, user:, report:)
     @transaction = transaction
     @user = user
@@ -13,6 +11,15 @@ class UpdateTransaction
     convert_and_assign_value(transaction, attributes[:value])
 
     result = if transaction.valid?
+      HistoryRecorder
+        .new(user: user)
+        .call(
+          changes: transaction.changes,
+          reference: "Update to Transaction",
+          activity: transaction.parent_activity,
+          trackable: transaction,
+          report: report
+        )
       Result.new(transaction.save, transaction)
     else
       Result.new(false, transaction)
