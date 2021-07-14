@@ -757,6 +757,7 @@
 - Create and populate an activity's RODA identifier automatically
 
 ## [unreleased]
+- Show the financial quarter of the actuals spend on the Report view
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-63...HEAD
 [release-63]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...release-63
