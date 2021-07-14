@@ -31,8 +31,15 @@ RSpec.feature "users can upload transactions" do
     end
   end
 
+  scenario "they get helpful guidance and a link to actuals upload template on the upload page" do
+    visit new_report_transaction_upload_path(report)
+
+    expect(page.html).to include t("page_content.transactions.upload.copy_html",
+      report_actuals_template_path: report_transaction_upload_path(report, format: :csv))
+  end
+
   scenario "downloading a CSV template with activities for the current report" do
-    click_link t("action.transaction.download.button")
+    visit report_transaction_upload_path(report, format: :csv)
 
     csv_data = page.body.delete_prefix("\uFEFF")
     rows = CSV.parse(csv_data, headers: true).map(&:to_h)
