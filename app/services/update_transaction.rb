@@ -9,23 +9,23 @@ class UpdateTransaction
     transaction.assign_attributes(attributes)
 
     convert_and_assign_value(transaction, attributes[:value])
+    changes = transaction.changes
+    success = transaction.save
 
-    result = if transaction.valid?
+    if success
       HistoryRecorder
         .new(user: user)
         .call(
-          changes: transaction.changes,
+          changes: changes,
           reference: "Update to Transaction",
           activity: transaction.parent_activity,
           trackable: transaction,
           report: report
         )
-      Result.new(transaction.save, transaction)
+      Result.new(true, transaction)
     else
       Result.new(false, transaction)
     end
-
-    result
   end
 
   private
