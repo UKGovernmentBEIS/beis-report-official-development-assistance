@@ -17,7 +17,6 @@ RSpec.describe Activities::ImportFromCsv do
     {
       "RODA ID" => existing_activity.roda_identifier,
       "Transparency identifier" => "13232332323",
-      "RODA ID Fragment" => "",
       "Parent RODA ID" => "",
       "Title" => "Here is a title",
       "Description" => "Some description goes here...",
@@ -69,7 +68,6 @@ RSpec.describe Activities::ImportFromCsv do
   let(:new_activity_attributes) do
     existing_activity_attributes.merge({
       "RODA ID" => "",
-      "RODA ID Fragment" => "234566",
       "Parent RODA ID" => parent_activity.roda_identifier,
       "Transparency identifier" => "23232332323",
     })
@@ -99,22 +97,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:roda_id)
       expect(subject.errors.first.value).to eq("FAKE RODA ID")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.not_found"))
-    end
-
-    it "has an error when the ID present, but there is a fragment present" do
-      existing_activity_attributes["RODA ID Fragment"] = "13344"
-
-      expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
-
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
-
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("RODA ID Fragment")
-      expect(subject.errors.first.column).to eq(:roda_identifier_fragment)
-      expect(subject.errors.first.value).to eq("13344")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.fragment_present"))
     end
 
     it "has an error when the ID present, but there is a parent present" do
@@ -423,7 +405,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.transparency_identifier).to eq(new_activity_attributes["Transparency identifier"])
       expect(new_activity.title).to eq(new_activity_attributes["Title"])
       expect(new_activity.description).to eq(new_activity_attributes["Description"])
-      expect(new_activity.roda_identifier_fragment).to eq(new_activity_attributes["RODA ID Fragment"])
       expect(new_activity.recipient_region).to eq(new_activity_attributes["Recipient Region"])
       expect(new_activity.recipient_country).to eq(new_activity_attributes["Recipient Country"])
       expect(new_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
@@ -826,22 +807,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:parent_id)
       expect(subject.errors.first.value).to eq("111111")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.parent_not_found"))
-    end
-
-    it "has an error if the identifier is invalid" do
-      new_activity_attributes["RODA ID Fragment"] = "%^$!234566"
-
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
-
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
-
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("RODA ID Fragment")
-      expect(subject.errors.first.column).to eq(:roda_identifier_fragment)
-      expect(subject.errors.first.value).to eq("%^$!234566")
-      expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.roda_identifier_fragment.invalid_characters"))
     end
 
     context "implementing organisation" do

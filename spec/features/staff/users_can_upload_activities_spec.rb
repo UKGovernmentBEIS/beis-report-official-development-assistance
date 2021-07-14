@@ -49,7 +49,6 @@ RSpec.feature "users can upload activities" do
       "ODA Eligibility", "ODA Eligibility Lead",
       "Parent RODA ID",
       "Planned end date", "Planned start date",
-      "RODA ID Fragment",
       "SDG 1", "SDG 2", "SDG 3",
       "Sector",
       "Title",
@@ -153,7 +152,7 @@ RSpec.feature "users can upload activities" do
       end
 
       within "//tbody/tr[2]" do
-        expect(page).to have_xpath("td[1]", text: "RODA ID Fragment")
+        expect(page).to have_xpath("td[1]", text: "RODA ID")
         expect(page).to have_xpath("td[2]", text: "3")
         expect(page).to have_xpath("td[3]", text: "")
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.unauthorised"))
