@@ -14,8 +14,8 @@ RSpec.feature "Users can view activities" do
       authenticate!(user: user)
     end
 
-    scenario "they can see and navigate current activities", js: true do
-      visit activities_path
+    scenario "they can see and navigate current delivery partner activities", js: true do
+      visit activities_path(organisation_id: organisation.id)
 
       expect(page).to have_content t("page_title.activity.index")
 
@@ -69,23 +69,6 @@ RSpec.feature "Users can view activities" do
     include_examples "shows activities", {
       user_type: :beis_user,
     }
-
-    scenario "only delivery partners are listed" do
-      delivery_partners = create_list(:delivery_partner_organisation, 3)
-      matched_effort_provider = create(:matched_effort_provider)
-      external_income_provider = create(:external_income_provider)
-
-      visit activities_path(organisation_id: user.organisation)
-
-      within "select#organisation_id" do
-        delivery_partners.each do |delivery_partner|
-          expect(page).to have_content(delivery_partner.name)
-        end
-
-        expect(page).to_not have_content(matched_effort_provider.name)
-        expect(page).to_not have_content(external_income_provider.name)
-      end
-    end
   end
 
   context "when the user is signed in as a delivery partner" do

@@ -6,9 +6,6 @@
       %h1.govuk-heading-xl
         = t("page_title.activity.index")
 
-  - if current_user.service_owner?
-    = render partial: "staff/shared/activities/filter", locals: { organisation_id: @organisation.id }
-
   .govuk-grid-row.activity-page
     .govuk-grid-column-full
       = render partial: "staff/shared/activities/table", locals: { activities: @grouped_activities }

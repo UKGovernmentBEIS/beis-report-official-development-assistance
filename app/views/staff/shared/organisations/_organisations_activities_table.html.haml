@@ -1,0 +1,20 @@
+%table.govuk-table#delivery_partner_organisations
+  %caption.govuk-table__caption.govuk-table__caption--m
+    = t("table.caption.activity.activities_by_delivery_partner")
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header{scope: "col", class: "govuk-!-width-one-half" }
+        = t("table.header.organisation.name")
+      %th.govuk-table__header{scope: "col", class: "govuk-!-width-one-quarter" }
+        = t("table.header.organisation.beis_organisation_reference")
+      %th.govuk-table__header{scope: "col", class: "govuk-!-width-one-quarter" }
+        = t("table.header.default.action")
+  %tbody.govuk-table__body
+    - @delivery_partner_organisations.each do |delivery_partner_organisation|
+      %tr.govuk-table__row
+        %td.govuk-table__cell
+          = delivery_partner_organisation.name
+        %td.govuk-table__cell
+          = delivery_partner_organisation.beis_organisation_reference
+        %td.govuk-table__cell
+          = a11y_action_link t("table.actions.activity.view_activities"), activities_path(params: { organisation_id: delivery_partner_organisation }), "for #{delivery_partner_organisation.name}", ["govuk-link", "govuk-link--no-visited-state"]
