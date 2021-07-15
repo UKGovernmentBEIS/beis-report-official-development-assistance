@@ -68,6 +68,10 @@ RSpec.describe ActivityDefaults do
         expect(identifier_parts.second).to eq(delivery_partner_organisation.beis_organisation_reference)
         expect(identifier_parts.third).to match(/[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}/)
       end
+
+      it "sets the transparency identifier" do
+        expect(subject[:transparency_identifier]).to eq("#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}")
+      end
     end
 
     context "parent is a programe" do
@@ -110,6 +114,10 @@ RSpec.describe ActivityDefaults do
           identifier_parts.second,
         ].join("-")).to eq(programme.roda_identifier)
         expect(identifier_parts.third).to match(/[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}/)
+      end
+
+      it "sets the transparency identifier" do
+        expect(subject[:transparency_identifier]).to eq("#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}")
       end
     end
 
@@ -154,6 +162,10 @@ RSpec.describe ActivityDefaults do
           identifier_parts.third,
         ].join("-")).to eq(project.roda_identifier)
         expect(identifier_parts.fourth).to match(/[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}/)
+      end
+
+      it "sets the transparency identifier" do
+        expect(subject[:transparency_identifier]).to eq("#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}")
       end
     end
 

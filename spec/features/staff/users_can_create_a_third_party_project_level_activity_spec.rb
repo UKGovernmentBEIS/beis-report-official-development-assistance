@@ -51,7 +51,7 @@ RSpec.feature "Users can create a third-party project" do
         end
       end
 
-      scenario "the activity saves its identifier as read-only `transparency_identifier`" do
+      xscenario "the activity saves its identifier as read-only `transparency_identifier`" do
         programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
         project = create(:project_activity, :gcrf_funded, organisation: user.organisation, extending_organisation: user.organisation, parent: programme)
         _report = create(:report, state: :active, organisation: user.organisation, fund: project.associated_fund)

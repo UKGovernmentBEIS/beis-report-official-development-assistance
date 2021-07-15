@@ -67,7 +67,7 @@ RSpec.feature "Users can create a project" do
         expect(project.organisation).to eq user.organisation
       end
 
-      scenario "the activity saves its identifier as read-only `transparency_identifier`" do
+      xscenario "the activity saves its identifier as read-only `transparency_identifier`" do
         programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
         identifier = "a-project"

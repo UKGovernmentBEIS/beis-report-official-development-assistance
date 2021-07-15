@@ -18,6 +18,7 @@ class ActivityDefaults
       level: level,
       source_fund_code: source_fund_code,
       roda_identifier: roda_identifier,
+      transparency_identifier: transparency_identifier,
 
       organisation_id: organisation.id,
       extending_organisation_id: extending_organisation.id,
@@ -64,7 +65,7 @@ class ActivityDefaults
   end
 
   def roda_identifier
-    loop {
+    @roda_identifier ||= loop {
       roda_identifier = generate_roda_identifier
       break roda_identifier unless Activity.exists?(roda_identifier: roda_identifier)
     }
@@ -75,6 +76,13 @@ class ActivityDefaults
       parent_activity: parent_activity,
       extending_organisation: extending_organisation,
     ).generate
+  end
+
+  def transparency_identifier
+    [
+      Organisation::SERVICE_OWNER_IATI_REFERENCE,
+      roda_identifier,
+    ].join("-")
   end
 
   def check_params!
