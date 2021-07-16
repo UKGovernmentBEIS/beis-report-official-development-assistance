@@ -77,3 +77,14 @@ jobs:
         run: |
           script/deploy-terraform
         if: github.ref == 'refs/heads/master'
+  check_and_notify:
+    needs: deploy
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v2
+      - name: Notifying the team of a successful deploy
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: script/deployment-notification

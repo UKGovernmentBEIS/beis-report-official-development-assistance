@@ -1,0 +1,19 @@
+#!/bin/sh
+
+printf "Waiting for deploy."
+current_sha=$(git rev-parse HEAD)
+
+while :
+do
+  printf "."
+  deployed_sha=$(curl -s https://www.report-official-development-assistance.service.gov.uk/health_check | jq -r '.git_sha')
+  if [ "$deployed_sha" = "$current_sha" ]; then
+    break
+  fi
+  sleep 10
+done
+
+echo "Sending Slack notification!"
+
+curl -s -X POST --data-urlencode "payload={\"text\": \"@here :badgerbadger: The latest release of RODA has been deployed to production :badgerbadger:\"}" "$SLACK_WEBHOOK_URL"
+
