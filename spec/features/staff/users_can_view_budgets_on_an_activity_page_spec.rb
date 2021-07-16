@@ -13,9 +13,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         budget = create(:budget, parent_activity: fund_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
-        visit activities_path
-
-        click_link fund_activity.title
+        visit organisation_activity_path(fund_activity.organisation, fund_activity)
 
         budget_information_is_shown_on_page(budget_presenter)
       end
@@ -27,9 +25,8 @@ RSpec.feature "Users can view budgets on an activity page" do
         budget_2 = create(:budget, parent_activity: fund_activity, financial_year: 2019)
         budget_3 = create(:budget, parent_activity: fund_activity, financial_year: 2018)
 
-        visit activities_path
+        visit organisation_activity_path(fund_activity.organisation, fund_activity)
 
-        click_link fund_activity.title
         expect(page.find(:xpath, "//table[@class = 'govuk-table budgets']/tbody/tr[1]")[:id]).to eq(budget_1.id)
         expect(page.find(:xpath, "//table[@class = 'govuk-table budgets']/tbody/tr[2]")[:id]).to eq(budget_2.id)
         expect(page.find(:xpath, "//table[@class = 'govuk-table budgets']/tbody/tr[3]")[:id]).to eq(budget_3.id)
@@ -44,11 +41,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         budget = create(:budget, parent_activity: programme_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
-        visit activities_path
-
-        click_link fund_activity.title
-        click_on t("tabs.activity.children")
-        click_link programme_activity.title
+        visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
         budget_information_is_shown_on_page(budget_presenter)
       end
@@ -64,13 +57,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         budget = create(:budget, parent_activity: project_activity)
         budget_presenter = BudgetPresenter.new(budget)
 
-        visit activities_path
-
-        click_link fund_activity.title
-        click_on t("tabs.activity.children")
-        click_link programme_activity.title
-        click_on t("tabs.activity.children")
-        click_link project_activity.title
+        visit organisation_activity_path(project_activity.organisation, project_activity)
 
         budget_information_is_shown_on_page(budget_presenter)
       end
@@ -82,13 +69,7 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         budget = create(:budget, parent_activity: project_activity)
 
-        visit activities_path
-
-        click_link fund_activity.title
-        click_on t("tabs.activity.children")
-        click_link programme_activity.title
-        click_on t("tabs.activity.children")
-        click_link project_activity.title
+        visit organisation_activity_path(project_activity.organisation, project_activity)
 
         expect(page).to_not have_content(t("page_content.budgets.button.create"))
         within("tr##{budget.id}") do

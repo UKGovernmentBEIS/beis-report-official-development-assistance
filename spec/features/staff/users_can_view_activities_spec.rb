@@ -57,9 +57,7 @@ RSpec.feature "Users can view activities" do
     end
 
     scenario "they can see historic activities" do
-      visit historic_activities_path
-
-      expect(page).to have_content t("page_title.activity.index")
+      visit historic_activities_path(organisation_id: historic_programme.extending_organisation_id)
 
       expect(page).to have_content(historic_programme.title)
     end

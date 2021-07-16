@@ -4,13 +4,12 @@ RSpec.describe "Users can create a budget" do
   context "when signed in as BEIS user" do
     let(:user) { create(:beis_user) }
 
-    context "when the activity is a fund" do
+    context "when the activity is a fund (level A)" do
       scenario "successfully creates a budget" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         create(:programme_activity, parent: fund_activity)
 
-        visit activities_path
-        click_on(fund_activity.title)
+        visit organisation_activity_path(fund_activity.organisation, fund_activity)
 
         click_on(t("page_content.budgets.button.create"))
 
@@ -24,8 +23,7 @@ RSpec.describe "Users can create a budget" do
         create(:programme_activity, parent: fund_activity)
 
         PublicActivity.with_tracking do
-          visit activities_path
-          click_on(fund_activity.title)
+          visit organisation_activity_path(fund_activity.organisation, fund_activity)
 
           click_on(t("page_content.budgets.button.create"))
 
@@ -40,13 +38,12 @@ RSpec.describe "Users can create a budget" do
       end
     end
 
-    context "on a programme level activity" do
+    context "when the activity is a programme (level B)" do
       scenario "successfully creates a budget" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
 
-        visit activities_path
-        click_on(programme_activity.title)
+        visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
         click_on(t("page_content.budgets.button.create"))
 
@@ -59,9 +56,7 @@ RSpec.describe "Users can create a budget" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(programme_activity.title)
+        visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
         click_on(t("page_content.budgets.button.create"))
 
@@ -76,9 +71,7 @@ RSpec.describe "Users can create a budget" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(programme_activity.title)
+        visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
         click_on(t("page_content.budgets.button.create"))
 
@@ -106,23 +99,20 @@ RSpec.describe "Users can create a budget" do
         organisation: user.organisation)
     }
 
-    context "on a programme level activity" do
+    context "when the activity is a programme (level B)" do
       scenario "they can view but not create budgets" do
-        visit organisation_activity_path(user.organisation, programme_activity)
+        visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
         expect(page).to have_content(t("page_content.activity.budgets"))
         expect(page).not_to have_content(t("page_content.budgets.button.create"))
       end
     end
 
-    context "on a project level activity" do
+    context "when the activity is a project (level C)" do
       scenario "successfully creates a direct budget by default", js: true do
         _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
 
-        visit activities_path
-
-        click_on(programme_activity.title)
-        click_on(project_activity.title)
+        visit organisation_activity_path(project_activity.organisation, project_activity)
 
         click_on(t("page_content.budgets.button.create"))
 
@@ -134,10 +124,7 @@ RSpec.describe "Users can create a budget" do
       scenario "successfully creates an external budget", js: true do
         _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
 
-        visit activities_path
-
-        click_on(programme_activity.title)
-        click_on(project_activity.title)
+        visit organisation_activity_path(project_activity.organisation, project_activity)
 
         click_on(t("page_content.budgets.button.create"))
 
@@ -154,9 +141,7 @@ RSpec.describe "Users can create a budget" do
       scenario "for an external budget it shows an error if the user doesn't input a providing organisation name and type", js: true do
         _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
 
-        visit activities_path
-        click_on(programme_activity.title)
-        click_on(project_activity.title)
+        visit organisation_activity_path(programme_activity.organisation, project_activity)
         click_on(t("page_content.budgets.button.create"))
 
         choose("Other official development assistance")
@@ -173,8 +158,7 @@ RSpec.describe "Users can create a budget" do
         scenario "for an external budget it shows an error if the user doesn't input a providing organisation name and type" do
           _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
 
-          visit activities_path
-          click_on(project_activity.title)
+          visit organisation_activity_path(project_activity.organisation, project_activity)
           click_on(t("page_content.budgets.button.create"))
 
           choose("Other official development assistance")
