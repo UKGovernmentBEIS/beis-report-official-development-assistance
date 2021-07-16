@@ -57,9 +57,19 @@ RSpec.feature "Users can view activities" do
     end
 
     scenario "they can see historic activities" do
-      visit historic_activities_path(organisation_id: historic_programme.extending_organisation_id)
+      visit historic_organisation_activities_path(historic_programme.extending_organisation_id)
 
       expect(page).to have_content(historic_programme.title)
+    end
+
+    scenario "does not see activities which belong to a different organisation" do
+      other_programme = create(:programme_activity, extending_organisation: create(:delivery_partner_organisation))
+      other_project = create(:project_activity, organisation: create(:delivery_partner_organisation))
+
+      visit activities_path(organisation_id: organisation.id)
+
+      expect(page).to_not have_content(other_programme.title)
+      expect(page).to_not have_content(other_project.title)
     end
   end
 
@@ -67,6 +77,17 @@ RSpec.feature "Users can view activities" do
     include_examples "shows activities", {
       user_type: :beis_user,
     }
+    scenario "cannot add a child activity to a programme (level C) activity" do
+      delivery_partner_organisation = create(:delivery_partner_organisation)
+      gcrf = create(:fund_activity, :gcrf)
+      programme = create(:programme_activity, parent: gcrf, extending_organisation: delivery_partner_organisation)
+      _report = create(:report, :active, fund: gcrf, organisation: delivery_partner_organisation)
+
+      visit organisation_activity_path(programme.organisation, programme)
+      click_on t("tabs.activity.children")
+
+      expect(page).to_not have_link(t("action.activity.add_child"), exact: true)
+    end
   end
 
   context "when the user is signed in as a delivery partner" do

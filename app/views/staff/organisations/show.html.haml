@@ -8,7 +8,6 @@
       %h1.govuk-heading-xl
         = @organisation_presenter.name
 
-  = render partial: "staff/searches/form"
 
   - if @funds.any? { |fund| policy(fund).create_child? }
     .govuk-grid-row
@@ -52,9 +51,6 @@
         %div.govuk-body
           = t("page_content.organisation.download.third-party-projects.explanation")
         = link_to t("default.button.download_as_xml"), organisation_path(@organisation_presenter, format: :xml, level: :third_party_project), class: "govuk-button"
-
-  - unless @organisation_presenter.service_owner?
-    = render partial: "grouped_programmes", locals: { grouped_programmes: @grouped_programmes }
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds

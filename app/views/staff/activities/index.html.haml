@@ -1,11 +1,15 @@
-= content_for :page_title_prefix, t("document_title.activity.index")
+= content_for :page_title_prefix, t("document_title.activity.index", delivery_partner_name: @organisation.name)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full
       %h1.govuk-heading-xl
-        = t("page_title.activity.index")
+        Activities
+
+      = render partial: "staff/searches/form"
 
   .govuk-grid-row.activity-page
     .govuk-grid-column-full
+      %h2.govuk-heading-m
+        = t("document_title.activity.index", delivery_partner_name: @organisation.name)
       = render partial: "staff/shared/activities/table", locals: { activities: @grouped_activities }

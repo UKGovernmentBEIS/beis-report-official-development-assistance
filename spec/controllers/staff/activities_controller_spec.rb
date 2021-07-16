@@ -80,13 +80,13 @@ RSpec.describe Staff::ActivitiesController do
       let(:user) { create(:delivery_partner_user) }
 
       it "assigns the activities correctly" do
-        get route
+        get route, params: {organisation_id: user.organisation.id}
 
         expect(assigns(:grouped_activities)).to eq(activities)
       end
 
       it "fetches the activities for the user's organisation" do
-        get route
+        get route, params: {organisation_id: user.organisation.id}
 
         expect(Activity::GroupedActivitiesFetcher).to have_received(:new).with(
           user: user,
