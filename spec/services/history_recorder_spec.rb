@@ -28,7 +28,13 @@ RSpec.describe HistoryRecorder do
     let(:report) { double("report") }
 
     it "creates a HistoricalEvent for each change provided" do
-      recorder.call(changes: changes, activity: activity, reference: reference, report: report)
+      recorder.call(
+        changes: changes,
+        activity: activity,
+        trackable: activity,
+        reference: reference,
+        report: report
+      )
 
       expect(HistoricalEvent).to have_received(:create).with(
         user: user,
@@ -60,7 +66,13 @@ RSpec.describe HistoryRecorder do
       end
 
       it "does NOT create a HistoricalEvent for that particular property" do
-        recorder.call(changes: changes, activity: activity, reference: reference, report: report)
+        recorder.call(
+          changes: changes,
+          activity: activity,
+          trackable: activity,
+          reference: reference,
+          report: report
+        )
 
         expect(HistoricalEvent).not_to have_received(:create).with(
           hash_including(
@@ -70,7 +82,13 @@ RSpec.describe HistoryRecorder do
       end
 
       it "does create a HistoricalEvent for other properties in the batch" do
-        recorder.call(changes: changes, activity: activity, reference: reference, report: report)
+        recorder.call(
+          changes: changes,
+          activity: activity,
+          trackable: activity,
+          reference: reference,
+          report: report
+        )
 
         expect(HistoricalEvent).to have_received(:create).with(
           user: user,
