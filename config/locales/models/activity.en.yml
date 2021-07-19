@@ -293,6 +293,12 @@ en:
         transparency_identifier: "Transparency identifier"
         uk_dp_named_contact: UK delivery partner named contact for this activity
   table:
+    caption:
+      activity:
+        new_activities: New activities
+        updated_activities: Updated activities
+        new_activities_report: New activities added in this report
+        updated_activities_report: Activities updated in this report
     header:
       activity:
         identifier: RODA Identifier

@@ -16,18 +16,18 @@
           %h2.govuk-heading-l
             = t("tabs.report.activities")
 
-          %p.govuk-body
-            All activities that are reportable for this report are shown below.
-
-          %p.govuk-body
-            For guidance on adding or updating activities, see the
-            = link_to_new_tab "guidance in the help centre", "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005510061-Understanding-the-Bulk-Upload-Functionality-to-Report-your-Data"
-
           - if policy(@report_presenter).upload?
+            %h3.govuk-heading-m
+              Upload new or changed activity data
             %p.govuk-body
               Large numbers of activities can be added or updated via the activities upload.
 
             %p.govuk-body
-              = link_to t("action.activity.upload.link"), new_report_activity_upload_path(@report_presenter), class: "govuk-link"
+              For guidance on adding or updating activities, see the
+              = link_to_new_tab "guidance in the help centre", "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005510061-Understanding-the-Bulk-Upload-Functionality-to-Report-your-Data"
+            %p.govuk-body
+              = link_to t("action.activity.upload.link"), new_report_activity_upload_path(@report_presenter), class: "govuk-button govuk-button--secondary"
 
-          = render partial: "staff/activity_uploads/activities_table", locals: { action: "related to this report", activities: @activities }
+          = render partial: "staff/activity_uploads/activities_table", locals: { table_caption: t("table.caption.activity.new_activities_report"), activities: @new_activities }
+
+          = render partial: "staff/activity_uploads/activities_table", locals: { table_caption: t("table.caption.activity.updated_activities_report"), activities: @updated_activities }
