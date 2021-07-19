@@ -1,0 +1,10 @@
+%h3.govuk-heading-m
+  Add new activities
+
+- funds.each do |fund|
+  - if policy(fund).create_child?
+    = button_to t("form.button.activity.new_child", name: fund.title),
+        organisation_activity_children_path(organisation, fund),
+        class: "govuk-button"
+
+%hr.govuk-section-break.govuk-section-break--l.govuk-section-break--visible

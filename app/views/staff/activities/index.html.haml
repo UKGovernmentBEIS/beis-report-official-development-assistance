@@ -10,6 +10,10 @@
 
   .govuk-grid-row.activity-page
     .govuk-grid-column-full
-      %h2.govuk-heading-m
+      %h2.govuk-heading-l
         = t("document_title.activity.index", delivery_partner_name: @organisation.name)
+
+      - if current_user.service_owner?
+        = render partial: "staff/shared/activities/add_activity", locals: { funds: @funds, organisation: @organisation }
+
       = render partial: "staff/shared/activities/table", locals: { activities: @grouped_activities }

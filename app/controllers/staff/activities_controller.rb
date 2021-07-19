@@ -11,6 +11,7 @@ class Staff::ActivitiesController < Staff::BaseController
       @delivery_partner_organisations = Organisation.delivery_partners
       render "staff/activities/index_beis"
     else
+      @funds = Activity.fund.order(:title)
       @grouped_activities = Activity::GroupedActivitiesFetcher.new(
         user: current_user,
         organisation: @organisation,
