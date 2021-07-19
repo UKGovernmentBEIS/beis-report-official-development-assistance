@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_08_112144) do
+ActiveRecord::Schema.define(version: 2021_07_19_082105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -186,8 +186,11 @@ ActiveRecord::Schema.define(version: 2021_07_08_112144) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "report_id"
+    t.string "trackable_id"
+    t.string "trackable_type"
     t.index ["activity_id"], name: "index_historical_events_on_activity_id"
     t.index ["report_id"], name: "index_historical_events_on_report_id"
+    t.index ["trackable_type", "trackable_id"], name: "index_historical_events_on_trackable_type_and_trackable_id"
     t.index ["user_id"], name: "index_historical_events_on_user_id"
   end
 

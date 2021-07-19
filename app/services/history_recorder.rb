@@ -13,6 +13,7 @@ class HistoryRecorder
       HistoricalEvent.create(
         user: user,
         activity: activity,
+        trackable: trackable,
         report: report,
         reference: reference,
         value_changed: value_changed,

@@ -25,13 +25,14 @@ RSpec.describe HistoryRecorder do
     let(:user) { double("user") }
     let(:reference) { double("reference") }
     let(:activity) { double("activity") }
+    let(:trackable) { double("trackable") }
     let(:report) { double("report") }
 
     it "creates a HistoricalEvent for each change provided" do
       recorder.call(
         changes: changes,
         activity: activity,
-        trackable: activity,
+        trackable: trackable,
         reference: reference,
         report: report
       )
@@ -39,6 +40,7 @@ RSpec.describe HistoryRecorder do
       expect(HistoricalEvent).to have_received(:create).with(
         user: user,
         activity: activity,
+        trackable: trackable,
         report: report,
         reference: reference,
         value_changed: "title",
@@ -49,6 +51,7 @@ RSpec.describe HistoryRecorder do
       expect(HistoricalEvent).to have_received(:create).with(
         user: user,
         activity: activity,
+        trackable: trackable,
         report: report,
         reference: reference,
         value_changed: "description",
@@ -69,7 +72,7 @@ RSpec.describe HistoryRecorder do
         recorder.call(
           changes: changes,
           activity: activity,
-          trackable: activity,
+          trackable: trackable,
           reference: reference,
           report: report
         )
@@ -85,7 +88,7 @@ RSpec.describe HistoryRecorder do
         recorder.call(
           changes: changes,
           activity: activity,
-          trackable: activity,
+          trackable: trackable,
           reference: reference,
           report: report
         )
@@ -93,6 +96,7 @@ RSpec.describe HistoryRecorder do
         expect(HistoricalEvent).to have_received(:create).with(
           user: user,
           activity: activity,
+          trackable: trackable,
           report: report,
           reference: reference,
           value_changed: "objectives",

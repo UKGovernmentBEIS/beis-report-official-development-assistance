@@ -3,6 +3,8 @@ require "rails_helper"
 RSpec.describe Transaction, type: :model do
   let(:activity) { build(:project_activity) }
 
+  it { should have_many(:historical_events) }
+
   describe "validations" do
     it { should validate_presence_of(:value) }
     it { should validate_presence_of(:financial_year) }
