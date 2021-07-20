@@ -34,7 +34,7 @@ FactoryBot.define do
     form_state { "complete" }
 
     before(:create) do |activity|
-      activity.cache_roda_identifier
+      activity.cache_roda_identifier unless activity.roda_identifier.present?
     end
 
     trait :with_report do
