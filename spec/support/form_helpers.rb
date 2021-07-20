@@ -151,7 +151,7 @@ module FormHelpers
     end
 
     # NB: Since the parent might be a fund, `is_newton_fund?` won't work here
-    if parent&.associated_fund&.roda_identifier_fragment == "NF"
+    if parent&.associated_fund&.roda_identifier == "NF"
       expect(page).to have_content t("form.legend.activity.country_delivery_partners")
       expect(page).to have_content t("form.hint.activity.country_delivery_partners")
       fill_in "activity[country_delivery_partners][]", match: :first, with: country_delivery_partners
@@ -275,7 +275,7 @@ module FormHelpers
     choose("activity[covid19_related]", option: covid19_related)
     click_button t("form.button.activity.submit")
 
-    if parent&.is_gcrf_funded? || parent&.roda_identifier_fragment == "GCRF"
+    if parent&.is_gcrf_funded? || parent&.roda_identifier == "GCRF"
       expect(page).to have_content t("form.legend.activity.gcrf_strategic_area")
       expect(page).to have_content t("form.hint.activity.gcrf_strategic_area")
       check gcrf_strategic_area
@@ -344,7 +344,7 @@ module FormHelpers
     end
 
     # NB: Since the parent might be a fund, `is_newton_fund?` won't work here
-    if parent&.associated_fund&.roda_identifier_fragment == "NF"
+    if parent&.associated_fund&.roda_identifier == "NF"
       expect(page).to have_css(".govuk-summary-list__row.country_delivery_partners")
       expect(page).to have_content country_delivery_partners if country_delivery_partners.present?
     else

@@ -36,7 +36,6 @@ class Activity
 
     def set_roda_identifier
       assign_attributes_for_step("roda_identifier_fragment")
-      activity.cache_roda_identifier!
     end
 
     def set_purpose

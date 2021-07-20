@@ -108,10 +108,11 @@ RSpec.describe ActivityDefaults do
       it "sets the roda identifier" do
         identifier_parts = subject[:roda_identifier].split("-")
 
-        expect(identifier_parts.count).to eq(3)
+        expect(identifier_parts.count).to eq(4)
         expect([
           identifier_parts.first,
           identifier_parts.second,
+          identifier_parts.third,
         ].join("-")).to eq(programme.roda_identifier)
         expect(identifier_parts.third).to match(/[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}/)
       end
@@ -155,11 +156,12 @@ RSpec.describe ActivityDefaults do
       it "sets the roda identifier" do
         identifier_parts = subject[:roda_identifier].split("-")
 
-        expect(identifier_parts.count).to eq(4)
+        expect(identifier_parts.count).to eq(5)
         expect([
           identifier_parts.first,
           identifier_parts.second,
           identifier_parts.third,
+          identifier_parts.fourth,
         ].join("-")).to eq(project.roda_identifier)
         expect(identifier_parts.fourth).to match(/[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}/)
       end

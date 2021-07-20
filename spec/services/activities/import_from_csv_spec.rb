@@ -417,15 +417,9 @@ RSpec.describe Activities::ImportFromCsv do
 
       new_activity = Activity.order(:created_at).last
 
-      expected_roda_identifier = [
-        parent_activity.roda_identifier,
-        new_activity_attributes["RODA ID Fragment"],
-      ].join("-")
-
       expect(new_activity.parent).to eq(parent_activity)
       expect(new_activity.source_fund_code).to eq(1)
       expect(new_activity.level).to eq("project")
-      expect(new_activity.roda_identifier).to eq(expected_roda_identifier)
       expect(new_activity.transparency_identifier).to eq(new_activity_attributes["Transparency identifier"])
       expect(new_activity.title).to eq(new_activity_attributes["Title"])
       expect(new_activity.description).to eq(new_activity_attributes["Description"])

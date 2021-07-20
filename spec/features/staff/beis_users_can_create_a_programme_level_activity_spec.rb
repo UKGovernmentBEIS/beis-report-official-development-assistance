@@ -303,15 +303,14 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
   scenario "the activity saves its identifier as read-only `transparency_identifier`" do
     fund = create(:fund_activity, :newton)
-    identifier = "a-programme"
 
     visit organisation_activities_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: fund.title)
 
-    fill_in_activity_form(roda_identifier_fragment: identifier, level: "programme", parent: fund)
+    fill_in_activity_form(level: "programme", parent: fund)
 
-    activity = Activity.find_by(roda_identifier_fragment: identifier)
-    expect(activity.transparency_identifier).to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{activity.roda_identifier_fragment}")
+    activity = Activity.order("created_at ASC").last
+    expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
   end
 
   scenario "programme creation is tracked with public_activity" do

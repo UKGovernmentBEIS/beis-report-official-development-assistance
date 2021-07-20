@@ -192,7 +192,6 @@ module Activities
           a.form_state = "complete"
         }
         @activity.assign_attributes(@converter.to_h)
-        @activity.cache_roda_identifier
 
         if @activity.sdg_1 || @activity.sdg_2 || @activity.sdg_3
           @activity.sdgs_apply = true

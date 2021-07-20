@@ -34,7 +34,12 @@ FactoryBot.define do
     form_state { "complete" }
 
     before(:create) do |activity|
-      activity.cache_roda_identifier unless activity.roda_identifier.present?
+      if activity.roda_identifier.blank? && activity.parent.present?
+        activity.roda_identifier = Activity::RodaIdentifierGenerator.new(
+          parent_activity: activity.parent,
+          extending_organisation: activity.extending_organisation,
+        ).generate
+      end
     end
 
     trait :with_report do
@@ -51,7 +56,7 @@ FactoryBot.define do
       association :extending_organisation, factory: :beis_organisation
 
       trait :gcrf do
-        roda_identifier_fragment { "GCRF" }
+        roda_identifier { "GCRF" }
         title { "Global Challenges Research Fund (GCRF)" }
         source_fund_code { Fund.by_short_name("GCRF").id }
 
@@ -61,7 +66,7 @@ FactoryBot.define do
       end
 
       trait :newton do
-        roda_identifier_fragment { "NF" }
+        roda_identifier { "NF" }
         title { "Newton Fund" }
         source_fund_code { Fund.by_short_name("NF").id }
 

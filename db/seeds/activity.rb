@@ -81,7 +81,6 @@ Activity.find_or_create_by(third_party_project_params)
   Activity.third_party_project,
 ].each do |set|
   set.each do |activity|
-    activity.cache_roda_identifier! unless activity.roda_identifier.present?
     activity.save!
   end
 end

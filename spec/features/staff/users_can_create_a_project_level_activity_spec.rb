@@ -67,18 +67,17 @@ RSpec.feature "Users can create a project" do
         expect(project.organisation).to eq user.organisation
       end
 
-      xscenario "the activity saves its identifier as read-only `transparency_identifier`" do
+      scenario "the activity saves its identifier as read-only `transparency_identifier`" do
         programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
-        identifier = "a-project"
 
         visit organisation_activity_children_path(programme.extending_organisation, programme)
         click_on t("action.activity.add_child")
 
-        fill_in_activity_form(roda_identifier_fragment: identifier, level: "project", parent: programme)
+        fill_in_activity_form(level: "project", parent: programme)
 
-        activity = Activity.find_by(roda_identifier_fragment: identifier)
-        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{programme.parent.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{activity.roda_identifier_fragment}")
+        activity = Activity.order("created_at ASC").last
+        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
       end
 
       scenario "the activity date shows an error message if an invalid date is entered" do

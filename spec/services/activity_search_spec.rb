@@ -3,7 +3,7 @@ RSpec.describe ActivitySearch do
   let(:alice) { create(:delivery_partner_user) }
   let(:bob) { create(:delivery_partner_user) }
 
-  let!(:fund) { create(:fund_activity) }
+  let!(:fund) { create(:fund_activity, roda_identifier: "ABC") }
   let!(:programme) { create(:programme_activity, parent: fund) }
 
   let!(:alice_project) { create(:project_activity, parent: programme, organisation: alice.organisation, roda_identifier_fragment: "fragment") }
