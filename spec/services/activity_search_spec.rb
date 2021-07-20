@@ -69,6 +69,19 @@ RSpec.describe ActivitySearch do
         expect(activity_search.results).to match_array [alice_third_party_project, bob_project]
       end
     end
+
+    describe "searching by partial RODA identifier" do
+      let(:query) { "roda" }
+
+      before do
+        alice_third_party_project.update!(roda_identifier: "roda-123")
+        bob_project.update!(roda_identifier: "123-roda")
+      end
+
+      it "returns the matching activities" do
+        expect(activity_search.results).to match_array [alice_third_party_project, bob_project]
+      end
+    end
   end
 
   context "for delivery partners" do
@@ -131,6 +144,19 @@ RSpec.describe ActivitySearch do
       end
 
       it "returns only the user's own activities" do
+        expect(activity_search.results).to match_array [alice_third_party_project]
+      end
+    end
+
+    describe "searching by partial RODA identifier" do
+      let(:query) { "roda" }
+
+      before do
+        alice_third_party_project.update!(roda_identifier: "roda-123")
+        bob_project.update!(roda_identifier: "123-roda")
+      end
+
+      it "returns the matching activities" do
         expect(activity_search.results).to match_array [alice_third_party_project]
       end
     end
