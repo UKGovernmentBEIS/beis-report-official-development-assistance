@@ -230,6 +230,7 @@ GEM
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
+    nanoid (2.0.0)
     netrc (0.11.0)
     nio4r (2.5.7)
     nokogiri (1.11.7)
@@ -498,6 +499,7 @@ DEPENDENCIES
   mail-notify
   mini_racer
   monetize
+  nanoid
   omniauth-auth0 (~> 3.0)
   omniauth-rails_csrf_protection (~> 1.0.0)
   parser (~> 2.6.3.0)
