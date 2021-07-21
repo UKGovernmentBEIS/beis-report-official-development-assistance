@@ -6,48 +6,62 @@ RSpec.feature "Users can view reports" do
       authenticate!(user: beis_user)
     end
 
-    scenario "they can view all active reports for all organisations" do
-      first_report = create(:report, :active)
-      second_report = create(:report, :active)
+    def expect_to_see_a_table_of_reports(selector:, reports:, organisations:)
+      within selector do
+        expect(page.find_all("th[scope=rowgroup]").count).to eq(organisations.count)
+        expect(page.find_all("tbody tr").count).to eq(reports.count)
+
+        organisations.each do |organisation|
+          expect_to_see_grouped_rows_of_reports_for_an_organisation(
+            organisation: organisation,
+            expected_reports: reports.select { |r| r.organisation == organisation }
+          )
+        end
+      end
+    end
+
+    def expect_to_see_grouped_rows_of_reports_for_an_organisation(organisation:, expected_reports:)
+      expect(page).to have_selector("th[id='#{organisation.id}']")
+      expect(page).to have_content organisation.name
+
+      expected_reports.each do |report|
+        within "##{report.id}" do
+          expect(page).to have_content report.description
+          expect(page).to have_content report.financial_quarter_and_year
+        end
+      end
+    end
+
+    scenario "they can see a list of all active and historic reports" do
+      organisations = create_list(:delivery_partner_organisation, 2)
+
+      unapproved_reports = [
+        create_list(:report, 2, :active, organisation: organisations.first),
+        create_list(:report, 3, :active, organisation: organisations.last),
+        create_list(:report, 3, :inactive, organisation: organisations.first),
+        create_list(:report, 2, :inactive, organisation: organisations.last),
+      ].flatten
+
+      approved_reports = [
+        create_list(:report, 3, :approved, organisation: organisations.first),
+        create_list(:report, 1, :approved, organisation: organisations.last),
+      ].flatten
 
       visit reports_path
 
       expect(page).to have_content t("page_title.report.index")
-      expect(page).to have_content first_report.description
-      expect(page).to have_content second_report.description
-    end
 
-    scenario "they see the name of the associated organisation in the table" do
-      report = create(:report)
+      expect_to_see_a_table_of_reports(
+        selector: "#current",
+        reports: unapproved_reports,
+        organisations: organisations
+      )
 
-      visit reports_path
-
-      expect(page).to have_content report.organisation.name
-    end
-
-    scenario "they see the financial quarter the of the report" do
-      _report = create(:report, :active, financial_quarter: 4, financial_year: 2019)
-
-      visit reports_path
-
-      expect(page).to have_content "Q4 2019-2020"
-    end
-
-    scenario "they can view all inactive reports for all organisations" do
-      reports = create_list(:report, 2)
-      visit reports_path
-
-      expect(page).to have_content t("page_title.report.index")
-      expect(page).to have_content reports.first.description
-      expect(page).to have_content reports.last.description
-    end
-
-    scenario "they can view submitted reports for all organisations" do
-      reports = create_list(:report, 2)
-      visit reports_path
-
-      expect(page).to have_content reports.first.description
-      expect(page).to have_content reports.last.description
+      expect_to_see_a_table_of_reports(
+        selector: "#historic",
+        reports: approved_reports,
+        organisations: organisations
+      )
     end
 
     scenario "can view a report belonging to any delivery partner" do

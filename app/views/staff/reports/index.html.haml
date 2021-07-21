@@ -10,45 +10,53 @@
     .govuk-grid-column-full.page-actions
       = link_to t("action.report.download.reports"), reports_path(format: :csv), class: "govuk-button govuk-button--secondary govuk-!-margin-left-4"
 
-  .govuk-grid-row.activity-page
-    .govuk-grid-column-full
-      %h2.govuk-heading-m
-        = t("table.title.report.awaiting_changes")
+    .govuk-tabs{ data: { module: "govuk-tabs" } }
+      %h2.govuk-tabs__title
+        = t("page_title.report.index")
+      %ul.govuk-tabs__list
+        %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
+          %a.govuk-tabs__tab{ "href": "#current"}
+            = t("tabs.report.current")
+        %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
+          %a.govuk-tabs__tab{ "href": "#historic"}
+            = t("tabs.report.historic")
+      .govuk-tabs__panel{ id: "current" }
+        = render partial: "staff/shared/reports/table", locals: { grouped_reports: (@grouped_reports.current), type: "current" }
+      .govuk-tabs__panel{ id: "historic" }
+        = render partial: "staff/shared/reports/table", locals: { grouped_reports: (@grouped_reports.historic), type: "historic" }
 
-      = render partial: "staff/shared/reports/table_awaiting_changes", locals: { reports: @awaiting_changes_report_presenters }
-
-  .govuk-grid-row.activity-page
-    .govuk-grid-column-full
-      %h2.govuk-heading-m
-        = t("table.title.report.in_review")
-
-      = render partial: "staff/shared/reports/table_in_review", locals: { reports: @in_review_report_presenters }
-
-  .govuk-grid-row.activity-page
-    .govuk-grid-column-full
-      %h2.govuk-heading-m
-        = t("table.title.report.active")
-
-      = render partial: "staff/shared/reports/table_active", locals: { reports: @active_report_presenters }
-
-  .govuk-grid-row.activity-page
-    .govuk-grid-column-full
-      %h2.govuk-heading-m
-        = t("table.title.report.submitted")
-
-      = render partial: "staff/shared/reports/table_submitted", locals: { reports: @submitted_report_presenters }
-
-  .govuk-grid-row.activity-page
-    .govuk-grid-column-full
-      %h2.govuk-heading-m
-        = t("table.title.report.approved")
-
-      = render partial: "staff/shared/reports/table_approved", locals: { reports: @approved_report_presenters }
-
-  - if current_user.service_owner?
+  - else
     .govuk-grid-row.activity-page
       .govuk-grid-column-full
         %h2.govuk-heading-m
-          = t("table.title.report.inactive")
+          = t("table.title.report.awaiting_changes")
 
-        = render partial: "staff/shared/reports/table_inactive", locals: { reports: @inactive_report_presenters }
+        = render partial: "staff/shared/reports/table_awaiting_changes", locals: { reports: @awaiting_changes_report_presenters }
+
+    .govuk-grid-row.activity-page
+      .govuk-grid-column-full
+        %h2.govuk-heading-m
+          = t("table.title.report.in_review")
+
+        = render partial: "staff/shared/reports/table_in_review", locals: { reports: @in_review_report_presenters }
+
+    .govuk-grid-row.activity-page
+      .govuk-grid-column-full
+        %h2.govuk-heading-m
+          = t("table.title.report.active")
+
+        = render partial: "staff/shared/reports/table_active", locals: { reports: @active_report_presenters }
+
+    .govuk-grid-row.activity-page
+      .govuk-grid-column-full
+        %h2.govuk-heading-m
+          = t("table.title.report.submitted")
+
+        = render partial: "staff/shared/reports/table_submitted", locals: { reports: @submitted_report_presenters }
+
+    .govuk-grid-row.activity-page
+      .govuk-grid-column-full
+        %h2.govuk-heading-m
+          = t("table.title.report.approved")
+
+        = render partial: "staff/shared/reports/table_approved", locals: { reports: @approved_report_presenters }
