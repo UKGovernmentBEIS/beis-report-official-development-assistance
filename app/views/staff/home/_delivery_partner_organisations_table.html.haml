@@ -6,12 +6,13 @@
       %th.govuk-table__header{scope: "col"}
         = t("table.header.organisation.name")
       %th.govuk-table__header{scope: "col"}
-        = t("table.header.default.action")
+        = t("table.header.default.actions")
   %tbody.govuk-table__body
     - @delivery_partner_organisations.each do |delivery_partner_organisation|
       %tr.govuk-table__row
         %td.govuk-table__cell
           = delivery_partner_organisation.name
         %td.govuk-table__cell
-          = a11y_action_link "View details ", organisation_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link", "govuk-link--no-visited-state"]
-          = a11y_action_link "View activities", organisation_activities_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link", "govuk-link--no-visited-state govuk-!-margin-left-9"]
+          = a11y_action_link "View details ", organisation_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state"]
+          = a11y_action_link "View activities", organisation_activities_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-9"]
+          = a11y_action_link "View exports", exports_organisation_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-9"]

@@ -14,7 +14,7 @@
             %th.govuk-table__header{scope: "col"}
               = t("table.header.organisation.name")
             %th.govuk-table__header{scope: "col"}
-              = t("table.header.default.action")
+              = t("table.header.default.actions")
 
         %tbody.govuk-table__body
           - @organisations.each do |organisation|
@@ -22,4 +22,4 @@
               %td.govuk-table__cell
                 = organisation.name
               %td.govuk-table__cell
-                = a11y_action_link("View exports", exports_organisation_path(organisation), "for #{organisation.name}")
+                = a11y_action_link("View exports", exports_organisation_path(organisation), "for #{organisation.name}", ["govuk-link--no-visited-state"])
