@@ -27,7 +27,13 @@ RSpec.feature "Users can view an activity's 'Change History' within a tab" do
     def setup_historical_events(report:)
       HistoryRecorder
         .new(user: user)
-        .call(changes: changes, activity: activity, reference: reference, report: report)
+        .call(
+          changes: changes,
+          activity: activity,
+          trackable: activity,
+          reference: reference,
+          report: report
+        )
     end
 
     def expect_to_see_change_history_with_reference(reference:, events:)

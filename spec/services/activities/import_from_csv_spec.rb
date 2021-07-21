@@ -974,6 +974,7 @@ RSpec.describe Activities::ImportFromCsv do
           reference: "Import from CSV",
           changes: expected_changes,
           activity: existing_activity,
+          trackable: existing_activity,
           report: report
         )
       end

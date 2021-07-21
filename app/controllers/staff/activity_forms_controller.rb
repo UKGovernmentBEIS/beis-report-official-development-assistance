@@ -115,6 +115,7 @@ class Staff::ActivityFormsController < Staff::BaseController
         changes: @activity.changes,
         reference: "Update to Activity #{step}",
         activity: @activity,
+        trackable: @activity,
         report: Report.editable_for_activity(@activity)
       )
   end

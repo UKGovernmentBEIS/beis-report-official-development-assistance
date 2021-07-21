@@ -151,6 +151,7 @@ module Activities
             changes: changes,
             reference: "Import from CSV",
             activity: @activity,
+            trackable: @activity,
             report: report
           )
       end

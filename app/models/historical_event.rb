@@ -1,5 +1,6 @@
 class HistoricalEvent < ApplicationRecord
   belongs_to :user
+  belongs_to :trackable, polymorphic: true
   belongs_to :activity
   belongs_to :report, optional: true
 

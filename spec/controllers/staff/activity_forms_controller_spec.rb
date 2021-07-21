@@ -124,6 +124,7 @@ RSpec.describe Staff::ActivityFormsController do
           changes: expected_changes,
           reference: "Update to Activity purpose",
           activity: activity,
+          trackable: activity,
           report: report
         )
       end

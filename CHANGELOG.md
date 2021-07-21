@@ -753,6 +753,7 @@
 - Improvements to navigation and to url scheme for activities
 - Add new programme (level B) activities buttons are now on the delivery partner
   activities pages
+- Track changes to 'Actual' financials in activity's 'Change history'
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...HEAD
 [release-62]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-61...release-62
