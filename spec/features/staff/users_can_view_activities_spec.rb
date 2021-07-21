@@ -14,8 +14,8 @@ RSpec.feature "Users can view activities" do
       authenticate!(user: user)
     end
 
-    scenario "they can see and navigate current activities", js: true do
-      visit activities_path
+    scenario "they can see and navigate current delivery partner activities", js: true do
+      visit activities_path(organisation_id: organisation.id)
 
       expect(page).to have_content t("page_title.activity.index")
 
@@ -57,11 +57,19 @@ RSpec.feature "Users can view activities" do
     end
 
     scenario "they can see historic activities" do
-      visit historic_activities_path
-
-      expect(page).to have_content t("page_title.activity.index")
+      visit historic_organisation_activities_path(historic_programme.extending_organisation_id)
 
       expect(page).to have_content(historic_programme.title)
+    end
+
+    scenario "does not see activities which belong to a different organisation" do
+      other_programme = create(:programme_activity, extending_organisation: create(:delivery_partner_organisation))
+      other_project = create(:project_activity, organisation: create(:delivery_partner_organisation))
+
+      visit activities_path(organisation_id: organisation.id)
+
+      expect(page).to_not have_content(other_programme.title)
+      expect(page).to_not have_content(other_project.title)
     end
   end
 
@@ -69,22 +77,16 @@ RSpec.feature "Users can view activities" do
     include_examples "shows activities", {
       user_type: :beis_user,
     }
+    scenario "cannot add a child activity to a programme (level C) activity" do
+      delivery_partner_organisation = create(:delivery_partner_organisation)
+      gcrf = create(:fund_activity, :gcrf)
+      programme = create(:programme_activity, parent: gcrf, extending_organisation: delivery_partner_organisation)
+      _report = create(:report, :active, fund: gcrf, organisation: delivery_partner_organisation)
 
-    scenario "only delivery partners are listed" do
-      delivery_partners = create_list(:delivery_partner_organisation, 3)
-      matched_effort_provider = create(:matched_effort_provider)
-      external_income_provider = create(:external_income_provider)
+      visit organisation_activity_path(programme.organisation, programme)
+      click_on t("tabs.activity.children")
 
-      visit activities_path(organisation_id: user.organisation)
-
-      within "select#organisation_id" do
-        delivery_partners.each do |delivery_partner|
-          expect(page).to have_content(delivery_partner.name)
-        end
-
-        expect(page).to_not have_content(matched_effort_provider.name)
-        expect(page).to_not have_content(external_income_provider.name)
-      end
+      expect(page).to_not have_link(t("action.activity.add_child"), exact: true)
     end
   end
 

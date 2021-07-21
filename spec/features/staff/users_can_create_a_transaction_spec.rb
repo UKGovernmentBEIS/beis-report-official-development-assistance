@@ -1,12 +1,4 @@
 RSpec.feature "Users can create a transaction" do
-  context "when the user is not logged in" do
-    it "redirects the user to the root path" do
-      activity = create(:programme_activity)
-      visit organisation_activity_path(activity.organisation, activity)
-      expect(current_path).to eq(root_path)
-    end
-  end
-
   context "when the user belongs to BEIS" do
     before { authenticate!(user: user) }
     let(:user) { create(:beis_user) }
@@ -14,9 +6,7 @@ RSpec.feature "Users can create a transaction" do
     scenario "the form only shows relevant fields" do
       activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-      visit activities_path
-
-      click_on(activity.title)
+      visit organisation_activity_path(activity.organisation, activity)
 
       click_on(t("page_content.transactions.button.create"))
 
@@ -28,9 +18,7 @@ RSpec.feature "Users can create a transaction" do
     scenario "successfully creates a transaction on an activity" do
       activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-      visit activities_path
-
-      click_on(activity.title)
+      visit organisation_activity_path(activity.organisation, activity)
 
       click_on(t("page_content.transactions.button.create"))
 
@@ -43,9 +31,7 @@ RSpec.feature "Users can create a transaction" do
       activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
       PublicActivity.with_tracking do
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
 
@@ -63,9 +49,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "validations" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
         click_on(t("default.button.submit"))
@@ -79,9 +63,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "validations" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
         fill_in "transaction[value]", with: "234r.67"
@@ -96,9 +78,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "Value must be maximum 99,999,999,999" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
 
@@ -113,9 +93,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "Value cannot be 0" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
 
@@ -130,9 +108,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "Value can be negative" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
 
@@ -149,9 +125,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the value includes a pound sign" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
 
@@ -163,9 +137,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the value includes alphabetical characters" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
 
@@ -177,9 +149,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the value includes decimal places" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
 
@@ -191,9 +161,7 @@ RSpec.feature "Users can create a transaction" do
       scenario "When the value includes commas" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
 
@@ -207,9 +175,7 @@ RSpec.feature "Users can create a transaction" do
       it "shows an error when the organisation type is blank, but not the name" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
 
@@ -224,9 +190,7 @@ RSpec.feature "Users can create a transaction" do
       it "shows an error when the organisation name is blank, but not the type" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
 
@@ -241,9 +205,7 @@ RSpec.feature "Users can create a transaction" do
       it "shows errors if the organisation reference is present, but not the name or reference" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.transactions.button.create"))
 
@@ -260,9 +222,7 @@ RSpec.feature "Users can create a transaction" do
     scenario "they can cancel their transaction" do
       activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
-      visit activities_path
-
-      click_on(activity.title)
+      visit organisation_activity_path(activity.organisation, activity)
 
       click_on(t("page_content.transactions.button.create"))
 

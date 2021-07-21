@@ -1,14 +1,13 @@
 RSpec.feature "Users can create a project" do
-  context "when the user does NOT belong to BEIS" do
+  context "when they are a delivery parther" do
     let(:user) { create(:delivery_partner_user) }
     before { authenticate!(user: user) }
 
     context "when viewing a programme" do
       scenario "a new project cannot be added to the programme when a report does not exist" do
-        programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
+        programme_activity = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
 
-        visit activities_path
-        click_on programme.title
+        visit organisation_activity_path(programme_activity.organisation, programme_activity)
         click_on t("tabs.activity.children")
 
         expect(page).to have_no_button(t("action.activity.add_child"))
@@ -35,6 +34,21 @@ RSpec.feature "Users can create a project" do
         # our new direct association between activity and report
         expect(project.originating_report).to eq(report)
         expect(report.new_activities).to eq([project])
+      end
+
+      scenario "can create a new child activity for a given programme" do
+        gcrf = create(:fund_activity, :gcrf)
+        programme = create(:programme_activity, parent: gcrf, extending_organisation: user.organisation)
+        _report = create(:report, :active, fund: gcrf, organisation: user.organisation)
+
+        visit organisation_activity_path(programme.organisation, programme)
+
+        click_link t("tabs.activity.children")
+        click_button t("action.activity.add_child")
+        fill_in "activity[delivery_partner_identifier]", with: "foo"
+        click_button t("form.button.activity.submit")
+
+        expect(page).to have_content t("form.label.activity.roda_identifier_fragment", level: "programme")
       end
 
       scenario "a new project can be added when the program has no RODA identifier" do

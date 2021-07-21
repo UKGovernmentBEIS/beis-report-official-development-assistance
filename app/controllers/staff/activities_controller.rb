@@ -7,11 +7,17 @@ class Staff::ActivitiesController < Staff::BaseController
 
   def index
     @organisation = Organisation.find(organisation_id)
-    @grouped_activities = Activity::GroupedActivitiesFetcher.new(
-      user: current_user,
-      organisation: @organisation,
-      scope: :current
-    ).call
+    if @organisation.service_owner?
+      @delivery_partner_organisations = Organisation.delivery_partners
+      render "staff/activities/index_beis"
+    else
+      @funds = Activity.fund.order(:title)
+      @grouped_activities = Activity::GroupedActivitiesFetcher.new(
+        user: current_user,
+        organisation: @organisation,
+        scope: :current
+      ).call
+    end
   end
 
   def show
@@ -38,11 +44,16 @@ class Staff::ActivitiesController < Staff::BaseController
 
   def historic
     @organisation = Organisation.find(organisation_id)
-    @grouped_activities = Activity::GroupedActivitiesFetcher.new(
-      user: current_user,
-      organisation: @organisation,
-      scope: :historic
-    ).call
+    if @organisation.service_owner?
+      @delivery_partner_organisations = Organisation.delivery_partners
+      render "staff/activities/index_beis"
+    else
+      @grouped_activities = Activity::GroupedActivitiesFetcher.new(
+        user: current_user,
+        organisation: @organisation,
+        scope: :historic
+      ).call
+    end
   end
 
   private

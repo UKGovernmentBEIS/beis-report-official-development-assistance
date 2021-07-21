@@ -1,29 +1,28 @@
-= content_for :page_title_prefix, t("document_title.activity.index")
+= content_for :page_title_prefix, t("document_title.activity.index", delivery_partner_name: @organisation.name)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full
       %h1.govuk-heading-xl
-        = t("page_title.activity.index")
+        Activities
 
-  - if current_user.service_owner?
-    = render partial: "staff/shared/activities/filter", locals: { organisation_id: @organisation.id }
+      = render partial: "staff/searches/form"
 
   .govuk-grid-row
     .govuk-grid-column-full
-      .govuk-tabs
-        %h2.govuk-tabs__title
-          Activities
+      %h2.govuk-heading-l
+        = t("document_title.activity.index", delivery_partner_name: @organisation.name)
 
+      .govuk-tabs
         %ul.govuk-tabs__list
           %li.govuk-tabs__list-item
             = link_to t("tabs.activities.current"),
-              activities_path(organisation_id: @organisation.id),
+              organisation_activities_path(@organisation),
               { class: "govuk-tabs__tab", role: "tab", aria: { controls: "current", selected: false } }
 
           %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
             = link_to t("tabs.activities.historic"),
-              historic_activities_path(organisation_id: @organisation.id),
+              historic_organisation_activities_path(@organisation),
               { class: "govuk-tabs__tab", role: "tab", aria: { controls: "historic", selected: true } }
 
         .govuk-tabs__panel

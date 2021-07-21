@@ -7,8 +7,8 @@ RSpec.describe "Users can create a forecast" do
     scenario "they can add a forecast" do
       programme = create(:programme_activity, extending_organisation: user.organisation)
       project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
-      visit activities_path
-      click_on project.title
+
+      visit organisation_activity_path(project.organisation, project)
 
       expect(page).to have_content t("page_content.activity.forecasts")
 
@@ -175,12 +175,7 @@ RSpec.describe "Users can create a forecast" do
       programme = create(:programme_activity)
       project = create(:project_activity, parent: programme)
 
-      visit activities_path
-      within "#activity-#{programme.id}" do
-        click_on t("table.body.activity.view_activity")
-      end
-      click_on t("tabs.activity.children")
-      click_on project.title
+      visit organisation_activity_path(project.organisation, project)
 
       expect(page).not_to have_link t("page_content.forecasts.button.create"), href: new_activity_forecast_path(project)
 

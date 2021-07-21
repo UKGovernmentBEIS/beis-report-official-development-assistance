@@ -742,10 +742,17 @@
 
 ## [unreleased]
 
-- New activities know which was their 'originating' report, and reports can list 'new' activities originating from their financial period
+- New activities know which was their 'originating' report, and reports can list
+  'new' activities originating from their financial period
 - Newly updated activities are shown in a report.
 - Newly added activities are shown in a report.
 - Exports page layout is more accessible
+- New activities know which was their 'originating' report, and reports can list
+  'new' activities originating from their financial period
+- BEIS users navigate activities by delivery partners
+- Improvements to navigation and to url scheme for activities
+- Add new programme (level B) activities buttons are now on the delivery partner
+  activities pages
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...HEAD
 [release-62]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-61...release-62

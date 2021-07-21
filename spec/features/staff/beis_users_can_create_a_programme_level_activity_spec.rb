@@ -3,7 +3,18 @@ RSpec.feature "BEIS users can create a programme level activity" do
   let(:delivery_partner) { create(:delivery_partner_organisation) }
   before { authenticate!(user: user) }
 
-  context "via a delivery partner's organisation page" do
+  context "with a new fund and delivery partner" do
+    scenario "they see the button to add a new programme (level B activity)" do
+      fund = create(:fund_activity, :gcrf)
+      delivery_partner_organisation = create(:delivery_partner_organisation)
+
+      visit organisation_activities_path(delivery_partner_organisation)
+
+      expect(page).to have_button(t("form.button.activity.new_child", name: fund.title))
+    end
+  end
+
+  context "via a delivery partner's activities page" do
     before do
       create(:fund_activity, :gcrf)
       create(:fund_activity, :newton)
@@ -12,11 +23,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     Activity.fund.each do |fund|
       context "with #{fund.title} as the funding source" do
         scenario "reaches the 'roda_identifier' form step, with a newly created programme-level activity" do
-          visit organisations_path
-
-          within ".govuk-table__row##{delivery_partner.id}" do
-            click_on t("default.link.show")
-          end
+          visit organisation_activities_path(delivery_partner)
 
           click_on t("form.button.activity.new_child", name: fund.title)
 
@@ -32,28 +39,13 @@ RSpec.feature "BEIS users can create a programme level activity" do
     end
   end
 
-  context "via the service_owner's organisation page" do
-    before do
-      create(:fund_activity, :gcrf)
-      create(:fund_activity, :newton)
-    end
-
-    it "has no links to create new child activities" do
-      visit organisation_path(user.organisation)
-
-      Activity.fund.each do |fund|
-        expect(page).to have_no_content(t("form.button.activity.new_child", name: fund.title))
-      end
-    end
-  end
-
   context "validations" do
     scenario "validation errors work as expected" do
-      parent = create(:fund_activity, :gcrf)
+      fund = create(:fund_activity, :gcrf)
       identifier = "foo"
 
-      visit organisation_path(delivery_partner)
-      click_on t("form.button.activity.new_child", name: parent.title)
+      visit organisation_activities_path(delivery_partner)
+      click_on t("form.button.activity.new_child", name: fund.title)
 
       # Don't provide an identifier
       click_button t("form.button.activity.submit")
@@ -117,7 +109,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       choose("activity[programme_status]", option: "spend_in_progress")
       click_button t("form.button.activity.submit")
 
-      if parent.roda_identifier_compound.include?("NF")
+      if fund.roda_identifier_compound.include?("NF")
         expect(page).to have_content t("form.legend.activity.country_delivery_partners")
 
         # Don't provide a country delivery partner
@@ -265,7 +257,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     scenario "failing to select a country shows an error message" do
       fund = create(:fund_activity, :gcrf)
 
-      visit organisation_path(delivery_partner)
+      visit organisation_activities_path(delivery_partner)
       click_on t("form.button.activity.new_child", name: fund.title)
 
       fill_in "activity[delivery_partner_identifier]", with: "no-country-selected"
@@ -298,7 +290,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     fund = create(:fund_activity, :newton)
     identifier = "a-fund-has-an-accountable-organisation"
 
-    visit organisation_path(delivery_partner)
+    visit organisation_activities_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: fund.title)
 
     fill_in_activity_form(delivery_partner_identifier: identifier, level: "programme", parent: fund)
@@ -313,7 +305,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     fund = create(:fund_activity, :newton)
     identifier = "a-programme"
 
-    visit organisation_path(delivery_partner)
+    visit organisation_activities_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: fund.title)
 
     fill_in_activity_form(roda_identifier_fragment: identifier, level: "programme", parent: fund)
@@ -326,7 +318,8 @@ RSpec.feature "BEIS users can create a programme level activity" do
     fund = create(:fund_activity, :newton)
 
     PublicActivity.with_tracking do
-      visit organisation_path(delivery_partner)
+      visit organisation_activities_path(delivery_partner)
+
       click_on t("form.button.activity.new_child", name: fund.title)
 
       fill_in_activity_form(delivery_partner_identifier: "my-unique-identifier", level: "programme", parent: fund)
@@ -343,7 +336,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     newton_fund = create(:fund_activity, :newton, organisation: user.organisation)
     identifier = "newton-prog"
 
-    visit organisation_path(delivery_partner)
+    visit organisation_activities_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: newton_fund.title)
 
     fill_in_activity_form(level: "programme", roda_identifier_fragment: identifier, parent: newton_fund)
@@ -357,7 +350,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     other_fund = create(:fund_activity, :gcrf, organisation: user.organisation)
     identifier = "other-prog"
 
-    visit organisation_path(delivery_partner)
+    visit organisation_activities_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: other_fund.title)
 
     fill_in_activity_form(level: "programme", roda_identifier_fragment: identifier, parent: other_fund)
@@ -367,11 +360,10 @@ RSpec.feature "BEIS users can create a programme level activity" do
     expect(activity.country_delivery_partners).to be_nil
   end
 
-  scenario "a new programme requires specific fields when the programme is Newton-funded" do
+  scenario "a new programme requires specific fields when it is Newton-funded" do
     newton_fund = create(:fund_activity, :newton)
-    # _report = create(:report, state: :active, organisation: user.organisation, fund: newton_fund)
 
-    visit organisation_path(delivery_partner)
+    visit organisation_activities_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: newton_fund.title)
 
     fill_in_activity_form(level: "programme", parent: newton_fund)

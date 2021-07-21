@@ -2,8 +2,7 @@
   .govuk-grid-row
     .govuk-grid-column-full
       %h2.govuk-heading-m
-        = t("page_content.organisation.programmes")
-
+        Programe (level B) activities
       - grouped_programmes.each do |fund, activities|
         - if activities.any?
           %table{id: fund.id, class: "govuk-table"}
