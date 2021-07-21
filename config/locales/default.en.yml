@@ -29,6 +29,7 @@ en:
     header:
       default:
         action: Action
+        actions: Actions
   activerecord:
     errors:
       format: "%{attribute} %{message}"
