@@ -252,7 +252,7 @@ RSpec.feature "Users can view reports" do
         expect(page.response_headers["Content-Type"]).to include("text/csv")
         header = page.response_headers["Content-Disposition"]
         expect(header).to match(/#{ERB::Util.url_encode("FQ4 2019-2020")}/)
-        expect(header).to match(/#{ERB::Util.url_encode(report.fund.roda_identifier_fragment)}/)
+        expect(header).to match(/#{ERB::Util.url_encode(report.fund.roda_identifier)}/)
       end
     end
 

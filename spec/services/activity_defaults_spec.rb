@@ -20,12 +20,14 @@ RSpec.describe ActivityDefaults do
   end
 
   describe "#call" do
-    subject do
+    let(:activity_defaults) do
       described_class.new(
         parent_activity: parent_activity,
         delivery_partner_organisation: delivery_partner_organisation
-      ).call
+      )
     end
+
+    subject { activity_defaults.call }
 
     context "parent is a fund" do
       let(:parent_activity) { fund }
@@ -56,6 +58,19 @@ RSpec.describe ActivityDefaults do
 
       it "sets the originating_report id to nil, as level A does not report" do
         expect(subject[:origination_report_id]).to be_nil
+      end
+
+      it "sets the roda identifier" do
+        identifier_parts = subject[:roda_identifier].split("-")
+
+        expect(identifier_parts.count).to eq(3)
+        expect(identifier_parts.first).to eq(fund.roda_identifier)
+        expect(identifier_parts.second).to eq(delivery_partner_organisation.beis_organisation_reference)
+        expect(identifier_parts.third).to match(/[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}/)
+      end
+
+      it "sets the transparency identifier" do
+        expect(subject[:transparency_identifier]).to eq("#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}")
       end
     end
 
@@ -89,6 +104,22 @@ RSpec.describe ActivityDefaults do
       it "sets the originating_report id to nil, as level B does not report" do
         expect(subject[:origination_report_id]).to be_nil
       end
+
+      it "sets the roda identifier" do
+        identifier_parts = subject[:roda_identifier].split("-")
+
+        expect(identifier_parts.count).to eq(4)
+        expect([
+          identifier_parts.first,
+          identifier_parts.second,
+          identifier_parts.third,
+        ].join("-")).to eq(programme.roda_identifier)
+        expect(identifier_parts.third).to match(/[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}/)
+      end
+
+      it "sets the transparency identifier" do
+        expect(subject[:transparency_identifier]).to eq("#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}")
+      end
     end
 
     context "parent is a project" do
@@ -120,6 +151,39 @@ RSpec.describe ActivityDefaults do
 
       it "sets the originating_report id to the report for the current financial period" do
         expect(subject[:originating_report_id]).to eq(current_report.id)
+      end
+
+      it "sets the roda identifier" do
+        identifier_parts = subject[:roda_identifier].split("-")
+
+        expect(identifier_parts.count).to eq(5)
+        expect([
+          identifier_parts.first,
+          identifier_parts.second,
+          identifier_parts.third,
+          identifier_parts.fourth,
+        ].join("-")).to eq(project.roda_identifier)
+        expect(identifier_parts.fourth).to match(/[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}/)
+      end
+
+      it "sets the transparency identifier" do
+        expect(subject[:transparency_identifier]).to eq("#{Organisation::SERVICE_OWNER_IATI_REFERENCE}-#{subject[:roda_identifier]}")
+      end
+    end
+
+    context "when an activity already exists with the same RODA identifier" do
+      let(:parent_activity) { project }
+
+      let(:existing_roda_identifier) { "ABC-1234" }
+      let(:new_roda_identifier) { "ABC-5678" }
+      let!(:existing_activity) { create(:programme_activity, roda_identifier: existing_roda_identifier) }
+
+      before do
+        allow(activity_defaults).to receive(:generate_roda_identifier).and_return(existing_roda_identifier, new_roda_identifier)
+      end
+
+      it "generates a unique roda identifier" do
+        expect(subject[:roda_identifier]).to eq(new_roda_identifier)
       end
     end
   end

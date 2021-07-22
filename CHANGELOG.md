@@ -754,6 +754,7 @@
 - Add new programme (level B) activities buttons are now on the delivery partner
   activities pages
 - Track changes to 'Actual' financials in activity's 'Change history'
+- Create and populate an activity's RODA identifier automatically
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...HEAD
 [release-62]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-61...release-62

@@ -11,7 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2021_07_19_082105) do
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -44,8 +43,7 @@ ActiveRecord::Schema.define(version: 2021_07_19_082105) do
     t.date "call_open_date"
     t.date "call_close_date"
     t.string "intended_beneficiaries", array: true
-    t.string "roda_identifier_fragment"
-    t.string "roda_identifier_compound"
+    t.string "roda_identifier"
     t.boolean "requires_additional_benefitting_countries"
     t.string "gdi"
     t.integer "total_applications"
@@ -83,7 +81,7 @@ ActiveRecord::Schema.define(version: 2021_07_19_082105) do
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
     t.index ["originating_report_id"], name: "index_activities_on_originating_report_id"
     t.index ["parent_id"], name: "index_activities_on_parent_id"
-    t.index ["roda_identifier_compound"], name: "index_activities_on_roda_identifier_compound"
+    t.index ["roda_identifier"], name: "index_activities_on_roda_identifier"
     t.index ["transparency_identifier"], name: "index_activities_on_transparency_identifier", unique: true
   end
 

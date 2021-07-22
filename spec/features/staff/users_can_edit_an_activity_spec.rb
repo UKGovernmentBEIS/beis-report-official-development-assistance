@@ -343,26 +343,8 @@ RSpec.feature "Users can edit an activity" do
         end
       end
 
-      context "when the project does not have a RODA identifier" do
-        let(:fund) { create(:fund_activity, roda_identifier_fragment: "AAA") }
-        let(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "BBB") }
-
-        scenario "a RODA identifier can be added" do
-          activity = create(:project_activity, organisation: user.organisation, parent: programme, roda_identifier_fragment: nil)
-          _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
-          visit organisation_activity_details_path(activity.organisation, activity)
-
-          within(".roda_identifier") { click_on(t("default.link.add")) }
-          fill_in "activity[roda_identifier_fragment]", with: "CCC"
-          click_button t("form.button.activity.submit")
-
-          expect(page).to have_content(t("action.project.update.success"))
-          expect(activity.reload.roda_identifier).to eq("AAA-BBB-CCC")
-        end
-      end
-
       context "when the project has a RODA identifier" do
-        let(:activity) { create(:project_activity, organisation: user.organisation, roda_identifier_fragment: "A-RODA-ID") }
+        let(:activity) { create(:project_activity, organisation: user.organisation, roda_identifier: "A-RODA-ID") }
 
         scenario "the RODA identifier cannot be edited" do
           visit organisation_activity_details_path(activity.organisation, activity)
@@ -375,10 +357,10 @@ RSpec.feature "Users can edit an activity" do
       end
 
       context "when the project's parent does not have a RODA identifier" do
-        let(:activity) { create(:project_activity, organisation: user.organisation, roda_identifier_fragment: nil) }
+        let(:activity) { create(:project_activity, organisation: user.organisation, roda_identifier: nil) }
 
         before do
-          activity.parent.update!(roda_identifier_fragment: nil)
+          activity.parent.update!(roda_identifier: nil)
         end
 
         scenario "a RODA identifier cannot be added" do

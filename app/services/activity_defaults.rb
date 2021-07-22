@@ -17,6 +17,8 @@ class ActivityDefaults
       parent_id: parent_activity.id,
       level: level,
       source_fund_code: source_fund_code,
+      roda_identifier: roda_identifier,
+      transparency_identifier: transparency_identifier,
 
       organisation_id: organisation.id,
       extending_organisation_id: extending_organisation.id,
@@ -60,6 +62,27 @@ class ActivityDefaults
 
   def form_state
     Activity::FORM_STEPS.first.to_s
+  end
+
+  def roda_identifier
+    @roda_identifier ||= loop {
+      roda_identifier = generate_roda_identifier
+      break roda_identifier unless Activity.exists?(roda_identifier: roda_identifier)
+    }
+  end
+
+  def generate_roda_identifier
+    Activity::RodaIdentifierGenerator.new(
+      parent_activity: parent_activity,
+      extending_organisation: extending_organisation,
+    ).generate
+  end
+
+  def transparency_identifier
+    [
+      Organisation::SERVICE_OWNER_IATI_REFERENCE,
+      roda_identifier,
+    ].join("-")
   end
 
   def check_params!

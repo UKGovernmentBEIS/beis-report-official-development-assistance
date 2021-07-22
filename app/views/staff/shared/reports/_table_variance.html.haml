@@ -20,7 +20,7 @@
         - if activity.project?
           %td.govuk-table__cell= activity.roda_identifier
         - else
-          %td.govuk-table__cell.level-d= activity.roda_identifier_fragment
+          %td.govuk-table__cell.level-d= activity.roda_identifier
 
         %td.govuk-table__cell= activity.forecasted_total_for_report_financial_quarter(report: @report)
         %td.govuk-table__cell= activity.actual_total_for_report_financial_quarter(report: @report)

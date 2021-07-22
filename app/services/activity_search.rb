@@ -10,17 +10,22 @@ class ActivitySearch
 
   def results
     search_fields = [
-      :roda_identifier_compound,
-      :roda_identifier_fragment,
+      :roda_identifier,
       :delivery_partner_identifier,
       :beis_identifier,
       :previous_identifier,
     ]
 
-    search_fields
+    result = search_fields
       .map { |field| activities.where("LOWER(#{field}) = ?", @query.downcase) }
       .reduce { |a, b| a.or(b) }
       .or(activities.where("LOWER(title) LIKE ?", "%#{@query.downcase}%"))
+
+    if result.blank?
+      result = activities.where("LOWER(roda_identifier) LIKE ?", "%#{@query.downcase}%")
+    end
+
+    result
   end
 
   private

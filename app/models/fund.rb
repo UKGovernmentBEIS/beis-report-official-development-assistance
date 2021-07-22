@@ -34,7 +34,7 @@ class Fund
     def from_activity(activity)
       raise InvalidActivity unless activity.fund?
 
-      by_short_name(activity.roda_identifier_fragment)
+      by_short_name(activity.roda_identifier)
     end
 
     def by_short_name(short_name)

@@ -1,7 +1,0 @@
-= render layout: "wrapper" do |f|
-  - if f.object.parent
-    = f.govuk_text_field :roda_identifier_fragment,
-      label: { tag: 'h1', size: 'xl' },
-      hint: { text: t("form.hint.activity.roda_identifier_fragment_with_parent_html", identifier: f.object.parent.roda_identifier) }
-  - else
-    = f.govuk_text_field :roda_identifier_fragment, label: { tag: 'h1', size: 'xl' }

@@ -3,7 +3,6 @@ module FormHelpers
   def fill_in_activity_form(
     level:,
     delivery_partner_identifier: "A-Unique-Identifier",
-    roda_identifier_fragment: "RODA-ID",
     title: "My Aid Activity",
     description: Faker::Lorem.paragraph,
     objectives: Faker::Lorem.paragraph,
@@ -63,13 +62,6 @@ module FormHelpers
     expect(page).to have_content t("form.hint.activity.delivery_partner_identifier")
     fill_in "activity[delivery_partner_identifier]", with: delivery_partner_identifier
     click_button t("form.button.activity.submit")
-
-    if parent.blank? || parent.roda_identifier_fragment.present?
-      expect(page).to have_content t("form.label.activity.roda_identifier_fragment")
-      expect(page).to have_content t("form.hint.activity.roda_identifier_fragment")
-      fill_in "activity[roda_identifier_fragment]", with: roda_identifier_fragment
-      click_button t("form.button.activity.submit")
-    end
 
     expect(page).to have_content t("form.legend.activity.purpose", level: activity_level(level))
     expect(page).to have_content custom_capitalisation(t("form.label.activity.title", level: activity_level(level)))
@@ -151,7 +143,7 @@ module FormHelpers
     end
 
     # NB: Since the parent might be a fund, `is_newton_fund?` won't work here
-    if parent&.associated_fund&.roda_identifier_fragment == "NF"
+    if parent&.associated_fund&.roda_identifier == "NF"
       expect(page).to have_content t("form.legend.activity.country_delivery_partners")
       expect(page).to have_content t("form.hint.activity.country_delivery_partners")
       fill_in "activity[country_delivery_partners][]", match: :first, with: country_delivery_partners
@@ -275,7 +267,7 @@ module FormHelpers
     choose("activity[covid19_related]", option: covid19_related)
     click_button t("form.button.activity.submit")
 
-    if parent&.is_gcrf_funded? || parent&.roda_identifier_fragment == "GCRF"
+    if parent&.is_gcrf_funded? || parent&.roda_identifier == "GCRF"
       expect(page).to have_content t("form.legend.activity.gcrf_strategic_area")
       expect(page).to have_content t("form.hint.activity.gcrf_strategic_area")
       check gcrf_strategic_area
@@ -344,7 +336,7 @@ module FormHelpers
     end
 
     # NB: Since the parent might be a fund, `is_newton_fund?` won't work here
-    if parent&.associated_fund&.roda_identifier_fragment == "NF"
+    if parent&.associated_fund&.roda_identifier == "NF"
       expect(page).to have_css(".govuk-summary-list__row.country_delivery_partners")
       expect(page).to have_content country_delivery_partners if country_delivery_partners.present?
     else

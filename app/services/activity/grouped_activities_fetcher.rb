@@ -29,7 +29,7 @@ class Activity
         programmes = programmes.where(extending_organisation: organisation)
       end
 
-      programmes.order(:roda_identifier_compound).group_by(&:parent)
+      programmes.order(:roda_identifier).group_by(&:parent)
     end
 
     def scoped_child_activities_for(activity)

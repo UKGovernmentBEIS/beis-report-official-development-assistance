@@ -53,15 +53,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
       fill_in "activity[delivery_partner_identifier]", with: identifier
       click_button t("form.button.activity.submit")
-      expect(page).to have_content t("form.label.activity.roda_identifier_fragment", level: "programme")
 
-      # Provide an invalid identifier
-      fill_in "activity[roda_identifier_fragment]", with: "!!!"
-      click_button t("form.button.activity.submit")
-      expect(page).to have_content t("activerecord.errors.models.activity.attributes.roda_identifier_fragment.invalid_characters")
-
-      fill_in "activity[roda_identifier_fragment]", with: identifier
-      click_button t("form.button.activity.submit")
       expect(page).to have_content custom_capitalisation(t("form.legend.activity.purpose", level: "programme (level B)"))
       expect(page).to have_content t("form.hint.activity.title", level: "programme (level B)")
 
@@ -109,7 +101,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       choose("activity[programme_status]", option: "spend_in_progress")
       click_button t("form.button.activity.submit")
 
-      if fund.roda_identifier_compound.include?("NF")
+      if fund.roda_identifier.include?("NF")
         expect(page).to have_content t("form.legend.activity.country_delivery_partners")
 
         # Don't provide a country delivery partner
@@ -262,8 +254,6 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
       fill_in "activity[delivery_partner_identifier]", with: "no-country-selected"
       click_button t("form.button.activity.submit")
-      fill_in "activity[roda_identifier_fragment]", with: "roda-id"
-      click_button t("form.button.activity.submit")
       fill_in "activity[title]", with: "My title"
       fill_in "activity[description]", with: "My description"
       click_button t("form.button.activity.submit")
@@ -303,15 +293,14 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
   scenario "the activity saves its identifier as read-only `transparency_identifier`" do
     fund = create(:fund_activity, :newton)
-    identifier = "a-programme"
 
     visit organisation_activities_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: fund.title)
 
-    fill_in_activity_form(roda_identifier_fragment: identifier, level: "programme", parent: fund)
+    fill_in_activity_form(level: "programme", parent: fund)
 
-    activity = Activity.find_by(roda_identifier_fragment: identifier)
-    expect(activity.transparency_identifier).to eql("GB-GOV-13-#{fund.roda_identifier_fragment}-#{activity.roda_identifier_fragment}")
+    activity = Activity.order("created_at ASC").last
+    expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
   end
 
   scenario "programme creation is tracked with public_activity" do
@@ -334,29 +323,27 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
   scenario "country_delivery_parters is included in Newton funded programmes" do
     newton_fund = create(:fund_activity, :newton, organisation: user.organisation)
-    identifier = "newton-prog"
 
     visit organisation_activities_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: newton_fund.title)
 
-    fill_in_activity_form(level: "programme", roda_identifier_fragment: identifier, parent: newton_fund)
+    fill_in_activity_form(level: "programme", parent: newton_fund)
 
     expect(page).to have_content t("action.programme.create.success")
-    activity = Activity.find_by(roda_identifier_fragment: identifier)
+    activity = Activity.order("created_at ASC").last
     expect(activity.country_delivery_partners).to eql(["National Council for the State Funding Agencies (CONFAP)"])
   end
 
   scenario "non Newton funded programmes do not include 'country_delivery_partners'" do
     other_fund = create(:fund_activity, :gcrf, organisation: user.organisation)
-    identifier = "other-prog"
 
     visit organisation_activities_path(delivery_partner)
     click_on t("form.button.activity.new_child", name: other_fund.title)
 
-    fill_in_activity_form(level: "programme", roda_identifier_fragment: identifier, parent: other_fund)
+    fill_in_activity_form(level: "programme", parent: other_fund)
 
     expect(page).to have_content t("action.programme.create.success")
-    activity = Activity.find_by(roda_identifier_fragment: identifier)
+    activity = Activity.order("created_at ASC").last
     expect(activity.country_delivery_partners).to be_nil
   end
 

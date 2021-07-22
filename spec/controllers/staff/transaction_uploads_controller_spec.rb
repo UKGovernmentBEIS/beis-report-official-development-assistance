@@ -72,13 +72,13 @@ RSpec.describe Staff::TransactionUploadsController do
   describe "#show" do
     let(:report) { create(:report, organisation: organisation, state: :active, fund: fund) }
 
-    let!(:fund) { create(:fund_activity, roda_identifier_fragment: "A") }
-    let!(:programme_a) { create(:programme_activity, parent: fund, roda_identifier_fragment: "A", created_at: rand(0..60).minutes.ago) }
-    let!(:programme_b) { create(:programme_activity, parent: fund, roda_identifier_fragment: "B", created_at: rand(0..60).minutes.ago) }
-    let!(:project_c) { create(:project_activity, parent: programme_a, organisation: report.organisation, roda_identifier_fragment: "C", created_at: rand(0..60).minutes.ago) }
-    let!(:project_d) { create(:project_activity, parent: programme_b, organisation: report.organisation, roda_identifier_fragment: "D", created_at: rand(0..60).minutes.ago) }
-    let!(:third_party_project_e) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier_fragment: "E", created_at: rand(0..60).minutes.ago) }
-    let!(:third_party_project_f) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier_fragment: "F", created_at: rand(0..60).minutes.ago) }
+    let!(:fund) { create(:fund_activity, roda_identifier: "A") }
+    let!(:programme_a) { create(:programme_activity, parent: fund, roda_identifier: "A-A", created_at: rand(0..60).minutes.ago) }
+    let!(:programme_b) { create(:programme_activity, parent: fund, roda_identifier: "A-B", created_at: rand(0..60).minutes.ago) }
+    let!(:project_c) { create(:project_activity, parent: programme_a, organisation: report.organisation, roda_identifier: "A-A-C", created_at: rand(0..60).minutes.ago) }
+    let!(:project_d) { create(:project_activity, parent: programme_b, organisation: report.organisation, roda_identifier: "A-B-D", created_at: rand(0..60).minutes.ago) }
+    let!(:third_party_project_e) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier: "A-A-C-E", created_at: rand(0..60).minutes.ago) }
+    let!(:third_party_project_f) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier: "A-B-D-F", created_at: rand(0..60).minutes.ago) }
 
     let!(:stopped_project) { create(:project_activity, parent: programme_a, organisation: report.organisation, programme_status: "stopped",) }
     let!(:cancelled_project) { create(:project_activity, parent: programme_b, organisation: report.organisation, programme_status: "cancelled",) }
@@ -92,10 +92,10 @@ RSpec.describe Staff::TransactionUploadsController do
       csv = CSV.parse(response.body, headers: true)
 
       expect(csv.count).to eq(4)
-      expect(csv[0]["Activity RODA Identifier"]).to eq(project_c.roda_identifier_compound)
-      expect(csv[1]["Activity RODA Identifier"]).to eq(third_party_project_e.roda_identifier_compound)
-      expect(csv[2]["Activity RODA Identifier"]).to eq(third_party_project_f.roda_identifier_compound)
-      expect(csv[3]["Activity RODA Identifier"]).to eq(project_d.roda_identifier_compound)
+      expect(csv[0]["Activity RODA Identifier"]).to eq(project_c.roda_identifier)
+      expect(csv[1]["Activity RODA Identifier"]).to eq(third_party_project_e.roda_identifier)
+      expect(csv[2]["Activity RODA Identifier"]).to eq(third_party_project_f.roda_identifier)
+      expect(csv[3]["Activity RODA Identifier"]).to eq(project_d.roda_identifier)
     end
 
     it "does not include non-reportable activities" do
@@ -105,11 +105,11 @@ RSpec.describe Staff::TransactionUploadsController do
 
       roda_identifiers = csv.pluck("Activity RODA Identifier")
 
-      expect(roda_identifiers).to_not include(stopped_project.roda_identifier_compound)
-      expect(roda_identifiers).to_not include(cancelled_project.roda_identifier_compound)
-      expect(roda_identifiers).to_not include(completed_project.roda_identifier_compound)
-      expect(roda_identifiers).to_not include(paused_project.roda_identifier_compound)
-      expect(roda_identifiers).to_not include(ineligible_project.roda_identifier_compound)
+      expect(roda_identifiers).to_not include(stopped_project.roda_identifier)
+      expect(roda_identifiers).to_not include(cancelled_project.roda_identifier)
+      expect(roda_identifiers).to_not include(completed_project.roda_identifier)
+      expect(roda_identifiers).to_not include(paused_project.roda_identifier)
+      expect(roda_identifiers).to_not include(ineligible_project.roda_identifier)
     end
   end
 end

@@ -48,11 +48,11 @@ RSpec.feature "Users can create a project" do
         fill_in "activity[delivery_partner_identifier]", with: "foo"
         click_button t("form.button.activity.submit")
 
-        expect(page).to have_content t("form.label.activity.roda_identifier_fragment", level: "programme")
+        expect(page).to have_content t("form.legend.activity.purpose", level: "project (level C)")
       end
 
       scenario "a new project can be added when the program has no RODA identifier" do
-        programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation, roda_identifier_fragment: nil)
+        programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation, roda_identifier: nil)
         _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 
         visit organisation_activity_children_path(programme.extending_organisation, programme)
@@ -70,15 +70,14 @@ RSpec.feature "Users can create a project" do
       scenario "the activity saves its identifier as read-only `transparency_identifier`" do
         programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
-        identifier = "a-project"
 
         visit organisation_activity_children_path(programme.extending_organisation, programme)
         click_on t("action.activity.add_child")
 
-        fill_in_activity_form(roda_identifier_fragment: identifier, level: "project", parent: programme)
+        fill_in_activity_form(level: "project", parent: programme)
 
-        activity = Activity.find_by(roda_identifier_fragment: identifier)
-        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{programme.parent.roda_identifier_fragment}-#{programme.roda_identifier_fragment}-#{activity.roda_identifier_fragment}")
+        activity = Activity.order("created_at ASC").last
+        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
       end
 
       scenario "the activity date shows an error message if an invalid date is entered" do
@@ -89,8 +88,6 @@ RSpec.feature "Users can create a project" do
         click_on t("action.activity.add_child")
 
         fill_in "activity[delivery_partner_identifier]", with: "no-country-selected"
-        click_button t("form.button.activity.submit")
-        fill_in "activity[roda_identifier_fragment]", with: "roda-identifier"
         click_button t("form.button.activity.submit")
         fill_in "activity[title]", with: "My title"
         fill_in "activity[description]", with: "My description"
@@ -139,30 +136,28 @@ RSpec.feature "Users can create a project" do
         scenario "'country_delivery_partners' can be present" do
           newton_programme = create(:programme_activity, extending_organisation: user.organisation, parent: newton_fund)
           _report = create(:report, state: :active, organisation: user.organisation, fund: newton_fund)
-          identifier = "newton-project"
 
           visit organisation_activity_children_path(newton_programme.extending_organisation, newton_programme)
           click_on t("action.activity.add_child")
 
-          fill_in_activity_form(level: "project", roda_identifier_fragment: identifier, parent: newton_programme)
+          fill_in_activity_form(level: "project", parent: newton_programme)
 
           expect(page).to have_content t("action.project.create.success")
-          activity = Activity.find_by(roda_identifier_fragment: identifier)
+          activity = Activity.order("created_at ASC").last
           expect(activity.country_delivery_partners).to eql(["National Council for the State Funding Agencies (CONFAP)"])
         end
 
         scenario "'country_delivery_partners' is however not mandatory for Newton funded projects" do
           newton_programme = create(:programme_activity, extending_organisation: user.organisation, parent: newton_fund)
           _report = create(:report, state: :active, organisation: user.organisation, fund: newton_fund)
-          identifier = "newton-project"
 
           visit organisation_activity_children_path(newton_programme.extending_organisation, newton_programme)
           click_on t("action.activity.add_child")
 
-          fill_in_activity_form(level: "project", roda_identifier_fragment: identifier, parent: newton_programme, country_delivery_partners: nil)
+          fill_in_activity_form(level: "project", parent: newton_programme, country_delivery_partners: nil)
 
           expect(page).to have_content t("action.project.create.success")
-          activity = Activity.find_by(roda_identifier_fragment: identifier)
+          activity = Activity.order("created_at ASC").last
           expect(activity.country_delivery_partners).to be_empty
         end
       end

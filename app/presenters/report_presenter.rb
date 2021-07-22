@@ -13,7 +13,7 @@ class ReportPresenter < SimpleDelegator
 
   def email_title
     return nil if financial_quarter_and_year.nil? || fund.nil? || organisation.nil?
-    "#{financial_quarter_and_year} #{fund.roda_identifier_fragment} #{organisation.beis_organisation_reference}"
+    "#{financial_quarter_and_year} #{fund.roda_identifier} #{organisation.beis_organisation_reference}"
   end
 
   def filename_for_report_download
@@ -47,7 +47,7 @@ class ReportPresenter < SimpleDelegator
   private def filename(purpose:)
     [
       financial_quarter_and_year,
-      fund.roda_identifier_fragment,
+      fund.roda_identifier,
       organisation.beis_organisation_reference,
       purpose,
     ].compact.join("-") + ".csv"
