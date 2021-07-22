@@ -143,7 +143,12 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "can download a spending breakdown CSV of the report" do
-      report = create(:report, :active)
+      fund = create(:fund_activity)
+      programme = create(:programme_activity, parent: fund)
+      dp_org = create(:delivery_partner_organisation)
+      project = create(:project_activity, organisation: dp_org, parent: programme)
+      report = create(:report, :active, organisation: dp_org, fund: programme.parent)
+      create(:transaction, report: report, parent_activity: project)
 
       visit reports_path
 
@@ -156,6 +161,10 @@ RSpec.feature "Users can view reports" do
       expect(page.response_headers["Content-Type"]).to include("text/csv")
       header = page.response_headers["Content-Disposition"]
       expect(header).to match(/#{ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv")}\z/)
+
+      download = CSV.parse(page.body)
+      expected_row = ActivitySpendingBreakdown.new(report: report, activity: project).values
+      expect(download.to_a).to include(expected_row)
     end
 
     context "when they download a CSV for all reports" do
