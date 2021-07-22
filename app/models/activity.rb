@@ -123,7 +123,7 @@ class Activity < ApplicationRecord
   validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :is_project?
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
-  validates :roda_identifier_compound, uniqueness: true, allow_nil: true
+  validates :roda_identifier, uniqueness: true, allow_nil: true
   validates :transparency_identifier, uniqueness: true, allow_nil: true
   validates :planned_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.actual_start_date.present? }
   validates :actual_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.planned_start_date.present? }
@@ -209,7 +209,7 @@ class Activity < ApplicationRecord
 
   scope :programmes, -> { where(level: :programme) }
   scope :publishable_to_iati, -> { where(form_state: :complete, publish_to_iati: true) }
-  scope :with_roda_identifier, -> { where.not(roda_identifier_compound: nil) }
+  scope :with_roda_identifier, -> { where.not(roda_identifier: nil) }
 
   scope :current, -> {
                     where.not(programme_status: NON_CURRENT_PROGRAMME_STATUSES).or(where(programme_status: nil))
@@ -233,7 +233,7 @@ class Activity < ApplicationRecord
   end
 
   def self.by_roda_identifier(identifier)
-    find_by(roda_identifier_compound: identifier)
+    find_by(roda_identifier: identifier)
   end
 
   def descendants
@@ -423,10 +423,6 @@ class Activity < ApplicationRecord
     end
   end
 
-  def roda_identifier
-    roda_identifier_compound
-  end
-
   def can_set_roda_identifier?
     identifier_fragments = roda_identifier_fragment_chain
     identifier_fragments[0..-2].all?(&:present?) && identifier_fragments.last.blank?
@@ -439,7 +435,7 @@ class Activity < ApplicationRecord
     compound = identifier_fragments[0..2].join("-")
     compound << identifier_fragments[3] if identifier_fragments.size == 4
 
-    self.roda_identifier_compound = compound
+    self.roda_identifier = compound
 
     self.transparency_identifier ||= [
       Organisation::SERVICE_OWNER_IATI_REFERENCE,
@@ -452,14 +448,6 @@ class Activity < ApplicationRecord
   def cache_roda_identifier!
     unless cache_roda_identifier
       raise TypeError, "Attempted to generate a RODA ID but some parent identifiers are blank"
-    end
-  end
-
-  def roda_identifier_compound=(roda_identifier)
-    if roda_identifier_compound.blank?
-      super
-    else
-      raise TypeError, "Activity #{id} already has a compound RODA identifier"
     end
   end
 

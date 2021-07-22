@@ -264,7 +264,7 @@ RSpec.describe Activity, type: :model do
             expect(programme).not_to be_valid
           end
 
-          it "is invalid if it has the same compound identifier as a cousin activity" do
+          it "is invalid if it has the same identifier as a cousin activity" do
             programme = build(:programme_activity, parent: fund_b, roda_identifier_fragment: "CCC")
             programme.cache_roda_identifier!
 
@@ -1270,17 +1270,13 @@ RSpec.describe Activity, type: :model do
     let!(:third_party_project) { create(:third_party_project_activity, parent: project, roda_identifier_fragment: "Level/D") }
 
     before do
-      project.write_attribute(:roda_identifier_compound, nil)
-      third_party_project.write_attribute(:roda_identifier_compound, nil)
+      project.write_attribute(:roda_identifier, nil)
+      third_party_project.write_attribute(:roda_identifier, nil)
     end
 
-    it "raises an exception if roda_identifier_compound is overwritten" do
-      expect { fund.cache_roda_identifier! }.to raise_error(TypeError, "Activity #{fund.id} already has a compound RODA identifier")
-    end
-
-    it "caches the compound RODA identifier on a project" do
+    it "caches the RODA identifier on a project" do
       project.cache_roda_identifier!
-      expect(project.roda_identifier_compound).to eq("Lvl/A-Level/B-Level/C")
+      expect(project.roda_identifier).to eq("Lvl/A-Level/B-Level/C")
     end
 
     it "caches the transparency identifier on a project" do
@@ -1288,9 +1284,9 @@ RSpec.describe Activity, type: :model do
       expect(project.transparency_identifier).to eq("GB-GOV-13-Lvl-A-Level-B-Level-C")
     end
 
-    it "caches the compound RODA identifier on a third-party project" do
+    it "caches the RODA identifier on a third-party project" do
       third_party_project.cache_roda_identifier!
-      expect(third_party_project.roda_identifier_compound).to eq("Lvl/A-Level/B-Level/CLevel/D")
+      expect(third_party_project.roda_identifier).to eq("Lvl/A-Level/B-Level/CLevel/D")
     end
 
     context "when the activity does not have a RODA identifier fragment" do
@@ -1323,7 +1319,7 @@ RSpec.describe Activity, type: :model do
     let(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "RSDel") }
     let(:project) { create(:project_activity, parent: programme, roda_identifier_fragment: "DEL_Misc") }
 
-    it "returns the compound RODA identifier" do
+    it "returns the RODA identifier" do
       expect(project.roda_identifier).to eq("GCRF-RSDel-DEL_Misc")
     end
   end

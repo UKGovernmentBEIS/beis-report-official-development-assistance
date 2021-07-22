@@ -428,7 +428,7 @@ en:
   activerecord:
     attributes:
       activity:
-        roda_identifier_compound: RODA identifier
+        roda_identifier: RODA identifier
         sector: Focus area
         sector_category: Focus area category
     errors:

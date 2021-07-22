@@ -15,7 +15,7 @@ RSpec.describe Activities::ImportFromCsv do
   end
   let(:existing_activity_attributes) do
     {
-      "RODA ID" => existing_activity.roda_identifier_compound,
+      "RODA ID" => existing_activity.roda_identifier,
       "Transparency identifier" => "13232332323",
       "RODA ID Fragment" => "",
       "Parent RODA ID" => "",
@@ -70,7 +70,7 @@ RSpec.describe Activities::ImportFromCsv do
     existing_activity_attributes.merge({
       "RODA ID" => "",
       "RODA ID Fragment" => "234566",
-      "Parent RODA ID" => parent_activity.roda_identifier_compound,
+      "Parent RODA ID" => parent_activity.roda_identifier,
       "Transparency identifier" => "23232332323",
     })
   end
@@ -232,7 +232,7 @@ RSpec.describe Activities::ImportFromCsv do
     it "has an error and does not update any other activities if a region does not exist" do
       activity_2 = create(:project_activity)
       invalid_activity_attributes = existing_activity_attributes.merge({
-        "RODA ID" => activity_2.roda_identifier_compound,
+        "RODA ID" => activity_2.roda_identifier,
         "Recipient Region" => "111111",
       })
 
@@ -275,7 +275,7 @@ RSpec.describe Activities::ImportFromCsv do
 
       let(:attributes) do
         attributes = existing_activity_attributes.map { |k, _v| [k, ""] }.to_h
-        attributes["RODA ID"] = existing_activity.roda_identifier_compound
+        attributes["RODA ID"] = existing_activity.roda_identifier
         attributes
       end
       let(:changed_attributes) do
@@ -417,15 +417,15 @@ RSpec.describe Activities::ImportFromCsv do
 
       new_activity = Activity.order(:created_at).last
 
-      expected_roda_identifier_compound = [
-        parent_activity.roda_identifier_compound,
+      expected_roda_identifier = [
+        parent_activity.roda_identifier,
         new_activity_attributes["RODA ID Fragment"],
       ].join("-")
 
       expect(new_activity.parent).to eq(parent_activity)
       expect(new_activity.source_fund_code).to eq(1)
       expect(new_activity.level).to eq("project")
-      expect(new_activity.roda_identifier_compound).to eq(expected_roda_identifier_compound)
+      expect(new_activity.roda_identifier).to eq(expected_roda_identifier)
       expect(new_activity.transparency_identifier).to eq(new_activity_attributes["Transparency identifier"])
       expect(new_activity.title).to eq(new_activity_attributes["Title"])
       expect(new_activity.description).to eq(new_activity_attributes["Description"])
@@ -728,7 +728,7 @@ RSpec.describe Activities::ImportFromCsv do
 
     context "when the activity is a project" do
       it "has an error if the 'Channel of delivery code' is empty" do
-        new_activity_attributes["Parent RODA ID"] = parent_activity.roda_identifier_compound
+        new_activity_attributes["Parent RODA ID"] = parent_activity.roda_identifier
         new_activity_attributes["Channel of delivery code"] = ""
 
         expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }

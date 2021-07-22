@@ -32,7 +32,7 @@ class Staff::OrganisationsController < Staff::BaseController
         @grouped_programmes = Activity.programme
           .includes(:extending_organisation, :organisation, parent: [:parent])
           .where(extending_organisation: organisation)
-          .order(:roda_identifier_compound)
+          .order(:roda_identifier)
           .group_by(&:parent)
       end
 

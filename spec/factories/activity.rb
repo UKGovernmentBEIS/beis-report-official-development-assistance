@@ -3,7 +3,7 @@ FactoryBot.define do
     title { Faker::Lorem.sentence }
     delivery_partner_identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
     roda_identifier_fragment { Faker::Alphanumeric.alpha(number: 5) }
-    roda_identifier_compound { nil }
+    roda_identifier { nil }
     beis_identifier { nil }
     description { Faker::Lorem.paragraph }
     sector_category { "111" }

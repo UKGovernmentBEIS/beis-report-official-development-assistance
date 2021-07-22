@@ -109,7 +109,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       choose("activity[programme_status]", option: "spend_in_progress")
       click_button t("form.button.activity.submit")
 
-      if fund.roda_identifier_compound.include?("NF")
+      if fund.roda_identifier.include?("NF")
         expect(page).to have_content t("form.legend.activity.country_delivery_partners")
 
         # Don't provide a country delivery partner
