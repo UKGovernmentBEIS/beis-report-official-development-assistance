@@ -43,7 +43,6 @@ ActiveRecord::Schema.define(version: 2021_07_19_082105) do
     t.date "call_open_date"
     t.date "call_close_date"
     t.string "intended_beneficiaries", array: true
-    t.string "roda_identifier_fragment"
     t.string "roda_identifier"
     t.boolean "requires_additional_benefitting_countries"
     t.string "gdi"

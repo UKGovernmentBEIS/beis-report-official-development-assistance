@@ -2,7 +2,6 @@ FactoryBot.define do
   factory :__activity do
     title { Faker::Lorem.sentence }
     delivery_partner_identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
-    roda_identifier_fragment { Faker::Alphanumeric.alpha(number: 5) }
     roda_identifier { nil }
     beis_identifier { nil }
     description { Faker::Lorem.paragraph }
@@ -61,7 +60,7 @@ FactoryBot.define do
         source_fund_code { Fund.by_short_name("GCRF").id }
 
         initialize_with do
-          Activity.find_or_initialize_by(roda_identifier_fragment: "GCRF")
+          Activity.find_or_initialize_by(roda_identifier: "GCRF")
         end
       end
 
@@ -71,7 +70,7 @@ FactoryBot.define do
         source_fund_code { Fund.by_short_name("NF").id }
 
         initialize_with do
-          Activity.find_or_initialize_by(roda_identifier_fragment: "NF")
+          Activity.find_or_initialize_by(roda_identifier: "NF")
         end
       end
     end
@@ -182,7 +181,6 @@ FactoryBot.define do
   trait :at_identifier_step do
     form_state { "identifier" }
     delivery_partner_identifier { nil }
-    roda_identifier_fragment { nil }
     title { nil }
     description { nil }
     objectives { nil }

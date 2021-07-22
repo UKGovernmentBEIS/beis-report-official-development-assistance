@@ -58,7 +58,6 @@ en:
           recipient_region: Region
           recipient_country: Country
         delivery_partner_identifier: Enter your unique identifier
-        roda_identifier_fragment: Enter a unique identifier for RODA
         intended_beneficiaries: What are the intended beneficiaries?
         objectives: Aims/Objectives of the activity
         oda_eligibility:
@@ -180,8 +179,6 @@ en:
         oda_eligibility_lead: This will be used by us as a first point of contact for anything ODA related.
         planned_end_date: For example, 28 11 2020
         planned_start_date: For example, 27 3 2020
-        roda_identifier_fragment: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.
-        roda_identifier_fragment_with_parent_html: This should be a unique ID that will be used to report this activity externally. This value cannot be edited once it is set.<br><br>The RODA identifier for this activity's parent is <strong>%{identifier}</strong>.
         sdgs_apply: For broad programme calls, please select the SDG most commonly represented across the individual projects within the programme. If unable, or if the activity is a delivery line, you may select 'N/A'.
         sector_category_html: For example, research, education or small to medium-sized enterprise (SME) development. Choose one of the %{link}
         title: A short title that explains the purpose of the %{level}. There is no character limit to this field. However, when this data is published to Statistics in International Development the title will be truncated at 150 characters.
@@ -466,12 +463,6 @@ en:
               blank: Select a parent activity
             delivery_partner_identifier:
               blank: Enter a unique identifier
-            roda_identifier_fragment:
-              invalid_characters: Must contain only letters, digits, dashes, underscores and slashes
-              level_a_too_long: Fund's (level A) identifiers must be at most %{limit} characters long
-              level_b_too_long: This programme's (level B) identifier must be at most %{limit} characters long
-              level_c_too_long: This project's (level C) identifier must be at most %{limit} characters long
-              level_d_too_long: This third-party project's (level D) identifier must be at most %{limit} characters long
             requires_additional_benefitting_countries:
               blank: Select an option
             title:

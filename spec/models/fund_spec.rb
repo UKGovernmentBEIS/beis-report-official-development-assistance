@@ -69,7 +69,7 @@ RSpec.describe Fund do
     end
 
     context "when the fund does not have the expected fragment" do
-      let(:activity) { build(:fund_activity, roda_identifier_fragment: "FOO") }
+      let(:activity) { build(:fund_activity, roda_identifier: "FOO") }
 
       it "should raise an error" do
         expect { fund }.to raise_error("Fund::InvalidFund")

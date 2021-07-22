@@ -77,14 +77,13 @@ class Activity < ApplicationRecord
 
   FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete", "recipient_country", "recipient_region")
 
-  strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
+  strip_attributes only: [:delivery_partner_identifier]
 
   validates :level, presence: true
   validates :parent, absence: true, if: proc { |activity| activity.fund? }
   validates :parent, presence: true, unless: proc { |activity| activity.fund? }
   validates_with OrganisationValidator
   validates :delivery_partner_identifier, presence: true, on: :identifier_step
-  validates_with RodaIdentifierValidator, on: :roda_identifier_step
   validates :title, :description, presence: true, on: :purpose_step
   validates :objectives, presence: true, on: :objectives_step, unless: proc { |activity| activity.fund? }
   validates :sector_category, presence: true, on: :sector_category_step
@@ -486,13 +485,13 @@ class Activity < ApplicationRecord
 
   def self.hierarchically_grouped_projects
     activities = all.to_a
-    projects = activities.select(&:project?).sort_by { |a| a.roda_identifier_fragment.to_s }
+    projects = activities.select(&:project?).sort_by { |a| a.roda_identifier.to_s }
     third_party_projects = activities.select(&:third_party_project?).group_by(&:parent_id)
 
     grouped_projects = []
     projects.each do |project|
       grouped_projects << project
-      grouped_projects += third_party_projects.fetch(project.id, []).sort_by { |a| a.roda_identifier_fragment.to_s }
+      grouped_projects += third_party_projects.fetch(project.id, []).sort_by { |a| a.roda_identifier.to_s }
     end
     grouped_projects
   end

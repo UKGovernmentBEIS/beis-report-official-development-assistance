@@ -48,11 +48,11 @@ RSpec.feature "Users can create a project" do
         fill_in "activity[delivery_partner_identifier]", with: "foo"
         click_button t("form.button.activity.submit")
 
-        expect(page).to have_content t("form.label.activity.roda_identifier_fragment", level: "programme")
+        expect(page).to have_content t("form.legend.activity.purpose", level: "project (level C)")
       end
 
       scenario "a new project can be added when the program has no RODA identifier" do
-        programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation, roda_identifier_fragment: nil)
+        programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation, roda_identifier: nil)
         _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
 
         visit organisation_activity_children_path(programme.extending_organisation, programme)

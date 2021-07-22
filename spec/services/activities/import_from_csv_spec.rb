@@ -100,7 +100,7 @@ RSpec.describe Activities::ImportFromCsv do
     end
 
     it "has an error when the ID present, but there is a parent present" do
-      existing_activity_attributes["Parent RODA ID"] = parent_activity.roda_identifier_fragment
+      existing_activity_attributes["Parent RODA ID"] = parent_activity.roda_identifier
 
       expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
 
@@ -111,7 +111,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.csv_row).to eq(2)
       expect(subject.errors.first.csv_column).to eq("Parent RODA ID")
       expect(subject.errors.first.column).to eq(:parent_id)
-      expect(subject.errors.first.value).to eq(parent_activity.roda_identifier_fragment)
+      expect(subject.errors.first.value).to eq(parent_activity.roda_identifier)
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.cannot_update.parent_present"))
     end
 

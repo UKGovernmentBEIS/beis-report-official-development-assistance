@@ -344,7 +344,7 @@ RSpec.feature "Users can edit an activity" do
       end
 
       context "when the project has a RODA identifier" do
-        let(:activity) { create(:project_activity, organisation: user.organisation, roda_identifier_fragment: "A-RODA-ID") }
+        let(:activity) { create(:project_activity, organisation: user.organisation, roda_identifier: "A-RODA-ID") }
 
         scenario "the RODA identifier cannot be edited" do
           visit organisation_activity_details_path(activity.organisation, activity)
@@ -357,10 +357,10 @@ RSpec.feature "Users can edit an activity" do
       end
 
       context "when the project's parent does not have a RODA identifier" do
-        let(:activity) { create(:project_activity, organisation: user.organisation, roda_identifier_fragment: nil) }
+        let(:activity) { create(:project_activity, organisation: user.organisation, roda_identifier: nil) }
 
         before do
-          activity.parent.update!(roda_identifier_fragment: nil)
+          activity.parent.update!(roda_identifier: nil)
         end
 
         scenario "a RODA identifier cannot be added" do

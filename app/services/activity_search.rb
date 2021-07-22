@@ -11,7 +11,6 @@ class ActivitySearch
   def results
     search_fields = [
       :roda_identifier,
-      :roda_identifier_fragment,
       :delivery_partner_identifier,
       :beis_identifier,
       :previous_identifier,

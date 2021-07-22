@@ -6,11 +6,11 @@ RSpec.describe ActivitySearch do
   let!(:fund) { create(:fund_activity, roda_identifier: "ABC") }
   let!(:programme) { create(:programme_activity, parent: fund) }
 
-  let!(:alice_project) { create(:project_activity, parent: programme, organisation: alice.organisation, roda_identifier_fragment: "fragment") }
+  let!(:alice_project) { create(:project_activity, parent: programme, organisation: alice.organisation, roda_identifier: "alice") }
   let!(:alice_third_party_project) { create(:third_party_project_activity, parent: alice_project, organisation: alice.organisation) }
 
   let!(:bob_project) { create(:project_activity, parent: programme, organisation: bob.organisation) }
-  let!(:bob_third_party_project) { create(:third_party_project_activity, parent: bob_project, organisation: bob.organisation, roda_identifier_fragment: "fragment") }
+  let!(:bob_third_party_project) { create(:third_party_project_activity, parent: bob_project, organisation: bob.organisation, roda_identifier: "bob") }
 
   let(:activity_search) { ActivitySearch.new(user: user, query: query) }
 
@@ -22,22 +22,6 @@ RSpec.describe ActivitySearch do
 
       it "returns the matching fund" do
         expect(activity_search.results).to match_array [fund]
-      end
-    end
-
-    describe "searching for RODA identifier fragments" do
-      let(:query) { "fragment" }
-
-      it "returns all activities with that fragment" do
-        expect(activity_search.results).to match_array [alice_project, bob_third_party_project]
-      end
-    end
-
-    describe "searching for RODA identifier fragment ignoring case" do
-      let(:query) { "FRAGMENT" }
-
-      it "returns all activities with that fragment" do
-        expect(activity_search.results).to match_array [alice_project, bob_third_party_project]
       end
     end
 
@@ -95,14 +79,6 @@ RSpec.describe ActivitySearch do
 
       it "returns nothing" do
         expect(activity_search.results).to match_array []
-      end
-    end
-
-    describe "searching for a RODA identifier fragments" do
-      let(:query) { "fragment" }
-
-      it "returns only the user's own activities" do
-        expect(activity_search.results).to match_array [alice_project]
       end
     end
 
