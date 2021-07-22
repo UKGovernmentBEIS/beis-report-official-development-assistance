@@ -33,23 +33,6 @@ RSpec.feature "Users can submit a report" do
           expect(user).to have_received_email.with_subject(t("mailer.report.submitted.delivery_partner.subject", application_name: t("app.title")))
         end
       end
-
-      scenario "a report submission is recorded in the audit log" do
-        report = create(:report, state: :active, organisation: delivery_partner_user.organisation)
-        PublicActivity.with_tracking do
-          visit reports_path
-          within "##{report.id}" do
-            click_on t("default.link.view")
-          end
-          click_link t("action.report.submit.button")
-          click_button t("action.report.submit.confirm.button")
-
-          auditable_events = PublicActivity::Activity.all
-          expect(auditable_events.last.key).to include("report.state.changed_to.submitted")
-          expect(auditable_events.last.owner_id).to include delivery_partner_user.id
-          expect(auditable_events.last.trackable_id).to include report.id
-        end
-      end
     end
 
     context "when the report is awaiting changes" do

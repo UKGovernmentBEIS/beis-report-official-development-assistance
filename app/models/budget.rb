@@ -1,6 +1,4 @@
 class Budget < ApplicationRecord
-  include PublicActivity::Common
-
   IATI_TYPES = Codelist.new(type: "budget_type", source: "iati").hash_of_coded_names
   IATI_STATUSES = Codelist.new(type: "budget_status", source: "iati").hash_of_coded_names
 

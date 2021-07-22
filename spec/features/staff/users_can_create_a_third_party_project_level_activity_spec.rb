@@ -69,29 +69,6 @@ RSpec.feature "Users can create a third-party project" do
         expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
       end
 
-      scenario "third party project creation is tracked with public_activity" do
-        programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
-        project = create(:project_activity, :gcrf_funded, organisation: user.organisation, extending_organisation: user.organisation, parent: programme)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: project.associated_fund)
-
-        PublicActivity.with_tracking do
-          visit activities_path
-
-          click_on(project.title)
-          click_on t("tabs.activity.children")
-
-          click_on(t("action.activity.add_child"))
-
-          fill_in_activity_form(level: "third_party_project", delivery_partner_identifier: "my-unique-identifier", parent: project)
-
-          third_party_project = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
-          auditable_events = PublicActivity::Activity.where(trackable_id: third_party_project.id)
-          expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.aid_type")
-          expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
-          expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [third_party_project.id]
-        end
-      end
-
       scenario "a new third party project requires specific fields when the project is Newton-funded" do
         newton_fund = create(:fund_activity, :newton)
         newton_programme = create(:programme_activity, parent: newton_fund, extending_organisation: user.organisation)

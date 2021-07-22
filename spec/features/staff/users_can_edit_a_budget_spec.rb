@@ -46,27 +46,6 @@ RSpec.describe "Users can edit a budget" do
       end
     end
 
-    scenario "budget update is tracked with public_activity" do
-      activity = create(:project_activity, organisation: user.organisation)
-      report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
-      budget = create(:budget, parent_activity: activity, budget_type: "direct", value: "10", report: report)
-
-      PublicActivity.with_tracking do
-        visit organisation_activity_path(user.organisation, activity)
-        within("##{budget.id}") do
-          click_on t("default.link.edit")
-        end
-
-        fill_in "budget[value]", with: "20"
-        click_on t("default.button.submit")
-
-        budget = Budget.last
-        auditable_event = PublicActivity::Activity.find_by(trackable_id: budget.id)
-        expect(auditable_event.key).to eq "budget.update"
-        expect(auditable_event.owner_id).to eq user.id
-      end
-    end
-
     scenario "validation errors work as expected" do
       activity = create(:project_activity, organisation: user.organisation)
       report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)

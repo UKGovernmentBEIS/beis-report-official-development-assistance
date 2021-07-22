@@ -1,5 +1,4 @@
 class Forecast < ApplicationRecord
-  include PublicActivity::Common
   include HasFinancialQuarter
 
   DIRECT_ACCESS_WARNING = "The Forecast model should not be accessed \

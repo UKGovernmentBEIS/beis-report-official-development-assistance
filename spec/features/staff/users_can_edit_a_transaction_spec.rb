@@ -30,28 +30,6 @@ RSpec.feature "Users can edit a transaction" do
 
       expect(page).to have_content(t("action.transaction.update.success"))
     end
-
-    scenario "transaction update is tracked with public_activity" do
-      PublicActivity.with_tracking do
-        visit organisation_activity_path(activity.organisation, activity)
-
-        expect(page).to have_content(transaction.value)
-
-        within("##{transaction.id}") do
-          click_on(t("default.link.edit"))
-        end
-
-        fill_in_transaction_form(
-          value: "2000.51",
-          financial_quarter: "4",
-          financial_year: "2019-2020",
-        )
-
-        auditable_event = PublicActivity::Activity.find_by(trackable_id: transaction.id)
-        expect(auditable_event.key).to eq "transaction.update"
-        expect(auditable_event.owner_id).to eq user.id
-      end
-    end
   end
 
   context "when signed in as a delivery partner" do

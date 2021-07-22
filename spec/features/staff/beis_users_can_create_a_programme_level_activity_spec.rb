@@ -303,24 +303,6 @@ RSpec.feature "BEIS users can create a programme level activity" do
     expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
   end
 
-  scenario "programme creation is tracked with public_activity" do
-    fund = create(:fund_activity, :newton)
-
-    PublicActivity.with_tracking do
-      visit organisation_activities_path(delivery_partner)
-
-      click_on t("form.button.activity.new_child", name: fund.title)
-
-      fill_in_activity_form(delivery_partner_identifier: "my-unique-identifier", level: "programme", parent: fund)
-
-      programme = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
-      auditable_events = PublicActivity::Activity.where(trackable_id: programme.id)
-      expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.aid_type")
-      expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
-      expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [programme.id]
-    end
-  end
-
   scenario "country_delivery_parters is included in Newton funded programmes" do
     newton_fund = create(:fund_activity, :newton, organisation: user.organisation)
 

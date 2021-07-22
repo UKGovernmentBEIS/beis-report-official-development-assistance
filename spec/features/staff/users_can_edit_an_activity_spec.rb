@@ -162,27 +162,6 @@ RSpec.feature "Users can edit an activity" do
             expect(page).to_not have_content t("default.link.edit")
           end
         end
-
-        it "tracks activity updates with public_activity" do
-          activity = create(:fund_activity, organisation: user.organisation)
-          description = "Some new text for the description field."
-          PublicActivity.with_tracking do
-            visit organisation_activity_details_path(activity.organisation, activity)
-
-            within(".description") do
-              click_on(t("default.link.edit"))
-            end
-
-            fill_in "activity[description]", with: description
-            click_button t("form.button.activity.submit")
-
-            # grab the most recently created auditable_event
-            auditable_events = PublicActivity::Activity.where(trackable_id: activity.id).order("created_at ASC")
-            expect(auditable_events.first.key).to eq "activity.update.purpose"
-            expect(auditable_events.first.owner_id).to eq user.id
-            expect(auditable_events.first.trackable_id).to eq activity.id
-          end
-        end
       end
 
       context "when the activity is incomplete" do

@@ -49,22 +49,6 @@ RSpec.describe "Users can edit a comment" do
           expect(page).to have_content "Amendments have been made"
           expect(page).to have_content t("action.comment.update.success")
         end
-
-        scenario "comment update is tracked with PublicActivity" do
-          PublicActivity.with_tracking do
-            visit report_path(report)
-            click_on t("tabs.report.variance")
-            click_on t("table.body.report.edit_comment")
-            fill_in "comment[comment]", with: "Amendments have been made"
-            click_button t("default.button.submit")
-
-            comment = Comment.last
-            auditable_event = PublicActivity::Activity.last
-            expect(auditable_event.key).to eq "comment.update"
-            expect(auditable_event.owner_id).to eq delivery_partner_user.id
-            expect(auditable_event.trackable_id).to eq comment.id
-          end
-        end
       end
 
       context "when the report is not editable" do

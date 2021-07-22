@@ -57,22 +57,5 @@ RSpec.describe "Users can edit a forecast" do
 
       expect(page).to have_content t("activerecord.errors.models.forecast.attributes.value.not_a_number")
     end
-
-    scenario "the action is recorded with public_activity" do
-      PublicActivity.with_tracking do
-        visit activities_path
-        click_on(project.title)
-        within("##{forecast.id}") do
-          click_on(t("default.link.edit"))
-        end
-
-        fill_in "forecast[value]", with: "2000.51"
-        click_on(t("default.button.submit"))
-
-        auditable_event = PublicActivity::Activity.find_by(trackable_id: forecast.id)
-        expect(auditable_event.key).to eq "forecast.update"
-        expect(auditable_event.owner_id).to eq user.id
-      end
-    end
   end
 end

@@ -25,7 +25,6 @@ class Staff::UsersController < Staff::BaseController
     if @user.valid?
       result = CreateUser.new(user: @user, organisation: organisation).call
       if result.success?
-        @user.create_activity key: "user.create", owner: current_user
         flash.now[:notice] = t("action.user.create.success")
         redirect_to user_path(@user.reload.id)
       else
@@ -57,7 +56,6 @@ class Staff::UsersController < Staff::BaseController
       result = UpdateUser.new(user: @user, organisation: organisation).call
 
       if result.success?
-        @user.create_activity key: "user.update", owner: current_user
         flash.now[:notice] = t("action.user.update.success")
         redirect_to user_path(@user)
       else
