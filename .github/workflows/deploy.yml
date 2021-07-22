@@ -87,4 +87,4 @@ jobs:
       - name: Notifying the team of a successful deploy
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: script/deployment-notification
+        run: script/deploy-notification
