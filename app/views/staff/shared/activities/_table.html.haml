@@ -8,12 +8,12 @@
         %ul.govuk-tabs__list
           %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
             = link_to t("tabs.activities.current"),
-              activities_path(organisation_id: @organisation.id),
+              organisation_activities_path(@organisation),
               { class: "govuk-tabs__tab", role: "tab", aria: { controls: "current", selected: true } }
 
           %li.govuk-tabs__list-item
             = link_to t("tabs.activities.historic"),
-              historic_activities_path(organisation_id: @organisation.id),
+              historic_organisation_activities_path(@organisation),
               { class: "govuk-tabs__tab", role: "tab", aria: { controls: "historic", selected: false } }
 
         .govuk-tabs__panel

@@ -10,8 +10,7 @@ RSpec.feature "Users can view programme level activities" do
         organisation: user.organisation,
         parent: fund_activity)
 
-      visit activities_path
-      click_on programme_activity.title
+      visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
       page_displays_an_activity(activity_presenter: ActivityPresenter.new(programme_activity))
     end

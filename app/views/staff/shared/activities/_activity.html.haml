@@ -40,8 +40,6 @@
     %dd.govuk-summary-list__value
       = activity_presenter.roda_identifier
     %dd.govuk-summary-list__actions
-      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :roda_identifier) && activity_presenter.can_set_roda_identifier?
-        = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:roda_identifier_fragment)}"), activity_step_path(activity_presenter, :roda_identifier), t("summary.label.activity.title"))
 
   .govuk-summary-list__row.transparency-identifier
     %dt.govuk-summary-list__key

@@ -3,8 +3,33 @@ require "rails_helper"
 RSpec.describe HistoricalEvent, type: :model do
   describe "associations" do
     it { should belong_to(:activity) }
+    it { should belong_to(:trackable) }
     it { should belong_to(:user) }
     it { should belong_to(:report).optional }
+  end
+
+  describe "polymorphic 'trackable' association" do
+    context "when the change being tracked is on an Activity" do
+      let(:trackable) { create(:project_activity) }
+      let(:event) { HistoricalEvent.new(trackable: trackable) }
+
+      it "associates with the expected Activity object" do
+        expect(event.trackable_id).to eq(trackable.id)
+        expect(event.trackable_type).to eq("Activity")
+        expect(event.trackable).to eq(trackable)
+      end
+    end
+
+    context "when the change being tracked is on a Transaction" do
+      let(:trackable) { create(:transaction) }
+      let(:event) { HistoricalEvent.new(trackable: trackable) }
+
+      it "associates with the expected Transaction object" do
+        expect(event.trackable_id).to eq(trackable.id)
+        expect(event.trackable_type).to eq("Transaction")
+        expect(event.trackable).to eq(trackable)
+      end
+    end
   end
 
   describe "flexible 'value' fields which handle a range of data types" do

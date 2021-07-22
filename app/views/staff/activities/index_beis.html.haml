@@ -1,0 +1,9 @@
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-xl
+        Activities
+
+      = render partial: "staff/searches/form"
+
+      = render partial: "staff/shared/organisations/organisations_activities_table", locals: { delivery_partner_organisations: @delivery_partner_organisaitons }

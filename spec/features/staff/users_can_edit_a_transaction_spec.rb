@@ -14,9 +14,7 @@ RSpec.feature "Users can edit a transaction" do
     let!(:transaction) { create(:transaction, parent_activity: activity, report: report) }
 
     scenario "editing a transaction on a programme" do
-      visit activities_path
-
-      click_on(activity.title)
+      visit organisation_activity_path(activity.organisation, activity)
 
       expect(page).to have_content(transaction.value)
 
@@ -35,9 +33,7 @@ RSpec.feature "Users can edit a transaction" do
 
     scenario "transaction update is tracked with public_activity" do
       PublicActivity.with_tracking do
-        visit activities_path
-
-        click_on(activity.title)
+        visit organisation_activity_path(activity.organisation, activity)
 
         expect(page).to have_content(transaction.value)
 
@@ -72,10 +68,24 @@ RSpec.feature "Users can edit a transaction" do
         report.update(state: :active)
       end
 
-      scenario "shows the edit link" do
+      scenario "can be edited, with 'change history'" do
         visit organisation_activity_path(activity.organisation, activity)
 
         expect(page).to have_link t("default.link.edit"), href: edit_activity_transaction_path(activity, transaction)
+
+        within ".transactions" do
+          expect(page).to have_content("£110.01")
+          click_link("Edit")
+        end
+
+        fill_in "transaction[value]", with: 221.12
+
+        click_on(t("default.button.submit"))
+
+        within ".transactions" do
+          expect(page).to have_content("£221.12")
+        end
+        expect_to_see_change_recorded_in_activitys_change_history("110.01", "221.12")
       end
     end
 
@@ -87,6 +97,19 @@ RSpec.feature "Users can edit a transaction" do
 
         expect(page).not_to have_link t("default.link.edit"), href: edit_activity_transaction_path(activity, transaction)
       end
+    end
+  end
+
+  def expect_to_see_change_recorded_in_activitys_change_history(previous_value, new_value)
+    click_link("Change history")
+    within(".historical-events .transaction") do
+      expect(page).to have_css(".property", text: "value")
+      expect(page).to have_css(".previous-value", text: previous_value)
+      expect(page).to have_css(".new-value", text: new_value)
+      expect(page).to have_css(
+        ".report a[href='#{report_path(report)}']",
+        text: report.financial_quarter_and_year
+      )
     end
   end
 end

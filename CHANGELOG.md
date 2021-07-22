@@ -735,13 +735,31 @@
 - Group Activity's Change history by "reference" and show newest first
 
 ## [release-62] - 2021-07-13
+
 - Fix: guard against orphan HistoricalEvents
 - Delete related HistoricalEvents when their associated activity is deleted
 - Ignore internal "changes" to Activity made by form "wizard"
 
+## [release-63] - 2021-07-22
+
+- New activities know which was their 'originating' report, and reports can list
+  'new' activities originating from their financial period
+- Newly updated activities are shown in a report.
+- Newly added activities are shown in a report.
+- Exports page layout is more accessible
+- New activities know which was their 'originating' report, and reports can list
+  'new' activities originating from their financial period
+- BEIS users navigate activities by delivery partners
+- Improvements to navigation and to url scheme for activities
+- Add new programme (level B) activities buttons are now on the delivery partner
+  activities pages
+- Track changes to 'Actual' financials in activity's 'Change history'
+- Create and populate an activity's RODA identifier automatically
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-63...HEAD
+[release-63]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...release-63
 [release-62]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-61...release-62
 [release-61]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-60...release-61
 [release-60]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-59...release-60

@@ -10,8 +10,6 @@ class Staff::ActivityFormsController < Staff::BaseController
     authorize @activity
 
     case step
-    when :roda_identifier
-      skip_step unless @activity.can_set_roda_identifier?
     when :objectives
       skip_step if @activity.fund?
     when :programme_status
@@ -115,6 +113,7 @@ class Staff::ActivityFormsController < Staff::BaseController
         changes: @activity.changes,
         reference: "Update to Activity #{step}",
         activity: @activity,
+        trackable: @activity,
         report: Report.editable_for_activity(@activity)
       )
   end

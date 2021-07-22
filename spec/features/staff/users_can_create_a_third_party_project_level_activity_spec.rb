@@ -55,7 +55,6 @@ RSpec.feature "Users can create a third-party project" do
         programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
         project = create(:project_activity, :gcrf_funded, organisation: user.organisation, extending_organisation: user.organisation, parent: programme)
         _report = create(:report, state: :active, organisation: user.organisation, fund: project.associated_fund)
-        identifier = "3rd-party-proj"
 
         visit activities_path
 
@@ -64,10 +63,10 @@ RSpec.feature "Users can create a third-party project" do
 
         click_on(t("action.activity.add_child"))
 
-        fill_in_activity_form(level: "third_party_project", roda_identifier_fragment: identifier, parent: project)
+        fill_in_activity_form(level: "third_party_project", parent: project)
 
-        activity = Activity.find_by(roda_identifier_fragment: identifier)
-        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{project.parent.parent.roda_identifier_fragment}-#{project.parent.roda_identifier_fragment}-#{project.roda_identifier_fragment}#{activity.roda_identifier_fragment}")
+        activity = Activity.order("created_at ASC").last
+        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
       end
 
       scenario "third party project creation is tracked with public_activity" do

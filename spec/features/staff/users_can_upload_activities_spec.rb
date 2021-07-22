@@ -2,7 +2,7 @@ RSpec.feature "users can upload activities" do
   let(:organisation) { create(:delivery_partner_organisation) }
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
-  let!(:programme) { create(:programme_activity, :newton_funded, extending_organisation: organisation, roda_identifier_fragment: "B-PROG", parent: create(:fund_activity, roda_identifier_fragment: "AFUND")) }
+  let!(:programme) { create(:programme_activity, :newton_funded, extending_organisation: organisation, roda_identifier: "AFUND-B-PROG", parent: create(:fund_activity, roda_identifier: "AFUND")) }
 
   let!(:report) do
     create(:report,
@@ -49,7 +49,6 @@ RSpec.feature "users can upload activities" do
       "ODA Eligibility", "ODA Eligibility Lead",
       "Parent RODA ID",
       "Planned end date", "Planned start date",
-      "RODA ID Fragment",
       "SDG 1", "SDG 2", "SDG 3",
       "Sector",
       "Title",
@@ -81,7 +80,7 @@ RSpec.feature "users can upload activities" do
 
     expect(Activity.count - old_count).to eq(2)
     expect(page).to have_text(t("action.activity.upload.success"))
-    expect(page).to have_text("List of activities created")
+    expect(page).to have_table(t("table.caption.activity.new_activities"))
 
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[2]", text: "Programme - Award (round 5)")
@@ -133,8 +132,8 @@ RSpec.feature "users can upload activities" do
 
   context "uploading a set of activities the user doesn't have permission to modify" do
     let(:another_organisation) { create(:delivery_partner_organisation) }
-    let!(:another_programme) { create(:programme_activity, parent: programme.associated_fund, extending_organisation: another_organisation, roda_identifier_fragment: "BB-PROG") }
-    let!(:existing_activity) { create(:project_activity, parent: programme, roda_identifier_fragment: "EX42") }
+    let!(:another_programme) { create(:programme_activity, parent: programme.associated_fund, extending_organisation: another_organisation, roda_identifier: "AFUND-BB-PROG") }
+    let!(:existing_activity) { create(:project_activity, parent: programme, roda_identifier: "AFUND-B-PROG-EX42") }
 
     it "prevents creating or updating" do
       old_count = Activity.count
@@ -153,7 +152,7 @@ RSpec.feature "users can upload activities" do
       end
 
       within "//tbody/tr[2]" do
-        expect(page).to have_xpath("td[1]", text: "RODA ID Fragment")
+        expect(page).to have_xpath("td[1]", text: "RODA ID")
         expect(page).to have_xpath("td[2]", text: "3")
         expect(page).to have_xpath("td[3]", text: "")
         expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.unauthorised"))
@@ -175,7 +174,7 @@ RSpec.feature "users can upload activities" do
     CSV
 
     expect(page).to have_text(t("action.activity.upload.success"))
-    expect(page).to have_text("List of activities updated")
+    expect(page).to have_table(t("table.caption.activity.updated_activities"))
 
     expect_change_to_be_recorded_as_historical_event(
       field: "title",

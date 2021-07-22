@@ -62,14 +62,14 @@ GEM
       zeitwerk (~> 2.3)
     acts_as_tree (2.9.1)
       activerecord (>= 3.0.0)
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
-    auth0 (5.1.1)
-      addressable (~> 2.7.0)
-      jwt (~> 2.2.0)
-      rest-client (~> 2.0.0)
-      zache (~> 0.12.0)
+    auth0 (5.2.0)
+      addressable (~> 2.8)
+      jwt (~> 2.2)
+      rest-client (~> 2.0.2)
+      zache (~> 0.12)
     better_errors (2.9.1)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -77,7 +77,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.7.5)
       msgpack (~> 1.0)
-    brakeman (5.0.4)
+    brakeman (5.1.1)
     builder (3.2.4)
     bullet (6.1.4)
       activesupport (>= 3.0.0)
@@ -167,7 +167,7 @@ GEM
       haml (>= 4.0, < 6)
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
-    http-cookie (1.0.3)
+    http-cookie (1.0.4)
       domain_name (~> 0.5)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
@@ -216,7 +216,7 @@ GEM
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0225)
+    mime-types-data (3.2021.0704)
     mini_mime (1.1.0)
     mini_portile2 (2.5.3)
     mini_racer (0.4.0)
@@ -230,6 +230,7 @@ GEM
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
+    nanoid (2.0.0)
     netrc (0.11.0)
     nio4r (2.5.7)
     nokogiri (1.11.7)
@@ -470,7 +471,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
-  auth0 (~> 5.1)
+  auth0 (~> 5.2)
   better_errors
   bootsnap (>= 1.1.0)
   brakeman
@@ -498,6 +499,7 @@ DEPENDENCIES
   mail-notify
   mini_racer
   monetize
+  nanoid
   omniauth-auth0 (~> 3.0)
   omniauth-rails_csrf_protection (~> 1.0.0)
   parser (~> 2.6.3.0)

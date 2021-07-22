@@ -12,7 +12,6 @@ class Activity < ApplicationRecord
 
   FORM_STEPS = [
     :identifier,
-    :roda_identifier,
     :purpose,
     :objectives,
     :sector_category,
@@ -78,14 +77,13 @@ class Activity < ApplicationRecord
 
   FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete", "recipient_country", "recipient_region")
 
-  strip_attributes only: [:delivery_partner_identifier, :roda_identifier_fragment]
+  strip_attributes only: [:delivery_partner_identifier]
 
   validates :level, presence: true
   validates :parent, absence: true, if: proc { |activity| activity.fund? }
   validates :parent, presence: true, unless: proc { |activity| activity.fund? }
   validates_with OrganisationValidator
   validates :delivery_partner_identifier, presence: true, on: :identifier_step
-  validates_with RodaIdentifierValidator, on: :roda_identifier_step
   validates :title, :description, presence: true, on: :purpose_step
   validates :objectives, presence: true, on: :objectives_step, unless: proc { |activity| activity.fund? }
   validates :sector_category, presence: true, on: :sector_category_step
@@ -123,7 +121,7 @@ class Activity < ApplicationRecord
   validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :is_project?
 
   validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
-  validates :roda_identifier_compound, uniqueness: true, allow_nil: true
+  validates :roda_identifier, uniqueness: true, allow_nil: true
   validates :transparency_identifier, uniqueness: true, allow_nil: true
   validates :planned_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.actual_start_date.present? }
   validates :actual_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.planned_start_date.present? }
@@ -138,6 +136,7 @@ class Activity < ApplicationRecord
   belongs_to :parent, optional: true, class_name: :Activity, foreign_key: "parent_id"
 
   has_many :child_activities, foreign_key: "parent_id", class_name: "Activity"
+  belongs_to :originating_report, class_name: "Report", optional: true
   belongs_to :organisation
   belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
   has_many :implementing_organisations, dependent: :destroy
@@ -208,7 +207,7 @@ class Activity < ApplicationRecord
 
   scope :programmes, -> { where(level: :programme) }
   scope :publishable_to_iati, -> { where(form_state: :complete, publish_to_iati: true) }
-  scope :with_roda_identifier, -> { where.not(roda_identifier_compound: nil) }
+  scope :with_roda_identifier, -> { where.not(roda_identifier: nil) }
 
   scope :current, -> {
                     where.not(programme_status: NON_CURRENT_PROGRAMME_STATUSES).or(where(programme_status: nil))
@@ -232,7 +231,7 @@ class Activity < ApplicationRecord
   end
 
   def self.by_roda_identifier(identifier)
-    find_by(roda_identifier_compound: identifier)
+    find_by(roda_identifier: identifier)
   end
 
   def descendants
@@ -422,51 +421,6 @@ class Activity < ApplicationRecord
     end
   end
 
-  def roda_identifier
-    roda_identifier_compound
-  end
-
-  def can_set_roda_identifier?
-    identifier_fragments = roda_identifier_fragment_chain
-    identifier_fragments[0..-2].all?(&:present?) && identifier_fragments.last.blank?
-  end
-
-  def cache_roda_identifier
-    identifier_fragments = roda_identifier_fragment_chain
-    return false unless identifier_fragments.all?(&:present?)
-
-    compound = identifier_fragments[0..2].join("-")
-    compound << identifier_fragments[3] if identifier_fragments.size == 4
-
-    self.roda_identifier_compound = compound
-
-    self.transparency_identifier ||= [
-      Organisation::SERVICE_OWNER_IATI_REFERENCE,
-      compound.gsub(/[^a-z0-9-]+/i, "-"),
-    ].join("-")
-
-    true
-  end
-
-  def cache_roda_identifier!
-    unless cache_roda_identifier
-      raise TypeError, "Attempted to generate a RODA ID but some parent identifiers are blank"
-    end
-  end
-
-  def roda_identifier_compound=(roda_identifier)
-    if roda_identifier_compound.blank?
-      super
-    else
-      raise TypeError, "Activity #{id} already has a compound RODA identifier"
-    end
-  end
-
-  private def roda_identifier_fragment_chain
-    activity_chain = parent_activities + [self]
-    activity_chain.map(&:roda_identifier_fragment)
-  end
-
   def iati_identifier
     if previous_identifier.present?
       previous_identifier
@@ -531,13 +485,13 @@ class Activity < ApplicationRecord
 
   def self.hierarchically_grouped_projects
     activities = all.to_a
-    projects = activities.select(&:project?).sort_by { |a| a.roda_identifier_fragment.to_s }
+    projects = activities.select(&:project?).sort_by { |a| a.roda_identifier.to_s }
     third_party_projects = activities.select(&:third_party_project?).group_by(&:parent_id)
 
     grouped_projects = []
     projects.each do |project|
       grouped_projects << project
-      grouped_projects += third_party_projects.fetch(project.id, []).sort_by { |a| a.roda_identifier_fragment.to_s }
+      grouped_projects += third_party_projects.fetch(project.id, []).sort_by { |a| a.roda_identifier.to_s }
     end
     grouped_projects
   end

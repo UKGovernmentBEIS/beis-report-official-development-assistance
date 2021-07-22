@@ -10,7 +10,7 @@ module Activities
       end
 
       def column_to_csv_column_mapping
-        Converter::FIELDS.merge(parent_id: "Parent RODA ID")
+        Converter::FIELDS.merge(parent_id: "Parent RODA ID", roda_identifier: "RODA ID")
       end
     }
 
@@ -53,7 +53,7 @@ module Activities
     end
 
     def create_activity(row, index)
-      if row["RODA ID Fragment"].present? && row["Parent RODA ID"].present?
+      if row["Parent RODA ID"].present?
         creator = ActivityCreator.new(row: row, uploader: @uploader, delivery_partner_organisation: @delivery_partner_organisation)
         creator.create
         created << creator.activity unless creator.errors.any?
@@ -65,9 +65,7 @@ module Activities
     end
 
     def update_activity(row, index)
-      if row["RODA ID Fragment"].present?
-        add_error(index, :roda_identifier_fragment, row["RODA ID Fragment"], I18n.t("importer.errors.activity.cannot_update.fragment_present")) && return
-      elsif row["Parent RODA ID"].present?
+      if row["Parent RODA ID"].present?
         add_error(index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
       elsif row["Delivery Partner Identifier"].present?
         add_error(index, :delivery_partner_identifier, row["Delivery Partner Identifier"], I18n.t("importer.errors.activity.cannot_update.delivery_partner_identifier_present")) && return
@@ -102,7 +100,7 @@ module Activities
         @converter = Converter.new(row, :update)
 
         if @activity && !ActivityPolicy.new(@uploader, @activity).update?
-          @errors[:roda_identifier_fragment] = [nil, I18n.t("importer.errors.activity.unauthorised")]
+          @errors[:roda_identifier] = [nil, I18n.t("importer.errors.activity.unauthorised")]
           return
         end
 
@@ -151,6 +149,7 @@ module Activities
             changes: changes,
             reference: "Import from CSV",
             activity: @activity,
+            trackable: @activity,
             report: report
           )
       end
@@ -191,7 +190,6 @@ module Activities
           a.form_state = "complete"
         }
         @activity.assign_attributes(@converter.to_h)
-        @activity.cache_roda_identifier
 
         if @activity.sdg_1 || @activity.sdg_2 || @activity.sdg_3
           @activity.sdgs_apply = true
@@ -274,7 +272,6 @@ module Activities
         recipient_country: "Recipient Country",
         intended_beneficiaries: "Intended Beneficiaries",
         delivery_partner_identifier: "Delivery partner identifier",
-        roda_identifier_fragment: "RODA ID Fragment",
         gdi: "GDI",
         gcrf_strategic_area: "GCRF Strategic Area",
         gcrf_challenge_area: "GCRF Challenge Area",

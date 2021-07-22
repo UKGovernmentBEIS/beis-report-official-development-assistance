@@ -13,6 +13,7 @@ class Report < ApplicationRecord
   has_many :transactions
   has_many :forecasts
   has_many :historical_events
+  has_many :new_activities, class_name: "Activity", foreign_key: :originating_report_id
 
   validate :activity_must_be_a_fund
   validates :deadline, date_not_in_past: true, date_within_boundaries: true, on: :edit
@@ -81,10 +82,6 @@ class Report < ApplicationRecord
 
   def reportable_activities
     Activity::ProjectsForReportFinder.new(report: self, scope: Activity.reportable).call.with_roda_identifier
-  end
-
-  def activities_created
-    reportable_activities.where(created_at: financial_period)
   end
 
   def activities_updated

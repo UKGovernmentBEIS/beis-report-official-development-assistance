@@ -2,8 +2,7 @@ FactoryBot.define do
   factory :__activity do
     title { Faker::Lorem.sentence }
     delivery_partner_identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
-    roda_identifier_fragment { Faker::Alphanumeric.alpha(number: 5) }
-    roda_identifier_compound { nil }
+    roda_identifier { nil }
     beis_identifier { nil }
     description { Faker::Lorem.paragraph }
     sector_category { "111" }
@@ -34,7 +33,12 @@ FactoryBot.define do
     form_state { "complete" }
 
     before(:create) do |activity|
-      activity.cache_roda_identifier
+      if activity.roda_identifier.blank? && activity.parent.present?
+        activity.roda_identifier = Activity::RodaIdentifierGenerator.new(
+          parent_activity: activity.parent,
+          extending_organisation: activity.extending_organisation,
+        ).generate
+      end
     end
 
     trait :with_report do
@@ -51,22 +55,22 @@ FactoryBot.define do
       association :extending_organisation, factory: :beis_organisation
 
       trait :gcrf do
-        roda_identifier_fragment { "GCRF" }
+        roda_identifier { "GCRF" }
         title { "Global Challenges Research Fund (GCRF)" }
         source_fund_code { Fund.by_short_name("GCRF").id }
 
         initialize_with do
-          Activity.find_or_initialize_by(roda_identifier_fragment: "GCRF")
+          Activity.find_or_initialize_by(roda_identifier: "GCRF")
         end
       end
 
       trait :newton do
-        roda_identifier_fragment { "NF" }
+        roda_identifier { "NF" }
         title { "Newton Fund" }
         source_fund_code { Fund.by_short_name("NF").id }
 
         initialize_with do
-          Activity.find_or_initialize_by(roda_identifier_fragment: "NF")
+          Activity.find_or_initialize_by(roda_identifier: "NF")
         end
       end
     end
@@ -177,7 +181,6 @@ FactoryBot.define do
   trait :at_identifier_step do
     form_state { "identifier" }
     delivery_partner_identifier { nil }
-    roda_identifier_fragment { nil }
     title { nil }
     description { nil }
     objectives { nil }
@@ -193,39 +196,6 @@ FactoryBot.define do
     geography { nil }
     recipient_region { nil }
     recipient_country { nil }
-    collaboration_type { nil }
-    aid_type { nil }
-    policy_marker_gender { nil }
-    policy_marker_climate_change_adaptation { nil }
-    policy_marker_climate_change_mitigation { nil }
-    policy_marker_biodiversity { nil }
-    policy_marker_desertification { nil }
-    policy_marker_disability { nil }
-    policy_marker_disaster_risk_reduction { nil }
-    policy_marker_nutrition { nil }
-    oda_eligibility_lead { nil }
-  end
-
-  trait :at_roda_identifier_step do
-    form_state { "roda_identifier" }
-    roda_identifier_fragment { nil }
-    title { nil }
-    description { nil }
-    objectives { nil }
-    sector_category { nil }
-    sector { nil }
-    call_present { nil }
-    programme_status { nil }
-    country_delivery_partners { nil }
-    planned_start_date { nil }
-    planned_end_date { nil }
-    actual_start_date { nil }
-    actual_end_date { nil }
-    geography { nil }
-    recipient_region { nil }
-    recipient_country { nil }
-    intended_beneficiaries { nil }
-    gdi { nil }
     collaboration_type { nil }
     aid_type { nil }
     policy_marker_gender { nil }

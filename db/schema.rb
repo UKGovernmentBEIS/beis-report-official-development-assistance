@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_30_094140) do
-
+ActiveRecord::Schema.define(version: 2021_07_19_082105) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -44,8 +43,7 @@ ActiveRecord::Schema.define(version: 2021_06_30_094140) do
     t.date "call_open_date"
     t.date "call_close_date"
     t.string "intended_beneficiaries", array: true
-    t.string "roda_identifier_fragment"
-    t.string "roda_identifier_compound"
+    t.string "roda_identifier"
     t.boolean "requires_additional_benefitting_countries"
     t.string "gdi"
     t.integer "total_applications"
@@ -77,11 +75,13 @@ ActiveRecord::Schema.define(version: 2021_06_30_094140) do
     t.string "channel_of_delivery_code"
     t.integer "source_fund_code"
     t.string "gcrf_strategic_area", default: [], array: true
+    t.uuid "originating_report_id"
     t.index ["extending_organisation_id"], name: "index_activities_on_extending_organisation_id"
     t.index ["level"], name: "index_activities_on_level"
     t.index ["organisation_id"], name: "index_activities_on_organisation_id"
+    t.index ["originating_report_id"], name: "index_activities_on_originating_report_id"
     t.index ["parent_id"], name: "index_activities_on_parent_id"
-    t.index ["roda_identifier_compound"], name: "index_activities_on_roda_identifier_compound"
+    t.index ["roda_identifier"], name: "index_activities_on_roda_identifier"
     t.index ["transparency_identifier"], name: "index_activities_on_transparency_identifier", unique: true
   end
 
@@ -184,8 +184,11 @@ ActiveRecord::Schema.define(version: 2021_06_30_094140) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "report_id"
+    t.string "trackable_id"
+    t.string "trackable_type"
     t.index ["activity_id"], name: "index_historical_events_on_activity_id"
     t.index ["report_id"], name: "index_historical_events_on_report_id"
+    t.index ["trackable_type", "trackable_id"], name: "index_historical_events_on_trackable_type_and_trackable_id"
     t.index ["user_id"], name: "index_historical_events_on_user_id"
   end
 

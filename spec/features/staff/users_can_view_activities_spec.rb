@@ -1,12 +1,4 @@
 RSpec.feature "Users can view activities" do
-  context "when the user is not logged in" do
-    it "redirects the user to the root path" do
-      activity = create(:programme_activity)
-      visit organisation_activity_path(activity.organisation, activity)
-      expect(current_path).to eq(root_path)
-    end
-  end
-
   shared_examples "shows activities" do |params|
     let(:user) { create(params[:user_type]) }
     let(:organisation) { params[:user_type] == :beis_user ? create(:delivery_partner_organisation) : user.organisation }
@@ -22,8 +14,8 @@ RSpec.feature "Users can view activities" do
       authenticate!(user: user)
     end
 
-    scenario "they can see and navigate current activities", js: true do
-      visit activities_path
+    scenario "they can see and navigate current delivery partner activities", js: true do
+      visit activities_path(organisation_id: organisation.id)
 
       expect(page).to have_content t("page_title.activity.index")
 
@@ -65,11 +57,19 @@ RSpec.feature "Users can view activities" do
     end
 
     scenario "they can see historic activities" do
-      visit historic_activities_path
-
-      expect(page).to have_content t("page_title.activity.index")
+      visit historic_organisation_activities_path(historic_programme.extending_organisation_id)
 
       expect(page).to have_content(historic_programme.title)
+    end
+
+    scenario "does not see activities which belong to a different organisation" do
+      other_programme = create(:programme_activity, extending_organisation: create(:delivery_partner_organisation))
+      other_project = create(:project_activity, organisation: create(:delivery_partner_organisation))
+
+      visit activities_path(organisation_id: organisation.id)
+
+      expect(page).to_not have_content(other_programme.title)
+      expect(page).to_not have_content(other_project.title)
     end
   end
 
@@ -77,22 +77,16 @@ RSpec.feature "Users can view activities" do
     include_examples "shows activities", {
       user_type: :beis_user,
     }
+    scenario "cannot add a child activity to a programme (level C) activity" do
+      delivery_partner_organisation = create(:delivery_partner_organisation)
+      gcrf = create(:fund_activity, :gcrf)
+      programme = create(:programme_activity, parent: gcrf, extending_organisation: delivery_partner_organisation)
+      _report = create(:report, :active, fund: gcrf, organisation: delivery_partner_organisation)
 
-    scenario "only delivery partners are listed" do
-      delivery_partners = create_list(:delivery_partner_organisation, 3)
-      matched_effort_provider = create(:matched_effort_provider)
-      external_income_provider = create(:external_income_provider)
+      visit organisation_activity_path(programme.organisation, programme)
+      click_on t("tabs.activity.children")
 
-      visit activities_path(organisation_id: user.organisation)
-
-      within "select#organisation_id" do
-        delivery_partners.each do |delivery_partner|
-          expect(page).to have_content(delivery_partner.name)
-        end
-
-        expect(page).to_not have_content(matched_effort_provider.name)
-        expect(page).to_not have_content(external_income_provider.name)
-      end
+      expect(page).to_not have_link(t("action.activity.add_child"), exact: true)
     end
   end
 
@@ -101,111 +95,6 @@ RSpec.feature "Users can view activities" do
       include_examples "shows activities", {
         user_type: :delivery_partner_user,
       }
-    end
-
-    context "when viewing a single activity" do
-      let(:user) { create(:delivery_partner_user) }
-
-      before do
-        authenticate!(user: user)
-      end
-
-      scenario "they do not see a Publish to Iati column & status against projects" do
-        programme = create(:programme_activity, extending_organisation: user.organisation)
-        project = create(:project_activity, organisation: user.organisation, parent: programme)
-
-        visit organisation_activity_path(user.organisation.id, project)
-
-        click_on t("tabs.activity.details")
-        click_on programme.title
-        click_on t("tabs.activity.children")
-
-        expect(page).to_not have_content t("summary.label.activity.publish_to_iati.label")
-
-        within("##{project.id}") do
-          expect(page).to_not have_content t("summary.label.activity.publish_to_iati.true")
-        end
-      end
-
-      scenario "the activity financials can be viewed" do
-        activity = create(:project_activity, organisation: user.organisation)
-        transaction = create(:transaction, parent_activity: activity)
-        budget = create(:budget, parent_activity: activity)
-
-        visit organisation_activity_financials_path(activity.organisation, activity)
-        within ".govuk-tabs__list-item--selected" do
-          expect(page).to have_content "Financials"
-        end
-        expect(page).to have_content transaction.value
-        expect(page).to have_content budget.value
-      end
-
-      scenario "the activity details can be viewed" do
-        activity = create(:project_activity, organisation: user.organisation)
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-
-        within ".govuk-tabs__list-item--selected" do
-          expect(page).to have_content "Details"
-        end
-        expect(page).to have_content activity.title
-        expect(page).to have_link t("page_content.activity.implementing_organisation.button.new")
-      end
-
-      scenario "an activity can be viewed" do
-        programme = create(:programme_activity, extending_organisation: user.organisation)
-        activity = create(:project_activity, parent: programme, organisation: user.organisation, sdgs_apply: true, sdg_1: 5)
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-
-        click_on(programme.title)
-        click_on t("tabs.activity.children")
-        click_on activity.title
-        click_on t("tabs.activity.details")
-
-        activity_presenter = ActivityPresenter.new(activity)
-
-        expect(page).to have_content activity_presenter.roda_identifier
-        expect(page).to have_content activity_presenter.sector
-        expect(page).to have_content activity_presenter.title
-        expect(page).to have_content activity_presenter.description
-        expect(page).to have_content activity_presenter.planned_start_date
-        expect(page).to have_content activity_presenter.planned_end_date
-        expect(page).to have_content activity_presenter.recipient_region
-
-        within ".sustainable_development_goals" do
-          expect(page).to have_content "Gender Equality"
-        end
-      end
-
-      scenario "activities have human readable date format" do
-        travel_to Time.zone.local(2020, 1, 29) do
-          activity = create(:project_activity, planned_start_date: Date.new(2020, 2, 3),
-                                               planned_end_date: Date.new(2024, 6, 22),
-                                               actual_start_date: Date.new(2020, 1, 2),
-                                               actual_end_date: Date.new(2020, 1, 29),
-                                               organisation: user.organisation)
-
-          visit organisation_activity_path(user.organisation, activity)
-          click_on t("tabs.activity.details")
-
-          within(".planned_start_date") do
-            expect(page).to have_content("3 Feb 2020")
-          end
-
-          within(".planned_end_date") do
-            expect(page).to have_content("22 Jun 2024")
-          end
-
-          within(".actual_start_date") do
-            expect(page).to have_content("2 Jan 2020")
-          end
-
-          within(".actual_end_date") do
-            expect(page).to have_content("29 Jan 2020")
-          end
-        end
-      end
     end
   end
 end

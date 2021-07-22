@@ -6,8 +6,8 @@ RSpec.describe ActivityHelper, type: :helper do
   describe "#step_is_complete_or_next?" do
     context "when the activity has passed the identification step" do
       it "returns true for the purpose fields" do
-        activity = build(:project_activity, :at_roda_identifier_step)
-        expect(helper.step_is_complete_or_next?(activity: activity, step: "purpose")).to be(true)
+        activity = build(:project_activity, :at_purpose_step)
+        expect(helper.step_is_complete_or_next?(activity: activity, step: "objectives")).to be(true)
       end
 
       it "returns false for the next fields following the purpose field" do

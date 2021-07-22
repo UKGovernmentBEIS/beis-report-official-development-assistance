@@ -17,11 +17,7 @@ Rails.application.routes.draw do
   scope module: "staff" do
     get "home", to: "home#show"
     resources :users
-    resources :activities, only: [:index] do
-      collection do
-        get "historic" => "activities#historic"
-      end
-    end
+    resources :activities, only: [:index]
 
     constraints role: /delivery_partners|matched_effort_providers|external_income_providers/ do
       get "organisations/(:role)", to: "organisations#index", defaults: {role: "delivery_partners"}, as: :organisations
@@ -37,10 +33,12 @@ Rails.application.routes.draw do
     end
 
     resources :organisations, except: [:destroy, :index, :new] do
-      resources :activities, except: [:index, :create, :destroy] do
+      resources :activities, except: [:create, :destroy] do
+        collection do
+          get "historic" => "activities#historic"
+        end
         get "financials" => "activity_financials#show"
         get "details" => "activity_details#show"
-
         resource :children, controller: :activity_children, only: [:show, :create]
 
         get "comments" => "activity_comments#show"

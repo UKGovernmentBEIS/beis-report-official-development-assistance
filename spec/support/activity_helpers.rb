@@ -52,6 +52,6 @@ module ActivityHelpers
   def associated_fund_is_newton?(activity)
     return if activity.nil?
 
-    activity.associated_fund.roda_identifier_fragment == "NF"
+    activity.associated_fund.roda_identifier == "NF"
   end
 end

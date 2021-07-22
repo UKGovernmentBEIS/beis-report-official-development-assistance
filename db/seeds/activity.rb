@@ -1,14 +1,14 @@
 beis = Organisation.service_owner
 
 gcrf_fund_params = FactoryBot.build(:fund_activity,
-  roda_identifier_fragment: "GCRF",
+  roda_identifier: "GCRF",
   title: "Global Challenges Research Fund (GCRF)",
   organisation: beis).attributes
 
 gcrf_fund = Activity.find_or_create_by(gcrf_fund_params)
 
 newton_fund_params = FactoryBot.build(:fund_activity,
-  roda_identifier_fragment: "NF",
+  roda_identifier: "NF",
   title: "Newton Fund",
   organisation: beis).attributes
 
@@ -81,7 +81,6 @@ Activity.find_or_create_by(third_party_project_params)
   Activity.third_party_project,
 ].each do |set|
   set.each do |activity|
-    activity.cache_roda_identifier! unless activity.roda_identifier.present?
     activity.save!
   end
 end

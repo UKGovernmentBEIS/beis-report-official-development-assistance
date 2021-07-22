@@ -8,6 +8,7 @@ RSpec.describe Activity::HistoricalEventsGrouper do
   let!(:event1) do
     HistoricalEvent.create(
       activity: activity,
+      trackable: activity,
       reference: "Update to Activity programme_status",
       user: user1,
       created_at: Time.zone.parse("02-Jul-2021 12:08:00")
@@ -16,6 +17,7 @@ RSpec.describe Activity::HistoricalEventsGrouper do
   let!(:event2) do
     HistoricalEvent.create(
       activity: activity,
+      trackable: activity,
       reference: "Update to Activity programme_status",
       user: user1,
       created_at: Time.zone.parse("02-Jul-2021 12:08:10")
@@ -25,6 +27,7 @@ RSpec.describe Activity::HistoricalEventsGrouper do
   let!(:event3) do
     HistoricalEvent.create(
       activity: activity,
+      trackable: activity,
       reference: "Import from CSV",
       user: user2,
       created_at: Time.zone.parse("07-Jul-2021 10:45:20")
@@ -33,6 +36,7 @@ RSpec.describe Activity::HistoricalEventsGrouper do
   let!(:event4) do
     HistoricalEvent.create(
       activity: activity,
+      trackable: activity,
       reference: "Import from CSV",
       user: user2,
       created_at: Time.zone.parse("07-Jul-2021 10:45:30")

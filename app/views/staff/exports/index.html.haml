@@ -11,9 +11,15 @@
       %table.govuk-table
         %thead.govuk-table__head
           %tr.govuk-table__row
-            %th.govuk-table__header{scope: "col"} Delivery partner
+            %th.govuk-table__header{scope: "col"}
+              = t("table.header.organisation.name")
+            %th.govuk-table__header{scope: "col"}
+              = t("table.header.default.actions")
+
         %tbody.govuk-table__body
           - @organisations.each do |organisation|
             %tr.govuk-table__row
               %td.govuk-table__cell
-                = link_to organisation.name, exports_organisation_path(organisation), class: "govuk-link"
+                = organisation.name
+              %td.govuk-table__cell
+                = a11y_action_link("View exports", exports_organisation_path(organisation), "for #{organisation.name}", ["govuk-link--no-visited-state"])

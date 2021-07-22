@@ -49,7 +49,7 @@
                   %tbody.govuk-table__body
                     - events.each do |event|
 
-                      %tr.govuk-body-s.govuk-table__row[event]
+                      %tr.govuk-body-s.govuk-table__row[event]{class: event.trackable_type.downcase}
                         %td.govuk-table__cell.property= event.value_changed
                         %td.govuk-table__cell.previous-value= event.previous_value
                         %td.govuk-table__cell.new-value= event.new_value

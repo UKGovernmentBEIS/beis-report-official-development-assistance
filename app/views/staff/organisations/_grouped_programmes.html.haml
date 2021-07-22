@@ -2,8 +2,7 @@
   .govuk-grid-row
     .govuk-grid-column-full
       %h2.govuk-heading-m
-        = t("page_content.organisation.programmes")
-
+        Programe (level B) activities
       - grouped_programmes.each do |fund, activities|
         - if activities.any?
           %table{id: fund.id, class: "govuk-table"}
@@ -14,7 +13,7 @@
                 %th{scope: "col", class: "govuk-table__header govuk-!-width-one-half"}
                   = Activity.human_attribute_name(:title)
                 %th{scope: "col", class: "govuk-table__header"}
-                  = Activity.human_attribute_name(:roda_identifier_compound)
+                  = Activity.human_attribute_name(:roda_identifier)
                 %th{scope: "col", class: "govuk-table__header"}
 
             %tbody{class: "govuk-table__body"}
@@ -23,7 +22,7 @@
                   %td{scope: "row", class: "govuk-table__cell"}
                     = activity.title
                   %td{class: "govuk-table__cell"}
-                    = activity.roda_identifier_compound
+                    = activity.roda_identifier
                   %td{class: "govuk-table__cell"}
                     - if policy(activity).create_child?
                       = link_to(t("action.activity.add_child"), organisation_activity_children_path(activity.extending_organisation, activity), method: :post, class: "govuk-link govuk-!-margin-right-4")
