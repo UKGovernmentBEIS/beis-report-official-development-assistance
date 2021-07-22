@@ -211,39 +211,6 @@ FactoryBot.define do
     oda_eligibility_lead { nil }
   end
 
-  trait :at_roda_identifier_step do
-    form_state { "roda_identifier" }
-    roda_identifier_fragment { nil }
-    title { nil }
-    description { nil }
-    objectives { nil }
-    sector_category { nil }
-    sector { nil }
-    call_present { nil }
-    programme_status { nil }
-    country_delivery_partners { nil }
-    planned_start_date { nil }
-    planned_end_date { nil }
-    actual_start_date { nil }
-    actual_end_date { nil }
-    geography { nil }
-    recipient_region { nil }
-    recipient_country { nil }
-    intended_beneficiaries { nil }
-    gdi { nil }
-    collaboration_type { nil }
-    aid_type { nil }
-    policy_marker_gender { nil }
-    policy_marker_climate_change_adaptation { nil }
-    policy_marker_climate_change_mitigation { nil }
-    policy_marker_biodiversity { nil }
-    policy_marker_desertification { nil }
-    policy_marker_disability { nil }
-    policy_marker_disaster_risk_reduction { nil }
-    policy_marker_nutrition { nil }
-    oda_eligibility_lead { nil }
-  end
-
   trait :at_purpose_step do
     form_state { "purpose" }
     title { nil }

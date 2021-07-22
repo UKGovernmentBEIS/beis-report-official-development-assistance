@@ -1003,42 +1003,6 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#can_set_roda_identifier?" do
-    let!(:fund) { create(:fund_activity, roda_identifier_fragment: "Lvl/A") }
-    let!(:programme) { create(:programme_activity, parent: fund, roda_identifier_fragment: "Level/B") }
-    let!(:project) { create(:project_activity, parent: programme, roda_identifier_fragment: nil) }
-
-    context "for a top-level (fund) activity" do
-      it "is true when the activity does not have a RODA identifier" do
-        fund.roda_identifier_fragment = nil
-        expect(fund.can_set_roda_identifier?).to be(true)
-      end
-
-      it "is false when the activity already has a RODA identifier" do
-        expect(fund.can_set_roda_identifier?).to be(false)
-      end
-    end
-
-    it "is true when all parent identifiers are present" do
-      expect(project.can_set_roda_identifier?).to be(true)
-    end
-
-    it "is false if the activity has a RODA identifier" do
-      project.update!(roda_identifier_fragment: "Level/C")
-      expect(project.can_set_roda_identifier?).to be(false)
-    end
-
-    it "is false if the parent identifier is missing" do
-      programme.update!(roda_identifier_fragment: nil)
-      expect(project.can_set_roda_identifier?).to be(false)
-    end
-
-    it "is false if the grandparent identifier is missing" do
-      fund.update!(roda_identifier_fragment: nil)
-      expect(project.can_set_roda_identifier?).to be(false)
-    end
-  end
-
   describe "#actual_total_for_report_financial_quarter" do
     let(:current_quarter) { FinancialQuarter.for_date(Date.today) }
 

@@ -89,8 +89,6 @@ RSpec.feature "Users can create a project" do
 
         fill_in "activity[delivery_partner_identifier]", with: "no-country-selected"
         click_button t("form.button.activity.submit")
-        fill_in "activity[roda_identifier_fragment]", with: "roda-identifier"
-        click_button t("form.button.activity.submit")
         fill_in "activity[title]", with: "My title"
         fill_in "activity[description]", with: "My description"
         click_button t("form.button.activity.submit")
@@ -138,30 +136,28 @@ RSpec.feature "Users can create a project" do
         scenario "'country_delivery_partners' can be present" do
           newton_programme = create(:programme_activity, extending_organisation: user.organisation, parent: newton_fund)
           _report = create(:report, state: :active, organisation: user.organisation, fund: newton_fund)
-          identifier = "newton-project"
 
           visit organisation_activity_children_path(newton_programme.extending_organisation, newton_programme)
           click_on t("action.activity.add_child")
 
-          fill_in_activity_form(level: "project", roda_identifier_fragment: identifier, parent: newton_programme)
+          fill_in_activity_form(level: "project", parent: newton_programme)
 
           expect(page).to have_content t("action.project.create.success")
-          activity = Activity.find_by(roda_identifier_fragment: identifier)
+          activity = Activity.order("created_at ASC").last
           expect(activity.country_delivery_partners).to eql(["National Council for the State Funding Agencies (CONFAP)"])
         end
 
         scenario "'country_delivery_partners' is however not mandatory for Newton funded projects" do
           newton_programme = create(:programme_activity, extending_organisation: user.organisation, parent: newton_fund)
           _report = create(:report, state: :active, organisation: user.organisation, fund: newton_fund)
-          identifier = "newton-project"
 
           visit organisation_activity_children_path(newton_programme.extending_organisation, newton_programme)
           click_on t("action.activity.add_child")
 
-          fill_in_activity_form(level: "project", roda_identifier_fragment: identifier, parent: newton_programme, country_delivery_partners: nil)
+          fill_in_activity_form(level: "project", parent: newton_programme, country_delivery_partners: nil)
 
           expect(page).to have_content t("action.project.create.success")
-          activity = Activity.find_by(roda_identifier_fragment: identifier)
+          activity = Activity.order("created_at ASC").last
           expect(activity.country_delivery_partners).to be_empty
         end
       end

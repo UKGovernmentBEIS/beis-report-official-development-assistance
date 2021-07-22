@@ -34,10 +34,6 @@ class Activity
       assign_attributes_for_step("delivery_partner_identifier")
     end
 
-    def set_roda_identifier
-      assign_attributes_for_step("roda_identifier_fragment")
-    end
-
     def set_purpose
       activity.assign_attributes(title: params_for("title"), description: params_for("description"))
     end

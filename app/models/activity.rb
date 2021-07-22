@@ -12,7 +12,6 @@ class Activity < ApplicationRecord
 
   FORM_STEPS = [
     :identifier,
-    :roda_identifier,
     :purpose,
     :objectives,
     :sector_category,
@@ -421,16 +420,6 @@ class Activity < ApplicationRecord
     when "project" then "third_party_project"
     when "third_party_project" then raise "no level below third_party_project"
     end
-  end
-
-  def can_set_roda_identifier?
-    identifier_fragments = roda_identifier_fragment_chain
-    identifier_fragments[0..-2].all?(&:present?) && identifier_fragments.last.blank?
-  end
-
-  private def roda_identifier_fragment_chain
-    activity_chain = parent_activities + [self]
-    activity_chain.map(&:roda_identifier_fragment)
   end
 
   def iati_identifier
