@@ -757,9 +757,11 @@
 - Create and populate an activity's RODA identifier automatically
 
 ## [unreleased]
+
 - Show the financial quarter of the actuals spend on the Report view
 - Content and layout improvements to the actual spend tab on Report
 - Content and layout improvements to the actual spend upload page
+- Rework the way reports are shown to Delivery Partners and Service Owners
 
 - Fix: 'spending breakdown' download is no longer empty
 
