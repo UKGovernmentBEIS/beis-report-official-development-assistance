@@ -40,6 +40,34 @@ the Delivery Partner Identifier.
 
 ## RODA Identifier
 
+Starting with activities reported in Q2 2021-2022, the previous RODA identifier
+scheme was replaced with a new one. Activities prior to this retain their
+existing RODA identifier, but any new activities will have a new, auto generated
+one assigned.
+
+The RODA identifier still reflects the hierarchy of activities, with each level
+adding to the parent identifier. For this reason, new activities added to older
+parents will have a hybrid identifier.
+
+The main motivation for this change was to remove both BEIS and delivery
+partners from the creation of the identifiers, which was a heavy burden and
+slowed the reporting process drastically, users no longer have to enter any
+information into the service in order to create a new activity and it's
+identifier.
+
+The RODA identifier retains the constraints of the legacy version.
+
+For each new activity in the hierarchy we create a unique, seven character
+string for each new activity, from the following characters:
+
+`23456789ABCDEFGHJKLMNPQRSTUVWXYZ`
+
+The RODA identifier also includes the fund code (level A activity code), this is
+achieved by adding these two values to the identifier for top level activities
+(level B).
+
+## RODA Identifier (legacy version <= Q1 2021-2022)
+
 The identifier by which RODA knows an activity, and should be regarded as the
 canonical identifier for an activity. It is used to identify the activity in
 exported data. It must be globally unique; no two activities within RODA, at any
