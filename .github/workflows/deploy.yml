@@ -92,6 +92,38 @@ jobs:
       - uses: actions/checkout@v2
       - name: Deploy latest code to Staging
         run: script/deploy-terraform
+  deploy_to_training:
+    needs: build_and_push_to_dockerhub
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    env:
+      TF_VAR_docker_image: ${{ needs.build_and_push_to_dockerhub.outputs.docker_tag }}
+      TF_VAR_docker_username: ${{ secrets.DOCKER_USERNAME }}
+      TF_VAR_docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      TF_VAR_environment: "pentest"
+      TF_VAR_secret_key_base: ${{ secrets.TRAINING_SECRET_KEY_BASE }}
+      TF_VAR_auth0_client_id: ${{ secrets.TRAINING_AUTH0_CLIENT_ID }}
+      TF_VAR_auth0_client_secret: ${{ secrets.TRAINING_AUTH0_CLIENT_SECRET }}
+      TF_VAR_auth0_domain: ${{ secrets.TRAINING_AUTH0_DOMAIN }}
+      TF_VAR_notify_key: ${{ secrets.TRAINING_NOTIFY_KEY }}
+      TF_VAR_notify_welcome_email_template: ${{ secrets.TRAINING_NOTIFY_WELCOME_EMAIL_TEMPLATE }}
+      TF_VAR_notify_view_template: "b541df04-add8-458e-a7d3-2e156386e150"
+      TF_VAR_rollbar_access_token: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
+      TF_VAR_skylight_access_token: ${{ secrets.SKYLIGHT_ACCESS_TOKEN }}
+      TF_VAR_skylight_env: "pentest"
+      TF_VAR_skylight_enable_sidekiq: ${{ secrets.SKYLIGHT_ENABLE_SIDEKIQ }}
+      TF_VAR_additional_hostnames: ${{ secrets.TRAINING_ADDITIONAL_HOSTNAMES }}
+      TF_VAR_papertrail_destination: ${{ secrets.TRAINING_PAPERTRAIL_DESTINATION }}
+      TF_VAR_google_tag_manager_container_id: ${{ secrets.TRAINING_GOOGLE_TAG_MANAGER_CONTAINER_ID }}
+      TF_VAR_google_tag_manager_environment_auth: ${{ secrets.TRAINING_GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH }}
+      TF_VAR_google_tag_manager_environment_preview: ${{ secrets.TRAINING_GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW }}
+      TF_VAR_custom_domain: ${{ secrets.TRAINING_CUSTOM_DOMAIN }}
+      TF_VAR_custom_hostname: ${{ secrets.TRAINING_CUSTOM_HOSTNAME }}
+      TF_VAR_robot_noindex: "true"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy latest code to the Training environment
+        run: script/deploy-terraform
   check_and_notify:
     needs: deploy_to_production
     if: github.ref == 'refs/heads/master'
