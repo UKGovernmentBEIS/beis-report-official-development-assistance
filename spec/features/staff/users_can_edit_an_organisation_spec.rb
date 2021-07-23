@@ -14,21 +14,6 @@ RSpec.feature "Users can edit organisations" do
     successfully_edit_an_organisation
   end
 
-  scenario "organisation update is tracked by public_activity" do
-    user = create(:administrator, organisation: beis_organisation)
-    authenticate!(user: user)
-
-    PublicActivity.with_tracking do
-      successfully_edit_an_organisation(organisation_name: "My Edited Organisation")
-
-      organisation = Organisation.find_by(name: "My Edited Organisation")
-      auditable_event = PublicActivity::Activity.find_by(trackable_id: organisation.id)
-      expect(auditable_event.key).to eq "organisation.update"
-      expect(auditable_event.owner_id).to eq user.id
-      expect(auditable_event.trackable_id).to eq organisation.id
-    end
-  end
-
   scenario "presence validation works as expected" do
     authenticate!(user: create(:administrator, organisation: beis_organisation))
 

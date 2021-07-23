@@ -29,16 +29,6 @@ RSpec.describe "Users can edit an external income" do
       expect(external_income.oda_funding).to eq(false)
     end
 
-    scenario "updating is tracked with PublicActivity" do
-      PublicActivity.with_tracking do
-        fill_in_external_income_form(external_income)
-
-        auditable_event = PublicActivity::Activity.last
-        expect(auditable_event.key).to eq "external_income.update"
-        expect(auditable_event.owner_id).to eq user.id
-      end
-    end
-
     scenario "they see errors when a required field is missing" do
       select("", from: "external_income[organisation_id]")
       click_on t("default.button.submit")
@@ -46,20 +36,6 @@ RSpec.describe "Users can edit an external income" do
       expect(page).to_not have_content(t("action.external_income.update.success"))
 
       expect(page).to have_content("Organisation can't be blank")
-    end
-
-    scenario "they can delete an external income" do
-      PublicActivity.with_tracking do
-        expect {
-          click_on t("default.button.delete")
-        }.to change { ExternalIncome.count }.by(-1)
-
-        expect(page).to have_content(t("action.external_income.destroy.success"))
-
-        auditable_event = PublicActivity::Activity.last
-        expect(auditable_event.key).to eq "external_income.destroy"
-        expect(auditable_event.owner_id).to eq user.id
-      end
     end
   end
 end

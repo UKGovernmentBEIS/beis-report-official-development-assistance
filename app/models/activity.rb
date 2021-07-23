@@ -1,5 +1,4 @@
 class Activity < ApplicationRecord
-  include PublicActivity::Common
   include CodelistHelper
 
   STANDARD_GRANT_FINANCE_CODE = "110"

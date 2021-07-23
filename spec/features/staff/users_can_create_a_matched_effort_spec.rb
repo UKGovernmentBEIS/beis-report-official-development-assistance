@@ -49,18 +49,6 @@ RSpec.describe "Users can create a matched effort" do
       end
     end
 
-    scenario "creation is tracked with PublicActivity" do
-      template = build(:matched_effort, organisation: matched_effort_provider)
-
-      PublicActivity.with_tracking do
-        fill_in_matched_effort_form(template)
-
-        auditable_event = PublicActivity::Activity.last
-        expect(auditable_event.key).to eq "matched_effort.create"
-        expect(auditable_event.owner_id).to eq user.id
-      end
-    end
-
     scenario "they receive an error message when the category does not match the funding type" do
       template = build(:matched_effort,
         funding_type: "reciprocal",

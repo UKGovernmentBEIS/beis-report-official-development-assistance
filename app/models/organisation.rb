@@ -1,6 +1,4 @@
 class Organisation < ApplicationRecord
-  include PublicActivity::Common
-
   SERVICE_OWNER_IATI_REFERENCE = "GB-GOV-13"
 
   strip_attributes only: [:iati_reference]

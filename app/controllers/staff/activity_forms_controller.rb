@@ -71,7 +71,6 @@ class Staff::ActivityFormsController < Staff::BaseController
 
     update_form_state
     record_history
-    record_auditable_activity
 
     # `render_wizard` calls save on the object passed to it.
     render_wizard @activity, context: :"#{step}_step"
@@ -116,11 +115,6 @@ class Staff::ActivityFormsController < Staff::BaseController
         trackable: @activity,
         report: Report.editable_for_activity(@activity)
       )
-  end
-
-  def record_auditable_activity
-    action = @activity.form_steps_completed? ? "update" : "create"
-    @activity.create_activity key: "activity.#{action}.#{step}", owner: current_user
   end
 
   def assign_default_collaboration_type_value_if_nil

@@ -16,7 +16,6 @@ class Staff::CommentsController < Staff::BaseController
 
     if @comment.valid?
       @comment.save!
-      @comment.create_activity key: "comment.create", owner: current_user
       flash[:notice] = t("action.comment.create.success")
       redirect_to organisation_activity_comments_path(@comment.activity.organisation, @comment.activity)
     else
@@ -39,7 +38,6 @@ class Staff::CommentsController < Staff::BaseController
     @comment.assign_attributes(comment_params)
     if @comment.valid?
       @comment.save!
-      @comment.create_activity key: "comment.update", owner: current_user
       flash[:notice] = t("action.comment.update.success")
       redirect_to organisation_activity_comments_path(@comment.activity.organisation, @comment.activity)
     else

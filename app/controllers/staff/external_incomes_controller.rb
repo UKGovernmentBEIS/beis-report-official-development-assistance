@@ -14,7 +14,6 @@ class Staff::ExternalIncomesController < Staff::BaseController
 
     if @external_income.valid?
       @external_income.save
-      @external_income.create_activity key: "external_income.create", owner: current_user
 
       flash[:notice] = t("action.external_income.create.success")
       redirect_to organisation_activity_other_funding_path(@activity.organisation, @activity)
@@ -40,7 +39,6 @@ class Staff::ExternalIncomesController < Staff::BaseController
 
     if @external_income.valid?
       @external_income.save
-      @external_income.create_activity key: "external_income.update", owner: current_user
 
       flash[:notice] = t("action.external_income.update.success")
       redirect_to organisation_activity_other_funding_path(@activity.organisation, @activity)
@@ -55,7 +53,6 @@ class Staff::ExternalIncomesController < Staff::BaseController
 
     authorize @external_income
 
-    @external_income.create_activity key: "external_income.destroy", owner: current_user
     @external_income.destroy
 
     flash[:notice] = t("action.external_income.destroy.success")

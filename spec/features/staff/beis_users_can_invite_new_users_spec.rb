@@ -51,25 +51,6 @@ RSpec.feature "BEIS users can invite new users to the service" do
         )
       end
 
-      scenario "user creation is tracked with public_activity" do
-        PublicActivity.with_tracking do
-          organisation = create(:delivery_partner_organisation)
-          new_user_name = "Foo Bar"
-          new_user_email = "email@example.com"
-          auth0_identifier = "auth0|00991122"
-
-          stub_auth0_create_user_request(
-            email: new_user_email,
-            auth0_identifier: auth0_identifier
-          )
-
-          create_user(organisation, new_user_name, new_user_email)
-          auditable_events = PublicActivity::Activity.all
-          expect(auditable_events.map { |event| event.key }).to include("user.create")
-          expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
-        end
-      end
-
       context "when the name and email are not provided" do
         it "shows the user validation errors instead" do
           visit new_user_path

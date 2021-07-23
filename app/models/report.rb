@@ -1,5 +1,4 @@
 class Report < ApplicationRecord
-  include PublicActivity::Common
   include HasFinancialQuarter
 
   EDITABLE_STATES = %w[active awaiting_changes]

@@ -24,7 +24,6 @@ class Staff::TransactionsController < Staff::BaseController
     @transaction = result.object
 
     if result.success?
-      @transaction.create_activity key: "transaction.create", owner: current_user
       flash[:notice] = t("action.transaction.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
@@ -51,7 +50,6 @@ class Staff::TransactionsController < Staff::BaseController
     ).call(attributes: transaction_params)
 
     if result.success?
-      @transaction.create_activity key: "transaction.update", owner: current_user
       flash[:notice] = t("action.transaction.update.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
@@ -63,7 +61,6 @@ class Staff::TransactionsController < Staff::BaseController
     @transaction = Transaction.find(id)
     authorize @transaction
 
-    @transaction.create_activity key: "transaction.destroy", owner: current_user, parameters: {activity_id: activity.id}
     @transaction.destroy
 
     flash[:notice] = t("action.transaction.destroy.success")

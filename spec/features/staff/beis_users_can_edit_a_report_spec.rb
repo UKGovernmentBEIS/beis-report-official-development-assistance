@@ -33,29 +33,6 @@ RSpec.feature "BEIS users can edit a report" do
       expect(page).to have_field("report[deadline(3i)]", with: "31")
     end
 
-    scenario "editing a Report creates a log in PublicActivity" do
-      PublicActivity.with_tracking do
-        authenticate!(user: beis_user)
-        report = create(:report)
-
-        visit reports_path
-
-        within "##{report.id}" do
-          click_on t("default.link.edit")
-        end
-
-        fill_in "report[deadline(3i)]", with: "31"
-        fill_in "report[deadline(2i)]", with: "1"
-        fill_in "report[deadline(1i)]", with: "2021"
-
-        click_on t("default.button.submit")
-
-        auditable_events = PublicActivity::Activity.where(trackable_id: report.id)
-        expect(auditable_events.map(&:key)).to include "report.update"
-        expect(auditable_events.first.owner_id).to eq beis_user.id
-      end
-    end
-
     scenario "the deadline cannot be in the past" do
       authenticate!(user: beis_user)
       report = create(:report)
@@ -94,29 +71,6 @@ RSpec.feature "BEIS users can edit a report" do
 
       expect(page).to_not have_content t("action.report.update.success")
       expect(page).to have_content t("activerecord.errors.models.report.attributes.deadline.between", min: 10, max: 25)
-    end
-
-    scenario "setting a Report's deadline logs an activity in PublicActivity" do
-      PublicActivity.with_tracking do
-        authenticate!(user: beis_user)
-        report = create(:report)
-
-        visit reports_path
-
-        within "##{report.id}" do
-          click_on t("default.link.edit")
-        end
-
-        fill_in "report[deadline(3i)]", with: "31"
-        fill_in "report[deadline(2i)]", with: "1"
-        fill_in "report[deadline(1i)]", with: "2021"
-
-        click_on t("default.button.submit")
-
-        auditable_events = PublicActivity::Activity.where(trackable_id: report.id)
-        expect(auditable_events.map(&:key)).to match_array ["report.update"]
-        expect(auditable_events.map(&:owner_id).uniq).to eq [beis_user.id]
-      end
     end
 
     scenario "they can edit a Report to change the description (Reporting Period)" do
