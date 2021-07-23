@@ -8,7 +8,6 @@ class Staff::ReportsController < Staff::BaseController
 
   def index
     if current_user.service_owner?
-
       respond_to do |format|
         format.html do
           @grouped_reports = Report::GroupedReportsFetcher.new
@@ -23,7 +22,7 @@ class Staff::ReportsController < Staff::BaseController
         end
       end
     else
-      reports_for_delivery_partner
+      redirect_to organisation_reports_path(organisation_id: current_user.organisation.id)
     end
   end
 

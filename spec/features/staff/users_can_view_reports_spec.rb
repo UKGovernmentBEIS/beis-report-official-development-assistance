@@ -485,7 +485,7 @@ RSpec.feature "Users can view reports" do
     end
 
     context "when there are reports awaiting changes" do
-      scenario "they see their own reports which are awaiting changes" do
+      xscenario "they see their own reports which are awaiting changes" do
         report = create(:report, organisation: delivery_partner_user.organisation, state: :awaiting_changes)
 
         visit reports_path
@@ -496,7 +496,7 @@ RSpec.feature "Users can view reports" do
     end
 
     context "when there are approved reports" do
-      scenario "they see their own reports which are approved" do
+      xscenario "they see their own reports which are approved" do
         report = create(:report, organisation: delivery_partner_user.organisation, state: :approved)
 
         visit reports_path
@@ -505,7 +505,7 @@ RSpec.feature "Users can view reports" do
         expect(page).to have_content report.description
       end
 
-      scenario "they are displayed in historical order" do
+      xscenario "they are displayed in historical order" do
         old_report = create(:report, organisation: delivery_partner_user.organisation, state: :approved, financial_year: 2020)
         new_report = create(:report, organisation: delivery_partner_user.organisation, state: :approved, financial_year: 2021)
         oldest_report = create(:report, organisation: delivery_partner_user.organisation, state: :approved, financial_year: 2019)
