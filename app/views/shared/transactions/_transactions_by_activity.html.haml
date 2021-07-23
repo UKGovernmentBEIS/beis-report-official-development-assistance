@@ -1,21 +1,27 @@
 %table.govuk-table
+  %caption.govuk-table__caption.govuk-table__caption--m
+    = t("table.caption.transaction.actuals_in_report")
   %thead.govuk-table__head
     %tr.govuk-table__row
       %th.govuk-table__header{class: "govuk-!-width-one-third", scope: "col"} Activity
       %th.govuk-table__header{class: "govuk-!-width-one-third", scope: "col"} RODA Identifier
-      %th.govuk-table__header.govuk-table__header--numeric{class: "govuk-!-width-one-third", scope: "col"} Amount
+      %th.govuk-table__header{class: "govuk-!-width-one-third", scope: "col"} Actual spend
   %tbody.govuk-table__body
 
     - @grouped_transactions.each do |activity, transactions|
 
       %tr.govuk-table__row{ id: "activity_#{activity.id}" }
-        %td.govuk-table__cell= activity.title
-        %td.govuk-table__cell= activity.roda_identifier
-        %td.govuk-table__cell
+        %td.govuk-table__cell{class: "govuk-!-width-one-third"}
+          = activity.title
+        %td.govuk-table__cell{class: "govuk-!-width-one-third"}
+          = activity.roda_identifier
+        %td.govuk-table__cell{class: "govuk-!-width-one-third"}
           %table.govuk-table.transactions
             - transactions.each do |transaction|
               %tr.govuk-table__row
-                %td.govuk-table__cell--numeric{class: "govuk-!-width-one-quarter", scope: "col"}
+                %td.govuk-table__cell--numeric{class: "govuk-!-width-one-half", scope: "col"}
+                  = transaction.financial_quarter_and_year
+                %td.govuk-table__cell--numeric{class: "govuk-!-width-one-half", scope: "col"}
                   = transaction.value
 
     %tr.govuk-table__row.totals

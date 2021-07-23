@@ -8,10 +8,6 @@ RSpec.feature "Users can view actuals in tab within a report" do
     end
 
     def expect_to_see_a_table_of_transactions_grouped_by_activity(activities)
-      expect(page).to have_content(
-        t("page_content.tab_content.transactions.per_activity_heading")
-      )
-
       fail "We expect some activities to be present" if activities.none?
 
       activities.each do |activity|
@@ -21,9 +17,10 @@ RSpec.feature "Users can view actuals in tab within a report" do
 
           fail "We expect some transactions to be present" if activity.transactions.none?
 
-          within ".transactions" do
-            activity.transactions.each do |transaction|
+          activity.transactions.each do |transaction|
+            within ".transactions" do
               expect(page).to have_content(transaction.value)
+              expect(page).to have_content(transaction.financial_quarter_and_year)
             end
           end
         end
@@ -63,13 +60,8 @@ RSpec.feature "Users can view actuals in tab within a report" do
 
       click_link t("tabs.report.transactions")
 
-      expect(page).to have_content(t("page_content.tab_content.transactions.heading"))
+      expect(page).to have_content("Actuals")
       expect(page).to have_link(t("action.transaction.upload.link"))
-
-      # guidance with 2 links
-      expect(page).to have_content("This page shows all the actual spend you have reported in RODA since the last reporting quarter")
-      expect(page).to have_link("uploading new actuals")
-      expect(page).to have_link("uploading updates to activities")
 
       expect_to_see_a_table_of_transactions_grouped_by_activity(activities)
 
