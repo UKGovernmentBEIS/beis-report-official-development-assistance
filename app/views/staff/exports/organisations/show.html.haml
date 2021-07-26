@@ -12,9 +12,11 @@
         %thead.govuk-table__head
           %tr.govuk-table__row
             %th.govuk-table__header{scope: "col"}= t("table.export.organisation.report")
+            %th.govuk-table__header{scope: "col"}= t("table.export.organisation.format")
             %th.govuk-table__header{scope: "col"}= t("table.export.organisation.actions")
         %tbody.govuk-table__body
           %tr.govuk-table__row
             %td.govuk-table__cell All transactions
+            %td.govuk-table__cell CSV
             %td.govuk-table__cell
               = link_to t("table.export.organisation.download"), transactions_exports_organisation_path(@organisation, format: "csv"), class: "govuk-link"
