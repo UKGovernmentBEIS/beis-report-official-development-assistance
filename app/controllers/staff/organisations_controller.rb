@@ -40,11 +40,11 @@ class Staff::OrganisationsController < Staff::BaseController
         @reporting_organisation = Organisation.service_owner
         @activities = case level
         when "programme"
-          return [] unless fund_id.present?
+          return [] unless fund_code.present?
           publishable_programme_activities(
             organisation: organisation,
             user: current_user,
-            fund_id: fund_id
+            fund_code: fund_code
           )
         when "project"
           @project_activities
@@ -105,11 +105,11 @@ class Staff::OrganisationsController < Staff::BaseController
     Activity.find(fund_ids_for_organisation_programmes)
   end
 
-  private def publishable_programme_activities(organisation:, user:, fund_id:)
+  private def publishable_programme_activities(organisation:, user:, fund_code:)
     FindProgrammeActivities.new(
       organisation: organisation,
       user: current_user,
-      fund_id: fund_id
+      fund_code: fund_code
     ).call
   end
 
@@ -140,7 +140,10 @@ class Staff::OrganisationsController < Staff::BaseController
     params[:level]
   end
 
-  private def fund_id
-    params[:fund_id]
+  private def fund_code
+    return nil if params[:fund_id].blank?
+
+    activity = Activity.find(params[:fund_id])
+    Fund.from_activity(activity).id
   end
 end

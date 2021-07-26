@@ -28,11 +28,11 @@ RSpec.describe FindProgrammeActivities do
     context "when a fund is passed" do
       it "includes only the programmes for the organisaiton and the fund" do
         delivery_partner_organisation = create(:delivery_partner_organisation)
-        fund = create(:fund_activity)
-        programme = create(:programme_activity, parent: fund, extending_organisation: delivery_partner_organisation)
-        programme_from_another_fund = create(:programme_activity, extending_organisation: delivery_partner_organisation)
+        source_fund_code = 1
+        programme = create(:programme_activity, source_fund_code: source_fund_code, extending_organisation: delivery_partner_organisation)
+        programme_from_another_fund = create(:programme_activity, source_fund_code: 2, extending_organisation: delivery_partner_organisation)
 
-        result = described_class.new(organisation: delivery_partner_organisation, user: user, fund_id: fund.id).call
+        result = described_class.new(organisation: delivery_partner_organisation, user: user, fund_code: source_fund_code).call
 
         expect(result).to include programme
         expect(result).not_to include programme_from_another_fund

@@ -179,7 +179,7 @@ RSpec.feature "Users can view an organisation as XML" do
         end
 
         it "sums up the total forecasts of all the programmes and their child activities by quarter" do
-          programme = create(:programme_activity, extending_organisation: organisation)
+          programme = create(:programme_activity, :newton_funded, extending_organisation: organisation)
 
           project_1 = create(:project_activity, parent: programme, organisation: organisation)
           third_party_project_1 = create(:third_party_project_activity, parent: project_1, organisation: organisation)
@@ -209,7 +209,7 @@ RSpec.feature "Users can view an organisation as XML" do
         end
 
         it "sums up the total transactions of all the programmes and their child activities by quarter" do
-          programme = create(:programme_activity, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
+          programme = create(:programme_activity, :newton_funded, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
           other_programme = create(:programme_activity, parent: programme.parent, extending_organisation: organisation)
 
           activity_projects = create_list(:project_activity, 2, parent: programme)
