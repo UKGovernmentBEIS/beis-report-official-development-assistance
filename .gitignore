@@ -135,3 +135,5 @@ terraform/.terraform/*
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+!app/views/**/*.xml.haml

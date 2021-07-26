@@ -9,7 +9,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
     end
 
     it "renders the correct template" do
-      expect(response).to render_template("staff/organisations/show")
+      expect(response).to render_template("staff/exports/organisations/show")
     end
   end
 
@@ -32,7 +32,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
 
     describe "#programme_activities" do
       before do
-        get :programme_activities, params: {id: organisation.id, fund: fund.short_name}
+        get :programme_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
       end
 
       include_examples "does not allow the user to download the XML"
@@ -40,7 +40,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
 
     describe "#project_activities" do
       before do
-        get :project_activities, params: {id: organisation.id, fund: fund.short_name}
+        get :project_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
       end
 
       include_examples "does not allow the user to download the XML"
@@ -48,7 +48,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
 
     describe "#third_party_project_activities" do
       before do
-        get :third_party_project_activities, params: {id: organisation.id, fund: fund.short_name}
+        get :third_party_project_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
       end
 
       include_examples "does not allow the user to download the XML"
@@ -64,7 +64,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
         @find_programme_activities_stub = double("FindProgrammeActivities", call: @activities)
         allow(FindProgrammeActivities).to receive(:new).and_return(@find_programme_activities_stub)
 
-        get :programme_activities, params: {id: organisation.id, fund: fund.short_name}
+        get :programme_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
       end
 
       include_examples "renders XML"
@@ -84,7 +84,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
         allow(FindProjectActivities).to receive(:new).and_return(@find_project_activities_stub)
         allow(@find_project_activities_stub).to receive(:call).and_return(@find_project_activities_stub)
 
-        get :project_activities, params: {id: organisation.id, fund: fund.short_name}
+        get :project_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
       end
 
       include_examples "renders XML"
@@ -105,7 +105,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
         allow(FindThirdPartyProjectActivities).to receive(:new).and_return(@find_third_party_project_activities_stub)
         allow(@find_third_party_project_activities_stub).to receive(:call).and_return(@find_third_party_project_activities_stub)
 
-        get :third_party_project_activities, params: {id: organisation.id, fund: fund.short_name}
+        get :third_party_project_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
       end
 
       include_examples "renders XML"

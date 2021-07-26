@@ -64,6 +64,6 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
   def render_xml
     response.headers["Content-Disposition"] = "attachment; filename=\"#{@organisation.iati_reference}.xml\""
 
-    render "staff/organisations/show"
+    render "staff/exports/organisations/show"
   end
 end
