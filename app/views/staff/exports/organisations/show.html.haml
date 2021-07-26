@@ -19,4 +19,4 @@
             %td.govuk-table__cell All transactions
             %td.govuk-table__cell CSV
             %td.govuk-table__cell
-              = link_to t("table.export.organisation.download"), transactions_exports_organisation_path(@organisation, format: "csv"), class: "govuk-link"
+              = a11y_action_link t("table.export.organisation.download"), transactions_exports_organisation_path(@organisation, format: "csv"), "all transactions"
