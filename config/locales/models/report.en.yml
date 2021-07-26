@@ -9,6 +9,8 @@ en:
         in_review: Reports in review
         awaiting_changes: Reports awaiting changes
         approved: Approved reports
+        current: Current reports
+        historic: Historic reports
     header:
       report:
         financial_quarter: Financial quarter
@@ -17,6 +19,7 @@ en:
         organisation: Organisation
         fund: Fund (level A)
         deadline: Deadline
+        state: State
     body:
       report:
         action:
@@ -36,6 +39,8 @@ en:
       transactions: Actuals
       variance: Variance
       budgets: Budgets
+      current: Current
+      historic: Historic
 
   page_content:
     reports:

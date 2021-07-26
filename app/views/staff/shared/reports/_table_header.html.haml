@@ -1,0 +1,19 @@
+%caption.govuk-table__caption.govuk-table__caption--m
+  = t("table.title.report.#{type}")
+%thead.govuk-table__head
+  %tr.govuk-table__row
+    - if current_user.service_owner?
+      %th.govuk-table__header
+        = t("table.header.report.organisation")
+    %th{class: "govuk-table__header govuk-!-width-one-quarter"}
+      =t("table.header.report.financial_quarter")
+    %th.govuk-table__header
+      =t("table.header.report.description")
+    %th.govuk-table__header
+      =t("table.header.report.fund")
+    - if type == "current"
+      %th.govuk-table__header
+        =t("table.header.report.state")
+      %th.govuk-table__header
+        =t("table.header.report.deadline")
+    %th.govuk-table__header

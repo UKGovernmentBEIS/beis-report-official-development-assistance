@@ -1,0 +1,9 @@
+%h2.govuk-tabs__title
+  = t("page_title.report.index")
+%ul.govuk-tabs__list
+  %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
+    %a.govuk-tabs__tab{ "href": "#current"}
+      = t("tabs.report.current")
+  %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
+    %a.govuk-tabs__tab{ "href": "#historic"}
+      = t("tabs.report.historic")
