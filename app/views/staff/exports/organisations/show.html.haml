@@ -15,8 +15,4 @@
             %th.govuk-table__header{scope: "col"}= t("table.export.organisation.format")
             %th.govuk-table__header{scope: "col"}= t("table.export.organisation.actions")
         %tbody.govuk-table__body
-          %tr.govuk-table__row
-            %td.govuk-table__cell All transactions
-            %td.govuk-table__cell CSV
-            %td.govuk-table__cell
-              = a11y_action_link t("table.export.organisation.download"), transactions_exports_organisation_path(@organisation, format: "csv"), "all transactions"
+          = render partial: "row", locals: { report: "All transactions", format: "CSV", download_url: transactions_exports_organisation_path(@organisation, format: "csv") }
