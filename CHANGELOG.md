@@ -762,8 +762,8 @@
 - Content and layout improvements to the actual spend tab on Report
 - Content and layout improvements to the actual spend upload page
 - Rework the way reports are shown to Delivery Partners and Service Owners
-
 - Fix: 'spending breakdown' download is no longer empty
+- Allow budgets to be deleted
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-63...HEAD
 [release-63]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...release-63

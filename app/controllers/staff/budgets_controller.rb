@@ -48,6 +48,18 @@ class Staff::BudgetsController < Staff::BaseController
     end
   end
 
+  def destroy
+    @activity = Activity.find(activity_id)
+    @budget = Budget.find(id)
+
+    authorize @budget
+
+    @budget.destroy
+
+    flash[:notice] = t("action.budget.destroy.success")
+    redirect_to organisation_activity_path(@activity.organisation, @activity)
+  end
+
   private
 
   def id
