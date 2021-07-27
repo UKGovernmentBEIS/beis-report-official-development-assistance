@@ -112,24 +112,6 @@ RSpec.feature "Users can create a project" do
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.planned_end_date.invalid")
       end
 
-      scenario "project creation is tracked with public_activity" do
-        programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
-
-        PublicActivity.with_tracking do
-          visit organisation_activity_children_path(programme.extending_organisation, programme)
-          click_on t("action.activity.add_child")
-
-          fill_in_activity_form(level: "project", delivery_partner_identifier: "my-unique-identifier", parent: programme)
-
-          project = Activity.find_by(delivery_partner_identifier: "my-unique-identifier")
-          auditable_events = PublicActivity::Activity.where(trackable_id: project.id)
-          expect(auditable_events.map { |event| event.key }).to include("activity.create", "activity.create.identifier", "activity.create.purpose", "activity.create.sector", "activity.create.geography", "activity.create.region", "activity.create.aid_type")
-          expect(auditable_events.map { |event| event.owner_id }.uniq).to eq [user.id]
-          expect(auditable_events.map { |event| event.trackable_id }.uniq).to eq [project.id]
-        end
-      end
-
       context "when creating a project that is Newton funded" do
         let(:newton_fund) { create(:fund_activity, :newton) }
 

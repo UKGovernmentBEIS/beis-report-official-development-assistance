@@ -4,7 +4,7 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "2.7.3"
 
-gem "auth0", "~> 5.2"
+gem "auth0", "~> 5.3"
 gem "acts_as_tree"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "govuk_design_system_formbuilder", "~> 2.7.2"
@@ -20,7 +20,6 @@ gem "nanoid"
 gem "parser", "~> 2.6.3.0"
 gem "pry-rails"
 gem "puma", "~> 5.3"
-gem "public_activity", "~> 1.5"
 gem "pundit"
 gem "rollbar"
 gem "rails", "~> 6.1.4"
@@ -58,7 +57,7 @@ end
 group :development do
   gem "better_errors"
   gem "html2haml"
-  gem "listen", ">= 3.0.5", "< 3.6"
+  gem "listen", ">= 3.0.5", "< 3.7"
   gem "spring"
   gem "spring-commands-rspec"
   gem "spring-watcher-listen", "~> 2.0.0"

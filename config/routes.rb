@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     end
 
     resources :organisations, except: [:destroy, :index, :new] do
+      get "reports" => "organisation_reports#index"
       resources :activities, except: [:create, :destroy] do
         collection do
           get "historic" => "activities#historic"
@@ -66,7 +67,7 @@ Rails.application.routes.draw do
     end
 
     concern :budgetable do
-      resources :budgets, only: [:new, :create, :show, :edit, :update]
+      resources :budgets
     end
 
     concern :forecastable do

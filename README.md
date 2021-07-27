@@ -92,9 +92,8 @@ The `develop` branch is deployed to staging after a successful build via GitHub 
 
 The app has a training and or penetration testing environment: [http://training.report-official-development-assistance.service.gov.uk](https://training.report-official-development-assistance.service.gov.uk)
 
-The environment must be manually deployed, see [the
-documentation](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/develop/terraform/README.md) for more
-information.
+The `master` branch is deployed to the training/pentest environment after a
+successful build via GitHub Actions.
 
 ### Production
 
@@ -103,7 +102,6 @@ The app is currently hosted on GPaaS: [https://www.report-official-development-a
 The `master` branch is deployed to production after a successful build via GitHub Actions.
 
 ## DNS
-
 
 The DNS for the service is hosted and managed by [dxw](https://dxw.com) the
 source for which is maintained in this private repo:

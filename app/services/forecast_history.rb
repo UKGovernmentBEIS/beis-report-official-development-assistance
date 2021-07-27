@@ -100,7 +100,6 @@ class ForecastHistory
     )
 
     entry = Forecast.unscoped.create!(attributes)
-    entry.create_activity(key: "forecast.create", owner: @user)
     entry
   end
 
@@ -112,7 +111,6 @@ class ForecastHistory
       value: value,
       report: report
     )
-    new_entry.create_activity(key: "forecast.create", owner: @user)
     new_entry
   end
 
@@ -121,7 +119,6 @@ class ForecastHistory
       entry.destroy!
     else
       entry.update!(value: value)
-      entry.create_activity(key: "forecast.update", owner: @user)
     end
     entry
   end

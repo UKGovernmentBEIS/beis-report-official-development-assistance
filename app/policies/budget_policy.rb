@@ -33,7 +33,7 @@ class BudgetPolicy < ApplicationPolicy
   end
 
   def destroy?
-    false
+    update?
   end
 
   private def editable_report_for_organisation_and_fund

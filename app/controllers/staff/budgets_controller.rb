@@ -18,7 +18,6 @@ class Staff::BudgetsController < Staff::BaseController
     @budget = result.object
 
     if result.success?
-      @budget.create_activity key: "budget.create", owner: current_user
       flash[:notice] = t("action.budget.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
@@ -42,12 +41,23 @@ class Staff::BudgetsController < Staff::BaseController
       .call(attributes: budget_params)
 
     if result.success?
-      @budget.create_activity key: "budget.update", owner: current_user
       flash[:notice] = t("action.budget.update.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :edit
     end
+  end
+
+  def destroy
+    @activity = Activity.find(activity_id)
+    @budget = Budget.find(id)
+
+    authorize @budget
+
+    @budget.destroy
+
+    flash[:notice] = t("action.budget.destroy.success")
+    redirect_to organisation_activity_path(@activity.organisation, @activity)
   end
 
   private

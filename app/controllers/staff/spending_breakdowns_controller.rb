@@ -7,7 +7,7 @@ class Staff::SpendingBreakdownsController < Staff::BaseController
     authorize @report
 
     @report_presenter = ReportPresenter.new(@report)
-    @report_activities = Activity::ProjectsForReportFinder.new(report: @report)
+    @report_activities = Activity::ProjectsForReportFinder.new(report: @report).call
 
     respond_to do |format|
       format.csv { send_csv }

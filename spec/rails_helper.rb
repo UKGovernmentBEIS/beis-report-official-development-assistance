@@ -10,10 +10,6 @@ require "rspec/rails"
 # Add additional requires below this line. Rails is not loaded until this point!
 require "fakeredis/rspec"
 
-# Testing for public_activity gem
-require "public_activity/testing"
-PublicActivity.enabled = false
-
 # testing strip_attributes
 require "strip_attributes/matchers"
 

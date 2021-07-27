@@ -8,10 +8,9 @@ class Staff::ReportsController < Staff::BaseController
 
   def index
     if current_user.service_owner?
-
       respond_to do |format|
         format.html do
-          reports_for_service_owner
+          @grouped_reports = Report::GroupedReportsFetcher.new
         end
         format.csv do
           if reports_have_same_quarter?
@@ -23,7 +22,7 @@ class Staff::ReportsController < Staff::BaseController
         end
       end
     else
-      reports_for_delivery_partner
+      redirect_to organisation_reports_path(organisation_id: current_user.organisation.id)
     end
   end
 
@@ -59,7 +58,6 @@ class Staff::ReportsController < Staff::BaseController
     @report.assign_attributes(report_params)
     if @report.valid?(:edit)
       @report.save
-      @report.create_activity key: "report.update", owner: current_user
       flash[:notice] = t("action.report.update.success")
       redirect_to reports_path
     else
@@ -75,15 +73,6 @@ class Staff::ReportsController < Staff::BaseController
 
   def report_params
     params.require(:report).permit(:deadline, :description)
-  end
-
-  def reports_for_service_owner
-    inactive_reports
-    active_reports(including: [:organisation])
-    submitted_reports(including: [:organisation])
-    in_review_reports(including: [:organisation])
-    awaiting_changes_reports(including: [:organisation])
-    approved_reports(including: [:organisation])
   end
 
   def reports_for_delivery_partner

@@ -43,18 +43,6 @@ RSpec.describe "Users can create a external income" do
       end
     end
 
-    scenario "creation is tracked with PublicActivity" do
-      template = build(:external_income, organisation: external_income_provider)
-
-      PublicActivity.with_tracking do
-        fill_in_external_income_form(template)
-
-        auditable_event = PublicActivity::Activity.last
-        expect(auditable_event.key).to eq "external_income.create"
-        expect(auditable_event.owner_id).to eq user.id
-      end
-    end
-
     scenario "they are shown errors when required fields are left blank" do
       click_on t("default.button.submit")
 

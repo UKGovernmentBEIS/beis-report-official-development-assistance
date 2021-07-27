@@ -1,5 +1,4 @@
 class Transaction < ApplicationRecord
-  include PublicActivity::Common
   include HasFinancialQuarter
 
   TRANSACTION_TYPE_DISBURSEMENT = "3"

@@ -1,0 +1,10 @@
+- if reports.empty?
+  = render partial: "staff/shared/reports/table_empty"
+- else
+  %table.govuk-table
+    = render partial: "staff/shared/reports/table_header", locals: { type: type }
+
+    %tbody.govuk-table__body
+      - reports.each do |report|
+        = render partial: "staff/shared/reports/table_row", locals: { report: report, type: type }
+

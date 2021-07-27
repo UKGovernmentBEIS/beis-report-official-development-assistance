@@ -65,27 +65,6 @@ RSpec.describe "Users can create a forecast" do
       end
     end
 
-    scenario "the action is recorded with public_activity" do
-      programme = create(:programme_activity, extending_organisation: user.organisation)
-      activity = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
-
-      PublicActivity.with_tracking do
-        visit activities_path
-
-        click_on(activity.title)
-
-        click_on(t("page_content.forecasts.button.create"))
-
-        fill_in_forecast_form_for_activity(activity)
-
-        forecast = ForecastOverview.new(activity).latest_values.last
-        auditable_event = PublicActivity::Activity.last
-        expect(auditable_event.key).to eq "forecast.create"
-        expect(auditable_event.owner_id).to eq user.id
-        expect(auditable_event.trackable_id).to eq forecast.id
-      end
-    end
-
     scenario "they do not see the add button when the activity is not editable" do
       activity = create(:project_activity, organisation: user.organisation)
 

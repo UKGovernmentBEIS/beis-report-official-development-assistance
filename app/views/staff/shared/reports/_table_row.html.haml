@@ -1,0 +1,13 @@
+%tr.govuk-table__row{id: report.id}
+  - if defined?(index) && index == 0
+    %th.govuk-table__cell{rowspan: reports.count, scope: "rowgroup", id: report.organisation.id}= report.organisation.name
+  %td.govuk-table__cell= report.financial_quarter_and_year
+  %td.govuk-table__cell= report.description
+  %td.govuk-table__cell= report.fund.title
+  - if type == "current"
+    %td.govuk-table__cell= report.state
+    %td.govuk-table__cell= report.deadline
+  %td.govuk-table__cell
+    - if policy(:report).edit?
+      = a11y_action_link(t("default.link.edit"), edit_report_path(report), report.description)
+    = a11y_action_link(t("default.link.view"), report_path(report), report.description)

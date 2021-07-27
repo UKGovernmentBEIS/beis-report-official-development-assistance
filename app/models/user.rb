@@ -1,6 +1,4 @@
 class User < ApplicationRecord
-  include PublicActivity::Common
-
   belongs_to :organisation
   has_many :historical_events
   validates_presence_of :name, :email

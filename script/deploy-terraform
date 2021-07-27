@@ -3,8 +3,6 @@
 # exit on error or if a variable is unbound
 set -eu
 
-export TF_VAR_docker_image=$DOCKER_TAG
-
 # Disable the shellcheck check for unassigned variables. We export this var
 # in Github Actions, but Shellcheck complains because there are lowercase
 # characters in it

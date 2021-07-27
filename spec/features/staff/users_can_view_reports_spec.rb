@@ -6,48 +6,62 @@ RSpec.feature "Users can view reports" do
       authenticate!(user: beis_user)
     end
 
-    scenario "they can view all active reports for all organisations" do
-      first_report = create(:report, :active)
-      second_report = create(:report, :active)
+    def expect_to_see_a_table_of_reports_grouped_by_organisation(selector:, reports:, organisations:)
+      within selector do
+        expect(page.find_all("th[scope=rowgroup]").count).to eq(organisations.count)
+        expect(page.find_all("tbody tr").count).to eq(reports.count)
+
+        organisations.each do |organisation|
+          expect_to_see_grouped_rows_of_reports_for_an_organisation(
+            organisation: organisation,
+            expected_reports: reports.select { |r| r.organisation == organisation }
+          )
+        end
+      end
+    end
+
+    def expect_to_see_grouped_rows_of_reports_for_an_organisation(organisation:, expected_reports:)
+      expect(page).to have_selector("th[id='#{organisation.id}']")
+      expect(page).to have_content organisation.name
+
+      expected_reports.each do |report|
+        within "##{report.id}" do
+          expect(page).to have_content report.description
+          expect(page).to have_content report.financial_quarter_and_year
+        end
+      end
+    end
+
+    scenario "they can see a list of all active and historic reports" do
+      organisations = create_list(:delivery_partner_organisation, 2)
+
+      unapproved_reports = [
+        create_list(:report, 2, :active, organisation: organisations.first),
+        create_list(:report, 3, :active, organisation: organisations.last),
+        create_list(:report, 3, :inactive, organisation: organisations.first),
+        create_list(:report, 2, :inactive, organisation: organisations.last),
+      ].flatten
+
+      approved_reports = [
+        create_list(:report, 3, :approved, organisation: organisations.first),
+        create_list(:report, 1, :approved, organisation: organisations.last),
+      ].flatten
 
       visit reports_path
 
       expect(page).to have_content t("page_title.report.index")
-      expect(page).to have_content first_report.description
-      expect(page).to have_content second_report.description
-    end
 
-    scenario "they see the name of the associated organisation in the table" do
-      report = create(:report)
+      expect_to_see_a_table_of_reports_grouped_by_organisation(
+        selector: "#current",
+        reports: unapproved_reports,
+        organisations: organisations
+      )
 
-      visit reports_path
-
-      expect(page).to have_content report.organisation.name
-    end
-
-    scenario "they see the financial quarter the of the report" do
-      _report = create(:report, :active, financial_quarter: 4, financial_year: 2019)
-
-      visit reports_path
-
-      expect(page).to have_content "Q4 2019-2020"
-    end
-
-    scenario "they can view all inactive reports for all organisations" do
-      reports = create_list(:report, 2)
-      visit reports_path
-
-      expect(page).to have_content t("page_title.report.index")
-      expect(page).to have_content reports.first.description
-      expect(page).to have_content reports.last.description
-    end
-
-    scenario "they can view submitted reports for all organisations" do
-      reports = create_list(:report, 2)
-      visit reports_path
-
-      expect(page).to have_content reports.first.description
-      expect(page).to have_content reports.last.description
+      expect_to_see_a_table_of_reports_grouped_by_organisation(
+        selector: "#historic",
+        reports: approved_reports,
+        organisations: organisations
+      )
     end
 
     scenario "can view a report belonging to any delivery partner" do
@@ -143,7 +157,12 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "can download a spending breakdown CSV of the report" do
-      report = create(:report, :active)
+      fund = create(:fund_activity)
+      programme = create(:programme_activity, parent: fund)
+      dp_org = create(:delivery_partner_organisation)
+      project = create(:project_activity, organisation: dp_org, parent: programme)
+      report = create(:report, :active, organisation: dp_org, fund: programme.parent)
+      create(:transaction, report: report, parent_activity: project)
 
       visit reports_path
 
@@ -156,6 +175,10 @@ RSpec.feature "Users can view reports" do
       expect(page.response_headers["Content-Type"]).to include("text/csv")
       header = page.response_headers["Content-Disposition"]
       expect(header).to match(/#{ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv")}\z/)
+
+      download = CSV.parse(page.body)
+      expected_row = ActivitySpendingBreakdown.new(report: report, activity: project).values
+      expect(download.to_a).to include(expected_row)
     end
 
     context "when they download a CSV for all reports" do
@@ -296,24 +319,42 @@ RSpec.feature "Users can view reports" do
   context "as a delivery partner user" do
     let(:delivery_partner_user) { create(:delivery_partner_user) }
 
+    def expect_to_see_a_table_of_reports(selector:, reports:)
+      within selector do
+        expect(page.find_all("tbody tr").count).to eq(reports.count)
+
+        reports.each do |report|
+          within "##{report.id}" do
+            expect(page).to have_content report.description
+            expect(page).to have_content report.financial_quarter_and_year
+          end
+        end
+      end
+    end
+
     before do
       authenticate!(user: delivery_partner_user)
     end
 
+    scenario "they can see a list of all their active and historic reports" do
+      reports_awaiting_changes = create_list(:report, 2, organisation: delivery_partner_user.organisation, state: :awaiting_changes)
+      approved_reports = create_list(:report, 3, organisation: delivery_partner_user.organisation, state: :approved)
+
+      visit reports_path
+
+      expect(page).to have_content t("page_title.report.index")
+
+      expect_to_see_a_table_of_reports(selector: "#current", reports: reports_awaiting_changes)
+      expect_to_see_a_table_of_reports(selector: "#historic", reports: approved_reports)
+    end
+
     context "when there is an active report" do
-      scenario "they can view reports for their own organisation" do
-        _report = create(:report, :active, organisation: delivery_partner_user.organisation)
-        _other_organisation_report = create(:report, :active)
-
-        visit reports_path
-
-        expect(page).to have_content t("page_title.report.index")
-      end
-
       scenario "can view their own report" do
         report = create(:report, :active, organisation: delivery_partner_user.organisation)
 
         visit reports_path
+
+        expect_to_see_a_table_of_reports(selector: "#current", reports: [report])
 
         within "##{report.id}" do
           click_on t("default.link.show")
@@ -372,6 +413,18 @@ RSpec.feature "Users can view reports" do
             expect(page).to have_link t("default.link.view"), href: organisation_activity_path(activity.organisation, activity)
           end
         end
+      end
+
+      scenario "they see helpful content about uploading acutals spend data and a link to the template on the actuals tab" do
+        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+
+        visit report_actuals_path(report)
+
+        expect(page.html).to include t("tabs.transactions.upload.copy_html")
+        expect(page).to have_link t("page_content.transactions.button.download_template"),
+          href: report_transaction_upload_path(report, format: :csv)
+        expect(page).to have_link "guidance in the help centre (opens in new tab)",
+          href: "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload"
       end
 
       scenario "they can view and edit budgets in a report" do
@@ -446,40 +499,6 @@ RSpec.feature "Users can view reports" do
         expect(page.response_headers["Content-Type"]).to include("text/csv")
         header = page.response_headers["Content-Disposition"]
         expect(header).to match(ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv"))
-      end
-    end
-
-    context "when there are reports awaiting changes" do
-      scenario "they see their own reports which are awaiting changes" do
-        report = create(:report, organisation: delivery_partner_user.organisation, state: :awaiting_changes)
-
-        visit reports_path
-
-        expect(page).to have_content t("table.title.report.awaiting_changes")
-        expect(page).to have_content report.description
-      end
-    end
-
-    context "when there are approved reports" do
-      scenario "they see their own reports which are approved" do
-        report = create(:report, organisation: delivery_partner_user.organisation, state: :approved)
-
-        visit reports_path
-
-        expect(page).to have_content t("table.title.report.approved")
-        expect(page).to have_content report.description
-      end
-
-      scenario "they are displayed in historical order" do
-        old_report = create(:report, organisation: delivery_partner_user.organisation, state: :approved, financial_year: 2020)
-        new_report = create(:report, organisation: delivery_partner_user.organisation, state: :approved, financial_year: 2021)
-        oldest_report = create(:report, organisation: delivery_partner_user.organisation, state: :approved, financial_year: 2019)
-
-        visit reports_path
-
-        expect(page.find(:xpath, "//table[@id = 'approved-reports']/tbody/tr[1]")[:id]).to eq(new_report.id)
-        expect(page.find(:xpath, "//table[@id = 'approved-reports']/tbody/tr[2]")[:id]).to eq(old_report.id)
-        expect(page.find(:xpath, "//table[@id = 'approved-reports']/tbody/tr[3]")[:id]).to eq(oldest_report.id)
       end
     end
   end
