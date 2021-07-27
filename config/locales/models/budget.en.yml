@@ -6,6 +6,8 @@ en:
         success: Budget successfully created
       update:
         success: Budget successfully updated
+      destroy:
+        success: Budget successfully deleted
   form:
     label:
       budget:

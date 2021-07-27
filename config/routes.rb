@@ -67,7 +67,7 @@ Rails.application.routes.draw do
     end
 
     concern :budgetable do
-      resources :budgets, only: [:new, :create, :show, :edit, :update]
+      resources :budgets
     end
 
     concern :forecastable do
