@@ -756,7 +756,7 @@
 - Track changes to 'Actual' financials in activity's 'Change history'
 - Create and populate an activity's RODA identifier automatically
 
-## [unreleased]
+## [release-64] - 2021-07-27
 
 - Show the financial quarter of the actuals spend on the Report view
 - Content and layout improvements to the actual spend tab on Report
@@ -765,7 +765,10 @@
 - Fix: 'spending breakdown' download is no longer empty
 - Allow budgets to be deleted
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-63...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-64...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-63...release-64
 [release-63]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...release-63
 [release-62]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-61...release-62
 [release-61]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-60...release-61
