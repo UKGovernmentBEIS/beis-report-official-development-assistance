@@ -18,6 +18,7 @@ FactoryBot.define do
     recipient_country { nil }
     requires_additional_benefitting_countries { true }
     intended_beneficiaries { ["CU", "DM", "DO"] }
+    benefitting_countries { nil }
     gdi { "4" }
     fstc_applies { true }
     aid_type { "D01" }

@@ -31,7 +31,7 @@ RSpec.feature "users can add benefitting countries as intended beneficiaries" do
         expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
         choose "No"
         click_button t("form.button.activity.submit")
-        expect(page).to have_current_path(activity_step_path(activity, :gdi))
+        expect(page).to have_current_path(activity_step_path(activity, :benefitting_countries))
       end
 
       scenario "the user has the option of selecting other intended beneficiaries based on the full list of all countries" do
@@ -58,7 +58,7 @@ RSpec.feature "users can add benefitting countries as intended beneficiaries" do
         click_button t("form.button.activity.submit")
         activity.reload
         expect(activity.intended_beneficiaries).to eq(["GM", "ID", "YE"])
-        expect(page).to have_current_path(activity_step_path(activity, :gdi))
+        expect(page).to have_current_path(activity_step_path(activity, :benefitting_countries))
       end
     end
   end

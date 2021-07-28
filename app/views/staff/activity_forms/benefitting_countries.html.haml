@@ -1,0 +1,10 @@
+= render layout: "wrapper" do |f|
+  = f.govuk_check_boxes_fieldset :benefitting_countries, legend: { tag: 'h1', size: 'xl' } do |fs|
+    - benefitting_countries_hash.each do |region_code, region_countries|
+
+      %h3.govuk-heading-s.region-heading
+        = region_name_from_code(region_code)
+
+      .region-countries-wrapper
+        - region_countries.each do |country|
+          = f.govuk_check_box :benefitting_countries, country["code"], label: { text: country["name"] }

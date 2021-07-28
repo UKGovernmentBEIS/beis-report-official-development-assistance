@@ -91,6 +91,13 @@ class Activity
       activity.assign_attributes(intended_beneficiaries: intended_beneficiaries)
     end
 
+    def set_benefitting_countries
+      benefitting_countries = activity_params
+        .permit(benefitting_countries: [])
+        .fetch("benefitting_countries", []).drop(1)
+      activity.assign_attributes(benefitting_countries: benefitting_countries)
+    end
+
     def set_gcrf_strategic_area
       gcrf_strategic_area = activity_params
         .permit(gcrf_strategic_area: [])
