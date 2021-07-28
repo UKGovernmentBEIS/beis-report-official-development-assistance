@@ -271,6 +271,7 @@ module Activities
         recipient_region: "Recipient Region",
         recipient_country: "Recipient Country",
         intended_beneficiaries: "Intended Beneficiaries",
+        benefitting_countries: "Benefitting Countries",
         delivery_partner_identifier: "Delivery partner identifier",
         gdi: "GDI",
         gcrf_strategic_area: "GCRF Strategic Area",
@@ -457,6 +458,15 @@ module Activities
           validate_country(
             code,
             I18n.t("importer.errors.activity.invalid_intended_beneficiaries")
+          )
+        end
+      end
+
+      def convert_benefitting_countries(benefitting_countries)
+        benefitting_countries.split("|").map do |code|
+          validate_country(
+            code,
+            I18n.t("importer.errors.activity.invalid_benefitting_countries")
           )
         end
       end

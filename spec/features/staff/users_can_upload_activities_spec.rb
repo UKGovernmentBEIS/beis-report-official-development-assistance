@@ -57,6 +57,7 @@ RSpec.feature "users can upload activities" do
       "Recipient Country", "Recipient Region",
       "UK DP Named Contact",
       "NF Partner Country DP",
+      "Benefitting Countries",
     ])
   end
 
