@@ -9,7 +9,7 @@ RSpec.feature "users can add benefitting countries" do
       visit activity_step_path(activity, :benefitting_countries)
 
       expect(page).to have_content t("form.legend.activity.benefitting_countries")
-      expect(page).to have_selector(".govuk-checkboxes__item", visible: true, count: 143)
+      expect(page).to have_selector(".region-countries-wrapper .govuk-checkboxes__item", count: 143)
       expect(page).to have_content("Afghanistan")
       expect(page).to have_content("Zimbabwe")
       check "Gambia"
@@ -19,6 +19,22 @@ RSpec.feature "users can add benefitting countries" do
 
       activity.reload
       expect(activity.benefitting_countries).to match_array(["GM", "ID", "YE"])
+    end
+
+    scenario "the user with JavaScript enabled can select whole regions at once", js: true do
+      visit activity_step_path(activity, :benefitting_countries)
+
+      expect(page).to have_content t("form.legend.activity.benefitting_countries")
+      expect(page).to have_selector(".region-countries-wrapper .govuk-checkboxes__item", count: 143)
+      expect(page).to have_selector(".govuk-checkboxes__item.region-checkbox-wrapper", count: 15)
+      expect(page).to have_content("Afghanistan")
+      expect(page).to have_content("Zimbabwe")
+
+      check "Caribbean, regional"
+      click_button t("form.button.activity.submit")
+
+      activity.reload
+      expect(activity.benefitting_countries).to match_array(["AG", "CU", "DM", "DO", "GD", "HT", "JM", "MS", "LC", "VC"])
     end
   end
 end

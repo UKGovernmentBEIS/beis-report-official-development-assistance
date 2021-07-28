@@ -27,3 +27,17 @@
   margin-left: govuk-spacing(6);
   margin-bottom: govuk-spacing(3);
 }
+
+.region-checkbox-wrapper {
+  display: none;
+}
+
+.js-enabled {
+  .region-checkbox-wrapper {
+    display: block;
+  }
+
+  .region-heading {
+    display: none;
+  }
+}

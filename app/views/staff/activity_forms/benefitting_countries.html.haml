@@ -2,9 +2,13 @@
   = f.govuk_check_boxes_fieldset :benefitting_countries, legend: { tag: 'h1', size: 'xl' } do |fs|
     - benefitting_countries_hash.each do |region_code, region_countries|
 
+      .govuk-checkboxes__item.region-checkbox-wrapper
+        = check_box_tag region_name_from_code(region_code), nil, false, "data-region-code" => region_code, class: "govuk-checkboxes__input region-checkbox"
+        = label_tag region_name_from_code(region_code), class: "govuk-label govuk-checkboxes__label" do
+          = region_name_from_code(region_code)
       %h3.govuk-heading-s.region-heading
         = region_name_from_code(region_code)
 
-      .region-countries-wrapper
+      .region-countries-wrapper{"data-region-code": region_code}
         - region_countries.each do |country|
           = f.govuk_check_box :benefitting_countries, country["code"], label: { text: country["name"] }

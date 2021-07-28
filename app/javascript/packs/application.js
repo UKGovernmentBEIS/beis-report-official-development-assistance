@@ -21,6 +21,7 @@ import Rails from "@rails/ujs"
 import cookieConsent from "../src/cookie-consent"
 import initTableTreeView from "../src/table-tree-view"
 import toggleProvidingOrgFields from "../src/toggle-providing-org-fields"
+import toggleAllRegionCountries from "../src/region-countries-checkbox"
 
 Rails.start()
 window.accessibleAutocomplete = accessibleAutocomplete
