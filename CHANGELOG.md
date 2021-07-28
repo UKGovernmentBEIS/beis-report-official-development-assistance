@@ -768,6 +768,7 @@
 ## [unreleased]
 
 - Move IATI XML exports to the exports section
+- Collect all benefitting countries in one step
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-64...HEAD
 [release-64]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-63...release-64
