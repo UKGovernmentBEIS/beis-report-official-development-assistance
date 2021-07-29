@@ -22,4 +22,4 @@
         %td.govuk-table__cell= t("form.user.active.#{user.active}")
         %td.govuk-table__cell
           = a11y_action_link(t("default.link.show"), user_path(user), user.name)
-          = a11y_action_link(t("default.link.edit"), edit_user_path(user), user.name)
+          = a11y_action_link(t("default.link.edit"), edit_user_path(user), user.name, ["govuk-!-margin-left-3"])

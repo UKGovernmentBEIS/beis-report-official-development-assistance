@@ -13,6 +13,8 @@
         %th.govuk-table__header
           = t("table.header.activity.comment")
         %th.govuk-table__header
+          %span.govuk-visually-hidden
+            = t("table.header.default.actions")
 
   %tbody.govuk-table__body
     - activities.each do |activity|
