@@ -10,6 +10,8 @@
       %th.govuk-table__header
         = t("table.header.user.active")
       %th.govuk-table__header
+        %span.govuk-visually-hidden
+          = t("table.header.default.actions")
 
   %tbody.govuk-table__body
     - users.each do |user|
