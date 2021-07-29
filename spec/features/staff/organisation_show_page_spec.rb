@@ -20,28 +20,6 @@ RSpec.feature "Organisation show page" do
 
         expect(page).to have_link t("page_content.organisation.button.edit_details"), href: edit_organisation_path(beis_user.organisation)
       end
-
-      context "when viewing a delivery partners organisation" do
-        scenario "they see a download xml button for project activities" do
-          delivery_partner_organisation = create(:delivery_partner_organisation)
-          _project = create(:project_activity, organisation: delivery_partner_organisation)
-
-          visit organisation_path(delivery_partner_organisation)
-
-          expect(page).to have_link t("page_content.organisation.download.title"),
-            href: organisation_path(delivery_partner_organisation, format: :xml, level: :project)
-        end
-
-        scenario "they see a download xml button for third-party project activities" do
-          delivery_partner_organisation = create(:delivery_partner_organisation)
-          _third_party_project = create(:third_party_project_activity, organisation: delivery_partner_organisation)
-
-          visit organisation_path(delivery_partner_organisation)
-
-          expect(page).to have_link t("page_content.organisation.download.title"),
-            href: organisation_path(delivery_partner_organisation, format: :xml, level: :third_party_project)
-        end
-      end
     end
   end
 

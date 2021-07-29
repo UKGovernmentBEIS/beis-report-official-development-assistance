@@ -9,6 +9,7 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
   end
 
   def show
+    @xml_downloads = Iati::XmlDownload.all_for_organisation(@organisation)
   end
 
   def transactions
