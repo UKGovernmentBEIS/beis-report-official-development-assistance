@@ -7,9 +7,9 @@ RSpec.feature "Users can view an organisation as XML" do
 
     context "when the user is viewing an organisation's export page" do
       context "when the organisation has projects" do
-        let!(:gcrf_project) { create(:project_activity, :gcrf_funded, organisation: organisation) }
-        let!(:newton_project) { create(:project_activity, :newton_funded, organisation: organisation) }
-        let!(:redacted_newton_project) { create(:project_activity, :newton_funded, organisation: organisation, publish_to_iati: false) }
+        let!(:gcrf_project) { create(:project_activity, :gcrf_funded, organisation: organisation, extending_organisation: organisation) }
+        let!(:newton_project) { create(:project_activity, :newton_funded, organisation: organisation, extending_organisation: organisation) }
+        let!(:redacted_newton_project) { create(:project_activity, :newton_funded, organisation: organisation, extending_organisation: organisation, publish_to_iati: false) }
 
         scenario "they can download the projects as xml" do
           visit exports_organisation_path(organisation)
@@ -26,9 +26,9 @@ RSpec.feature "Users can view an organisation as XML" do
       end
 
       context "the organisation has third-party projects" do
-        let!(:gcrf_project) { create(:third_party_project_activity, :gcrf_funded, organisation: organisation) }
-        let!(:newton_project) { create(:third_party_project_activity, :newton_funded, organisation: organisation) }
-        let!(:redacted_newton_project) { create(:third_party_project_activity, :newton_funded, organisation: organisation, publish_to_iati: false) }
+        let!(:gcrf_project) { create(:third_party_project_activity, :gcrf_funded, organisation: organisation, extending_organisation: organisation) }
+        let!(:newton_project) { create(:third_party_project_activity, :newton_funded, organisation: organisation, extending_organisation: organisation) }
+        let!(:redacted_newton_project) { create(:third_party_project_activity, :newton_funded, organisation: organisation, extending_organisation: organisation, publish_to_iati: false) }
 
         scenario "they can download the organisation's third-party projects as XML" do
           visit exports_organisation_path(organisation)
@@ -45,7 +45,7 @@ RSpec.feature "Users can view an organisation as XML" do
       end
 
       scenario "the XML file contains budgets and transactions for activities in the organisation" do
-        project = create(:project_activity, :newton_funded, organisation: organisation)
+        project = create(:project_activity, :newton_funded, organisation: organisation, extending_organisation: organisation)
         _budget = create(:budget, parent_activity: project, value: 2000)
         _transaction = create(:transaction, parent_activity: project, value: 100)
 
@@ -62,8 +62,8 @@ RSpec.feature "Users can view an organisation as XML" do
       end
 
       scenario "the XML file does not contain incomplete activities" do
-        _complete_project = create(:project_activity, :newton_funded, organisation: organisation)
-        _project = create(:project_activity, :newton_funded, :at_purpose_step, organisation: organisation)
+        _complete_project = create(:project_activity, :newton_funded, organisation: organisation, extending_organisation: organisation)
+        _project = create(:project_activity, :newton_funded, :at_purpose_step, organisation: organisation, extending_organisation: organisation)
 
         visit exports_organisation_path(organisation)
 
@@ -84,13 +84,13 @@ RSpec.feature "Users can view an organisation as XML" do
         it "sums up the total forecasts of all the programmes and their child activities by quarter" do
           programme = create(:programme_activity, :newton_funded, extending_organisation: organisation)
 
-          project_1 = create(:project_activity, parent: programme, organisation: organisation)
-          third_party_project_1 = create(:third_party_project_activity, parent: project_1, organisation: organisation)
-          _third_party_project_2 = create(:third_party_project_activity, parent: project_1, organisation: organisation)
+          project_1 = create(:project_activity, parent: programme, organisation: organisation, extending_organisation: organisation)
+          third_party_project_1 = create(:third_party_project_activity, parent: project_1, organisation: organisation, extending_organisation: organisation)
+          _third_party_project_2 = create(:third_party_project_activity, parent: project_1, organisation: organisation, extending_organisation: organisation)
 
-          project_2 = create(:project_activity, parent: programme, organisation: organisation)
-          third_party_project_3 = create(:third_party_project_activity, parent: project_2, organisation: organisation)
-          third_party_project_4 = create(:third_party_project_activity, parent: project_2, organisation: organisation)
+          project_2 = create(:project_activity, parent: programme, organisation: organisation, extending_organisation: organisation)
+          third_party_project_3 = create(:third_party_project_activity, parent: project_2, organisation: organisation, extending_organisation: organisation)
+          third_party_project_4 = create(:third_party_project_activity, parent: project_2, organisation: organisation, extending_organisation: organisation)
 
           ReportingCycle.new(project_1, 2, 2021).tick
 
@@ -141,8 +141,8 @@ RSpec.feature "Users can view an organisation as XML" do
 
       context "when downloading project level activities" do
         it "includes all transactions for those projects only" do
-          project = create(:project_activity, :gcrf_funded, :with_transparency_identifier, organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
-          other_project = create(:project_activity, :gcrf_funded, parent: project.parent, organisation: organisation)
+          project = create(:project_activity, :gcrf_funded, :with_transparency_identifier, organisation: organisation, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
+          other_project = create(:project_activity, :gcrf_funded, parent: project.parent, organisation: organisation, extending_organisation: organisation)
 
           third_party_project = create(:third_party_project_activity, :gcrf_funded, parent: project)
 

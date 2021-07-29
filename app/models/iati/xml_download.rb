@@ -21,9 +21,18 @@ module Iati
       def all_for_organisation(organisation)
         LEVELS.map { |level|
           Fund.all.map { |fund|
+            next unless organisation_has_activities_for_level_and_fund?(organisation, level, fund)
+
             new(organisation: organisation, level: level, fund: fund)
           }
-        }.flatten
+        }.flatten.compact
+      end
+
+      private def organisation_has_activities_for_level_and_fund?(organisation, level, fund)
+        Activity.send(level).where(
+          source_fund_code: fund.id,
+          extending_organisation: organisation
+        ).present?
       end
     end
 
