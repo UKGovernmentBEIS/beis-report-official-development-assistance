@@ -3,6 +3,7 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
   include StreamCsvDownload
 
   before_action do
+    @reporting_organisation = Organisation.service_owner
     @organisation = Organisation.find(params[:id])
     authorize :export, :show?
   end
@@ -21,5 +22,47 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
         end
       end
     end
+  end
+
+  def programme_activities
+    @activities = FindProgrammeActivities.new(
+      organisation: @organisation,
+      user: current_user,
+      fund_code: fund_code
+    ).call
+
+    render_xml
+  end
+
+  def project_activities
+    @activities = FindProjectActivities.new(
+      organisation: @organisation,
+      user: current_user,
+      fund_code: fund_code
+    ).call.publishable_to_iati
+
+    render_xml
+  end
+
+  def third_party_project_activities
+    @activities = FindThirdPartyProjectActivities.new(
+      organisation: @organisation,
+      user: current_user,
+      fund_code: fund_code
+    ).call.publishable_to_iati
+
+    render_xml
+  end
+
+  private
+
+  def fund_code
+    Fund.by_short_name(params[:fund]).id if params[:fund]
+  end
+
+  def render_xml
+    response.headers["Content-Disposition"] = "attachment; filename=\"#{@organisation.iati_reference}.xml\""
+
+    render "staff/organisations/show"
   end
 end
