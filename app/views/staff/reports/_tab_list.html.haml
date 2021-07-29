@@ -1,4 +1,4 @@
-%ul.govuk-tabs__list{ role: "navigation", aria: { label: "Report subnavigation" } }
+%ul.govuk-tabs__list{ aria: { label: "Report subnavigation" } }
   = render partial: "staff/reports/tab", locals: { name: "summary", path: report_path(@report), active_tab: active_tab }
   = render partial: "staff/reports/tab", locals: { name: "activities", path: report_activities_path(@report), active_tab: active_tab }
   = render partial: "staff/reports/tab", locals: { name: "forecasts", path: report_forecasts_path(@report), active_tab: active_tab }
