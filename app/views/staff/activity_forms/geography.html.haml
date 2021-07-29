@@ -1,5 +1,0 @@
-= render layout: "wrapper" do |f|
-  = f.govuk_radio_buttons_fieldset(:geography, legend: { text: t("form.legend.activity.geography"), size: "xl", tag: "h1" }) do
-    = f.hidden_field :geography, value: nil
-    = f.govuk_radio_button :geography, :recipient_region, label: { text: t("form.label.activity.geography_options.recipient_region") }
-    = f.govuk_radio_button :geography, :recipient_country, label: { text: t("form.label.activity.geography_options.recipient_country") }

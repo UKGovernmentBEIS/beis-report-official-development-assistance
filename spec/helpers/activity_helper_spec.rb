@@ -15,25 +15,6 @@ RSpec.describe ActivityHelper, type: :helper do
         expect(helper.step_is_complete_or_next?(activity: activity, step: "sector")).to be(false)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "programme_status")).to be(false)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "dates")).to be(false)
-        expect(helper.step_is_complete_or_next?(activity: activity, step: "region")).to be(false)
-        expect(helper.step_is_complete_or_next?(activity: activity, step: "country")).to be(false)
-        expect(helper.step_is_complete_or_next?(activity: activity, step: "aid_type")).to be(false)
-      end
-    end
-
-    context "when the activity has passed the region step" do
-      it "returns true for the previous field and only for the next field" do
-        activity = build(:project_activity, :at_region_step)
-        expect(helper.step_is_complete_or_next?(activity: activity, step: "purpose")).to be(true)
-        expect(helper.step_is_complete_or_next?(activity: activity, step: "sector")).to be(true)
-        expect(helper.step_is_complete_or_next?(activity: activity, step: "programme_status")).to be(true)
-        expect(helper.step_is_complete_or_next?(activity: activity, step: "dates")).to be(true)
-        expect(helper.step_is_complete_or_next?(activity: activity, step: "region")).to be(true)
-        expect(helper.step_is_complete_or_next?(activity: activity, step: "country")).to be(true)
-      end
-
-      it "returns false for the next fields" do
-        activity = build(:project_activity, :at_region_step)
         expect(helper.step_is_complete_or_next?(activity: activity, step: "aid_type")).to be(false)
       end
     end

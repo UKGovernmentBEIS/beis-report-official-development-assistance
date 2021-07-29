@@ -31,9 +31,6 @@ module FormHelpers
     actual_end_date_day: "1",
     actual_end_date_month: "2",
     actual_end_date_year: "2020",
-    geography: "recipient_region",
-    recipient_region: "Developing countries, unspecified",
-    intended_beneficiaries: "Haiti",
     gdi: "GDI not applicable",
     collaboration_type: "Bilateral",
     sdg_1: 1,
@@ -173,22 +170,6 @@ module FormHelpers
     fill_in "activity[actual_end_date(2i)]", with: actual_end_date_month
     fill_in "activity[actual_end_date(1i)]", with: actual_end_date_year
 
-    click_button t("form.button.activity.submit")
-
-    expect(page).to have_content t("form.legend.activity.geography")
-    choose "Region"
-    click_button t("form.button.activity.submit")
-
-    expect(page).to have_content t("form.label.activity.recipient_region")
-    select recipient_region, from: "activity[recipient_region]"
-    click_button t("form.button.activity.submit")
-
-    expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
-    choose "Yes"
-    click_button t("form.button.activity.submit")
-
-    expect(page).to have_content t("form.label.activity.intended_beneficiaries")
-    check intended_beneficiaries
     click_button t("form.button.activity.submit")
 
     expect(page).to have_content t("form.legend.activity.benefitting_countries")
@@ -347,8 +328,6 @@ module FormHelpers
       expect(page).to have_no_css(".govuk-summary-list__row.country_delivery_partners")
     end
 
-    expect(page).to have_content recipient_region
-    expect(page).to have_content intended_beneficiaries
     expect(page).to have_content gdi
     expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
 
