@@ -1,4 +1,6 @@
-- unless budgets.empty?
+- if budgets.empty?
+  %p.govuk-body= t("page_content.budgets.no_budgets")
+- else
   %table.govuk-table.budgets
     %thead.govuk-table__head
       %tr.govuk-table__row

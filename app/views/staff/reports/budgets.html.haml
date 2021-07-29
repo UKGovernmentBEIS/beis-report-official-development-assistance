@@ -16,4 +16,7 @@
           %h2.govuk-heading-l
             = t("tabs.report.budgets")
 
+          %p.govuk-body
+            This page shows all the budgets you have added during this reporting cycle.
+
           = render partial: "staff/shared/reports/table_budgets", locals: { budgets: @budgets }
