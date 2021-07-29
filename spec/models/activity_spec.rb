@@ -306,43 +306,6 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when geography is blank" do
-      subject(:activity) { build(:project_activity, geography: nil) }
-      it "should not be valid" do
-        expect(activity.valid?(:geography_step)).to be_falsey
-      end
-    end
-
-    context "when geography is recipient_region" do
-      context "and recipient_region and recipient_contry are blank" do
-        subject { build(:project_activity) }
-        it { should validate_presence_of(:recipient_region).on(:region_step) }
-        it { should_not validate_presence_of(:recipient_country).on(:country_step) }
-      end
-    end
-
-    context "when geography is recipient_country" do
-      context "and recipient_region and recipient_country are blank" do
-        subject { build(:project_activity, geography: :recipient_country) }
-        it { should validate_presence_of(:recipient_country).on(:country_step) }
-        it { should_not validate_presence_of(:recipient_region).on(:region_step) }
-      end
-    end
-
-    context "when requires_additional_benefitting_countries is blank when required" do
-      subject(:activity) { build(:project_activity, geography: :recipient_country, requires_additional_benefitting_countries: nil) }
-      it "should not be valid" do
-        expect(activity.valid?(:requires_additional_benefitting_countries_step)).to be_falsey
-      end
-    end
-
-    context "when intended_beneficiaries is blank" do
-      subject(:activity) { build(:project_activity, intended_beneficiaries: nil) }
-      it "should not be valid" do
-        expect(activity.valid?(:intended_beneficiaries_step)).to be_falsey
-      end
-    end
-
     context "when gdi is blank" do
       subject(:activity) { build(:project_activity, gdi: nil) }
       it "should not be valid" do
