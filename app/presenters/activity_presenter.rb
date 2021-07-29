@@ -93,6 +93,11 @@ class ActivityPresenter < SimpleDelegator
     super.map { |item| translate("activity.recipient_country.#{item}") }.to_sentence
   end
 
+  def benefitting_countries
+    return if super.blank?
+    super.map { |item| translate("activity.recipient_country.#{item}") }.to_sentence
+  end
+
   def gdi
     return if super.blank?
     translate("activity.gdi.#{super}")

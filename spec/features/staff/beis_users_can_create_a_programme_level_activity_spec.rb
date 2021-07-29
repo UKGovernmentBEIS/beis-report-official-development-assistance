@@ -163,6 +163,9 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
       check "Haiti"
       click_button t("form.button.activity.submit")
+      expect(page).to have_content t("form.legend.activity.benefitting_countries")
+
+      click_button t("form.button.activity.submit")
       expect(page).to have_content t("form.label.activity.gdi")
 
       # Don't select a GDI

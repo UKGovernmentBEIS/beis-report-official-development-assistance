@@ -26,6 +26,7 @@ class Activity < ApplicationRecord
     :country,
     :requires_additional_benefitting_countries,
     :intended_beneficiaries,
+    :benefitting_countries,
     :gdi,
     :aid_type,
     :collaboration_type,
