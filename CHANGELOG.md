@@ -770,6 +770,7 @@
 - Move IATI XML exports to the exports section
 - Collect all benefitting countries in one step
 - Benefitting countries can be imported via CSV upload
+- Tidy up Report Variance tab to only show activities that have a varaince
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-64...HEAD
 [release-64]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-63...release-64
