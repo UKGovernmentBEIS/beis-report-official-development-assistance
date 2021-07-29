@@ -508,6 +508,7 @@ en:
         invalid_region: The region cannot be found
         invalid_country: The country code cannot be found
         invalid_intended_beneficiaries: The intended beneficiaries are invalid
+        invalid_benefitting_countries: The benefitting countries are invalid
         invalid_gdi: The GDI code is invalid
         invalid_gcrf_strategic_area: The GCRF strategic area is invalid
         invalid_gcrf_challenge_area: The GCRF challenge area is invalid
