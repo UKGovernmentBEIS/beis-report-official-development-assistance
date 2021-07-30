@@ -1,5 +1,7 @@
 = content_for :page_title_prefix, t("document_title.activity.index", delivery_partner_name: @organisation.name)
 
+= breadcrumb_tags
+
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full

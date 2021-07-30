@@ -17,6 +17,7 @@ class Staff::ActivitiesController < Staff::BaseController
         organisation: @organisation,
         scope: :current
       ).call
+      add_breadcrumb "Current activities", organisation_activities_path(@organisation)
     end
   end
 
@@ -53,6 +54,7 @@ class Staff::ActivitiesController < Staff::BaseController
         organisation: @organisation,
         scope: :historic
       ).call
+      add_breadcrumb "Historic activities", historic_organisation_activities_path(@organisation)
     end
   end
 
