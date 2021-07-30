@@ -78,6 +78,8 @@ GEM
     bootsnap (1.7.7)
       msgpack (~> 1.0)
     brakeman (5.1.1)
+    breadcrumbs_on_rails (4.1.0)
+      railties (>= 5.0)
     builder (3.2.4)
     bullet (6.1.4)
       activesupport (>= 3.0.0)
@@ -470,6 +472,7 @@ DEPENDENCIES
   better_errors
   bootsnap (>= 1.1.0)
   brakeman
+  breadcrumbs_on_rails
   bullet
   byebug
   capybara (>= 2.15)

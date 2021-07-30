@@ -36,6 +36,8 @@ gem "webpacker"
 gem "wicked"
 gem "strip_attributes"
 
+gem "breadcrumbs_on_rails"
+
 # Authentication
 gem "omniauth-auth0", "~> 3.0"
 gem "omniauth-rails_csrf_protection", "~> 1.0.0"
