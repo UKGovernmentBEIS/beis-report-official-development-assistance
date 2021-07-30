@@ -2,10 +2,13 @@
 
 class Staff::ActivityTransfersController < Staff::BaseController
   include Secured
+  include Breadcrumbed
 
   def show
     activity = Activity.find(params[:activity_id])
     authorize activity
+
+    prepare_default_activity_trail(activity)
 
     @activity = ActivityPresenter.new(activity)
     @outgoing_transfers = policy_scope(OutgoingTransfer.where(source: activity)).map { |transfer| TransferPresenter.new(transfer) }

@@ -7,10 +7,11 @@ RSpec.describe Staff::ActivityHistoricalEventsController do
   before do
     allow(controller).to receive(:current_user).and_return(user)
     allow(controller).to receive(:logged_in_using_omniauth?).and_return(true)
+    allow(controller).to receive(:prepare_default_activity_trail)
   end
 
   describe "#show" do
-    let(:activity) { build_stubbed(:project_activity) }
+    let(:activity) { build_stubbed(:project_activity, organisation: organisation) }
     let(:grouper) { instance_double(Activity::HistoricalEventsGrouper, call: double) }
 
     before do
@@ -21,7 +22,7 @@ RSpec.describe Staff::ActivityHistoricalEventsController do
     end
 
     it "asks the HistoricalEventsGrouper to prepare the 'Change history'" do
-      get :show, params: {activity_id: "abc123", organisation_id: "asd321"}
+      get :show, params: {activity_id: "abc123", organisation_id: organisation.id}
 
       expect(Activity::HistoricalEventsGrouper)
         .to have_received(:new)

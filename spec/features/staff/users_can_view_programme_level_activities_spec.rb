@@ -29,7 +29,10 @@ RSpec.feature "Users can view programme level activities" do
       project = create(:project_activity, parent: programme_activity, organisation: user.organisation)
 
       visit organisation_activity_details_path(user.organisation, project)
-      click_on programme_activity.title
+
+      within(".activity-details") do
+        click_on programme_activity.title
+      end
 
       page_displays_an_activity(activity_presenter: ActivityPresenter.new(programme_activity))
     end
