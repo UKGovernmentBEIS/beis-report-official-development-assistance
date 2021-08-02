@@ -111,4 +111,4 @@ en:
               blank: Enter an organisation type
             beis_organisation_reference:
               blank: Enter an organisation short name
-              format: Short names must be between 2 and 10 letters long, and must contain only uppercase letters
+              format: Short names must be between 2 and 5 letters long, and must contain only uppercase letters
