@@ -4,13 +4,14 @@ RSpec.describe ActivitySearch do
   let(:bob) { create(:delivery_partner_user) }
 
   let!(:fund) { create(:fund_activity, roda_identifier: "ABC") }
-  let!(:programme) { create(:programme_activity, parent: fund) }
 
-  let!(:alice_project) { create(:project_activity, parent: programme, organisation: alice.organisation, roda_identifier: "alice") }
-  let!(:alice_third_party_project) { create(:third_party_project_activity, parent: alice_project, organisation: alice.organisation) }
+  let!(:alice_programme) { create(:programme_activity, parent: fund, extending_organisation: alice.organisation, roda_identifier: "alice") }
+  let!(:alice_project) { create(:project_activity, parent: alice_programme, extending_organisation: alice.organisation) }
+  let!(:alice_third_party_project) { create(:third_party_project_activity, parent: alice_project, extending_organisation: alice.organisation) }
 
-  let!(:bob_project) { create(:project_activity, parent: programme, organisation: bob.organisation) }
-  let!(:bob_third_party_project) { create(:third_party_project_activity, parent: bob_project, organisation: bob.organisation, roda_identifier: "bob") }
+  let!(:bob_programme) { create(:programme_activity, parent: fund, extending_organisation: bob.organisation) }
+  let!(:bob_project) { create(:project_activity, parent: bob_programme, extending_organisation: bob.organisation) }
+  let!(:bob_third_party_project) { create(:third_party_project_activity, parent: bob_project, extending_organisation: bob.organisation, roda_identifier: "bob") }
 
   let(:activity_search) { ActivitySearch.new(user: user, query: query) }
 
@@ -34,26 +35,26 @@ RSpec.describe ActivitySearch do
     end
 
     describe "searching for BEIS identifiers" do
-      let(:query) { programme.beis_identifier }
+      let(:query) { bob_programme.beis_identifier }
 
       before do
-        programme.update!(beis_identifier: "programme-id")
+        bob_programme.update!(beis_identifier: "programme-id")
       end
 
       it "returns the matching activities" do
-        expect(activity_search.results).to match_array [programme]
+        expect(activity_search.results).to match_array [bob_programme]
       end
     end
 
     describe "searching for previous identifiers" do
-      let(:query) { programme.previous_identifier }
+      let(:query) { bob_programme.previous_identifier }
 
       before do
-        programme.update!(previous_identifier: "programme-id")
+        bob_programme.update!(previous_identifier: "programme-id")
       end
 
       it "returns the matching activities" do
-        expect(activity_search.results).to match_array [programme]
+        expect(activity_search.results).to match_array [bob_programme]
       end
     end
 
@@ -124,14 +125,15 @@ RSpec.describe ActivitySearch do
     end
 
     describe "searching for a programme's BEIS identifiers" do
-      let(:query) { programme.beis_identifier }
+      let(:query) { alice_programme.beis_identifier }
 
       before do
-        programme.update!(beis_identifier: "programme-id")
+        alice_programme.update!(beis_identifier: "programme-id")
+        bob_programme.update!(beis_identifier: "programme-id")
       end
 
-      it "returns nothing" do
-        expect(activity_search.results).to match_array []
+      it "returns only the user's programme" do
+        expect(activity_search.results).to match_array [alice_programme]
       end
     end
 
