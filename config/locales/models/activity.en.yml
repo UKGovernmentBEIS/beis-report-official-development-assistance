@@ -305,11 +305,12 @@ en:
         identifier: RODA Identifier
         title: Name
         level: Level
-        actual_spend_for_quarter: "%{financial_quarter_and_year} actual spend"
-        forecasted_spend_for_quarter: "%{financial_quarter_and_year} forecasted spend"
-        variance_for_quarter: "%{financial_quarter_and_year} variance"
+        actual_spend: Actual spend
+        forecasted_spend: Forecasted spend
+        variance: Variance
         comment: Comment
         programme_status: Status
+        total_variance: Total variance
     body:
       activity:
         level:

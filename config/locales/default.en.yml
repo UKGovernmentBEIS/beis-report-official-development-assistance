@@ -6,6 +6,10 @@ en:
     formats:
       default: "%-d %b %Y"
       iati: "%Y-%m-%d"
+  number:
+    currency:
+      format:
+        unit: "&pound;"
   time:
     formats:
       default: "%Y-%m-%d"

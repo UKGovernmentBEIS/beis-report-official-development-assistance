@@ -4,11 +4,11 @@
       %th.govuk-table__header
         = t("table.header.activity.identifier")
       %th.govuk-table__header
-        = t("table.header.activity.forecasted_spend_for_quarter", financial_quarter_and_year: @report_presenter.financial_quarter_and_year)
+        = t("table.header.activity.forecasted_spend")
       %th.govuk-table__header
-        = t("table.header.activity.actual_spend_for_quarter", financial_quarter_and_year: @report_presenter.financial_quarter_and_year)
+        = t("table.header.activity.actual_spend")
       %th.govuk-table__header
-        = t("table.header.activity.variance_for_quarter", financial_quarter_and_year: @report_presenter.financial_quarter_and_year)
+        = t("table.header.activity.variance")
       - unless readonly
         %th.govuk-table__header
           = t("table.header.activity.comment")
@@ -19,14 +19,10 @@
   %tbody.govuk-table__body
     - activities.each do |activity|
       %tr.govuk-table__row{id: activity.id}
-        - if activity.project?
-          %td.govuk-table__cell= activity.roda_identifier
-        - else
-          %td.govuk-table__cell.level-d= activity.roda_identifier
-
-        %td.govuk-table__cell= activity.forecasted_total_for_report_financial_quarter(report: @report)
-        %td.govuk-table__cell= activity.actual_total_for_report_financial_quarter(report: @report)
-        %td.govuk-table__cell= activity.variance_for_report_financial_quarter(report: @report)
+        %td.govuk-table__cell= activity.roda_identifier
+        %td.govuk-table__cell= number_to_currency activity.forecasted_total_for_report_financial_quarter(report: @report)
+        %td.govuk-table__cell= number_to_currency activity.actual_total_for_report_financial_quarter(report: @report)
+        %td.govuk-table__cell= number_to_currency activity.variance_for_report_financial_quarter(report: @report)
         - unless readonly
           %td.govuk-table__cell
             -if activity.comment_for_report(report_id: @report.id) && policy(activity.comment_for_report(report_id: @report.id)).update?
@@ -36,3 +32,8 @@
           %td.govuk-table__cell
             = a11y_action_link(t('default.link.view'), organisation_activity_path(activity.organisation, activity), activity.roda_identifier)
 
+  %tfoot.govuk-table_footer
+    %tr.govuk-table__row
+      %th.govuk-table__header{"scope" => "row", "colspan" => "3"}
+        = t("table.header.activity.total_variance")
+      %td.govuk-table__cell{"colspan" => "3"}= number_to_currency @total

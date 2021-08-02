@@ -391,7 +391,6 @@ RSpec.feature "Users can view reports" do
 
         reporting_cycle.tick
         report = Report.for_activity(activity).in_historical_order.first
-        report_presenter = ReportPresenter.new(report)
 
         report_quarter = report.own_financial_quarter
         _actual_value = create(:transaction, parent_activity: activity, report: report, value: 1100, **report_quarter)
@@ -405,12 +404,16 @@ RSpec.feature "Users can view reports" do
           click_on t("tabs.report.variance")
 
           expect(page).to have_content t("table.header.activity.identifier")
-          expect(page).to have_content t("table.header.activity.forecasted_spend_for_quarter", financial_quarter_and_year: report_presenter.financial_quarter_and_year)
+          expect(page).to have_content t("table.header.activity.forecasted_spend")
           within "##{activity.id}" do
-            expect(page).to have_content "1000.00"
-            expect(page).to have_content "1100.00"
-            expect(page).to have_content "100.00"
+            expect(page).to have_content "£1,000.00"
+            expect(page).to have_content "£1,100.00"
+            expect(page).to have_content "£100.00"
             expect(page).to have_link t("default.link.view"), href: organisation_activity_path(activity.organisation, activity)
+          end
+
+          within "tfoot tr:first-child td" do
+            expect(page).to have_content "£100.00"
           end
         end
       end
