@@ -77,6 +77,40 @@ RSpec.describe Organisation, type: :model do
     end
   end
 
+  describe "#beis_organisation_reference" do
+    it "makes the organisation valid if it is between 2 and 5 characters long" do
+      organisation = build(:delivery_partner_organisation, beis_organisation_reference: "ABCD")
+      result = organisation.valid?
+      expect(result).to eq(true)
+    end
+
+    it "makes the organisation invalid if it is over 5 characters long" do
+      organisation = build(:delivery_partner_organisation, beis_organisation_reference: "ABCDEF")
+      result = organisation.valid?
+      expect(result).to eq(false)
+    end
+
+    it "makes the organisation invalid if contains non alphabetical characters" do
+      organisation = build(:delivery_partner_organisation, beis_organisation_reference: "123")
+      result = organisation.valid?
+      expect(result).to eq(false)
+    end
+
+    it "returns an error message if it is invalid" do
+      organisation = build(:delivery_partner_organisation, beis_organisation_reference: "ABCDEF")
+      organisation.valid?
+      expect(organisation.errors.messages[:beis_organisation_reference]).to include(
+        t("activerecord.errors.models.organisation.attributes.beis_organisation_reference.format")
+      )
+    end
+
+    it "does not validate if the organisation is not a reporter" do
+      organisation = build(:external_income_provider, beis_organisation_reference: "ABCDEF")
+      result = organisation.valid?
+      expect(result).to eq(true)
+    end
+  end
+
   describe "associations" do
     it { should have_many(:users) }
   end
