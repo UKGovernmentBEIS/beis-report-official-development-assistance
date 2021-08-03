@@ -34,7 +34,7 @@ class ActivitySearch
     @_activities ||= if @user.service_owner?
       Activity.all
     else
-      Activity.where(organisation: @user.organisation)
+      Activity.where(extending_organisation: @user.organisation)
     end
   end
 end
