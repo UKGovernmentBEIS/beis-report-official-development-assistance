@@ -191,6 +191,10 @@ module FormHelpers
     check intended_beneficiaries
     click_button t("form.button.activity.submit")
 
+    expect(page).to have_content t("form.legend.activity.benefitting_countries")
+    expect(page).to have_content t("form.hint.activity.benefitting_countries")
+    click_button t("form.button.activity.submit")
+
     expect(page).to have_content t("form.label.activity.gdi")
     expect(page).to have_content t("form.hint.activity.gdi")
     choose "GDI not applicable"

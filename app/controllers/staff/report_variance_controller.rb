@@ -9,16 +9,10 @@ class Staff::ReportVarianceController < Staff::BaseController
 
     @report_presenter = ReportPresenter.new(@report)
 
-    @activities = hierarchically_grouped_projects.map { |activity| ActivityPresenter.new(activity) }
+    @variance = Activity::VarianceFetcher.new(@report)
+
+    @activities = @variance.activities
+    @total = @variance.total
     render "staff/reports/variance"
-  end
-
-  private
-
-  def hierarchically_grouped_projects
-    Activity::ProjectsForReportFinder.new(
-      scope: Activity.includes(:organisation),
-      report: @report
-    ).call.hierarchically_grouped_projects
   end
 end

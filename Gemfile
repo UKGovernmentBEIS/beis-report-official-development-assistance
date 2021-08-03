@@ -4,7 +4,7 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "2.7.3"
 
-gem "auth0", "~> 5.3"
+gem "auth0", "~> 5.4"
 gem "acts_as_tree"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "govuk_design_system_formbuilder", "~> 2.7.2"
@@ -19,7 +19,7 @@ gem "mini_racer"
 gem "nanoid"
 gem "parser", "~> 2.6.3.0"
 gem "pry-rails"
-gem "puma", "~> 5.3"
+gem "puma", "~> 5.4"
 gem "pundit"
 gem "rollbar"
 gem "rails", "~> 6.1.4"

@@ -47,6 +47,7 @@ en:
     budgets:
       button:
         create: Add budget
+      no_budgets: There are no budgets created during this reporting cycle.
   page_title:
     budget:
       edit: Edit budget

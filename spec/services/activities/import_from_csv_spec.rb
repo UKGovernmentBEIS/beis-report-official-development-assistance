@@ -23,6 +23,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Recipient Region" => "789",
       "Recipient Country" => "KH",
       "Intended Beneficiaries" => "KH|KP|ID",
+      "Benefitting Countries" => "KH|KP|ID",
       "Delivery partner identifier" => "1234567890",
       "GDI" => "1",
       "GCRF Strategic Area" => "17A|RF",
@@ -408,6 +409,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.recipient_region).to eq(new_activity_attributes["Recipient Region"])
       expect(new_activity.recipient_country).to eq(new_activity_attributes["Recipient Country"])
       expect(new_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
+      expect(new_activity.benefitting_countries).to eq(["KH", "KP", "ID"])
       expect(new_activity.gdi).to eq("1")
       expect(new_activity.gcrf_challenge_area).to eq(4)
       expect(new_activity.geography).to eq("recipient_region")
@@ -551,6 +553,22 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.column).to eq(:intended_beneficiaries)
       expect(subject.errors.first.value).to eq("ffsdfdsfsfds")
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_intended_beneficiaries"))
+    end
+
+    it "has an error if the benefiting countries are invalid" do
+      new_activity_attributes["Benefitting Countries"] = "ffsdfdsfsfds"
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(1)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Benefitting Countries")
+      expect(subject.errors.first.column).to eq(:benefitting_countries)
+      expect(subject.errors.first.value).to eq("ffsdfdsfsfds")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_benefitting_countries"))
     end
 
     it "has an error if the GDI is invalid" do

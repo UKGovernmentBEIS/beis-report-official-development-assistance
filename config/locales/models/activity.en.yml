@@ -118,6 +118,7 @@ en:
         aid_type: What is the aid type?
         actual_end_date: Actual end date (optional)
         actual_start_date: Actual start date (optional if planned start date is entered)
+        benefitting_countries: What countries will benefit from this activity?
         call_present: Is there a call for this %{level}?
         call_open_date: Call open date
         call_close_date: Call close date
@@ -165,6 +166,7 @@ en:
         actual_end_date: For example, 2 2 2020
         actual_start_date: For example, 11 1 2020
         aid_type: Where an activity is not G01 or E01 we would expect most of our activity to be classified as D02 but there will be cases where C01 is more appropriate.
+        benefitting_countries: Select all that apply
         call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
         call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
         country_delivery_partners: "Please provide up to ten country delivery partners. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
@@ -227,6 +229,7 @@ en:
         actual_end_date: Actual end date
         actual_start_date: Actual start date
         aid_type: Aid type
+        benefitting_countries: Benefitting countries
         budgets: Budgets
         button:
           create: Add activity
@@ -302,11 +305,12 @@ en:
         identifier: RODA Identifier
         title: Name
         level: Level
-        actual_spend_for_quarter: "%{financial_quarter_and_year} actual spend"
-        forecasted_spend_for_quarter: "%{financial_quarter_and_year} forecasted spend"
-        variance_for_quarter: "%{financial_quarter_and_year} variance"
+        actual_spend: Actual spend
+        forecasted_spend: Forecasted spend
+        variance: Variance
         comment: Comment
         programme_status: Status
+        total_variance: Total variance
     body:
       activity:
         level:
@@ -389,6 +393,7 @@ en:
     activity_form:
       show:
         aid_type: Aid type
+        benefitting_countries: What are the countries benefitting from this activity?
         call_dates: What are the call open and close dates for this %{level}?
         call_present: Is there a call for this %{level}?
         channel_of_delivery_code: Channel of delivery code
@@ -504,6 +509,7 @@ en:
         invalid_region: The region cannot be found
         invalid_country: The country code cannot be found
         invalid_intended_beneficiaries: The intended beneficiaries are invalid
+        invalid_benefitting_countries: The benefitting countries are invalid
         invalid_gdi: The GDI code is invalid
         invalid_gcrf_strategic_area: The GCRF strategic area is invalid
         invalid_gcrf_challenge_area: The GCRF challenge area is invalid

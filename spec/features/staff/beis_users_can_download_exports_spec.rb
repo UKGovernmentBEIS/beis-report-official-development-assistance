@@ -10,7 +10,7 @@ RSpec.feature "BEIS users can download exports" do
 
     visit exports_path
     click_link delivery_partner.name
-    click_link t("table.export.organisation.download")
+    click_link "Download All transactions"
     document = CSV.parse(page.body.delete_prefix("\uFEFF"), headers: true).map(&:to_h)
 
     expect(document).to match_array([
