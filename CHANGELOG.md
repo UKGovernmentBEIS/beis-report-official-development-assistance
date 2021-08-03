@@ -765,14 +765,17 @@
 - Fix: 'spending breakdown' download is no longer empty
 - Allow budgets to be deleted
 
-## [unreleased]
+## [release-65] - 2021-08-03
 
 - Move IATI XML exports to the exports section
 - Collect all benefitting countries in one step
 - Benefitting countries can be imported via CSV upload
-- Tidy up Report Variance tab to only show activities that have a varaince
+- Tidy up Report Variance tab to only show activities that have a variance
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-64...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-65...HEAD
+[release-65]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-64...release-65
 [release-64]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-63...release-64
 [release-63]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...release-63
 [release-62]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-61...release-62
