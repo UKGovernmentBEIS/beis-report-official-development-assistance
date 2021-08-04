@@ -89,4 +89,45 @@ RSpec.describe ActivityHelper, type: :helper do
       end
     end
   end
+
+  describe "#benefitting_countries_with_percentages" do
+    it "returns an array of structs with country name, code and percentage" do
+      codes = ["AG", "LC"]
+      countries = benefitting_countries_with_percentages(codes)
+
+      expect(countries.count).to eql(2)
+
+      expect(countries.first.code).to eq("AG")
+      expect(countries.first.name).to eq("Antigua and Barbuda")
+      expect(countries.first.percentage).to eq(50.0)
+
+      expect(countries.last.code).to eq("LC")
+      expect(countries.last.name).to eq("Saint Lucia")
+      expect(countries.last.percentage).to eq(50.0)
+    end
+
+    it "appends the remainder to the last item if the country list count is an odd number" do
+      codes = ["AG", "LC", "BZ"]
+      countries = benefitting_countries_with_percentages(codes)
+
+      expect(countries.count).to eql(3)
+
+      expect(countries.first.code).to eq("AG")
+      expect(countries.first.name).to eq("Antigua and Barbuda")
+      expect(countries.first.percentage).to eq(33.0)
+
+      expect(countries.second.code).to eq("LC")
+      expect(countries.second.name).to eq("Saint Lucia")
+      expect(countries.second.percentage).to eq(33.0)
+
+      expect(countries.last.code).to eq("BZ")
+      expect(countries.last.name).to eq("Belize")
+      expect(countries.last.percentage).to eq(34.0)
+    end
+
+    it "returns an empty array if the codes are nil or empty" do
+      expect(benefitting_countries_with_percentages(nil)).to eq([])
+      expect(benefitting_countries_with_percentages([])).to eq([])
+    end
+  end
 end
