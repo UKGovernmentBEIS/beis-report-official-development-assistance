@@ -94,7 +94,9 @@ RSpec.feature "Users can view budgets on an activity page" do
           click_link t("table.body.activity.view_activity")
         end
         click_link t("tabs.activity.details")
-        click_link programme_activity.title
+        within(".activity-details") do
+          click_link programme_activity.title
+        end
 
         budget_information_is_shown_on_page(budget_presenter)
       end

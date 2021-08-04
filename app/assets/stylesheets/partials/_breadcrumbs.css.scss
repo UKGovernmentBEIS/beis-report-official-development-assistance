@@ -1,0 +1,7 @@
+.govuk-breadcrumbs .govuk-breadcrumbs__list li {
+  @extend .govuk-breadcrumbs__list-item;
+}
+
+.govuk-breadcrumbs .govuk-breadcrumbs__list li a {
+  @extend .govuk-breadcrumbs__link;
+}

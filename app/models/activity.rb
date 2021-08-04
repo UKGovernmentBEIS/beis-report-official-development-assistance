@@ -483,6 +483,10 @@ class Activity < ApplicationRecord
     iati_status_from_programme_status(programme_status)
   end
 
+  def historic?
+    programme_status.in?(["completed", "stopped", "cancelled"])
+  end
+
   def self.hierarchically_grouped_projects
     activities = all.to_a
     projects = activities.select(&:project?).sort_by { |a| a.roda_identifier.to_s }
