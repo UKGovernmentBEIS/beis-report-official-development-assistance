@@ -20,7 +20,7 @@ RSpec.describe StubController, type: :controller do
     let(:activity) { build(:project_activity, programme_status: "completed") }
 
     it "adds the historic index path to the breadcrumb stack" do
-      expect(subject).to receive(:add_breadcrumb).with("Historic activities", "historic_index_path")
+      expect(subject).to receive(:add_breadcrumb).with(t("page_content.breadcrumbs.historic_index"), "historic_index_path")
       expect(subject).to receive(:add_breadcrumb).with(activity.parent.title, "activity_path")
       expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
 
@@ -32,7 +32,7 @@ RSpec.describe StubController, type: :controller do
     let(:activity) { build(:project_activity) }
 
     it "adds the current index path to the breadcrumb stack" do
-      expect(subject).to receive(:add_breadcrumb).with("Current activities", "current_index_path")
+      expect(subject).to receive(:add_breadcrumb).with(t("page_content.breadcrumbs.current_index"), "current_index_path")
       expect(subject).to receive(:add_breadcrumb).with(activity.parent.title, "activity_path")
       expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
 
@@ -44,7 +44,7 @@ RSpec.describe StubController, type: :controller do
     let(:activity) { build(:third_party_project_activity) }
 
     it "adds the parent project and programme activities to the breadcrumb stack" do
-      expect(subject).to receive(:add_breadcrumb).with("Current activities", "current_index_path")
+      expect(subject).to receive(:add_breadcrumb).with(t("page_content.breadcrumbs.current_index"), "current_index_path")
       expect(subject).to receive(:add_breadcrumb).with(activity.parent.parent.title, "activity_path")
       expect(subject).to receive(:add_breadcrumb).with(activity.parent.title, "activity_path")
       expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")

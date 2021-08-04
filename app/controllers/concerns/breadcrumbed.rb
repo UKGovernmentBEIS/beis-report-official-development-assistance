@@ -3,9 +3,9 @@ module Breadcrumbed
 
   def prepare_default_activity_trail(activity)
     if activity.historic?
-      add_breadcrumb "Historic activities", historic_organisation_activities_path(activity.organisation)
+      add_breadcrumb t("page_content.breadcrumbs.historic_index"), historic_organisation_activities_path(activity.organisation)
     else
-      add_breadcrumb "Current activities", organisation_activities_path(activity.organisation)
+      add_breadcrumb t("page_content.breadcrumbs.current_index"), organisation_activities_path(activity.organisation)
     end
 
     if activity.third_party_project?
