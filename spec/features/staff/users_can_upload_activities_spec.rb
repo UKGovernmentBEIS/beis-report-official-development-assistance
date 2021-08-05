@@ -44,7 +44,6 @@ RSpec.feature "users can upload activities" do
       "GCRF Strategic Area",
       "GCRF Challenge Area",
       "GDI",
-      "Intended Beneficiaries",
       "Newton Fund Pillar",
       "ODA Eligibility", "ODA Eligibility Lead",
       "Parent RODA ID",
@@ -54,7 +53,6 @@ RSpec.feature "users can upload activities" do
       "Title",
       "Total applications", "Total awards",
       "Transparency identifier",
-      "Recipient Country", "Recipient Region",
       "UK DP Named Contact",
       "NF Partner Country DP",
       "Benefitting Countries",
@@ -117,10 +115,10 @@ RSpec.feature "users can upload activities" do
     expect(page).not_to have_text(t("action.activity.upload.success"))
 
     within "//tbody/tr[1]" do
-      expect(page).to have_xpath("td[1]", text: "Recipient Region")
+      expect(page).to have_xpath("td[1]", text: "Benefitting Countries")
       expect(page).to have_xpath("td[2]", text: "2")
-      expect(page).to have_xpath("td[3]", text: "999999")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.invalid_region"))
+      expect(page).to have_xpath("td[3]", text: "ZZ")
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.invalid_benefitting_countries"))
     end
 
     within "//tbody/tr[2]" do
@@ -170,8 +168,8 @@ RSpec.feature "users can upload activities" do
     create(:report, state: :active, fund: activity_to_update.associated_fund, organisation: organisation)
 
     upload_csv <<~CSV
-      RODA ID                               | Title     | Channel of delivery code                       | Sector | Recipient Country |
-      #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | BR                |
+      RODA ID                               | Title     | Channel of delivery code                       | Sector | Benefitting Countries |
+      #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | BR                    |
     CSV
 
     expect(page).to have_text(t("action.activity.upload.success"))
@@ -184,17 +182,11 @@ RSpec.feature "users can upload activities" do
       activity: activity_to_update,
       report: report
     )
+
     expect_change_to_be_recorded_as_historical_event(
-      field: "recipient_country",
-      previous_value: activity_to_update.recipient_country,
-      new_value: "BR",
-      activity: activity_to_update,
-      report: report
-    )
-    expect_change_to_be_recorded_as_historical_event(
-      field: "geography",
-      previous_value: activity_to_update.geography,
-      new_value: "recipient_country",
+      field: "benefitting_countries",
+      previous_value: activity_to_update.benefitting_countries,
+      new_value: ["BR"],
       activity: activity_to_update,
       report: report
     )
@@ -215,8 +207,8 @@ RSpec.feature "users can upload activities" do
     create(:report, state: :active, fund: activity_to_update.associated_fund, organisation: organisation)
 
     upload_csv <<~CSV
-      RODA ID                               | Title     | Channel of delivery code                       | Sector | Recipient Country | Delivery Partner Identifier |
-      #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | BR                | new-id-oh-no                |
+      RODA ID                               | Title     | Channel of delivery code                       | Sector | Delivery Partner Identifier |
+      #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | new-id-oh-no                |
     CSV
 
     expect(page).not_to have_text(t("action.activity.upload.success"))
