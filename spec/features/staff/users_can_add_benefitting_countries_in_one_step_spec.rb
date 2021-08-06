@@ -26,7 +26,7 @@ RSpec.feature "users can add benefitting countries" do
 
       expect(page).to have_content t("form.legend.activity.benefitting_countries")
       expect(page).to have_selector(".region-countries-wrapper .govuk-checkboxes__item", count: 143)
-      expect(page).to have_selector(".govuk-checkboxes__item.region-checkbox-wrapper", count: 15)
+      expect(page).to have_selector(".govuk-checkboxes__item.region-checkbox-wrapper", count: 16)
       expect(page).to have_content("Afghanistan")
       expect(page).to have_content("Zimbabwe")
 
