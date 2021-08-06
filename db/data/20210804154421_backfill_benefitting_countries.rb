@@ -14,13 +14,13 @@ activities_to_update.each_with_index do |activity, counter|
     intended_beneficiaries = activity.intended_beneficiaries || []
 
     activity.benefitting_countries = ([recipient_country] + intended_beneficiaries).compact.uniq
-    activity.save!
+    activity.save(validate: false)
   elsif activity.geography == "recipient_region"
     recipient_region = activity.recipient_region
 
     countries = benefitting_countries_hash.fetch(recipient_region, [])
     activity.benefitting_countries = countries.map { |c| c["code"] }
-    activity.save!
+    activity.save(validate: false)
   end
 end
 
