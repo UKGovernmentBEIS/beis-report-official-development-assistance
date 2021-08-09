@@ -1,0 +1,10 @@
+table.govuk-table {
+  @include govuk-media-query($until: tablet) {
+    display: block;
+  }
+  overflow-x: scroll;
+}
+
+.govuk-template {
+  overflow-x:hidden;
+}
