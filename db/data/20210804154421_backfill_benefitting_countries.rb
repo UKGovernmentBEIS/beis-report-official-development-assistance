@@ -10,18 +10,20 @@ activities_to_update.each_with_index do |activity, counter|
     puts "#{counter + 1} of #{total_activities_to_update}"
   end
 
-  if activity.geography == "recipient_country"
-    recipient_country = activity.recipient_country
-    intended_beneficiaries = activity.intended_beneficiaries || []
+  # We want all the stored information:
+  # - recipient country
+  # - intended beneficiaries
+  # - countries belonging to the recipient region
+  # regardless of whether the geography is recipient_country or recipient_region
 
-    activity.benefitting_countries = ([recipient_country] + intended_beneficiaries).compact.uniq
-    activity.save(validate: false)
-  elsif activity.geography == "recipient_region"
-    recipient_region = activity.recipient_region
+  recipient_country = activity.recipient_country
+  intended_beneficiaries = activity.intended_beneficiaries || []
 
-    next if recipient_region.nil? || recipient_region == "998"
-
+  recipient_region = activity.recipient_region
+  region_countries = []
+  unless recipient_region.nil? || recipient_region == "998"
     recipient_regions = if !benefitting_countries_hash.key?(recipient_region)
+      # We want to collect all the countries in the supra-region, by adding up the subregions' countries
       regions = [recipient_region]
       loop do
         subregions = regions.map { |r| region_to_subregion_hash.fetch(r) }.flatten
@@ -34,13 +36,14 @@ activities_to_update.each_with_index do |activity, counter|
       [recipient_region]
     end
 
-    countries = recipient_regions.map { |region|
+    region_countries = recipient_regions.map { |region|
       benefitting_countries_hash.fetch(region, [])
-    }.flatten
-
-    activity.benefitting_countries = countries.map { |c| c["code"] }
-    activity.save(validate: false)
+    }.flatten.map { |c| c["code"] }
   end
+
+  benefitting_countries = ([recipient_country] + intended_beneficiaries + region_countries).compact.uniq
+  activity.benefitting_countries = benefitting_countries if benefitting_countries.present?
+  activity.save(validate: false)
 end
 
 if (remaining_activities = Activity.where.not(geography: nil).where(benefitting_countries: nil)).present?
