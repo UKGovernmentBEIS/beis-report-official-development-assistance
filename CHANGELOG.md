@@ -772,13 +772,16 @@
 - Benefitting countries can be imported via CSV upload
 - Tidy up Report Variance tab to only show activities that have a variance
 
-## [unreleased]
+## [release-66] - 2021-08-10
 
 - Make sure users are active even after login
 - Add breadcrumb trail for activities
 - Adjust XML exports to use new benefitting countries field
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-65...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-66...HEAD
+[release-66]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-65...release-66
 [release-65]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-64...release-65
 [release-64]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-63...release-64
 [release-63]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-62...release-63
