@@ -65,10 +65,11 @@ GEM
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
-    auth0 (5.4.0)
+    auth0 (5.5.0)
       addressable (~> 2.8)
       jwt (~> 2.2)
       rest-client (~> 2.0.2)
+      retryable (~> 3.0)
       zache (~> 0.12)
     better_errors (2.9.1)
       coderay (>= 1.0.0)
@@ -344,6 +345,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    retryable (3.0.5)
     rexml (3.2.5)
     rollbar (3.2.0)
     rspec-core (3.10.1)
@@ -468,7 +470,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
-  auth0 (~> 5.4)
+  auth0 (~> 5.5)
   better_errors
   bootsnap (>= 1.1.0)
   brakeman
