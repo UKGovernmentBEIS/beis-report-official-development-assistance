@@ -19,7 +19,7 @@ module Auth
 
   def current_user
     @current_user ||= if session.dig(:userinfo)
-      User.includes(:organisation).find_by!(identifier: signed_in_user_identifier) do |user|
+      User.active.includes(:organisation).find_by!(identifier: signed_in_user_identifier) do |user|
         user.name = session.dig(:userinfo, "info", "name")
         user.email = session.dig(:userinfo, "info", "email")
       end

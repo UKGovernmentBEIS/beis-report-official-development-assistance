@@ -65,10 +65,11 @@ GEM
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
-    auth0 (5.4.0)
+    auth0 (5.5.0)
       addressable (~> 2.8)
       jwt (~> 2.2)
       rest-client (~> 2.0.2)
+      retryable (~> 3.0)
       zache (~> 0.12)
     better_errors (2.9.1)
       coderay (>= 1.0.0)
@@ -78,6 +79,8 @@ GEM
     bootsnap (1.7.7)
       msgpack (~> 1.0)
     brakeman (5.1.1)
+    breadcrumbs_on_rails (4.1.0)
+      railties (>= 5.0)
     builder (3.2.4)
     bullet (6.1.4)
       activesupport (>= 3.0.0)
@@ -342,6 +345,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    retryable (3.0.5)
     rexml (3.2.5)
     rollbar (3.2.0)
     rspec-core (3.10.1)
@@ -442,8 +446,8 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webmock (3.13.0)
-      addressable (>= 2.3.6)
+    webmock (3.14.0)
+      addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
     webpacker (5.4.0)
@@ -466,10 +470,11 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
-  auth0 (~> 5.4)
+  auth0 (~> 5.5)
   better_errors
   bootsnap (>= 1.1.0)
   brakeman
+  breadcrumbs_on_rails
   bullet
   byebug
   capybara (>= 2.15)
@@ -526,7 +531,7 @@ DEPENDENCIES
   strip_attributes
   tzinfo-data
   web-console (>= 3.3.0)
-  webmock (~> 3.13)
+  webmock (~> 3.14)
   webpacker
   wicked
 

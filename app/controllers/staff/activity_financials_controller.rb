@@ -2,10 +2,13 @@
 
 class Staff::ActivityFinancialsController < Staff::BaseController
   include Secured
+  include Breadcrumbed
 
   def show
     activity = Activity.find(params[:activity_id])
     authorize activity
+
+    prepare_default_activity_trail(activity)
 
     @transactions = policy_scope(Transaction).where(parent_activity: activity).order("date DESC")
     @budgets = policy_scope(Budget).where(parent_activity: activity).order("financial_year DESC")

@@ -774,6 +774,10 @@
 
 ## [unreleased]
 
+- Make sure users are active even after login
+- Add breadcrumb trail for activities
+- Adjust XML exports to use new benefitting countries field
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-65...HEAD
 [release-65]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-64...release-65
 [release-64]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-63...release-64

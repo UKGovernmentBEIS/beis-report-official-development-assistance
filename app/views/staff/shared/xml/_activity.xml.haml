@@ -39,7 +39,11 @@
     %website= I18n.t("contact_info.website")
     %mailing-address
       %narrative= I18n.t("contact_info.mailing_address")
-  - if activity.recipient_country?
+  - if activity.benefitting_countries.present?
+    - benefitting_countries_with_percentages(activity.benefitting_countries).each do |country|
+      %recipient-country{"code" => country.code, "percentage" => country.percentage}
+        %narrative= country.name
+  - elsif activity.recipient_country?
     %recipient-country{"code" => activity.recipient_country}
       %narrative= country_name_from_code(activity.recipient_country)
   - elsif activity.recipient_region?

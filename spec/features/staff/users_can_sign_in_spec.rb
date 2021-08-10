@@ -76,6 +76,7 @@ RSpec.feature "Users can sign in with Auth0" do
 
     expect(page.current_path).to eql home_path
   end
+
   scenario "protected pages cannot be visited unless signed in" do
     visit root_path
 
@@ -145,6 +146,27 @@ RSpec.feature "Users can sign in with Auth0" do
 
       expect(page).to have_content(t("header.link.sign_in"))
       click_on t("header.link.sign_in")
+
+      expect(page).to have_content(t("page_title.errors.not_authorised"))
+      expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))
+    end
+
+    scenario "a user who is logged in and then deactivated sees an error message" do
+      user = create(:delivery_partner_user)
+
+      mock_successful_authentication(
+        uid: user.identifier, name: user.name, email: user.email
+      )
+
+      visit root_path
+      click_on t("header.link.sign_in")
+
+      expect(page.current_path).to eql home_path
+
+      user.active = false
+      user.save
+
+      visit home_path
 
       expect(page).to have_content(t("page_title.errors.not_authorised"))
       expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))

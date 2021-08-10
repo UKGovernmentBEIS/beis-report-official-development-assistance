@@ -2,10 +2,13 @@
 
 class Staff::ActivityChildrenController < Staff::BaseController
   include Secured
+  include Breadcrumbed
 
   def show
     @activity = Activity.find(params[:activity_id])
     authorize @activity
+
+    prepare_default_activity_trail(@activity)
 
     @activities = @activity.child_activities.includes([:organisation, :parent]).order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
   end

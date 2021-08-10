@@ -30,4 +30,12 @@ module ApplicationHelper
   def support_email_link
     mail_to(SUPPORT_EMAIL_ADDRESS, nil, class: "govuk-link")
   end
+
+  def breadcrumb_tags
+    content_tag :div, class: "govuk-breadcrumbs" do
+      content_tag :ol, class: "govuk-breadcrumbs__list" do
+        render_breadcrumbs tag: :li, separator: ""
+      end
+    end
+  end
 end
