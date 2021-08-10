@@ -450,4 +450,4 @@
       %dd.govuk-summary-list__value
         = t("summary.label.activity.publish_to_iati.#{activity_presenter.publish_to_iati}")
       %dd.govuk-summary-list__actions
-        = link_to(t("default.link.edit"), edit_activity_redaction_path(activity_presenter), class: "govuk-link")
+        = a11y_action_link(t("default.link.edit"), edit_activity_redaction_path(activity_presenter), t("summary.label.activity.publish_to_iati.label"))
