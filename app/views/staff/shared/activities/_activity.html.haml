@@ -56,7 +56,7 @@
     %dd.govuk-summary-list__actions
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :purpose)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:title)}"),
-        activity_step_path(activity_presenter, :purpose), t("summary.label.activity.title"))
+        activity_step_path(activity_presenter, :purpose), t("summary.label.activity.title", level: activity_presenter.level))
 
   .govuk-summary-list__row.description
     %dt.govuk-summary-list__key
