@@ -56,7 +56,7 @@
     %dd.govuk-summary-list__actions
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :purpose)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:title)}"),
-        activity_step_path(activity_presenter, :purpose), t("summary.label.activity.title"))
+        activity_step_path(activity_presenter, :purpose), t("summary.label.activity.title", level: activity_presenter.level))
 
   .govuk-summary-list__row.description
     %dt.govuk-summary-list__key
@@ -450,4 +450,4 @@
       %dd.govuk-summary-list__value
         = t("summary.label.activity.publish_to_iati.#{activity_presenter.publish_to_iati}")
       %dd.govuk-summary-list__actions
-        = link_to(t("default.link.edit"), edit_activity_redaction_path(activity_presenter), class: "govuk-link")
+        = a11y_action_link(t("default.link.edit"), edit_activity_redaction_path(activity_presenter), t("summary.label.activity.publish_to_iati.label"))
