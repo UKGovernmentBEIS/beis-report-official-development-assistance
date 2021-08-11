@@ -5,6 +5,8 @@ en:
         success: Refund successfully created
       update:
         success: Refund successfully updated
+      destroy:
+        success: Refund successfully deleted
   page_content:
     refund:
       button:

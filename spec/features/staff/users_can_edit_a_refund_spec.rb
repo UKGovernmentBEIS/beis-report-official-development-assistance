@@ -4,9 +4,9 @@ RSpec.feature "Users can edit a refund" do
   RSpec.shared_examples "refunds" do
     let!(:refund) { create(:refund, parent_activity: activity, report: report) }
 
-    before { authenticate!(user: user) }
+    before do
+      authenticate!(user: user)
 
-    scenario "they can edit a refund for an activity" do
       visit organisation_activity_financials_path(
         organisation_id: activity.organisation.id,
         activity_id: activity.id
@@ -15,7 +15,9 @@ RSpec.feature "Users can edit a refund" do
       within "##{refund.id}" do
         click_on "Edit refund"
       end
+    end
 
+    scenario "they can edit a refund for an activity" do
       fill_in "refund[value]", with: "100"
       choose "4", name: "refund[financial_quarter]"
       select "2019-2020", from: "refund[financial_year]"
@@ -33,6 +35,10 @@ RSpec.feature "Users can edit a refund" do
       })
 
       expect(page).to have_content(t("action.refund.update.success"))
+    end
+
+    scenario "they can delete a refund" do
+      expect { click_on t("default.button.delete") }.to change(Refund, :count).by(-1)
     end
   end
 

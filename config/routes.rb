@@ -101,7 +101,7 @@ Rails.application.routes.draw do
       resources :comments, only: [:new, :create, :edit, :update]
       resources :outgoing_transfers, except: [:index]
       resources :incoming_transfers, except: [:index]
-      resources :refunds, only: [:new, :create, :edit, :update]
+      resources :refunds, except: [:index]
     end
 
     resource :search, only: [:show]

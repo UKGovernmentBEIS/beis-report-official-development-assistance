@@ -51,6 +51,17 @@ class Staff::RefundsController < Staff::ActivitiesController
     end
   end
 
+  def destroy
+    @refund = Refund.find(id)
+    authorize @refund
+
+    @refund.destroy
+
+    flash[:notice] = t("action.refund.destroy.success")
+
+    redirect_to organisation_activity_path(activity.organisation, activity)
+  end
+
   private
 
   def refund_params
