@@ -1,0 +1,22 @@
+= f.govuk_error_summary
+
+= f.govuk_text_field :value
+
+= f.govuk_fieldset legend: { text: t("form.label.refund.financial_quarter") } do
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      = f.govuk_collection_radio_buttons :financial_quarter,
+        list_of_financial_quarters,
+        :id,
+        :name,
+        inline: true,
+        legend: { text: t("form.label.refund.financial_quarter") , tag: :p, size: 's' }
+    .govuk-grid-column-one-third
+      = f.govuk_collection_select :financial_year,
+        list_of_financial_years(FinancialYear.previous_ten),
+        :id,
+        :name,
+        label: { text: t("form.label.refund.financial_year"), tag: :p, size: 's' }
+
+= f.govuk_text_area :comment
+
