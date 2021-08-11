@@ -6,9 +6,13 @@
           = t("table.header.refund.financial_quarter")
         %th.govuk-table__header
           = t("table.header.refund.value")
+        %th.govuk-table__header
 
     %tbody.govuk-table__body
       - refunds.each do |refund|
         %tr.govuk-table__row{id: refund.id}
           %td.govuk-table__cell= refund.financial_quarter_and_year
           %td.govuk-table__cell= refund.value
+          %td.govuk-table__cell
+            - if policy(refund).edit?
+              = a11y_action_link(t('default.link.edit'), edit_activity_refund_path(refund.parent_activity_id, refund), t("page_content.refund.edit_noun"))

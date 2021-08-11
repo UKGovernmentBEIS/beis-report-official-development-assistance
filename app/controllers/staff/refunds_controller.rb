@@ -28,6 +28,29 @@ class Staff::RefundsController < Staff::ActivitiesController
     end
   end
 
+  def edit
+    @activity = activity
+    @refund = Refund.find(id)
+
+    authorize @refund
+  end
+
+  def update
+    @refund = Refund.find(id)
+    authorize @refund
+
+    result = UpdateRefund.new(
+      refund: @refund,
+    ).call(attributes: refund_params)
+
+    if result.success?
+      flash[:notice] = t("action.refund.update.success")
+      redirect_to organisation_activity_path(activity.organisation, activity)
+    else
+      render :edit
+    end
+  end
+
   private
 
   def refund_params

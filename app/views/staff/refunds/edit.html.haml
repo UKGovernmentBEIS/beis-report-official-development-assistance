@@ -1,0 +1,15 @@
+=content_for :page_title_prefix, t("page_title.refund.edit")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = @activity.title
+
+      %h2.govuk-heading-l
+        = t("page_title.refund.edit")
+
+      = form_with model: @refund, url: activity_refund_path(@activity, @refund) do |f|
+        = render partial: "form", locals: { f: f, activity: @activity }
+
+        = f.govuk_submit t("default.button.submit")

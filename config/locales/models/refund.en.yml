@@ -3,13 +3,17 @@ en:
     refund:
       create:
         success: Refund successfully created
+      update:
+        success: Refund successfully updated
   page_content:
     refund:
       button:
         create: Add a refund
+      edit_noun: refund
   page_title:
     refund:
       new: Add a new refund
+      edit: Edit refund
   form:
     label:
       refund:
