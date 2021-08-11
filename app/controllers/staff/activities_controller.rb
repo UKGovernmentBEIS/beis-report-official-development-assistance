@@ -17,7 +17,12 @@ class Staff::ActivitiesController < Staff::BaseController
         organisation: @organisation,
         scope: :current
       ).call
-      add_breadcrumb t("page_content.breadcrumbs.current_index"), organisation_activities_path(@organisation)
+
+      if current_user.service_owner?
+        add_breadcrumb t("page_content.breadcrumbs.organisation_current_index", org_name: @organisation.name), organisation_activities_path(@organisation)
+      else
+        add_breadcrumb t("page_content.breadcrumbs.current_index"), organisation_activities_path(@organisation)
+      end
     end
   end
 
@@ -54,7 +59,12 @@ class Staff::ActivitiesController < Staff::BaseController
         organisation: @organisation,
         scope: :historic
       ).call
-      add_breadcrumb t("page_content.breadcrumbs.historic_index"), historic_organisation_activities_path(@organisation)
+
+      if current_user.service_owner?
+        add_breadcrumb t("page_content.breadcrumbs.organisation_historic_index", org_name: @organisation.name), historic_organisation_activities_path(@organisation)
+      else
+        add_breadcrumb t("page_content.breadcrumbs.historic_index"), historic_organisation_activities_path(@organisation)
+      end
     end
   end
 
