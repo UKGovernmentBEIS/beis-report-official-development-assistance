@@ -1,0 +1,14 @@
+- unless refunds.empty?
+  %table.govuk-table.refunds
+    %thead.govuk-table__head
+      %tr.govuk-table__row
+        %th.govuk-table__header
+          = t("table.header.refund.financial_quarter")
+        %th.govuk-table__header
+          = t("table.header.refund.value")
+
+    %tbody.govuk-table__body
+      - refunds.each do |refund|
+        %tr.govuk-table__row{id: refund.id}
+          %td.govuk-table__cell= refund.financial_quarter_and_year
+          %td.govuk-table__cell= refund.value

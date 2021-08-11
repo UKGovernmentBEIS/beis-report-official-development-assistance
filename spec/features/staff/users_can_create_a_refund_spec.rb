@@ -5,10 +5,14 @@ RSpec.feature "Users can create a refund" do
     before { authenticate!(user: user) }
 
     scenario "they can create a refund for an activity" do
-      visit new_activity_refund_path(activity_id: activity.id)
+      visit organisation_activity_financials_path(
+        organisation_id: activity.organisation.id,
+        activity_id: activity.id
+      )
+
+      click_on t("page_content.refund.button.create")
 
       fill_in "refund[value]", with: "100"
-
       choose "4", name: "refund[financial_quarter]"
       select "2019-2020", from: "refund[financial_year]"
       fill_in "refund[comment]", with: "Comment goes here"
@@ -16,6 +20,13 @@ RSpec.feature "Users can create a refund" do
       expect { click_on(t("default.button.submit")) }.to change(Refund, :count).by(1)
 
       expect(page).to have_content(t("action.refund.create.success"))
+
+      newly_created_refund = Refund.last
+
+      within "##{newly_created_refund.id}" do
+        expect(page).to have_content("Q4 2019-2020")
+        expect(page).to have_content("£100")
+      end
     end
   end
 
