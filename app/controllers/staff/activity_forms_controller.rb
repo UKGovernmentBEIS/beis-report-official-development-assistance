@@ -22,12 +22,6 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step unless @activity.call_present?
     when :total_applications_and_awards
       skip_step unless @activity.call_present?
-    when :region
-      skip_step if @activity.recipient_country?
-    when :country
-      skip_step if @activity.recipient_region?
-    when :intended_beneficiaries
-      skip_step unless @activity.requires_additional_benefitting_countries?
     when :collaboration_type
       skip_step if @activity.fund?
       skip_step unless Activity::Inference.service.editable?(@activity, :collaboration_type)
@@ -91,11 +85,7 @@ class Staff::ActivityFormsController < Staff::BaseController
   def update_form_state
     return if @activity.invalid?("#{step}_step".to_sym)
 
-    if step == :geography && @activity.geography == "recipient_country"
-      jump_to :country
-    elsif step == :geography && @activity.geography == "recipient_region"
-      jump_to :region
-    elsif step == :sector_category
+    if step == :sector_category
       jump_to :sector
     elsif @activity.form_steps_completed?
       flash[:notice] ||= t("action.#{@activity.level}.update.success")

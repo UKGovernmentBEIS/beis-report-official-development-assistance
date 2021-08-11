@@ -1,4 +1,9 @@
 class ActivityCsvPresenter < ActivityPresenter
+  def benefitting_countries
+    return if super.blank?
+    to_model.benefitting_countries.map { |item| I18n.t("activity.recipient_country.#{item}") }.join("; ")
+  end
+
   def intended_beneficiaries
     return if super.blank?
     to_model.intended_beneficiaries.map { |item| I18n.t("activity.recipient_country.#{item}") }.join("; ")

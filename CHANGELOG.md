@@ -777,6 +777,7 @@
 - Make sure users are active even after login
 - Add breadcrumb trail for activities
 - Adjust XML exports to use new benefitting countries field
+- No longer collect geography, recipient country, recipient region, and intended beneficiaries (deprecated by collecting benefitting countries)
 
 ## [unreleased]
 

@@ -268,9 +268,6 @@ module Activities
         transparency_identifier: "Transparency identifier",
         title: "Title",
         description: "Description",
-        recipient_region: "Recipient Region",
-        recipient_country: "Recipient Country",
-        intended_beneficiaries: "Intended Beneficiaries",
         benefitting_countries: "Benefitting Countries",
         delivery_partner_identifier: "Delivery partner identifier",
         gdi: "GDI",
@@ -343,8 +340,6 @@ module Activities
           attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
         end
 
-        attributes[:geography] = infer_geography(attributes) if (attributes[:recipient_region] || attributes[:recipient_country]).present?
-        attributes[:recipient_region] ||= inferred_region if attributes[:recipient_country].present?
         attributes[:sector_category] = get_sector_category(attributes[:sector]) if attributes[:sector].present?
 
         attributes
@@ -373,21 +368,6 @@ module Activities
       rescue => error
         @errors[attr_name] = [original_value, error.message]
         nil
-      end
-
-      def convert_recipient_region(region)
-        validate_from_codelist(
-          region,
-          "recipient_region",
-          I18n.t("importer.errors.activity.invalid_region"),
-        )
-      end
-
-      def convert_recipient_country(country)
-        validate_country(
-          country,
-          I18n.t("importer.errors.activity.invalid_country")
-        )
       end
 
       def convert_gdi(gdi)
@@ -452,15 +432,6 @@ module Activities
       alias convert_sdg_1 convert_sustainable_development_goal
       alias convert_sdg_2 convert_sustainable_development_goal
       alias convert_sdg_3 convert_sustainable_development_goal
-
-      def convert_intended_beneficiaries(intended_beneficiaries)
-        intended_beneficiaries.split("|").map do |code|
-          validate_country(
-            code,
-            I18n.t("importer.errors.activity.invalid_intended_beneficiaries")
-          )
-        end
-      end
 
       def convert_benefitting_countries(benefitting_countries)
         benefitting_countries.split("|").map do |code|
@@ -582,22 +553,6 @@ module Activities
         sector = codelist.find_item_by_code(sector_code)
 
         sector["category"] if sector
-      end
-
-      def infer_geography(attributes)
-        if attributes[:recipient_region].present?
-          :recipient_region
-        elsif attributes[:recipient_country].present?
-          :recipient_country
-        end
-      end
-
-      def inferred_region
-        @inferred_region ||= begin
-          return if @row["Recipient Region"].present?
-
-          country_to_region_mapping.find { |pair| pair["country"] == @row["Recipient Country"] }&.fetch("region")
-        end
       end
 
       def validate_from_codelist(code, entity, message)
