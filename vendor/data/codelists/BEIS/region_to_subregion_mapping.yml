@@ -1,0 +1,26 @@
+data:
+  "298": # Africa, regional
+    - "189" # North of Sahara, regional
+    - "289" # South of Sahara, regional
+  "289": # South of Sahara, regional
+    - "1027" # Eastern Africa, regional
+    - "1029" # Southern Africa, regional
+    - "1030" # Western Africa, regional
+  "498": # America, regional
+    - "389" # Caribbean & Central America, regional
+    - "489" # South America, regional
+  "389": # Caribbean & Central America, regional
+    - "1031" # Caribbean, regional
+    - "1032" # Central America, regional
+  "798": # Asia, regional
+    - "789" # Far East Asia, regional
+    - "589" # Middle East, regional
+    - "679" # South Asia, regional
+    - "689" # South & Central Asia, regional
+  "689": # South & Central Asia, regional
+    - "679" # South Asia, regional
+    - "619" # Central Asia, regional
+  "889": # Oceania, regional
+    - "1033" # Melanesia, regional
+    - "1034" # Micronesia, regional
+    - "1035" # Polynesia, regional
