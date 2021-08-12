@@ -13,10 +13,7 @@ class Staff::ReportActualsController < Staff::BaseController
     @report_presenter = ReportPresenter.new(@report)
     @report_activities = @report.reportable_activities
     @total_transaction = @report_presenter.summed_transactions
-    @grouped_transactions = @report.transactions
-      .includes([:parent_activity])
-      .map { |forecast| TransactionPresenter.new(forecast) }
-      .group_by { |forecast| ActivityPresenter.new(forecast.parent_activity) }
+    @grouped_transactions = Transaction::GroupedTransactionFetcher.new(@report).call
 
     render "staff/reports/actuals"
   end
