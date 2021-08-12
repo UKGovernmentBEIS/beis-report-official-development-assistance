@@ -99,6 +99,10 @@ class Report < ApplicationRecord
     transactions.sum(&:value)
   end
 
+  def summed_refunds
+    refunds.sum(&:value)
+  end
+
   def summed_forecasts_for_reportable_activities
     forecasts_for_reportable_activities.sum(&:value)
   end
