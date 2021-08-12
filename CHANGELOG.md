@@ -787,6 +787,8 @@
 
 ## [unreleased]
 
+- Allow a refund to be posted against an active report
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-67...HEAD
 [release-67]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-66...release-67
 [release-66]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-65...release-66

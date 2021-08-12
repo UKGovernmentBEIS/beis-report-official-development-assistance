@@ -19,6 +19,7 @@ RSpec.describe ActivityPolicy do
 
       it { is_expected.to forbid_action(:destroy) }
       it { is_expected.to forbid_action(:redact_from_iati) }
+      it { is_expected.to forbid_action(:create_refund) }
 
       it { is_expected.to permit_action(:create_child) }
       it { is_expected.to permit_action(:create_transfer) }
@@ -34,9 +35,16 @@ RSpec.describe ActivityPolicy do
 
       it { is_expected.to forbid_action(:destroy) }
       it { is_expected.to forbid_action(:redact_from_iati) }
+      it { is_expected.to forbid_action(:create_refund) }
 
       it { is_expected.to forbid_action(:create_child) }
       it { is_expected.to permit_action(:create_transfer) }
+
+      context "and there is an active report" do
+        let(:activity) { create(:programme_activity, :with_report, organisation: user.organisation) }
+
+        it { is_expected.to permit_action(:create_refund) }
+      end
     end
 
     context "when the activity is a project" do
@@ -44,6 +52,7 @@ RSpec.describe ActivityPolicy do
 
       it { is_expected.to permit_action(:show) }
       it { is_expected.to permit_action(:redact_from_iati) }
+      it { is_expected.to forbid_action(:create_refund) }
 
       it { is_expected.to forbid_action(:create) }
       it { is_expected.to forbid_action(:edit) }
@@ -67,6 +76,7 @@ RSpec.describe ActivityPolicy do
 
       it { is_expected.to forbid_action(:create_child) }
       it { is_expected.to forbid_action(:create_transfer) }
+      it { is_expected.to forbid_action(:create_refund) }
     end
   end
 
@@ -85,6 +95,7 @@ RSpec.describe ActivityPolicy do
 
       it { is_expected.to forbid_action(:create_child) }
       it { is_expected.to forbid_action(:create_transfer) }
+      it { is_expected.to forbid_action(:create_refund) }
     end
 
     context "when the activity is a programme" do
@@ -100,6 +111,7 @@ RSpec.describe ActivityPolicy do
 
         it { is_expected.to forbid_action(:create_child) }
         it { is_expected.to forbid_action(:create_transfer) }
+        it { is_expected.to forbid_action(:create_refund) }
       end
 
       context "and the users organisation is the extending organisation" do
@@ -117,6 +129,7 @@ RSpec.describe ActivityPolicy do
 
         it { is_expected.to forbid_action(:create_child) }
         it { is_expected.to forbid_action(:create_transfer) }
+        it { is_expected.to forbid_action(:create_refund) }
 
         context "and there is an editable report for the users organisation" do
           before do
@@ -125,6 +138,7 @@ RSpec.describe ActivityPolicy do
 
           it { is_expected.to permit_action(:create_child) }
           it { is_expected.to forbid_action(:create_transfer) }
+          it { is_expected.to forbid_action(:create_refund) }
         end
       end
     end
@@ -142,6 +156,7 @@ RSpec.describe ActivityPolicy do
 
         it { is_expected.to forbid_action(:create_child) }
         it { is_expected.to forbid_action(:create_transfer) }
+        it { is_expected.to forbid_action(:create_refund) }
       end
 
       context "and the users organisation is the extending organisation" do
@@ -160,6 +175,7 @@ RSpec.describe ActivityPolicy do
 
           it { is_expected.to forbid_action(:create_child) }
           it { is_expected.to forbid_action(:create_transfer) }
+          it { is_expected.to forbid_action(:create_refund) }
         end
 
         context "and there is an editable report for the users organisation" do
@@ -177,6 +193,7 @@ RSpec.describe ActivityPolicy do
 
           it { is_expected.to permit_action(:create_child) }
           it { is_expected.to permit_action(:create_transfer) }
+          it { is_expected.to permit_action(:create_refund) }
         end
       end
     end
@@ -194,6 +211,7 @@ RSpec.describe ActivityPolicy do
 
         it { is_expected.to forbid_action(:create_child) }
         it { is_expected.to forbid_action(:create_transfer) }
+        it { is_expected.to forbid_action(:create_refund) }
       end
 
       context "and the users organisation is the extending organisation" do
@@ -212,6 +230,7 @@ RSpec.describe ActivityPolicy do
 
           it { is_expected.to forbid_action(:create_child) }
           it { is_expected.to forbid_action(:create_transfer) }
+          it { is_expected.to forbid_action(:create_refund) }
         end
 
         context "and there is an editable report for the users organisation" do
@@ -229,6 +248,7 @@ RSpec.describe ActivityPolicy do
 
           it { is_expected.to forbid_action(:create_child) }
           it { is_expected.to permit_action(:create_transfer) }
+          it { is_expected.to permit_action(:create_refund) }
         end
       end
     end

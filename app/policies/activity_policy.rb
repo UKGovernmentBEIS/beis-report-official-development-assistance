@@ -31,6 +31,13 @@ class ActivityPolicy < ApplicationPolicy
     end
   end
 
+  def create_refund?
+    Pundit.policy(
+      user,
+      Refund.new(parent_activity: record)
+    ).create?
+  end
+
   def edit?
     update?
   end
