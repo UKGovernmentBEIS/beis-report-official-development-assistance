@@ -779,9 +779,16 @@
 - Adjust XML exports to use new benefitting countries field
 - No longer collect geography, recipient country, recipient region, and intended beneficiaries (deprecated by collecting benefitting countries)
 
+## [release-67] - 2021-08-12
+
+- Remove legacy geography steps
+- Backfill benefitting_countries where possible
+- Add horizontal margin inside table wrappers
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-66...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-67...HEAD
+[release-67]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-66...release-67
 [release-66]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-65...release-66
 [release-65]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-64...release-65
 [release-64]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-63...release-64
