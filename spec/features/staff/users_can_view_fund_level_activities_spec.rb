@@ -9,7 +9,9 @@ RSpec.feature "Users can view fund level activities" do
 
       visit organisation_activity_path(programme.extending_organisation, programme)
       click_on "Details"
-      click_on fund_activity.title
+      within(".activity-details") do
+        click_on fund_activity.title
+      end
 
       page_displays_an_activity(activity_presenter: ActivityPresenter.new(fund_activity))
     end
