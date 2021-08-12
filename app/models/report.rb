@@ -12,6 +12,7 @@ class Report < ApplicationRecord
   has_many :transactions
   has_many :forecasts
   has_many :historical_events
+  has_many :refunds
   has_many :new_activities, class_name: "Activity", foreign_key: :originating_report_id
 
   validate :activity_must_be_a_fund
