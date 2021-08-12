@@ -1,4 +1,4 @@
-%table.govuk-table
+%table.govuk-table#transactions
   %caption.govuk-table__caption.govuk-table__caption--m
     = t("table.caption.transaction.actuals_in_report")
   %thead.govuk-table__head
@@ -10,7 +10,7 @@
 
     - @grouped_transactions.each do |activity, transactions|
 
-      %tr.govuk-table__row{ id: "activity_#{activity.id}" }
+      %tr.govuk-table__row{ id: "activity_transactions_#{activity.id}" }
         %td.govuk-table__cell{class: "govuk-!-width-one-third"}
           = activity.title
         %td.govuk-table__cell{class: "govuk-!-width-one-third"}

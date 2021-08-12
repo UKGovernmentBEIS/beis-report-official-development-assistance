@@ -11,7 +11,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
       fail "We expect some activities to be present" if activities.none?
 
       activities.each do |activity|
-        within "#activity_#{activity.id}" do
+        within "#activity_transactions_#{activity.id}" do
           expect(page).to have_content(activity.title)
           expect(page).to have_content(activity.roda_identifier)
 
@@ -27,12 +27,42 @@ RSpec.feature "Users can view actuals in tab within a report" do
       end
     end
 
+    def expect_to_see_a_table_of_refunds_grouped_by_activity(activities)
+      fail "We expect some activities to be present" if activities.none?
+
+      activities.each do |activity|
+        within "#activity_refunds_#{activity.id}" do
+          expect(page).to have_content(activity.title)
+          expect(page).to have_content(activity.roda_identifier)
+
+          fail "We expect some refunds to be present" if activity.refunds.none?
+
+          activity.refunds.each do |refund|
+            within ".refunds" do
+              expect(page).to have_content(refund.value)
+              expect(page).to have_content(refund.financial_quarter_and_year)
+            end
+          end
+        end
+      end
+    end
+
     def expect_to_see_total_of_actual_amounts(activities)
       transaction_total = activities.map(&:transactions).flatten.sum(&:value)
 
-      within ".totals" do
+      within "#transactions .totals" do
         expect(page).to have_content(
           ActionController::Base.helpers.number_to_currency(transaction_total, unit: "£")
+        )
+      end
+    end
+
+    def expect_to_see_total_of_refund_amounts(activities)
+      refund_total = activities.map(&:refunds).flatten.sum(&:value)
+
+      within "#refunds .totals" do
+        expect(page).to have_content(
+          ActionController::Base.helpers.number_to_currency(refund_total, unit: "£")
         )
       end
     end
@@ -48,11 +78,13 @@ RSpec.feature "Users can view actuals in tab within a report" do
           organisation: organisation,
           parent: project).tap do |activity|
           create(:transaction, report: report, parent_activity: activity)
+          create(:refund, report: report, parent_activity: activity)
         end,
         create(:third_party_project_activity,
           organisation: organisation,
           parent: project).tap do |activity|
           create_list(:transaction, 3, report: report, parent_activity: activity)
+          create_list(:refund, 4, report: report, parent_activity: activity)
         end,
       ]
 
@@ -64,6 +96,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
       expect(page).to have_link(t("action.transaction.upload.link"))
 
       expect_to_see_a_table_of_transactions_grouped_by_activity(activities)
+      expect_to_see_a_table_of_refunds_grouped_by_activity(activities)
 
       expect_to_see_total_of_actual_amounts(activities)
     end

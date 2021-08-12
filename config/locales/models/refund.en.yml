@@ -26,6 +26,9 @@ en:
       refund:
         financial_quarter_and_year: The financial quarter the refund applies to
   table:
+    caption:
+      refund:
+        in_report: Refunds added in this report
     header:
       refund:
         financial_quarter: Financial quarter

@@ -1,0 +1,32 @@
+- if @grouped_refunds.present?
+  %table.govuk-table#refunds
+    %caption.govuk-table__caption.govuk-table__caption--m
+      = t("table.caption.refund.in_report")
+    %thead.govuk-table__head
+      %tr.govuk-table__row
+        %th.govuk-table__header{class: "govuk-!-width-one-third", scope: "col"} Activity
+        %th.govuk-table__header{class: "govuk-!-width-one-third", scope: "col"} RODA Identifier
+        %th.govuk-table__header{class: "govuk-!-width-one-third", scope: "col"} Actual spend
+    %tbody.govuk-table__body
+
+      - @grouped_refunds.each do |activity, refunds|
+
+        %tr.govuk-table__row{ id: "activity_refunds_#{activity.id}" }
+          %td.govuk-table__cell{class: "govuk-!-width-one-third"}
+            = activity.title
+          %td.govuk-table__cell{class: "govuk-!-width-one-third"}
+            = activity.roda_identifier
+          %td.govuk-table__cell{class: "govuk-!-width-one-third"}
+            %table.govuk-table.refunds
+              - refunds.each do |refund|
+                %tr.govuk-table__row
+                  %td.govuk-table__cell--numeric{class: "govuk-!-width-one-half", scope: "col"}
+                    = refund.financial_quarter_and_year
+                  %td.govuk-table__cell--numeric{class: "govuk-!-width-one-half", scope: "col"}
+                    = refund.value
+
+      %tr.govuk-table__row.totals
+        %td.govuk-table__cell Total
+        %td.govuk-table__cell
+        %td.govuk-table__cell.govuk-table__cell--numeric
+          = @total_refund

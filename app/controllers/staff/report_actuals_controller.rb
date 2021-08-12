@@ -13,7 +13,9 @@ class Staff::ReportActualsController < Staff::BaseController
     @report_presenter = ReportPresenter.new(@report)
     @report_activities = @report.reportable_activities
     @total_transaction = @report_presenter.summed_transactions
+    @total_refund = @report_presenter.summed_refunds
     @grouped_transactions = Transaction::GroupedTransactionFetcher.new(@report).call
+    @grouped_refunds = Refund::GroupedRefundFetcher.new(@report).call
 
     render "staff/reports/actuals"
   end
