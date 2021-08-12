@@ -1,9 +1,0 @@
-= render layout: "wrapper" do |f|
-  = f.govuk_collection_select :recipient_country,
-    country_select_options,
-    :code,
-    :name,
-    options: { selected: f.object.recipient_country || country_select_options.first.code},
-    label: { size: "xl", tag: "h1" }
-  %script
-    accessibleAutocomplete.enhanceSelectElement({ defaultValue: "", selectElement: document.getElementsByTagName("select")[0], showAllValues: true})

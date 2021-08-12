@@ -21,11 +21,6 @@ class Activity < ApplicationRecord
     :programme_status,
     :country_delivery_partners,
     :dates,
-    :geography,
-    :region,
-    :country,
-    :requires_additional_benefitting_countries,
-    :intended_beneficiaries,
     :benefitting_countries,
     :gdi,
     :aid_type,
@@ -55,11 +50,6 @@ class Activity < ApplicationRecord
     :total_applications_and_awards_step,
     :programme_status_step,
     :country_delivery_partners_step,
-    :geography_step,
-    :region_step,
-    :country_step,
-    :requires_additional_benefitting_countries_step,
-    :intended_beneficiaries_step,
     :gdi_step,
     :aid_type_step,
     :collaboration_type_step,
@@ -75,7 +65,7 @@ class Activity < ApplicationRecord
     :uk_dp_named_contact_step,
   ]
 
-  FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete", "recipient_country", "recipient_region")
+  FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete")
 
   strip_attributes only: [:delivery_partner_identifier]
 
@@ -93,11 +83,6 @@ class Activity < ApplicationRecord
   validates :total_awards, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :programme_status, presence: true, on: :programme_status_step
   validates :country_delivery_partners, presence: true, on: :country_delivery_partners_step, if: :requires_country_delivery_partners?
-  validates :geography, presence: true, on: :geography_step
-  validates :recipient_region, presence: true, on: :region_step, if: :recipient_region?
-  validates :recipient_country, presence: true, on: :country_step, if: :recipient_country?
-  validates :requires_additional_benefitting_countries, inclusion: {in: [true, false], message: I18n.t("activerecord.errors.models.activity.attributes.requires_additional_benefitting_countries.blank")}, on: :requires_additional_benefitting_countries_step
-  validates :intended_beneficiaries, presence: true, on: :intended_beneficiaries_step, if: :requires_additional_benefitting_countries?
   validates :gdi, presence: true, on: :gdi_step
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
   validates :covid19_related, presence: true, on: :covid19_related_step

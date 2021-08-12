@@ -135,37 +135,11 @@ RSpec.feature "BEIS users can create a programme level activity" do
       fill_in "activity[planned_end_date(2i)]", with: 12
       fill_in "activity[planned_end_date(1i)]", with: 2020
       click_button t("form.button.activity.submit")
-      expect(page).to have_content t("form.legend.activity.geography")
 
-      click_button t("form.button.activity.submit")
-      expect(page).to have_content t("activerecord.errors.models.activity.attributes.geography.blank")
-
-      choose "Region"
-      click_button t("form.button.activity.submit")
-      expect(page).to have_content t("form.label.activity.recipient_region")
-
-      # region has the default value already selected
-      click_button t("form.button.activity.submit")
-
-      expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
-
-      # Don't select any option
-      click_button t("form.button.activity.submit")
-      expect(page).to have_content t("activerecord.errors.models.activity.attributes.requires_additional_benefitting_countries.blank")
-
-      choose "Yes"
-      click_button t("form.button.activity.submit")
-      expect(page).to have_content t("form.legend.activity.intended_beneficiaries")
-
-      # Don't select any intended beneficiaries
-      click_button t("form.button.activity.submit")
-      expect(page).to have_content t("activerecord.errors.models.activity.attributes.intended_beneficiaries.blank")
-
-      check "Haiti"
-      click_button t("form.button.activity.submit")
       expect(page).to have_content t("form.legend.activity.benefitting_countries")
-
+      # Benefitting countries do not have presence validation yet
       click_button t("form.button.activity.submit")
+
       expect(page).to have_content t("form.label.activity.gdi")
 
       # Don't select a GDI
@@ -247,35 +221,6 @@ RSpec.feature "BEIS users can create a programme level activity" do
       # oda_eligibility has the default value already selected
       click_button t("form.button.activity.submit")
       expect(page).to have_content Activity.find_by(delivery_partner_identifier: identifier).title
-    end
-
-    scenario "failing to select a country shows an error message" do
-      fund = create(:fund_activity, :gcrf)
-
-      visit organisation_activities_path(delivery_partner)
-      click_on t("form.button.activity.new_child", name: fund.title)
-
-      fill_in "activity[delivery_partner_identifier]", with: "no-country-selected"
-      click_button t("form.button.activity.submit")
-      fill_in "activity[title]", with: "My title"
-      fill_in "activity[description]", with: "My description"
-      click_button t("form.button.activity.submit")
-      fill_in "activity[objectives]", with: "My objectives"
-      click_button t("form.button.activity.submit")
-      choose "Basic Education"
-      click_button t("form.button.activity.submit")
-      choose "School feeding"
-      click_button t("form.button.activity.submit")
-      choose "Delivery"
-      click_button t("form.button.activity.submit")
-      fill_in "activity[planned_start_date(3i)]", with: "01"
-      fill_in "activity[planned_start_date(2i)]", with: "01"
-      fill_in "activity[planned_start_date(1i)]", with: "2020"
-      click_button t("form.button.activity.submit")
-      choose "Country"
-      click_button t("form.button.activity.submit")
-      click_button t("form.button.activity.submit")
-      expect(page).to have_content "Recipient country can't be blank"
     end
   end
 

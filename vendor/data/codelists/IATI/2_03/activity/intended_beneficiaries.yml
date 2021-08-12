@@ -2,9 +2,9 @@
 attributes:
   category-codelist: IntendedBeneficiariesType-category
   name: IntendedBeneficiaries
-  complete: '1'
+  complete: "1"
 data:
-  '1031': #Caribbean
+  "1031": #Caribbean
     - code: AG
       name: Antigua and Barbuda
     - code: CU
@@ -25,7 +25,7 @@ data:
       name: Saint Lucia
     - code: VC
       name: Saint Vincent and the Grenadines
-  '1032': # Central America
+  "1032": # Central America
     - code: BZ
       name: Belize
     - code: CR
@@ -42,7 +42,7 @@ data:
       name: Nicaragua
     - code: PA
       name: Panama
-  '1027': # Eastern Africa
+  "1027": # Eastern Africa
     - code: BI
       name: Burundi
     - code: KM
@@ -79,7 +79,7 @@ data:
       name: Zambia
     - code: ZW
       name: Zimbabwe
-  '89': # Europe
+  "89": # Europe
     - code: AL
       name: Albania
     - code: BY
@@ -100,7 +100,7 @@ data:
       name: Turkey
     - code: UA
       name: Ukraine
-  '789': # Far East Asia
+  "789": # Far East Asia
     - code: KH
       name: Cambodia
     - code: CN
@@ -123,7 +123,7 @@ data:
       name: Timor-Leste
     - code: VN
       name: Viet Nam
-  '1033': # Melanesia
+  "1033": # Melanesia
     - code: FJ
       name: Fiji
     - code: PG
@@ -132,7 +132,7 @@ data:
       name: Solomon Islands
     - code: VU
       name: Vanuatu
-  '1034': # Micronesia
+  "1034": # Micronesia
     - code: KI
       name: Kiribati
     - code: MH
@@ -143,7 +143,7 @@ data:
       name: Nauru
     - code: PW
       name: Palau
-  '1028': # Middle Africa
+  "1028": # Middle Africa
     - code: AO
       name: Angola
     - code: CM
@@ -162,7 +162,7 @@ data:
       name: Gabon
     - code: ST
       name: Sao Tome and Principe
-  '589': # Middle East
+  "589": # Middle East
     - code: IR
       name: Iran
     - code: IQ
@@ -177,7 +177,7 @@ data:
       name: West Bank and Gaza Strip (Palestinian territory)
     - code: YE
       name: Yemen
-  '189': # North of Sahara
+  "189": # North of Sahara
     - code: DZ
       name: Algeria
     - code: EG
@@ -188,7 +188,7 @@ data:
       name: Morocco
     - code: TN
       name: Tunisia
-  '1035': # Polynesia
+  "1035": # Polynesia
     - code: CK
       name: Cook Islands
     - code: NU
@@ -203,25 +203,32 @@ data:
       name: Tuvalu
     - code: WF
       name: Wallis and Futuna
-  '689': # South and Central Asia
-    - code: AF
-      name: Afghanistan
+  "619": # Central Asia
     - code: AM
       name: Armenia
     - code: AZ
       name: Azerbaijan
-    - code: BD
-      name: Bangladesh
-    - code: BT
-      name: Bhutan
     - code: GE
       name: Georgia
-    - code: IN
-      name: India
     - code: KZ
       name: Kazakhstan
     - code: KG
       name: Kyrgyzstan
+    - code: TJ
+      name: Tajikistan
+    - code: TM
+      name: Turkmenistan
+    - code: UZ
+      name: Uzbekistan
+  "679": # South Asia
+    - code: AF
+      name: Afghanistan
+    - code: BD
+      name: Bangladesh
+    - code: BT
+      name: Bhutan
+    - code: IN
+      name: India
     - code: MV
       name: Maldives
     - code: MM
@@ -232,13 +239,7 @@ data:
       name: Pakistan
     - code: LK
       name: Sri Lanka
-    - code: TJ
-      name: Tajikistan
-    - code: TM
-      name: Turkmenistan
-    - code: UZ
-      name: Uzbekistan
-  '489': # South America
+  "489": # South America
     - code: AR
       name: Argentina
     - code: BO
@@ -259,7 +260,7 @@ data:
       name: Suriname
     - code: VE
       name: Venezuela
-  '1029': # Southern Africa
+  "1029": # Southern Africa
     - code: BW
       name: Botswana
     - code: SZ
@@ -270,7 +271,7 @@ data:
       name: Namibia
     - code: ZA
       name: South Africa
-  '1030': # Western Africa
+  "1030": # Western Africa
     - code: BJ
       name: Benin
     - code: BF

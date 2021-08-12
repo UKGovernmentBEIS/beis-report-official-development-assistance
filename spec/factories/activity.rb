@@ -241,43 +241,6 @@ FactoryBot.define do
     oda_eligibility_lead { nil }
   end
 
-  trait :at_region_step do
-    form_state { "region" }
-    recipient_country { nil }
-    intended_beneficiaries { nil }
-    gdi { nil }
-    collaboration_type { nil }
-    aid_type { nil }
-    policy_marker_gender { nil }
-    policy_marker_climate_change_adaptation { nil }
-    policy_marker_climate_change_mitigation { nil }
-    policy_marker_biodiversity { nil }
-    policy_marker_desertification { nil }
-    policy_marker_disability { nil }
-    policy_marker_disaster_risk_reduction { nil }
-    policy_marker_nutrition { nil }
-    oda_eligibility_lead { nil }
-  end
-
-  trait :at_geography_step do
-    form_state { "geography" }
-    recipient_region { nil }
-    recipient_country { nil }
-    intended_beneficiaries { nil }
-    gdi { nil }
-    collaboration_type { nil }
-    aid_type { nil }
-    policy_marker_gender { nil }
-    policy_marker_climate_change_adaptation { nil }
-    policy_marker_climate_change_mitigation { nil }
-    policy_marker_biodiversity { nil }
-    policy_marker_desertification { nil }
-    policy_marker_disability { nil }
-    policy_marker_disaster_risk_reduction { nil }
-    policy_marker_nutrition { nil }
-    oda_eligibility_lead { nil }
-  end
-
   trait :at_collaboration_type_step do
     form_state { "collaboration_type" }
     collaboration_type { nil }

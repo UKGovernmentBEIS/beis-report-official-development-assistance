@@ -166,20 +166,16 @@ RSpec.feature "Users can edit an activity" do
 
       context "when the activity is incomplete" do
         it "editing and saving a step goes to the next step in the form" do
-          activity = create(:fund_activity, :at_region_step, organisation: user.organisation)
-          recipient_region = "Oceania, regional"
+          activity = create(:fund_activity, :at_collaboration_type_step, organisation: user.organisation)
 
           visit organisation_activity_details_path(activity.organisation, activity)
 
-          within(".recipient_region") do
+          within(".description") do
             click_on(t("default.link.edit"))
           end
-          choose "Region"
-          click_button t("form.button.activity.submit")
-          select recipient_region, from: "activity[recipient_region]"
           click_button t("form.button.activity.submit")
 
-          expect(page).to have_content t("form.legend.activity.requires_additional_benefitting_countries")
+          expect(page).to have_content t("form.legend.activity.sector_category", level: "fund (level A)")
           expect(page).not_to have_content activity.title
         end
 
@@ -572,19 +568,10 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   click_on(t("default.link.back"))
   click_on t("tabs.activity.details")
 
-  within(".recipient_region") do
+  within(".benefitting_countries") do
     click_on(t("default.link.edit"))
     expect(page).to have_current_path(
-      activity_step_path(activity, :geography)
-    )
-  end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
-
-  within(".intended_beneficiaries") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :intended_beneficiaries)
+      activity_step_path(activity, :benefitting_countries)
     )
   end
   click_on(t("default.link.back"))

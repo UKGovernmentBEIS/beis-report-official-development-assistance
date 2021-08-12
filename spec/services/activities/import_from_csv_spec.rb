@@ -20,9 +20,6 @@ RSpec.describe Activities::ImportFromCsv do
       "Parent RODA ID" => "",
       "Title" => "Here is a title",
       "Description" => "Some description goes here...",
-      "Recipient Region" => "789",
-      "Recipient Country" => "KH",
-      "Intended Beneficiaries" => "KH|KP|ID",
       "Benefitting Countries" => "KH|KP|ID",
       "Delivery partner identifier" => "1234567890",
       "GDI" => "1",
@@ -139,9 +136,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.reload.transparency_identifier).to eq(existing_activity_attributes["Transparency identifier"])
       expect(existing_activity.title).to eq(existing_activity_attributes["Title"])
       expect(existing_activity.description).to eq(existing_activity_attributes["Description"])
-      expect(existing_activity.recipient_region).to eq(existing_activity_attributes["Recipient Region"])
-      expect(existing_activity.recipient_country).to eq(existing_activity_attributes["Recipient Country"])
-      expect(existing_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
       expect(existing_activity.gdi).to eq("1")
       expect(existing_activity.gcrf_strategic_area).to eq(["17A", "RF"])
       expect(existing_activity.gcrf_challenge_area).to eq(4)
@@ -212,25 +206,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.count).to eq(1)
     end
 
-    it "has an error and does not update any other activities if a region does not exist" do
-      activity_2 = create(:project_activity)
-      invalid_activity_attributes = existing_activity_attributes.merge({
-        "RODA ID" => activity_2.roda_identifier,
-        "Recipient Region" => "111111",
-      })
-
-      activities = [
-        existing_activity_attributes,
-        invalid_activity_attributes,
-      ]
-
-      expect { subject.import(activities) }.to_not change { existing_activity }
-
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
-      expect(subject.errors.count).to eq(1)
-    end
-
     it "has an error if a policy marker is invalid" do
       existing_activity_attributes["DFID policy marker - Biodiversity"] = "3"
       existing_activity_attributes["DFID policy marker - Desertification"] = "bogus"
@@ -279,36 +254,11 @@ RSpec.describe Activities::ImportFromCsv do
         )
       end
 
-      it "infers the geography" do
-        existing_activity.geography = "recipient_country"
-        existing_activity.save
-
-        attributes["Recipient Region"] = 789
-
-        subject.import([attributes])
-
-        expect(existing_activity.reload.geography).to eq("recipient_region")
-      end
-
-      it "infers the region if it is not present" do
-        existing_activity.recipient_region = nil
-        existing_activity.save
-
-        attributes["Recipient Country"] = "KH"
-
-        subject.import([attributes])
-
-        expect(subject.updated.count).to eq(1)
-
-        expect(existing_activity.reload.recipient_region).to eq("789")
-      end
-
       it "has the expected errors if the activity is invalid and no implementing organisation" do
         existing_activity.sector_category = nil
         existing_activity.save(validate: false)
 
         attributes["Title"] = "New Title"
-        attributes["Recipient Country"] = "SO"
 
         subject.import([attributes])
 
@@ -321,7 +271,6 @@ RSpec.describe Activities::ImportFromCsv do
 
       it "has the expected errors if the activity is invalid and the implementing organisation is invalid" do
         attributes["Title"] = "New Title"
-        attributes["Recipient Country"] = "SO"
         attributes["Implementing organisation name"] = "Some Organisation"
 
         existing_activity.implementing_organisations.delete_all
@@ -406,13 +355,9 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.transparency_identifier).to eq(new_activity_attributes["Transparency identifier"])
       expect(new_activity.title).to eq(new_activity_attributes["Title"])
       expect(new_activity.description).to eq(new_activity_attributes["Description"])
-      expect(new_activity.recipient_region).to eq(new_activity_attributes["Recipient Region"])
-      expect(new_activity.recipient_country).to eq(new_activity_attributes["Recipient Country"])
-      expect(new_activity.intended_beneficiaries).to eq(["KH", "KP", "ID"])
       expect(new_activity.benefitting_countries).to eq(["KH", "KP", "ID"])
       expect(new_activity.gdi).to eq("1")
       expect(new_activity.gcrf_challenge_area).to eq(4)
-      expect(new_activity.geography).to eq("recipient_region")
       expect(new_activity.delivery_partner_identifier).to eq(new_activity_attributes["Delivery partner identifier"])
       expect(new_activity.covid19_related).to eq(0)
       expect(new_activity.oda_eligibility).to eq("never_eligible")
@@ -483,17 +428,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.implementing_organisations.first.organisation_type).to eq(new_activity_attributes["Implementing organisation sector"])
     end
 
-    it "sets the geography to recipient country and infers the region if the region is not specified" do
-      new_activity_attributes["Recipient Region"] = ""
-
-      expect { subject.import([new_activity_attributes]) }.to change { Activity.count }
-
-      new_activity = Activity.order(:created_at).last
-
-      expect(new_activity.geography).to eq("recipient_country")
-      expect(new_activity.recipient_region).to eq("789")
-    end
-
     it "allows the Call Open and Close Dates to be blank" do
       new_activity_attributes["Call open date"] = ""
       new_activity_attributes["Call close date"] = ""
@@ -505,54 +439,6 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.call_open_date).to be_nil
       expect(new_activity.call_close_date).to be_nil
       expect(new_activity.call_present).to eq(false)
-    end
-
-    it "has an error if a region does not exist" do
-      new_activity_attributes["Recipient Region"] = "111111"
-
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
-
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
-
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Recipient Region")
-      expect(subject.errors.first.column).to eq(:recipient_region)
-      expect(subject.errors.first.value).to eq("111111")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_region"))
-    end
-
-    it "has an error if a country does not exist" do
-      new_activity_attributes["Recipient Country"] = "BBBBBB"
-
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
-
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
-
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Recipient Country")
-      expect(subject.errors.first.column).to eq(:recipient_country)
-      expect(subject.errors.first.value).to eq("BBBBBB")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_country"))
-    end
-
-    it "has an error if the intended beneficiaries are invalid" do
-      new_activity_attributes["Intended Beneficiaries"] = "ffsdfdsfsfds"
-
-      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
-
-      expect(subject.created.count).to eq(0)
-      expect(subject.updated.count).to eq(0)
-
-      expect(subject.errors.count).to eq(1)
-      expect(subject.errors.first.csv_row).to eq(2)
-      expect(subject.errors.first.csv_column).to eq("Intended Beneficiaries")
-      expect(subject.errors.first.column).to eq(:intended_beneficiaries)
-      expect(subject.errors.first.value).to eq("ffsdfdsfsfds")
-      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_intended_beneficiaries"))
     end
 
     it "has an error if the benefiting countries are invalid" do

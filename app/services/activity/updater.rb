@@ -65,32 +65,6 @@ class Activity
       assign_inputs_on_dates_step
     end
 
-    def set_geography
-      activity.assign_attributes(geography: params_for("geography"), recipient_region: nil, recipient_country: nil)
-    end
-
-    def set_region
-      activity.assign_attributes(recipient_region: params_for("recipient_region"))
-    end
-
-    def set_country
-      recipient_country = params_for("recipient_country")
-
-      if recipient_country.blank?
-        activity.assign_attributes(recipient_country: nil)
-      else
-        inferred_region = country_to_region_mapping.find { |pair| pair["country"] == recipient_country }["region"]
-        activity.assign_attributes(recipient_region: inferred_region, recipient_country: recipient_country)
-      end
-    end
-
-    def set_intended_beneficiaries
-      intended_beneficiaries = activity_params
-        .permit(intended_beneficiaries: [])
-        .fetch("intended_beneficiaries", []).drop(1)
-      activity.assign_attributes(intended_beneficiaries: intended_beneficiaries)
-    end
-
     def set_benefitting_countries
       benefitting_countries = activity_params
         .permit(benefitting_countries: [])
@@ -177,10 +151,6 @@ class Activity
       rescue InvalidDateError
         activity.errors.add(date_attr, I18n.t("activerecord.errors.models.activity.attributes.#{date_attr}.invalid"))
       end
-    end
-
-    def country_to_region_mapping
-      Codelist.new(type: "country_to_region_mapping", source: "beis")
     end
   end
 end

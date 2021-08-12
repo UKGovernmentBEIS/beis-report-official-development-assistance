@@ -267,7 +267,7 @@ RSpec.describe ActivityPresenter do
     it_behaves_like "a code translator", "benefitting_countries", {type: "recipient_country"}, "Array"
 
     context "when there are benefitting countries" do
-      it "returns the locale value for the codes of the countries" do
+      it "returns the locale value for the codes of the countries joined in sentence form" do
         activity = build(:project_activity, benefitting_countries: ["AR", "EC", "BR"])
         result = described_class.new(activity).benefitting_countries
         expect(result).to eql("Argentina, Ecuador, and Brazil")
