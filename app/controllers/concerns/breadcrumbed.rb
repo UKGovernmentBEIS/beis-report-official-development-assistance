@@ -14,19 +14,10 @@ module Breadcrumbed
     end
 
     # index crumb section
-    index_crumb_title = if activity.historic? && current_user.service_owner?
-      t("page_content.breadcrumbs.organisation_historic_index", org_name: activity.organisation.name)
-    elsif activity.historic?
-      t("page_content.breadcrumbs.historic_index")
-    elsif current_user.service_owner?
-      t("page_content.breadcrumbs.organisation_current_index", org_name: activity.organisation.name)
-    else
-      t("page_content.breadcrumbs.current_index")
-    end
     if activity.historic?
-      add_breadcrumb index_crumb_title, historic_organisation_activities_path(activity.organisation)
+      add_breadcrumb index_crumb_title(activity), historic_organisation_activities_path(activity.organisation)
     else
-      add_breadcrumb index_crumb_title, organisation_activities_path(activity.organisation)
+      add_breadcrumb index_crumb_title(activity), organisation_activities_path(activity.organisation)
     end
 
     # activity parent tree section
@@ -39,5 +30,17 @@ module Breadcrumbed
 
     # "leaf" activity section
     add_breadcrumb activity.title, organisation_activity_financials_path(activity.organisation, activity)
+  end
+
+  def index_crumb_title(activity)
+    if activity.historic? && current_user.service_owner?
+      t("page_content.breadcrumbs.organisation_historic_index", org_name: activity.organisation.name)
+    elsif activity.historic?
+      t("page_content.breadcrumbs.historic_index")
+    elsif current_user.service_owner?
+      t("page_content.breadcrumbs.organisation_current_index", org_name: activity.organisation.name)
+    else
+      t("page_content.breadcrumbs.current_index")
+    end
   end
 end
