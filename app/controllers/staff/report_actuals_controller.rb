@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ReportTransactionsController < Staff::BaseController
+class Staff::ReportActualsController < Staff::BaseController
   include Secured
   include Reports::Breadcrumbed
 
@@ -18,6 +18,6 @@ class Staff::ReportTransactionsController < Staff::BaseController
       .map { |forecast| TransactionPresenter.new(forecast) }
       .group_by { |forecast| ActivityPresenter.new(forecast.parent_activity) }
 
-    render "staff/reports/transactions"
+    render "staff/reports/actuals"
   end
 end
