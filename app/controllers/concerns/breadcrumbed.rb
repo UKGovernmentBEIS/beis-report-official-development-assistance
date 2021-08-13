@@ -2,12 +2,12 @@ module Breadcrumbed
   extend ActiveSupport::Concern
 
   def prepare_default_activity_trail(activity)
-    return if (activity.fund? || activity.programme?) && !current_user.service_owner?
+    return if activity.fund? && !current_user.service_owner?
 
     if activity.fund?
       add_breadcrumb activity.title, organisation_activity_financials_path(activity.organisation, activity)
       return
-    elsif activity.programme?
+    elsif activity.programme? && current_user.service_owner?
       add_breadcrumb activity.parent.title, organisation_activity_financials_path(activity.parent.organisation, activity.parent)
       add_breadcrumb activity.title, organisation_activity_financials_path(activity.organisation, activity)
       return
