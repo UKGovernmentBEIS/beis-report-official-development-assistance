@@ -789,6 +789,7 @@
 
 - Allow a refund to be posted against an active report
 - Activity breadcrumb trail for BEIS users includes the delivery partner organisation
+- Truncate breadcrumbs that are over a certain length
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-67...HEAD
 [release-67]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-66...release-67
