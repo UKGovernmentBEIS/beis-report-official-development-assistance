@@ -27,6 +27,15 @@ RSpec.describe StubController, type: :controller do
 
       subject.prepare_default_report_trail(report)
     end
+
+    it "sets the breadcrumb context in the session" do
+      subject.prepare_default_report_trail(report)
+
+      expect(session[:breadcrumb_context]).to eq({
+        type: :report,
+        model: report,
+      })
+    end
   end
 
   context "when the report is current" do
@@ -37,6 +46,15 @@ RSpec.describe StubController, type: :controller do
       expect(subject).to receive(:add_breadcrumb).with(t("page_title.report.show", report_fund: report.fund.source_fund.name, report_financial_quarter: report.financial_quarter_and_year), report_path(report))
 
       subject.prepare_default_report_trail(report)
+    end
+
+    it "sets the breadcrumb context in the session" do
+      subject.prepare_default_report_trail(report)
+
+      expect(session[:breadcrumb_context]).to eq({
+        type: :report,
+        model: report,
+      })
     end
   end
 end

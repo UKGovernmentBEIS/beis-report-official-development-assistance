@@ -3,6 +3,8 @@ module Reports
     extend ActiveSupport::Concern
 
     def prepare_default_report_trail(report)
+      BreadcrumbContext.new(session).set(type: :report, model: report)
+
       if report.approved?
         add_breadcrumb "Historic Reports", reports_path(anchor: "historic")
       else
