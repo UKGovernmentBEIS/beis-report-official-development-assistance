@@ -5,8 +5,11 @@ require "csv"
 class Staff::ReportsController < Staff::BaseController
   include Secured
   include StreamCsvDownload
+  include Reports::Breadcrumbed
 
   def index
+    add_breadcrumb "Reports", :reports_path
+
     if current_user.service_owner?
       respond_to do |format|
         format.html do
@@ -31,6 +34,8 @@ class Staff::ReportsController < Staff::BaseController
     authorize @report
 
     @report_presenter = ReportPresenter.new(@report)
+
+    prepare_default_report_trail @report
 
     respond_to do |format|
       format.html do
