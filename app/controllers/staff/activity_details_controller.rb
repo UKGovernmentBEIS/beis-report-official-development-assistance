@@ -2,7 +2,7 @@
 
 class Staff::ActivityDetailsController < Staff::BaseController
   include Secured
-  include Breadcrumbed
+  include Activities::Breadcrumbed
 
   def show
     @activity = Activity.find(params[:activity_id])

@@ -1,6 +1,6 @@
 class Staff::ActivityCommentsController < Staff::BaseController
   include Secured
-  include Breadcrumbed
+  include Activities::Breadcrumbed
 
   def show
     @activity = Activity.find(activity_id)

@@ -2,6 +2,8 @@
 
 class Staff::ActivitiesController < Staff::BaseController
   include Secured
+  include Activities::Breadcrumbed
+
   after_action :verify_authorized, except: [:index, :historic]
   after_action :skip_policy_scope, only: [:index, :historic]
 

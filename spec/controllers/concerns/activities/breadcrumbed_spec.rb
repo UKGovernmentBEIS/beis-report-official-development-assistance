@@ -1,7 +1,7 @@
 require "rails_helper"
 
 class StubController < Staff::BaseController
-  include Breadcrumbed
+  include Activities::Breadcrumbed
 
   def show
     activity = Activity.find(params[:id])
