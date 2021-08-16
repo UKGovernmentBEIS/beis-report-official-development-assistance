@@ -1,23 +1,25 @@
 module Activities
   module Breadcrumbed
     extend ActiveSupport::Concern
+    include Reports::Breadcrumbed
 
     def prepare_default_activity_trail(activity)
       return if activity.fund? && !current_user.service_owner?
 
-      if activity.fund?
+      if breadcrumb_context.type == :report
+        # If we've come here from a report - show the report breadcrumb
+        prepare_default_report_trail(breadcrumb_context.model)
+      elsif current_user.service_owner? && (activity.fund? || activity.programme?)
+        # Show fund/programme breadcrumbs (these don't belong to an organisation)
+        add_breadcrumb activity.parent.title, organisation_activity_financials_path(activity.parent.organisation, activity.parent) if activity.parent
         add_breadcrumb activity.title, organisation_activity_financials_path(activity.organisation, activity)
-        return
-      elsif activity.programme? && current_user.service_owner?
-        add_breadcrumb activity.parent.title, organisation_activity_financials_path(activity.parent.organisation, activity.parent)
-        add_breadcrumb activity.title, organisation_activity_financials_path(activity.organisation, activity)
-        return
-      end
 
-      # index crumb section
-      if activity.historic?
+        return
+      elsif activity.historic?
+        # Show historic index path
         add_breadcrumb index_crumb_title(activity), historic_organisation_activities_path(activity.organisation)
       else
+        # Show current index path
         add_breadcrumb index_crumb_title(activity), organisation_activities_path(activity.organisation)
       end
 
@@ -43,6 +45,10 @@ module Activities
       else
         t("page_content.breadcrumbs.current_index")
       end
+    end
+
+    def breadcrumb_context
+      @breadcrumb_context ||= BreadcrumbContext.new(session)
     end
   end
 end

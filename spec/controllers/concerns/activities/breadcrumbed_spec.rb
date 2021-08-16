@@ -34,6 +34,23 @@ RSpec.describe StubController, type: :controller do
 
         subject.prepare_default_activity_trail(activity)
       end
+
+      context "when the user has accessed the activity from a report" do
+        let(:report) { create(:report) }
+
+        before do
+          BreadcrumbContext.new(session).set(type: :report, model: report)
+        end
+
+        it "adds the report's path to the breadcrumb stack" do
+          expect(subject).to receive(:add_breadcrumb).with("Current Reports", reports_path)
+          expect(subject).to receive(:add_breadcrumb).with(t("page_title.report.show", report_fund: report.fund.source_fund.name, report_financial_quarter: report.financial_quarter_and_year), report_path(report))
+          expect(subject).to receive(:add_breadcrumb).with(activity.parent.title, "activity_path")
+          expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
+
+          subject.prepare_default_activity_trail(activity)
+        end
+      end
     end
 
     context "for a current project activity" do
@@ -45,6 +62,23 @@ RSpec.describe StubController, type: :controller do
         expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
 
         subject.prepare_default_activity_trail(activity)
+      end
+
+      context "when the user has accessed the activity from a report" do
+        let(:report) { create(:report) }
+
+        before do
+          BreadcrumbContext.new(session).set(type: :report, model: report)
+        end
+
+        it "adds the report's path to the breadcrumb stack" do
+          expect(subject).to receive(:add_breadcrumb).with("Current Reports", reports_path)
+          expect(subject).to receive(:add_breadcrumb).with(t("page_title.report.show", report_fund: report.fund.source_fund.name, report_financial_quarter: report.financial_quarter_and_year), report_path(report))
+          expect(subject).to receive(:add_breadcrumb).with(activity.parent.title, "activity_path")
+          expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
+
+          subject.prepare_default_activity_trail(activity)
+        end
       end
     end
 
@@ -59,6 +93,24 @@ RSpec.describe StubController, type: :controller do
 
         subject.prepare_default_activity_trail(activity)
       end
+
+      context "when the user has accessed the activity from a report" do
+        let(:report) { create(:report) }
+
+        before do
+          BreadcrumbContext.new(session).set(type: :report, model: report)
+        end
+
+        it "adds the report's path to the breadcrumb stack" do
+          expect(subject).to receive(:add_breadcrumb).with("Current Reports", reports_path)
+          expect(subject).to receive(:add_breadcrumb).with(t("page_title.report.show", report_fund: report.fund.source_fund.name, report_financial_quarter: report.financial_quarter_and_year), report_path(report))
+          expect(subject).to receive(:add_breadcrumb).with(activity.parent.parent.title, "activity_path")
+          expect(subject).to receive(:add_breadcrumb).with(activity.parent.title, "activity_path")
+          expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
+
+          subject.prepare_default_activity_trail(activity)
+        end
+      end
     end
 
     context "for a programme" do
@@ -69,6 +121,22 @@ RSpec.describe StubController, type: :controller do
         expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
 
         subject.prepare_default_activity_trail(activity)
+      end
+
+      context "when the user has accessed the activity from a report" do
+        let(:report) { create(:report) }
+
+        before do
+          BreadcrumbContext.new(session).set(type: :report, model: report)
+        end
+
+        it "adds the report's path to the breadcrumb stack" do
+          expect(subject).to receive(:add_breadcrumb).with("Current Reports", reports_path)
+          expect(subject).to receive(:add_breadcrumb).with(t("page_title.report.show", report_fund: report.fund.source_fund.name, report_financial_quarter: report.financial_quarter_and_year), report_path(report))
+          expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
+
+          subject.prepare_default_activity_trail(activity)
+        end
       end
     end
 
@@ -98,6 +166,23 @@ RSpec.describe StubController, type: :controller do
 
         subject.prepare_default_activity_trail(activity)
       end
+
+      context "when the user has accessed the activity from a report" do
+        let(:report) { create(:report) }
+
+        before do
+          BreadcrumbContext.new(session).set(type: :report, model: report)
+        end
+
+        it "adds the report's path to the breadcrumb stack" do
+          expect(subject).to receive(:add_breadcrumb).with("Current Reports", reports_path)
+          expect(subject).to receive(:add_breadcrumb).with(t("page_title.report.show", report_fund: report.fund.source_fund.name, report_financial_quarter: report.financial_quarter_and_year), report_path(report))
+          expect(subject).to receive(:add_breadcrumb).with(activity.parent.title, "activity_path")
+          expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
+
+          subject.prepare_default_activity_trail(activity)
+        end
+      end
     end
 
     context "for a current project activity" do
@@ -109,6 +194,23 @@ RSpec.describe StubController, type: :controller do
         expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
 
         subject.prepare_default_activity_trail(activity)
+      end
+
+      context "when the user has accessed the activity from a report" do
+        let(:report) { create(:report) }
+
+        before do
+          BreadcrumbContext.new(session).set(type: :report, model: report)
+        end
+
+        it "adds the report's path to the breadcrumb stack" do
+          expect(subject).to receive(:add_breadcrumb).with("Current Reports", reports_path)
+          expect(subject).to receive(:add_breadcrumb).with(t("page_title.report.show", report_fund: report.fund.source_fund.name, report_financial_quarter: report.financial_quarter_and_year), report_path(report))
+          expect(subject).to receive(:add_breadcrumb).with(activity.parent.title, "activity_path")
+          expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
+
+          subject.prepare_default_activity_trail(activity)
+        end
       end
     end
 
@@ -122,6 +224,24 @@ RSpec.describe StubController, type: :controller do
         expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
 
         subject.prepare_default_activity_trail(activity)
+      end
+
+      context "when the user has accessed the activity from a report" do
+        let(:report) { create(:report) }
+
+        before do
+          BreadcrumbContext.new(session).set(type: :report, model: report)
+        end
+
+        it "adds the report's path to the breadcrumb stack" do
+          expect(subject).to receive(:add_breadcrumb).with("Current Reports", reports_path)
+          expect(subject).to receive(:add_breadcrumb).with(t("page_title.report.show", report_fund: report.fund.source_fund.name, report_financial_quarter: report.financial_quarter_and_year), report_path(report))
+          expect(subject).to receive(:add_breadcrumb).with(activity.parent.parent.title, "activity_path")
+          expect(subject).to receive(:add_breadcrumb).with(activity.parent.title, "activity_path")
+          expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
+
+          subject.prepare_default_activity_trail(activity)
+        end
       end
     end
 
