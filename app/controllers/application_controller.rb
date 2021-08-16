@@ -28,4 +28,8 @@ class ApplicationController < ActionController::Base
     super
     payload[:remote_ip] = request_ip
   end
+
+  def add_breadcrumb(name, path, options = {})
+    super name, path, options.merge(title: name)
+  end
 end

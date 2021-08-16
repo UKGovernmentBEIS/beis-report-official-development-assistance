@@ -1,5 +1,10 @@
 .govuk-breadcrumbs .govuk-breadcrumbs__list li {
   @extend .govuk-breadcrumbs__list-item;
+  display: inline-block;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .govuk-breadcrumbs .govuk-breadcrumbs__list li a {
