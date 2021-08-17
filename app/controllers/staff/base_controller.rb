@@ -8,4 +8,10 @@ class Staff::BaseController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   add_breadcrumb "Home", :root_path
+
+  before_action :clear_breadcrumb_context
+
+  def clear_breadcrumb_context
+    BreadcrumbContext.new(session).reset!
+  end
 end

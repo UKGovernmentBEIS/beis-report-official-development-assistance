@@ -1,7 +1,5 @@
 = content_for :page_title_prefix, t("document_title.activity.details", name: @activity.title)
 
-= breadcrumb_tags
-
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full
@@ -23,7 +21,7 @@
           %h2.govuk-heading-l
             = t("page_title.activity.details")
 
-          = render partial: "staff/shared/activities/activity", locals: { activity_presenter: ActivityPresenter.new(@activity) }
+          = render partial: "staff/shared/activities/activity", locals: { activity_presenter: @activity }
 
           - if @activity.project? || @activity.third_party_project?
             = render partial: "staff/shared/activities/implementing_organisations", locals: { activity: @activity, implementing_organisation_presenters: @implementing_organisation_presenters }
