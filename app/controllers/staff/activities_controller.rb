@@ -6,6 +6,7 @@ class Staff::ActivitiesController < Staff::BaseController
 
   after_action :verify_authorized, except: [:index, :historic]
   after_action :skip_policy_scope, only: [:index, :historic]
+  skip_before_action :clear_breadcrumb_context, only: [:show]
 
   def index
     @organisation = Organisation.find(organisation_id)
