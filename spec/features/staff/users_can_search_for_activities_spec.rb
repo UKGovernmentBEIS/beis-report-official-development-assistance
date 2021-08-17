@@ -19,5 +19,13 @@ RSpec.describe "Users can search for activities" do
     end
   end
 
+  scenario "user sees breadcrumb context when accessing an activity from search results" do
+    click_on project.title
+
+    within ".govuk-breadcrumbs" do
+      expect(page).to have_content("Home")
+      expect(page).to have_content("Search results for “roda-id”")
+      expect(page).to have_content(project.title)
+    end
   end
 end

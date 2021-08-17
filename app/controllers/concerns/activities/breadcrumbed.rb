@@ -2,6 +2,7 @@ module Activities
   module Breadcrumbed
     extend ActiveSupport::Concern
     include Reports::Breadcrumbed
+    include Searches::Breadcrumbed
 
     def prepare_default_activity_trail(activity)
       return if activity.fund? && !current_user.service_owner?
@@ -9,6 +10,9 @@ module Activities
       if breadcrumb_context.type == :report
         # If we've come here from a report - show the report breadcrumb
         prepare_default_report_trail(breadcrumb_context.model)
+      elsif breadcrumb_context.type == :search
+        # If we've come from a search query - show the search breadcrumb
+        prepare_default_search_trail(breadcrumb_context.model)
       elsif current_user.service_owner? && (activity.fund? || activity.programme?)
         # Show fund/programme breadcrumbs (these don't belong to an organisation)
         add_breadcrumb activity.parent.title, organisation_activity_financials_path(activity.parent.organisation, activity.parent) if activity.parent
