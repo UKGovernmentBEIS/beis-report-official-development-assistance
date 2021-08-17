@@ -32,17 +32,23 @@ class Staff::ActivitiesController < Staff::BaseController
     @activity = Activity.find(id)
     authorize @activity
 
-    @activities = @activity.child_activities.order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
-
-    @transactions = policy_scope(Transaction).where(parent_activity: @activity).order("date DESC")
-    @budgets = policy_scope(Budget).where(parent_activity: @activity).order("financial_year DESC")
-    @forecasts = policy_scope(@activity.latest_forecasts)
-
     respond_to do |format|
       format.html do
-        redirect_to organisation_activity_financials_path(@activity.organisation, @activity)
+        prepare_default_activity_trail(@activity)
+
+        tab = Activity::Tab.new(
+          activity: @activity,
+          current_user: current_user,
+          tab_name: current_tab
+        )
+        render template: tab.template, locals: tab.locals
       end
       format.xml do |_format|
+        @activities = @activity.child_activities.order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
+
+        @transactions = policy_scope(Transaction).where(parent_activity: @activity).order("date DESC")
+        @budgets = policy_scope(Budget).where(parent_activity: @activity).order("financial_year DESC")
+        @forecasts = policy_scope(@activity.latest_forecasts)
         @reporting_organisation = Organisation.service_owner
 
         response.headers["Content-Disposition"] = "attachment; filename=\"#{@activity.transparency_identifier}.xml\""
@@ -73,7 +79,7 @@ class Staff::ActivitiesController < Staff::BaseController
   private
 
   def id
-    params[:id]
+    params[:id] || params[:activity_id]
   end
 
   def organisation_id
@@ -91,5 +97,9 @@ class Staff::ActivitiesController < Staff::BaseController
 
   def fund_id
     params[:fund_id]
+  end
+
+  def current_tab
+    params[:tab] || "financials"
   end
 end

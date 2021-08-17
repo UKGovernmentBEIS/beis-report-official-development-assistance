@@ -1,4 +1,4 @@
-- selected = controller_name.ends_with?(tab)
+- selected = (@tab_name == tab)
 %li{role: "presentation", class: ["govuk-tabs__list-item", ("govuk-tabs__list-item--selected" if selected)] }
   = link_to t(tab, scope: "tabs.activity"), path,
     { class: "govuk-tabs__tab", role: "tab", aria: { controls: tab, selected: selected } }

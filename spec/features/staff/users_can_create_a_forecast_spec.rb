@@ -18,7 +18,7 @@ RSpec.describe "Users can create a forecast" do
 
       fill_in_forecast_form_for_activity(project)
 
-      expect(page).to have_current_path organisation_activity_financials_path(user.organisation, project)
+      expect(page).to have_current_path organisation_activity_path(user.organisation, project)
       expect(page).to have_content t("action.forecast.create.success")
     end
 

@@ -1,17 +1,13 @@
 RSpec.describe "staff/shared/activities/_tab_nav_item" do
-  before do
-    allow(controller).to receive(:controller_name).and_return(controller_name)
-  end
-
   subject do
-    render partial: "staff/shared/activities/tab_nav_item", locals: {tab: tab, path: path}
+    render partial: "staff/shared/activities/tab_nav_item", locals: {tab: tab, path: path, "@tab_name": tab_name}
     Capybara.string(rendered)
   end
 
   let(:path) { "https://example.com" }
 
   describe "controller name matches the current tab" do
-    let(:controller_name) { "activity_details" }
+    let(:tab_name) { "details" }
     let(:tab) { "details" }
 
     it "is rendered correctly" do
@@ -25,7 +21,7 @@ RSpec.describe "staff/shared/activities/_tab_nav_item" do
   end
 
   describe "controller name doesn't match the current tab" do
-    let(:controller_name) { "another_controller" }
+    let(:tab_name) { "another_tab" }
     let(:tab) { "details" }
 
     it "is rendered correctly" do

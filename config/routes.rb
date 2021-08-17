@@ -42,14 +42,11 @@ Rails.application.routes.draw do
         collection do
           get "historic" => "activities#historic"
         end
-        get "financials" => "activity_financials#show"
-        get "details" => "activity_details#show"
-        resource :children, controller: :activity_children, only: [:show, :create]
+        resource :children, controller: :activity_children, only: [:create]
 
-        get "comments" => "activity_comments#show"
-        get "other_funding" => "activity_other_funding#show"
-        get "transfers" => "activity_transfers#show"
-        get "historical_events" => "activity_historical_events#show"
+        Activity::Tab::VALID_TAB_NAMES.each do |tab|
+          get tab, to: "activities#show", defaults: {tab: tab}
+        end
       end
     end
 

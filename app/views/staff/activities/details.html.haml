@@ -21,7 +21,7 @@
           %h2.govuk-heading-l
             = t("page_title.activity.details")
 
-          = render partial: "staff/shared/activities/activity", locals: { activity_presenter: ActivityPresenter.new(@activity) }
+          = render partial: "staff/shared/activities/activity", locals: { activity_presenter: @activity }
 
           - if @activity.project? || @activity.third_party_project?
             = render partial: "staff/shared/activities/implementing_organisations", locals: { activity: @activity, implementing_organisation_presenters: @implementing_organisation_presenters }
