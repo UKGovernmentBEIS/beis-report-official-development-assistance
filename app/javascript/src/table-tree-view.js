@@ -77,7 +77,14 @@ TableTreeView.prototype.initHeaderAttributes = function ($parent, index) {
     var $button = document.createElement('button')
     $button.setAttribute('type', 'button')
     $button.setAttribute('id', parentId + '-heading-' + (index + 1))
-    $button.setAttribute('aria-controls', parentId + '-content-' + (index + 1))
+
+    var children = this.$module.querySelectorAll('[data-child-of="'+$parent.getAttribute('id')+'"]');
+    var childIds = []
+    for (var i = 0; i < children.length; i++) {
+        childIds.push(children[i].id)
+    }
+
+    $button.setAttribute('aria-controls', childIds.join(" "))
 
     // Copy all attributes (https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes) from $span to $button
     for (var i = 0; i < $span.attributes.length; i++) {
