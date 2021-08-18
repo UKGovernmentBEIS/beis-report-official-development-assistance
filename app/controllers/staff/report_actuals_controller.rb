@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::ReportTransactionsController < Staff::BaseController
+class Staff::ReportActualsController < Staff::BaseController
   include Secured
   include Reports::Breadcrumbed
 
@@ -13,11 +13,10 @@ class Staff::ReportTransactionsController < Staff::BaseController
     @report_presenter = ReportPresenter.new(@report)
     @report_activities = @report.reportable_activities
     @total_transaction = @report_presenter.summed_transactions
-    @grouped_transactions = @report.transactions
-      .includes([:parent_activity])
-      .map { |forecast| TransactionPresenter.new(forecast) }
-      .group_by { |forecast| ActivityPresenter.new(forecast.parent_activity) }
+    @total_refund = @report_presenter.summed_refunds
+    @grouped_transactions = Transaction::GroupedTransactionFetcher.new(@report).call
+    @grouped_refunds = Refund::GroupedRefundFetcher.new(@report).call
 
-    render "staff/reports/transactions"
+    render "staff/reports/actuals"
   end
 end

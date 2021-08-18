@@ -40,6 +40,10 @@ class ReportPresenter < SimpleDelegator
     TotalPresenter.new(super).value
   end
 
+  def summed_refunds
+    TotalPresenter.new(super).value
+  end
+
   def summed_forecasts_for_reportable_activities
     TotalPresenter.new(super).value
   end
