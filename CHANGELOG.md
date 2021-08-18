@@ -791,6 +791,7 @@
 - Activity breadcrumb trail for BEIS users includes the delivery partner organisation
 - Truncate breadcrumbs that are over a certain length
 - Fix `aria-controls` element in the tree view
+- Show grouped refunds from a report on the report actuals page
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-67...HEAD
 [release-67]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-66...release-67
