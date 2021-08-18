@@ -314,11 +314,11 @@ ActiveRecord::Schema.define(version: 2021_08_11_093658) do
   add_foreign_key "activities", "organisations", on_delete: :restrict
   add_foreign_key "budgets", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "budgets", "organisations", column: "providing_organisation_id"
+  add_foreign_key "forecasts", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "incoming_transfers", "activities", column: "destination_id", on_delete: :restrict
   add_foreign_key "incoming_transfers", "activities", column: "source_id", on_delete: :restrict
   add_foreign_key "outgoing_transfers", "activities", column: "destination_id", on_delete: :restrict
   add_foreign_key "outgoing_transfers", "activities", column: "source_id", on_delete: :restrict
-  add_foreign_key "forecasts", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "transactions", "activities", column: "parent_activity_id", on_delete: :cascade
   add_foreign_key "users", "organisations", on_delete: :restrict
 end
