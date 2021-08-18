@@ -86,8 +86,8 @@ en:
           <p class="govuk-body">Large numbers of actuals can be added to the report by uploading them here.</p>
           <p class="govuk-body">The basic steps are:</p>
           <ol class="govuk-list govuk-list--number">
-            <li>Prepare the acutals data</li>
-            <li>Use the <a class="govuk-button govuk-button--secondary" href="%{report_actuals_template_path}">Download actuals data template</a>} as is or as a guide if required</li>
+            <li>Prepare the actuals data</li>
+            <li>Use the <a class="govuk-link" href="%{report_actuals_template_path}">actuals data template</a> as is or as a guide if required</li>
             <li>Ensure the file is saved as UTF-8 CSV, <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005515621-Uploading-your-Activity-Actuals-or-Forecasts-data-via-the-Templates-to-RODA">see guidance in the help centre (opens in new tab)</a></li>
             <li>Upload and verify the data here</li>
           </ol>
