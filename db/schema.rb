@@ -243,7 +243,6 @@ ActiveRecord::Schema.define(version: 2021_08_11_093658) do
     t.index ["source_id"], name: "index_outgoing_transfers_on_source_id"
   end
 
-  create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
   create_table "refunds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "parent_activity_id"
     t.uuid "report_id"
@@ -256,6 +255,8 @@ ActiveRecord::Schema.define(version: 2021_08_11_093658) do
     t.index ["parent_activity_id"], name: "index_refunds_on_parent_activity_id"
     t.index ["report_id"], name: "index_refunds_on_report_id"
   end
+
+  create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "state", default: "inactive", null: false
     t.string "description"
     t.uuid "fund_id"
