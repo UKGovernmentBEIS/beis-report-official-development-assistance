@@ -2,6 +2,12 @@ RSpec.feature "Users can edit an activity" do
   include ActivityHelper
   include CodelistHelper
 
+  def go_back(activity)
+    within ".govuk-breadcrumbs" do
+      click_link href: organisation_activity_path(activity.organisation, activity, tab: "details")
+    end
+  end
+
   context "when signed in as a BEIS user" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
@@ -130,7 +136,7 @@ RSpec.feature "Users can edit an activity" do
         end
 
         it "all edit links are available to take the user to the right step" do
-          activity = create(:fund_activity, organisation: user.organisation)
+          activity = create(:programme_activity, organisation: user.organisation)
 
           visit organisation_activity_details_path(activity.organisation, activity)
 
@@ -138,7 +144,7 @@ RSpec.feature "Users can edit an activity" do
         end
 
         it "does not show an edit link for collaboration type if it can be inferred from the aid type" do
-          activity = create(:fund_activity, organisation: user.organisation, aid_type: "B02", fstc_applies: true)
+          activity = create(:programme_activity, organisation: user.organisation, aid_type: "B02", fstc_applies: true)
 
           visit organisation_activity_details_path(activity.organisation, activity)
 
@@ -146,7 +152,7 @@ RSpec.feature "Users can edit an activity" do
         end
 
         it "does not show an edit link for FSTC applies if it can be inferred from the aid type" do
-          activity = create(:fund_activity, organisation: user.organisation, aid_type: "D02", fstc_applies: true)
+          activity = create(:programme_activity, organisation: user.organisation, aid_type: "D02", fstc_applies: true)
 
           visit organisation_activity_details_path(activity.organisation, activity)
 
@@ -154,7 +160,7 @@ RSpec.feature "Users can edit an activity" do
         end
 
         it "does not show an edit link for the transparency identifier" do
-          activity = create(:fund_activity, organisation: user.organisation)
+          activity = create(:programme_activity, organisation: user.organisation)
 
           visit organisation_activity_details_path(activity.organisation, activity)
 
@@ -175,8 +181,10 @@ RSpec.feature "Users can edit an activity" do
           end
           click_button t("form.button.activity.submit")
 
-          expect(page).to have_content t("form.legend.activity.sector_category", level: "fund (level A)")
-          expect(page).not_to have_content activity.title
+          within("#main-content") do
+            expect(page).to have_content t("form.legend.activity.sector_category", level: "fund (level A)")
+            expect(page).not_to have_content activity.title
+          end
         end
 
         context "when the activity only has an identifier" do
@@ -466,8 +474,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
         activity_step_path(activity, :identifier)
       )
     end
-    click_on t("default.link.back")
-    click_on t("tabs.activity.details")
+
+    go_back(activity)
   else
     within(".identifier") do
       expect(page).to_not have_link(t("default.link.edit"))
@@ -480,8 +488,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :sector_category)
     )
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
+
+  go_back(activity)
 
   within(".title") do
     click_on(t("default.link.edit"))
@@ -489,8 +497,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :purpose)
     )
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
+
+  go_back(activity)
 
   within(".description") do
     click_on(t("default.link.edit"))
@@ -498,8 +506,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :purpose)
     )
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
+
+  go_back(activity)
 
   if activity.call_present?
     within(".total_applications") do
@@ -508,8 +516,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
         activity_step_path(activity, :total_applications_and_awards)
       )
     end
-    click_on(t("default.link.back"))
-    click_on t("tabs.activity.details")
+
+    go_back(activity)
 
     within(".total_awards") do
       click_on(t("default.link.edit"))
@@ -517,8 +525,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
         activity_step_path(activity, :total_applications_and_awards)
       )
     end
-    click_on(t("default.link.back"))
-    click_on t("tabs.activity.details")
+
+    go_back(activity)
   end
 
   unless activity.fund?
@@ -528,8 +536,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
         activity_step_path(activity, :programme_status)
       )
     end
-    click_on(t("default.link.back"))
-    click_on t("tabs.activity.details")
+
+    go_back(activity)
   end
 
   within(".planned_start_date") do
@@ -538,8 +546,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :dates)
     )
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
+
+  go_back(activity)
 
   within(".planned_end_date") do
     click_on(t("default.link.edit"))
@@ -547,8 +555,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :dates)
     )
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
+
+  go_back(activity)
 
   within(".actual_start_date") do
     click_on(t("default.link.edit"))
@@ -556,8 +564,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :dates)
     )
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
+
+  go_back(activity)
 
   within(".actual_end_date") do
     click_on(t("default.link.edit"))
@@ -565,8 +573,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :dates)
     )
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
+
+  go_back(activity)
 
   within(".benefitting_countries") do
     click_on(t("default.link.edit"))
@@ -574,8 +582,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :benefitting_countries)
     )
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
+
+  go_back(activity)
 
   within(".gdi") do
     click_on(t("default.link.edit"))
@@ -583,8 +591,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :gdi)
     )
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
+
+  go_back(activity)
 
   if activity.is_gcrf_funded?
     within(".gcrf_strategic_area") do
@@ -593,8 +601,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
         activity_step_path(activity, :gcrf_strategic_area)
       )
     end
-    click_on(t("default.link.back"))
-    click_on t("tabs.activity.details")
+
+    go_back(activity)
   end
 
   if activity.is_gcrf_funded?
@@ -604,8 +612,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
         activity_step_path(activity, :gcrf_challenge_area)
       )
     end
-    click_on(t("default.link.back"))
-    click_on t("tabs.activity.details")
+
+    go_back(activity)
   end
 
   within(".aid_type") do
@@ -614,8 +622,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :aid_type)
     )
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
+
+  go_back(activity)
 
   unless activity.fund?
     if Activity::Inference.service.editable?(activity, :collaboration_type)
@@ -625,8 +633,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
           activity_step_path(activity, :collaboration_type)
         )
       end
-      click_on(t("default.link.back"))
-      click_on t("tabs.activity.details")
+
+      go_back(activity)
     else
       within(".collaboration_type") do
         expect(page).to_not have_link(t("default.link.edit"))
@@ -641,8 +649,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
         activity_step_path(activity, :fstc_applies)
       )
     end
-    click_on(t("default.link.back"))
-    click_on t("tabs.activity.details")
+
+    go_back(activity)
   else
     within(".fstc_applies") do
       expect(page).to_not have_link(t("default.link.edit"))
@@ -655,8 +663,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :covid19_related)
     )
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
+
+  go_back(activity)
 
   if activity.is_newton_funded?
     within(".fund_pillar") do
@@ -665,8 +673,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
         activity_step_path(activity, :fund_pillar)
       )
     end
-    click_on(t("default.link.back"))
-    click_on t("tabs.activity.details")
+
+    go_back(activity)
   end
 
   if activity.is_project?
@@ -676,8 +684,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
         activity_step_path(activity, :channel_of_delivery_code)
       )
     end
-    click_on(t("default.link.back"))
-    click_on t("tabs.activity.details")
+
+    go_back(activity)
   end
 
   within(".oda_eligibility") do
@@ -686,8 +694,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
       activity_step_path(activity, :oda_eligibility)
     )
   end
-  click_on(t("default.link.back"))
-  click_on t("tabs.activity.details")
+
+  go_back(activity)
 
   if activity.is_project?
     within(".oda_eligibility_lead") do
@@ -696,8 +704,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
         activity_step_path(activity, :oda_eligibility_lead)
       )
     end
-    click_on(t("default.link.back"))
-    click_on t("tabs.activity.details")
+
+    go_back(activity)
   end
 
   if activity.is_project?
@@ -707,8 +715,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
         activity_step_path(activity, :uk_dp_named_contact)
       )
     end
-    click_on(t("default.link.back"))
-    click_on t("tabs.activity.details")
+
+    go_back(activity)
   end
 end
 
