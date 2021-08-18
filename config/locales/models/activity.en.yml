@@ -365,6 +365,7 @@ en:
     breadcrumbs:
       current_index: Current activities
       historic_index: Historic activities
+      activities_by_delivery_partner: Activities by delivery partner
       organisation_current_index: "%{org_name} current activities"
       organisation_historic_index: "%{org_name} historic activities"
   tabs:
