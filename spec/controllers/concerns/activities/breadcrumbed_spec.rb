@@ -173,6 +173,17 @@ RSpec.describe StubController, type: :controller do
         subject.prepare_default_activity_trail(activity)
       end
     end
+
+    context "when the activity is untitled" do
+      it "sets an 'Untitled' title" do
+        activity = build(:project_activity, title: nil)
+
+        expect(subject).to receive(:add_breadcrumb).twice
+        expect(subject).to receive(:add_breadcrumb).with("Untitled activity", "activity_path")
+
+        subject.prepare_default_activity_trail(activity, tab: "tab")
+      end
+    end
   end
 
   context "for a BEIS user" do
