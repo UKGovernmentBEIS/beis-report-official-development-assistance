@@ -141,6 +141,9 @@ en:
       transactions: "%{report_financial_quarter} %{report_description} actuals"
       budgets: "%{report_financial_quarter} %{report_description} budgets"
       activities: "%{report_financial_quarter} %{report_description} activities"
+  breadcrumb:
+    report:
+      upload_activities: Upload bulk activity data
   mailer:
     report:
       activated:
