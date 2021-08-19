@@ -16,7 +16,7 @@ RSpec.describe StubController, type: :controller do
   before do
     allow(subject).to receive(:historic_organisation_activities_path).and_return("historic_index_path")
     allow(subject).to receive(:organisation_activities_path).and_return("current_index_path")
-    allow(subject).to receive(:organisation_activity_financials_path).and_return("activity_path")
+    allow(subject).to receive(:organisation_activity_path).and_return("activity_path")
   end
 
   context "for a delivery partner user" do
@@ -33,6 +33,12 @@ RSpec.describe StubController, type: :controller do
         expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
 
         subject.prepare_default_activity_trail(activity)
+      end
+
+      it "allows the tab to be specified for the leaf activity" do
+        expect(subject).to receive(:organisation_activity_path).with(activity.organisation, activity, tab: "tab")
+
+        subject.prepare_default_activity_trail(activity, tab: "tab")
       end
 
       context "when the user has accessed the activity from a report" do
@@ -62,6 +68,12 @@ RSpec.describe StubController, type: :controller do
         expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
 
         subject.prepare_default_activity_trail(activity)
+      end
+
+      it "allows the tab to be specified for the leaf activity" do
+        expect(subject).to receive(:organisation_activity_path).with(activity.organisation, activity, tab: "tab")
+
+        subject.prepare_default_activity_trail(activity, tab: "tab")
       end
 
       context "when the user has accessed the activity from a report" do
@@ -94,6 +106,12 @@ RSpec.describe StubController, type: :controller do
         subject.prepare_default_activity_trail(activity)
       end
 
+      it "allows the tab to be specified for the leaf activity" do
+        expect(subject).to receive(:organisation_activity_path).with(activity.organisation, activity, tab: "tab")
+
+        subject.prepare_default_activity_trail(activity, tab: "tab")
+      end
+
       context "when the user has accessed the activity from a report" do
         let(:report) { create(:report) }
 
@@ -121,6 +139,12 @@ RSpec.describe StubController, type: :controller do
         expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
 
         subject.prepare_default_activity_trail(activity)
+      end
+
+      it "allows the tab to be specified for the leaf activity" do
+        expect(subject).to receive(:organisation_activity_path).with(activity.organisation, activity, tab: "tab")
+
+        subject.prepare_default_activity_trail(activity, tab: "tab")
       end
 
       context "when the user has accessed the activity from a report" do
@@ -167,6 +191,12 @@ RSpec.describe StubController, type: :controller do
         subject.prepare_default_activity_trail(activity)
       end
 
+      it "allows the tab to be specified for the leaf activity" do
+        expect(subject).to receive(:organisation_activity_path).with(activity.organisation, activity, tab: "tab")
+
+        subject.prepare_default_activity_trail(activity, tab: "tab")
+      end
+
       context "when the user has accessed the activity from a report" do
         let(:report) { create(:report) }
 
@@ -194,6 +224,12 @@ RSpec.describe StubController, type: :controller do
         expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
 
         subject.prepare_default_activity_trail(activity)
+      end
+
+      it "allows the tab to be specified for the leaf activity" do
+        expect(subject).to receive(:organisation_activity_path).with(activity.organisation, activity, tab: "tab")
+
+        subject.prepare_default_activity_trail(activity, tab: "tab")
       end
 
       context "when the user has accessed the activity from a report" do
@@ -226,6 +262,12 @@ RSpec.describe StubController, type: :controller do
         subject.prepare_default_activity_trail(activity)
       end
 
+      it "allows the tab to be specified for the leaf activity" do
+        expect(subject).to receive(:organisation_activity_path).with(activity.organisation, activity, tab: "tab")
+
+        subject.prepare_default_activity_trail(activity, tab: "tab")
+      end
+
       context "when the user has accessed the activity from a report" do
         let(:report) { create(:report) }
 
@@ -254,6 +296,12 @@ RSpec.describe StubController, type: :controller do
 
         subject.prepare_default_activity_trail(activity)
       end
+
+      it "allows the tab to be specified for the leaf activity" do
+        expect(subject).to receive(:organisation_activity_path).with(activity.organisation, activity, tab: "tab")
+
+        subject.prepare_default_activity_trail(activity, tab: "tab")
+      end
     end
 
     context "for a fund" do
@@ -263,6 +311,12 @@ RSpec.describe StubController, type: :controller do
         expect(subject).to receive(:add_breadcrumb).with(activity.title, "activity_path")
 
         subject.prepare_default_activity_trail(activity)
+      end
+
+      it "allows the tab to be specified for the leaf activity" do
+        expect(subject).to receive(:organisation_activity_path).with(activity.organisation, activity, tab: "tab")
+
+        subject.prepare_default_activity_trail(activity, tab: "tab")
       end
     end
   end
