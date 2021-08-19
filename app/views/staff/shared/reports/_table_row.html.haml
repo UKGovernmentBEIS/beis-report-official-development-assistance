@@ -10,4 +10,5 @@
   %td.govuk-table__cell
     - if policy(:report).edit?
       = a11y_action_link(t("default.link.edit"), edit_report_path(report), report.description)
-    = a11y_action_link(t("default.link.view"), report_path(report), report.description)
+    - if policy(report).show?
+      = a11y_action_link(t("default.link.view"), report_path(report), report.description)
