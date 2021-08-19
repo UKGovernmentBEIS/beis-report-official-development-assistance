@@ -358,12 +358,15 @@ en:
         default_selection_value: Select a recipient country
       third_party_projects: Third-party projects (level D)
       transactions: Transactions
+      refunds: Refunds
     tab_content:
       change_history:
         guidance: Changes made to this activity
     breadcrumbs:
       current_index: Current activities
       historic_index: Historic activities
+      organisation_current_index: "%{org_name} current activities"
+      organisation_historic_index: "%{org_name} historic activities"
   tabs:
     activity:
       title: Contents

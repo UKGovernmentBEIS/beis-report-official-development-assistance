@@ -1,9 +1,9 @@
 %h2.govuk-tabs__title
   = t("page_title.report.index")
-%ul.govuk-tabs__list
-  %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
-    %a.govuk-tabs__tab{ "href": "#current"}
+%ul.govuk-tabs__list{role: "tablist"}
+  %li.govuk-tabs__list-item.govuk-tabs__list-item--selected{role: "presentation"}
+    %a.govuk-tabs__tab{href: "#current", role: "tab"}
       = t("tabs.report.current")
-  %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
-    %a.govuk-tabs__tab{ "href": "#historic"}
+  %li.govuk-tabs__list-item.govuk-tabs__list-item--selected{role: "presentation"}
+    %a.govuk-tabs__tab{href: "#historic", role: "tab"}
       = t("tabs.report.historic")

@@ -1,4 +1,4 @@
-%li{class: "govuk-tabs__list-item #{ "govuk-tabs__list-item--selected" if active_tab == name }"}
+%li{class: "govuk-tabs__list-item #{ "govuk-tabs__list-item--selected" if active_tab == name }", role: "presentation"}
   = link_to t("tabs.report.#{name}"),
     path,
-    { class: "govuk-tabs__tab", aria: { current: (active_tab == name ? "page" : nil) } }
+    { class: "govuk-tabs__tab", role: "tab", aria: { current: (active_tab == name ? "page" : nil) } }

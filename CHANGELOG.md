@@ -785,9 +785,18 @@
 - Backfill benefitting_countries where possible
 - Add horizontal margin inside table wrappers
 
+## [release-68] - 2021-08-19
+
+- Allow a refund to be posted against an active report
+- Activity breadcrumb trail for BEIS users includes the delivery partner organisation
+- Truncate breadcrumbs that are over a certain length
+- Fix `aria-controls` element in the tree view
+- Show grouped refunds from a report on the report actuals page
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-67...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-68...HEAD
+[release-68]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-67...release-68
 [release-67]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-66...release-67
 [release-66]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-65...release-66
 [release-65]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-64...release-65

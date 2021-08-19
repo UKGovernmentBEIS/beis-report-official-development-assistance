@@ -1,0 +1,35 @@
+en:
+  action:
+    refund:
+      create:
+        success: Refund successfully created
+      update:
+        success: Refund successfully updated
+      destroy:
+        success: Refund successfully deleted
+  page_content:
+    refund:
+      button:
+        create: Add a refund
+      edit_noun: refund
+  page_title:
+    refund:
+      new: Add a new refund
+      edit: Edit refund
+  form:
+    label:
+      refund:
+        value: Transaction amount
+        financial_quarter: Financial Quarter
+        financial_year: Financial Year
+    hint:
+      refund:
+        financial_quarter_and_year: The financial quarter the refund applies to
+  table:
+    caption:
+      refund:
+        in_report: Refunds added in this report
+    header:
+      refund:
+        financial_quarter: Financial quarter
+        value: Refund amount

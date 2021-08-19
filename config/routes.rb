@@ -42,14 +42,11 @@ Rails.application.routes.draw do
         collection do
           get "historic" => "activities#historic"
         end
-        get "financials" => "activity_financials#show"
-        get "details" => "activity_details#show"
-        resource :children, controller: :activity_children, only: [:show, :create]
+        resource :children, controller: :activity_children, only: [:create]
 
-        get "comments" => "activity_comments#show"
-        get "other_funding" => "activity_other_funding#show"
-        get "transfers" => "activity_transfers#show"
-        get "historical_events" => "activity_historical_events#show"
+        Activity::Tab::VALID_TAB_NAMES.each do |tab|
+          get tab, to: "activities#show", defaults: {tab: tab}
+        end
       end
     end
 
@@ -61,7 +58,7 @@ Rails.application.routes.draw do
       resource :transaction_upload, only: [:new, :show, :update]
       get "variance" => "report_variance#show"
       get "forecasts" => "report_forecasts#show"
-      get "actuals" => "report_transactions#show"
+      get "actuals" => "report_actuals#show"
       get "budgets" => "report_budgets#show"
       get "activities" => "report_activities#show"
     end
@@ -101,6 +98,7 @@ Rails.application.routes.draw do
       resources :comments, only: [:new, :create, :edit, :update]
       resources :outgoing_transfers, except: [:index]
       resources :incoming_transfers, except: [:index]
+      resources :refunds, except: [:index]
     end
 
     resource :search, only: [:show]

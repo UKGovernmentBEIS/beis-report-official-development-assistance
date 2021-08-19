@@ -1,0 +1,44 @@
+=content_for :page_title_prefix, t("page_title.report.transactions",report_description: @report_presenter.description, report_financial_quarter: @report_presenter.financial_quarter_and_year)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+
+  = render "staff/reports/meta"
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      .govuk-tabs
+        %h2.govuk-tabs__title
+          Contents
+
+        = render partial: "staff/reports/tab_list", locals: { active_tab: "transactions" }
+
+        .govuk-tabs__panel
+          %h2.govuk-heading-l
+            = t("tabs.transactions.heading")
+
+          %p.govuk-body
+            = t("tabs.transactions.copy")
+
+          - if policy(@report_presenter).upload?
+            %h3.govuk-heading-m
+              = t("tabs.transactions.providing.heading")
+
+            %p.govuk-body
+              = t("tabs.transactions.providing.copy")
+
+            %h3.govuk-heading-s
+              = t("tabs.transactions.upload.heading")
+
+            = t("tabs.transactions.upload.copy_html")
+
+            .govuk-inset-text
+              = t("tabs.transactions.upload.warning")
+
+            .govuk-button-group
+              = link_to t("page_content.transactions.button.download_template"), report_transaction_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary"
+              = link_to t("page_content.transactions.button.upload"), new_report_transaction_upload_path(@report_presenter), class: "govuk-button govuk-button"
+
+            %hr.govuk-section-break.govuk-section-break--l.govuk-section-break--visible
+
+          = render partial: "shared/transactions/transactions_by_activity"
+          = render partial: "shared/refunds/refunds_by_activity"

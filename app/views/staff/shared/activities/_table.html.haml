@@ -5,13 +5,13 @@
         %h2.govuk-tabs__title
           Activities
 
-        %ul.govuk-tabs__list
-          %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
+        %ul.govuk-tabs__list{role: "tablist"}
+          %li.govuk-tabs__list-item.govuk-tabs__list-item--selected{role: "presentation"}
             = link_to t("tabs.activities.current"),
               organisation_activities_path(@organisation),
               { class: "govuk-tabs__tab", role: "tab", aria: { controls: "current", selected: true } }
 
-          %li.govuk-tabs__list-item
+          %li.govuk-tabs__list-item{role: "presentation"}
             = link_to t("tabs.activities.historic"),
               historic_organisation_activities_path(@organisation),
               { class: "govuk-tabs__tab", role: "tab", aria: { controls: "historic", selected: false } }
