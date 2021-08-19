@@ -50,6 +50,11 @@ en:
       edit: Edit forecasted spend for %{quarter}
       new: Add forecasted spend
       upload: Upload bulk forecasts data
+  breadcrumb:
+    forecast:
+      edit: Edit forecasted spend for %{quarter}
+      new: Add forecasted spend
+      upload: Upload bulk forecasts data
   activerecord:
     errors:
       models:
