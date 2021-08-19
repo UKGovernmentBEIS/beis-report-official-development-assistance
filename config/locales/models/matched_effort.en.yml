@@ -14,6 +14,10 @@ en:
       index: Matched effort
       new: Add new matched effort
       edit: Edit a matched effort
+  breadcrumb:
+    matched_effort:
+      new: Add new matched effort
+      edit: Edit a matched effort
   table:
     header:
       matched_effort:

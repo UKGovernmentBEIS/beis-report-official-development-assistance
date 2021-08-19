@@ -1,9 +1,14 @@
 class Staff::MatchedEffortsController < Staff::BaseController
+  include Activities::Breadcrumbed
+
   def new
     @activity = Activity.find(params[:activity_id])
     @matched_effort = MatchedEffort.new
 
     authorize @activity
+
+    prepare_default_activity_trail(@activity, tab: "other_funding")
+    add_breadcrumb t("breadcrumb.matched_effort.new"), new_activity_matched_effort_path(@activity)
   end
 
   def edit
@@ -11,6 +16,9 @@ class Staff::MatchedEffortsController < Staff::BaseController
     @matched_effort = MatchedEffort.find(params[:id])
 
     authorize @matched_effort
+
+    prepare_default_activity_trail(@activity, tab: "other_funding")
+    add_breadcrumb t("breadcrumb.matched_effort.edit"), edit_activity_matched_effort_path(@activity, @matched_effort)
   end
 
   def create
