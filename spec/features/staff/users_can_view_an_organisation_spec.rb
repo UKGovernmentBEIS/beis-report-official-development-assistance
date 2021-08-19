@@ -24,24 +24,15 @@ RSpec.feature "Users can view an organisation" do
 
       scenario "can see the other organisation's page" do
         visit organisation_path(user.organisation)
-        click_link t("page_title.organisation.index")
-        within("##{other_organisation.id}") do
-          click_link t("default.link.show")
-        end
-        expect(page).to have_content(other_organisation.name)
-      end
 
-      scenario "can go back to the previous page" do
-        visit organisation_path(user.organisation)
-        click_link t("page_title.organisation.index")
+        within ".govuk-header__navigation" do
+          click_link t("page_title.organisation.index")
+        end
 
         within("##{other_organisation.id}") do
           click_link t("default.link.show")
         end
         expect(page).to have_content(other_organisation.name)
-        click_on t("default.link.back")
-
-        expect(page).to have_current_path(organisations_path)
       end
     end
   end
