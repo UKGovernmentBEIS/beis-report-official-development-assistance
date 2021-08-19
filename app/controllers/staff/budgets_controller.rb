@@ -1,5 +1,6 @@
 class Staff::BudgetsController < Staff::BaseController
   include Secured
+  include Activities::Breadcrumbed
 
   def new
     @activity = Activity.find(activity_id)
@@ -8,6 +9,9 @@ class Staff::BudgetsController < Staff::BaseController
     @budget.budget_type = "direct"
 
     authorize @budget
+
+    prepare_default_activity_trail(@activity)
+    add_breadcrumb t("breadcrumb.budget.new"), new_activity_budget_path(@activity)
   end
 
   def create
@@ -30,6 +34,9 @@ class Staff::BudgetsController < Staff::BaseController
     authorize @budget
 
     @activity = Activity.find(activity_id)
+
+    prepare_default_activity_trail(@activity)
+    add_breadcrumb t("breadcrumb.budget.edit"), edit_activity_budget_path(@activity, @budget)
   end
 
   def update
@@ -82,5 +89,8 @@ class Staff::BudgetsController < Staff::BaseController
       :providing_organisation_type,
       :providing_organisation_reference
     )
+  end
+
+  def find_activity
   end
 end
