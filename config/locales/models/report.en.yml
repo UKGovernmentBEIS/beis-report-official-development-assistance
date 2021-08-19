@@ -145,6 +145,7 @@ en:
     report:
       upload_activities: Upload bulk activity data
       upload_forecasts: Upload forecast data
+      upload_transactions:  Upload actuals data
   mailer:
     report:
       activated:
