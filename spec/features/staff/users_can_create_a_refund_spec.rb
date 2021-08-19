@@ -1,7 +1,7 @@
 RSpec.feature "Users can create a refund" do
   let(:organisation) { create(:delivery_partner_organisation) }
 
-  RSpec.shared_examples "refunds" do
+  RSpec.shared_examples "create refunds" do
     before { authenticate!(user: user) }
 
     scenario "they can create a refund for an activity" do
@@ -31,14 +31,14 @@ RSpec.feature "Users can create a refund" do
   end
 
   context "when logged in as a BEIS user" do
-    include_examples "refunds" do
+    include_examples "create refunds" do
       let(:user) { create(:beis_user) }
       let(:activity) { create(:programme_activity, :with_report) }
     end
   end
 
   context "when logged in as a delivery partner" do
-    include_examples "refunds" do
+    include_examples "create refunds" do
       let(:user) { create(:delivery_partner_user, organisation: organisation) }
       let(:activity) { create(:project_activity, :with_report, organisation: organisation) }
     end
