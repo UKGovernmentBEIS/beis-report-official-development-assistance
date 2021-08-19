@@ -1,7 +1,7 @@
 RSpec.feature "Users can edit a refund" do
   let(:organisation) { create(:delivery_partner_organisation) }
 
-  RSpec.shared_examples "refunds" do
+  RSpec.shared_examples "edit refunds" do
     let!(:refund) { create(:refund, parent_activity: activity, report: report) }
 
     before do
@@ -43,7 +43,7 @@ RSpec.feature "Users can edit a refund" do
   end
 
   context "when logged in as a BEIS user" do
-    include_examples "refunds" do
+    include_examples "edit refunds" do
       let(:user) { create(:beis_user) }
       let(:activity) { create(:programme_activity) }
       let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
@@ -51,7 +51,7 @@ RSpec.feature "Users can edit a refund" do
   end
 
   context "when logged in as a delivery partner" do
-    include_examples "refunds" do
+    include_examples "edit refunds" do
       let(:user) { create(:delivery_partner_user, organisation: organisation) }
       let(:activity) { create(:project_activity, organisation: organisation) }
       let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
