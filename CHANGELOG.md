@@ -796,6 +796,7 @@
 ## [unreleased]
 
 - Show an error message if the search query is empty
+- Show delivery partner users more information about the current reports
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-68...HEAD
 [release-68]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-67...release-68
