@@ -11,6 +11,7 @@ en:
         roda_identifier: RODA Identifier
         delivery_partner_identifier: Delivery Partner Identifier
       no_results: No results.
+      empty_query: The search query must contain at least 1 character!
   form:
     activity_search:
       query: Enter your search query
