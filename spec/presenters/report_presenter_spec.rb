@@ -11,6 +11,30 @@ RSpec.describe ReportPresenter do
     end
   end
 
+  describe "#can_edit_message" do
+    it "returns the right message corresponding to the report state" do
+      report = build(:report, state: "active")
+      result = described_class.new(report).can_edit_message
+      expect(result).to eql(t("label.report.can_edit.active"))
+
+      report.state = "awaiting_changes"
+      result = described_class.new(report).can_edit_message
+      expect(result).to eql(t("label.report.can_edit.awaiting_changes"))
+
+      report.state = "in_review"
+      result = described_class.new(report).can_edit_message
+      expect(result).to eql(t("label.report.can_edit.in_review"))
+
+      report.state = "submitted"
+      result = described_class.new(report).can_edit_message
+      expect(result).to eql(t("label.report.can_edit.submitted"))
+
+      report.state = "inactive"
+      result = described_class.new(report).can_edit_message
+      expect(result).to eql(t("label.report.can_edit.inactive"))
+    end
+  end
+
   describe "#deadline" do
     it "returns the formatted date for the deadline" do
       report = build(:report, deadline: Date.today)
