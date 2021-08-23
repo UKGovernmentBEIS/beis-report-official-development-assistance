@@ -6,6 +6,11 @@ class ReportPresenter < SimpleDelegator
     I18n.t("label.report.state.#{super.downcase}")
   end
 
+  def can_edit_message
+    return if state.blank?
+    I18n.t("label.report.can_edit.#{to_model.state.downcase}")
+  end
+
   def deadline
     return if super.blank?
     I18n.l(super)

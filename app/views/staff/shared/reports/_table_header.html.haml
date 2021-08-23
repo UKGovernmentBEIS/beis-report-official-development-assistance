@@ -7,15 +7,18 @@
         = t("table.header.report.organisation")
     %th{class: "govuk-table__header govuk-!-width-one-quarter"}
       =t("table.header.report.financial_quarter")
-    %th.govuk-table__header
-      =t("table.header.report.description")
-    %th.govuk-table__header
-      =t("table.header.report.fund")
     - if type == "current"
       %th.govuk-table__header
-        =t("table.header.report.state")
-      %th.govuk-table__header
         =t("table.header.report.deadline")
+      %th.govuk-table__header
+        =t("table.header.report.state")
+    %th.govuk-table__header
+      =t("table.header.report.fund")
+    %th.govuk-table__header
+      =t("table.header.report.description")
+    - if type == "current" && current_user.delivery_partner?
+      %th.govuk-table__header
+        =t("table.header.report.can_edit")
     %th.govuk-table__header
       %span.govuk-visually-hidden
         = t("table.header.default.actions")

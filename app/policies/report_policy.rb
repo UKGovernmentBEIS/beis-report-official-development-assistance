@@ -7,7 +7,7 @@ class ReportPolicy < ApplicationPolicy
 
   def show?
     return true if beis_user?
-    return true if record.organisation == user.organisation && record.state != "inactive"
+    return true if record.organisation == user.organisation && record.state.downcase != "inactive"
     false
   end
 
