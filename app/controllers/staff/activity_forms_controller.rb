@@ -1,6 +1,7 @@
 class Staff::ActivityFormsController < Staff::BaseController
   include Wicked::Wizard
   include CodelistHelper
+  include Activities::Breadcrumbed
 
   steps(*Activity::FORM_STEPS)
 
@@ -8,6 +9,9 @@ class Staff::ActivityFormsController < Staff::BaseController
     @activity = Activity.find(activity_id)
     @page_title = t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}"))
     authorize @activity
+
+    prepare_default_activity_trail(@activity, tab: "details")
+    add_breadcrumb t("page_title.activity_form.show.#{step}", sector_category: t("activity.sector_category.#{@activity.sector_category}"), level: t("page_content.activity.level.#{@activity.level}")), activity_step_path(@activity.id, step)
 
     case step
     when :objectives

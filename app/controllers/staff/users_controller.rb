@@ -1,4 +1,6 @@
 class Staff::UsersController < Staff::BaseController
+  add_breadcrumb I18n.t("breadcrumb.users.index"), :users_path
+
   def index
     authorize :user, :index?
     @users = policy_scope(User).includes(:organisation).order("organisations.name ASC, users.name ASC")
@@ -7,6 +9,8 @@ class Staff::UsersController < Staff::BaseController
   def show
     @user = User.find(id)
     authorize @user
+
+    add_breadcrumb t("breadcrumb.users.show"), user_path(@user)
   end
 
   def new
@@ -14,6 +18,8 @@ class Staff::UsersController < Staff::BaseController
     authorize @user
     @service_owner = service_owner
     @delivery_partners = delivery_partners
+
+    add_breadcrumb t("breadcrumb.users.new"), new_user_path
   end
 
   def create
@@ -41,6 +47,8 @@ class Staff::UsersController < Staff::BaseController
     authorize @user
     @service_owner = service_owner
     @delivery_partners = delivery_partners
+
+    add_breadcrumb t("breadcrumb.users.edit"), edit_user_path(@user)
   end
 
   def update

@@ -18,7 +18,11 @@ RSpec.feature "Users can edit organisations" do
     authenticate!(user: create(:administrator, organisation: beis_organisation))
 
     visit organisation_path(beis_organisation)
-    click_link t("page_title.organisation.index")
+
+    within ".govuk-header__navigation" do
+      click_link t("page_title.organisation.index")
+    end
+
     within("##{another_organisation.id}") do
       click_link t("default.link.edit")
     end
@@ -38,7 +42,11 @@ RSpec.feature "Users can edit organisations" do
       authenticate!(user: create(:administrator, organisation: beis_organisation))
 
       visit organisation_path(beis_organisation)
-      click_link t("page_title.organisation.index")
+
+      within ".govuk-header__navigation" do
+        click_link t("page_title.organisation.index")
+      end
+
       click_link t("tabs.organisations.matched_effort_providers")
 
       within("##{another_organisation.id}") do
@@ -63,7 +71,11 @@ RSpec.feature "Users can edit organisations" do
       authenticate!(user: create(:administrator, organisation: beis_organisation))
 
       visit organisation_path(beis_organisation)
-      click_link t("page_title.organisation.index")
+
+      within ".govuk-header__navigation" do
+        click_link t("page_title.organisation.index")
+      end
+
       click_link t("tabs.organisations.external_income_providers")
 
       within("##{another_organisation.id}") do
@@ -84,7 +96,9 @@ RSpec.feature "Users can edit organisations" do
   def successfully_edit_an_organisation(organisation_name: "My New Organisation")
     visit organisation_path(beis_organisation)
 
-    click_link t("page_title.organisation.index")
+    within ".govuk-header__navigation" do
+      click_link t("page_title.organisation.index")
+    end
 
     within("##{another_organisation.id}") do
       click_link t("default.link.edit")

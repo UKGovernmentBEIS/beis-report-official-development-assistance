@@ -12,6 +12,9 @@ class Staff::ActivitiesController < Staff::BaseController
     @organisation = Organisation.find(organisation_id)
     if @organisation.service_owner?
       @delivery_partner_organisations = Organisation.delivery_partners
+
+      add_breadcrumb t("page_content.breadcrumbs.activities_by_delivery_partner"), organisation_activities_path(Organisation.service_owner)
+
       render "staff/activities/index_beis"
     else
       @funds = Activity.fund.order(:title)

@@ -6,6 +6,11 @@ en:
       edit: Edit outgoing transfer
       confirm: Are these transfer details correct?
       index: Outgoing Transfers
+  breadcrumb:
+    outgoing_transfer:
+      new: Create outgoing Transfer
+      edit: Edit outgoing transfer
+      confirm: Are these transfer details correct?
   intro:
     outgoing_transfer: Transfer funds to another delivery partner activity
   action:

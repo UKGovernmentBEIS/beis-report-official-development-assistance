@@ -1,5 +1,7 @@
 class Staff::CommentsController < Staff::BaseController
   include Secured
+  include Activities::Breadcrumbed
+  include Reports::Breadcrumbed
 
   def new
     @activity = Activity.find(activity_id)
@@ -7,6 +9,9 @@ class Staff::CommentsController < Staff::BaseController
     @comment = Comment.new(activity_id: activity_id, report_id: report_id)
     authorize @comment
     @report_presenter = ReportPresenter.new(@report)
+
+    prepare_default_report_variance_trail(@report)
+    add_breadcrumb t("breadcrumb.comment.new"), new_activity_comment_path(@activity)
   end
 
   def create
@@ -29,6 +34,9 @@ class Staff::CommentsController < Staff::BaseController
     @report = Report.find(@comment.report_id)
     @report_presenter = ReportPresenter.new(@report)
     authorize @comment
+
+    prepare_default_activity_trail(@activity, tab: "comments")
+    add_breadcrumb t("breadcrumb.comment.edit"), edit_activity_comment_path(@activity, @comment)
   end
 
   def update

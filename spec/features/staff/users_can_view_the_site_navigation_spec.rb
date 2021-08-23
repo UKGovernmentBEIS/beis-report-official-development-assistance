@@ -20,7 +20,7 @@ RSpec.feature "Users can view the site navigation" do
       expect(page).to have_css ".govuk-header__navigation"
       expect(page).to have_link t("page_title.home"), href: home_path
       expect(page).to have_link t("page_title.report.index"), href: reports_path
-      expect(page).not_to have_link t("page_title.organisation.index"), href: organisations_path
+      expect(page).not_to have_link t("page_title.organisation.index"), href: organisations_path, class: "govuk-header__link"
       expect(page).not_to have_link t("page_title.users.index"), href: users_path
     end
   end

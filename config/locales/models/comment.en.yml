@@ -8,6 +8,10 @@ en:
       index: Comments
       new: New comment
       edit: Edit comment
+  breadcrumb:
+    comment:
+      new: New comment
+      edit: Edit comment
   page_content:
     comment:
       add: Add a comment

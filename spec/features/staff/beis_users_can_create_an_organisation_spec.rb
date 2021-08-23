@@ -10,11 +10,14 @@ RSpec.feature "BEIS users can create organisations" do
     let(:user) { create(:beis_user) }
     before do
       authenticate!(user: user)
+      visit organisation_path(user.organisation)
+
+      within ".govuk-header__navigation" do
+        click_link t("page_title.organisation.index")
+      end
     end
 
     scenario "successfully creating a delivery partner organisation" do
-      visit organisation_path(user.organisation)
-      click_link t("page_title.organisation.index")
       click_link t("page_content.organisations.delivery_partners.button.create")
 
       expect(page).to have_content(t("page_title.organisation.delivery_partner.new"))
@@ -42,8 +45,6 @@ RSpec.feature "BEIS users can create organisations" do
     end
 
     scenario "successfully creating a matched effort provider organisation" do
-      visit organisation_path(user.organisation)
-      click_link t("page_title.organisation.index")
       click_link t("tabs.organisations.matched_effort_providers")
 
       click_link t("page_content.organisations.matched_effort_providers.button.create")
@@ -72,8 +73,6 @@ RSpec.feature "BEIS users can create organisations" do
     end
 
     scenario "successfully creating a external income provider organisation" do
-      visit organisation_path(user.organisation)
-      click_link t("page_title.organisation.index")
       click_link t("tabs.organisations.external_income_providers")
 
       click_link t("page_content.organisations.external_income_providers.button.create")
@@ -102,8 +101,6 @@ RSpec.feature "BEIS users can create organisations" do
     end
 
     scenario "presence validation works as expected" do
-      visit organisation_path(user.organisation)
-      click_link t("page_title.organisation.index")
       click_link t("page_content.organisations.delivery_partners.button.create")
 
       expect(page).to have_content(t("page_title.organisation.delivery_partner.new"))
@@ -113,14 +110,14 @@ RSpec.feature "BEIS users can create organisations" do
       expect(page).to_not have_content t("action.organisation.create.success")
       expect(page).to have_content t("activerecord.errors.models.organisation.attributes.organisation_type.blank")
     end
+  end
 
-    context "when the user does not belongs to BEIS" do
-      let(:user) { create(:delivery_partner_user) }
+  context "when the user does not belongs to BEIS" do
+    let(:user) { create(:delivery_partner_user) }
 
-      it "does not show them the manage user button" do
-        visit organisation_path(user.organisation)
-        expect(page).not_to have_content(t("page_title.organisation.index"))
-      end
+    it "does not show them the manage user button" do
+      visit organisation_path(user.organisation)
+      expect(page).not_to have_link(t("page_title.organisation.index"))
     end
   end
 end

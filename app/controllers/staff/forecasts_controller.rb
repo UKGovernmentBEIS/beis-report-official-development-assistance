@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Staff::ForecastsController < Staff::BaseController
+  include Activities::Breadcrumbed
+
   def new
     @activity = Activity.find(params["activity_id"])
     @forecast = Forecast.unscoped.new
@@ -8,6 +10,9 @@ class Staff::ForecastsController < Staff::BaseController
     pre_fill_financial_quarter_and_year
 
     authorize @forecast
+
+    prepare_default_activity_trail(@activity)
+    add_breadcrumb t("breadcrumb.forecast.new"), new_activity_forecast_path(@activity)
   end
 
   def create
@@ -41,6 +46,9 @@ class Staff::ForecastsController < Staff::BaseController
     history = history_for_update
     @forecast = ForecastPresenter.new(history.latest_entry)
     authorize @forecast
+
+    prepare_default_activity_trail(@activity)
+    add_breadcrumb t("breadcrumb.forecast.edit", quarter: @forecast.financial_quarter_and_year), edit_activity_forecasts_path(@activity, @forecast.financial_year, @forecast.financial_quarter)
   end
 
   def update
