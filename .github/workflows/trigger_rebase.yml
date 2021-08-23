@@ -15,7 +15,7 @@ jobs:
       - name: Get all awaiting PR numbers
         id: get-all-awaiting-pr-numbers
         run: |
-          PR_NUMBER=$(curl https://api.github.com/repos/UKGovernmentBEIS/beis-report-official-development-assistance/pulls\?state\=open | jq -c '.[] | select(.auto_merge!=null) | .number | [.] | first')
+          PR_NUMBER=$(curl https://api.github.com/repos/UKGovernmentBEIS/beis-report-official-development-assistance/pulls\?state\=open | jq -c '[.[] | select(.auto_merge!=null) | .number] | first')
           echo "::set-output name=pr_number::$PR_NUMBER"
   trigger_rebase_action:
     if: ${{ needs.fetch_oldest_pr_awaiting_automerge.outputs.pr_number != '' }}
