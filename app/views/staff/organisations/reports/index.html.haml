@@ -11,5 +11,5 @@
 
     .govuk-tabs__panel{ id: "current" }
       = render partial: "staff/shared/reports/table", locals: { reports: @reports.current, type: "current" }
-    .govuk-tabs__panel{ id: "historic" }
-      = render partial: "staff/shared/reports/table", locals: { reports: @reports.historic, type: "historic" }
+    .govuk-tabs__panel{ id: "approved" }
+      = render partial: "staff/shared/reports/table", locals: { reports: @reports.historic, type: "approved" }
