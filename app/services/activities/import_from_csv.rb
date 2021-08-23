@@ -17,7 +17,7 @@ module Activities
     attr_reader :errors, :created, :updated
 
     def self.column_headings
-      ["Parent RODA ID"] + Converter::FIELDS.values
+      ["Parent RODA ID"] + Converter::FIELDS.values - ["BEIS ID"]
     end
 
     def initialize(uploader:, delivery_partner_organisation:, report: nil)
