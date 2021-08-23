@@ -19,12 +19,12 @@ RSpec.describe StubController, type: :controller do
     allow(subject).to receive(:report_variance_path).and_return("report_path")
   end
 
-  context "when the report is historic" do
+  context "when the report is approved" do
     let(:report) { build(:report, state: :approved) }
 
     describe "#prepare_default_report_trail" do
-      it "adds the historic reports path to the breadcrumbs" do
-        expect(subject).to receive(:add_breadcrumb).with("Historic Reports", reports_path(anchor: "historic"))
+      it "adds the approved reports path to the breadcrumbs" do
+        expect(subject).to receive(:add_breadcrumb).with("Approved Reports", reports_path(anchor: "approved"))
         expect(subject).to receive(:add_breadcrumb).with(t("page_title.report.show", report_fund: report.fund.source_fund.name, report_financial_quarter: report.financial_quarter_and_year), report_path(report))
 
         subject.prepare_default_report_trail(report)
@@ -41,8 +41,8 @@ RSpec.describe StubController, type: :controller do
     end
 
     describe "#prepare_default_report_variance_trail" do
-      it "adds the historic reports path and the variance to the breadcrumbs" do
-        expect(subject).to receive(:add_breadcrumb).with("Historic Reports", reports_path(anchor: "historic"))
+      it "adds the approved reports path and the variance to the breadcrumbs" do
+        expect(subject).to receive(:add_breadcrumb).with("Approved Reports", reports_path(anchor: "approved"))
         expect(subject).to receive(:add_breadcrumb).with(t("page_title.report.show", report_fund: report.fund.source_fund.name, report_financial_quarter: report.financial_quarter_and_year), report_variance_path(report))
 
         subject.prepare_default_report_trail(report)
@@ -72,7 +72,7 @@ RSpec.describe StubController, type: :controller do
     end
 
     describe "#prepare_default_report_variance_trail" do
-      it "adds the historic reports path and the variance to the breadcrumbs" do
+      it "adds the approved reports path and the variance to the breadcrumbs" do
         expect(subject).to receive(:add_breadcrumb).with("Current Reports", reports_path)
         expect(subject).to receive(:add_breadcrumb).with(t("page_title.report.show", report_fund: report.fund.source_fund.name, report_financial_quarter: report.financial_quarter_and_year), report_variance_path(report))
 
