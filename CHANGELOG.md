@@ -793,12 +793,16 @@
 - Fix `aria-controls` element in the tree view
 - Show grouped refunds from a report on the report actuals page
 
-## [unreleased]
+## [release-69] - 2021-08-24
 
 - Show an error message if the search query is empty
 - Show delivery partner users more information about the current reports
+- Ensure all other views have a sensible breadcrumb
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-68...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-69...HEAD
+[release-69]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-68...release-69
 [release-68]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-67...release-68
 [release-67]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-66...release-67
 [release-66]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-65...release-66
