@@ -6,7 +6,10 @@
       %h1.govuk-heading-xl
         = t("page_content.activity_search.heading", query: @activity_search.query)
 
-      - if @activity_search.results.any?
+      - if @activity_search.query.blank?
+        %p.govuk-body.govuk-error-summary.govuk-error-summary--alert
+          = t("page_content.activity_search.empty_query")
+      - elsif @activity_search.results.any?
         %table.govuk-table
           %thead.govuk-table__head
             %tr.govuk-table__row

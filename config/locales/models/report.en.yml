@@ -19,7 +19,8 @@ en:
         organisation: Organisation
         fund: Fund (level A)
         deadline: Deadline
-        state: State
+        state: Status
+        can_edit: Can edit?
     body:
       report:
         action:
@@ -91,7 +92,13 @@ en:
         in_review: In review
         inactive: Inactive
         submitted: Submitted
-
+      can_edit:
+        active: Yes, data can be added/edited
+        awaiting_changes: Yes, data can be revised
+        in_review: No, report is in review with BEIS
+        submitted: No, report has been submitted to BEIS
+        inactive: No, the report needs to be activated by BEIS
+        approved: N/A
   form:
     label:
       report:
@@ -134,6 +141,11 @@ en:
       transactions: "%{report_financial_quarter} %{report_description} actuals"
       budgets: "%{report_financial_quarter} %{report_description} budgets"
       activities: "%{report_financial_quarter} %{report_description} activities"
+  breadcrumb:
+    report:
+      upload_activities: Upload bulk activity data
+      upload_forecasts: Upload forecast data
+      upload_transactions:  Upload actuals data
   mailer:
     report:
       activated:

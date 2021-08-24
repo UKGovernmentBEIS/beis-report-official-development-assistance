@@ -5,11 +5,15 @@ require "csv"
 class Staff::ActivityUploadsController < Staff::BaseController
   include Secured
   include StreamCsvDownload
+  include Reports::Breadcrumbed
 
   def new
     authorize report, :show?
 
     @report_presenter = ReportPresenter.new(report)
+
+    prepare_default_report_trail(report)
+    add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activity_upload_path(report)
   end
 
   def show
@@ -27,6 +31,9 @@ class Staff::ActivityUploadsController < Staff::BaseController
     @report_presenter = ReportPresenter.new(report)
     upload = CsvFileUpload.new(params[:report], :activity_csv)
     @success = false
+
+    prepare_default_report_trail(report)
+    add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activity_upload_path(report)
 
     if upload.valid?
       importer = Activities::ImportFromCsv.new(

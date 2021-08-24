@@ -6,6 +6,11 @@ en:
       edit: Edit incoming transfer
       confirm: Are these transfer details correct?
       index: Incoming transfers
+  breadcrumb:
+    incoming_transfer:
+      new: Incoming transfer
+      edit: Edit incoming transfer
+      confirm: Are these transfer details correct?
   intro:
     incoming_transfer: Record a transfer from another activity
   action:

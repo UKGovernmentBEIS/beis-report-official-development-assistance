@@ -1,6 +1,7 @@
 module Transfers
   extend ActiveSupport::Concern
   include Secured
+  include Activities::Breadcrumbed
 
   included do
     before_action :can_create_transfer?
@@ -8,11 +9,17 @@ module Transfers
 
   def new
     @transfer = transfer_model.new
+
+    prepare_default_activity_trail(target_activity, tab: "transfers")
+    add_breadcrumb t("breadcrumb.#{transfer_type}.new"), new_path
   end
 
   def edit
     @transfer = transfer_model.find(params[:id])
     authorize @transfer
+
+    prepare_default_activity_trail(target_activity, tab: "transfers")
+    add_breadcrumb t("breadcrumb.#{transfer_type}.edit"), edit_path
   end
 
   def create
@@ -59,6 +66,10 @@ module Transfers
   def show_confirmation_or_errors
     if @transfer.valid?
       @transfer_presenter = TransferPresenter.new(@transfer)
+
+      prepare_default_activity_trail(target_activity, tab: "transfers")
+      add_breadcrumb t("breadcrumb.#{transfer_type}.confirm"), @confirmation_url
+
       render :confirm
     else
       render edit_or_new
@@ -70,11 +81,19 @@ module Transfers
   end
 
   def set_confirmation_url
-    @confirmation_url = if action_name == "create"
-      send("activity_#{transfer_type.to_s.pluralize}_path", target_activity)
-    else
-      send("activity_#{transfer_type}_path", target_activity, @transfer)
-    end
+    @confirmation_url = action_name == "create" ? show_path : edit_path
+  end
+
+  def edit_path
+    send("activity_#{transfer_type}_path", target_activity, @transfer)
+  end
+
+  def show_path
+    send("activity_#{transfer_type.to_s.pluralize}_path", target_activity)
+  end
+
+  def new_path
+    send("new_activity_#{transfer_type}_path", target_activity)
   end
 
   def transfer_type

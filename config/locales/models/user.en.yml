@@ -60,6 +60,12 @@ en:
       index: Users
       new: Create user
       show: User
+  breadcrumb:
+    users:
+      edit: Edit user
+      index: Users
+      new: Create user
+      show: User
   activerecord:
     attributes:
       user:

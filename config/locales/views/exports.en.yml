@@ -15,3 +15,8 @@ en:
         actions: Actions
         download: Download
         format: Format
+  breadcrumbs:
+    export:
+      index: Exports
+      organisation:
+        show: Exports for %{name}

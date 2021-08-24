@@ -6,6 +6,8 @@ class Staff::OrganisationReportsController < Staff::BaseController
 
     @reports = Report::OrganisationReportsFetcher.new(organisation: organisation)
 
+    add_breadcrumb "Reports", :organisation_reports_path
+
     render "staff/organisations/reports/index"
   end
 

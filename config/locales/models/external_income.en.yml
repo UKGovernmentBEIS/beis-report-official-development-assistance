@@ -5,6 +5,10 @@ en:
       index: External income
       new: Add new external income
       edit: Edit an external income
+  breadcrumb:
+    external_income:
+      new: Add new external income
+      edit: Edit an external income
   table:
     header:
       external_income:

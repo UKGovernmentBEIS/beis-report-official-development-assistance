@@ -4,7 +4,7 @@ module Activities
     include Reports::Breadcrumbed
     include Searches::Breadcrumbed
 
-    def prepare_default_activity_trail(activity)
+    def prepare_default_activity_trail(activity, args = {tab: "financials"})
       return if activity.fund? && !current_user.service_owner?
 
       if breadcrumb_context.type == :report
@@ -15,8 +15,8 @@ module Activities
         prepare_default_search_trail(breadcrumb_context.model)
       elsif current_user.service_owner? && (activity.fund? || activity.programme?)
         # Show fund/programme breadcrumbs (these don't belong to an organisation)
-        add_breadcrumb activity.parent.title, organisation_activity_financials_path(activity.parent.organisation, activity.parent) if activity.parent
-        add_breadcrumb activity.title, organisation_activity_financials_path(activity.organisation, activity)
+        add_breadcrumb activity.parent.title, organisation_activity_path(activity.parent.organisation, activity.parent) if activity.parent
+        add_breadcrumb activity.title, organisation_activity_path(activity.organisation, activity, tab: args[:tab])
 
         return
       elsif activity.historic?
@@ -29,14 +29,14 @@ module Activities
 
       # activity parent tree section
       if activity.third_party_project?
-        add_breadcrumb activity.parent.parent.title, organisation_activity_financials_path(activity.parent.parent.organisation, activity.parent.parent)
-        add_breadcrumb activity.parent.title, organisation_activity_financials_path(activity.parent.organisation, activity.parent)
+        add_breadcrumb activity.parent.parent.title, organisation_activity_path(activity.parent.parent.organisation, activity.parent.parent)
+        add_breadcrumb activity.parent.title, organisation_activity_path(activity.parent.organisation, activity.parent)
       elsif activity.project?
-        add_breadcrumb activity.parent.title, organisation_activity_financials_path(activity.parent.organisation, activity.parent)
+        add_breadcrumb activity.parent.title, organisation_activity_path(activity.parent.organisation, activity.parent)
       end
 
       # "leaf" activity section
-      add_breadcrumb activity.title, organisation_activity_financials_path(activity.organisation, activity)
+      add_breadcrumb activity_title(activity), organisation_activity_path(activity.organisation, activity, tab: args[:tab])
     end
 
     def index_crumb_title(activity)
@@ -53,6 +53,10 @@ module Activities
 
     def breadcrumb_context
       @breadcrumb_context ||= BreadcrumbContext.new(session)
+    end
+
+    def activity_title(activity)
+      activity.title || "Untitled activity"
     end
   end
 end

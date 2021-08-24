@@ -5,11 +5,15 @@ require "csv"
 class Staff::ForecastUploadsController < Staff::BaseController
   include Secured
   include StreamCsvDownload
+  include Reports::Breadcrumbed
 
   def new
     authorize report, :show?
 
     @report_presenter = ReportPresenter.new(report)
+
+    prepare_default_report_trail(report)
+    add_breadcrumb t("breadcrumb.report.upload_forecasts"), new_report_forecast_upload_path(report)
   end
 
   def show
@@ -32,6 +36,9 @@ class Staff::ForecastUploadsController < Staff::BaseController
     @report_presenter = ReportPresenter.new(report)
     upload = CsvFileUpload.new(params[:report], :forecast_csv)
     @success = false
+
+    prepare_default_report_trail(report)
+    add_breadcrumb t("breadcrumb.report.upload_forecasts"), new_report_forecast_upload_path(report)
 
     if upload.valid?
       importer = ImportForecasts.new(uploader: current_user)

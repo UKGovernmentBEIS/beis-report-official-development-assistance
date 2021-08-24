@@ -1,5 +1,6 @@
 class Staff::RefundsController < Staff::ActivitiesController
   include Secured
+  include Activities::Breadcrumbed
 
   def new
     @activity = activity
@@ -10,6 +11,9 @@ class Staff::RefundsController < Staff::ActivitiesController
     @refund.report = @report
 
     authorize @refund
+
+    prepare_default_activity_trail(@activity)
+    add_breadcrumb t("breadcrumb.refund.new"), new_activity_refund_path(@activity)
   end
 
   def create
@@ -33,6 +37,9 @@ class Staff::RefundsController < Staff::ActivitiesController
     @refund = Refund.find(id)
 
     authorize @refund
+
+    prepare_default_activity_trail(@activity)
+    add_breadcrumb t("breadcrumb.refund.edit"), edit_activity_refund_path(@activity, @refund)
   end
 
   def update

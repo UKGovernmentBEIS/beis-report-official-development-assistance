@@ -16,6 +16,10 @@ en:
     refund:
       new: Add a new refund
       edit: Edit refund
+  breadcrumb:
+    refund:
+      new: Add a new refund
+      edit: Edit refund
   form:
     label:
       refund:

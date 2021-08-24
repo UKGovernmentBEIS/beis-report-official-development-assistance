@@ -7,6 +7,7 @@ RSpec.describe ActivityPresenter do
     let(:field) { field }
     let(:args) { args.reverse_merge(source: "iati") }
     let(:field_type) { field_type }
+    let(:activity) { build(:project_activity) }
 
     def cast_code_to_field(code)
       return code if field_type.nil?
@@ -16,7 +17,6 @@ RSpec.describe ActivityPresenter do
 
     it "has translations for all of the codes" do
       Codelist.new(**args).each do |code|
-        activity = build(:project_activity)
         code = cast_code_to_field(code["code"])
         activity.write_attribute(field, code)
 

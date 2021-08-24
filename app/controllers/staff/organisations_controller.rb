@@ -5,11 +5,16 @@ class Staff::OrganisationsController < Staff::BaseController
     @role = params[:role]
     @organisations = policy_scope(Organisation).where(role: @role.singularize)
     authorize @organisations
+
+    add_breadcrumb I18n.t("breadcrumbs.organisation.index"), organisations_path(role: @role)
   end
 
   def show
     organisation = Organisation.find(id)
     authorize organisation
+
+    add_breadcrumb I18n.t("breadcrumbs.organisation.index"), organisations_path(role: organisation.role.pluralize)
+    add_breadcrumb organisation.name, :organisation_path
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
   end
@@ -17,6 +22,9 @@ class Staff::OrganisationsController < Staff::BaseController
   def new
     @organisation = Organisation.new(role: params[:role].singularize)
     authorize @organisation
+
+    add_breadcrumb I18n.t("breadcrumbs.organisation.index"), organisations_path(role: @organisation.role.pluralize)
+    add_breadcrumb I18n.t("breadcrumbs.organisation.#{@organisation.role}.new"), new_organisation_path(role: params[:role])
   end
 
   def create
@@ -35,6 +43,9 @@ class Staff::OrganisationsController < Staff::BaseController
   def edit
     @organisation = Organisation.find(id)
     authorize @organisation
+
+    add_breadcrumb I18n.t("breadcrumbs.organisation.index"), organisations_path(role: @organisation.role.pluralize)
+    add_breadcrumb t("breadcrumbs.organisation.edit", name: @organisation.name), :edit_organisation_path
   end
 
   def update

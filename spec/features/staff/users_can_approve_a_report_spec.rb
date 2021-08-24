@@ -49,7 +49,7 @@ RSpec.feature "Users can approve reports" do
 
         within "##{new_report.id}" do
           expect(page).to have_content new_report.organisation.name
-          expect(page).to have_content new_report.fund.title
+          expect(page).to have_content new_report.fund.source_fund.short_name
           expect(page).to have_content "Q2 2019-2020"
         end
       end

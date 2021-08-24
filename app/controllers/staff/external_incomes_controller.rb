@@ -1,9 +1,14 @@
 class Staff::ExternalIncomesController < Staff::BaseController
+  include Activities::Breadcrumbed
+
   def new
     @activity = Activity.find(params[:activity_id])
     @external_income = ExternalIncome.new
 
     authorize @activity
+
+    prepare_default_activity_trail(@activity, tab: "other_funding")
+    add_breadcrumb t("breadcrumb.external_income.new"), new_activity_external_income_path(@activity)
   end
 
   def create
@@ -27,6 +32,9 @@ class Staff::ExternalIncomesController < Staff::BaseController
     @external_income = ExternalIncome.find(params[:id])
 
     authorize @external_income
+
+    prepare_default_activity_trail(@activity, tab: "other_funding")
+    add_breadcrumb t("breadcrumb.external_income.edit"), edit_activity_external_income_path(@activity, @external_income)
   end
 
   def update

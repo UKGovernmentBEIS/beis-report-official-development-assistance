@@ -2,6 +2,7 @@
 
 class Staff::TransactionsController < Staff::BaseController
   include Secured
+  include Activities::Breadcrumbed
 
   def new
     @activity = activity
@@ -13,6 +14,9 @@ class Staff::TransactionsController < Staff::BaseController
     @transaction.financial_year = @report&.financial_year
 
     authorize @transaction
+
+    prepare_default_activity_trail(@activity)
+    add_breadcrumb t("breadcrumb.transaction.new"), new_activity_transaction_path(@activity)
   end
 
   def create
@@ -36,6 +40,9 @@ class Staff::TransactionsController < Staff::BaseController
     authorize @transaction
 
     @activity = Activity.find(activity_id)
+
+    prepare_default_activity_trail(@activity)
+    add_breadcrumb t("breadcrumb.transaction.edit"), edit_activity_transaction_path(@activity, @transaction)
   end
 
   def update

@@ -19,6 +19,13 @@ RSpec.describe "Users can search for activities" do
     end
   end
 
+  scenario "searching for an empty string shows an error message" do
+    fill_in :query, with: ""
+    click_button t("form.activity_search.submit")
+
+    expect(page).to have_content(t("page_content.activity_search.empty_query"))
+  end
+
   scenario "user sees breadcrumb context when accessing an activity from search results" do
     click_on project.title
 

@@ -52,6 +52,10 @@ en:
     budget:
       edit: Edit budget
       new: Create budget
+  breadcrumb:
+    budget:
+      edit: Edit budget
+      new: Create budget
   activerecord:
     errors:
       models:
