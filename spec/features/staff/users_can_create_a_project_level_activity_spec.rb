@@ -111,38 +111,6 @@ RSpec.feature "Users can create a project" do
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.planned_end_date.invalid")
       end
-
-      context "when creating a project that is Newton funded" do
-        let(:newton_fund) { create(:fund_activity, :newton) }
-
-        scenario "'country_delivery_partners' can be present" do
-          newton_programme = create(:programme_activity, extending_organisation: user.organisation, parent: newton_fund)
-          _report = create(:report, state: :active, organisation: user.organisation, fund: newton_fund)
-
-          visit organisation_activity_children_path(newton_programme.extending_organisation, newton_programme)
-          click_on t("action.activity.add_child")
-
-          fill_in_activity_form(level: "project", parent: newton_programme)
-
-          expect(page).to have_content t("action.project.create.success")
-          activity = Activity.order("created_at ASC").last
-          expect(activity.country_delivery_partners).to eql(["National Council for the State Funding Agencies (CONFAP)"])
-        end
-
-        scenario "'country_delivery_partners' is however not mandatory for Newton funded projects" do
-          newton_programme = create(:programme_activity, extending_organisation: user.organisation, parent: newton_fund)
-          _report = create(:report, state: :active, organisation: user.organisation, fund: newton_fund)
-
-          visit organisation_activity_children_path(newton_programme.extending_organisation, newton_programme)
-          click_on t("action.activity.add_child")
-
-          fill_in_activity_form(level: "project", parent: newton_programme, country_delivery_partners: nil)
-
-          expect(page).to have_content t("action.project.create.success")
-          activity = Activity.order("created_at ASC").last
-          expect(activity.country_delivery_partners).to be_empty
-        end
-      end
     end
   end
 end

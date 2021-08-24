@@ -117,6 +117,22 @@ RSpec.describe Staff::ActivityFormsController do
           it { is_expected.to render_current_step }
         end
       end
+
+      context "country_delivery_partners" do
+        subject { get_step :country_delivery_partners }
+
+        context "when the activity is newton funded" do
+          let(:activity) { create(:project_activity, :newton_funded, organisation: organisation, parent: programme) }
+
+          it { is_expected.to render_current_step }
+        end
+
+        context "when the activity is GCRF funded" do
+          let(:activity) { create(:project_activity, :gcrf_funded, organisation: organisation, parent: programme) }
+
+          it { is_expected.to skip_to_next_step }
+        end
+      end
     end
 
     context "when editing a third-party project" do
