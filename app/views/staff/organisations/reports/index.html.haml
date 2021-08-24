@@ -12,4 +12,4 @@
     .govuk-tabs__panel{ id: "current" }
       = render partial: "staff/shared/reports/table", locals: { reports: @reports.current, type: "current" }
     .govuk-tabs__panel{ id: "approved" }
-      = render partial: "staff/shared/reports/table", locals: { reports: @reports.historic, type: "approved" }
+      = render partial: "staff/shared/reports/table", locals: { reports: @reports.approved, type: "approved" }

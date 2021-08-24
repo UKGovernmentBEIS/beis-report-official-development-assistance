@@ -5,8 +5,8 @@ RSpec.describe Report::OrganisationReportsFetcher do
 
   let(:fetcher) { described_class.new(organisation: organisation) }
 
-  describe "#historic" do
-    subject { fetcher.historic }
+  describe "#approved" do
+    subject { fetcher.approved }
 
     it "returns approved reports for an organisation" do
       approved_reports = build_list(:report, 3, organisation: organisation)

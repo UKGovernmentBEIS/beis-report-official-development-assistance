@@ -32,7 +32,7 @@ RSpec.feature "Users can view reports" do
       end
     end
 
-    scenario "they can see a list of all active and historic reports" do
+    scenario "they can see a list of all active and approved reports" do
       organisations = create_list(:delivery_partner_organisation, 2)
 
       unapproved_reports = [

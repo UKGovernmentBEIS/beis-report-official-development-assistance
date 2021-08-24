@@ -15,5 +15,5 @@
     .govuk-tabs__panel{ id: "current" }
       = render partial: "staff/shared/reports/grouped_table", locals: { grouped_reports: @grouped_reports.current, type: "current" }
     .govuk-tabs__panel{ id: "approved" }
-      = render partial: "staff/shared/reports/grouped_table", locals: { grouped_reports: @grouped_reports.historic, type: "approved" }
+      = render partial: "staff/shared/reports/grouped_table", locals: { grouped_reports: @grouped_reports.approved, type: "approved" }
 
