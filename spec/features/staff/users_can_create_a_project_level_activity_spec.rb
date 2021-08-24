@@ -34,6 +34,9 @@ RSpec.feature "Users can create a project" do
         # our new direct association between activity and report
         expect(project.originating_report).to eq(report)
         expect(report.new_activities).to eq([project])
+
+        activity = Activity.order("created_at ASC").last
+        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
       end
 
       scenario "can create a new child activity for a given programme" do
@@ -65,19 +68,6 @@ RSpec.feature "Users can create a project" do
         expect(programme.child_activities.count).to eq 1
         project = programme.child_activities.last
         expect(project.organisation).to eq user.organisation
-      end
-
-      scenario "the activity saves its identifier as read-only `transparency_identifier`" do
-        programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
-
-        visit organisation_activity_children_path(programme.extending_organisation, programme)
-        click_on t("action.activity.add_child")
-
-        fill_in_activity_form(level: "project", parent: programme)
-
-        activity = Activity.order("created_at ASC").last
-        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
       end
 
       scenario "the activity date shows an error message if an invalid date is entered" do
