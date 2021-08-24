@@ -39,6 +39,46 @@ RSpec.describe Staff::ActivityFormsController do
           it { is_expected.to render_current_step }
         end
       end
+
+      context "collaboration_type" do
+        subject { get_step :collaboration_type }
+
+        context "when the field is not editable" do
+          before do
+            allow(Activity::Inference.service).to receive(:editable?).with(activity, :collaboration_type).and_return(false)
+          end
+
+          it { is_expected.to skip_to_next_step }
+        end
+
+        context "when the field is editable" do
+          before do
+            allow(Activity::Inference.service).to receive(:editable?).with(activity, :collaboration_type).and_return(true)
+          end
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "collaboration_type" do
+        subject { get_step :fstc_applies }
+
+        context "when the field is not editable" do
+          before do
+            allow(Activity::Inference.service).to receive(:editable?).with(activity, :fstc_applies).and_return(false)
+          end
+
+          it { is_expected.to skip_to_next_step }
+        end
+
+        context "when the field is editable" do
+          before do
+            allow(Activity::Inference.service).to receive(:editable?).with(activity, :fstc_applies).and_return(true)
+          end
+
+          it { is_expected.to render_current_step }
+        end
+      end
     end
 
     context "when editing a project" do
@@ -53,6 +93,26 @@ RSpec.describe Staff::ActivityFormsController do
 
         context "when activity is associated with the GCRF fund" do
           let(:activity) { create(:project_activity, organisation: organisation, parent: programme, source_fund_code: Fund.by_short_name("GCRF").id) }
+
+          it { is_expected.to render_current_step }
+        end
+      end
+
+      context "channel_of_delivery_code" do
+        subject { get_step :channel_of_delivery_code }
+
+        context "when the field is not editable" do
+          before do
+            allow(Activity::Inference.service).to receive(:editable?).with(activity, :channel_of_delivery_code).and_return(false)
+          end
+
+          it { is_expected.to skip_to_next_step }
+        end
+
+        context "when the field is editable" do
+          before do
+            allow(Activity::Inference.service).to receive(:editable?).with(activity, :channel_of_delivery_code).and_return(true)
+          end
 
           it { is_expected.to render_current_step }
         end

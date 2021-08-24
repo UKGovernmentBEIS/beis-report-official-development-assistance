@@ -35,7 +35,7 @@ module FormHelpers
     collaboration_type: "Bilateral",
     sdg_1: 1,
     fund_pillar: "1",
-    aid_type: "D01",
+    aid_type: "C01",
     fstc_applies: true,
     policy_marker_gender: "Not assessed",
     policy_marker_climate_change_adaptation: "Not targeted",
@@ -186,7 +186,7 @@ module FormHelpers
     choose("activity[aid_type]", option: aid_type)
     click_button t("form.button.activity.submit")
 
-    unless level == "fund" || aid_type.in?(["B02", "B03"])
+    unless level == "fund"
       expect(page).to have_content t("form.label.activity.collaboration_type")
       choose "Bilateral"
       click_button t("form.button.activity.submit")
@@ -208,12 +208,10 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
-    if aid_type.in?(["C01", "B03"])
-      expect(page).to have_content t("form.legend.activity.fstc_applies")
-      expect(page.body).to include t("form.hint.activity.fstc_applies")
-      choose("activity[fstc_applies]", option: fstc_applies ? "1" : "0")
-      click_button t("form.button.activity.submit")
-    end
+    expect(page).to have_content t("form.legend.activity.fstc_applies")
+    expect(page.body).to include t("form.hint.activity.fstc_applies")
+    choose("activity[fstc_applies]", option: fstc_applies ? "1" : "0")
+    click_button t("form.button.activity.submit")
 
     if level == "project" || level == "third_party_project"
       expect(page).to have_content t("page_title.activity_form.show.policy_markers")
@@ -264,7 +262,7 @@ module FormHelpers
       click_button t("form.button.activity.submit")
     end
 
-    if (level == "project" || level == "third_party_project") && aid_type != "B02" && collaboration_type != "2"
+    if (level == "project" || level == "third_party_project") && collaboration_type != "2"
       expect(page).to have_content t("form.legend.activity.channel_of_delivery_code")
       choose("activity[channel_of_delivery_code]", option: channel_of_delivery_code)
       click_button t("form.button.activity.submit")
@@ -311,13 +309,7 @@ module FormHelpers
     end
 
     within(".govuk-summary-list__row.collaboration_type") do
-      if aid_type == "B02"
-        expect(page).to have_content "Multilateral (inflows)"
-      elsif aid_type == "B03"
-        expect(page).to have_content "Bilateral"
-      else
-        expect(page).to have_content collaboration_type
-      end
+      expect(page).to have_content collaboration_type
     end
 
     # NB: Since the parent might be a fund, `is_newton_fund?` won't work here
@@ -331,15 +323,7 @@ module FormHelpers
     expect(page).to have_content gdi
     expect(page).to have_content t("activity.aid_type.#{aid_type.downcase}")
 
-    within(".govuk-summary-list__row.fstc_applies") do
-      if aid_type.in?(["B03", "C01"])
-        expect(page).to have_content t("summary.label.activity.fstc_applies.#{fstc_applies}")
-      elsif aid_type.in?(["D01", "D02", "E01", "E02"])
-        expect(page).to have_content "Yes"
-      elsif aid_type.in?(["G01", "B02"])
-        expect(page).to have_content "No"
-      end
-    end
+    expect(page).to have_content t("summary.label.activity.fstc_applies.#{fstc_applies}")
 
     if level == "project" || level == "third_party_project"
       within(".policy_marker_gender") do
