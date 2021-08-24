@@ -61,7 +61,9 @@ RSpec.feature "Users can approve reports" do
 
         visit report_path(report)
 
-        expect(page).not_to have_link t("action.report.approve.button")
+        within("#main-content") do
+          expect(page).not_to have_link t("action.report.approve.button")
+        end
       end
     end
   end

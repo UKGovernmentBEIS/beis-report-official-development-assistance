@@ -8,8 +8,8 @@ class Report
       @current ||= fetch(reports.not_approved)
     end
 
-    def historic
-      @historic ||= fetch(reports.approved)
+    def approved
+      @approved ||= fetch(reports.approved)
     end
 
     private

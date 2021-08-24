@@ -32,7 +32,7 @@ RSpec.feature "Users can view reports" do
       end
     end
 
-    scenario "they can see a list of all active and historic reports" do
+    scenario "they can see a list of all active and approved reports" do
       organisations = create_list(:delivery_partner_organisation, 2)
 
       unapproved_reports = [
@@ -58,7 +58,7 @@ RSpec.feature "Users can view reports" do
       )
 
       expect_to_see_a_table_of_reports_grouped_by_organisation(
-        selector: "#historic",
+        selector: "#approved",
         reports: approved_reports,
         organisations: organisations
       )
@@ -336,7 +336,7 @@ RSpec.feature "Users can view reports" do
       authenticate!(user: delivery_partner_user)
     end
 
-    scenario "they can see a list of all their active and historic reports" do
+    scenario "they can see a list of all their active and approved reports" do
       reports_awaiting_changes = create_list(:report, 2, organisation: delivery_partner_user.organisation, state: :awaiting_changes)
       approved_reports = create_list(:report, 3, organisation: delivery_partner_user.organisation, state: :approved)
 
@@ -345,7 +345,7 @@ RSpec.feature "Users can view reports" do
       expect(page).to have_content t("page_title.report.index")
 
       expect_to_see_a_table_of_reports(selector: "#current", reports: reports_awaiting_changes)
-      expect_to_see_a_table_of_reports(selector: "#historic", reports: approved_reports)
+      expect_to_see_a_table_of_reports(selector: "#approved", reports: approved_reports)
     end
 
     context "when there is an active report" do
