@@ -16,6 +16,11 @@ en:
         financial_quarter: Financial quarter
         oda_funding: Official development assistance
         amount: Amount
+    body:
+      external_income:
+        oda_funding:
+          "true": "Yes"
+          "false": "No"
   form:
     label:
       external_income:
