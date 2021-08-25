@@ -436,10 +436,6 @@ module FormHelpers
     )
   end
 
-  def localise_date_from_input_fields(year:, month:, day:)
-    I18n.l(Date.parse("#{year}-#{month}-#{day}"))
-  end
-
   def fill_in_transfer_form(type:, destination: create(:project_activity), source: create(:project_activity), financial_quarter: FinancialQuarter.for_date(Date.today).to_i, financial_year: FinancialYear.for_date(Date.today).to_i, value: 1234, beis_identifier: nil)
     transfer = build(
       type,
