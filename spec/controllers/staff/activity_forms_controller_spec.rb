@@ -205,6 +205,29 @@ RSpec.describe Staff::ActivityFormsController do
         )
       end
     end
+
+    context "when the activity is invalid" do
+      before do
+        allow(Activity).to receive(:find).and_return(activity)
+        allow(activity).to receive(:valid?).and_return(false)
+      end
+
+      subject { put_step(:purpose, {title: "Updated title", description: "Updated description"}) }
+
+      it { is_expected.to render_current_step }
+    end
+
+    context "when the activity is valid" do
+      before do
+        allow(Activity).to receive(:find).and_return(activity)
+        allow(activity).to receive(:valid?).and_return(true)
+        allow(activity).to receive(:form_steps_completed?).and_return(false)
+      end
+
+      subject { put_step(:purpose, {title: "Updated title", description: "Updated description"}) }
+
+      it { is_expected.to skip_to_next_step }
+    end
   end
 
   private
