@@ -89,38 +89,6 @@ RSpec.feature "Users can create a project" do
 
         expect(page).to have_content t("form.legend.activity.purpose", level: "project (level C)")
       end
-
-      scenario "the activity date shows an error message if an invalid date is entered" do
-        programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
-
-        visit organisation_activity_children_path(programme.extending_organisation, programme)
-        click_on t("action.activity.add_child")
-
-        fill_in "activity[delivery_partner_identifier]", with: "no-country-selected"
-        click_button t("form.button.activity.submit")
-        fill_in "activity[title]", with: "My title"
-        fill_in "activity[description]", with: "My description"
-        click_button t("form.button.activity.submit")
-        fill_in "activity[objectives]", with: Faker::Lorem.paragraph
-        click_button t("form.button.activity.submit")
-        choose "Basic Education"
-        click_button t("form.button.activity.submit")
-        choose "School feeding"
-        click_button t("form.button.activity.submit")
-        choose "No"
-        click_button t("form.button.activity.submit")
-        choose "Delivery"
-        click_button t("form.button.activity.submit")
-        fill_in "activity[planned_start_date(3i)]", with: "01"
-        fill_in "activity[planned_start_date(2i)]", with: "12"
-        fill_in "activity[planned_start_date(1i)]", with: "2020"
-        fill_in "activity[planned_end_date(3i)]", with: "01"
-        fill_in "activity[planned_end_date(2i)]", with: "15"
-        fill_in "activity[planned_end_date(1i)]", with: "2021"
-        click_button t("form.button.activity.submit")
-        expect(page).to have_content t("activerecord.errors.models.activity.attributes.planned_end_date.invalid")
-      end
     end
   end
 end
