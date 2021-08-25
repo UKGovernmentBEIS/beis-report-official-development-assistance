@@ -54,22 +54,6 @@ RSpec.feature "Users can create a project" do
         expect(page).to have_content t("form.legend.activity.purpose", level: "project (level C)")
       end
 
-      scenario "a new project can be added when the program has no RODA identifier" do
-        programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation, roda_identifier: nil)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
-
-        visit organisation_activity_children_path(programme.extending_organisation, programme)
-        click_on t("action.activity.add_child")
-
-        fill_in_activity_form(level: "project", parent: programme)
-
-        expect(page).to have_content t("action.project.create.success")
-
-        expect(programme.child_activities.count).to eq 1
-        project = programme.child_activities.last
-        expect(project.organisation).to eq user.organisation
-      end
-
       scenario "the activity date shows an error message if an invalid date is entered" do
         programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
         _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
