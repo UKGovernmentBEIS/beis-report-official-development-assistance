@@ -44,6 +44,7 @@ en:
   page_content:
     reports:
       title: Reports
+      approved_reports_link: View approved reports
     tab_content:
       forecasts:
         heading: Forecasts in this report

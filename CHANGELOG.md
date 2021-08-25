@@ -803,6 +803,7 @@
 
 - The Activities upload template no longer includes the "BEIS ID" column
 - Replace the use of "historic" with "approved" in the context of reports
+- List the current reports on the delivery partners' homepage
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-69...HEAD
 [release-69]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-68...release-69
