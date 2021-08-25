@@ -242,32 +242,6 @@ RSpec.feature "BEIS users can create a programme level activity" do
     expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
   end
 
-  scenario "country_delivery_parters is included in Newton funded programmes" do
-    newton_fund = create(:fund_activity, :newton, organisation: user.organisation)
-
-    visit organisation_activities_path(delivery_partner)
-    click_on t("form.button.activity.new_child", name: newton_fund.title)
-
-    fill_in_activity_form(level: "programme", parent: newton_fund)
-
-    expect(page).to have_content t("action.programme.create.success")
-    activity = Activity.order("created_at ASC").last
-    expect(activity.country_delivery_partners).to eql(["National Council for the State Funding Agencies (CONFAP)"])
-  end
-
-  scenario "non Newton funded programmes do not include 'country_delivery_partners'" do
-    other_fund = create(:fund_activity, :gcrf, organisation: user.organisation)
-
-    visit organisation_activities_path(delivery_partner)
-    click_on t("form.button.activity.new_child", name: other_fund.title)
-
-    fill_in_activity_form(level: "programme", parent: other_fund)
-
-    expect(page).to have_content t("action.programme.create.success")
-    activity = Activity.order("created_at ASC").last
-    expect(activity.country_delivery_partners).to be_nil
-  end
-
   scenario "a new programme requires specific fields when it is Newton-funded" do
     newton_fund = create(:fund_activity, :newton)
 
