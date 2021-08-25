@@ -10,7 +10,7 @@ module ActivityFormHelpers
 
   def fill_in_purpose_step(activity)
     expect(page).to have_content t("form.legend.activity.purpose", level: activity_level(activity.level))
-    expect(page).to have_content custom_capitalisation(t("form.label.activity.title", level: t("page_content.activity.level.programme")))
+    expect(page).to have_content custom_capitalisation(t("form.label.activity.title", level: activity_level(activity.level)))
     expect(page).to have_content t("form.label.activity.description")
     fill_in "activity[title]", with: activity.title
     fill_in "activity[description]", with: activity.description
@@ -57,6 +57,37 @@ module ActivityFormHelpers
     expect(page).to have_content "Cancelled"
 
     find("input[value='#{activity.programme_status}']", visible: :all).click
+    click_button t("form.button.activity.submit")
+  end
+
+  def fill_in_call_details(activity)
+    expect(page).to have_content t("form.legend.activity.call_present", level: activity_level(activity.level))
+    choose "Yes"
+    click_button t("form.button.activity.submit")
+    expect(page).to have_content t("page_title.activity_form.show.call_dates", level: activity_level(activity.level))
+
+    expect(page).to have_content t("form.legend.activity.call_open_date")
+    fill_in "activity[call_open_date(3i)]", with: activity.call_open_date.day
+    fill_in "activity[call_open_date(2i)]", with: activity.call_open_date.month
+    fill_in "activity[call_open_date(1i)]", with: activity.call_open_date.year
+
+    expect(page).to have_content t("form.legend.activity.call_close_date")
+    fill_in "activity[call_close_date(3i)]", with: activity.call_close_date.day
+    fill_in "activity[call_close_date(2i)]", with: activity.call_close_date.month
+    fill_in "activity[call_close_date(1i)]", with: activity.call_close_date.year
+
+    click_button t("form.button.activity.submit")
+  end
+
+  def fill_in_call_applications(activity)
+    expect(page).to have_content t("form.legend.activity.total_applications")
+    expect(page).to have_content t("form.hint.activity.total_applications")
+    fill_in "activity[total_applications]", with: activity.total_applications
+
+    expect(page).to have_content t("form.legend.activity.total_awards")
+    expect(page).to have_content t("form.hint.activity.total_awards")
+    fill_in "activity[total_awards]", with: activity.total_awards
+
     click_button t("form.button.activity.submit")
   end
 
@@ -148,6 +179,24 @@ module ActivityFormHelpers
     click_button t("form.button.activity.submit")
   end
 
+  def fill_in_policy_markers(activity)
+    expect(page).to have_content t("page_title.activity_form.show.policy_markers")
+    expect(page).to have_content t("form.hint.activity.policy_markers.title")
+    expect(page).to have_content t("form.legend.activity.policy_markers.responses.not_assessed")
+    expect(page).to have_content t("form.hint.activity.policy_markers.responses.not_assessed")
+
+    fill_in_policy_marker("policy_marker_gender", activity.policy_marker_gender)
+    fill_in_policy_marker("policy_marker_climate_change_adaptation", activity.policy_marker_climate_change_adaptation)
+    fill_in_policy_marker("policy_marker_climate_change_mitigation", activity.policy_marker_climate_change_mitigation)
+    fill_in_policy_marker("policy_marker_biodiversity", activity.policy_marker_biodiversity)
+    fill_in_policy_marker("policy_marker_desertification", activity.policy_marker_desertification)
+    fill_in_policy_marker("policy_marker_disability", activity.policy_marker_disability)
+    fill_in_policy_marker("policy_marker_disaster_risk_reduction", activity.policy_marker_disaster_risk_reduction)
+    fill_in_policy_marker("policy_marker_nutrition", activity.policy_marker_nutrition)
+
+    click_button t("form.button.activity.submit")
+  end
+
   def fill_in_covid19_related(activity)
     expect(page).to have_content t("form.legend.activity.covid19_related")
     choose("activity[covid19_related]", option: activity.covid19_related)
@@ -170,6 +219,12 @@ module ActivityFormHelpers
     click_button t("form.button.activity.submit")
   end
 
+  def fill_in_channel_of_delivery_code(activity)
+    expect(page).to have_content t("form.legend.activity.channel_of_delivery_code")
+    choose("activity[channel_of_delivery_code]", option: activity.channel_of_delivery_code)
+    click_button t("form.button.activity.submit")
+  end
+
   def fill_in_oda_eligibility(activity)
     expect(page).to have_content t("form.legend.activity.oda_eligibility")
     expect(page).to have_content t("form.hint.activity.oda_eligibility")
@@ -177,7 +232,25 @@ module ActivityFormHelpers
     click_button t("form.button.activity.submit")
   end
 
+  def fill_in_oda_eligibility_lead(activity)
+    expect(page).to have_content t("form.label.activity.oda_eligibility_lead")
+    expect(page).to have_content t("form.hint.activity.oda_eligibility_lead")
+    fill_in "activity[oda_eligibility_lead]", with: activity.oda_eligibility_lead
+    click_button t("form.button.activity.submit")
+  end
+
+  def fill_in_named_contact(activity)
+    expect(page).to have_content t("form.label.activity.uk_dp_named_contact")
+    fill_in "activity[uk_dp_named_contact]", with: activity.uk_dp_named_contact
+    click_button t("form.button.activity.submit")
+  end
+
   private def activity_level(level)
     t("page_content.activity.level.#{level}")
+  end
+
+  private def fill_in_policy_marker(key, value)
+    expect(page).to have_content t("form.legend.activity.#{key}")
+    find("input[name='activity[#{key}]'][value='#{value}']").click
   end
 end
