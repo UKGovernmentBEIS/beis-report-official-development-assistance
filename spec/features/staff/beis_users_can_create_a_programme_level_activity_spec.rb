@@ -14,55 +14,129 @@ RSpec.feature "BEIS users can create a programme level activity" do
     end
   end
 
-  context "via a delivery partner's activities page" do
-    before do
-      create(:fund_activity, :gcrf)
-      create(:fund_activity, :newton)
+  context "when the source fund is GCRF" do
+    let(:identifier) { "a-fund-has-an-accountable-organisation" }
+    let!(:activity) do
+      build(:programme_activity, :gcrf_funded,
+        delivery_partner_identifier: identifier,
+        benefitting_countries: ["AG", "HT"],
+        sdgs_apply: true,
+        sdg_1: 5)
     end
+    let(:created_activity) { Activity.find_by(delivery_partner_identifier: identifier) }
 
-    Activity.fund.each do |fund|
-      context "with #{fund.title} as the funding source" do
-        scenario "reaches the 'roda_identifier' form step, with a newly created programme-level activity" do
-          visit organisation_activities_path(delivery_partner)
+    scenario "an activity can be created" do
+      visit organisation_activities_path(delivery_partner)
+      click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
 
-          click_on t("form.button.activity.new_child", name: fund.title)
+      fill_in_identifier_step(activity)
+      fill_in_purpose_step(activity)
+      fill_in_objectives_step(activity)
+      fill_in_sector_category_step(activity)
+      fill_in_sector_step(activity)
+      fill_in_programme_status(activity)
+      fill_in_dates(activity)
+      fill_in_benefitting_countries(activity)
+      fill_in_gdi(activity)
+      fill_in_aid_type(activity)
+      fill_in_collaboration_type(activity)
+      fill_in_sdgs_apply(activity)
+      fill_in_covid19_related(activity)
+      fill_in_gcrf_strategic_area(activity)
+      fill_in_gcrf_challenge_area(activity)
+      fill_in_oda_eligibility(activity)
 
-          expect(page).to have_content t("form.label.activity.delivery_partner_identifier")
+      expect(page).to have_content(t("action.programme.create.success"))
 
-          programme = Activity.programme.first
+      expect(created_activity.title).to eq(activity.title)
+      expect(created_activity.description).to eq(activity.description)
+      expect(created_activity.objectives).to eq(activity.objectives)
+      expect(created_activity.sector_category).to eq(activity.sector_category)
+      expect(created_activity.sector).to eq(activity.sector)
+      expect(created_activity.programme_status).to eq(activity.programme_status)
+      expect(created_activity.planned_start_date).to eq(activity.planned_start_date)
+      expect(created_activity.planned_end_date).to eq(activity.planned_end_date)
+      expect(created_activity.actual_start_date).to eq(activity.actual_start_date)
+      expect(created_activity.actual_end_date).to eq(activity.actual_end_date)
+      expect(created_activity.benefitting_countries).to eq(activity.benefitting_countries)
+      expect(created_activity.gdi).to eq(activity.gdi)
+      expect(created_activity.aid_type).to eq(activity.aid_type)
+      expect(created_activity.collaboration_type).to eq(activity.collaboration_type)
+      expect(created_activity.sdgs_apply).to eq(activity.sdgs_apply)
+      expect(created_activity.sdg_1).to eq(activity.sdg_1)
+      expect(created_activity.covid19_related).to eq(activity.covid19_related)
+      expect(created_activity.gcrf_strategic_area).to eq(activity.gcrf_strategic_area)
+      expect(created_activity.gcrf_challenge_area).to eq(activity.gcrf_challenge_area)
+      expect(created_activity.oda_eligibility).to eq(activity.oda_eligibility)
 
-          expect(programme.form_state).to eq("identifier")
-          expect(programme.parent).to eq(fund)
-          expect(programme.source_fund).to eq(fund.source_fund)
-        end
-      end
+      expect(created_activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
+      expect(created_activity.accountable_organisation_reference).to eq("GB-GOV-13")
+      expect(created_activity.accountable_organisation_type).to eq("10")
+
+      expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
     end
   end
 
-  scenario "the activity can be created with the appropriate defaults" do
-    fund = create(:fund_activity, :newton)
-    identifier = "a-fund-has-an-accountable-organisation"
+  context "when the source fund is Newton" do
+    let(:identifier) { "a-fund-has-an-accountable-organisation" }
+    let!(:activity) do
+      build(:programme_activity, :newton_funded,
+        delivery_partner_identifier: identifier,
+        benefitting_countries: ["AG", "HT"],
+        sdgs_apply: true,
+        sdg_1: 5)
+    end
+    let(:created_activity) { Activity.find_by(delivery_partner_identifier: identifier) }
 
-    visit organisation_activities_path(delivery_partner)
-    click_on t("form.button.activity.new_child", name: fund.title)
+    scenario "an activity can be created" do
+      visit organisation_activities_path(delivery_partner)
+      click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
 
-    fill_in_activity_form(delivery_partner_identifier: identifier, level: "programme", parent: fund)
+      fill_in_identifier_step(activity)
+      fill_in_purpose_step(activity)
+      fill_in_objectives_step(activity)
+      fill_in_sector_category_step(activity)
+      fill_in_sector_step(activity)
+      fill_in_programme_status(activity)
+      fill_in_country_delivery_partners(activity)
+      fill_in_dates(activity)
+      fill_in_benefitting_countries(activity)
+      fill_in_gdi(activity)
+      fill_in_aid_type(activity)
+      fill_in_collaboration_type(activity)
+      fill_in_sdgs_apply(activity)
+      fill_in_fund_pillar(activity)
+      fill_in_covid19_related(activity)
+      fill_in_oda_eligibility(activity)
 
-    activity = Activity.find_by(delivery_partner_identifier: identifier)
+      expect(page).to have_content(t("action.programme.create.success"))
 
-    expect(activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
-    expect(activity.accountable_organisation_reference).to eq("GB-GOV-13")
-    expect(activity.accountable_organisation_type).to eq("10")
+      expect(created_activity.title).to eq(activity.title)
+      expect(created_activity.description).to eq(activity.description)
+      expect(created_activity.objectives).to eq(activity.objectives)
+      expect(created_activity.sector_category).to eq(activity.sector_category)
+      expect(created_activity.sector).to eq(activity.sector)
+      expect(created_activity.programme_status).to eq(activity.programme_status)
+      expect(created_activity.planned_start_date).to eq(activity.planned_start_date)
+      expect(created_activity.planned_end_date).to eq(activity.planned_end_date)
+      expect(created_activity.actual_start_date).to eq(activity.actual_start_date)
+      expect(created_activity.actual_end_date).to eq(activity.actual_end_date)
+      expect(created_activity.country_delivery_partners).to eq(activity.country_delivery_partners)
+      expect(created_activity.benefitting_countries).to eq(activity.benefitting_countries)
+      expect(created_activity.gdi).to eq(activity.gdi)
+      expect(created_activity.aid_type).to eq(activity.aid_type)
+      expect(created_activity.collaboration_type).to eq(activity.collaboration_type)
+      expect(created_activity.sdgs_apply).to eq(activity.sdgs_apply)
+      expect(created_activity.sdg_1).to eq(activity.sdg_1)
+      expect(created_activity.fund_pillar).to eq(activity.fund_pillar)
+      expect(created_activity.covid19_related).to eq(activity.covid19_related)
+      expect(created_activity.oda_eligibility).to eq(activity.oda_eligibility)
 
-    expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
-  end
+      expect(created_activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
+      expect(created_activity.accountable_organisation_reference).to eq("GB-GOV-13")
+      expect(created_activity.accountable_organisation_type).to eq("10")
 
-  scenario "a new programme requires specific fields when it is Newton-funded" do
-    newton_fund = create(:fund_activity, :newton)
-
-    visit organisation_activities_path(delivery_partner)
-    click_on t("form.button.activity.new_child", name: newton_fund.title)
-
-    fill_in_activity_form(level: "programme", parent: newton_fund)
+      expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
+    end
   end
 end
