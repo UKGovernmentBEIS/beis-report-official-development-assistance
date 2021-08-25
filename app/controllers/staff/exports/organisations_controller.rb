@@ -58,6 +58,20 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
     render_xml
   end
 
+  def external_income
+    fund = Fund.new(params[:fund_id])
+
+    respond_to do |format|
+      format.csv do
+        export = QuarterlyExternalIncomeExport.new(@organisation, fund)
+
+        stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
+          export.rows.each { |row| csv << row }
+        end
+      end
+    end
+  end
+
   private
 
   def fund_code
