@@ -224,7 +224,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     end
   end
 
-  scenario "the activity has the appropriate accountable organisation defaults" do
+  scenario "the activity can be created with the appropriate defaults" do
     fund = create(:fund_activity, :newton)
     identifier = "a-fund-has-an-accountable-organisation"
 
@@ -234,47 +234,12 @@ RSpec.feature "BEIS users can create a programme level activity" do
     fill_in_activity_form(delivery_partner_identifier: identifier, level: "programme", parent: fund)
 
     activity = Activity.find_by(delivery_partner_identifier: identifier)
+
     expect(activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
     expect(activity.accountable_organisation_reference).to eq("GB-GOV-13")
     expect(activity.accountable_organisation_type).to eq("10")
-  end
 
-  scenario "the activity saves its identifier as read-only `transparency_identifier`" do
-    fund = create(:fund_activity, :newton)
-
-    visit organisation_activities_path(delivery_partner)
-    click_on t("form.button.activity.new_child", name: fund.title)
-
-    fill_in_activity_form(level: "programme", parent: fund)
-
-    activity = Activity.order("created_at ASC").last
     expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
-  end
-
-  scenario "country_delivery_parters is included in Newton funded programmes" do
-    newton_fund = create(:fund_activity, :newton, organisation: user.organisation)
-
-    visit organisation_activities_path(delivery_partner)
-    click_on t("form.button.activity.new_child", name: newton_fund.title)
-
-    fill_in_activity_form(level: "programme", parent: newton_fund)
-
-    expect(page).to have_content t("action.programme.create.success")
-    activity = Activity.order("created_at ASC").last
-    expect(activity.country_delivery_partners).to eql(["National Council for the State Funding Agencies (CONFAP)"])
-  end
-
-  scenario "non Newton funded programmes do not include 'country_delivery_partners'" do
-    other_fund = create(:fund_activity, :gcrf, organisation: user.organisation)
-
-    visit organisation_activities_path(delivery_partner)
-    click_on t("form.button.activity.new_child", name: other_fund.title)
-
-    fill_in_activity_form(level: "programme", parent: other_fund)
-
-    expect(page).to have_content t("action.programme.create.success")
-    activity = Activity.order("created_at ASC").last
-    expect(activity.country_delivery_partners).to be_nil
   end
 
   scenario "a new programme requires specific fields when it is Newton-funded" do
