@@ -799,13 +799,16 @@
 - Show delivery partner users more information about the current reports
 - Ensure all other views have a sensible breadcrumb
 
-## [unreleased]
+## [release-70] - 2021-08-26
 
 - The Activities upload template no longer includes the "BEIS ID" column
 - Replace the use of "historic" with "approved" in the context of reports
 - List the current reports on the delivery partners' homepage
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-69...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-70...HEAD
+[release-70]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-69...release-70
 [release-69]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-68...release-69
 [release-68]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-67...release-68
 [release-67]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-66...release-67
