@@ -12,35 +12,7 @@ RSpec.feature "Users can edit an activity" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
 
-    it "shows the Publish to Iati field" do
-      activity = create(:third_party_project_activity)
-
-      visit organisation_activity_path(activity.organisation, activity)
-      click_on t("tabs.activity.details")
-
-      expect(page).to have_content(t("summary.label.activity.publish_to_iati.label"))
-    end
-
     it "allows the user to redact the activity from Iati" do
-      activity = create(:third_party_project_activity)
-
-      visit organisation_activity_path(activity.organisation, activity)
-      click_on t("tabs.activity.details")
-
-      within ".publish_to_iati" do
-        click_on(t("default.link.edit"))
-      end
-
-      choose t("summary.label.activity.publish_to_iati.false")
-      click_button t("form.button.activity.submit")
-
-      click_on t("tabs.activity.details")
-      within ".publish_to_iati" do
-        expect(page).to have_content(t("summary.label.activity.publish_to_iati.false"))
-      end
-    end
-
-    it "also redacts any child third-party projects when a project is redacted" do
       project_activity = create(:project_activity)
       third_party_project_activity = create(:third_party_project_activity, parent: project_activity)
 
@@ -69,47 +41,6 @@ RSpec.feature "Users can edit an activity" do
     end
 
     context "when the activity is a fund level activity" do
-      it "does not show the parent field" do
-        activity = create(:fund_activity, organisation: user.organisation)
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-
-        expect(page).not_to have_content(t("summary.label.activity.parent"))
-      end
-
-      it "does not show the Publish to Iati field" do
-        activity = create(:fund_activity, organisation: user.organisation)
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-
-        expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
-      end
-
-      context "when a title attribute is present" do
-        let(:user) { create(:beis_user) }
-        it "the call to action is 'Edit'" do
-          activity = create(:fund_activity, organisation: user.organisation, form_state: :sector)
-
-          visit organisation_activity_details_path(activity.organisation, activity)
-
-          within(".title") do
-            expect(page).to have_content(t("default.link.edit"))
-          end
-        end
-      end
-
-      context "when an activity attribute is not present" do
-        it "the call to action is 'Add'" do
-          activity = create(:fund_activity, :at_purpose_step, organisation: user.organisation)
-
-          visit organisation_activity_details_path(activity.organisation, activity)
-
-          within(".title") do
-            expect(page).to have_content(t("default.link.add"))
-          end
-        end
-      end
-
       context "when the activity is complete" do
         it "editing and saving a step returns the user to the activity page details tab" do
           activity = create(:fund_activity, organisation: user.organisation)
@@ -186,26 +117,6 @@ RSpec.feature "Users can edit an activity" do
             expect(page).not_to have_content activity.title
           end
         end
-
-        context "when the activity only has an identifier" do
-          it "only shows the add link on the next step" do
-            activity = create(:fund_activity, :at_purpose_step, organisation: user.organisation)
-
-            visit organisation_activity_details_path(activity.organisation, activity)
-
-            within(".identifier") do
-              expect(page).not_to have_content(t("default.link.edit"))
-            end
-
-            within(".title") do
-              expect(page).to have_content(t("default.link.add"))
-            end
-
-            within(".sector") do
-              expect(page).not_to have_content(t("default.link.add"))
-            end
-          end
-        end
       end
     end
 
@@ -222,22 +133,6 @@ RSpec.feature "Users can edit an activity" do
         click_button t("form.button.activity.submit")
         expect(page).to have_content(t("action.programme.update.success"))
       end
-
-      it "does not show the Publish to Iati field" do
-        activity = create(:programme_activity, organisation: user.organisation)
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-
-        expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
-      end
-
-      it "does not show the Channel of delivery code field" do
-        activity = create(:programme_activity, organisation: user.organisation)
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-
-        expect(page).to_not have_content(t("summary.label.activity.channel_of_delivery_code"))
-      end
     end
   end
 
@@ -245,41 +140,11 @@ RSpec.feature "Users can edit an activity" do
     let(:user) { create(:delivery_partner_user) }
     before { authenticate!(user: user) }
 
-    context "and the activity is a programme" do
-      scenario "the user should not be shown edit/add actions" do
-        activity = create(:programme_activity, :at_purpose_step)
-
-        visit organisation_activity_path(activity.organisation, activity)
-
-        expect(page).not_to have_link(t("default.link.edit"))
-        expect(page).not_to have_link(t("default.link.add"))
-      end
-
-      scenario "it does not show the Publish to Iati field" do
-        activity = create(:programme_activity)
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-
-        expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
-      end
-    end
-
     context "when the activity is a project" do
-      it "does not show edit/add actions if there is no report" do
-        activity = create(:project_activity, organisation: user.organisation)
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-
-        within ".activity-details" do
-          expect(page).not_to have_link(t("default.link.edit"))
-          expect(page).not_to have_link(t("default.link.add"))
-        end
-      end
+      let(:activity) { create(:project_activity, organisation: user.organisation) }
+      let!(:report) { create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund) }
 
       it "shows an update success message" do
-        activity = create(:project_activity, organisation: user.organisation)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
-
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".title") do
@@ -290,91 +155,12 @@ RSpec.feature "Users can edit an activity" do
         expect(page).to have_content(t("action.project.update.success"))
       end
 
-      it "does not show the Publish to Iati field" do
-        activity = create(:project_activity, organisation: user.organisation)
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-
-        expect(page).to_not have_content(t("summary.label.activity.publish_to_iati.label"))
-      end
-
       scenario "the delivery partner identifier cannot be changed" do
-        activity = create(:project_activity, organisation: user.organisation)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-
-        within(".identifier") do
-          expect(page).not_to have_content(t("default.link.edit"))
-        end
-
-        # not even by visiting the URL directly
         visit activity_step_path(activity, :identifier)
         expect(page).not_to have_content("Enter your unique identifier")
       end
 
-      context "when the project does not have a delivery partner identifier" do
-        scenario "the delivery partner identifier can be added" do
-          activity = create(:project_activity, :at_identifier_step, organisation: user.organisation)
-          _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
-
-          visit organisation_activity_details_path(activity.organisation, activity)
-
-          within(".identifier") do
-            expect(page).to have_content(t("default.link.add"))
-          end
-        end
-      end
-
-      context "when the project has a RODA identifier" do
-        let(:activity) { create(:project_activity, organisation: user.organisation, roda_identifier: "A-RODA-ID") }
-
-        scenario "the RODA identifier cannot be edited" do
-          visit organisation_activity_details_path(activity.organisation, activity)
-
-          within(".roda_identifier") do
-            expect(page).not_to have_content(t("default.link.add"))
-            expect(page).not_to have_content(t("default.link.edit"))
-          end
-        end
-      end
-
-      context "when the project's parent does not have a RODA identifier" do
-        let(:activity) { create(:project_activity, organisation: user.organisation, roda_identifier: nil) }
-
-        before do
-          activity.parent.update!(roda_identifier: nil)
-        end
-
-        scenario "a RODA identifier cannot be added" do
-          visit organisation_activity_details_path(activity.organisation, activity)
-
-          within(".roda_identifier") do
-            expect(page).not_to have_content(t("default.link.add"))
-            expect(page).not_to have_content(t("default.link.edit"))
-          end
-        end
-      end
-
-      it "shows a link to edit the UK DP named contact" do
-        activity = create(:project_activity, organisation: user.organisation)
-        # Report needs to exist so the activity is editable
-        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
-
-        visit organisation_activity_details_path(activity.organisation, activity)
-
-        within(".uk_dp_named_contact") do
-          click_on(t("default.link.edit"))
-          expect(page).to have_current_path(
-            activity_step_path(activity, :uk_dp_named_contact)
-          )
-        end
-      end
-
       it "shows an error message when the user enters an invalid date" do
-        activity = create(:project_activity, organisation: user.organisation, planned_start_date: Date.parse("2020-01-01"), actual_start_date: nil)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
-
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".planned_start_date") do
@@ -388,10 +174,6 @@ RSpec.feature "Users can edit an activity" do
       end
 
       it "the policy markers can be added" do
-        activity = create(:project_activity, organisation: user.organisation)
-        # Report needs to exist so the activity is editable
-        report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
-
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".policy_marker_gender") do
@@ -414,9 +196,7 @@ RSpec.feature "Users can edit an activity" do
       end
 
       it "the existing policy marker selections are shown and preserved on edit" do
-        activity = create(:project_activity, organisation: user.organisation, policy_marker_desertification: "significant_objective")
-        # Report needs to exist so the activity is editable
-        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
+        activity.update!(policy_marker_desertification: "significant_objective")
 
         visit activity_step_path(activity, :policy_markers)
 
