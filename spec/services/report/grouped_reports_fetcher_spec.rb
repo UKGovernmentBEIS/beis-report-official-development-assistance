@@ -4,7 +4,7 @@ RSpec.describe Report::GroupedReportsFetcher do
   let(:organisation1) { build(:delivery_partner_organisation) }
   let(:organisation2) { build(:delivery_partner_organisation) }
 
-  describe "#historic" do
+  describe "#approved" do
     it "returns approved reports grouped by organisation" do
       organisation1_approved_reports = build_list(:report, 3, organisation: organisation1)
       organisation2_approved_reports = build_list(:report, 2, organisation: organisation2)
@@ -16,7 +16,7 @@ RSpec.describe Report::GroupedReportsFetcher do
       expect(approved_relation_double).to receive(:includes).with([:organisation, :fund]).and_return(approved_relation_double)
       expect(approved_relation_double).to receive(:order).with("financial_year, financial_quarter DESC").and_return(approved_reports)
 
-      expect(described_class.new.historic).to eq({
+      expect(described_class.new.approved).to eq({
         organisation1 => organisation1_approved_reports,
         organisation2 => organisation2_approved_reports,
       })

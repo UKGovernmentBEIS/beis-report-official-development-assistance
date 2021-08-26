@@ -10,7 +10,6 @@ en:
         awaiting_changes: Reports awaiting changes
         approved: Approved reports
         current: Current reports
-        historic: Historic reports
     header:
       report:
         financial_quarter: Financial quarter
@@ -41,11 +40,11 @@ en:
       variance: Variance
       budgets: Budgets
       current: Current
-      historic: Historic
-
+      approved: Approved
   page_content:
     reports:
       title: Reports
+      approved_reports_link: View approved reports
     tab_content:
       forecasts:
         heading: Forecasts in this report

@@ -29,7 +29,6 @@ RSpec.feature "users can upload activities" do
       "Actual end date", "Actual start date",
       "Aid type",
       "Aims/Objectives (DP Definition)",
-      "BEIS ID",
       "Call close date", "Call open date",
       "Channel of delivery code",
       "Collaboration type (Bi/Multi Marker)",

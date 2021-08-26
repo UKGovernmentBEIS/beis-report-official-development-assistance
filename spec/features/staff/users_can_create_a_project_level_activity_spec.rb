@@ -34,6 +34,9 @@ RSpec.feature "Users can create a project" do
         # our new direct association between activity and report
         expect(project.originating_report).to eq(report)
         expect(report.new_activities).to eq([project])
+
+        activity = Activity.order("created_at ASC").last
+        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
       end
 
       scenario "can create a new child activity for a given programme" do
@@ -49,35 +52,6 @@ RSpec.feature "Users can create a project" do
         click_button t("form.button.activity.submit")
 
         expect(page).to have_content t("form.legend.activity.purpose", level: "project (level C)")
-      end
-
-      scenario "a new project can be added when the program has no RODA identifier" do
-        programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation, roda_identifier: nil)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
-
-        visit organisation_activity_children_path(programme.extending_organisation, programme)
-        click_on t("action.activity.add_child")
-
-        fill_in_activity_form(level: "project", parent: programme)
-
-        expect(page).to have_content t("action.project.create.success")
-
-        expect(programme.child_activities.count).to eq 1
-        project = programme.child_activities.last
-        expect(project.organisation).to eq user.organisation
-      end
-
-      scenario "the activity saves its identifier as read-only `transparency_identifier`" do
-        programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
-
-        visit organisation_activity_children_path(programme.extending_organisation, programme)
-        click_on t("action.activity.add_child")
-
-        fill_in_activity_form(level: "project", parent: programme)
-
-        activity = Activity.order("created_at ASC").last
-        expect(activity.transparency_identifier).to eql("GB-GOV-13-#{activity.roda_identifier}")
       end
 
       scenario "the activity date shows an error message if an invalid date is entered" do
@@ -110,103 +84,6 @@ RSpec.feature "Users can create a project" do
         fill_in "activity[planned_end_date(1i)]", with: "2021"
         click_button t("form.button.activity.submit")
         expect(page).to have_content t("activerecord.errors.models.activity.attributes.planned_end_date.invalid")
-      end
-
-      context "when creating a project that is Newton funded" do
-        let(:newton_fund) { create(:fund_activity, :newton) }
-
-        scenario "'country_delivery_partners' can be present" do
-          newton_programme = create(:programme_activity, extending_organisation: user.organisation, parent: newton_fund)
-          _report = create(:report, state: :active, organisation: user.organisation, fund: newton_fund)
-
-          visit organisation_activity_children_path(newton_programme.extending_organisation, newton_programme)
-          click_on t("action.activity.add_child")
-
-          fill_in_activity_form(level: "project", parent: newton_programme)
-
-          expect(page).to have_content t("action.project.create.success")
-          activity = Activity.order("created_at ASC").last
-          expect(activity.country_delivery_partners).to eql(["National Council for the State Funding Agencies (CONFAP)"])
-        end
-
-        scenario "'country_delivery_partners' is however not mandatory for Newton funded projects" do
-          newton_programme = create(:programme_activity, extending_organisation: user.organisation, parent: newton_fund)
-          _report = create(:report, state: :active, organisation: user.organisation, fund: newton_fund)
-
-          visit organisation_activity_children_path(newton_programme.extending_organisation, newton_programme)
-          click_on t("action.activity.add_child")
-
-          fill_in_activity_form(level: "project", parent: newton_programme, country_delivery_partners: nil)
-
-          expect(page).to have_content t("action.project.create.success")
-          activity = Activity.order("created_at ASC").last
-          expect(activity.country_delivery_partners).to be_empty
-        end
-      end
-
-      context "when the aid type is 'B03'" do
-        it "skips the collaboration type step and infers it from the aid type" do
-          programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
-          create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
-
-          visit organisation_activity_children_path(programme.extending_organisation, programme)
-          click_on t("action.activity.add_child")
-
-          # Test is done in this method:
-          fill_in_activity_form(level: "project", parent: programme, aid_type: "B03")
-
-          expect(page).to have_content t("action.project.create.success")
-          expect(programme.child_activities.last.collaboration_type).to eql "1"
-        end
-      end
-
-      context "when the aid type is 'B02'" do
-        it "skips the collaboration type and channel of delivery steps and infers them from the aid type" do
-          programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
-          create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
-
-          visit organisation_activity_children_path(programme.extending_organisation, programme)
-          click_on t("action.activity.add_child")
-
-          # Test is done in this method:
-          fill_in_activity_form(level: "project", parent: programme, aid_type: "B02")
-
-          expect(page).to have_content t("action.project.create.success")
-          expect(programme.child_activities.last.collaboration_type).to eql "2"
-          expect(programme.child_activities.last.channel_of_delivery_code).to eql "40000"
-        end
-      end
-
-      context "when the aid type is one of 'D02', 'E01', 'G01'" do
-        it "skips the FSTC applies step and infers it from the aid type" do
-          programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
-          _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
-
-          visit organisation_activity_children_path(programme.extending_organisation, programme)
-          click_on t("action.activity.add_child")
-
-          # Test is done in this method:
-          fill_in_activity_form(level: "project", parent: programme, aid_type: "D02")
-
-          expect(page).to have_content t("action.project.create.success")
-          expect(programme.child_activities.last.fstc_applies).to eql true
-        end
-      end
-
-      context "when the aid type is 'C01'" do
-        it "lets the user choose the FSTC applies option" do
-          programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
-          _report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
-
-          visit organisation_activity_children_path(programme.extending_organisation, programme)
-          click_on t("action.activity.add_child")
-
-          # Test is done in this method:
-          fill_in_activity_form(level: "project", parent: programme, aid_type: "C01", fstc_applies: false)
-
-          expect(page).to have_content t("action.project.create.success")
-          expect(programme.child_activities.last.fstc_applies).to eql false
-        end
       end
     end
   end
