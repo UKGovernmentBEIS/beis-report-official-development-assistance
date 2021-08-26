@@ -2,12 +2,6 @@ RSpec.feature "Users can edit an activity" do
   include ActivityHelper
   include CodelistHelper
 
-  def go_back(activity)
-    within ".govuk-breadcrumbs" do
-      click_link href: organisation_activity_path(activity.organisation, activity, tab: "details")
-    end
-  end
-
   context "when signed in as a BEIS user" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
@@ -249,254 +243,132 @@ end
 def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   if activity.delivery_partner_identifier.blank?
     within(".identifier") do
-      click_on t("default.link.edit")
-      expect(page).to have_current_path(
-        activity_step_path(activity, :identifier)
-      )
+      expect(page).to have_link(href: activity_step_path(activity, :identifier))
     end
-
-    go_back(activity)
   else
     within(".identifier") do
-      expect(page).to_not have_link(t("default.link.edit"))
+      expect(page).to_not have_link(href: activity_step_path(activity, :identifier))
     end
   end
 
   within(".sector") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :sector_category)
-    )
+    expect(page).to have_link(href: activity_step_path(activity, :sector_category))
   end
-
-  go_back(activity)
 
   within(".title") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :purpose)
-    )
+    expect(page).to have_link(href: activity_step_path(activity, :purpose))
   end
-
-  go_back(activity)
 
   within(".description") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :purpose)
-    )
+    expect(page).to have_link(href: activity_step_path(activity, :purpose))
   end
-
-  go_back(activity)
 
   if activity.call_present?
     within(".total_applications") do
-      click_on(t("default.link.edit"))
-      expect(page).to have_current_path(
-        activity_step_path(activity, :total_applications_and_awards)
-      )
+      expect(page).to have_link(href: activity_step_path(activity, :total_applications_and_awards))
     end
-
-    go_back(activity)
 
     within(".total_awards") do
-      click_on(t("default.link.edit"))
-      expect(page).to have_current_path(
-        activity_step_path(activity, :total_applications_and_awards)
-      )
+      expect(page).to have_link(href: activity_step_path(activity, :total_applications_and_awards))
     end
-
-    go_back(activity)
   end
 
   unless activity.fund?
     within(".programme_status") do
-      click_on(t("default.link.edit"))
-      expect(page).to have_current_path(
-        activity_step_path(activity, :programme_status)
-      )
+      expect(page).to have_link(href: activity_step_path(activity, :programme_status))
     end
-
-    go_back(activity)
   end
 
   within(".planned_start_date") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :dates)
-    )
+    expect(page).to have_link(href: activity_step_path(activity, :dates))
   end
-
-  go_back(activity)
 
   within(".planned_end_date") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :dates)
-    )
+    expect(page).to have_link(href: activity_step_path(activity, :dates))
   end
-
-  go_back(activity)
 
   within(".actual_start_date") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :dates)
-    )
+    expect(page).to have_link(href: activity_step_path(activity, :dates))
   end
-
-  go_back(activity)
 
   within(".actual_end_date") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :dates)
-    )
+    expect(page).to have_link(href: activity_step_path(activity, :dates))
   end
-
-  go_back(activity)
 
   within(".benefitting_countries") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :benefitting_countries)
-    )
+    expect(page).to have_link(href: activity_step_path(activity, :benefitting_countries))
   end
-
-  go_back(activity)
 
   within(".gdi") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :gdi)
-    )
+    expect(page).to have_link(href: activity_step_path(activity, :gdi))
   end
-
-  go_back(activity)
 
   if activity.is_gcrf_funded?
     within(".gcrf_strategic_area") do
-      click_on(t("default.link.edit"))
-      expect(page).to have_current_path(
-        activity_step_path(activity, :gcrf_strategic_area)
-      )
+      expect(page).to have_link(href: activity_step_path(activity, :gcrf_strategic_area))
     end
 
-    go_back(activity)
-  end
-
-  if activity.is_gcrf_funded?
     within(".gcrf_challenge_area") do
-      click_on(t("default.link.edit"))
-      expect(page).to have_current_path(
-        activity_step_path(activity, :gcrf_challenge_area)
-      )
+      expect(page).to have_link(href: activity_step_path(activity, :gcrf_challenge_area))
     end
-
-    go_back(activity)
   end
 
   within(".aid_type") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :aid_type)
-    )
+    expect(page).to have_link(href: activity_step_path(activity, :aid_type))
   end
-
-  go_back(activity)
 
   unless activity.fund?
     if Activity::Inference.service.editable?(activity, :collaboration_type)
       within(".collaboration_type") do
-        click_on(t("default.link.edit"))
-        expect(page).to have_current_path(
-          activity_step_path(activity, :collaboration_type)
-        )
+        expect(page).to have_link(href: activity_step_path(activity, :collaboration_type))
       end
-
-      go_back(activity)
     else
       within(".collaboration_type") do
-        expect(page).to_not have_link(t("default.link.edit"))
+        expect(page).to_not have_link(href: activity_step_path(activity, :collaboration_type))
       end
     end
   end
 
   if Activity::Inference.service.editable?(activity, :fstc_applies)
     within(".fstc_applies") do
-      click_on(t("default.link.edit"))
-      expect(page).to have_current_path(
-        activity_step_path(activity, :fstc_applies)
-      )
+      expect(page).to have_link(href: activity_step_path(activity, :fstc_applies))
     end
-
-    go_back(activity)
   else
     within(".fstc_applies") do
-      expect(page).to_not have_link(t("default.link.edit"))
+      expect(page).to_not have_link(href: activity_step_path(activity, :fstc_applies))
     end
   end
 
   within(".covid19_related") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :covid19_related)
-    )
+    expect(page).to have_link(href: activity_step_path(activity, :covid19_related))
   end
-
-  go_back(activity)
 
   if activity.is_newton_funded?
     within(".fund_pillar") do
-      click_on(t("default.link.edit"))
-      expect(page).to have_current_path(
-        activity_step_path(activity, :fund_pillar)
-      )
+      expect(page).to have_link(href: activity_step_path(activity, :fund_pillar))
     end
-
-    go_back(activity)
   end
 
   if activity.is_project?
     within(".channel_of_delivery_code") do
-      click_on(t("default.link.edit"))
-      expect(page).to have_current_path(
-        activity_step_path(activity, :channel_of_delivery_code)
-      )
+      expect(page).to have_link(href: activity_step_path(activity, :channel_of_delivery_code))
     end
-
-    go_back(activity)
   end
 
   within(".oda_eligibility") do
-    click_on(t("default.link.edit"))
-    expect(page).to have_current_path(
-      activity_step_path(activity, :oda_eligibility)
-    )
+    expect(page).to have_link(href: activity_step_path(activity, :oda_eligibility))
   end
-
-  go_back(activity)
 
   if activity.is_project?
     within(".oda_eligibility_lead") do
-      click_on(t("default.link.edit"))
-      expect(page).to have_current_path(
-        activity_step_path(activity, :oda_eligibility_lead)
-      )
+      expect(page).to have_link(href: activity_step_path(activity, :oda_eligibility_lead))
     end
-
-    go_back(activity)
   end
 
   if activity.is_project?
     within(".uk_dp_named_contact") do
-      click_on(t("default.link.edit"))
-      expect(page).to have_current_path(
-        activity_step_path(activity, :uk_dp_named_contact)
-      )
+      expect(page).to have_link(href: activity_step_path(activity, :uk_dp_named_contact))
     end
-
-    go_back(activity)
   end
 end
 
