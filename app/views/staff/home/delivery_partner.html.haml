@@ -4,7 +4,9 @@
       %h2.govuk-heading-l
         = t("page_content.reports.title")
 
-      - unless @reports.blank?
+      - if @reports.blank?
+        = render partial: "staff/home/empty_report_status"
+      - else
         = render partial: "staff/shared/reports/table", locals: { reports: @reports, type: "current" }
 
       .govuk-body

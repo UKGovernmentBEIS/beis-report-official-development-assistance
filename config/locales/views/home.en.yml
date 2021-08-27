@@ -2,3 +2,7 @@
 en:
   page_title:
     home: Home
+  page_content:
+    home:
+      report_status:
+        empty_message_html: You have no current reports. Once active, any new reports will appear here. Read more about reporting periods in the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500000234721-When-to-submit-your-reports-">guidance (opens in new tab)</a>

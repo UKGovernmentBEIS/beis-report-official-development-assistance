@@ -805,6 +805,7 @@
 - Replace the use of "historic" with "approved" in the context of reports
 - List the current reports on the delivery partners' homepage
 - Do not list inactive reports on the delivery partners' home page
+- Show guidance on the home page when a delivery partner has no active reports
 
 ## [unreleased]
 
