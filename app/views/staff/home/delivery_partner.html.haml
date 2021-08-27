@@ -8,7 +8,7 @@
         = render partial: "staff/shared/reports/table", locals: { reports: @reports, type: "current" }
 
       .govuk-body
-        = link_to t("page_content.reports.approved_reports_link"), organisation_reports_path(organisation_id: current_user.organisation_id, anchor: "approved"), class: "govuk-link"
+        = link_to t("page_content.reports.approved_reports_link"), organisation_reports_path(organisation_id: @current_user.organisation_id, anchor: "approved"), class: "govuk-link"
 
   .govuk-grid-row
     .govuk-grid-column-full
