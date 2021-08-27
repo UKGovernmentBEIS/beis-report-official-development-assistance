@@ -5,7 +5,7 @@ class Report
     end
 
     def current
-      @current ||= fetch(reports.not_approved)
+      @current ||= fetch(reports.not_approved.not_inactive)
     end
 
     def approved
