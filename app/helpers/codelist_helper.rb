@@ -46,7 +46,7 @@ module CodelistHelper
   end
 
   def collaboration_type_radio_options
-    codelist = Codelist.new(type: "collaboration_type", source: "beis")
+    codelist = Codelist.new(type: "accepted_collaboration_types_and_channel_of_delivery_mapping", source: "beis")
     codelist.to_objects(with_empty_item: false).sort_by(&:code)
   end
 
