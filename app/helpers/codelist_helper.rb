@@ -170,7 +170,7 @@ module CodelistHelper
   end
 
   def beis_allowed_channel_of_delivery_codes
-    Codelist.new(type: "channel_of_delivery_code", source: "beis").list
+    Codelist.new(type: "accepted_channel_of_delivery_codes", source: "beis").list
   end
 
   def channel_of_delivery_codes(activity = nil)
