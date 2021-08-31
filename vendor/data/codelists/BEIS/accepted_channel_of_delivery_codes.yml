@@ -1,0 +1,18 @@
+---
+metadata:
+  name: Accepted channel of delivery codes
+  description: 'Specifies the channel of delivery codes that are accepted for new activities.
+    The codes are defined in the IATI CRS Channel code list, see:
+    vendor/data/codelists/IATI/2_03/activity/channel_of_delivery_code.yml
+    channel of delivery also relates to collaboration type, see:
+    vendor/data/codelists/BEIS/collaboration_type.yml
+    vendor/data/codelists/IATI/2_03/activity/collaboration_type.yml'
+  category: Logic
+  url: https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005355401-Channel-of-delivery-code
+data:
+  - "11000"
+  - "11001"
+  - "11004"
+  - "20000"
+  - "40000"
+  - "51000"

@@ -59,6 +59,24 @@ RSpec.describe "Activity forms", type: :request do
     end
   end
 
+  context "date validation" do
+    let(:step) { :dates }
+
+    it "returns an error if the date is invalid" do
+      put_step(step, {
+        "planned_start_date(3i)": "01",
+        "planned_start_date(2i)": "12",
+        "planned_start_date(1i)": "2020",
+        "planned_end_date(3i)": "01",
+        "planned_end_date(2i)": "15",
+        "planned_end_date(1i)": "2021",
+      })
+
+      expect(response).to_not redirect_to_next_step
+      expect(response.body).to include(t("activerecord.errors.models.activity.attributes.planned_end_date.invalid"))
+    end
+  end
+
   private
 
   def put_step(step, activity_params)

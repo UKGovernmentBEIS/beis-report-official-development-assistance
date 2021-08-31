@@ -805,9 +805,15 @@
 - Replace the use of "historic" with "approved" in the context of reports
 - List the current reports on the delivery partners' homepage
 
+## [release-71] - 2021-08-31
+
+- Do not list inactive reports on the delivery partners' home page
+- Show guidance on the home page when a delivery partner has no active reports
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-70...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-71...HEAD
+[release-71]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-70...release-71
 [release-70]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-69...release-70
 [release-69]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-68...release-69
 [release-68]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-67...release-68

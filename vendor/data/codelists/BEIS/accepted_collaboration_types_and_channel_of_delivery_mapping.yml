@@ -1,0 +1,23 @@
+---
+metadata:
+  name: Accepted collaboration types and channel of delivery code mappings
+  description: 'Specifies the collaboration type codes that are accepted for new activities.
+    The codes are defined in the IATI Collaboration type code list, see:
+    vendor/data/codelists/IATI/2_03/activity/collaboration_type.yml
+    collaboration type also relates to channel of delivery, see:
+    vendor/data/codelists/BEIS/channel_of_delivery.yml
+    vendor/data/codelists/IATI/2_03/activity/channel_of_delivery_code.yml'
+  category: Logic
+  url: https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005355401-Channel-of-delivery-code
+
+data:
+  - code: '1'
+    name: Bilateral
+  - code: '2'
+    name: Multilateral (inflows)
+    channel_of_delivery_code: '40000'
+  - code: '3'
+    name: Bilateral, core contributions to NGOs and other private bodies / PPPs
+    channel_of_delivery_code:
+      - '20000'
+      - '51000'

@@ -23,7 +23,7 @@ class Activity
         end
       end
 
-      Codelist.new(source: "beis", type: "collaboration_type").each do |item|
+      Codelist.new(source: "beis", type: "accepted_collaboration_types_and_channel_of_delivery_mapping").each do |item|
         allowed_values = item["channel_of_delivery_code"]
         rule = service.on(:collaboration_type, item["code"])
 
