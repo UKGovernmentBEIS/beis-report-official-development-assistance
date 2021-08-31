@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ExportPolicy do
+RSpec.describe Export::OrganisationPolicy do
   subject { described_class.new(user, :export) }
 
   context "for a BEIS user" do

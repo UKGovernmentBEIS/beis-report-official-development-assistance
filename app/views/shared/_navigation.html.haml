@@ -12,7 +12,7 @@
       %li{ class: navigation_item_class(organisation_activities_path(organisation_id: current_user.organisation_id)) }
         = link_to t("page_title.activity.index"), organisation_activities_path(organisation_id: current_user.organisation_id), class: "govuk-header__link"
 
-      - if policy(:export).index?
+      - if policy([:export, Organisation]).index?
         %li{ class: navigation_item_class(exports_path) }
           = link_to t("page_title.export.index"), exports_path, class: "govuk-header__link"
 

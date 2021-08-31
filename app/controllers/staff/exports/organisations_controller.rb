@@ -5,7 +5,7 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
   before_action do
     @reporting_organisation = Organisation.service_owner
     @organisation = Organisation.find(params[:id])
-    authorize :export, :show?
+    authorize [:export, @organisation], :show?
   end
 
   def show
