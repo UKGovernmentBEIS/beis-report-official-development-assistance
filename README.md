@@ -101,6 +101,11 @@ The app is currently hosted on GPaaS: [https://www.report-official-development-a
 
 The `master` branch is deployed to production after a successful build via GitHub Actions.
 
+## Email notifications
+The service sends email notifications see the
+[documentation](/doc/email-notificaitons.md) for more
+details.
+
 ## DNS
 
 The DNS for the service is hosted and managed by [dxw](https://dxw.com) the
