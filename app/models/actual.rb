@@ -1,0 +1,2 @@
+class Actual < Transaction
+end

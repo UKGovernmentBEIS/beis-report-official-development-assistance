@@ -11,8 +11,8 @@ RSpec.describe CreateTransaction do
     end
 
     it "returns a successful result" do
-      allow_any_instance_of(Transaction).to receive(:valid?).and_return(true)
-      allow_any_instance_of(Transaction).to receive(:save).and_return(true)
+      allow_any_instance_of(Actual).to receive(:valid?).and_return(true)
+      allow_any_instance_of(Actual).to receive(:save).and_return(true)
 
       result = described_class.new(activity: activity).call(attributes: {})
 
@@ -21,7 +21,7 @@ RSpec.describe CreateTransaction do
 
     context "when the transaction isn't valid" do
       it "returns a failed result" do
-        allow_any_instance_of(Transaction).to receive(:valid?).and_return(false)
+        allow_any_instance_of(Actual).to receive(:valid?).and_return(false)
 
         result = described_class.new(activity: activity).call(attributes: {})
 

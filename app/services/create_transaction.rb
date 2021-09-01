@@ -4,7 +4,7 @@ class CreateTransaction
   def initialize(activity:, report: nil)
     self.activity = activity
     self.report = report || Report.editable_for_activity(activity)
-    self.transaction = Transaction.new
+    self.transaction = Actual.new
   end
 
   def call(attributes: {})
