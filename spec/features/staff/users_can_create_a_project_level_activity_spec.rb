@@ -28,21 +28,21 @@ RSpec.feature "Users can create a project" do
         click_on t("tabs.activity.children")
         click_on t("action.activity.add_child")
 
-        fill_in_project_newton_activity_form(activity)
+        form = ActivityForm.new(activity: activity, level: "project", fund: "newton")
+        form.complete!
 
         expect(page).to have_content t("action.project.create.success")
         expect(programme.child_activities.count).to eq 1
 
-        project = programme.child_activities.last
+        created_activity = form.created_activity
 
-        expect(project.organisation).to eq user.organisation
+        expect(created_activity).to eq(programme.child_activities.last)
 
         # our new direct association between activity and report
-        expect(project.originating_report).to eq(report)
-        expect(report.new_activities).to eq([project])
+        expect(created_activity.originating_report).to eq(report)
+        expect(report.new_activities).to eq([created_activity])
 
-        created_activity = Activity.order("created_at ASC").last
-
+        expect(created_activity.organisation).to eq(user.organisation)
         expect(created_activity.title).to eq(activity.title)
         expect(created_activity.description).to eq(activity.description)
         expect(created_activity.objectives).to eq(activity.objectives)

@@ -46,7 +46,6 @@ RSpec.configure do |config|
   config.include CustomEmailMatchers
   config.include FormHelpers
   config.include ActivityHelpers
-  config.include ActivityFormHelpers
   config.include StripAttributes::Matchers
   config.include TimeTravelHelpers
 
