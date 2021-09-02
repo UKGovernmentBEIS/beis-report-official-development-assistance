@@ -6,7 +6,7 @@ RSpec.feature "BEIS users can download exports" do
   scenario "downloading the transactions for a delivery partner" do
     delivery_partner = create(:delivery_partner_organisation)
     project = create(:project_activity, organisation: delivery_partner)
-    create(:transaction, parent_activity: project, financial_year: 2019, financial_quarter: 3, value: 150)
+    create(:actual, parent_activity: project, financial_year: 2019, financial_quarter: 3, value: 150)
 
     visit exports_path
     click_link delivery_partner.name

@@ -39,7 +39,7 @@ RSpec.describe TransactionOverview do
   end
 
   def create_transaction(attributes)
-    create(:transaction, parent_activity: project, report: reporting_cycle.report, **attributes)
+    create(:actual, parent_activity: project, report: reporting_cycle.report, **attributes)
   end
 
   shared_examples_for "transaction report history" do

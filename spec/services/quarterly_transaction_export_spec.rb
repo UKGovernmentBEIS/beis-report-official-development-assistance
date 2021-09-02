@@ -24,8 +24,8 @@ RSpec.describe QuarterlyTransactionExport do
   it "exports one quarter of spend for a single project" do
     project = create(:project_activity, organisation: delivery_partner)
 
-    create(:transaction, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 10)
-    create(:transaction, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 20)
+    create(:actual, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 10)
+    create(:actual, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 20)
 
     expect(quarter_headers).to eq ["FQ1 2014-2015"]
 
@@ -37,8 +37,8 @@ RSpec.describe QuarterlyTransactionExport do
   it "exports two quarters of spend for a single project with zeros for intervening quarters" do
     project = create(:project_activity, organisation: delivery_partner)
 
-    create(:transaction, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 10)
-    create(:transaction, parent_activity: project, financial_year: 2014, financial_quarter: 4, value: 20)
+    create(:actual, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 10)
+    create(:actual, parent_activity: project, financial_year: 2014, financial_quarter: 4, value: 20)
 
     expect(quarter_headers).to eq ["FQ1 2014-2015", "FQ2 2014-2015", "FQ3 2014-2015", "FQ4 2014-2015"]
 
@@ -51,8 +51,8 @@ RSpec.describe QuarterlyTransactionExport do
     project = create(:project_activity, organisation: delivery_partner)
     third_party_project = create(:third_party_project_activity, organisation: delivery_partner)
 
-    create(:transaction, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 10)
-    create(:transaction, parent_activity: third_party_project, financial_year: 2015, financial_quarter: 2, value: 20)
+    create(:actual, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 10)
+    create(:actual, parent_activity: third_party_project, financial_year: 2015, financial_quarter: 2, value: 20)
 
     expect(quarter_headers).to eq ["FQ1 2014-2015", "FQ2 2014-2015", "FQ3 2014-2015", "FQ4 2014-2015", "FQ1 2015-2016", "FQ2 2015-2016"]
 
@@ -66,7 +66,7 @@ RSpec.describe QuarterlyTransactionExport do
     project = create(:project_activity, organisation: delivery_partner)
     third_party_project = create(:third_party_project_activity, organisation: delivery_partner)
 
-    create(:transaction, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 10)
+    create(:actual, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 10)
 
     expect(quarter_headers).to eq ["FQ1 2014-2015"]
 

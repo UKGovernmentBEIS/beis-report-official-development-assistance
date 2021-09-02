@@ -3,7 +3,7 @@ RSpec.describe "Users can create a comment" do
   let(:delivery_partner_user) { create(:delivery_partner_user) }
 
   let(:activity) { create(:project_activity, organisation: delivery_partner_user.organisation) }
-  let(:transaction) { create(:transaction, report: report, activity: activity) }
+  let(:transaction) { create(:actual, report: report, activity: activity) }
   let(:report) { create(:report, :active, fund: activity.associated_fund, organisation: delivery_partner_user.organisation, financial_year: 2020, financial_quarter: 1) }
 
   context "when the activity has variance" do

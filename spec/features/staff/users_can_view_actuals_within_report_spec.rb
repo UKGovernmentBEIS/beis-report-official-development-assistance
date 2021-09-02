@@ -77,13 +77,13 @@ RSpec.feature "Users can view actuals in tab within a report" do
         create(:third_party_project_activity,
           organisation: organisation,
           parent: project).tap do |activity|
-          create(:transaction, report: report, parent_activity: activity)
+          create(:actual, report: report, parent_activity: activity)
           create(:refund, report: report, parent_activity: activity)
         end,
         create(:third_party_project_activity,
           organisation: organisation,
           parent: project).tap do |activity|
-          create_list(:transaction, 3, report: report, parent_activity: activity)
+          create_list(:actual, 3, report: report, parent_activity: activity)
           create_list(:refund, 4, report: report, parent_activity: activity)
         end,
       ]

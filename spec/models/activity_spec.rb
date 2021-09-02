@@ -973,9 +973,9 @@ RSpec.describe Activity, type: :model do
     it "returns the total of all the activity's transactions scoped to a report" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
-      create(:transaction, parent_activity: project, value: 100.20, report: report, **current_quarter)
-      create(:transaction, parent_activity: project, value: 50.00, report: report, **current_quarter)
-      create(:transaction, parent_activity: project, value: 210, report: report, **current_quarter.pred)
+      create(:actual, parent_activity: project, value: 100.20, report: report, **current_quarter)
+      create(:actual, parent_activity: project, value: 50.00, report: report, **current_quarter)
+      create(:actual, parent_activity: project, value: 210, report: report, **current_quarter.pred)
 
       expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(150.20)
     end
@@ -983,8 +983,8 @@ RSpec.describe Activity, type: :model do
     it "does not include the totals for any transactions outside the report's date range" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
-      create(:transaction, parent_activity: project, value: 100.20, report: report, **current_quarter.pred.pred)
-      create(:transaction, parent_activity: project, value: 210, report: report, **current_quarter.pred)
+      create(:actual, parent_activity: project, value: 100.20, report: report, **current_quarter.pred.pred)
+      create(:actual, parent_activity: project, value: 210, report: report, **current_quarter.pred)
 
       expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(0)
     end
@@ -1056,8 +1056,8 @@ RSpec.describe Activity, type: :model do
       reporting_cycle.tick
 
       report = Report.for_activity(project).find_by(financial_quarter: 3)
-      create(:transaction, parent_activity: project, value: 100, report: report, date: Date.today)
-      create(:transaction, parent_activity: project, value: 200, report: report, date: Date.today)
+      create(:actual, parent_activity: project, value: 100, report: report, date: Date.today)
+      create(:actual, parent_activity: project, value: 200, report: report, date: Date.today)
 
       expect(project.variance_for_report_financial_quarter(report: report)).to eq(-1200)
     end
@@ -1238,32 +1238,32 @@ RSpec.describe Activity, type: :model do
 
     describe "#total_spend" do
       before do
-        create(:transaction, value: 100, parent_activity: fund)
-        create(:transaction, value: 100, parent_activity: fund, financial_year: 2020, financial_quarter: 1)
+        create(:actual, value: 100, parent_activity: fund)
+        create(:actual, value: 100, parent_activity: fund, financial_year: 2020, financial_quarter: 1)
 
-        create(:transaction, value: 100, parent_activity: programme1)
-        create(:transaction, value: 100, parent_activity: programme1, financial_year: 2020, financial_quarter: 1)
+        create(:actual, value: 100, parent_activity: programme1)
+        create(:actual, value: 100, parent_activity: programme1, financial_year: 2020, financial_quarter: 1)
 
-        create(:transaction, value: 100, parent_activity: programme2)
-        create(:transaction, value: 100, parent_activity: programme2, financial_year: 2020, financial_quarter: 1)
+        create(:actual, value: 100, parent_activity: programme2)
+        create(:actual, value: 100, parent_activity: programme2, financial_year: 2020, financial_quarter: 1)
 
-        create(:transaction, value: 50, parent_activity: programme1_projects[0])
-        create(:transaction, value: 50, parent_activity: programme1_projects[0], financial_year: 2020, financial_quarter: 1)
+        create(:actual, value: 50, parent_activity: programme1_projects[0])
+        create(:actual, value: 50, parent_activity: programme1_projects[0], financial_year: 2020, financial_quarter: 1)
 
-        create(:transaction, value: 50, parent_activity: programme1_projects[1])
-        create(:transaction, value: 50, parent_activity: programme1_projects[1], financial_year: 2020, financial_quarter: 1)
+        create(:actual, value: 50, parent_activity: programme1_projects[1])
+        create(:actual, value: 50, parent_activity: programme1_projects[1], financial_year: 2020, financial_quarter: 1)
 
-        create(:transaction, value: 100, parent_activity: programme2_projects[0])
-        create(:transaction, value: 100, parent_activity: programme2_projects[0], financial_year: 2020, financial_quarter: 1)
+        create(:actual, value: 100, parent_activity: programme2_projects[0])
+        create(:actual, value: 100, parent_activity: programme2_projects[0], financial_year: 2020, financial_quarter: 1)
 
-        create(:transaction, value: 100, parent_activity: programme2_projects[1])
-        create(:transaction, value: 100, parent_activity: programme2_projects[1], financial_year: 2020, financial_quarter: 1)
+        create(:actual, value: 100, parent_activity: programme2_projects[1])
+        create(:actual, value: 100, parent_activity: programme2_projects[1], financial_year: 2020, financial_quarter: 1)
 
-        create(:transaction, value: 100, parent_activity: programme1_third_party_project)
-        create(:transaction, value: 100, parent_activity: programme1_third_party_project, financial_year: 2020, financial_quarter: 1)
+        create(:actual, value: 100, parent_activity: programme1_third_party_project)
+        create(:actual, value: 100, parent_activity: programme1_third_party_project, financial_year: 2020, financial_quarter: 1)
 
-        create(:transaction, value: 100, parent_activity: programme2_third_party_project)
-        create(:transaction, value: 100, parent_activity: programme2_third_party_project, financial_year: 2020, financial_quarter: 1)
+        create(:actual, value: 100, parent_activity: programme2_third_party_project)
+        create(:actual, value: 100, parent_activity: programme2_third_party_project, financial_year: 2020, financial_quarter: 1)
       end
 
       context "when quarter is not specified" do
@@ -1412,15 +1412,15 @@ RSpec.describe Activity, type: :model do
     end
 
     describe "#own_and_descendants_transactions" do
-      let!(:fund_transaction) { create(:transaction, value: 100, parent_activity: fund) }
-      let!(:programme1_transaction) { create(:transaction, value: 100, parent_activity: programme1) }
-      let!(:programme2_transaction) { create(:transaction, value: 100, parent_activity: programme2) }
-      let!(:programme1_projects1_transaction) { create(:transaction, value: 50, parent_activity: programme1_projects[0]) }
-      let!(:programme1_projects2_transaction) { create(:transaction, value: 50, parent_activity: programme1_projects[1]) }
-      let!(:programme2_projects1_transaction) { create(:transaction, value: 100, parent_activity: programme2_projects[0]) }
-      let!(:programme2_projects2_transaction) { create(:transaction, value: 100, parent_activity: programme2_projects[1]) }
-      let!(:programme1_tpp_transaction) { create(:transaction, value: 100, parent_activity: programme1_third_party_project) }
-      let!(:programme2_tpp_transaction) { create(:transaction, value: 100, parent_activity: programme2_third_party_project) }
+      let!(:fund_transaction) { create(:actual, value: 100, parent_activity: fund) }
+      let!(:programme1_transaction) { create(:actual, value: 100, parent_activity: programme1) }
+      let!(:programme2_transaction) { create(:actual, value: 100, parent_activity: programme2) }
+      let!(:programme1_projects1_transaction) { create(:actual, value: 50, parent_activity: programme1_projects[0]) }
+      let!(:programme1_projects2_transaction) { create(:actual, value: 50, parent_activity: programme1_projects[1]) }
+      let!(:programme2_projects1_transaction) { create(:actual, value: 100, parent_activity: programme2_projects[0]) }
+      let!(:programme2_projects2_transaction) { create(:actual, value: 100, parent_activity: programme2_projects[1]) }
+      let!(:programme1_tpp_transaction) { create(:actual, value: 100, parent_activity: programme1_third_party_project) }
+      let!(:programme2_tpp_transaction) { create(:actual, value: 100, parent_activity: programme2_third_party_project) }
 
       it "returns all the transactions belonging to the activity and to the descendant activities" do
         expect(fund.own_and_descendants_transactions.pluck(:id)).to match_array([
@@ -1445,16 +1445,16 @@ RSpec.describe Activity, type: :model do
           projects = create_list(:project_activity, 2, parent: programme)
           third_party_project = create(:third_party_project_activity, parent: projects[0])
 
-          create(:transaction, value: 1000, parent_activity: programme, financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 1000, parent_activity: programme, financial_year: 2018, financial_quarter: 2)
-          create(:transaction, value: 500, parent_activity: projects[0], financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 500, parent_activity: projects[0], financial_year: 2020, financial_quarter: 1)
+          create(:actual, value: 1000, parent_activity: programme, financial_year: 2018, financial_quarter: 1)
+          create(:actual, value: 1000, parent_activity: programme, financial_year: 2018, financial_quarter: 2)
+          create(:actual, value: 500, parent_activity: projects[0], financial_year: 2018, financial_quarter: 1)
+          create(:actual, value: 500, parent_activity: projects[0], financial_year: 2020, financial_quarter: 1)
 
-          create(:transaction, value: 500, parent_activity: projects[1], financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 500, parent_activity: projects[1], financial_year: 2020, financial_quarter: 1)
+          create(:actual, value: 500, parent_activity: projects[1], financial_year: 2018, financial_quarter: 1)
+          create(:actual, value: 500, parent_activity: projects[1], financial_year: 2020, financial_quarter: 1)
 
-          create(:transaction, value: 200, parent_activity: third_party_project, financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 200, parent_activity: third_party_project, financial_year: 2020, financial_quarter: 1)
+          create(:actual, value: 200, parent_activity: third_party_project, financial_year: 2018, financial_quarter: 1)
+          create(:actual, value: 200, parent_activity: third_party_project, financial_year: 2020, financial_quarter: 1)
 
           reportable_transactions = programme.reportable_transactions_for_level
           expect(reportable_transactions.map(&:value)).to eql([1200, 1000, 2200])
@@ -1468,12 +1468,12 @@ RSpec.describe Activity, type: :model do
           project = create(:project_activity, :with_transparency_identifier, organisation: organisation)
           third_party_project = create(:third_party_project_activity, parent: project, organisation: organisation)
 
-          project_transaction_1 = create(:transaction, value: 1000, parent_activity: project)
-          project_transaction_2 = create(:transaction, value: 1000, parent_activity: project)
-          project_transaction_3 = create(:transaction, value: 500, parent_activity: project)
-          project_transaction_4 = create(:transaction, value: 500, parent_activity: project)
+          project_transaction_1 = create(:actual, value: 1000, parent_activity: project)
+          project_transaction_2 = create(:actual, value: 1000, parent_activity: project)
+          project_transaction_3 = create(:actual, value: 500, parent_activity: project)
+          project_transaction_4 = create(:actual, value: 500, parent_activity: project)
 
-          third_party_project_transaction = create(:transaction, value: 500, parent_activity: third_party_project)
+          third_party_project_transaction = create(:actual, value: 500, parent_activity: third_party_project)
 
           expect(project.reportable_transactions_for_level).to match_array([project_transaction_1, project_transaction_2, project_transaction_3, project_transaction_4])
           expect(third_party_project.reportable_transactions_for_level).to match_array([third_party_project_transaction])

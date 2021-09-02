@@ -287,9 +287,9 @@ RSpec.describe Report, type: :model do
     it "sums all of the transactions belonging to a report" do
       report = create(:report)
 
-      create(:transaction, report: report, value: 50)
-      create(:transaction, report: report, value: 75)
-      create(:transaction, report: report, value: 100)
+      create(:actual, report: report, value: 50)
+      create(:actual, report: report, value: 75)
+      create(:actual, report: report, value: 100)
 
       expect(report.summed_transactions).to eq(225)
     end

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe UpdateTransaction do
-  let(:transaction) { create(:transaction, value: BigDecimal("101.01"), financial_quarter: 1) }
+  let(:transaction) { create(:actual, value: BigDecimal("101.01"), financial_quarter: 1) }
   let(:user) { double("user") }
   let(:report) { double("report") }
 

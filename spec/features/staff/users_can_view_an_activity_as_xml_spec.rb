@@ -294,8 +294,8 @@ RSpec.feature "Users can view an activity as XML" do
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it "only includes transactions which belong to the activity" do
-          _transaction = create(:transaction, parent_activity: activity)
-          _other_transaction = create(:transaction)
+          _transaction = create(:actual, parent_activity: activity)
+          _other_transaction = create(:actual)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
@@ -303,7 +303,7 @@ RSpec.feature "Users can view an activity as XML" do
         end
 
         it "has the correct transaction XML" do
-          transaction = create(:transaction, parent_activity: activity)
+          transaction = create(:actual, parent_activity: activity)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
@@ -313,7 +313,7 @@ RSpec.feature "Users can view an activity as XML" do
         end
 
         it "omits the receiving organisation if one is not present" do
-          _transaction = create(:transaction, :without_receiving_organisation, parent_activity: activity)
+          _transaction = create(:actual, :without_receiving_organisation, parent_activity: activity)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 

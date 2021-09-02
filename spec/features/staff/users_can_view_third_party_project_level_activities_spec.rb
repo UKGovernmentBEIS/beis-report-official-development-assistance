@@ -23,7 +23,7 @@ RSpec.feature "Users can view third-party project level activities" do
     scenario "can view and add budgets and transactions on a third-party project" do
       third_party_project = create(:third_party_project_activity, organisation: user.organisation)
       budget = create(:budget, parent_activity: third_party_project)
-      transaction = create(:transaction, parent_activity: third_party_project)
+      transaction = create(:actual, parent_activity: third_party_project)
       _report = create(:report, state: :active, organisation: user.organisation, fund: third_party_project.associated_fund)
 
       visit organisation_activity_path(third_party_project.organisation, third_party_project)

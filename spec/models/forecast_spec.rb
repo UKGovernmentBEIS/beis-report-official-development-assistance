@@ -22,7 +22,7 @@ RSpec.describe Forecast, type: :model do
       before { activity.update(organisation: build_stubbed(:delivery_partner_organisation)) }
 
       it "should validate the presence of report" do
-        transaction = build_stubbed(:transaction, parent_activity: activity, report: nil)
+        transaction = build_stubbed(:actual, parent_activity: activity, report: nil)
         expect(transaction.valid?).to be false
       end
     end
@@ -31,7 +31,7 @@ RSpec.describe Forecast, type: :model do
       before { activity.update(organisation: build_stubbed(:beis_organisation)) }
 
       it "should not validate the presence of report" do
-        transaction = build_stubbed(:transaction, parent_activity: activity, report: nil)
+        transaction = build_stubbed(:actual, parent_activity: activity, report: nil)
         expect(transaction.valid?).to be true
       end
     end

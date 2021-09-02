@@ -162,7 +162,7 @@ RSpec.feature "Users can view reports" do
       dp_org = create(:delivery_partner_organisation)
       project = create(:project_activity, organisation: dp_org, parent: programme)
       report = create(:report, :active, organisation: dp_org, fund: programme.parent)
-      create(:transaction, report: report, parent_activity: project)
+      create(:actual, report: report, parent_activity: project)
 
       visit reports_path
 
@@ -393,7 +393,7 @@ RSpec.feature "Users can view reports" do
         report = Report.for_activity(activity).in_historical_order.first
 
         report_quarter = report.own_financial_quarter
-        _actual_value = create(:transaction, parent_activity: activity, report: report, value: 1100, **report_quarter)
+        _actual_value = create(:actual, parent_activity: activity, report: report, value: 1100, **report_quarter)
 
         travel_to quarter_two_2019 do
           visit reports_path

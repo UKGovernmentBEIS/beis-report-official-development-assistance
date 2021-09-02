@@ -8,8 +8,8 @@ RSpec.describe Transaction::GroupedTransactionFetcher do
   describe "#call" do
     let(:activity1) { build(:project_activity) }
     let(:activity2) { build(:project_activity) }
-    let(:activity1_transactions) { build_list(:transaction, 3, parent_activity: activity1) }
-    let(:activity2_transactions) { build_list(:transaction, 4, parent_activity: activity2) }
+    let(:activity1_transactions) { build_list(:actual, 3, parent_activity: activity1) }
+    let(:activity2_transactions) { build_list(:actual, 4, parent_activity: activity2) }
     let(:transactions) { activity1_transactions + activity2_transactions }
     let(:transactions_stub) { double("ActiveRecord::Relation") }
 

@@ -7,7 +7,7 @@ RSpec.describe ActivitySpendingBreakdown do
   let(:breakdown) { ActivitySpendingBreakdown.new(activity: project, report: report) }
 
   def create_transaction(financial_year, financial_quarter, value)
-    create(:transaction, report: report, parent_activity: project, financial_year: financial_year, financial_quarter: financial_quarter, value: value)
+    create(:actual, report: report, parent_activity: project, financial_year: financial_year, financial_quarter: financial_quarter, value: value)
   end
 
   it "generates columns in the given order" do

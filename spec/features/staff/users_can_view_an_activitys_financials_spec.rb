@@ -8,7 +8,7 @@ RSpec.feature "Users can view an activitys financials" do
 
     scenario "the activity financials can be viewed" do
       activity = create(:project_activity, organisation: user.organisation)
-      transaction = create(:transaction, parent_activity: activity)
+      transaction = create(:actual, parent_activity: activity)
       budget = create(:budget, parent_activity: activity)
 
       visit organisation_activity_financials_path(activity.organisation, activity)

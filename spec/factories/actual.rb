@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :actual, class: "Actual", aliases: [:transaction] do
+  factory :actual, class: "Actual" do
     description { Faker::Lorem.paragraph }
     transaction_type { "1" }
     financial_quarter { FinancialQuarter.for_date(Date.today).quarter }
