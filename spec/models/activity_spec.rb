@@ -1481,4 +1481,29 @@ RSpec.describe Activity, type: :model do
       end
     end
   end
+
+  describe "#benefitting_region" do
+    let(:activity) { build(:programme_activity, benefitting_countries: benefitting_countries) }
+
+    subject { activity.benefitting_region }
+
+    context "when there are countries present" do
+      let(:benefitting_countries) { ["ZA", "ZW"] }
+      let(:region) { BenefittingCountry::Region.new }
+
+      it "returns a region" do
+        expect(BenefittingCountry).to receive(:region_from_country_codes).with(benefitting_countries).and_return(region)
+        expect(subject).to eq(region)
+      end
+    end
+
+    context "when there are not benefitting countries present" do
+      let(:benefitting_countries) { [] }
+
+      it "returns nil" do
+        expect(BenefittingCountry).to_not receive(:region_from_country_codes).with(benefitting_countries)
+        expect(subject).to eq(nil)
+      end
+    end
+  end
 end
