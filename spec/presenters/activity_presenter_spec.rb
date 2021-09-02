@@ -275,6 +275,25 @@ RSpec.describe ActivityPresenter do
     end
   end
 
+  describe "#benefitting_region" do
+    subject { described_class.new(activity).benefitting_region }
+
+    let(:activity) { build(:project_activity) }
+    before { expect(activity).to receive(:benefitting_region).at_least(:once).and_return(region) }
+
+    context "when there is a benefitting region" do
+      let(:region) { BenefittingCountry::Region.new(name: "Some region") }
+
+      it { is_expected.to eq(region.name) }
+    end
+
+    context "when there is no benefitting region" do
+      let(:region) { nil }
+
+      it { is_expected.to be_nil }
+    end
+  end
+
   describe "#recipient_region" do
     it_behaves_like "a code translator", "recipient_region", {type: "recipient_region"}
 
