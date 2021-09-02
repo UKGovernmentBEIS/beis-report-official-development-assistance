@@ -812,6 +812,8 @@
 
 ## [unreleased]
 
+- BEIS users can export the external income per organisation per fund
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-71...HEAD
 [release-71]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-70...release-71
 [release-70]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-69...release-70

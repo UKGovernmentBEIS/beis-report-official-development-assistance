@@ -33,6 +33,7 @@ Rails.application.routes.draw do
         get "iati/programme_activities", on: :member, to: "organisations#programme_activities"
         get "iati/project_activities", on: :member, to: "organisations#project_activities"
         get "iati/third_party_project_activities", on: :member, to: "organisations#third_party_project_activities"
+        get :external_income, on: :member
       end
     end
 

@@ -385,7 +385,7 @@ en:
     activity:
       index: Activities
       implementing_organisation:
-        edit: Edit implemening organisation
+        edit: Edit implementing organisation
         new: Add a new implementing organisation
       details: Details
       financials: Financials
