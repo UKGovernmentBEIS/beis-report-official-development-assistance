@@ -1,40 +1,40 @@
 class UpdateTransaction
   def initialize(transaction:, user:, report:)
-    @transaction = transaction
+    @actual = transaction
     @user = user
     @report = report
   end
 
   def call(attributes: {})
-    transaction.assign_attributes(attributes)
+    actual.assign_attributes(attributes)
 
-    convert_and_assign_value(transaction, attributes[:value])
-    changes = transaction.changes
-    success = transaction.save
+    convert_and_assign_value(actual, attributes[:value])
+    changes = actual.changes
+    success = actual.save
 
     if success
       HistoryRecorder
         .new(user: user)
         .call(
           changes: changes,
-          reference: "Update to Transaction",
-          activity: transaction.parent_activity,
-          trackable: transaction,
+          reference: "Update to Actual",
+          activity: actual.parent_activity,
+          trackable: actual,
           report: report
         )
-      Result.new(true, transaction)
+      Result.new(true, actual)
     else
-      Result.new(false, transaction)
+      Result.new(false, actual)
     end
   end
 
   private
 
-  attr_reader :transaction, :user, :report
+  attr_reader :actual, :user, :report
 
-  def convert_and_assign_value(transaction, value)
-    transaction.value = ConvertFinancialValue.new.convert(value.to_s)
+  def convert_and_assign_value(actual, value)
+    actual.value = ConvertFinancialValue.new.convert(value.to_s)
   rescue ConvertFinancialValue::Error
-    transaction.errors.add(:value, I18n.t("activerecord.errors.models.transaction.attributes.value.not_a_number"))
+    actual.errors.add(:value, I18n.t("activerecord.errors.models.actual.attributes.value.not_a_number"))
   end
 end

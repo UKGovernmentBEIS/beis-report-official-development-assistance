@@ -37,7 +37,7 @@ class CreateTransaction
   def convert_and_assign_value(actual, value)
     actual.value = ConvertFinancialValue.new.convert(value.to_s)
   rescue ConvertFinancialValue::Error
-    actual.errors.add(:value, I18n.t("activerecord.errors.models.transaction.attributes.value.not_a_number"))
+    actual.errors.add(:value, I18n.t("activerecord.errors.models.actual.attributes.value.not_a_number"))
   end
 
   def default_description

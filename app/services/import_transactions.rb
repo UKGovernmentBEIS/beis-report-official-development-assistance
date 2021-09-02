@@ -70,11 +70,11 @@ class ImportTransactions
       policy = ActivityPolicy.new(@uploader, @activity)
 
       if @activity.nil?
-        @errors[:activity] = [activity_id, I18n.t("importer.errors.transaction.unknown_identifier")]
+        @errors[:activity] = [activity_id, I18n.t("importer.errors.actual.unknown_identifier")]
       elsif @activity && !policy.create?
-        @errors[:activity] = [activity_id, I18n.t("importer.errors.transaction.unauthorised")]
+        @errors[:activity] = [activity_id, I18n.t("importer.errors.actual.unauthorised")]
       elsif !reportable_activity?
-        @errors[:activity] = [activity_id, I18n.t("importer.errors.transaction.unauthorised")]
+        @errors[:activity] = [activity_id, I18n.t("importer.errors.actual.unauthorised")]
       end
     end
 
@@ -153,7 +153,7 @@ class ImportTransactions
     rescue Encoding::CompatibilityError
       @errors[attr_name] = [
         original_value.force_encoding("UTF-8"),
-        I18n.t("importer.errors.transaction.invalid_characters"),
+        I18n.t("importer.errors.actual.invalid_characters"),
       ]
       nil
     rescue => error
@@ -168,14 +168,14 @@ class ImportTransactions
     def convert_value(value)
       ConvertFinancialValue.new.convert(value)
     rescue ConvertFinancialValue::Error
-      raise I18n.t("importer.errors.transaction.non_numeric_value")
+      raise I18n.t("importer.errors.actual.non_numeric_value")
     end
 
     def convert_receiving_organisation_type(type)
       validate_from_codelist(
         type,
         "organisation_type",
-        I18n.t("importer.errors.transaction.invalid_iati_organisation_type"),
+        I18n.t("importer.errors.actual.invalid_iati_organisation_type"),
       )
     end
 

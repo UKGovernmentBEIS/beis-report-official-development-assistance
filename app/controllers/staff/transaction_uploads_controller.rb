@@ -53,11 +53,11 @@ class Staff::TransactionUploadsController < Staff::BaseController
           .group_by { |forecast| ActivityPresenter.new(forecast.parent_activity) }
 
         @success = true
-        flash.now[:notice] = t("action.transaction.upload.success")
+        flash.now[:notice] = t("action.actual.upload.success")
       end
     else
       @errors = []
-      flash.now[:error] = t("action.transaction.upload.file_missing_or_invalid")
+      flash.now[:error] = t("action.actual.upload.file_missing_or_invalid")
     end
   end
 

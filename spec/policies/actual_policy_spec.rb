@@ -1,9 +1,9 @@
 require "rails_helper"
 
-RSpec.describe TransactionPolicy do
-  let(:transaction) { create(:transaction, parent_activity: activity) }
+RSpec.describe ActualPolicy do
+  let(:actual) { create(:actual, parent_activity: activity) }
 
-  subject { described_class.new(user, transaction) }
+  subject { described_class.new(user, actual) }
 
   context "when signed in as a BEIS user" do
     let(:user) { create(:beis_user) }
@@ -132,7 +132,7 @@ RSpec.describe TransactionPolicy do
               report.update(organisation: activity.organisation, fund: activity.associated_fund)
             end
 
-            context "when the report is not the one in which the transaction was created" do
+            context "when the report is not the one in which the actual was created" do
               it { is_expected.to permit_action(:show) }
               it { is_expected.to permit_action(:create) }
 
@@ -141,9 +141,9 @@ RSpec.describe TransactionPolicy do
               it { is_expected.to forbid_action(:destroy) }
             end
 
-            context "when the report is the one in which the transaction was created" do
+            context "when the report is the one in which the actual was created" do
               before do
-                transaction.update(report: report)
+                actual.update(report: report)
               end
 
               it { is_expected.to permit_action(:show) }

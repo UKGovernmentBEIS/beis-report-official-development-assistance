@@ -1,4 +1,4 @@
-class TransactionPolicy < ApplicationPolicy
+class ActualPolicy < ApplicationPolicy
   def show?
     return true if beis_user?
     record.parent_activity.organisation == user.organisation

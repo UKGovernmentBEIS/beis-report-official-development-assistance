@@ -20,7 +20,7 @@ RSpec.describe Staff::ActivityUploadsController do
       it "shows the upload button" do
         get :new, params: {report_id: report.id}
 
-        expect(response.body).to include(t("action.transaction.upload.button"))
+        expect(response.body).to include(t("action.actual.upload.button"))
       end
     end
 
@@ -30,7 +30,7 @@ RSpec.describe Staff::ActivityUploadsController do
       it "shows the upload button" do
         get :new, params: {report_id: report.id}
 
-        expect(response.body).to include(t("action.transaction.upload.button"))
+        expect(response.body).to include(t("action.actual.upload.button"))
       end
     end
 
@@ -40,7 +40,7 @@ RSpec.describe Staff::ActivityUploadsController do
       it "doesn't show the upload button" do
         get :new, params: {report_id: report.id}
 
-        expect(response.body).to_not include(t("action.transaction.upload.button"))
+        expect(response.body).to_not include(t("action.actual.upload.button"))
       end
     end
   end

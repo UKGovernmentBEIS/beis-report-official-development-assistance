@@ -31,7 +31,7 @@ RSpec.feature "Users can view third-party project level activities" do
       expect(page).to have_content(budget.value)
       expect(page).to have_content(transaction.value)
       expect(page).to have_content(t("page_content.budgets.button.create"))
-      expect(page).to have_content(t("page_content.transactions.button.create"))
+      expect(page).to have_content(t("page_content.actuals.button.create"))
     end
   end
 

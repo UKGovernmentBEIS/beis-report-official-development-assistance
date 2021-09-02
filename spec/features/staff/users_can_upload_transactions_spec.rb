@@ -16,14 +16,14 @@ RSpec.feature "users can upload transactions" do
   before do
     authenticate!(user: user)
     visit report_actuals_path(report)
-    click_link t("action.transaction.upload.link")
+    click_link t("action.actual.upload.link")
   end
 
   def expect_to_see_successful_upload_summary_with(count:, total:)
-    expect(page).to have_text(t("page_title.transaction.upload_success"))
+    expect(page).to have_text(t("page_title.actual.upload_success"))
     expect(page).to have_css(".transactions tr", count: count)
     expect(page).to have_link(
-      t("importer.success.transaction.back_link"),
+      t("importer.success.actual.back_link"),
       href: report_actuals_path(report)
     )
     within ".totals" do
@@ -34,7 +34,7 @@ RSpec.feature "users can upload transactions" do
   scenario "they get helpful guidance and a link to actuals upload template on the upload page" do
     visit new_report_transaction_upload_path(report)
 
-    expect(page.html).to include t("page_content.transactions.upload.copy_html",
+    expect(page.html).to include t("page_content.actuals.upload.copy_html",
       report_actuals_template_path: report_transaction_upload_path(report, format: :csv))
   end
 
@@ -71,9 +71,9 @@ RSpec.feature "users can upload transactions" do
   end
 
   scenario "not uploading a file" do
-    click_button t("action.transaction.upload.button")
+    click_button t("action.actual.upload.button")
     expect(Transaction.count).to eq(0)
-    expect(page).to have_text(t("action.transaction.upload.file_missing_or_invalid"))
+    expect(page).to have_text(t("action.actual.upload.file_missing_or_invalid"))
   end
 
   scenario "uploading a valid set of transactions" do
@@ -86,7 +86,7 @@ RSpec.feature "users can upload transactions" do
     CSV
 
     expect(Transaction.count).to eq(2)
-    expect(page).to have_text(t("action.transaction.upload.success"))
+    expect(page).to have_text(t("action.actual.upload.success"))
     expect(page).not_to have_css("table.govuk-table.errors")
 
     expect_to_see_successful_upload_summary_with(count: 2, total: 50)
@@ -102,7 +102,7 @@ RSpec.feature "users can upload transactions" do
     CSV
 
     expect(Transaction.count).to eq(2)
-    expect(page).to have_text(t("action.transaction.upload.success"))
+    expect(page).to have_text(t("action.actual.upload.success"))
 
     expect_to_see_successful_upload_summary_with(count: 2, total: 50)
   end
@@ -117,7 +117,7 @@ RSpec.feature "users can upload transactions" do
     CSV
 
     expect(Transaction.count).to eq(1)
-    expect(page).to have_text(t("action.transaction.upload.success"))
+    expect(page).to have_text(t("action.actual.upload.success"))
 
     expect_to_see_successful_upload_summary_with(count: 1, total: 30)
   end
@@ -132,20 +132,20 @@ RSpec.feature "users can upload transactions" do
     CSV
 
     expect(Transaction.count).to eq(0)
-    expect(page).not_to have_text(t("action.transaction.upload.success"))
+    expect(page).not_to have_text(t("action.actual.upload.success"))
 
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[1]", text: "Value")
       expect(page).to have_xpath("td[2]", text: "2")
       expect(page).to have_xpath("td[3]", text: "fish")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.transaction.non_numeric_value"))
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.actual.non_numeric_value"))
     end
 
     within "//tbody/tr[2]" do
       expect(page).to have_xpath("td[1]", text: "Receiving Organisation Type")
       expect(page).to have_xpath("td[2]", text: "3")
       expect(page).to have_xpath("td[3]", text: "61")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.transaction.invalid_iati_organisation_type"))
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.actual.invalid_iati_organisation_type"))
     end
   end
 
@@ -163,7 +163,7 @@ RSpec.feature "users can upload transactions" do
     file.close
 
     attach_file "report[transaction_csv]", file.path
-    click_button t("action.transaction.upload.button")
+    click_button t("action.actual.upload.button")
 
     file.unlink
 
@@ -183,7 +183,7 @@ RSpec.feature "users can upload transactions" do
     CSV
 
     expect(Transaction.count).to eq(2)
-    expect(page).to have_text(t("action.transaction.upload.success"))
+    expect(page).to have_text(t("action.actual.upload.success"))
 
     expect_to_see_successful_upload_summary_with(count: 2, total: 50)
   end
@@ -194,7 +194,7 @@ RSpec.feature "users can upload transactions" do
     file.close
 
     attach_file "report[transaction_csv]", file.path
-    click_button t("action.transaction.upload.button")
+    click_button t("action.actual.upload.button")
 
     file.unlink
   end

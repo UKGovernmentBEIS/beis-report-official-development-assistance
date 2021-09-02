@@ -6,17 +6,17 @@ class Staff::TransactionsController < Staff::BaseController
 
   def new
     @activity = activity
-    @transaction = Transaction.new
-    @transaction.parent_activity = @activity
+    @actual = Actual.new
+    @actual.parent_activity = @activity
 
     @report = Report.editable_for_activity(@activity)
-    @transaction.financial_quarter = @report&.financial_quarter
-    @transaction.financial_year = @report&.financial_year
+    @actual.financial_quarter = @report&.financial_quarter
+    @actual.financial_year = @report&.financial_year
 
-    authorize @transaction
+    authorize(@actual)
 
     prepare_default_activity_trail(@activity)
-    add_breadcrumb t("breadcrumb.transaction.new"), new_activity_transaction_path(@activity)
+    add_breadcrumb t("breadcrumb.actual.new"), new_activity_transaction_path(@activity)
   end
 
   def create
@@ -24,11 +24,11 @@ class Staff::TransactionsController < Staff::BaseController
     authorize @activity
 
     result = CreateTransaction.new(activity: @activity)
-      .call(attributes: transaction_params)
-    @transaction = result.object
+      .call(attributes: actual_params)
+    @actual = result.object
 
     if result.success?
-      flash[:notice] = t("action.transaction.create.success")
+      flash[:notice] = t("action.actual.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :new
@@ -36,28 +36,27 @@ class Staff::TransactionsController < Staff::BaseController
   end
 
   def edit
-    @transaction = Transaction.find(id)
-    authorize @transaction
+    @actual = Actual.find(id)
+    authorize @actual
 
     @activity = Activity.find(activity_id)
 
     prepare_default_activity_trail(@activity)
-    add_breadcrumb t("breadcrumb.transaction.edit"), edit_activity_transaction_path(@activity, @transaction)
+    add_breadcrumb t("breadcrumb.actual.edit"), edit_activity_transaction_path(@activity, @actual)
   end
 
   def update
-    @transaction = Transaction.find(id)
-    authorize @transaction
-
+    @actual = Actual.find(id)
+    authorize @actual
     @activity = activity
     result = UpdateTransaction.new(
-      transaction: @transaction,
+      transaction: @actual,
       user: current_user,
       report: Report.editable_for_activity(@activity)
-    ).call(attributes: transaction_params)
+    ).call(attributes: actual_params)
 
     if result.success?
-      flash[:notice] = t("action.transaction.update.success")
+      flash[:notice] = t("action.actual.update.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
       render :edit
@@ -65,20 +64,20 @@ class Staff::TransactionsController < Staff::BaseController
   end
 
   def destroy
-    @transaction = Transaction.find(id)
-    authorize @transaction
+    @actual = Actual.find(id)
+    authorize @actual
 
-    @transaction.destroy
+    @actual.destroy
 
-    flash[:notice] = t("action.transaction.destroy.success")
+    flash[:notice] = t("action.actual.destroy.success")
 
     redirect_to organisation_activity_path(activity.organisation, activity)
   end
 
   private
 
-  def transaction_params
-    params.require(:transaction).permit(
+  def actual_params
+    params.require(:actual).permit(
       :value,
       :financial_quarter,
       :financial_year,

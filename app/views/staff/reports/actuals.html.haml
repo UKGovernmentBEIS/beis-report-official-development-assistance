@@ -14,29 +14,29 @@
 
         .govuk-tabs__panel
           %h2.govuk-heading-l
-            = t("tabs.transactions.heading")
+            = t("tabs.actuals.heading")
 
           %p.govuk-body
-            = t("tabs.transactions.copy")
+            = t("tabs.actuals.copy")
 
           - if policy(@report_presenter).upload?
             %h3.govuk-heading-m
-              = t("tabs.transactions.providing.heading")
+              = t("tabs.actuals.providing.heading")
 
             %p.govuk-body
-              = t("tabs.transactions.providing.copy")
+              = t("tabs.actuals.providing.copy")
 
             %h3.govuk-heading-s
-              = t("tabs.transactions.upload.heading")
+              = t("tabs.actuals.upload.heading")
 
-            = t("tabs.transactions.upload.copy_html")
+            = t("tabs.actuals.upload.copy_html")
 
             .govuk-inset-text
-              = t("tabs.transactions.upload.warning")
+              = t("tabs.actuals.upload.warning")
 
             .govuk-button-group
-              = link_to t("page_content.transactions.button.download_template"), report_transaction_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary"
-              = link_to t("page_content.transactions.button.upload"), new_report_transaction_upload_path(@report_presenter), class: "govuk-button govuk-button"
+              = link_to t("page_content.actuals.button.download_template"), report_transaction_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary"
+              = link_to t("page_content.actuals.button.upload"), new_report_transaction_upload_path(@report_presenter), class: "govuk-button govuk-button"
 
             %hr.govuk-section-break.govuk-section-break--l.govuk-section-break--visible
 

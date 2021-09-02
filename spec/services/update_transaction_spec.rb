@@ -36,7 +36,7 @@ RSpec.describe UpdateTransaction do
         expect(HistoryRecorder).to have_received(:new).with(user: user)
         expect(history_recorder).to have_received(:call).with(
           changes: expected_changes,
-          reference: "Update to Transaction",
+          reference: "Update to Actual",
           activity: transaction.parent_activity,
           trackable: transaction,
           report: report

@@ -93,7 +93,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
       click_link t("tabs.report.transactions")
 
       expect(page).to have_content("Actuals")
-      expect(page).to have_link(t("action.transaction.upload.link"))
+      expect(page).to have_link(t("action.actual.upload.link"))
 
       expect_to_see_a_table_of_transactions_grouped_by_activity(activities)
       expect_to_see_a_table_of_refunds_grouped_by_activity(activities)
@@ -109,7 +109,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
 
         click_link "Actuals"
 
-        expect(page).not_to have_link(t("action.transaction.upload.link"))
+        expect(page).not_to have_link(t("action.actual.upload.link"))
       end
     end
   end

@@ -15,8 +15,8 @@ RSpec.describe Transaction, type: :model do
       before { activity.update(organisation: build_stubbed(:delivery_partner_organisation)) }
 
       it "should validate the prescence of report" do
-        transaction = build_stubbed(:transaction, parent_activity: activity, report: nil)
-        expect(transaction.valid?).to be false
+        actual = build_stubbed(:actual, parent_activity: activity, report: nil)
+        expect(actual.valid?).to be false
       end
     end
 
@@ -24,14 +24,14 @@ RSpec.describe Transaction, type: :model do
       before { activity.update(organisation: build_stubbed(:beis_organisation)) }
 
       it "should not validate the prescence of report" do
-        transaction = build_stubbed(:transaction, parent_activity: activity, report: nil)
-        expect(transaction.valid?).to be true
+        actual = build_stubbed(:actual, parent_activity: activity, report: nil)
+        expect(actual.valid?).to be true
       end
     end
 
     describe "organisation validation" do
       subject do
-        build(:transaction,
+        build(:actual,
           receiving_organisation_name: receiving_organisation_name,
           receiving_organisation_type: receiving_organisation_type,
           receiving_organisation_reference: receiving_organisation_reference)
@@ -88,90 +88,90 @@ RSpec.describe Transaction, type: :model do
   end
 
   describe "date and financial quarter conversions" do
-    let(:transaction) { build(:transaction, date: nil, financial_quarter: nil, financial_year: nil) }
+    let(:actual) { build(:actual, date: nil, financial_quarter: nil, financial_year: nil) }
 
-    context "when the transaction has a date" do
+    context "when the actual has a date" do
       before do
-        transaction.date = Date.parse("2020-02-18")
+        actual.date = Date.parse("2020-02-18")
       end
 
       it "is valid" do
-        expect(transaction).to be_valid
+        expect(actual).to be_valid
       end
 
       it "fills in the financial quarter based on the date" do
-        transaction.valid?
-        expect(transaction.financial_quarter).to eq(4)
-        expect(transaction.financial_year).to eq(2019)
+        actual.valid?
+        expect(actual.financial_quarter).to eq(4)
+        expect(actual.financial_year).to eq(2019)
       end
     end
 
-    context "when the transaction has a financial quarter" do
+    context "when the actual has a financial quarter" do
       before do
-        transaction.financial_quarter = 4
-        transaction.financial_year = 2019
+        actual.financial_quarter = 4
+        actual.financial_year = 2019
       end
 
       it "is valid" do
-        expect(transaction).to be_valid
+        expect(actual).to be_valid
       end
 
       it "fills in the date based on the financial quarter" do
-        transaction.valid?
-        expect(transaction.date).to eq(Date.parse("2020-03-31"))
+        actual.valid?
+        expect(actual.date).to eq(Date.parse("2020-03-31"))
       end
     end
 
-    context "when the transaction has date and a financial quarter" do
+    context "when the actual has date and a financial quarter" do
       before do
-        transaction.date = Date.parse("2018-02-18")
-        transaction.financial_quarter = 4
-        transaction.financial_year = 2019
+        actual.date = Date.parse("2018-02-18")
+        actual.financial_quarter = 4
+        actual.financial_year = 2019
       end
 
       it "is valid" do
-        expect(transaction).to be_valid
+        expect(actual).to be_valid
       end
 
       it "leaves all the values unchanged" do
-        transaction.valid?
-        expect(transaction.date).to eq(Date.parse("2018-02-18"))
-        expect(transaction.financial_quarter).to eq(4)
-        expect(transaction.financial_year).to eq(2019)
+        actual.valid?
+        expect(actual.date).to eq(Date.parse("2018-02-18"))
+        expect(actual.financial_quarter).to eq(4)
+        expect(actual.financial_year).to eq(2019)
       end
     end
 
-    context "when the transaction has no financial quarter" do
+    context "when the actual has no financial quarter" do
       before do
-        transaction.financial_year = 2019
+        actual.financial_year = 2019
       end
 
       it "is not valid" do
-        expect(transaction).not_to be_valid
-        expect(transaction.errors[:financial_quarter]).to eq([t("activerecord.errors.models.transaction.attributes.financial_quarter.inclusion")])
-        expect(transaction.errors[:date]).to eq([])
+        expect(actual).not_to be_valid
+        expect(actual.errors[:financial_quarter]).to eq([t("activerecord.errors.models.actual.attributes.financial_quarter.inclusion")])
+        expect(actual.errors[:date]).to eq([])
       end
 
       it "does not assign the date" do
-        transaction.valid?
-        expect(transaction.date).to be_nil
+        actual.valid?
+        expect(actual.date).to be_nil
       end
     end
 
-    context "when the transaction has no financial year" do
+    context "when the actual has no financial year" do
       before do
-        transaction.financial_quarter = 4
+        actual.financial_quarter = 4
       end
 
       it "is not valid" do
-        expect(transaction).not_to be_valid
-        expect(transaction.errors[:financial_year]).to eq([t("activerecord.errors.models.transaction.attributes.financial_year.blank")])
-        expect(transaction.errors[:date]).to eq([])
+        expect(actual).not_to be_valid
+        expect(actual.errors[:financial_year]).to eq([t("activerecord.errors.models.actual.attributes.financial_year.blank")])
+        expect(actual.errors[:date]).to eq([])
       end
 
       it "does not assign the date" do
-        transaction.valid?
-        expect(transaction.date).to be_nil
+        actual.valid?
+        expect(actual.date).to be_nil
       end
     end
   end
@@ -183,33 +183,33 @@ RSpec.describe Transaction, type: :model do
   describe "#value" do
     context "value must be a maximum of 99,999,999,999.00 (100 billion minus one)" do
       it "allows the maximum possible value" do
-        transaction = build(:transaction, parent_activity: activity, value: 99_999_999_999.00)
-        expect(transaction.valid?).to be true
+        actual = build(:actual, parent_activity: activity, value: 99_999_999_999.00)
+        expect(actual.valid?).to be true
       end
 
       it "allows one penny" do
-        transaction = build(:transaction, parent_activity: activity, value: 0.01)
-        expect(transaction.valid?).to be true
+        actual = build(:actual, parent_activity: activity, value: 0.01)
+        expect(actual.valid?).to be true
       end
 
       it "does not allow a value of 0" do
-        transaction = build(:transaction, parent_activity: activity, value: 0)
-        expect(transaction.valid?).to be false
+        actual = build(:actual, parent_activity: activity, value: 0)
+        expect(actual.valid?).to be false
       end
 
       it "does not allow a value of more than 99,999,999,999.00" do
-        transaction = build(:transaction, parent_activity: activity, value: 100_000_000_000.00)
-        expect(transaction.valid?).to be false
+        actual = build(:actual, parent_activity: activity, value: 100_000_000_000.00)
+        expect(actual.valid?).to be false
       end
 
       it "allows a value between 1 and 99,999,999,999.00" do
-        transaction = build(:transaction, parent_activity: activity, value: 500_000.00)
-        expect(transaction.valid?).to be true
+        actual = build(:actual, parent_activity: activity, value: 500_000.00)
+        expect(actual.valid?).to be true
       end
 
       it "allows a negative value" do
-        transaction = build(:transaction, parent_activity: activity, value: -500_000.00)
-        expect(transaction.valid?).to be true
+        actual = build(:actual, parent_activity: activity, value: -500_000.00)
+        expect(actual.valid?).to be true
       end
     end
   end

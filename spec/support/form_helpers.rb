@@ -1,23 +1,23 @@
 module FormHelpers
   include ActivityHelper
 
-  def fill_in_transaction_form(expectations: true,
+  def fill_in_actual_form(expectations: true,
     value: "1000.01",
     financial_quarter: "4",
     financial_year: "2019-2020",
     receiving_organisation: OpenStruct.new(name: "Example receiver", reference: "GB-COH-123", type: "Private Sector"))
 
-    fill_in "transaction[value]", with: value
-    choose financial_quarter, name: "transaction[financial_quarter]"
-    select financial_year, from: "transaction[financial_year]"
-    fill_in "transaction[receiving_organisation_name]", with: receiving_organisation.name
-    select receiving_organisation.type, from: "transaction[receiving_organisation_type]" if receiving_organisation.type.present?
-    fill_in "transaction[receiving_organisation_reference]", with: receiving_organisation.reference
+    fill_in "actual[value]", with: value
+    choose financial_quarter, name: "actual[financial_quarter]"
+    select financial_year, from: "actual[financial_year]"
+    fill_in "actual[receiving_organisation_name]", with: receiving_organisation.name
+    select receiving_organisation.type, from: "actual[receiving_organisation_type]" if receiving_organisation.type.present?
+    fill_in "actual[receiving_organisation_reference]", with: receiving_organisation.reference
 
     click_on(t("default.button.submit"))
 
     if expectations
-      within ".transactions" do
+      within ".actuals" do
         start_year = financial_year.split("-").first.to_i
         expect(page).to have_content(FinancialQuarter.new(start_year, financial_quarter).to_s)
         expect(page).to have_content(ActionController::Base.helpers.number_to_currency(value, unit: "£"))
