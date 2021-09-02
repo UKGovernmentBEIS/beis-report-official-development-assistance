@@ -284,7 +284,7 @@ RSpec.describe Report, type: :model do
   end
 
   describe "#summed_transactions" do
-    it "sums all of the transactions belonging to a report" do
+    it "sums all of the actuals belonging to a report" do
       report = create(:report)
 
       create(:actual, report: report, value: 50)

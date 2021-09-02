@@ -73,7 +73,7 @@ RSpec.describe ReportPresenter do
       it "returns the URL-encoded filename for the transactions template CSV dowload" do
         result = described_class.new(report).filename_for_transactions_template
 
-        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-transactions_upload.csv"
+        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-actuals_upload.csv"
       end
     end
 

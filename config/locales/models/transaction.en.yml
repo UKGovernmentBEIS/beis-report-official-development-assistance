@@ -46,7 +46,7 @@ en:
         disbursement_channel: The channel through which the funds will flow for this actual.
         providing_organisation: The organisation where this actual is coming from.
         providing_organisation_reference_html: For example, GB-GOV-13. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
-        receiving_organisation: The organisation receiving the money from this actual.
+        receiving_organisation: The organisation receiving the money from this actual spend.
         receiving_organisation_reference_html: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
   table:
     caption:
@@ -73,10 +73,10 @@ en:
   page_content:
     actuals:
       button:
-        create: Add a transaction
+        create: Add an actual
         upload: Upload actuals data
         download_template: Download actuals data template
-      edit_noun: transaction
+      edit_noun: actual spend
       table:
         headers:
           providing_organisation: Provider
@@ -94,13 +94,13 @@ en:
           <p class="govuk-body">For more detailed guidance on uploading actuals data, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload">guidance in the help centre (opens in new tab)</a></p>
   page_title:
     actual:
-      edit: Edit actual
+      edit: Edit actual spend
       new: Add an actual
       upload: Upload actuals data
       upload_success: Successful uploads
   breadcrumb:
     actual:
-      edit: Edit actual
+      edit: Edit actual spend
       new: Add an actual
       upload: Upload actuals data
       upload_success: Successful uploads
@@ -112,15 +112,15 @@ en:
             date:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_in_future: Date must not be in the future
-              blank: Enter a date the actual was made
+              blank: Enter a date the actual spend was made
             financial_quarter:
               inclusion: Enter a financial quarter between 1 and 4
             financial_year:
-              blank: Enter a financial year the actual was made
+              blank: Enter a financial year the actual spend was made
             value:
               less_than_or_equal_to: Value must be less than or equal to 99,999,999,999.00
               other_than: Value must not be zero
-              blank: Enter an actual amount
+              blank: Enter an actual spend amount
               not_a_number: Value must be a valid number
             transaction_type:
               blank: Select a transaction type

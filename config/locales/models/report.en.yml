@@ -36,7 +36,7 @@ en:
       summary: Summary
       activities: Activities
       forecasts: Forecasts
-      transactions: Actuals
+      actuals: Actuals
       variance: Variance
       budgets: Budgets
       current: Current
@@ -137,14 +137,14 @@ en:
         complete: This report is approved
       variance: "%{report_financial_quarter} %{report_description} variance"
       forecasts: "%{report_financial_quarter} %{report_description} forecasts"
-      transactions: "%{report_financial_quarter} %{report_description} actuals"
+      actuals: "%{report_financial_quarter} %{report_description} actuals"
       budgets: "%{report_financial_quarter} %{report_description} budgets"
       activities: "%{report_financial_quarter} %{report_description} activities"
   breadcrumb:
     report:
       upload_activities: Upload bulk activity data
       upload_forecasts: Upload forecast data
-      upload_transactions:  Upload actuals data
+      upload_actuals:  Upload actuals data
   mailer:
     report:
       activated:

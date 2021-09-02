@@ -2,7 +2,7 @@
   .govuk-grid-column-full
     = form_for @report_presenter, url: report_transaction_upload_path(@report_presenter) do |f|
 
-      = f.govuk_file_field :transaction_csv,
+      = f.govuk_file_field :actual_csv,
         label: { text: t("form.label.actual.csv_file_recover_from_error") },
         hint: { text: t("form.hint.actual.csv_file_recover_from_error_html", link: report_transaction_upload_path(@report_presenter, format: :csv)) }
 

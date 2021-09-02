@@ -1,4 +1,4 @@
-RSpec.feature "users can upload transactions" do
+RSpec.feature "users can upload actuals" do
   let(:organisation) { create(:delivery_partner_organisation) }
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
@@ -72,11 +72,11 @@ RSpec.feature "users can upload transactions" do
 
   scenario "not uploading a file" do
     click_button t("action.actual.upload.button")
-    expect(Transaction.count).to eq(0)
+    expect(Actual.count).to eq(0)
     expect(page).to have_text(t("action.actual.upload.file_missing_or_invalid"))
   end
 
-  scenario "uploading a valid set of transactions" do
+  scenario "uploading a valid set of actuals" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
@@ -85,14 +85,14 @@ RSpec.feature "users can upload transactions" do
       #{ids[1]}                | 1                 | 2020           | 30    | Example Foundation          | 60                          |
     CSV
 
-    expect(Transaction.count).to eq(2)
+    expect(Actual.count).to eq(2)
     expect(page).to have_text(t("action.actual.upload.success"))
     expect(page).not_to have_css("table.govuk-table.errors")
 
     expect_to_see_successful_upload_summary_with(count: 2, total: 50)
   end
 
-  scenario "uploading a valid set of transactions with no organisation data" do
+  scenario "uploading a valid set of actuals with no organisation data" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
@@ -101,13 +101,13 @@ RSpec.feature "users can upload transactions" do
       #{ids[1]}                | 1                 | 2020           | 30    |                             |                             |
     CSV
 
-    expect(Transaction.count).to eq(2)
+    expect(Actual.count).to eq(2)
     expect(page).to have_text(t("action.actual.upload.success"))
 
     expect_to_see_successful_upload_summary_with(count: 2, total: 50)
   end
 
-  scenario "uploading a valid set of transactions including zero values" do
+  scenario "uploading a valid set of actuals including zero values" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
@@ -116,13 +116,13 @@ RSpec.feature "users can upload transactions" do
       #{ids[1]}                | 1                 | 2020           | 30    | Example Foundation          | 60                          |
     CSV
 
-    expect(Transaction.count).to eq(1)
+    expect(Actual.count).to eq(1)
     expect(page).to have_text(t("action.actual.upload.success"))
 
     expect_to_see_successful_upload_summary_with(count: 1, total: 30)
   end
 
-  scenario "uploading an invalid set of transactions" do
+  scenario "uploading an invalid set of actuals" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
@@ -131,7 +131,7 @@ RSpec.feature "users can upload transactions" do
       #{ids[1]}                | 1                 | 2020           | 30    | Example Foundation          | 61                          |
     CSV
 
-    expect(Transaction.count).to eq(0)
+    expect(Actual.count).to eq(0)
     expect(page).not_to have_text(t("action.actual.upload.success"))
 
     within "//tbody/tr[1]" do
@@ -149,7 +149,7 @@ RSpec.feature "users can upload transactions" do
     end
   end
 
-  scenario "uploading a set of transactions with encoding errors" do
+  scenario "uploading a set of actuals with encoding errors" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     csv = <<~CSV
@@ -158,21 +158,21 @@ RSpec.feature "users can upload transactions" do
       #{ids[1]},1,2020,\xA330,Example Foundation,60
     CSV
 
-    file = Tempfile.new("transactions.csv")
+    file = Tempfile.new("actuals.csv")
     file.write(csv)
     file.close
 
-    attach_file "report[transaction_csv]", file.path
+    attach_file "report[actual_csv]", file.path
     click_button t("action.actual.upload.button")
 
     file.unlink
 
-    expect(Transaction.count).to eq(0)
+    expect(Actual.count).to eq(0)
 
     expect(page).to have_content(t("action.forecast.upload.file_missing_or_invalid"))
   end
 
-  scenario "uploading a valid set of transactions with a BOM at the start of the file" do
+  scenario "uploading a valid set of actuals with a BOM at the start of the file" do
     ids = [project, sibling_project].map(&:roda_identifier)
     bom = "\uFEFF"
 
@@ -182,18 +182,18 @@ RSpec.feature "users can upload transactions" do
       #{ids[1]}                | 2                 | 2020           | 30    | Example Foundation          | 60                          |
     CSV
 
-    expect(Transaction.count).to eq(2)
+    expect(Actual.count).to eq(2)
     expect(page).to have_text(t("action.actual.upload.success"))
 
     expect_to_see_successful_upload_summary_with(count: 2, total: 50)
   end
 
   def upload_csv(content)
-    file = Tempfile.new("transactions.csv")
+    file = Tempfile.new("actuals.csv")
     file.write(content.gsub(/ *\| */, ","))
     file.close
 
-    attach_file "report[transaction_csv]", file.path
+    attach_file "report[actual_csv]", file.path
     click_button t("action.actual.upload.button")
 
     file.unlink

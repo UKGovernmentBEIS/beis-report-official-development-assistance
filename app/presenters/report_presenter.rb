@@ -30,7 +30,7 @@ class ReportPresenter < SimpleDelegator
   end
 
   def filename_for_transactions_template
-    filename(purpose: "transactions_upload")
+    filename(purpose: "actuals_upload")
   end
 
   def filename_for_forecasts_template

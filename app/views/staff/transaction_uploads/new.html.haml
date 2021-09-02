@@ -14,7 +14,7 @@
         .govuk-body.upload-form
           = form_for @report_presenter, url: report_transaction_upload_path(@report_presenter) do |f|
 
-            = f.govuk_file_field :transaction_csv,
+            = f.govuk_file_field :actual_csv,
               label: { text: t("form.label.actual.csv_file") },
               hint: { text: t("form.hint.actual.csv_file") }
 

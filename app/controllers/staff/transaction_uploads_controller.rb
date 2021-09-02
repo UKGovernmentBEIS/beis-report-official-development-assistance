@@ -13,7 +13,7 @@ class Staff::TransactionUploadsController < Staff::BaseController
     @report_presenter = ReportPresenter.new(report)
 
     prepare_default_report_trail(report)
-    add_breadcrumb t("breadcrumb.report.upload_transactions"), new_report_transaction_upload_path(report)
+    add_breadcrumb t("breadcrumb.report.upload_actuals"), new_report_transaction_upload_path(report)
   end
 
   def show
@@ -33,11 +33,11 @@ class Staff::TransactionUploadsController < Staff::BaseController
     authorize report, :upload?
 
     @report_presenter = ReportPresenter.new(report)
-    upload = CsvFileUpload.new(params[:report], :transaction_csv)
+    upload = CsvFileUpload.new(params[:report], :actual_csv)
     @success = false
 
     prepare_default_report_trail(report)
-    add_breadcrumb t("breadcrumb.report.upload_transactions"), new_report_transaction_upload_path(report)
+    add_breadcrumb t("breadcrumb.report.upload_actuals"), new_report_transaction_upload_path(report)
 
     if upload.valid?
       importer = ImportTransactions.new(report: report, uploader: current_user)
