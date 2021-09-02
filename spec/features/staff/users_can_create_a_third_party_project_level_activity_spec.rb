@@ -33,17 +33,17 @@ RSpec.feature "Users can create a third-party project" do
 
         click_on(t("action.activity.add_child"))
 
-        fill_in_project_gcrf_activity_form(activity)
+        form = ActivityForm.new(activity: activity, level: "project", fund: "gcrf")
+        form.complete!
 
         expect(page).to have_content t("action.third_party_project.create.success")
         expect(project.child_activities.count).to eq 1
 
-        third_party_project = project.child_activities.last
+        created_activity = form.created_activity
 
-        expect(third_party_project.organisation).to eq user.organisation
+        expect(created_activity).to eq(project.child_activities.last)
 
-        created_activity = Activity.order("created_at ASC").last
-
+        expect(created_activity.organisation).to eq user.organisation
         expect(created_activity.title).to eq(activity.title)
         expect(created_activity.description).to eq(activity.description)
         expect(created_activity.objectives).to eq(activity.objectives)

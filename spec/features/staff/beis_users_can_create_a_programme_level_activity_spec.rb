@@ -23,15 +23,17 @@ RSpec.feature "BEIS users can create a programme level activity" do
         sdgs_apply: true,
         sdg_1: 5)
     end
-    let(:created_activity) { Activity.find_by(delivery_partner_identifier: identifier) }
 
     scenario "an activity can be created" do
       visit organisation_activities_path(delivery_partner)
       click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
 
-      fill_in_gcrf_programme_activity_form(activity)
+      form = ActivityForm.new(activity: activity, level: "programme", fund: "gcrf")
+      form.complete!
 
       expect(page).to have_content(t("action.programme.create.success"))
+
+      created_activity = form.created_activity
 
       expect(created_activity.title).to eq(activity.title)
       expect(created_activity.description).to eq(activity.description)
@@ -71,15 +73,17 @@ RSpec.feature "BEIS users can create a programme level activity" do
         sdgs_apply: true,
         sdg_1: 5)
     end
-    let(:created_activity) { Activity.find_by(delivery_partner_identifier: identifier) }
 
     scenario "an activity can be created" do
       visit organisation_activities_path(delivery_partner)
       click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
 
-      fill_in_newton_programme_activity_form(activity)
+      form = ActivityForm.new(activity: activity, level: "programme", fund: "newton")
+      form.complete!
 
       expect(page).to have_content(t("action.programme.create.success"))
+
+      created_activity = form.created_activity
 
       expect(created_activity.title).to eq(activity.title)
       expect(created_activity.description).to eq(activity.description)

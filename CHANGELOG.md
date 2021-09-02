@@ -810,9 +810,14 @@
 - Do not list inactive reports on the delivery partners' home page
 - Show guidance on the home page when a delivery partner has no active reports
 
+## [release-72] - 2021-09-02
+
+- BEIS users can export the external income per organisation per fund
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-71...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-72...HEAD
+[release-72]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-71...release-72
 [release-71]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-70...release-71
 [release-70]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-69...release-70
 [release-69]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-68...release-69
