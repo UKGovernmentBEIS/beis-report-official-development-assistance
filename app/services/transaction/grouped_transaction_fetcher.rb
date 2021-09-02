@@ -5,10 +5,10 @@ class Transaction
     end
 
     def call
-      report.transactions
+      report.actuals
         .includes([:parent_activity])
-        .map { |transaction| TransactionPresenter.new(transaction) }
-        .group_by { |transaction| ActivityPresenter.new(transaction.parent_activity) }
+        .map { |actual| TransactionPresenter.new(actual) }
+        .group_by { |actual| ActivityPresenter.new(actual.parent_activity) }
     end
 
     private

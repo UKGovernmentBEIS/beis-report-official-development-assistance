@@ -15,12 +15,12 @@ RSpec.feature "Users can view actuals in tab within a report" do
           expect(page).to have_content(activity.title)
           expect(page).to have_content(activity.roda_identifier)
 
-          fail "We expect some transactions to be present" if activity.transactions.none?
+          fail "We expect some transactions to be present" if activity.actuals.none?
 
-          activity.transactions.each do |transaction|
+          activity.actuals.each do |actual|
             within ".transactions" do
-              expect(page).to have_content(transaction.value)
-              expect(page).to have_content(transaction.financial_quarter_and_year)
+              expect(page).to have_content(actual.value)
+              expect(page).to have_content(actual.financial_quarter_and_year)
             end
           end
         end
@@ -48,9 +48,9 @@ RSpec.feature "Users can view actuals in tab within a report" do
     end
 
     def expect_to_see_total_of_actual_amounts(activities)
-      transaction_total = activities.map(&:transactions).flatten.sum(&:value)
+      transaction_total = activities.map(&:actuals).flatten.sum(&:value)
 
-      within "#transactions .totals" do
+      within "#actuals .totals" do
         expect(page).to have_content(
           ActionController::Base.helpers.number_to_currency(transaction_total, unit: "£")
         )

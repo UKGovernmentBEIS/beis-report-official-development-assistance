@@ -5,7 +5,7 @@ class ImportTransactions
     end
   }
 
-  attr_reader :errors, :imported_transactions
+  attr_reader :errors, :imported_actuals
 
   def self.column_headings
     Converter::FIELDS.values
@@ -19,9 +19,9 @@ class ImportTransactions
 
   def import(transactions)
     ActiveRecord::Base.transaction do
-      @imported_transactions = transactions.map.with_index { |row, index| import_row(row, index) }
+      @imported_actuals = transactions.map.with_index { |row, index| import_row(row, index) }
       unless @errors.empty?
-        @imported_transactions = []
+        @imported_actuals = []
         raise ActiveRecord::Rollback
       end
     end

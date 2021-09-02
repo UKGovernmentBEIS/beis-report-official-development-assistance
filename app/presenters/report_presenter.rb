@@ -41,7 +41,7 @@ class ReportPresenter < SimpleDelegator
     financial_quarter_and_year + "-All-Reports.csv"
   end
 
-  def summed_transactions
+  def summed_actuals
     TotalPresenter.new(super).value
   end
 

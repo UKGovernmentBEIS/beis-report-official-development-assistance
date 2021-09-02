@@ -9,7 +9,7 @@ class Report < ApplicationRecord
 
   belongs_to :fund, -> { where(level: :fund) }, class_name: "Activity"
   belongs_to :organisation
-  has_many :transactions
+  has_many :actuals
   has_many :forecasts
   has_many :historical_events
   has_many :refunds
@@ -95,8 +95,8 @@ class Report < ApplicationRecord
       .where(report: self)
   end
 
-  def summed_transactions
-    transactions.sum(&:value)
+  def summed_actuals
+    actuals.sum(&:value)
   end
 
   def summed_refunds

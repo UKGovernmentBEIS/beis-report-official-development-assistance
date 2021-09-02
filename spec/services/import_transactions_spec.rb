@@ -19,8 +19,8 @@ RSpec.describe ImportTransactions do
     ImportTransactions.new(report: report, uploader: reporter)
   end
 
-  describe "importing a single transaction" do
-    let :transaction_row do
+  describe "importing a single actual" do
+    let :actual_row do
       {
         "Activity RODA Identifier" => project.roda_identifier,
         "Financial Quarter" => "4",
@@ -33,17 +33,17 @@ RSpec.describe ImportTransactions do
     end
 
     before do
-      importer.import([transaction_row])
+      importer.import([actual_row])
     end
 
-    it "imports a single transaction" do
-      expect(report.transactions.count).to eq(1)
+    it "imports a single actual" do
+      expect(report.actuals.count).to eq(1)
     end
 
     it "assigns the attributes from the row data" do
-      transaction = report.transactions.first
+      actual = report.actuals.first
 
-      expect(transaction).to have_attributes(
+      expect(actual).to have_attributes(
         parent_activity: project,
         financial_quarter: 4,
         financial_year: 2019,
@@ -55,20 +55,20 @@ RSpec.describe ImportTransactions do
     end
 
     it "assigns a default currency" do
-      transaction = report.transactions.first
-      expect(transaction.currency).to eq("GBP")
+      actual = report.actuals.first
+      expect(actual.currency).to eq("GBP")
     end
 
     # https://iatistandard.org/en/iati-standard/203/codelists/transactiontype/
-    it "assigns 'disbursement' as the transaction type" do
-      transaction = report.transactions.first
-      expect(transaction.transaction_type).to eq("3")
+    it "assigns 'disbursement' as the actual type" do
+      actual = report.actuals.first
+      expect(actual.transaction_type).to eq("3")
     end
 
     it "assigns the providing organisation based on the activity" do
-      transaction = report.transactions.first
+      actual = report.actuals.first
 
-      expect(transaction).to have_attributes(
+      expect(actual).to have_attributes(
         providing_organisation_name: project.providing_organisation.name,
         providing_organisation_type: project.providing_organisation.organisation_type,
         providing_organisation_reference: project.providing_organisation.iati_reference
@@ -78,8 +78,8 @@ RSpec.describe ImportTransactions do
     context "when the reporter is not authorised to report on the Activity" do
       let(:reporter_organisation) { create(:delivery_partner_organisation) }
 
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
+      it "does not import any actuals" do
+        expect(report.actuals.count).to eq(0)
       end
 
       it "returns an error" do
@@ -92,12 +92,12 @@ RSpec.describe ImportTransactions do
     context "when the Activity does not belong to the given Report" do
       let(:another_project) { create(:project_activity, organisation: reporter_organisation) }
 
-      let :transaction_row do
+      let :actual_row do
         super().merge("Activity RODA Identifier" => another_project.roda_identifier)
       end
 
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
+      it "does not import any actuals" do
+        expect(report.actuals.count).to eq(0)
       end
 
       it "returns an error" do
@@ -108,12 +108,12 @@ RSpec.describe ImportTransactions do
     end
 
     context "when the Activity Identifier is not recognised" do
-      let :transaction_row do
+      let :actual_row do
         super().merge("Activity RODA Identifier" => "not-a-real-id")
       end
 
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
+      it "does not import any actuals" do
+        expect(report.actuals.count).to eq(0)
       end
 
       it "returns an error" do
@@ -124,12 +124,12 @@ RSpec.describe ImportTransactions do
     end
 
     context "when the Financial Quarter is blank" do
-      let :transaction_row do
+      let :actual_row do
         super().merge("Financial Quarter" => "")
       end
 
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
+      it "does not import any actuals" do
+        expect(report.actuals.count).to eq(0)
       end
 
       it "returns an error" do
@@ -140,12 +140,12 @@ RSpec.describe ImportTransactions do
     end
 
     context "when the Financial Year is blank" do
-      let :transaction_row do
+      let :actual_row do
         super().merge("Financial Year" => "")
       end
 
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
+      it "does not import any actuals" do
+        expect(report.actuals.count).to eq(0)
       end
 
       it "returns an error" do
@@ -156,12 +156,12 @@ RSpec.describe ImportTransactions do
     end
 
     context "when the Financial Quarter is invalid" do
-      let :transaction_row do
+      let :actual_row do
         super().merge("Financial Quarter" => "5")
       end
 
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
+      it "does not import any actuals" do
+        expect(report.actuals.count).to eq(0)
       end
 
       it "returns an error" do
@@ -172,27 +172,27 @@ RSpec.describe ImportTransactions do
     end
 
     context "with additional formatting in the Value field" do
-      let :transaction_row do
+      let :actual_row do
         super().merge("Value" => "£ 12,345.67")
       end
 
-      it "imports the transaction" do
-        expect(report.transactions.count).to eq(1)
+      it "imports the actual" do
+        expect(report.actuals.count).to eq(1)
       end
 
       it "interprets the Value as a number" do
-        transaction = report.transactions.first
-        expect(transaction.value).to eq(12_345.67)
+        actual = report.actuals.first
+        expect(actual.value).to eq(12_345.67)
       end
     end
 
     context "when the Value is blank" do
-      let :transaction_row do
+      let :actual_row do
         super().merge("Value" => "")
       end
 
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
+      it "does not import any actuals" do
+        expect(report.actuals.count).to eq(0)
       end
 
       it "returns an error" do
@@ -203,12 +203,12 @@ RSpec.describe ImportTransactions do
     end
 
     context "when the Value is zero" do
-      let :transaction_row do
+      let :actual_row do
         super().merge("Value" => "0")
       end
 
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
+      it "does not import any actuals" do
+        expect(report.actuals.count).to eq(0)
       end
 
       it "does not return an error" do
@@ -217,12 +217,12 @@ RSpec.describe ImportTransactions do
     end
 
     context "when the Value is not numeric" do
-      let :transaction_row do
+      let :actual_row do
         super().merge("Value" => "This is not a number")
       end
 
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
+      it "does not import any actuals" do
+        expect(report.actuals.count).to eq(0)
       end
 
       it "returns an error" do
@@ -233,12 +233,12 @@ RSpec.describe ImportTransactions do
     end
 
     context "when the Value is partially numeric" do
-      let :transaction_row do
+      let :actual_row do
         super().merge("Value" => "3a4b5.c67")
       end
 
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
+      it "does not import any actuals" do
+        expect(report.actuals.count).to eq(0)
       end
 
       it "returns an error" do
@@ -249,12 +249,12 @@ RSpec.describe ImportTransactions do
     end
 
     context "when the Receiving Organisation Name is blank" do
-      let :transaction_row do
+      let :actual_row do
         super().merge("Receiving Organisation Name" => "")
       end
 
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
+      it "does not import any actuals" do
+        expect(report.actuals.count).to eq(0)
       end
 
       it "returns an error" do
@@ -266,12 +266,12 @@ RSpec.describe ImportTransactions do
 
     # https://iatistandard.org/en/iati-standard/203/codelists/organisationtype/
     context "when the Receiving Organisation Type is not a valid IATI type" do
-      let :transaction_row do
+      let :actual_row do
         super().merge("Receiving Organisation Type" => "81")
       end
 
-      it "does not import any transactions" do
-        expect(report.transactions.count).to eq(0)
+      it "does not import any actuals" do
+        expect(report.actuals.count).to eq(0)
       end
 
       it "returns an error" do
@@ -282,22 +282,22 @@ RSpec.describe ImportTransactions do
     end
 
     context "when a Receiving Organisation IATI Reference is provided" do
-      let :transaction_row do
+      let :actual_row do
         super().merge("Receiving Organisation IATI Reference" => "Rec-Org-IATI-Ref")
       end
 
-      it "imports the transaction" do
-        expect(report.transactions.count).to eq(1)
+      it "imports the actual" do
+        expect(report.actuals.count).to eq(1)
       end
 
-      it "saves the IATI reference on the transaction" do
-        transaction = report.transactions.first
-        expect(transaction.receiving_organisation_reference).to eq("Rec-Org-IATI-Ref")
+      it "saves the IATI reference on the actual" do
+        actual = report.actuals.first
+        expect(actual.receiving_organisation_reference).to eq("Rec-Org-IATI-Ref")
       end
     end
 
     context "when the Receiving Organisation fields are blank" do
-      let :transaction_row do
+      let :actual_row do
         super().merge(
           "Receiving Organisation Name" => "",
           "Receiving Organisation Type" => "",
@@ -305,14 +305,14 @@ RSpec.describe ImportTransactions do
         )
       end
 
-      it "imports a single transaction" do
-        expect(report.transactions.count).to eq(1)
+      it "imports a single actual" do
+        expect(report.actuals.count).to eq(1)
       end
 
       it "assigns the attributes from the row data" do
-        transaction = report.transactions.first
+        actual = report.actuals.first
 
-        expect(transaction).to have_attributes(
+        expect(actual).to have_attributes(
           parent_activity: project,
           financial_quarter: 4,
           financial_year: 2019,
@@ -325,12 +325,12 @@ RSpec.describe ImportTransactions do
     end
   end
 
-  describe "importing multiple transactions" do
+  describe "importing multiple actuals" do
     let :sibling_project do
       create(:project_activity, organisation: project.organisation, parent: project.parent, title: "Sibling Project")
     end
 
-    let :first_transaction_row do
+    let :first_actual_row do
       {
         "Activity RODA Identifier" => sibling_project.roda_identifier,
         "Financial Quarter" => "3",
@@ -341,7 +341,7 @@ RSpec.describe ImportTransactions do
       }
     end
 
-    let :second_transaction_row do
+    let :second_actual_row do
       {
         "Activity RODA Identifier" => project.roda_identifier,
         "Financial Quarter" => "3",
@@ -352,7 +352,7 @@ RSpec.describe ImportTransactions do
       }
     end
 
-    let :third_transaction_row do
+    let :third_actual_row do
       {
         "Activity RODA Identifier" => sibling_project.roda_identifier,
         "Financial Quarter" => "3",
@@ -365,20 +365,20 @@ RSpec.describe ImportTransactions do
 
     before do
       importer.import([
-        first_transaction_row,
-        second_transaction_row,
-        third_transaction_row,
+        first_actual_row,
+        second_actual_row,
+        third_actual_row,
       ])
     end
 
     it "imports all transactions successfully" do
       expect(importer.errors).to eq([])
-      expect(importer.imported_transactions.count).to eq(3)
-      expect(importer.imported_transactions).to match_array(report.transactions)
+      expect(importer.imported_actuals.count).to eq(3)
+      expect(importer.imported_actuals).to match_array(report.actuals)
     end
 
     it "assigns each transaction to the correct report" do
-      expect(report.transactions.pluck(:description)).to contain_exactly(
+      expect(report.actuals.pluck(:description)).to contain_exactly(
         "FQ4 1999-2000 spend on Example Project",
         "FQ4 1999-2000 spend on Sibling Project",
         "FQ4 1999-2000 spend on Sibling Project"
@@ -386,23 +386,23 @@ RSpec.describe ImportTransactions do
     end
 
     it "assigns each transaction to the correct activity" do
-      expect(project.transactions.pluck(:description)).to eq([
+      expect(project.actuals.pluck(:description)).to eq([
         "FQ4 1999-2000 spend on Example Project",
       ])
-      expect(sibling_project.transactions.pluck(:description)).to eq([
+      expect(sibling_project.actuals.pluck(:description)).to eq([
         "FQ4 1999-2000 spend on Sibling Project",
         "FQ4 1999-2000 spend on Sibling Project",
       ])
     end
 
     context "when any row is not valid" do
-      let :third_transaction_row do
+      let :third_actual_row do
         super().merge("Value" => "fish")
       end
 
-      it "does not import any transactions" do
-        expect(Transaction.count).to eq(0)
-        expect(importer.imported_transactions).to eq([])
+      it "does not import any actuals" do
+        expect(Actual.count).to eq(0)
+        expect(importer.imported_actuals).to eq([])
       end
 
       it "returns an error" do
@@ -413,16 +413,16 @@ RSpec.describe ImportTransactions do
     end
 
     context "when there are multiple errors" do
-      let :first_transaction_row do
+      let :first_actual_row do
         super().merge("Receiving Organisation Type" => "81", "Value" => "fish")
       end
 
-      let :third_transaction_row do
+      let :third_actual_row do
         super().merge("Financial Quarter" => "5")
       end
 
-      it "does not import any transactions" do
-        expect(Transaction.count).to eq(0)
+      it "does not import any actuals" do
+        expect(Actual.count).to eq(0)
       end
 
       it "returns all the errors" do
@@ -432,7 +432,7 @@ RSpec.describe ImportTransactions do
         expect(errors).to eq([
           ImportTransactions::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.actual.invalid_iati_organisation_type")),
           ImportTransactions::Error.new(0, "Value", "fish", t("importer.errors.actual.non_numeric_value")),
-          ImportTransactions::Error.new(2, "Financial Quarter", third_transaction_row["Financial Quarter"], t("activerecord.errors.models.actual.attributes.financial_quarter.inclusion")),
+          ImportTransactions::Error.new(2, "Financial Quarter", third_actual_row["Financial Quarter"], t("activerecord.errors.models.actual.attributes.financial_quarter.inclusion")),
         ])
       end
     end

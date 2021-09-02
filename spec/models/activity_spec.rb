@@ -607,7 +607,7 @@ RSpec.describe Activity, type: :model do
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
     it { should have_many(:implementing_organisations) }
     it { should have_many(:budgets) }
-    it { should have_many(:transactions) }
+    it { should have_many(:actuals) }
     it { should have_many(:refunds) }
     it { should have_many(:source_transfers) }
     it { should have_many(:destination_transfers) }
@@ -970,7 +970,7 @@ RSpec.describe Activity, type: :model do
   describe "#actual_total_for_report_financial_quarter" do
     let(:current_quarter) { FinancialQuarter.for_date(Date.today) }
 
-    it "returns the total of all the activity's transactions scoped to a report" do
+    it "returns the total of all the activity's actuals scoped to a report" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
       create(:actual, parent_activity: project, value: 100.20, report: report, **current_quarter)
@@ -980,7 +980,7 @@ RSpec.describe Activity, type: :model do
       expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(150.20)
     end
 
-    it "does not include the totals for any transactions outside the report's date range" do
+    it "does not include the totals for any actuals outside the report's date range" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
       create(:actual, parent_activity: project, value: 100.20, report: report, **current_quarter.pred.pred)
@@ -1411,35 +1411,35 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    describe "#own_and_descendants_transactions" do
-      let!(:fund_transaction) { create(:actual, value: 100, parent_activity: fund) }
-      let!(:programme1_transaction) { create(:actual, value: 100, parent_activity: programme1) }
-      let!(:programme2_transaction) { create(:actual, value: 100, parent_activity: programme2) }
-      let!(:programme1_projects1_transaction) { create(:actual, value: 50, parent_activity: programme1_projects[0]) }
-      let!(:programme1_projects2_transaction) { create(:actual, value: 50, parent_activity: programme1_projects[1]) }
-      let!(:programme2_projects1_transaction) { create(:actual, value: 100, parent_activity: programme2_projects[0]) }
-      let!(:programme2_projects2_transaction) { create(:actual, value: 100, parent_activity: programme2_projects[1]) }
-      let!(:programme1_tpp_transaction) { create(:actual, value: 100, parent_activity: programme1_third_party_project) }
-      let!(:programme2_tpp_transaction) { create(:actual, value: 100, parent_activity: programme2_third_party_project) }
+    describe "#own_and_descendants_actuals" do
+      let!(:fund_actual) { create(:actual, value: 100, parent_activity: fund) }
+      let!(:programme1_actual) { create(:actual, value: 100, parent_activity: programme1) }
+      let!(:programme2_actual) { create(:actual, value: 100, parent_activity: programme2) }
+      let!(:programme1_projects1_actual) { create(:actual, value: 50, parent_activity: programme1_projects[0]) }
+      let!(:programme1_projects2_actual) { create(:actual, value: 50, parent_activity: programme1_projects[1]) }
+      let!(:programme2_projects1_actual) { create(:actual, value: 100, parent_activity: programme2_projects[0]) }
+      let!(:programme2_projects2_actual) { create(:actual, value: 100, parent_activity: programme2_projects[1]) }
+      let!(:programme1_tpp_actual) { create(:actual, value: 100, parent_activity: programme1_third_party_project) }
+      let!(:programme2_tpp_actual) { create(:actual, value: 100, parent_activity: programme2_third_party_project) }
 
-      it "returns all the transactions belonging to the activity and to the descendant activities" do
-        expect(fund.own_and_descendants_transactions.pluck(:id)).to match_array([
-          fund_transaction.id,
-          programme1_transaction.id,
-          programme2_transaction.id,
-          programme1_projects1_transaction.id,
-          programme1_projects2_transaction.id,
-          programme2_projects1_transaction.id,
-          programme2_projects2_transaction.id,
-          programme1_tpp_transaction.id,
-          programme2_tpp_transaction.id,
+      it "returns all the actuals belonging to the activity and to the descendant activities" do
+        expect(fund.own_and_descendants_actuals.pluck(:id)).to match_array([
+          fund_actual.id,
+          programme1_actual.id,
+          programme2_actual.id,
+          programme1_projects1_actual.id,
+          programme1_projects2_actual.id,
+          programme2_projects1_actual.id,
+          programme2_projects2_actual.id,
+          programme1_tpp_actual.id,
+          programme2_tpp_actual.id,
         ])
       end
     end
 
-    describe "#reportable_transactions_for_level" do
+    describe "#reportable_actuals_for_level" do
       context "when the activity is a programme" do
-        it "sums up the transactions of the activity and child activities by financial quarter" do
+        it "sums up the actuals of the activity and child activities by financial quarter" do
           organisation = create(:delivery_partner_organisation)
           programme = create(:programme_activity, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
           projects = create_list(:project_activity, 2, parent: programme)
@@ -1456,27 +1456,27 @@ RSpec.describe Activity, type: :model do
           create(:actual, value: 200, parent_activity: third_party_project, financial_year: 2018, financial_quarter: 1)
           create(:actual, value: 200, parent_activity: third_party_project, financial_year: 2020, financial_quarter: 1)
 
-          reportable_transactions = programme.reportable_transactions_for_level
-          expect(reportable_transactions.map(&:value)).to eql([1200, 1000, 2200])
-          expect(reportable_transactions.map(&:date)).to eql([FinancialQuarter.new(2020, 1).end_date, FinancialQuarter.new(2018, 2).end_date, FinancialQuarter.new(2018, 1).end_date])
+          reportable_actuals = programme.reportable_actuals_for_level
+          expect(reportable_actuals.map(&:value)).to eql([1200, 1000, 2200])
+          expect(reportable_actuals.map(&:date)).to eql([FinancialQuarter.new(2020, 1).end_date, FinancialQuarter.new(2018, 2).end_date, FinancialQuarter.new(2018, 1).end_date])
         end
       end
 
       context "when the activity is a project or third-party project" do
-        it "returns all the transactions with that activity only" do
+        it "returns all the actuals with that activity only" do
           organisation = create(:delivery_partner_organisation)
           project = create(:project_activity, :with_transparency_identifier, organisation: organisation)
           third_party_project = create(:third_party_project_activity, parent: project, organisation: organisation)
 
-          project_transaction_1 = create(:actual, value: 1000, parent_activity: project)
-          project_transaction_2 = create(:actual, value: 1000, parent_activity: project)
-          project_transaction_3 = create(:actual, value: 500, parent_activity: project)
-          project_transaction_4 = create(:actual, value: 500, parent_activity: project)
+          project_actual_1 = create(:actual, value: 1000, parent_activity: project)
+          project_actual_2 = create(:actual, value: 1000, parent_activity: project)
+          project_actual_3 = create(:actual, value: 500, parent_activity: project)
+          project_actual_4 = create(:actual, value: 500, parent_activity: project)
 
-          third_party_project_transaction = create(:actual, value: 500, parent_activity: third_party_project)
+          third_party_project_actual = create(:actual, value: 500, parent_activity: third_party_project)
 
-          expect(project.reportable_transactions_for_level).to match_array([project_transaction_1, project_transaction_2, project_transaction_3, project_transaction_4])
-          expect(third_party_project.reportable_transactions_for_level).to match_array([third_party_project_transaction])
+          expect(project.reportable_actuals_for_level).to match_array([project_actual_1, project_actual_2, project_actual_3, project_actual_4])
+          expect(third_party_project.reportable_actuals_for_level).to match_array([third_party_project_actual])
         end
       end
     end

@@ -40,7 +40,7 @@ en:
     hint:
       actual:
         csv_file: Select the file that contains the actuals data for this report.
-        csv_file_recover_from_error_html: Upload a spreadsheet containing transaction information in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
+        csv_file_recover_from_error_html: Upload a spreadsheet containing actual spend information in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
         date: If you're reporting quarterly data, select the last day of the quarter. For example, 31 12 2020
         description: For example, 2020 quarter one spend on the Early Career Research Network project.
         disbursement_channel: The channel through which the funds will flow for this actual.
