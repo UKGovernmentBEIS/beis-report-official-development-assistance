@@ -12,7 +12,7 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
   def show
     authorize [:export, @organisation], :show?
 
-    add_breadcrumb t("breadcrumbs.export.index"), exports_path
+    add_breadcrumb(t("breadcrumbs.export.index"), exports_path) if policy([:export, Organisation]).index?
     add_breadcrumb t("breadcrumbs.export.organisation.show", name: @organisation.name), :exports_organisation_path
 
     @xml_downloads = Iati::XmlDownload.all_for_organisation(@organisation)

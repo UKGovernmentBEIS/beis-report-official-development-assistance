@@ -42,6 +42,17 @@ RSpec.describe Staff::Exports::OrganisationsController do
   context "when logged in as a delivery partner" do
     let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
+    describe "#show" do
+      it "only adds a breadcrumb for the current page" do
+        allow(controller).to receive(:add_breadcrumb).with(any_args)
+
+        expect(controller).to_not receive(:add_breadcrumb).with(t("breadcrumbs.export.index"), exports_path)
+        expect(controller).to receive(:add_breadcrumb).with(t("breadcrumbs.export.organisation.show", name: organisation.name), :exports_organisation_path)
+
+        get "show", params: {id: organisation.id}
+      end
+    end
+
     describe "#external_income" do
       before do
         get :external_income, params: {id: organisation.id, fund_id: fund.id, format: :csv}
@@ -85,6 +96,17 @@ RSpec.describe Staff::Exports::OrganisationsController do
 
   context "when logged in as a BEIS user" do
     let(:user) { create(:beis_user) }
+
+    describe "#show" do
+      it "adds the breadcrumb for the exports index and the current page" do
+        allow(controller).to receive(:add_breadcrumb).with(any_args)
+
+        expect(controller).to receive(:add_breadcrumb).with(t("breadcrumbs.export.index"), exports_path)
+        expect(controller).to receive(:add_breadcrumb).with(t("breadcrumbs.export.organisation.show", name: organisation.name), :exports_organisation_path)
+
+        get "show", params: {id: organisation.id}
+      end
+    end
 
     describe "#external_income" do
       before do
