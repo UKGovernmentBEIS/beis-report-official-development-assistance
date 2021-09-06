@@ -1,4 +1,4 @@
-class ImportTransactions
+class ImportActuals
   Error = Struct.new(:row, :column, :value, :message) {
     def csv_row
       row + 2

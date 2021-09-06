@@ -40,7 +40,7 @@ class Staff::TransactionUploadsController < Staff::BaseController
     add_breadcrumb t("breadcrumb.report.upload_actuals"), new_report_transaction_upload_path(report)
 
     if upload.valid?
-      importer = ImportTransactions.new(report: report, uploader: current_user)
+      importer = ImportActuals.new(report: report, uploader: current_user)
       importer.import(upload.rows)
       @errors = importer.errors
 
@@ -66,7 +66,7 @@ class Staff::TransactionUploadsController < Staff::BaseController
   end
 
   private def csv_headers
-    ["Activity Name", "Activity Delivery Partner Identifier"] + ImportTransactions.column_headings
+    ["Activity Name", "Activity Delivery Partner Identifier"] + ImportActuals.column_headings
   end
 
   private def csv_row(activity)
