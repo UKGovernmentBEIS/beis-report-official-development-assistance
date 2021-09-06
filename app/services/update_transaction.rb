@@ -1,6 +1,6 @@
 class UpdateTransaction
-  def initialize(transaction:, user:, report:)
-    @actual = transaction
+  def initialize(actual:, user:, report:)
+    @actual = actual
     @user = user
     @report = report
   end

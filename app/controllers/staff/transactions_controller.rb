@@ -50,7 +50,7 @@ class Staff::TransactionsController < Staff::BaseController
     authorize @actual
     @activity = activity
     result = UpdateTransaction.new(
-      transaction: @actual,
+      actual: @actual,
       user: current_user,
       report: Report.editable_for_activity(@activity)
     ).call(attributes: actual_params)

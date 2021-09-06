@@ -6,7 +6,7 @@ RSpec.describe UpdateTransaction do
   let(:report) { double("report") }
 
   let(:updater) do
-    described_class.new(transaction: actual, user: user, report: report)
+    described_class.new(actual: actual, user: user, report: report)
   end
 
   let(:history_recorder) do

@@ -36,7 +36,7 @@ RSpec.describe Staff::TransactionsController do
 
       expect(UpdateTransaction).to have_received(:new).with(
         user: user,
-        transaction: actual,
+        actual: actual,
         report: report
       )
       expect(updater).to have_received(:call).with(
