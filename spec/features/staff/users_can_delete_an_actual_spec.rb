@@ -33,7 +33,7 @@ RSpec.feature "Users can delete an actual" do
         click_on(t("default.link.edit"))
       end
 
-      expect { click_on t("default.button.delete") }.to change { Transaction.count }.by(-1)
+      expect { click_on t("default.button.delete") }.to change { Actual.count }.by(-1)
       expect(page).to have_content(t("action.actual.destroy.success"))
     end
   end

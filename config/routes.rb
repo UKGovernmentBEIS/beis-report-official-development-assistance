@@ -65,7 +65,7 @@ Rails.application.routes.draw do
     end
 
     concern :transactionable do
-      resources :transactions
+      resources :actuals
     end
 
     concern :budgetable do

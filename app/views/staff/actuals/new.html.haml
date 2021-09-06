@@ -6,5 +6,5 @@
       %h1.govuk-heading-xl
         = t("page_title.actual.new")
 
-      = form_with model: @actual, url: activity_transactions_path(@activity) do |f|
+      = form_with model: @actual, url: activity_actuals_path(@activity) do |f|
         = render partial: "form", locals: { f: f, organisations: @organisations }

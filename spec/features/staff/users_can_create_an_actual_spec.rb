@@ -253,7 +253,7 @@ RSpec.feature "Users can create an actual" do
 
       visit organisation_activity_path(activity.organisation, activity)
 
-      expect(page).not_to have_link t("page_content.actuals.button.create"), href: new_activity_transaction_path(activity)
+      expect(page).not_to have_link t("page_content.actuals.button.create"), href: new_activity_actual_path(activity)
     end
   end
 end

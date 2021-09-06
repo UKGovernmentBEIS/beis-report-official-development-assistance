@@ -18,4 +18,4 @@
           %td.govuk-table__cell= actual.receiving_organisation_name
           %td.govuk-table__cell
             - if policy(actual).edit?
-              = a11y_action_link(t('default.link.edit'), edit_activity_transaction_path(actual.parent_activity_id, actual), t("page_content.actuals.edit_noun"))
+              = a11y_action_link(t('default.link.edit'), edit_activity_actual_path(actual.parent_activity_id, actual), t("page_content.actuals.edit_noun"))

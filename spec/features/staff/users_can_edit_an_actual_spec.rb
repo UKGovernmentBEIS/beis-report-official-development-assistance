@@ -49,7 +49,7 @@ RSpec.feature "Users can edit an actual" do
       scenario "can be edited, with 'change history'" do
         visit organisation_activity_path(activity.organisation, activity)
 
-        expect(page).to have_link t("default.link.edit"), href: edit_activity_transaction_path(activity, actual)
+        expect(page).to have_link t("default.link.edit"), href: edit_activity_actual_path(activity, actual)
 
         within ".actuals" do
           expect(page).to have_content("£110.01")
@@ -73,7 +73,7 @@ RSpec.feature "Users can edit an actual" do
       scenario "does not show the edit link" do
         visit organisation_activity_path(activity.organisation, activity)
 
-        expect(page).not_to have_link t("default.link.edit"), href: edit_activity_transaction_path(activity, actual)
+        expect(page).not_to have_link t("default.link.edit"), href: edit_activity_actual_path(activity, actual)
       end
     end
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::TransactionsController < Staff::BaseController
+class Staff::ActualsController < Staff::BaseController
   include Secured
   include Activities::Breadcrumbed
 
@@ -16,7 +16,7 @@ class Staff::TransactionsController < Staff::BaseController
     authorize(@actual)
 
     prepare_default_activity_trail(@activity)
-    add_breadcrumb t("breadcrumb.actual.new"), new_activity_transaction_path(@activity)
+    add_breadcrumb t("breadcrumb.actual.new"), new_activity_actual_path(@activity)
   end
 
   def create
@@ -42,7 +42,7 @@ class Staff::TransactionsController < Staff::BaseController
     @activity = Activity.find(activity_id)
 
     prepare_default_activity_trail(@activity)
-    add_breadcrumb t("breadcrumb.actual.edit"), edit_activity_transaction_path(@activity, @actual)
+    add_breadcrumb t("breadcrumb.actual.edit"), edit_activity_actual_path(@activity, @actual)
   end
 
   def update
