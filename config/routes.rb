@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
     namespace :exports do
       resources :organisations, only: [:show] do
-        get "transactions", on: :member
+        get "actuals", on: :member
         # IATI XML exports
         get "iati/programme_activities", on: :member, to: "organisations#programme_activities"
         get "iati/project_activities", on: :member, to: "organisations#project_activities"

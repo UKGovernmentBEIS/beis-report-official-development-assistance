@@ -24,8 +24,8 @@ RSpec.describe "staff/exports/organisations/show" do
   context "when the current user is a BEIS user" do
     let(:user) { build(:beis_user) }
 
-    it "shows the link to download all transactions" do
-      expect(rendered).to have_export_row(report: "All transactions", path: transactions_exports_organisation_path(organisation, format: "csv"))
+    it "shows the link to download all actuals" do
+      expect(rendered).to have_export_row(report: "All actuals", path: actuals_exports_organisation_path(organisation, format: "csv"))
     end
 
     it "shows the links to download the XML" do
@@ -42,8 +42,8 @@ RSpec.describe "staff/exports/organisations/show" do
   context "when the current user is a delivery partner" do
     let(:user) { build(:delivery_partner_user, organisation: organisation) }
 
-    it "does not show the link to download all transactions" do
-      expect(rendered).to_not have_export_row(report: "All transactions", path: transactions_exports_organisation_path(organisation, format: "csv"))
+    it "does not show the link to download all actuals" do
+      expect(rendered).to_not have_export_row(report: "All actuals", path: actuals_exports_organisation_path(organisation, format: "csv"))
     end
 
     it "does not show the links to download the XML" do

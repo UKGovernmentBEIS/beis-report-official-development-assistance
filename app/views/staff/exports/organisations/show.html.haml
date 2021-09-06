@@ -16,7 +16,7 @@
             %th.govuk-table__header{scope: "col"}= t("table.export.organisation.actions")
         %tbody.govuk-table__body
           - if policy([:export, @organisation]).show_transactions?
-            = render partial: "row", locals: { report: "All actuals", format: "CSV", download_url: transactions_exports_organisation_path(@organisation, format: "csv") }
+            = render partial: "row", locals: { report: "All actuals", format: "CSV", download_url: actuals_exports_organisation_path(@organisation, format: "csv") }
           - if policy([:export, @organisation]).show_xml?
             - @xml_downloads.each do |download|
               = render partial: "row", locals: { report: download.title, format: "XML", download_url: download.path }

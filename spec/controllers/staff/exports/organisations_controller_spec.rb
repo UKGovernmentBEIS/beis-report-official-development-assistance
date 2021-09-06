@@ -67,9 +67,9 @@ RSpec.describe Staff::Exports::OrganisationsController do
       include_examples "allows the user to access the export"
     end
 
-    describe "#transactions" do
+    describe "#actuals" do
       before do
-        get :transactions, params: {id: organisation.id, format: :csv}
+        get :actuals, params: {id: organisation.id, format: :csv}
       end
 
       include_examples "responds with a 401"
@@ -128,9 +128,9 @@ RSpec.describe Staff::Exports::OrganisationsController do
       include_examples "allows the user to access the export"
     end
 
-    describe "#transactions" do
+    describe "#actuals" do
       before do
-        get :transactions, params: {id: organisation.id, format: :csv}
+        get :actuals, params: {id: organisation.id, format: :csv}
       end
 
       include_examples "allows the user to access the export"

@@ -18,7 +18,7 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
     @xml_downloads = Iati::XmlDownload.all_for_organisation(@organisation) if policy([:export, @organisation]).show_xml?
   end
 
-  def transactions
+  def actuals
     authorize [:export, @organisation], :show_transactions?
 
     respond_to do |format|
