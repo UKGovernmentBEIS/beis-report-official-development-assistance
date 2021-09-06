@@ -21,7 +21,7 @@ RSpec.feature "users can upload actuals" do
 
   def expect_to_see_successful_upload_summary_with(count:, total:)
     expect(page).to have_text(t("page_title.actual.upload_success"))
-    expect(page).to have_css(".transactions tr", count: count)
+    expect(page).to have_css(".actuals tr", count: count)
     expect(page).to have_link(
       t("importer.success.actual.back_link"),
       href: report_actuals_path(report)

@@ -18,7 +18,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
           fail "We expect some actuals to be present" if activity.actuals.none?
 
           activity.actuals.each do |actual|
-            within ".transactions" do
+            within ".actuals" do
               expect(page).to have_content(actual.value)
               expect(page).to have_content(actual.financial_quarter_and_year)
             end

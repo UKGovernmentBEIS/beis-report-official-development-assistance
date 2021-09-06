@@ -42,7 +42,7 @@ class Activity
       @forecasts = policy_scope(@activity.latest_forecasts)
       @refunds = policy_scope(Refund).where(parent_activity: @activity).order("financial_year DESC")
 
-      @transaction_presenters = @actuals.includes(:parent_activity).map { |actual| TransactionPresenter.new(actual) }
+      @actual_presenters = @actuals.includes(:parent_activity).map { |actual| TransactionPresenter.new(actual) }
       @budget_presenters = @budgets.includes(:parent_activity, :providing_organisation).map { |budget| BudgetPresenter.new(budget) }
       @forecast_presenters = @forecasts.map { |forecast| ForecastPresenter.new(forecast) }
       @refund_presenters = @refunds.map { |forecast| RefundPresenter.new(forecast) }

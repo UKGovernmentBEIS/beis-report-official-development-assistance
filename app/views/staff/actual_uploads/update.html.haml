@@ -17,5 +17,5 @@
         %h1.govuk-heading-xl
           = t("page_title.actual.upload_success")
 
-        = render partial: "shared/transactions/transactions_by_activity"
+        = render partial: "shared/actuals/actuals_by_activity"
         = link_to t("importer.success.actual.back_link"), report_actuals_path(@report_presenter), class: "govuk-button govuk-button"
