@@ -1,4 +1,4 @@
-class UpdateTransaction
+class UpdateActual
   def initialize(actual:, user:, report:)
     @actual = actual
     @user = user

@@ -49,7 +49,7 @@ class Staff::TransactionsController < Staff::BaseController
     @actual = Actual.find(id)
     authorize @actual
     @activity = activity
-    result = UpdateTransaction.new(
+    result = UpdateActual.new(
       actual: @actual,
       user: current_user,
       report: Report.editable_for_activity(@activity)

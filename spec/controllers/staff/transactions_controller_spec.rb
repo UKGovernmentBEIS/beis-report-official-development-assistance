@@ -15,17 +15,17 @@ RSpec.describe Staff::TransactionsController do
 
   describe "#update" do
     let(:actual) { build_stubbed(:actual) }
-    let(:updater) { instance_double(UpdateTransaction, call: result) }
+    let(:updater) { instance_double(UpdateActual, call: result) }
 
     before do
       allow(Actual).to receive(:find).and_return(actual)
       policy = instance_double(ActualPolicy, update?: true)
       allow(ActualPolicy).to receive(:new).and_return(policy)
-      allow(UpdateTransaction).to receive(:new).and_return(updater)
+      allow(UpdateActual).to receive(:new).and_return(updater)
       allow(Report).to receive(:editable_for_activity).and_return(report)
     end
 
-    it "asks the UpdateTransaction service to persist the changes" do
+    it "asks the UpdateActual service to persist the changes" do
       params = {
         actual: {value: "200.02", financial_quarter: "2"},
         activity_id: "abc123",
@@ -34,7 +34,7 @@ RSpec.describe Staff::TransactionsController do
 
       put :update, params: params
 
-      expect(UpdateTransaction).to have_received(:new).with(
+      expect(UpdateActual).to have_received(:new).with(
         user: user,
         actual: actual,
         report: report
