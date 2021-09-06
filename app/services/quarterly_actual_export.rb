@@ -1,4 +1,4 @@
-class QuarterlyTransactionExport
+class QuarterlyActualExport
   HEADERS = [
     "Activity RODA Identifier",
     "Activity BEIS Identifier",
@@ -6,7 +6,7 @@ class QuarterlyTransactionExport
 
   def initialize(activities)
     @activities = activities.to_a
-    load_transactions
+    load_actuals
   end
 
   def headers
@@ -32,10 +32,10 @@ class QuarterlyTransactionExport
     end
   end
 
-  def load_transactions
+  def load_actuals
     group_columns = "parent_activity_id, financial_year, financial_quarter"
 
-    txn_relation = Transaction
+    actual_relation = Actual
       .where(parent_activity: @activities)
       .group(group_columns)
       .select("#{group_columns}, SUM(value) AS value")
@@ -43,11 +43,11 @@ class QuarterlyTransactionExport
     @actuals = {}
     @financial_quarters = Set.new
 
-    txn_relation.each do |txn|
-      key = [txn.parent_activity_id, txn.own_financial_quarter]
-      @actuals[key] = txn
+    actual_relation.each do |actual|
+      key = [actual.parent_activity_id, actual.own_financial_quarter]
+      @actuals[key] = actual
 
-      @financial_quarters.add(txn.own_financial_quarter)
+      @financial_quarters.add(actual.own_financial_quarter)
     end
   end
 

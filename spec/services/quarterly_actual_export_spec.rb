@@ -1,13 +1,13 @@
-RSpec.describe QuarterlyTransactionExport do
+RSpec.describe QuarterlyActualExport do
   let(:delivery_partner) { create(:delivery_partner_organisation) }
   let(:activities) { Activity.where(organisation: delivery_partner) }
-  let(:export) { QuarterlyTransactionExport.new(activities) }
+  let(:export) { QuarterlyActualExport.new(activities) }
 
   let :quarter_headers do
     export.headers.drop(2)
   end
 
-  let :transaction_data do
+  let :actual_data do
     export.rows.map { |row| row.take(1) + row.drop(2) }
   end
 
@@ -16,7 +16,7 @@ RSpec.describe QuarterlyTransactionExport do
 
     expect(quarter_headers).to eq []
 
-    expect(transaction_data).to eq([
+    expect(actual_data).to eq([
       [project.roda_identifier],
     ])
   end
@@ -29,7 +29,7 @@ RSpec.describe QuarterlyTransactionExport do
 
     expect(quarter_headers).to eq ["FQ1 2014-2015"]
 
-    expect(transaction_data).to eq([
+    expect(actual_data).to eq([
       [project.roda_identifier, "30.00"],
     ])
   end
@@ -42,7 +42,7 @@ RSpec.describe QuarterlyTransactionExport do
 
     expect(quarter_headers).to eq ["FQ1 2014-2015", "FQ2 2014-2015", "FQ3 2014-2015", "FQ4 2014-2015"]
 
-    expect(transaction_data).to eq([
+    expect(actual_data).to eq([
       [project.roda_identifier, "10.00", "0.00", "0.00", "20.00"],
     ])
   end
@@ -56,13 +56,13 @@ RSpec.describe QuarterlyTransactionExport do
 
     expect(quarter_headers).to eq ["FQ1 2014-2015", "FQ2 2014-2015", "FQ3 2014-2015", "FQ4 2014-2015", "FQ1 2015-2016", "FQ2 2015-2016"]
 
-    expect(transaction_data).to match_array([
+    expect(actual_data).to match_array([
       [project.roda_identifier, "10.00", "0.00", "0.00", "0.00", "0.00", "0.00"],
       [third_party_project.roda_identifier, "0.00", "0.00", "0.00", "0.00", "0.00", "20.00"],
     ])
   end
 
-  it "includes activities that do not have any transactions recorded" do
+  it "includes activities that do not have any actuals recorded" do
     project = create(:project_activity, organisation: delivery_partner)
     third_party_project = create(:third_party_project_activity, organisation: delivery_partner)
 
@@ -70,7 +70,7 @@ RSpec.describe QuarterlyTransactionExport do
 
     expect(quarter_headers).to eq ["FQ1 2014-2015"]
 
-    expect(transaction_data).to match_array([
+    expect(actual_data).to match_array([
       [project.roda_identifier, "10.00"],
       [third_party_project.roda_identifier, "0.00"],
     ])
