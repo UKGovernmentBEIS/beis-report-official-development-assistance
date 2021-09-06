@@ -416,7 +416,7 @@ class Activity < ApplicationRecord
   end
 
   def actual_total_for_report_financial_quarter(report:)
-    TransactionOverview.new(self, report).value_for_report_quarter
+    ActualOverview.new(self, report).value_for_report_quarter
   end
 
   def forecasted_total_for_report_financial_quarter(report:)

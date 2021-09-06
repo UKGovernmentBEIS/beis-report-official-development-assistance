@@ -1,8 +1,8 @@
-RSpec.describe TransactionOverview do
+RSpec.describe ActualOverview do
   let(:delivery_partner) { create(:delivery_partner_organisation) }
   let(:project) { create(:project_activity, organisation: delivery_partner) }
   let(:reporting_cycle) { ReportingCycle.new(project, 4, 2018) }
-  let(:overview) { TransactionOverview.new(project, report) }
+  let(:overview) { ActualOverview.new(project, report) }
 
   #   Report:     2018-Q4     2019-Q1     2019-Q2
   #   Quarter

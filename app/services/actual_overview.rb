@@ -1,4 +1,4 @@
-class TransactionOverview
+class ActualOverview
   def initialize(activity, report)
     @activity = activity
     @report = report
