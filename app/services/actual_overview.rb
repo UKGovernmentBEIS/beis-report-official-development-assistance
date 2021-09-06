@@ -7,7 +7,7 @@ class ActualOverview
   def all_quarters
     group_fields = "transactions.financial_year, transactions.financial_quarter"
 
-    relation = transaction_relation
+    relation = actual_relation
       .group(group_fields)
       .select("#{group_fields}, SUM(value) AS value")
 
@@ -19,14 +19,14 @@ class ActualOverview
   end
 
   def value_for(financial_quarter:, financial_year:)
-    transaction_relation
+    actual_relation
       .where(financial_quarter: financial_quarter, financial_year: financial_year)
       .sum(:value)
   end
 
   private
 
-  def transaction_relation
+  def actual_relation
     Actual
       .joins(:report)
       .where(parent_activity_id: @activity.id)
