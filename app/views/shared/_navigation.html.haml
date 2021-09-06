@@ -15,6 +15,9 @@
       - if policy([:export, Organisation]).index?
         %li{ class: navigation_item_class(exports_path) }
           = link_to t("page_title.export.index"), exports_path, class: "govuk-header__link"
+      - elsif policy([:export, current_user.organisation]).show?
+        %li{ class: navigation_item_class(exports_organisation_path(id: current_user.organisation_id)) }
+          = link_to t("page_title.export.index"), exports_organisation_path(id: current_user.organisation_id), class: "govuk-header__link"
 
       - if policy(Organisation).index?
         %li{ class: navigation_item_class(organisations_path) }
