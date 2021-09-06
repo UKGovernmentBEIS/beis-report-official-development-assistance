@@ -51,6 +51,12 @@ RSpec.describe Staff::Exports::OrganisationsController do
 
         get "show", params: {id: organisation.id}
       end
+
+      it "does not fetch the XML downloads" do
+        get "show", params: {id: organisation.id}
+
+        expect(assigns(:xml_downloads)).to be_nil
+      end
     end
 
     describe "#external_income" do
@@ -105,6 +111,12 @@ RSpec.describe Staff::Exports::OrganisationsController do
         expect(controller).to receive(:add_breadcrumb).with(t("breadcrumbs.export.organisation.show", name: organisation.name), :exports_organisation_path)
 
         get "show", params: {id: organisation.id}
+      end
+
+      it "fetches the XML downloads" do
+        get "show", params: {id: organisation.id}
+
+        expect(assigns(:xml_downloads)).to be_an(Array)
       end
     end
 

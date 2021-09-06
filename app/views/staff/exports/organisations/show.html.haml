@@ -15,8 +15,11 @@
             %th.govuk-table__header{scope: "col"}= t("table.export.organisation.format")
             %th.govuk-table__header{scope: "col"}= t("table.export.organisation.actions")
         %tbody.govuk-table__body
-          = render partial: "row", locals: { report: "All transactions", format: "CSV", download_url: transactions_exports_organisation_path(@organisation, format: "csv") }
-          - @xml_downloads.each do |download|
-            = render partial: "row", locals: { report: download.title, format: "XML", download_url: download.path }
-          - Fund.all.each do |fund|
-            = render partial: "row", locals: { report: "#{fund.name} external income", format: "CSV", download_url: external_income_exports_organisation_path(@organisation, fund_id: fund.id, format: "csv") }
+          - if policy([:export, @organisation]).show_transactions?
+            = render partial: "row", locals: { report: "All transactions", format: "CSV", download_url: transactions_exports_organisation_path(@organisation, format: "csv") }
+          - if policy([:export, @organisation]).show_xml?
+            - @xml_downloads.each do |download|
+              = render partial: "row", locals: { report: download.title, format: "XML", download_url: download.path }
+          - if policy([:export, @organisation]).show_external_income?
+            - Fund.all.each do |fund|
+              = render partial: "row", locals: { report: "#{fund.name} external income", format: "CSV", download_url: external_income_exports_organisation_path(@organisation, fund_id: fund.id, format: "csv") }
