@@ -17,13 +17,13 @@ class QuarterlyActualExport
 
   def rows
     @activities.map do |activity|
-      [activity.roda_identifier, activity.beis_identifier] + transaction_row(activity)
+      [activity.roda_identifier, activity.beis_identifier] + actual_row(activity)
     end
   end
 
   private
 
-  def transaction_row(activity)
+  def actual_row(activity)
     return [] if @actuals.empty?
 
     financial_quarter_range.map do |quarter|
