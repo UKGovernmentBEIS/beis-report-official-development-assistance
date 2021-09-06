@@ -23,7 +23,7 @@ class Staff::TransactionsController < Staff::BaseController
     @activity = activity
     authorize @activity
 
-    result = CreateTransaction.new(activity: @activity)
+    result = CreateActual.new(activity: @activity)
       .call(attributes: actual_params)
     @actual = result.object
 

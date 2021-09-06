@@ -88,7 +88,7 @@ class ImportTransactions
       attrs = @converter.to_h
       assign_default_values(attrs)
 
-      creator = CreateTransaction.new(activity: @activity, report: @report)
+      creator = CreateActual.new(activity: @activity, report: @report)
       result = creator.call(attributes: attrs)
       return unless result
 

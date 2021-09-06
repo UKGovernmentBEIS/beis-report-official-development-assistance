@@ -1,4 +1,4 @@
-class CreateTransaction
+class CreateActual
   attr_accessor :activity, :report, :actual
 
   def initialize(activity:, report: nil)

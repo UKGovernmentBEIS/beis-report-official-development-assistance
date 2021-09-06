@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CreateTransaction do
+RSpec.describe CreateActual do
   let!(:service_owner) { create(:beis_organisation) }
   let(:activity) { create(:project_activity) }
 
