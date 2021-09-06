@@ -1,5 +1,5 @@
 class Transaction
-  class GroupedTransactionFetcher
+  class GroupedActualsFetcher
     def initialize(report)
       @report = report
     end

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Transaction::GroupedTransactionFetcher do
+RSpec.describe Transaction::GroupedActualsFetcher do
   let(:report) { create(:report) }
 
   subject { described_class.new(report) }
