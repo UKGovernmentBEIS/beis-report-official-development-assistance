@@ -371,13 +371,13 @@ RSpec.describe ImportTransactions do
       ])
     end
 
-    it "imports all transactions successfully" do
+    it "imports all actuals successfully" do
       expect(importer.errors).to eq([])
       expect(importer.imported_actuals.count).to eq(3)
       expect(importer.imported_actuals).to match_array(report.actuals)
     end
 
-    it "assigns each transaction to the correct report" do
+    it "assigns each actual to the correct report" do
       expect(report.actuals.pluck(:description)).to contain_exactly(
         "FQ4 1999-2000 spend on Example Project",
         "FQ4 1999-2000 spend on Sibling Project",
@@ -385,7 +385,7 @@ RSpec.describe ImportTransactions do
       )
     end
 
-    it "assigns each transaction to the correct activity" do
+    it "assigns each actual to the correct activity" do
       expect(project.actuals.pluck(:description)).to eq([
         "FQ4 1999-2000 spend on Example Project",
       ])

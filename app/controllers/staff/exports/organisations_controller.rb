@@ -26,7 +26,7 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
         activities = Activity.where(organisation: @organisation)
         export = QuarterlyTransactionExport.new(activities)
 
-        stream_csv_download(filename: "transactions.csv", headers: export.headers) do |csv|
+        stream_csv_download(filename: "actuals.csv", headers: export.headers) do |csv|
           export.rows.each { |row| csv << row }
         end
       end

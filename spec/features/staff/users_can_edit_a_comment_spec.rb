@@ -3,7 +3,7 @@ RSpec.describe "Users can edit a comment" do
   let(:delivery_partner_user) { create(:delivery_partner_user) }
 
   let(:activity) { create(:project_activity, organisation: delivery_partner_user.organisation) }
-  let(:transaction) { create(:actual, report: report, activity: activity) }
+  let(:actual) { create(:actual, report: report, activity: activity) }
   let(:report) { create(:report, :active, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
   let!(:comment) { create(:comment, activity_id: activity.id, report_id: report.id, owner: delivery_partner_user) }
 

@@ -5,7 +5,7 @@ RSpec.describe CreateTransaction do
   let(:activity) { create(:project_activity) }
 
   describe "#call" do
-    it "sets the parent activity as the one this transaction belongs to" do
+    it "sets the parent activity as the one this actual belongs to" do
       result = described_class.new(activity: activity).call
       expect(result.object.parent_activity).to eq(activity)
     end
@@ -19,7 +19,7 @@ RSpec.describe CreateTransaction do
       expect(result.success?).to be true
     end
 
-    context "when the transaction isn't valid" do
+    context "when the actual isn't valid" do
       it "returns a failed result" do
         allow_any_instance_of(Actual).to receive(:valid?).and_return(false)
 

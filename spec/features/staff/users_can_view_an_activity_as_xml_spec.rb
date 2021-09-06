@@ -289,13 +289,13 @@ RSpec.feature "Users can view an activity as XML" do
         end
       end
 
-      context "when the activity has transactions" do
+      context "when the activity has actuals" do
         let(:activity) { create(:project_activity) }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
-        it "only includes transactions which belong to the activity" do
-          _transaction = create(:actual, parent_activity: activity)
-          _other_transaction = create(:actual)
+        it "only includes actuals which belong to the activity" do
+          _actual = create(:actual, parent_activity: activity)
+          _other_actual = create(:actual)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
@@ -303,17 +303,17 @@ RSpec.feature "Users can view an activity as XML" do
         end
 
         it "has the correct transaction XML" do
-          transaction = create(:actual, parent_activity: activity)
+          actual = create(:actual, parent_activity: activity)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 
           expect(xml.xpath("//iati-activity/transaction/transaction-type/@code").text).to eq("1")
-          expect(xml.xpath("//iati-activity/transaction/receiver-org/narrative").text).to eq(transaction.receiving_organisation_name)
+          expect(xml.xpath("//iati-activity/transaction/receiver-org/narrative").text).to eq(actual.receiving_organisation_name)
           expect(xml.xpath("//iati-activity/transaction/value").text).to eq("110.01")
         end
 
         it "omits the receiving organisation if one is not present" do
-          _transaction = create(:actual, :without_receiving_organisation, parent_activity: activity)
+          _actual = create(:actual, :without_receiving_organisation, parent_activity: activity)
 
           visit organisation_activity_path(organisation, activity, format: :xml)
 

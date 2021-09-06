@@ -1,12 +1,12 @@
 require "rails_helper"
 
 RSpec.describe UpdateTransaction do
-  let(:transaction) { create(:actual, value: BigDecimal("101.01"), financial_quarter: 1) }
+  let(:actual) { create(:actual, value: BigDecimal("101.01"), financial_quarter: 1) }
   let(:user) { double("user") }
   let(:report) { double("report") }
 
   let(:updater) do
-    described_class.new(transaction: transaction, user: user, report: report)
+    described_class.new(transaction: actual, user: user, report: report)
   end
 
   let(:history_recorder) do
@@ -20,7 +20,7 @@ RSpec.describe UpdateTransaction do
 
     context "when the change is persisted successfully" do
       before do
-        allow(transaction).to receive(:save).and_return(true)
+        allow(actual).to receive(:save).and_return(true)
       end
 
       let(:expected_changes) do
@@ -37,8 +37,8 @@ RSpec.describe UpdateTransaction do
         expect(history_recorder).to have_received(:call).with(
           changes: expected_changes,
           reference: "Update to Actual",
-          activity: transaction.parent_activity,
-          trackable: transaction,
+          activity: actual.parent_activity,
+          trackable: actual,
           report: report
         )
       end
@@ -52,7 +52,7 @@ RSpec.describe UpdateTransaction do
 
     context "when the change is NOT persisted successfully" do
       before do
-        allow(transaction).to receive(:save).and_return(false)
+        allow(actual).to receive(:save).and_return(false)
       end
 
       it "does NOT ask the HistoryRecorder to handle the changes" do

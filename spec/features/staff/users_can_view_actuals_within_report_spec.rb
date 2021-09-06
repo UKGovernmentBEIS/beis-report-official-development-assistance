@@ -7,7 +7,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
       authenticate!(user: user)
     end
 
-    def expect_to_see_a_table_of_transactions_grouped_by_activity(activities)
+    def expect_to_see_a_table_of_actuals_grouped_by_activity(activities)
       fail "We expect some activities to be present" if activities.none?
 
       activities.each do |activity|
@@ -15,7 +15,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
           expect(page).to have_content(activity.title)
           expect(page).to have_content(activity.roda_identifier)
 
-          fail "We expect some transactions to be present" if activity.actuals.none?
+          fail "We expect some actuals to be present" if activity.actuals.none?
 
           activity.actuals.each do |actual|
             within ".transactions" do
@@ -48,11 +48,11 @@ RSpec.feature "Users can view actuals in tab within a report" do
     end
 
     def expect_to_see_total_of_actual_amounts(activities)
-      transaction_total = activities.map(&:actuals).flatten.sum(&:value)
+      actuals_total = activities.map(&:actuals).flatten.sum(&:value)
 
       within "#actuals .totals" do
         expect(page).to have_content(
-          ActionController::Base.helpers.number_to_currency(transaction_total, unit: "£")
+          ActionController::Base.helpers.number_to_currency(actuals_total, unit: "£")
         )
       end
     end
@@ -95,7 +95,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
       expect(page).to have_content("Actuals")
       expect(page).to have_link(t("action.actual.upload.link"))
 
-      expect_to_see_a_table_of_transactions_grouped_by_activity(activities)
+      expect_to_see_a_table_of_actuals_grouped_by_activity(activities)
       expect_to_see_a_table_of_refunds_grouped_by_activity(activities)
 
       expect_to_see_total_of_actual_amounts(activities)

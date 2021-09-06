@@ -10,7 +10,7 @@ class QuarterlyTransactionExport
   end
 
   def headers
-    return HEADERS if @transactions.empty?
+    return HEADERS if @actuals.empty?
 
     HEADERS + financial_quarter_range.map(&:to_s)
   end
@@ -24,10 +24,10 @@ class QuarterlyTransactionExport
   private
 
   def transaction_row(activity)
-    return [] if @transactions.empty?
+    return [] if @actuals.empty?
 
     financial_quarter_range.map do |quarter|
-      value = @transactions[[activity.id, quarter]]&.value || 0
+      value = @actuals[[activity.id, quarter]]&.value || 0
       "%.2f" % value
     end
   end
@@ -40,12 +40,12 @@ class QuarterlyTransactionExport
       .group(group_columns)
       .select("#{group_columns}, SUM(value) AS value")
 
-    @transactions = {}
+    @actuals = {}
     @financial_quarters = Set.new
 
     txn_relation.each do |txn|
       key = [txn.parent_activity_id, txn.own_financial_quarter]
-      @transactions[key] = txn
+      @actuals[key] = txn
 
       @financial_quarters.add(txn.own_financial_quarter)
     end

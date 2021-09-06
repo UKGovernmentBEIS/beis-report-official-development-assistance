@@ -113,7 +113,7 @@ RSpec.feature "Users can view an activity" do
 
     scenario "the financial summary and activity financials can be viewed" do
       activity = create(:programme_activity, organisation: user.organisation)
-      transaction = create(:actual, parent_activity: activity, value: 10)
+      actual = create(:actual, parent_activity: activity, value: 10)
       budget = create(:budget, parent_activity: activity, value: 10)
 
       create(:actual, parent_activity: activity, value: 50)
@@ -129,7 +129,7 @@ RSpec.feature "Users can view an activity" do
         expect(page).to have_content "Total budget to date £65.00"
         expect(page).to have_content "Total forecasted spend to date £70.00"
       end
-      expect(page).to have_content transaction.value
+      expect(page).to have_content actual.value
       expect(page).to have_content budget.value
     end
 

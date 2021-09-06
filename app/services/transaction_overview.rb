@@ -27,7 +27,7 @@ class TransactionOverview
   private
 
   def transaction_relation
-    Transaction
+    Actual
       .joins(:report)
       .where(parent_activity_id: @activity.id)
       .merge(Report.historically_up_to(@report))

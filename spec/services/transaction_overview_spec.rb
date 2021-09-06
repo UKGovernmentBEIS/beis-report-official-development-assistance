@@ -18,45 +18,39 @@ RSpec.describe TransactionOverview do
 
   before do
     reporting_cycle.tick
-    create_transaction(financial_year: 2017, financial_quarter: 1, value: 10)
-    create_transaction(financial_year: 2017, financial_quarter: 4, value: 20)
-    create_transaction(financial_year: 2018, financial_quarter: 1, value: 40)
-    create_transaction(financial_year: 2018, financial_quarter: 3, value: 80)
-    create_transaction(financial_year: 2018, financial_quarter: 4, value: 160)
+    create_actual(financial_year: 2017, financial_quarter: 1, value: 10)
+    create_actual(financial_year: 2017, financial_quarter: 4, value: 20)
+    create_actual(financial_year: 2018, financial_quarter: 1, value: 40)
+    create_actual(financial_year: 2018, financial_quarter: 3, value: 80)
+    create_actual(financial_year: 2018, financial_quarter: 4, value: 160)
 
     reporting_cycle.tick
-    create_transaction(financial_year: 2017, financial_quarter: 2, value: 320)
-    create_transaction(financial_year: 2017, financial_quarter: 4, value: 640)
-    create_transaction(financial_year: 2018, financial_quarter: 2, value: 1_280)
-    create_transaction(financial_year: 2018, financial_quarter: 3, value: 2_560)
+    create_actual(financial_year: 2017, financial_quarter: 2, value: 320)
+    create_actual(financial_year: 2017, financial_quarter: 4, value: 640)
+    create_actual(financial_year: 2018, financial_quarter: 2, value: 1_280)
+    create_actual(financial_year: 2018, financial_quarter: 3, value: 2_560)
 
     reporting_cycle.tick
-    create_transaction(financial_year: 2017, financial_quarter: 3, value: 5_120)
-    create_transaction(financial_year: 2018, financial_quarter: 1, value: 10_240)
-    create_transaction(financial_year: 2018, financial_quarter: 2, value: 20_480)
-    create_transaction(financial_year: 2018, financial_quarter: 3, value: 40_960)
-    create_transaction(financial_year: 2018, financial_quarter: 4, value: 81_920)
+    create_actual(financial_year: 2017, financial_quarter: 3, value: 5_120)
+    create_actual(financial_year: 2018, financial_quarter: 1, value: 10_240)
+    create_actual(financial_year: 2018, financial_quarter: 2, value: 20_480)
+    create_actual(financial_year: 2018, financial_quarter: 3, value: 40_960)
+    create_actual(financial_year: 2018, financial_quarter: 4, value: 81_920)
   end
 
-  def create_transaction(attributes)
+  def create_actual(attributes)
     create(:actual, parent_activity: project, report: reporting_cycle.report, **attributes)
   end
 
-  shared_examples_for "transaction report history" do
-    def transaction_values(records)
-      records.map do |entry|
-        [entry.financial_quarter, entry.financial_year, entry.value]
-      end
-    end
-
-    it "returns the transaction value for a particular quarter" do
+  shared_examples_for "actual report history" do
+    it "returns the actual value for a particular quarter" do
       expected_values.each do |quarter, year, amount|
         value = overview.value_for(financial_quarter: quarter, financial_year: year)
         expect(value).to eq(amount)
       end
     end
 
-    it "returns the transaction value for a particular quarter using a bulk load" do
+    it "returns the actual value for a particular quarter using a bulk load" do
       expected_values.each do |quarter, year, amount|
         value = overview.all_quarters.value_for(financial_quarter: quarter, financial_year: year)
         expect(value).to eq(amount)
@@ -80,7 +74,7 @@ RSpec.describe TransactionOverview do
       ]
     }
 
-    it_should_behave_like "transaction report history"
+    it_should_behave_like "actual report history"
   end
 
   context "for the middle report" do
@@ -99,7 +93,7 @@ RSpec.describe TransactionOverview do
       ]
     }
 
-    it_should_behave_like "transaction report history"
+    it_should_behave_like "actual report history"
   end
 
   context "for the latest report" do
@@ -118,6 +112,6 @@ RSpec.describe TransactionOverview do
       ]
     }
 
-    it_should_behave_like "transaction report history"
+    it_should_behave_like "actual report history"
   end
 end

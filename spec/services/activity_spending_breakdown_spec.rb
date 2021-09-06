@@ -6,7 +6,7 @@ RSpec.describe ActivitySpendingBreakdown do
   let(:report) { Report.for_activity(project).in_historical_order.first }
   let(:breakdown) { ActivitySpendingBreakdown.new(activity: project, report: report) }
 
-  def create_transaction(financial_year, financial_quarter, value)
+  def create_actual(financial_year, financial_quarter, value)
     create(:actual, report: report, parent_activity: project, financial_year: financial_year, financial_quarter: financial_quarter, value: value)
   end
 
@@ -67,35 +67,35 @@ RSpec.describe ActivitySpendingBreakdown do
   end
 
   describe "net spending columns" do
-    context "with a positive transaction" do
+    context "with a positive actual" do
       before do
-        create_transaction(2018, 3, 50)
+        create_actual(2018, 3, 50)
       end
 
-      it "includes the transaction" do
+      it "includes the actual" do
         expect(breakdown.combined_hash).to include(
           "FQ3 2018-2019 actual net" => "50.00"
         )
       end
 
-      it "includes a zero value for quarters with no transactions" do
+      it "includes a zero value for quarters with no actual" do
         expect(breakdown.combined_hash).to include(
           "FQ4 2018-2019 actual net" => "0.00"
         )
       end
     end
 
-    context "with multiple positive transactions" do
+    context "with multiple positive actual" do
       before do
-        create_transaction(2018, 2, 80)
-        create_transaction(2018, 2, 160)
+        create_actual(2018, 2, 80)
+        create_actual(2018, 2, 160)
 
-        create_transaction(2018, 3, 10)
-        create_transaction(2018, 3, 20)
-        create_transaction(2018, 3, 40)
+        create_actual(2018, 3, 10)
+        create_actual(2018, 3, 20)
+        create_actual(2018, 3, 40)
       end
 
-      it "includes the sum of the transaction values by quarter" do
+      it "includes the sum of the actual values by quarter" do
         expect(breakdown.combined_hash).to include(
           "FQ2 2018-2019 actual net" => "240.00",
           "FQ3 2018-2019 actual net" => "70.00",
@@ -103,14 +103,14 @@ RSpec.describe ActivitySpendingBreakdown do
       end
     end
 
-    context "with positive and negative transactions" do
+    context "with positive and negative actuals" do
       before do
-        create_transaction(2018, 3, 10)
-        create_transaction(2018, 3, -20)
-        create_transaction(2018, 3, 40)
+        create_actual(2018, 3, 10)
+        create_actual(2018, 3, -20)
+        create_actual(2018, 3, 40)
       end
 
-      it "includes the sum of the transaction values" do
+      it "includes the sum of the actual values" do
         expect(breakdown.combined_hash).to include(
           "FQ3 2018-2019 actual net" => "30.00",
         )
@@ -119,12 +119,12 @@ RSpec.describe ActivitySpendingBreakdown do
   end
 
   describe "detailed spending columns" do
-    context "with a positive transaction" do
+    context "with a positive actual" do
       before do
-        create_transaction(2020, 3, 50)
+        create_actual(2020, 3, 50)
       end
 
-      it "includes the transaction as a spend and net value" do
+      it "includes the actual as a spend and net value" do
         expect(breakdown.combined_hash).to include(
           "FQ3 2020-2021 actual spend" => "50.00",
           "FQ3 2020-2021 actual refund" => "0.00",
@@ -132,7 +132,7 @@ RSpec.describe ActivitySpendingBreakdown do
         )
       end
 
-      it "includes a zero value for quarters with no transactions" do
+      it "includes a zero value for quarters with no actuals" do
         expect(breakdown.combined_hash).to include(
           "FQ2 2020-2021 actual spend" => "0.00",
           "FQ2 2020-2021 actual refund" => "0.00",
@@ -141,17 +141,17 @@ RSpec.describe ActivitySpendingBreakdown do
       end
     end
 
-    context "with multiple positive transactions" do
+    context "with multiple positive actuals" do
       before do
-        create_transaction(2020, 2, 80)
-        create_transaction(2020, 2, 160)
+        create_actual(2020, 2, 80)
+        create_actual(2020, 2, 160)
 
-        create_transaction(2020, 3, 10)
-        create_transaction(2020, 3, 20)
-        create_transaction(2020, 3, 40)
+        create_actual(2020, 3, 10)
+        create_actual(2020, 3, 20)
+        create_actual(2020, 3, 40)
       end
 
-      it "includes the sum of the transaction values by quarter" do
+      it "includes the sum of the actual values by quarter" do
         expect(breakdown.combined_hash).to include(
           "FQ2 2020-2021 actual spend" => "240.00",
           "FQ2 2020-2021 actual refund" => "0.00",
@@ -164,14 +164,14 @@ RSpec.describe ActivitySpendingBreakdown do
       end
     end
 
-    context "with positive and negative transactions" do
+    context "with positive and negative actuals" do
       before do
-        create_transaction(2020, 3, 10)
-        create_transaction(2020, 3, -20)
-        create_transaction(2020, 3, 40)
+        create_actual(2020, 3, 10)
+        create_actual(2020, 3, -20)
+        create_actual(2020, 3, 40)
       end
 
-      it "includes the sum of the transaction spend, refund, and net" do
+      it "includes the sum of the actual spend, refund, and net" do
         expect(breakdown.combined_hash).to include(
           "FQ3 2020-2021 actual spend" => "50.00",
           "FQ3 2020-2021 actual refund" => "20.00",
@@ -180,14 +180,14 @@ RSpec.describe ActivitySpendingBreakdown do
       end
     end
 
-    context "with net negative transactions" do
+    context "with net negative actuals" do
       before do
-        create_transaction(2020, 3, 10)
-        create_transaction(2020, 3, 20)
-        create_transaction(2020, 3, -40)
+        create_actual(2020, 3, 10)
+        create_actual(2020, 3, 20)
+        create_actual(2020, 3, -40)
       end
 
-      it "includes the sum of the transaction spend, refund, and net" do
+      it "includes the sum of the actual spend, refund, and net" do
         expect(breakdown.combined_hash).to include(
           "FQ3 2020-2021 actual spend" => "30.00",
           "FQ3 2020-2021 actual refund" => "40.00",

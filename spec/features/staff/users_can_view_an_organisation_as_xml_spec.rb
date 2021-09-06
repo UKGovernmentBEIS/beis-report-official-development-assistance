@@ -44,10 +44,10 @@ RSpec.feature "Users can view an organisation as XML" do
         end
       end
 
-      scenario "the XML file contains budgets and transactions for activities in the organisation" do
+      scenario "the XML file contains budgets and actuals for activities in the organisation" do
         project = create(:project_activity, :newton_funded, organisation: organisation, extending_organisation: organisation)
         _budget = create(:budget, parent_activity: project, value: 2000)
-        _transaction = create(:actual, parent_activity: project, value: 100)
+        _actual = create(:actual, parent_activity: project, value: 100)
 
         visit exports_organisation_path(organisation)
 
@@ -111,7 +111,7 @@ RSpec.feature "Users can view an organisation as XML" do
           expect(xml.xpath("//iati-activity/planned-disbursement/value").map(&:text)).to eql(["560.00", "70.00"])
         end
 
-        it "sums up the total transactions of all the programmes and their child activities by quarter" do
+        it "sums up the total actuals of all the programmes and their child activities by quarter" do
           programme = create(:programme_activity, :newton_funded, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
           other_programme = create(:programme_activity, parent: programme.parent, extending_organisation: organisation)
 
@@ -140,7 +140,7 @@ RSpec.feature "Users can view an organisation as XML" do
       end
 
       context "when downloading project level activities" do
-        it "includes all transactions for those projects only" do
+        it "includes all actuals for those projects only" do
           project = create(:project_activity, :gcrf_funded, :with_transparency_identifier, organisation: organisation, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
           other_project = create(:project_activity, :gcrf_funded, parent: project.parent, organisation: organisation, extending_organisation: organisation)
 

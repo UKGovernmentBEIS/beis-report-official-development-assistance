@@ -144,7 +144,7 @@ RSpec.describe RefundPolicy do
               report.update(organisation: activity.organisation, fund: activity.associated_fund)
             end
 
-            context "when the report is not the one in which the transaction was created" do
+            context "when the report is not the one in which the actual was created" do
               it { is_expected.to permit_action(:show) }
               it { is_expected.to permit_action(:create) }
 
@@ -153,7 +153,7 @@ RSpec.describe RefundPolicy do
               it { is_expected.to forbid_action(:destroy) }
             end
 
-            context "when the report is the one in which the transaction was created" do
+            context "when the report is the one in which the actual was created" do
               before do
                 refund.update(report: report)
               end
