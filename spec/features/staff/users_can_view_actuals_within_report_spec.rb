@@ -11,7 +11,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
       fail "We expect some activities to be present" if activities.none?
 
       activities.each do |activity|
-        within "#activity_transactions_#{activity.id}" do
+        within "#activity_actuals_#{activity.id}" do
           expect(page).to have_content(activity.title)
           expect(page).to have_content(activity.roda_identifier)
 

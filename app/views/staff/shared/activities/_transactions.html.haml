@@ -4,4 +4,4 @@
       = t("page_content.activity.actuals")
     - if policy(activity).edit?
       = link_to(t("page_content.actuals.button.create"), new_activity_transaction_path(activity), class: "govuk-button")
-    = render partial: '/staff/shared/transactions/table', locals: { transactions: transaction_presenters }
+    = render partial: '/staff/shared/transactions/table', locals: { actuals: transaction_presenters }

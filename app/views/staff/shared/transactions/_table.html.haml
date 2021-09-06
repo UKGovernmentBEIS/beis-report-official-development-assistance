@@ -1,4 +1,4 @@
-- unless transactions.empty?
+- unless actuals.empty?
   %table.govuk-table.actuals
     %thead.govuk-table__head
       %tr.govuk-table__row
@@ -11,7 +11,7 @@
         %th.govuk-table__header
 
     %tbody.govuk-table__body
-      - transactions.each do |actual|
+      - actuals.each do |actual|
         %tr.govuk-table__row{id: actual.id}
           %td.govuk-table__cell= actual.financial_quarter_and_year
           %td.govuk-table__cell= actual.value
