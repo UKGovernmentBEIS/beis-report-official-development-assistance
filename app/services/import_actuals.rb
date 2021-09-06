@@ -17,9 +17,9 @@ class ImportActuals
     @errors = []
   end
 
-  def import(transactions)
+  def import(actuals)
     ActiveRecord::Base.transaction do
-      @imported_actuals = transactions.map.with_index { |row, index| import_row(row, index) }
+      @imported_actuals = actuals.map.with_index { |row, index| import_row(row, index) }
       unless @errors.empty?
         @imported_actuals = []
         raise ActiveRecord::Rollback
@@ -35,7 +35,7 @@ class ImportActuals
       add_error(index, attr_name, value, message)
     end
 
-    importer.transaction
+    importer.actual
   end
 
   def add_error(row_number, column, value, message)
@@ -43,7 +43,7 @@ class ImportActuals
   end
 
   class RowImporter
-    attr_reader :errors, :transaction
+    attr_reader :errors, :actual
 
     def initialize(report, uploader, row)
       @report = report
@@ -54,12 +54,12 @@ class ImportActuals
 
     def import_row
       @converter = Converter.new(@row)
-      return if @converter.zero_value_transaction?
+      return if @converter.zero_value_actual?
 
       @errors.update(@converter.errors)
 
       authorise_activity
-      @transaction = create_transaction
+      @actual = create_actual
     end
 
     private
@@ -82,7 +82,7 @@ class ImportActuals
       @activity.organisation == @report.organisation && @activity.associated_fund == @report.fund
     end
 
-    def create_transaction
+    def create_actual
       return unless @activity && @errors.empty?
 
       attrs = @converter.to_h
@@ -195,7 +195,7 @@ class ImportActuals
       code
     end
 
-    def zero_value_transaction?
+    def zero_value_actual?
       @attributes[:value].present? && @attributes[:value].zero?
     end
   end
