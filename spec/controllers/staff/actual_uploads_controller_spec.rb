@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::TransactionUploadsController do
+RSpec.describe Staff::ActualUploadsController do
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
   let(:organisation) { create(:delivery_partner_organisation) }
 

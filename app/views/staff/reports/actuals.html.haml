@@ -35,8 +35,8 @@
               = t("tabs.actuals.upload.warning")
 
             .govuk-button-group
-              = link_to t("page_content.actuals.button.download_template"), report_transaction_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary"
-              = link_to t("page_content.actuals.button.upload"), new_report_transaction_upload_path(@report_presenter), class: "govuk-button govuk-button"
+              = link_to t("page_content.actuals.button.download_template"), report_actual_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary"
+              = link_to t("page_content.actuals.button.upload"), new_report_actual_upload_path(@report_presenter), class: "govuk-button govuk-button"
 
             %hr.govuk-section-break.govuk-section-break--l.govuk-section-break--visible
 

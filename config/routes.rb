@@ -56,7 +56,7 @@ Rails.application.routes.draw do
       resource :state, only: [:edit, :update], controller: :reports_state
       resource :activity_upload, only: [:new, :show, :update]
       resource :forecast_upload, only: [:new, :show, :update]
-      resource :transaction_upload, only: [:new, :show, :update]
+      resource :actual_upload, only: [:new, :show, :update]
       get "variance" => "report_variance#show"
       get "forecasts" => "report_forecasts#show"
       get "actuals" => "report_actuals#show"
