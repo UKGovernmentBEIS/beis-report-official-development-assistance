@@ -25,10 +25,10 @@ class ExportActivityToCsv
   def previous_twelve_quarter_actuals
     return [] if report.own_financial_quarter.nil?
 
-    transaction_quarters = ActualOverview.new(activity_presenter, report_presenter).all_quarters
+    actual_quarters = ActualOverview.new(activity_presenter, report_presenter).all_quarters
 
     previous_report_quarters.map do |quarter|
-      value = transaction_quarters.value_for(**quarter)
+      value = actual_quarters.value_for(**quarter)
       "%.2f" % value
     end
   end
