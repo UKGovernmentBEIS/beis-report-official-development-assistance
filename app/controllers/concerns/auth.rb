@@ -13,7 +13,7 @@ module Auth
         t("page_content.errors.not_authorised.explanation")
       end
 
-      render "pages/errors/not_authorised", status: 401, locals: {error_message: error_message}
+      render "pages/errors/not_authorised", formats: [:html], status: 401, locals: {error_message: error_message}
     end
   end
 
