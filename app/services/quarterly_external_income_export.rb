@@ -9,7 +9,7 @@ class QuarterlyExternalIncomeExport
     "ODA",
   ]
 
-  def initialize(organisation, source_fund)
+  def initialize(organisation:, source_fund:)
     @organisation = organisation
     @source_fund = source_fund
   end

@@ -4,7 +4,7 @@ RSpec.describe QuarterlyExternalIncomeExport do
 
   let(:project) { build(:project_activity, source_fund: fund, organisation: delivery_partner, id: SecureRandom.uuid) }
   let(:source_fund) { Fund.new(fund.source_fund_code) }
-  let(:export) { QuarterlyExternalIncomeExport.new(delivery_partner, source_fund) }
+  let(:export) { QuarterlyExternalIncomeExport.new(organisation: delivery_partner, source_fund: source_fund) }
 
   let(:external_income_relation) { double("ActiveRecord::Relation") }
 
