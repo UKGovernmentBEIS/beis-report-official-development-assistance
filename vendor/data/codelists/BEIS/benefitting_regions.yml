@@ -1,0 +1,74 @@
+---
+data:
+  - name: Africa, regional
+    code: "298"
+    level: 1
+  - name: North of Sahara, regional
+    code: "189"
+    level: 2
+  - name: South of Sahara, regional
+    code: "289"
+    level: 2
+  - name: Eastern Africa, regional
+    code: "1027"
+    level: 3
+  - name: Middle Africa, regional
+    code: "1028"
+    level: 3
+  - name: Southern Africa, regional
+    code: "1029"
+    level: 3
+  - name: Western Africa, regional
+    code: "1030"
+    level: 3
+  - name: America, regional
+    code: "498"
+    level: 1
+  - name: Caribbean & Central America, regional
+    code: "389"
+    level: 2
+  - name: Caribbean, regional
+    code: "1031"
+    level: 3
+  - name: Central America, regional
+    code: "1032"
+    level: 3
+  - name: South America, regional
+    code: "489"
+    level: 2
+  - name: Asia, regional
+    code: "798"
+    level: 1
+  - name: Far East Asia, regional
+    code: "789"
+    level: 3
+  - name: Middle East, regional
+    code: "589"
+    level: 3
+  - name: South & Central Asia, regional
+    code: "689"
+    level: 2
+  - name: Central Asia, regional
+    code: "619"
+    level: 3
+  - name: South Asia, regional
+    code: "679"
+    level: 3
+  - name: Europe, regional
+    code: "89"
+    level: 1
+  - name: Oceania, regional
+    code: "889"
+    level: 1
+  - name: Melanesia, regional
+    code: "1033"
+    level: 3
+  - name: Micronesia, regional
+    code: "1034"
+    level: 3
+  - name: Polynesia, regional
+    code: "1035"
+    level: 3
+  - name: Developing countries, unspecified
+    code: "998"
+    level: 1

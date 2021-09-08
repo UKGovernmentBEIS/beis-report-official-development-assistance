@@ -1,0 +1,8 @@
+---
+data:
+  - name: Region
+    code: 1
+  - name: Sub-region 1
+    code: 2
+  - name: Sub-region 2
+    code: 3
