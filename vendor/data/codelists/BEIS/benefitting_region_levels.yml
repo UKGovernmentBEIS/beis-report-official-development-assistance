@@ -1,4 +1,10 @@
 ---
+metadata:
+  title: Region Levels
+  description: |
+    Each region (described in benefitting_regions.yml) has a level.
+    The lower the level's code, the less specific the region is
+  url: https://beisodahelp.zendesk.com/hc/en-gb/articles/4406544687379
 data:
   - name: Region
     code: 1

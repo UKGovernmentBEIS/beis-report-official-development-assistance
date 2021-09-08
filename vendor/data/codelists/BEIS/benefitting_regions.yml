@@ -1,4 +1,11 @@
 ---
+metadata:
+  title: Benefitting Regions
+  description: |
+    A list of all the regions that Benefitting Countries belong to (see
+    benefitting_countries.yml). Each region has a level (see region_levels.yml).
+    The lower the level, the less specific the region in
+  url: https://beisodahelp.zendesk.com/hc/en-gb/articles/4406544674707
 data:
   - name: Africa, regional
     code: "298"

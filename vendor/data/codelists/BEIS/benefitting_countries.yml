@@ -1,4 +1,11 @@
 ---
+metadata:
+  title: Benefitting Countries
+  description: |
+    All delivery partners must submit what countries will benefit from an
+    activity. Each country belongs to a number of regions
+    (see benefitting_regions.yml)
+  url: https://beisodahelp.zendesk.com/hc/en-gb/articles/4406536016659
 data:
   - name: Algeria
     recipient_code: "130"
