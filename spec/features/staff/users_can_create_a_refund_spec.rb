@@ -12,10 +12,10 @@ RSpec.feature "Users can create a refund" do
 
       click_on t("page_content.refund.button.create")
 
-      fill_in "refund[value]", with: "100"
-      choose "4", name: "refund[financial_quarter]"
-      select "2019-2020", from: "refund[financial_year]"
-      fill_in "refund[comment]", with: "Comment goes here"
+      fill_in "refund_form[value]", with: "100"
+      choose "4", name: "refund_form[financial_quarter]"
+      select "2019-2020", from: "refund_form[financial_year]"
+      fill_in "refund_form[comment]", with: "Comment goes here"
 
       expect { click_on(t("default.button.submit")) }.to change(Refund, :count).by(1)
 
