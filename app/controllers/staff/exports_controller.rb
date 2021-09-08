@@ -2,7 +2,7 @@ class Staff::ExportsController < Staff::BaseController
   include Secured
 
   def index
-    authorize [:export, Organisation]
+    authorize :export, :index?
 
     add_breadcrumb t("breadcrumbs.export.index"), :exports_path
 
