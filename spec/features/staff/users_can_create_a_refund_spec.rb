@@ -63,7 +63,8 @@ RSpec.feature "Users can create a refund" do
   end
 
   def then_i_expect_to_see_how_i_need_to_correct_the_refund_form
-    expect(page).to have_content("Financial quarter can't be blank")
-    expect(page).to have_content("Value can't be blank")
+    expect(page).to have_content("Select a financial quarter")
+    expect(page).to have_content("Select a financial year")
+    expect(page).to have_content("Enter a refund amount")
   end
 end
