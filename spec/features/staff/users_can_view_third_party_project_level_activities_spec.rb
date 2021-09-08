@@ -20,18 +20,18 @@ RSpec.feature "Users can view third-party project level activities" do
       expect(page).to_not have_content t("default.button.download_as_xml")
     end
 
-    scenario "can view and add budgets and transactions on a third-party project" do
+    scenario "can view and add budgets and actuals on a third-party project" do
       third_party_project = create(:third_party_project_activity, organisation: user.organisation)
       budget = create(:budget, parent_activity: third_party_project)
-      transaction = create(:transaction, parent_activity: third_party_project)
+      actual = create(:actual, parent_activity: third_party_project)
       _report = create(:report, state: :active, organisation: user.organisation, fund: third_party_project.associated_fund)
 
       visit organisation_activity_path(third_party_project.organisation, third_party_project)
 
       expect(page).to have_content(budget.value)
-      expect(page).to have_content(transaction.value)
+      expect(page).to have_content(actual.value)
       expect(page).to have_content(t("page_content.budgets.button.create"))
-      expect(page).to have_content(t("page_content.transactions.button.create"))
+      expect(page).to have_content(t("page_content.actuals.button.create"))
     end
   end
 

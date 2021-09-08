@@ -128,7 +128,7 @@ class Activity < ApplicationRecord
   validates_associated :implementing_organisations
 
   has_many :budgets, foreign_key: "parent_activity_id"
-  has_many :transactions, foreign_key: "parent_activity_id"
+  has_many :actuals, foreign_key: "parent_activity_id"
   has_many :refunds, foreign_key: "parent_activity_id"
 
   has_many :source_transfers, foreign_key: "source_id", class_name: "OutgoingTransfer"
@@ -236,16 +236,16 @@ class Activity < ApplicationRecord
   end
 
   def total_spend(financial_quarter = nil)
-    transactions = own_and_descendants_transactions
+    actuals = own_and_descendants_actuals
 
     if financial_quarter
-      transactions = transactions.where(
+      actuals = actuals.where(
         financial_year: financial_quarter.financial_year.to_i,
         financial_quarter: financial_quarter.to_i
       )
     end
 
-    transactions.sum(:value)
+    actuals.sum(:value)
   end
 
   def total_budget
@@ -258,16 +258,16 @@ class Activity < ApplicationRecord
     overview.latest_values.sum(:value)
   end
 
-  def own_and_descendants_transactions
+  def own_and_descendants_actuals
     activity_ids = descendants.pluck(:id).append(id)
-    Transaction.where(parent_activity_id: activity_ids)
+    Actual.where(parent_activity_id: activity_ids)
   end
 
-  def reportable_transactions_for_level
+  def reportable_actuals_for_level
     if programme?
-      spend_by_financial_quarter(own_and_descendants_transactions.order("date DESC"))
+      spend_by_financial_quarter(own_and_descendants_actuals.order("date DESC"))
     else
-      transactions.order("date DESC")
+      actuals.order("date DESC")
     end
   end
 
@@ -283,9 +283,9 @@ class Activity < ApplicationRecord
     end
   end
 
-  private def spend_by_financial_quarter(reportable_transactions)
-    reportable_transactions.group_by(&:own_financial_quarter).map do |financial_quarter, actuals|
-      Transaction.new(date: financial_quarter.end_date, value: actuals.sum(&:value), transaction_type: Transaction::DEFAULT_TRANSACTION_TYPE)
+  private def spend_by_financial_quarter(reportable_actuals)
+    reportable_actuals.group_by(&:own_financial_quarter).map do |financial_quarter, actuals|
+      Actual.new(date: financial_quarter.end_date, value: actuals.sum(&:value), transaction_type: Transaction::DEFAULT_TRANSACTION_TYPE)
     end
   end
 
@@ -416,7 +416,7 @@ class Activity < ApplicationRecord
   end
 
   def actual_total_for_report_financial_quarter(report:)
-    TransactionOverview.new(self, report).value_for_report_quarter
+    ActualOverview.new(self, report).value_for_report_quarter
   end
 
   def forecasted_total_for_report_financial_quarter(report:)

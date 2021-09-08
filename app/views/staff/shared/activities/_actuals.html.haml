@@ -1,0 +1,7 @@
+.govuk-grid-row
+  .govuk-grid-column-full
+    %h2.govuk-heading-m
+      = t("page_content.activity.actuals")
+    - if policy(activity).edit?
+      = link_to(t("page_content.actuals.button.create"), new_activity_actual_path(activity), class: "govuk-button")
+    = render partial: '/staff/shared/actuals/table', locals: { actuals: actual_presenters }

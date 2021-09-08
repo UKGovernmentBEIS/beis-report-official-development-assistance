@@ -636,12 +636,12 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#actual_total_for_report_financial_quarter" do
-    it "returns the transaction total scoped to report as a formatted number" do
+    it "returns the actual total scoped to report as a formatted number" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
       current_quarter = FinancialQuarter.for_date(Date.today)
-      _transaction_in_report_scope = create(:transaction, parent_activity: project, report: report, value: 100.20, **current_quarter)
-      _transaction_outside_report_scope = create(:transaction, parent_activity: project, report: report, value: 300, **current_quarter.pred)
+      _actual_in_report_scope = create(:actual, parent_activity: project, report: report, value: 100.20, **current_quarter)
+      _actual_outside_report_scope = create(:actual, parent_activity: project, report: report, value: 300, **current_quarter.pred)
 
       expect(described_class.new(project).actual_total_for_report_financial_quarter(report: report))
         .to eq "100.20"
@@ -676,7 +676,7 @@ RSpec.describe ActivityPresenter do
 
       reporting_cycle.tick
       report = Report.for_activity(project).in_historical_order.first
-      _transaction = create(:transaction, parent_activity: project, report: report, value: 200, **report.own_financial_quarter)
+      _actual = create(:actual, parent_activity: project, report: report, value: 200, **report.own_financial_quarter)
 
       expect(described_class.new(project).variance_for_report_financial_quarter(report: report))
         .to eq "-1300.00"
@@ -694,7 +694,7 @@ RSpec.describe ActivityPresenter do
   describe "#total_spend" do
     it "returns the value to two decimal places with a currency symbol" do
       activity = build(:programme_activity)
-      create(:transaction, parent_activity: activity, value: 20)
+      create(:actual, parent_activity: activity, value: 20)
       expect(described_class.new(activity).total_spend).to eq("£20.00")
     end
   end

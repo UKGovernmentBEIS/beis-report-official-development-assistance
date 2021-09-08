@@ -107,11 +107,11 @@ class ActivitySpendingBreakdown
 
   def previous_quarters_actuals
     @_previous_quarters_actuals ||= begin
-      transactions = ActivityTransactions.new(@activity, @report)
+      actuals = ActivityActuals.new(@activity, @report)
 
       previous_quarters.map do |quarter|
         key = [quarter.financial_year.start_year, quarter.quarter]
-        [quarter, transactions.index[key]]
+        [quarter, actuals.index[key]]
       end
     end
   end
@@ -133,7 +133,7 @@ class ActivitySpendingBreakdown
     @_financial_quarter ||= @report.own_financial_quarter
   end
 
-  class ActivityTransactions
+  class ActivityActuals
     attr_reader :index
 
     def initialize(activity, report)
@@ -141,13 +141,13 @@ class ActivitySpendingBreakdown
       @report = report
       @index = Hash.new { |hash, key| hash[key] = Actuals.new(0, 0) }
 
-      load_transaction_data
+      load_actual_data
     end
 
     private
 
-    def load_transaction_data
-      report_activity_transactions.each do |txn|
+    def load_actual_data
+      report_activity_actuals.each do |txn|
         key = [txn.financial_year, txn.financial_quarter]
 
         if txn.value < 0
@@ -158,8 +158,8 @@ class ActivitySpendingBreakdown
       end
     end
 
-    def report_activity_transactions
-      Transaction
+    def report_activity_actuals
+      Actual
         .joins(:report)
         .where(parent_activity_id: @activity.id)
         .merge(Report.historically_up_to(@report))

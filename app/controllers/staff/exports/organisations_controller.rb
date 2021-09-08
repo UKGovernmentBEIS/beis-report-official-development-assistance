@@ -18,15 +18,15 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
     @xml_downloads = Iati::XmlDownload.all_for_organisation(@organisation) if policy([:export, @organisation]).show_xml?
   end
 
-  def transactions
+  def actuals
     authorize [:export, @organisation], :show_transactions?
 
     respond_to do |format|
       format.csv do
         activities = Activity.where(organisation: @organisation)
-        export = QuarterlyTransactionExport.new(activities)
+        export = QuarterlyActualExport.new(activities)
 
-        stream_csv_download(filename: "transactions.csv", headers: export.headers) do |csv|
+        stream_csv_download(filename: "actuals.csv", headers: export.headers) do |csv|
           export.rows.each { |row| csv << row }
         end
       end

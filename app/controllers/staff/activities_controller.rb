@@ -50,7 +50,7 @@ class Staff::ActivitiesController < Staff::BaseController
       format.xml do |_format|
         @activities = @activity.child_activities.order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
 
-        @transactions = policy_scope(Transaction).where(parent_activity: @activity).order("date DESC")
+        @actuals = policy_scope(Actual).where(parent_activity: @activity).order("date DESC")
         @budgets = policy_scope(Budget).where(parent_activity: @activity).order("financial_year DESC")
         @forecasts = policy_scope(@activity.latest_forecasts)
         @reporting_organisation = Organisation.service_owner

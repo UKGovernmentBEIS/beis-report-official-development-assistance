@@ -20,14 +20,20 @@ RSpec.describe HistoricalEvent, type: :model do
       end
     end
 
-    context "when the change being tracked is on a Transaction" do
-      let(:trackable) { create(:transaction) }
+    context "when the change being tracked is on an Actual (subclass of Transaction)" do
+      let(:trackable) { create(:actual) }
       let(:event) { HistoricalEvent.new(trackable: trackable) }
 
-      it "associates with the expected Transaction object" do
+      it "associates with the expected Actual object" do
         expect(event.trackable_id).to eq(trackable.id)
-        expect(event.trackable_type).to eq("Transaction")
         expect(event.trackable).to eq(trackable)
+      end
+
+      it "correctly sets the subclass at the point of validation" do
+        expect { event.valid? }
+          .to change { event.trackable_type }
+          .from("Transaction")
+          .to("Actual")
       end
     end
   end

@@ -1,0 +1,21 @@
+= content_for :page_title_prefix, t("page_title.actual.upload")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    - if @success == false
+      .govuk-grid-column-two-thirds
+        %h1.govuk-heading-xl
+          = t("page_title.actual.upload")
+
+      .govuk-grid-row
+        .govuk-grid-column-full
+          = render partial: "error_table"
+
+          = render partial: "upload_form"
+    - else
+      .govuk-grid-column-full
+        %h1.govuk-heading-xl
+          = t("page_title.actual.upload_success")
+
+        = render partial: "shared/actuals/actuals_by_activity"
+        = link_to t("importer.success.actual.back_link"), report_actuals_path(@report_presenter), class: "govuk-button govuk-button"

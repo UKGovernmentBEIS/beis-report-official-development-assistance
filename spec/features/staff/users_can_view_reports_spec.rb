@@ -162,7 +162,7 @@ RSpec.feature "Users can view reports" do
       dp_org = create(:delivery_partner_organisation)
       project = create(:project_activity, organisation: dp_org, parent: programme)
       report = create(:report, :active, organisation: dp_org, fund: programme.parent)
-      create(:transaction, report: report, parent_activity: project)
+      create(:actual, report: report, parent_activity: project)
 
       visit reports_path
 
@@ -393,7 +393,7 @@ RSpec.feature "Users can view reports" do
         report = Report.for_activity(activity).in_historical_order.first
 
         report_quarter = report.own_financial_quarter
-        _actual_value = create(:transaction, parent_activity: activity, report: report, value: 1100, **report_quarter)
+        _actual_value = create(:actual, parent_activity: activity, report: report, value: 1100, **report_quarter)
 
         travel_to quarter_two_2019 do
           visit reports_path
@@ -423,9 +423,9 @@ RSpec.feature "Users can view reports" do
 
         visit report_actuals_path(report)
 
-        expect(page.html).to include t("tabs.transactions.upload.copy_html")
-        expect(page).to have_link t("page_content.transactions.button.download_template"),
-          href: report_transaction_upload_path(report, format: :csv)
+        expect(page.html).to include t("tabs.actuals.upload.copy_html")
+        expect(page).to have_link t("page_content.actuals.button.download_template"),
+          href: report_actual_upload_path(report, format: :csv)
         expect(page).to have_link "guidance in the help centre (opens in new tab)",
           href: "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload"
       end
