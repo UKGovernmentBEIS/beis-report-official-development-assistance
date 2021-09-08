@@ -1,0 +1,1151 @@
+---
+metadata:
+  title: Benefitting Countries
+  description: |
+    All delivery partners must submit what countries will benefit from an
+    activity. Each country belongs to a number of regions
+    (see benefitting_regions.yml)
+  url: https://beisodahelp.zendesk.com/hc/en-gb/articles/4406536016659
+data:
+  - name: Algeria
+    recipient_code: "130"
+    code: DZ
+    regions:
+      - "298"
+      - "189"
+  - name: Libya
+    recipient_code: "133"
+    code: LY
+    regions:
+      - "298"
+      - "189"
+  - name: Morocco
+    recipient_code: "136"
+    code: MA
+    regions:
+      - "298"
+      - "189"
+  - name: Tunisia
+    recipient_code: "139"
+    code: TN
+    regions:
+      - "298"
+      - "189"
+  - name: Egypt
+    recipient_code: "142"
+    code: EG
+    regions:
+      - "298"
+      - "189"
+  - name: Burundi
+    recipient_code: "228"
+    code: BI
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Comoros
+    recipient_code: "233"
+    code: KM
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Ethiopia
+    recipient_code: "238"
+    code: ET
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Kenya
+    recipient_code: "248"
+    code: KE
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Madagascar
+    recipient_code: "252"
+    code: MG
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Malawi
+    recipient_code: "253"
+    code: MW
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Mauritius
+    recipient_code: "257"
+    code: MU
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Mayotte
+    recipient_code: "258"
+    code: YT
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Mozambique
+    recipient_code: "259"
+    code: MZ
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Zimbabwe
+    recipient_code: "265"
+    code: ZW
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Rwanda
+    recipient_code: "266"
+    code: RW
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Seychelles
+    recipient_code: "270"
+    code: SC
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Eritrea
+    recipient_code: "271"
+    code: ER
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Somalia
+    recipient_code: "273"
+    code: SO
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Djibouti
+    recipient_code: "274"
+    code: DJ
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Sudan
+    recipient_code: "278"
+    code: SD
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: South Sudan
+    recipient_code: "279"
+    code: SS
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Tanzania
+    recipient_code: "282"
+    code: TZ
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Uganda
+    recipient_code: "285"
+    code: UG
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Zambia
+    recipient_code: "288"
+    code: ZM
+    regions:
+      - "298"
+      - "289"
+      - "1027"
+  - name: Angola
+    recipient_code: "225"
+    code: AO
+    regions:
+      - "298"
+      - "289"
+      - "1028"
+  - name: Cameroon
+    recipient_code: "229"
+    code: CM
+    regions:
+      - "298"
+      - "289"
+      - "1028"
+  - name: Central African Republic
+    recipient_code: "231"
+    code: CF
+    regions:
+      - "298"
+      - "289"
+      - "1028"
+  - name: Chad
+    recipient_code: "232"
+    code: TD
+    regions:
+      - "298"
+      - "289"
+      - "1028"
+  - name: Congo
+    recipient_code: "234"
+    code: CG
+    regions:
+      - "298"
+      - "289"
+      - "1028"
+  - name: Democratic Republic of the Congo
+    recipient_code: "235"
+    code: CD
+    regions:
+      - "298"
+      - "289"
+      - "1028"
+  - name: Gabon
+    recipient_code: "239"
+    code: GA
+    regions:
+      - "298"
+      - "289"
+      - "1028"
+  - name: Equatorial Guinea
+    recipient_code: "245"
+    code: GQ
+    regions:
+      - "298"
+      - "289"
+      - "1028"
+  - name: Sao Tome and Principe
+    recipient_code: "268"
+    code: ST
+    regions:
+      - "298"
+      - "289"
+      - "1028"
+  - name: South Africa
+    recipient_code: "218"
+    code: ZA
+    regions:
+      - "298"
+      - "289"
+      - "1029"
+  - name: Botswana
+    recipient_code: "227"
+    code: BW
+    regions:
+      - "298"
+      - "289"
+      - "1029"
+  - name: Lesotho
+    recipient_code: "249"
+    code: LS
+    regions:
+      - "298"
+      - "289"
+      - "1029"
+  - name: Namibia
+    recipient_code: "275"
+    code: NA
+    regions:
+      - "298"
+      - "289"
+      - "1029"
+  - name: Eswatini
+    recipient_code: "280"
+    code: SZ
+    regions:
+      - "298"
+      - "289"
+      - "1029"
+  - name: Cabo Verde
+    recipient_code: "230"
+    code: CV
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Benin
+    recipient_code: "236"
+    code: BJ
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Gambia
+    recipient_code: "240"
+    code: GM
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Ghana
+    recipient_code: "241"
+    code: GH
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Guinea
+    recipient_code: "243"
+    code: GN
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Guinea-Bissau
+    recipient_code: "244"
+    code: GW
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Côte d'Ivoire
+    recipient_code: "247"
+    code: CI
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Liberia
+    recipient_code: "251"
+    code: LR
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Mali
+    recipient_code: "255"
+    code: ML
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Mauritania
+    recipient_code: "256"
+    code: MR
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Niger
+    recipient_code: "260"
+    code: NE
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Nigeria
+    recipient_code: "261"
+    code: NG
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Senegal
+    recipient_code: "269"
+    code: SN
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Sierra Leone
+    recipient_code: "272"
+    code: SL
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Saint Helena
+    recipient_code: "276"
+    code: SH
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Togo
+    recipient_code: "283"
+    code: TG
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Burkina Faso
+    recipient_code: "287"
+    code: BF
+    regions:
+      - "298"
+      - "289"
+      - "1030"
+  - name: Bahamas
+    recipient_code: "328"
+    code: BS
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Barbados
+    recipient_code: "329"
+    code: BB
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Cuba
+    recipient_code: "338"
+    code: CU
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Dominican Republic
+    recipient_code: "340"
+    code: DO
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Haiti
+    recipient_code: "349"
+    code: HT
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Jamaica
+    recipient_code: "354"
+    code: JM
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Netherlands Antilles
+    recipient_code: "361"
+    code: AN
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Aruba
+    recipient_code: "373"
+    code: AW
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Trinidad and Tobago
+    recipient_code: "375"
+    code: TT
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Anguilla
+    recipient_code: "376"
+    code: AI
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Antigua and Barbuda
+    recipient_code: "377"
+    code: AG
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Dominica
+    recipient_code: "378"
+    code: DM
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Grenada
+    recipient_code: "381"
+    code: GD
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Saint Kitts and Nevis
+    recipient_code: "382"
+    code: KN
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Saint Lucia
+    recipient_code: "383"
+    code: LC
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Saint Vincent and the Grenadines
+    recipient_code: "384"
+    code: VC
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Montserrat
+    recipient_code: "385"
+    code: MS
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Cayman Islands
+    recipient_code: "386"
+    code: KY
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Turks and Caicos Islands
+    recipient_code: "387"
+    code: TC
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: British Virgin Islands
+    recipient_code: "388"
+    code: VG
+    regions:
+      - "498"
+      - "389"
+      - "1031"
+  - name: Costa Rica
+    recipient_code: "336"
+    code: CR
+    regions:
+      - "498"
+      - "389"
+      - "1032"
+  - name: El Salvador
+    recipient_code: "342"
+    code: SV
+    regions:
+      - "498"
+      - "389"
+      - "1032"
+  - name: Guatemala
+    recipient_code: "347"
+    code: GT
+    regions:
+      - "498"
+      - "389"
+      - "1032"
+  - name: Honduras
+    recipient_code: "351"
+    code: HN
+    regions:
+      - "498"
+      - "389"
+      - "1032"
+  - name: Belize
+    recipient_code: "352"
+    code: BZ
+    regions:
+      - "498"
+      - "389"
+      - "1032"
+  - name: Mexico
+    recipient_code: "358"
+    code: MX
+    regions:
+      - "498"
+      - "389"
+      - "1032"
+  - name: Nicaragua
+    recipient_code: "364"
+    code: NI
+    regions:
+      - "498"
+      - "389"
+      - "1032"
+  - name: Panama
+    recipient_code: "366"
+    code: PA
+    regions:
+      - "498"
+      - "389"
+      - "1032"
+  - name: Argentina
+    recipient_code: "425"
+    code: AR
+    regions:
+      - "498"
+      - "489"
+  - name: Bolivia
+    recipient_code: "428"
+    code: BO
+    regions:
+      - "498"
+      - "489"
+  - name: Brazil
+    recipient_code: "431"
+    code: BR
+    regions:
+      - "498"
+      - "489"
+  - name: Colombia
+    recipient_code: "437"
+    code: CO
+    regions:
+      - "498"
+      - "489"
+  - name: Ecuador
+    recipient_code: "440"
+    code: EC
+    regions:
+      - "498"
+      - "489"
+  - name: Falkland Islands (Malvinas)
+    recipient_code: "443"
+    code: FK
+    regions:
+      - "498"
+      - "489"
+  - name: Guyana
+    recipient_code: "446"
+    code: GY
+    regions:
+      - "498"
+      - "489"
+  - name: Paraguay
+    recipient_code: "451"
+    code: PY
+    regions:
+      - "498"
+      - "489"
+  - name: Peru
+    recipient_code: "454"
+    code: PE
+    regions:
+      - "498"
+      - "489"
+  - name: Suriname
+    recipient_code: "457"
+    code: SR
+    regions:
+      - "498"
+      - "489"
+  - name: Venezuela
+    recipient_code: "463"
+    code: VE
+    regions:
+      - "498"
+      - "489"
+  - name: Brunei Darussalam
+    recipient_code: "725"
+    code: BN
+    regions:
+      - "798"
+      - "789"
+  - name: Cambodia
+    recipient_code: "728"
+    code: KH
+    regions:
+      - "798"
+      - "789"
+  - name: China (People's Republic of)
+    recipient_code: "730"
+    code: CN
+    regions:
+      - "798"
+      - "789"
+  - name: Chinese Taipei
+    recipient_code: "732"
+    code: TW
+    regions:
+      - "798"
+      - "789"
+  - name: Hong Kong (China)
+    recipient_code: "735"
+    code: HK
+    regions:
+      - "798"
+      - "789"
+  - name: Indonesia
+    recipient_code: "738"
+    code: ID
+    regions:
+      - "798"
+      - "789"
+  - name: Democratic People's Republic of Korea
+    recipient_code: "740"
+    code: KP
+    regions:
+      - "798"
+      - "789"
+  - name: Korea
+    recipient_code: "742"
+    code: KR
+    regions:
+      - "798"
+      - "789"
+  - name: Lao People's Democratic Republic
+    recipient_code: "745"
+    code: LA
+    regions:
+      - "798"
+      - "789"
+  - name: Macau (China)
+    recipient_code: "748"
+    code: MO
+    regions:
+      - "798"
+      - "789"
+  - name: Malaysia
+    recipient_code: "751"
+    code: MY
+    regions:
+      - "798"
+      - "789"
+  - name: Mongolia
+    recipient_code: "753"
+    code: MN
+    regions:
+      - "798"
+      - "789"
+  - name: Philippines
+    recipient_code: "755"
+    code: PH
+    regions:
+      - "798"
+      - "789"
+  - name: Singapore
+    recipient_code: "761"
+    code: SG
+    regions:
+      - "798"
+      - "789"
+  - name: Thailand
+    recipient_code: "764"
+    code: TH
+    regions:
+      - "798"
+      - "789"
+  - name: Timor-Leste
+    recipient_code: "765"
+    code: TL
+    regions:
+      - "798"
+      - "789"
+  - name: Viet Nam
+    recipient_code: "769"
+    code: VN
+    regions:
+      - "798"
+      - "789"
+  - name: Bahrain
+    recipient_code: "530"
+    code: BH
+    regions:
+      - "798"
+      - "589"
+  - name: Iran
+    recipient_code: "540"
+    code: IR
+    regions:
+      - "798"
+      - "589"
+  - name: Iraq
+    recipient_code: "543"
+    code: IQ
+    regions:
+      - "798"
+      - "589"
+  - name: Israel
+    recipient_code: "546"
+    code: IL
+    regions:
+      - "798"
+      - "589"
+  - name: Jordan
+    recipient_code: "549"
+    code: JO
+    regions:
+      - "798"
+      - "589"
+  - name: West Bank and Gaza Strip
+    recipient_code: "550"
+    code: PS
+    regions:
+      - "798"
+      - "589"
+  - name: Kuwait
+    recipient_code: "552"
+    code: KW
+    regions:
+      - "798"
+      - "589"
+  - name: Lebanon
+    recipient_code: "555"
+    code: LB
+    regions:
+      - "798"
+      - "589"
+  - name: Oman
+    recipient_code: "558"
+    code: OM
+    regions:
+      - "798"
+      - "589"
+  - name: Qatar
+    recipient_code: "561"
+    code: QA
+    regions:
+      - "798"
+      - "589"
+  - name: Saudi Arabia
+    recipient_code: "566"
+    code: SA
+    regions:
+      - "798"
+      - "589"
+  - name: Syrian Arab Republic
+    recipient_code: "573"
+    code: SY
+    regions:
+      - "798"
+      - "589"
+  - name: United Arab Emirates
+    recipient_code: "576"
+    code: AE
+    regions:
+      - "798"
+      - "589"
+  - name: Yemen
+    recipient_code: "580"
+    code: YE
+    regions:
+      - "798"
+      - "589"
+  - name: Armenia
+    recipient_code: "610"
+    code: AM
+    regions:
+      - "798"
+      - "689"
+      - "619"
+  - name: Azerbaijan
+    recipient_code: "611"
+    code: AZ
+    regions:
+      - "798"
+      - "689"
+      - "619"
+  - name: Georgia
+    recipient_code: "612"
+    code: GE
+    regions:
+      - "798"
+      - "689"
+      - "619"
+  - name: Kazakhstan
+    recipient_code: "613"
+    code: KZ
+    regions:
+      - "798"
+      - "689"
+      - "619"
+  - name: Kyrgyzstan
+    recipient_code: "614"
+    code: KG
+    regions:
+      - "798"
+      - "689"
+      - "619"
+  - name: Tajikistan
+    recipient_code: "615"
+    code: TJ
+    regions:
+      - "798"
+      - "689"
+      - "619"
+  - name: Turkmenistan
+    recipient_code: "616"
+    code: TM
+    regions:
+      - "798"
+      - "689"
+      - "619"
+  - name: Uzbekistan
+    recipient_code: "617"
+    code: UZ
+    regions:
+      - "798"
+      - "689"
+      - "619"
+  - name: Afghanistan
+    recipient_code: "625"
+    code: AF
+    regions:
+      - "798"
+      - "689"
+      - "679"
+  - name: Bhutan
+    recipient_code: "630"
+    code: BT
+    regions:
+      - "798"
+      - "689"
+      - "679"
+  - name: Myanmar
+    recipient_code: "635"
+    code: MM
+    regions:
+      - "798"
+      - "689"
+      - "679"
+  - name: Sri Lanka
+    recipient_code: "640"
+    code: LK
+    regions:
+      - "798"
+      - "689"
+      - "679"
+  - name: India
+    recipient_code: "645"
+    code: IN
+    regions:
+      - "798"
+      - "689"
+      - "679"
+  - name: Maldives
+    recipient_code: "655"
+    code: MV
+    regions:
+      - "798"
+      - "689"
+      - "679"
+  - name: Nepal
+    recipient_code: "660"
+    code: NP
+    regions:
+      - "798"
+      - "689"
+      - "679"
+  - name: Pakistan
+    recipient_code: "665"
+    code: PK
+    regions:
+      - "798"
+      - "689"
+      - "679"
+  - name: Bangladesh
+    recipient_code: "666"
+    code: BD
+    regions:
+      - "798"
+      - "689"
+      - "679"
+  - name: Cyprus
+    recipient_code: "30"
+    code: CY
+    regions:
+      - "89"
+  - name: Gibraltar
+    recipient_code: "35"
+    code: GI
+    regions:
+      - "89"
+  - name: Malta
+    recipient_code: "45"
+    code: MT
+    regions:
+      - "89"
+  - name: Turkey
+    recipient_code: "55"
+    code: TR
+    regions:
+      - "89"
+  - name: Kosovo
+    recipient_code: "57"
+    code: XK
+    regions:
+      - "89"
+  - name: Slovenia
+    recipient_code: "61"
+    code: SI
+    regions:
+      - "89"
+  - name: Croatia
+    recipient_code: "62"
+    code: HR
+    regions:
+      - "89"
+  - name: Serbia
+    recipient_code: "63"
+    code: RS
+    regions:
+      - "89"
+  - name: Bosnia and Herzegovina
+    recipient_code: "64"
+    code: BA
+    regions:
+      - "89"
+  - name: Montenegro
+    recipient_code: "65"
+    code: ME
+    regions:
+      - "89"
+  - name: North Macedonia
+    recipient_code: "66"
+    code: MK
+    regions:
+      - "89"
+  - name: Albania
+    recipient_code: "71"
+    code: AL
+    regions:
+      - "89"
+  - name: Ukraine
+    recipient_code: "85"
+    code: UA
+    regions:
+      - "89"
+  - name: Belarus
+    recipient_code: "86"
+    code: BY
+    regions:
+      - "89"
+  - name: States Ex-Yugoslavia unspecified
+    recipient_code: "88"
+    code: A region on IATI code 88
+    regions:
+      - "89"
+  - name: Moldova
+    recipient_code: "93"
+    code: MD
+    regions:
+      - "89"
+  - name: Fiji
+    recipient_code: "832"
+    code: FJ
+    regions:
+      - "889"
+      - "1033"
+  - name: New Caledonia
+    recipient_code: "850"
+    code: NC
+    regions:
+      - "889"
+      - "1033"
+  - name: Vanuatu
+    recipient_code: "854"
+    code: VU
+    regions:
+      - "889"
+      - "1033"
+  - name: Papua New Guinea
+    recipient_code: "862"
+    code: PG
+    regions:
+      - "889"
+      - "1033"
+  - name: Solomon Islands
+    recipient_code: "866"
+    code: SB
+    regions:
+      - "889"
+      - "1033"
+  - name: Kiribati
+    recipient_code: "836"
+    code: KI
+    regions:
+      - "889"
+      - "1034"
+  - name: Nauru
+    recipient_code: "845"
+    code: NR
+    regions:
+      - "889"
+      - "1034"
+  - name: Northern Mariana Islands
+    recipient_code: "858"
+    code: MP
+    regions:
+      - "889"
+      - "1034"
+  - name: Marshall Islands
+    recipient_code: "859"
+    code: MH
+    regions:
+      - "889"
+      - "1034"
+  - name: Micronesia
+    recipient_code: "860"
+    code: FM
+    regions:
+      - "889"
+      - "1034"
+  - name: Palau
+    recipient_code: "861"
+    code: PW
+    regions:
+      - "889"
+      - "1034"
+  - name: French Polynesia
+    recipient_code: "840"
+    code: PF
+    regions:
+      - "889"
+      - "1035"
+  - name: Niue
+    recipient_code: "856"
+    code: NU
+    regions:
+      - "889"
+      - "1035"
+  - name: Tokelau
+    recipient_code: "868"
+    code: TK
+    regions:
+      - "889"
+      - "1035"
+  - name: Tonga
+    recipient_code: "870"
+    code: TO
+    regions:
+      - "889"
+      - "1035"
+  - name: Tuvalu
+    recipient_code: "872"
+    code: TV
+    regions:
+      - "889"
+      - "1035"
+  - name: Wallis and Futuna
+    recipient_code: "876"
+    code: WF
+    regions:
+      - "889"
+      - "1035"
+  - name: Samoa
+    recipient_code: "880"
+    code: WS
+    regions:
+      - "889"
+      - "1035"

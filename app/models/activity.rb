@@ -389,6 +389,13 @@ class Activity < ApplicationRecord
     Organisation.service_owner
   end
 
+  def benefitting_region
+    @benefitting_region ||= begin
+      return nil unless benefitting_countries.present?
+      BenefittingCountry.region_from_country_codes(benefitting_countries)
+    end
+  end
+
   def parent_level
     case level
     when "fund" then nil

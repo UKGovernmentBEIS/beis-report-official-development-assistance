@@ -230,6 +230,7 @@ en:
         actual_start_date: Actual start date
         aid_type: Aid type
         benefitting_countries: Benefitting countries
+        benefitting_region: Benefitting region
         budgets: Budgets
         button:
           create: Add activity
