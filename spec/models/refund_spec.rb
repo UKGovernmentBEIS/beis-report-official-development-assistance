@@ -1,15 +1,20 @@
 require "rails_helper"
 
 RSpec.describe Refund, type: :model do
-  let(:refund) { build(:refund) }
   it { should have_one(:comment) }
 
-  it { should belong_to(:parent_activity) }
-  it { should belong_to(:report) }
+  describe "Single table inheritance from Transaction" do
+    it "should inherit from the Transaction class " do
+      expect(Refund.ancestors).to include(Transaction)
+      expect(Refund.table_name).to eq("transactions")
+      expect(Refund.inheritance_column).to eq("type")
+    end
 
-  it { should validate_presence_of(:financial_quarter) }
-  it { should validate_presence_of(:financial_year) }
-  it { should validate_presence_of(:value) }
+    it "should have the _type_ of 'Refund'" do
+      expect(Refund.new.type).to eq("Refund")
+    end
+  end
+
   describe "validations" do
     let(:refund) do
       Refund.new.tap do |refund|
