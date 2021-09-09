@@ -8,3 +8,7 @@ table.govuk-table {
 .govuk-template {
   overflow-x:hidden;
 }
+
+td.error-text {
+  word-break: break-all;
+}
