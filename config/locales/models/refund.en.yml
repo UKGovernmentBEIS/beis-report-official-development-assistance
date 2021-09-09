@@ -43,6 +43,8 @@ en:
       models:
         refund:
           attributes:
+            comment:
+              invalid: Enter a comment describing the need for the refund
             financial_year:
               blank: Select a financial year
             financial_quarter:

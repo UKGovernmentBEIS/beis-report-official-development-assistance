@@ -10,7 +10,7 @@ class CreateRefund
   def call(attributes:)
     refund.parent_activity = activity
     refund.report = report
-    refund.assign_attributes(attributes)
+    assign_refund_and_comment(attributes)
 
     result = if refund.valid?
       Result.new(refund.save, refund)
@@ -19,5 +19,13 @@ class CreateRefund
     end
 
     result
+  end
+
+  private
+
+  def assign_refund_and_comment(attrs)
+    refund.build_comment(comment: attrs.delete(:comment), commentable: refund)
+    refund.value = attrs.delete(:value)&.to_s
+    refund.assign_attributes(attrs)
   end
 end

@@ -27,13 +27,12 @@ RSpec.feature "Users can edit a refund" do
       expect {
         click_on(t("default.button.submit"))
       }.to change {
-        refund.reload.attributes.slice("financial_year", "financial_quarter", "value", "comment")
+        refund.reload.attributes.slice("financial_year", "financial_quarter", "value")
       }.to({
         "financial_year" => 2019,
         "financial_quarter" => 4,
         "value" => BigDecimal("100"),
-        "comment" => "Comment goes here",
-      })
+      }).and change { refund.comment.reload.comment }.to("Comment goes here")
 
       expect(page).to have_content(t("action.refund.update.success"))
     end
@@ -68,6 +67,6 @@ RSpec.feature "Users can edit a refund" do
     page.has_css?(
       "#refund-form-financial-year-field option[value='#{refund.financial_year}'][selected='selected']"
     )
-    expect(page).to have_field("refund_form[comment]", with: refund.comment)
+    expect(page).to have_field("refund_form[comment]", with: refund.comment.comment)
   end
 end
