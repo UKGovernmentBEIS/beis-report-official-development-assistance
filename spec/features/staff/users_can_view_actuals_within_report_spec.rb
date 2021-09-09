@@ -39,7 +39,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
 
           activity.refunds.each do |refund|
             within ".refunds" do
-              expect(page).to have_content(refund.value)
+              expect(page).to have_content(TransactionPresenter.new(refund).value)
               expect(page).to have_content(refund.financial_quarter_and_year)
             end
           end

@@ -297,14 +297,14 @@ RSpec.describe Report, type: :model do
   end
 
   describe "#summed_refunds" do
-    it "sums all of the refunds belonging to a report" do
+    it "sums all of the refunds belonging to a report (NB: negative values)" do
       report = create(:report)
 
       create(:refund, report: report, value: 25)
       create(:refund, report: report, value: 75)
       create(:refund, report: report, value: 100)
 
-      expect(report.summed_refunds).to eq(200)
+      expect(report.summed_refunds).to eq(-200)
     end
   end
 end

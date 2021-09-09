@@ -30,6 +30,7 @@ en:
       refund:
         financial_quarter_and_year: The financial quarter the refund applies to
         comment: The reason for posting the refund
+        value: Your refund is stored as a negative amount
   table:
     caption:
       refund:

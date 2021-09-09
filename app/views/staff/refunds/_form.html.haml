@@ -1,7 +1,8 @@
 = f.govuk_error_summary
 
 = f.govuk_text_field :value,
-  label: { text: t("form.label.refund.value"), tag: :p, size: 's' }
+  label: { text: t("form.label.refund.value"), tag: :p, size: 's' },
+  hint: { text: t("form.hint.refund.value") }
 
 = f.govuk_fieldset legend: { text: t("form.label.refund.financial_quarter") } do
   .govuk-grid-row

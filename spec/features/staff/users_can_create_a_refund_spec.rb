@@ -11,6 +11,7 @@ RSpec.feature "Users can create a refund" do
       )
 
       click_on t("page_content.refund.button.create")
+      then_i_see_that_my_refund_amount_will_be_negative
 
       fill_in "refund_form[value]", with: "100"
       choose "4", name: "refund_form[financial_quarter]"
@@ -25,7 +26,7 @@ RSpec.feature "Users can create a refund" do
 
       within "##{newly_created_refund.id}" do
         expect(page).to have_content("Q4 2019-2020")
-        expect(page).to have_content("£100")
+        expect(page).to have_content("-£100")
       end
     end
 
@@ -48,6 +49,10 @@ RSpec.feature "Users can create a refund" do
       let(:user) { create(:delivery_partner_user, organisation: organisation) }
       let(:activity) { create(:project_activity, :with_report, organisation: organisation) }
     end
+  end
+
+  def then_i_see_that_my_refund_amount_will_be_negative
+    expect(page).to have_content("Your refund is stored as a negative amount")
   end
 
   def given_i_am_on_the_new_refund_form

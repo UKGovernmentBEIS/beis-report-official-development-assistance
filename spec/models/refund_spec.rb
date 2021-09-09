@@ -43,4 +43,46 @@ RSpec.describe Refund, type: :model do
       end
     end
   end
+
+  describe "#value" do
+    describe "always stores a negative #value" do
+      context "when given a positive value" do
+        let(:refund) { create(:refund, value: "100.01") }
+
+        it "stores a negative value" do
+          expect(refund.reload.value.to_s).to eq("-100.01")
+        end
+      end
+
+      context "when given a negative value" do
+        let(:refund) { create(:refund, value: "-100.01") }
+
+        it "stores a negative value" do
+          expect(refund.reload.value.to_s).to eq("-100.01")
+        end
+      end
+    end
+
+    context "when value is missing" do
+      let(:refund) { build(:refund, value: nil) }
+
+      it "is invalid" do
+        refund.valid?
+
+        expect(refund.errors.messages[:value])
+          .to eq(["Enter a refund amount", "Refund amount must be a valid number"])
+      end
+    end
+
+    context "when value is not a number" do
+      let(:refund) { build(:refund, value: "rubbish") }
+
+      it "is invalid" do
+        refund.valid?
+
+        expect(refund.errors.messages[:value])
+          .to eq(["Enter a refund amount", "Refund amount must be a valid number"])
+      end
+    end
+  end
 end
