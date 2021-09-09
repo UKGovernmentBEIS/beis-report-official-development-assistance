@@ -9,7 +9,7 @@ class QuarterlyExternalIncomeExport
     "ODA",
   ]
 
-  def initialize(organisation:, source_fund:)
+  def initialize(source_fund:, organisation: nil)
     @organisation = organisation
     @source_fund = source_fund
   end
@@ -27,7 +27,11 @@ class QuarterlyExternalIncomeExport
   end
 
   def filename
-    "#{@source_fund.short_name}_#{@organisation.beis_organisation_reference}_external_income.csv"
+    [
+      @source_fund.short_name,
+      @organisation&.beis_organisation_reference,
+      "external_income.csv",
+    ].reject(&:blank?).join("_")
   end
 
   private
@@ -36,7 +40,7 @@ class QuarterlyExternalIncomeExport
     [
       activity.roda_identifier,
       activity.delivery_partner_identifier,
-      @organisation.name,
+      activity.organisation.name,
       activity.title,
       I18n.t("table.body.activity.level.#{activity.level}"),
     ]
@@ -63,11 +67,15 @@ class QuarterlyExternalIncomeExport
   end
 
   def external_incomes
-    @_external_incomes ||= ExternalIncome.includes(:activity, :organisation).where(activity_id: activity_ids).order(:activity_id, :financial_year, :financial_quarter)
+    @_external_incomes ||= ExternalIncome.includes(activity: :organisation).includes(:organisation).where(activity_id: activity_ids).order(:activity_id, :financial_year, :financial_quarter)
   end
 
   def activity_ids
-    Activity.where(organisation_id: @organisation.id, source_fund_code: @source_fund.id).pluck(:id)
+    if @organisation.nil?
+      Activity.where(source_fund_code: @source_fund.id)
+    else
+      Activity.where(organisation_id: @organisation.id, source_fund_code: @source_fund.id)
+    end.pluck(:id)
   end
 
   def financial_quarters
