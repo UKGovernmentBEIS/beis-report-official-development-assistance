@@ -14,11 +14,27 @@ RSpec.describe BenefittingCountry do
   let(:asia) { BenefittingCountry::Region.new(name: "Asia, regional", code: "798", level: region) }
   let(:middle_east) { BenefittingCountry::Region.new(name: "Middle East, regional", code: "589", level: subregion1) }
 
-  let(:countries) do
+  let(:graduated_countries) do
+    [
+      BenefittingCountry.new(
+        code: "SC",
+        name: "Seychelles",
+        graduated: true,
+        regions: [
+          africa,
+          south_of_sahara,
+          eastern_africa,
+        ]
+      ),
+    ]
+  end
+
+  let(:non_graduated_countries) do
     [
       BenefittingCountry.new(
         code: "AO",
         name: "Angola",
+        graduated: false,
         regions: [
           africa,
           south_of_sahara,
@@ -28,6 +44,7 @@ RSpec.describe BenefittingCountry do
       BenefittingCountry.new(
         code: "GA",
         name: "Gabon",
+        graduated: false,
         regions: [
           africa,
           south_of_sahara,
@@ -37,6 +54,7 @@ RSpec.describe BenefittingCountry do
       BenefittingCountry.new(
         code: "ZW",
         name: "Zimbabwe",
+        graduated: false,
         regions: [
           africa,
           south_of_sahara,
@@ -46,6 +64,7 @@ RSpec.describe BenefittingCountry do
       BenefittingCountry.new(
         code: "ZA",
         name: "South Africa",
+        graduated: false,
         regions: [
           africa,
           south_of_sahara,
@@ -55,6 +74,7 @@ RSpec.describe BenefittingCountry do
       BenefittingCountry.new(
         code: "DZ",
         name: "Algeria",
+        graduated: false,
         regions: [
           africa,
           north_of_sahara,
@@ -63,6 +83,7 @@ RSpec.describe BenefittingCountry do
       BenefittingCountry.new(
         code: "LB",
         name: "Lebanon",
+        graduated: false,
         regions: [
           asia,
           middle_east,
@@ -71,8 +92,38 @@ RSpec.describe BenefittingCountry do
     ]
   end
 
+  let(:countries) { non_graduated_countries + graduated_countries }
+
   before do
     allow(described_class).to receive(:all).and_return(countries)
+  end
+
+  describe ".all" do
+    subject { described_class.all }
+
+    it "includes graduated and non graduated countries" do
+      expect(subject).to match countries
+    end
+  end
+
+  describe ".non_graduated" do
+    subject { described_class.non_graduated }
+
+    it "does not include graduated countries" do
+      expect(subject).not_to include non_graduated_countries
+    end
+  end
+
+  describe ".find_non_graduated_country_by_code" do
+    subject { described_class.find_non_graduated_country_by_code(code) }
+
+    context "when the code is of a graduated country" do
+      let(:code) { "SC" }
+
+      it "returns nil when the code is that of a graduated country" do
+        expect(subject).to be_nil
+      end
+    end
   end
 
   describe ".region_from_country_codes" do
