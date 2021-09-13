@@ -817,6 +817,7 @@
 ## [unreleased]
 
 - Added a new accepted channel of delivery code, "22000" ("Donor country-based NGO")
+- Force word wrapping in table cells showing invalid upload values
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-72...HEAD
 [release-72]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-71...release-72
