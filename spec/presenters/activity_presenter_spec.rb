@@ -264,13 +264,19 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#benefitting_countries" do
-    it_behaves_like "a code translator", "benefitting_countries", {type: "recipient_country"}, "Array"
+    it_behaves_like "a code translator", "benefitting_countries", {type: "benefitting_countries", source: "beis"}, "Array"
 
     context "when there are benefitting countries" do
       it "returns the locale value for the codes of the countries joined in sentence form" do
         activity = build(:project_activity, benefitting_countries: ["AR", "EC", "BR"])
         result = described_class.new(activity).benefitting_countries
         expect(result).to eql("Argentina, Ecuador, and Brazil")
+      end
+
+      it "handles unexpected country codes" do
+        activity = build(:project_activity, benefitting_countries: ["UK"])
+        result = described_class.new(activity).benefitting_countries
+        expect(result).to eql t("page_content.activity.unknown_country")
       end
     end
   end
@@ -315,13 +321,19 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#recipient_country" do
-    it_behaves_like "a code translator", "recipient_country", {type: "recipient_country"}
+    it_behaves_like "a code translator", "recipient_country", {type: "benefitting_countries", source: "beis"}
 
     context "when there is a recipient_country" do
-      it "returns the locale value for the code" do
+      it "returns the name from the code" do
         activity = build(:project_activity, recipient_country: "CL")
         result = described_class.new(activity).recipient_country
-        expect(result).to eq t("activity.recipient_country.#{activity.recipient_country}")
+        expect(result).to eq "Chile"
+      end
+
+      it "handles unexpected country codes" do
+        activity = build(:project_activity, benefitting_countries: ["UK"])
+        result = described_class.new(activity).benefitting_countries
+        expect(result).to eql t("page_content.activity.unknown_country")
       end
     end
 
@@ -360,6 +372,12 @@ RSpec.describe ActivityPresenter do
         activity = build(:project_activity, intended_beneficiaries: ["AR", "EC", "BR"])
         result = described_class.new(activity).intended_beneficiaries
         expect(result).to eql("Argentina, Ecuador, and Brazil")
+      end
+
+      it "handles unexpected country codes" do
+        activity = build(:project_activity, benefitting_countries: ["UK"])
+        result = described_class.new(activity).benefitting_countries
+        expect(result).to eql t("page_content.activity.unknown_country")
       end
     end
   end

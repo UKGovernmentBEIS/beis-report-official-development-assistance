@@ -336,6 +336,7 @@ en:
         html: To create a new Activity, first choose the %{organisations_link} you wish to create the Activity under
       organisation: Organisation
     activity:
+      unknown_country: Unknown country code
       budgets: Budgets
       button:
         create: Add activity
