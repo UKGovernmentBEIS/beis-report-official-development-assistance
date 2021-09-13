@@ -1,0 +1,16 @@
+en:
+  activerecord:
+    errors:
+      models:
+        adjustment:
+          attributes:
+            comment:
+              invalid: Enter a comment explaining the adjustment
+            financial_year:
+              blank: Select a financial year
+            financial_quarter:
+              blank: Select a financial quarter
+            value:
+              blank: Enter a adjustment amount
+              inclusion: Refund amount must be between 0.01 and 99,999,999,999.00
+              not_a_number: "Refund amount must be a valid number"
