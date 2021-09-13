@@ -1,12 +1,12 @@
 class ActivityCsvPresenter < ActivityPresenter
   def benefitting_countries
     return if super.blank?
-    to_model.benefitting_countries.map { |item| I18n.t("activity.recipient_country.#{item}") }.join("; ")
+    list_of_benefitting_countries(to_model.benefitting_countries)
   end
 
   def intended_beneficiaries
     return if super.blank?
-    to_model.intended_beneficiaries.map { |item| I18n.t("activity.recipient_country.#{item}") }.join("; ")
+    list_of_benefitting_countries(to_model.intended_beneficiaries)
   end
 
   def beis_identifier
@@ -21,5 +21,16 @@ class ActivityCsvPresenter < ActivityPresenter
   def implementing_organisations
     return if super.empty?
     super.pluck(:name).join("|")
+  end
+
+  private
+
+  def list_of_benefitting_countries(country_code_list)
+    return nil unless country_code_list.present?
+    benefitting_country_names = country_code_list.map { |country_code|
+      benefitting_country = BenefittingCountry.find_by_code(country_code)
+      benefitting_country.nil? ? translate("page_content.activity.unknown_country") : benefitting_country.name
+    }
+    benefitting_country_names.join("; ")
   end
 end
