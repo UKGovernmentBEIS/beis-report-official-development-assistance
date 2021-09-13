@@ -15,6 +15,7 @@ RSpec.feature "Users can edit a refund" do
       within "##{refund.id}" do
         click_on "Edit refund"
       end
+      then_i_see_the_refund_values_prefilled_as_expected
     end
 
     scenario "they can edit a refund for an activity" do
@@ -56,5 +57,17 @@ RSpec.feature "Users can edit a refund" do
       let(:activity) { create(:project_activity, organisation: organisation) }
       let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
     end
+  end
+
+  def then_i_see_the_refund_values_prefilled_as_expected
+    expect(page).to have_field("refund_form[value]", with: "110.01")
+    expect(page).to have_checked_field(
+      "refund_form[financial_quarter]",
+      with: refund.financial_quarter
+    )
+    page.has_css?(
+      "#refund-form-financial-year-field option[value='#{refund.financial_year}'][selected='selected']"
+    )
+    expect(page).to have_field("refund_form[comment]", with: refund.comment)
   end
 end
