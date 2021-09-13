@@ -17,6 +17,7 @@ FactoryBot.define do
 
     after(:create) do |adjustment, _evaluator|
       create(:flexible_comment, commentable: adjustment)
+      create(:adjustment_detail, adjustment: adjustment)
       adjustment.reload
     end
   end

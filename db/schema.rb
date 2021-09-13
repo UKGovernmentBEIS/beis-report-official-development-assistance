@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_09_104830) do
+ActiveRecord::Schema.define(version: 2021_09_13_150920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -85,6 +85,17 @@ ActiveRecord::Schema.define(version: 2021_09_09_104830) do
     t.index ["parent_id"], name: "index_activities_on_parent_id"
     t.index ["roda_identifier"], name: "index_activities_on_roda_identifier"
     t.index ["transparency_identifier"], name: "index_activities_on_transparency_identifier", unique: true
+  end
+
+  create_table "adjustment_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "adjustment_id"
+    t.uuid "user_id"
+    t.string "adjustment_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["adjustment_id"], name: "index_adjustment_details_on_adjustment_id"
+    t.index ["adjustment_type"], name: "index_adjustment_details_on_adjustment_type"
+    t.index ["user_id"], name: "index_adjustment_details_on_user_id"
   end
 
   create_table "budgets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

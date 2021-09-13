@@ -2,6 +2,24 @@ require "rails_helper"
 
 RSpec.describe Adjustment, type: :model do
   it { should have_one(:comment) }
+  it { should have_one(:creator).through(:detail).source(:user) }
+
+  describe "#adjustment_type" do
+    let(:adjustment) { build(:adjustment) }
+
+    before do
+      adjustment.adjustment_type = "Actual"
+      adjustment.save
+    end
+
+    it "sets the AdjustmentDetail#adjustment_type attr on the has_one association" do
+      expect(adjustment.detail.adjustment_type).to eq("Actual")
+    end
+
+    it "delegates the getter to the has_one association" do
+      expect(adjustment.adjustment_type).to eq("Actual")
+    end
+  end
 
   describe "Single table inheritance from Transaction" do
     it "should inherit from the Transaction class " do
@@ -19,6 +37,7 @@ RSpec.describe Adjustment, type: :model do
     let(:adjustment) do
       Adjustment.new.tap do |adjustment|
         adjustment.build_comment(comment: nil)
+        adjustment.build_detail(adjustment_type: "Rubbish", user: nil)
         adjustment.valid?
       end
     end
@@ -26,6 +45,13 @@ RSpec.describe Adjustment, type: :model do
     it "validates associated comment with a helpful message" do
       expect(adjustment.errors[:comment])
         .to include("Enter a comment explaining the adjustment")
+    end
+
+    it "validates associated adjustment detail" do
+      aggregate_failures do
+        expect(adjustment.errors[:"detail.adjustment_type"]).to be_present
+        expect(adjustment.errors[:"detail.user"]).to be_present
+      end
     end
   end
 
