@@ -19,6 +19,10 @@ class BenefittingCountry
       non_graduated.find { |country| country.code == code }
     end
 
+    def non_graduated_for_region(region)
+      non_graduated.select { |country| country.regions.include?(region) }
+    end
+
     def region_from_country_codes(codes)
       codes.map { |c| find_by_code(c) }
         .map { |c| c.regions }
@@ -52,6 +56,11 @@ class BenefittingCountry
         @all ||= Codelist.new(type: "benefitting_regions", source: "beis").map { |region| new_from_hash(region) }
       end
 
+      def all_for_level_code(level_code = 3)
+        level = BenefittingCountry::Region::Level.find_by_code(level_code)
+        all.select { |region| region.level == level }
+      end
+
       def find_by_code(code)
         all.find { |region| region.code == code }
       end
@@ -72,6 +81,10 @@ class BenefittingCountry
     end
 
     def eql?(other)
+      code == other.code
+    end
+
+    def ==(other)
       code == other.code
     end
 
