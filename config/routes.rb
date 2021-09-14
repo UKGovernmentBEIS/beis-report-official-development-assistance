@@ -24,7 +24,9 @@ Rails.application.routes.draw do
       get "organisations/(:role)/new", to: "organisations#new", as: :new_organisation
     end
 
-    resources :exports, only: [:index]
+    resources :exports, only: [:index] do
+      get "external_income", on: :collection
+    end
 
     namespace :exports do
       resources :organisations, only: [:show] do
