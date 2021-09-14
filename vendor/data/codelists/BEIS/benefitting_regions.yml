@@ -13,6 +13,9 @@ data:
   - name: North of Sahara, regional
     code: "189"
     level: 2
+  - name: North of Sahara, regional
+    code: "189"
+    level: 3
   - name: South of Sahara, regional
     code: "289"
     level: 2
@@ -43,9 +46,15 @@ data:
   - name: South America, regional
     code: "489"
     level: 2
+  - name: South America, regional
+    code: "489"
+    level: 3
   - name: Asia, regional
     code: "798"
     level: 1
+  - name: Asia, regional
+    code: "798"
+    level: 2
   - name: Far East Asia, regional
     code: "789"
     level: 3
@@ -64,6 +73,12 @@ data:
   - name: Europe, regional
     code: "89"
     level: 1
+  - name: Europe, regional
+    code: "89"
+    level: 2
+  - name: Europe, regional
+    code: "89"
+    level: 3
   - name: Oceania, regional
     code: "889"
     level: 1
