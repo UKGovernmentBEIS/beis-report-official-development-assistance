@@ -825,6 +825,7 @@
 
 - BEIS users have a link to delivery partners reports on the homepage
 - Show the activity summary on all activity tabs
+- Delivery Partner can post an adjustment to an approved report
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-73...HEAD
 [release-73]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-72...release-73
