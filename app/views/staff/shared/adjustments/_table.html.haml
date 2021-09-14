@@ -1,0 +1,23 @@
+- unless adjustments.empty?
+  %table.govuk-table.adjustments
+    %thead.govuk-table__head
+      %tr.govuk-table__row
+        %th.govuk-table__header
+          = t("table.header.adjustment.financial_quarter")
+        %th.govuk-table__header
+          = t("table.header.adjustment.value")
+        %th.govuk-table__header
+          = t("table.header.adjustment.adjustment_type")
+        %th.govuk-table__header
+          Report
+        %th.govuk-table__header
+          Actions
+
+    %tbody.govuk-table__body
+      - adjustments.each do |adjustment|
+        %tr.adjustment.govuk-table__row{id: "adjustment_#{adjustment.id}"}
+          %td.financial-period.govuk-table__cell= adjustment.financial_quarter_and_year
+          %td.value.govuk-table__cell= adjustment.value
+          %td.type.govuk-table__cell= adjustment.adjustment_type
+          %td.report.govuk-table__cell= link_to("Report", report_path(adjustment.report))
+          %td.actions.govuk-table__cell= link_to("View", activity_adjustment_path(@activity, adjustment))

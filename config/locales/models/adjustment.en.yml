@@ -1,4 +1,50 @@
 en:
+  action:
+    adjustment:
+      create:
+        success: Adjustment successfully created
+
+  page_content:
+    adjustment:
+      button:
+        create: Add an adjustment
+
+  page_title:
+    adjustment:
+      new: Add a new adjustment
+      show: Adjustment
+  form:
+    label:
+      adjustment:
+        report: Report
+        value: Adjustment amount
+        adjustment_type: Adjustment type
+        financial_quarter: Financial quarter
+        financial_year: Financial year
+    hint:
+      adjustment:
+        financial_quarter_and_year: The report with which the adjustment should be associated
+  table:
+    caption:
+      adjustment:
+        in_report: Adjustments added in this report
+    header:
+      adjustment:
+        financial_quarter: Financial quarter
+        value: Adjustment amount
+        adjustment_type: Adjustment type
+
+  summary:
+    headings:
+      adjustment:
+        timestamp: Time posted
+        creator: Posted by
+        value: Amount
+        adjustment_type: Adjustment type
+        report: Report
+        activity: Activity
+        financial_period: Financial period
+        comment: Comment
   activerecord:
     errors:
       models:

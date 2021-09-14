@@ -363,6 +363,7 @@ en:
       third_party_projects: Third-party projects (level D)
       actuals: Actual spend
       refunds: Refunds
+      adjustments: Adjustments
     tab_content:
       change_history:
         guidance: Changes made to this activity

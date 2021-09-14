@@ -102,6 +102,7 @@ Rails.application.routes.draw do
       resources :outgoing_transfers, except: [:index]
       resources :incoming_transfers, except: [:index]
       resources :refunds, except: [:index]
+      resources :adjustments, only: [:new, :create, :show]
     end
 
     resource :search, only: [:show]
