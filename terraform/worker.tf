@@ -7,7 +7,7 @@ resource "cloudfoundry_app" "beis-roda-worker" {
   health_check_type = "none"
   memory            = 1024
   disk_quota        = 3072
-  timeout           = 120
+  timeout           = 300
   docker_image      = "thedxw/beis-report-official-development-assistance:${var.docker_image}"
   docker_credentials = {
     username = "${var.docker_username}"
