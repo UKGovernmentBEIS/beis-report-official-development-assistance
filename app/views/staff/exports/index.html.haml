@@ -8,6 +8,29 @@
 
   .govuk-grid-row.activity-page
     .govuk-grid-column-full
+
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "col"}
+              = t("table.export.header.fund")
+            %th.govuk-table__header{scope: "col"}
+              = t("table.export.header.format")
+            %th.govuk-table__header{scope: "col"}
+              = t("table.header.default.actions")
+        %tbody.govuk-table__body
+          - Fund.all.each do |fund|
+            %tr.govuk-table__row
+              %td.govuk-table__cell
+                = t("table.export.external_income.name", fund: fund.name)
+              %td.govuk-table__cell
+                CSV
+              %td.govuk-table__cell
+                = a11y_action_link("Download", external_income_exports_path(fund_id: fund.id, format: "csv"), "for #{fund.name}", ["govuk-link--no-visited-state"])
+
+      %h1.govuk-heading-m
+        = t("page_content.export.organisations.title")
+
       %table.govuk-table
         %thead.govuk-table__head
           %tr.govuk-table__row

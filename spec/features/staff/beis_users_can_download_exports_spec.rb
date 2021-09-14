@@ -79,7 +79,9 @@ RSpec.feature "BEIS users can download exports" do
     ext_income2 = create(:external_income, activity: project2, financial_year: 2021, financial_quarter: 1, amount: 240)
     ext_income3 = create(:external_income, activity: project2, financial_year: 2021, financial_quarter: 2, amount: 100)
 
-    visit external_income_exports_path(fund_id: Fund.by_short_name("NF").id, format: "csv")
+    visit exports_path
+    click_link "Download for Newton Fund"
+
     document = CSV.parse(page.body.delete_prefix("\uFEFF"), headers: true).map(&:to_h)
 
     expect(document.size).to eq(3)

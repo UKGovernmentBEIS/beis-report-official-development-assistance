@@ -8,6 +8,10 @@ en:
       index: Exports
       organisation:
         show: Exports for %{name}
+  page_content:
+    export:
+      organisations:
+        title: Exports for delivery partner organisations
   table:
     export:
       organisation:
@@ -15,6 +19,11 @@ en:
         actions: Actions
         download: Download
         format: Format
+      header:
+        fund: Fund
+        format: Format
+      external_income:
+        name: External income for %{fund}
   breadcrumbs:
     export:
       index: Exports
