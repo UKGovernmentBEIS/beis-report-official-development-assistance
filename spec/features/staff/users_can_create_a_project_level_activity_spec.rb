@@ -54,7 +54,7 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.actual_start_date).to eq(activity.actual_start_date)
         expect(created_activity.actual_end_date).to eq(activity.actual_end_date)
         expect(created_activity.country_delivery_partners).to eq(activity.country_delivery_partners)
-        expect(created_activity.benefitting_countries).to eq(activity.benefitting_countries)
+        expect(created_activity.benefitting_countries).to match_array(activity.benefitting_countries)
         expect(created_activity.gdi).to eq(activity.gdi)
         expect(created_activity.aid_type).to eq(activity.aid_type)
         expect(created_activity.collaboration_type).to eq(activity.collaboration_type)

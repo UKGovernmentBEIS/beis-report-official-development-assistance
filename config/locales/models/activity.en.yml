@@ -166,7 +166,6 @@ en:
         actual_end_date: For example, 2 2 2020
         actual_start_date: For example, 11 1 2020
         aid_type: Where an activity is not G01 or E01 we would expect most of our activity to be classified as D02 but there will be cases where C01 is more appropriate.
-        benefitting_countries: Select all that apply
         call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
         call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
         country_delivery_partners: "Please provide up to ten country delivery partners. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
@@ -177,6 +176,7 @@ en:
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
         objectives: Please refrain from using any abbreviations
         intended_beneficiaries: Select all that apply
+        benefitting_countries_html: <p>Select all that apply.</p><p>For help responding to this question, refer to the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/4406536016659-Benefitting-Countries">guidance (opens in new tab)</a></p>
         oda_eligibility: ODA eligibility is determined by the OECD. The primary purpose of the research must be to benefit a DAC list country. The title and description are collected in line with OECD specification, and benefitting countries must be on the OECD DAC list – and referenced using the correct code
         oda_eligibility_lead: This will be used by us as a first point of contact for anything ODA related.
         planned_end_date: For example, 28 11 2020
@@ -337,6 +337,7 @@ en:
       organisation: Organisation
     activity:
       unknown_country: Unknown country code
+      benefitting_region_check_box: Select or deselect all countries in %{region}
       budgets: Budgets
       button:
         create: Add activity

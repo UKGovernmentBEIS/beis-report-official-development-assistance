@@ -240,7 +240,7 @@ class ActivityForm
 
   def fill_in_benefitting_countries
     expect(page).to have_content I18n.t("form.legend.activity.benefitting_countries")
-    expect(page).to have_content I18n.t("form.hint.activity.benefitting_countries")
+    expect(page.html).to include I18n.t("form.hint.activity.benefitting_countries_html")
 
     activity.benefitting_countries.each do |country|
       find("input[value='#{country}']", visible: :all).click
