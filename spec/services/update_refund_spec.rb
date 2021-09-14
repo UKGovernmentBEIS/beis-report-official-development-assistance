@@ -29,7 +29,7 @@ RSpec.describe UpdateRefund do
 
         result = described_class.new(refund: refund).call(attributes: attributes)
 
-        expect(result.object.comment).to eq("abc")
+        expect(result.object.comment.comment).to eq("abc")
       end
     end
 
