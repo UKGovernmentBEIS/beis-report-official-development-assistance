@@ -814,12 +814,15 @@
 
 - BEIS users can export the external income per organisation per fund
 
-## [unreleased]
+## [release-73] - 2021-09-14
 
 - Added a new accepted channel of delivery code, "22000" ("Donor country-based NGO")
 - Force word wrapping in table cells showing invalid upload values
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-72...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-73...HEAD
+[release-73]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-72...release-73
 [release-72]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-71...release-72
 [release-71]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-70...release-71
 [release-70]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-69...release-70
