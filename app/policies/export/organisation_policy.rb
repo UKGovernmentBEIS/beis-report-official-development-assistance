@@ -17,6 +17,10 @@ module Export
       return true if user.service_owner?
     end
 
+    def show_budgets?
+      show?
+    end
+
     def show_xml?
       return true if user.service_owner?
     end
