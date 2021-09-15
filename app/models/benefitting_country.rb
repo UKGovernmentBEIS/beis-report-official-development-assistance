@@ -24,7 +24,7 @@ class BenefittingCountry
     end
 
     def region_from_country_codes(codes)
-      codes.map { |c| find_by_code(c) }
+      codes.filter_map { |code| find_by_code(code) if find_by_code(code).present? }
         .map { |c| c.regions }
         .inject(:&)
         .max_by { |r| r.level.code } || Region.find_by_code(Region::DEVELOPING_COUNTRIES_CODE)
