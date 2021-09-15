@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
     resources :exports, only: [:index] do
       get "external_income", on: :collection
+      get "budgets", on: :collection
     end
 
     namespace :exports do

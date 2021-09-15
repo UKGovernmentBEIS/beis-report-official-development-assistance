@@ -25,4 +25,20 @@ class Staff::ExportsController < Staff::BaseController
       end
     end
   end
+
+  def budgets
+    authorize :export, :show_budgets?
+
+    fund = Fund.new(params[:fund_id])
+
+    respond_to do |format|
+      format.csv do
+        export = Budget::Export.new(source_fund: fund)
+
+        stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
+          export.rows.each { |row| csv << row }
+        end
+      end
+    end
+  end
 end

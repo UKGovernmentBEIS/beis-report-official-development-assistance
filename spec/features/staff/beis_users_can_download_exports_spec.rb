@@ -140,4 +140,62 @@ RSpec.feature "BEIS users can download exports" do
       },
     ])
   end
+
+  scenario "downloading budgets for all delivery partners" do
+    delivery_partner1, delivery_partner2 = create_list(:delivery_partner_organisation, 2)
+
+    report = create(:report)
+
+    programme = create(:programme_activity)
+    project1 = create(:project_activity, :newton_funded, organisation: delivery_partner1, parent: programme)
+    project2 = create(:project_activity, :newton_funded, organisation: delivery_partner2, parent: programme)
+
+    create(:budget, financial_year: 2018, value: 100, parent_activity: project1, report: report)
+    create(:budget, financial_year: 2019, value: 80, parent_activity: project1, report: report)
+    create(:budget, financial_year: 2021, value: 20, parent_activity: project1, report: report)
+
+    create(:budget, financial_year: 2018, value: 100, parent_activity: project2, report: report)
+    create(:budget, financial_year: 2019, value: 80, parent_activity: project2, report: report)
+    create(:budget, financial_year: 2020, value: 75, parent_activity: project2, report: report)
+    create(:budget, financial_year: 2021, value: 20, parent_activity: project2, report: report)
+
+    visit budgets_exports_path(fund_id: Fund.by_short_name("NF").id, format: "csv")
+
+    document = CSV.parse(page.body.delete_prefix("\uFEFF"), headers: true).map(&:to_h)
+
+    expect(document.size).to eq(3)
+
+    expect(document).to match_array([
+      {
+        "RODA identifier" => programme.roda_identifier,
+        "Delivery partner identifier" => programme.delivery_partner_identifier,
+        "Level" => "Programme (level B)",
+        "Title" => programme.title,
+        "2018-2019" => "0.00",
+        "2019-2020" => "0.00",
+        "2020-2021" => "0.00",
+        "2021-2022" => "0.00",
+      },
+      {
+        "RODA identifier" => project1.roda_identifier,
+        "Delivery partner identifier" => project1.delivery_partner_identifier,
+        "Level" => "Project (level C)",
+        "Title" => project1.title,
+        "2018-2019" => "100.00",
+        "2019-2020" => "80.00",
+        "2020-2021" => "0.00",
+        "2021-2022" => "20.00",
+      },
+      {
+        "RODA identifier" => project2.roda_identifier,
+        "Delivery partner identifier" => project2.delivery_partner_identifier,
+        "Level" => "Project (level C)",
+        "Title" => project2.title,
+        "2018-2019" => "100.00",
+        "2019-2020" => "80.00",
+        "2020-2021" => "75.00",
+        "2021-2022" => "20.00",
+      },
+    ])
+  end
 end
