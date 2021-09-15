@@ -1,18 +1,30 @@
 class BenefittingCountry
   include ActiveModel::Model
-  attr_accessor :name, :recipient_code, :code, :regions
+  attr_accessor :name, :recipient_code, :code, :graduated, :regions
 
   class << self
     def all
       @all ||= Codelist.new(type: "benefitting_countries", source: "beis").map { |country| new_from_hash(country) }
     end
 
+    def non_graduated
+      @non_graduated ||= all.select { |country| !country.graduated }
+    end
+
     def find_by_code(code)
       all.find { |country| country.code == code }
     end
 
+    def find_non_graduated_country_by_code(code)
+      non_graduated.find { |country| country.code == code }
+    end
+
+    def non_graduated_for_region(region)
+      non_graduated.select { |country| country.regions.include?(region) }
+    end
+
     def region_from_country_codes(codes)
-      codes.map { |c| find_by_code(c) }
+      codes.filter_map { |code| find_by_code(code) if find_by_code(code).present? }
         .map { |c| c.regions }
         .inject(:&)
         .max_by { |r| r.level.code } || Region.find_by_code(Region::DEVELOPING_COUNTRIES_CODE)
@@ -25,6 +37,7 @@ class BenefittingCountry
         name: country["name"],
         code: country["code"],
         recipient_code: country["recipient_code"],
+        graduated: country["graduated"],
         regions: country["regions"].map { |region|
           Region.find_by_code(region)
         }
@@ -41,6 +54,11 @@ class BenefittingCountry
     class << self
       def all
         @all ||= Codelist.new(type: "benefitting_regions", source: "beis").map { |region| new_from_hash(region) }
+      end
+
+      def all_for_level_code(level_code = 3)
+        level = BenefittingCountry::Region::Level.find_by_code(level_code)
+        all.select { |region| region.level == level }
       end
 
       def find_by_code(code)
@@ -63,6 +81,10 @@ class BenefittingCountry
     end
 
     def eql?(other)
+      code == other.code
+    end
+
+    def ==(other)
       code == other.code
     end
 

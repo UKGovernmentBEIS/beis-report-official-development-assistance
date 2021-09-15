@@ -12,10 +12,6 @@ module CodelistHelper
     objects.unshift(OpenStruct.new(name: "Pound Sterling", code: "GBP")).uniq
   end
 
-  def benefitting_countries_hash
-    Codelist.new(type: "intended_beneficiaries").list
-  end
-
   def region_select_options
     objects = Codelist.new(type: "recipient_region").to_objects(with_empty_item: false)
     objects.unshift(OpenStruct.new(name: "Developing countries, unspecified", code: "998")).uniq

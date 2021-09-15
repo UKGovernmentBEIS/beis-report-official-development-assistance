@@ -1505,5 +1505,23 @@ RSpec.describe Activity, type: :model do
         expect(subject).to eq(nil)
       end
     end
+
+    context "when there is an unexpcted country" do
+      let(:benefitting_countries) { ["UK", "DZ", "LY"] }
+      let(:region) { BenefittingCountry::Region.find_by_code("189") }
+
+      it "handles the unexpected country and returns the region that can be derived" do
+        expect(subject).to eql(region)
+      end
+    end
+
+    context "when there is a graduated country" do
+      let(:benefitting_countries) { ["SC", "KM", "BI"] }
+      let(:region) { BenefittingCountry::Region.find_by_code("1027") }
+
+      it "handles graduated countries including them in the region calculation" do
+        expect(subject).to eql(region)
+      end
+    end
   end
 end

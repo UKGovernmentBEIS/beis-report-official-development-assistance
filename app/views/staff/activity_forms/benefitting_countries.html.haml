@@ -1,14 +1,15 @@
 = render layout: "wrapper" do |f|
-  = f.govuk_check_boxes_fieldset :benefitting_countries, legend: { tag: 'h1', size: 'xl' } do |fs|
-    - benefitting_countries_hash.each do |region_code, region_countries|
+  = f.govuk_check_boxes_fieldset :benefitting_countries, legend: { tag: 'h1', size: 'xl' }, hint: { text: t("form.hint.activity.benefitting_countries_html") }  do |fs|
+    - benefitting_regions_for_form.each do |region|
+
+      %h3.govuk-heading-m
+        = "#{region.name} (#{region.code})"
 
       .govuk-checkboxes__item.region-checkbox-wrapper
-        = check_box_tag region_name_from_code(region_code), nil, false, "data-region-code" => region_code, class: "govuk-checkboxes__input region-checkbox"
-        = label_tag region_name_from_code(region_code), class: "govuk-label govuk-checkboxes__label" do
-          = region_name_from_code(region_code)
-      %h3.govuk-heading-s.region-heading
-        = region_name_from_code(region_code)
+        = check_box_tag region.name, nil, false, "data-region-code" => region.code, class: "govuk-checkboxes__input region-checkbox"
+        = label_tag region.name, class: "govuk-label govuk-checkboxes__label govuk-heading-m" do
+          = t("page_content.activity.benefitting_region_check_box", region: region.name)
 
-      .region-countries-wrapper{"data-region-code": region_code}
-        - region_countries.each do |country|
-          = f.govuk_check_box :benefitting_countries, country["code"], label: { text: country["name"] }
+      .region-countries-wrapper{"data-region-code": region.code}
+        - benefitting_countries_in_region_for_form(region).each do |country|
+          = f.govuk_check_box :benefitting_countries, country.code, label: { text: "#{country.name} (#{country.code.upcase})" }, class: "country-checkbox"

@@ -581,11 +581,7 @@ module Activities
       end
 
       def validate_country(country, error)
-        yaml = YAML.safe_load(File.read("#{Rails.root}/config/locales/codelists/#{IATI_VERSION}/iati.en.yml"))
-        countries = yaml["en"]["activity"]["recipient_country"]
-
-        raise error unless countries.key?(country)
-
+        raise error unless BenefittingCountry.find_non_graduated_country_by_code(country)
         country
       end
     end
