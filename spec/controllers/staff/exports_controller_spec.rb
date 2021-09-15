@@ -35,7 +35,7 @@ RSpec.describe Staff::ExportsController do
       end
 
       it "returns a CSV of all of the exports" do
-        expect(CSV.parse(response.body.delete_prefix("\uFEFF")).first).to match_array(QuarterlyExternalIncomeExport::HEADERS)
+        expect(CSV.parse(response.body.delete_prefix("\uFEFF")).first).to match_array(ExternalIncome::Export::HEADERS)
       end
     end
   end
