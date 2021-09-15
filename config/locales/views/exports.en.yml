@@ -24,6 +24,8 @@ en:
         format: Format
       external_income:
         name: External income for %{fund}
+      budgets:
+        name: Budgets for %{fund}
   breadcrumbs:
     export:
       index: Exports

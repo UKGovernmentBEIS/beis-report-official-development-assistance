@@ -80,7 +80,7 @@ RSpec.feature "BEIS users can download exports" do
     ext_income3 = create(:external_income, activity: project2, financial_year: 2021, financial_quarter: 2, amount: 100)
 
     visit exports_path
-    click_link "Download for Newton Fund"
+    click_link "Download External income for Newton Fund"
 
     document = CSV.parse(page.body.delete_prefix("\uFEFF"), headers: true).map(&:to_h)
 
@@ -159,7 +159,8 @@ RSpec.feature "BEIS users can download exports" do
     create(:budget, financial_year: 2020, value: 75, parent_activity: project2, report: report)
     create(:budget, financial_year: 2021, value: 20, parent_activity: project2, report: report)
 
-    visit budgets_exports_path(fund_id: Fund.by_short_name("NF").id, format: "csv")
+    visit exports_path
+    click_link "Download Budgets for Newton Fund"
 
     document = CSV.parse(page.body.delete_prefix("\uFEFF"), headers: true).map(&:to_h)
 
