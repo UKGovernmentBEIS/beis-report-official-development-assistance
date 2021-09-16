@@ -80,14 +80,6 @@ class Staff::ReportsController < Staff::BaseController
     params.require(:report).permit(:deadline, :description)
   end
 
-  def reports_for_delivery_partner
-    active_reports
-    submitted_reports
-    in_review_reports
-    awaiting_changes_reports
-    approved_reports
-  end
-
   def inactive_reports(including: [:organisation])
     inactive_reports = policy_scope(Report.inactive).includes([:fund] + including)
     authorize inactive_reports
@@ -125,7 +117,7 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def send_csv
-    export = Report::Export.new(report: @report)
+    export = Report::Export.new(reports: [@report])
 
     stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
       export.rows.each do |row|
@@ -135,20 +127,15 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def downloadable_reports_for_beis_users
-    report_sets = [
-      active_reports(including: [:organisation]),
-      submitted_reports(including: [:organisation]),
-      in_review_reports(including: [:organisation]),
-      awaiting_changes_reports(including: [:organisation]),
-    ]
-    report_sets.sum.sort_by { |report| report.organisation.name }
-  end
-
-  def report_activities_sorted_by_level(report)
-    Activity::ProjectsForReportFinder.new(
-      report: report,
-      scope: Activity.includes(:organisation, :extending_organisation, :implementing_organisations)
-    ).call.sort_by { |a| a.level }
+    @downloadable_reports_for_beis_users ||= begin
+      report_sets = [
+        active_reports(including: [:organisation]),
+        submitted_reports(including: [:organisation]),
+        in_review_reports(including: [:organisation]),
+        awaiting_changes_reports(including: [:organisation]),
+      ]
+      report_sets.sum.sort_by { |report| report.organisation.name }
+    end
   end
 
   def reports_have_same_quarter?
@@ -156,15 +143,11 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def send_all_reports_csv
-    report_sample = downloadable_reports_for_beis_users.first
-    headers = ExportActivityToCsv.new(report: report_sample).headers
-    filename = ReportPresenter.new(report_sample).filename_for_all_reports_download
+    export = Report::Export.new(reports: downloadable_reports_for_beis_users, export_type: :all)
 
-    stream_csv_download(filename: filename, headers: headers) do |csv|
-      downloadable_reports_for_beis_users.each do |report|
-        report_activities_sorted_by_level(report).each do |activity|
-          csv << ExportActivityToCsv.new(activity: activity, report: report).call
-        end
+    stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
+      export.rows.each do |row|
+        csv << row
       end
     end
   end
