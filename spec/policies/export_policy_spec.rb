@@ -1,19 +1,21 @@
 require "rails_helper"
 
 RSpec.describe ExportPolicy do
+  let(:user) { build_stubbed(:beis_user) }
+
   subject { described_class.new(user, :export) }
 
-  context "for a BEIS user" do
+  context "as a BEIS user" do
     let(:user) { create(:beis_user) }
 
     it { is_expected.to permit_action(:index) }
-    it { is_expected.to permit_action(:show) }
+    it { is_expected.to permit_action(:show_external_income) }
   end
 
-  context "for a delivery partner" do
+  context "as a Delivery partner user" do
     let(:user) { create(:delivery_partner_user) }
 
-    it { is_expected.to forbid_action(:index) }
-    it { is_expected.to forbid_action(:show) }
+    it { is_expected.to_not permit_action(:index) }
+    it { is_expected.to_not permit_action(:show_external_income) }
   end
 end

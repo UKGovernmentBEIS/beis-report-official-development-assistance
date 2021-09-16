@@ -1,0 +1,21 @@
+- unless actuals.empty?
+  %table.govuk-table.actuals
+    %thead.govuk-table__head
+      %tr.govuk-table__row
+        %th.govuk-table__header
+          = t("table.header.actual.financial_quarter")
+        %th.govuk-table__header
+          = t("table.header.actual.value")
+        %th.govuk-table__header
+          = t("table.header.actual.receiving_organisation")
+        %th.govuk-table__header
+
+    %tbody.govuk-table__body
+      - actuals.each do |actual|
+        %tr.govuk-table__row{id: actual.id}
+          %td.govuk-table__cell= actual.financial_quarter_and_year
+          %td.govuk-table__cell= actual.value
+          %td.govuk-table__cell= actual.receiving_organisation_name
+          %td.govuk-table__cell
+            - if policy(actual).edit?
+              = a11y_action_link(t('default.link.edit'), edit_activity_actual_path(actual.parent_activity_id, actual), t("page_content.actuals.edit_noun"))

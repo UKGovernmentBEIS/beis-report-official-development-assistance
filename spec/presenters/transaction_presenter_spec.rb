@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe TransactionPresenter do
   let(:transaction) do
-    build_stubbed(:transaction,
+    build_stubbed(:actual,
       currency: "GBP",
       date: "2020-06-25",
       value: BigDecimal("110.01"))
@@ -24,7 +24,7 @@ RSpec.describe TransactionPresenter do
 
   describe "#receiving_organisation_name" do
     context "when the organisation is nil" do
-      let(:transaction) { build(:transaction, receiving_organisation_name: nil) }
+      let(:transaction) { build(:actual, receiving_organisation_name: nil) }
 
       it "returns N/A" do
         expect(subject.receiving_organisation_name).to eq("N/A")
@@ -33,7 +33,7 @@ RSpec.describe TransactionPresenter do
 
     context "when the organisation is present" do
       let(:organisation_name) { Faker::Company.name }
-      let(:transaction) { build(:transaction, receiving_organisation_name: organisation_name) }
+      let(:transaction) { build(:actual, receiving_organisation_name: organisation_name) }
 
       it "returns the organisation name" do
         expect(subject.receiving_organisation_name).to eq(organisation_name)

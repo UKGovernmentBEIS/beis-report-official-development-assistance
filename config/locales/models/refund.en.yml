@@ -23,12 +23,14 @@ en:
   form:
     label:
       refund:
-        value: Transaction amount
+        value: Refund amount
         financial_quarter: Financial Quarter
         financial_year: Financial Year
     hint:
       refund:
         financial_quarter_and_year: The financial quarter the refund applies to
+        comment: The reason for posting the refund
+        value: Your refund is stored as a negative amount
   table:
     caption:
       refund:
@@ -37,3 +39,18 @@ en:
       refund:
         financial_quarter: Financial quarter
         value: Refund amount
+  activerecord:
+    errors:
+      models:
+        refund:
+          attributes:
+            comment:
+              invalid: Enter a comment describing the need for the refund
+            financial_year:
+              blank: Select a financial year
+            financial_quarter:
+              blank: Select a financial quarter
+            value:
+              blank: Enter a refund amount
+              inclusion: Refund amount must be between 0.01 and 99,999,999,999.00
+              not_a_number: "Refund amount must be a valid number"

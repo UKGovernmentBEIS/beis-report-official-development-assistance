@@ -264,7 +264,7 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#benefitting_countries" do
-    it_behaves_like "a code translator", "benefitting_countries", {type: "recipient_country"}, "Array"
+    it_behaves_like "a code translator", "benefitting_countries", {type: "benefitting_countries", source: "beis"}, "Array"
 
     context "when there are benefitting countries" do
       it "returns the locale value for the codes of the countries joined in sentence form" do
@@ -272,6 +272,31 @@ RSpec.describe ActivityPresenter do
         result = described_class.new(activity).benefitting_countries
         expect(result).to eql("Argentina, Ecuador, and Brazil")
       end
+
+      it "handles unexpected country codes" do
+        activity = build(:project_activity, benefitting_countries: ["UK"])
+        result = described_class.new(activity).benefitting_countries
+        expect(result).to eql t("page_content.activity.unknown_country")
+      end
+    end
+  end
+
+  describe "#benefitting_region" do
+    subject { described_class.new(activity).benefitting_region }
+
+    let(:activity) { build(:project_activity) }
+    before { expect(activity).to receive(:benefitting_region).at_least(:once).and_return(region) }
+
+    context "when there is a benefitting region" do
+      let(:region) { BenefittingRegion.new(name: "Some region") }
+
+      it { is_expected.to eq(region.name) }
+    end
+
+    context "when there is no benefitting region" do
+      let(:region) { nil }
+
+      it { is_expected.to be_nil }
     end
   end
 
@@ -296,13 +321,19 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#recipient_country" do
-    it_behaves_like "a code translator", "recipient_country", {type: "recipient_country"}
+    it_behaves_like "a code translator", "recipient_country", {type: "benefitting_countries", source: "beis"}
 
     context "when there is a recipient_country" do
-      it "returns the locale value for the code" do
+      it "returns the name from the code" do
         activity = build(:project_activity, recipient_country: "CL")
         result = described_class.new(activity).recipient_country
-        expect(result).to eq t("activity.recipient_country.#{activity.recipient_country}")
+        expect(result).to eq "Chile"
+      end
+
+      it "handles unexpected country codes" do
+        activity = build(:project_activity, benefitting_countries: ["UK"])
+        result = described_class.new(activity).benefitting_countries
+        expect(result).to eql t("page_content.activity.unknown_country")
       end
     end
 
@@ -341,6 +372,12 @@ RSpec.describe ActivityPresenter do
         activity = build(:project_activity, intended_beneficiaries: ["AR", "EC", "BR"])
         result = described_class.new(activity).intended_beneficiaries
         expect(result).to eql("Argentina, Ecuador, and Brazil")
+      end
+
+      it "handles unexpected country codes" do
+        activity = build(:project_activity, benefitting_countries: ["UK"])
+        result = described_class.new(activity).benefitting_countries
+        expect(result).to eql t("page_content.activity.unknown_country")
       end
     end
   end
@@ -636,12 +673,12 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#actual_total_for_report_financial_quarter" do
-    it "returns the transaction total scoped to report as a formatted number" do
+    it "returns the actual total scoped to report as a formatted number" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
       current_quarter = FinancialQuarter.for_date(Date.today)
-      _transaction_in_report_scope = create(:transaction, parent_activity: project, report: report, value: 100.20, **current_quarter)
-      _transaction_outside_report_scope = create(:transaction, parent_activity: project, report: report, value: 300, **current_quarter.pred)
+      _actual_in_report_scope = create(:actual, parent_activity: project, report: report, value: 100.20, **current_quarter)
+      _actual_outside_report_scope = create(:actual, parent_activity: project, report: report, value: 300, **current_quarter.pred)
 
       expect(described_class.new(project).actual_total_for_report_financial_quarter(report: report))
         .to eq "100.20"
@@ -676,7 +713,7 @@ RSpec.describe ActivityPresenter do
 
       reporting_cycle.tick
       report = Report.for_activity(project).in_historical_order.first
-      _transaction = create(:transaction, parent_activity: project, report: report, value: 200, **report.own_financial_quarter)
+      _actual = create(:actual, parent_activity: project, report: report, value: 200, **report.own_financial_quarter)
 
       expect(described_class.new(project).variance_for_report_financial_quarter(report: report))
         .to eq "-1300.00"
@@ -694,7 +731,7 @@ RSpec.describe ActivityPresenter do
   describe "#total_spend" do
     it "returns the value to two decimal places with a currency symbol" do
       activity = build(:programme_activity)
-      create(:transaction, parent_activity: activity, value: 20)
+      create(:actual, parent_activity: activity, value: 20)
       expect(described_class.new(activity).total_spend).to eq("£20.00")
     end
   end

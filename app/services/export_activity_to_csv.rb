@@ -25,10 +25,10 @@ class ExportActivityToCsv
   def previous_twelve_quarter_actuals
     return [] if report.own_financial_quarter.nil?
 
-    transaction_quarters = TransactionOverview.new(activity_presenter, report_presenter).all_quarters
+    actual_quarters = ActualOverview.new(activity_presenter, report_presenter).all_quarters
 
     previous_report_quarters.map do |quarter|
-      value = transaction_quarters.value_for(**quarter)
+      value = actual_quarters.value_for(**quarter)
       "%.2f" % value
     end
   end
@@ -59,6 +59,7 @@ class ExportActivityToCsv
       "Recipient country" => -> { activity_presenter.recipient_country },
       "Intended beneficiaries" => -> { activity_presenter.intended_beneficiaries },
       "Benefitting countries" => -> { activity_presenter.benefitting_countries },
+      "Benefitting region" => -> { activity_presenter.benefitting_region },
       "GDI" => -> { activity_presenter.gdi },
       "GCRF Strategic Area" => -> { activity_presenter.gcrf_strategic_area },
       "GCRF Challenge Area" => -> { activity_presenter.gcrf_challenge_area },

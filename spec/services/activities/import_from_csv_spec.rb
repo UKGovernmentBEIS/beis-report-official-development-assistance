@@ -457,6 +457,18 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_benefitting_countries"))
     end
 
+    it "has an error if the benefiting countries are graduated or not from the list" do
+      new_activity_attributes["Benefitting Countries"] = ["UK", "SC"]
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.errors.first.csv_column).to eq("Benefitting Countries")
+      expect(subject.errors.first.column).to eq(:benefitting_countries)
+      expect(subject.errors.first.value).to include("UK")
+      expect(subject.errors.first.value).to include("SC")
+      expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_benefitting_countries"))
+    end
+
     it "has an error if the GDI is invalid" do
       new_activity_attributes["GDI"] = "2222222"
 

@@ -167,6 +167,48 @@ RSpec.describe "staff/shared/activities/_activity" do
     end
   end
 
+  describe "Benefitting region" do
+    let(:activity) { build(:programme_activity, benefitting_countries: benefitting_countries) }
+
+    context "when the activity has benefitting countries" do
+      subject { body.find(".benefitting_region") }
+
+      let(:benefitting_countries) { ["DZ", "LY"] }
+      let(:expected_region) { BenefittingCountry.find_by_code("DZ").regions.last }
+
+      it { is_expected.to have_content(expected_region.name) }
+      it { is_expected.to_not show_the_edit_add_actions }
+    end
+
+    context "when the activity has no benefitting countries" do
+      subject { body }
+
+      let(:benefitting_countries) { [] }
+
+      it { is_expected.to_not have_css(".benefitting_region") }
+    end
+  end
+
+  describe "legacy recipient_region" do
+    let(:activity) { build(:programme_activity, recipient_region: "298", benefitting_countries: benefitting_countries) }
+
+    context "when the activity has no benefitting_countries" do
+      subject { body.find(".recipient_region") }
+
+      let(:benefitting_countries) { [] }
+
+      it { is_expected.to have_content("Africa, regional") }
+    end
+
+    context "when the activity has benefitting countries" do
+      subject { body }
+
+      let(:benefitting_countries) { ["DZ", "LY"] }
+
+      it { is_expected.to_not have_css(".recipient_region") }
+    end
+  end
+
   RSpec::Matchers.define :show_the_edit_add_actions do
     match do
       expect(rendered).to have_link(t("default.link.edit"))

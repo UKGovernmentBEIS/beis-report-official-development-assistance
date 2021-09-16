@@ -37,12 +37,12 @@ class Activity
     attr_reader :current_user, :tab_name
 
     def financials
-      @transactions = policy_scope(Transaction).where(parent_activity: @activity).order("date DESC")
+      @actuals = policy_scope(Actual).where(parent_activity: @activity).order("date DESC")
       @budgets = policy_scope(Budget).where(parent_activity: @activity).order("financial_year DESC")
       @forecasts = policy_scope(@activity.latest_forecasts)
       @refunds = policy_scope(Refund).where(parent_activity: @activity).order("financial_year DESC")
 
-      @transaction_presenters = @transactions.includes(:parent_activity).map { |transaction| TransactionPresenter.new(transaction) }
+      @actual_presenters = @actuals.includes(:parent_activity).map { |actual| TransactionPresenter.new(actual) }
       @budget_presenters = @budgets.includes(:parent_activity, :providing_organisation).map { |budget| BudgetPresenter.new(budget) }
       @forecast_presenters = @forecasts.map { |forecast| ForecastPresenter.new(forecast) }
       @refund_presenters = @refunds.map { |forecast| RefundPresenter.new(forecast) }

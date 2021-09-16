@@ -6,35 +6,39 @@ RSpec.feature "users can add benefitting countries" do
     let!(:report) { create(:report, :active, fund: activity.associated_fund, organisation: user.organisation) }
 
     scenario "the user can select benefitting countries based on the full list of all countries" do
+      all_non_graduated_benefitting_countires = BenefittingCountry.non_graduated
+
       visit activity_step_path(activity, :benefitting_countries)
 
       expect(page).to have_content t("form.legend.activity.benefitting_countries")
-      expect(page).to have_selector(".region-countries-wrapper .govuk-checkboxes__item", count: 143)
       expect(page).to have_content("Afghanistan")
       expect(page).to have_content("Zimbabwe")
+      expect(page).to have_selector(".country-checkbox", count: all_non_graduated_benefitting_countires.count)
+
       check "Gambia"
-      check "Indonesia"
-      check "Yemen"
+      check "Pakistan"
+      check "Egypt"
       click_button t("form.button.activity.submit")
 
       activity.reload
-      expect(activity.benefitting_countries).to match_array(["GM", "ID", "YE"])
+      expect(activity.benefitting_countries).to match_array(["GM", "PK", "EG"])
     end
 
     scenario "the user with JavaScript enabled can select whole regions at once", js: true do
+      activity.benefitting_countries = nil
+      caribbean_region = BenefittingRegion.find_by_code("1031")
+      countries_in_region = BenefittingCountry.non_graduated_for_region(caribbean_region)
+      country_codes = countries_in_region.map { |country| country.code }
+
       visit activity_step_path(activity, :benefitting_countries)
 
       expect(page).to have_content t("form.legend.activity.benefitting_countries")
-      expect(page).to have_selector(".region-countries-wrapper .govuk-checkboxes__item", count: 143)
-      expect(page).to have_selector(".govuk-checkboxes__item.region-checkbox-wrapper", count: 16)
-      expect(page).to have_content("Afghanistan")
-      expect(page).to have_content("Zimbabwe")
 
-      check "Caribbean, regional"
+      check t("page_content.activity.benefitting_region_check_box", region: caribbean_region.name)
       click_button t("form.button.activity.submit")
 
       activity.reload
-      expect(activity.benefitting_countries).to match_array(["AG", "CU", "DM", "DO", "GD", "HT", "JM", "MS", "LC", "VC"])
+      expect(activity.benefitting_countries).to match_array(country_codes)
     end
   end
 end

@@ -4,7 +4,7 @@ RSpec.describe QuarterlyExternalIncomeExport do
 
   let(:project) { build(:project_activity, source_fund: fund, organisation: delivery_partner, id: SecureRandom.uuid) }
   let(:source_fund) { Fund.new(fund.source_fund_code) }
-  let(:export) { QuarterlyExternalIncomeExport.new(delivery_partner, source_fund) }
+  let(:export) { QuarterlyExternalIncomeExport.new(organisation: delivery_partner, source_fund: source_fund) }
 
   let(:external_income_relation) { double("ActiveRecord::Relation") }
 
@@ -22,7 +22,8 @@ RSpec.describe QuarterlyExternalIncomeExport do
       project,
     ])
 
-    allow(ExternalIncome).to receive(:includes).with(:activity, :organisation).and_return(external_income_relation)
+    allow(ExternalIncome).to receive(:includes).with(activity: :organisation).and_return(external_income_relation)
+    allow(external_income_relation).to receive(:includes).with(:organisation).and_return(external_income_relation)
     allow(external_income_relation).to receive(:where).with(activity_id: [project.id]).and_return(external_income_relation)
     allow(external_income_relation).to receive(:order).with(:activity_id, :financial_year, :financial_quarter).and_return(external_income)
   end
@@ -39,6 +40,12 @@ RSpec.describe QuarterlyExternalIncomeExport do
     it "concatenates the fund short name and the DP org short name" do
       expect(export.filename).to eql("#{source_fund.short_name}_#{delivery_partner.beis_organisation_reference}_external_income.csv")
     end
+  end
+
+  it "fetches the external income for the delivery partner organisation" do
+    expect(Activity).to receive(:where).with(organisation_id: delivery_partner.id, source_fund_code: source_fund.id)
+
+    export.rows
   end
 
   it "exports one quarter of external income for a single project" do
@@ -71,6 +78,24 @@ RSpec.describe QuarterlyExternalIncomeExport do
         [project.roda_identifier, "10.00", "0.00", "0.00", "0.00"],
         [project.roda_identifier, "0.00", "0.00", "0.00", "20.00"],
       ])
+    end
+  end
+
+  context "when the organisation is not provided" do
+    let(:export) { QuarterlyExternalIncomeExport.new(source_fund: source_fund) }
+
+    it "fetches the external income for all delivery partners" do
+      expect(Activity).to receive(:where).with(source_fund_code: source_fund.id).and_return([
+        project,
+      ])
+
+      export.rows
+    end
+
+    describe "#filename" do
+      it "only includes the fund short name in the export" do
+        expect(export.filename).to eql("#{source_fund.short_name}_external_income.csv")
+      end
     end
   end
 end

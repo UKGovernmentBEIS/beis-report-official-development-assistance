@@ -24,11 +24,13 @@ Rails.application.routes.draw do
       get "organisations/(:role)/new", to: "organisations#new", as: :new_organisation
     end
 
-    resources :exports, only: [:index]
+    resources :exports, only: [:index] do
+      get "external_income", on: :collection
+    end
 
     namespace :exports do
       resources :organisations, only: [:show] do
-        get "transactions", on: :member
+        get "actuals", on: :member
         # IATI XML exports
         get "iati/programme_activities", on: :member, to: "organisations#programme_activities"
         get "iati/project_activities", on: :member, to: "organisations#project_activities"
@@ -56,7 +58,7 @@ Rails.application.routes.draw do
       resource :state, only: [:edit, :update], controller: :reports_state
       resource :activity_upload, only: [:new, :show, :update]
       resource :forecast_upload, only: [:new, :show, :update]
-      resource :transaction_upload, only: [:new, :show, :update]
+      resource :actual_upload, only: [:new, :show, :update]
       get "variance" => "report_variance#show"
       get "forecasts" => "report_forecasts#show"
       get "actuals" => "report_actuals#show"
@@ -65,7 +67,7 @@ Rails.application.routes.draw do
     end
 
     concern :transactionable do
-      resources :transactions
+      resources :actuals
     end
 
     concern :budgetable do

@@ -13,9 +13,21 @@ RSpec.describe Staff::Exports::OrganisationsController do
     end
   end
 
-  shared_examples "does not allow the user to download the XML" do
-    it "does not allow the user to download XML" do
+  shared_examples "responds with a 401" do
+    it "does not allow the user to access the export" do
       expect(response.status).to eq(401)
+    end
+  end
+
+  shared_examples "allows the user to access the export" do
+    it "responds with a 200" do
+      expect(response.status).to eq(200)
+    end
+
+    it "sets the CSV headers correctly" do
+      expect(response.headers.to_h).to include({
+        "Content-Type" => "text/csv",
+      })
     end
   end
 
@@ -30,12 +42,45 @@ RSpec.describe Staff::Exports::OrganisationsController do
   context "when logged in as a delivery partner" do
     let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
+    describe "#show" do
+      it "only adds a breadcrumb for the current page" do
+        allow(controller).to receive(:add_breadcrumb).with(any_args)
+
+        expect(controller).to_not receive(:add_breadcrumb).with(t("breadcrumbs.export.index"), exports_path)
+        expect(controller).to receive(:add_breadcrumb).with(t("breadcrumbs.export.organisation.show", name: organisation.name), :exports_organisation_path)
+
+        get "show", params: {id: organisation.id}
+      end
+
+      it "does not fetch the XML downloads" do
+        get "show", params: {id: organisation.id}
+
+        expect(assigns(:xml_downloads)).to be_nil
+      end
+    end
+
+    describe "#external_income" do
+      before do
+        get :external_income, params: {id: organisation.id, fund_id: fund.id, format: :csv}
+      end
+
+      include_examples "allows the user to access the export"
+    end
+
+    describe "#actuals" do
+      before do
+        get :actuals, params: {id: organisation.id, format: :csv}
+      end
+
+      include_examples "responds with a 401"
+    end
+
     describe "#programme_activities" do
       before do
         get :programme_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
       end
 
-      include_examples "does not allow the user to download the XML"
+      include_examples "responds with a 401"
     end
 
     describe "#project_activities" do
@@ -43,7 +88,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
         get :project_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
       end
 
-      include_examples "does not allow the user to download the XML"
+      include_examples "responds with a 401"
     end
 
     describe "#third_party_project_activities" do
@@ -51,12 +96,45 @@ RSpec.describe Staff::Exports::OrganisationsController do
         get :third_party_project_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
       end
 
-      include_examples "does not allow the user to download the XML"
+      include_examples "responds with a 401"
     end
   end
 
   context "when logged in as a BEIS user" do
     let(:user) { create(:beis_user) }
+
+    describe "#show" do
+      it "adds the breadcrumb for the exports index and the current page" do
+        allow(controller).to receive(:add_breadcrumb).with(any_args)
+
+        expect(controller).to receive(:add_breadcrumb).with(t("breadcrumbs.export.index"), exports_path)
+        expect(controller).to receive(:add_breadcrumb).with(t("breadcrumbs.export.organisation.show", name: organisation.name), :exports_organisation_path)
+
+        get "show", params: {id: organisation.id}
+      end
+
+      it "fetches the XML downloads" do
+        get "show", params: {id: organisation.id}
+
+        expect(assigns(:xml_downloads)).to be_an(Array)
+      end
+    end
+
+    describe "#external_income" do
+      before do
+        get :external_income, params: {id: organisation.id, fund_id: fund.id, format: :csv}
+      end
+
+      include_examples "allows the user to access the export"
+    end
+
+    describe "#actuals" do
+      before do
+        get :actuals, params: {id: organisation.id, format: :csv}
+      end
+
+      include_examples "allows the user to access the export"
+    end
 
     describe "#programme_activities" do
       before do

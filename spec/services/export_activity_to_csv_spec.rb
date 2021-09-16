@@ -96,9 +96,9 @@ RSpec.describe ExportActivityToCsv do
     let(:previous_year_report) { travel_to_quarter(4, 2018) { Report.for_activity(project).create } }
 
     it "gets the actual totals for the previous twelve quarters" do
-      create(:transaction, parent_activity: project, report: previous_quarter_report, financial_quarter: 4, financial_year: 2019, value: 20)
-      create(:transaction, parent_activity: project, report: previous_quarter_report, financial_quarter: 1, financial_year: 2019, value: 40)
-      create(:transaction, parent_activity: project, report: previous_year_report, financial_quarter: 3, financial_year: 2017, value: 80)
+      create(:actual, parent_activity: project, report: previous_quarter_report, financial_quarter: 4, financial_year: 2019, value: 20)
+      create(:actual, parent_activity: project, report: previous_quarter_report, financial_quarter: 1, financial_year: 2019, value: 40)
+      create(:actual, parent_activity: project, report: previous_year_report, financial_quarter: 3, financial_year: 2017, value: 80)
 
       totals = ExportActivityToCsv.new(activity: project, report: report).previous_twelve_quarter_actuals
 
@@ -141,9 +141,9 @@ RSpec.describe ExportActivityToCsv do
     let(:report_quarter) { report.own_financial_quarter }
 
     before do
-      create(:transaction, parent_activity: project, **report_quarter.pred, report: report, value: 10)
-      create(:transaction, parent_activity: project, **report_quarter, report: report, value: 20)
-      create(:transaction, parent_activity: project, **report_quarter, report: next_quarter_report, value: 40)
+      create(:actual, parent_activity: project, **report_quarter.pred, report: report, value: 10)
+      create(:actual, parent_activity: project, **report_quarter, report: report, value: 20)
+      create(:actual, parent_activity: project, **report_quarter, report: next_quarter_report, value: 40)
 
       ForecastHistory.new(project, report: previous_year_report, **report_quarter).set_value(50)
       ForecastHistory.new(project, report: previous_quarter_report, **report_quarter).set_value(100)

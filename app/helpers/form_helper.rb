@@ -1,4 +1,6 @@
 module FormHelper
+  BENEFITTING_SUB_REGION_2_CODE = 3
+
   def list_of_organisations
     @list_of_organisations ||=
       [OpenStruct.new(name: "", id: ""), Organisation.sorted_by_name].flatten
@@ -46,5 +48,13 @@ module FormHelper
       OpenStruct.new(id: "true", name: t("form.label.organisation.active.true")),
       OpenStruct.new(id: "false", name: t("form.label.organisation.active.false")),
     ]
+  end
+
+  def benefitting_regions_for_form
+    BenefittingRegion.all_for_level_code(BENEFITTING_SUB_REGION_2_CODE)
+  end
+
+  def benefitting_countries_in_region_for_form(region)
+    BenefittingCountry.non_graduated_for_region(region)
   end
 end

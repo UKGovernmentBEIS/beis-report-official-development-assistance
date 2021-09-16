@@ -3,7 +3,7 @@ class ExportPolicy < ApplicationPolicy
     user.service_owner?
   end
 
-  def show?
+  def show_external_income?
     user.service_owner?
   end
 end

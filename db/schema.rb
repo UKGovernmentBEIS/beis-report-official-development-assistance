@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_11_093658) do
+ActiveRecord::Schema.define(version: 2021_09_09_104830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -102,6 +102,8 @@ ActiveRecord::Schema.define(version: 2021_08_11_093658) do
     t.string "providing_organisation_name"
     t.string "providing_organisation_type"
     t.string "providing_organisation_reference"
+    t.datetime "created_at", precision: 6
+    t.datetime "updated_at", precision: 6
     t.index ["parent_activity_id"], name: "index_budgets_on_parent_activity_id"
     t.index ["providing_organisation_id"], name: "index_budgets_on_providing_organisation_id"
     t.index ["report_id"], name: "index_budgets_on_report_id"
@@ -130,6 +132,16 @@ ActiveRecord::Schema.define(version: 2021_08_11_093658) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["activity_id"], name: "index_external_incomes_on_activity_id"
     t.index ["organisation_id"], name: "index_external_incomes_on_organisation_id"
+  end
+
+  create_table "flexible_comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "commentable_id"
+    t.string "commentable_type"
+    t.text "comment"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["commentable_id"], name: "index_flexible_comments_on_commentable_id"
+    t.index ["commentable_type"], name: "index_flexible_comments_on_commentable_type"
   end
 
   create_table "forecasts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -243,19 +255,6 @@ ActiveRecord::Schema.define(version: 2021_08_11_093658) do
     t.index ["source_id"], name: "index_outgoing_transfers_on_source_id"
   end
 
-  create_table "refunds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "parent_activity_id"
-    t.uuid "report_id"
-    t.integer "financial_year"
-    t.integer "financial_quarter"
-    t.decimal "value", precision: 13, scale: 2
-    t.text "comment"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["parent_activity_id"], name: "index_refunds_on_parent_activity_id"
-    t.index ["report_id"], name: "index_refunds_on_report_id"
-  end
-
   create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "state", default: "inactive", null: false
     t.string "description"
@@ -293,8 +292,10 @@ ActiveRecord::Schema.define(version: 2021_08_11_093658) do
     t.uuid "report_id"
     t.integer "financial_quarter"
     t.integer "financial_year"
+    t.string "type"
     t.index ["parent_activity_id"], name: "index_transactions_on_parent_activity_id"
     t.index ["report_id"], name: "index_transactions_on_report_id"
+    t.index ["type"], name: "index_transactions_on_type"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

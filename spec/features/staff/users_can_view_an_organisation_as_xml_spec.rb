@@ -44,10 +44,10 @@ RSpec.feature "Users can view an organisation as XML" do
         end
       end
 
-      scenario "the XML file contains budgets and transactions for activities in the organisation" do
+      scenario "the XML file contains budgets and actuals for activities in the organisation" do
         project = create(:project_activity, :newton_funded, organisation: organisation, extending_organisation: organisation)
         _budget = create(:budget, parent_activity: project, value: 2000)
-        _transaction = create(:transaction, parent_activity: project, value: 100)
+        _actual = create(:actual, parent_activity: project, value: 100)
 
         visit exports_organisation_path(organisation)
 
@@ -111,25 +111,25 @@ RSpec.feature "Users can view an organisation as XML" do
           expect(xml.xpath("//iati-activity/planned-disbursement/value").map(&:text)).to eql(["560.00", "70.00"])
         end
 
-        it "sums up the total transactions of all the programmes and their child activities by quarter" do
+        it "sums up the total actuals of all the programmes and their child activities by quarter" do
           programme = create(:programme_activity, :newton_funded, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
           other_programme = create(:programme_activity, parent: programme.parent, extending_organisation: organisation)
 
           activity_projects = create_list(:project_activity, 2, parent: programme)
           activity_third_party_project = create(:third_party_project_activity, parent: activity_projects[0])
 
-          create(:transaction, value: 10, parent_activity: programme, financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 20, parent_activity: programme, financial_year: 2018, financial_quarter: 2)
-          create(:transaction, value: 40, parent_activity: other_programme, financial_year: 2019, financial_quarter: 3)
+          create(:actual, value: 10, parent_activity: programme, financial_year: 2018, financial_quarter: 1)
+          create(:actual, value: 20, parent_activity: programme, financial_year: 2018, financial_quarter: 2)
+          create(:actual, value: 40, parent_activity: other_programme, financial_year: 2019, financial_quarter: 3)
 
-          create(:transaction, value: 80, parent_activity: activity_projects[0], financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 160, parent_activity: activity_projects[0], financial_year: 2020, financial_quarter: 1)
+          create(:actual, value: 80, parent_activity: activity_projects[0], financial_year: 2018, financial_quarter: 1)
+          create(:actual, value: 160, parent_activity: activity_projects[0], financial_year: 2020, financial_quarter: 1)
 
-          create(:transaction, value: 320, parent_activity: activity_projects[1], financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 640, parent_activity: activity_projects[1], financial_year: 2020, financial_quarter: 1)
+          create(:actual, value: 320, parent_activity: activity_projects[1], financial_year: 2018, financial_quarter: 1)
+          create(:actual, value: 640, parent_activity: activity_projects[1], financial_year: 2020, financial_quarter: 1)
 
-          create(:transaction, value: 1280, parent_activity: activity_third_party_project, financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 2560, parent_activity: activity_third_party_project, financial_year: 2020, financial_quarter: 1)
+          create(:actual, value: 1280, parent_activity: activity_third_party_project, financial_year: 2018, financial_quarter: 1)
+          create(:actual, value: 2560, parent_activity: activity_third_party_project, financial_year: 2020, financial_quarter: 1)
 
           visit iati_programme_activities_exports_organisation_path(organisation, format: :xml, fund: "NF")
           xml = Nokogiri::XML::Document.parse(page.body)
@@ -140,18 +140,18 @@ RSpec.feature "Users can view an organisation as XML" do
       end
 
       context "when downloading project level activities" do
-        it "includes all transactions for those projects only" do
+        it "includes all actuals for those projects only" do
           project = create(:project_activity, :gcrf_funded, :with_transparency_identifier, organisation: organisation, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
           other_project = create(:project_activity, :gcrf_funded, parent: project.parent, organisation: organisation, extending_organisation: organisation)
 
           third_party_project = create(:third_party_project_activity, :gcrf_funded, parent: project)
 
-          create(:transaction, value: 100, parent_activity: project, financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 150, parent_activity: project, financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 200, parent_activity: other_project, financial_year: 2019, financial_quarter: 3)
+          create(:actual, value: 100, parent_activity: project, financial_year: 2018, financial_quarter: 1)
+          create(:actual, value: 150, parent_activity: project, financial_year: 2018, financial_quarter: 1)
+          create(:actual, value: 200, parent_activity: other_project, financial_year: 2019, financial_quarter: 3)
 
-          create(:transaction, value: 99, parent_activity: third_party_project, financial_year: 2018, financial_quarter: 1)
-          create(:transaction, value: 77, parent_activity: third_party_project, financial_year: 2020, financial_quarter: 1)
+          create(:actual, value: 99, parent_activity: third_party_project, financial_year: 2018, financial_quarter: 1)
+          create(:actual, value: 77, parent_activity: third_party_project, financial_year: 2020, financial_quarter: 1)
 
           visit iati_project_activities_exports_organisation_path(organisation, format: :xml, fund: "GCRF")
           xml = Nokogiri::XML::Document.parse(page.body)

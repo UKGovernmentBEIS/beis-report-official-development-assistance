@@ -29,8 +29,8 @@ class ReportPresenter < SimpleDelegator
     filename(purpose: "activities_upload")
   end
 
-  def filename_for_transactions_template
-    filename(purpose: "transactions_upload")
+  def filename_for_actuals_template
+    filename(purpose: "actuals_upload")
   end
 
   def filename_for_forecasts_template
@@ -41,7 +41,7 @@ class ReportPresenter < SimpleDelegator
     financial_quarter_and_year + "-All-Reports.csv"
   end
 
-  def summed_transactions
+  def summed_actuals
     TotalPresenter.new(super).value
   end
 

@@ -13,6 +13,7 @@ RSpec.describe Report, type: :model do
     it { should have_many(:historical_events) }
     it { should have_many(:new_activities).class_name("Activity") }
     it { should have_many(:refunds) }
+    it { should have_many(:actuals) }
   end
 
   describe ".editable_for_activity" do
@@ -283,27 +284,27 @@ RSpec.describe Report, type: :model do
     end
   end
 
-  describe "#summed_transactions" do
-    it "sums all of the transactions belonging to a report" do
+  describe "#summed_actuals" do
+    it "sums all of the actuals belonging to a report" do
       report = create(:report)
 
-      create(:transaction, report: report, value: 50)
-      create(:transaction, report: report, value: 75)
-      create(:transaction, report: report, value: 100)
+      create(:actual, report: report, value: 50)
+      create(:actual, report: report, value: 75)
+      create(:actual, report: report, value: 100)
 
-      expect(report.summed_transactions).to eq(225)
+      expect(report.summed_actuals).to eq(225)
     end
   end
 
   describe "#summed_refunds" do
-    it "sums all of the refunds belonging to a report" do
+    it "sums all of the refunds belonging to a report (NB: negative values)" do
       report = create(:report)
 
       create(:refund, report: report, value: 25)
       create(:refund, report: report, value: 75)
       create(:refund, report: report, value: 100)
 
-      expect(report.summed_refunds).to eq(200)
+      expect(report.summed_refunds).to eq(-200)
     end
   end
 end
