@@ -255,6 +255,7 @@ en:
         gdi: GDI
         geography: Benefitting recipient geography
         delivery_partner_identifier: Delivery partner identifier
+        delivery_partner_organisation: Delivery partner organisation
         intended_beneficiaries: Intended beneficiaries
         objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
