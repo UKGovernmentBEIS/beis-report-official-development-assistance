@@ -125,14 +125,11 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def send_csv
-    report_activities = Activity::ProjectsForReportFinder.new(report: @report).call
+    export = Report::Export.new(report: @report)
 
-    filename = @report_presenter.filename_for_report_download
-    headers = ExportActivityToCsv.new(report: @report).headers
-
-    stream_csv_download(filename: filename, headers: headers) do |csv|
-      report_activities.each do |activity|
-        csv << ExportActivityToCsv.new(activity: activity, report: @report).call
+    stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
+      export.rows.each do |row|
+        csv << row
       end
     end
   end
