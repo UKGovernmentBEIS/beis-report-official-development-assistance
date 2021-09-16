@@ -1,18 +1,18 @@
 require "spec_helper"
 
 RSpec.describe BenefittingCountry do
-  let(:region) { BenefittingCountry::Region::Level.new(code: 1, name: "Region") }
-  let(:subregion1) { BenefittingCountry::Region::Level.new(code: 2, name: "Sub-region 1") }
-  let(:subregion2) { BenefittingCountry::Region::Level.new(code: 3, name: "Sub-region 2") }
+  let(:region) { BenefittingRegion::Level.new(code: 1, name: "Region") }
+  let(:subregion1) { BenefittingRegion::Level.new(code: 2, name: "Sub-region 1") }
+  let(:subregion2) { BenefittingRegion::Level.new(code: 3, name: "Sub-region 2") }
 
-  let(:africa) { BenefittingCountry::Region.new(name: "Africa, regional", code: "298", level: region) }
-  let(:south_of_sahara) { BenefittingCountry::Region.new(name: "South of Sahara, regional", code: "289", level: subregion1) }
-  let(:middle_africa) { BenefittingCountry::Region.new(name: "Middle Africa, regional", code: "1028", level: subregion2) }
-  let(:eastern_africa) { BenefittingCountry::Region.new(name: "Eastern Africa, regional", code: "1027", level: subregion2) }
-  let(:southern_africa) { BenefittingCountry::Region.new(name: "Southern Africa, regional", code: "102", level: subregion2) }
-  let(:north_of_sahara) { BenefittingCountry::Region.new(name: "North of Sahara, regional", code: "189", level: subregion2) }
-  let(:asia) { BenefittingCountry::Region.new(name: "Asia, regional", code: "798", level: region) }
-  let(:middle_east) { BenefittingCountry::Region.new(name: "Middle East, regional", code: "589", level: subregion1) }
+  let(:africa) { BenefittingRegion.new(name: "Africa, regional", code: "298", level: region) }
+  let(:south_of_sahara) { BenefittingRegion.new(name: "South of Sahara, regional", code: "289", level: subregion1) }
+  let(:middle_africa) { BenefittingRegion.new(name: "Middle Africa, regional", code: "1028", level: subregion2) }
+  let(:eastern_africa) { BenefittingRegion.new(name: "Eastern Africa, regional", code: "1027", level: subregion2) }
+  let(:southern_africa) { BenefittingRegion.new(name: "Southern Africa, regional", code: "102", level: subregion2) }
+  let(:north_of_sahara) { BenefittingRegion.new(name: "North of Sahara, regional", code: "189", level: subregion2) }
+  let(:asia) { BenefittingRegion.new(name: "Asia, regional", code: "798", level: region) }
+  let(:middle_east) { BenefittingRegion.new(name: "Middle East, regional", code: "589", level: subregion1) }
 
   let(:graduated_countries) do
     [
@@ -182,39 +182,6 @@ RSpec.describe BenefittingCountry do
 
       it "gets the most specific region" do
         expect(subject.code).to eq("298")
-      end
-    end
-  end
-end
-
-RSpec.describe BenefittingCountry::Region do
-  let(:region) { BenefittingCountry::Region::Level.new(code: 1, name: "Region") }
-  let(:subregion1) { BenefittingCountry::Region::Level.new(code: 2, name: "Sub-region 1") }
-  let(:subregion2) { BenefittingCountry::Region::Level.new(code: 3, name: "Sub-region 2") }
-
-  let(:africa) { BenefittingCountry::Region.new(name: "Africa, regional", code: "298", level: region) }
-  let(:south_of_sahara) { BenefittingCountry::Region.new(name: "South of Sahara, regional", code: "289", level: subregion1) }
-  let(:middle_africa) { BenefittingCountry::Region.new(name: "Middle Africa, regional", code: "1028", level: subregion2) }
-
-  let(:regions) { [africa, south_of_sahara, middle_africa] }
-  let(:region_levels) { [region, subregion1, subregion2] }
-
-  before do
-    allow(described_class).to receive(:all).and_return(regions)
-    allow(described_class::Level).to receive(:all).and_return(region_levels)
-  end
-
-  describe ".all_for_level" do
-    subject { described_class.all_for_level_code(code) }
-
-    context "with level 3 (sub region 3)" do
-      let(:code) { 3 }
-
-      it "returns all the regions for a given level" do
-        expect(subject.count).to eql 1
-        expect(subject).not_to include africa
-        expect(subject).not_to include south_of_sahara
-        expect(subject).to include middle_africa
       end
     end
   end
