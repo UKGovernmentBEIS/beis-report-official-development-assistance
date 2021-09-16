@@ -67,6 +67,14 @@ RSpec.describe Staff::Exports::OrganisationsController do
       include_examples "allows the user to access the export"
     end
 
+    describe "#budgets" do
+      before do
+        get :budgets, params: {id: organisation.id, fund_id: fund.id, format: :csv}
+      end
+
+      include_examples "allows the user to access the export"
+    end
+
     describe "#actuals" do
       before do
         get :actuals, params: {id: organisation.id, format: :csv}
@@ -131,6 +139,14 @@ RSpec.describe Staff::Exports::OrganisationsController do
     describe "#actuals" do
       before do
         get :actuals, params: {id: organisation.id, format: :csv}
+      end
+
+      include_examples "allows the user to access the export"
+    end
+
+    describe "#budgets" do
+      before do
+        get :budgets, params: {id: organisation.id, fund_id: fund.id, format: :csv}
       end
 
       include_examples "allows the user to access the export"
