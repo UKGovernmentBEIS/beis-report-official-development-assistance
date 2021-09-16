@@ -26,7 +26,7 @@ RSpec.feature "users can add benefitting countries" do
 
     scenario "the user with JavaScript enabled can select whole regions at once", js: true do
       activity.benefitting_countries = nil
-      caribbean_region = BenefittingCountry::Region.find_by_code("1031")
+      caribbean_region = BenefittingRegion.find_by_code("1031")
       countries_in_region = BenefittingCountry.non_graduated_for_region(caribbean_region)
       country_codes = countries_in_region.map { |country| country.code }
 

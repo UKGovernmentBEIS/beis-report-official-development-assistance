@@ -51,7 +51,7 @@ module FormHelper
   end
 
   def benefitting_regions_for_form
-    BenefittingCountry::Region.all_for_level_code(BENEFITTING_SUB_REGION_2_CODE)
+    BenefittingRegion.all_for_level_code(BENEFITTING_SUB_REGION_2_CODE)
   end
 
   def benefitting_countries_in_region_for_form(region)

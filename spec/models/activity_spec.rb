@@ -1489,7 +1489,7 @@ RSpec.describe Activity, type: :model do
 
     context "when there are countries present" do
       let(:benefitting_countries) { ["ZA", "ZW"] }
-      let(:region) { BenefittingCountry::Region.new }
+      let(:region) { BenefittingRegion.new }
 
       it "returns a region" do
         expect(BenefittingCountry).to receive(:region_from_country_codes).with(benefitting_countries).and_return(region)
@@ -1508,7 +1508,7 @@ RSpec.describe Activity, type: :model do
 
     context "when there is an unexpcted country" do
       let(:benefitting_countries) { ["UK", "DZ", "LY"] }
-      let(:region) { BenefittingCountry::Region.find_by_code("189") }
+      let(:region) { BenefittingRegion.find_by_code("189") }
 
       it "handles the unexpected country and returns the region that can be derived" do
         expect(subject).to eql(region)
@@ -1517,7 +1517,7 @@ RSpec.describe Activity, type: :model do
 
     context "when there is a graduated country" do
       let(:benefitting_countries) { ["SC", "KM", "BI"] }
-      let(:region) { BenefittingCountry::Region.find_by_code("1027") }
+      let(:region) { BenefittingRegion.find_by_code("1027") }
 
       it "handles graduated countries including them in the region calculation" do
         expect(subject).to eql(region)

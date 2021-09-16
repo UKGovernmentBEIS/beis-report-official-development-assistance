@@ -288,7 +288,7 @@ RSpec.describe ActivityPresenter do
     before { expect(activity).to receive(:benefitting_region).at_least(:once).and_return(region) }
 
     context "when there is a benefitting region" do
-      let(:region) { BenefittingCountry::Region.new(name: "Some region") }
+      let(:region) { BenefittingRegion.new(name: "Some region") }
 
       it { is_expected.to eq(region.name) }
     end
