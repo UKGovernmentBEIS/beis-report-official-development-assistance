@@ -23,3 +23,6 @@
           - if policy([:export, @organisation]).show_external_income?
             - Fund.all.each do |fund|
               = render partial: "row", locals: { report: "#{fund.name} external income", format: "CSV", download_url: external_income_exports_organisation_path(@organisation, fund_id: fund.id, format: "csv") }
+          - if policy([:export, @organisation]).show_budgets?
+            - Fund.all.each do |fund|
+              = render partial: "row", locals: { report: "#{fund.name} budgets", format: "CSV", download_url: budgets_exports_organisation_path(@organisation, fund_id: fund.id, format: "csv") }

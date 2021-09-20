@@ -141,6 +141,40 @@ RSpec.feature "BEIS users can download exports" do
     ])
   end
 
+  scenario "downloading budgets for a delivery partner" do
+    delivery_partner = create(:delivery_partner_organisation)
+
+    report = create(:report)
+
+    project = create(:project_activity, :newton_funded, extending_organisation: delivery_partner)
+
+    create(:budget, financial_year: 2018, value: 100, parent_activity: project, report: report)
+    create(:budget, financial_year: 2019, value: 80, parent_activity: project, report: report)
+    create(:budget, financial_year: 2020, value: 75, parent_activity: project, report: report)
+    create(:budget, financial_year: 2021, value: 20, parent_activity: project, report: report)
+
+    visit exports_path
+    click_link delivery_partner.name
+    click_link "Newton Fund budgets"
+
+    document = CSV.parse(page.body.delete_prefix("\uFEFF"), headers: true).map(&:to_h)
+
+    expect(document.size).to eq(1)
+
+    expect(document).to match_array([
+      {
+        "RODA identifier" => project.roda_identifier,
+        "Delivery partner identifier" => project.delivery_partner_identifier,
+        "Level" => "Project (level C)",
+        "Title" => project.title,
+        "2018-2019" => "100.00",
+        "2019-2020" => "80.00",
+        "2020-2021" => "75.00",
+        "2021-2022" => "20.00",
+      },
+    ])
+  end
+
   scenario "downloading budgets for all delivery partners" do
     delivery_partner1, delivery_partner2 = create_list(:delivery_partner_organisation, 2)
 
