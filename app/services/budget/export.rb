@@ -7,8 +7,9 @@ class Budget
       "Title",
     ]
 
-    def initialize(source_fund:)
+    def initialize(source_fund:, organisation: nil)
       @source_fund = source_fund
+      @organisation = organisation
     end
 
     def headers
@@ -28,8 +29,9 @@ class Budget
     def filename
       [
         source_fund.short_name,
+        @organisation&.beis_organisation_reference,
         "budgets.csv",
-      ].join("_")
+      ].reject(&:blank?).join("_")
     end
 
     private
@@ -53,7 +55,10 @@ class Budget
     end
 
     def activities
-      @_activities ||= Activity.includes(:budgets).not_fund.where(source_fund_code: source_fund.id)
+      @_activities ||= begin
+        activities = @organisation.nil? ? Activity : Activity.where(extending_organisation: @organisation)
+        activities.includes(:budgets).not_fund.where(source_fund_code: source_fund.id)
+      end
     end
 
     def budgets
