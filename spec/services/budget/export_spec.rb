@@ -16,7 +16,7 @@ RSpec.describe Budget::Export do
     subject { described_class.new(source_fund: fund) }
 
     before(with_activities: true) do
-      allow(Activity).to receive(:includes).with(:budgets).and_return(activity_stub)
+      allow(Activity).to receive(:includes).with(:budgets, :extending_organisation).and_return(activity_stub)
       allow(activity_stub).to receive(:not_fund).and_return(activity_stub)
       allow(activity_stub).to receive(:where).with(source_fund_code: fund.id).and_return(activities)
     end
@@ -88,6 +88,7 @@ RSpec.describe Budget::Export do
             [
               activity1.roda_identifier,
               activity1.delivery_partner_identifier,
+              activity1.extending_organisation.name,
               "Project (level C)",
               activity1.title,
               "100.00",
@@ -98,6 +99,7 @@ RSpec.describe Budget::Export do
             [
               activity2.roda_identifier,
               activity2.delivery_partner_identifier,
+              activity2.extending_organisation.name,
               "Project (level C)",
               activity2.title,
               "100.00",
@@ -133,7 +135,7 @@ RSpec.describe Budget::Export do
     describe "#rows" do
       it "only fetches activities for the specified organisation" do
         expect(Activity).to receive(:where).with(extending_organisation: organisation).and_return(activity_stub)
-        expect(activity_stub).to receive(:includes).with(:budgets).and_return(activity_stub)
+        expect(activity_stub).to receive(:includes).with(:budgets, :extending_organisation).and_return(activity_stub)
         expect(activity_stub).to receive(:not_fund).and_return(activity_stub)
         expect(activity_stub).to receive(:where).with(source_fund_code: fund.id).and_return(activities)
 

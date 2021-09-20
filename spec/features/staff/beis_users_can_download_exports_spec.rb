@@ -165,6 +165,7 @@ RSpec.feature "BEIS users can download exports" do
       {
         "RODA identifier" => project.roda_identifier,
         "Delivery partner identifier" => project.delivery_partner_identifier,
+        "Delivery partner organisation" => delivery_partner.name,
         "Level" => "Project (level C)",
         "Title" => project.title,
         "2018-2019" => "100.00",
@@ -181,8 +182,8 @@ RSpec.feature "BEIS users can download exports" do
     report = create(:report)
 
     programme = create(:programme_activity)
-    project1 = create(:project_activity, :newton_funded, organisation: delivery_partner1, parent: programme)
-    project2 = create(:project_activity, :newton_funded, organisation: delivery_partner2, parent: programme)
+    project1 = create(:project_activity, :newton_funded, extending_organisation: delivery_partner1, parent: programme)
+    project2 = create(:project_activity, :newton_funded, extending_organisation: delivery_partner2, parent: programme)
 
     create(:budget, financial_year: 2018, value: 100, parent_activity: project1, report: report)
     create(:budget, financial_year: 2019, value: 80, parent_activity: project1, report: report)
@@ -204,6 +205,7 @@ RSpec.feature "BEIS users can download exports" do
       {
         "RODA identifier" => programme.roda_identifier,
         "Delivery partner identifier" => programme.delivery_partner_identifier,
+        "Delivery partner organisation" => programme.extending_organisation.name,
         "Level" => "Programme (level B)",
         "Title" => programme.title,
         "2018-2019" => "0.00",
@@ -214,6 +216,7 @@ RSpec.feature "BEIS users can download exports" do
       {
         "RODA identifier" => project1.roda_identifier,
         "Delivery partner identifier" => project1.delivery_partner_identifier,
+        "Delivery partner organisation" => delivery_partner1.name,
         "Level" => "Project (level C)",
         "Title" => project1.title,
         "2018-2019" => "100.00",
@@ -224,6 +227,7 @@ RSpec.feature "BEIS users can download exports" do
       {
         "RODA identifier" => project2.roda_identifier,
         "Delivery partner identifier" => project2.delivery_partner_identifier,
+        "Delivery partner organisation" => delivery_partner2.name,
         "Level" => "Project (level C)",
         "Title" => project2.title,
         "2018-2019" => "100.00",

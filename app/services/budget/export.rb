@@ -3,6 +3,7 @@ class Budget
     HEADERS = [
       "RODA identifier",
       "Delivery partner identifier",
+      "Delivery partner organisation",
       "Level",
       "Title",
     ]
@@ -42,6 +43,7 @@ class Budget
       [
         activity.roda_identifier,
         activity.delivery_partner_identifier,
+        activity.extending_organisation&.name,
         I18n.t("table.body.activity.level.#{activity.level}"),
         activity.title,
       ]
@@ -57,7 +59,7 @@ class Budget
     def activities
       @_activities ||= begin
         activities = @organisation.nil? ? Activity : Activity.where(extending_organisation: @organisation)
-        activities.includes(:budgets).not_fund.where(source_fund_code: source_fund.id)
+        activities.includes(:budgets, :extending_organisation).not_fund.where(source_fund_code: source_fund.id)
       end
     end
 
