@@ -36,7 +36,7 @@ RSpec.describe Iati::XmlDownload do
       allow(Activity).to receive(:third_party_project).and_return(third_party_project_relation)
     end
 
-    context "when the organisation has activites for each level and fund" do
+    context "when the organisation has activities for each level and fund" do
       before do
         allow(programme_relation).to receive(:where).and_return(build_list(:project_activity, 5))
         allow(project_relation).to receive(:where).and_return(build_list(:project_activity, 5))
@@ -54,7 +54,7 @@ RSpec.describe Iati::XmlDownload do
       end
     end
 
-    context "when the organisation has activites for some levels and funds" do
+    context "when the organisation has activities for some levels and funds" do
       before do
         allow(project_relation).to receive(:where).with(
           source_fund_code: Fund.by_short_name("NF").id,
