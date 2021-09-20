@@ -69,6 +69,7 @@ RSpec.describe Budget::Export do
         let(:activity_1_budgets) do
           [
             build(:budget, financial_year: 2018, value: 100),
+            build(:budget, financial_year: 2018, value: -20),
             build(:budget, financial_year: 2019, value: 80),
             build(:budget, financial_year: 2021, value: 20),
           ]
@@ -79,6 +80,7 @@ RSpec.describe Budget::Export do
             build(:budget, financial_year: 2018, value: 100),
             build(:budget, financial_year: 2019, value: 80),
             build(:budget, financial_year: 2020, value: 75),
+            build(:budget, financial_year: 2020, value: 25),
             build(:budget, financial_year: 2021, value: 20),
           ]
         end
@@ -97,6 +99,17 @@ RSpec.describe Budget::Export do
               "20.00",
             ],
             [
+              activity1.roda_identifier,
+              activity1.delivery_partner_identifier,
+              activity1.extending_organisation.name,
+              "Project (level C)",
+              activity1.title,
+              "-20.00",
+              "0.00",
+              "0.00",
+              "0.00",
+            ],
+            [
               activity2.roda_identifier,
               activity2.delivery_partner_identifier,
               activity2.extending_organisation.name,
@@ -106,6 +119,17 @@ RSpec.describe Budget::Export do
               "80.00",
               "75.00",
               "20.00",
+            ],
+            [
+              activity2.roda_identifier,
+              activity2.delivery_partner_identifier,
+              activity2.extending_organisation.name,
+              "Project (level C)",
+              activity2.title,
+              "0.00",
+              "0.00",
+              "25.00",
+              "0.00",
             ],
           ])
         end

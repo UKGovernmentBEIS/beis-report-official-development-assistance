@@ -22,8 +22,15 @@ class Budget
     def rows
       return [] if budgets.empty?
 
-      activities.map do |activity|
-        activity_data(activity) + budget_data(activity.budgets)
+      activities.flat_map do |activity|
+        activity_budgets = activity.budgets.to_a
+        arr = []
+
+        until activity_budgets.empty?
+          arr << activity_data(activity) + budget_data(activity_budgets)
+        end
+
+        arr
       end
     end
 
@@ -51,7 +58,8 @@ class Budget
 
     def budget_data(budgets)
       financial_year_range.map do |financial_year|
-        value = budgets.find { |budget| budget.financial_year == financial_year }&.value || 0
+        budget_index = budgets.index { |budget| budget.financial_year == financial_year }
+        value = budget_index.nil? ? 0 : budgets.delete_at(budget_index).value
         "%.2f" % value
       end
     end
