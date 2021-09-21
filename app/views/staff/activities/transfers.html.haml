@@ -6,6 +6,11 @@
       %h1.govuk-heading-xl
         = @activity.title
 
+  - unless @activity.fund?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        = render partial: "staff/shared/activities/activity_summary", locals: { activity_presenter: @activity }
+
   .govuk-grid-row
     .govuk-grid-column-full
       .govuk-tabs

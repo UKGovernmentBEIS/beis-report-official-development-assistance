@@ -14,5 +14,6 @@
           = delivery_partner_organisation.name
         %td.govuk-table__cell
           = a11y_action_link "View details ", organisation_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state"]
-          = a11y_action_link "View activities", organisation_activities_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-9"]
-          = a11y_action_link "View exports", exports_organisation_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-9"]
+          = a11y_action_link "View activities", organisation_activities_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-7"]
+          = a11y_action_link "View exports", exports_organisation_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-7"]
+          = a11y_action_link "View reports", organisation_reports_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-7"]

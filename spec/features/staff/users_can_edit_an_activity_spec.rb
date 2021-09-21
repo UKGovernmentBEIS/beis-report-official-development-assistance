@@ -242,11 +242,11 @@ end
 
 def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   if activity.delivery_partner_identifier.blank?
-    within(".identifier") do
+    within(".activity-details .identifier") do
       expect(page).to have_link(href: activity_step_path(activity, :identifier))
     end
   else
-    within(".identifier") do
+    within(".activity-details .identifier") do
       expect(page).to_not have_link(href: activity_step_path(activity, :identifier))
     end
   end
@@ -274,7 +274,7 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   end
 
   unless activity.fund?
-    within(".programme_status") do
+    within(".activity-details .programme_status") do
       expect(page).to have_link(href: activity_step_path(activity, :programme_status))
     end
   end

@@ -255,6 +255,7 @@ en:
         gdi: GDI
         geography: Benefitting recipient geography
         delivery_partner_identifier: Delivery partner identifier
+        delivery_partner_organisation: Delivery partner organisation
         intended_beneficiaries: Intended beneficiaries
         objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
@@ -362,6 +363,7 @@ en:
       third_party_projects: Third-party projects (level D)
       actuals: Actual spend
       refunds: Refunds
+      adjustments: Adjustments
     tab_content:
       change_history:
         guidance: Changes made to this activity

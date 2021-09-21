@@ -1,0 +1,64 @@
+=content_for :page_title_prefix, t("page_title.adjustment.show")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.adjustment.show")
+
+      %h2.govuk-heading-l
+        = @activity.title
+
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %dl.govuk-summary-list
+
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("summary.headings.adjustment.timestamp")
+          %dd.govuk-summary-list__value
+            = @adjustment.created_at.strftime("%d %b %Y at %R")
+
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("summary.headings.adjustment.creator")
+          %dd.govuk-summary-list__value
+            = @adjustment.creator.email
+
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("summary.headings.adjustment.financial_period")
+          %dd.govuk-summary-list__value
+            = @adjustment.financial_quarter_and_year
+
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("summary.headings.adjustment.activity")
+          %dd.govuk-summary-list__value
+            = link_to("View", organisation_activity_financials_path(organisation_id: @activity.organisation.id, activity_id: @activity.id))
+
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("summary.headings.adjustment.report")
+          %dd.govuk-summary-list__value
+            = link_to("View", report_path(@adjustment.report))
+
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("summary.headings.adjustment.value")
+          %dd.govuk-summary-list__value
+            = @adjustment.value
+
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("summary.headings.adjustment.adjustment_type")
+          %dd.govuk-summary-list__value
+            = @adjustment.adjustment_type
+
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("summary.headings.adjustment.comment")
+          %dd.govuk-summary-list__value
+            = @adjustment.comment.comment
+

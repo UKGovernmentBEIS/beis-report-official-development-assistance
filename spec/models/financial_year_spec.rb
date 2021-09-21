@@ -51,4 +51,22 @@ RSpec.describe FinancialYear do
       expect(years.sort).to match_array([oldest_year, middle_year, latest_year])
     end
   end
+
+  it "allows iterating over a range of years" do
+    range = Range.new(FinancialYear.new(2010), FinancialYear.new(2020))
+
+    expect(range.to_a).to eq([
+      FinancialYear.new(2010),
+      FinancialYear.new(2011),
+      FinancialYear.new(2012),
+      FinancialYear.new(2013),
+      FinancialYear.new(2014),
+      FinancialYear.new(2015),
+      FinancialYear.new(2016),
+      FinancialYear.new(2017),
+      FinancialYear.new(2018),
+      FinancialYear.new(2019),
+      FinancialYear.new(2020),
+    ])
+  end
 end

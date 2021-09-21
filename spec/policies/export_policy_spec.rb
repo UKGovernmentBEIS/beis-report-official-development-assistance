@@ -8,14 +8,20 @@ RSpec.describe ExportPolicy do
   context "as a BEIS user" do
     let(:user) { create(:beis_user) }
 
-    it { is_expected.to permit_action(:index) }
-    it { is_expected.to permit_action(:show_external_income) }
+    it "controls actions as expected" do
+      is_expected.to permit_action(:index)
+      is_expected.to permit_action(:show_external_income)
+      is_expected.to permit_action(:show_budgets)
+    end
   end
 
   context "as a Delivery partner user" do
     let(:user) { create(:delivery_partner_user) }
 
-    it { is_expected.to_not permit_action(:index) }
-    it { is_expected.to_not permit_action(:show_external_income) }
+    it "controls actions as expected" do
+      is_expected.to forbid_action(:index)
+      is_expected.to forbid_action(:show_external_income)
+      is_expected.to forbid_action(:show_budgets)
+    end
   end
 end

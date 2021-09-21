@@ -6,6 +6,11 @@
       %h1.govuk-heading-xl
         = @activity.title
 
+  - unless @activity.fund?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        = render partial: "staff/shared/activities/activity_summary", locals: { activity_presenter: @activity }
+
   .govuk-grid-row
     .govuk-grid-column-full
       - if @activity.project? || @activity.third_party_project?
@@ -55,3 +60,5 @@
               locals: { activity: @activity, actual_presenters: @actual_presenters }
             = render partial: "staff/shared/activities/refunds",
               locals: { activity: @activity, refund_presenters: @refund_presenters }
+            = render partial: "staff/shared/activities/adjustments",
+              locals: { activity: @activity, adjustment_presenters: @adjustment_presenters }
