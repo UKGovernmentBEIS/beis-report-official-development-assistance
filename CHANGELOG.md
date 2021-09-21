@@ -821,14 +821,17 @@
 - Allow a BEIS user to export external income for all delivery partner organisations
 - Countries and regions are derived from BEIS benefitting countries code lists
 
-## [unreleased]
+## [release-74] - 2021-09-21
 
 - BEIS users have a link to delivery partners reports on the homepage
 - Show the activity summary on all activity tabs
-- Delivery Partner can post an adjustment to an approved report
+- Delivery Partner can post an adjustment to an historic financial period
 - Users can export budget data
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-73...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-74...HEAD
+[release-74]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-73...release-74
 [release-73]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-72...release-73
 [release-72]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-71...release-72
 [release-71]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-70...release-71
