@@ -161,7 +161,7 @@ class Report
       end
 
       def previous_quarter_actuals
-        actual_quarters = ActualOverview.new(activity_presenter, report_presenter).all_quarters
+        actual_quarters = ActualOverview.new(activity: activity_presenter, report: report_presenter).all_quarters
 
         previous_report_quarters.map do |quarter|
           value = actual_quarters.value_for(**quarter)

@@ -168,7 +168,7 @@ RSpec.describe Report::Export do
 
       all_quarters = ActualOverview::AllQuarters.new(actuals)
       actual_overview = double("ActualOverview", all_quarters: all_quarters, value_for_report_quarter: 0)
-      expect(ActualOverview).to receive(:new).with(activity_presenter, report_presenter).at_least(:once).and_return(actual_overview)
+      expect(ActualOverview).to receive(:new).with(activity: activity_presenter, report: report_presenter).at_least(:once).and_return(actual_overview)
 
       expect(actual_columns).to eq(["20.00", "40.00", "80.00", "0.00"])
     end
