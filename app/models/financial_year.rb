@@ -63,4 +63,12 @@ class FinancialYear
   def quarters
     FinancialQuarter::QUARTERS.map { |q| FinancialQuarter.new(start_year, q) }
   end
+
+  def pred
+    FinancialYear.new(start_year - 1)
+  end
+
+  def succ
+    FinancialYear.new(start_year + 1)
+  end
 end

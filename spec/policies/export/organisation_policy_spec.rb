@@ -8,31 +8,39 @@ RSpec.describe Export::OrganisationPolicy do
   context "for a BEIS user" do
     let(:user) { create(:beis_user) }
 
-    it { is_expected.to permit_action(:index) }
-    it { is_expected.to permit_action(:show) }
-    it { is_expected.to permit_action(:show_external_income) }
-    it { is_expected.to permit_action(:show_transactions) }
-    it { is_expected.to permit_action(:show_xml) }
+    it "controls access as expected" do
+      is_expected.to permit_action(:index)
+      is_expected.to permit_action(:show)
+      is_expected.to permit_action(:show_external_income)
+      is_expected.to permit_action(:show_transactions)
+      is_expected.to permit_action(:show_xml)
+      is_expected.to permit_action(:show_budgets)
+    end
   end
 
   context "for a delivery partner" do
     let(:user) { create(:delivery_partner_user) }
 
-    it { is_expected.to forbid_action(:index) }
-    it { is_expected.to forbid_action(:show) }
-    it { is_expected.to forbid_action(:show_external_income) }
-    it { is_expected.to forbid_action(:show_transactions) }
-    it { is_expected.to forbid_action(:show_xml) }
+    it "controls access as expected" do
+      is_expected.to forbid_action(:index)
+      is_expected.to forbid_action(:show)
+      is_expected.to forbid_action(:show_external_income)
+      is_expected.to forbid_action(:show_transactions)
+      is_expected.to forbid_action(:show_xml)
+      is_expected.to forbid_action(:show_budgets)
+    end
 
     context "when the user's organisation matches the organisation" do
       let(:organisation) { user.organisation }
 
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to permit_action(:show_external_income) }
-
-      it { is_expected.to forbid_action(:index) }
-      it { is_expected.to forbid_action(:show_transactions) }
-      it { is_expected.to forbid_action(:show_xml) }
+      it "controls access as expected" do
+        is_expected.to permit_action(:show)
+        is_expected.to permit_action(:show_external_income)
+        is_expected.to permit_action(:show_budgets)
+        is_expected.to forbid_action(:index)
+        is_expected.to forbid_action(:show_transactions)
+        is_expected.to forbid_action(:show_xml)
+      end
     end
   end
 end

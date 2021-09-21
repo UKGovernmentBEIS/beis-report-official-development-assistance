@@ -1,10 +1,10 @@
-RSpec.describe QuarterlyExternalIncomeExport do
+RSpec.describe ExternalIncome::Export do
   let!(:delivery_partner) { build(:delivery_partner_organisation) }
   let!(:fund) { build(:fund_activity, :newton) }
 
   let(:project) { build(:project_activity, source_fund: fund, organisation: delivery_partner, id: SecureRandom.uuid) }
   let(:source_fund) { Fund.new(fund.source_fund_code) }
-  let(:export) { QuarterlyExternalIncomeExport.new(organisation: delivery_partner, source_fund: source_fund) }
+  let(:export) { described_class.new(organisation: delivery_partner, source_fund: source_fund) }
 
   let(:external_income_relation) { double("ActiveRecord::Relation") }
 
@@ -82,7 +82,7 @@ RSpec.describe QuarterlyExternalIncomeExport do
   end
 
   context "when the organisation is not provided" do
-    let(:export) { QuarterlyExternalIncomeExport.new(source_fund: source_fund) }
+    let(:export) { described_class.new(source_fund: source_fund) }
 
     it "fetches the external income for all delivery partners" do
       expect(Activity).to receive(:where).with(source_fund_code: source_fund.id).and_return([

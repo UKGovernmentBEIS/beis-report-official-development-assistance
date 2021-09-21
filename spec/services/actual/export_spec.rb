@@ -1,7 +1,7 @@
-RSpec.describe QuarterlyActualExport do
+RSpec.describe Actual::Export do
   let(:delivery_partner) { create(:delivery_partner_organisation) }
   let(:activities) { Activity.where(organisation: delivery_partner) }
-  let(:export) { QuarterlyActualExport.new(activities) }
+  let(:export) { Actual::Export.new(activities) }
 
   let :quarter_headers do
     export.headers.drop(2)
