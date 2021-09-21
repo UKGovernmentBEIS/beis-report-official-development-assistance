@@ -1,0 +1,20 @@
+---
+en:
+  activemodel:
+    errors:
+      models:
+        adjustment_form:
+          attributes:
+            financial_quarter:
+              blank: Select a financial quarter
+            financial_year:
+              blank: Select a financial year
+            comment:
+              blank: Enter a comment explaining the adjustment
+            value:
+              blank: Enter an amount
+            adjustment_type:
+              blank: Select the type of adjustment
+            report_id:
+              blank: Select a report to associate with the adjustment
+

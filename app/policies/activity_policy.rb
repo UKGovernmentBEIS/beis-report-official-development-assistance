@@ -38,6 +38,13 @@ class ActivityPolicy < ApplicationPolicy
     ).create?
   end
 
+  def create_adjustment?
+    Pundit.policy(
+      user,
+      Adjustment.new(parent_activity: record)
+    ).create?
+  end
+
   def edit?
     update?
   end

@@ -1,0 +1,29 @@
+= f.govuk_error_summary
+
+= f.govuk_text_field :value, label: { text:  t("form.label.adjustment.value")}
+
+= f.govuk_collection_select :adjustment_type,
+  %w[Actual Refund],
+  :to_s,
+  :to_s,
+  label: { text: t("form.label.adjustment.adjustment_type") },
+  options: { include_blank: true }
+
+.govuk-grid-row
+  .govuk-grid-column-two-thirds
+    = f.govuk_collection_radio_buttons :financial_quarter,
+      list_of_financial_quarters,
+      :id,
+      :name,
+      inline: true,
+      legend: { text: t("form.label.adjustment.financial_quarter") , tag: :p, size: 's' }
+  .govuk-grid-column-one-third
+    = f.govuk_collection_select :financial_year,
+      list_of_financial_years(FinancialYear.previous_ten),
+      :id,
+      :name,
+      label: { text: t("form.label.adjustment.financial_year"), tag: :p, size: 's' },
+      options: { include_blank: true }
+
+= f.govuk_text_area :comment
+

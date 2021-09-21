@@ -609,6 +609,7 @@ RSpec.describe Activity, type: :model do
     it { should have_many(:budgets) }
     it { should have_many(:actuals) }
     it { should have_many(:refunds) }
+    it { should have_many(:adjustments) }
     it { should have_many(:source_transfers) }
     it { should have_many(:destination_transfers) }
     it { should have_many(:matched_efforts) }

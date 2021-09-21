@@ -60,3 +60,5 @@
               locals: { activity: @activity, actual_presenters: @actual_presenters }
             = render partial: "staff/shared/activities/refunds",
               locals: { activity: @activity, refund_presenters: @refund_presenters }
+            = render partial: "staff/shared/activities/adjustments",
+              locals: { activity: @activity, adjustment_presenters: @adjustment_presenters }

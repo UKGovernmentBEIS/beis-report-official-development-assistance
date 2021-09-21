@@ -41,11 +41,13 @@ class Activity
       @budgets = policy_scope(Budget).where(parent_activity: @activity).order("financial_year DESC")
       @forecasts = policy_scope(@activity.latest_forecasts)
       @refunds = policy_scope(Refund).where(parent_activity: @activity).order("financial_year DESC")
+      @adjustments = policy_scope(Adjustment).where(parent_activity: @activity).order("date DESC")
 
       @actual_presenters = @actuals.includes(:parent_activity).map { |actual| TransactionPresenter.new(actual) }
       @budget_presenters = @budgets.includes(:parent_activity, :providing_organisation).map { |budget| BudgetPresenter.new(budget) }
       @forecast_presenters = @forecasts.map { |forecast| ForecastPresenter.new(forecast) }
       @refund_presenters = @refunds.map { |forecast| RefundPresenter.new(forecast) }
+      @adjustment_presenters = @adjustments.map { |adj| AdjustmentPresenter.new(adj) }
 
       @implementing_organisation_presenters = @activity.implementing_organisations.map { |implementing_organisation| ImplementingOrganisationPresenter.new(implementing_organisation) }
     end

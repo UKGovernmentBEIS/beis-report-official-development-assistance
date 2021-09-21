@@ -1,0 +1,16 @@
+=content_for :page_title_prefix, t("page_title.adjustment.new")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = @activity.title
+
+      %h2.govuk-heading-l
+        = t("page_title.adjustment.new")
+
+      = form_with model: @adjustment, url: activity_adjustments_path(@activity) do |f|
+        = render partial: "form", locals: { f: f, activity: @activity }
+
+        = f.govuk_submit t("default.button.submit")
+        = link_to t("form.link.activity.back"), organisation_activity_path(@activity.organisation, @activity), class: "govuk-button govuk-button--secondary", "data-module": "govuk-button", role: "button"
