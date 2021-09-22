@@ -16,6 +16,7 @@ en:
     comment:
       add: Add a comment
       edit: Edit comment
+      index_html: "This tab shows all the comments for this activity.<br>New comments can only be added whilst there is an active report."
   action:
     comment:
       create:

@@ -20,6 +20,9 @@
           %h2.govuk-heading-l
             = t("page_title.comment.index")
 
+          .govuk-body
+            = t("page_content.comment.index_html")
+
           %dl.govuk-summary-list.activity_comments
             - @comments.each do |comment|
               - report_presenter = ReportPresenter.new(comment.report)
