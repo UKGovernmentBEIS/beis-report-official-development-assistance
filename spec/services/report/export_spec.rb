@@ -138,10 +138,6 @@ RSpec.describe Report::Export do
     let(:actual_index) { Report::Export::Row::ACTIVITY_HEADERS.count }
     let(:forecast_index) { actual_index + previous_report_quarters.count }
 
-    let(:actual_columns) { subject.call.slice(actual_index, previous_report_quarters.count) }
-    let(:forecast_columns) { subject.call.slice(forecast_index, following_report_quarters.count) }
-    let(:variance_columns) { subject.call.slice(-5, 5) }
-
     subject do
       described_class.new(
         activity: activity,
@@ -156,57 +152,69 @@ RSpec.describe Report::Export do
     end
 
     it "includes the activity data" do
-      expect(subject.call).to include(activity.roda_identifier)
+      expect(subject.activity_data).to include(activity.roda_identifier)
     end
 
-    it "includes the actuals for the previous quarters" do
-      actuals = [
-        build(:actual, financial_quarter: 1, financial_year: 2020, value: 20),
-        build(:actual, financial_quarter: 2, financial_year: 2020, value: 40),
-        build(:actual, financial_quarter: 3, financial_year: 2020, value: 80),
-      ]
+    context "financial data" do
+      let(:actuals) do
+        [
+          Transaction.new(financial_quarter: 1, financial_year: 2020, value: 20),
+          Transaction.new(financial_quarter: 2, financial_year: 2020, value: 40),
+          Transaction.new(financial_quarter: 3, financial_year: 2020, value: 80),
+        ]
+      end
 
-      all_quarters = ActualOverview::AllQuarters.new(actuals)
-      actual_overview = double("ActualOverview", all_quarters: all_quarters, value_for_report_quarter: 0)
-      expect(ActualOverview).to receive(:new).with(activity: activity_presenter, report: report_presenter).at_least(:once).and_return(actual_overview)
+      let(:actual_quarters) { ActualOverview::AllQuarters.new(actuals) }
+      let(:actual_overview) { double("ActualOverview", all_quarters: actual_quarters, value_for_report_quarter: 0) }
 
-      expect(actual_columns).to eq(["20.00", "40.00", "80.00", "0.00"])
-    end
+      let(:forecast_quarters) { double("ForecastOverview::AllQuarters") }
+      let(:forecast_snapshot) { double("ForecastOverview::Snapshot", all_quarters: forecast_quarters, value_for_report_quarter: 0) }
+      let(:forecast_overview) { double("ForecastOverview") }
 
-    it "includes the forecasts for the next quarters" do
-      all_quarters = double("ForecastOverview::AllQuarters")
-      snapshot = double("ForecastOverview::Snapshot", all_quarters: all_quarters, value_for_report_quarter: 0)
-      forecast_overview = double("ForecastOverview")
+      it "includes the actuals for the previous quarters" do
+        expect(ActualOverview).to receive(:new).with(activity: activity_presenter, report: report_presenter, include_adjustments: true).and_return(actual_overview)
 
-      expect(ForecastOverview).to receive(:new).with(activity_presenter).at_least(:once).and_return(forecast_overview)
-      expect(forecast_overview).to receive(:snapshot).with(report_presenter).at_least(:once).and_return(snapshot)
+        expect(subject.previous_quarter_actuals).to eq(["20.00", "40.00", "80.00", "0.00"])
+      end
 
-      expect(all_quarters).to receive(:value_for).with(**following_report_quarters[0]).and_return(100)
-      expect(all_quarters).to receive(:value_for).with(**following_report_quarters[1]).and_return(40)
-      expect(all_quarters).to receive(:value_for).with(**following_report_quarters[2]).and_return(80)
-      expect(all_quarters).to receive(:value_for).with(**following_report_quarters[3]).and_return(90)
+      it "includes the forecasts for the next quarters" do
+        expect(ForecastOverview).to receive(:new).with(activity_presenter).at_least(:once).and_return(forecast_overview)
+        expect(forecast_overview).to receive(:snapshot).with(report_presenter).at_least(:once).and_return(forecast_snapshot)
 
-      expect(forecast_columns).to eq(["100.00", "40.00", "80.00", "90.00"])
-    end
+        expect(forecast_quarters).to receive(:value_for).with(**following_report_quarters[0]).at_least(:once).and_return(100)
+        expect(forecast_quarters).to receive(:value_for).with(**following_report_quarters[1]).at_least(:once).and_return(40)
+        expect(forecast_quarters).to receive(:value_for).with(**following_report_quarters[2]).at_least(:once).and_return(80)
+        expect(forecast_quarters).to receive(:value_for).with(**following_report_quarters[3]).at_least(:once).and_return(90)
 
-    it "includes the variance data" do
-      fund = Fund.new("1")
-      comment = build(:comment, comment: "Comment")
-      extending_organisation = build(:delivery_partner_organisation)
+        expect(subject.next_quarter_forecasts).to eq(["100.00", "40.00", "80.00", "90.00"])
+      end
 
-      expect(activity_presenter).to receive(:variance_for_report_financial_quarter).with(report: report_presenter).and_return(100.00)
-      expect(activity_presenter).to receive(:comment_for_report).with(report_id: report_presenter.id).and_return(comment)
-      expect(activity_presenter).to receive(:source_fund).and_return(fund)
-      expect(activity_presenter).to receive(:extending_organisation).and_return(extending_organisation)
-      expect(activity_presenter).to receive(:link_to_roda).and_return("http://example.com")
+      it "includes the variance data" do
+        fund = Fund.new("1")
+        comment = build(:comment, comment: "Comment")
+        extending_organisation = build(:delivery_partner_organisation)
 
-      expect(variance_columns).to eq([
-        100.00,
-        comment.comment,
-        fund.name,
-        extending_organisation.beis_organisation_reference,
-        "http://example.com",
-      ])
+        expect(ActualOverview).to receive(:new).with(activity: activity_presenter, report: report_presenter, include_adjustments: true).and_return(actual_overview)
+
+        expect(ForecastOverview).to receive(:new).with(activity_presenter).at_least(:once).and_return(forecast_overview)
+        expect(forecast_overview).to receive(:snapshot).with(report_presenter).at_least(:once).and_return(forecast_snapshot)
+
+        expect(forecast_quarters).to receive(:value_for).with(**report.own_financial_quarter).and_return(100)
+        expect(actual_quarters).to receive(:value_for).with(**report.own_financial_quarter).and_return(120)
+
+        expect(activity_presenter).to receive(:comment_for_report).with(report_id: report_presenter.id).and_return(comment)
+        expect(activity_presenter).to receive(:source_fund).and_return(fund)
+        expect(activity_presenter).to receive(:extending_organisation).and_return(extending_organisation)
+        expect(activity_presenter).to receive(:link_to_roda).and_return("http://example.com")
+
+        expect(subject.variance_data).to eq([
+          -20.00,
+          comment.comment,
+          fund.name,
+          extending_organisation.beis_organisation_reference,
+          "http://example.com",
+        ])
+      end
     end
   end
 end
