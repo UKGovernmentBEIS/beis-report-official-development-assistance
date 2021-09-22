@@ -37,7 +37,7 @@ class ActualOverview
   def scope
     if @include_adjustments
       Transaction
-        .joins("LEFT OUTER JOIN adjustment_details ON transactions.id = adjustment_details.adjustment_id")
+        .with_adjustment_details
         .where(type: "Actual")
         .or(
           Transaction
