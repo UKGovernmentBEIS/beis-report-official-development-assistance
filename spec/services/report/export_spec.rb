@@ -1,9 +1,7 @@
 RSpec.describe Report::Export do
-  subject { described_class.new(reports: reports, export_type: export_type) }
+  subject { described_class.new(report: report) }
 
   let(:report) { build(:report) }
-  let(:reports) { [report] }
-  let(:export_type) { :single }
 
   describe "#headers" do
     before do
@@ -109,58 +107,6 @@ RSpec.describe Report::Export do
       expect(ReportPresenter).to receive(:new).and_return(presenter)
 
       expect(subject.filename).to eq(filename)
-    end
-  end
-
-  context "when the export_type is all" do
-    let(:reports) { reports_with_financial_quarters.append(report_without_financial_quarter) }
-
-    let(:reports_with_financial_quarters) { build_list(:report, 3) }
-    let(:report_without_financial_quarter) { build(:report, financial_year: nil, financial_quarter: nil) }
-    let(:export_type) { :all }
-
-    describe "#rows" do
-      let(:activities) { build_list(:project_activity, 6) }
-      let(:projects_for_report_stub) { double("Activity::ProjectsForReportFinder", call: activities) }
-
-      it "maps all the reports and their activities to the row" do
-        activities = []
-
-        expect(Activity::ProjectsForReportFinder).to_not receive(:new).with(report: report_without_financial_quarter, scope: Activity.all)
-
-        reports_with_financial_quarters.each do |report|
-          report_presenter = ReportPresenter.new(report)
-          report_activities = build_list(:project_activity, 2)
-          projects_for_report = double("Activity::ProjectsForReportFinder", call: report_activities)
-
-          expect(Activity::ProjectsForReportFinder).to receive(:new).with(report: report, scope: Activity.all).and_return(projects_for_report)
-          allow(ReportPresenter).to receive(:new).and_return(report_presenter)
-
-          report_activities.each do |activity|
-            stub = double("Report::Export::Row")
-
-            expect(Report::Export::Row).to receive(:new).with(
-              activity: activity,
-              report_presenter: report_presenter,
-              previous_report_quarters: an_instance_of(Array),
-              following_report_quarters: an_instance_of(Array),
-            ).and_return(stub)
-
-            expect(stub).to receive(:call).and_return([activity.title])
-          end
-
-          activities += report_activities
-        end
-
-        expect(subject.rows).to match_array([
-          [activities[0].title],
-          [activities[1].title],
-          [activities[2].title],
-          [activities[3].title],
-          [activities[4].title],
-          [activities[5].title],
-        ])
-      end
     end
   end
 

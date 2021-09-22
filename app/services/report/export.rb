@@ -1,8 +1,7 @@
 class Report
   class Export
-    def initialize(reports:, export_type: :single)
-      @reports = reports
-      @export_type = export_type
+    def initialize(report:)
+      @report = report
     end
 
     def headers
@@ -13,43 +12,35 @@ class Report
     end
 
     def rows
-      reports_with_financial_quarters.flat_map { |report|
-        activities_for_report(report).map do |activity|
-          Row.new(
-            activity: activity,
-            report_presenter: report_presenter,
-            previous_report_quarters: previous_report_quarters,
-            following_report_quarters: following_report_quarters
-          ).call
-        end
-      }
+      activities.map do |activity|
+        Row.new(
+          activity: activity,
+          report_presenter: report_presenter,
+          previous_report_quarters: previous_report_quarters,
+          following_report_quarters: following_report_quarters
+        ).call
+      end
     end
 
     def filename
-      if export_type == :single
-        report_presenter.filename_for_report_download
-      else
-        report_presenter.filename_for_all_reports_download
-      end
+      report_presenter.filename_for_report_download
     end
 
     private
 
-    attr_reader :reports, :export_type
+    attr_reader :report
 
-    def activities_for_report(report)
-      Activity::ProjectsForReportFinder.new(
-        report: report,
-        scope: scope
-      ).call.sort_by { |a| a.level }
+    def activities
+      @activities ||= begin
+        Activity::ProjectsForReportFinder.new(
+          report: report,
+          scope: Activity.all
+        ).call.sort_by { |a| a.level }
+      end
     end
 
     def report_presenter
-      @report_presenter ||= ReportPresenter.new(report_sample)
-    end
-
-    def scope
-      export_type == :single ? Activity.all : Activity.includes(:organisation, :extending_organisation, :implementing_organisations)
+      @report_presenter ||= ReportPresenter.new(report)
     end
 
     def variance_headers
@@ -80,14 +71,6 @@ class Report
 
     def next_twenty_quarter_forecasts_headers
       following_report_quarters.map { |quarter| "FC #{quarter}" }
-    end
-
-    def report_sample
-      reports.first
-    end
-
-    def reports_with_financial_quarters
-      reports.reject { |r| r.own_financial_quarter.nil? }
     end
 
     class Row
