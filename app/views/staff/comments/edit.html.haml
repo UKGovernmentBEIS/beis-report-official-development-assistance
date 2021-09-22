@@ -13,10 +13,6 @@
 
   .govuk-grid-row
     .govuk-grid-column-full
-      = render partial: "staff/shared/reports/table_variance", locals: { activities: [@activity], readonly: true }
-
-  .govuk-grid-row
-    .govuk-grid-column-full
       = form_with model: @comment, url: activity_comment_path do |f|
         = f.govuk_error_summary
         = f.govuk_text_area :comment
