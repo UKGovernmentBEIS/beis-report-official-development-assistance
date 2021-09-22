@@ -66,7 +66,7 @@ RSpec.describe Staff::ActivityUploadsController do
       allow(Activities::ImportFromCsv).to receive(:new).and_return(importer)
     end
 
-    it "asks CsvFileUpload to prepare the uploaded activites" do
+    it "asks CsvFileUpload to prepare the uploaded activities" do
       put :update, params: {report_id: report.id, report: file_upload}
 
       expect(CsvFileUpload).to have_received(:new).with(file_upload, :activity_csv)

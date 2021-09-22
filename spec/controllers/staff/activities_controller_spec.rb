@@ -57,13 +57,13 @@ RSpec.describe Staff::ActivitiesController do
     context "when signed in as a BEIS user" do
       let(:user) { create(:beis_user) }
 
-      it "does not try to fetch activities when the organisation is beis" do
+      it "does not try to fetch activities when the organisation is BEIS" do
         get route, params: {organisation_id: user.organisation.id}
 
         expect(Activity::GroupedActivitiesFetcher).not_to have_received(:new)
       end
 
-      it "allows fetching of another organisation's activites" do
+      it "allows fetching of another organisation's activities" do
         organisation = create(:delivery_partner_organisation)
 
         get route, params: {organisation_id: organisation.id}
