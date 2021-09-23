@@ -65,6 +65,22 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
     end
   end
 
+  def spending_breakdown
+    authorize [:export, @organisation], :show_spending_breakdown?
+
+    fund = Fund.new(params[:fund_id])
+
+    respond_to do |format|
+      format.csv do
+        export = SpendingBreakdown::Export.new(organisation: @organisation, source_fund: fund)
+
+        stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
+          export.rows.each { |row| csv << row }
+        end
+      end
+    end
+  end
+
   def programme_activities
     @activities = FindProgrammeActivities.new(
       organisation: @organisation,
