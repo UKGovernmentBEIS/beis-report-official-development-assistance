@@ -836,6 +836,7 @@
 ## [unreleased]
 
 - Include refunds in the report CSV exports
+- BEIS users can export spending breakdown for all organisations
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-75...HEAD
 [release-75]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-74...release-75

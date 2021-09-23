@@ -35,8 +35,14 @@
                 CSV
               %td.govuk-table__cell
                 = a11y_action_link("Download", budgets_exports_path(fund_id: fund.id, format: "csv"), t("table.export.budgets.name", fund: fund.name), ["govuk-link--no-visited-state"])
-
-
+          - Fund.all.each do |fund|
+            %tr.govuk-table__row
+              %td.govuk-table__cell
+                = t("table.export.spending_breakdown.name", fund: fund.name)
+              %td.govuk-table__cell
+                CSV
+              %td.govuk-table__cell
+                = a11y_action_link("Download", spending_breakdown_exports_path(fund_id: fund.id, format: "csv"), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
       %h1.govuk-heading-m
         = t("page_content.export.organisations.title")
 
