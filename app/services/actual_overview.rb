@@ -1,7 +1,8 @@
 class ActualOverview
-  def initialize(activity, report)
+  def initialize(activity:, report:, include_adjustments: false)
     @activity = activity
     @report = report
+    @include_adjustments = include_adjustments
   end
 
   def all_quarters
@@ -27,10 +28,27 @@ class ActualOverview
   private
 
   def actual_relation
-    Actual
+    scope
       .joins(:report)
       .where(parent_activity_id: @activity.id)
       .merge(Report.historically_up_to(@report))
+  end
+
+  def scope
+    if @include_adjustments
+      Transaction
+        .with_adjustment_details
+        .where(type: "Actual")
+        .or(
+          Transaction
+            .where(
+              type: "Adjustment",
+              adjustment_details: {adjustment_type: "Actual"}
+            )
+        )
+    else
+      Actual
+    end
   end
 
   class AllQuarters

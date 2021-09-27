@@ -5,6 +5,14 @@ RSpec.describe Transaction, type: :model do
 
   it { should have_many(:historical_events) }
 
+  describe ".with_adjustment_details" do
+    it "should optionally join the adjustment details table" do
+      scope = Adjustment.with_adjustment_details
+
+      expect(scope.to_sql).to include("LEFT OUTER JOIN adjustment_details ON transactions.id = adjustment_details.adjustment_id")
+    end
+  end
+
   describe "validations" do
     it { should validate_presence_of(:value) }
     it { should validate_presence_of(:financial_year) }

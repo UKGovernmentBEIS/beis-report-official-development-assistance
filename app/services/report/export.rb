@@ -150,10 +150,6 @@ class Report
           variance_data
       end
 
-      private
-
-      attr_reader :activity, :report_presenter, :previous_report_quarters, :following_report_quarters
-
       def activity_data
         ACTIVITY_HEADERS.map do |_key, value|
           activity_presenter.send(value)
@@ -161,8 +157,6 @@ class Report
       end
 
       def previous_quarter_actuals
-        actual_quarters = ActualOverview.new(activity_presenter, report_presenter).all_quarters
-
         previous_report_quarters.map do |quarter|
           value = actual_quarters.value_for(**quarter)
           "%.2f" % value
@@ -170,8 +164,6 @@ class Report
       end
 
       def next_quarter_forecasts
-        forecast_quarters = ForecastOverview.new(activity_presenter).snapshot(report_presenter).all_quarters
-
         following_report_quarters.map do |quarter|
           value = forecast_quarters.value_for(**quarter)
           "%.2f" % value
@@ -180,7 +172,7 @@ class Report
 
       def variance_data
         [
-          activity_presenter.variance_for_report_financial_quarter(report: report_presenter),
+          variance_for_report_financial_quarter,
           activity_presenter.comment_for_report(report_id: report_presenter.id)&.comment,
           activity_presenter.source_fund&.name,
           activity_presenter.extending_organisation&.beis_organisation_reference,
@@ -188,8 +180,24 @@ class Report
         ]
       end
 
+      private
+
+      attr_reader :activity, :report_presenter, :previous_report_quarters, :following_report_quarters
+
       def activity_presenter
         @activity_presenter ||= ActivityCsvPresenter.new(activity)
+      end
+
+      def forecast_quarters
+        @forecast_quarters ||= ForecastOverview.new(activity_presenter).snapshot(report_presenter).all_quarters
+      end
+
+      def actual_quarters
+        @actual_quarters ||= ActualOverview.new(activity: activity_presenter, report: report_presenter, include_adjustments: true).all_quarters
+      end
+
+      def variance_for_report_financial_quarter
+        forecast_quarters.value_for(**report_presenter.own_financial_quarter) - actual_quarters.value_for(**report_presenter.own_financial_quarter)
       end
     end
   end

@@ -2,7 +2,8 @@ RSpec.describe ActualOverview do
   let(:delivery_partner) { create(:delivery_partner_organisation) }
   let(:project) { create(:project_activity, organisation: delivery_partner) }
   let(:reporting_cycle) { ReportingCycle.new(project, 4, 2018) }
-  let(:overview) { ActualOverview.new(project, report) }
+  let(:include_adjustments) { false }
+  let(:overview) { ActualOverview.new(activity: project, report: report, include_adjustments: include_adjustments) }
 
   #   Report:     2018-Q4     2019-Q1     2019-Q2
   #   Quarter
@@ -24,11 +25,18 @@ RSpec.describe ActualOverview do
     create_actual(financial_year: 2018, financial_quarter: 3, value: 80)
     create_actual(financial_year: 2018, financial_quarter: 4, value: 160)
 
+    create_adjustment(financial_year: 2017, financial_quarter: 1, value: 20, adjustment_type: :actual)
+    create_adjustment(financial_year: 2017, financial_quarter: 4, value: -5, adjustment_type: :actual)
+    create_adjustment(financial_year: 2017, financial_quarter: 4, value: 900, adjustment_type: :refund)
+
     reporting_cycle.tick
     create_actual(financial_year: 2017, financial_quarter: 2, value: 320)
     create_actual(financial_year: 2017, financial_quarter: 4, value: 640)
     create_actual(financial_year: 2018, financial_quarter: 2, value: 1_280)
     create_actual(financial_year: 2018, financial_quarter: 3, value: 2_560)
+
+    create_adjustment(financial_year: 2017, financial_quarter: 2, value: -20, adjustment_type: :actual)
+    create_adjustment(financial_year: 2017, financial_quarter: 2, value: 1000, adjustment_type: :refund)
 
     reporting_cycle.tick
     create_actual(financial_year: 2017, financial_quarter: 3, value: 5_120)
@@ -36,10 +44,18 @@ RSpec.describe ActualOverview do
     create_actual(financial_year: 2018, financial_quarter: 2, value: 20_480)
     create_actual(financial_year: 2018, financial_quarter: 3, value: 40_960)
     create_actual(financial_year: 2018, financial_quarter: 4, value: 81_920)
+
+    create_adjustment(financial_year: 2017, financial_quarter: 3, value: -100, adjustment_type: :actual)
+    create_adjustment(financial_year: 2017, financial_quarter: 3, value: -9999, adjustment_type: :refund)
   end
 
   def create_actual(attributes)
     create(:actual, parent_activity: project, report: reporting_cycle.report, **attributes)
+  end
+
+  def create_adjustment(attributes)
+    adjustment_type = attributes.delete(:adjustment_type)
+    create(:adjustment, adjustment_type, parent_activity: project, report: reporting_cycle.report, **attributes)
   end
 
   shared_examples_for "actual report history" do
@@ -75,6 +91,24 @@ RSpec.describe ActualOverview do
     }
 
     it_should_behave_like "actual report history"
+
+    context "when adjustments are included" do
+      let(:include_adjustments) { true }
+      let(:expected_values) {
+        [
+          [1, 2017, 30],
+          [2, 2017, 0],
+          [3, 2017, 0],
+          [4, 2017, 15],
+          [1, 2018, 40],
+          [2, 2018, 0],
+          [3, 2018, 80],
+          [4, 2018, 160],
+        ]
+      }
+
+      it_should_behave_like "actual report history"
+    end
   end
 
   context "for the middle report" do
@@ -94,6 +128,24 @@ RSpec.describe ActualOverview do
     }
 
     it_should_behave_like "actual report history"
+
+    context "when adjustments are included" do
+      let(:include_adjustments) { true }
+      let(:expected_values) {
+        [
+          [1, 2017, 30],
+          [2, 2017, 300],
+          [3, 2017, 0],
+          [4, 2017, 655],
+          [1, 2018, 40],
+          [2, 2018, 1_280],
+          [3, 2018, 2_640],
+          [4, 2018, 160],
+        ]
+      }
+
+      it_should_behave_like "actual report history"
+    end
   end
 
   context "for the latest report" do
@@ -113,5 +165,23 @@ RSpec.describe ActualOverview do
     }
 
     it_should_behave_like "actual report history"
+
+    context "when adjustments are included" do
+      let(:include_adjustments) { true }
+      let(:expected_values) {
+        [
+          [1, 2017, 30],
+          [2, 2017, 300],
+          [3, 2017, 5_020],
+          [4, 2017, 655],
+          [1, 2018, 10_280],
+          [2, 2018, 21_760],
+          [3, 2018, 43_600],
+          [4, 2018, 82_080],
+        ]
+      }
+
+      it_should_behave_like "actual report history"
+    end
   end
 end
