@@ -16,12 +16,12 @@ class SpendingBreakdown::Export
   def headers
     return HEADERS if actuals.empty? && refunds.empty? && forecasts.empty?
 
-    HEADERS + headers_from_financial_quarters + forecasts_headers
+    HEADERS + actual_and_refund_headers + forecasts_headers
   end
 
   def rows
     activities.map do |activity|
-      activity_data(activity) + financial_data(activity) + forecast_data(activity)
+      activity_data(activity) + acutal_and_refund_data(activity) + forecast_data(activity)
     end
   end
 
@@ -35,8 +35,8 @@ class SpendingBreakdown::Export
 
   private
 
-  def financial_data(activity)
-    build_row(all_totals_for_activity(activity), activity)
+  def acutal_and_refund_data(activity)
+    build_columns(all_totals_for_activity(activity), activity)
   end
 
   def forecast_data(activity)
@@ -58,8 +58,8 @@ class SpendingBreakdown::Export
       .sum(:value)
   end
 
-  def build_row(totals, activity)
-    rows = financial_quarter_range.map { |fq|
+  def build_columns(totals, activity)
+    columns = all_actual_and_refund_financial_quarter_range.map { |fq|
       actual_overview = TransactionOverview.new(:actual, activity, totals, fq)
       refund_overview = TransactionOverview.new(:refund, activity, totals, fq)
 
@@ -67,7 +67,7 @@ class SpendingBreakdown::Export
 
       [actual_overview.net_total, refund_overview.net_total, net_total]
     }
-    rows.flatten!
+    columns.flatten!
   end
 
   def activity_data(activity)
@@ -107,12 +107,12 @@ class SpendingBreakdown::Export
     activities.pluck(:id)
   end
 
-  def financial_quarters_with_acutals
+  def all_financial_quarters_with_acutals
     return [] unless actuals.present?
     actuals.map(&:own_financial_quarter).uniq
   end
 
-  def financial_quarters_with_refunds
+  def all_financial_quarters_with_refunds
     return [] unless refunds.present?
     refunds.map(&:own_financial_quarter).uniq
   end
@@ -123,7 +123,7 @@ class SpendingBreakdown::Export
   end
 
   def financial_quarters
-    financial_quarters_with_acutals + financial_quarters_with_refunds
+    all_financial_quarters_with_acutals + all_financial_quarters_with_refunds
   end
 
   def actual_and_refund_headers
@@ -142,12 +142,12 @@ class SpendingBreakdown::Export
     end
   end
 
-  def financial_quarter_range
+  def all_actual_and_refund_financial_quarter_range
     @_financial_quarter_range ||= Range.new(*financial_quarters.minmax)
   end
 
   def all_forecast_financial_quarter_range
-    @_forecast_quarter_range ||= Range.new(financial_quarter_range.last.succ, *all_financial_quarters_with_forecasts.max)
+    @_forecast_quarter_range ||= Range.new(all_actual_and_refund_financial_quarter_range.last.succ, *all_financial_quarters_with_forecasts.max)
   end
 
   class TransactionOverview

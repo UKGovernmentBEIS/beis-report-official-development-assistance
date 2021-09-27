@@ -126,69 +126,65 @@ RSpec.describe SpendingBreakdown::Export do
   end
 
   describe "#rows" do
-    describe "non financial data" do
-      it "contains the appropriate values" do
-        aggregate_failures do
-          expect(value_for_header("RODA identifier")).to eql(activity.roda_identifier)
-          expect(value_for_header("Delivery partner identifier")).to eql(activity.delivery_partner_identifier)
-          expect(value_for_header("Delivery partner organisation")).to eql(activity.organisation.name)
-          expect(value_for_header("Title")).to eql(activity.title)
-          expect(value_for_header("Level")).to eql("Project (level C)")
-          expect(value_for_header("Activity status")).to eql("Spend in progress")
-        end
+    it "contains the appropriate activity values" do
+      aggregate_failures do
+        expect(value_for_header("RODA identifier")).to eql(activity.roda_identifier)
+        expect(value_for_header("Delivery partner identifier")).to eql(activity.delivery_partner_identifier)
+        expect(value_for_header("Delivery partner organisation")).to eql(activity.organisation.name)
+        expect(value_for_header("Title")).to eql(activity.title)
+        expect(value_for_header("Level")).to eql("Project (level C)")
+        expect(value_for_header("Activity status")).to eql("Spend in progress")
       end
     end
 
-    describe "financial data" do
-      it "contains the financial data for financial quarter 1 2020-2021" do
-        aggregate_failures do
-          expect(value_for_header("Actual spend FQ1 2020-2021").to_s).to eql("200.0")
-          expect(value_for_header("Refund FQ1 2020-2021").to_s).to eql("-350.0")
-          expect(value_for_header("Actual net FQ1 2020-2021").to_s).to eql("-150.0")
-        end
+    it "contains the financial data for financial quarter 1 2020-2021" do
+      aggregate_failures do
+        expect(value_for_header("Actual spend FQ1 2020-2021").to_s).to eql("200.0")
+        expect(value_for_header("Refund FQ1 2020-2021").to_s).to eql("-350.0")
+        expect(value_for_header("Actual net FQ1 2020-2021").to_s).to eql("-150.0")
+      end
+    end
+
+    it "contains the financial data for financial quarter 4 2020-2021" do
+      aggregate_failures do
+        expect(value_for_header("Actual spend FQ4 2020-2021").to_s).to eql("200.0")
+        expect(value_for_header("Refund FQ4 2020-2021").to_s).to eql("-350.0")
+        expect(value_for_header("Actual net FQ4 2020-2021").to_s).to eql("-150.0")
+      end
+    end
+
+    it "contains zero values for the financial quarters inbetween" do
+      aggregate_failures do
+        expect(value_for_header("Actual spend FQ2 2020-2021").to_s).to eql("0")
+        expect(value_for_header("Refund FQ2 2020-2021").to_s).to eql("0")
+        expect(value_for_header("Actual net FQ2 2020-2021").to_s).to eql("0")
+
+        expect(value_for_header("Actual spend FQ3 2020-2021").to_s).to eql("0")
+        expect(value_for_header("Refund FQ3 2020-2021").to_s).to eql("0")
+        expect(value_for_header("Actual net FQ3 2020-2021").to_s).to eql("0")
+      end
+    end
+
+    it "contains the financial data for financial quarter 1 2021-2022" do
+      expect(value_for_header("Forecast FQ1 2021-2022").to_s).to eql("20000.0")
+    end
+
+    it "contains the financial data for financial quarter 4 2021-2022" do
+      expect(value_for_header("Forecast FQ4 2021-2022").to_s).to eql("10000.0")
+    end
+
+    it "contains a zero for the financial quarters inbetween in which there are no forecasts" do
+      expect(value_for_header("Forecast FQ2 2021-2022").to_s).to eql "0"
+      expect(value_for_header("Forecast FQ3 2021-2022").to_s).to eql "0"
+    end
+
+    context "where there are additional activities" do
+      before do
+        create_list(:project_activity, 4, organisation: organisation)
       end
 
-      it "contains the financial data for financial quarter 4 2020-2021" do
-        aggregate_failures do
-          expect(value_for_header("Actual spend FQ4 2020-2021").to_s).to eql("200.0")
-          expect(value_for_header("Refund FQ4 2020-2021").to_s).to eql("-350.0")
-          expect(value_for_header("Actual net FQ4 2020-2021").to_s).to eql("-150.0")
-        end
-      end
-
-      it "contains zero values for the financial quarters inbetween" do
-        aggregate_failures do
-          expect(value_for_header("Actual spend FQ2 2020-2021").to_s).to eql("0")
-          expect(value_for_header("Refund FQ2 2020-2021").to_s).to eql("0")
-          expect(value_for_header("Actual net FQ2 2020-2021").to_s).to eql("0")
-
-          expect(value_for_header("Actual spend FQ3 2020-2021").to_s).to eql("0")
-          expect(value_for_header("Refund FQ3 2020-2021").to_s).to eql("0")
-          expect(value_for_header("Actual net FQ3 2020-2021").to_s).to eql("0")
-        end
-      end
-
-      it "contains the financial data for financial quarter 1 2021-2022" do
-        expect(value_for_header("Forecast FQ1 2021-2022").to_s).to eql("20000.0")
-      end
-
-      it "contains the financial data for financial quarter 4 2021-2022" do
-        expect(value_for_header("Forecast FQ4 2021-2022").to_s).to eql("10000.0")
-      end
-
-      it "contains a zero for the financial quarters inbetween in which there are no forecasts" do
-        expect(value_for_header("Forecast FQ2 2021-2022").to_s).to eql "0"
-        expect(value_for_header("Forecast FQ3 2021-2022").to_s).to eql "0"
-      end
-
-      context "where there are additional activities" do
-        before do
-          create_list(:project_activity, 4, organisation: organisation)
-        end
-
-        it "includes a row for each" do
-          expect(subject.rows.count).to eq(5)
-        end
+      it "includes a row for each" do
+        expect(subject.rows.count).to eq(5)
       end
     end
   end
