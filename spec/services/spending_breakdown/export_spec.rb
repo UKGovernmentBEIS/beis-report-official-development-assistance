@@ -20,6 +20,12 @@ RSpec.describe SpendingBreakdown::Export do
   let!(:positive_refund_adjustment_fq4) { create(:adjustment, :refund, parent_activity: activity, value: 50, financial_quarter: 4, financial_year: 2020) }
   let!(:negative_refund_adjustment_fq4) { create(:adjustment, :refund, parent_activity: activity, value: -200, financial_quarter: 4, financial_year: 2020) }
 
+  let!(:report) { create(:report, :approved, organisation: organisation, fund: activity.associated_fund, financial_quarter: 1, financial_year: 2019) }
+  let!(:old_forecasti_fq1) { ForecastHistory.new(activity, report: report, financial_quarter: 1, financial_year: 2020).set_value(5_000) }
+  let!(:old_forecasti_fq4) { ForecastHistory.new(activity, report: report, financial_quarter: 4, financial_year: 2020).set_value(2_500) }
+  let!(:forecast_fq1) { ForecastHistory.new(activity, report: report, financial_quarter: 1, financial_year: 2021).set_value(20_000) }
+  let!(:forecast_fq4) { ForecastHistory.new(activity, report: report, financial_quarter: 4, financial_year: 2021).set_value(10_000) }
+
   subject { SpendingBreakdown::Export.new(organisation: organisation, source_fund: source_fund) }
 
   def value_for_header(header_name)
@@ -88,6 +94,35 @@ RSpec.describe SpendingBreakdown::Export do
         "Actual net FQ3 2020-2021",
       )
     end
+
+    it "does NOT contain forecasts for financial quarters where there is actual spend or refund values" do
+      expect(subject.headers).not_to include "Forecast FQ1 2020-2021"
+      expect(subject.headers).not_to include "Forecast FQ4 2020-2021"
+    end
+
+    it "includes the correct headers at the boundry between actual spend and refunds and forecasts" do
+      expect(subject.headers).not_to include "Forecast FQ4 2020-2021"
+      expect(subject.headers).not_to include "Actual spend FQ1 2021-2022"
+    end
+
+    it "includes the heading that describe the finances for the future financial quarter FQ1 2021-2022" do
+      expect(subject.headers).to include(
+        "Forecast FQ1 2021-2022",
+      )
+    end
+
+    it "includes the heading that describe the finances for the future financial quarter FQ4 2021-2022" do
+      expect(subject.headers).to include(
+        "Forecast FQ4 2021-2022",
+      )
+    end
+
+    it "includes the headings that describe the finances for the future financial quarters inbetween" do
+      expect(subject.headers).to include(
+        "Forecast FQ2 2021-2022",
+        "Forecast FQ3 2021-2022",
+      )
+    end
   end
 
   describe "#rows" do
@@ -131,6 +166,19 @@ RSpec.describe SpendingBreakdown::Export do
           expect(value_for_header("Refund FQ3 2020-2021").to_s).to eql("0")
           expect(value_for_header("Actual net FQ3 2020-2021").to_s).to eql("0")
         end
+      end
+
+      it "contains the financial data for financial quarter 1 2021-2022" do
+        expect(value_for_header("Forecast FQ1 2021-2022").to_s).to eql("20000.0")
+      end
+
+      it "contains the financial data for financial quarter 4 2021-2022" do
+        expect(value_for_header("Forecast FQ4 2021-2022").to_s).to eql("10000.0")
+      end
+
+      it "contains a zero for the financial quarters inbetween in which there are no forecasts" do
+        expect(value_for_header("Forecast FQ2 2021-2022").to_s).to eql "0"
+        expect(value_for_header("Forecast FQ3 2021-2022").to_s).to eql "0"
       end
 
       context "where there are additional activities" do

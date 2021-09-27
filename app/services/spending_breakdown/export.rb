@@ -19,12 +19,12 @@ class SpendingBreakdown::Export
   def headers
     return HEADERS if @actuals.empty? && @refunds.empty?
 
-    HEADERS + headers_from_financial_quarters.flatten
+    HEADERS + headers_from_financial_quarters.flatten! + forecasts_headers
   end
 
   def rows
     @activities.map do |activity|
-      activity_data(activity) + financial_data(activity)
+      activity_data(activity) + financial_data(activity) + forecast_data(activity)
     end
   end
 
@@ -40,6 +40,16 @@ class SpendingBreakdown::Export
 
   def financial_data(activity)
     build_row(all_totals_for_activity(activity), activity)
+  end
+
+  def forecast_data(activity)
+    all_forecast_financial_quarter_range.map { |fq| forecasts_to_hash.fetch([activity.id, fq.quarter, fq.financial_year.start_year], 0) }
+  end
+
+  def forecasts_to_hash
+    @_forecasts_to_hash ||= forecasts.each_with_object({}) { |forecast, hash|
+      hash[[forecast.parent_activity_id, forecast.financial_quarter, forecast.financial_year]] = forecast.value
+    }
   end
 
   def all_totals_for_activity(activity)
@@ -91,6 +101,11 @@ class SpendingBreakdown::Export
     Refund.where(parent_activity_id: activity_ids)
   end
 
+  def forecasts
+    overview = ForecastOverview.new(activity_ids)
+    @_forecasts ||= overview.latest_values
+  end
+
   def activity_ids
     @activities.pluck(:id)
   end
@@ -103,6 +118,11 @@ class SpendingBreakdown::Export
   def financial_quarters_with_refunds
     return [] unless @refunds.present?
     @refunds.map(&:own_financial_quarter).uniq
+  end
+
+  def all_financial_quarters_with_forecasts
+    return [] unless forecasts.present?
+    forecasts.map(&:own_financial_quarter).uniq
   end
 
   def financial_quarters
@@ -119,8 +139,18 @@ class SpendingBreakdown::Export
     end
   end
 
+  def forecasts_headers
+    all_forecast_financial_quarter_range.map do |financial_quarter|
+      "Forecast #{financial_quarter}"
+    end
+  end
+
   def financial_quarter_range
     @_financial_quarter_range ||= Range.new(*financial_quarters.minmax)
+  end
+
+  def all_forecast_financial_quarter_range
+    @_forecast_quarter_range ||= Range.new(financial_quarter_range.last.succ, *all_financial_quarters_with_forecasts.max)
   end
 
   class TransactionOverview
