@@ -16,7 +16,7 @@ class SpendingBreakdown::Export
   def headers
     return HEADERS if actuals.empty? && refunds.empty? && forecasts.empty?
 
-    HEADERS + headers_from_financial_quarters.flatten! + forecasts_headers
+    HEADERS + headers_from_financial_quarters + forecasts_headers
   end
 
   def rows
@@ -126,14 +126,14 @@ class SpendingBreakdown::Export
     financial_quarters_with_acutals + financial_quarters_with_refunds
   end
 
-  def headers_from_financial_quarters
-    financial_quarter_range.map do |financial_quarter|
+  def actual_and_refund_headers
+    all_actual_and_refund_financial_quarter_range.map { |financial_quarter|
       [
         "Actual spend #{financial_quarter}",
         "Refund #{financial_quarter}",
         "Actual net #{financial_quarter}",
       ]
-    end
+    }.flatten!
   end
 
   def forecasts_headers
