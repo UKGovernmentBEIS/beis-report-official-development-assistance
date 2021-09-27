@@ -84,6 +84,7 @@ RSpec.describe Report::Export do
           report_presenter: report_presenter,
           previous_report_quarters: an_instance_of(Array),
           following_report_quarters: an_instance_of(Array),
+          actual_quarters: an_instance_of(ActualOverview::AllQuarters),
         ).and_return(stub)
         expect(stub).to receive(:call).and_return([activity.title])
       end
@@ -135,6 +136,15 @@ RSpec.describe Report::Export do
       ]
     end
 
+    let(:actuals) do
+      [
+        Actual.new(financial_quarter: 1, financial_year: 2020, value: 20, parent_activity: activity),
+        Actual.new(financial_quarter: 2, financial_year: 2020, value: 40, parent_activity: activity),
+        Actual.new(financial_quarter: 3, financial_year: 2020, value: 80, parent_activity: activity),
+      ]
+    end
+
+    let(:actual_quarters) { ActualOverview::AllQuarters.new(actuals) }
     let(:actual_index) { Report::Export::Row::ACTIVITY_HEADERS.count }
     let(:forecast_index) { actual_index + previous_report_quarters.count }
 
@@ -143,7 +153,8 @@ RSpec.describe Report::Export do
         activity: activity,
         report_presenter: report_presenter,
         previous_report_quarters: previous_report_quarters,
-        following_report_quarters: following_report_quarters
+        following_report_quarters: following_report_quarters,
+        actual_quarters: actual_quarters,
       )
     end
 
@@ -156,24 +167,11 @@ RSpec.describe Report::Export do
     end
 
     context "financial data" do
-      let(:actuals) do
-        [
-          Transaction.new(financial_quarter: 1, financial_year: 2020, value: 20),
-          Transaction.new(financial_quarter: 2, financial_year: 2020, value: 40),
-          Transaction.new(financial_quarter: 3, financial_year: 2020, value: 80),
-        ]
-      end
-
-      let(:actual_quarters) { ActualOverview::AllQuarters.new(actuals) }
-      let(:actual_overview) { double("ActualOverview", all_quarters: actual_quarters, value_for_report_quarter: 0) }
-
       let(:forecast_quarters) { double("ForecastOverview::AllQuarters") }
       let(:forecast_snapshot) { double("ForecastOverview::Snapshot", all_quarters: forecast_quarters, value_for_report_quarter: 0) }
       let(:forecast_overview) { double("ForecastOverview") }
 
       it "includes the actuals for the previous quarters" do
-        expect(ActualOverview).to receive(:new).with(activity: activity_presenter, report: report_presenter, include_adjustments: true).and_return(actual_overview)
-
         expect(subject.previous_quarter_actuals).to eq(["20.00", "40.00", "80.00", "0.00"])
       end
 
@@ -194,13 +192,11 @@ RSpec.describe Report::Export do
         comment = build(:comment, comment: "Comment")
         extending_organisation = build(:delivery_partner_organisation)
 
-        expect(ActualOverview).to receive(:new).with(activity: activity_presenter, report: report_presenter, include_adjustments: true).and_return(actual_overview)
-
         expect(ForecastOverview).to receive(:new).with(activity_presenter).at_least(:once).and_return(forecast_overview)
         expect(forecast_overview).to receive(:snapshot).with(report_presenter).at_least(:once).and_return(forecast_snapshot)
 
         expect(forecast_quarters).to receive(:value_for).with(**report.own_financial_quarter).and_return(100)
-        expect(actual_quarters).to receive(:value_for).with(**report.own_financial_quarter).and_return(120)
+        expect(actual_quarters).to receive(:value_for).with(activity: activity, **report.own_financial_quarter).and_return(120)
 
         expect(activity_presenter).to receive(:comment_for_report).with(report_id: report_presenter.id).and_return(comment)
         expect(activity_presenter).to receive(:source_fund).and_return(fund)
