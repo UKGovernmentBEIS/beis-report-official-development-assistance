@@ -831,6 +831,7 @@
 ## [unreleased]
 
 - Remove the all reports download
+- Fix the GCRF strategic area code for Coherence and Impact
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-74...HEAD
 [release-74]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-73...release-74
