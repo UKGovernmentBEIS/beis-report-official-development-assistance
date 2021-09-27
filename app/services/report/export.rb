@@ -17,7 +17,8 @@ class Report
           activity: activity,
           report_presenter: report_presenter,
           previous_report_quarters: previous_report_quarters,
-          following_report_quarters: following_report_quarters
+          following_report_quarters: following_report_quarters,
+          actual_quarters: actual_quarters,
         ).call
       end
     end
@@ -37,6 +38,10 @@ class Report
           scope: Activity.all
         ).call.sort_by { |a| a.level }
       end
+    end
+
+    def actual_quarters
+      @actual_quarters ||= ActualOverview.new(report: report_presenter, include_adjustments: true).all_quarters
     end
 
     def report_presenter
@@ -136,11 +141,12 @@ class Report
         "Link to activity in RODA",
       ]
 
-      def initialize(activity:, report_presenter:, previous_report_quarters:, following_report_quarters:)
+      def initialize(activity:, report_presenter:, previous_report_quarters:, following_report_quarters:, actual_quarters:)
         @activity = activity
         @report_presenter = report_presenter
         @previous_report_quarters = previous_report_quarters
         @following_report_quarters = following_report_quarters
+        @actual_quarters = actual_quarters
       end
 
       def call
@@ -158,7 +164,7 @@ class Report
 
       def previous_quarter_actuals
         previous_report_quarters.map do |quarter|
-          value = actual_quarters.value_for(**quarter)
+          value = actual_quarters.value_for(activity: activity, **quarter)
           "%.2f" % value
         end
       end
@@ -182,7 +188,7 @@ class Report
 
       private
 
-      attr_reader :activity, :report_presenter, :previous_report_quarters, :following_report_quarters
+      attr_reader :activity, :report_presenter, :previous_report_quarters, :following_report_quarters, :actual_quarters
 
       def activity_presenter
         @activity_presenter ||= ActivityCsvPresenter.new(activity)
@@ -192,12 +198,8 @@ class Report
         @forecast_quarters ||= ForecastOverview.new(activity_presenter).snapshot(report_presenter).all_quarters
       end
 
-      def actual_quarters
-        @actual_quarters ||= ActualOverview.new(activity: activity_presenter, report: report_presenter, include_adjustments: true).all_quarters
-      end
-
       def variance_for_report_financial_quarter
-        forecast_quarters.value_for(**report_presenter.own_financial_quarter) - actual_quarters.value_for(**report_presenter.own_financial_quarter)
+        forecast_quarters.value_for(**report_presenter.own_financial_quarter) - actual_quarters.value_for(activity: activity, **report_presenter.own_financial_quarter)
       end
     end
   end

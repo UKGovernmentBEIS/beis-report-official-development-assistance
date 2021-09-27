@@ -3,7 +3,7 @@ RSpec.describe ActualOverview do
   let(:project) { create(:project_activity, organisation: delivery_partner) }
   let(:reporting_cycle) { ReportingCycle.new(project, 4, 2018) }
   let(:include_adjustments) { false }
-  let(:overview) { ActualOverview.new(activity: project, report: report, include_adjustments: include_adjustments) }
+  let(:overview) { ActualOverview.new(report: report, include_adjustments: include_adjustments) }
 
   #   Report:     2018-Q4     2019-Q1     2019-Q2
   #   Quarter
@@ -61,14 +61,14 @@ RSpec.describe ActualOverview do
   shared_examples_for "actual report history" do
     it "returns the actual value for a particular quarter" do
       expected_values.each do |quarter, year, amount|
-        value = overview.value_for(financial_quarter: quarter, financial_year: year)
+        value = overview.value_for(financial_quarter: quarter, financial_year: year, activity: project)
         expect(value).to eq(amount)
       end
     end
 
     it "returns the actual value for a particular quarter using a bulk load" do
       expected_values.each do |quarter, year, amount|
-        value = overview.all_quarters.value_for(financial_quarter: quarter, financial_year: year)
+        value = overview.all_quarters.value_for(financial_quarter: quarter, financial_year: year, activity: project)
         expect(value).to eq(amount)
       end
     end
