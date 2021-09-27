@@ -17,8 +17,21 @@ FactoryBot.define do
 
     after(:create) do |adjustment, _evaluator|
       create(:flexible_comment, commentable: adjustment)
-      create(:adjustment_detail, adjustment: adjustment)
       adjustment.reload
+    end
+
+    trait :refund do
+      after(:create) do |adjustment, _evaluator|
+        create(:adjustment_detail, adjustment: adjustment, adjustment_type: "Refund")
+        adjustment.reload
+      end
+    end
+
+    trait :actual do
+      after(:create) do |adjustment, _evaluator|
+        create(:adjustment_detail, adjustment: adjustment, adjustment_type: "Actual")
+        adjustment.reload
+      end
     end
   end
 end
