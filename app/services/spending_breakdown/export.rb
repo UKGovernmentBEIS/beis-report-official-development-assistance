@@ -11,19 +11,16 @@ class SpendingBreakdown::Export
   def initialize(source_fund:, organisation: nil)
     @organisation = organisation
     @source_fund = source_fund
-    @activities = activities
-    @actuals = actuals
-    @refunds = refunds
   end
 
   def headers
-    return HEADERS if @actuals.empty? && @refunds.empty?
+    return HEADERS if actuals.empty? && refunds.empty? && forecasts.empty?
 
     HEADERS + headers_from_financial_quarters.flatten! + forecasts_headers
   end
 
   def rows
-    @activities.map do |activity|
+    activities.map do |activity|
       activity_data(activity) + financial_data(activity) + forecast_data(activity)
     end
   end
@@ -85,7 +82,7 @@ class SpendingBreakdown::Export
   end
 
   def activities
-    if @organisation.nil?
+    @_activities ||= if @organisation.nil?
       Activity.where(source_fund_code: @source_fund.id).includes(:organisation)
     else
       Activity.includes(:organisation).where(organisation_id: @organisation.id, source_fund_code: @source_fund.id)
@@ -94,11 +91,11 @@ class SpendingBreakdown::Export
   end
 
   def actuals
-    Actual.where(parent_activity_id: activity_ids)
+    @_actuals ||= Actual.where(parent_activity_id: activity_ids)
   end
 
   def refunds
-    Refund.where(parent_activity_id: activity_ids)
+    @_refunds ||= Refund.where(parent_activity_id: activity_ids)
   end
 
   def forecasts
@@ -107,17 +104,17 @@ class SpendingBreakdown::Export
   end
 
   def activity_ids
-    @activities.pluck(:id)
+    activities.pluck(:id)
   end
 
   def financial_quarters_with_acutals
-    return [] unless @actuals.present?
-    @actuals.map(&:own_financial_quarter).uniq
+    return [] unless actuals.present?
+    actuals.map(&:own_financial_quarter).uniq
   end
 
   def financial_quarters_with_refunds
-    return [] unless @refunds.present?
-    @refunds.map(&:own_financial_quarter).uniq
+    return [] unless refunds.present?
+    refunds.map(&:own_financial_quarter).uniq
   end
 
   def all_financial_quarters_with_forecasts
@@ -163,8 +160,7 @@ class SpendingBreakdown::Export
       @transaction_type = TRANSACTION_TYPES[transaction_type]
       @activity = activity
       @totals = totals
-      @financial_quarter = financial_quarter.to_i
-      @financial_year = financial_quarter.financial_year.start_year
+      @financial_quarter = financial_quarter
     end
 
     def net_total
@@ -174,11 +170,11 @@ class SpendingBreakdown::Export
     private
 
     def total
-      @totals.fetch([@activity.id, @financial_quarter, @financial_year, @transaction_type, nil], 0)
+      @totals.fetch([@activity.id, @financial_quarter.quarter, @financial_quarter.financial_year.start_year, @transaction_type, nil], 0)
     end
 
     def adjustments_total
-      @totals.fetch([@activity.id, @financial_quarter, @financial_year, "Adjustment", @transaction_type], 0)
+      @totals.fetch([@activity.id, @financial_quarter.quarter, @financial_quarter.financial_year.start_year, "Adjustment", @transaction_type], 0)
     end
   end
 end
