@@ -35,7 +35,20 @@ class ActualOverview
   end
 
   def scope
-    @include_adjustments ? Transaction.where(type: ["Actual", "Adjustment"]) : Actual
+    if @include_adjustments
+      Transaction
+        .joins("LEFT OUTER JOIN adjustment_details ON transactions.id = adjustment_details.adjustment_id")
+        .where(type: "Actual")
+        .or(
+          Transaction
+            .where(
+              type: "Adjustment",
+              adjustment_details: {adjustment_type: "Actual"}
+            )
+        )
+    else
+      Actual
+    end
   end
 
   class AllQuarters

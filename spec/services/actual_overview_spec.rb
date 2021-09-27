@@ -25,8 +25,9 @@ RSpec.describe ActualOverview do
     create_actual(financial_year: 2018, financial_quarter: 3, value: 80)
     create_actual(financial_year: 2018, financial_quarter: 4, value: 160)
 
-    create_adjustment(financial_year: 2017, financial_quarter: 1, value: 20)
-    create_adjustment(financial_year: 2017, financial_quarter: 4, value: -5)
+    create_adjustment(financial_year: 2017, financial_quarter: 1, value: 20, adjustment_type: :actual)
+    create_adjustment(financial_year: 2017, financial_quarter: 4, value: -5, adjustment_type: :actual)
+    create_adjustment(financial_year: 2017, financial_quarter: 4, value: 900, adjustment_type: :refund)
 
     reporting_cycle.tick
     create_actual(financial_year: 2017, financial_quarter: 2, value: 320)
@@ -34,7 +35,8 @@ RSpec.describe ActualOverview do
     create_actual(financial_year: 2018, financial_quarter: 2, value: 1_280)
     create_actual(financial_year: 2018, financial_quarter: 3, value: 2_560)
 
-    create_adjustment(financial_year: 2017, financial_quarter: 2, value: -20)
+    create_adjustment(financial_year: 2017, financial_quarter: 2, value: -20, adjustment_type: :actual)
+    create_adjustment(financial_year: 2017, financial_quarter: 2, value: 1000, adjustment_type: :refund)
 
     reporting_cycle.tick
     create_actual(financial_year: 2017, financial_quarter: 3, value: 5_120)
@@ -43,7 +45,8 @@ RSpec.describe ActualOverview do
     create_actual(financial_year: 2018, financial_quarter: 3, value: 40_960)
     create_actual(financial_year: 2018, financial_quarter: 4, value: 81_920)
 
-    create_adjustment(financial_year: 2017, financial_quarter: 3, value: -100)
+    create_adjustment(financial_year: 2017, financial_quarter: 3, value: -100, adjustment_type: :actual)
+    create_adjustment(financial_year: 2017, financial_quarter: 3, value: -9999, adjustment_type: :refund)
   end
 
   def create_actual(attributes)
@@ -51,7 +54,8 @@ RSpec.describe ActualOverview do
   end
 
   def create_adjustment(attributes)
-    create(:adjustment, parent_activity: project, report: reporting_cycle.report, **attributes)
+    adjustment_type = attributes.delete(:adjustment_type)
+    create(:adjustment, adjustment_type, parent_activity: project, report: reporting_cycle.report, **attributes)
   end
 
   shared_examples_for "actual report history" do
