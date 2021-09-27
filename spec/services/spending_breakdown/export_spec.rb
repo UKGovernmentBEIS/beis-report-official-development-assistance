@@ -1,32 +1,26 @@
 RSpec.describe SpendingBreakdown::Export do
-  let!(:organisation) { create(:delivery_partner_organisation, beis_organisation_reference: "BC") }
-  let!(:activity) { create(:project_activity, organisation: organisation) }
-  let!(:source_fund) { Fund.new(activity.source_fund_code) }
-  let!(:actual) { create(:actual, parent_activity: activity, value: 100, financial_quarter: 1, financial_year: 2020) }
-  let!(:refund) { create(:refund, parent_activity: activity, value: -200, financial_quarter: 1, financial_year: 2020) }
+  before(:all) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.start
 
-  let!(:positive_actual_adjustment) { create(:adjustment, :actual, parent_activity: activity, value: 200, financial_quarter: 1, financial_year: 2020) }
-  let!(:negative_actual_adjustment) { create(:adjustment, :actual, parent_activity: activity, value: -100, financial_quarter: 1, financial_year: 2020) }
+    @organisation = create(:delivery_partner_organisation, beis_organisation_reference: "BC")
+    @activity = create(:project_activity, organisation: @organisation)
+    @source_fund = Fund.new(1)
 
-  let!(:positive_refund_adjustment) { create(:adjustment, :refund, parent_activity: activity, value: 50, financial_quarter: 1, financial_year: 2020) }
-  let!(:negative_refund_adjustment) { create(:adjustment, :refund, parent_activity: activity, value: -200, financial_quarter: 1, financial_year: 2020) }
+    create_q1_2020_actual_and_adjustments
+    create_q4_2020_actual_and_adjustments
 
-  let!(:actual_fq4) { create(:actual, parent_activity: activity, value: 100, financial_quarter: 4, financial_year: 2020) }
-  let!(:refund_fq4) { create(:refund, parent_activity: activity, value: -200, financial_quarter: 4, financial_year: 2020) }
+    create_q1_2020_refund_and_adjustments
+    create_q4_2020_refund_and_adjustments
 
-  let!(:positive_actual_adjustment_fq4) { create(:adjustment, :actual, parent_activity: activity, value: 200, financial_quarter: 4, financial_year: 2020) }
-  let!(:negative_actual_adjustment_fq4) { create(:adjustment, :actual, parent_activity: activity, value: -100, financial_quarter: 4, financial_year: 2020) }
+    create_old_report_and_forecasts
+  end
 
-  let!(:positive_refund_adjustment_fq4) { create(:adjustment, :refund, parent_activity: activity, value: 50, financial_quarter: 4, financial_year: 2020) }
-  let!(:negative_refund_adjustment_fq4) { create(:adjustment, :refund, parent_activity: activity, value: -200, financial_quarter: 4, financial_year: 2020) }
+  after(:all) do
+    DatabaseCleaner.clean
+  end
 
-  let!(:report) { create(:report, :approved, organisation: organisation, fund: activity.associated_fund, financial_quarter: 1, financial_year: 2019) }
-  let!(:old_forecasti_fq1) { ForecastHistory.new(activity, report: report, financial_quarter: 1, financial_year: 2020).set_value(5_000) }
-  let!(:old_forecasti_fq4) { ForecastHistory.new(activity, report: report, financial_quarter: 4, financial_year: 2020).set_value(2_500) }
-  let!(:forecast_fq1) { ForecastHistory.new(activity, report: report, financial_quarter: 1, financial_year: 2021).set_value(20_000) }
-  let!(:forecast_fq4) { ForecastHistory.new(activity, report: report, financial_quarter: 4, financial_year: 2021).set_value(10_000) }
-
-  subject { SpendingBreakdown::Export.new(organisation: organisation, source_fund: source_fund) }
+  subject { SpendingBreakdown::Export.new(organisation: @organisation, source_fund: @source_fund) }
 
   def value_for_header(header_name)
     subject.rows.first[subject.headers.index(header_name)]
@@ -38,7 +32,7 @@ RSpec.describe SpendingBreakdown::Export do
         newton_fund = Fund.new(1)
         breakdown = SpendingBreakdown::Export.new(
           source_fund: newton_fund,
-          organisation: organisation
+          organisation: @organisation
         )
         expect(breakdown.filename).to eq("NF_BC_spending_breakdown.csv")
       end
@@ -128,10 +122,10 @@ RSpec.describe SpendingBreakdown::Export do
   describe "#rows" do
     it "contains the appropriate activity values" do
       aggregate_failures do
-        expect(value_for_header("RODA identifier")).to eql(activity.roda_identifier)
-        expect(value_for_header("Delivery partner identifier")).to eql(activity.delivery_partner_identifier)
-        expect(value_for_header("Delivery partner organisation")).to eql(activity.organisation.name)
-        expect(value_for_header("Title")).to eql(activity.title)
+        expect(value_for_header("RODA identifier")).to eql(@activity.roda_identifier)
+        expect(value_for_header("Delivery partner identifier")).to eql(@activity.delivery_partner_identifier)
+        expect(value_for_header("Delivery partner organisation")).to eql(@activity.organisation.name)
+        expect(value_for_header("Title")).to eql(@activity.title)
         expect(value_for_header("Level")).to eql("Project (level C)")
         expect(value_for_header("Activity status")).to eql("Spend in progress")
       end
@@ -180,12 +174,135 @@ RSpec.describe SpendingBreakdown::Export do
 
     context "where there are additional activities" do
       before do
-        create_list(:project_activity, 4, organisation: organisation)
+        create_list(:project_activity, 4, organisation: @organisation)
       end
 
       it "includes a row for each" do
         expect(subject.rows.count).to eq(5)
       end
     end
+  end
+
+  def create_q1_2020_actual_and_adjustments
+    @actual = create(
+      :actual,
+      parent_activity: @activity,
+      value: 100,
+      financial_quarter: 1,
+      financial_year: 2020
+    )
+    create(
+      :adjustment,
+      :actual,
+      parent_activity: @activity,
+      value: 200,
+      financial_quarter: 1,
+      financial_year: 2020
+    )
+    create(
+      :adjustment,
+      :actual,
+      parent_activity: @activity,
+      value: -100,
+      financial_quarter: 1,
+      financial_year: 2020
+    )
+  end
+
+  def create_q4_2020_actual_and_adjustments
+    create(
+      :actual,
+      parent_activity: @activity,
+      value: 100,
+      financial_quarter: 4,
+      financial_year: 2020
+    )
+    create(
+      :adjustment,
+      :actual,
+      parent_activity: @activity,
+      value: 200,
+      financial_quarter: 4,
+      financial_year: 2020
+    )
+    create(
+      :adjustment,
+      :actual,
+      parent_activity: @activity,
+      value: -100,
+      financial_quarter: 4,
+      financial_year: 2020
+    )
+  end
+
+  def create_q1_2020_refund_and_adjustments
+    @refund = create(
+      :refund,
+      parent_activity: @activity,
+      value: -200,
+      financial_quarter: 1,
+      financial_year: 2020
+    )
+    create(
+      :adjustment,
+      :refund,
+      parent_activity: @activity,
+      value: 50,
+      financial_quarter: 1,
+      financial_year: 2020
+    )
+    create(
+      :adjustment,
+      :refund,
+      parent_activity: @activity,
+      value: -200,
+      financial_quarter: 1,
+      financial_year: 2020
+    )
+  end
+
+  def create_q4_2020_refund_and_adjustments
+    create(
+      :refund,
+      parent_activity: @activity,
+      value: -200,
+      financial_quarter: 4,
+      financial_year: 2020
+    )
+    create(
+      :adjustment,
+      :refund,
+      parent_activity: @activity,
+      value: 50,
+      financial_quarter: 4,
+      financial_year: 2020
+    )
+    create(
+      :adjustment,
+      :refund,
+      parent_activity: @activity,
+      value: -200,
+      financial_quarter: 4,
+      financial_year: 2020
+    )
+  end
+
+  def create_old_report_and_forecasts
+    report = create(
+      :report,
+      :approved,
+      organisation: @organisation,
+      fund: @activity.associated_fund,
+      financial_quarter: 1,
+      financial_year: 2019
+    )
+    ForecastHistory.new(@activity, report: report, financial_quarter: 1, financial_year: 2020)
+      .set_value(5_000)
+    ForecastHistory.new(@activity, report: report, financial_quarter: 4, financial_year: 2020)
+      .set_value(2_500)
+    ForecastHistory.new(@activity, report: report, financial_quarter: 1, financial_year: 2021)
+      .set_value(20_000)
+    ForecastHistory.new(@activity, report: report, financial_quarter: 4, financial_year: 2021)
+      .set_value(10_000)
   end
 end
