@@ -8,7 +8,7 @@ data:
   - code: "RF"
     legacy_code: "3"
     description: "Academies Collective Fund: Resilient Futures"
-  - code: "Clm"
+  - code: "CIm"
     legacy_code: "4"
     description: Coherence and Impact
   - code: "IP"
