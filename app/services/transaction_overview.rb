@@ -1,4 +1,4 @@
-class ActualOverview
+module TransactionOverview
   def initialize(report:, include_adjustments: false)
     @report = report
     @include_adjustments = include_adjustments
@@ -37,20 +37,25 @@ class ActualOverview
   end
 
   def scope
+    scope = Transaction.where(type: transaction_class)
+
     if @include_adjustments
-      Transaction
+      scope = scope
         .with_adjustment_details
-        .where(type: "Actual")
         .or(
           Transaction
             .where(
               type: "Adjustment",
-              adjustment_details: {adjustment_type: "Actual"}
+              adjustment_details: {adjustment_type: transaction_class}
             )
         )
-    else
-      Actual
     end
+
+    scope
+  end
+
+  def transaction_class
+    @transaction_class ||= self.class.name.split("::").first
   end
 
   class AllQuarters
