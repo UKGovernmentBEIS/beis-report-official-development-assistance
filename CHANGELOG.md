@@ -828,9 +828,15 @@
 - Delivery Partner can post an adjustment to an historic financial period
 - Users can export budget data
 
+## [release-75] - 2021-09-28
+
+- Remove the all reports download
+- Fix the GCRF strategic area code for Coherence and Impact
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-74...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-75...HEAD
+[release-75]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-74...release-75
 [release-74]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-73...release-74
 [release-73]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-72...release-73
 [release-72]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-71...release-72

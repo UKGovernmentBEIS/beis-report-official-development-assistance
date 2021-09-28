@@ -1,8 +1,7 @@
 class Report
   class Export
-    def initialize(reports:, export_type: :single)
-      @reports = reports
-      @export_type = export_type
+    def initialize(report:)
+      @report = report
     end
 
     def headers
@@ -13,43 +12,40 @@ class Report
     end
 
     def rows
-      reports_with_financial_quarters.flat_map { |report|
-        activities_for_report(report).map do |activity|
-          Row.new(
-            activity: activity,
-            report_presenter: report_presenter,
-            previous_report_quarters: previous_report_quarters,
-            following_report_quarters: following_report_quarters
-          ).call
-        end
-      }
+      activities.map do |activity|
+        Row.new(
+          activity: activity,
+          report_presenter: report_presenter,
+          previous_report_quarters: previous_report_quarters,
+          following_report_quarters: following_report_quarters,
+          actual_quarters: actual_quarters,
+        ).call
+      end
     end
 
     def filename
-      if export_type == :single
-        report_presenter.filename_for_report_download
-      else
-        report_presenter.filename_for_all_reports_download
-      end
+      report_presenter.filename_for_report_download
     end
 
     private
 
-    attr_reader :reports, :export_type
+    attr_reader :report
 
-    def activities_for_report(report)
-      Activity::ProjectsForReportFinder.new(
-        report: report,
-        scope: scope
-      ).call.sort_by { |a| a.level }
+    def activities
+      @activities ||= begin
+        Activity::ProjectsForReportFinder.new(
+          report: report,
+          scope: Activity.all
+        ).call.sort_by { |a| a.level }
+      end
+    end
+
+    def actual_quarters
+      @actual_quarters ||= ActualOverview.new(report: report_presenter, include_adjustments: true).all_quarters
     end
 
     def report_presenter
-      @report_presenter ||= ReportPresenter.new(report_sample)
-    end
-
-    def scope
-      export_type == :single ? Activity.all : Activity.includes(:organisation, :extending_organisation, :implementing_organisations)
+      @report_presenter ||= ReportPresenter.new(report)
     end
 
     def variance_headers
@@ -80,14 +76,6 @@ class Report
 
     def next_twenty_quarter_forecasts_headers
       following_report_quarters.map { |quarter| "FC #{quarter}" }
-    end
-
-    def report_sample
-      reports.first
-    end
-
-    def reports_with_financial_quarters
-      reports.reject { |r| r.own_financial_quarter.nil? }
     end
 
     class Row
@@ -153,11 +141,12 @@ class Report
         "Link to activity in RODA",
       ]
 
-      def initialize(activity:, report_presenter:, previous_report_quarters:, following_report_quarters:)
+      def initialize(activity:, report_presenter:, previous_report_quarters:, following_report_quarters:, actual_quarters:)
         @activity = activity
         @report_presenter = report_presenter
         @previous_report_quarters = previous_report_quarters
         @following_report_quarters = following_report_quarters
+        @actual_quarters = actual_quarters
       end
 
       def call
@@ -167,10 +156,6 @@ class Report
           variance_data
       end
 
-      private
-
-      attr_reader :activity, :report_presenter, :previous_report_quarters, :following_report_quarters
-
       def activity_data
         ACTIVITY_HEADERS.map do |_key, value|
           activity_presenter.send(value)
@@ -178,17 +163,13 @@ class Report
       end
 
       def previous_quarter_actuals
-        actual_quarters = ActualOverview.new(activity_presenter, report_presenter).all_quarters
-
         previous_report_quarters.map do |quarter|
-          value = actual_quarters.value_for(**quarter)
+          value = actual_quarters.value_for(activity: activity, **quarter)
           "%.2f" % value
         end
       end
 
       def next_quarter_forecasts
-        forecast_quarters = ForecastOverview.new(activity_presenter).snapshot(report_presenter).all_quarters
-
         following_report_quarters.map do |quarter|
           value = forecast_quarters.value_for(**quarter)
           "%.2f" % value
@@ -197,7 +178,7 @@ class Report
 
       def variance_data
         [
-          activity_presenter.variance_for_report_financial_quarter(report: report_presenter),
+          variance_for_report_financial_quarter,
           activity_presenter.comment_for_report(report_id: report_presenter.id)&.comment,
           activity_presenter.source_fund&.name,
           activity_presenter.extending_organisation&.beis_organisation_reference,
@@ -205,8 +186,20 @@ class Report
         ]
       end
 
+      private
+
+      attr_reader :activity, :report_presenter, :previous_report_quarters, :following_report_quarters, :actual_quarters
+
       def activity_presenter
         @activity_presenter ||= ActivityCsvPresenter.new(activity)
+      end
+
+      def forecast_quarters
+        @forecast_quarters ||= ForecastOverview.new(activity_presenter).snapshot(report_presenter).all_quarters
+      end
+
+      def variance_for_report_financial_quarter
+        forecast_quarters.value_for(**report_presenter.own_financial_quarter) - actual_quarters.value_for(activity: activity, **report_presenter.own_financial_quarter)
       end
     end
   end

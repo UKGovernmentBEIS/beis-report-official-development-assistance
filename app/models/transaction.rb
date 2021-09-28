@@ -20,6 +20,8 @@ class Transaction < ApplicationRecord
 
   before_validation :set_financial_quarter_from_date
 
+  scope :with_adjustment_details, -> { joins("LEFT OUTER JOIN adjustment_details ON transactions.id = adjustment_details.adjustment_id") }
+
   private
 
   def set_financial_quarter_from_date

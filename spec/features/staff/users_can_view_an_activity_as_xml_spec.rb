@@ -32,7 +32,7 @@ RSpec.feature "Users can view an activity as XML" do
         end
       end
 
-      context "when the activity has benefitting countries" do
+      context "when the activity has one benefitting country" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
@@ -59,7 +59,7 @@ RSpec.feature "Users can view an activity as XML" do
         }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
-        it "contains data about the recipient country" do
+        it "contains data about the recipient countries" do
           visit organisation_activity_path(organisation, activity, format: :xml)
 
           results = xml.xpath("//iati-activity/recipient-country")
@@ -76,12 +76,11 @@ RSpec.feature "Users can view an activity as XML" do
         end
       end
 
-      context "when the activity has recipient_region geography" do
+      context "when the activity has a legacy recipient_region and no benefitting countries" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
             delivery_partner_identifier: "IND-ENT-IFIER",
-            geography: :recipient_region,
             recipient_region: "489")
         }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
@@ -100,44 +99,20 @@ RSpec.feature "Users can view an activity as XML" do
         end
       end
 
-      context "when the activity has recipient_country geography" do
+      context "when the activity has a legacy recipient_region and at least one benefitting country" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
             delivery_partner_identifier: "IND-ENT-IFIER",
-            geography: :recipient_country,
-            recipient_country: "CV")
+            recipient_region: "489",
+            benefitting_countries: ["CV"])
         }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
-        it "contains the recipient country code and fixed vocabulary code of 1" do
+        it "contains only data about the recipient countries" do
           visit organisation_activity_path(organisation, activity, format: :xml)
 
-          expect(xml.at("iati-activity/recipient-country/@code").text).to eq(activity.recipient_country)
-        end
-
-        it "contains the recipient country name as a narrative element" do
-          visit organisation_activity_path(organisation, activity, format: :xml)
-
-          expect(xml.at("iati-activity/recipient-country/narrative").text).to eq("Cabo Verde")
-        end
-      end
-
-      context "when the activity has both recipient_country and recipient_region geography" do
-        let(:activity) {
-          create(:fund_activity,
-            organisation: organisation,
-            delivery_partner_identifier: "IND-ENT-IFIER",
-            geography: :recipient_country,
-            recipient_country: "CL",
-            recipient_region: "489")
-        }
-        let(:xml) { Nokogiri::XML::Document.parse(page.body) }
-
-        it "contains only the recipient country code" do
-          visit organisation_activity_path(organisation, activity, format: :xml)
-
-          expect(xml.at("iati-activity/recipient-country/@code").text).to eq(activity.recipient_country)
+          expect(xml.at("iati-activity/recipient-country/@code").text).to eq(activity.benefitting_countries.first)
           expect(xml.at("iati-activity/recipient-region")).to be_nil
         end
       end
