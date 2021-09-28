@@ -84,7 +84,7 @@ RSpec.describe Report::Export do
           report_presenter: report_presenter,
           previous_report_quarters: an_instance_of(Array),
           following_report_quarters: an_instance_of(Array),
-          actual_quarters: an_instance_of(ActualOverview::AllQuarters),
+          actual_quarters: an_instance_of(Actual::Overview::AllQuarters),
         ).and_return(stub)
         expect(stub).to receive(:call).and_return([activity.title])
       end
@@ -144,7 +144,7 @@ RSpec.describe Report::Export do
       ]
     end
 
-    let(:actual_quarters) { ActualOverview::AllQuarters.new(actuals) }
+    let(:actual_quarters) { Actual::Overview::AllQuarters.new(actuals) }
     let(:actual_index) { Report::Export::Row::ACTIVITY_HEADERS.count }
     let(:forecast_index) { actual_index + previous_report_quarters.count }
 

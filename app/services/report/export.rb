@@ -41,7 +41,7 @@ class Report
     end
 
     def actual_quarters
-      @actual_quarters ||= ActualOverview.new(report: report_presenter, include_adjustments: true).all_quarters
+      @actual_quarters ||= Actual::Overview.new(report: report_presenter, include_adjustments: true).all_quarters
     end
 
     def report_presenter
