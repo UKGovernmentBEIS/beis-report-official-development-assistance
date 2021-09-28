@@ -71,13 +71,14 @@ class SpendingBreakdown::Export
   end
 
   def activity_data(activity)
+    activity_presenter = ActivityCsvPresenter.new(activity)
     [
-      activity.roda_identifier,
-      activity.delivery_partner_identifier,
-      activity.organisation.name,
-      activity.title,
-      I18n.t("table.body.activity.level.#{activity.level}"),
-      I18n.t("activity.programme_status.#{activity.programme_status}"),
+      activity_presenter.roda_identifier,
+      activity_presenter.delivery_partner_identifier,
+      activity_presenter.organisation.name,
+      activity_presenter.title,
+      activity_presenter.level,
+      activity_presenter.programme_status,
     ]
   end
 
