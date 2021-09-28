@@ -1,2 +1,7 @@
-.govuk-grid-column-one-third.page-actions
-  = link_to t("action.report.download.button"), report_path(report_presenter, format: :csv), class: "govuk-link"
+.govuk-grid-column-two-thirds
+  %h3.govuk-heading-m
+    Download
+  %p.govuk-body
+    Download a CSV file to review offline. For guidance on reviewing and submitting your report, see the
+    = link_to_new_tab " guidance in the help centre", "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005604902-Review-and-Submit-your-Data"
+  = link_to t("action.report.download.button"), report_path(report_presenter, format: :csv), class: "govuk-button govuk-button--secondary"

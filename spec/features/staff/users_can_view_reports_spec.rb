@@ -140,7 +140,7 @@ RSpec.feature "Users can view reports" do
       end
     end
 
-    scenario "can download a CSV of the report" do
+    scenario "they see helpful guidance about and can download a CSV of their own report" do
       report = create(:report, :active)
 
       visit reports_path
@@ -149,13 +149,15 @@ RSpec.feature "Users can view reports" do
         click_on t("default.link.show")
       end
 
-      click_on t("action.report.download.button")
+      expect(page).to have_content("Download a CSV file to review offline.")
+      expect(page).to have_link("guidance in the help centre (opens in new tab)")
+
+      click_link t("action.report.download.button")
 
       expect(page.response_headers["Content-Type"]).to include("text/csv")
       header = page.response_headers["Content-Disposition"]
       expect(header).to match(/#{ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv")}\z/)
     end
-
 
     context "if the report description is empty" do
       scenario "the report csv has a filename made up of the fund name & report financial year & quarter" do
@@ -361,16 +363,18 @@ RSpec.feature "Users can view reports" do
         expect(page).to have_http_status(401)
       end
 
-      scenario "can download a CSV of their own report" do
+      scenario "they see helpful guidance about and can download a CSV of their own report" do
         report = create(:report, :active, organisation: delivery_partner_user.organisation)
 
         visit reports_path
-
         within "##{report.id}" do
           click_on t("default.link.show")
         end
 
-        click_on t("action.report.download.button")
+        expect(page).to have_content("Download a CSV file to review offline.")
+        expect(page).to have_link("guidance in the help centre (opens in new tab)")
+
+        click_link t("action.report.download.button")
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
 
