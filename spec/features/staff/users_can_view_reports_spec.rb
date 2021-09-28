@@ -156,30 +156,6 @@ RSpec.feature "Users can view reports" do
       expect(header).to match(/#{ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv")}\z/)
     end
 
-    scenario "can download a spending breakdown CSV of the report" do
-      fund = create(:fund_activity)
-      programme = create(:programme_activity, parent: fund)
-      dp_org = create(:delivery_partner_organisation)
-      project = create(:project_activity, organisation: dp_org, parent: programme)
-      report = create(:report, :active, organisation: dp_org, fund: programme.parent)
-      create(:actual, report: report, parent_activity: project)
-
-      visit reports_path
-
-      within "##{report.id}" do
-        click_on t("default.link.show")
-      end
-
-      click_on t("action.report.spending_download.button")
-
-      expect(page.response_headers["Content-Type"]).to include("text/csv")
-      header = page.response_headers["Content-Disposition"]
-      expect(header).to match(/#{ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv")}\z/)
-
-      download = CSV.parse(page.body)
-      expected_row = ActivitySpendingBreakdown.new(report: report, activity: project).values
-      expect(download.to_a).to include(expected_row)
-    end
 
     context "if the report description is empty" do
       scenario "the report csv has a filename made up of the fund name & report financial year & quarter" do
@@ -229,10 +205,6 @@ RSpec.feature "Users can view reports" do
 
       it "they can be downloaded as CSV" do
         click_on "Download report as CSV file"
-      end
-
-      it "the spending breakdown can be downloaded" do
-        click_on "Download spending breakdown as CSV file"
       end
     end
   end
@@ -399,24 +371,6 @@ RSpec.feature "Users can view reports" do
         end
 
         click_on t("action.report.download.button")
-
-        expect(page.response_headers["Content-Type"]).to include("text/csv")
-
-        expect(page.response_headers["Content-Type"]).to include("text/csv")
-        header = page.response_headers["Content-Disposition"]
-        expect(header).to match(ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv"))
-      end
-
-      scenario "can download a spending breakdown CSV of their own report" do
-        report = create(:report, :active, organisation: delivery_partner_user.organisation)
-
-        visit reports_path
-
-        within "##{report.id}" do
-          click_on t("default.link.show")
-        end
-
-        click_on t("action.report.spending_download.button")
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
 
