@@ -42,7 +42,7 @@ module ActivityHelpers
     expect(page).to have_content t("summary.label.activity.actual_end_date")
     expect(page).to have_content activity_presenter.actual_end_date
 
-    expect(page).to have_content t("summary.label.activity.recipient_region")
+    expect(page).to have_content t("summary.label.activity.benefitting_countries")
     expect(page).to have_content activity_presenter.recipient_region
 
     expect(page).to have_content t("summary.label.activity.aid_type")

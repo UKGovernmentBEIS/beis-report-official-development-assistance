@@ -256,7 +256,7 @@ en:
         geography: Benefitting recipient geography
         delivery_partner_identifier: Delivery partner identifier
         delivery_partner_organisation: Delivery partner organisation
-        intended_beneficiaries: Intended beneficiaries
+        intended_beneficiaries_html: 'Intended beneficiaries</br><span class="govuk-body-s">Legacy field: not editable</span>'
         objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
         oda_eligibility_lead: ODA eligibility lead
@@ -277,9 +277,9 @@ en:
         policy_marker_nutrition: Nutrition Policy
         programme_status: Activity status
         projects: Projects (level C)
-        recipient_country: Recipient country
-        recipient_region: Recipient region
         requires_additional_benefitting_countries: Other benefitting countries?
+        recipient_country_html: 'Recipient country</br><span class="govuk-body-s">Legacy field: not editable</span>'
+        recipient_region_html: 'Recipient region</br><span class="govuk-body-s">Legacy field: not editable</span>'
         sustainable_development_goals: Sustainable Development Goals
         sector: Economic/societal area
         sector_category: Focus area category

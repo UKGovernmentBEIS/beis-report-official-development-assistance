@@ -185,27 +185,48 @@ RSpec.describe "staff/shared/activities/_activity" do
 
       let(:benefitting_countries) { [] }
 
-      it { is_expected.to_not have_css(".benefitting_region") }
+      it { is_expected.to have_css(".benefitting_region") }
     end
   end
 
-  describe "legacy recipient_region" do
-    let(:activity) { build(:programme_activity, recipient_region: "298", benefitting_countries: benefitting_countries) }
+  describe "legacy geography recipient_region, recipient_country and intended_beneficiaries" do
+    context "when there is a value" do
+      let(:activity) {
+        build(
+          :programme_activity,
+          recipient_region: "298",
+          recipient_country: "UG",
+          intended_beneficiaries: ["UG"]
+        )
+      }
 
-    context "when the activity has no benefitting_countries" do
-      subject { body.find(".recipient_region") }
+      it "is shown at all times and has a helpful 'read only' label" do
+        expect(body.find(".recipient_region .govuk-summary-list__value")).to have_content("Africa, regional")
+        expect(body.find(".recipient_region .govuk-summary-list__key")).to have_content("Legacy field: not editable")
 
-      let(:benefitting_countries) { [] }
+        expect(body.find(".recipient_country .govuk-summary-list__value")).to have_content("Uganda")
+        expect(body.find(".recipient_country .govuk-summary-list__key")).to have_content("Legacy field: not editable")
 
-      it { is_expected.to have_content("Africa, regional") }
+        expect(body.find(".intended_beneficiaries .govuk-summary-list__value")).to have_content("Uganda")
+        expect(body.find(".intended_beneficiaries .govuk-summary-list__key")).to have_content("Legacy field: not editable")
+      end
     end
 
-    context "when the activity has benefitting countries" do
-      subject { body }
+    context "when there is NOT a value" do
+      let(:activity) {
+        build(
+          :programme_activity,
+          recipient_region: nil,
+          recipient_country: nil,
+          intended_beneficiaries: []
+        )
+      }
 
-      let(:benefitting_countries) { ["DZ", "LY"] }
-
-      it { is_expected.to_not have_css(".recipient_region") }
+      it "is shown at all times and has a helpful 'read only' label" do
+        expect(body.find(".recipient_region .govuk-summary-list__key")).to have_content("Legacy field: not editable")
+        expect(body.find(".recipient_country .govuk-summary-list__key")).to have_content("Legacy field: not editable")
+        expect(body.find(".intended_beneficiaries .govuk-summary-list__key")).to have_content("Legacy field: not editable")
+      end
     end
   end
 

@@ -214,43 +214,33 @@
       - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :benefitting_countries)
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:intended_beneficiaries)}"), activity_step_path(activity_presenter, :benefitting_countries), t("summary.label.activity.benefitting_countries"))
 
-  - if activity_presenter.benefitting_countries?
-    .govuk-summary-list__row.benefitting_region
-      %dt.govuk-summary-list__key
-        = t("summary.label.activity.benefitting_region")
-      %dd.govuk-summary-list__value
-        = activity_presenter.benefitting_region
-      %dd.govuk-summary-list__actions
-  - elsif activity_presenter.recipient_region?
-    .govuk-summary-list__row.recipient_region
-      %dt.govuk-summary-list__key
-        = t("summary.label.activity.recipient_region")
-      %dd.govuk-summary-list__value
-        = activity_presenter.recipient_region
-      %dd.govuk-summary-list__actions
-
-  - if activity_presenter.recipient_country?
-    .govuk-summary-list__row.recipient_country
-      %dt.govuk-summary-list__key
-        = t("summary.label.activity.recipient_country")
-      %dd.govuk-summary-list__value
-        = activity_presenter.recipient_country
-      %dd.govuk-summary-list__actions
-
-  .govuk-summary-list__row.requires_additional_benefitting_countries
+  .govuk-summary-list__row.benefitting_region
     %dt.govuk-summary-list__key
-      = t("summary.label.activity.requires_additional_benefitting_countries")
+      = t("summary.label.activity.benefitting_region")
     %dd.govuk-summary-list__value
-      = activity_presenter.requires_additional_benefitting_countries
+      = activity_presenter.benefitting_region
     %dd.govuk-summary-list__actions
 
-  - if activity_presenter.requires_additional_benefitting_countries?
-    .govuk-summary-list__row.intended_beneficiaries
-      %dt.govuk-summary-list__key
-        = t("summary.label.activity.intended_beneficiaries")
-      %dd.govuk-summary-list__value
-        = activity_presenter.intended_beneficiaries
-      %dd.govuk-summary-list__actions
+  .govuk-summary-list__row.recipient_region
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.recipient_region_html")
+    %dd.govuk-summary-list__value
+      = activity_presenter.recipient_region
+    %dd.govuk-summary-list__actions
+
+  .govuk-summary-list__row.recipient_country
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.recipient_country_html")
+    %dd.govuk-summary-list__value
+      = activity_presenter.recipient_country
+    %dd.govuk-summary-list__actions
+
+  .govuk-summary-list__row.intended_beneficiaries
+    %dt.govuk-summary-list__key
+      = t("summary.label.activity.intended_beneficiaries_html")
+    %dd.govuk-summary-list__value
+      = activity_presenter.intended_beneficiaries
+    %dd.govuk-summary-list__actions
 
   .govuk-summary-list__row.gdi
     %dt.govuk-summary-list__key
