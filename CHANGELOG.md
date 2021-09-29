@@ -840,6 +840,9 @@
 - BEIS users can export spending breakdown for any organisation
 - Delviery partner users can export spending breakdown for their own
   organisation
+- Remove the old Report > Spending Breakdown download
+- Improve the Report CSV download experience, includes moving the link that
+  triggers the download
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-75...HEAD
 [release-75]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-74...release-75
