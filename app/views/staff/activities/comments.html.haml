@@ -23,6 +23,10 @@
           .govuk-body
             = t("page_content.comment.index_html")
 
+          .govuk-body
+            - if policy(:comment).create? && @report
+              = a11y_action_link(t("page_content.comment.add"), new_activity_comment_path(@activity, report_id: @report.id))
+
           %dl.govuk-summary-list.activity_comments
             - @comments.each do |comment|
               - report_presenter = ReportPresenter.new(comment.report)
