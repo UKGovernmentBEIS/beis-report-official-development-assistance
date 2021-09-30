@@ -116,3 +116,8 @@ source for which is maintained in this private repo:
 ## Source
 
 This repository was bootstrapped from [dxw's `rails-template`](https://github.com/dxw/rails-template).
+
+## Documentation
+
+[Detailed documentation](./doc/0_index_of_contents.md) for developers and support staff is found in `doc/`. 
+See [`doc/0_index_of_contents.md`](./doc/0_index_of_contents.md)
