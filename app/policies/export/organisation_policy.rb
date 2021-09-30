@@ -21,6 +21,10 @@ module Export
       show?
     end
 
+    def show_spending_breakdown?
+      show?
+    end
+
     def show_xml?
       return true if user.service_owner?
     end

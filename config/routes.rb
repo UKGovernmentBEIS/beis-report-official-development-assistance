@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     resources :exports, only: [:index] do
       get "external_income", on: :collection
       get "budgets", on: :collection
+      get "spending_breakdown", on: :collection
     end
 
     namespace :exports do
@@ -38,6 +39,7 @@ Rails.application.routes.draw do
         get "iati/third_party_project_activities", on: :member, to: "organisations#third_party_project_activities"
         get :external_income, on: :member
         get :budgets, on: :member
+        get :spending_breakdown, on: :member
       end
     end
 
@@ -56,7 +58,6 @@ Rails.application.routes.draw do
     end
 
     resources :reports, only: [:show, :edit, :update, :index] do
-      resource :spending_breakdown, only: [:show], path: "spending"
       resource :state, only: [:edit, :update], controller: :reports_state
       resource :activity_upload, only: [:new, :show, :update]
       resource :forecast_upload, only: [:new, :show, :update]

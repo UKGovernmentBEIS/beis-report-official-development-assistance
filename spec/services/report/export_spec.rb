@@ -16,17 +16,29 @@ RSpec.describe Report::Export do
     it "includes the previous twelve quarters" do
       expect(subject.headers).to include(
         "ACT FQ3 2018-2019",
+        "REFUND FQ3 2018-2019",
         "ACT FQ4 2018-2019",
+        "REFUND FQ4 2018-2019",
         "ACT FQ1 2019-2020",
+        "REFUND FQ1 2019-2020",
         "ACT FQ2 2019-2020",
+        "REFUND FQ2 2019-2020",
         "ACT FQ3 2019-2020",
+        "REFUND FQ3 2019-2020",
         "ACT FQ4 2019-2020",
+        "REFUND FQ4 2019-2020",
         "ACT FQ1 2020-2021",
+        "REFUND FQ1 2020-2021",
         "ACT FQ2 2020-2021",
+        "REFUND FQ2 2020-2021",
         "ACT FQ3 2020-2021",
+        "REFUND FQ3 2020-2021",
         "ACT FQ4 2020-2021",
+        "REFUND FQ4 2020-2021",
         "ACT FQ1 2021-2022",
-        "ACT FQ2 2021-2022"
+        "REFUND FQ1 2021-2022",
+        "ACT FQ2 2021-2022",
+        "REFUND FQ2 2021-2022"
       )
     end
 
@@ -84,7 +96,8 @@ RSpec.describe Report::Export do
           report_presenter: report_presenter,
           previous_report_quarters: an_instance_of(Array),
           following_report_quarters: an_instance_of(Array),
-          actual_quarters: an_instance_of(ActualOverview::AllQuarters),
+          actual_quarters: an_instance_of(Actual::Overview::AllQuarters),
+          refund_quarters: an_instance_of(Refund::Overview::AllQuarters),
         ).and_return(stub)
         expect(stub).to receive(:call).and_return([activity.title])
       end
@@ -144,7 +157,16 @@ RSpec.describe Report::Export do
       ]
     end
 
-    let(:actual_quarters) { ActualOverview::AllQuarters.new(actuals) }
+    let(:refunds) do
+      [
+        Refund.new(financial_quarter: 1, financial_year: 2020, value: -5, parent_activity: activity),
+        Refund.new(financial_quarter: 2, financial_year: 2020, value: -10, parent_activity: activity),
+      ]
+    end
+
+    let(:actual_quarters) { Actual::Overview::AllQuarters.new(actuals) }
+    let(:refund_quarters) { Refund::Overview::AllQuarters.new(refunds) }
+
     let(:actual_index) { Report::Export::Row::ACTIVITY_HEADERS.count }
     let(:forecast_index) { actual_index + previous_report_quarters.count }
 
@@ -155,6 +177,7 @@ RSpec.describe Report::Export do
         previous_report_quarters: previous_report_quarters,
         following_report_quarters: following_report_quarters,
         actual_quarters: actual_quarters,
+        refund_quarters: refund_quarters,
       )
     end
 
@@ -171,8 +194,8 @@ RSpec.describe Report::Export do
       let(:forecast_snapshot) { double("ForecastOverview::Snapshot", all_quarters: forecast_quarters, value_for_report_quarter: 0) }
       let(:forecast_overview) { double("ForecastOverview") }
 
-      it "includes the actuals for the previous quarters" do
-        expect(subject.previous_quarter_actuals).to eq(["20.00", "40.00", "80.00", "0.00"])
+      it "includes the actuals and refunds for the previous quarters" do
+        expect(subject.previous_quarter_actuals_and_refunds).to eq(["20.00", "-5.00", "40.00", "-10.00", "80.00", "0.00", "0.00", "0.00"])
       end
 
       it "includes the forecasts for the next quarters" do

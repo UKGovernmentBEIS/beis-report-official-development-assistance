@@ -6,7 +6,7 @@ class Report
 
     def headers
       Row::ACTIVITY_HEADERS.keys +
-        previous_twelve_quarter_actuals_headers +
+        previous_twelve_quarter_actual_and_refund_headers +
         next_twenty_quarter_forecasts_headers +
         variance_headers
     end
@@ -19,6 +19,7 @@ class Report
           previous_report_quarters: previous_report_quarters,
           following_report_quarters: following_report_quarters,
           actual_quarters: actual_quarters,
+          refund_quarters: refund_quarters,
         ).call
       end
     end
@@ -41,7 +42,11 @@ class Report
     end
 
     def actual_quarters
-      @actual_quarters ||= ActualOverview.new(report: report_presenter, include_adjustments: true).all_quarters
+      @actual_quarters ||= Actual::Overview.new(report: report_presenter, include_adjustments: true).all_quarters
+    end
+
+    def refund_quarters
+      @refund_quarters ||= Refund::Overview.new(report: report_presenter, include_adjustments: true).all_quarters
     end
 
     def report_presenter
@@ -70,8 +75,10 @@ class Report
       end
     end
 
-    def previous_twelve_quarter_actuals_headers
-      previous_report_quarters.map { |quarter| "ACT #{quarter}" }
+    def previous_twelve_quarter_actual_and_refund_headers
+      previous_report_quarters.map { |quarter|
+        ["ACT #{quarter}", "REFUND #{quarter}"]
+      }.flatten
     end
 
     def next_twenty_quarter_forecasts_headers
@@ -141,17 +148,18 @@ class Report
         "Link to activity in RODA",
       ]
 
-      def initialize(activity:, report_presenter:, previous_report_quarters:, following_report_quarters:, actual_quarters:)
+      def initialize(activity:, report_presenter:, previous_report_quarters:, following_report_quarters:, actual_quarters:, refund_quarters:)
         @activity = activity
         @report_presenter = report_presenter
         @previous_report_quarters = previous_report_quarters
         @following_report_quarters = following_report_quarters
         @actual_quarters = actual_quarters
+        @refund_quarters = refund_quarters
       end
 
       def call
         activity_data +
-          previous_quarter_actuals +
+          previous_quarter_actuals_and_refunds +
           next_quarter_forecasts +
           variance_data
       end
@@ -162,11 +170,13 @@ class Report
         end
       end
 
-      def previous_quarter_actuals
-        previous_report_quarters.map do |quarter|
-          value = actual_quarters.value_for(activity: activity, **quarter)
-          "%.2f" % value
-        end
+      def previous_quarter_actuals_and_refunds
+        previous_report_quarters.map { |quarter|
+          [
+            actual_value(quarter),
+            refund_value(quarter),
+          ]
+        }.flatten
       end
 
       def next_quarter_forecasts
@@ -188,7 +198,7 @@ class Report
 
       private
 
-      attr_reader :activity, :report_presenter, :previous_report_quarters, :following_report_quarters, :actual_quarters
+      attr_reader :activity, :report_presenter, :previous_report_quarters, :following_report_quarters, :actual_quarters, :refund_quarters
 
       def activity_presenter
         @activity_presenter ||= ActivityCsvPresenter.new(activity)
@@ -200,6 +210,16 @@ class Report
 
       def variance_for_report_financial_quarter
         forecast_quarters.value_for(**report_presenter.own_financial_quarter) - actual_quarters.value_for(activity: activity, **report_presenter.own_financial_quarter)
+      end
+
+      def actual_value(quarter)
+        value = actual_quarters.value_for(activity: activity, **quarter)
+        "%.2f" % value
+      end
+
+      def refund_value(quarter)
+        value = refund_quarters.value_for(activity: activity, **quarter)
+        "%.2f" % value
       end
     end
   end

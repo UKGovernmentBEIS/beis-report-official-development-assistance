@@ -37,32 +37,27 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
     authorize [:export, @organisation], :show_external_income?
 
     fund = Fund.new(params[:fund_id])
+    export = ExternalIncome::Export.new(organisation: @organisation, source_fund: fund)
 
-    respond_to do |format|
-      format.csv do
-        export = ExternalIncome::Export.new(organisation: @organisation, source_fund: fund)
-
-        stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
-          export.rows.each { |row| csv << row }
-        end
-      end
-    end
+    render_csv_export(export)
   end
 
   def budgets
     authorize [:export, @organisation], :show_budgets?
 
     fund = Fund.new(params[:fund_id])
+    export = Budget::Export.new(organisation: @organisation, source_fund: fund)
 
-    respond_to do |format|
-      format.csv do
-        export = Budget::Export.new(organisation: @organisation, source_fund: fund)
+    render_csv_export(export)
+  end
 
-        stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
-          export.rows.each { |row| csv << row }
-        end
-      end
-    end
+  def spending_breakdown
+    authorize [:export, @organisation], :show_spending_breakdown?
+
+    fund = Fund.new(params[:fund_id])
+    export = SpendingBreakdown::Export.new(organisation: @organisation, source_fund: fund)
+
+    render_csv_export(export)
   end
 
   def programme_activities
@@ -96,6 +91,12 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
   end
 
   private
+
+  def render_csv_export(export)
+    stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
+      export.rows.each { |row| csv << row }
+    end
+  end
 
   def fund_code
     Fund.by_short_name(params[:fund]).id if params[:fund]

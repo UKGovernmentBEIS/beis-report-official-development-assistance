@@ -2,10 +2,10 @@
   "name": "beis-report-official-development-assistance",
   "private": true,
   "dependencies": {
-    "accessible-autocomplete": "^2.0.2",
-    "govuk-frontend": "^3.11.0",
     "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "5.2.1"
+    "@rails/webpacker": "^5.4.3",
+    "accessible-autocomplete": "^2.0.2",
+    "govuk-frontend": "^3.11.0"
   },
   "description": "## Getting started",
   "version": "1.0.0",

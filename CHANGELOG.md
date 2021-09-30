@@ -833,9 +833,22 @@
 - Remove the all reports download
 - Fix the GCRF strategic area code for Coherence and Impact
 
+## [release-76] - 2021-09-30
+
+- Include refunds in the report CSV exports
+- BEIS users can export spending breakdown for all organisations
+- BEIS users can export spending breakdown for any organisation
+- Delviery partner users can export spending breakdown for their own
+  organisation
+- Remove the old Report > Spending Breakdown download
+- Improve the Report CSV download experience, includes moving the link that
+  triggers the download
+- Fix up activities' benefitting countries where backfilled overenthusiastically
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-75...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-76...HEAD
+[release-76]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-75...release-76
 [release-75]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-74...release-75
 [release-74]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-73...release-74
 [release-73]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-72...release-73

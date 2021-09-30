@@ -26,9 +26,12 @@ en:
         name: External income for %{fund}
       budgets:
         name: Budgets for %{fund}
+      spending_breakdown:
+        name: Spending breakdown for %{fund}
       subheading:
         external_income: External income
         budgets: Budgets
+        spending_breakdown: Spending breakdown
         iati: IATI Exports
   breadcrumbs:
     export:

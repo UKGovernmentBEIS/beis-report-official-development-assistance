@@ -12,6 +12,7 @@ RSpec.describe ExportPolicy do
       is_expected.to permit_action(:index)
       is_expected.to permit_action(:show_external_income)
       is_expected.to permit_action(:show_budgets)
+      is_expected.to permit_action(:show_spending_breakdown)
     end
   end
 
@@ -22,6 +23,7 @@ RSpec.describe ExportPolicy do
       is_expected.to forbid_action(:index)
       is_expected.to forbid_action(:show_external_income)
       is_expected.to forbid_action(:show_budgets)
+      is_expected.to forbid_action(:show_spending_breakdown)
     end
   end
 end

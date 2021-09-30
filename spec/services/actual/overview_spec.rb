@@ -1,9 +1,9 @@
-RSpec.describe ActualOverview do
+RSpec.describe Actual::Overview do
   let(:delivery_partner) { create(:delivery_partner_organisation) }
   let(:project) { create(:project_activity, organisation: delivery_partner) }
   let(:reporting_cycle) { ReportingCycle.new(project, 4, 2018) }
   let(:include_adjustments) { false }
-  let(:overview) { ActualOverview.new(report: report, include_adjustments: include_adjustments) }
+  let(:overview) { described_class.new(report: report, include_adjustments: include_adjustments) }
 
   #   Report:     2018-Q4     2019-Q1     2019-Q2
   #   Quarter
@@ -49,31 +49,6 @@ RSpec.describe ActualOverview do
     create_adjustment(financial_year: 2017, financial_quarter: 3, value: -9999, adjustment_type: :refund)
   end
 
-  def create_actual(attributes)
-    create(:actual, parent_activity: project, report: reporting_cycle.report, **attributes)
-  end
-
-  def create_adjustment(attributes)
-    adjustment_type = attributes.delete(:adjustment_type)
-    create(:adjustment, adjustment_type, parent_activity: project, report: reporting_cycle.report, **attributes)
-  end
-
-  shared_examples_for "actual report history" do
-    it "returns the actual value for a particular quarter" do
-      expected_values.each do |quarter, year, amount|
-        value = overview.value_for(financial_quarter: quarter, financial_year: year, activity: project)
-        expect(value).to eq(amount)
-      end
-    end
-
-    it "returns the actual value for a particular quarter using a bulk load" do
-      expected_values.each do |quarter, year, amount|
-        value = overview.all_quarters.value_for(financial_quarter: quarter, financial_year: year, activity: project)
-        expect(value).to eq(amount)
-      end
-    end
-  end
-
   context "for the first report" do
     let(:report) { Report.for_activity(project).find_by(financial_quarter: 4, financial_year: 2018) }
 
@@ -90,7 +65,7 @@ RSpec.describe ActualOverview do
       ]
     }
 
-    it_should_behave_like "actual report history"
+    it_should_behave_like "transaction report history"
 
     context "when adjustments are included" do
       let(:include_adjustments) { true }
@@ -107,7 +82,7 @@ RSpec.describe ActualOverview do
         ]
       }
 
-      it_should_behave_like "actual report history"
+      it_should_behave_like "transaction report history"
     end
   end
 
@@ -127,7 +102,7 @@ RSpec.describe ActualOverview do
       ]
     }
 
-    it_should_behave_like "actual report history"
+    it_should_behave_like "transaction report history"
 
     context "when adjustments are included" do
       let(:include_adjustments) { true }
@@ -144,7 +119,7 @@ RSpec.describe ActualOverview do
         ]
       }
 
-      it_should_behave_like "actual report history"
+      it_should_behave_like "transaction report history"
     end
   end
 
@@ -164,7 +139,7 @@ RSpec.describe ActualOverview do
       ]
     }
 
-    it_should_behave_like "actual report history"
+    it_should_behave_like "transaction report history"
 
     context "when adjustments are included" do
       let(:include_adjustments) { true }
@@ -181,7 +156,7 @@ RSpec.describe ActualOverview do
         ]
       }
 
-      it_should_behave_like "actual report history"
+      it_should_behave_like "transaction report history"
     end
   end
 end

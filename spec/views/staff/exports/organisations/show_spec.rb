@@ -37,6 +37,11 @@ RSpec.describe "staff/exports/organisations/show" do
       expect(rendered).to have_export_row(report: "Newton Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
       expect(rendered).to have_export_row(report: "Global Challenges Research Fund external income", path: external_income_exports_organisation_path(organisation, fund_id: 2, format: "csv"))
     end
+
+    it "shows the links to download the spending breakdown" do
+      expect(rendered).to have_export_row(report: "Newton Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 1, format: "csv"))
+      expect(rendered).to have_export_row(report: "Global Challenges Research Fund spending breakdown", path: spending_breakdown_exports_organisation_path(organisation, fund_id: 2, format: "csv"))
+    end
   end
 
   context "when the current user is a delivery partner" do
