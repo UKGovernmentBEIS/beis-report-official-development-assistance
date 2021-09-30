@@ -833,7 +833,7 @@
 - Remove the all reports download
 - Fix the GCRF strategic area code for Coherence and Impact
 
-## [unreleased]
+## [release-76] - 2021-09-30
 
 - Include refunds in the report CSV exports
 - BEIS users can export spending breakdown for all organisations
@@ -845,7 +845,10 @@
   triggers the download
 - Fix up activities' benefitting countries where backfilled overenthusiastically
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-75...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-76...HEAD
+[release-76]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-75...release-76
 [release-75]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-74...release-75
 [release-74]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-73...release-74
 [release-73]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-72...release-73
