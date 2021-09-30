@@ -42,17 +42,18 @@ RSpec.describe "Users can create a comment" do
         context "when the report is editable" do
           context "when there are no comments about this activity" do
             scenario "the user can add a comment" do
-              visit report_path(report)
-              click_on t("tabs.report.variance")
-              click_on t("table.body.report.add_comment")
-              fill_in "comment[comment]", with: "This activity underspent"
-              click_button t("default.button.submit")
+              form = CommentForm.create(report: report)
+
+              expect(form).to have_report_summary_information
+              form.complete(comment: "This activity underspent")
+
               expect(Comment.all.count).to eq(1)
+              expect(Comment.last.comment).to eq(form.comment)
 
               expect(page).to have_content t("action.comment.create.success")
 
               within ".activity_comments" do
-                expect(page).to have_content "This activity underspent"
+                expect(page).to have_content form.comment
                 expect(page).to have_content I18n.l(Date.today)
                 expect(page).to have_link "#{report.financial_quarter_and_year} #{report.description}"
               end

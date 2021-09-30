@@ -49,13 +49,13 @@ RSpec.describe "Users can edit a comment" do
           end
 
           scenario "the user can edit a comment" do
-            visit report_path(report)
-            click_on t("tabs.report.variance")
-            click_on t("table.body.report.edit_comment")
-            fill_in "comment[comment]", with: "Amendments have been made"
-            click_button t("default.button.submit")
-            expect(page).to have_content "Amendments have been made"
+            form = CommentForm.edit_from_variance_page(report: report, comment: comment)
+
+            expect(form).to have_report_summary_information
+            form.complete(comment: "Amendments have been made")
+
             expect(page).to have_content t("action.comment.update.success")
+            expect(page).to have_content form.comment
           end
         end
 
@@ -104,12 +104,13 @@ RSpec.describe "Users can edit a comment" do
 
       context "when the report is editable" do
         scenario "the user can edit any comments left by users in the same organisation" do
-          visit organisation_activity_comments_path(activity.organisation, activity)
-          click_on t("default.link.edit")
-          fill_in "comment[comment]", with: "Amendments have been made"
-          click_button t("default.button.submit")
-          expect(page).to have_content "Amendments have been made"
+          form = CommentForm.edit_from_activity_page(report: report, comment: comment)
+
+          expect(form).to have_report_summary_information
+          form.complete(comment: "Amendments have been made")
+
           expect(page).to have_content t("action.comment.update.success")
+          expect(page).to have_content form.comment
         end
       end
 

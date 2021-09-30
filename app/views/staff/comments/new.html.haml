@@ -3,13 +3,12 @@
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
     .govuk-grid-column-full
-      %h1.govuk-heading-xl
-        = @report.description
+      %h2.govuk-heading-l
+        = t("page_content.comment.add_about_activity", activity: @activity.title)
 
   .govuk-grid-row
     .govuk-grid-column-full
-      %h2.govuk-heading-l
-        = t("page_content.comment.add")
+      = render partial: "staff/reports/summary_short", locals: { report: ReportPresenter.new(@comment.report) }
 
   .govuk-grid-row
     .govuk-grid-column-full
