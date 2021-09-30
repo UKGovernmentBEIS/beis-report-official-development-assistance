@@ -71,9 +71,6 @@ en:
         description: Description
         recipient_country: What country will benefit from this activity?
         recipient_region: What region will benefit from this activity?
-        requires_additional_benefitting_countries:
-          "true": "Yes"
-          "false": "No"
         sdg_1: First most relevant goal
         sdg_2: Second most relevant goal (optional)
         sdg_3: Third most relevant goal (optional)
@@ -153,7 +150,6 @@ en:
             principal_objective_and_in_support_of_an_action_programme: Principal objective AND in support of an action programme
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
-        requires_additional_benefitting_countries: Does this activity have other benefitting countries?
         sdgs_apply: Which Sustainable Development Goals does this activity meet?
         sector: Which %{sector_category} sector is the focus area for this %{level}?
         sector_category: What area of the economy or society is the %{level} helping?
@@ -256,7 +252,7 @@ en:
         geography: Benefitting recipient geography
         delivery_partner_identifier: Delivery partner identifier
         delivery_partner_organisation: Delivery partner organisation
-        intended_beneficiaries: Intended beneficiaries
+        intended_beneficiaries_html: 'Intended beneficiaries</br><span class="govuk-body-s">Legacy field: not editable</span>'
         objectives: Aims/Objectives
         oda_eligibility: ODA eligibility
         oda_eligibility_lead: ODA eligibility lead
@@ -277,9 +273,8 @@ en:
         policy_marker_nutrition: Nutrition Policy
         programme_status: Activity status
         projects: Projects (level C)
-        recipient_country: Recipient country
-        recipient_region: Recipient region
-        requires_additional_benefitting_countries: Other benefitting countries?
+        recipient_country_html: 'Recipient country</br><span class="govuk-body-s">Legacy field: not editable</span>'
+        recipient_region_html: 'Recipient region</br><span class="govuk-body-s">Legacy field: not editable</span>'
         sustainable_development_goals: Sustainable Development Goals
         sector: Economic/societal area
         sector_category: Focus area category
@@ -431,7 +426,6 @@ en:
         programme_status: A description of the status of the activity
         purpose: What is the purpose of the %{level}?
         region: What region will benefit from this activity?
-        requires_additional_benefitting_countries: Additional benefitting countries
         roda_identifier: Enter your unique RODA identifier
         sector: Which %{sector_category} sector is the focus area for this %{level}
         sector_category: What is the focus area category for this %{level}?
@@ -480,8 +474,6 @@ en:
               blank: Select a parent activity
             delivery_partner_identifier:
               blank: Enter a unique identifier
-            requires_additional_benefitting_countries:
-              blank: Select an option
             title:
               blank: Enter a title
             description:

@@ -84,11 +84,6 @@ class ActivityPresenter < SimpleDelegator
     country.nil? ? translate("page_content.activity.unknown_country") : country.name
   end
 
-  def requires_additional_benefitting_countries
-    return if super.nil?
-    translate("activity.requires_additional_benefitting_countries.#{super}")
-  end
-
   def intended_beneficiaries
     return if super.blank?
     sentence_of_benefitting_countries(super)

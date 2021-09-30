@@ -16,7 +16,6 @@ FactoryBot.define do
     geography { :recipient_region }
     recipient_region { "489" }
     recipient_country { nil }
-    requires_additional_benefitting_countries { true }
     intended_beneficiaries { ["CU", "DM", "DO"] }
     benefitting_countries { nil }
     gdi { "4" }
