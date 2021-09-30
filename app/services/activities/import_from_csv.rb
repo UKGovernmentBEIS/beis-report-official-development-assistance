@@ -336,7 +336,6 @@ module Activities
         }
 
         if @method == :create
-          attributes[:requires_additional_benefitting_countries] = (@row["Recipient Country"] && @row["Intended Beneficiaries"]).present?
           attributes[:call_present] = (@row["Call open date"] && @row["Call close date"]).present?
         end
 

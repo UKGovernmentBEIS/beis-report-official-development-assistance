@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_13_150920) do
+ActiveRecord::Schema.define(version: 2021_09_29_155655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -45,7 +45,6 @@ ActiveRecord::Schema.define(version: 2021_09_13_150920) do
     t.date "call_close_date"
     t.string "intended_beneficiaries", array: true
     t.string "roda_identifier"
-    t.boolean "requires_additional_benefitting_countries"
     t.string "gdi"
     t.integer "total_applications"
     t.integer "total_awards"
