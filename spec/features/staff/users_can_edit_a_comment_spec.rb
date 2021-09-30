@@ -84,17 +84,17 @@ RSpec.describe "Users can edit a comment" do
       before { authenticate!(user: beis_user) }
 
       context "when the report is editable" do
-        scenario "the user cannot edit a comment" do
+        scenario "the user cannot edit comments" do
           visit organisation_activity_comments_path(activity.organisation, activity)
-          expect(page).not_to have_content t("table.body.report.edit_comment")
+          expect(page).not_to have_content t("page_content.comment.edit")
         end
       end
 
       context "when the report is not editable" do
         let(:report) { create(:report, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
-        scenario "the user cannot edit a comment" do
+        scenario "the user cannot edit comments" do
           visit organisation_activity_comments_path(activity.organisation, activity)
-          expect(page).not_to have_content t("table.body.report.edit_comment")
+          expect(page).not_to have_content t("page_content.comment.edit")
         end
       end
     end
@@ -103,9 +103,9 @@ RSpec.describe "Users can edit a comment" do
       before { authenticate!(user: delivery_partner_user) }
 
       context "when the report is editable" do
-        scenario "the user can edit a comment" do
+        scenario "the user can edit any comments left by users in the same organisation" do
           visit organisation_activity_comments_path(activity.organisation, activity)
-          click_on t("table.body.report.edit_comment")
+          click_on t("default.link.edit")
           fill_in "comment[comment]", with: "Amendments have been made"
           click_button t("default.button.submit")
           expect(page).to have_content "Amendments have been made"
@@ -115,9 +115,9 @@ RSpec.describe "Users can edit a comment" do
 
       context "when the report is not editable" do
         let(:report) { create(:report, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
-        scenario "the user cannot edit a comment" do
+        scenario "the user cannot edit any comments" do
           visit organisation_activity_comments_path(activity.organisation, activity)
-          expect(page).not_to have_content t("table.body.report.edit_comment")
+          expect(page).not_to have_content t("default.link.edit")
         end
       end
     end

@@ -48,8 +48,14 @@ RSpec.describe "Users can create a comment" do
               fill_in "comment[comment]", with: "This activity underspent"
               click_button t("default.button.submit")
               expect(Comment.all.count).to eq(1)
-              expect(page).to have_content "This activity underspent"
+
               expect(page).to have_content t("action.comment.create.success")
+
+              within ".activity_comments" do
+                expect(page).to have_content "This activity underspent"
+                expect(page).to have_content I18n.l(Date.today)
+                expect(page).to have_link "#{report.financial_quarter_and_year} #{report.description}"
+              end
             end
           end
         end

@@ -23,3 +23,8 @@ en:
         success: Comment successfully created
       update:
         success: Comment successfully updated
+  activerecord:
+    models:
+      comment:
+        one: Comment
+        other: Comments
