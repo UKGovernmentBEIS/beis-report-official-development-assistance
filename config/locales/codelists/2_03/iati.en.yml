@@ -452,9 +452,6 @@ en:
       "920": SUPPORT TO NON- GOVERNMENTAL ORGANISATIONS (NGOs)
       "930": Refugees in Donor Countries
       "998": Unallocated / Unspecified
-    requires_additional_benefitting_countries:
-      "true": "Yes"
-      "false": "No"
     status:
       "1": Pipeline/identification
       "2": Implementation

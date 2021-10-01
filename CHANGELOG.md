@@ -844,6 +844,7 @@
 - Improve the Report CSV download experience, includes moving the link that
   triggers the download
 - Fix up activities' benefitting countries where backfilled overenthusiastically
+- No longer show 'requires additional benefitting countries' in activity details
 
 ## [unreleased]
 

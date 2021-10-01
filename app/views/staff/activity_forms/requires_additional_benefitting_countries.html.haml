@@ -1,5 +1,0 @@
-= render layout: "wrapper" do |f|
-  = f.govuk_radio_buttons_fieldset(:requires_additional_benefitting_countries, legend: { text: t("form.legend.activity.requires_additional_benefitting_countries"), size: "xl", tag: "h1" }) do
-    = f.hidden_field :requires_additional_benefitting_countries, value: nil
-    = f.govuk_radio_button :requires_additional_benefitting_countries, :true, label: { text: t("form.label.activity.requires_additional_benefitting_countries.true") }
-    = f.govuk_radio_button :requires_additional_benefitting_countries, :false, label: { text: t("form.label.activity.requires_additional_benefitting_countries.false") }
