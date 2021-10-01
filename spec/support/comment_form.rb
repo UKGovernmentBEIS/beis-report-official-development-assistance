@@ -20,15 +20,6 @@ class CommentForm
       new(report: report)
     end
 
-    def edit_from_variance_page(report:, comment:)
-      visit report_path(report)
-      click_on I18n.t("tabs.report.variance")
-
-      click_link href: edit_activity_comment_path(comment.activity, comment, report_id: report.id)
-
-      new(report: report)
-    end
-
     def edit_from_activity_page(report:, comment:)
       visit organisation_activity_comments_path(comment.activity.organisation, comment.activity)
 

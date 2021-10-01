@@ -29,8 +29,7 @@ en:
         no_reports:
           You have no current reports. Once active, any new reports will appear here. You can view approved reports in the Approved tab.
         add_comment: Add comment
-        edit_comment: Edit comment
-        comment: Comment
+        view_comments: View comments
   tabs:
     report:
       summary: Summary

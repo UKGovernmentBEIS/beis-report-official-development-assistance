@@ -11,7 +11,7 @@
         = t("table.header.activity.variance")
       - unless readonly
         %th.govuk-table__header
-          = t("table.header.activity.comment")
+          = t("table.header.activity.comments")
         %th.govuk-table__header
           %span.govuk-visually-hidden
             = t("table.header.default.actions")
@@ -25,12 +25,12 @@
         %td.govuk-table__cell= number_to_currency activity.variance_for_report_financial_quarter(report: @report)
         - unless readonly
           %td.govuk-table__cell
-            - if activity.comment_for_report(report_id: @report.id) && policy(activity.comment_for_report(report_id: @report.id)).update?
-              = a11y_action_link(t("table.body.report.edit_comment"), edit_activity_comment_path(activity, activity.comments.find_by(report_id: @report.id), report_id: @report.id))
+            - if activity.comments_for_report(report_id: @report.id)
+              = a11y_action_link(t("table.body.report.view_comments"), organisation_activity_comments_path(activity.organisation, activity), "about #{activity.roda_identifier}")
             - elsif policy(:comment).create?
-              = a11y_action_link(t("table.body.report.add_comment"), new_activity_comment_path(activity, report_id: @report.id), t("table.body.report.comment").downcase)
+              = a11y_action_link(t("table.body.report.add_comment"), new_activity_comment_path(activity, report_id: @report.id), "about #{activity.roda_identifier}")
           %td.govuk-table__cell
-            = a11y_action_link(t('default.link.view'), organisation_activity_path(activity.organisation, activity), activity.roda_identifier)
+            = a11y_action_link(t("default.link.view"), organisation_activity_path(activity.organisation, activity), activity.roda_identifier)
 
   %tfoot.govuk-table_footer
     %tr.govuk-table__row
