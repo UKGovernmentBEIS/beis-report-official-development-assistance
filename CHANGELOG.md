@@ -846,9 +846,15 @@
 - Fix up activities' benefitting countries where backfilled overenthusiastically
 - No longer show 'requires additional benefitting countries' in activity details
 
+## [release-77] - 2021-10-01
+
+- Fix up activities (with legacy intended beneficiaries) where backfilling was
+  too enthusiastic
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-76...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-77...HEAD
+[release-77]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-76...release-77
 [release-76]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-75...release-76
 [release-75]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-74...release-75
 [release-74]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-73...release-74
