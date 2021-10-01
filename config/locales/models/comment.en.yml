@@ -15,10 +15,18 @@ en:
   page_content:
     comment:
       add: Add a comment
+      add_about_activity: Add a comment about %{activity}
       edit: Edit comment
+      edit_about_activity: Edit comment about %{activity}
+      index_html: "This tab shows all the comments for this activity.<br>New comments can only be added whilst there is an active report."
   action:
     comment:
       create:
         success: Comment successfully created
       update:
         success: Comment successfully updated
+  activerecord:
+    models:
+      comment:
+        one: Comment
+        other: Comments

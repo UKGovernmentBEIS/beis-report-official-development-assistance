@@ -20,15 +20,34 @@
           %h2.govuk-heading-l
             = t("page_title.comment.index")
 
-          %dl.govuk-summary-list.activity_comments
+          .govuk-body
+            = t("page_content.comment.index_html")
+
+          .govuk-body
+            - if policy(:comment).create? && @report
+              = a11y_action_link(t("page_content.comment.add"), new_activity_comment_path(@activity, report_id: @report.id))
+
+          %ul.govuk-list.activity_comments
             - @comments.each do |comment|
               - report_presenter = ReportPresenter.new(comment.report)
-              .govuk-summary-list__row
-                %dt.govuk-summary-list__key
-                  = "#{report_presenter.financial_quarter_and_year} #{comment.report.description}"
-                %dd.govuk-summary-list__value
-                  = comment.comment
-                %dd.govuk-summary-list__actions
-                  - if policy(comment).update?
-                    = a11y_action_link(t("default.link.edit"), edit_activity_comment_path(@activity, comment), t("table.body.report.comment").downcase)
+              %li
+                %dl.govuk-summary-list
+                  .govuk-summary-list__row
+                    %dt.govuk-summary-list__key
+                      = Comment.model_name.human
+                    %dd.govuk-summary-list__value
+                      = comment.comment
+                      - if policy(comment).update?
+                        %span.govuk-body-s
+                          (#{a11y_action_link(t("default.link.edit"), edit_activity_comment_path(@activity, comment))})
+                  .govuk-summary-list__row
+                    %dt.govuk-summary-list__key
+                      Date
+                    %dd.govuk-summary-list__value
+                      = I18n.l(comment.created_at.to_date)
+                  .govuk-summary-list__row
+                    %dt.govuk-summary-list__key
+                      Comment reported in
+                    %dd.govuk-summary-list__value
+                      = link_to "#{report_presenter.financial_quarter_and_year} #{report_presenter.description}", report_path(comment.report)
 

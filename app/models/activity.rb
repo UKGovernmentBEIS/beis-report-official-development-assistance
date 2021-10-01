@@ -443,7 +443,7 @@ class Activity < ApplicationRecord
     is_project?
   end
 
-  def comment_for_report(report_id:)
+  def comments_for_report(report_id:)
     comments.find_by(report_id: report_id)
   end
 

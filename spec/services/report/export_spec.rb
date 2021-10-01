@@ -212,7 +212,7 @@ RSpec.describe Report::Export do
 
       it "includes the variance data" do
         fund = Fund.new("1")
-        comment = build(:comment, comment: "Comment")
+        comments = [build(:comment, comment: "First comment"), build(:comment, comment: "Additional content")]
         extending_organisation = build(:delivery_partner_organisation)
 
         expect(ForecastOverview).to receive(:new).with(activity_presenter).at_least(:once).and_return(forecast_overview)
@@ -221,14 +221,14 @@ RSpec.describe Report::Export do
         expect(forecast_quarters).to receive(:value_for).with(**report.own_financial_quarter).and_return(100)
         expect(actual_quarters).to receive(:value_for).with(activity: activity, **report.own_financial_quarter).and_return(120)
 
-        expect(activity_presenter).to receive(:comment_for_report).with(report_id: report_presenter.id).and_return(comment)
+        expect(activity_presenter).to receive(:comments_for_report).with(report_id: report_presenter.id).and_return(comments)
         expect(activity_presenter).to receive(:source_fund).and_return(fund)
         expect(activity_presenter).to receive(:extending_organisation).and_return(extending_organisation)
         expect(activity_presenter).to receive(:link_to_roda).and_return("http://example.com")
 
         expect(subject.variance_data).to eq([
           -20.00,
-          comment.comment,
+          comments.map(&:comment).join("\n"),
           fund.name,
           extending_organisation.beis_organisation_reference,
           "http://example.com",
