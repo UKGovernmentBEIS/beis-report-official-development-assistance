@@ -13,6 +13,14 @@ RSpec.describe Refund, type: :model do
     it "should have the _type_ of 'Refund'" do
       expect(Refund.new.type).to eq("Refund")
     end
+
+    it "should have the _transaction_type_ of '3' for 'Disbursement'" do
+      expect(Refund.new.transaction_type).to eq("3")
+    end
+
+    it "should have the _currency_ of 'GBP'" do
+      expect(Refund.new.currency).to eq("GBP")
+    end
   end
 
   describe "validations" do
