@@ -14,6 +14,7 @@ class Report < ApplicationRecord
   has_many :historical_events
   has_many :refunds
   has_many :new_activities, class_name: "Activity", foreign_key: :originating_report_id
+  has_many :comments
 
   validate :activity_must_be_a_fund
   validates :deadline, date_not_in_past: true, date_within_boundaries: true, on: :edit

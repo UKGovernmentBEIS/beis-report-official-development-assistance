@@ -209,6 +209,26 @@ RSpec.feature "Users can view reports" do
         click_on "Download report as CSV file"
       end
     end
+
+    scenario "they can view all comments made during a reporting period" do
+      report = create(:report)
+
+      activities = create_list(:project_activity, 2, organisation: report.organisation, source_fund_code: report.fund.source_fund_code)
+
+      comments_for_report = [
+        create_list(:comment, 3, activity: activities[0], report: report),
+        create_list(:comment, 1, activity: activities[1], report: report),
+      ].flatten
+
+      page = ReportPage.new(report)
+      page.visit_comments_page
+
+      expect(page).to have_comments_grouped_by_activity(
+        activities: activities,
+        comments: comments_for_report
+      )
+      expect(page).to_not have_edit_buttons_for_comments(comments_for_report)
+    end
   end
 
   context "as a delivery partner user" do
@@ -382,6 +402,25 @@ RSpec.feature "Users can view reports" do
         header = page.response_headers["Content-Disposition"]
         expect(header).to match(ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv"))
       end
+    end
+
+    scenario "they can view all comments made during a reporting period" do
+      report = create(:report, :active, organisation: delivery_partner_user.organisation, fund: create(:fund_activity, :newton))
+      activities = create_list(:project_activity, 2, :newton_funded, organisation: delivery_partner_user.organisation)
+
+      comments_for_report = [
+        create_list(:comment, 3, activity: activities[0], report: report, owner: delivery_partner_user),
+        create_list(:comment, 1, activity: activities[1], report: report, owner: delivery_partner_user),
+      ].flatten
+
+      page = ReportPage.new(report)
+      page.visit_comments_page
+
+      expect(page).to have_comments_grouped_by_activity(
+        activities: activities,
+        comments: comments_for_report
+      )
+      expect(page).to have_edit_buttons_for_comments(comments_for_report)
     end
   end
 
