@@ -67,6 +67,7 @@ Rails.application.routes.draw do
       get "actuals" => "report_actuals#show"
       get "budgets" => "report_budgets#show"
       get "activities" => "report_activities#show"
+      get "comments" => "report_comments#show"
     end
 
     concern :transactionable do

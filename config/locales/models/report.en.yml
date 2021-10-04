@@ -30,6 +30,7 @@ en:
           You have no current reports. Once active, any new reports will appear here. You can view approved reports in the Approved tab.
         add_comment: Add comment
         view_comments: View comments
+        comment: Comment
   tabs:
     report:
       summary: Summary
@@ -40,6 +41,7 @@ en:
       budgets: Budgets
       current: Current
       approved: Approved
+      comments: Comments
   page_content:
     reports:
       title: Reports
@@ -139,6 +141,7 @@ en:
       actuals: "%{report_financial_quarter} %{report_description} actuals"
       budgets: "%{report_financial_quarter} %{report_description} budgets"
       activities: "%{report_financial_quarter} %{report_description} activities"
+      comments: "%{report_financial_quarter} %{report_description} comments"
   breadcrumb:
     report:
       upload_activities: Upload bulk activity data
