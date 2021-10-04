@@ -78,3 +78,7 @@
   (support_tasks/create_new_report.md)](./support_tasks/create_new_report.md)**:
   Manually create a new report, most commonly required when a new delivery
   partner joins ODA reporting.
+
+- **[Reset a user's MFA
+  (support_tasks/reset_mfa.md)](./support_tasks/reset_mfa.md)**:
+  Reset a user's multi-factor authentication settings, so that they can configure a new method, e.g. if they have a new mobile phone number.
