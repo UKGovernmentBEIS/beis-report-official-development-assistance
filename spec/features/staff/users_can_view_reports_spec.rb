@@ -316,7 +316,7 @@ RSpec.feature "Users can view reports" do
             click_on t("default.link.show")
           end
 
-          click_on t("tabs.report.variance")
+          click_on t("tabs.report.variance.heading")
 
           expect(page).to have_content t("table.header.activity.identifier")
           expect(page).to have_content t("table.header.activity.forecasted_spend")

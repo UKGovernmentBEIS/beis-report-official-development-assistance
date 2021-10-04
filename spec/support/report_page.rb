@@ -13,7 +13,7 @@ class ReportPage
 
   def visit_comments_page
     within ".govuk-tabs" do
-      click_on I18n.t("tabs.report.comments")
+      click_on I18n.t("tabs.report.comments.heading")
     end
   end
 

@@ -90,7 +90,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
 
       visit report_path(report.id)
 
-      click_link t("tabs.report.actuals")
+      click_link t("tabs.report.actuals.heading")
 
       expect(page).to have_content("Actuals")
       expect(page).to have_link(t("action.actual.upload.link"))

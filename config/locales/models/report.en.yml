@@ -33,15 +33,24 @@ en:
         comment: Comment
   tabs:
     report:
-      summary: Summary
-      activities: Activities
-      forecasts: Forecasts
-      actuals: Actuals
-      variance: Variance
-      budgets: Budgets
-      current: Current
-      approved: Approved
-      comments: Comments
+      summary:
+        heading: Summary
+      activities:
+        heading: Activities
+      forecasts:
+        heading: Forecasts
+      actuals:
+        heading: Actuals
+      variance:
+        heading: Variance
+      budgets:
+        heading: Budgets
+      current:
+        heading: Current
+      approved:
+        heading: Approved
+      comments:
+        heading: Comments
   page_content:
     reports:
       title: Reports
