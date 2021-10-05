@@ -853,6 +853,8 @@
 
 ## [unreleased]
 
+- Adjustments to actual spend are included in the variance calculation
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-77...HEAD
 [release-77]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-76...release-77
 [release-76]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-75...release-76

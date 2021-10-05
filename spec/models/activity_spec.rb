@@ -981,6 +981,25 @@ RSpec.describe Activity, type: :model do
       expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(150.20)
     end
 
+    it "includes any Adjustment of type 'Actual' for the same financial quarter in the calculation" do
+      project = create(:project_activity, :with_report)
+      report = Report.for_activity(project).first
+      create(:actual, parent_activity: project, value: 100.20, report: report, **current_quarter)
+      create(:actual, parent_activity: project, value: 50.00, report: report, **current_quarter)
+      create(:adjustment, :actual, parent_activity: project, value: -50, report: report, **current_quarter)
+
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(100.20)
+    end
+
+    it "does NOT include Adjustments of type 'Actual' for a different financial quarter in the calculation" do
+      project = create(:project_activity, :with_report)
+      report = Report.for_activity(project).first
+      create(:actual, parent_activity: project, value: 130.20, report: report, **current_quarter)
+      create(:adjustment, :actual, parent_activity: project, value: -30, report: report, **current_quarter.pred)
+
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(130.20)
+    end
+
     it "does not include the totals for any actuals outside the report's date range" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first

@@ -14,7 +14,7 @@ class CommentForm
 
     def create(report:)
       visit report_path(report)
-      click_on I18n.t("tabs.report.variance")
+      click_on I18n.t("tabs.report.variance.heading")
       click_on I18n.t("table.body.report.add_comment")
 
       new(report: report)
