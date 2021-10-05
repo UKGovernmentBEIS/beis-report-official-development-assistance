@@ -17,6 +17,6 @@
             = t("tabs.report.variance.heading")
 
           %p.govuk-body
-            This tab shows the variance between forecasted and actual spend in this reporting cycle.
+            = t("tabs.report.variance.body")
 
           = render partial: "staff/shared/reports/table_variance", locals: { activities: @activities, readonly: false }

@@ -43,6 +43,7 @@ en:
         heading: Actuals
       variance:
         heading: Variance
+        body: This tab shows the variance between forecasted and actual spend, including any adjustments, in this reporting cycle.
       budgets:
         heading: Budgets
       current:
