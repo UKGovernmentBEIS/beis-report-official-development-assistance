@@ -3,8 +3,7 @@ class Adjustment < Transaction
     -> { where(commentable_type: "Adjustment") },
     foreign_key: :commentable_id,
     dependent: :destroy,
-    autosave: true,
-    class_name: "FlexibleComment"
+    autosave: true
 
   has_one :detail,
     dependent: :destroy,
