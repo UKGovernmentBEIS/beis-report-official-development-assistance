@@ -324,7 +324,6 @@ RSpec.feature "Users can view reports" do
             expect(page).to have_content "£1,000.00"
             expect(page).to have_content "£1,100.00"
             expect(page).to have_content "£100.00"
-            expect(page).to have_link t("default.link.view"), href: organisation_activity_path(activity.organisation, activity)
           end
 
           within "tfoot tr:first-child td" do
