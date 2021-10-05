@@ -305,7 +305,7 @@ en:
         actual_spend: Actual spend
         forecasted_spend: Forecasted spend
         variance: Variance
-        comment: Comment
+        comments: Comments
         programme_status: Status
         total_variance: Total variance
     body:

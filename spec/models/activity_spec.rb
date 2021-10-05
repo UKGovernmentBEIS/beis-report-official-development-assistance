@@ -981,6 +981,25 @@ RSpec.describe Activity, type: :model do
       expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(150.20)
     end
 
+    it "includes any Adjustment of type 'Actual' for the same financial quarter in the calculation" do
+      project = create(:project_activity, :with_report)
+      report = Report.for_activity(project).first
+      create(:actual, parent_activity: project, value: 100.20, report: report, **current_quarter)
+      create(:actual, parent_activity: project, value: 50.00, report: report, **current_quarter)
+      create(:adjustment, :actual, parent_activity: project, value: -50, report: report, **current_quarter)
+
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(100.20)
+    end
+
+    it "does NOT include Adjustments of type 'Actual' for a different financial quarter in the calculation" do
+      project = create(:project_activity, :with_report)
+      report = Report.for_activity(project).first
+      create(:actual, parent_activity: project, value: 130.20, report: report, **current_quarter)
+      create(:adjustment, :actual, parent_activity: project, value: -30, report: report, **current_quarter.pred)
+
+      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(130.20)
+    end
+
     it "does not include the totals for any actuals outside the report's date range" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
@@ -1064,21 +1083,21 @@ RSpec.describe Activity, type: :model do
     end
   end
 
-  describe "#comment_for_report" do
+  describe "#comments_for_report" do
     it "returns the comment associated to this activity and a particular report" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
       comment = create(:comment, activity_id: project.id, report_id: report.id, comment: "Here's my comment")
-      expect(project.comment_for_report(report_id: report.id)).to eq comment
-      expect(project.comment_for_report(report_id: report.id).comment).to eq "Here's my comment"
+      expect(project.comments_for_report(report_id: report.id)).to eq comment
+      expect(project.comments_for_report(report_id: report.id).comment).to eq "Here's my comment"
     end
 
     it "does not return any other comments associated to this activity" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
       comment = create(:comment, activity_id: project.id, report_id: create(:report).id)
-      expect(project.comment_for_report(report_id: report.id)).to_not eq comment
-      expect(project.comment_for_report(report_id: report.id)).to be_nil
+      expect(project.comments_for_report(report_id: report.id)).to_not eq comment
+      expect(project.comments_for_report(report_id: report.id)).to be_nil
     end
   end
 

@@ -424,7 +424,7 @@ class Activity < ApplicationRecord
   end
 
   def actual_total_for_report_financial_quarter(report:)
-    Actual::Overview.new(report: report).value_for_report_quarter(self)
+    Actual::Overview.new(report: report, include_adjustments: true).value_for_report_quarter(self)
   end
 
   def forecasted_total_for_report_financial_quarter(report:)
@@ -443,7 +443,7 @@ class Activity < ApplicationRecord
     is_project?
   end
 
-  def comment_for_report(report_id:)
+  def comments_for_report(report_id:)
     comments.find_by(report_id: report_id)
   end
 
