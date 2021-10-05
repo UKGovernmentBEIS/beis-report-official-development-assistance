@@ -97,7 +97,7 @@ class Staff::RefundsController < Staff::ActivitiesController
       ))
       .merge(report: refund.report,
              parent_activity: refund.parent_activity,
-             comment: refund.comment.comment)
+             comment: refund.comment.body)
       .merge(persisted: true)
   end
 

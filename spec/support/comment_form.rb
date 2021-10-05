@@ -32,7 +32,7 @@ class CommentForm
 
   def complete(comment:)
     @comment = comment
-    fill_in "comment[comment]", with: comment
+    fill_in "comment[body]", with: comment
     click_button I18n.t("default.button.submit")
   end
 

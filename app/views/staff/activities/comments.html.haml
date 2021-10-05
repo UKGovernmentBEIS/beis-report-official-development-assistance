@@ -36,7 +36,7 @@
                     %dt.govuk-summary-list__key
                       = Comment.model_name.human
                     %dd.govuk-summary-list__value
-                      = comment.comment
+                      = comment.body
                       - if policy([:activity, comment]).update?
                         %span.govuk-body-s
                           (#{a11y_action_link(t("default.link.edit"), edit_activity_comment_path(@activity, comment))})

@@ -5,7 +5,7 @@ class Comment < ApplicationRecord
 
   before_create :set_commentable_type
 
-  validates :comment, presence: true
+  validates :body, presence: true
 
   def set_commentable_type
     self.commentable_type = commentable.class.to_s

@@ -14,6 +14,6 @@
     .govuk-grid-column-full
       = form_with model: @comment, url: activity_comments_path do |f|
         = f.govuk_error_summary
-        = f.govuk_text_area :comment
+        = f.govuk_text_area :body
         = f.hidden_field :report_id
         = f.govuk_submit t("default.button.submit")

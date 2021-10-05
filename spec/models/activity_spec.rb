@@ -1088,9 +1088,9 @@ RSpec.describe Activity, type: :model do
     it "returns the comment associated to this activity and a particular report" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
-      comment = create(:comment, commentable: project, report_id: report.id, comment: "Here's my comment")
+      comment = create(:comment, commentable: project, report_id: report.id, body: "Here's my comment")
       expect(project.comments_for_report(report_id: report.id)).to include(comment)
-      expect(project.comments_for_report(report_id: report.id).first.comment).to eq "Here's my comment"
+      expect(project.comments_for_report(report_id: report.id).first.body).to eq "Here's my comment"
     end
 
     it "does not return any other comments associated to this activity but in another report" do

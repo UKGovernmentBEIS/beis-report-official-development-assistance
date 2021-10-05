@@ -68,6 +68,6 @@ class Staff::ActivityCommentsController < Staff::BaseController
   end
 
   def comment_params
-    params.require(:comment).permit(:comment, :report_id)
+    params.require(:comment).permit(:body, :report_id)
   end
 end

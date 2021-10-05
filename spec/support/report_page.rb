@@ -32,7 +32,7 @@ class ReportPage
 
           comments_for_activity.each do |comment|
             expect(page).to have_content(I18n.l(comment.created_at.to_date))
-            expect(page).to have_content(comment.comment)
+            expect(page).to have_content(comment.body)
           end
         end
       end

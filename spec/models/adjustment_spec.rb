@@ -44,7 +44,7 @@ RSpec.describe Adjustment, type: :model do
   describe "validations" do
     let(:adjustment) do
       Adjustment.new.tap do |adjustment|
-        adjustment.build_comment(comment: nil)
+        adjustment.build_comment(body: nil)
         adjustment.build_detail(adjustment_type: "Rubbish", user: nil)
         adjustment.valid?
       end
@@ -68,12 +68,12 @@ RSpec.describe Adjustment, type: :model do
 
     context "when the comment is edited and the adjustment is saved" do
       before do
-        adjustment.comment.comment = "Edited comment"
+        adjustment.comment.body = "Edited comment"
         adjustment.save
       end
 
       it "autosaves the associated comment" do
-        expect(adjustment.comment.reload.comment).to eq("Edited comment")
+        expect(adjustment.comment.reload.body).to eq("Edited comment")
       end
     end
   end

@@ -8,10 +8,10 @@ RSpec.describe Comment, type: :model do
   end
 
   describe "validations" do
-    it { should validate_presence_of(:comment) }
+    it { should validate_presence_of(:body) }
   end
 
-  it { should validate_presence_of(:comment) }
+  it { should validate_presence_of(:body) }
 
   it "should set the commentable type before creating the comment" do
     adjustment = create(:adjustment)

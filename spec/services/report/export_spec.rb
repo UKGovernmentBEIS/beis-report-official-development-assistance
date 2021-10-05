@@ -221,7 +221,9 @@ RSpec.describe Report::Export do
       end
 
       it "includes the variance data" do
-        comments = [build(:comment, comment: "First comment"), build(:comment, comment: "Additional content")]
+        fund = Fund.new("1")
+        comments = [build(:comment, body: "First comment"), build(:comment, body: "Additional content")]
+        extending_organisation = build(:delivery_partner_organisation)
 
         expect(ForecastOverview).to receive(:new).with(activity_presenter).at_least(:once).and_return(forecast_overview)
         expect(forecast_overview).to receive(:snapshot).with(report_presenter).at_least(:once).and_return(forecast_snapshot)
@@ -236,7 +238,7 @@ RSpec.describe Report::Export do
 
         expect(subject.variance_data).to eq([
           -20.00,
-          comments.map(&:comment).join("\n"),
+          comments.map(&:body).join("\n"),
           fund.name,
           extending_organisation.beis_organisation_reference,
           "http://example.com",
