@@ -5,7 +5,7 @@ RSpec.describe "Users can edit a comment" do
   let(:activity) { create(:project_activity, organisation: delivery_partner_user.organisation) }
   let(:actual) { create(:actual, report: report, activity: activity) }
   let(:report) { create(:report, :active, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
-  let!(:comment) { create(:comment, activity_id: activity.id, report_id: report.id, owner: delivery_partner_user) }
+  let!(:comment) { create(:comment, commentable: activity, report_id: report.id, owner: delivery_partner_user) }
 
   context "editing a comment from the activity view" do
     context "when the user is a BEIS user" do

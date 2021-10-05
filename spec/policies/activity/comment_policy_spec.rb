@@ -1,9 +1,9 @@
 require "rails_helper"
 
-RSpec.describe CommentPolicy do
+RSpec.describe Activity::CommentPolicy do
   let(:activity) { create(:fund_activity) }
   let(:report) { create(:report, :active, fund: activity, organisation: user.organisation) }
-  let(:comment) { create(:comment, activity: activity, report: report, owner: user) }
+  let(:comment) { create(:comment, commentable: activity, report: report, owner: user) }
 
   subject { described_class.new(user, comment) }
 
@@ -36,7 +36,7 @@ RSpec.describe CommentPolicy do
       end
 
       context "when the attached report is not viewable by the delivery partner" do
-        let(:comment) { create(:comment, activity: activity, report: create(:report), owner: user) }
+        let(:comment) { create(:comment, commentable: activity, report: create(:report), owner: user) }
         it { is_expected.to forbid_action(:show) }
       end
     end
@@ -63,7 +63,7 @@ RSpec.describe CommentPolicy do
       end
 
       context "when the comment was made by a user in the same Delivery Partner organisation" do
-        let(:comment) { create(:comment, activity: activity, report: report, owner: create(:delivery_partner_user, organisation: user.organisation)) }
+        let(:comment) { create(:comment, commentable: activity, report: report, owner: create(:delivery_partner_user, organisation: user.organisation)) }
         it { is_expected.to permit_action(:update) }
       end
     end
