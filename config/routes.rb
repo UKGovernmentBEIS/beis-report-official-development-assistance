@@ -102,7 +102,7 @@ Rails.application.routes.draw do
       resource :redaction, only: [:edit, :update], controller: :activity_redactions
       resources :steps, controller: "activity_forms"
       resources :implementing_organisations, only: [:new, :create, :edit, :update]
-      resources :comments, only: [:new, :create, :edit, :update]
+      resources :comments, only: [:new, :create, :edit, :update], controller: "activity_comments"
       resources :outgoing_transfers, except: [:index]
       resources :incoming_transfers, except: [:index]
       resources :refunds, except: [:index]
