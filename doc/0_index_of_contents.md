@@ -82,3 +82,9 @@
 - **[Reset a user's MFA
   (support_tasks/reset_mfa.md)](./support_tasks/reset_mfa.md)**:
   Reset a user's multi-factor authentication settings, so that they can configure a new method, e.g. if they have a new mobile phone number.
+
+- **[Pull back a submitted report (support_tasks/pull_back_submitted_report.md)](./support_tasks/pull_back_submitted_report.md)**:
+  Allow a delivery partner to resume editing a submitted report.
+
+- **[Change a report's financial period (support_tasks/change_financial_period.md)](./support_tasks/change_financial_period.md)**:
+  If a report is created with the wrong financial period it is a little fiddly to change.
