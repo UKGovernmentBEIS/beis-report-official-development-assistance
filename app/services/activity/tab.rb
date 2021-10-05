@@ -67,7 +67,7 @@ class Activity
     end
 
     def comments
-      @comments = Comment.where(activity_id: @activity.id).includes(:report)
+      @comments = @activity.comments.includes(:report)
       @report = Report.editable_for_activity(@activity)
     end
 

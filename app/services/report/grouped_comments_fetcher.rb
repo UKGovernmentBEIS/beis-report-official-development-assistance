@@ -6,7 +6,7 @@ class Report
     end
 
     def all
-      comments.group_by(&:activity)
+      comments.group_by(&:commentable)
     end
 
     private
@@ -17,14 +17,14 @@ class Report
       if user.delivery_partner?
         report.comments.includes(
           owner: [:organisation],
-          activity: [
+          commentable: [
             parent: [
               parent: [:parent],
             ],
           ]
         )
       else
-        report.comments.includes(:activity)
+        report.comments.includes(:commentable)
       end
     end
   end

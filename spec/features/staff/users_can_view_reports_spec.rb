@@ -216,8 +216,8 @@ RSpec.feature "Users can view reports" do
       activities = create_list(:project_activity, 2, organisation: report.organisation, source_fund_code: report.fund.source_fund_code)
 
       comments_for_report = [
-        create_list(:comment, 3, activity: activities[0], report: report),
-        create_list(:comment, 1, activity: activities[1], report: report),
+        create_list(:comment, 3, commentable: activities[0], report: report),
+        create_list(:comment, 1, commentable: activities[1], report: report),
       ].flatten
 
       page = ReportPage.new(report)
@@ -408,8 +408,8 @@ RSpec.feature "Users can view reports" do
       activities = create_list(:project_activity, 2, :newton_funded, organisation: delivery_partner_user.organisation)
 
       comments_for_report = [
-        create_list(:comment, 3, activity: activities[0], report: report, owner: delivery_partner_user),
-        create_list(:comment, 1, activity: activities[1], report: report, owner: delivery_partner_user),
+        create_list(:comment, 3, commentable: activities[0], report: report, owner: delivery_partner_user),
+        create_list(:comment, 1, commentable: activities[1], report: report, owner: delivery_partner_user),
       ].flatten
 
       page = ReportPage.new(report)
