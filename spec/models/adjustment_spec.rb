@@ -31,6 +31,14 @@ RSpec.describe Adjustment, type: :model do
     it "should have the _type_ of 'Adjustment'" do
       expect(Adjustment.new.type).to eq("Adjustment")
     end
+
+    it "should have the _transaction_type_ of '3' for 'Disbursement'" do
+      expect(Adjustment.new.transaction_type).to eq("3")
+    end
+
+    it "should have the _currency_ of 'GBP'" do
+      expect(Adjustment.new.currency).to eq("GBP")
+    end
   end
 
   describe "validations" do

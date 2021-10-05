@@ -8,6 +8,9 @@ class Refund < Transaction
 
   validates_associated :comment
 
+  attribute :currency, :string, default: "GBP"
+  attribute :transaction_type, :string, default: Transaction::TRANSACTION_TYPE_DISBURSEMENT
+
   def value=(amount)
     big_decimal = begin
                     BigDecimal(amount)
