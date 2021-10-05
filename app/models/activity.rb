@@ -444,7 +444,7 @@ class Activity < ApplicationRecord
   end
 
   def comments_for_report(report_id:)
-    comments.find_by(report_id: report_id)
+    comments.where(report_id: report_id)
   end
 
   def requires_collaboration_type?
