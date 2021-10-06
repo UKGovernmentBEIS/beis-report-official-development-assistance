@@ -860,6 +860,8 @@
 
 ## [unreleased]
 
+- Consolidate links to commnents on the report, variance tab
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-78...HEAD
 [release-78]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-77...release-78
 [release-77]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-76...release-77

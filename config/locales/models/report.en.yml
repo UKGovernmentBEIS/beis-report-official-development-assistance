@@ -31,6 +31,7 @@ en:
         add_comment: Add comment
         view_comments: View comments
         comment: Comment
+        view_and_add_comments: View and add new comments
   tabs:
     report:
       summary:

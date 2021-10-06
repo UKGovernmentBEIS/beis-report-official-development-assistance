@@ -88,6 +88,7 @@ RSpec.describe "Users can create a comment" do
       context "when the report is editable" do
         scenario "the user can create a comment" do
           visit organisation_activity_comments_path(activity.organisation, activity)
+          expect(page).to have_css(".govuk-button")
           click_on t("page_content.comment.add")
           fill_in "comment[comment]", with: "Amendments have been made"
           click_button t("default.button.submit")
