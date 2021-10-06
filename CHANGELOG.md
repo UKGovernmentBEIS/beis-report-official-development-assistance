@@ -858,11 +858,14 @@
 - Show all comments for a report in "Report | Comments" tab
 - Adjustments to actual spend are included in the variance calculation
 
-## [unreleased]
+## [release-79] 2021-10-06
 
 - Consolidate links to commnents on the report, variance tab
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-78...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-79...HEAD
+[release-79]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-78...release-79
 [release-78]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-77...release-78
 [release-77]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-76...release-77
 [release-76]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-75...release-76
