@@ -1088,16 +1088,22 @@ RSpec.describe Activity, type: :model do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
       comment = create(:comment, activity_id: project.id, report_id: report.id, comment: "Here's my comment")
-      expect(project.comments_for_report(report_id: report.id)).to eq comment
-      expect(project.comments_for_report(report_id: report.id).comment).to eq "Here's my comment"
+      expect(project.comments_for_report(report_id: report.id)).to include(comment)
+      expect(project.comments_for_report(report_id: report.id).first.comment).to eq "Here's my comment"
     end
 
-    it "does not return any other comments associated to this activity" do
+    it "does not return any other comments associated to this activity but in another report" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
       comment = create(:comment, activity_id: project.id, report_id: create(:report).id)
-      expect(project.comments_for_report(report_id: report.id)).to_not eq comment
-      expect(project.comments_for_report(report_id: report.id)).to be_nil
+      expect(project.comments_for_report(report_id: report.id)).not_to include(comment)
+      expect(project.comments_for_report(report_id: report.id)).to eq []
+    end
+
+    it "returns an empty array when there are no comments" do
+      project = create(:project_activity, :with_report)
+      report = Report.for_activity(project).first
+      expect(project.comments_for_report(report_id: report.id)).to eq []
     end
   end
 

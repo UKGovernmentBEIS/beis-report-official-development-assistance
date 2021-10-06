@@ -193,6 +193,8 @@ RSpec.describe Report::Export do
       let(:forecast_quarters) { double("ForecastOverview::AllQuarters") }
       let(:forecast_snapshot) { double("ForecastOverview::Snapshot", all_quarters: forecast_quarters, value_for_report_quarter: 0) }
       let(:forecast_overview) { double("ForecastOverview") }
+      let(:fund) { Fund.new(1) }
+      let(:extending_organisation) { build(:delivery_partner_organisation) }
 
       it "includes the actuals and refunds for the previous quarters" do
         expect(subject.previous_quarter_actuals_and_refunds).to eq(["20.00", "-5.00", "40.00", "-10.00", "80.00", "0.00", "0.00", "0.00"])
@@ -211,9 +213,7 @@ RSpec.describe Report::Export do
       end
 
       it "includes the variance data" do
-        fund = Fund.new("1")
         comments = [build(:comment, comment: "First comment"), build(:comment, comment: "Additional content")]
-        extending_organisation = build(:delivery_partner_organisation)
 
         expect(ForecastOverview).to receive(:new).with(activity_presenter).at_least(:once).and_return(forecast_overview)
         expect(forecast_overview).to receive(:snapshot).with(report_presenter).at_least(:once).and_return(forecast_snapshot)
@@ -229,6 +229,27 @@ RSpec.describe Report::Export do
         expect(subject.variance_data).to eq([
           -20.00,
           comments.map(&:comment).join("\n"),
+          fund.name,
+          extending_organisation.beis_organisation_reference,
+          "http://example.com",
+        ])
+      end
+
+      it "handles the variance when there are no comments" do
+        expect(ForecastOverview).to receive(:new).with(activity_presenter).at_least(:once).and_return(forecast_overview)
+        expect(forecast_overview).to receive(:snapshot).with(report_presenter).at_least(:once).and_return(forecast_snapshot)
+
+        expect(forecast_quarters).to receive(:value_for).with(**report.own_financial_quarter).and_return(100)
+        expect(actual_quarters).to receive(:value_for).with(activity: activity, **report.own_financial_quarter).and_return(120)
+
+        expect(activity_presenter).to receive(:comments_for_report).with(report_id: report_presenter.id).and_return([])
+        expect(activity_presenter).to receive(:source_fund).and_return(fund)
+        expect(activity_presenter).to receive(:extending_organisation).and_return(extending_organisation)
+        expect(activity_presenter).to receive(:link_to_roda).and_return("http://example.com")
+
+        expect(subject.variance_data).to eq([
+          -20.00,
+          "",
           fund.name,
           extending_organisation.beis_organisation_reference,
           "http://example.com",
