@@ -1,4 +1,0 @@
----
-# The authentication token for the application.
-authentication: <%=ENV["SKYLIGHT_ACCESS_TOKEN"]%>
-enable_sidekiq: true

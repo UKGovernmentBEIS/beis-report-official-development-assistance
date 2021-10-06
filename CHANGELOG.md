@@ -864,6 +864,7 @@
 
 ## [unreleased]
 
+- Remove the unused Skylight gem
 - include activities 'change state' in the report csv
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-79...HEAD
