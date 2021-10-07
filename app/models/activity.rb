@@ -140,6 +140,8 @@ class Activity < ApplicationRecord
   has_many :external_incomes
   has_many :historical_events, dependent: :destroy
 
+  has_one :commitment, dependent: :destroy
+
   enum level: {
     fund: "fund",
     programme: "programme",
