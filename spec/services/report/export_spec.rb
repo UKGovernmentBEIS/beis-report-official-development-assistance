@@ -11,6 +11,7 @@ RSpec.describe Report::Export do
 
     it "includes the activity headers" do
       expect(subject.headers).to include(*Report::Export::Row::ACTIVITY_HEADERS.keys)
+      expect(subject.headers).to include("Change state")
     end
 
     it "includes the previous twelve quarters" do
@@ -84,6 +85,7 @@ RSpec.describe Report::Export do
     let(:report_presenter) { ReportPresenter.new(report) }
 
     before do
+      allow(Activity::ProjectsForReportFinder).to receive(:new).with(report: report).and_return(projects_for_report_stub)
       allow(Activity::ProjectsForReportFinder).to receive(:new).with(report: report, scope: Activity.all).and_return(projects_for_report_stub)
       allow(ReportPresenter).to receive(:new).and_return(report_presenter)
     end
@@ -98,6 +100,7 @@ RSpec.describe Report::Export do
           following_report_quarters: an_instance_of(Array),
           actual_quarters: an_instance_of(Actual::Overview::AllQuarters),
           refund_quarters: an_instance_of(Refund::Overview::AllQuarters),
+          change_state: an_instance_of(Array),
         ).and_return(stub)
         expect(stub).to receive(:call).and_return([activity.title])
       end
@@ -178,6 +181,7 @@ RSpec.describe Report::Export do
         following_report_quarters: following_report_quarters,
         actual_quarters: actual_quarters,
         refund_quarters: refund_quarters,
+        change_state: ["Changed"],
       )
     end
 
@@ -187,6 +191,10 @@ RSpec.describe Report::Export do
 
     it "includes the activity data" do
       expect(subject.activity_data).to include(activity.roda_identifier)
+    end
+
+    it "includes the change state" do
+      expect(subject.call).to include("Changed")
     end
 
     context "financial data" do

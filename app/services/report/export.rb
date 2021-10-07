@@ -2,10 +2,12 @@ class Report
   class Export
     def initialize(report:)
       @report = report
+      @change_state_column = ChangeStateColumn.new(report: @report)
     end
 
     def headers
       Row::ACTIVITY_HEADERS.keys +
+        @change_state_column.header +
         previous_twelve_quarter_actual_and_refund_headers +
         next_twenty_quarter_forecasts_headers +
         variance_headers
@@ -15,6 +17,7 @@ class Report
       activities.map do |activity|
         Row.new(
           activity: activity,
+          change_state: @change_state_column.state_of(activity: activity),
           report_presenter: report_presenter,
           previous_report_quarters: previous_report_quarters,
           following_report_quarters: following_report_quarters,
@@ -148,17 +151,19 @@ class Report
         "Link to activity in RODA",
       ]
 
-      def initialize(activity:, report_presenter:, previous_report_quarters:, following_report_quarters:, actual_quarters:, refund_quarters:)
+      def initialize(activity:, report_presenter:, previous_report_quarters:, following_report_quarters:, actual_quarters:, refund_quarters:, change_state:)
         @activity = activity
         @report_presenter = report_presenter
         @previous_report_quarters = previous_report_quarters
         @following_report_quarters = following_report_quarters
         @actual_quarters = actual_quarters
         @refund_quarters = refund_quarters
+        @change_state = change_state
       end
 
       def call
         activity_data +
+          @change_state +
           previous_quarter_actuals_and_refunds +
           next_quarter_forecasts +
           variance_data
