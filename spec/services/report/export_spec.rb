@@ -257,4 +257,54 @@ RSpec.describe Report::Export do
       end
     end
   end
+
+  describe Report::Export::ChangeStateColumn do
+    let(:activity) { Activity.new(id: "123abc") }
+    let(:report) { instance_double(Report, id: "321cba") }
+
+    let(:result) { double(call: [activity]) }
+    let(:empty_result) { double(call: []) }
+
+    subject { described_class.new(report: report).state_of(activity: activity) }
+
+    describe "#header" do
+      it "returns the correct header string" do
+        expect(described_class.new(report: report).header).to match_array(["Change state"])
+      end
+    end
+
+    describe "#state_of" do
+      it "returns 'Changed' if the activity's non-financial data has been modified" do
+        allow(Activity::ProjectsForReportFinder).to receive(:new).with(report: report).and_return(result)
+        allow(report).to receive(:activities_updated).and_return([activity])
+        allow(report).to receive(:new_activities).and_return([])
+
+        expect(subject).to match_array(["Changed"])
+      end
+
+      it "returns 'New' if the activity is new" do
+        allow(Activity::ProjectsForReportFinder).to receive(:new).with(report: report).and_return(result)
+        allow(report).to receive(:activities_updated).and_return([])
+        allow(report).to receive(:new_activities).and_return([activity])
+
+        expect(subject).to match_array(["New"])
+      end
+
+      it "returns 'Unchanged' if the activity is not new and has not been modified" do
+        allow(Activity::ProjectsForReportFinder).to receive(:new).with(report: report).and_return(result)
+        allow(report).to receive(:activities_updated).and_return([])
+        allow(report).to receive(:new_activities).and_return([])
+
+        expect(subject).to match_array(["Unchanged"])
+      end
+
+      it "raises an error if the activity is not expected" do
+        allow(Activity::ProjectsForReportFinder).to receive(:new).with(report: report).and_return(empty_result)
+        allow(report).to receive(:activities_updated).and_return([])
+        allow(report).to receive(:new_activities).and_return([])
+
+        expect { subject }.to raise_error(ArgumentError)
+      end
+    end
+  end
 end

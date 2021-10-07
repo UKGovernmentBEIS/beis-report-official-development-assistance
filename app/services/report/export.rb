@@ -222,5 +222,38 @@ class Report
         "%.2f" % value
       end
     end
+
+    class ChangeStateColumn
+      class UnexpectedActivity < StandardError; end
+
+      def initialize(report:)
+        @report = report
+      end
+
+      def header
+        ["Change state"]
+      end
+
+      def state_of(activity:)
+        raise ArgumentError, "Activity is not expected for report id #{@report.id}" unless all_activities_for_report.include?(activity.id)
+        return ["New"] if all_new_activities.include?(activity.id)
+        return ["Changed"] if all_changed_activities.include?(activity.id)
+        ["Unchanged"]
+      end
+
+      private
+
+      def all_activities_for_report
+        @_all_activities_for_report ||= Activity::ProjectsForReportFinder.new(report: @report).call.pluck(:id)
+      end
+
+      def all_new_activities
+        @_all_new_activities ||= @report.new_activities.pluck(:id)
+      end
+
+      def all_changed_activities
+        @_all_changed_activities ||= @report.activities_updated.pluck(:id)
+      end
+    end
   end
 end
