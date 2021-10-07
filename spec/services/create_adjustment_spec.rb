@@ -9,11 +9,16 @@ RSpec.describe CreateAdjustment do
       "adjustment",
       errors: [],
       build_comment: double,
-      build_detail: double
+      build_detail: double,
+      parent_activity: activity,
     )
   end
 
   let(:creator) { described_class.new(activity: activity) }
+
+  let(:history_recorder) do
+    instance_double(HistoryRecorder, call: double)
+  end
 
   describe "#call" do
     before do
@@ -21,6 +26,7 @@ RSpec.describe CreateAdjustment do
       allow(Report).to receive(:for_activity).and_return([report])
       allow(Adjustment).to receive(:new).and_return(adjustment)
       allow(adjustment).to receive(:save).and_return(adjustment)
+      allow(HistoryRecorder).to receive(:new).and_return(history_recorder)
     end
 
     let(:valid_attributes) do
@@ -84,6 +90,27 @@ RSpec.describe CreateAdjustment do
           Result.new(true, adjustment)
         )
       end
+
+      it "asks the HistoryRecorder to handle the changes" do
+        changes_to_tracked_attributes = {
+          value: [nil, valid_attributes.fetch(:value)],
+          financial_quarter: [nil, valid_attributes.fetch(:financial_quarter)],
+          financial_year: [nil, valid_attributes.fetch(:financial_year)],
+          comment: [nil, valid_attributes.fetch(:comment)],
+          adjustment_type: [nil, valid_attributes.fetch(:adjustment_type)],
+        }
+
+        creator.call(attributes: valid_attributes)
+
+        expect(HistoryRecorder).to have_received(:new).with(user: user)
+        expect(history_recorder).to have_received(:call).with(
+          changes: changes_to_tracked_attributes,
+          reference: "Adjustment to Actual",
+          activity: adjustment.parent_activity,
+          trackable: adjustment,
+          report: report
+        )
+      end
     end
 
     context "when creation is unsuccessful" do
@@ -93,6 +120,12 @@ RSpec.describe CreateAdjustment do
         expect(creator.call(attributes: valid_attributes)).to eq(
           Result.new(false, adjustment)
         )
+      end
+
+      it "does NOT ask the HistoryRecorder to handle the changes" do
+        creator.call(attributes: valid_attributes)
+
+        expect(HistoryRecorder).not_to have_received(:new)
       end
     end
 
