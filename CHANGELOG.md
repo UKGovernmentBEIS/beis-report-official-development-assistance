@@ -864,6 +864,8 @@
 
 ## [unreleased]
 
+- include activities 'change state' in the report csv
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-79...HEAD
 [release-79]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-78...release-79
 [release-78]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-77...release-78
