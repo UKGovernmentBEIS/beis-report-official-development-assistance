@@ -872,6 +872,7 @@
 ## [unreleased]
 
 - Record changes to refunds and show them in the activity's Change history
+- Show the commitment value on an activity's finance tab
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-80...HEAD
 [release-80]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-79...release-80

@@ -36,6 +36,8 @@ class Staff::ActivitiesController < Staff::BaseController
     @activity = Activity.find(id)
     authorize @activity
 
+    @commitment = CommitmentPresenter.new(@activity.commitment)
+
     respond_to do |format|
       format.html do
         prepare_default_activity_trail(@activity)

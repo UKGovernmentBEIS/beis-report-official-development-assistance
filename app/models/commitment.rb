@@ -1,4 +1,6 @@
 class Commitment < ApplicationRecord
+  include HasFinancialQuarter
+
   belongs_to :activity
 
   validates :value, :financial_quarter, :financial_year, presence: true

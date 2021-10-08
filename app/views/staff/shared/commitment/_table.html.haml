@@ -1,0 +1,14 @@
+%table.govuk-table#commitment
+  %caption.govuk-table__caption.govuk-table__caption--m
+    Commitment
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header
+        Date
+      %th.govuk-table__header
+        Amount
+
+  %tbody.govuk-table__body
+    %tr.govuk-table__row
+      %td.govuk-table__cell= commitment.financial_quarter_and_year
+      %td.govuk-table__cell= commitment.value

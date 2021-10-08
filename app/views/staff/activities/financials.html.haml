@@ -47,6 +47,10 @@
                   %dd.govuk-summary-list__value
                     = @activity.total_forecasted
 
+          - if @commitment.present?
+            = render partial: "staff/shared/commitment/table",
+              locals: { commitment: @commitment }
+
           - if @activity.fund? && policy(:fund).create?
             = render partial: "staff/shared/activities/budgets",
               locals: { activity: @activity, budget_presenters: @budget_presenters }
