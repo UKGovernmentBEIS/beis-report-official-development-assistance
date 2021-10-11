@@ -58,7 +58,7 @@ RSpec.describe UpdateActual do
       it "does NOT ask the HistoryRecorder to handle the changes" do
         updater.call(attributes: {value: "202.02", financial_quarter: "2"})
 
-        expect(HistoryRecorder).not_to have_received(:new).with(user: user)
+        expect(HistoryRecorder).not_to have_received(:new)
       end
 
       it "returns a failed result" do
