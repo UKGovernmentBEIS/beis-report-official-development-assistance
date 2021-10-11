@@ -616,6 +616,7 @@ RSpec.describe Activity, type: :model do
     it { should have_many(:external_incomes) }
     it { should have_many(:historical_events) }
     it { should have_many(:comments).with_foreign_key("commentable_id") }
+    it { should have_one(:commitment) }
   end
 
   describe "#parent_activities" do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_05_140235) do
+ActiveRecord::Schema.define(version: 2021_10_07_092806) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -130,6 +130,14 @@ ActiveRecord::Schema.define(version: 2021_10_05_140235) do
     t.index ["commentable_type"], name: "index_comments_on_commentable_type"
     t.index ["owner_id"], name: "index_comments_on_owner_id"
     t.index ["report_id"], name: "index_comments_on_report_id"
+  end
+
+  create_table "commitments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "value", precision: 13, scale: 2
+    t.uuid "activity_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id"], name: "index_commitments_on_activity_id", unique: true
   end
 
   create_table "external_incomes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
