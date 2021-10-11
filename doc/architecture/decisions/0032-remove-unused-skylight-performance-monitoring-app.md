@@ -4,7 +4,7 @@ Date: 2021-10-06
 
 ## Status
 
-Accepted
+Supercedes [20. use-skylight-application-performance-monitoring](0020-use-skylight-application-performance-monitoring.md)
 
 ## Context
 
