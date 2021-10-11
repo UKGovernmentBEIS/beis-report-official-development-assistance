@@ -865,8 +865,9 @@
 ## [unreleased]
 
 - Remove the unused Skylight gem
-- include activities 'change state' in the report csv
+- Include activities 'change state' in the report csv
 - Use a single comment model for all comments
+- Track the creation of adjustments in an activity's Change history
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-79...HEAD
 [release-79]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-78...release-79

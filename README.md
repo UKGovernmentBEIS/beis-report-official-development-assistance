@@ -103,7 +103,7 @@ The `master` branch is deployed to production after a successful build via GitHu
 
 ## Email notifications
 The service sends email notifications see the
-[documentation](/doc/email-notificaitons.md) for more
+[documentation](/doc/email-notifications.md) for more
 details.
 
 ## DNS

@@ -15,6 +15,7 @@ RSpec.feature "Users can create an adjustment (correcting spend in an approved r
     and_the_adjustment_should_not_appear_in_the_list_of_actuals
     and_i_can_drill_down_to_the_details_of_the_adjustment
     and_i_can_navigate_back_to_the_associated_activity_or_report
+    and_the_adjustment_should_appear_in_the_change_history
   end
 
   scenario "must supply the required information to create an adjustment" do
@@ -104,6 +105,22 @@ RSpec.feature "Users can create an adjustment (correcting spend in an approved r
       "View",
       href: report_path(activity.adjustments.first.report)
     )
+  end
+
+  def and_the_adjustment_should_appear_in_the_change_history
+    visit organisation_activity_historical_events_path(
+      organisation_id: activity.organisation.id,
+      activity_id: activity.id
+    )
+    within(".historical-events") do
+      expect(page).to have_css(".adjustment .property", text: "value")
+      expect(page).to have_css(".adjustment .previous-value", text: "")
+      expect(page).to have_css(".adjustment .new-value", text: "100.01")
+      expect(page).to have_css(
+        ".adjustment .report a[href='#{report_path(activity.adjustments.first.report)}']",
+        text: activity.adjustments.first.report.financial_quarter_and_year
+      )
+    end
   end
 
   def then_i_expect_to_see_how_i_need_to_correct_the_form
