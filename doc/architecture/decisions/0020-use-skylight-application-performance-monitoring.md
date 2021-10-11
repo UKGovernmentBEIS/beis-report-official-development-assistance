@@ -4,7 +4,7 @@ Date: 2020-05-01
 
 ## Status
 
-Accepted
+Superceded by [32. remove skylight](0032-remove-unused-skylight-performance-monitoring-app.md)
 
 ## Context
 

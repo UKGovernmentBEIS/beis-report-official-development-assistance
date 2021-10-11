@@ -33,9 +33,6 @@ resource "cloudfoundry_app" "beis-roda-app" {
     "ROLLBAR_ENV"                            = "paas-${var.environment}"
     "ROLLBAR_ACCESS_TOKEN"                   = var.rollbar_access_token
     "ROLLBAR_DISABLED"                       = var.rollbar_disabled
-    "SKYLIGHT_ACCESS_TOKEN"                  = var.skylight_access_token
-    "SKYLIGHT_ENV"                           = var.skylight_env
-    "SKYLIGHT_ENABLE_SIDEKIQ"                = var.skylight_enable_sidekiq
     "GOOGLE_TAG_MANAGER_CONTAINER_ID"        = var.google_tag_manager_container_id
     "GOOGLE_TAG_MANAGER_ENVIRONMENT_AUTH"    = var.google_tag_manager_environment_auth
     "GOOGLE_TAG_MANAGER_ENVIRONMENT_PREVIEW" = var.google_tag_manager_environment_preview

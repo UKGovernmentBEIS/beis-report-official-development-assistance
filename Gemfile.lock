@@ -414,8 +414,6 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    skylight (5.1.1)
-      activesupport (>= 5.2.0)
     spring (2.1.1)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
@@ -533,7 +531,6 @@ DEPENDENCIES
   selenium-webdriver
   shoulda-matchers
   sidekiq (~> 5.2)
-  skylight
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
