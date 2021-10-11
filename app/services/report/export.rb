@@ -194,7 +194,7 @@ class Report
       def variance_data
         [
           variance_for_report_financial_quarter,
-          activity_presenter.comments_for_report(report_id: report_presenter.id).map(&:comment).join("\n"),
+          activity_presenter.comments_for_report(report_id: report_presenter.id).map(&:body).join("\n"),
           activity_presenter.source_fund&.name,
           activity_presenter.extending_organisation&.beis_organisation_reference,
           activity_presenter.link_to_roda,

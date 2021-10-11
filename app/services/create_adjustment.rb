@@ -26,7 +26,7 @@ class CreateAdjustment
   def create_adjustment
     Adjustment.new(adjustment_attrs).tap do |adjustment|
       adjustment.build_comment(
-        comment: attributes.fetch(:comment),
+        body: attributes.fetch(:comment),
         commentable: adjustment
       )
       adjustment.build_detail(

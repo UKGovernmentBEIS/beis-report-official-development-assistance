@@ -40,7 +40,7 @@ RSpec.describe CreateRefund do
           expect(refund.value).to eq(-100.10)
           expect(refund.financial_quarter).to eq(1)
           expect(refund.financial_year).to eq(2020)
-          expect(refund.comment.comment).to eq("Some words")
+          expect(refund.comment.body).to eq("Some words")
         end
       end
 

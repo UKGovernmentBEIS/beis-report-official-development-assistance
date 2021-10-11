@@ -16,7 +16,7 @@ FactoryBot.define do
     receiving_organisation_type { nil }
 
     after(:create) do |refund, _evaluator|
-      create(:flexible_comment, commentable: refund)
+      create(:comment, commentable: refund)
       refund.reload
     end
   end

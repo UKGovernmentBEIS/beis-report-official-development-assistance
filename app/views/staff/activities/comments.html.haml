@@ -24,7 +24,7 @@
             = t("page_content.comment.index_html")
 
           .govuk-body
-            - if policy(:comment).create? && @report
+            - if policy([:activity, :comment]).create? && @report
               = link_to(t("page_content.comment.add"), new_activity_comment_path(@activity, report_id: @report.id),  class: "govuk-button")
 
           %ul.govuk-list.activity_comments
@@ -36,8 +36,8 @@
                     %dt.govuk-summary-list__key
                       = Comment.model_name.human
                     %dd.govuk-summary-list__value
-                      = comment.comment
-                      - if policy(comment).update?
+                      = comment.body
+                      - if policy([:activity, comment]).update?
                         %span.govuk-body-s
                           (#{a11y_action_link(t("default.link.edit"), edit_activity_comment_path(@activity, comment))})
                   .govuk-summary-list__row

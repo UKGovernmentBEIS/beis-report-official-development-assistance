@@ -37,8 +37,8 @@
                       %th.govuk-table__cell{rowspan: comments.count, scope: "rowgroup"}
                         = activity.roda_identifier
                     %td.govuk-table__cell= I18n.l(comment.created_at.to_date)
-                    %td.govuk-table__cell= comment.comment
-                    - if policy(comment).update?
+                    %td.govuk-table__cell= comment.body
+                    - if policy([:activity, comment]).update?
                       %td.govuk-table__cell
                         = a11y_action_link(t("default.link.edit"), edit_activity_comment_path(activity, comment), t("table.body.report.comment").downcase)
 

@@ -8,7 +8,7 @@ RSpec.describe "staff/shared/reports/_table_variance" do
       .and_return("This is not the path you are looking for")
 
     without_partial_double_verification do
-      allow(view).to receive(:policy).with(:comment).and_return(policy)
+      allow(view).to receive(:policy).with([:activity, :comment]).and_return(policy)
     end
 
     render partial: "staff/shared/reports/table_variance", locals: {

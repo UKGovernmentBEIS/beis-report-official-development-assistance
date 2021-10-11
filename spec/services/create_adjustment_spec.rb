@@ -57,7 +57,7 @@ RSpec.describe CreateAdjustment do
 
       expect(adjustment).to have_received(:build_comment)
         .with(
-          comment: "A typo in the original value",
+          body: "A typo in the original value",
           commentable: adjustment
         )
     end

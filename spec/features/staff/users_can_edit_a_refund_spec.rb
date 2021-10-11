@@ -33,7 +33,7 @@ RSpec.feature "Users can edit a refund" do
         "financial_year" => 2019,
         "financial_quarter" => 4,
         "value" => BigDecimal("-100"),
-      }).and change { refund.comment.reload.comment }.to("Comment goes here")
+      }).and change { refund.comment.reload.body }.to("Comment goes here")
 
       expect(page).to have_content(t("action.refund.update.success"))
     end
@@ -67,7 +67,7 @@ RSpec.feature "Users can edit a refund" do
     page.has_css?(
       "#refund-form-financial-year-field option[value='#{refund.financial_year}'][selected='selected']"
     )
-    expect(page).to have_field("refund_form[comment]", with: refund.comment.comment)
+    expect(page).to have_field("refund_form[comment]", with: refund.comment.body)
   end
 
   def and_i_see_the_refund_value_field_with_a_negative_amount

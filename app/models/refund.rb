@@ -3,8 +3,7 @@ class Refund < Transaction
     -> { where(commentable_type: "Refund") },
     foreign_key: :commentable_id,
     dependent: :destroy,
-    autosave: true,
-    class_name: "FlexibleComment"
+    autosave: true
 
   validates_associated :comment
 

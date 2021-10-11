@@ -23,7 +23,7 @@ class ReportPage
       expect(page.find_all("tbody tr").count).to eq(comments.count)
 
       activities.each do |activity|
-        comments_for_activity = comments.select { |c| c.activity_id == activity.id }
+        comments_for_activity = comments.select { |c| c.commentable_id == activity.id }
 
         within "tbody##{activity.id}" do
           within "th" do
@@ -32,7 +32,7 @@ class ReportPage
 
           comments_for_activity.each do |comment|
             expect(page).to have_content(I18n.l(comment.created_at.to_date))
-            expect(page).to have_content(comment.comment)
+            expect(page).to have_content(comment.body)
           end
         end
       end
@@ -42,7 +42,7 @@ class ReportPage
   def has_edit_buttons_for_comments?(comments)
     within ".govuk-table" do
       comments.all? do |comment|
-        page.has_link?(href: edit_activity_comment_path(comment.activity, comment))
+        page.has_link?(href: edit_activity_comment_path(comment.commentable, comment))
       end
     end
   end

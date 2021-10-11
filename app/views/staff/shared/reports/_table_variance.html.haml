@@ -25,7 +25,7 @@
         %td.govuk-table__cell= number_to_currency activity.variance_for_report_financial_quarter(report: @report)
         - unless readonly
           %td.govuk-table__cell
-            - if policy(:comment).create?
+            - if policy([:activity, :comment]).create?
               = a11y_action_link(t("table.body.report.view_and_add_comments"), organisation_activity_comments_path(activity.organisation, activity), "about #{activity.roda_identifier}")
             - else
               = a11y_action_link(t("table.body.report.view_comments"), organisation_activity_comments_path(activity.organisation, activity), "about #{activity.roda_identifier}")
