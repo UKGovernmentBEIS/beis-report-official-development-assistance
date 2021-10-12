@@ -862,14 +862,17 @@
 
 - Consolidate links to commnents on the report, variance tab
 
-## [unreleased]
+## [release-80] 2021-10-12
 
 - Remove the unused Skylight gem
 - Include activities 'change state' in the report csv
 - Use a single comment model for all comments
 - Track the creation of adjustments in an activity's Change history
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-79...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-80...HEAD
+[release-80]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-79...release-80
 [release-79]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-78...release-79
 [release-78]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-77...release-78
 [release-77]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-76...release-77
