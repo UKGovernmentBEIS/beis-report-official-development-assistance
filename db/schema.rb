@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_29_155655) do
-
+ActiveRecord::Schema.define(version: 2021_10_07_092806) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -120,15 +119,25 @@ ActiveRecord::Schema.define(version: 2021_09_29_155655) do
   end
 
   create_table "comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.text "comment"
-    t.uuid "owner_id"
-    t.uuid "activity_id"
-    t.uuid "report_id"
+    t.uuid "commentable_id"
+    t.string "commentable_type"
+    t.text "body"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["activity_id"], name: "index_comments_on_activity_id"
+    t.uuid "owner_id"
+    t.uuid "report_id"
+    t.index ["commentable_id"], name: "index_comments_on_commentable_id"
+    t.index ["commentable_type"], name: "index_comments_on_commentable_type"
     t.index ["owner_id"], name: "index_comments_on_owner_id"
     t.index ["report_id"], name: "index_comments_on_report_id"
+  end
+
+  create_table "commitments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "value", precision: 13, scale: 2
+    t.uuid "activity_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id"], name: "index_commitments_on_activity_id", unique: true
   end
 
   create_table "external_incomes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -142,16 +151,6 @@ ActiveRecord::Schema.define(version: 2021_09_29_155655) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["activity_id"], name: "index_external_incomes_on_activity_id"
     t.index ["organisation_id"], name: "index_external_incomes_on_organisation_id"
-  end
-
-  create_table "flexible_comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "commentable_id"
-    t.string "commentable_type"
-    t.text "comment"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["commentable_id"], name: "index_flexible_comments_on_commentable_id"
-    t.index ["commentable_type"], name: "index_flexible_comments_on_commentable_type"
   end
 
   create_table "forecasts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -220,6 +219,18 @@ ActiveRecord::Schema.define(version: 2021_09_29_155655) do
     t.index ["destination_id"], name: "index_incoming_transfers_on_destination_id"
     t.index ["report_id"], name: "index_incoming_transfers_on_report_id"
     t.index ["source_id"], name: "index_incoming_transfers_on_source_id"
+  end
+
+  create_table "legacy_comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "comment"
+    t.uuid "owner_id"
+    t.uuid "activity_id"
+    t.uuid "report_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id"], name: "index_legacy_comments_on_activity_id"
+    t.index ["owner_id"], name: "index_legacy_comments_on_owner_id"
+    t.index ["report_id"], name: "index_legacy_comments_on_report_id"
   end
 
   create_table "matched_efforts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

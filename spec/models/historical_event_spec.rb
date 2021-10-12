@@ -36,6 +36,23 @@ RSpec.describe HistoricalEvent, type: :model do
           .to("Actual")
       end
     end
+
+    context "when the change being tracked is on an Adjustment (subclass of Transaction)" do
+      let(:trackable) { create(:adjustment) }
+      let(:event) { HistoricalEvent.new(trackable: trackable) }
+
+      it "associates with the expected Adjustment object" do
+        expect(event.trackable_id).to eq(trackable.id)
+        expect(event.trackable).to eq(trackable)
+      end
+
+      it "correctly sets the subclass at the point of validation" do
+        expect { event.valid? }
+          .to change { event.trackable_type }
+          .from("Transaction")
+          .to("Adjustment")
+      end
+    end
   end
 
   describe "flexible 'value' fields which handle a range of data types" do

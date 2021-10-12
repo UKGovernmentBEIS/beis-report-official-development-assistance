@@ -22,9 +22,9 @@ class CommentForm
     end
 
     def edit_from_activity_page(report:, comment:)
-      visit organisation_activity_comments_path(comment.activity.organisation, comment.activity)
+      visit organisation_activity_comments_path(comment.commentable.organisation, comment.commentable)
 
-      click_link I18n.t("default.link.edit"), href: edit_activity_comment_path(comment.activity, comment)
+      click_link I18n.t("default.link.edit"), href: edit_activity_comment_path(comment.commentable, comment)
 
       new(report: report)
     end
@@ -32,7 +32,7 @@ class CommentForm
 
   def complete(comment:)
     @comment = comment
-    fill_in "comment[comment]", with: comment
+    fill_in "comment[body]", with: comment
     click_button I18n.t("default.button.submit")
   end
 

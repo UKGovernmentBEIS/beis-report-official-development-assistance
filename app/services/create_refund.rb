@@ -24,7 +24,7 @@ class CreateRefund
   private
 
   def assign_refund_and_comment(attrs)
-    refund.build_comment(comment: attrs.delete(:comment), commentable: refund)
+    refund.build_comment(body: attrs.delete(:comment), commentable: refund)
     refund.value = attrs.delete(:value)&.to_s
     refund.assign_attributes(attrs)
   end

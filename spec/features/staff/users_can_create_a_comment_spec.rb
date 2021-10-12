@@ -48,7 +48,7 @@ RSpec.describe "Users can create a comment" do
               form.complete(comment: "This activity underspent")
 
               expect(Comment.all.count).to eq(1)
-              expect(Comment.last.comment).to eq(form.comment)
+              expect(Comment.last.body).to eq(form.comment)
 
               expect(page).to have_content t("action.comment.create.success")
 
@@ -90,7 +90,7 @@ RSpec.describe "Users can create a comment" do
           visit organisation_activity_comments_path(activity.organisation, activity)
           expect(page).to have_css(".govuk-button")
           click_on t("page_content.comment.add")
-          fill_in "comment[comment]", with: "Amendments have been made"
+          fill_in "comment[body]", with: "Amendments have been made"
           click_button t("default.button.submit")
           expect(page).to have_content "Amendments have been made"
           expect(page).to have_content t("action.comment.create.success")

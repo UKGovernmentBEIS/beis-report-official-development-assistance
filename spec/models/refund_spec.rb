@@ -26,7 +26,7 @@ RSpec.describe Refund, type: :model do
   describe "validations" do
     let(:refund) do
       Refund.new.tap do |refund|
-        refund.build_comment(comment: nil)
+        refund.build_comment(body: nil)
         refund.valid?
       end
     end
@@ -42,12 +42,12 @@ RSpec.describe Refund, type: :model do
 
     context "when the comment is edited and the refund is saved" do
       before do
-        refund.comment.comment = "Edited comment"
+        refund.comment.body = "Edited comment"
         refund.save
       end
 
       it "autosaves the associated comment" do
-        expect(refund.comment.reload.comment).to eq("Edited comment")
+        expect(refund.comment.reload.body).to eq("Edited comment")
       end
     end
   end

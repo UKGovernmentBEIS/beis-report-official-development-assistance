@@ -1,28 +1,28 @@
-class Staff::CommentsController < Staff::BaseController
+class Staff::ActivityCommentsController < Staff::BaseController
   include Secured
   include Activities::Breadcrumbed
   include Reports::Breadcrumbed
 
   def new
     @activity = Activity.find(activity_id)
-    @report = Report.find(report_id)
-    @comment = Comment.new(activity_id: activity_id, report_id: report_id)
-    authorize @comment
-    @report_presenter = ReportPresenter.new(@report)
+    @comment = @activity.comments.new(report_id: report_id)
+    authorize @comment, policy_class: Activity::CommentPolicy
 
-    prepare_default_report_variance_trail(@report)
+    prepare_default_report_variance_trail(@comment.report)
     add_breadcrumb t("breadcrumb.comment.new"), new_activity_comment_path(@activity)
   end
 
   def create
-    @comment = Comment.create(comment_params)
-    authorize @comment
+    @activity = Activity.find(activity_id)
+    @comment = @activity.comments.create(comment_params)
+    authorize @comment, policy_class: Activity::CommentPolicy
+
     @comment.assign_attributes(owner: current_user)
 
     if @comment.valid?
       @comment.save!
       flash[:notice] = t("action.comment.create.success")
-      redirect_to organisation_activity_comments_path(@comment.activity.organisation, @comment.activity)
+      redirect_to organisation_activity_comments_path(@activity.organisation, @activity)
     else
       render :new
     end
@@ -30,10 +30,10 @@ class Staff::CommentsController < Staff::BaseController
 
   def edit
     @comment = Comment.find(id)
-    @activity = Activity.find(@comment.activity_id)
+    @activity = Activity.find(@comment.commentable_id)
     @report = Report.find(@comment.report_id)
     @report_presenter = ReportPresenter.new(@report)
-    authorize @comment
+    authorize @comment, policy_class: Activity::CommentPolicy
 
     prepare_default_activity_trail(@activity, tab: "comments")
     add_breadcrumb t("breadcrumb.comment.edit"), edit_activity_comment_path(@activity, @comment)
@@ -41,13 +41,13 @@ class Staff::CommentsController < Staff::BaseController
 
   def update
     @comment = Comment.find(id)
-    authorize @comment
+    authorize @comment, policy_class: Activity::CommentPolicy
 
     @comment.assign_attributes(comment_params)
     if @comment.valid?
       @comment.save!
       flash[:notice] = t("action.comment.update.success")
-      redirect_to organisation_activity_comments_path(@comment.activity.organisation, @comment.activity)
+      redirect_to organisation_activity_comments_path(@comment.commentable.organisation, @comment.commentable)
     else
       render :edit
     end
@@ -68,6 +68,6 @@ class Staff::CommentsController < Staff::BaseController
   end
 
   def comment_params
-    params.require(:comment).permit(:comment, :activity_id, :report_id)
+    params.require(:comment).permit(:body, :report_id)
   end
 end

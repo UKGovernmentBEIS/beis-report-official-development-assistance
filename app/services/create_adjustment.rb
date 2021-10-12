@@ -13,6 +13,7 @@ class CreateAdjustment
     result = if adjustment.errors.any?
       Result.new(false, adjustment)
     else
+      record_historical_event(adjustment)
       Result.new(true, adjustment)
     end
 
@@ -26,15 +27,25 @@ class CreateAdjustment
   def create_adjustment
     Adjustment.new(adjustment_attrs).tap do |adjustment|
       adjustment.build_comment(
-        comment: attributes.fetch(:comment),
+        body: attributes.fetch(:comment),
         commentable: adjustment
       )
       adjustment.build_detail(
-        user: attributes.fetch(:user),
+        user: user,
         adjustment_type: attributes.fetch(:adjustment_type)
       )
       adjustment.save
     end
+  end
+
+  def record_historical_event(adjustment)
+    HistoryRecorder.new(user: user).call(
+      changes: changes_to_tracked_attributes,
+      reference: "Adjustment to #{attributes.fetch(:adjustment_type)}",
+      activity: adjustment.parent_activity,
+      trackable: adjustment,
+      report: report
+    )
   end
 
   def adjustment_attrs
@@ -44,6 +55,16 @@ class CreateAdjustment
       value: attributes.fetch(:value),
       financial_quarter: attributes.fetch(:financial_quarter),
       financial_year: attributes.fetch(:financial_year),
+    }
+  end
+
+  def changes_to_tracked_attributes
+    {
+      value: [nil, attributes.fetch(:value)],
+      financial_quarter: [nil, attributes.fetch(:financial_quarter)],
+      financial_year: [nil, attributes.fetch(:financial_year)],
+      comment: [nil, attributes.fetch(:comment)],
+      adjustment_type: [nil, attributes.fetch(:adjustment_type)],
     }
   end
 
@@ -60,6 +81,10 @@ class CreateAdjustment
 
   def report
     attributes.fetch(:report)
+  end
+
+  def user
+    attributes.fetch(:user)
   end
 
   def valid_reports_for_activity

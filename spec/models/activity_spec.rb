@@ -615,6 +615,8 @@ RSpec.describe Activity, type: :model do
     it { should have_many(:matched_efforts) }
     it { should have_many(:external_incomes) }
     it { should have_many(:historical_events) }
+    it { should have_many(:comments).with_foreign_key("commentable_id") }
+    it { should have_one(:commitment) }
   end
 
   describe "#parent_activities" do
@@ -1087,15 +1089,15 @@ RSpec.describe Activity, type: :model do
     it "returns the comment associated to this activity and a particular report" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
-      comment = create(:comment, activity_id: project.id, report_id: report.id, comment: "Here's my comment")
+      comment = create(:comment, commentable: project, report_id: report.id, body: "Here's my comment")
       expect(project.comments_for_report(report_id: report.id)).to include(comment)
-      expect(project.comments_for_report(report_id: report.id).first.comment).to eq "Here's my comment"
+      expect(project.comments_for_report(report_id: report.id).first.body).to eq "Here's my comment"
     end
 
     it "does not return any other comments associated to this activity but in another report" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
-      comment = create(:comment, activity_id: project.id, report_id: create(:report).id)
+      comment = create(:comment, commentable: project, report_id: create(:report).id)
       expect(project.comments_for_report(report_id: report.id)).not_to include(comment)
       expect(project.comments_for_report(report_id: report.id)).to eq []
     end
@@ -1104,6 +1106,9 @@ RSpec.describe Activity, type: :model do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
       expect(project.comments_for_report(report_id: report.id)).to eq []
+
+      comment = create(:comment, commentable: project, report_id: create(:report).id)
+      expect(project.comments_for_report(report_id: report.id)).to_not include(comment)
     end
   end
 

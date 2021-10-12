@@ -135,10 +135,12 @@ class Activity < ApplicationRecord
   has_many :source_transfers, foreign_key: "source_id", class_name: "OutgoingTransfer"
   has_many :destination_transfers, foreign_key: "destination_id", class_name: "OutgoingTransfer"
 
-  has_many :comments
+  has_many :comments, foreign_key: "commentable_id", as: :commentable
   has_many :matched_efforts
   has_many :external_incomes
   has_many :historical_events, dependent: :destroy
+
+  has_one :commitment, dependent: :destroy
 
   enum level: {
     fund: "fund",

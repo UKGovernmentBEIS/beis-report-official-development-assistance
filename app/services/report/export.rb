@@ -2,10 +2,12 @@ class Report
   class Export
     def initialize(report:)
       @report = report
+      @change_state_column = ChangeStateColumn.new(report: @report)
     end
 
     def headers
       Row::ACTIVITY_HEADERS.keys +
+        @change_state_column.header +
         previous_twelve_quarter_actual_and_refund_headers +
         next_twenty_quarter_forecasts_headers +
         variance_headers
@@ -15,6 +17,7 @@ class Report
       activities.map do |activity|
         Row.new(
           activity: activity,
+          change_state: @change_state_column.state_of(activity: activity),
           report_presenter: report_presenter,
           previous_report_quarters: previous_report_quarters,
           following_report_quarters: following_report_quarters,
@@ -148,17 +151,19 @@ class Report
         "Link to activity in RODA",
       ]
 
-      def initialize(activity:, report_presenter:, previous_report_quarters:, following_report_quarters:, actual_quarters:, refund_quarters:)
+      def initialize(activity:, report_presenter:, previous_report_quarters:, following_report_quarters:, actual_quarters:, refund_quarters:, change_state:)
         @activity = activity
         @report_presenter = report_presenter
         @previous_report_quarters = previous_report_quarters
         @following_report_quarters = following_report_quarters
         @actual_quarters = actual_quarters
         @refund_quarters = refund_quarters
+        @change_state = change_state
       end
 
       def call
         activity_data +
+          @change_state +
           previous_quarter_actuals_and_refunds +
           next_quarter_forecasts +
           variance_data
@@ -189,7 +194,7 @@ class Report
       def variance_data
         [
           variance_for_report_financial_quarter,
-          activity_presenter.comments_for_report(report_id: report_presenter.id).map(&:comment).join("\n"),
+          activity_presenter.comments_for_report(report_id: report_presenter.id).map(&:body).join("\n"),
           activity_presenter.source_fund&.name,
           activity_presenter.extending_organisation&.beis_organisation_reference,
           activity_presenter.link_to_roda,
@@ -220,6 +225,39 @@ class Report
       def refund_value(quarter)
         value = refund_quarters.value_for(activity: activity, **quarter)
         "%.2f" % value
+      end
+    end
+
+    class ChangeStateColumn
+      class UnexpectedActivity < StandardError; end
+
+      def initialize(report:)
+        @report = report
+      end
+
+      def header
+        ["Change state"]
+      end
+
+      def state_of(activity:)
+        raise ArgumentError, "Activity is not expected for report id #{@report.id}" unless all_activities_for_report.include?(activity.id)
+        return ["New"] if all_new_activities.include?(activity.id)
+        return ["Changed"] if all_changed_activities.include?(activity.id)
+        ["Unchanged"]
+      end
+
+      private
+
+      def all_activities_for_report
+        @_all_activities_for_report ||= Activity::ProjectsForReportFinder.new(report: @report).call.pluck(:id)
+      end
+
+      def all_new_activities
+        @_all_new_activities ||= @report.new_activities.pluck(:id)
+      end
+
+      def all_changed_activities
+        @_all_changed_activities ||= @report.activities_updated.pluck(:id)
       end
     end
   end

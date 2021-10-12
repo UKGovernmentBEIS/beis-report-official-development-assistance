@@ -19,7 +19,7 @@ class UpdateRefund
   attr_reader :refund
 
   def assign_refund_and_comment(attrs)
-    refund.comment.comment = attrs.delete(:comment)
+    refund.comment.body = attrs.delete(:comment)
     refund.value = attrs.delete(:value)&.to_s
     refund.assign_attributes(attrs)
   end
