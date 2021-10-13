@@ -12,7 +12,14 @@ class FindProgrammeActivities
   def call
     programmes = ProgrammePolicy::Scope.new(user, Activity.programme)
       .resolve
-      .includes(:organisation, :extending_organisation, :implementing_organisations, :budgets, :parent)
+      .includes(
+        :organisation,
+        :extending_organisation,
+        :implementing_organisations,
+        :budgets,
+        :parent,
+        :commitment
+      )
       .order("created_at ASC")
 
     return programmes if organisation.service_owner?

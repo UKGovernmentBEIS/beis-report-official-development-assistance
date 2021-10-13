@@ -15,4 +15,8 @@ module HasFinancialQuarter
     return if own_financial_quarter.nil?
     (own_financial_quarter.start_date..own_financial_quarter.end_date)
   end
+
+  def first_day_of_financial_period
+    own_financial_quarter.start_date
+  end
 end

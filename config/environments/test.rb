@@ -84,6 +84,7 @@ Rails.application.configure do
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Activity", association: :parent
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Activity", association: :extending_organisation
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Activity", association: :implementing_organisations
+    Bullet.add_safelist type: :unused_eager_loading, class_name: "Activity", association: :commitment
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Activity", association: :budgets
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Report", association: :fund
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Budget", association: :providing_organisation
