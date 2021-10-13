@@ -36,6 +36,8 @@ RSpec.feature "Users can edit a refund" do
       }).and change { refund.comment.reload.body }.to("Comment goes here")
 
       expect(page).to have_content(t("action.refund.update.success"))
+
+      and_the_refund_update_appears_in_the_change_history
     end
 
     scenario "they can delete a refund" do
@@ -72,5 +74,23 @@ RSpec.feature "Users can edit a refund" do
 
   def and_i_see_the_refund_value_field_with_a_negative_amount
     expect(page).to have_field("refund_form[value]", with: "-110.01")
+  end
+
+  def and_the_refund_update_appears_in_the_change_history
+    visit organisation_activity_historical_events_path(
+      organisation_id: activity.organisation.id,
+      activity_id: activity.id
+    )
+    within(".historical-events") do
+      expect(page).to have_css(".refund .property", text: "value")
+      expect(page).to have_css(".refund .previous-value", text: "")
+      expect(page).to have_css(".refund .new-value", text: "-100.0")
+      expect(page).to have_css(".refund .property", text: "comment")
+      expect(page).to have_css(".refund .new-value", text: "Comment goes here")
+      expect(page).to have_css(
+        ".refund .report a[href='#{report_path(activity.refunds.first.report)}']",
+        text: activity.refunds.first.report.financial_quarter_and_year
+      )
+    end
   end
 end
