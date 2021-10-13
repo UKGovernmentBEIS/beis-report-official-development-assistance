@@ -871,6 +871,8 @@
 
 ## [unreleased]
 
+- Record changes to refunds and show them in the activity's Change history
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-80...HEAD
 [release-80]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-79...release-80
 [release-79]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-78...release-79

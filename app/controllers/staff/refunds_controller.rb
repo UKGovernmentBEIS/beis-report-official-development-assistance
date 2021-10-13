@@ -52,6 +52,7 @@ class Staff::RefundsController < Staff::ActivitiesController
 
     result = UpdateRefund.new(
       refund: Refund.find(id),
+      user: current_user
     ).call(attributes: refund_params)
 
     if result.success?
