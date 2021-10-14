@@ -22,16 +22,9 @@ class Staff::RefundsController < Staff::ActivitiesController
 
     return render :new unless @refund.valid?
 
-    result = CreateRefund.new(activity: @activity)
-      .call(attributes: @refund.attributes)
-    @refund = result.object
-
-    if result.success?
-      flash[:notice] = t("action.refund.create.success")
-      redirect_to organisation_activity_path(@activity.organisation, @activity)
-    else
-      render :new
-    end
+    CreateRefund.new(activity: @activity).call(attributes: @refund.attributes)
+    flash[:notice] = t("action.refund.create.success")
+    redirect_to organisation_activity_path(@activity.organisation, @activity)
   end
 
   def edit
@@ -52,6 +45,7 @@ class Staff::RefundsController < Staff::ActivitiesController
 
     result = UpdateRefund.new(
       refund: Refund.find(id),
+      user: current_user
     ).call(attributes: refund_params)
 
     if result.success?

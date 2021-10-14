@@ -45,9 +45,11 @@ class Staff::ActivitiesController < Staff::BaseController
           current_user: current_user,
           tab_name: current_tab
         )
+        @commitment = CommitmentPresenter.new(@activity.commitment)
         render template: tab.template, locals: tab.locals
       end
       format.xml do |_format|
+        @commitment = @activity.commitment
         @activities = @activity.child_activities.order("created_at ASC").map { |activity| ActivityPresenter.new(activity) }
 
         @actuals = policy_scope(Actual).where(parent_activity: @activity).order("date DESC")

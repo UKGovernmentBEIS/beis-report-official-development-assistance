@@ -117,6 +117,16 @@ RSpec.describe SpendingBreakdown::Export do
         "Forecast FQ3 2021-2022",
       )
     end
+
+    context "when there are no forecasts" do
+      before do
+        allow(subject).to receive(:forecasts).and_return([])
+      end
+
+      it "should not return any forecast headers" do
+        expect(subject.headers.any? { |header| header.match(/Forecast/) }).to eq(false)
+      end
+    end
   end
 
   describe "#rows" do

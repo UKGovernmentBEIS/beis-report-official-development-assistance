@@ -1,30 +1,17 @@
 RSpec.describe Commitment do
-  it { should belong_to(:activity) }
+  it "should be valid" do
+    should belong_to(:activity)
 
-  describe ".value" do
-    it "must be a number" do
-      commitment = build(:commitment, value: "not a number")
-      expect(commitment.valid?).to be false
-    end
+    should validate_presence_of(:value)
+    should validate_numericality_of(:value).is_greater_than(0)
+    should validate_numericality_of(:value).is_less_than_or_equal_to(99_999_999_999.00)
 
-    it "cannot be zero" do
-      commitment = build(:commitment, value: 0)
-      expect(commitment.valid?).to be false
-    end
+    should validate_presence_of(:financial_quarter)
+    should validate_inclusion_of(:financial_quarter).in_array((1..4).to_a)
 
-    it "cannot be negative" do
-      commitment = build(:commitment, value: -1000.00)
-      expect(commitment.valid?).to be false
-    end
-
-    it "cannot exceed 99_999_999_999_00" do
-      commitment = build(:commitment, value: 100_000_000_000_00)
-      expect(commitment.valid?).to be false
-    end
-
-    it "can be a number within the allowed range" do
-      commitment = build(:commitment, value: 100_000_00)
-      expect(commitment.valid?).to be true
-    end
+    should validate_presence_of(:financial_year)
+    should validate_numericality_of(:financial_year).only_integer
+    should validate_numericality_of(:financial_year).is_greater_than_or_equal_to(2_000)
+    should validate_numericality_of(:financial_year).is_less_than_or_equal_to(3_000)
   end
 end

@@ -55,6 +55,8 @@
 - **[Identifying invalid activities (utilities.md)](./utilities.md)**: A rake
   tasks to report invalid activites in a CSV file.
 
+  **[Importing commitments (import-commitments.md)](./import-commitments.md)** A
+  rake task to import Commitments into the application
 
 ## Third party services
 

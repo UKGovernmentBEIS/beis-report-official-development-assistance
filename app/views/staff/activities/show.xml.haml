@@ -1,4 +1,5 @@
 !!! XML
 %iati-activities{"version" => "#{IATI_VERSION.gsub('_', '.')}",
-"generated-datetime" => "#{Time.now.strftime("%Y-%m-%dT%H:%M:%S")}"}
-  = render partial: "staff/shared/xml/activity", locals: { activity: @activity, reporting_organisation: @reporting_organisation, transactions: @actuals, budgets: @budgets, forecasts: @forecasts }
+  "generated-datetime" => "#{Time.now.strftime("%Y-%m-%dT%H:%M:%S")}"}
+  = render partial: "staff/shared/xml/activity",
+    locals: { activity: @activity, reporting_organisation: @reporting_organisation, transactions: @actuals, budgets: @budgets, forecasts: @forecasts, commitment: @commitment }
