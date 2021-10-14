@@ -70,8 +70,8 @@ class CreateAdjustment
   end
 
   def bail_if_report_not_acceptable
-    if report.state != "active"
-      msg = "Report ##{report.id} is not in the active state"
+    unless Report::EDITABLE_STATES.include?(report.state)
+      msg = "Report ##{report.id} is not in an editable state"
     end
     unless valid_reports_for_activity.include?(report)
       msg = "Report ##{report.id} is not associated with Activity ##{activity.id}"

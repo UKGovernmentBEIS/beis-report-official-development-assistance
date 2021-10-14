@@ -143,7 +143,7 @@ RSpec.describe CreateAdjustment do
       end
     end
 
-    context "when the given report is not in the *active* state" do
+    context "when the given report is not in an *editable* state" do
       before do
         allow(report).to receive(:state).and_return("approved")
       end
@@ -152,7 +152,7 @@ RSpec.describe CreateAdjustment do
         expect { creator.call(attributes: {report: report}) }
           .to raise_error(
             CreateAdjustment::AdjustmentError,
-            "Report #abc123 is not in the active state"
+            "Report #abc123 is not in an editable state"
           )
       end
 
@@ -164,6 +164,18 @@ RSpec.describe CreateAdjustment do
         end
 
         expect(Adjustment).not_to have_received(:new)
+      end
+    end
+
+    context "when the given report is in any *editable* state" do
+      Report::EDITABLE_STATES.each do |editable_state|
+        before do
+          allow(report).to receive(:state).and_return(editable_state)
+        end
+
+        it "does not raise an error when report is in *#{editable_state}* state" do
+          expect { creator.call(attributes: valid_attributes) }.not_to raise_error
+        end
       end
     end
 
