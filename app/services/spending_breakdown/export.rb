@@ -148,7 +148,11 @@ class SpendingBreakdown::Export
   end
 
   def all_forecast_financial_quarter_range
-    @_forecast_quarter_range ||= Range.new(all_actual_and_refund_financial_quarter_range.last.succ, *all_financial_quarters_with_forecasts.max)
+    @_forecast_quarter_range ||= begin
+      return [] if all_financial_quarters_with_forecasts.blank?
+
+      Range.new(all_actual_and_refund_financial_quarter_range.last.succ, all_financial_quarters_with_forecasts.max)
+    end
   end
 
   class TransactionOverview
