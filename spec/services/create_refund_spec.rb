@@ -7,7 +7,6 @@ RSpec.describe CreateRefund do
 
   describe "#call" do
     subject { creator.call(attributes: attributes) }
-    let(:refund) { subject.object }
 
     context "when there is an editable report for the activity" do
       before do
@@ -28,19 +27,17 @@ RSpec.describe CreateRefund do
           expect { subject }.to change { Refund.count }.by(1)
         end
 
-        it "returns a result object" do
-          expect(subject).to be_a(Result)
-          expect(subject.success?).to eq(true)
-          expect(subject.object).to be_a(Refund)
+        it "returns the created refund" do
+          expect(subject).to be_a(Refund)
         end
 
         it "sets the correct attributes" do
-          expect(refund.parent_activity).to eq(activity)
-          expect(refund.report).to eq(report)
-          expect(refund.value).to eq(-100.10)
-          expect(refund.financial_quarter).to eq(1)
-          expect(refund.financial_year).to eq(2020)
-          expect(refund.comment.body).to eq("Some words")
+          expect(subject.parent_activity).to eq(activity)
+          expect(subject.report).to eq(report)
+          expect(subject.value).to eq(-100.10)
+          expect(subject.financial_quarter).to eq(1)
+          expect(subject.financial_year).to eq(2020)
+          expect(subject.comment.body).to eq("Some words")
         end
       end
 
@@ -54,8 +51,8 @@ RSpec.describe CreateRefund do
           }
         end
 
-        it "does not create a refund" do
-          expect { subject }.to_not change { Refund.count }
+        it "raises an error with the validation errors" do
+          expect { subject }.to raise_error(CreateRefund::Error, /Select a financial year/)
         end
       end
     end
@@ -74,8 +71,11 @@ RSpec.describe CreateRefund do
         }
       end
 
-      it "does not create a refund" do
-        expect { subject }.to_not change { Refund.count }
+      it "raises an error explaining the problem with the report" do
+        expect { subject }.to raise_error(
+          CreateRefund::Error,
+          /There is no editable report for this activity/
+        )
       end
     end
   end
