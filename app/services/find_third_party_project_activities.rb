@@ -12,7 +12,14 @@ class FindThirdPartyProjectActivities
   def call
     third_party_projects = ThirdPartyProjectPolicy::Scope.new(user, projects_scope)
       .resolve
-      .includes(:organisation, :extending_organisation, :implementing_organisations, :budgets, :parent)
+      .includes(
+        :organisation,
+        :extending_organisation,
+        :implementing_organisations,
+        :budgets,
+        :parent,
+        :commitment
+      )
       .order("created_at ASC")
 
     if organisation.service_owner?

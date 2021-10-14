@@ -82,6 +82,8 @@
   - if transactions
     - transactions.each do |transaction|
       = render partial: "staff/shared/xml/transaction", locals: { transaction: transaction }
+  - if commitment
+    = render partial: "staff/shared/xml/commitment", locals: { commitment: commitment }
   - if activity.project?
     - activity.parent_activities.each do |parent_activity|
       %related-activity{"ref" => parent_activity.delivery_partner_identifier, "type" => 1}
