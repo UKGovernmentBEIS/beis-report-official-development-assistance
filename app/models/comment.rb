@@ -10,4 +10,15 @@ class Comment < ApplicationRecord
   def set_commentable_type
     self.commentable_type = commentable.class.to_s
   end
+
+  def associated_activity
+    case commentable_type
+    when "Activity"
+      commentable
+    when "Refund"
+      commentable.parent_activity
+    when "Adjustment"
+      commentable.parent_activity
+    end
+  end
 end

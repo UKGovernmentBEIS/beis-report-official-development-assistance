@@ -23,4 +23,26 @@ RSpec.describe Comment, type: :model do
     expect(adjustment_comment.commentable_type).to eq("Adjustment")
     expect(refund_comment.commentable_type).to eq("Refund")
   end
+
+  describe "#associated_activity" do
+    subject { comment.associated_activity }
+
+    context "when the commentable type is Activity" do
+      let(:comment) { build(:comment, :with_activity) }
+
+      it { is_expected.to eq(comment.commentable) }
+    end
+
+    context "when the commentable type is Refund" do
+      let(:comment) { build(:comment, :with_refund) }
+
+      it { is_expected.to eq(comment.commentable.parent_activity) }
+    end
+
+    context "when the commentable type is Adjustment" do
+      let(:comment) { build(:comment, :with_adjustment) }
+
+      it { is_expected.to eq(comment.commentable.parent_activity) }
+    end
+  end
 end

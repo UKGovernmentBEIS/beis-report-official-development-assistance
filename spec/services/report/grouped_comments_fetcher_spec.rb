@@ -14,13 +14,18 @@ RSpec.describe Report::GroupedCommentsFetcher do
     [
       build_list(:comment, 3, commentable: activities[0]),
       build_list(:comment, 2, commentable: activities[1]),
+      build(:comment, commentable: build(:refund, parent_activity: activities[0]), commentable_type: "Refund"),
+      build(:comment, commentable: build(:adjustment, parent_activity: activities[1]), commentable_type: "Adjustment"),
     ]
   end
 
+  let(:first_activity_comments) { comments[0].append(comments[2]) }
+  let(:second_activity_comments) { comments[1].append(comments[3]) }
+
   let(:grouped_comments) do
     {
-      activities[0] => comments[0],
-      activities[1] => comments[1],
+      activities[0] => first_activity_comments,
+      activities[1] => second_activity_comments,
     }
   end
 
