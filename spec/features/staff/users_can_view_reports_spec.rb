@@ -407,10 +407,19 @@ RSpec.feature "Users can view reports" do
       report = create(:report, :active, organisation: delivery_partner_user.organisation, fund: create(:fund_activity, :newton))
       activities = create_list(:project_activity, 2, :newton_funded, organisation: delivery_partner_user.organisation)
 
-      comments_for_report = [
+      activity_comments = [
         create_list(:comment, 3, commentable: activities[0], report: report, owner: delivery_partner_user),
         create_list(:comment, 1, commentable: activities[1], report: report, owner: delivery_partner_user),
       ].flatten
+
+      refund_comments = [
+        create_list(:comment, 2, commentable: create(:refund, parent_activity: activities[0]), report: report),
+        create_list(:comment, 1, commentable: create(:refund, parent_activity: activities[1]), report: report),
+      ].flatten
+
+      adjustment_comments = create_list(:comment, 2, commentable: create(:adjustment, parent_activity: activities[0]), report: report)
+
+      comments_for_report = activity_comments + refund_comments + adjustment_comments
 
       page = ReportPage.new(report)
       page.visit_comments_page
@@ -419,7 +428,9 @@ RSpec.feature "Users can view reports" do
         activities: activities,
         comments: comments_for_report
       )
-      expect(page).to have_edit_buttons_for_comments(comments_for_report)
+      expect(page).to have_edit_buttons_for_comments(activity_comments)
+      expect(page).to_not have_edit_buttons_for_comments(adjustment_comments)
+      expect(page).to_not have_edit_buttons_for_comments(comments_for_report)
     end
   end
 

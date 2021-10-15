@@ -1,0 +1,7 @@
+.govuk-\!-width-one-eighth {
+  width: 100% !important;
+
+  @include govuk-media-query($from: tablet) {
+    width: 12.5% !important;
+  }
+}

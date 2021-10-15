@@ -42,6 +42,7 @@ RSpec.describe Report::GroupedCommentsFetcher do
       expect(comment_relation).to receive(:includes).with(
         owner: [:organisation],
         commentable: [
+          :parent_activity,
           parent: [
             parent: [:parent],
           ],
@@ -56,7 +57,7 @@ RSpec.describe Report::GroupedCommentsFetcher do
     let(:user) { build(:beis_user) }
 
     it "returns comments, grouped by activity" do
-      expect(comment_relation).to receive(:includes).with(:commentable).and_return(comments.flatten)
+      expect(comment_relation).to receive(:includes).with(commentable: [:parent_activity]).and_return(comments.flatten)
 
       expect(subject.all).to eq(grouped_comments)
     end

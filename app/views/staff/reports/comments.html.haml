@@ -19,15 +19,18 @@
           %table.govuk-table
             %thead.govuk-table__head
               %tr.govuk-table__row
-                %th.govuk-table__cell{ class: "govuk-!-width-one-quarter" }
+                %th.govuk-table__cell
                   = t("table.header.comments.activity_roda_identifier")
-                %th.govuk-table__cell{ class: "govuk-!-width-one-quarter" }
+                %th.govuk-table__cell{ class: "govuk-!-width-one-eighth" }
                   = t("table.header.comments.date")
+                %th.govuk-table__cell{ class: "govuk-!-width-one-eighth" }
+                  = t("table.header.comments.type")
                 %th.govuk-table__cell
                   = t("table.header.comments.comment")
-                %th.govuk-table__cell
-                  %span.govuk-visually-hidden
-                    = t("table.header.default.actions")
+                - if current_user.delivery_partner?
+                  %th.govuk-table__cell
+                    %span.govuk-visually-hidden
+                      = t("table.header.default.actions")
 
             - @grouped_comments.each do |activity, comments|
               %tbody.govuk-table__body{id: activity.id}
@@ -37,8 +40,10 @@
                       %th.govuk-table__cell{rowspan: comments.count, scope: "rowgroup"}
                         = activity.roda_identifier
                     %td.govuk-table__cell= I18n.l(comment.created_at.to_date)
+                    %td.govuk-table__cell= comment.commentable_type
                     %td.govuk-table__cell= comment.body
-                    - if policy([:activity, comment]).update?
+                    - if current_user.delivery_partner?
                       %td.govuk-table__cell
-                        = a11y_action_link(t("default.link.edit"), edit_activity_comment_path(activity, comment), t("table.body.report.comment").downcase)
+                        - if policy([comment.commentable, comment]).update?
+                          = a11y_action_link(t("default.link.edit"), edit_activity_comment_path(activity, comment), t("table.body.report.comment").downcase)
 
