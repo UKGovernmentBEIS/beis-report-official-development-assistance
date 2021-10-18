@@ -877,6 +877,8 @@
 
 ## [unreleased]
 
+- BEIS users create reports manually
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-81...HEAD
 [release-81]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-80...release-81
 [release-80]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-79...release-80
