@@ -990,44 +990,122 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "#actual_total_for_report_financial_quarter" do
-    let(:current_quarter) { FinancialQuarter.for_date(Date.today) }
+    let(:project) { create(:project_activity) }
 
-    it "returns the total of all the activity's actuals scoped to a report" do
-      project = create(:project_activity, :with_report)
-      report = Report.for_activity(project).first
-      create(:actual, parent_activity: project, value: 100.20, report: report, **current_quarter)
-      create(:actual, parent_activity: project, value: 50.00, report: report, **current_quarter)
-      create(:actual, parent_activity: project, value: 210, report: report, **current_quarter.pred)
+    let(:q_1) { FinancialQuarter.for_date(Date.parse("01-May-2020")) }
+    let(:q_2) { FinancialQuarter.for_date(Date.parse("01-Aug-2020")) }
 
-      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(150.20)
+    let(:q1_report) do
+      create(
+        :report,
+        state: "approved",
+        fund: project.associated_fund,
+        organisation: project.organisation,
+        **q_1
+      )
     end
 
-    it "includes any Adjustment of type 'Actual' for the same financial quarter in the calculation" do
-      project = create(:project_activity, :with_report)
-      report = Report.for_activity(project).first
-      create(:actual, parent_activity: project, value: 100.20, report: report, **current_quarter)
-      create(:actual, parent_activity: project, value: 50.00, report: report, **current_quarter)
-      create(:adjustment, :actual, parent_activity: project, value: -50, report: report, **current_quarter)
+    let(:q2_report) do
+      create(
+        :report,
+        fund: project.associated_fund,
+        organisation: project.organisation,
+        **q_2
+      )
+    end
 
-      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(100.20)
+    it "returns the total of all the activity's actuals scoped to a report" do
+      create(
+        :actual,
+        parent_activity: project,
+        value: 100.20,
+        report: q2_report,
+        **q_2
+      )
+      create(
+        :actual,
+        parent_activity: project,
+        value: 50.00,
+        report: q2_report,
+        **q_2
+      )
+      create(
+        :actual,
+        parent_activity: project,
+        value: 210,
+        report: q1_report,
+        **q_1
+      )
+
+      expect(project.actual_total_for_report_financial_quarter(report: q2_report)).to eq(150.20)
     end
 
     it "does NOT include Adjustments of type 'Actual' for a different financial quarter in the calculation" do
-      project = create(:project_activity, :with_report)
-      report = Report.for_activity(project).first
-      create(:actual, parent_activity: project, value: 130.20, report: report, **current_quarter)
-      create(:adjustment, :actual, parent_activity: project, value: -30, report: report, **current_quarter.pred)
+      create(
+        :actual,
+        parent_activity: project,
+        value: 130.20,
+        report: q2_report,
+        **q_2
+      )
+      create(
+        :adjustment,
+        :actual,
+        parent_activity: project,
+        value: -30,
+        report: q2_report,
+        **q_1
+      )
 
-      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(130.20)
+      expect(project.actual_total_for_report_financial_quarter(report: q2_report))
+        .to eq(130.20)
+    end
+
+    it "does NOT include Adjustments reported later for same financial quarter" do
+      create(
+        :actual,
+        parent_activity: project,
+        value: 100.20,
+        report: q1_report,
+        **q_1
+      )
+      create(
+        :actual,
+        parent_activity: project,
+        value: 50.00,
+        report: q1_report,
+        **q_1
+      )
+      create(
+        :adjustment,
+        :actual,
+        parent_activity: project,
+        value: -50,
+        report: q2_report,
+        **q_1
+      )
+
+      expect(project.actual_total_for_report_financial_quarter(report: q1_report))
+        .to eq(150.20)
     end
 
     it "does not include the totals for any actuals outside the report's date range" do
-      project = create(:project_activity, :with_report)
-      report = Report.for_activity(project).first
-      create(:actual, parent_activity: project, value: 100.20, report: report, **current_quarter.pred.pred)
-      create(:actual, parent_activity: project, value: 210, report: report, **current_quarter.pred)
+      create(
+        :actual,
+        parent_activity: project,
+        value: 100.20, report: q2_report,
+        **q_1.pred
+      )
+      create(
+        :actual,
+        parent_activity: project,
+        value: 210,
+        report: q2_report,
+        **q_1
+      )
 
-      expect(project.actual_total_for_report_financial_quarter(report: report)).to eq(0)
+      expect(project.actual_total_for_report_financial_quarter(report: q2_report))
+        .to eq(0)
     end
   end
 

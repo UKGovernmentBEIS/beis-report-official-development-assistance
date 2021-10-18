@@ -1,4 +1,4 @@
-= f.govuk_error_summary
+= f.govuk_error_summary link_base_errors_to: :financial_quarter
 
 = f.govuk_text_field :value, label: { text:  t("form.label.adjustment.value")}
 
@@ -9,7 +9,13 @@
   label: { text: t("form.label.adjustment.adjustment_type") },
   options: { include_blank: true }
 
-.govuk-grid-row
+.govuk-grid-row.govuk-form-group{ class: f.object.errors.messages[:base].present? ? " govuk-form-group--error" : "" }
+  - if f.object.errors.messages[:base].present?
+    %span.govuk-error-message
+      %span.govuk-visually-hidden
+        Error:
+      = t("activerecord.errors.models.adjustment.attributes.financial_period.invalid")
+
   .govuk-grid-column-two-thirds
     = f.govuk_collection_radio_buttons :financial_quarter,
       list_of_financial_quarters,
