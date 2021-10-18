@@ -103,7 +103,7 @@ RSpec.describe ForecastPolicy do
         end
 
         context "when there is no editable report" do
-          before { report.update!(state: :inactive) }
+          before { report.update!(state: :approved) }
 
           it { is_expected.to permit_action(:show) }
 

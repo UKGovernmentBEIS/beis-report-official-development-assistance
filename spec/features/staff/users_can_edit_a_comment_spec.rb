@@ -43,7 +43,7 @@ RSpec.describe "Users can edit a comment" do
       end
 
       context "when the report is not editable" do
-        let(:report) { create(:report, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
+        let(:report) { create(:report, :approved, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
         scenario "the user cannot edit any comments" do
           visit organisation_activity_comments_path(activity.organisation, activity)
           expect(page).not_to have_content t("default.link.edit")

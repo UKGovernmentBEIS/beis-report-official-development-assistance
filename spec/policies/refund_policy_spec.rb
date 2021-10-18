@@ -136,7 +136,7 @@ RSpec.describe RefundPolicy do
         end
 
         context "when there is no editable report" do
-          let(:report) { create(:report, state: :inactive) }
+          let(:report) { create(:report, state: :approved) }
 
           it "controls actions as expected" do
             aggregate_failures do

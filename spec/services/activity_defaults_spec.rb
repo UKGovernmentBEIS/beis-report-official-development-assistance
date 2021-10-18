@@ -14,9 +14,9 @@ RSpec.describe ActivityDefaults do
   before do
     # some reports which we don't expect to be returned as 'originating_report'
     # for 'project' (level C)
-    _inactive = create(:report, :inactive, organisation: delivery_partner_organisation, fund: fund)
     _other_org = create(:report, :active, organisation: create(:delivery_partner_organisation), fund: fund)
     _other_fund = create(:report, :active, organisation: delivery_partner_organisation, fund: create(:fund_activity, :newton))
+    _approved = create(:report, :approved, organisation: delivery_partner_organisation, fund: fund)
   end
 
   describe "#call" do
