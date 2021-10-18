@@ -29,7 +29,6 @@ RSpec.feature "Users can create an adjustment (correcting spend in an approved r
   def given_an_active_report_exists
     create(
       :report,
-      :active,
       fund: activity.associated_fund,
       organisation: activity.organisation,
       financial_quarter: 1,

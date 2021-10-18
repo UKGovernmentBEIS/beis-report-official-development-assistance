@@ -25,7 +25,7 @@ RSpec.describe Staff::ReportCommentsController do
       let(:user) { create(:delivery_partner_user) }
 
       context "when the report belongs to the user's organisation" do
-        let(:report) { build(:report, :active, id: SecureRandom.uuid, organisation: user.organisation) }
+        let(:report) { build(:report, id: SecureRandom.uuid, organisation: user.organisation) }
 
         it "responds with a 200" do
           expect(response.status).to eq(200)

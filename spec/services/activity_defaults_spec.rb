@@ -9,14 +9,14 @@ RSpec.describe ActivityDefaults do
   let(:project) { create(:project_activity, :gcrf_funded, parent: programme) }
   let(:third_party_project) { create(:third_party_project_activity, :gcrf_funded, parent: project) }
 
-  let!(:current_report) { create(:report, :active, organisation: delivery_partner_organisation, fund: fund) }
+  let!(:current_report) { create(:report, organisation: delivery_partner_organisation, fund: fund) }
 
   before do
     # some reports which we don't expect to be returned as 'originating_report'
     # for 'project' (level C)
-    _other_org = create(:report, :active, organisation: create(:delivery_partner_organisation), fund: fund)
-    _other_fund = create(:report, :active, organisation: delivery_partner_organisation, fund: create(:fund_activity, :newton))
     _approved = create(:report, :approved, organisation: delivery_partner_organisation, fund: fund)
+    _other_org = create(:report, organisation: create(:delivery_partner_organisation), fund: fund)
+    _other_fund = create(:report, organisation: delivery_partner_organisation, fund: create(:fund_activity, :newton))
   end
 
   describe "#call" do
