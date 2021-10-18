@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_14_155109) do
+ActiveRecord::Schema.define(version: 2021_10_18_171800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -268,7 +268,7 @@ ActiveRecord::Schema.define(version: 2021_10_14_155109) do
   end
 
   create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "state", default: "inactive", null: false
+    t.string "state", default: "active", null: false
     t.string "description"
     t.uuid "fund_id"
     t.uuid "organisation_id"
@@ -277,7 +277,7 @@ ActiveRecord::Schema.define(version: 2021_10_14_155109) do
     t.date "deadline"
     t.integer "financial_quarter"
     t.integer "financial_year"
-    t.index ["fund_id", "organisation_id"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text <> ALL (ARRAY[('inactive'::character varying)::text, ('approved'::character varying)::text]))"
+    t.index ["fund_id", "organisation_id"], name: "enforce_one_editable_report_per_series", unique: true, where: "((state)::text <> 'approved'::text)"
     t.index ["fund_id", "organisation_id"], name: "enforce_one_historic_report_per_series", unique: true, where: "((financial_quarter IS NULL) OR (financial_year IS NULL))"
     t.index ["fund_id"], name: "index_reports_on_fund_id"
     t.index ["organisation_id"], name: "index_reports_on_organisation_id"
