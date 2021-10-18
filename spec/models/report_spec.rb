@@ -5,6 +5,20 @@ RSpec.describe Report, type: :model do
     it { should validate_presence_of(:state) }
     it { should have_readonly_attribute(:financial_quarter) }
     it { should have_readonly_attribute(:financial_year) }
+
+    context "in the :new validation context" do
+      it "validates there are no unapproved reports for the organisation and fund" do
+        organisation = create(:delivery_partner_organisation)
+        existing_approved_report = create(:report, :approved, organisation: organisation)
+        existing_unapproved_report = create(:report, state: "awaiting_changes", organisation: organisation)
+
+        new_valid_report = Report.new(fund: existing_approved_report.fund, organisation: organisation, state: "active")
+        new_invalid_report = Report.new(fund: existing_unapproved_report.fund, organisation: organisation, state: "active")
+
+        expect(new_invalid_report.valid?(:new)).to eql(false)
+        expect(new_valid_report.valid?).to eql(true)
+      end
+    end
   end
 
   describe "associations" do
