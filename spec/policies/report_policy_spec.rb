@@ -15,26 +15,6 @@ RSpec.describe ReportPolicy do
       expect(resolved_scope).to include report, another_report
     end
 
-    context "when the report is inactive" do
-      before { report.update(state: :inactive) }
-
-      it { is_expected.to permit_action(:create) }
-      it { is_expected.to permit_action(:update) }
-      it { is_expected.to permit_action(:index) }
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to permit_action(:download) }
-      it { is_expected.to permit_action(:change_state) }
-      it { is_expected.to permit_action(:activate) }
-
-      it { is_expected.to forbid_action(:destroy) }
-
-      it { is_expected.to forbid_action(:submit) }
-      it { is_expected.to forbid_action(:review) }
-      it { is_expected.to forbid_action(:request_changes) }
-      it { is_expected.to forbid_action(:approve) }
-      it { is_expected.to forbid_action(:upload) }
-    end
-
     context "when the report is active" do
       before { report.update(state: :active) }
 
@@ -129,22 +109,6 @@ RSpec.describe ReportPolicy do
 
     context "when the report belongs to the users organisation" do
       let(:report) { create(:report, organisation: user.organisation) }
-
-      context "when the report is inactive" do
-        before { report.update(state: :inactive) }
-
-        it { is_expected.to forbid_action(:create) }
-        it { is_expected.to forbid_action(:show) }
-        it { is_expected.to forbid_action(:download) }
-        it { is_expected.to forbid_action(:change_state) }
-        it { is_expected.to forbid_action(:destroy) }
-        it { is_expected.to forbid_action(:activate) }
-        it { is_expected.to forbid_action(:submit) }
-        it { is_expected.to forbid_action(:review) }
-        it { is_expected.to forbid_action(:request_changes) }
-        it { is_expected.to forbid_action(:approve) }
-        it { is_expected.to forbid_action(:upload) }
-      end
 
       context "when the report is active" do
         before { report.update(state: :active) }

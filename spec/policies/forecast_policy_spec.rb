@@ -7,7 +7,6 @@ RSpec.describe ForecastPolicy do
   before do
     reporting_cycle.tick
     ForecastHistory.new(activity, financial_quarter: 2, financial_year: 2018).set_value(50)
-    report.update!(state: :inactive)
   end
 
   let :forecast do

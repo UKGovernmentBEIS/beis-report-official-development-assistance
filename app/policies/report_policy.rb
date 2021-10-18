@@ -7,7 +7,7 @@ class ReportPolicy < ApplicationPolicy
 
   def show?
     return true if beis_user?
-    return true if record.organisation == user.organisation && record.state.downcase != "inactive"
+    return true if record.organisation == user.organisation
     false
   end
 
@@ -29,8 +29,6 @@ class ReportPolicy < ApplicationPolicy
 
   def change_state?
     case record.state
-    when "inactive"
-      beis_user?
     when "active"
       delivery_partner_user?
     when "submitted"
@@ -53,7 +51,7 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def activate?
-    return change_state? if record.state == "inactive"
+    false
   end
 
   def submit?

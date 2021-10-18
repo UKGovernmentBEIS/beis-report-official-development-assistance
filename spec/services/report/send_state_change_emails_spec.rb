@@ -60,12 +60,4 @@ RSpec.describe Report::SendStateChangeEmails do
       expect(recipients).to match_array((service_owners + delivery_partners).pluck(:email))
     end
   end
-
-  context "when the state is inactive" do
-    let(:state) { "inactive" }
-
-    it "does not send any emails" do
-      expect { subject.send! }.to_not have_enqueued_mail
-    end
-  end
 end

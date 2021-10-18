@@ -21,7 +21,6 @@ class Report < ApplicationRecord
   validates :deadline, date_not_in_past: true, date_within_boundaries: true, on: :edit
 
   enum state: {
-    inactive: "inactive",
     active: "active",
     submitted: "submitted",
     in_review: "in_review",

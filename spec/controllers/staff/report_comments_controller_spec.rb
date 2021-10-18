@@ -30,14 +30,6 @@ RSpec.describe Staff::ReportCommentsController do
         it "responds with a 200" do
           expect(response.status).to eq(200)
         end
-
-        context "when the report is inactive" do
-          let(:report) { build(:report, :inactive, id: SecureRandom.uuid, organisation: user.organisation) }
-
-          it "responds with a 401" do
-            expect(response.status).to eq(401)
-          end
-        end
       end
 
       context "when the report does not belong to the user's organisation" do
