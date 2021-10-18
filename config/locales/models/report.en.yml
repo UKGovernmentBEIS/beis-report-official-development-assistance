@@ -116,6 +116,7 @@ en:
         description: Report description
         fund: Fund (level A)
         organisation: Organisation
+        organisation_id: Delivery partner organisation
         state: State
         deadline: Deadline
         level_a_activity: Fund (level A)
@@ -124,6 +125,7 @@ en:
       report:
         description: Reporting period
         deadline: Deadline
+        fund_id: Fund (level A)
   document_title:
     report:
       index: Reports
@@ -133,6 +135,7 @@ en:
         confirm: Activate %{report_financial_quarter} for %{report_organisation}
         complete: Report activation complete
       index: Reports
+      new: Create a new report
       edit: Edit report
       show: "%{report_financial_quarter} %{report_fund} report"
       submit:
@@ -192,6 +195,8 @@ en:
         failure: Report could not be moved to awaiting changes
       approve:
         failure: Report could not be approved
+      create:
+        success: Report successfully created
       update:
         success: Report successfully updated
       submit:

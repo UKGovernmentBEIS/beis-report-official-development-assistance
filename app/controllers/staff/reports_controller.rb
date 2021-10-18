@@ -35,7 +35,32 @@ class Staff::ReportsController < Staff::BaseController
     end
   end
 
+  def new
+    add_breadcrumb "Reports", :reports_path
+
+    @report = Report.new
+    authorize @report
+  end
+
+  def create
+    add_breadcrumb "Reports", :reports_path
+
+    @report = Report.new
+    authorize @report
+
+    @report.assign_attributes(report_creatable_params.merge(state: "active"))
+    if @report.valid?(:new)
+      @report.save
+      flash[:notice] = t("action.report.create.success")
+      redirect_to reports_path
+    else
+      render :new
+    end
+  end
+
   def edit
+    add_breadcrumb "Reports", :reports_path
+
     @report = Report.find(id)
     authorize @report
 
@@ -43,12 +68,14 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def update
+    add_breadcrumb "Reports", :reports_path
+
     @report = Report.find(id)
     authorize @report
 
     @report_presenter = ReportPresenter.new(@report)
 
-    @report.assign_attributes(report_params)
+    @report.assign_attributes(report_updateable_params)
     if @report.valid?(:edit)
       @report.save
       flash[:notice] = t("action.report.update.success")
@@ -64,7 +91,18 @@ class Staff::ReportsController < Staff::BaseController
     params[:id]
   end
 
-  def report_params
+  def report_creatable_params
+    params.require(:report).permit(
+      :financial_quarter,
+      :financial_year,
+      :fund_id,
+      :organisation_id,
+      :deadline,
+      :description
+    )
+  end
+
+  def report_updateable_params
     params.require(:report).permit(:deadline, :description)
   end
 
