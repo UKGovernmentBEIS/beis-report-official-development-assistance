@@ -70,11 +70,20 @@ RSpec.describe Report, type: :model do
     end
   end
 
-  it "sets the financial_quarter and financial_year when created" do
+  it "sets the financial_quarter and financial_year when created if no values are provided" do
     travel_to(Date.parse("01-04-2020")) do
       report = Report.new
 
       expect(report.financial_quarter).to eql 1
+    end
+  end
+
+  it "uses the provided values for the financial_quarter and financial_year" do
+    travel_to(Date.parse("01-04-2020")) do
+      report = Report.new(financial_quarter: "3", financial_year: "2021")
+
+      expect(report.financial_quarter).to eql 3
+      expect(report.financial_year).to eql 2021
     end
   end
 

@@ -67,8 +67,11 @@ class Report < ApplicationRecord
 
   def initialize(attributes = nil)
     super(attributes)
-    self.financial_quarter = FinancialQuarter.for_date(Date.today).to_i
-    self.financial_year = FinancialYear.for_date(Date.today).to_i
+
+    if financial_quarter.blank? && financial_year.blank?
+      self.financial_quarter = FinancialQuarter.for_date(Date.today).to_i
+      self.financial_year = FinancialYear.for_date(Date.today).to_i
+    end
   end
 
   def editable?
