@@ -6,6 +6,12 @@
       %h1.govuk-heading-xl
         = t("page_title.report.index")
 
+  - if policy(:report).create?
+    .govuk-grid-row
+      .govuk-grid-column-full
+        .govuk-body
+          = link_to "Create a new report", new_report_path, class: "govuk-link"
+
   .govuk-tabs{ data: { module: "govuk-tabs" } }
     = render partial: "staff/shared/reports/tabs"
 

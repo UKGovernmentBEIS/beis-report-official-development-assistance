@@ -875,9 +875,16 @@
 - Show the commitment value on an activity's finance tab
 - Include any commitment in an activity's IATI XML
 
+## [release-82] 2021-10-19
+
+- BEIS users create reports manually
+- Create historical events when creating a refund
+- Ensure all types of comments are displayed against reports and activities
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-81...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-82...HEAD
+[release-82]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-81...release-82
 [release-81]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-80...release-81
 [release-80]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-79...release-80
 [release-79]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-78...release-79

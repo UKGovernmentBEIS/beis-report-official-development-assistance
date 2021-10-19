@@ -18,6 +18,7 @@ RSpec.describe ReportPolicy do
     context "when the report is inactive" do
       before { report.update(state: :inactive) }
 
+      it { is_expected.to permit_action(:create) }
       it { is_expected.to permit_action(:update) }
       it { is_expected.to permit_action(:index) }
       it { is_expected.to permit_action(:show) }
@@ -25,7 +26,6 @@ RSpec.describe ReportPolicy do
       it { is_expected.to permit_action(:change_state) }
       it { is_expected.to permit_action(:activate) }
 
-      it { is_expected.to forbid_action(:create) }
       it { is_expected.to forbid_action(:destroy) }
 
       it { is_expected.to forbid_action(:submit) }
@@ -38,6 +38,7 @@ RSpec.describe ReportPolicy do
     context "when the report is active" do
       before { report.update(state: :active) }
 
+      it { is_expected.to permit_action(:create) }
       it { is_expected.to forbid_action(:change_state) }
       it { is_expected.to forbid_action(:activate) }
       it { is_expected.to forbid_action(:submit) }
@@ -132,6 +133,7 @@ RSpec.describe ReportPolicy do
       context "when the report is inactive" do
         before { report.update(state: :inactive) }
 
+        it { is_expected.to forbid_action(:create) }
         it { is_expected.to forbid_action(:show) }
         it { is_expected.to forbid_action(:download) }
         it { is_expected.to forbid_action(:change_state) }
@@ -147,6 +149,7 @@ RSpec.describe ReportPolicy do
       context "when the report is active" do
         before { report.update(state: :active) }
 
+        it { is_expected.to forbid_action(:create) }
         it { is_expected.to permit_action(:show) }
         it { is_expected.to permit_action(:download) }
         it { is_expected.to permit_action(:change_state) }

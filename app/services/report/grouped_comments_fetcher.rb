@@ -6,7 +6,7 @@ class Report
     end
 
     def all
-      comments.group_by(&:commentable)
+      comments.group_by(&:associated_activity)
     end
 
     private
@@ -18,13 +18,14 @@ class Report
         report.comments.includes(
           owner: [:organisation],
           commentable: [
+            :parent_activity,
             parent: [
               parent: [:parent],
             ],
           ]
         )
       else
-        report.comments.includes(:commentable)
+        report.comments.includes(commentable: [:parent_activity])
       end
     end
   end

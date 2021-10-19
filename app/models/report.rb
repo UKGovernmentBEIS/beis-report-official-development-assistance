@@ -17,6 +17,7 @@ class Report < ApplicationRecord
   has_many :comments
 
   validate :activity_must_be_a_fund
+  validate :no_unapproved_reports_per_series, on: :new
   validates :deadline, date_not_in_past: true, date_within_boundaries: true, on: :edit
 
   enum state: {
@@ -66,8 +67,11 @@ class Report < ApplicationRecord
 
   def initialize(attributes = nil)
     super(attributes)
-    self.financial_quarter = FinancialQuarter.for_date(Date.today).to_i
-    self.financial_year = FinancialYear.for_date(Date.today).to_i
+
+    if financial_quarter.blank? && financial_year.blank?
+      self.financial_quarter = FinancialQuarter.for_date(Date.today).to_i
+      self.financial_year = FinancialYear.for_date(Date.today).to_i
+    end
   end
 
   def editable?
@@ -78,6 +82,17 @@ class Report < ApplicationRecord
     return unless fund.present?
     unless fund.fund?
       errors.add(:fund, I18n.t("activerecord.errors.models.report.attributes.fund.level"))
+    end
+  end
+
+  def no_unapproved_reports_per_series
+    return unless fund.present? && organisation.present?
+
+    unless Report.where(
+      fund: fund,
+      organisation: organisation,
+    ).all?(&:approved?)
+      errors.add(:base, I18n.t("activerecord.errors.models.report.unapproved_reports_html"))
     end
   end
 

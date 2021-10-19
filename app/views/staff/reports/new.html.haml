@@ -1,0 +1,41 @@
+=content_for :page_title_prefix, t("page_title.report.new")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.report.new")
+
+      = form_with model: @report do |f|
+        = f.govuk_error_summary
+
+        = f.govuk_fieldset legend: { text: nil } do
+          .govuk-grid-row
+            .govuk-grid-column-two-thirds
+              = f.govuk_collection_radio_buttons :financial_quarter,
+                list_of_financial_quarters,
+                :id,
+                :name,
+                inline: true,
+                legend: { text: "Financial quarter" , tag: :h2 }
+            .govuk-grid-column-one-third
+              = f.govuk_collection_select :financial_year,
+                list_of_financial_years(FinancialYear.previous_ten),
+                :id,
+                :name,
+                label: { text: "Financial year", tag: :h2, size: "m" }
+
+        = f.govuk_radio_buttons_fieldset :fund_id do
+          - Activity.fund.each do |fund|
+            = f.govuk_radio_button :fund_id, fund.id, label: { text: fund.title }
+
+        = f.govuk_collection_select :organisation_id,
+          list_of_delivery_partners,
+          :id,
+          :name,
+          { include_blank: true }
+
+        = f.govuk_text_field :description
+        = f.govuk_date_field :deadline, legend: {  size: "s" }
+
+        = f.govuk_submit t("default.button.submit")
