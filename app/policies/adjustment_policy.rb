@@ -1,14 +1,14 @@
 class AdjustmentPolicy < ApplicationPolicy
   def new?
     return false if record.parent_activity.level.nil?
-    return true if delivery_partner_user? && active_report_exists?
+    return true if delivery_partner_user? && editable_report_exists?
 
     false
   end
 
   def create?
     return false if record.parent_activity.level.nil?
-    return true if delivery_partner_user? && active_report_exists?
+    return true if delivery_partner_user? && editable_report_exists?
 
     false
   end
@@ -20,12 +20,12 @@ class AdjustmentPolicy < ApplicationPolicy
 
   private
 
-  def active_report_exists?
-    active_report.any?
+  def editable_report_exists?
+    editable_report.present?
   end
 
-  def active_report
-    Report.for_activity(record.parent_activity).where(state: "active")
+  def editable_report
+    Report.editable_for_activity(record.parent_activity)
   end
 
   def activity_is_a_programme?
