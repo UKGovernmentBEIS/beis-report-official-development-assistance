@@ -50,12 +50,7 @@ class Export::SpendingBreakdown
   end
 
   def all_totals_for_activity(activity)
-    Transaction.joins("LEFT OUTER JOIN adjustment_details ON adjustment_details.adjustment_id = transactions.id")
-      .where(parent_activity_id: activity.id)
-      .select(:financial_quarter, :financial_year, :parent_activity_id, :value, :type, "adjustment_details.adjustment_type")
-      .group(:parent_activity_id, :financial_quarter, :financial_year, :type, "adjustment_details.adjustment_type")
-      .order(:parent_activity_id, :financial_quarter, :financial_year)
-      .sum(:value)
+    Export::AllActivityTotals.new(activity: activity).call
   end
 
   def build_columns(totals, activity)
