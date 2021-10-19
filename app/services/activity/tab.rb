@@ -67,8 +67,17 @@ class Activity
     end
 
     def comments
-      @comments = @activity.comments.includes(:report)
+      @comments = comments_with_includes
       @report = Report.editable_for_activity(@activity)
+    end
+
+    def comments_with_includes
+      comments = Comment.for_activity(@activity)
+      if current_user.delivery_partner?
+        comments.includes(:commentable, :owner, :report)
+      else
+        comments.includes(:commentable, :report)
+      end
     end
 
     def transfers

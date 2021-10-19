@@ -28,6 +28,7 @@ en:
         activity_roda_identifier: Activity RODA Identifier
         date: Date
         comment: Comment
+        type: Type
   action:
     comment:
       create:

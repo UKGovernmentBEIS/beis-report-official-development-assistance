@@ -45,6 +45,7 @@ RSpec.describe CreateRefund do
           expect(created_refund.financial_quarter).to eq(1)
           expect(created_refund.financial_year).to eq(2020)
           expect(created_refund.comment.body).to eq("Some words")
+          expect(subject.comment.report).to eq(report)
         end
 
         it "creates historical events" do

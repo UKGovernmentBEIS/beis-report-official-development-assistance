@@ -16,7 +16,7 @@ FactoryBot.define do
     receiving_organisation_type { nil }
 
     after(:create) do |adjustment, _evaluator|
-      create(:comment, commentable: adjustment)
+      create(:comment, commentable: adjustment, report: adjustment.report)
       adjustment.reload
     end
 

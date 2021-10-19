@@ -30,14 +30,14 @@
           %ul.govuk-list.activity_comments
             - @comments.each do |comment|
               - report_presenter = ReportPresenter.new(comment.report)
-              %li
+              %li{id: "comment_#{comment.id}"}
                 %dl.govuk-summary-list
                   .govuk-summary-list__row
                     %dt.govuk-summary-list__key
                       = Comment.model_name.human
                     %dd.govuk-summary-list__value
                       = comment.body
-                      - if policy([:activity, comment]).update?
+                      - if policy([comment.commentable, comment]).update?
                         %span.govuk-body-s
                           (#{a11y_action_link(t("default.link.edit"), edit_activity_comment_path(@activity, comment))})
                   .govuk-summary-list__row
@@ -45,6 +45,11 @@
                       Date
                     %dd.govuk-summary-list__value
                       = I18n.l(comment.created_at.to_date)
+                  .govuk-summary-list__row
+                    %dt.govuk-summary-list__key
+                      Type
+                    %dd.govuk-summary-list__value
+                      = comment.commentable_type
                   .govuk-summary-list__row
                     %dt.govuk-summary-list__key
                       Comment reported in

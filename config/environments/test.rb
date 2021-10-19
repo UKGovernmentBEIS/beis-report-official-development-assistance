@@ -89,6 +89,7 @@ Rails.application.configure do
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Report", association: :fund
     Bullet.add_safelist type: :unused_eager_loading, class_name: "Budget", association: :providing_organisation
     Bullet.add_safelist type: :unused_eager_loading, class_name: "HistoricalEvent", association: :report
+    Bullet.add_safelist type: :unused_eager_loading, class_name: "Activity", association: :parent_activity
   end
 
   config.hosts = [
