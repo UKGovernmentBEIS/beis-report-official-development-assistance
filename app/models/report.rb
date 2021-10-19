@@ -6,6 +6,7 @@ class Report < ApplicationRecord
   attr_readonly :financial_quarter, :financial_year
 
   validates_presence_of :state
+  validates_presence_of :financial_quarter, :financial_year, on: :new
 
   belongs_to :fund, -> { where(level: :fund) }, class_name: "Activity"
   belongs_to :organisation
@@ -62,15 +63,6 @@ class Report < ApplicationRecord
 
   def self.editable_for_activity(activity)
     editable.for_activity(activity).first
-  end
-
-  def initialize(attributes = nil)
-    super(attributes)
-
-    if financial_quarter.blank? && financial_year.blank?
-      self.financial_quarter = FinancialQuarter.for_date(Date.today).to_i
-      self.financial_year = FinancialYear.for_date(Date.today).to_i
-    end
   end
 
   def editable?
