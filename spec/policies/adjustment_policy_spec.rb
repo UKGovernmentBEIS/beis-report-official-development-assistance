@@ -170,6 +170,20 @@ RSpec.describe AdjustmentPolicy do
               end
             end
 
+            context "when the report is in an editable state" do
+              Report::EDITABLE_STATES.each do |state|
+                before { report.update(state: state) }
+
+                it "applies the expected controls when report in #{state} state" do
+                  aggregate_failures do
+                    is_expected.to permit_action(:show)
+                    is_expected.to permit_action(:new)
+                    is_expected.to permit_action(:create)
+                  end
+                end
+              end
+            end
+
             context "when the report is the one in which the transaction was created" do
               before do
                 adjustment.update(report: report)
