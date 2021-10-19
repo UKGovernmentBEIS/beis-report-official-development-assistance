@@ -1,6 +1,7 @@
 class Export::ActivityForecastColumns
-  def initialize(activities:)
+  def initialize(activities:, report: nil)
     @activities = activities
+    @report = report
   end
 
   def headers
@@ -32,8 +33,13 @@ class Export::ActivityForecastColumns
   end
 
   def forecasts
-    overview = ForecastOverview.new(activity_ids)
-    @_forecasts ||= overview.latest_values
+    @_forecasts ||= begin
+      if @report.nil?
+        ForecastOverview.new(activity_ids).latest_values
+      else
+        ForecastOverview.new(activity_ids).snapshot(@report).all_quarters.as_records
+      end
+    end
   end
 
   def forecasts_to_hash
@@ -51,7 +57,11 @@ class Export::ActivityForecastColumns
     @_forecast_quarter_range ||= begin
       return [] if all_financial_quarters_with_forecasts.blank?
 
-      Range.new(all_financial_quarters_with_forecasts.min, all_financial_quarters_with_forecasts.max)
+      if @report.nil?
+        Range.new(all_financial_quarters_with_forecasts.min, all_financial_quarters_with_forecasts.max)
+      else
+        Range.new(report_financial_quarter(@report), all_financial_quarters_with_forecasts.max)
+      end
     end
   end
 

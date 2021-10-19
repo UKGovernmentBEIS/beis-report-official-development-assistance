@@ -3,60 +3,195 @@ RSpec.describe Export::ActivityForecastColumns do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
     @activity = create(:project_activity)
-    @organisation = create(:delivery_partner_organisation, beis_organisation_reference: "BC")
-    @source_fund = Fund.new(1)
     other_activities = create_list(:project_activity, 4)
 
     @activities = [@activity] + other_activities
 
-    create_old_report_and_forecasts
+    q1_2018_report = create(
+      :report,
+      :approved,
+      organisation: @activity.organisation,
+      fund: @activity.associated_fund,
+      financial_quarter: 1,
+      financial_year: 2018
+    )
+    forecasts_for_report_from_table(q1_2018_report,
+      <<~TABLE
+        |financial_quarter|financial_year|value|
+        |4                |2018          | 5000|
+        |1                |2020          |10000|
+        |4                |2020          | 5000|
+        |1                |2021          |40000|
+        |4                |2021          |20000|
+      TABLE
+    )
+
+    q1_2019_report = create(
+      :report,
+      :approved,
+      organisation: @activity.organisation,
+      fund: @activity.associated_fund,
+      financial_quarter: 1,
+      financial_year: 2019
+    )
+    forecasts_for_report_from_table(q1_2019_report,
+      <<~TABLE
+        |financial_quarter|financial_year|value|
+        |1                |2020          | 5000|
+        |4                |2020          | 2500|
+        |1                |2021          |20000|
+        |4                |2021          |10000|
+      TABLE
+    )
+
+    q4_2019_report = create(
+      :report,
+      :approved,
+      organisation: @activity.organisation,
+      fund: @activity.associated_fund,
+      financial_quarter: 4,
+      financial_year: 2019
+    )
+    forecasts_for_report_from_table(q4_2019_report,
+      <<~TABLE
+        |financial_quarter|financial_year|value|
+        |1                |2020          |10000|
+        |4                |2020          | 5000|
+        |1                |2021          |40000|
+        |4                |2021          |20000|
+      TABLE
+    )
   end
 
   after(:all) do
     DatabaseCleaner.clean
   end
 
-  subject { Export::ActivityForecastColumns.new(activities: @activities) }
+  subject { Export::ActivityForecastColumns.new(activities: @activities, report: report) }
 
-  let(:attributes) { [:roda_identifier, :delivery_partner_identifier] }
+  context "when passed a report AND a starting_financial_quarter" do
+    let(:report) { build(:report) }
+    let(:starting_financial_quarter) { FinancialYear.new }
 
-  describe "#headers" do
-    it "includes the heading that describe the finances for the future financial quarter FQ1 2021-2022" do
-      expect(subject.headers).to include(
-        "Forecast FQ1 2021-2022",
-      )
-    end
-
-    it "includes the heading that describe the finances for the future financial quarter FQ4 2021-2022" do
-      expect(subject.headers).to include(
-        "Forecast FQ4 2021-2022",
-      )
-    end
-
-    it "includes the headings that describe the finances for the future financial quarters inbetween" do
-      expect(subject.headers).to include(
-        "Forecast FQ2 2021-2022",
-        "Forecast FQ3 2021-2022",
-      )
+    it "raises an argument error" do
+      expect { subject }.to raise_error ArgumentError
     end
   end
 
-  describe "#rows" do
-    it "contains the financial data for financial quarter 1 2021-2022" do
-      expect(value_for_header("Forecast FQ1 2021-2022").to_s).to eql("20000.0")
+  context "when a report is not passed in" do
+    let(:report) { nil }
+
+    describe "#headers" do
+      it "includes the heading that describe the finances for the earliest forecast" do
+        expect(subject.headers).to include("Forecast FQ4 2018-2019")
+      end
+
+      it "includes the heading that describe the finances for financial quarter FQ1 2021-2022" do
+        expect(subject.headers).to include(
+          "Forecast FQ1 2021-2022",
+        )
+      end
+
+      it "includes the heading that describe the finances for financial quarter FQ4 2021-2022" do
+        expect(subject.headers).to include(
+          "Forecast FQ4 2021-2022",
+        )
+      end
+
+      it "includes the headings that describe the finances for financial quarters inbetween" do
+        expect(subject.headers).to include(
+          "Forecast FQ2 2021-2022",
+          "Forecast FQ3 2021-2022",
+        )
+      end
     end
 
-    it "contains the financial data for financial quarter 4 2021-2022" do
-      expect(value_for_header("Forecast FQ4 2021-2022").to_s).to eql("10000.0")
+    describe "#rows" do
+      it "contains the financial data for earliest financial quarter" do
+        expect(value_for_header("Forecast FQ4 2018-2019").to_s).to eql("5000.0")
+      end
+
+      it "contains the financial data for financial quarter 1 2021-2022" do
+        expect(value_for_header("Forecast FQ1 2021-2022").to_s).to eql("40000.0")
+      end
+
+      it "contains the financial data for financial quarter 4 2021-2022" do
+        expect(value_for_header("Forecast FQ4 2021-2022").to_s).to eql("20000.0")
+      end
+
+      it "contains a zero for the financial quarters inbetween in which there are no forecasts" do
+        expect(value_for_header("Forecast FQ2 2021-2022").to_s).to eql "0"
+        expect(value_for_header("Forecast FQ3 2021-2022").to_s).to eql "0"
+      end
+
+      it "includes a row for each acitvity" do
+        expect(subject.rows.count).to eq(5)
+      end
     end
 
-    it "contains a zero for the financial quarters inbetween in which there are no forecasts" do
-      expect(value_for_header("Forecast FQ2 2021-2022").to_s).to eql "0"
-      expect(value_for_header("Forecast FQ3 2021-2022").to_s).to eql "0"
+    context "when there are no activities" do
+      subject { Export::ActivityForecastColumns.new(activities: []) }
+
+      it "returns an empty array" do
+        expect(subject.headers).to eql []
+        expect(subject.rows).to eql []
+      end
+    end
+  end
+
+  context "when a report is passed in" do
+    let(:report) { create(:report, financial_quarter: 1, financial_year: 2019) }
+
+    describe "#headers" do
+      it "incudes the heading that describe the finances for the finnacial quarter of the report" do
+        expect(subject.headers).to include("Forecast FQ2 2019-2020")
+      end
+
+      it "includes the heading that describe the finances for financial quarter FQ1 2021-2022" do
+        expect(subject.headers).to include(
+          "Forecast FQ1 2021-2022",
+        )
+      end
+
+      it "includes the heading that describe the finances for financial quarter FQ4 2021-2022" do
+        expect(subject.headers).to include(
+          "Forecast FQ4 2021-2022",
+        )
+      end
+
+      it "includes the headings that describe the finances for financial quarters inbetween" do
+        expect(subject.headers).to include(
+          "Forecast FQ2 2021-2022",
+          "Forecast FQ3 2021-2022",
+        )
+      end
+
+      it "contains the the forecast for Q1 2021-2022 as provided in the given report" do
+        expect(subject.headers).not_to include("Forecast FQ4 2018-2019")
+      end
     end
 
-    it "includes a row for each acitvity" do
-      expect(subject.rows.count).to eq(5)
+    describe "#rows" do
+      it "contains the financial data for financial quarter of the report" do
+        expect(value_for_header("Forecast FQ1 2019-2020").to_s).to eql("0")
+      end
+
+      it "contains the financial data for financial quarter 1 2021-2022" do
+        expect(value_for_header("Forecast FQ1 2021-2022").to_s).to eql("20000.0")
+      end
+
+      it "contains the financial data for financial quarter 4 2021-2022" do
+        expect(value_for_header("Forecast FQ4 2021-2022").to_s).to eql("10000.0")
+      end
+
+      it "contains a zero for the financial quarters inbetween in which there are no forecasts" do
+        expect(value_for_header("Forecast FQ2 2021-2022").to_s).to eql "0"
+        expect(value_for_header("Forecast FQ3 2021-2022").to_s).to eql "0"
+      end
+
+      it "includes a row for each acitvity" do
+        expect(subject.rows.count).to eq(5)
+      end
     end
 
     context "when there are no activities" do
@@ -74,22 +209,14 @@ RSpec.describe Export::ActivityForecastColumns do
     values[subject.headers.index(header_name)]
   end
 
-  def create_old_report_and_forecasts
-    report = create(
-      :report,
-      :approved,
-      organisation: @organisation,
-      fund: @activity.associated_fund,
-      financial_quarter: 1,
-      financial_year: 2019
-    )
-    ForecastHistory.new(@activity, report: report, financial_quarter: 1, financial_year: 2020)
-      .set_value(5_000)
-    ForecastHistory.new(@activity, report: report, financial_quarter: 4, financial_year: 2020)
-      .set_value(2_500)
-    ForecastHistory.new(@activity, report: report, financial_quarter: 1, financial_year: 2021)
-      .set_value(20_000)
-    ForecastHistory.new(@activity, report: report, financial_quarter: 4, financial_year: 2021)
-      .set_value(10_000)
+  def forecasts_for_report_from_table(report, table)
+    CSV.parse(table, col_sep: "|", headers: true).each do |row|
+      ForecastHistory.new(
+        @activity,
+        report: report,
+        financial_quarter: row["financial_quarter"].to_i,
+        financial_year: row["financial_year"].to_i,
+      ).set_value(row["value"].to_i)
+    end
   end
 end
