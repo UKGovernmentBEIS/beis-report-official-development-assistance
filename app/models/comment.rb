@@ -1,7 +1,7 @@
 class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
   belongs_to :owner, class_name: "User", optional: true
-  belongs_to :report, optional: true
+  belongs_to :report
 
   before_create :set_commentable_type
 

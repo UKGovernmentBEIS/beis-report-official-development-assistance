@@ -4,7 +4,7 @@ RSpec.describe Comment, type: :model do
   describe "associations" do
     it { should belong_to(:commentable) }
     it { should belong_to(:owner).class_name("User").optional(true) }
-    it { should belong_to(:report).optional(true) }
+    it { should belong_to(:report) }
   end
 
   describe "validations" do
