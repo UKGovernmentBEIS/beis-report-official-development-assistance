@@ -55,7 +55,7 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
     authorize [:export, @organisation], :show_spending_breakdown?
 
     fund = Fund.new(params[:fund_id])
-    export = SpendingBreakdown::Export.new(organisation: @organisation, source_fund: fund)
+    export = Export::SpendingBreakdown.new(organisation: @organisation, source_fund: fund)
 
     render_csv_export(export)
   end

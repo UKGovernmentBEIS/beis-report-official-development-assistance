@@ -1,4 +1,4 @@
-class SpendingBreakdown::Export
+class Export::SpendingBreakdown
   HEADERS = [
     "RODA identifier",
     "Delivery partner identifier",
