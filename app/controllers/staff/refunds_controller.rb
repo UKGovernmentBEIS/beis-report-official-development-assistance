@@ -22,7 +22,11 @@ class Staff::RefundsController < Staff::ActivitiesController
 
     return render :new unless @refund.valid?
 
-    CreateRefund.new(activity: @activity).call(attributes: @refund.attributes)
+    CreateRefund.new(
+      activity: @activity,
+      user: current_user
+    ).call(attributes: @refund.attributes)
+
     flash[:notice] = t("action.refund.create.success")
     redirect_to organisation_activity_path(@activity.organisation, @activity)
   end

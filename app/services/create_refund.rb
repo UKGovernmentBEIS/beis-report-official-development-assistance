@@ -1,10 +1,11 @@
 class CreateRefund
   class Error < StandardError; end
 
-  attr_accessor :activity, :report, :refund
+  attr_accessor :activity, :report, :refund, :user
 
-  def initialize(activity:)
+  def initialize(activity:, user:)
     self.activity = activity
+    self.user = user
     self.refund = Refund.new
   end
 
@@ -15,6 +16,8 @@ class CreateRefund
     refund.save
 
     raise Error, validation_error_message(refund) if refund.errors.any?
+
+    record_historical_event(refund)
 
     refund
   end
@@ -36,5 +39,24 @@ class CreateRefund
     raise Error, "There is no editable report for this activity" unless report
 
     report
+  end
+
+  def record_historical_event(refund)
+    HistoryRecorder.new(user: user).call(
+      changes: changes_to_tracked_attributes(refund),
+      reference: "Creation of Refund",
+      activity: refund.parent_activity,
+      trackable: refund,
+      report: refund.report
+    )
+  end
+
+  def changes_to_tracked_attributes(refund)
+    {
+      value: [nil, refund.value],
+      financial_quarter: [nil, refund.financial_quarter],
+      financial_year: [nil, refund.financial_year],
+      comment: [nil, refund.comment.body],
+    }
   end
 end
