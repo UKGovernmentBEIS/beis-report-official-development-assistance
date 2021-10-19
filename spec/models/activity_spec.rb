@@ -111,6 +111,26 @@ RSpec.describe Activity, type: :model do
         expect(reportable_activities).to_not include(ineligible_project)
       end
     end
+
+    describe ".comments" do
+      it "fetches comments related to a given activity" do
+        activity = create(:project_activity)
+        refund = create(:refund, parent_activity: activity)
+        adjustment = create(:adjustment, parent_activity: activity)
+
+        activity_comment = create(:comment, commentable: activity)
+
+        _comments = create_list(:comment, 5)
+        _refunds = create_list(:refund, 2)
+        _adjustments = create_list(:adjustment, 2)
+
+        expect(activity.comments).to match_array([
+          activity_comment,
+          refund.comment,
+          adjustment.comment,
+        ])
+      end
+    end
   end
 
   describe "sanitisation" do
@@ -615,7 +635,6 @@ RSpec.describe Activity, type: :model do
     it { should have_many(:matched_efforts) }
     it { should have_many(:external_incomes) }
     it { should have_many(:historical_events) }
-    it { should have_many(:comments).with_foreign_key("commentable_id") }
     it { should have_one(:commitment) }
   end
 

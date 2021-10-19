@@ -45,4 +45,24 @@ RSpec.describe Comment, type: :model do
       it { is_expected.to eq(comment.commentable.parent_activity) }
     end
   end
+
+  describe ".for_activity" do
+    it "fetches comments related to a given activity" do
+      activity = create(:project_activity)
+      refund = create(:refund, parent_activity: activity)
+      adjustment = create(:adjustment, parent_activity: activity)
+
+      activity_comment = create(:comment, commentable: activity)
+
+      _comments = create_list(:comment, 5)
+      _refunds = create_list(:refund, 2)
+      _adjustments = create_list(:adjustment, 2)
+
+      expect(Comment.for_activity(activity)).to match_array([
+        activity_comment,
+        refund.comment,
+        adjustment.comment,
+      ])
+    end
+  end
 end
