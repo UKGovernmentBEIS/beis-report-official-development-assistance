@@ -879,6 +879,7 @@
 
 - BEIS users create reports manually
 - Create historical events when creating a refund
+- Ensure all types of comments are displayed against reports and activities
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-81...HEAD
 [release-81]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-80...release-81
