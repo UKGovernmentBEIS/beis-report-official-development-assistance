@@ -28,33 +28,6 @@ RSpec.feature "Users can approve reports" do
       end
     end
 
-    scenario "a new report is created for the delivery partner and level A activity" do
-      organisation = create(:delivery_partner_organisation)
-      fund = create(:fund_activity)
-      _approved_report = create(:report, state: :approved, organisation: organisation, fund: fund)
-      report = create(:report, state: :in_review, organisation: organisation, fund: fund)
-
-      travel_to Date.parse("2019-7-1") do
-        visit report_path(report)
-        click_link t("action.report.approve.button")
-        click_button t("action.report.approve.confirm.button")
-
-        expect(report.reload.state).to eql "approved"
-
-        expect(Report.where(state: :inactive, organisation: report.organisation, fund: report.fund).count).to eql 1
-
-        new_report = Report.where(state: :inactive, organisation: report.organisation, fund: report.fund).first
-
-        visit reports_path
-
-        within "##{new_report.id}" do
-          expect(page).to have_content new_report.organisation.name
-          expect(page).to have_content new_report.fund.source_fund.short_name
-          expect(page).to have_content "Q2 2019-2020"
-        end
-      end
-    end
-
     context "when the report is already approved" do
       scenario "it cannot be approved" do
         report = create(:report, state: :approved)

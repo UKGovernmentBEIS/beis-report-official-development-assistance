@@ -12,7 +12,7 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def create?
-    false
+    beis_user?
   end
 
   def edit?

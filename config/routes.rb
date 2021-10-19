@@ -57,7 +57,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :reports, only: [:show, :edit, :update, :index] do
+    resources :reports, only: [:new, :create, :show, :edit, :update, :index] do
       resource :state, only: [:edit, :update], controller: :reports_state
       resource :activity_upload, only: [:new, :show, :update]
       resource :forecast_upload, only: [:new, :show, :update]
