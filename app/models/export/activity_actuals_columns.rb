@@ -2,6 +2,7 @@ class Export::ActivityActualsColumns
   def initialize(activities:, include_breakdown: false, report: nil)
     @activities = activities
     @include_breakdown = include_breakdown
+    @report = report
   end
 
   def headers
@@ -54,12 +55,21 @@ class Export::ActivityActualsColumns
     Export::AllActivityTotals.new(activity: activity).call
   end
 
+  def reports_up_to(report)
+    return if report.nil?
+    Report.historically_up_to(report).pluck(:id)
+  end
+
   def actual_spend
-    @_actual_spend ||= Actual.where(parent_activity_id: activity_ids)
+    actual_spend_scope = Actual.where(parent_activity_id: activity_ids)
+    actual_spend_scope = actual_spend_scope.where(report_id: reports_up_to(@report)) unless @report.nil?
+    @_actual_spend ||= actual_spend_scope
   end
 
   def refunds
-    @_refunds ||= Refund.where(parent_activity_id: activity_ids)
+    refund_scope = Refund.where(parent_activity_id: activity_ids)
+    refund_scope = refund_scope.where(report_id: reports_up_to(@report)) unless @report.nil?
+    @_refunds ||= refund_scope
   end
 
   def activity_ids
