@@ -2,9 +2,14 @@ require "rails_helper"
 
 RSpec.describe Report, type: :model do
   describe "validations" do
-    it { should validate_presence_of(:state) }
-    it { should have_readonly_attribute(:financial_quarter) }
-    it { should have_readonly_attribute(:financial_year) }
+    it "should be valid in all contexts" do
+      should validate_presence_of(:state)
+
+      should have_readonly_attribute(:financial_quarter)
+      should have_readonly_attribute(:financial_year)
+
+      should validate_inclusion_of(:financial_quarter).in_array((1..4).to_a)
+    end
 
     context "in the :new validation context" do
       it "validates there are no unapproved reports for the organisation and fund" do

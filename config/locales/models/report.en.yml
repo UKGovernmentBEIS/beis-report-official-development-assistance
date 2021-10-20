@@ -238,4 +238,6 @@ en:
             deadline:
               not_in_past: The deadline must be a date in the future
               between: Date must be between %{min} years ago and %{max} years in the future
+            financial_quarter:
+              inclusion: Enter a financial quarter between 1 and 4
           unapproved_reports_html: "Cannot create new report: There is an unapproved report for the same delivery partner organisation and fund. Previous reports must be approved before creating a new report."

@@ -7,6 +7,7 @@ class Report < ApplicationRecord
 
   validates_presence_of :state
   validates_presence_of :financial_quarter, :financial_year, on: :new
+  validates :financial_quarter, inclusion: {in: 1..4}, if: :financial_quarter
 
   belongs_to :fund, -> { where(level: :fund) }, class_name: "Activity"
   belongs_to :organisation
