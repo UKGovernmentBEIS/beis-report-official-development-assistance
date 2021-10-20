@@ -20,7 +20,7 @@ RSpec.describe StubController, type: :controller do
   end
 
   context "when the report is approved" do
-    let(:report) { build(:report, state: :approved) }
+    let(:report) { build(:report, :approved) }
 
     describe "#prepare_default_report_trail" do
       it "adds the approved reports path to the breadcrumbs" do
@@ -51,7 +51,7 @@ RSpec.describe StubController, type: :controller do
   end
 
   context "when the report is current" do
-    let(:report) { build(:report, state: :active) }
+    let(:report) { build(:report, :active) }
 
     describe "#prepare_default_report_trail" do
       it "adds the current reports path to the breadcrumbs" do

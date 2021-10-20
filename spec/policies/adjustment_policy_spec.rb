@@ -5,7 +5,7 @@ RSpec.describe AdjustmentPolicy do
     create(:adjustment, parent_activity: activity, report: report)
   end
 
-  let(:report) { create(:report, state: :active) }
+  let(:report) { create(:report, :active) }
 
   subject { described_class.new(user, adjustment) }
 
@@ -29,7 +29,7 @@ RSpec.describe AdjustmentPolicy do
       let(:activity) { create(:programme_activity, organisation: user.organisation) }
       let(:report) do
         fund = activity.associated_fund
-        create(:report, fund: fund, organisation: activity.organisation)
+        create(:report, :active, fund: fund, organisation: activity.organisation)
       end
 
       it "applies the expected controls" do
@@ -114,7 +114,7 @@ RSpec.describe AdjustmentPolicy do
         end
 
         context "when there is no active report" do
-          let(:report) { create(:report, state: :approved) }
+          let(:report) { create(:report, :approved) }
 
           it "applies the expected controls" do
             aggregate_failures do
@@ -127,7 +127,7 @@ RSpec.describe AdjustmentPolicy do
         end
 
         context "when there is an active report" do
-          let(:report) { create(:report, state: :active) }
+          let(:report) { create(:report, :active) }
 
           context "and the report is not for the organisation or fund of the activity" do
             it "applies the expected controls" do

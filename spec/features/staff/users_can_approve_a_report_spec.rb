@@ -30,7 +30,7 @@ RSpec.feature "Users can approve reports" do
 
     context "when the report is already approved" do
       scenario "it cannot be approved" do
-        report = create(:report, state: :approved)
+        report = create(:report, :approved)
 
         visit report_path(report)
 

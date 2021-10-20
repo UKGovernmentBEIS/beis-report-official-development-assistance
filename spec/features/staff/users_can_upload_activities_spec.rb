@@ -6,7 +6,7 @@ RSpec.feature "users can upload activities" do
 
   let!(:report) do
     create(:report,
-      state: :active,
+      :active,
       fund: programme.associated_fund,
       organisation: organisation)
   end
@@ -164,7 +164,7 @@ RSpec.feature "users can upload activities" do
         create(:implementing_organisation, activity: activity),
       ]
     }
-    create(:report, state: :active, fund: activity_to_update.associated_fund, organisation: organisation)
+    create(:report, :active, fund: activity_to_update.associated_fund, organisation: organisation)
 
     upload_csv <<~CSV
       RODA ID                               | Title     | Channel of delivery code                       | Sector | Benefitting Countries |
@@ -203,7 +203,7 @@ RSpec.feature "users can upload activities" do
         create(:implementing_organisation, activity: activity),
       ]
     }
-    create(:report, state: :active, fund: activity_to_update.associated_fund, organisation: organisation)
+    create(:report, :active, fund: activity_to_update.associated_fund, organisation: organisation)
 
     upload_csv <<~CSV
       RODA ID                               | Title     | Channel of delivery code                       | Sector | Delivery Partner Identifier |

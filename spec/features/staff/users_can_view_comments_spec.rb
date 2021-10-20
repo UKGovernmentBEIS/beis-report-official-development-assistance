@@ -8,7 +8,7 @@ RSpec.feature "Users can view comments on an activity page" do
 
     scenario "they can view all comments associated with an activity" do
       activity = create(:project_activity, organisation: user.organisation)
-      report = create(:report, fund: activity.associated_fund, organisation: user.organisation)
+      report = create(:report, :active, fund: activity.associated_fund, organisation: user.organisation)
 
       comment = create(:comment, commentable: activity, report: report, owner: user)
       adjustment = create(:adjustment, parent_activity: activity, report: report)

@@ -78,7 +78,7 @@ RSpec.describe "Users can create a forecast" do
       fund = create(:fund_activity)
       programme = create(:programme_activity, parent: fund, extending_organisation: user.organisation)
       project = create(:project_activity, organisation: user.organisation, parent: programme)
-      report = create(:report, fund: fund, organisation: project.organisation)
+      report = create(:report, :active, fund: fund, organisation: project.organisation)
 
       visit activities_path
 

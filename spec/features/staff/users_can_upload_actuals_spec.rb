@@ -8,7 +8,7 @@ RSpec.feature "users can upload actuals" do
 
   let! :report do
     create(:report,
-      state: :active,
+      :active,
       fund: project.associated_fund,
       organisation: organisation)
   end

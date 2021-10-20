@@ -10,7 +10,7 @@ RSpec.feature "Users can edit an actual" do
     before { authenticate!(user: user) }
     let(:user) { create(:beis_user) }
     let!(:activity) { create(:programme_activity, organisation: user.organisation) }
-    let(:report) { create(:report, organisation: user.organisation, fund: activity.associated_fund) }
+    let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
     let!(:actual) { create(:actual, parent_activity: activity, report: report) }
 
     scenario "editing a actual on a programme" do

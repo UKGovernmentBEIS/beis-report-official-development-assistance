@@ -111,7 +111,7 @@ RSpec.feature "BEIS users can edit a report" do
     let(:delivery_partner_user) { create(:delivery_partner_user) }
 
     scenario "they cannot edit a Report" do
-      report = create(:report, state: :active, organisation: delivery_partner_user.organisation)
+      report = create(:report, :active, organisation: delivery_partner_user.organisation)
 
       authenticate!(user: delivery_partner_user)
 

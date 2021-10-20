@@ -15,7 +15,7 @@ RSpec.feature "Users can create a project" do
 
       scenario "a new project can be added to the programme" do
         programme = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
-        report = create(:report, state: :active, organisation: user.organisation, fund: programme.associated_fund)
+        report = create(:report, :active, organisation: user.organisation, fund: programme.associated_fund)
 
         activity = build(:project_activity, :newton_funded,
           country_delivery_partners: ["National Council for the State Funding Agencies (CONFAP)"],
@@ -78,7 +78,7 @@ RSpec.feature "Users can create a project" do
       scenario "can create a new child activity for a given programme" do
         gcrf = create(:fund_activity, :gcrf)
         programme = create(:programme_activity, parent: gcrf, extending_organisation: user.organisation)
-        _report = create(:report, fund: gcrf, organisation: user.organisation)
+        _report = create(:report, :active, fund: gcrf, organisation: user.organisation)
 
         visit organisation_activity_path(programme.organisation, programme)
 

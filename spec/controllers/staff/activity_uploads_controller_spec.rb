@@ -46,7 +46,7 @@ RSpec.describe Staff::ActivityUploadsController do
   end
 
   describe "#update" do
-    let(:report) { create(:report, organisation: organisation, state: :active) }
+    let(:report) { create(:report, :active, organisation: organisation) }
     let(:file_upload) { "file upload double" }
     let(:uploaded_rows) { double("uploaded rows") }
     let(:upload) { instance_double(CsvFileUpload, rows: uploaded_rows, valid?: true) }

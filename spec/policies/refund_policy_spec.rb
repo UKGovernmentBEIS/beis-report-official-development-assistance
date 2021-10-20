@@ -136,7 +136,7 @@ RSpec.describe RefundPolicy do
         end
 
         context "when there is no editable report" do
-          let(:report) { create(:report, state: :approved) }
+          let(:report) { create(:report, :approved) }
 
           it "controls actions as expected" do
             aggregate_failures do
@@ -151,7 +151,7 @@ RSpec.describe RefundPolicy do
         end
 
         context "when there is an editable report" do
-          let(:report) { create(:report, state: :active) }
+          let(:report) { create(:report, :active) }
 
           context "and the report is not for the organisation or fund of the activity" do
             it "controls actions as expected" do

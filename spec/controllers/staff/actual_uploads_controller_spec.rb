@@ -70,7 +70,7 @@ RSpec.describe Staff::ActualUploadsController do
   end
 
   describe "#show" do
-    let(:report) { create(:report, organisation: organisation, state: :active, fund: fund) }
+    let(:report) { create(:report, :active, organisation: organisation, fund: fund) }
 
     let!(:fund) { create(:fund_activity, roda_identifier: "A") }
     let!(:programme_a) { create(:programme_activity, parent: fund, roda_identifier: "A-A", created_at: rand(0..60).minutes.ago) }
