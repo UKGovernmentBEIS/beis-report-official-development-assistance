@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe ExternalIncomePolicy do
   subject { described_class.new(user, external_income) }
 
-  let!(:report) { create(:report, organisation: user.organisation, fund: activity.associated_fund, state: :approved) }
+  let!(:report) { create(:report, :approved, organisation: user.organisation, fund: activity.associated_fund) }
   let(:external_income) { build_stubbed(:external_income, activity: activity) }
 
   context "as a user that belongs to BEIS" do

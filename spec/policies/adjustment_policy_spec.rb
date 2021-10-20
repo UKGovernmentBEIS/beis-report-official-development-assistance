@@ -114,7 +114,7 @@ RSpec.describe AdjustmentPolicy do
         end
 
         context "when there is no active report" do
-          let(:report) { create(:report, state: :approved) }
+          let(:report) { create(:report, :approved) }
 
           it "applies the expected controls" do
             aggregate_failures do

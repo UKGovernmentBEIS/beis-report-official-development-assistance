@@ -1449,7 +1449,7 @@ RSpec.describe Activity, type: :model do
 
       context "when there are versions of level C/D forecasts in older reports" do
         let(:project) { programme1_projects[0] }
-        let(:old_report) { create(:report, organisation: project.organisation, fund: project.associated_fund, state: :approved, **quarter.pred.pred) }
+        let(:old_report) { create(:report, :approved, organisation: project.organisation, fund: project.associated_fund, **quarter.pred.pred) }
 
         before do
           ForecastHistory.new(project, report: old_report, **quarter).set_value(70)

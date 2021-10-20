@@ -111,7 +111,7 @@ RSpec.feature "Users can view forecasts in tab within a report" do
 
     context "report is in a state where upload is not permissable" do
       scenario "the upload facility is not present" do
-        report = create(:report, state: :approved, organisation: organisation, description: nil)
+        report = create(:report, :approved, organisation: organisation, description: nil)
 
         visit report_path(report.id)
 

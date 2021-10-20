@@ -9,7 +9,7 @@ RSpec.describe Report::OrganisationReportsFetcher do
     subject { fetcher.approved }
 
     it "returns approved reports for an organisation" do
-      approved_reports = build_list(:report, 3, organisation: organisation, state: :approved)
+      approved_reports = build_list(:report, 3, :approved, organisation: organisation)
 
       approved_relation_double = double(ActiveRecord::Relation, "[]": approved_reports)
 

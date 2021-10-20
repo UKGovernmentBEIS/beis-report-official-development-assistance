@@ -48,7 +48,7 @@ RSpec.describe Report, type: :model do
     let!(:project_in_another_fund) { create(:project_activity, organisation: organisation) }
 
     let! :approved_report do
-      create(:report, fund: project.associated_fund, organisation: organisation, state: :approved)
+      create(:report, :approved, fund: project.associated_fund, organisation: organisation)
     end
 
     let! :report_for_another_fund do

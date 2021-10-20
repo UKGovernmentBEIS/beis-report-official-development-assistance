@@ -92,7 +92,7 @@ RSpec.describe ActualPolicy do
         end
 
         context "when there is no editable report" do
-          let(:report) { create(:report, state: :approved) }
+          let(:report) { create(:report, :approved) }
 
           it { is_expected.to permit_action(:show) }
 
