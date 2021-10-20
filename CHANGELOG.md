@@ -884,6 +884,7 @@
 ## [unreleased]
 
 - Budgets can be added in the past, back to 2010
+- List organisations sorted alphabetically on the Organisations and Reports pages
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-82...HEAD
 [release-82]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-81...release-82
