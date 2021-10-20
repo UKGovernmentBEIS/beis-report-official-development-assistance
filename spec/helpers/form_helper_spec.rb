@@ -40,4 +40,11 @@ RSpec.describe FormHelper, type: :helper do
       ])
     end
   end
+
+  describe "#list_of_budget_financial_years" do
+    it "returns the values in the correct format" do
+      expect(helper.list_of_budget_financial_years.first.id).to eq 2010
+      expect(helper.list_of_budget_financial_years.first.name).to eq "2010-2011"
+    end
+  end
 end

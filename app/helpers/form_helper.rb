@@ -36,6 +36,13 @@ module FormHelper
     @list_of_financial_years ||= years.map { |year| OpenStruct.new(id: year.to_i, name: year.to_s) }
   end
 
+  def list_of_budget_financial_years
+    @list_of_budget_financial_years =
+      FinancialYear.from_twenty_ten_to_ten_years_ahead.map { |fy|
+        OpenStruct.new(id: fy.to_i, name: fy.to_s)
+      }
+  end
+
   def user_active_options
     [
       OpenStruct.new(id: "true", name: t("form.user.active.active")),
