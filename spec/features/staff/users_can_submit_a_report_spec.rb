@@ -10,7 +10,7 @@ RSpec.feature "Users can submit a report" do
 
     context "when the report is active" do
       scenario "they can submit a report" do
-        report = create(:report, organisation: delivery_partner_user.organisation)
+        report = create(:report, :active, organisation: delivery_partner_user.organisation)
         report_presenter = ReportPresenter.new(report)
 
         perform_enqueued_jobs do

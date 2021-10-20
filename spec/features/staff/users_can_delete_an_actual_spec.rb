@@ -3,7 +3,7 @@ RSpec.feature "Users can delete an actual" do
   let(:beis_user) { create(:beis_user) }
 
   let!(:activity) { create(:programme_activity) }
-  let!(:report) { create(:report, organisation: delivery_partner_user.organisation, fund: activity.associated_fund) }
+  let!(:report) { create(:report, :active, organisation: delivery_partner_user.organisation, fund: activity.associated_fund) }
   let!(:actual) { create(:actual, parent_activity: activity, report: report) }
 
   context "when the user belongs to BEIS" do

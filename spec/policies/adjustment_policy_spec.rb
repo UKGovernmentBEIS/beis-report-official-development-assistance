@@ -29,7 +29,7 @@ RSpec.describe AdjustmentPolicy do
       let(:activity) { create(:programme_activity, organisation: user.organisation) }
       let(:report) do
         fund = activity.associated_fund
-        create(:report, fund: fund, organisation: activity.organisation)
+        create(:report, :active, fund: fund, organisation: activity.organisation)
       end
 
       it "applies the expected controls" do

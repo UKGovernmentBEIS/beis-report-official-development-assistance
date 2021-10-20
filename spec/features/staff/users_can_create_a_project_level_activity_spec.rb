@@ -78,7 +78,7 @@ RSpec.feature "Users can create a project" do
       scenario "can create a new child activity for a given programme" do
         gcrf = create(:fund_activity, :gcrf)
         programme = create(:programme_activity, parent: gcrf, extending_organisation: user.organisation)
-        _report = create(:report, fund: gcrf, organisation: user.organisation)
+        _report = create(:report, :active, fund: gcrf, organisation: user.organisation)
 
         visit organisation_activity_path(programme.organisation, programme)
 

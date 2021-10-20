@@ -6,6 +6,7 @@ RSpec.feature "Users can view an activity's 'Change History' within a tab" do
     let(:report) do
       create(
         :report,
+        :active,
         organisation: programme.organisation,
         fund: programme.parent,
         financial_quarter: 3,

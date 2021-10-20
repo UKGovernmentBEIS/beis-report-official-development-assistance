@@ -53,6 +53,7 @@ RSpec.feature "Users can view forecasts in tab within a report" do
 
       report = create(
         :report,
+        :active,
         organisation: organisation,
         fund: programme.parent,
         financial_quarter: 3,
