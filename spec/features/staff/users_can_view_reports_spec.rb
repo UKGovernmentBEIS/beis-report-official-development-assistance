@@ -36,10 +36,10 @@ RSpec.feature "Users can view reports" do
       organisations = create_list(:delivery_partner_organisation, 2)
 
       unapproved_reports = [
-        create_list(:report, 2, :active, organisation: organisations.first),
-        create_list(:report, 3, :active, organisation: organisations.last),
-        create_list(:report, 3, :inactive, organisation: organisations.first),
-        create_list(:report, 2, :inactive, organisation: organisations.last),
+        create_list(:report, 2, organisation: organisations.first),
+        create_list(:report, 3, organisation: organisations.last),
+        create_list(:report, 3, :awaiting_changes, organisation: organisations.first),
+        create_list(:report, 2, :in_review, organisation: organisations.last),
       ].flatten
 
       approved_reports = [
@@ -65,7 +65,7 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "can view a report belonging to any delivery partner" do
-      report = create(:report, :active)
+      report = create(:report)
 
       visit reports_path
 
@@ -78,7 +78,7 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "the report includes a summary" do
-      report = create(:report, :active, organisation: build(:delivery_partner_organisation))
+      report = create(:report, organisation: build(:delivery_partner_organisation))
 
       visit reports_path
 
@@ -97,7 +97,7 @@ RSpec.feature "Users can view reports" do
       fund = create(:fund_activity)
       programme = create(:programme_activity, parent: fund)
       project = create(:project_activity, parent: programme)
-      report = create(:report, :active, fund: fund, organisation: delivery_partner_organisation, financial_quarter: 1, financial_year: 2021)
+      report = create(:report, fund: fund, organisation: delivery_partner_organisation, financial_quarter: 1, financial_year: 2021)
 
       new_activity = create(:third_party_project_activity, organisation: delivery_partner_organisation, parent: project, originating_report: report)
       updated_activity = create(:third_party_project_activity, organisation: delivery_partner_organisation, parent: project)
@@ -120,7 +120,7 @@ RSpec.feature "Users can view reports" do
 
     context "when there is no report descripiton" do
       scenario "the summary does not include the empty value" do
-        report = create(:report, :active, organisation: build(:delivery_partner_organisation), description: nil)
+        report = create(:report, organisation: build(:delivery_partner_organisation), description: nil)
 
         visit report_path(report.id)
 
@@ -129,7 +129,7 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "they can view budgets in a report" do
-      report = create(:report, :active)
+      report = create(:report)
       budget = create(:budget, report: report)
 
       visit report_budgets_path(report)
@@ -141,7 +141,7 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "they see helpful guidance about and can download a CSV of their own report" do
-      report = create(:report, :active)
+      report = create(:report)
 
       visit reports_path
 
@@ -161,7 +161,7 @@ RSpec.feature "Users can view reports" do
 
     context "if the report description is empty" do
       scenario "the report csv has a filename made up of the fund name & report financial year & quarter" do
-        report = create(:report, :active, description: "", financial_quarter: 4, financial_year: 2019)
+        report = create(:report, description: "", financial_quarter: 4, financial_year: 2019)
 
         visit reports_path
 
@@ -188,7 +188,7 @@ RSpec.feature "Users can view reports" do
 
     context "when there are legacy ingested reports" do
       let(:activity) { create(:project_activity) }
-      let!(:report) { create(:report, :active, fund: activity.associated_fund, organisation: activity.organisation, financial_quarter: nil, financial_year: nil) }
+      let!(:report) { create(:report, fund: activity.associated_fund, organisation: activity.organisation, financial_quarter: nil, financial_year: nil) }
 
       before do
         visit reports_path
@@ -265,7 +265,7 @@ RSpec.feature "Users can view reports" do
 
     context "when there is an active report" do
       scenario "can view their own report" do
-        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+        report = create(:report, organisation: delivery_partner_user.organisation)
 
         visit reports_path
 
@@ -280,7 +280,7 @@ RSpec.feature "Users can view reports" do
       end
 
       scenario "their own report includes a summary" do
-        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+        report = create(:report, organisation: delivery_partner_user.organisation)
 
         visit reports_path
 
@@ -333,7 +333,7 @@ RSpec.feature "Users can view reports" do
       end
 
       scenario "they see helpful content about uploading acutals spend data and a link to the template on the actuals tab" do
-        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+        report = create(:report, organisation: delivery_partner_user.organisation)
 
         visit report_actuals_path(report)
 
@@ -346,7 +346,7 @@ RSpec.feature "Users can view reports" do
 
       scenario "they can view and edit budgets in a report" do
         activity = create(:project_activity, organisation: delivery_partner_user.organisation)
-        report = create(:report, :active, organisation: delivery_partner_user.organisation, fund: activity.associated_fund)
+        report = create(:report, organisation: delivery_partner_user.organisation, fund: activity.associated_fund)
         budget = create(:budget, report: report, parent_activity: activity)
 
         visit report_budgets_path(report)
@@ -383,7 +383,7 @@ RSpec.feature "Users can view reports" do
       end
 
       scenario "they see helpful guidance about and can download a CSV of their own report" do
-        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+        report = create(:report, organisation: delivery_partner_user.organisation)
 
         visit reports_path
         within "##{report.id}" do
@@ -404,7 +404,7 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "they can view all comments made during a reporting period" do
-      report = create(:report, :active, organisation: delivery_partner_user.organisation, fund: create(:fund_activity, :newton))
+      report = create(:report, organisation: delivery_partner_user.organisation, fund: create(:fund_activity, :newton))
       activities = create_list(:project_activity, 2, :newton_funded, organisation: delivery_partner_user.organisation)
 
       activity_comments = [
@@ -436,7 +436,7 @@ RSpec.feature "Users can view reports" do
 
   context "when there are no active reports" do
     scenario "they see no reports" do
-      report = create(:report, state: :inactive)
+      report = create(:report, state: :approved)
 
       visit reports_path
 

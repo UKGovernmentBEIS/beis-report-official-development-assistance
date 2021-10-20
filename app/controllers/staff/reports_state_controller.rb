@@ -13,8 +13,6 @@ class Staff::ReportsStateController < Staff::BaseController
 
   def edit
     case report.state
-    when "inactive"
-      show_state_change_confirmation(:activate)
     when "active"
       show_state_change_confirmation(:submit)
     when "submitted"

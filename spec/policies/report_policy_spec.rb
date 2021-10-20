@@ -15,87 +15,78 @@ RSpec.describe ReportPolicy do
       expect(resolved_scope).to include report, another_report
     end
 
-    context "when the report is inactive" do
-      before { report.update(state: :inactive) }
-
-      it { is_expected.to permit_action(:create) }
-      it { is_expected.to permit_action(:update) }
-      it { is_expected.to permit_action(:index) }
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to permit_action(:download) }
-      it { is_expected.to permit_action(:change_state) }
-      it { is_expected.to permit_action(:activate) }
-
-      it { is_expected.to forbid_action(:destroy) }
-
-      it { is_expected.to forbid_action(:submit) }
-      it { is_expected.to forbid_action(:review) }
-      it { is_expected.to forbid_action(:request_changes) }
-      it { is_expected.to forbid_action(:approve) }
-      it { is_expected.to forbid_action(:upload) }
-    end
-
     context "when the report is active" do
       before { report.update(state: :active) }
 
-      it { is_expected.to permit_action(:create) }
-      it { is_expected.to forbid_action(:change_state) }
-      it { is_expected.to forbid_action(:activate) }
-      it { is_expected.to forbid_action(:submit) }
-      it { is_expected.to forbid_action(:request_changes) }
-      it { is_expected.to forbid_action(:review) }
-      it { is_expected.to forbid_action(:approve) }
-      it { is_expected.to forbid_action(:upload) }
+      it "controls actions as expected" do
+        is_expected.to permit_action(:create)
+
+        is_expected.to forbid_action(:change_state)
+        is_expected.to forbid_action(:activate)
+        is_expected.to forbid_action(:submit)
+        is_expected.to forbid_action(:request_changes)
+        is_expected.to forbid_action(:review)
+        is_expected.to forbid_action(:approve)
+        is_expected.to forbid_action(:upload)
+      end
     end
 
     context "when the report is submitted" do
       before { report.update(state: :submitted) }
 
-      it { is_expected.to permit_action(:change_state) }
-      it { is_expected.to permit_action(:review) }
+      it "controls actions as expected" do
+        is_expected.to permit_action(:change_state)
+        is_expected.to permit_action(:review)
 
-      it { is_expected.to forbid_action(:activate) }
-      it { is_expected.to forbid_action(:submit) }
-      it { is_expected.to forbid_action(:request_changes) }
-      it { is_expected.to forbid_action(:approve) }
-      it { is_expected.to forbid_action(:upload) }
+        is_expected.to forbid_action(:activate)
+        is_expected.to forbid_action(:submit)
+        is_expected.to forbid_action(:request_changes)
+        is_expected.to forbid_action(:approve)
+        is_expected.to forbid_action(:upload)
+      end
     end
 
     context "when the report is in review" do
       before { report.update(state: :in_review) }
 
-      it { is_expected.to permit_action(:change_state) }
-      it { is_expected.to permit_action(:request_changes) }
-      it { is_expected.to permit_action(:approve) }
+      it "controls actions as expected" do
+        is_expected.to permit_action(:change_state)
+        is_expected.to permit_action(:request_changes)
+        is_expected.to permit_action(:approve)
 
-      it { is_expected.to forbid_action(:activate) }
-      it { is_expected.to forbid_action(:submit) }
-      it { is_expected.to forbid_action(:review) }
-      it { is_expected.to forbid_action(:upload) }
+        is_expected.to forbid_action(:activate)
+        is_expected.to forbid_action(:submit)
+        is_expected.to forbid_action(:review)
+        is_expected.to forbid_action(:upload)
+      end
     end
 
     context "when the report is awaiting changes" do
       before { report.update(state: :awaiting_changes) }
 
-      it { is_expected.to forbid_action(:change_state) }
-      it { is_expected.to forbid_action(:activate) }
-      it { is_expected.to forbid_action(:submit) }
-      it { is_expected.to forbid_action(:request_changes) }
-      it { is_expected.to forbid_action(:review) }
-      it { is_expected.to forbid_action(:approve) }
-      it { is_expected.to forbid_action(:upload) }
+      it "controls actions as expected" do
+        is_expected.to forbid_action(:change_state)
+        is_expected.to forbid_action(:activate)
+        is_expected.to forbid_action(:submit)
+        is_expected.to forbid_action(:request_changes)
+        is_expected.to forbid_action(:review)
+        is_expected.to forbid_action(:approve)
+        is_expected.to forbid_action(:upload)
+      end
     end
 
     context "when the report is approved" do
       before { report.update(state: :approved) }
 
-      it { is_expected.to forbid_action(:change_state) }
-      it { is_expected.to forbid_action(:activate) }
-      it { is_expected.to forbid_action(:submit) }
-      it { is_expected.to forbid_action(:request_changes) }
-      it { is_expected.to forbid_action(:review) }
-      it { is_expected.to forbid_action(:approve) }
-      it { is_expected.to forbid_action(:upload) }
+      it "controls actions as expected" do
+        is_expected.to forbid_action(:change_state)
+        is_expected.to forbid_action(:activate)
+        is_expected.to forbid_action(:submit)
+        is_expected.to forbid_action(:request_changes)
+        is_expected.to forbid_action(:review)
+        is_expected.to forbid_action(:approve)
+        is_expected.to forbid_action(:upload)
+      end
     end
   end
 
@@ -110,116 +101,113 @@ RSpec.describe ReportPolicy do
       expect(resolved_scope).to contain_exactly report
     end
 
-    context "when the report does not belong to the users organisation" do
+    context "when the report does not belong to the user's organisation" do
       let(:report) { create(:report) }
 
-      it { is_expected.to forbid_action(:update) }
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:change_state) }
-      it { is_expected.to forbid_action(:destroy) }
-      it { is_expected.to forbid_action(:activate) }
-      it { is_expected.to forbid_action(:submit) }
-      it { is_expected.to forbid_action(:review) }
-      it { is_expected.to forbid_action(:request_changes) }
-      it { is_expected.to forbid_action(:approve) }
-      it { is_expected.to forbid_action(:upload) }
+      it "controls actions as expected" do
+        is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:create)
+        is_expected.to forbid_action(:change_state)
+        is_expected.to forbid_action(:destroy)
+        is_expected.to forbid_action(:activate)
+        is_expected.to forbid_action(:submit)
+        is_expected.to forbid_action(:review)
+        is_expected.to forbid_action(:request_changes)
+        is_expected.to forbid_action(:approve)
+        is_expected.to forbid_action(:upload)
 
-      it { is_expected.to permit_action(:index) }
+        is_expected.to permit_action(:index)
+      end
     end
 
-    context "when the report belongs to the users organisation" do
+    context "when the report belongs to the user's organisation" do
       let(:report) { create(:report, organisation: user.organisation) }
-
-      context "when the report is inactive" do
-        before { report.update(state: :inactive) }
-
-        it { is_expected.to forbid_action(:create) }
-        it { is_expected.to forbid_action(:show) }
-        it { is_expected.to forbid_action(:download) }
-        it { is_expected.to forbid_action(:change_state) }
-        it { is_expected.to forbid_action(:destroy) }
-        it { is_expected.to forbid_action(:activate) }
-        it { is_expected.to forbid_action(:submit) }
-        it { is_expected.to forbid_action(:review) }
-        it { is_expected.to forbid_action(:request_changes) }
-        it { is_expected.to forbid_action(:approve) }
-        it { is_expected.to forbid_action(:upload) }
-      end
 
       context "when the report is active" do
         before { report.update(state: :active) }
 
-        it { is_expected.to forbid_action(:create) }
-        it { is_expected.to permit_action(:show) }
-        it { is_expected.to permit_action(:download) }
-        it { is_expected.to permit_action(:change_state) }
-        it { is_expected.to permit_action(:submit) }
-        it { is_expected.to permit_action(:upload) }
+        it "controls actions as expected" do
+          is_expected.to forbid_action(:create)
 
-        it { is_expected.to forbid_action(:activate) }
-        it { is_expected.to forbid_action(:review) }
-        it { is_expected.to forbid_action(:request_changes) }
-        it { is_expected.to forbid_action(:approve) }
+          is_expected.to permit_action(:show)
+          is_expected.to permit_action(:download)
+          is_expected.to permit_action(:change_state)
+          is_expected.to permit_action(:submit)
+          is_expected.to permit_action(:upload)
+
+          is_expected.to forbid_action(:activate)
+          is_expected.to forbid_action(:review)
+          is_expected.to forbid_action(:request_changes)
+          is_expected.to forbid_action(:approve)
+        end
       end
 
       context "when the report is submitted" do
         before { report.update(state: :submitted) }
 
-        it { is_expected.to permit_action(:show) }
-        it { is_expected.to permit_action(:download) }
+        it "controls actions as expected" do
+          is_expected.to permit_action(:show)
+          is_expected.to permit_action(:download)
 
-        it { is_expected.to forbid_action(:change_state) }
-        it { is_expected.to forbid_action(:activate) }
-        it { is_expected.to forbid_action(:submit) }
-        it { is_expected.to forbid_action(:review) }
-        it { is_expected.to forbid_action(:request_changes) }
-        it { is_expected.to forbid_action(:approve) }
-        it { is_expected.to forbid_action(:upload) }
+          is_expected.to forbid_action(:change_state)
+          is_expected.to forbid_action(:activate)
+          is_expected.to forbid_action(:submit)
+          is_expected.to forbid_action(:review)
+          is_expected.to forbid_action(:request_changes)
+          is_expected.to forbid_action(:approve)
+          is_expected.to forbid_action(:upload)
+        end
       end
 
       context "when the report is in review" do
         before { report.update(state: :in_review) }
 
-        it { is_expected.to permit_action(:show) }
-        it { is_expected.to permit_action(:download) }
+        it "controls actions as expected" do
+          is_expected.to permit_action(:show)
+          is_expected.to permit_action(:download)
 
-        it { is_expected.to forbid_action(:change_state) }
-        it { is_expected.to forbid_action(:activate) }
-        it { is_expected.to forbid_action(:submit) }
-        it { is_expected.to forbid_action(:review) }
-        it { is_expected.to forbid_action(:request_changes) }
-        it { is_expected.to forbid_action(:approve) }
-        it { is_expected.to forbid_action(:upload) }
+          is_expected.to forbid_action(:change_state)
+          is_expected.to forbid_action(:activate)
+          is_expected.to forbid_action(:submit)
+          is_expected.to forbid_action(:review)
+          is_expected.to forbid_action(:request_changes)
+          is_expected.to forbid_action(:approve)
+          is_expected.to forbid_action(:upload)
+        end
       end
 
       context "when the report is awaiting changes" do
         before { report.update(state: :awaiting_changes) }
 
-        it { is_expected.to permit_action(:show) }
-        it { is_expected.to permit_action(:download) }
-        it { is_expected.to permit_action(:change_state) }
-        it { is_expected.to permit_action(:submit) }
-        it { is_expected.to permit_action(:upload) }
+        it "controls actions as expected" do
+          is_expected.to permit_action(:show)
+          is_expected.to permit_action(:download)
+          is_expected.to permit_action(:change_state)
+          is_expected.to permit_action(:submit)
+          is_expected.to permit_action(:upload)
 
-        it { is_expected.to forbid_action(:activate) }
-        it { is_expected.to forbid_action(:review) }
-        it { is_expected.to forbid_action(:request_changes) }
-        it { is_expected.to forbid_action(:approve) }
+          is_expected.to forbid_action(:activate)
+          is_expected.to forbid_action(:review)
+          is_expected.to forbid_action(:request_changes)
+          is_expected.to forbid_action(:approve)
+        end
       end
 
       context "when the report is approved" do
         before { report.update(state: :approved) }
 
-        it { is_expected.to permit_action(:show) }
-        it { is_expected.to permit_action(:download) }
+        it "controls actions as expected" do
+          is_expected.to permit_action(:show)
+          is_expected.to permit_action(:download)
 
-        it { is_expected.to forbid_action(:change_state) }
-        it { is_expected.to forbid_action(:activate) }
-        it { is_expected.to forbid_action(:submit) }
-        it { is_expected.to forbid_action(:request_changes) }
-        it { is_expected.to forbid_action(:review) }
-        it { is_expected.to forbid_action(:approve) }
-        it { is_expected.to forbid_action(:upload) }
+          is_expected.to forbid_action(:change_state)
+          is_expected.to forbid_action(:activate)
+          is_expected.to forbid_action(:submit)
+          is_expected.to forbid_action(:request_changes)
+          is_expected.to forbid_action(:review)
+          is_expected.to forbid_action(:approve)
+          is_expected.to forbid_action(:upload)
+        end
       end
     end
   end

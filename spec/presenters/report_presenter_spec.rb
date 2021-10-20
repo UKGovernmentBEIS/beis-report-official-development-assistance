@@ -5,9 +5,9 @@ require "rails_helper"
 RSpec.describe ReportPresenter do
   describe "#state" do
     it "returns the string for the state" do
-      report = build(:report, state: "inactive")
+      report = build(:report, state: "active")
       result = described_class.new(report).state
-      expect(result).to eql("Inactive")
+      expect(result).to eql("Active")
     end
   end
 
@@ -28,10 +28,6 @@ RSpec.describe ReportPresenter do
       report.state = "submitted"
       result = described_class.new(report).can_edit_message
       expect(result).to eql(t("label.report.can_edit.submitted"))
-
-      report.state = "inactive"
-      result = described_class.new(report).can_edit_message
-      expect(result).to eql(t("label.report.can_edit.inactive"))
     end
   end
 

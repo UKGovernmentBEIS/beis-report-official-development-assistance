@@ -249,7 +249,7 @@ RSpec.feature "Users can create an actual" do
 
     scenario "when the activity cannot be edited they cannot see the add actual button" do
       activity = create(:project_activity, organisation: user.organisation)
-      _report = create(:report, state: :inactive, organisation: activity.organisation, fund: activity.associated_fund)
+      _report = create(:report, :approved, organisation: activity.organisation, fund: activity.associated_fund)
 
       visit organisation_activity_path(activity.organisation, activity)
 
