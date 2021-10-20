@@ -67,19 +67,32 @@ RSpec.describe Export::ActivityForecastColumns do
     DatabaseCleaner.clean
   end
 
-  subject { Export::ActivityForecastColumns.new(activities: @activities, report: report) }
+  subject {
+    Export::ActivityForecastColumns.new(
+      activities: @activities,
+      report: report,
+      starting_financial_quarter: starting_financial_quarter
+    )
+  }
 
   context "when passed a report AND a starting_financial_quarter" do
     let(:report) { build(:report) }
-    let(:starting_financial_quarter) { FinancialYear.new }
+    let(:starting_financial_quarter) { FinancialQuarter.new }
 
     it "raises an argument error" do
-      expect { subject }.to raise_error ArgumentError
+      expect {
+        Export::ActivityForecastColumns.new(
+          activities: @activities,
+          report: report,
+          starting_financial_quarter: starting_financial_quarter
+        )
+      }.to raise_error ArgumentError
     end
   end
 
-  context "when a report is not passed in" do
+  context "when no report or starting financial quarter is passed in" do
     let(:report) { nil }
+    let(:starting_financial_quarter) { nil }
 
     describe "#headers" do
       it "includes the heading that describe the finances for the earliest forecast" do
@@ -141,6 +154,7 @@ RSpec.describe Export::ActivityForecastColumns do
 
   context "when a report is passed in" do
     let(:report) { create(:report, financial_quarter: 1, financial_year: 2019) }
+    let(:starting_financial_quarter) { nil }
 
     describe "#headers" do
       it "incudes the heading that describe the finances for the finnacial quarter of the report" do
@@ -200,6 +214,31 @@ RSpec.describe Export::ActivityForecastColumns do
       it "returns an empty array" do
         expect(subject.headers).to eql []
         expect(subject.rows).to eql []
+      end
+    end
+  end
+
+  context "when there is a starting financial quarter" do
+    let(:starting_financial_quarter) { FinancialQuarter.new(2020, 1) }
+    let(:report) { nil }
+
+    describe "#headers" do
+      it "does not include the heading for the quarter before the starting one" do
+        expect(subject.headers).not_to include("Forecast FQ4 2019-2020")
+      end
+
+      it "does include the heading for the starting quarter" do
+        expect(subject.headers).to include("Forecast FQ1 2020-2021")
+      end
+    end
+
+    describe "#rows" do
+      it "includes the latest value for the starting quarter" do
+        expect(value_for_header("Forecast FQ1 2020-2021").to_s).to eql("10000.0")
+      end
+
+      it "contains the financial data for financial quarter 4 2021-2022" do
+        expect(value_for_header("Forecast FQ4 2021-2022").to_s).to eql("20000.0")
       end
     end
   end

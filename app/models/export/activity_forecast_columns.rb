@@ -1,7 +1,12 @@
 class Export::ActivityForecastColumns
-  def initialize(activities:, report: nil)
+  def initialize(activities:, report: nil, starting_financial_quarter: nil)
     @activities = activities
     @report = report
+    @starting_financial_quarter = starting_financial_quarter
+
+    if @report && @starting_financial_quarter
+      raise ArgumentError.new("Provide either a report for historical forecasts or a starting_financial_quarter for the latest forecast")
+    end
   end
 
   def headers
@@ -57,15 +62,25 @@ class Export::ActivityForecastColumns
     @_forecast_quarter_range ||= begin
       return [] if all_financial_quarters_with_forecasts.blank?
 
-      if @report.nil?
-        Range.new(all_financial_quarters_with_forecasts.min, all_financial_quarters_with_forecasts.max)
-      else
+      if exporting_most_recent_forecasts?
+        Range.new(@starting_financial_quarter, all_financial_quarters_with_forecasts.max)
+      elsif exporting_forecasts_for_given_report?
         Range.new(report_financial_quarter(@report), all_financial_quarters_with_forecasts.max)
+      else
+        Range.new(all_financial_quarters_with_forecasts.min, all_financial_quarters_with_forecasts.max)
       end
     end
   end
 
   def report_financial_quarter(report)
     FinancialQuarter.new(report.financial_year, report.financial_quarter)
+  end
+
+  def exporting_most_recent_forecasts?
+    @starting_financial_quarter.present?
+  end
+
+  def exporting_forecasts_for_given_report?
+    @report.present?
   end
 end
