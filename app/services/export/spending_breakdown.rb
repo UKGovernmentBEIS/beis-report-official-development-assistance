@@ -1,27 +1,38 @@
 class Export::SpendingBreakdown
-  HEADERS = [
-    "RODA identifier",
-    "Delivery partner identifier",
-    "Delivery partner organisation",
-    "Title",
-    "Level",
-    "Activity status",
+  ACTIVITY_ATTRIBUTES = [
+    :roda_identifier,
+    :delivery_partner_identifier,
+    :title,
+    :level,
+    :programme_status,
   ]
 
   def initialize(source_fund:, organisation: nil)
     @organisation = organisation
     @source_fund = source_fund
+    @activities = activities
+
+    @activity_attributes =
+      Export::ActivityAttributesColumns.new(activities: @activities, attributes: ACTIVITY_ATTRIBUTES)
+    @delivery_partner_organisations =
+      Export::ActivityDeliveryPartnerOrganisationColumn.new(activities_relation: @activities)
   end
 
   def headers
-    return HEADERS if actuals.empty? && refunds.empty? && forecasts.empty?
+    return @activity_attributes.headers if actuals.empty? && refunds.empty? && forecasts.empty?
 
-    HEADERS + actual_and_refund_headers + forecasts_headers
+    @activity_attributes.headers +
+      @delivery_partner_organisations.headers +
+      actual_and_refund_headers +
+      forecasts_headers
   end
 
   def rows
     activities.map do |activity|
-      activity_data(activity) + acutal_and_refund_data(activity) + forecast_data(activity)
+      @activity_attributes.rows.fetch(activity.id, nil) +
+        @delivery_partner_organisations.rows.fetch(activity.id, nil) +
+        acutal_and_refund_data(activity) +
+        forecast_data(activity)
     end
   end
 

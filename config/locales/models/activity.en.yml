@@ -440,7 +440,7 @@ en:
         transparency_identifier: IATI identifier
         beis_identifier: Original BEIS tracker identifier
         level: Activity level
-        delivery_partner_identifier: Delivery Partner Identifier
+        delivery_partner_identifier: Delivery partner identifier
         recipient_region: Recipient region
         recipient_country: Recipient country
         intended_beneficiaries: Intended beneficiaries
