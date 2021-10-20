@@ -51,7 +51,7 @@ RSpec.describe StubController, type: :controller do
   end
 
   context "when the report is current" do
-    let(:report) { build(:report, state: :active) }
+    let(:report) { build(:report, :active) }
 
     describe "#prepare_default_report_trail" do
       it "adds the current reports path to the breadcrumbs" do

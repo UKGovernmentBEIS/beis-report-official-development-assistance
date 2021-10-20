@@ -27,7 +27,7 @@ RSpec.describe Report::OrganisationReportsFetcher do
     subject { fetcher.current }
 
     it "returns active unapproved reports for an organisation" do
-      unapproved_reports = build_list(:report, 2, organisation: organisation, state: :active)
+      unapproved_reports = build_list(:report, 2, :active, organisation: organisation)
 
       unapproved_relation_double = double(ActiveRecord::Relation, "[]": unapproved_reports)
 

@@ -68,7 +68,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
     end
 
     scenario "the report contains an _actuals_ tab" do
-      report = create(:report, state: :active, organisation: organisation, description: nil)
+      report = create(:report, :active, organisation: organisation, description: nil)
 
       programme = create(:programme_activity)
       project = create(:project_activity, organisation: organisation, parent: programme)

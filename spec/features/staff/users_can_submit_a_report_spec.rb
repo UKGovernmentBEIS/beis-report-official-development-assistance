@@ -75,7 +75,7 @@ RSpec.feature "Users can submit a report" do
     end
 
     scenario "they cannot submit a report" do
-      report = create(:report, state: :active)
+      report = create(:report, :active)
 
       visit report_path(report)
 

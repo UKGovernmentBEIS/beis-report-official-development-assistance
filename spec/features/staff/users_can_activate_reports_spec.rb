@@ -9,7 +9,7 @@ RSpec.feature "Users can activate reports" do
 
     context "when the report is already active" do
       scenario "it cannot be activated again" do
-        report = create(:report, state: :active)
+        report = create(:report, :active)
 
         visit report_path(report)
 

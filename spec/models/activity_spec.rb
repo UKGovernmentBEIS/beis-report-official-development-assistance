@@ -1387,7 +1387,7 @@ RSpec.describe Activity, type: :model do
       let(:quarter) { FinancialQuarter.new(Date.today.year + 2, 3) }
 
       def create_report(organisation, fund)
-        create(:report, organisation: organisation, fund: fund, state: :active, **quarter.pred)
+        create(:report, :active, organisation: organisation, fund: fund, **quarter.pred)
       end
 
       before do

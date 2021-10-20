@@ -52,12 +52,12 @@ RSpec.describe Report, type: :model do
     end
 
     let! :report_for_another_fund do
-      create(:report, fund: project_in_another_fund.associated_fund, organisation: organisation, state: :active)
+      create(:report, :active, fund: project_in_another_fund.associated_fund, organisation: organisation)
     end
 
     context "when there is an active report" do
       let! :active_report do
-        create(:report, fund: project.associated_fund, organisation: organisation, state: :active)
+        create(:report, :active, fund: project.associated_fund, organisation: organisation)
       end
 
       it "returns the editable report for the activity's fund" do
