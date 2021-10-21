@@ -3,7 +3,7 @@
 class Staff::OrganisationsController < Staff::BaseController
   def index
     @role = params[:role]
-    @organisations = policy_scope(Organisation).where(role: @role.singularize)
+    @organisations = policy_scope(Organisation).where(role: @role.singularize).sorted_by_name
     authorize @organisations
 
     add_breadcrumb I18n.t("breadcrumbs.organisation.index"), organisations_path(role: @role)

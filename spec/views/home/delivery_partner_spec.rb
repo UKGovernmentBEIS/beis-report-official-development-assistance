@@ -24,7 +24,7 @@ RSpec.describe "staff/home/delivery_partner" do
     before do
       assign(:current_user, build(:delivery_partner_user))
       assign(:grouped_activities, [])
-      assign(:reports, build_list(:report, 2, state: :active))
+      assign(:reports, build_list(:report, 2, :active))
 
       allow(view).to receive(:organisation_reports_path).and_return("/reports/id")
 

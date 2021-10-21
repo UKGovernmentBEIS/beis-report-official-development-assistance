@@ -48,7 +48,7 @@ class Staff::ExportsController < Staff::BaseController
 
     respond_to do |format|
       format.csv do
-        export = SpendingBreakdown::Export.new(source_fund: fund)
+        export = Export::SpendingBreakdown.new(source_fund: fund)
 
         stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
           export.rows.each { |row| csv << row }

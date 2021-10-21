@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe MatchedEffortPolicy do
   subject { described_class.new(user, matched_effort) }
 
-  let!(:report) { create(:report, organisation: user.organisation, fund: activity.associated_fund, state: :approved) }
+  let!(:report) { create(:report, :approved, organisation: user.organisation, fund: activity.associated_fund) }
   let(:matched_effort) { build_stubbed(:matched_effort, activity: activity) }
 
   context "as a user that belongs to BEIS" do

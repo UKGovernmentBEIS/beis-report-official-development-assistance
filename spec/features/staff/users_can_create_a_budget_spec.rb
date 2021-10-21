@@ -33,6 +33,22 @@ RSpec.describe "Users can create a budget" do
         expect(page).to have_content(t("action.budget.create.success"))
       end
 
+      scenario "successfully creates a budget in the past" do
+        fund_activity = create(:fund_activity, organisation: user.organisation)
+        programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(programme_activity.organisation, programme_activity)
+
+        click_on(t("page_content.budgets.button.create"))
+
+        expect(page).to have_checked_field("budget[budget_type]", with: "direct", visible: false)
+        select "2010-2011", from: "budget[financial_year]"
+        fill_in "budget[value]", with: "1000.00"
+        click_button t("default.button.submit")
+
+        expect(page).to have_content(t("action.budget.create.success"))
+      end
+
       scenario "sees validation errors for missing attributes" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
@@ -91,7 +107,7 @@ RSpec.describe "Users can create a budget" do
 
     context "when the activity is a project (level C)" do
       scenario "successfully creates a direct budget by default", js: true do
-        _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
+        _report = create(:report, :active, organisation: user.organisation, fund: fund_activity)
 
         visit organisation_activity_path(project_activity.organisation, project_activity)
 
@@ -103,7 +119,7 @@ RSpec.describe "Users can create a budget" do
       end
 
       scenario "successfully creates an external budget", js: true do
-        _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
+        _report = create(:report, :active, organisation: user.organisation, fund: fund_activity)
 
         visit organisation_activity_path(project_activity.organisation, project_activity)
 
@@ -120,7 +136,7 @@ RSpec.describe "Users can create a budget" do
       end
 
       scenario "for an external budget it shows an error if the user doesn't input a providing organisation name and type", js: true do
-        _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
+        _report = create(:report, :active, organisation: user.organisation, fund: fund_activity)
 
         visit organisation_activity_path(programme_activity.organisation, project_activity)
         click_on(t("page_content.budgets.button.create"))
@@ -137,7 +153,7 @@ RSpec.describe "Users can create a budget" do
 
       context "without JavaScript" do
         scenario "for an external budget it shows an error if the user doesn't input a providing organisation name and type" do
-          _report = create(:report, state: :active, organisation: user.organisation, fund: fund_activity)
+          _report = create(:report, :active, organisation: user.organisation, fund: fund_activity)
 
           visit organisation_activity_path(project_activity.organisation, project_activity)
           click_on(t("page_content.budgets.button.create"))

@@ -2,9 +2,14 @@ require "rails_helper"
 
 RSpec.describe Report, type: :model do
   describe "validations" do
-    it { should validate_presence_of(:state) }
-    it { should have_readonly_attribute(:financial_quarter) }
-    it { should have_readonly_attribute(:financial_year) }
+    it "should be valid in all contexts" do
+      should validate_presence_of(:state)
+
+      should have_readonly_attribute(:financial_quarter)
+      should have_readonly_attribute(:financial_year)
+
+      should validate_inclusion_of(:financial_quarter).in_array((1..4).to_a)
+    end
 
     context "in the :new validation context" do
       it "validates there are no unapproved reports for the organisation and fund" do
@@ -12,11 +17,18 @@ RSpec.describe Report, type: :model do
         existing_approved_report = create(:report, :approved, organisation: organisation)
         existing_unapproved_report = create(:report, state: "awaiting_changes", organisation: organisation)
 
-        new_valid_report = Report.new(fund: existing_approved_report.fund, organisation: organisation, state: "active")
-        new_invalid_report = Report.new(fund: existing_unapproved_report.fund, organisation: organisation, state: "active")
+        new_valid_report = build(:report, fund: existing_approved_report.fund, organisation: organisation)
+        new_invalid_report = build(:report, fund: existing_unapproved_report.fund, organisation: organisation)
 
         expect(new_invalid_report.valid?(:new)).to eql(false)
         expect(new_valid_report.valid?).to eql(true)
+      end
+
+      it "validates the presence of financial_quarter and financial_year" do
+        new_report = build(:report, financial_quarter: nil, financial_year: nil)
+
+        expect(new_report.valid?(:new)).to eql(false)
+        expect(new_report.valid?).to eql(true)
       end
     end
   end
@@ -36,16 +48,16 @@ RSpec.describe Report, type: :model do
     let!(:project_in_another_fund) { create(:project_activity, organisation: organisation) }
 
     let! :approved_report do
-      create(:report, fund: project.associated_fund, organisation: organisation, state: :approved)
+      create(:report, :approved, fund: project.associated_fund, organisation: organisation)
     end
 
     let! :report_for_another_fund do
-      create(:report, fund: project_in_another_fund.associated_fund, organisation: organisation, state: :active)
+      create(:report, :active, fund: project_in_another_fund.associated_fund, organisation: organisation)
     end
 
     context "when there is an active report" do
       let! :active_report do
-        create(:report, fund: project.associated_fund, organisation: organisation, state: :active)
+        create(:report, :active, fund: project.associated_fund, organisation: organisation)
       end
 
       it "returns the editable report for the activity's fund" do
@@ -67,14 +79,6 @@ RSpec.describe Report, type: :model do
       it "returns nothing" do
         expect(Report.editable_for_activity(project)).to be_nil
       end
-    end
-  end
-
-  it "sets the financial_quarter and financial_year when created if no values are provided" do
-    travel_to(Date.parse("01-04-2020")) do
-      report = Report.new
-
-      expect(report.financial_quarter).to eql 1
     end
   end
 
@@ -103,82 +107,6 @@ RSpec.describe Report, type: :model do
     it "does not allow a deadline which is in the past" do
       report = build(:report, deadline: Date.yesterday)
       expect(report.valid?(:edit)).to eq false
-    end
-  end
-
-  describe "#financial_quarter" do
-    context "when in the first quarter of the financial year - April to March" do
-      it "sets the financial quarter to 1" do
-        ["1 April 2020", "30 June 2020"].each do |date|
-          travel_to(Date.parse(date)) do
-            report = Report.new
-            expect(report.financial_quarter).to eql 1
-          end
-        end
-      end
-    end
-
-    context "when in the second quarter of the financial year - May to July" do
-      it "sets the financial quarter to 2" do
-        ["1 July 2020", "30 September 2020"].each do |date|
-          travel_to(Date.parse(date)) do
-            report = Report.new
-            expect(report.financial_quarter).to eql 2
-          end
-        end
-      end
-    end
-
-    context "when in the third quarter of the financial year - October to December" do
-      it "sets the financial quarter to 3" do
-        ["1 October 2020", "31 December 2020"].each do |date|
-          travel_to(Date.parse(date)) do
-            report = Report.new
-            expect(report.financial_quarter).to eql 3
-          end
-        end
-      end
-    end
-
-    context "when in the fourth quarter of the financial year - January to March" do
-      it "sets the financial quarter to 4" do
-        ["1 January 2020", "31 March 2020"].each do |date|
-          travel_to(Date.parse(date)) do
-            report = Report.new
-            expect(report.financial_quarter).to eql 4
-          end
-        end
-      end
-    end
-  end
-
-  describe "#financial_year" do
-    context "when in the first, second or third quarter of the 2020-2021 financial year" do
-      it "sets the financial year to 2020" do
-        travel_to(Date.parse("1 May 2020")) do
-          report = Report.new
-          expect(report.financial_year).to eql 2020
-        end
-
-        travel_to(Date.parse("1 September 2020")) do
-          report = Report.new
-          expect(report.financial_year).to eql 2020
-        end
-
-        travel_to(Date.parse("1 November 2020")) do
-          report = Report.new
-          expect(report.financial_year).to eql 2020
-        end
-      end
-    end
-
-    context "when in the fourth quarter of the 2020-2021 financial year" do
-      it "sets the financial year to 2020" do
-        travel_to(Date.parse("1 February 2021")) do
-          report = Report.new
-          expect(report.financial_year).to eql 2020
-        end
-      end
     end
   end
 

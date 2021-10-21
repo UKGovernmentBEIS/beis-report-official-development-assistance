@@ -1,15 +1,13 @@
 FactoryBot.define do
   factory :report do
     description { Faker::Lorem.paragraph }
-    state { :inactive }
+    state { :active }
+    financial_quarter { FinancialQuarter.for_date(Date.today).to_i }
+    financial_year { FinancialYear.for_date(Date.today).to_i }
+    deadline { 1.year.from_now }
 
     association :fund, factory: :fund_activity
     association :organisation, factory: :delivery_partner_organisation
-
-    trait :active do
-      state { :active }
-      deadline { 1.year.from_now }
-    end
 
     trait :approved do
       state { :approved }

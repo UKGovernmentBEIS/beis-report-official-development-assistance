@@ -1,4 +1,4 @@
-RSpec.describe SpendingBreakdown::Export do
+RSpec.describe Export::SpendingBreakdown do
   before(:all) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
@@ -20,7 +20,7 @@ RSpec.describe SpendingBreakdown::Export do
     DatabaseCleaner.clean
   end
 
-  subject { SpendingBreakdown::Export.new(organisation: @organisation, source_fund: @source_fund) }
+  subject { described_class.new(organisation: @organisation, source_fund: @source_fund) }
 
   def value_for_header(header_name)
     subject.rows.first[subject.headers.index(header_name)]
@@ -30,7 +30,7 @@ RSpec.describe SpendingBreakdown::Export do
     context "when an organisation IS used in construction" do
       it "includes the organisation reference" do
         newton_fund = Fund.new(1)
-        breakdown = SpendingBreakdown::Export.new(
+        breakdown = described_class.new(
           source_fund: newton_fund,
           organisation: @organisation
         )
@@ -41,7 +41,7 @@ RSpec.describe SpendingBreakdown::Export do
     context "when NO organisation is used in construction" do
       it "leaves out the organisation reference" do
         newton_fund = Fund.new(1)
-        breakdown = SpendingBreakdown::Export.new(source_fund: newton_fund)
+        breakdown = described_class.new(source_fund: newton_fund)
 
         expect(breakdown.filename).to eq("NF_spending_breakdown.csv")
       end

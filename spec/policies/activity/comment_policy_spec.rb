@@ -47,7 +47,7 @@ RSpec.describe Activity::CommentPolicy do
       end
 
       context "when there is not an editable report to attach this comment to" do
-        let(:report) { create(:report, fund: activity, organisation: user.organisation) }
+        let(:report) { create(:report, :approved, fund: activity, organisation: user.organisation) }
         it { is_expected.to forbid_action(:create) }
       end
     end
@@ -58,7 +58,7 @@ RSpec.describe Activity::CommentPolicy do
       end
 
       context "when there is not an editable report to attach this comment to" do
-        let(:report) { create(:report, fund: activity, organisation: user.organisation) }
+        let(:report) { create(:report, :approved, fund: activity, organisation: user.organisation) }
         it { is_expected.to forbid_action(:update) }
       end
 

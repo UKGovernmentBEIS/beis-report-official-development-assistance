@@ -136,7 +136,7 @@ RSpec.feature "Users can edit an activity" do
 
     context "when the activity is a project" do
       let(:activity) { create(:project_activity, organisation: user.organisation) }
-      let!(:report) { create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund) }
+      let!(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
 
       it "shows an update success message" do
         visit organisation_activity_details_path(activity.organisation, activity)
@@ -205,7 +205,7 @@ RSpec.feature "Users can edit an activity" do
     context "when the activity is a third-party project" do
       it "shows an update success message" do
         activity = create(:third_party_project_activity, organisation: user.organisation)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
+        _report = create(:report, :active, organisation: user.organisation, fund: activity.associated_fund)
 
         visit organisation_activity_details_path(activity.organisation, activity)
 
@@ -223,7 +223,7 @@ RSpec.feature "Users can edit an activity" do
 
       it "saves the value and shows an update success message" do
         activity.update_columns(title: nil, collaboration_type: "Replace me")
-        _report = create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund)
+        _report = create(:report, :active, organisation: user.organisation, fund: activity.associated_fund)
 
         visit organisation_activity_details_path(activity.organisation, activity)
 

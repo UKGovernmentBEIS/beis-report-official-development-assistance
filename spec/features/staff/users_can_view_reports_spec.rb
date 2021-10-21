@@ -38,8 +38,8 @@ RSpec.feature "Users can view reports" do
       unapproved_reports = [
         create_list(:report, 2, :active, organisation: organisations.first),
         create_list(:report, 3, :active, organisation: organisations.last),
-        create_list(:report, 3, :inactive, organisation: organisations.first),
-        create_list(:report, 2, :inactive, organisation: organisations.last),
+        create_list(:report, 3, :awaiting_changes, organisation: organisations.first),
+        create_list(:report, 2, :in_review, organisation: organisations.last),
       ].flatten
 
       approved_reports = [
@@ -253,7 +253,7 @@ RSpec.feature "Users can view reports" do
 
     scenario "they can see a list of all their active and approved reports" do
       reports_awaiting_changes = create_list(:report, 2, organisation: delivery_partner_user.organisation, state: :awaiting_changes)
-      approved_reports = create_list(:report, 3, organisation: delivery_partner_user.organisation, state: :approved)
+      approved_reports = create_list(:report, 3, :approved, organisation: delivery_partner_user.organisation)
 
       visit reports_path
 
@@ -436,7 +436,7 @@ RSpec.feature "Users can view reports" do
 
   context "when there are no active reports" do
     scenario "they see no reports" do
-      report = create(:report, state: :inactive)
+      report = create(:report, :approved)
 
       visit reports_path
 

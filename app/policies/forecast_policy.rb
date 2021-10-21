@@ -8,7 +8,7 @@ class ForecastPolicy < ApplicationPolicy
     return false if record.parent_activity.level.nil?
     return true if beis_user? && record.parent_activity.programme?
 
-    if delivery_partner_user?
+    if delivery_partner_user? && record.parent_activity.organisation == user.organisation
       return true if editable_report_for_organisation_and_fund.present?
     end
 
@@ -27,7 +27,7 @@ class ForecastPolicy < ApplicationPolicy
     return false if record.parent_activity.level.nil?
     return true if beis_user? && record.parent_activity.programme?
 
-    if delivery_partner_user?
+    if delivery_partner_user? && record.parent_activity.organisation == user.organisation
       return true if editable_report_for_organisation_and_fund.present?
     end
 

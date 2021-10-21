@@ -19,7 +19,7 @@
     = f.govuk_text_field :providing_organisation_reference
 
 = f.govuk_collection_select :financial_year,
-  list_of_financial_years,
+  list_of_budget_financial_years,
   :id,
   :name,
   options: { selected: f.object.financial_year, prompt: t("form.prompt.budget.financial_year") },

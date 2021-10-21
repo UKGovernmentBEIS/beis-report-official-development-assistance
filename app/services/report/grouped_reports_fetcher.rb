@@ -11,7 +11,7 @@ class Report
     private def fetch(relation)
       relation
         .includes([:organisation, :fund])
-        .order("financial_year, financial_quarter DESC")
+        .order("organisations.name ASC, financial_year, financial_quarter DESC")
         .map { |report| ReportPresenter.new(report) }
         .group_by(&:organisation)
     end

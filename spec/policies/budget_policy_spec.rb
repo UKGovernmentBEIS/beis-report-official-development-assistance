@@ -91,7 +91,7 @@ RSpec.describe BudgetPolicy do
         end
 
         context "when there is no editable report" do
-          let(:report) { create(:report, state: :inactive) }
+          let(:report) { create(:report, :approved) }
 
           it { is_expected.to permit_action(:show) }
 
@@ -102,7 +102,7 @@ RSpec.describe BudgetPolicy do
         end
 
         context "when there is an editable report" do
-          let(:report) { create(:report, state: :active) }
+          let(:report) { create(:report, :active) }
 
           context "and the report is not for the organisation or fund of the activity" do
             it { is_expected.to permit_action(:show) }

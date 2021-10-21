@@ -18,7 +18,7 @@ RSpec.feature "Users can create a third-party project" do
       scenario "a new third party project can be added to the project" do
         programme = create(:programme_activity, :gcrf_funded, extending_organisation: user.organisation)
         project = create(:project_activity, :gcrf_funded, organisation: user.organisation, extending_organisation: user.organisation, parent: programme)
-        _report = create(:report, state: :active, organisation: user.organisation, fund: project.associated_fund)
+        _report = create(:report, :active, organisation: user.organisation, fund: project.associated_fund)
 
         activity = build(:third_party_project_activity, :gcrf_funded,
           country_delivery_partners: ["National Council for the State Funding Agencies (CONFAP)"],

@@ -12,7 +12,7 @@ RSpec.describe "Activity forms", type: :request do
   end
 
   let(:activity) { create(:project_activity, organisation: user.organisation, extending_organisation: user.organisation) }
-  let!(:fund) { create(:report, state: :active, organisation: user.organisation, fund: activity.associated_fund) }
+  let!(:fund) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
 
   context "aid types" do
     let(:step) { :aid_type }

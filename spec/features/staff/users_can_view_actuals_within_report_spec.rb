@@ -68,7 +68,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
     end
 
     scenario "the report contains an _actuals_ tab" do
-      report = create(:report, state: :active, organisation: organisation, description: nil)
+      report = create(:report, :active, organisation: organisation, description: nil)
 
       programme = create(:programme_activity)
       project = create(:project_activity, organisation: organisation, parent: programme)
@@ -103,7 +103,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
 
     context "report is in a state where upload is not permissable" do
       scenario "the upload facility is not present" do
-        report = create(:report, state: :approved, organisation: organisation, description: nil)
+        report = create(:report, :approved, organisation: organisation, description: nil)
 
         visit report_path(report.id)
 

@@ -1,4 +1,4 @@
-class SpendingBreakdown::Export
+class Export::SpendingBreakdown
   HEADERS = [
     "RODA identifier",
     "Delivery partner identifier",
@@ -50,18 +50,23 @@ class SpendingBreakdown::Export
   end
 
   def all_totals_for_activity(activity)
-    Transaction.joins("LEFT OUTER JOIN adjustment_details ON adjustment_details.adjustment_id = transactions.id")
-      .where(parent_activity_id: activity.id)
-      .select(:financial_quarter, :financial_year, :parent_activity_id, :value, :type, "adjustment_details.adjustment_type")
-      .group(:parent_activity_id, :financial_quarter, :financial_year, :type, "adjustment_details.adjustment_type")
-      .order(:parent_activity_id, :financial_quarter, :financial_year)
-      .sum(:value)
+    Export::AllActivityTotals.new(activity: activity).call
   end
 
   def build_columns(totals, activity)
     columns = all_actual_and_refund_financial_quarter_range.map { |fq|
-      actual_overview = TransactionOverview.new(:actual, activity, totals, fq)
-      refund_overview = TransactionOverview.new(:refund, activity, totals, fq)
+      actual_overview = Export::FinancialQuarterActivityTotals.new(
+        type: :actual,
+        activity: activity,
+        totals: totals,
+        financial_quarter: fq
+      )
+      refund_overview = Export::FinancialQuarterActivityTotals.new(
+        type: :refund,
+        activity: activity,
+        totals: totals,
+        financial_quarter: fq
+      )
 
       net_total = actual_overview.net_total + refund_overview.net_total
 
@@ -152,34 +157,6 @@ class SpendingBreakdown::Export
       return [] if all_financial_quarters_with_forecasts.blank?
 
       Range.new(all_actual_and_refund_financial_quarter_range.last.succ, all_financial_quarters_with_forecasts.max)
-    end
-  end
-
-  class TransactionOverview
-    TRANSACTION_TYPES = {
-      actual: "Actual",
-      refund: "Refund",
-    }
-
-    def initialize(transaction_type, activity, totals, financial_quarter)
-      @transaction_type = TRANSACTION_TYPES[transaction_type]
-      @activity = activity
-      @totals = totals
-      @financial_quarter = financial_quarter
-    end
-
-    def net_total
-      total + adjustments_total
-    end
-
-    private
-
-    def total
-      @totals.fetch([@activity.id, @financial_quarter.quarter, @financial_quarter.financial_year.start_year, @transaction_type, nil], 0)
-    end
-
-    def adjustments_total
-      @totals.fetch([@activity.id, @financial_quarter.quarter, @financial_quarter.financial_year.start_year, "Adjustment", @transaction_type], 0)
     end
   end
 end

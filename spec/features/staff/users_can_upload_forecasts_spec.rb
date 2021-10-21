@@ -8,7 +8,7 @@ RSpec.feature "users can upload forecasts" do
 
   let! :report do
     create(:report,
-      state: :active,
+      :active,
       fund: project.associated_fund,
       organisation: organisation,
       financial_year: 2021,

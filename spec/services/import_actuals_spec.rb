@@ -8,9 +8,9 @@ RSpec.describe ImportActuals do
 
   let! :report do
     create(:report,
+      :active,
       fund: project.associated_fund,
       organisation: project.organisation,
-      state: :active,
       financial_year: 1999,
       financial_quarter: 4)
   end

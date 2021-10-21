@@ -7,7 +7,6 @@ RSpec.describe ForecastPolicy do
   before do
     reporting_cycle.tick
     ForecastHistory.new(activity, financial_quarter: 2, financial_year: 2018).set_value(50)
-    report.update!(state: :inactive)
   end
 
   let :forecast do
@@ -22,44 +21,53 @@ RSpec.describe ForecastPolicy do
     context "when the activity is a fund" do
       let(:activity) { create(:fund_activity, organisation: user.organisation) }
 
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:edit) }
-      it { is_expected.to forbid_action(:update) }
+      it "controls actions as expected" do
+        is_expected.to permit_action(:show)
 
-      it { is_expected.to forbid_action(:destroy) }
+        is_expected.to forbid_action(:create)
+        is_expected.to forbid_action(:edit)
+        is_expected.to forbid_action(:update)
+
+        is_expected.to forbid_action(:destroy)
+      end
     end
 
     context "when the activity is a programme" do
       let(:activity) { create(:programme_activity, organisation: user.organisation) }
 
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to permit_action(:create) }
-      it { is_expected.to permit_action(:edit) }
-      it { is_expected.to permit_action(:update) }
-      it { is_expected.to permit_action(:destroy) }
+      it "controls actions as expected" do
+        is_expected.to permit_action(:show)
+        is_expected.to permit_action(:create)
+        is_expected.to permit_action(:edit)
+        is_expected.to permit_action(:update)
+        is_expected.to permit_action(:destroy)
+      end
     end
 
     context "when the activity is a project" do
       let(:activity) { create(:project_activity) }
 
-      it { is_expected.to permit_action(:show) }
+      it "controls actions as expected" do
+        is_expected.to permit_action(:show)
 
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:edit) }
-      it { is_expected.to forbid_action(:update) }
-      it { is_expected.to forbid_action(:destroy) }
+        is_expected.to forbid_action(:create)
+        is_expected.to forbid_action(:edit)
+        is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:destroy)
+      end
     end
 
     context "when the activity is a third party project" do
       let(:activity) { create(:third_party_project_activity) }
 
-      it { is_expected.to permit_action(:show) }
+      it "controls actions as expected" do
+        is_expected.to permit_action(:show)
 
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:edit) }
-      it { is_expected.to forbid_action(:update) }
-      it { is_expected.to forbid_action(:destroy) }
+        is_expected.to forbid_action(:create)
+        is_expected.to forbid_action(:edit)
+        is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:destroy)
+      end
     end
   end
 
@@ -69,32 +77,38 @@ RSpec.describe ForecastPolicy do
     context "when the activity is a fund" do
       let(:activity) { create(:fund_activity) }
 
-      it { is_expected.to forbid_action(:show) }
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:edit) }
-      it { is_expected.to forbid_action(:update) }
-      it { is_expected.to forbid_action(:destroy) }
+      it "controls actions as expected" do
+        is_expected.to forbid_action(:show)
+        is_expected.to forbid_action(:create)
+        is_expected.to forbid_action(:edit)
+        is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:destroy)
+      end
     end
 
     context "when the activity is a programme" do
       let(:activity) { create(:programme_activity) }
 
-      it { is_expected.to forbid_action(:show) }
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:edit) }
-      it { is_expected.to forbid_action(:update) }
-      it { is_expected.to forbid_action(:destroy) }
+      it "controls actions as expected" do
+        is_expected.to forbid_action(:show)
+        is_expected.to forbid_action(:create)
+        is_expected.to forbid_action(:edit)
+        is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:destroy)
+      end
     end
 
     context "when the activity is a project" do
       let(:activity) { create(:project_activity) }
 
-      context "and the activity does not belong to the users organisation" do
-        it { is_expected.to forbid_action(:show) }
-        it { is_expected.to forbid_action(:create) }
-        it { is_expected.to forbid_action(:edit) }
-        it { is_expected.to forbid_action(:update) }
-        it { is_expected.to forbid_action(:destroy) }
+      context "and the activity does not belong to the user's organisation" do
+        it "controls actions as expected" do
+          is_expected.to forbid_action(:show)
+          is_expected.to forbid_action(:create)
+          is_expected.to forbid_action(:edit)
+          is_expected.to forbid_action(:update)
+          is_expected.to forbid_action(:destroy)
+        end
       end
 
       context "and the activity does belong to the users organisation" do
@@ -103,14 +117,16 @@ RSpec.describe ForecastPolicy do
         end
 
         context "when there is no editable report" do
-          before { report.update!(state: :inactive) }
+          before { report.update!(state: :approved) }
 
-          it { is_expected.to permit_action(:show) }
+          it "controls actions as expected" do
+            is_expected.to permit_action(:show)
 
-          it { is_expected.to forbid_action(:create) }
-          it { is_expected.to forbid_action(:edit) }
-          it { is_expected.to forbid_action(:update) }
-          it { is_expected.to forbid_action(:destroy) }
+            is_expected.to forbid_action(:create)
+            is_expected.to forbid_action(:edit)
+            is_expected.to forbid_action(:update)
+            is_expected.to forbid_action(:destroy)
+          end
         end
 
         context "when there is an editable report" do
@@ -121,12 +137,14 @@ RSpec.describe ForecastPolicy do
               report.update!(organisation: create(:delivery_partner_organisation), fund: create(:fund_activity))
             end
 
-            it { is_expected.to permit_action(:show) }
+            it "controls actions as expected" do
+              is_expected.to permit_action(:show)
 
-            it { is_expected.to forbid_action(:create) }
-            it { is_expected.to forbid_action(:edit) }
-            it { is_expected.to forbid_action(:update) }
-            it { is_expected.to forbid_action(:destroy) }
+              is_expected.to forbid_action(:create)
+              is_expected.to forbid_action(:edit)
+              is_expected.to forbid_action(:update)
+              is_expected.to forbid_action(:destroy)
+            end
           end
 
           context "and the report is for the organisation but not the fund of the activity" do
@@ -134,12 +152,14 @@ RSpec.describe ForecastPolicy do
               report.update!(fund: create(:fund_activity))
             end
 
-            it { is_expected.to permit_action(:show) }
+            it "controls actions as expected" do
+              is_expected.to permit_action(:show)
 
-            it { is_expected.to forbid_action(:create) }
-            it { is_expected.to forbid_action(:edit) }
-            it { is_expected.to forbid_action(:update) }
-            it { is_expected.to forbid_action(:destroy) }
+              is_expected.to forbid_action(:create)
+              is_expected.to forbid_action(:edit)
+              is_expected.to forbid_action(:update)
+              is_expected.to forbid_action(:destroy)
+            end
           end
 
           context "and the report is for the organisation and fund of the activity" do
@@ -152,20 +172,23 @@ RSpec.describe ForecastPolicy do
                 forecast.update!(report: create(:report))
               end
 
-              it { is_expected.to permit_action(:show) }
-              it { is_expected.to permit_action(:create) }
-
-              it { is_expected.to permit_action(:edit) }
-              it { is_expected.to permit_action(:update) }
-              it { is_expected.to permit_action(:destroy) }
+              it "controls actions as expected" do
+                is_expected.to permit_action(:show)
+                is_expected.to permit_action(:create)
+                is_expected.to permit_action(:edit)
+                is_expected.to permit_action(:update)
+                is_expected.to permit_action(:destroy)
+              end
             end
 
             context "when the report is the one in which the forecast was created" do
-              it { is_expected.to permit_action(:show) }
-              it { is_expected.to permit_action(:create) }
-              it { is_expected.to permit_action(:edit) }
-              it { is_expected.to permit_action(:update) }
-              it { is_expected.to permit_action(:destroy) }
+              it "controls actions as expected" do
+                is_expected.to permit_action(:show)
+                is_expected.to permit_action(:create)
+                is_expected.to permit_action(:edit)
+                is_expected.to permit_action(:update)
+                is_expected.to permit_action(:destroy)
+              end
             end
           end
         end
