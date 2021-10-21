@@ -34,6 +34,13 @@ class FinancialYear
 
       (first_year..this_financial_year).map { |year| new(year) }
     end
+
+    def from_twenty_ten_to_ten_years_ahead
+      twenty_ten = for_date(Date.parse("2011-01-01")).to_i
+      ten_years_ahead = for_date(Date.today).to_i + 9
+
+      (twenty_ten..ten_years_ahead).map { |year| new(year) }
+    end
   end
 
   def <=>(other)

@@ -33,6 +33,22 @@ RSpec.describe "Users can create a budget" do
         expect(page).to have_content(t("action.budget.create.success"))
       end
 
+      scenario "successfully creates a budget in the past" do
+        fund_activity = create(:fund_activity, organisation: user.organisation)
+        programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
+
+        visit organisation_activity_path(programme_activity.organisation, programme_activity)
+
+        click_on(t("page_content.budgets.button.create"))
+
+        expect(page).to have_checked_field("budget[budget_type]", with: "direct", visible: false)
+        select "2010-2011", from: "budget[financial_year]"
+        fill_in "budget[value]", with: "1000.00"
+        click_button t("default.button.submit")
+
+        expect(page).to have_content(t("action.budget.create.success"))
+      end
+
       scenario "sees validation errors for missing attributes" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)

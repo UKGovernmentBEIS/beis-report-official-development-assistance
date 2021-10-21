@@ -883,6 +883,8 @@
 
 ## [unreleased]
 
+- Budgets can be added in the past, back to 2010
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-82...HEAD
 [release-82]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-81...release-82
 [release-81]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-80...release-81
