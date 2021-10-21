@@ -881,12 +881,15 @@
 - Create historical events when creating a refund
 - Ensure all types of comments are displayed against reports and activities
 
-## [unreleased]
+## [release-83] 2021-10-21
 
 - Budgets can be added in the past, back to 2010
 - List organisations sorted alphabetically on the Organisations and Reports pages
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-82...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-83...HEAD
+[release-83]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-82...release-83
 [release-82]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-81...release-82
 [release-81]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-80...release-81
 [release-80]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-79...release-80
