@@ -29,6 +29,10 @@ class Export::ActivityActualsColumns
     }.to_h
   end
 
+  def last_financial_quarter
+    financial_quarter_range.max
+  end
+
   private
 
   def actual_and_refund_data(activity)

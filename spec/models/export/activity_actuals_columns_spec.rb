@@ -140,6 +140,12 @@ RSpec.describe Export::ActivityActualsColumns do
           expect(subject.rows).to eql []
         end
       end
+
+      describe "#last_financial_quarter" do
+        it "returns the last financial quarter in the set" do
+          expect(subject.last_financial_quarter).to eql FinancialQuarter.new(2020, 4)
+        end
+      end
     end
   end
 
