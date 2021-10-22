@@ -4,12 +4,12 @@ FactoryBot.define do
     disbursement_channel { "1" }
     currency { "gbp" }
     ingested { false }
-    financial_quarter { FinancialQuarter.for_date(Date.today).quarter }
-    financial_year { FinancialQuarter.for_date(Date.today).financial_year.start_year }
+    financial_quarter { 1 }
+    financial_year { 2020 }
     value { BigDecimal("110.01") }
 
     association :parent_activity, factory: :project_activity
-    association :report
+    report { association :report, financial_quarter: financial_quarter, financial_year: financial_year + 1 }
 
     receiving_organisation_name { nil }
     receiving_organisation_reference { nil }

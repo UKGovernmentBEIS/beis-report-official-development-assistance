@@ -14,6 +14,7 @@ class Adjustment < Transaction
 
   validates_associated :comment
   validates_associated :detail
+  validate :ensure_correction_suits_adjustment
 
   attribute :currency, :string, default: "GBP"
   attribute :transaction_type, :string, default: Transaction::TRANSACTION_TYPE_DISBURSEMENT
@@ -23,5 +24,20 @@ class Adjustment < Transaction
   def adjustment_type=(variant)
     build_detail unless detail
     detail.adjustment_type = variant
+  end
+
+  private
+
+  def ensure_correction_suits_adjustment
+    return unless report && financial_quarter && financial_year
+
+    unless financial_period.first < report.financial_period.first
+      errors.add(
+        :base,
+        I18n.t(
+          "activerecord.errors.models.adjustment.attributes.financial_period.invalid"
+        )
+      )
+    end
   end
 end

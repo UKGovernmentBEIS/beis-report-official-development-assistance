@@ -52,6 +52,8 @@ en:
           attributes:
             comment:
               invalid: Enter a comment explaining the adjustment
+            financial_period:
+              invalid: Adjustments must relate to an earlier financial period than the current report. For a current report you must edit an Actual or Refund.
             financial_year:
               blank: Select a financial year
             financial_quarter:
