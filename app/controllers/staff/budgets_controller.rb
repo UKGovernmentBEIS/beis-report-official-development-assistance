@@ -44,7 +44,7 @@ class Staff::BudgetsController < Staff::BaseController
     authorize @budget
 
     @activity = Activity.find(activity_id)
-    result = UpdateBudget.new(budget: @budget)
+    result = UpdateBudget.new(budget: @budget, user: current_user)
       .call(attributes: budget_params)
 
     if result.success?

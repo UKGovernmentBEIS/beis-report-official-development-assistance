@@ -1,8 +1,9 @@
 class UpdateBudget
-  attr_accessor :budget
+  attr_accessor :budget, :user
 
-  def initialize(budget:)
+  def initialize(budget:, user:)
     self.budget = budget
+    self.user = user
   end
 
   def call(attributes: {})
@@ -11,7 +12,9 @@ class UpdateBudget
     convert_and_assign_value(budget, attributes[:value])
 
     result = if budget.valid?
-      Result.new(budget.save, budget)
+      result = Result.new(budget.save, budget)
+      record_historical_event(attributes) if result && user.delivery_partner?
+      result
     else
       Result.new(false, budget)
     end
@@ -20,6 +23,35 @@ class UpdateBudget
   end
 
   private
+
+  def record_historical_event(attributes)
+    HistoryRecorder.new(user: user).call(
+      changes: changes_to_tracked_attributes,
+      reference: "Change to Budget",
+      activity: budget.parent_activity,
+      trackable: budget,
+      report: report
+    )
+  end
+
+  def report
+    Report.editable_for_activity(budget.parent_activity)
+  end
+
+  def changes_to_tracked_attributes
+    [
+      :value,
+      :budget_type,
+      :financial_year,
+      :budget_type,
+      :providing_organisation_name,
+      :providing_organisation_type,
+      :providing_organisation_reference,
+      :providing_organisation_id,
+    ].filter_map { |attribute|
+      [attribute, budget.saved_change_to_attribute(attribute)] if budget.saved_change_to_attribute?(attribute)
+    }.to_h
+  end
 
   def convert_and_assign_value(budget, value)
     budget.value = ConvertFinancialValue.new.convert(value.to_s)
