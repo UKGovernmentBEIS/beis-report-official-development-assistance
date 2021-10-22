@@ -7,11 +7,26 @@ RSpec.describe Export::ActivityActualsColumns do
 
     @activities = [@activity] + other_activities
 
-    create_q1_2020_actual_and_adjustments_in_q1_report
-    create_q4_2020_actual_and_adjustments_in_q4_report
+    @q1_report = create(:report, financial_quarter: 1, financial_year: 2020)
+    @q4_report = create(:report, financial_quarter: 4, financial_year: 2020)
 
-    create_q1_2020_refund_and_adjustments_in_q1_report
-    create_q4_2020_refund_and_adjustments_in_q4_report
+    create_fixtures(
+      <<~TABLE
+        |transaction|report|financial_period|value|
+        | Actual    |q1    | q1             |  100|
+        | Adj. Act. |q1    | q1             |  200|
+        | Adj. Act. |q1    | q1             | -100|
+        | Refund    |q1    | q1             | -200|
+        | Adj. Ref. |q1    | q1             |   50|
+        | Adj. Ref. |q1    | q1             | -200|
+        | Actual    |q4    | q4             |  100|
+        | Adj. Act. |q4    | q4             |  200|
+        | Adj. Act. |q4    | q4             | -100|
+        | Refund    |q4    | q4             | -200|
+        | Adj. Ref. |q4    | q4             |  100|
+        | Adj. Ref. |q4    | q4             | -200|
+      TABLE
+    )
   end
 
   after(:all) do
@@ -149,6 +164,8 @@ RSpec.describe Export::ActivityActualsColumns do
     end
   end
 
+  private
+
   def value_for_header(header_name)
     values = subject.rows.fetch(@activity.id)
     values[subject.headers.index(header_name)]
@@ -256,5 +273,32 @@ RSpec.describe Export::ActivityActualsColumns do
       financial_quarter: 4,
       financial_year: 2020,
     )
+  end
+
+  def create_fixtures(table)
+    CSV.parse(table, col_sep: "|", headers: true).each do |row|
+      case row["transaction"].strip
+      when "Actual"
+        create(:actual, fixture_attrs(row))
+      when "Adj. Act."
+        create(:adjustment, :actual, fixture_attrs(row))
+      when "Adj. Ref."
+        create(:adjustment, :refund, fixture_attrs(row))
+      when "Refund"
+        create(:refund, fixture_attrs(row))
+      else
+        raise "don't know what to do"
+      end
+    end
+  end
+
+  def fixture_attrs(row)
+    {
+      parent_activity: @activity,
+      value: row["value"].strip,
+      financial_quarter: row["financial_period"][/\d/],
+      financial_year: 2020,
+      report: instance_variable_get("@#{row["report"].strip}_report"),
+    }
   end
 end
