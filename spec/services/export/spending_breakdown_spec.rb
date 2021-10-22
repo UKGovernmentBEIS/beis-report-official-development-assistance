@@ -120,35 +120,6 @@ RSpec.describe Export::SpendingBreakdown do
         "Forecast FQ3 2021-2022",
       )
     end
-
-    context "when there are no actual spend, refunds and forecasts" do
-      before do
-        allow(subject).to receive(:actuals).and_return([])
-        allow(subject).to receive(:forecasts).and_return([])
-        allow(subject).to receive(:refunds).and_return([])
-      end
-
-      it "returns the activity attribute headers only" do
-        activity_attribute_headers = [
-          "RODA identifier",
-          "Delivery partner identifier",
-          "Activity title",
-          "Activity level",
-          "Activity status",
-        ]
-        expect(subject.headers).to match_array(activity_attribute_headers)
-      end
-    end
-
-    context "when there are no forecasts" do
-      before do
-        allow(subject).to receive(:forecasts).and_return([])
-      end
-
-      it "should not return any forecast headers" do
-        expect(subject.headers.any? { |header| header.match(/Forecast/) }).to eq(false)
-      end
-    end
   end
 
   describe "#rows" do
@@ -214,6 +185,23 @@ RSpec.describe Export::SpendingBreakdown do
 
       it "includes a row for each" do
         expect(subject.rows.count).to eq(5)
+      end
+    end
+
+    context "when there are no actual spend, refunds and forecasts" do
+      let(:activities) { create_list(:project_activity, 5) }
+      subject { described_class.new(source_fund: activities.first.associated_fund, organisation: activities.first.organisation) }
+
+      it "returns the activity attribute headers only" do
+        activity_attribute_headers = [
+          "RODA identifier",
+          "Delivery partner identifier",
+          "Activity title",
+          "Activity level",
+          "Activity status",
+        ]
+        expect(subject.headers).to match_array(activity_attribute_headers)
+        expect(subject.rows).to eq []
       end
     end
   end
