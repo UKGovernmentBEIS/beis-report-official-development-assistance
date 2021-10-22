@@ -22,7 +22,7 @@ class Export::ActivityAttributesColumns
   def rows
     @activities.map { |activity|
       values = @attributes.map { |att|
-        activity.send(att)
+        ActivityCsvPresenter.new(activity).send(att)
       }
       [activity.id, values]
     }.to_h

@@ -53,11 +53,14 @@ RSpec.describe Export::SpendingBreakdown do
       expect(subject.headers).to include(
         "RODA identifier",
         "Delivery partner identifier",
-        "Delivery partner organisation",
-        "Title",
-        "Level",
+        "Activity title",
+        "Activity level",
         "Activity status",
       )
+    end
+
+    it "includes the delivery partner organisation" do
+      expect(subject.headers).to include("Delivery partner organisation")
     end
 
     it "includes the three headings that describe the finances for financial quarter 1 2020-2021" do
@@ -118,6 +121,25 @@ RSpec.describe Export::SpendingBreakdown do
       )
     end
 
+    context "when there are no actual spend, refunds and forecasts" do
+      before do
+        allow(subject).to receive(:actuals).and_return([])
+        allow(subject).to receive(:forecasts).and_return([])
+        allow(subject).to receive(:refunds).and_return([])
+      end
+
+      it "returns the activity attribute headers only" do
+        activity_attribute_headers = [
+          "RODA identifier",
+          "Delivery partner identifier",
+          "Activity title",
+          "Activity level",
+          "Activity status",
+        ]
+        expect(subject.headers).to match_array(activity_attribute_headers)
+      end
+    end
+
     context "when there are no forecasts" do
       before do
         allow(subject).to receive(:forecasts).and_return([])
@@ -134,11 +156,14 @@ RSpec.describe Export::SpendingBreakdown do
       aggregate_failures do
         expect(value_for_header("RODA identifier")).to eql(@activity.roda_identifier)
         expect(value_for_header("Delivery partner identifier")).to eql(@activity.delivery_partner_identifier)
-        expect(value_for_header("Delivery partner organisation")).to eql(@activity.organisation.name)
-        expect(value_for_header("Title")).to eql(@activity.title)
-        expect(value_for_header("Level")).to eql("Project (level C)")
+        expect(value_for_header("Activity title")).to eql(@activity.title)
+        expect(value_for_header("Activity level")).to eql("Project (level C)")
         expect(value_for_header("Activity status")).to eql("Spend in progress")
       end
+    end
+
+    it "contains the appropriate delivery partner name" do
+      expect(value_for_header("Delivery partner organisation")).to eq @activity.organisation.name
     end
 
     it "contains the financial data for financial quarter 1 2020-2021" do
