@@ -32,6 +32,23 @@ RSpec.feature "Users can edit an activity" do
       within ".publish_to_iati" do
         expect(page).to have_content(t("summary.label.activity.publish_to_iati.false"))
       end
+
+      expect_change_to_be_recorded_as_historical_event(
+        field: "publish_to_iati",
+        previous_value: true,
+        new_value: false,
+        reference: "Activity redacted from IATI",
+        activity: project_activity,
+        report: nil
+      )
+      expect_change_to_be_recorded_as_historical_event(
+        field: "publish_to_iati",
+        previous_value: true,
+        new_value: false,
+        reference: "Activity redacted from IATI",
+        activity: third_party_project_activity,
+        report: nil
+      )
     end
 
     context "when the activity is a fund level activity" do
@@ -55,6 +72,7 @@ RSpec.feature "Users can edit an activity" do
             field: "description",
             previous_value: activity.description,
             new_value: updated_description,
+            reference: "Update to Activity purpose",
             activity: activity,
             report: nil # no report in this scenario. Realistic or failure in setup?
           )
@@ -184,6 +202,7 @@ RSpec.feature "Users can edit an activity" do
           field: "policy_marker_gender",
           previous_value: "not_assessed",
           new_value: "significant_objective",
+          reference: "Update to Activity policy_markers",
           activity: activity,
           report: report
         )
@@ -376,14 +395,16 @@ def expect_change_to_be_recorded_as_historical_event(
   field:,
   previous_value:,
   new_value:,
+  reference:,
   activity:,
   report:
 )
-  historical_event = HistoricalEvent.last
+  historical_event = activity.historical_events.last
   aggregate_failures do
     expect(historical_event.value_changed).to eq(field)
     expect(historical_event.previous_value).to eq(previous_value)
     expect(historical_event.new_value).to eq(new_value)
+    expect(historical_event.reference).to eq(reference)
     expect(historical_event.activity).to eq(activity)
     expect(historical_event.report).to eq(report)
   end

@@ -888,6 +888,8 @@
 
 ## [unreleased]
 
+- Record redactions from IATI in the activity's change history
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-83...HEAD
 [release-83]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-82...release-83
 [release-82]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-81...release-82
