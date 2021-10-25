@@ -1,7 +1,7 @@
 class ForecastHistory
   SequenceError = Class.new(StandardError)
 
-  attr_reader :financial_year, :financial_quarter
+  attr_reader :financial_year, :financial_quarter, :history_recorder
 
   def initialize(activity, financial_quarter:, financial_year:, report: nil, user: nil)
     @activity = activity
@@ -9,6 +9,7 @@ class ForecastHistory
     @financial_year = financial_year.to_i
     @report = report
     @user = user
+    @history_recorder = HistoryRecorder.new(user: user)
   end
 
   def set_value(value)
@@ -63,7 +64,8 @@ class ForecastHistory
     if latest_entry&.report_id == report.id
       update_entry(latest_entry, value)
     elsif latest_entry
-      revise_entry(latest_entry, value, report)
+      new_entry = revise_entry(latest_entry, value, report)
+      record_historical_event(latest_entry, new_entry, report)
     else
       create_original_entry(value, report)
     end
@@ -112,6 +114,16 @@ class ForecastHistory
       report: report
     )
     new_entry
+  end
+
+  def record_historical_event(old_entry, new_entry, report)
+    history_recorder.call(
+      changes: {value: [old_entry.value, new_entry.value]},
+      reference: "Revising a forecast for #{old_entry.own_financial_quarter}",
+      activity: new_entry.parent_activity,
+      trackable: new_entry,
+      report: report,
+    )
   end
 
   def update_entry(entry, value)
