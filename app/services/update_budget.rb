@@ -13,7 +13,7 @@ class UpdateBudget
 
     result = if budget.valid?
       result = Result.new(budget.save, budget)
-      record_historical_event(attributes) if result && user.delivery_partner?
+      record_historical_event(attributes) if result.success?
       result
     else
       Result.new(false, budget)
@@ -43,11 +43,9 @@ class UpdateBudget
       :value,
       :budget_type,
       :financial_year,
-      :budget_type,
       :providing_organisation_name,
       :providing_organisation_type,
       :providing_organisation_reference,
-      :providing_organisation_id,
     ].filter_map { |attribute|
       [attribute, budget.saved_change_to_attribute(attribute)] if budget.saved_change_to_attribute?(attribute)
     }.to_h
