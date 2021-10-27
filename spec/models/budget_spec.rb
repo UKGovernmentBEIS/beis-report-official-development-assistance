@@ -121,13 +121,21 @@ RSpec.describe Budget do
     end
   end
 
-  it "returns an instance of FinancialYear for the financial year" do
-    travel_to Date.new(2020, 5, 16) do
-      budget = build(:budget, financial_year: Date.today.year)
+  describe "#financial_year" do
+    it "returns an instance of FinancialYear for the financial year" do
+      travel_to Date.new(2020, 5, 16) do
+        budget = build(:budget, financial_year: Date.today.year)
 
-      expect(budget.financial_year).to be_a(FinancialYear)
-      expect(budget.period_start_date).to eq(Date.parse("01-04-2020"))
-      expect(budget.period_end_date).to eq(Date.parse("31-03-2021"))
+        expect(budget.financial_year).to be_a(FinancialYear)
+        expect(budget.period_start_date).to eq(Date.parse("01-04-2020"))
+        expect(budget.period_end_date).to eq(Date.parse("31-03-2021"))
+      end
+    end
+
+    it "allows the financial year to change" do
+      budget = create(:budget, financial_year: 2022)
+      budget.update(financial_year: 2014)
+      expect(budget.financial_year).to eq(FinancialYear.new(2014))
     end
   end
 end
