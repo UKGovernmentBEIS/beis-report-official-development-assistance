@@ -8,7 +8,11 @@ Generic term for any project undertaken by an organisation with BEIS money. Top 
 
 Also: actuals, transaction(s)
 
-Money spent for an activity. `Transaction` in the code.
+Money spent for an activity. For historical reasons, some actuals have negative values, but newer actuals should only ever have positive values.
+
+## Adjustments
+
+Corrections made to fix inconsistencies with reported actuals.
 
 ## Budget
 
@@ -81,6 +85,10 @@ An activity (a way of organising money, organisations, and people involved) reco
 Also "level C"
 
 An activity managed by a DP, recording how money is received and spent from BEIS on a specific activity (such an aid programme, a public health campaign etc). The DP is responsible for correctly reporting all the financial details, target areas, etc.
+
+## Refunds
+
+Represent money returned, that will be deducted when calculating net spends. Always stored as negative values.
 
 ## Report
 
