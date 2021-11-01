@@ -87,23 +87,20 @@ RSpec.describe ActivityHelper, type: :helper do
       expect(countries.last.percentage).to eq(50.0)
     end
 
-    it "appends the remainder to the last item if the country list count is an odd number" do
+    it "handles the case when all countries are selected" do
+      codes = Codelist.new(type: "benefitting_countries", source: "beis").map { |c| c["code"] }
+      countries = benefitting_countries_with_percentages(codes)
+
+      expect(countries.first.percentage).to eq 100 / countries.count.to_f
+      expect(countries.last.percentage).to eq 100 / countries.count.to_f
+    end
+
+    it "handles the case when three coutries are selected" do
       codes = ["AG", "LC", "BZ"]
       countries = benefitting_countries_with_percentages(codes)
 
-      expect(countries.count).to eql(3)
-
-      expect(countries.first.code).to eq("AG")
-      expect(countries.first.name).to eq("Antigua and Barbuda")
-      expect(countries.first.percentage).to eq(33.0)
-
-      expect(countries.second.code).to eq("LC")
-      expect(countries.second.name).to eq("Saint Lucia")
-      expect(countries.second.percentage).to eq(33.0)
-
-      expect(countries.last.code).to eq("BZ")
-      expect(countries.last.name).to eq("Belize")
-      expect(countries.last.percentage).to eq(34.0)
+      expect(countries.first.percentage).to eq 100 / countries.count.to_f
+      expect(countries.last.percentage).to eq 100 / countries.count.to_f
     end
 
     it "returns an empty array if the codes are nil or empty" do
