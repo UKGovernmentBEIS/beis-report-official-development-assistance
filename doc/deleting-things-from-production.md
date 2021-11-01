@@ -1,38 +1,35 @@
+## Deleting activities
 Users cannot delete activities via the web app.
 
-Requests to delete activities usually come in via Zendesk support tickets.
+Requests to delete activities should come via Zendesk at the end of reporting
+and a complete, approved list of activities to be deleted must be provided.
 
-Sometimes we'll be given the database ID of the activity to delete:
+A rake task is available to help you delete activities and their associations.
 
-```
-activity = Activity.find(id)
-```
+Connect to production to run the task, see [console access](./console-access.md)
 
-Most often we'll be given its RODA identifier:
+You will need the database ID of each activity, often we'll be given the activity's 
+RODA identifier, so you first need to locate the database ID on the Rails console:
 
-```
-activity = Activity.by_roda_identifier("REPLACE-ME")
-```
-
-Check whether the activity has any associated entities that would be deleted along with it:
-
-```
-activity.children.count
-Budget.where(parent_activity_id: activity.id).count
-Transaction.where(parent_activity_id: activity.id).count
-Forecast.where(parent_activity_id: activity.id).count
-
-Comment.where(activity_id: activity.id).count
-ImplementingOrganisation.where(activity_id: activity.id).count
+```ruby
+activity = Activity.by_roda_identifier("REPLACE-ME").pluck(:id)
 ```
 
-If any of these are present, and we haven't been explicitly told to delete the activity and all its associated entities, stop and confirm with the requester that this is what they want.
+Then run the task, setting the activity database ID as the ID environment
+variable:
 
-Other associations have database constraints in place to prevent deletion of associated activities, such as outgoing transfers:
-
-```
-OutgoingTransfer.where(source_id: activity.id).count
-OutgoingTransfer.where(destination_id: activity.id).count
+```bash
+bin/rails activities:delete ID=REPLACE-ME
 ```
 
-If there are such associations present, confirm the course of action with the requester.
+Running the rake task will show you which activity the ID is and associated
+data, including how many descendants the activity may have, use this
+information to verify this is the expected activity.
+
+**If the activity is on the list, we must assume the activity is to be deleted**
+
+However, if any of the activity details is cause for concern for you, it is
+absolutely correct to go back and question the requester.
+
+The task will delete ALL associated entities including descendant activities and
+their associations.
