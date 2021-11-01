@@ -1180,12 +1180,6 @@ data:
     graduated: no
     regions:
       - "89"
-  - name: States Ex-Yugoslavia unspecified
-    recipient_code: "88"
-    code: A region on IATI code 88
-    graduated: no
-    regions:
-      - "89"
   - name: Moldova
     recipient_code: "93"
     code: MD
