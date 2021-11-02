@@ -886,12 +886,15 @@
 - Budgets can be added in the past, back to 2010
 - List organisations sorted alphabetically on the Organisations and Reports pages
 
-## [unreleased]
+## [release-84] 2021-11-02
 
 - Record redactions from IATI in the activity's change history
 - Track changes to budgets
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-83...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-84...HEAD
+[release-83]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-83...release-84
 [release-83]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-82...release-83
 [release-82]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-81...release-82
 [release-81]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-80...release-81
