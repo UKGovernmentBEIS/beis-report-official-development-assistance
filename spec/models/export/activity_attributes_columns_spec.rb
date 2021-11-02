@@ -12,24 +12,26 @@ RSpec.describe Export::ActivityAttributesColumns do
   subject { Export::ActivityAttributesColumns.new(activities: @activities, attributes: attributes) }
 
   context "when the attributes exist on the Activity model" do
-    let(:attributes) { [:roda_identifier, :delivery_partner_identifier] }
+    let(:attributes) { [:roda_identifier, :delivery_partner_identifier, :programme_status] }
 
     describe "#headers" do
       it "returns an array of the column headers for the attributes" do
         headers = [
           I18n.t("activerecord.attributes.activity.roda_identifier"),
           I18n.t("activerecord.attributes.activity.delivery_partner_identifier"),
+          I18n.t("activerecord.attributes.activity.programme_status"),
         ]
         expect(subject.headers).to match_array(headers)
       end
 
       describe "ordering" do
-        let(:attributes) { [:delivery_partner_identifier, :roda_identifier] }
+        let(:attributes) { [:delivery_partner_identifier, :roda_identifier, :programme_status] }
 
         it "returns the values in the order they were passed in" do
           headers = [
             I18n.t("activerecord.attributes.activity.delivery_partner_identifier"),
             I18n.t("activerecord.attributes.activity.roda_identifier"),
+            I18n.t("activerecord.attributes.activity.programme_status"),
           ]
           expect(subject.headers).to match_array(headers)
         end
@@ -38,19 +40,30 @@ RSpec.describe Export::ActivityAttributesColumns do
 
     describe "#rows" do
       it "returns a hash with activity id keys and an array of the activity values" do
+        first_row_activity_presenter = ActivityCsvPresenter.new(@activities.first)
+        last_row_activity_presenter = ActivityCsvPresenter.new(@activities.last)
+
         first_row_values = [
-          @activities.first.roda_identifier,
-          @activities.first.delivery_partner_identifier,
+          first_row_activity_presenter.roda_identifier,
+          first_row_activity_presenter.delivery_partner_identifier,
+          first_row_activity_presenter.programme_status,
         ]
 
         last_row_values = [
-          @activities.last.roda_identifier,
-          @activities.last.delivery_partner_identifier,
+          last_row_activity_presenter.roda_identifier,
+          last_row_activity_presenter.delivery_partner_identifier,
+          last_row_activity_presenter.programme_status,
         ]
 
         expect(subject.rows.count).to eq 5
         expect(subject.rows.fetch(@activities.first.id)).to match_array(first_row_values)
         expect(subject.rows.fetch(@activities.last.id)).to match_array(last_row_values)
+      end
+
+      it "Returns the values in the correct format" do
+        last_row_programme_status = ActivityCsvPresenter.new(@activities.last).programme_status
+
+        expect(subject.rows.fetch(@activities.last.id)).to include last_row_programme_status
       end
     end
   end

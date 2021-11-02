@@ -1,6 +1,7 @@
 RSpec.describe ForecastHistory do
   let(:edited_report) { nil }
-  let(:history) { ForecastHistory.new(activity, financial_quarter: 3, financial_year: 2020, report: edited_report) }
+  let(:user) { create(:delivery_partner_user) }
+  let(:history) { ForecastHistory.new(activity, financial_quarter: 3, financial_year: 2020, report: edited_report, user: user) }
   let(:reporting_cycle) { ReportingCycle.new(activity, 1, 2015) }
 
   def history_entries
@@ -30,6 +31,10 @@ RSpec.describe ForecastHistory do
       ])
     end
 
+    it "does not create a historical event when the value is first set" do
+      expect { history.set_value(10) }.to not_create_a_historical_event
+    end
+
     it "creates an original with a negative value" do
       history.set_value(-10)
 
@@ -51,6 +56,12 @@ RSpec.describe ForecastHistory do
         ["original", nil, nil, 10],
         ["revised", nil, nil, 20],
       ])
+    end
+
+    it "does not create a historical event when the value is first updated" do
+      history.set_value(10)
+
+      expect { history.set_value(20) }.to not_create_a_historical_event
     end
 
     it "adds a revision with a zero value" do
@@ -123,6 +134,13 @@ RSpec.describe ForecastHistory do
         ["original", nil, nil, 10],
       ])
     end
+
+    it "does not create a historical event when the value is changed outside of the current reporting period" do
+      reporting_cycle.tick
+      history.set_value(10)
+
+      expect { history.set_value(20) }.to not_create_a_historical_event
+    end
   end
 
   context "for a level C activity, owned by a delivery partner" do
@@ -158,6 +176,10 @@ RSpec.describe ForecastHistory do
       ])
     end
 
+    it "does not create a historical event when the value is first set" do
+      expect { history.set_value(20) }.to not_create_a_historical_event
+    end
+
     it "returns a _Forecast_" do
       expect(history.set_value(10)).to be_a(Forecast)
     end
@@ -167,123 +189,141 @@ RSpec.describe ForecastHistory do
       expect(history_entries).to eq([])
     end
 
-    it "edits an original entry when it belongs to the current report" do
-      history.set_value(10)
-      history.set_value(20)
+    context "when the forecast belongs to the current report" do
+      before do
+        history.set_value(10)
+      end
 
-      expect(history_entries).to eq([
-        ["original", 1, 2015, 20],
-      ])
+      it "edits an original entry" do
+        history.set_value(20)
+
+        expect(history_entries).to eq([
+          ["original", 1, 2015, 20],
+        ])
+      end
+
+      it "deletes an original entry with a zero value" do
+        history.set_value(0)
+
+        expect(history_entries).to eq([])
+      end
+
+      it "does not create a historical event when the value is first set" do
+        expect { history.set_value(20) }.to not_create_a_historical_event
+      end
     end
 
-    it "deletes an original entry with a zero value when it belongs to the current report" do
-      history.set_value(10)
-      history.set_value(0)
+    context "when the original entry is part of an approved report" do
+      before do
+        history.set_value(10)
+        reporting_cycle.tick
+      end
 
-      expect(history_entries).to eq([])
+      it "adds a revision" do
+        history.set_value(20)
+
+        expect(history_entries).to eq([
+          ["original", 1, 2015, 10],
+          ["revised", 2, 2015, 20],
+        ])
+      end
+
+      it "adds a revision with a zero value" do
+        history.set_value(0)
+
+        expect(history_entries).to eq([
+          ["original", 1, 2015, 10],
+          ["revised", 2, 2015, 0],
+        ])
+      end
+
+      it "adds a revision with a zero value when a forecast is deleted" do
+        history.clear
+
+        expect(history_entries).to eq([
+          ["original", 1, 2015, 10],
+          ["revised", 2, 2015, 0],
+        ])
+      end
+
+      it "edits a revision when it belongs to the current report" do
+        history.set_value(20)
+        history.set_value(30)
+
+        expect(history_entries).to eq([
+          ["original", 1, 2015, 10],
+          ["revised", 2, 2015, 30],
+        ])
+      end
+
+      it "edits a revision with a zero value when it belongs to the current report" do
+        history.set_value(20)
+        history.set_value(0)
+
+        expect(history_entries).to eq([
+          ["original", 1, 2015, 10],
+          ["revised", 2, 2015, 0],
+        ])
+      end
+
+      it "deleting a forecast edits a revision with a zero value when it belongs to the current report" do
+        history.set_value(20)
+        history.clear
+
+        expect(history_entries).to eq([
+          ["original", 1, 2015, 10],
+          ["revised", 2, 2015, 0],
+        ])
+      end
+
+      it "adds a revision when the last revision is part of an approved report" do
+        history.set_value(20)
+        3.times { reporting_cycle.tick }
+
+        history.set_value(30)
+
+        expect(history_entries).to eq([
+          ["original", 1, 2015, 10],
+          ["revised", 2, 2015, 20],
+          ["revised", 1, 2016, 30],
+        ])
+      end
+
+      it "records a historical event when the last revision is part of an approved report" do
+        expect { history.set_value(20) }.to create_a_historical_forecast_event(
+          financial_quarter: FinancialQuarter.new(2020, 3),
+          activity: activity,
+          previous_value: 10,
+          new_value: 20,
+          report: Report.editable_for_activity(activity)
+        )
+      end
     end
 
-    it "adds a revision when the original entry is part of an approved report" do
-      history.set_value(10)
-      reporting_cycle.tick
+    context "when the original entry is part of an older approved report" do
+      before do
+        history.set_value(10)
+        6.times { reporting_cycle.tick }
+      end
 
-      history.set_value(20)
+      it "adds a revision" do
+        history.set_value(20)
 
-      expect(history_entries).to eq([
-        ["original", 1, 2015, 10],
-        ["revised", 2, 2015, 20],
-      ])
-    end
+        expect(history_entries).to eq([
+          ["original", 1, 2015, 10],
+          ["revised", 3, 2016, 20],
+        ])
+      end
 
-    it "adds a revision when the original entry is part of an older approved report" do
-      history.set_value(10)
-      6.times { reporting_cycle.tick }
-
-      history.set_value(20)
-
-      expect(history_entries).to eq([
-        ["original", 1, 2015, 10],
-        ["revised", 3, 2016, 20],
-      ])
-    end
-
-    it "adds a revision with a zero value when the original is part of an approved report" do
-      history.set_value(10)
-      reporting_cycle.tick
-
-      history.set_value(0)
-
-      expect(history_entries).to eq([
-        ["original", 1, 2015, 10],
-        ["revised", 2, 2015, 0],
-      ])
-    end
-
-    it "deleting a forecast adds a revision with a zero value when the original is part of an approved report" do
-      history.set_value(10)
-      reporting_cycle.tick
-
-      history.clear
-
-      expect(history_entries).to eq([
-        ["original", 1, 2015, 10],
-        ["revised", 2, 2015, 0],
-      ])
-    end
-
-    it "edits a revision when it belongs to the current report" do
-      history.set_value(10)
-      reporting_cycle.tick
-
-      history.set_value(20)
-      history.set_value(30)
-
-      expect(history_entries).to eq([
-        ["original", 1, 2015, 10],
-        ["revised", 2, 2015, 30],
-      ])
-    end
-
-    it "edits a revision with a zero value when it belongs to the current report" do
-      history.set_value(10)
-      reporting_cycle.tick
-
-      history.set_value(20)
-      history.set_value(0)
-
-      expect(history_entries).to eq([
-        ["original", 1, 2015, 10],
-        ["revised", 2, 2015, 0],
-      ])
-    end
-
-    it "deleting a forecast edits a revision with a zero value when it belongs to the current report" do
-      history.set_value(10)
-      reporting_cycle.tick
-
-      history.set_value(20)
-      history.clear
-
-      expect(history_entries).to eq([
-        ["original", 1, 2015, 10],
-        ["revised", 2, 2015, 0],
-      ])
-    end
-
-    it "adds a revision when the last revision is part of an approved report" do
-      history.set_value(10)
-      reporting_cycle.tick
-
-      history.set_value(20)
-      3.times { reporting_cycle.tick }
-
-      history.set_value(30)
-
-      expect(history_entries).to eq([
-        ["original", 1, 2015, 10],
-        ["revised", 2, 2015, 20],
-        ["revised", 1, 2016, 30],
-      ])
+      it "records a historical event when the last revision is part of an approved report" do
+        expect { history.set_value(20) }.to create_a_historical_forecast_event(
+          financial_quarter: FinancialQuarter.new(2020, 3),
+          activity: activity,
+          previous_value: 10,
+          new_value: 20,
+          report: Report.editable_for_activity(activity)
+        )
+      end
     end
   end
 
@@ -303,6 +343,10 @@ RSpec.describe ForecastHistory do
       expect(history_entries).to eq([
         ["original", 1, 2015, 10],
       ])
+    end
+
+    it "does not create a historical event when the value is first set" do
+      expect { history.set_value(10) }.to not_create_a_historical_event
     end
   end
 
@@ -332,6 +376,10 @@ RSpec.describe ForecastHistory do
       ])
     end
 
+    it "does not create a historical event when the value is first set" do
+      expect { history.set_value(10) }.to not_create_a_historical_event
+    end
+
     it "edits an original entry when it belongs to the current report" do
       history.set_value(10)
       history.set_value(20)
@@ -341,29 +389,45 @@ RSpec.describe ForecastHistory do
       ])
     end
 
-    it "adds a revision when the original entry is part of an approved report" do
+    it "does not create a historical event when it belongs to the current report" do
       history.set_value(10)
-      reporting_cycle.tick
-
-      history.set_value(20)
-
-      expect(history_entries).to eq([
-        ["original", nil, nil, 10],
-        ["revised", 2, 2015, 20],
-      ])
+      expect { history.set_value(20) }.to not_create_a_historical_event
     end
 
-    it "edits a revision when it belongs to the current report" do
-      history.set_value(10)
-      reporting_cycle.tick
+    context "when the original entry is part of an approved report" do
+      before do
+        history.set_value(10)
+        reporting_cycle.tick
+      end
 
-      history.set_value(20)
-      history.set_value(30)
+      it "adds a revision" do
+        history.set_value(20)
 
-      expect(history_entries).to eq([
-        ["original", nil, nil, 10],
-        ["revised", 2, 2015, 30],
-      ])
+        expect(history_entries).to eq([
+          ["original", nil, nil, 10],
+          ["revised", 2, 2015, 20],
+        ])
+      end
+
+      it "records a historical event when adding a revision" do
+        expect { history.set_value(20) }.to create_a_historical_forecast_event(
+          financial_quarter: FinancialQuarter.new(2020, 3),
+          activity: activity,
+          previous_value: 10,
+          new_value: 20,
+          report: Report.editable_for_activity(activity)
+        )
+      end
+
+      it "edits a revision" do
+        history.set_value(20)
+        history.set_value(30)
+
+        expect(history_entries).to eq([
+          ["original", nil, nil, 10],
+          ["revised", 2, 2015, 30],
+        ])
+      end
     end
   end
 end

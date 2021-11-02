@@ -39,18 +39,12 @@ module ActivityHelper
   def benefitting_countries_with_percentages(benefitting_countries)
     return [] if benefitting_countries.blank?
 
-    # Get an equal percentage split between all the countries
-    # (together with the remainder if possible)
-    percentage, remainder = 100.divmod(benefitting_countries.count)
-
     benefitting_countries.map do |country|
-      # If we're at the last item, add the remainder to the percentage
-      # split
-      percentage += remainder if country == benefitting_countries.last
-
-      OpenStruct.new(code: country,
-                     name: country_name_from_code(country),
-                     percentage: percentage.to_f)
+      OpenStruct.new(
+        code: country,
+        name: country_name_from_code(country),
+        percentage: 100 / benefitting_countries.count.to_f
+      )
     end
   end
 end

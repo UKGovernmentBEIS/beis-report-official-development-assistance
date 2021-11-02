@@ -26,13 +26,24 @@ RSpec.feature "Users can create an adjustment (correcting spend in an approved r
     then_i_expect_to_see_how_i_need_to_correct_the_form
   end
 
+  scenario "must choose a financial period earlier than the current report" do
+    given_an_active_report_exists
+    and_i_am_looking_at_the_activity_financials_tab
+
+    when_i_try_to_create_an_adjustment_for_the_current_financial_period
+    then_i_should_see_an_explanation_of_when_adjustments_are_appropriate
+
+    when_i_choose_a_valid_financial_period
+    then_i_expect_to_see_the_new_adjustment
+  end
+
   def given_an_active_report_exists
     create(
       :report,
       :active,
       fund: activity.associated_fund,
       organisation: activity.organisation,
-      financial_quarter: 1,
+      financial_quarter: 2,
       financial_year: 2021
     )
   end
@@ -48,8 +59,8 @@ RSpec.feature "Users can create an adjustment (correcting spend in an approved r
     click_on t("page_content.adjustment.button.create")
     fill_in "adjustment_form[value]", with: "100.01"
     select "Actual", from: "adjustment_form[adjustment_type]"
-    choose "2", name: "adjustment_form[financial_quarter]"
-    select "2021-2022", from: "adjustment_form[financial_year]"
+    choose "1", name: "adjustment_form[financial_quarter]"
+    select "2020-2021", from: "adjustment_form[financial_year]"
     fill_in "adjustment_form[comment]", with: "There was a typo in the original 'actual'"
     click_on(t("default.button.submit"))
   end
@@ -66,7 +77,7 @@ RSpec.feature "Users can create an adjustment (correcting spend in an approved r
     fail "Expect activity to have an adjustment" unless adjustment
     within ".adjustments" do
       within "#adjustment_#{adjustment.id}" do
-        expect(page).to have_css(".financial-period", text: "FQ2 2021-2022")
+        expect(page).to have_css(".financial-period", text: "FQ1 2020-2021")
         expect(page).to have_css(".value", text: "£100.01")
         expect(page).to have_css(".type", text: "Actual")
         expect(page).to have_css(
@@ -88,7 +99,7 @@ RSpec.feature "Users can create an adjustment (correcting spend in an approved r
     expect(page).to have_content(user.email)
     expect(page).to have_content("£100.01")
     expect(page).to have_content("Actual")
-    expect(page).to have_content("FQ2 2021-2022")
+    expect(page).to have_content("FQ1 2020-2021")
     expect(page).to have_content("There was a typo in the original 'actual'")
   end
 
@@ -129,5 +140,28 @@ RSpec.feature "Users can create an adjustment (correcting spend in an approved r
     expect(page).to have_content("Select the type of adjustment")
     expect(page).to have_content("Enter a comment explaining the adjustment")
     expect(page).to have_content("Enter an amount")
+  end
+
+  def when_i_try_to_create_an_adjustment_for_the_current_financial_period
+    click_on t("page_content.adjustment.button.create")
+    fill_in "adjustment_form[value]", with: "100.01"
+    select "Actual", from: "adjustment_form[adjustment_type]"
+    choose "2", name: "adjustment_form[financial_quarter]"
+    select "2021-2022", from: "adjustment_form[financial_year]"
+    fill_in "adjustment_form[comment]", with: "There was a typo in the original 'actual'"
+    click_on(t("default.button.submit"))
+  end
+
+  def then_i_should_see_an_explanation_of_when_adjustments_are_appropriate
+    expect(page).to have_content(
+      "Adjustments must relate to an earlier financial period than the current " \
+      "report. For a current report you must edit an Actual or Refund."
+    )
+  end
+
+  def when_i_choose_a_valid_financial_period
+    choose "1", name: "adjustment_form[financial_quarter]"
+    select "2020-2021", from: "adjustment_form[financial_year]"
+    click_on(t("default.button.submit"))
   end
 end

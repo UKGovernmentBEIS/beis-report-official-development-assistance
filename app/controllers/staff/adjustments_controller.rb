@@ -23,6 +23,7 @@ class Staff::AdjustmentsController < Staff::ActivitiesController
       flash[:notice] = t("action.adjustment.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
+      @adjustment = form_for_correction
       show_errors
     end
   end
@@ -38,6 +39,13 @@ class Staff::AdjustmentsController < Staff::ActivitiesController
 
   def show_errors
     render :new
+  end
+
+  def form_for_correction
+    AdjustmentForm
+      .new(params[:adjustment_form]
+      .merge(parent_activity: activity))
+      .tap { |form| form.errors.merge!(@adjustment.errors) }
   end
 
   def create_adjustment

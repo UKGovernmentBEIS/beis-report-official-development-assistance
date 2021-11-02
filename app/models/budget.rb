@@ -33,7 +33,7 @@ class Budget < ApplicationRecord
   def financial_year
     return nil if self[:financial_year].nil?
 
-    @financial_year ||= FinancialYear.new(self[:financial_year])
+    FinancialYear.new(self[:financial_year])
   end
 
   def period_start_date

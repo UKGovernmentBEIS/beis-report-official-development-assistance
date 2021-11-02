@@ -4,11 +4,13 @@ RSpec.describe "Users can edit a forecast" do
     let(:programme) { create(:programme_activity, extending_organisation: user.organisation) }
     let(:project) { create(:project_activity, organisation: user.organisation, parent: programme) }
     let(:forecast) { ForecastOverview.new(project).latest_values.first }
+    let(:reporting_cycle) { ReportingCycle.new(project, 1, 2018) }
+    let(:history) { ForecastHistory.new(project, financial_quarter: 4, financial_year: 2018) }
 
     before do
       authenticate!(user: user)
-      ReportingCycle.new(project, 1, 2018).tick
-      ForecastHistory.new(project, financial_quarter: 2, financial_year: 2018).set_value(40)
+      reporting_cycle.tick
+      history.set_value(40)
     end
 
     scenario "they can edit a forecast" do
@@ -21,10 +23,35 @@ RSpec.describe "Users can edit a forecast" do
       expect(page).to have_http_status(:success)
 
       fill_in "Forecasted spend amount", with: "£20000"
-      click_button "Submit"
+
+      expect { click_button "Submit" }.to not_create_a_historical_event
 
       expect(page).to have_content t("action.forecast.update.success")
       expect(page).to have_content "£20,000"
+    end
+
+    scenario "a historical event is created if the original forecast part of an approved report" do
+      reporting_cycle.tick
+
+      visit organisation_activity_path(project.organisation, project)
+
+      within "##{forecast.id}" do
+        click_on "Edit"
+      end
+
+      fill_in "Forecasted spend amount", with: "£20000"
+
+      expect { click_button "Submit" }.to create_a_historical_forecast_event(
+        financial_quarter: FinancialQuarter.new(2018, 4),
+        activity: project,
+        previous_value: 40,
+        new_value: 20000,
+        report: Report.editable_for_activity(project)
+      )
+
+      click_on I18n.t("tabs.activity.historical_events")
+
+      expect(page).to have_content("Revising a forecast for #{FinancialQuarter.new(2018, 4)}")
     end
 
     scenario "the correct financial quarter and year are selected" do
@@ -33,7 +60,7 @@ RSpec.describe "Users can edit a forecast" do
         click_on "Edit"
       end
 
-      expect(page).to have_content("Edit forecasted spend for FQ2 2018-2019")
+      expect(page).to have_content("Edit forecasted spend for FQ4 2018-2019")
     end
 
     scenario "they do not see the edit link when they cannot edit" do

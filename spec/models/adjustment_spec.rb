@@ -42,23 +42,58 @@ RSpec.describe Adjustment, type: :model do
   end
 
   describe "validations" do
-    let(:adjustment) do
-      Adjustment.new.tap do |adjustment|
-        adjustment.build_comment(body: nil)
-        adjustment.build_detail(adjustment_type: "Rubbish", user: nil)
-        adjustment.valid?
+    describe "on #comment" do
+      let(:adjustment) do
+        Adjustment.new.tap do |adjustment|
+          adjustment.build_comment(body: nil)
+          adjustment.valid?
+        end
+      end
+
+      it "validates associated comment with a helpful message" do
+        expect(adjustment.errors[:comment])
+          .to include("Enter a comment explaining the adjustment")
       end
     end
 
-    it "validates associated comment with a helpful message" do
-      expect(adjustment.errors[:comment])
-        .to include("Enter a comment explaining the adjustment")
+    describe "on #details" do
+      let(:adjustment) do
+        Adjustment.new.tap do |adjustment|
+          adjustment.build_detail(adjustment_type: "Rubbish", user: nil)
+          adjustment.valid?
+        end
+      end
+
+      it "validates associated adjustment detail" do
+        aggregate_failures do
+          expect(adjustment.errors[:"detail.adjustment_type"]).to be_present
+          expect(adjustment.errors[:"detail.user"]).to be_present
+        end
+      end
     end
 
-    it "validates associated adjustment detail" do
-      aggregate_failures do
-        expect(adjustment.errors[:"detail.adjustment_type"]).to be_present
-        expect(adjustment.errors[:"detail.user"]).to be_present
+    describe "on financial period" do
+      let(:adjustment) do
+        report = create(:report, financial_quarter: 1, financial_year: 2021)
+
+        Adjustment.new.tap do |adjustment|
+          adjustment.report = report
+          adjustment.financial_quarter = 1
+          adjustment.financial_year = 2021
+          adjustment.valid?
+        end
+      end
+
+      it "ensures that the financial period is earlier than that of the associated " \
+         "report (if not, an edit rather than an adjustment is right correction)" do
+        aggregate_failures do
+          expect(adjustment.errors[:base])
+            .to include(
+              I18n.t(
+                "activerecord.errors.models.adjustment.attributes.financial_period.invalid"
+              )
+            )
+        end
       end
     end
   end
