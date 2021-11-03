@@ -37,6 +37,31 @@ RSpec.describe HasFinancialQuarter do
     end
   end
 
+  describe "later_period_than?(other)" do
+    let(:q2_2021) { TestReport.new(2, 2021) }
+    let(:q3_2021) { TestReport.new(3, 2021) }
+
+    it "returns TRUE when the period being compared is earlier" do
+      expect(q3_2021).to be_later_period_than(q2_2021)
+    end
+
+    it "returns FALSE when the period being compared is later" do
+      expect(q2_2021).not_to be_later_period_than(q3_2021)
+    end
+
+    it "returns FALSE when the period being compared is the same" do
+      expect(q3_2021).not_to be_later_period_than(q3_2021)
+    end
+
+    it "returns TRUE when the object compared is missing" do
+      expect(q3_2021).to be_later_period_than(nil)
+    end
+
+    it "returns TRUE when the period being compared is blank or missing" do
+      expect(q3_2021).to be_later_period_than(TestReport.new(nil, nil))
+    end
+  end
+
   describe "#first_day_of_financial_period" do
     it "returns the first day of the financial period" do
       report = TestReport.new(4, 2021)

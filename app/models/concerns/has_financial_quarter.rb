@@ -1,6 +1,12 @@
 module HasFinancialQuarter
   extend ActiveSupport::Concern
 
+  def later_period_than?(other)
+    return true if other&.financial_period.blank?
+
+    financial_period.last > other.financial_period.last
+  end
+
   def own_financial_quarter
     if financial_year.present? && financial_quarter.present?
       FinancialQuarter.new(financial_year, financial_quarter)
