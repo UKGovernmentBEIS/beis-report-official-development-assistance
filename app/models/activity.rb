@@ -142,6 +142,9 @@ class Activity < ApplicationRecord
 
   has_one :commitment, dependent: :destroy
 
+  has_many :reports,
+    ->(activity) { unscope(:where).for_activity(activity).in_historical_order }
+
   enum level: {
     fund: "fund",
     programme: "programme",
@@ -221,6 +224,10 @@ class Activity < ApplicationRecord
 
   def self.by_roda_identifier(identifier)
     find_by(roda_identifier: identifier)
+  end
+
+  def latest_report
+    reports.first
   end
 
   def descendants

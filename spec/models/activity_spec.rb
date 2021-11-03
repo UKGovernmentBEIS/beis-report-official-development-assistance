@@ -638,6 +638,40 @@ RSpec.describe Activity, type: :model do
     it { should have_one(:commitment) }
   end
 
+  describe "has_one #latest_report association" do
+    let(:activity) do
+      create(:project_activity)
+    end
+
+    let!(:latest_report) do
+      create(
+        :report,
+        :active,
+        organisation: activity.organisation,
+        fund: activity.associated_fund,
+        financial_quarter: 3,
+        financial_year: 2021
+      )
+    end
+
+    let!(:_earlier_report) do
+      create(
+        :report,
+        :approved,
+        organisation: activity.organisation,
+        fund: activity.associated_fund,
+        financial_quarter: 2,
+        financial_year: 2021
+      )
+    end
+
+    describe "#latest_report" do
+      it "returns the most recent report" do
+        expect(activity.latest_report).to eq(latest_report)
+      end
+    end
+  end
+
   describe "#parent_activities" do
     context "when the activity is a fund" do
       it "returns an empty array" do
