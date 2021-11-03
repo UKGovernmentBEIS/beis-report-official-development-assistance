@@ -153,7 +153,7 @@ RSpec.feature "Users can view an activity" do
       within ".financial-summary" do
         expect(page).to have_content "Total spend to date £60.00"
         expect(page).to have_content "Total budget to date £65.00"
-        expect(page).to have_content "Total forecasted spend to date £70.00"
+        expect(page).to have_content "Total forecasted spend £30.00" # only upcoming periods
       end
       expect(page).to have_content actual.value
       expect(page).to have_content budget.value

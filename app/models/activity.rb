@@ -262,10 +262,15 @@ class Activity < ApplicationRecord
     Budget.direct.where(parent_activity_id: id).sum(:value)
   end
 
-  def total_forecasted
+  def future_forecasts
     activity_ids = descendants.pluck(:id).append(id)
-    overview = ForecastOverview.new(activity_ids)
-    overview.latest_values.sum(:value)
+    ForecastOverview.new(activity_ids)
+      .latest_values
+      .select { |forecast| forecast.later_period_than?(latest_report) }
+  end
+
+  def total_forecasted
+    future_forecasts.sum(&:value)
   end
 
   def own_and_descendants_actuals

@@ -1547,6 +1547,22 @@ RSpec.describe Activity, type: :model do
         expect(programme2_projects[1].total_forecasted).to eq(10240)
       end
 
+      context "when a report exists for forecasted periods ('quarter')" do
+        before do
+          create(
+            :report,
+            :approved,
+            organisation: programme1.organisation,
+            fund: programme1.associated_fund,
+            **quarter
+          )
+        end
+
+        it "includes only forecasts for later periods ('quarter.succ')" do
+          expect(programme1.total_forecasted).to eq([40, 640].sum)
+        end
+      end
+
       context "when a level A/B forecast is revised" do
         let(:programme) { programme2 }
 
