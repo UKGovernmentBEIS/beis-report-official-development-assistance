@@ -25,6 +25,10 @@ class Export::ActivityForecastColumns
     }.to_h
   end
 
+  def rows_for_first_financial_quarter
+    rows.each_with_object({}) { |(key, values), rows| rows[key] = values.first }
+  end
+
   private
 
   def forecast_data(activity)

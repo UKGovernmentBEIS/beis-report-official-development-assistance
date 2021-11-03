@@ -32,6 +32,10 @@ class Export::ActivityActualsColumns
     financial_quarter_range.max
   end
 
+  def rows_for_last_financial_quarter
+    rows.each_with_object({}) { |(key, values), obj| obj[key] = values.last }
+  end
+
   private
 
   def actual_and_refund_data(activity)

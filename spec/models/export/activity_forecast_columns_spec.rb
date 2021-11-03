@@ -216,6 +216,20 @@ RSpec.describe Export::ActivityForecastColumns do
         expect(subject.rows).to eql []
       end
     end
+
+    context "when the Q1 2020-2021 report is passed in" do
+      let(:report) { create(:report, financial_quarter: 1, financial_year: 2020) }
+
+      describe "#rows_for_first_financial_quarter" do
+        it "returns the rows for the first column in the set (Q1 2020-2021)" do
+          first_column_of_forecasts = subject.rows_for_first_financial_quarter
+          activity_value = first_column_of_forecasts.fetch(@activity.id)
+
+          expect(activity_value).to eq BigDecimal(10_000)
+          expect(first_column_of_forecasts.count).to eq 5
+        end
+      end
+    end
   end
 
   context "when there is a starting financial quarter" do

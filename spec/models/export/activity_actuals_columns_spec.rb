@@ -119,6 +119,16 @@ RSpec.describe Export::ActivityActualsColumns do
         end
       end
     end
+
+    describe "rows_for_last_financial_quarter" do
+      it "returns the rows for the last column in the set (Q4 2020)" do
+        last_column_data = subject.rows_for_last_financial_quarter
+        value_for_activity = last_column_data.fetch(@activity.id)
+
+        expect(value_for_activity).to eq BigDecimal(300)
+        expect(last_column_data.count).to eq 5
+      end
+    end
   end
 
   context "when a breakdown is requested" do
