@@ -39,7 +39,7 @@ class Activity
     def financials
       @actuals = policy_scope(Actual).where(parent_activity: @activity).order("date DESC")
       @budgets = policy_scope(Budget).where(parent_activity: @activity).order("financial_year DESC")
-      @forecasts = policy_scope(@activity.latest_forecasts)
+      @forecasts = policy_scope(@activity.latest_forecasts).includes([:parent_activity])
       @refunds = policy_scope(Refund).where(parent_activity: @activity).order("financial_year DESC")
       @adjustments = policy_scope(Adjustment).where(parent_activity: @activity).order("date DESC")
 

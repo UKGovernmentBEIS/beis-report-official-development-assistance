@@ -113,12 +113,38 @@ RSpec.feature "Users can view an activity" do
 
     scenario "the financial summary and activity financials can be viewed" do
       activity = create(:programme_activity, organisation: user.organisation)
-      actual = create(:actual, parent_activity: activity, value: 10)
-      budget = create(:budget, parent_activity: activity, value: 10)
 
-      create(:actual, parent_activity: activity, value: 50)
+      q3_21_report = create(
+        :report,
+        :active,
+        organisation: user.organisation,
+        fund: activity.associated_fund
+      )
+
+      actual = create(
+        :actual,
+        parent_activity: activity,
+        value: 10,
+        report: q3_21_report,
+        financial_quarter: 3,
+        financial_year: 2021
+      )
+
+      create(
+        :actual,
+        parent_activity:
+        activity,
+        value: 50,
+        report: q3_21_report,
+        financial_quarter: 3,
+        financial_year: 2021
+      )
+
+      budget = create(:budget, parent_activity: activity, value: 10)
       create(:budget, parent_activity: activity, value: 55)
-      ForecastHistory.new(activity, financial_year: 2020, financial_quarter: 3).set_value(70)
+
+      ForecastHistory.new(activity, financial_year: 2021, financial_quarter: 3).set_value(40)
+      ForecastHistory.new(activity, financial_year: 2021, financial_quarter: 4).set_value(30)
 
       visit organisation_activity_financials_path(activity.organisation, activity)
       within ".govuk-tabs__list-item--selected" do
