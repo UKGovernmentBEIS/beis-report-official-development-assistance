@@ -10,51 +10,43 @@ RSpec.describe Export::SpendingBreakdown do
     q1_2019_report = create(
       :report,
       :approved,
-      organisation: @organisation,
+      organisation: @activity.organisation,
       fund: @activity.associated_fund,
       financial_quarter: 1,
       financial_year: 2019
     )
-
-    ForecastHistory
-      .new(@activity, report: q1_2019_report, financial_quarter: 1, financial_year: 2020)
-      .set_value(10_000)
-    ForecastHistory
-      .new(@activity, report: q1_2019_report, financial_quarter: 4, financial_year: 2020)
-      .set_value(5_00)
-    ForecastHistory
-      .new(@activity, report: q1_2019_report, financial_quarter: 1, financial_year: 2021)
-      .set_value(10_000)
-    ForecastHistory
-      .new(@activity, report: q1_2019_report, financial_quarter: 4, financial_year: 2021)
-      .set_value(20_000)
+    forecasts_for_report_from_table(q1_2019_report,
+      <<~TABLE
+        |financial_quarter|financial_year|value|
+        |1                |2020          |10000|
+        |4                |2020          |  500|
+        |1                |2021          |10000|
+        |4                |2021          |20000|
+      TABLE
+    )
 
     q4_2019_report = create(
       :report,
       :approved,
-      organisation: @organisation,
+      organisation: @activity.organisation,
       fund: @activity.associated_fund,
       financial_quarter: 4,
       financial_year: 2019
     )
-
-    ForecastHistory
-      .new(@activity, report: q4_2019_report, financial_quarter: 1, financial_year: 2020)
-      .set_value(5_000)
-    ForecastHistory
-      .new(@activity, report: q4_2019_report, financial_quarter: 4, financial_year: 2020)
-      .set_value(2_500)
-    ForecastHistory
-      .new(@activity, report: q4_2019_report, financial_quarter: 1, financial_year: 2021)
-      .set_value(20_000)
-    ForecastHistory
-      .new(@activity, report: q4_2019_report, financial_quarter: 4, financial_year: 2021)
-      .set_value(10_000)
+    forecasts_for_report_from_table(q4_2019_report,
+      <<~TABLE
+        |financial_quarter|financial_year|value|
+        |1                |2020          | 5000|
+        |4                |2020          | 2500|
+        |1                |2021          |20000|
+        |4                |2021          |10000|
+      TABLE
+    )
 
     @q1_report = create(:report, financial_quarter: 1, financial_year: 2020)
     @q2_report = create(:report, financial_quarter: 2, financial_year: 2020)
 
-    create_fixtures(
+    actuals_from_table(
       <<~TABLE
         |transaction|report|financial_period|value|
         | Actual    |q1    | q1             |  100|
@@ -213,7 +205,7 @@ RSpec.describe Export::SpendingBreakdown do
     end
   end
 
-  def create_fixtures(table)
+  def actuals_from_table(table)
     CSV.parse(table, col_sep: "|", headers: true).each do |row|
       case row["transaction"].strip
       when "Actual"
@@ -227,6 +219,17 @@ RSpec.describe Export::SpendingBreakdown do
       else
         raise "don't know what to do"
       end
+    end
+  end
+
+  def forecasts_for_report_from_table(report, table)
+    CSV.parse(table, col_sep: "|", headers: true).each do |row|
+      ForecastHistory.new(
+        @activity,
+        report: report,
+        financial_quarter: row["financial_quarter"].to_i,
+        financial_year: row["financial_year"].to_i,
+      ).set_value(row["value"].to_i)
     end
   end
 
