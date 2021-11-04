@@ -48,9 +48,16 @@ class Export::ActivityForecastColumns
   end
 
   def forecasts_to_hash
-    @_forecasts_to_hash ||= forecasts.each_with_object({}) { |forecast, hash|
-      hash[[forecast.parent_activity_id, forecast.financial_quarter, forecast.financial_year]] = forecast.value
-    }
+    @_forecasts_to_hash ||=
+      forecasts.each_with_object({}) { |forecast, hash|
+        hash[
+          [
+            forecast.parent_activity_id,
+            forecast.financial_quarter,
+            forecast.financial_year,
+          ]
+        ] = forecast.value
+      }
   end
 
   def all_financial_quarters_with_forecasts

@@ -241,6 +241,24 @@ RSpec.describe Export::ActivityForecastColumns do
         expect(value_for_header("Forecast FQ4 2021-2022").to_s).to eql("20000.0")
       end
     end
+
+    context "when #rows is called multiple times" do
+      let(:starting_financial_quarter) { nil }
+      let(:report) { nil }
+
+      before do
+        forecast_overview_double = double(latest_values: [])
+        allow(ForecastOverview).to receive(:new).and_return(forecast_overview_double)
+
+        3.times { subject.rows }
+      end
+
+      it "gets the forecast overview only once" do
+        expect(ForecastOverview)
+          .to have_received(:new)
+          .once
+      end
+    end
   end
 
   def value_for_header(header_name)
