@@ -216,6 +216,20 @@ RSpec.describe Export::ActivityForecastColumns do
         expect(subject.rows).to eql []
       end
     end
+
+    context "when the Q1 2020-2021 report is passed in" do
+      let(:report) { create(:report, financial_quarter: 1, financial_year: 2020) }
+
+      describe "#rows_for_first_financial_quarter" do
+        it "returns the rows for the first column in the set (Q1 2020-2021)" do
+          first_column_of_forecasts = subject.rows_for_first_financial_quarter
+          activity_value = first_column_of_forecasts.fetch(@activity.id)
+
+          expect(activity_value).to eq BigDecimal(10_000)
+          expect(first_column_of_forecasts.count).to eq 5
+        end
+      end
+    end
   end
 
   context "when there is a starting financial quarter" do
@@ -239,6 +253,24 @@ RSpec.describe Export::ActivityForecastColumns do
 
       it "contains the financial data for financial quarter 4 2021-2022" do
         expect(value_for_header("Forecast FQ4 2021-2022").to_s).to eql("20000.0")
+      end
+    end
+
+    context "when #rows is called multiple times" do
+      let(:starting_financial_quarter) { nil }
+      let(:report) { nil }
+
+      before do
+        forecast_overview_double = double(latest_values: [])
+        allow(ForecastOverview).to receive(:new).and_return(forecast_overview_double)
+
+        3.times { subject.rows }
+      end
+
+      it "gets the forecast overview only once" do
+        expect(ForecastOverview)
+          .to have_received(:new)
+          .once
       end
     end
   end
