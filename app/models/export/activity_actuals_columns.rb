@@ -23,8 +23,7 @@ class Export::ActivityActualsColumns
 
   def rows
     return [] if @activities.empty?
-
-    @activities.map { |activity|
+    @_rows ||= @activities.map { |activity|
       actual_and_refund_data(activity)
     }.to_h
   end

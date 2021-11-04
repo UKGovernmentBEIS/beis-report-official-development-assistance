@@ -222,7 +222,23 @@ RSpec.describe Export::ActivityActualsColumns do
     end
   end
 
-  private
+  context "when #rows is called multiple times" do
+    let(:breakdown) { false }
+    let(:report) { nil }
+
+    before do
+      totals_double = double(call: {"fake_activity_id" => []})
+      allow(Export::AllActivityTotals).to receive(:new).and_return(totals_double)
+
+      3.times { subject.rows }
+    end
+
+    it "builds totals for the activities only once" do
+      expect(Export::AllActivityTotals)
+        .to have_received(:new)
+        .exactly(@activities.count).times
+    end
+  end
 
   def value_for_header(header_name)
     values = subject.rows.fetch(@activity.id)
