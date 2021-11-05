@@ -444,8 +444,8 @@ en:
         recipient_region: Recipient region
         recipient_country: Recipient country
         intended_beneficiaries: Intended beneficiaries
-        benefitting_countries: Intended beneficiaries
-        benefitting_region: Recipient region
+        benefitting_countries: Benefitting countries
+        benefitting_region: Benefitting region
         gdi: Global Development Impact
         gcrf_strategic_area: GCRF Strategic Area
         gcrf_challenge_area: GCRF Challenge Area
@@ -455,7 +455,7 @@ en:
         sdg_2: Sustainable Development Goal 2
         sdg_3: Sustainable Development Goal 3
         title: Activity title
-        description: Activity title
+        description: Activity description
         objectives: Aims or objectives
         oda_eligibility: ODA eligibility
         oda_eligibility_lead: ODA eligibility lead contact name
@@ -473,9 +473,9 @@ en:
         total_awards: Total awards
         sector_with_code: Sector
         channel_of_delivery_code: Channel of delivery code
-        flow_with_code: Flow
-        finance_with_code: Finance type
-        aid_type_with_code: Aid type
+        flow: Flow
+        finance: Finance type
+        aid_type: Aid type
         collaboration_type: Collaboration type
         policy_marker_gender: Gender - policy marker
         policy_marker_climate_change_adaptation: Climate Change - Adaptation policy marker
@@ -498,10 +498,9 @@ en:
         previous_identifier: Previous IATI identifier
         geography: Recipient geography
         extending_organisation_id: Extending organisation identifier
-        form_state: Form state
-        aid_type: Aid type
         sector: Sector
         organisation_id: Organisation identifier
+        tied_status: Tied status
     errors:
       models:
         activity:
