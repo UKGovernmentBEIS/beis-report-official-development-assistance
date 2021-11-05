@@ -73,6 +73,28 @@ RSpec.describe Export::ActivityAttributesColumns do
         expect(subject.rows.fetch(@activities.last.id)).to include last_row_programme_status
       end
     end
+
+    context "when there are no activities" do
+      subject { Export::ActivityAttributesColumns.new(activities: [], attributes: attributes) }
+
+      describe "#headers" do
+        it "returns the headers" do
+          headers = [
+            I18n.t("activerecord.attributes.activity.roda_identifier"),
+            I18n.t("activerecord.attributes.activity.delivery_partner_identifier"),
+            I18n.t("activerecord.attributes.activity.programme_status"),
+            I18n.t("activerecord.attributes.activity.benefitting_region"),
+          ]
+          expect(subject.headers).to match_array(headers)
+        end
+      end
+
+      describe "#rows" do
+        it "returns an empty array" do
+          expect(subject.rows).to eq []
+        end
+      end
+    end
   end
 
   context "when the attribute does not exist on the Activity model" do

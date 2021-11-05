@@ -27,6 +27,7 @@ class Export::ActivityAttributesColumns
   end
 
   def rows
+    return [] if @activities.empty?
     @activities.map { |activity|
       values = @attributes.map { |att|
         ActivityCsvPresenter.new(activity).send(att)
