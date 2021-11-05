@@ -12,7 +12,7 @@ RSpec.describe Export::ActivityAttributesColumns do
   subject { Export::ActivityAttributesColumns.new(activities: @activities, attributes: attributes) }
 
   context "when the attributes exist on the Activity model" do
-    let(:attributes) { [:roda_identifier, :delivery_partner_identifier, :programme_status] }
+    let(:attributes) { [:roda_identifier, :delivery_partner_identifier, :programme_status, :benefitting_region] }
 
     describe "#headers" do
       it "returns an array of the column headers for the attributes" do
@@ -20,8 +20,13 @@ RSpec.describe Export::ActivityAttributesColumns do
           I18n.t("activerecord.attributes.activity.roda_identifier"),
           I18n.t("activerecord.attributes.activity.delivery_partner_identifier"),
           I18n.t("activerecord.attributes.activity.programme_status"),
+          I18n.t("activerecord.attributes.activity.benefitting_region"),
         ]
         expect(subject.headers).to match_array(headers)
+      end
+
+      it "includes a dynmic (non-active record) attribute header" do
+        expect(subject.headers).to include(I18n.t("activerecord.attributes.activity.benefitting_region"))
       end
 
       describe "ordering" do
@@ -47,12 +52,14 @@ RSpec.describe Export::ActivityAttributesColumns do
           first_row_activity_presenter.roda_identifier,
           first_row_activity_presenter.delivery_partner_identifier,
           first_row_activity_presenter.programme_status,
+          first_row_activity_presenter.benefitting_region,
         ]
 
         last_row_values = [
           last_row_activity_presenter.roda_identifier,
           last_row_activity_presenter.delivery_partner_identifier,
           last_row_activity_presenter.programme_status,
+          last_row_activity_presenter.benefitting_region,
         ]
 
         expect(subject.rows.count).to eq 5

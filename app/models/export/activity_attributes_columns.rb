@@ -10,6 +10,13 @@ class Export::ActivityAttributesColumns
     :parent_id,
   ]
 
+  DYNAMIC_ATTRIBUTES = [
+    :benefitting_region,
+    :flow,
+    :finance,
+    :tied_status,
+  ]
+
   def initialize(activities:, attributes:)
     @activities = activities
     @attributes = clean_attrbutes(attributes)
@@ -32,6 +39,7 @@ class Export::ActivityAttributesColumns
 
   def clean_attrbutes(attributes)
     attributes.reject do |att|
+      next if DYNAMIC_ATTRIBUTES.include?(att)
       attribute_error(att) unless Activity.has_attribute?(att)
       IGNORED_ATTRIBUTES.include?(att)
     end
