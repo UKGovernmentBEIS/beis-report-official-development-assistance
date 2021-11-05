@@ -23,7 +23,7 @@ class Export::SpendingBreakdown
   end
 
   def headers
-    return @activity_attributes.headers if @actual_columns.rows.empty? && @forecast_columns.rows.empty?
+    return @activity_attributes.headers if actuals_rows.empty? && forecast_rows.empty?
 
     @activity_attributes.headers +
       @delivery_partner_organisations.headers +
@@ -32,13 +32,16 @@ class Export::SpendingBreakdown
   end
 
   def rows
-    return [] if @actual_columns.rows.empty? && @forecast_columns.rows.empty?
+    return [] if actuals_rows.empty? && forecast_rows.empty?
+
+    attribute_row_data = @activity_attributes.rows
+    delivery_partner_organisations_row_data = @delivery_partner_organisations.rows
 
     activities.map do |activity|
-      @activity_attributes.rows.fetch(activity.id, nil) +
-        @delivery_partner_organisations.rows.fetch(activity.id, nil) +
-        @actual_columns.rows.fetch(activity.id, nil) +
-        @forecast_columns.rows.fetch(activity.id, nil)
+      attribute_row_data.fetch(activity.id, nil) +
+        delivery_partner_organisations_row_data.fetch(activity.id, nil) +
+        actuals_rows.fetch(activity.id, nil) +
+        forecast_rows.fetch(activity.id, nil)
     end
   end
 
@@ -52,8 +55,16 @@ class Export::SpendingBreakdown
 
   private
 
+  def actuals_rows
+    @_actuals_rows ||= @actual_columns.rows
+  end
+
+  def forecast_rows
+    @_forecast_rows ||= @forecast_columns.rows
+  end
+
   def first_forecast_financial_quarter
-    return nil if @actual_columns.rows.empty?
+    return nil if actuals_rows.empty?
     @actual_columns.last_financial_quarter.succ
   end
 
