@@ -46,6 +46,7 @@ RSpec.describe Export::Report do
         expect(headers).to include(@headers_for_report.first)
         expect(headers).to include(@headers_for_report.last)
         expect(headers).to include("Implementing organisations")
+        expect(headers).to include("Delivery partner organisation")
       end
     end
 
@@ -57,11 +58,13 @@ RSpec.describe Export::Report do
 
         first_row = rows.first
         expect(first_row.first).to eq(@project.roda_identifier)
-        expect(first_row.last).to include(@project.implementing_organisations.first.name)
+        expect(first_row[implementing_organisation_column_index]).to include(@project.implementing_organisations.first.name)
+        expect(first_row.last).to eq(@project.organisation.name)
 
         last_row = rows.last
         expect(last_row.first).to include(@third_party_project.roda_identifier)
-        expect(last_row.last).to include(@third_party_project.implementing_organisations.first.name)
+        expect(last_row[implementing_organisation_column_index]).to include(@third_party_project.implementing_organisations.first.name)
+        expect(last_row.last).to eq(@third_party_project.organisation.name)
       end
     end
 
@@ -75,6 +78,9 @@ RSpec.describe Export::Report do
         implementing_organisation_double = double(rows: rows_data_double)
         allow(Export::ActivityImplementingOrganisationColumn).to receive(:new).and_return(implementing_organisation_double)
 
+        delivery_partner_organisation_double = double(rows: rows_data_double)
+        allow(Export::ActivityDeliveryPartnerOrganisationColumn).to receive(:new).and_return(delivery_partner_organisation_double)
+
         subject.rows
 
         expect(attribute_double)
@@ -82,6 +88,10 @@ RSpec.describe Export::Report do
           .once
 
         expect(implementing_organisation_double)
+          .to have_received(:rows)
+          .once
+
+        expect(delivery_partner_organisation_double)
           .to have_received(:rows)
           .once
       end
@@ -104,6 +114,7 @@ RSpec.describe Export::Report do
         expect(headers).to include(@headers_for_report.first)
         expect(headers).to include(@headers_for_report.last)
         expect(headers).to include("Implementing organisations")
+        expect(headers).to include("Delivery partner organisation")
       end
     end
 
@@ -112,5 +123,9 @@ RSpec.describe Export::Report do
         expect(subject.rows.count).to eq 0
       end
     end
+  end
+
+  def implementing_organisation_column_index
+    @headers_for_report.length
   end
 end
