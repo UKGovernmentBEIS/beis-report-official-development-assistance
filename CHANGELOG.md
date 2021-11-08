@@ -893,6 +893,9 @@
 
 ## [unreleased]
 
+- Fix "Total forecasted" (in Activity financial summary) to exclude periods 
+  already reported
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-84...HEAD
 [release-83]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-83...release-84
 [release-83]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-82...release-83
