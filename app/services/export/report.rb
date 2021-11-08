@@ -10,19 +10,23 @@ class Export::Report
       Export::ActivityImplementingOrganisationColumn.new(activities_relation: activities)
     @delivery_partner_organisations =
       Export::ActivityDeliveryPartnerOrganisationColumn.new(activities_relation: activities)
+    @change_state_column =
+      Export::ActivityChangeStateColumn.new(activities: activities, report: @report)
   end
 
   def headers
     @activity_attributes.headers +
       @implementing_organisations.headers +
-      @delivery_partner_organisations.headers
+      @delivery_partner_organisations.headers +
+      @change_state_column.headers
   end
 
   def rows
     activities.map do |activity|
       attribute_rows.fetch(activity.id, nil) +
         implementing_organisations_rows.fetch(activity.id, nil) +
-        delivery_partner_organisation_rows.fetch(activity.id, nil)
+        delivery_partner_organisation_rows.fetch(activity.id, nil) +
+        change_state_rows.fetch(activity.id, nil)
     end
   end
 
@@ -38,6 +42,10 @@ class Export::Report
 
   def delivery_partner_organisation_rows
     @_delivery_partner_organisation_rows ||= @delivery_partner_organisations.rows
+  end
+
+  def change_state_rows
+    @_change_state_rows ||= @change_state_column.rows
   end
 
   def activities
