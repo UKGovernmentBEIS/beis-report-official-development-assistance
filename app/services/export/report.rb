@@ -14,6 +14,8 @@ class Export::Report
       Export::ActivityChangeStateColumn.new(activities: activities, report: @report)
     @actuals_columns =
       Export::ActivityActualsColumns.new(activities: activities, report: @report)
+    @forecast_columns =
+      Export::ActivityForecastColumns.new(activities: activities, report: @report)
   end
 
   def headers
@@ -23,6 +25,7 @@ class Export::Report
     headers << @delivery_partner_organisations.headers
     headers << @change_state_column.headers
     headers << @actuals_columns.headers if @actuals_columns.headers.any?
+    headers << @forecast_columns.headers if @forecast_columns.headers.any?
     headers.flatten
   end
 
@@ -34,6 +37,7 @@ class Export::Report
       row << delivery_partner_organisation_rows.fetch(activity.id, nil)
       row << change_state_rows.fetch(activity.id, nil)
       row << actuals_rows.fetch(activity.id, nil) if actuals_rows.any?
+      row << forecast_rows.fetch(activity.id, nil) if forecast_rows.any?
       row.flatten
     end
   end
@@ -58,6 +62,10 @@ class Export::Report
 
   def actuals_rows
     @_actuals_rows ||= @actuals_columns.rows
+  end
+
+  def forecast_rows
+    @_forecast_rows ||= @forecast_columns.rows
   end
 
   def activities

@@ -30,6 +30,14 @@ RSpec.describe Export::Report do
         financial_year: @report.financial_year
       )
 
+    @forecast =
+      ForecastHistory.new(
+        @project,
+        report: create(:report, financial_quarter: @report.financial_quarter.pred),
+        financial_quarter: @report.financial_quarter,
+        financial_year: @report.financial_year,
+      ).set_value(10_000)
+
     @headers_for_report = Export::ActivityAttributesOrder.attributes_in_order.map { |att|
       I18n.t("activerecord.attributes.activity.#{att}")
     }
@@ -58,6 +66,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Delivery partner organisation")
         expect(headers).to include("Change state")
         expect(headers).to include("Actual net #{@actual_spend.own_financial_quarter}")
+        expect(headers).to include("Forecast #{@forecast.own_financial_quarter}")
       end
     end
 
@@ -68,6 +77,7 @@ RSpec.describe Export::Report do
         expect(rows.count).to eq 2
 
         first_row = rows.first
+
         expect(roda_identifier_value_for_row(first_row))
           .to eq(@project.roda_identifier)
         expect(implementing_organisation_value_for_row(first_row))
@@ -78,8 +88,11 @@ RSpec.describe Export::Report do
           .to eq("Unchanged")
         expect(actual_spend_for_row(first_row))
           .to eq(@actual_spend.value)
+        expect(forecast_for_row(first_row))
+          .to eq(@forecast.value)
 
         last_row = rows.last
+
         expect(roda_identifier_value_for_row(last_row))
           .to include(@third_party_project.roda_identifier)
         expect(implementing_organisation_value_for_row(last_row))
@@ -89,6 +102,8 @@ RSpec.describe Export::Report do
         expect(change_state_value_for_row(last_row))
           .to eq("Unchanged")
         expect(actual_spend_for_row(last_row))
+          .to eq(0)
+        expect(forecast_for_row(last_row))
           .to eq(0)
       end
     end
@@ -112,6 +127,9 @@ RSpec.describe Export::Report do
         actuals_double = double(rows: rows_data_double, headers: rows_data_double)
         allow(Export::ActivityActualsColumns).to receive(:new).and_return(actuals_double)
 
+        forecasts_double = double(rows: rows_data_double, headers: rows_data_double)
+        allow(Export::ActivityForecastColumns).to receive(:new).and_return(forecasts_double)
+
         subject.rows
 
         expect(change_state_double)
@@ -131,6 +149,10 @@ RSpec.describe Export::Report do
           .once
 
         expect(actuals_double)
+          .to have_received(:rows)
+          .once
+
+        expect(forecasts_double)
           .to have_received(:rows)
           .once
       end
@@ -183,5 +205,9 @@ RSpec.describe Export::Report do
 
   def actual_spend_for_row(row)
     row[@headers_for_report.length + 3]
+  end
+
+  def forecast_for_row(row)
+    row[@headers_for_report.length + 4]
   end
 end
