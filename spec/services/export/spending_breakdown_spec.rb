@@ -177,6 +177,40 @@ RSpec.describe Export::SpendingBreakdown do
       expect(value_for_header("Forecast FQ3 2021-2022")).to eq 0
     end
 
+    it "attibute rows are only create once" do
+      rows_data_double = double(Hash, fetch: [], empty?: false)
+
+      attribute_double = double(rows: rows_data_double)
+      allow(Export::ActivityAttributesColumns).to receive(:new).and_return(attribute_double)
+
+      delivery_partner_organisation_double = double(rows: rows_data_double)
+      allow(Export::ActivityDeliveryPartnerOrganisationColumn).to receive(:new).and_return(delivery_partner_organisation_double)
+
+      actuals_double = double(rows: rows_data_double, last_financial_quarter: FinancialQuarter.new(2, 2021))
+      allow(Export::ActivityActualsColumns).to receive(:new).and_return(actuals_double)
+
+      forecasts_double = double(rows: rows_data_double)
+      allow(Export::ActivityForecastColumns).to receive(:new).and_return(forecasts_double)
+
+      subject.rows
+
+      expect(attribute_double)
+        .to have_received(:rows)
+        .once
+
+      expect(delivery_partner_organisation_double)
+        .to have_received(:rows)
+        .once
+
+      expect(actuals_double)
+        .to have_received(:rows)
+        .once
+
+      expect(forecasts_double)
+        .to have_received(:rows)
+        .once
+    end
+
     context "where there are additional activities" do
       before do
         create_list(:project_activity, 4, organisation: @organisation)
