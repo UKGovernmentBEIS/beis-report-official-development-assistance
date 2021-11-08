@@ -12,21 +12,29 @@ class Export::Report
       Export::ActivityDeliveryPartnerOrganisationColumn.new(activities_relation: activities)
     @change_state_column =
       Export::ActivityChangeStateColumn.new(activities: activities, report: @report)
+    @actuals_columns =
+      Export::ActivityActualsColumns.new(activities: activities, report: @report)
   end
 
   def headers
-    @activity_attributes.headers +
-      @implementing_organisations.headers +
-      @delivery_partner_organisations.headers +
-      @change_state_column.headers
+    headers = []
+    headers << @activity_attributes.headers
+    headers << @implementing_organisations.headers
+    headers << @delivery_partner_organisations.headers
+    headers << @change_state_column.headers
+    headers << @actuals_columns.headers if @actuals_columns.headers.any?
+    headers.flatten
   end
 
   def rows
     activities.map do |activity|
-      attribute_rows.fetch(activity.id, nil) +
-        implementing_organisations_rows.fetch(activity.id, nil) +
-        delivery_partner_organisation_rows.fetch(activity.id, nil) +
-        change_state_rows.fetch(activity.id, nil)
+      row = []
+      row << attribute_rows.fetch(activity.id, nil)
+      row << implementing_organisations_rows.fetch(activity.id, nil)
+      row << delivery_partner_organisation_rows.fetch(activity.id, nil)
+      row << change_state_rows.fetch(activity.id, nil)
+      row << actuals_rows.fetch(activity.id, nil) if actuals_rows.any?
+      row.flatten
     end
   end
 
@@ -46,6 +54,10 @@ class Export::Report
 
   def change_state_rows
     @_change_state_rows ||= @change_state_column.rows
+  end
+
+  def actuals_rows
+    @_actuals_rows ||= @actuals_columns.rows
   end
 
   def activities

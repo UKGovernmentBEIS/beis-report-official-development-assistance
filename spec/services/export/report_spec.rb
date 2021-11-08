@@ -21,6 +21,15 @@ RSpec.describe Export::Report do
         implementing_organisations: [@implementing_organisation]
       )
 
+    @actual_spend =
+      create(
+        :actual,
+        parent_activity_id: @project.id,
+        report: @report,
+        financial_quarter: @report.financial_quarter,
+        financial_year: @report.financial_year
+      )
+
     @headers_for_report = Export::ActivityAttributesOrder.attributes_in_order.map { |att|
       I18n.t("activerecord.attributes.activity.#{att}")
     }
@@ -48,6 +57,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Implementing organisations")
         expect(headers).to include("Delivery partner organisation")
         expect(headers).to include("Change state")
+        expect(headers).to include("Actual net #{@actual_spend.own_financial_quarter}")
       end
     end
 
@@ -66,6 +76,8 @@ RSpec.describe Export::Report do
           .to eq(@project.organisation.name)
         expect(change_state_value_for_row(first_row))
           .to eq("Unchanged")
+        expect(actual_spend_for_row(first_row))
+          .to eq(@actual_spend.value)
 
         last_row = rows.last
         expect(roda_identifier_value_for_row(last_row))
@@ -76,12 +88,14 @@ RSpec.describe Export::Report do
           .to eq(@third_party_project.organisation.name)
         expect(change_state_value_for_row(last_row))
           .to eq("Unchanged")
+        expect(actual_spend_for_row(last_row))
+          .to eq(0)
       end
     end
 
     describe "row caching" do
       it "export rows method if only called once" do
-        rows_data_double = double(Hash, fetch: [], empty?: false)
+        rows_data_double = double(Hash, fetch: [], empty?: false, any?: true)
 
         attribute_double = double(rows: rows_data_double)
         allow(Export::ActivityAttributesColumns).to receive(:new).and_return(attribute_double)
@@ -94,6 +108,10 @@ RSpec.describe Export::Report do
 
         change_state_double = double(rows: rows_data_double)
         allow(Export::ActivityChangeStateColumn).to receive(:new).and_return(change_state_double)
+
+        actuals_double = double(rows: rows_data_double, headers: rows_data_double)
+        allow(Export::ActivityActualsColumns).to receive(:new).and_return(actuals_double)
+
         subject.rows
 
         expect(change_state_double)
@@ -105,6 +123,14 @@ RSpec.describe Export::Report do
           .once
 
         expect(delivery_partner_organisation_double)
+          .to have_received(:rows)
+          .once
+
+        expect(change_state_double)
+          .to have_received(:rows)
+          .once
+
+        expect(actuals_double)
           .to have_received(:rows)
           .once
       end
@@ -153,5 +179,9 @@ RSpec.describe Export::Report do
 
   def change_state_value_for_row(row)
     row[@headers_for_report.length + 2]
+  end
+
+  def actual_spend_for_row(row)
+    row[@headers_for_report.length + 3]
   end
 end
