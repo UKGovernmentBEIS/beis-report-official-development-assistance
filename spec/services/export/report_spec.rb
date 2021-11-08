@@ -4,8 +4,23 @@ RSpec.describe Export::Report do
     DatabaseCleaner.start
 
     @report = create(:report)
-    @activity = create(:project_activity)
-    @third_party_project = create(:third_party_project_activity, parent: @activity)
+
+    @project = create(:project_activity_with_implementing_organisations)
+
+    @implementing_organisation =
+      ImplementingOrganisation.create(
+        name: "The name of the organisation that implements the activity",
+        reference: "IMP-002",
+        organisation_type: "10"
+      )
+
+    @third_party_project =
+      create(
+        :third_party_project_activity,
+        parent: @project,
+        implementing_organisations: [@implementing_organisation]
+      )
+
     @headers_for_report = Export::ActivityAttributesOrder.attributes_in_order.map { |att|
       I18n.t("activerecord.attributes.activity.#{att}")
     }
@@ -26,7 +41,11 @@ RSpec.describe Export::Report do
 
     describe "#headers" do
       it "returns the headers" do
-        expect(subject.headers).to match_array(@headers_for_report)
+        headers = subject.headers
+
+        expect(headers).to include(@headers_for_report.first)
+        expect(headers).to include(@headers_for_report.last)
+        expect(headers).to include("Implementing organisations")
       end
     end
 
@@ -35,8 +54,14 @@ RSpec.describe Export::Report do
         rows = subject.rows.to_a
 
         expect(rows.count).to eq 2
-        expect(rows.first[1]).to include(@activity.roda_identifier)
-        expect(rows.last[1]).to include(@third_party_project.roda_identifier)
+
+        first_row = rows.first
+        expect(first_row.first).to eq(@project.roda_identifier)
+        expect(first_row.last).to include(@project.implementing_organisations.first.name)
+
+        last_row = rows.last
+        expect(last_row.first).to include(@third_party_project.roda_identifier)
+        expect(last_row.last).to include(@third_party_project.implementing_organisations.first.name)
       end
     end
   end
@@ -56,6 +81,7 @@ RSpec.describe Export::Report do
 
         expect(headers).to include(@headers_for_report.first)
         expect(headers).to include(@headers_for_report.last)
+        expect(headers).to include("Implementing organisations")
       end
     end
 

@@ -6,17 +6,31 @@ class Export::Report
     @activity_attributes =
       Export::ActivityAttributesColumns
         .new(activities: activities, attributes: attributes_in_order)
+    @implementing_organisations =
+      Export::ActivityImplementingOrganisationColumn.new(activities_relation: activities)
   end
 
   def headers
-    @activity_attributes.headers
+    @activity_attributes.headers +
+      @implementing_organisations.headers
   end
 
   def rows
-    @activity_attributes.rows
+    activities.map do |activity|
+      attribute_rows.fetch(activity.id, nil) +
+        implementing_organisations_rows.fetch(activity.id, nil)
+    end
   end
 
   private
+
+  def attribute_rows
+    @_attribute_rows ||= @activity_attributes.rows
+  end
+
+  def implementing_organisations_rows
+    @_implementing_organisation_rows ||= @implementing_organisations.rows
+  end
 
   def activities
     @activities ||= begin
