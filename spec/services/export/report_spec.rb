@@ -64,6 +64,28 @@ RSpec.describe Export::Report do
         expect(last_row.last).to include(@third_party_project.implementing_organisations.first.name)
       end
     end
+
+    describe "row caching" do
+      it "export rows method if only called once" do
+        rows_data_double = double(Hash, fetch: [], empty?: false)
+
+        attribute_double = double(rows: rows_data_double)
+        allow(Export::ActivityAttributesColumns).to receive(:new).and_return(attribute_double)
+
+        implementing_organisation_double = double(rows: rows_data_double)
+        allow(Export::ActivityImplementingOrganisationColumn).to receive(:new).and_return(implementing_organisation_double)
+
+        subject.rows
+
+        expect(attribute_double)
+          .to have_received(:rows)
+          .once
+
+        expect(implementing_organisation_double)
+          .to have_received(:rows)
+          .once
+      end
+    end
   end
 
   context "when there are no activities" do
