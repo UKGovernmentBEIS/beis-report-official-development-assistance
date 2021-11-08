@@ -40,15 +40,15 @@ RSpec.describe Export::ActivityChangeStateColumn do
       end
 
       it "returns 'New' for an acitvity that was created in the report" do
-        expect(subject.rows.fetch(@new_activity.id)).to eq "New"
+        expect(subject.rows.fetch(@new_activity.id)).to match_array(["New"])
       end
 
       it "returns 'Changed' for an acitvity with changes to it's attributes in the report" do
-        expect(subject.rows.fetch(@changed_activity.id)).to eq "Changed"
+        expect(subject.rows.fetch(@changed_activity.id)).to match_array(["Changed"])
       end
 
       it "returns 'Unchanged' for an activity that neither applies" do
-        expect(subject.rows.fetch(@unchanged_activity.id)).to eq "Unchanged"
+        expect(subject.rows.fetch(@unchanged_activity.id)).to match_array(["Unchanged"])
       end
     end
   end
