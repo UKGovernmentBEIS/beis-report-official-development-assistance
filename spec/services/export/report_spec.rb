@@ -58,16 +58,24 @@ RSpec.describe Export::Report do
         expect(rows.count).to eq 2
 
         first_row = rows.first
-        expect(first_row.first).to eq(@project.roda_identifier)
-        expect(first_row[implementing_organisation_column_index]).to include(@project.implementing_organisations.first.name)
-        expect(first_row[delivery_partner_organisation_column_index]).to eq(@project.organisation.name)
-        expect(first_row[change_state_column_index]).to eq("Unchanged")
+        expect(roda_identifier_value_for_row(first_row))
+          .to eq(@project.roda_identifier)
+        expect(implementing_organisation_value_for_row(first_row))
+          .to include(@project.implementing_organisations.first.name)
+        expect(delivery_partner_organisation_value_for_row(first_row))
+          .to eq(@project.organisation.name)
+        expect(change_state_value_for_row(first_row))
+          .to eq("Unchanged")
 
         last_row = rows.last
-        expect(last_row.first).to include(@third_party_project.roda_identifier)
-        expect(last_row[implementing_organisation_column_index]).to include(@third_party_project.implementing_organisations.first.name)
-        expect(last_row[delivery_partner_organisation_column_index]).to eq(@third_party_project.organisation.name)
-        expect(first_row[change_state_column_index]).to eq("Unchanged")
+        expect(roda_identifier_value_for_row(last_row))
+          .to include(@third_party_project.roda_identifier)
+        expect(implementing_organisation_value_for_row(last_row))
+          .to include(@third_party_project.implementing_organisations.first.name)
+        expect(delivery_partner_organisation_value_for_row(last_row))
+          .to eq(@third_party_project.organisation.name)
+        expect(change_state_value_for_row(last_row))
+          .to eq("Unchanged")
       end
     end
 
@@ -131,15 +139,19 @@ RSpec.describe Export::Report do
     end
   end
 
-  def implementing_organisation_column_index
-    @headers_for_report.length
+  def roda_identifier_value_for_row(row)
+    row[0]
   end
 
-  def delivery_partner_organisation_column_index
-    implementing_organisation_column_index + 1
+  def implementing_organisation_value_for_row(row)
+    row[@headers_for_report.length]
   end
 
-  def change_state_column_index
-    delivery_partner_organisation_column_index + 1
+  def delivery_partner_organisation_value_for_row(row)
+    row[@headers_for_report.length + 1]
+  end
+
+  def change_state_value_for_row(row)
+    row[@headers_for_report.length + 2]
   end
 end
