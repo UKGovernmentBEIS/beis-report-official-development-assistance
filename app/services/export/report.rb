@@ -23,7 +23,7 @@ class Export::Report
       Activity::ProjectsForReportFinder.new(
         report: @report,
         scope: Activity.all
-      ).call.sort_by { |a| a.level }
+      ).call.order(:level)
     end
   end
 end
