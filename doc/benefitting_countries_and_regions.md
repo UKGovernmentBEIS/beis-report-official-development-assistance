@@ -44,7 +44,7 @@ lists:
 
 [benefitting_regions.yml](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/blob/d600961262af29677bf9385834f20c55a30bcb8f/vendor/data/codelists/BEIS/benefitting_regions.yml)
 
-The regions are defined be BEIS (via OECD), a sample of which is show below:
+The regions are defined by BEIS (via OECD), a sample of which is show below:
 
 | Region   | Sub-region 1    | Sub-region 2    | Country  |
 | ---      | ---             | ---             | ---      |
@@ -94,7 +94,7 @@ The logic for this was
 All of this data is now read only and kept, the rational for keeping it around
 is:
 
-- for an closed (or completed) activity there is no appetite to update the data
+- for a closed (or completed) activity there is no appetite to update the data
   as there is little value in doing so
 - for an activity with recipient region we do not know if the intent is 'all
   countries in the region' or 'some countries from that region' and so we cannot
