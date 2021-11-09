@@ -899,6 +899,8 @@
 
 ## [unreleased]
 
+- fix: free standing technical cooperation in report export is rendered correctly
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-85...HEAD
 [release-85]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-84...release-85
 [release-84]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-83...release-84

@@ -23,6 +23,10 @@ class ActivityCsvPresenter < ActivityPresenter
     super.pluck(:name).join("|")
   end
 
+  def fstc_applies
+    super ? "yes" : "no"
+  end
+
   private
 
   def list_of_benefitting_countries(country_code_list)
