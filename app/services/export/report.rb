@@ -62,6 +62,15 @@ class Export::Report
     end
   end
 
+  def filename
+    [
+      @report.own_financial_quarter,
+      @report.fund.source_fund.short_name,
+      @report.organisation.beis_organisation_reference,
+      "report.csv",
+    ].reject(&:blank?).join("_")
+  end
+
   private
 
   def attribute_rows

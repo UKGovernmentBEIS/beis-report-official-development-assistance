@@ -226,6 +226,16 @@ RSpec.describe Export::Report do
     end
   end
 
+  describe "#filename" do
+    subject { described_class.new(report: @report) }
+    it "creates the file name" do
+      expect(subject.filename).to include(@report.own_financial_quarter.to_s)
+      expect(subject.filename).to include(@report.fund.source_fund.short_name)
+      expect(subject.filename).to include(@report.organisation.beis_organisation_reference)
+      expect(subject.filename).to include("report.csv")
+    end
+  end
+
   def roda_identifier_value_for_row(row)
     row[0]
   end
