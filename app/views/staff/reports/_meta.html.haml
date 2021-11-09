@@ -6,7 +6,7 @@
   .govuk-grid-column-two-thirds
     = render partial: "staff/reports/summary"
 
-  - if policy(@report_presenter).download?
+  - if policy(@report_presenter).download? && @report_presenter.own_financial_quarter.present?
     = render partial: "staff/reports/download", locals: { report_presenter: @report_presenter }
 
   .govuk-grid-column-full
