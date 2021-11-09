@@ -38,6 +38,8 @@
 
 ## Operations
 
+- **[Terraform deployment(terraform-deployment.md)](./terraform-deployment.md)**: Deploying the infrastructure with terraform onto GPaaS
+
 - **[Deployment process (deployment-process.md)](./deployment-process.md)**: A
   step-by-step playbook to preparing and deploying a production release.
 
