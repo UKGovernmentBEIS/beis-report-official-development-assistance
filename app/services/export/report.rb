@@ -28,6 +28,8 @@ class Export::Report
         activities: activities,
         report: @report
       )
+    @link_column =
+      Export::ActivityLinkColumn.new(activities: activities)
   end
 
   def headers
@@ -40,6 +42,7 @@ class Export::Report
     headers << @variance_column.headers if @actuals_columns.headers.any? && @forecast_columns.headers.any?
     headers << @forecast_columns.headers if @forecast_columns.headers.any?
     headers << @comments_column.headers
+    headers << @link_column.headers
     headers.flatten
   end
 
@@ -54,6 +57,7 @@ class Export::Report
       row << variance_rows.fetch(activity.id, nil) if actuals_rows.any? && forecast_rows.any?
       row << forecast_rows.fetch(activity.id, nil) if forecast_rows.any?
       row << comment_rows.fetch(activity.id, nil)
+      row << link_rows.fetch(activity.id, nil)
       row.flatten
     end
   end
@@ -90,6 +94,10 @@ class Export::Report
 
   def comment_rows
     @_comment_rows ||= @comments_column.rows
+  end
+
+  def link_rows
+    @_link_rows ||= @link_column.rows
   end
 
   def activities

@@ -71,6 +71,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Variance #{@actual_spend.own_financial_quarter}")
         expect(headers).to include("Forecast #{@forecast.own_financial_quarter}")
         expect(headers).to include("Comments in report")
+        expect(headers).to include("Link to activity")
       end
     end
 
@@ -98,6 +99,8 @@ RSpec.describe Export::Report do
           .to eq(@forecast.value)
         expect(comments_for_row(first_row))
           .to eq(@comment.body)
+        expect(link_for_row(first_row))
+          .to include(@project.id)
 
         last_row = rows.last
 
@@ -118,6 +121,8 @@ RSpec.describe Export::Report do
 
         expect(comments_for_row(last_row))
           .to eq("")
+        expect(link_for_row(last_row))
+          .to include(@third_party_project.id)
       end
     end
 
@@ -148,6 +153,9 @@ RSpec.describe Export::Report do
 
         comments_double = double(rows: rows_data_double)
         allow(Export::ActivityCommentsColumn).to receive(:new).and_return(comments_double)
+
+        links_double = double(rows: rows_data_double)
+        allow(Export::ActivityLinkColumn).to receive(:new).and_return(links_double)
 
         subject.rows
 
@@ -180,6 +188,10 @@ RSpec.describe Export::Report do
           .once
 
         expect(comments_double)
+          .to have_received(:rows)
+          .once
+
+        expect(links_double)
           .to have_received(:rows)
           .once
       end
@@ -244,5 +256,9 @@ RSpec.describe Export::Report do
 
   def comments_for_row(row)
     row[@headers_for_report.length + 6]
+  end
+
+  def link_for_row(row)
+    row[@headers_for_report.length + 7]
   end
 end
