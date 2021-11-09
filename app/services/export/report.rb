@@ -23,6 +23,11 @@ class Export::Report
         forecast_column_data: @forecast_columns.rows_for_first_financial_quarter,
         financial_quarter: @report.own_financial_quarter
       )
+    @comments_column =
+      Export::ActivityCommentsColumn.new(
+        activities: activities,
+        report: @report
+      )
   end
 
   def headers
@@ -34,6 +39,7 @@ class Export::Report
     headers << @actuals_columns.headers if @actuals_columns.headers.any?
     headers << @variance_column.headers if @actuals_columns.headers.any? && @forecast_columns.headers.any?
     headers << @forecast_columns.headers if @forecast_columns.headers.any?
+    headers << @comments_column.headers
     headers.flatten
   end
 
@@ -47,6 +53,7 @@ class Export::Report
       row << actuals_rows.fetch(activity.id, nil) if actuals_rows.any?
       row << variance_rows.fetch(activity.id, nil) if actuals_rows.any? && forecast_rows.any?
       row << forecast_rows.fetch(activity.id, nil) if forecast_rows.any?
+      row << comment_rows.fetch(activity.id, nil)
       row.flatten
     end
   end
@@ -79,6 +86,10 @@ class Export::Report
 
   def variance_rows
     @_variance_rows ||= @variance_column.rows
+  end
+
+  def comment_rows
+    @_comment_rows ||= @comments_column.rows
   end
 
   def activities

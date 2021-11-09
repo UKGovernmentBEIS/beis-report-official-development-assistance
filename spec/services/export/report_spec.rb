@@ -38,6 +38,8 @@ RSpec.describe Export::Report do
         financial_year: @report.financial_year,
       ).set_value(10_000)
 
+    @comment = create(:comment, commentable: @project, report: @report)
+
     @headers_for_report = Export::ActivityAttributesOrder.attributes_in_order.map { |att|
       I18n.t("activerecord.attributes.activity.#{att}")
     }
@@ -68,6 +70,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Actual net #{@actual_spend.own_financial_quarter}")
         expect(headers).to include("Variance #{@actual_spend.own_financial_quarter}")
         expect(headers).to include("Forecast #{@forecast.own_financial_quarter}")
+        expect(headers).to include("Comments in report")
       end
     end
 
@@ -93,6 +96,8 @@ RSpec.describe Export::Report do
           .to eq(@forecast.value - @actual_spend.value)
         expect(forecast_for_row(first_row))
           .to eq(@forecast.value)
+        expect(comments_for_row(first_row))
+          .to eq(@comment.body)
 
         last_row = rows.last
 
@@ -110,6 +115,9 @@ RSpec.describe Export::Report do
           .to eq(0)
         expect(forecast_for_row(last_row))
           .to eq(0)
+
+        expect(comments_for_row(last_row))
+          .to eq("")
       end
     end
 
@@ -138,6 +146,9 @@ RSpec.describe Export::Report do
         forecasts_double = double(rows: rows_data_double, headers: rows_data_double, rows_for_first_financial_quarter: double(Hash, fetch: 50))
         allow(Export::ActivityForecastColumns).to receive(:new).and_return(forecasts_double)
 
+        comments_double = double(rows: rows_data_double)
+        allow(Export::ActivityCommentsColumn).to receive(:new).and_return(comments_double)
+
         subject.rows
 
         expect(change_state_double)
@@ -165,6 +176,10 @@ RSpec.describe Export::Report do
           .once
 
         expect(forecasts_double)
+          .to have_received(:rows)
+          .once
+
+        expect(comments_double)
           .to have_received(:rows)
           .once
       end
@@ -225,5 +240,9 @@ RSpec.describe Export::Report do
 
   def forecast_for_row(row)
     row[@headers_for_report.length + 5]
+  end
+
+  def comments_for_row(row)
+    row[@headers_for_report.length + 6]
   end
 end
