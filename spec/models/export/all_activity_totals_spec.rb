@@ -9,7 +9,7 @@ RSpec.describe Export::AllActivityTotals do
     @q3_report = create(:report, financial_quarter: 3, financial_year: 2020)
     @q4_report = create(:report, financial_quarter: 4, financial_year: 2020)
 
-    create_fixtures(
+    actuals_from_table(
       <<~TABLE
         |transaction|report|financial_period|value|
         | Actual    |q1    | q1             |  100|
@@ -89,32 +89,5 @@ RSpec.describe Export::AllActivityTotals do
       expect(subject.call).not_to include [@activity.id, 1, 2020, "Adjustment", "Refund"] => BigDecimal(400)
       expect(subject.call).not_to include [@activity.id, 1, 2020, "Adjustment", "Actual"] => BigDecimal(500)
     end
-  end
-
-  def create_fixtures(table)
-    CSV.parse(table, col_sep: "|", headers: true).each do |row|
-      case row["transaction"].strip
-      when "Actual"
-        create(:actual, fixture_attrs(row))
-      when "Adj. Act."
-        create(:adjustment, :actual, fixture_attrs(row))
-      when "Adj. Ref."
-        create(:adjustment, :refund, fixture_attrs(row))
-      when "Refund"
-        create(:refund, fixture_attrs(row))
-      else
-        raise "don't know what to do"
-      end
-    end
-  end
-
-  def fixture_attrs(row)
-    {
-      parent_activity: @activity,
-      value: row["value"].strip,
-      financial_quarter: row["financial_period"][/\d/],
-      financial_year: 2020,
-      report: instance_variable_get("@#{row["report"].strip}_report"),
-    }
   end
 end
