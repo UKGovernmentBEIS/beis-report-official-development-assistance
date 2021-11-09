@@ -142,6 +142,9 @@ class Activity < ApplicationRecord
 
   has_one :commitment, dependent: :destroy
 
+  has_many :reports,
+    ->(activity) { unscope(:where).for_activity(activity).in_historical_order }
+
   enum level: {
     fund: "fund",
     programme: "programme",
@@ -223,6 +226,10 @@ class Activity < ApplicationRecord
     find_by(roda_identifier: identifier)
   end
 
+  def latest_report
+    reports.first
+  end
+
   def descendants
     sql = <<~SQL
       WITH RECURSIVE descendants AS (
@@ -255,10 +262,15 @@ class Activity < ApplicationRecord
     Budget.direct.where(parent_activity_id: id).sum(:value)
   end
 
-  def total_forecasted
+  def future_forecasts
     activity_ids = descendants.pluck(:id).append(id)
-    overview = ForecastOverview.new(activity_ids)
-    overview.latest_values.sum(:value)
+    ForecastOverview.new(activity_ids)
+      .latest_values
+      .select { |forecast| forecast.later_period_than?(latest_report) }
+  end
+
+  def total_forecasted
+    future_forecasts.sum(&:value)
   end
 
   def own_and_descendants_actuals
