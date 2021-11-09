@@ -107,7 +107,7 @@ class Staff::ReportsController < Staff::BaseController
   end
 
   def send_csv
-    export = Report::Export.new(report: @report)
+    export = Export::Report.new(report: @report)
 
     stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
       export.rows.each do |row|
