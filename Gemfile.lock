@@ -184,9 +184,9 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.4)
       domain_name (~> 0.5)
-    i18n (1.8.10)
+    i18n (1.8.11)
       concurrent-ruby (~> 1.0)
-    i18n-tasks (0.9.34)
+    i18n-tasks (0.9.35)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
       erubi
@@ -476,7 +476,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zache (0.12.0)
-    zeitwerk (2.4.2)
+    zeitwerk (2.5.1)
 
 PLATFORMS
   ruby
@@ -503,7 +503,7 @@ DEPENDENCIES
   haml-rails
   high_voltage
   html2haml
-  i18n-tasks (~> 0.9.34)
+  i18n-tasks (~> 0.9.35)
   ipaddr
   jbuilder (~> 2.11)
   launchy
