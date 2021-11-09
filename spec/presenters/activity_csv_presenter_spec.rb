@@ -97,4 +97,16 @@ RSpec.describe ActivityCsvPresenter do
       expect(result).to eql("#{implementing_organisation_one.name}|#{implementing_organisation_two.name}")
     end
   end
+
+  describe "#fstc_applies" do
+    it "returns yes or no" do
+      activity = build(:project_activity, fstc_applies: true)
+
+      expect(described_class.new(activity).fstc_applies).to eq "yes"
+
+      activity = build(:project_activity, fstc_applies: false)
+
+      expect(described_class.new(activity).fstc_applies).to eq "no"
+    end
+  end
 end

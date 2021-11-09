@@ -897,9 +897,15 @@
   already reported
 - Fix spending breakdown report
 
-## [unreleased]
+## [release-86] 2021-11-09
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-85...HEAD
+- fix: free standing technical cooperation in report export is rendered correctly
+- Fix Readme typos and dead links
+- Remove unwanted packages from Brewfile (redis and Firefox)
+- Move terraform readme into '/doc' directory
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-86...HEAD
+[release-86]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-85...release-86
 [release-85]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-84...release-85
 [release-84]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-83...release-84
 [release-83]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-82...release-83
