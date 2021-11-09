@@ -16,6 +16,13 @@ class Export::Report
       Export::ActivityActualsColumns.new(activities: activities, report: @report)
     @forecast_columns =
       Export::ActivityForecastColumns.new(activities: activities, report: @report)
+    @variance_column =
+      Export::ActivityVarianceColumn.new(
+        activities: activities,
+        net_actual_spend_column_data: @actuals_columns.rows_for_last_financial_quarter,
+        forecast_column_data: @forecast_columns.rows_for_first_financial_quarter,
+        financial_quarter: @report.own_financial_quarter
+      )
   end
 
   def headers
@@ -25,6 +32,7 @@ class Export::Report
     headers << @delivery_partner_organisations.headers
     headers << @change_state_column.headers
     headers << @actuals_columns.headers if @actuals_columns.headers.any?
+    headers << @variance_column.headers if @actuals_columns.headers.any? && @forecast_columns.headers.any?
     headers << @forecast_columns.headers if @forecast_columns.headers.any?
     headers.flatten
   end
@@ -37,6 +45,7 @@ class Export::Report
       row << delivery_partner_organisation_rows.fetch(activity.id, nil)
       row << change_state_rows.fetch(activity.id, nil)
       row << actuals_rows.fetch(activity.id, nil) if actuals_rows.any?
+      row << variance_rows.fetch(activity.id, nil) if actuals_rows.any? && forecast_rows.any?
       row << forecast_rows.fetch(activity.id, nil) if forecast_rows.any?
       row.flatten
     end
@@ -66,6 +75,10 @@ class Export::Report
 
   def forecast_rows
     @_forecast_rows ||= @forecast_columns.rows
+  end
+
+  def variance_rows
+    @_variance_rows ||= @variance_column.rows
   end
 
   def activities

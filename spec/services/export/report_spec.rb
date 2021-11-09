@@ -66,6 +66,7 @@ RSpec.describe Export::Report do
         expect(headers).to include("Delivery partner organisation")
         expect(headers).to include("Change state")
         expect(headers).to include("Actual net #{@actual_spend.own_financial_quarter}")
+        expect(headers).to include("Variance #{@actual_spend.own_financial_quarter}")
         expect(headers).to include("Forecast #{@forecast.own_financial_quarter}")
       end
     end
@@ -88,6 +89,8 @@ RSpec.describe Export::Report do
           .to eq("Unchanged")
         expect(actual_spend_for_row(first_row))
           .to eq(@actual_spend.value)
+        expect(variance_for_row(first_row))
+          .to eq(@forecast.value - @actual_spend.value)
         expect(forecast_for_row(first_row))
           .to eq(@forecast.value)
 
@@ -102,6 +105,8 @@ RSpec.describe Export::Report do
         expect(change_state_value_for_row(last_row))
           .to eq("Unchanged")
         expect(actual_spend_for_row(last_row))
+          .to eq(0)
+        expect(variance_for_row(last_row))
           .to eq(0)
         expect(forecast_for_row(last_row))
           .to eq(0)
@@ -124,10 +129,13 @@ RSpec.describe Export::Report do
         change_state_double = double(rows: rows_data_double)
         allow(Export::ActivityChangeStateColumn).to receive(:new).and_return(change_state_double)
 
-        actuals_double = double(rows: rows_data_double, headers: rows_data_double)
+        actuals_double = double(rows: rows_data_double, headers: rows_data_double, rows_for_last_financial_quarter: double(Hash, fetch: 100))
         allow(Export::ActivityActualsColumns).to receive(:new).and_return(actuals_double)
 
-        forecasts_double = double(rows: rows_data_double, headers: rows_data_double)
+        variance_double = double(rows: rows_data_double)
+        allow(Export::ActivityVarianceColumn).to receive(:new).and_return(variance_double)
+
+        forecasts_double = double(rows: rows_data_double, headers: rows_data_double, rows_for_first_financial_quarter: double(Hash, fetch: 50))
         allow(Export::ActivityForecastColumns).to receive(:new).and_return(forecasts_double)
 
         subject.rows
@@ -149,6 +157,10 @@ RSpec.describe Export::Report do
           .once
 
         expect(actuals_double)
+          .to have_received(:rows)
+          .once
+
+        expect(variance_double)
           .to have_received(:rows)
           .once
 
@@ -207,7 +219,11 @@ RSpec.describe Export::Report do
     row[@headers_for_report.length + 3]
   end
 
-  def forecast_for_row(row)
+  def variance_for_row(row)
     row[@headers_for_report.length + 4]
+  end
+
+  def forecast_for_row(row)
+    row[@headers_for_report.length + 5]
   end
 end
