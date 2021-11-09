@@ -49,14 +49,6 @@ RSpec.describe ReportPresenter do
         description: "My report")
     }
 
-    describe "#filename_for_report_download" do
-      it "returns the URL-encoded filename for the downloadable report" do
-        result = described_class.new(report).filename_for_report_download
-
-        expect(result).to eql "FQ1 2020-2021-GCRF-BOR-report.csv"
-      end
-    end
-
     describe "#filename_for_activities_template" do
       it "returns the URL-encoded filename for the activities template CSV dowload" do
         result = described_class.new(report).filename_for_activities_template
