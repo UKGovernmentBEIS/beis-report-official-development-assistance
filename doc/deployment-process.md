@@ -2,9 +2,9 @@
 
 ## Production
 
-As outlined in the [dxw development workflow guide](http://playbook.dxw.com/#/guides/development-workflow?id=deploying), production deploys are done by manually merging develop into master. To give us a slightly more formal process around what gets deployed and when and also to give us visibility into the things that have been deployed, we additionally follow these steps when releasing to production:
+As outlined in the [dxw development workflow guide](https://playbook.dxw.com/guides/development-workflow.html#deploying), production deploys are done by manually merging develop into master. To give us a slightly more formal process around what gets deployed and when and also to give us visibility into the things that have been deployed, we additionally follow these steps when releasing to production:
 
-Releases are documented in the [CHANGELOG](CHANGELOG.md) following the [Keep a changelog](https://keepachangelog.com/en/1.0.0/) format.
+Releases are documented in the [CHANGELOG](../CHANGELOG.md) following the [Keep a changelog](https://keepachangelog.com/en/1.0.0/) format.
 
 When a new release is deployed to production, a new second-level heading should be created in CHANGELOG.md with the release number and details of what has changed in this release.
 
