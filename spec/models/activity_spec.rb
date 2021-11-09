@@ -638,6 +638,40 @@ RSpec.describe Activity, type: :model do
     it { should have_one(:commitment) }
   end
 
+  describe "has_one #latest_report association" do
+    let(:activity) do
+      create(:project_activity)
+    end
+
+    let!(:latest_report) do
+      create(
+        :report,
+        :active,
+        organisation: activity.organisation,
+        fund: activity.associated_fund,
+        financial_quarter: 3,
+        financial_year: 2021
+      )
+    end
+
+    let!(:_earlier_report) do
+      create(
+        :report,
+        :approved,
+        organisation: activity.organisation,
+        fund: activity.associated_fund,
+        financial_quarter: 2,
+        financial_year: 2021
+      )
+    end
+
+    describe "#latest_report" do
+      it "returns the most recent report" do
+        expect(activity.latest_report).to eq(latest_report)
+      end
+    end
+  end
+
   describe "#parent_activities" do
     context "when the activity is a fund" do
       it "returns an empty array" do
@@ -1511,6 +1545,22 @@ RSpec.describe Activity, type: :model do
         expect(programme1_projects[1].total_forecasted).to eq(160)
         expect(programme2_projects[0].total_forecasted).to eq(5120)
         expect(programme2_projects[1].total_forecasted).to eq(10240)
+      end
+
+      context "when a report exists for forecasted periods ('quarter')" do
+        before do
+          create(
+            :report,
+            :approved,
+            organisation: programme1.organisation,
+            fund: programme1.associated_fund,
+            **quarter
+          )
+        end
+
+        it "includes only forecasts for later periods ('quarter.succ')" do
+          expect(programme1.total_forecasted).to eq([40, 640].sum)
+        end
       end
 
       context "when a level A/B forecast is revised" do

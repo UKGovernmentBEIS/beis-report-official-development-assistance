@@ -891,10 +891,17 @@
 - Record redactions from IATI in the activity's change history
 - Track changes to budgets
 
+## [release-85] 2021-11-09
+
+- Fix "Total forecasted" (in Activity financial summary) to exclude periods 
+  already reported
+- Fix spending breakdown report
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-84...HEAD
-[release-83]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-83...release-84
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-85...HEAD
+[release-85]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-84...release-85
+[release-84]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-83...release-84
 [release-83]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-82...release-83
 [release-82]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-81...release-82
 [release-81]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-80...release-81

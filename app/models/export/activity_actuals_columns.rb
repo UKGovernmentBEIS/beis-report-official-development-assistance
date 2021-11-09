@@ -23,14 +23,17 @@ class Export::ActivityActualsColumns
 
   def rows
     return [] if @activities.empty?
-
-    @activities.map { |activity|
+    @_rows ||= @activities.map { |activity|
       actual_and_refund_data(activity)
     }.to_h
   end
 
   def last_financial_quarter
     financial_quarter_range.max
+  end
+
+  def rows_for_last_financial_quarter
+    rows.each_with_object({}) { |(key, values), obj| obj[key] = values.last }
   end
 
   private
