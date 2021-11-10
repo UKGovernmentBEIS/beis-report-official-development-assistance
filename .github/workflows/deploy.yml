@@ -123,7 +123,7 @@ jobs:
       - name: execute Ghost Inspector test
         uses: docker://ghostinspector/cli
         with:
-          args: test execute ${{ secrets.STAGING_GI_SUITE }} \
+          args: suite execute ${{ secrets.STAGING_GI_SUITE }} \
             --apiKey ${{ secrets.GI_API_KEY }} \
             --errorOnFail
   ghost_inspector_prod:
@@ -134,7 +134,7 @@ jobs:
       - name: execute Ghost Inspector test
         uses: docker://ghostinspector/cli
         with:
-          args: test execute ${{ secrets.PROD_GI_SUITE }} \
+          args: suite execute ${{ secrets.PROD_GI_SUITE }} \
             --apiKey ${{ secrets.GI_API_KEY }} \
             --errorOnFail
   check_and_notify:
