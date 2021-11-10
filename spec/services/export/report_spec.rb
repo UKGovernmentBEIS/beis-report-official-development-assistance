@@ -76,12 +76,25 @@ RSpec.describe Export::Report do
     end
 
     describe "#rows" do
-      it "returns the rows ordered by level" do
-        rows = subject.rows.to_a
+      describe "ordering" do
+        it "returns the rows ordered descending by level" do
+          relation =
+            double(
+              ActiveRecord::Relation,
+              order: Activity.all,
+              pluck: [@project.id, @third_party_project.id]
+            )
+          finder_double = double(Activity::ProjectsForReportFinder, call: relation)
+          allow(Activity::ProjectsForReportFinder).to receive(:new).and_return(finder_double)
 
-        expect(rows.count).to eq 2
+          subject.rows
 
-        first_row = rows.first
+          expect(relation).to have_received(:order).with(level: :asc)
+        end
+      end
+
+      it "returns the rows correctly" do
+        first_row = subject.rows.first.to_a
 
         expect(roda_identifier_value_for_row(first_row))
           .to eq(@project.roda_identifier)
@@ -101,28 +114,6 @@ RSpec.describe Export::Report do
           .to eq(@comment.body)
         expect(link_for_row(first_row))
           .to include(@project.id)
-
-        last_row = rows.last
-
-        expect(roda_identifier_value_for_row(last_row))
-          .to include(@third_party_project.roda_identifier)
-        expect(implementing_organisation_value_for_row(last_row))
-          .to include(@third_party_project.implementing_organisations.first.name)
-        expect(delivery_partner_organisation_value_for_row(last_row))
-          .to eq(@third_party_project.organisation.name)
-        expect(change_state_value_for_row(last_row))
-          .to eq("Unchanged")
-        expect(actual_spend_for_row(last_row))
-          .to eq(0)
-        expect(variance_for_row(last_row))
-          .to eq(0)
-        expect(forecast_for_row(last_row))
-          .to eq(0)
-
-        expect(comments_for_row(last_row))
-          .to eq("")
-        expect(link_for_row(last_row))
-          .to include(@third_party_project.id)
       end
     end
 

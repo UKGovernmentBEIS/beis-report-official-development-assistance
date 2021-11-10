@@ -114,7 +114,7 @@ class Export::Report
       Activity::ProjectsForReportFinder.new(
         report: @report,
         scope: Activity.all
-      ).call.order(:level)
+      ).call.order(level: :asc)
     end
   end
 end
