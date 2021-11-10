@@ -904,6 +904,10 @@
 - Remove unwanted packages from Brewfile (redis and Firefox)
 - Move terraform readme into '/doc' directory
 
+## [unreleased]
+
+- Add Ghost Inspector tests to the GitHub action deploy workflow
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-86...HEAD
 [release-86]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-85...release-86
 [release-85]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-84...release-85
