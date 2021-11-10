@@ -215,9 +215,9 @@ RSpec.describe Transaction, type: :model do
         expect(actual.valid?).to be true
       end
 
-      it "allows a negative value" do
+      it "does not allow a negative value" do
         actual = build(:actual, parent_activity: activity, value: -500_000.00)
-        expect(actual.valid?).to be true
+        expect(actual.valid?).to be false
       end
     end
   end
