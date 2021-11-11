@@ -907,6 +907,9 @@
 ## [unreleased]
 
 - Add Ghost Inspector tests to the GitHub action deploy workflow
+- Report csv export is includes all actual spend
+- Report csv export variance is calculate from net actual spend
+- Report csv performance improvements
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-86...HEAD
 [release-86]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-85...release-86

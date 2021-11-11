@@ -12,7 +12,7 @@ class Export::ActivityChangeStateColumn
     return [] if @activities.empty?
 
     @activities.map { |activity|
-      [activity.id, state_of(activity: activity)]
+      [activity.id, [state_of(activity: activity)]]
     }.to_h
   end
 

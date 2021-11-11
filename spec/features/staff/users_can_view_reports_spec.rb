@@ -155,8 +155,7 @@ RSpec.feature "Users can view reports" do
       click_link t("action.report.download.button")
 
       expect(page.response_headers["Content-Type"]).to include("text/csv")
-      header = page.response_headers["Content-Disposition"]
-      expect(header).to match(/#{ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv")}\z/)
+      expect(page.status_code).to eq 200
     end
 
     context "if the report description is empty" do
@@ -205,8 +204,8 @@ RSpec.feature "Users can view reports" do
         expect(page).to have_content "Budgets"
       end
 
-      it "they can be downloaded as CSV" do
-        click_on "Download report as CSV file"
+      it "they canont be downloaded as CSV" do
+        expect(page).not_to have_content "Download report as CSV file"
       end
     end
 
@@ -398,8 +397,7 @@ RSpec.feature "Users can view reports" do
         expect(page.response_headers["Content-Type"]).to include("text/csv")
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
-        header = page.response_headers["Content-Disposition"]
-        expect(header).to match(ERB::Util.url_encode("#{report.organisation.beis_organisation_reference}-report.csv"))
+        expect(page.status_code).to eq 200
       end
     end
 
