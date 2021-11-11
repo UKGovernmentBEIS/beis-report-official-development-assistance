@@ -910,6 +910,8 @@
 - Report csv export is includes all actual spend
 - Report csv export variance is calculate from net actual spend
 - Report csv performance improvements
+- Legacy version of report csv download is available whilst the new version is
+  validated by BEIS
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-86...HEAD
 [release-86]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-85...release-86
