@@ -11,7 +11,7 @@ class Export::ActivityLinkColumn
     return [] if @activities.nil?
 
     @activities.map { |activity|
-      link = Rails.application.routes.url_helpers.organisation_activity_details_url(activity.organisation, activity, host: ENV["DOMAIN"]).to_s
+      link = Rails.application.routes.url_helpers.organisation_activity_details_url(activity.organisation_id, activity, host: ENV["DOMAIN"]).to_s
       [activity.id, link]
     }.to_h
   end

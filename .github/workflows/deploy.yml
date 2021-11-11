@@ -115,6 +115,28 @@ jobs:
       - uses: actions/checkout@v2
       - name: Deploy latest code to the Training environment
         run: script/deploy-terraform
+  ghost_inspector_staging:
+    needs: deploy_to_staging
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - name: execute Ghost Inspector test
+        uses: docker://ghostinspector/cli
+        with:
+          args: suite execute ${{ secrets.STAGING_GI_SUITE }} \
+            --apiKey ${{ secrets.GI_API_KEY }} \
+            --errorOnFail
+  ghost_inspector_prod:
+    needs: deploy_to_production
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: execute Ghost Inspector test
+        uses: docker://ghostinspector/cli
+        with:
+          args: suite execute ${{ secrets.PROD_GI_SUITE }} \
+            --apiKey ${{ secrets.GI_API_KEY }} \
+            --errorOnFail
   check_and_notify:
     needs: deploy_to_production
     if: github.ref == 'refs/heads/master'

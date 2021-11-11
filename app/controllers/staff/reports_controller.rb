@@ -30,7 +30,7 @@ class Staff::ReportsController < Staff::BaseController
         render :show
       end
       format.csv do
-        send_csv
+        send_csv(legacy: legacy?)
       end
     end
   end
@@ -87,6 +87,11 @@ class Staff::ReportsController < Staff::BaseController
 
   private
 
+  def legacy?
+    return true if params[:legacy]
+    false
+  end
+
   def id
     params[:id]
   end
@@ -106,8 +111,13 @@ class Staff::ReportsController < Staff::BaseController
     params.require(:report).permit(:deadline, :description)
   end
 
-  def send_csv
-    export = Report::Export.new(report: @report)
+  def send_csv(legacy: false)
+    export =
+      if legacy
+        Report::Export.new(report: @report)
+      else
+        Export::Report.new(report: @report)
+      end
 
     stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
       export.rows.each do |row|
