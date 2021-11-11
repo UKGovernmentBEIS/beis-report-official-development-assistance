@@ -46,6 +46,11 @@ class ReportPolicy < ApplicationPolicy
     record.editable? && record.organisation == user.organisation
   end
 
+  def upload_history?
+    return true if beis_user? && record.editable?
+    false
+  end
+
   def download?
     show?
   end
