@@ -92,3 +92,7 @@
 
 - **[Change a report's financial period (support_tasks/change_financial_period.md)](./support_tasks/change_financial_period.md)**:
   If a report is created with the wrong financial period it is a little fiddly to change.
+
+- **[Add "channel of delivery" code to the accepted list (support_tasks/add_accepted_channel_of_delivery_code.md)](./support_tasks/add_accepted_channel_of_delivery_code.md)**:
+  From time to time an additional IATI "channel of delivery" code needs to be
+  added to RODA's list of accepted codes.
