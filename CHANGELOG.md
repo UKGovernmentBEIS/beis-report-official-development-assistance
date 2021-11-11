@@ -904,7 +904,7 @@
 - Remove unwanted packages from Brewfile (redis and Firefox)
 - Move terraform readme into '/doc' directory
 
-## [unreleased]
+## [release-87] 2021-11-11
 
 - Add Ghost Inspector tests to the GitHub action deploy workflow
 - Report csv export is includes all actual spend
@@ -913,7 +913,10 @@
 - Legacy version of report csv download is available whilst the new version is
   validated by BEIS
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-86...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-87...HEAD
+[release-87]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-86...release-87
 [release-86]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-85...release-86
 [release-85]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-84...release-85
 [release-84]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-83...release-84
