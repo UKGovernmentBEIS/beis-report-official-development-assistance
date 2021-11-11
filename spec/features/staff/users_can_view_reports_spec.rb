@@ -158,6 +158,16 @@ RSpec.feature "Users can view reports" do
       expect(page.status_code).to eq 200
     end
 
+    scenario "whilst available, they can download the legacy CSV version of their report" do
+      report = create(:report, :active)
+      visit report_actuals_path(report)
+
+      click_link("Download report as legacy CSV file")
+
+      expect(page.response_headers["Content-Type"]).to include("text/csv")
+      expect(page.status_code).to eq 200
+    end
+
     context "if the report description is empty" do
       scenario "the report csv has a filename made up of the fund name & report financial year & quarter" do
         report = create(:report, :active, description: "", financial_quarter: 4, financial_year: 2019)
