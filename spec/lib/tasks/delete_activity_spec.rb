@@ -1,6 +1,8 @@
 RSpec.describe "rake activities:delete", type: :task do
   let(:user) { create(:beis_user) }
 
+  before { allow(Kernel).to receive(:puts) }
+
   it "returns an error if the ID is blank" do
     expect { task.execute }.to raise_error(SystemExit, /You must specify a database ID/)
   end
