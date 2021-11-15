@@ -1,0 +1,30 @@
+---
+en:
+  page_title:
+    uploads:
+      actual_histories: Upload actual data history
+  page_content:
+    uploads:
+      actual_histories:
+        actuals_tab:
+          body_html:
+            <p class="govuk-body">Historic actuals can be uploaded into this report.</p>
+            <div class="govuk-inset-text">It is recommended that the actual data history is the only data uploaded in this report.</div>
+        new:
+          body_html:
+            <p class="govuk-body">Actual data history differs from regular reporting data in the following ways:</p>
+            <ul class="govuk-list govuk-list--bullet">
+              <li>Historic actuals can be negative</li>
+              <li>Historic actuals can be from the current or any past financial quarter</li>
+              </ul>
+          warning_html:
+            <div class="govuk-inset-text">
+              Uploading actual history data will append to any values already provided in this report.
+            </div>
+  actions:
+    uploads:
+      actual_histories:
+        new_upload: Upload actual history data
+  breadcrumb:
+    uploads:
+      actual_histories: Upload actual history
