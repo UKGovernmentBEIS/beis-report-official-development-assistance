@@ -16,6 +16,14 @@ RSpec.describe Staff::Uploads::ActualHistoriesController do
         expect(response).to render_template(:new)
       end
     end
+
+    describe "#update" do
+      it "renders the view" do
+        put :update, params: {report_id: report.id}
+
+        expect(response).to render_template(:new)
+      end
+    end
   end
 
   context "as a delivery partner user" do
@@ -29,6 +37,14 @@ RSpec.describe Staff::Uploads::ActualHistoriesController do
     describe "#new" do
       it "returns unauthorized (401)" do
         get :new, params: {report_id: report.id}
+
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    describe "#update" do
+      it "returns unauthorized (401)" do
+        put :update, params: {report_id: report.id}
 
         expect(response).to have_http_status(:unauthorized)
       end

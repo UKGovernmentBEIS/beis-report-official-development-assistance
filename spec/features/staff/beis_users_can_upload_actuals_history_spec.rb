@@ -10,6 +10,38 @@ RSpec.feature "BEIS users upload actual history" do
 
       expect(page).to have_content(t("actions.uploads.actual_histories.new_upload"))
     end
+
+    scenario "they can provide a file" do
+      file_content =
+        <<~CSV
+          Activity Name|Activity Delivery Partner Identifier|Activity RODA Identifier|Financial Quarter|Financial Year|Value
+          Activity A|DPID|RODAID|4|2021|10_000
+        CSV
+
+      visit new_report_uploads_actual_history_path(report)
+      upload_fixture(file_content)
+
+      expect(page).to have_content(t("actions.uploads.actual_histories.success"))
+    end
+
+    scenario "when the file is missing" do
+      visit new_report_uploads_actual_history_path(report)
+      click_button t("actions.uploads.actual_histories.upload.button")
+
+      expect(page).to have_content(t("actions.uploads.actual_histories.missing_or_invalid"))
+    end
+
+    scenario "when the file cannot be parsed" do
+      file_content =
+        <<~CSV
+          invalid;csv;content
+        CSV
+
+      visit new_report_uploads_actual_history_path(report)
+      upload_fixture(file_content)
+
+      expect(page).to have_content(t("actions.uploads.actual_histories.missing_or_invalid"))
+    end
   end
 
   context "as a delvivery partner user" do
@@ -25,5 +57,16 @@ RSpec.feature "BEIS users upload actual history" do
 
       expect(page).not_to have_content(t("actions.uploads.actual_histories.new_upload"))
     end
+  end
+
+  def upload_fixture(content)
+    file = Tempfile.new("actuals.csv")
+    file.write(content.gsub(/ *\| */, ","))
+    file.close
+
+    attach_file "report[actual_csv_file]", file.path
+    click_button t("actions.uploads.actual_histories.upload.button")
+
+    file.unlink
   end
 end

@@ -25,6 +25,19 @@ en:
     uploads:
       actual_histories:
         new_upload: Upload actual history data
+        upload:
+          button: Upload and continue
+        success: Success
+        missing_or_invalid: Actual history data file is missing or invalid
   breadcrumb:
     uploads:
       actual_histories: Upload actual history
+  form:
+    label:
+      uploads:
+        actual_histories:
+          csv_file: Provide actual history data file
+    hint:
+      uploads:
+        actual_histories:
+          csv_file: Select the file that contains the actual history data for this report.

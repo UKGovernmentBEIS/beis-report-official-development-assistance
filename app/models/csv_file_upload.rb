@@ -1,3 +1,5 @@
+require "csv"
+
 class CsvFileUpload
   BYTE_ORDER_MARK = "\uFEFF".encode(Encoding::UTF_8)
 

@@ -69,7 +69,7 @@ Rails.application.routes.draw do
       get "activities" => "report_activities#show"
       get "comments" => "report_comments#show"
       namespace :uploads do
-        resource :actual_history, only: [:new]
+        resource :actual_history, only: [:new, :update]
       end
     end
 
