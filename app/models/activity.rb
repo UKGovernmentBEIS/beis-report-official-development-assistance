@@ -219,7 +219,15 @@ class Activity < ApplicationRecord
       delivery_partner_organisation: delivery_partner_organisation
     ).call
 
-    new(attributes, &block)
+    new(attributes, &block).tap do |new_activity|
+      if new_activity.programme?
+        new_activity.implementing_organisations << ImplementingOrganisation.new(
+          name: delivery_partner_organisation.name,
+          reference: delivery_partner_organisation.iati_reference,
+          organisation_type: delivery_partner_organisation.organisation_type
+        )
+      end
+    end
   end
 
   def self.by_roda_identifier(identifier)

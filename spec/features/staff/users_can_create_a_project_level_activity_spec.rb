@@ -73,6 +73,7 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.oda_eligibility).to eq(activity.oda_eligibility)
         expect(created_activity.oda_eligibility_lead).to eq(activity.oda_eligibility_lead)
         expect(created_activity.uk_dp_named_contact).to eq(activity.uk_dp_named_contact)
+        expect(created_activity.implementing_organisations).to be_none
       end
 
       scenario "can create a new child activity for a given programme" do
