@@ -22,37 +22,37 @@ namespace :activities do
     incomming_transfers_count = IncomingTransfer.where(destination_id: activity.id).count
     outgoing_transfers_count = OutgoingTransfer.where(source_id: activity.id).count
 
-    puts "\nActivity: #{activity.id}\n"
-    puts "==============================================\n"
-    puts "title: #{activity.title}\n"
-    puts "fund: #{activity.source_fund.name}\n"
-    puts "level: #{activity.level}\n"
-    puts "----------------------------------------------\n"
-    puts "# descendents: #{descendents.count}\n"
-    puts "# children: #{children.count}\n"
-    puts "# actual spend entires: #{actuals.count}\n"
-    puts "# refund entires: #{refunds.count}\n"
-    puts "# budget entries: #{budgets.count}\n"
-    puts "# forecast entries: #{forecasts.count}\n"
-    puts "# incoming transfer entries: #{incomming_transfers_count}"
-    puts "# outgoing transfer entries: #{outgoing_transfers_count}"
-    puts "# comments: #{comment_count}\n"
-    puts "# matched effort entries: #{matched_effort.count}\n"
-    puts "# external income entires: #{external_income.count}\n"
-    puts "# history entries: #{history.count}\n"
-    puts "# adjustment entries: #{adjustments.count}\n"
-    puts "# implementing organisations: #{implementing_organisations.count}\n"
+    Kernel.puts "\nActivity: #{activity.id}\n"
+    Kernel.puts "==============================================\n"
+    Kernel.puts "title: #{activity.title}\n"
+    Kernel.puts "fund: #{activity.source_fund.name}\n"
+    Kernel.puts "level: #{activity.level}\n"
+    Kernel.puts "----------------------------------------------\n"
+    Kernel.puts "# descendents: #{descendents.count}\n"
+    Kernel.puts "# children: #{children.count}\n"
+    Kernel.puts "# actual spend entires: #{actuals.count}\n"
+    Kernel.puts "# refund entires: #{refunds.count}\n"
+    Kernel.puts "# budget entries: #{budgets.count}\n"
+    Kernel.puts "# forecast entries: #{forecasts.count}\n"
+    Kernel.puts "# incoming transfer entries: #{incomming_transfers_count}"
+    Kernel.puts "# outgoing transfer entries: #{outgoing_transfers_count}"
+    Kernel.puts "# comments: #{comment_count}\n"
+    Kernel.puts "# matched effort entries: #{matched_effort.count}\n"
+    Kernel.puts "# external income entires: #{external_income.count}\n"
+    Kernel.puts "# history entries: #{history.count}\n"
+    Kernel.puts "# adjustment entries: #{adjustments.count}\n"
+    Kernel.puts "# implementing organisations: #{implementing_organisations.count}\n"
 
-    puts "\nAre you sure you want to delete this activity, all descendants and associated entities? [y/n]\n"
+    Kernel.puts "\nAre you sure you want to delete this activity, all descendants and associated entities? [y/n]\n"
     answer = STDIN.gets.chomp
     case answer
     when "y"
       delete_activity(activity_id: activity.id)
     when "n"
-      puts "Not deleting the activity with ID #{activity.id}"
+      Kernel.puts "Not deleting the activity with ID #{activity.id}"
       abort
     else
-      puts "Unrecognised response, answer 'y' or 'n'"
+      Kernel.puts "Unrecognised response, answer 'y' or 'n'"
     end
   rescue ActiveRecord::RecordNotFound
     abort "Cannot find an activity with ID #{activity_id}"
@@ -63,8 +63,8 @@ def delete_activity(activity_id:)
   activity = Activity.find(activity_id)
 
   if activity.children.any?
-    puts "----------------------------------------------\n"
-    puts "Deleting children of activity with ID #{activity.id}\n"
+    Kernel.puts "----------------------------------------------\n"
+    Kernel.puts "Deleting children of activity with ID #{activity.id}\n"
     activity.children.each do |child_activity|
       delete_activity(activity_id: child_activity.id)
     end
@@ -81,21 +81,21 @@ def delete_activity(activity_id:)
   incomming_transfers_deleted = IncomingTransfer.destroy_by(destination_id: activity_id)
   outgoing_transfers_deleted = OutgoingTransfer.destroy_by(source_id: activity_id)
 
-  puts "\n==============================================\n"
-  puts "Deleted associations for activity with ID #{activity_id}\n"
-  puts "----------------------------------------------\n"
-  puts "#{actuals_deleted.count} acutals deleted\n"
-  puts "#{refunds_deleted.count} refunds deleted\n"
-  puts "#{adjustments_deleted.count} adjustments deleted\n"
-  puts "#{budgets_deleted.count} budgets deleted\n"
-  puts "#{forecasts_deleted.count} forecasts deleted\n"
-  puts "#{comments_deleted.count} comments deleted\n"
-  puts "#{matched_effort_deleted.count} matched effort entries deleted\n"
-  puts "#{external_income_deleted.count} external income entries deleted\n"
-  puts "#{incomming_transfers_deleted.count} incoming transfer entries deleted\n"
-  puts "#{outgoing_transfers_deleted.count} outgoing transfer entries deleted\n"
-  puts "----------------------------------------------\n"
+  Kernel.puts "\n==============================================\n"
+  Kernel.puts "Deleted associations for activity with ID #{activity_id}\n"
+  Kernel.puts "----------------------------------------------\n"
+  Kernel.puts "#{actuals_deleted.count} acutals deleted\n"
+  Kernel.puts "#{refunds_deleted.count} refunds deleted\n"
+  Kernel.puts "#{adjustments_deleted.count} adjustments deleted\n"
+  Kernel.puts "#{budgets_deleted.count} budgets deleted\n"
+  Kernel.puts "#{forecasts_deleted.count} forecasts deleted\n"
+  Kernel.puts "#{comments_deleted.count} comments deleted\n"
+  Kernel.puts "#{matched_effort_deleted.count} matched effort entries deleted\n"
+  Kernel.puts "#{external_income_deleted.count} external income entries deleted\n"
+  Kernel.puts "#{incomming_transfers_deleted.count} incoming transfer entries deleted\n"
+  Kernel.puts "#{outgoing_transfers_deleted.count} outgoing transfer entries deleted\n"
+  Kernel.puts "----------------------------------------------\n"
 
   activity.destroy
-  puts "Activity with ID #{activity.id} deleted"
+  Kernel.puts "Activity with ID #{activity.id} deleted"
 end
