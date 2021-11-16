@@ -41,7 +41,7 @@ RSpec.describe Import::ActualHistory do
   end
 
   context "with valid data" do
-    subject { described_class.new(report: @report, csv: @valid_csv) }
+    subject { described_class.new(report: @report, csv: @valid_csv, user: @user) }
 
     it "returns true" do
       expect(subject.call).to be true
@@ -55,10 +55,19 @@ RSpec.describe Import::ActualHistory do
       subject.call
       expect(subject.imported.count).to eq 3
     end
+
+    it "records the actuals in the history" do
+      history_recorder = double(HistoryRecorder, call: nil)
+      allow(HistoryRecorder).to receive(:new).and_return(history_recorder)
+
+      subject.call
+
+      expect(history_recorder).to have_received(:call).exactly(3).times
+    end
   end
 
   context "with invalid headers" do
-    subject { described_class.new(report: @report, csv: @invalid_headers_csv) }
+    subject { described_class.new(report: @report, csv: @invalid_headers_csv, user: @user) }
 
     it "returns false" do
       expect(subject.call).to be false
@@ -80,7 +89,7 @@ RSpec.describe Import::ActualHistory do
   end
 
   context "with invalid data" do
-    subject { described_class.new(report: @report, csv: @invalid_csv) }
+    subject { described_class.new(report: @report, csv: @invalid_csv, user: @user) }
 
     it "returns false" do
       expect(subject.call).to be false
@@ -89,6 +98,15 @@ RSpec.describe Import::ActualHistory do
     it "returns all of the errors" do
       subject.call
       expect(subject.errors.count).to eq 4
+    end
+
+    it "does not record the actuals in the history" do
+      history_recorder = double(HistoryRecorder, call: nil)
+      allow(HistoryRecorder).to receive(:new).and_return(history_recorder)
+
+      subject.call
+
+      expect(history_recorder).not_to have_received(:call)
     end
 
     describe "the errors" do

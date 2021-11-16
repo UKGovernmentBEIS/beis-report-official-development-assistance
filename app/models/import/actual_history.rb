@@ -17,10 +17,11 @@ class Import::ActualHistory
 
   attr_reader :errors, :imported
 
-  def initialize(report:, csv:)
+  def initialize(report:, csv:, user:)
     @report = report
     @headers = csv.headers
     @csv = csv
+    @user = user
     @imported = []
     @errors = []
   end
@@ -54,7 +55,7 @@ class Import::ActualHistory
     end
 
     return false if @errors.any?
-
+    record_import_history
     true
   end
 
@@ -64,6 +65,21 @@ class Import::ActualHistory
 
   def headers_error
     RowError.new("Invalid headers, must be #{VALID_HEADERS.values.to_sentence}", 1)
+  end
+
+  def record_import_history
+    imported.each do |actual|
+      changes = {
+        value: [nil, actual.value],
+      }
+      HistoryRecorder.new(user: @user).call(
+        changes: changes,
+        reference: "Actual spend imported",
+        activity: actual.parent_activity,
+        trackable: actual,
+        report: @report
+      )
+    end
   end
 
   class RowImport
