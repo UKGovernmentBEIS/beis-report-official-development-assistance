@@ -274,20 +274,4 @@ RSpec.describe Export::ActivityForecastColumns do
       end
     end
   end
-
-  def value_for_header(header_name)
-    values = subject.rows.fetch(@activity.id)
-    values[subject.headers.index(header_name)]
-  end
-
-  def forecasts_for_report_from_table(report, table)
-    CSV.parse(table, col_sep: "|", headers: true).each do |row|
-      ForecastHistory.new(
-        @activity,
-        report: report,
-        financial_quarter: row["financial_quarter"].to_i,
-        financial_year: row["financial_year"].to_i,
-      ).set_value(row["value"].to_i)
-    end
-  end
 end
