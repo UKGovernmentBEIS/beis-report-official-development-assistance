@@ -6,6 +6,18 @@ class UniqueImplementingOrganisation < ApplicationRecord
 
   strip_attributes only: [:name, :reference]
 
+  def self.find_matching(name)
+    where(name: name.strip)
+      .or(where(
+        UniqueImplementingOrganisation
+        .arel_table[:legacy_names]
+        .contains([name])
+      ))
+      .first
+  end
+
+  private
+
   class << self
     private def valid_organisation_types
       organisations = Codelist.new(type: "organisation_type")
