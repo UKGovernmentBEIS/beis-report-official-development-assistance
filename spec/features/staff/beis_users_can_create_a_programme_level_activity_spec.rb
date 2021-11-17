@@ -61,6 +61,11 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.accountable_organisation_type).to eq("10")
 
       expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
+
+      expect_implementing_organisation_to_be_the_delivery_partner(
+        activity: created_activity,
+        organisation: delivery_partner
+      )
     end
   end
 
@@ -112,5 +117,17 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
       expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
     end
+  end
+
+  def expect_implementing_organisation_to_be_the_delivery_partner(
+    activity:,
+    organisation:
+  )
+    expect(activity.implementing_organisations.first)
+      .to have_attributes(
+        "name" => organisation.name,
+        "reference" => organisation.iati_reference,
+        "organisation_type" => organisation.organisation_type
+      )
   end
 end
