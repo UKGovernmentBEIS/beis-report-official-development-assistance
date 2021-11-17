@@ -18,18 +18,44 @@ class Staff::Uploads::ActualHistoriesController < Staff::BaseController
 
     upload = CsvFileUpload.new(params[:report], :actual_csv_file)
 
-    if upload.valid?
-      flash[:notice] = t("actions.uploads.actual_histories.success")
+    return handle_invalid_file unless upload.valid?
+
+    importer = Import::ActualHistory.new(report: @report, csv: upload.rows, user: current_user)
+    @errors = importer.errors
+    @imported_actuals = importer.imported
+
+    if importer.call
+      render_uploaded_actual_history
     else
-      flash[:error] = t("actions.uploads.actual_histories.invalid")
+      render_uploaded_actual_history_errors
     end
-    render :new
   end
 
   private
 
+  def render_uploaded_actual_history
+    @total_actuals = TotalPresenter.new(@imported_actuals.sum(&:value)).value
+
+    @grouped_actuals = @imported_actuals
+      .map { |actual| TransactionPresenter.new(actual) }
+      .group_by { |actual| ActivityPresenter.new(actual.parent_activity) }
+
+    flash[:notice] = t("actions.uploads.actual_histories.success")
+    render :update
+  end
+
+  def render_uploaded_actual_history_errors
+    flash[:error] = t("actions.uploads.actual_histories.failed")
+    render :update
+  end
+
   def handle_missing_file
     flash[:error] = t("actions.uploads.actual_histories.missing")
+    render :new
+  end
+
+  def handle_invalid_file
+    flash[:error] = t("actions.uploads.actual_histories.invalid")
     render :new
   end
 

@@ -28,6 +28,7 @@ en:
         upload:
           button: Upload and continue
         success: Actual history uploaded successfully
+        failed: Actual history upload failed
         invalid: Actual history data file is invalid
         missing: You must provide an actual history data file
   breadcrumb:
