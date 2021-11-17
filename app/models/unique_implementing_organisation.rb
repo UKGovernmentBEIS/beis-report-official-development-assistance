@@ -6,13 +6,17 @@ class UniqueImplementingOrganisation < ApplicationRecord
 
   strip_attributes only: [:name, :reference]
 
+  scope :with_legacy_name, ->(name) do
+    where(
+      UniqueImplementingOrganisation
+      .arel_table[:legacy_names]
+      .contains([name])
+    )
+  end
+
   def self.find_matching(name)
     where(name: name.strip)
-      .or(where(
-        UniqueImplementingOrganisation
-        .arel_table[:legacy_names]
-        .contains([name])
-      ))
+      .or(merge(with_legacy_name(name)))
       .first
   end
 
