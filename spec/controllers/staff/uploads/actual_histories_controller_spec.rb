@@ -18,10 +18,29 @@ RSpec.describe Staff::Uploads::ActualHistoriesController do
     end
 
     describe "#update" do
-      it "renders the view" do
+      it "renders the new view" do
+        put :update, params: {report_id: report.id, actual_csv_file: {}}
+
+        expect(response).to render_template(:new)
+      end
+
+      it "handles a missing file with an error" do
         put :update, params: {report_id: report.id}
 
         expect(response).to render_template(:new)
+        expect(flash[:error]).to eq(t("actions.uploads.actual_histories.missing"))
+      end
+
+      it "handles an invalid file with an error" do
+        upload = double(CsvFileUpload, valid?: false)
+        allow(CsvFileUpload).to receive(:new).and_return(upload)
+        allow(controller).to receive(:file_supplied?).and_return(true)
+
+        put :update, params: {report_id: report.id}
+
+        expect(response).to render_template(:new)
+
+        expect(flash[:error]).to eq(t("actions.uploads.actual_histories.invalid"))
       end
     end
   end

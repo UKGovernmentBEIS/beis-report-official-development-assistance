@@ -27,8 +27,9 @@ en:
         new_upload: Upload actual history data
         upload:
           button: Upload and continue
-        success: Success
-        missing_or_invalid: Actual history data file is missing or invalid
+        success: Actual history uploaded successfully
+        invalid: Actual history data file is invalid
+        missing: You must provide an actual history data file
   breadcrumb:
     uploads:
       actual_histories: Upload actual history
