@@ -913,9 +913,15 @@
 - Legacy version of report csv download is available whilst the new version is
   validated by BEIS
 
+## [release-88] 2021-11-17
+
+- Set implementing organisation on new programmes (Level B activities)
+- Add support runbook for adding a channel of delivery code to accepted list
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-87...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-88...HEAD
+[release-88]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-87...release-88
 [release-87]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-86...release-87
 [release-86]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-85...release-86
 [release-85]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-84...release-85
