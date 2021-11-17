@@ -21,6 +21,8 @@ class Import::ActualHistory
     import_actual_history(@csv)
   end
 
+  alias imported? call
+
   private
 
   def import_actual_history(csv)

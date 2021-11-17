@@ -24,7 +24,7 @@ class Staff::Uploads::ActualHistoriesController < Staff::BaseController
     @errors = importer.errors
     @imported_actuals = importer.imported
 
-    if importer.call
+    if importer.imported?
       render_uploaded_actual_history
     else
       render_uploaded_actual_history_errors
