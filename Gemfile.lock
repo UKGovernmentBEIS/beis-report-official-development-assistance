@@ -158,7 +158,7 @@ GEM
     foreman (0.87.2)
     globalid (0.5.2)
       activesupport (>= 5.0)
-    govuk_design_system_formbuilder (2.7.5)
+    govuk_design_system_formbuilder (2.7.6)
       actionview (>= 6.0)
       activemodel (>= 6.0)
       activesupport (>= 6.0)
@@ -499,7 +499,7 @@ DEPENDENCIES
   faker
   fakeredis
   foreman
-  govuk_design_system_formbuilder (~> 2.7.5)
+  govuk_design_system_formbuilder (~> 2.7.6)
   haml-rails
   high_voltage
   html2haml
