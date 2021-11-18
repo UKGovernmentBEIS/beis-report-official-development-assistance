@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_16_105817) do
+ActiveRecord::Schema.define(version: 2021_11_18_114612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -238,6 +238,18 @@ ActiveRecord::Schema.define(version: 2021_11_16_105817) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["activity_id"], name: "index_matched_efforts_on_activity_id"
     t.index ["organisation_id"], name: "index_matched_efforts_on_organisation_id"
+  end
+
+  create_table "org_participations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "organisation_id"
+    t.uuid "activity_id"
+    t.string "role", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id"], name: "index_org_participations_on_activity_id"
+    t.index ["organisation_id", "activity_id", "role"], name: "idx_org_participations_on_org_and_act_and_role", unique: true
+    t.index ["organisation_id"], name: "index_org_participations_on_organisation_id"
+    t.index ["role"], name: "index_org_participations_on_role"
   end
 
   create_table "organisations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

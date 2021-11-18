@@ -6,6 +6,12 @@ class UniqueImplementingOrganisation < ApplicationRecord
 
   strip_attributes only: [:name, :reference]
 
+  has_many :org_participations,
+    -> { where(role: "Implementing").distinct },
+    foreign_key: :organisation_id,
+    inverse_of: :organisation
+  has_many :activities, through: :org_participations
+
   scope :with_legacy_name, ->(name) do
     where(
       UniqueImplementingOrganisation

@@ -1,6 +1,39 @@
 require "rails_helper"
 
 RSpec.describe UniqueImplementingOrganisation, type: :model do
+  describe "associations" do
+    let(:organisation) { create(:unique_implementing_org) }
+
+    let(:implemented_activity) { create(:programme_activity) }
+    let(:other_activity) { create(:programme_activity) }
+
+    let!(:implementing_participation) do
+      OrgParticipation.create(
+        activity: implemented_activity,
+        organisation: organisation,
+        role: "Implementing"
+      )
+    end
+
+    let!(:other_participation) do
+      OrgParticipation.create(
+        activity: other_activity,
+        organisation: organisation,
+        role: "Other"
+      )
+    end
+
+    it "associates with org_participations with the 'Implementing' role only" do
+      expect(organisation.org_participations).to include(implementing_participation)
+      expect(organisation.org_participations).not_to include(other_participation)
+    end
+
+    it "associates with activities through the 'Implementing' role only" do
+      expect(organisation.activities).to include(implemented_activity)
+      expect(organisation.activities).not_to include(other_activity)
+    end
+  end
+
   describe "::find_matching" do
     let!(:canonical) do
       create(
