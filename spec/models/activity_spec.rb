@@ -626,6 +626,8 @@ RSpec.describe Activity, type: :model do
     it { should have_many(:child_activities).with_foreign_key("parent_id") }
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
     it { should have_many(:implementing_organisations) }
+    it { should have_many(:implementing_org_participations) }
+    it { should have_many(:unique_implementing_organisations) }
     it { should have_many(:budgets) }
     it { should have_many(:actuals) }
     it { should have_many(:refunds) }

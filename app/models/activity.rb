@@ -126,6 +126,13 @@ class Activity < ApplicationRecord
   belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
   has_many :implementing_organisations, dependent: :destroy
   validates_associated :implementing_organisations
+  has_many :implementing_org_participations,
+    -> { where("org_participations.role = 'Implementing'") },
+    class_name: "OrgParticipation"
+  has_many :unique_implementing_organisations,
+    -> { distinct },
+    through: :implementing_org_participations,
+    source: :organisation
 
   has_many :budgets, foreign_key: "parent_activity_id"
   has_many :actuals, foreign_key: "parent_activity_id"
