@@ -1,9 +1,9 @@
 class Import::ActualHistory
   VALID_HEADERS = {
-    roda_identifier: "RODA identifier",
-    financial_quarter: "Financial quarter",
-    financial_year: "Financial year",
-    value: "Value",
+    roda_identifier: I18n.t("activerecord.attributes.activity.roda_identifier"),
+    financial_quarter: I18n.t("activerecord.attributes.default.financial_quarter"),
+    financial_year: I18n.t("activerecord.attributes.default.financial_year"),
+    value: I18n.t("activerecord.attributes.default.value"),
   }
 
   attr_reader :errors, :imported
