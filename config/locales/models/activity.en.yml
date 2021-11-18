@@ -332,7 +332,7 @@ en:
         html: To create a new Activity, first choose the %{organisations_link} you wish to create the Activity under
       organisation: Organisation
     activity:
-      unknown_country: Unknown country code
+      unknown_country: Unknown country code (%{code})
       benefitting_region_check_box: Select or deselect all countries in %{region}
       budgets: Budgets
       button:
