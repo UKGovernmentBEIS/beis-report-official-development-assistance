@@ -9,8 +9,15 @@ cd "$(dirname "$0")/.."
 
 if [ -z "$CI" ]; then
   if [ -f Brewfile ] && [ "$(uname -s)" = "Darwin" ]; then
+    set +e
+    echo "==> Installing Apple Command Line tools if required..."
+    xcode-select --install
+    echo "==> Apple Command Line tools installed..."
+    set -e
     if ! brew bundle check >/dev/null 2>&1; then
       echo "==> Installing Homebrew dependencies..."
+      brew update
+      brew upgrade ruby-build
       brew bundle install --verbose --no-lock
     fi
   fi
@@ -47,9 +54,12 @@ if [ -f package.json ]; then
   fi
 fi
 
-REDIS_STATUS=$(redis-cli ping)
-
-if [ "$REDIS_STATUS" != "PONG" ]; then
-  echo "===> Starting Redis server in daemon mode"
-  redis-server /usr/local/etc/redis.conf --daemonize yes
+if [ -z "$CI" ]; then
+  if command -v docker-compose >/dev/null; then
+    echo "==> Launching postgres/redis containers..."
+    docker-compose -f backing-services-docker-compose.yml up -d
+  else
+    echo "==> Error: docker-compose not installed"
+    exit 1
+  fi
 fi
