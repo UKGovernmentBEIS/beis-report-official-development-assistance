@@ -931,6 +931,8 @@
 - Uploaded actual history must be in past financial quarters
 - Activity summary view uses BEIS approved attribute names
 - Channel of delivery code 90000, 'Other' added to the accepted codes list
+- Fix deployment notification
+
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...HEAD
 [release-89]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-88...release-89
