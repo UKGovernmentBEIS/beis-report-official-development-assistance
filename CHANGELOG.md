@@ -923,6 +923,8 @@
   document funding flowing back
 - BEIS users can upload 'actual history' – historic actual spend, this is a
   short term feature to facilitate migration to the application
+- Update terrafom to version 1.0.11
+- Update postgres to version 13
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-88...HEAD
 [release-88]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-87...release-88

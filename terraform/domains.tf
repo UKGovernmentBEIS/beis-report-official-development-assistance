@@ -5,5 +5,5 @@ data "cloudfoundry_domain" "default" {
 
 # Get data for the custom domain on the PaaS
 data "cloudfoundry_domain" "custom" {
-  name = "${var.custom_domain}"
+  name = var.custom_domain
 }

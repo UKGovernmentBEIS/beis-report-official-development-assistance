@@ -8,8 +8,8 @@ resource "cloudfoundry_app" "beis-roda-app" {
   timeout      = 300
   docker_image = "thedxw/beis-report-official-development-assistance:${var.docker_image}"
   docker_credentials = {
-    username = "${var.docker_username}"
-    password = "${var.docker_password}"
+    username = var.docker_username
+    password = var.docker_password
   }
   strategy                   = "blue-green-v2"
   health_check_http_endpoint = "/health_check"
