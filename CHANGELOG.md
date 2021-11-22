@@ -929,6 +929,7 @@
 
 ## [unreleased]
 - Uploaded actual history must be in past financial quarters
+- Activity summary view uses BEIS approved attribute names
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...HEAD
 [release-89]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-88...release-89
