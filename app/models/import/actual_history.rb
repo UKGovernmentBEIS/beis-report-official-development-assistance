@@ -1,18 +1,9 @@
 class Import::ActualHistory
-  class RowError < StandardError
-    attr_reader :row_number
-
-    def initialize(message, row_number)
-      @row_number = row_number
-      super(message)
-    end
-  end
-
   VALID_HEADERS = {
-    roda_identifier: "RODA identifier",
-    financial_quarter: "Financial quarter",
-    financial_year: "Financial year",
-    value: "Value",
+    roda_identifier: I18n.t("activerecord.attributes.activity.roda_identifier"),
+    financial_quarter: I18n.t("activerecord.attributes.default.financial_quarter"),
+    financial_year: I18n.t("activerecord.attributes.default.financial_year"),
+    value: I18n.t("activerecord.attributes.default.value"),
   }
 
   attr_reader :errors, :imported
@@ -29,6 +20,8 @@ class Import::ActualHistory
   def call
     import_actual_history(@csv)
   end
+
+  alias imported? call
 
   private
 
@@ -64,7 +57,12 @@ class Import::ActualHistory
   end
 
   def headers_error
-    RowError.new("Invalid headers, must be #{VALID_HEADERS.values.to_sentence}", 1)
+    Import::RowError.new(
+      column: nil,
+      row_number: 1,
+      value: nil,
+      message: "Invalid headers, must be #{VALID_HEADERS.values.to_sentence}"
+    )
   end
 
   def record_import_history
@@ -149,10 +147,12 @@ class Import::ActualHistory
     end
 
     def report_error
-      RowError
+      Import::RowError
         .new(
-          "Activity with RODA ID #{activity.roda_identifier} does not match the fund and organisation of this report",
-          row_number
+          column: VALID_HEADERS[:roda_identifier],
+          row_number: row_number,
+          value: activity.roda_identifier,
+          message: "Activity does not match the fund and organisation of this report"
         )
     end
 
@@ -165,11 +165,23 @@ class Import::ActualHistory
     end
 
     def roda_identifier_error
-      RowError.new("Unknown RODA identifier #{roda_identifier}", row_number)
+      Import::RowError.new(
+        column: VALID_HEADERS[:roda_identifier],
+        row_number: row_number,
+        value: roda_identifier,
+        message: "No activity with this RODA identifier could be found"
+      )
     end
 
     def active_model_to_import_errors_for_row(errors)
-      errors.map { |error| RowError.new(error.message, row_number) }
+      errors.map do |error|
+        Import::RowError.new(
+          column: VALID_HEADERS[error.attribute],
+          row_number: row_number,
+          value: error.options[:value],
+          message: error.message
+        )
+      end
     end
   end
 end

@@ -1,0 +1,9 @@
+= content_for :page_title_prefix, t("page_title.uploads.actual_histories")
+
+%h1.govuk-heading-xl
+  = t("page_title.uploads.actual_histories")
+
+- if @errors.any?
+  = render partial: "errors_table.html.haml"
+- if @total_actuals.present?
+  = render partial: "shared/actuals/actuals_by_activity"

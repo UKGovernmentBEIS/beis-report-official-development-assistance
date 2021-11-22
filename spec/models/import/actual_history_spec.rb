@@ -3,13 +3,9 @@ RSpec.describe Import::ActualHistory do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
 
-    @activity = create(:project_activity)
-    @report = create(
-      :report,
-      organisation: @activity.organisation,
-      fund: @activity.associated_fund
-    )
     @user = create(:beis_user)
+    @activity = create(:project_activity)
+    @report = create(:report, organisation: @activity.organisation, fund: @activity.associated_fund)
 
     valid_data = <<~CSV
       RODA identifier,Financial quarter,Financial year,Value
@@ -236,7 +232,10 @@ RSpec.describe Import::ActualHistory do
 
       it "has a helpful error message" do
         subject.call
-        expect(subject.errors.first.message).to include("Unknown RODA identifier")
+        expect(subject.errors.first.message).to include("No activity with this RODA identifier could be found")
+        expect(subject.errors.first.column).to eq("RODA identifier")
+        expect(subject.errors.first.row_number).to eq(2)
+        expect(subject.errors.first.value).to eq("NOT-A-RODA-ID")
       end
     end
 

@@ -921,6 +921,8 @@
 ## [unreleased]
 - Actual spend values can no longer be negative, use Adjustments or Refunds to
   document funding flowing back
+- BEIS users can upload 'actual history' – historic actual spend, this is a
+  short term feature to facilitate migration to the application
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-88...HEAD
 [release-88]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-87...release-88
