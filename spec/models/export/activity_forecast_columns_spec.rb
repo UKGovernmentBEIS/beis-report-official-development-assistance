@@ -228,6 +228,18 @@ RSpec.describe Export::ActivityForecastColumns do
           expect(activity_value).to eq BigDecimal(10_000)
           expect(first_column_of_forecasts.count).to eq 5
         end
+
+        context "when there is no value for that report quarter" do
+          let(:report) { create(:report, financial_quarter: 1, financial_year: 2022) }
+
+          it "returns zero and not nil" do
+            first_column_of_forecasts = subject.rows_for_first_financial_quarter
+            activity_value = first_column_of_forecasts.fetch(@activity.id)
+
+            expect(activity_value).to eq 0
+            expect(activity_value).not_to be_nil
+          end
+        end
       end
     end
   end

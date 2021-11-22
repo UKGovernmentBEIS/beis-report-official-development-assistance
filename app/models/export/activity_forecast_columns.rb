@@ -26,7 +26,7 @@ class Export::ActivityForecastColumns
   end
 
   def rows_for_first_financial_quarter
-    rows.each_with_object({}) { |(key, values), rows| rows[key] = values.first }
+    rows.each_with_object({}) { |(key, values), rows| rows[key] = values.first || 0 }
   end
 
   private
