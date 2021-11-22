@@ -1,10 +1,3 @@
-# Use the cloudfoundry provider
-# install from https://github.com/cloudfoundry-community/terraform-provider-cf/wiki
-# CF_PASSWORD and CF_USER need to be set as environment variables
-provider "cloudfoundry" {
-  api_url = "https://api.london.cloud.service.gov.uk"
-}
-
 # Create and use a S3 bucket in the terraform space of the BEIS org to store state
 # cf create-space terraform
 # cf target -s terraform
@@ -20,5 +13,16 @@ terraform {
     key    = "terraform"
     region = "eu-west-2"
   }
+  required_providers {
+    cloudfoundry = {
+      source  = "cloudfoundry-community/cloudfoundry"
+      version = "0.15.0"
+    }
+  }
 }
 
+# Use the cloudfoundry provider
+# CF_PASSWORD and CF_USER need to be set as environment variables
+provider "cloudfoundry" {
+  api_url = "https://api.london.cloud.service.gov.uk"
+}

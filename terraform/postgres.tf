@@ -19,4 +19,6 @@ resource "cloudfoundry_service_instance" "beis-roda-postgres" {
     delete = "2h"
     update = "2h"
   }
+  replace_on_params_change       = false
+  replace_on_service_plan_change = false
 }
