@@ -95,7 +95,7 @@ RSpec.describe Export::ActivityActualsColumns do
         end
 
         it "does not contain headers for the financial quarters after the report" do
-          expect(subject.headers).not_to include("Actual net FQ4 2020-201")
+          expect(subject.headers).not_to include("Actual net FQ4 2020-2021")
         end
       end
 
