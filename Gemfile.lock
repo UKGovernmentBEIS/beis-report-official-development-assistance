@@ -158,7 +158,7 @@ GEM
     foreman (0.87.2)
     globalid (0.5.2)
       activesupport (>= 5.0)
-    govuk_design_system_formbuilder (2.7.5)
+    govuk_design_system_formbuilder (2.7.6)
       actionview (>= 6.0)
       activemodel (>= 6.0)
       activesupport (>= 6.0)
@@ -198,7 +198,7 @@ GEM
       terminal-table (>= 1.5.1)
     ipaddr (1.2.3)
     jaro_winkler (1.5.4)
-    jbuilder (2.11.2)
+    jbuilder (2.11.3)
       activesupport (>= 5.0.0)
     json (2.5.1)
     jwt (2.3.0)
@@ -454,7 +454,7 @@ GEM
     unf_ext (0.0.8)
     unicode-display_width (1.6.1)
     uniform_notifier (1.14.2)
-    web-console (4.1.0)
+    web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
@@ -499,7 +499,7 @@ DEPENDENCIES
   faker
   fakeredis
   foreman
-  govuk_design_system_formbuilder (~> 2.7.5)
+  govuk_design_system_formbuilder (~> 2.7.6)
   haml-rails
   high_voltage
   html2haml

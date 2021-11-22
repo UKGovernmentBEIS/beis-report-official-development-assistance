@@ -87,7 +87,7 @@ RSpec.feature "Users can create an actual" do
         expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.other_than")
       end
 
-      scenario "Value can be negative" do
+      scenario "Value cannot be negative" do
         activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
         visit organisation_activity_path(activity.organisation, activity)
@@ -101,7 +101,7 @@ RSpec.feature "Users can create an actual" do
         select "Government", from: "actual[receiving_organisation_type]"
         click_on(t("default.button.submit"))
 
-        expect(page).to have_content t("action.actual.create.success")
+        expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.greater_than")
       end
 
       scenario "When the value includes a pound sign" do

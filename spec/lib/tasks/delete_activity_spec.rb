@@ -145,5 +145,13 @@ RSpec.describe "rake activities:delete", type: :task do
 
       expect { delete_activity(activity_id: activity.id) }.to change { Activity.count }.by(-2)
     end
+
+    it "deletes the descendant activities" do
+      programme = create(:programme_activity)
+      activity = create(:project_activity, parent: programme)
+      create(:third_party_project_activity, parent: activity)
+
+      expect { delete_activity(activity_id: programme.id) }.to change { Activity.count }.by(-3)
+    end
   end
 end

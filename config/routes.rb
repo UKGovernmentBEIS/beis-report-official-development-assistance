@@ -68,6 +68,9 @@ Rails.application.routes.draw do
       get "budgets" => "report_budgets#show"
       get "activities" => "report_activities#show"
       get "comments" => "report_comments#show"
+      namespace :uploads do
+        resource :actual_history, only: [:new, :update]
+      end
     end
 
     concern :transactionable do

@@ -276,7 +276,7 @@ RSpec.describe ActivityPresenter do
       it "handles unexpected country codes" do
         activity = build(:project_activity, benefitting_countries: ["UK"])
         result = described_class.new(activity).benefitting_countries
-        expect(result).to eql t("page_content.activity.unknown_country")
+        expect(result).to eql t("page_content.activity.unknown_country", code: "UK")
       end
     end
   end
@@ -333,7 +333,7 @@ RSpec.describe ActivityPresenter do
       it "handles unexpected country codes" do
         activity = build(:project_activity, benefitting_countries: ["UK"])
         result = described_class.new(activity).benefitting_countries
-        expect(result).to eql t("page_content.activity.unknown_country")
+        expect(result).to eql t("page_content.activity.unknown_country", code: "UK")
       end
     end
 
@@ -359,7 +359,7 @@ RSpec.describe ActivityPresenter do
       it "handles unexpected country codes" do
         activity = build(:project_activity, benefitting_countries: ["UK"])
         result = described_class.new(activity).benefitting_countries
-        expect(result).to eql t("page_content.activity.unknown_country")
+        expect(result).to eql t("page_content.activity.unknown_country", code: "UK")
       end
     end
   end

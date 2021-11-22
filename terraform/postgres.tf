@@ -12,11 +12,13 @@ data "cloudfoundry_service" "postgres" {
 resource "cloudfoundry_service_instance" "beis-roda-postgres" {
   name         = "beis-roda-${var.environment}-postgres"
   space        = cloudfoundry_space.space.id
-  service_plan = data.cloudfoundry_service.postgres.service_plans["small-ha-11"]
+  service_plan = data.cloudfoundry_service.postgres.service_plans["small-ha-13"]
   json_params  = "{\"enable_extensions\": [\"pgcrypto\",\"plpgsql\"]}"
   timeouts {
     create = "2h"
     delete = "2h"
     update = "2h"
   }
+  replace_on_params_change       = false
+  replace_on_service_plan_change = false
 }

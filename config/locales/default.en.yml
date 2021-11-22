@@ -35,6 +35,11 @@ en:
         action: Action
         actions: Actions
   activerecord:
+    attributes:
+      default:
+        financial_quarter: Financial quarter
+        financial_year: Financial year
+        value: Value
     errors:
       format: "%{attribute} %{message}"
       messages:

@@ -1,0 +1,8 @@
+%h3.govuk-heading-m
+  = t("page_title.uploads.actual_histories")
+
+= t("page_content.uploads.actual_histories.actuals_tab.body_html")
+
+.govuk-button-group
+  = link_to t("actions.uploads.actual_histories.new_upload"), new_report_uploads_actual_history_path(@report_presenter), class: "govuk-button govuk-button"
+

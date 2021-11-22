@@ -122,6 +122,7 @@ en:
               other_than: Value must not be zero
               blank: Enter an actual spend amount
               not_a_number: Value must be a valid number
+              greater_than: Value cannot be negative
             transaction_type:
               blank: Select a transaction type
             description:
