@@ -934,6 +934,7 @@
 - Fix deployment notification
 
 ## [unreleased]
+- Health check endpoint includes basic sidekiq stats
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-90...HEAD
 [release-90]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...release-90
