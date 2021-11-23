@@ -2,7 +2,7 @@
   - if current_user.service_owner?
     .govuk-summary-list__row
       %dt.govuk-summary-list__key
-        = t("summary.label.activity.delivery_partner_organisation")
+        = t("activerecord.attributes.activity.delivery_partner_organisation")
       %dd.govuk-summary-list__value
         = activity_presenter.extending_organisation.name
 
@@ -14,18 +14,18 @@
 
   .govuk-summary-list__row.programme_status
     %dt.govuk-summary-list__key
-      = t("summary.label.activity.programme_status")
+      = t("activerecord.attributes.activity.programme_status")
     %dd.govuk-summary-list__value
       = activity_presenter.programme_status
 
   .govuk-summary-list__row.roda_identifier
     %dt.govuk-summary-list__key
-      = t("summary.label.activity.roda_identifier")
+      = t("activerecord.attributes.activity.roda_identifier")
     %dd.govuk-summary-list__value
       = activity_presenter.roda_identifier
 
   .govuk-summary-list__row.identifier
     %dt.govuk-summary-list__key
-      = t("summary.label.activity.delivery_partner_identifier")
+      = t("activerecord.attributes.activity.delivery_partner_identifier")
     %dd.govuk-summary-list__value
       = activity_presenter.delivery_partner_identifier
