@@ -9,9 +9,9 @@ RSpec.describe Import::ActualHistory do
 
     valid_data = <<~CSV
       RODA identifier,Financial quarter,Financial year,Value
+      #{@activity.roda_identifier},3,2020,20000
+      #{@activity.roda_identifier},4,2020,30000
       #{@activity.roda_identifier},1,2021,10000
-      #{@activity.roda_identifier},2,2021,20000
-      #{@activity.roda_identifier},3,2021,30000
     CSV
 
     invalid_data = <<~CSV
@@ -267,6 +267,42 @@ RSpec.describe Import::ActualHistory do
         subject.call
         expect(subject.errors.first.message)
           .to include("does not match the fund and organisation of this report")
+      end
+    end
+
+    context "when the financial quarter is not in the past" do
+      let(:current_financial_quarter) { FinancialQuarter.for_date(Date.today) }
+      let(:row) {
+        CSV::Row.new(
+          ["RODA identifier", "Financial quarter", "Financial year", "Value"],
+          [
+            @activity.roda_identifier,
+            current_financial_quarter.quarter.to_s,
+            current_financial_quarter.financial_year.start_year.to_s,
+            "100000",
+          ]
+        )
+      }
+
+      subject { described_class.new(report: @report, row_number: 2, row: row) }
+
+      it "returns false" do
+        expect(subject.call).to be false
+      end
+
+      it "returns errors" do
+        subject.call
+        expect(subject.errors.count).to eq 1
+      end
+
+      it "does not create the actual" do
+        expect(subject.actual).to be_nil
+      end
+
+      it "has a helpful error message" do
+        subject.call
+        expect(subject.errors.first.message)
+          .to include("actual spend must be in or before")
       end
     end
   end

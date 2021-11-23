@@ -14,9 +14,9 @@ en:
           body_html:
             <p class="govuk-body">Actual data history differs from regular reporting data in the following ways:</p>
             <ul class="govuk-list govuk-list--bullet">
+              <li>Historic actuals must be in a past financial quarter</li>
               <li>Historic actuals can be negative</li>
-              <li>Historic actuals can be from the current or any past financial quarter</li>
-              </ul>
+            </ul>
           warning_html:
             <div class="govuk-inset-text">
               Uploading actual history data will append to any values already provided in this report.
