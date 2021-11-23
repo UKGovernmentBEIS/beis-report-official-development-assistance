@@ -927,9 +927,16 @@
 - Update terrafom to version 1.0.11
 - Update postgres to version 13
 
-## [unreleased]
+## [release-90] 2021-11-23
+- Uploaded actual history must be in past financial quarters
+- Activity summary view uses BEIS approved attribute names
+- Channel of delivery code 90000, 'Other' added to the accepted codes list
+- Fix deployment notification
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-90...HEAD
+[release-90]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...release-90
 [release-89]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-88...release-89
 [release-88]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-87...release-88
 [release-87]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-86...release-87

@@ -102,6 +102,11 @@ class Import::ActualHistory
         return false
       end
 
+      unless financial_quarter_valid?
+        @errors << financial_quarter_error
+        return false
+      end
+
       create_actual
     end
 
@@ -170,6 +175,27 @@ class Import::ActualHistory
         row_number: row_number,
         value: roda_identifier,
         message: "No activity with this RODA identifier could be found"
+      )
+    end
+
+    def financial_quarter_valid?
+      row_financial_quarter < latest_valid_financial_quarter
+    end
+
+    def latest_valid_financial_quarter
+      FinancialQuarter.for_date(Date.today).pred
+    end
+
+    def row_financial_quarter
+      FinancialQuarter.new(FinancialYear.new(financial_year.to_i), financial_quarter.to_i)
+    end
+
+    def financial_quarter_error
+      Import::RowError.new(
+        column: VALID_HEADERS[:roda_identifier],
+        row_number: row_number,
+        value: roda_identifier,
+        message: "The actual spend must be in or before #{latest_valid_financial_quarter}"
       )
     end
 

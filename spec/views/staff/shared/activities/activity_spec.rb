@@ -89,7 +89,7 @@ RSpec.describe "staff/shared/activities/_activity" do
       let(:activity) { build(:fund_activity, organisation: user.organisation) }
 
       it "does not show the parent field" do
-        expect(rendered).not_to have_content(t("summary.label.activity.parent"))
+        expect(rendered).not_to have_content(t("activerecord.attributes.activity.parent"))
       end
 
       context "when a title attribute is present" do
@@ -124,7 +124,7 @@ RSpec.describe "staff/shared/activities/_activity" do
     let(:activity) { build(:programme_activity) }
 
     it "does not show the Channel of delivery code field" do
-      expect(rendered).to_not have_content(t("summary.label.activity.channel_of_delivery_code"))
+      expect(rendered).to_not have_content(t("activerecord.attributes.activity.channel_of_delivery_code"))
     end
 
     it { is_expected.to_not show_the_edit_add_actions }
@@ -303,7 +303,7 @@ RSpec.describe "staff/shared/activities/_activity" do
         expect(rendered).to have_content activity_presenter.policy_marker_nutrition
       end
 
-      expect(rendered).to have_content t("summary.label.activity.channel_of_delivery_code")
+      expect(rendered).to have_content t("activerecord.attributes.activity.channel_of_delivery_code")
       expect(rendered).to have_content activity_presenter.channel_of_delivery_code
 
       expect(rendered).to have_content activity_presenter.oda_eligibility_lead

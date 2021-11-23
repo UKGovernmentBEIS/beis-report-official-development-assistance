@@ -222,73 +222,27 @@ en:
   summary:
     label:
       activity:
-        actual_end_date: Actual end date
-        actual_start_date: Actual start date
-        aid_type: Aid type
-        benefitting_countries: Benefitting countries
-        benefitting_region: Benefitting region
         budgets: Budgets
         button:
           create: Add activity
         call_present: Calls
-        call_open_date: Call open date
-        call_close_date: Call close date
-        channel_of_delivery_code: Channel of delivery code
-        collaboration_type: Collaboration type
-        country_delivery_partners: Country delivery partners
-        covid19_related: Is this activity related to Covid-19?
-        description: Description
         form_state:
           complete: Complete
           incomplete: Incomplete
         fstc_applies:
-          label: Free-Standing Technical Cooperation applies?
           "false": "No"
           "true": "Yes"
-        gcrf_strategic_area: GCRF strategic area
-        gcrf_challenge_area: GCRF challenge area
-        fund_pillar: Fund pillar
-        gdi: GDI
-        geography: Benefitting recipient geography
-        delivery_partner_identifier: Delivery partner identifier
-        delivery_partner_organisation: Delivery partner organisation
         intended_beneficiaries_html: 'Intended beneficiaries</br><span class="govuk-body-s">Legacy field: not editable</span>'
-        objectives: Aims/Objectives
-        oda_eligibility: ODA eligibility
-        oda_eligibility_lead: ODA eligibility lead
-        roda_identifier: RODA identifier
-        level: Level
-        organisation: Organisation
-        parent: Parent activity
         forecasts: Forecasted spend
-        planned_end_date: Planned end date
-        planned_start_date: Planned start date
-        policy_marker_gender: Gender
-        policy_marker_climate_change_adaptation: Climate change - Adaptation
-        policy_marker_climate_change_mitigation: Climate change - Mitigation
-        policy_marker_biodiversity: Biodiversity
-        policy_marker_desertification: Desertification
-        policy_marker_disability: Disability
-        policy_marker_disaster_risk_reduction: Disaster Risk Reduction
-        policy_marker_nutrition: Nutrition Policy
-        programme_status: Activity status
         projects: Projects (level C)
         recipient_country_html: 'Recipient country</br><span class="govuk-body-s">Legacy field: not editable</span>'
         recipient_region_html: 'Recipient region</br><span class="govuk-body-s">Legacy field: not editable</span>'
-        sustainable_development_goals: Sustainable Development Goals
-        sector: Economic/societal area
-        sector_category: Focus area category
         stage: Stage
         third_party_projects: Third-party projects (level D)
-        title: "%{level} name"
         publish_to_iati:
           label: Publish to IATI?
           "false": "No"
           "true": "Yes"
-        total_applications: Total applications
-        total_awards: Total awards
-        transparency_identifier: "Transparency identifier"
-        uk_dp_named_contact: UK delivery partner named contact for this activity
   table:
     caption:
       activity:
@@ -454,6 +408,7 @@ en:
         sdg_1: Sustainable Development Goal 1
         sdg_2: Sustainable Development Goal 2
         sdg_3: Sustainable Development Goal 3
+        sustainable_development_goals: Sustainable Development Goals
         title: Activity title
         description: Activity description
         objectives: Aims or objectives
@@ -472,11 +427,14 @@ en:
         total_applications: Total applications
         total_awards: Total awards
         sector_with_code: Sector
+        sector: Sector
+        sector_category: Sector category
         channel_of_delivery_code: Channel of delivery code
         flow: Flow
         finance: Finance type
         aid_type: Aid type
         collaboration_type: Collaboration type
+        channel_of_delivery_code: Channel of delivery code
         policy_marker_gender: Gender - policy marker
         policy_marker_climate_change_adaptation: Climate Change - Adaptation policy marker
         policy_marker_climate_change_mitigation: Climate Change - Mitigation policy marker
@@ -492,7 +450,8 @@ en:
         source_fund_code: Fund code
         call_present: Call present?
         transparency_identifier: IATI identifier
-        parent_id: Parent identifier
+        parent_id: Parent activity identifier
+        parent: Parent activity
         publish_to_iati: Include in IATI XML export?
         sector_category: Sector category
         previous_identifier: Previous IATI identifier
@@ -501,6 +460,8 @@ en:
         sector: Sector
         organisation_id: Organisation identifier
         tied_status: Tied status
+        organisation: Organisation
+        delivery_partner_organisation: Delivery partner organisation
     errors:
       models:
         activity:
