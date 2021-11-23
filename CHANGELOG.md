@@ -928,6 +928,7 @@
 - Update postgres to version 13
 
 ## [unreleased]
+- Uploaded actual history must be in past financial quarters
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...HEAD
 [release-89]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-88...release-89
