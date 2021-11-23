@@ -15,5 +15,5 @@ done
 
 echo "Sending Slack notification!"
 
-curl -s -X POST --data-urlencode "payload={\"text\": \"@here :badgerbadger: The latest release of RODA has been deployed to production :badgerbadger:\"}" "$SLACK_WEBHOOK_URL"
+curl -s -X POST --data-urlencode "payload={\"text\": \"<!here> :badgerbadger: The latest release of RODA has been deployed to production :badgerbadger:\"}" "$SLACK_WEBHOOK_URL"
 
