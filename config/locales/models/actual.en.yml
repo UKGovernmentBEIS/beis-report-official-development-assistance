@@ -92,6 +92,8 @@ en:
           <li>Upload and verify the data here</li>
           </ol>
           <p class="govuk-body">For more detailed guidance on uploading actuals data, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload">guidance in the help centre (opens in new tab)</a></p>
+        warning_html:
+          <div class="govuk-warning-text"><span class="govuk-warning-text__icon" aria-hidden="true">!</span><strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>Uploading actuals data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details.</strong></div>
   page_title:
     actual:
       edit: Edit actual spend
