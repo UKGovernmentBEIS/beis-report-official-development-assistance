@@ -4,6 +4,8 @@ class Organisation < ApplicationRecord
   strip_attributes only: [:iati_reference]
   has_many :users
   has_many :funds
+  has_many :org_participations, -> { where(role: "implementing").distinct }
+  has_many :activities, through: :org_participations
 
   enum role: {
     delivery_partner: 0,
