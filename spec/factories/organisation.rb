@@ -23,6 +23,12 @@ FactoryBot.define do
       role { "external_income_provider" }
     end
 
+    factory :participating_organisation do
+      name { "UKRI" }
+      role { nil }
+      alternate_names { ["UK Research and Innovation", "UK Research & Innovation"] }
+    end
+
     factory :beis_organisation do
       name { "Department for Business, Energy and Industrial Strategy" }
       iati_reference { Organisation::SERVICE_OWNER_IATI_REFERENCE }

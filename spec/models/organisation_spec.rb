@@ -77,6 +77,31 @@ RSpec.describe Organisation, type: :model do
     end
   end
 
+  describe "::find_matching" do
+    let!(:canonical) do
+      create(
+        :participating_organisation,
+        name: "canonical",
+        alternate_names: ["uncanonical", "non_canonical"]
+      )
+    end
+
+    it "finds the canonical record when the search term matches the name" do
+      expect(Organisation.find_matching("canonical"))
+        .to eq(canonical)
+    end
+
+    it "finds the canonical record when the search term matches any legacy name" do
+      aggregate_failures do
+        expect(Organisation.find_matching("uncanonical"))
+          .to eq(canonical)
+
+        expect(Organisation.find_matching("non_canonical"))
+          .to eq(canonical)
+      end
+    end
+  end
+
   describe "#beis_organisation_reference" do
     it "makes the organisation valid if it is between 2 and 5 characters long" do
       organisation = build(:delivery_partner_organisation, beis_organisation_reference: "ABCD")
@@ -113,6 +138,37 @@ RSpec.describe Organisation, type: :model do
 
   describe "associations" do
     it { should have_many(:users) }
+
+    let(:organisation) { create(:participating_organisation) }
+
+    let(:implemented_activity) { create(:programme_activity) }
+    let(:other_activity) { create(:programme_activity) }
+
+    let!(:implementing_participation) do
+      OrgParticipation.create(
+        activity: implemented_activity,
+        organisation: organisation,
+        role: "implementing"
+      )
+    end
+
+    let!(:other_participation) do
+      OrgParticipation.create(
+        activity: other_activity,
+        organisation: organisation,
+        role: "delivery_partner"
+      )
+    end
+
+    it "associates with org_participations with the 'Implementing' role only" do
+      expect(organisation.org_participations).to include(implementing_participation)
+      expect(organisation.org_participations).not_to include(other_participation)
+    end
+
+    it "associates with activities through the 'Implementing' role only" do
+      expect(organisation.activities).to include(implemented_activity)
+      expect(organisation.activities).not_to include(other_activity)
+    end
   end
 
   describe "service_owner?" do
