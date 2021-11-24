@@ -77,6 +77,31 @@ RSpec.describe Organisation, type: :model do
     end
   end
 
+  describe "::find_matching" do
+    let!(:canonical) do
+      create(
+        :participating_organisation,
+        name: "canonical",
+        alternate_names: ["uncanonical", "non_canonical"]
+      )
+    end
+
+    it "finds the canonical record when the search term matches the name" do
+      expect(Organisation.find_matching("canonical"))
+        .to eq(canonical)
+    end
+
+    it "finds the canonical record when the search term matches any legacy name" do
+      aggregate_failures do
+        expect(Organisation.find_matching("uncanonical"))
+          .to eq(canonical)
+
+        expect(Organisation.find_matching("non_canonical"))
+          .to eq(canonical)
+      end
+    end
+  end
+
   describe "#beis_organisation_reference" do
     it "makes the organisation valid if it is between 2 and 5 characters long" do
       organisation = build(:delivery_partner_organisation, beis_organisation_reference: "ABCD")

@@ -36,6 +36,16 @@ class Organisation < ApplicationRecord
 
   before_validation :ensure_beis_organisation_reference_is_uppercase
 
+  def self.find_matching(name)
+    where(name: name.strip)
+      .or(where(
+        Organisation
+        .arel_table[:alternate_names]
+        .contains([name])
+      ))
+      .first
+  end
+
   def ensure_beis_organisation_reference_is_uppercase
     return unless beis_organisation_reference
 
