@@ -232,6 +232,26 @@ RSpec.describe Export::ActivityActualsColumns do
     end
   end
 
+  context "when there are activities and NONE have spend, refunds or adjustments" do
+    it "retruns empty arrays for rows and headers" do
+      activity = create(:project_activity)
+      subject = described_class.new(activities: [activity])
+
+      expect(subject.rows.fetch(activity.id)).to eq []
+      expect(subject.rows.count).to eq 1
+      expect(subject.headers).to eq []
+    end
+
+    describe "#last_financial_quarter" do
+      it "returns nil" do
+        activity = create(:project_activity)
+        subject = described_class.new(activities: [activity])
+
+        expect(subject.last_financial_quarter).to be_nil
+      end
+    end
+  end
+
   context "when #rows is called multiple times" do
     let(:breakdown) { false }
     let(:report) { nil }
