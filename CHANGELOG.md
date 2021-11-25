@@ -935,6 +935,7 @@
 
 ## [unreleased]
 - Health check endpoint includes basic sidekiq stats
+- Show users a warning about appending data when uploading actuals data
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-90...HEAD
 [release-90]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...release-90

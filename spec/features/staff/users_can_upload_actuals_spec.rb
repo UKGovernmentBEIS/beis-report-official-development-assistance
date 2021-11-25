@@ -36,6 +36,8 @@ RSpec.feature "users can upload actuals" do
 
     expect(page.html).to include t("page_content.actuals.upload.copy_html",
       report_actuals_template_path: report_actual_upload_path(report, format: :csv))
+
+    expect(page.html).to include t("page_content.actuals.upload.warning_html")
   end
 
   scenario "downloading a CSV template with activities for the current report" do
