@@ -7,6 +7,7 @@ class Export::ActivityActualsColumns
 
   def headers
     return [] if @activities.empty?
+    return [] if financial_quarter_range.nil?
 
     financial_quarter_range.map { |financial_quarter|
       if @include_breakdown
@@ -23,12 +24,15 @@ class Export::ActivityActualsColumns
 
   def rows
     return [] if @activities.empty?
+    return activities_with_no_data if financial_quarter_range.nil?
+
     @_rows ||= @activities.map { |activity|
       actual_and_refund_data(activity)
     }.to_h
   end
 
   def last_financial_quarter
+    return nil if financial_quarter_range.nil?
     financial_quarter_range.max
   end
 
@@ -37,6 +41,12 @@ class Export::ActivityActualsColumns
   end
 
   private
+
+  def activities_with_no_data
+    @_rows ||= @activities.map { |activity|
+      [activity.id, []]
+    }.to_h
+  end
 
   def actual_and_refund_data(activity)
     build_columns(all_totals_for_activity(activity), activity)
@@ -98,6 +108,7 @@ class Export::ActivityActualsColumns
   end
 
   def financial_quarter_range
+    return nil if financial_quarters.empty?
     @_financial_quarter_range ||= Range.new(*financial_quarters.minmax)
   end
 end
