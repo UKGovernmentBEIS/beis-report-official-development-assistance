@@ -24,7 +24,6 @@ FactoryBot.define do
     end
 
     factory :implementing_organisation do
-      name { "UKRI" }
       role { nil }
       organisation_type { %w[15 21 24 71 80 90].sample }
       alternate_names { ["UK Research and Innovation", "UK Research & Innovation"] }
