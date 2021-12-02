@@ -5,8 +5,15 @@ class Organisation < ApplicationRecord
   has_many :users
   has_many :funds
   has_many :reports
-  has_many :org_participations, -> { where(role: "implementing").distinct }
+  has_many :org_participations
+  has_many :implementing_org_participations,
+    -> { merge(OrgParticipation.implementing).distinct },
+    class_name: "OrgParticipation"
   has_many :activities, through: :org_participations
+  has_many :implemented_activities,
+    through: :implementing_org_participations,
+    class_name: "Activity",
+    source: :activity
 
   enum role: {
     delivery_partner: 0,
