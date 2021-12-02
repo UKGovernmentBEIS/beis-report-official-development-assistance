@@ -125,7 +125,8 @@ class Activity < ApplicationRecord
   belongs_to :organisation
   belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
   has_many :implementing_org_participations,
-    -> { where("org_participations.role" => "implementing") },
+    -> { merge(OrgParticipation.implementing) },
+    ### ^ this is messing up the use of << on new
     class_name: "OrgParticipation",
     dependent: :destroy
   has_many :implementing_organisations,
@@ -227,10 +228,10 @@ class Activity < ApplicationRecord
 
     new(attributes, &block).tap do |new_activity|
       if new_activity.programme?
-        new_activity.implementing_organisations << ImplementingOrganisation.new(
-          name: delivery_partner_organisation.name,
-          reference: delivery_partner_organisation.iati_reference,
-          organisation_type: delivery_partner_organisation.organisation_type
+        new_activity.implementing_org_participations << OrgParticipation.new(
+          organisation: delivery_partner_organisation,
+          role: "implementing",
+          activity: new_activity
         )
       end
     end
