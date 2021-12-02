@@ -19,6 +19,7 @@ class Report < ApplicationRecord
   has_many :comments
 
   validate :activity_must_be_a_fund
+  validate :financial_quarter_is_not_in_the_future?, on: :new
   validate :no_unapproved_reports_per_series, on: :new
   validates :deadline, date_not_in_past: true, date_within_boundaries: true, on: :edit
 
@@ -113,5 +114,14 @@ class Report < ApplicationRecord
 
   def summed_forecasts_for_reportable_activities
     forecasts_for_reportable_activities.sum(&:value)
+  end
+
+  def financial_quarter_is_not_in_the_future?
+    return false unless financial_quarter && financial_year
+
+    current_period = FinancialQuarter.for_date(Date.current)
+    unless financial_period.last <= current_period.end_date
+      errors.add(:financial_period, "Financial period must be no later than the current period.")
+    end
   end
 end
