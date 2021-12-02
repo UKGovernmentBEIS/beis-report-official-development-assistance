@@ -116,15 +116,17 @@ module Activities
           @activity.sdgs_apply = true
         end
 
-        if row["Implementing organisation name"].present? || row["Implementing organisation sector"].present?
+        if row["Implementing organisation name"].present?
           implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
           implementing_organisation = implementing_organisation_builder.organisation
 
-          if implementing_organisation.valid?
+          if implementing_organisation.present?
             @activity.implementing_organisations = [implementing_organisation]
           else
             implementing_organisation_builder.add_errors(@errors)
           end
+        else
+          @activity.implementing_organisations = []
         end
 
         changes = @activity.changes
@@ -196,9 +198,9 @@ module Activities
         end
 
         implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
-        if row["Implementing organisation name"].present? || row["Implementing organisation sector"].present?
-          implementing_organisation = implementing_organisation_builder.organisation
-          @activity.implementing_organisations = [implementing_organisation]
+        if row["Implementing organisation name"].present?
+          participations = implementing_organisation_builder.participations
+          @activity.implementing_org_participations = participations
         end
 
         return if @activity.save(context: Activity::VALIDATION_STEPS)
@@ -223,8 +225,6 @@ module Activities
     class ImplementingOrganisationBuilder
       FIELDS = {
         "implementing_organisation_name" => "Implementing organisation name",
-        "implementing_organisation_reference" => "Implementing organisation reference",
-        "implementing_organisation_organisation_type" => "Implementing organisation sector",
       }.freeze
 
       attr_accessor :activity, :row
@@ -235,25 +235,18 @@ module Activities
       end
 
       def organisation
-        @organisation ||= begin
-          ImplementingOrganisation.find_or_initialize_by(
-            activity_id: activity.id
-          ) { |implementing_organisation|
-            implementing_organisation.name = row["Implementing organisation name"]
-            implementing_organisation.reference = row["Implementing organisation reference"]
-            implementing_organisation.organisation_type = row["Implementing organisation sector"]
-          }
-        end
+        @organisation = Organisation.implementing.find_matching(row["Implementing organisation name"])
+      end
+
+      def participations
+        [OrgParticipation.new(activity: activity, organisation: organisation)]
       end
 
       def add_errors(errors)
-        return if organisation.valid?
+        return if organisation.present?
 
         errors.delete(:implementing_organisations)
-
-        implementing_organisation_errors = organisation.errors.messages
-        errors["implementing_organisation_name"] = [row["Implementing organisation name"], implementing_organisation_errors[:name].first] if implementing_organisation_errors[:name].any?
-        errors["implementing_organisation_organisation_type"] = [row["Implementing organisation sector"], implementing_organisation_errors[:organisation_type].first] if implementing_organisation_errors[:organisation_type].any?
+        errors["implementing_organisation_name"] = [row["Implementing organisation name"], "is not a known implementing organisation"]
         errors
       end
     end
