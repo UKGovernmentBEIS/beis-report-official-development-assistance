@@ -160,9 +160,7 @@ RSpec.feature "users can upload activities" do
 
   scenario "updating an existing activity" do
     activity_to_update = create(:project_activity, :gcrf_funded, organisation: organisation) { |activity|
-      activity.implementing_organisations = [
-        create(:implementing_organisation, activity: activity),
-      ]
+      activity.implementing_organisations = [create(:implementing_organisation)]
     }
     create(:report, :active, fund: activity_to_update.associated_fund, organisation: organisation)
 
@@ -199,9 +197,7 @@ RSpec.feature "users can upload activities" do
 
   scenario "attempting to change the delivery partner identifier of an existing activity" do
     activity_to_update = create(:project_activity, :gcrf_funded, organisation: organisation) { |activity|
-      activity.implementing_organisations = [
-        create(:implementing_organisation, activity: activity),
-      ]
+      activity.implementing_organisations = [create(:implementing_organisation)]
     }
     create(:report, :active, fund: activity_to_update.associated_fund, organisation: organisation)
 

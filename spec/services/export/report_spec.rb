@@ -18,9 +18,10 @@ RSpec.describe Export::Report do
     @third_party_project =
       create(
         :third_party_project_activity,
-        parent: @project,
-        implementing_organisations: [@implementing_organisation]
-      )
+        parent: @project
+      ).tap do |project|
+        project.implementing_organisations << @implementing_organisation
+      end
 
     @actual_spend =
       create(

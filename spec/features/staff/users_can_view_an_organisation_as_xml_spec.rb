@@ -7,9 +7,9 @@ RSpec.feature "Users can view an organisation as XML" do
 
     context "when the user is viewing an organisation's export page" do
       context "when the organisation has projects" do
-        let!(:gcrf_project) { create(:project_activity, :gcrf_funded, organisation: organisation, extending_organisation: organisation) }
-        let!(:newton_project) { create(:project_activity, :newton_funded, organisation: organisation, extending_organisation: organisation) }
-        let!(:redacted_newton_project) { create(:project_activity, :newton_funded, organisation: organisation, extending_organisation: organisation, publish_to_iati: false) }
+        let!(:gcrf_project) { create(:project_activity_with_implementing_organisations, :gcrf_funded, organisation: organisation, extending_organisation: organisation) }
+        let!(:newton_project) { create(:project_activity_with_implementing_organisations, :newton_funded, organisation: organisation, extending_organisation: organisation) }
+        let!(:redacted_newton_project) { create(:project_activity_with_implementing_organisations, :newton_funded, organisation: organisation, extending_organisation: organisation, publish_to_iati: false) }
 
         scenario "they can download the projects as xml" do
           visit exports_organisation_path(organisation)
@@ -45,7 +45,7 @@ RSpec.feature "Users can view an organisation as XML" do
       end
 
       scenario "the XML file contains budgets and actuals for activities in the organisation" do
-        project = create(:project_activity, :newton_funded, organisation: organisation, extending_organisation: organisation)
+        project = create(:project_activity_with_implementing_organisations, :newton_funded, organisation: organisation, extending_organisation: organisation)
         _budget = create(:budget, parent_activity: project, value: 2000)
         _actual = create(:actual, parent_activity: project, value: 100)
 
@@ -62,7 +62,7 @@ RSpec.feature "Users can view an organisation as XML" do
       end
 
       scenario "the XML file does not contain incomplete activities" do
-        _complete_project = create(:project_activity, :newton_funded, organisation: organisation, extending_organisation: organisation)
+        _complete_project = create(:project_activity_with_implementing_organisations, :newton_funded, organisation: organisation, extending_organisation: organisation)
         _project = create(:project_activity, :newton_funded, :at_purpose_step, organisation: organisation, extending_organisation: organisation)
 
         visit exports_organisation_path(organisation)
@@ -141,7 +141,7 @@ RSpec.feature "Users can view an organisation as XML" do
 
       context "when downloading project level activities" do
         it "includes all actuals for those projects only" do
-          project = create(:project_activity, :gcrf_funded, :with_transparency_identifier, organisation: organisation, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
+          project = create(:project_activity_with_implementing_organisations, :gcrf_funded, :with_transparency_identifier, organisation: organisation, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
           other_project = create(:project_activity, :gcrf_funded, parent: project.parent, organisation: organisation, extending_organisation: organisation)
 
           third_party_project = create(:third_party_project_activity, :gcrf_funded, parent: project)
