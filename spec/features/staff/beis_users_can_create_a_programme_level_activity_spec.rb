@@ -126,7 +126,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     expect(activity.implementing_organisations.first)
       .to have_attributes(
         "name" => organisation.name,
-        "reference" => organisation.iati_reference,
+        "iati_reference" => organisation.iati_reference,
         "organisation_type" => organisation.organisation_type
       )
   end

@@ -10,7 +10,7 @@ RSpec.describe Export::Report do
     @implementing_organisation =
       ImplementingOrganisation.create(
         name: "The name of the organisation that implements the activity",
-        reference: "IMP-002",
+        iati_reference: "IMP-002",
         organisation_type: "10"
       )
 
