@@ -124,12 +124,11 @@ class Activity < ApplicationRecord
   belongs_to :originating_report, class_name: "Report", optional: true
   belongs_to :organisation
   belongs_to :extending_organisation, foreign_key: "extending_organisation_id", class_name: "Organisation", optional: true
-  has_many :implementing_organisations, dependent: :destroy
-  validates_associated :implementing_organisations
   has_many :implementing_org_participations,
-    -> { where("org_participations.role = 'implementing'") },
-    class_name: "OrgParticipation"
-  has_many :unique_implementing_organisations,
+    -> { where("org_participations.role" => "implementing") },
+    class_name: "OrgParticipation",
+    dependent: :destroy
+  has_many :implementing_organisations,
     -> { distinct },
     through: :implementing_org_participations,
     source: :organisation

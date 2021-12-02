@@ -3,28 +3,16 @@ en:
   action:
     implementing_organisation:
       create:
-        success: Implementing organisation successfully created
-      update:
-        success: Implementing organisation successfully updated
-  activerecord:
-    errors:
-      models:
-        implementing_organisation:
-          attributes:
-            name:
-              blank: Implementing organisation name can't be blank
-            organisation_type:
-              blank: Implementing organisation sector can't be blank
-              inclusion: Implementing organisation sector must be included in the IATI codelist
+        success: Implementing organisation successfully added to activity
+      delete:
+        button: Remove
+        success: Implementing organisation successfully removed
+
   form:
     label:
-      implementing_organisation:
-        name: Organisation name
-        organisation_type: Organisation type
-        reference: International Aid Transparency Initiative (IATI) reference (optional)
-    hint:
-      implementing_organisation:
-        reference_html: <a href="http://org-id.guide/" target="_blank" class="govuk-link">Organisation references can be found using this service (Opens in new window)</a>
+      implementing_organisation: Choose organisation from list
+    guidance_html: Please contact the RODA team at %{link} if you need to add to this list of implementing organisations.
+
   table:
     header:
       implementing_organisation:
