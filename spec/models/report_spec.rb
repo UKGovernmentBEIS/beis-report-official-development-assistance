@@ -57,6 +57,30 @@ RSpec.describe Report, type: :model do
           end
         end
       end
+
+      describe "Ensuring that a new report does not attempt to rewrite history" do
+        let(:organisation) { create(:delivery_partner_organisation) }
+        let(:fund) { create(:fund_activity) }
+        context "where a report already exists for a period later than that of the new report" do
+          it "is not valid" do
+            create(:report, :approved, organisation: organisation, fund: fund, financial_quarter: 4, financial_year: 2018)
+            travel_to(Date.parse("01-04-2020")) do
+              new_report = build(:report, organisation: organisation, fund: fund, financial_quarter: 3, financial_year: 2018)
+              expect(new_report.valid?(:new)).to eql(false)
+            end
+          end
+        end
+        context "where a report does not exist for a period later than that of the new report" do
+          it "is valid" do
+            create(:report, :approved, organisation: organisation, fund: fund, financial_quarter: 4, financial_year: 2018)
+            travel_to(Date.parse("01-04-2020")) do
+              new_report = build(:report, organisation: organisation, fund: fund, financial_quarter: 4, financial_year: 2018)
+
+              expect(new_report.valid?(:new)).to eql(true)
+            end
+          end
+        end
+      end
     end
   end
 
