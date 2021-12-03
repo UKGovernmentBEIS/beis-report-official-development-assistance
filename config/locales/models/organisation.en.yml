@@ -34,6 +34,7 @@ en:
         beis_organisation_reference: Short name
   tabs:
     organisations:
+      implementing_organisations: Implementing organisations
       delivery_partners: Delivery partners
       matched_effort_providers: Matched effort providers
       external_income_providers: External income providers
@@ -48,6 +49,9 @@ en:
   page_content:
     organisation_details: Organisation details
     organisations:
+      implementing_organisations:
+        button:
+          create: Add implementing organisation
       delivery_partners:
         button:
           create: Add delivery partner organisation
@@ -90,6 +94,7 @@ en:
       external_income_provider:
         new: Create a new external income provider organisation
     organisations:
+      implementing_organisations: Implementing organisations
       delivery_partners: Delivery partners
       matched_effort_providers: Matched effort providers
       external_income_providers: External income providers

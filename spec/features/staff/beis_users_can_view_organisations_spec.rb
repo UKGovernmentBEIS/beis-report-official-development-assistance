@@ -66,6 +66,7 @@ RSpec.feature "BEIS users can view other organisations" do
     let!(:delivery_partner_organisations) { create_list(:delivery_partner_organisation, 3) }
     let!(:matched_effort_provider_organisations) { create_list(:matched_effort_provider, 2) }
     let!(:external_income_provider_organisations) { create_list(:external_income_provider, 2) }
+    let!(:implementing_organisations) { create_list(:implementing_organisation, 2) }
 
     before do
       authenticate!(user: user)
@@ -74,6 +75,19 @@ RSpec.feature "BEIS users can view other organisations" do
     context "when a role is provided" do
       before do
         visit organisations_path(role: role)
+      end
+
+      context "the role is 'implementing_organisations'" do
+        let(:role) { "implementing_organisations" }
+
+        scenario "lists only implementing organisations" do
+          within ".organisations" do
+            Organisation.implementing.each do |org|
+              expect(page).to have_content(org.name)
+            end
+          end
+          expect(page).to have_css(".organisation", count: Organisation.implementing.count)
+        end
       end
 
       context "the role is 'delivery_partners'" do

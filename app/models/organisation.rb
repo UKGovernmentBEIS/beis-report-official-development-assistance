@@ -57,6 +57,13 @@ class Organisation < ApplicationRecord
       .first
   end
 
+  def role
+    # temp hack whilst we figure out how to handle moving role from Org to OrgParticipation
+    return "implementing_organisation" unless read_attribute(:role)
+
+    super
+  end
+
   def ensure_beis_organisation_reference_is_uppercase
     return unless beis_organisation_reference
 
