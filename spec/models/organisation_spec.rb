@@ -245,12 +245,14 @@ RSpec.describe Organisation, type: :model do
       delivery_partner_organisation = create(:delivery_partner_organisation)
       matched_effort_provider = create(:matched_effort_provider)
       external_income_provider = create(:external_income_provider)
+      implementing_organisation = create(:implementing_organisation)
       reporters = Organisation.reporters
 
       expect(reporters).to include(delivery_partner_organisation)
       expect(reporters).to include(beis_organisation)
       expect(reporters).not_to include(matched_effort_provider)
       expect(reporters).not_to include(external_income_provider)
+      expect(reporters).not_to include(implementing_organisation)
     end
   end
 

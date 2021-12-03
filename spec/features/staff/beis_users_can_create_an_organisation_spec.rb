@@ -100,6 +100,57 @@ RSpec.feature "BEIS users can create organisations" do
       expect(organisation.active).to eq(true)
     end
 
+    scenario "successfully creating an implementing organisation" do
+      def given_i_am_on_the_new_implementing_organisation_page
+        click_link t("tabs.organisations.implementing_organisations")
+        click_link t("page_content.organisations.implementing_organisations.button.create")
+        expect(page).to have_content(t("page_title.organisation.implementing_organisation.new"))
+      end
+
+      def and_i_submit_the_new_implementing_organisation_form
+        click_button t("default.button.submit")
+      end
+
+      def then_i_expect_to_see_that_an_implementing_organisation_has_mandatory_fields
+        within ".govuk-error-summary" do
+          expect(page).to have_content("Enter an organisation type")
+          expect(page).to have_content("Enter a language code")
+          expect(page).to have_content("Enter a default currency")
+          expect(page).to have_content("Enter an organisation name")
+        end
+      end
+
+      def when_i_fill_in_the_implementing_organisation_form_correctly
+        fill_in "organisation[name]", with: "A New Implementing Organisation"
+        fill_in "organisation[beis_organisation_reference]", with: "ANIO"
+        fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
+        select "Other", from: "organisation[organisation_type]"
+        select "English", from: "organisation[language_code]"
+        select "Pound Sterling", from: "organisation[default_currency]"
+      end
+
+      def then_i_expect_to_see_the_created_implementing_organisation(organisation)
+        presented_org = OrganisationPresenter.new(organisation)
+
+        expect(page).to have_content(t("action.organisation.create.success"))
+        expect(page).to have_content(presented_org.name)
+        expect(page).to have_content(presented_org.iati_reference)
+        expect(page).to have_content(presented_org.language_code)
+        expect(page).to have_content(presented_org.default_currency)
+        expect(page).to have_content(presented_org.organisation_type)
+      end
+
+      given_i_am_on_the_new_implementing_organisation_page
+      and_i_submit_the_new_implementing_organisation_form
+      then_i_expect_to_see_that_an_implementing_organisation_has_mandatory_fields
+
+      when_i_fill_in_the_implementing_organisation_form_correctly
+      and_i_submit_the_new_implementing_organisation_form
+      then_i_expect_to_see_the_created_implementing_organisation(
+        Organisation.order("created_at ASC").last
+      )
+    end
+
     scenario "presence validation works as expected" do
       click_link t("page_content.organisations.delivery_partners.button.create")
 

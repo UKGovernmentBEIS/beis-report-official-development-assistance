@@ -19,6 +19,7 @@ class Organisation < ApplicationRecord
     delivery_partner: 0,
     matched_effort_provider: 1,
     external_income_provider: 2,
+    implementing_organisation: 3,
     service_owner: 99,
   }
 

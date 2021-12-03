@@ -87,6 +87,8 @@ en:
       edit: Edit organisation
       index: Organisations
       show: Organisation %{name}
+      implementing_organisation:
+        new: Create a new implementing organisation
       delivery_partner:
         new: Create a new delivery partner organisation
       matched_effort_provider:
@@ -102,6 +104,8 @@ en:
     organisation:
       index: Organisations
       edit: Edit %{name}
+      implementing_organisation:
+        new: Create a new implementing organisation
       delivery_partner:
         new: Create a new delivery partner organisation
       matched_effort_provider:
