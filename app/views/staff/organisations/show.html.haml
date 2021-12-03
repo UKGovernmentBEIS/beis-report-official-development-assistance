@@ -21,17 +21,17 @@
           %dt.govuk-summary-list__key
             = t("summary.label.organisation.organisation_type")
           %dd.govuk-summary-list__value
-            = t("organisation.organisation_type.#{@organisation_presenter.organisation_type}")
+            = @organisation_presenter.organisation_type
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
             = t("summary.label.organisation.language_code")
           %dd.govuk-summary-list__value
-            = t("organisation.language_code.#{@organisation_presenter.language_code}")
+            = @organisation_presenter.language_code
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
             = t("summary.label.organisation.default_currency")
           %dd.govuk-summary-list__value
-            = t("generic.default_currency.#{@organisation_presenter.default_currency}")
+            = @organisation_presenter.default_currency
         .govuk-summary-list__row
           %dt.govuk-summary-list__key
             = t("summary.label.organisation.beis_organisation_reference")
