@@ -17,8 +17,23 @@ RSpec.feature "BEIS users can create organisations" do
       end
     end
 
+    def then_breadcrumb_shows_type_of_organisation(name:, link: nil)
+      within ".govuk-breadcrumbs" do
+        if link
+          expect(page).to have_link(name, href: link)
+        else
+          expect(page).to have_content(name)
+        end
+      end
+    end
+
     scenario "successfully creating a delivery partner organisation" do
       click_link t("page_content.organisations.delivery_partners.button.create")
+
+      then_breadcrumb_shows_type_of_organisation(
+        name: "Delivery partners",
+        link: organisations_path(role: "delivery_partners")
+      )
 
       expect(page).to have_content(t("page_title.organisation.delivery_partner.new"))
       fill_in "organisation[name]", with: "My New Organisation"
@@ -49,6 +64,11 @@ RSpec.feature "BEIS users can create organisations" do
 
       click_link t("page_content.organisations.matched_effort_providers.button.create")
 
+      then_breadcrumb_shows_type_of_organisation(
+        name: "Matched effort providers",
+        link: organisations_path(role: "matched_effort_providers")
+      )
+
       expect(page).to have_content(t("page_title.organisation.matched_effort_provider.new"))
       expect(page).to have_field("organisation[active]", type: "radio")
 
@@ -76,6 +96,10 @@ RSpec.feature "BEIS users can create organisations" do
       click_link t("tabs.organisations.external_income_providers")
 
       click_link t("page_content.organisations.external_income_providers.button.create")
+      then_breadcrumb_shows_type_of_organisation(
+        name: "External income provider",
+        link: organisations_path(role: "external_income_providers")
+      )
 
       expect(page).to have_content(t("page_title.organisation.external_income_provider.new"))
       expect(page).to have_field("organisation[active]", type: "radio")
@@ -105,6 +129,10 @@ RSpec.feature "BEIS users can create organisations" do
         click_link t("tabs.organisations.implementing_organisations")
         click_link t("page_content.organisations.implementing_organisations.button.create")
         expect(page).to have_content(t("page_title.organisation.implementing_organisation.new"))
+        then_breadcrumb_shows_type_of_organisation(
+          name: "Implementing organisations",
+          link: organisations_path(role: "implementing_organisations")
+        )
       end
 
       def and_i_submit_the_new_implementing_organisation_form

@@ -87,6 +87,7 @@ RSpec.feature "BEIS users can view other organisations" do
             end
           end
           expect(page).to have_css(".organisation", count: Organisation.implementing.count)
+          then_breadcrumb_shows_type_of_organisation(name: "Implementing organisations")
         end
       end
 
@@ -100,12 +101,20 @@ RSpec.feature "BEIS users can view other organisations" do
             click_on t("tabs.organisations.matched_effort_providers")
           end
 
+          it "includes type of organisation in breadcrumb" do
+            then_breadcrumb_shows_type_of_organisation(name: "Matched effort providers")
+          end
+
           include_examples "lists matched effort provider organisations"
         end
 
         context "when viewing the external income providers tab" do
           before do
             click_on t("tabs.organisations.external_income_providers")
+          end
+
+          it "includes type of organisation in breadcrumb" do
+            then_breadcrumb_shows_type_of_organisation(name: "External income providers")
           end
 
           include_examples "lists external income provider organisations"
@@ -163,6 +172,12 @@ RSpec.feature "BEIS users can view other organisations" do
       end
 
       include_examples "lists delivery partner organisations"
+    end
+
+    def then_breadcrumb_shows_type_of_organisation(name:)
+      within ".govuk-breadcrumbs" do
+        expect(page).to have_content(name)
+      end
     end
   end
 end

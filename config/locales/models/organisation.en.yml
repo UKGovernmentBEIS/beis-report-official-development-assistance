@@ -106,12 +106,16 @@ en:
       edit: Edit %{name}
       implementing_organisation:
         new: Create a new implementing organisation
+        index: Implementing organisations
       delivery_partner:
         new: Create a new delivery partner organisation
+        index: Delivery partners
       matched_effort_provider:
         new: Create a new matched effort provider organisation
+        index: Matched effort providers
       external_income_provider:
         new: Create a new external income provider organisation
+        index: External income providers
   activerecord:
     errors:
       models:
