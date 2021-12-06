@@ -938,6 +938,7 @@
 - Show users a warning about appending data when uploading actuals data
 - Update Readme - Add process to get terraform AWS credentials
 - New reports have a stricter validation to financial period
+- Documentation about logging
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-90...HEAD
 [release-90]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...release-90
