@@ -43,6 +43,8 @@
 - **[Deployment process (deployment-process.md)](./deployment-process.md)**: A
   step-by-step playbook to preparing and deploying a production release.
 
+- **[Logging (logging.md)](./logging.md)**: Logging for services into Papertrail.
+
 - **[Console access (console-access.md)](./console-access.md)**: You must have
   an account that has been invited to the Government Platform as a Service
   (GPaaS) account.
