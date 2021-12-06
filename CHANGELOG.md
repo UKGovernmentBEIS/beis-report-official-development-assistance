@@ -893,7 +893,7 @@
 
 ## [release-85] 2021-11-09
 
-- Fix "Total forecasted" (in Activity financial summary) to exclude periods 
+- Fix "Total forecasted" (in Activity financial summary) to exclude periods
   already reported
 - Fix spending breakdown report
 
@@ -937,6 +937,7 @@
 - Health check endpoint includes basic sidekiq stats
 - Show users a warning about appending data when uploading actuals data
 - Update Readme - Add process to get terraform AWS credentials
+- New reports have a stricter validation to financial period
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-90...HEAD
 [release-90]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...release-90
