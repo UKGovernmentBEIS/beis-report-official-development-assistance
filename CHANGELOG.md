@@ -934,7 +934,7 @@
 - Channel of delivery code 90000, 'Other' added to the accepted codes list
 - Fix deployment notification
 
-## [unreleased]
+## [release-91] 2021-12-07
 
 - Health check endpoint includes basic sidekiq stats
 - Show users a warning about appending data when uploading actuals data
@@ -944,7 +944,10 @@
 - Fix setup script
 - Use postgres version 13 in backing-services-docker-compose.yml
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-90...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-91...HEAD
+[release-91]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-90...release-91
 [release-90]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...release-90
 [release-89]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-88...release-89
 [release-88]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-87...release-88
