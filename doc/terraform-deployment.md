@@ -45,6 +45,25 @@ training environment (pentest).
   in the item "terraform state S3 bucket credentials". The CF credentials should
   be your username and password for GPaaS. Once set, load these variables into
   your shell by running `source deploy-credentials.sh`
+
+  If you can't find the AWS credentials within 1Password (or they are incorrect), you can
+  find them within the `terraform` space in GPaaS:
+
+  1. Login to GPaaS
+  ```
+  cf login
+  ```
+
+  1. When promted, select the `terraform` space. If you are already logged in, switch to the
+  `terraform space:
+  ```
+  cf target -s terraform
+  ```
+
+  1. Then to output the AWS credentials, run:
+  ```
+  cf service-key terraform-state terraform-state-key
+  ```
 - download a copy of the Terraform variables from the RODA 1Password vault;
   they're in the item "pentest.tfvars" -- save them to a file named
   `pentest.tfvars` in the current directory
