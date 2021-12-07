@@ -893,7 +893,7 @@
 
 ## [release-85] 2021-11-09
 
-- Fix "Total forecasted" (in Activity financial summary) to exclude periods 
+- Fix "Total forecasted" (in Activity financial summary) to exclude periods
   already reported
 - Fix spending breakdown report
 
@@ -928,14 +928,26 @@
 - Update postgres to version 13
 
 ## [release-90] 2021-11-23
+
 - Uploaded actual history must be in past financial quarters
 - Activity summary view uses BEIS approved attribute names
 - Channel of delivery code 90000, 'Other' added to the accepted codes list
 - Fix deployment notification
 
-## [unreleased]
+## [release-91] 2021-12-07
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-90...HEAD
+- Health check endpoint includes basic sidekiq stats
+- Show users a warning about appending data when uploading actuals data
+- Update Readme - Add process to get terraform AWS credentials
+- New reports have a stricter validation to financial period
+- Documentation about logging
+- Fix setup script
+- Use postgres version 13 in backing-services-docker-compose.yml
+
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-91...HEAD
+[release-91]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-90...release-91
 [release-90]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...release-90
 [release-89]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-88...release-89
 [release-88]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-87...release-88

@@ -4,6 +4,9 @@ class Organisation < ApplicationRecord
   strip_attributes only: [:iati_reference]
   has_many :users
   has_many :funds
+  has_many :reports
+  has_many :org_participations, -> { where(role: "implementing").distinct }
+  has_many :activities, through: :org_participations
 
   enum role: {
     delivery_partner: 0,
@@ -35,6 +38,16 @@ class Organisation < ApplicationRecord
   scope :active, -> { where(active: true) }
 
   before_validation :ensure_beis_organisation_reference_is_uppercase
+
+  def self.find_matching(name)
+    where(name: name.strip)
+      .or(where(
+        Organisation
+        .arel_table[:alternate_names]
+        .contains([name])
+      ))
+      .first
+  end
 
   def ensure_beis_organisation_reference_is_uppercase
     return unless beis_organisation_reference

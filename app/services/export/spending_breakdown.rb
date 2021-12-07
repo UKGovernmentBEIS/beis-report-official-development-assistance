@@ -65,6 +65,7 @@ class Export::SpendingBreakdown
 
   def first_forecast_financial_quarter
     return nil if actuals_rows.empty?
+    return nil if @actual_columns.last_financial_quarter.nil?
     @actual_columns.last_financial_quarter.succ
   end
 

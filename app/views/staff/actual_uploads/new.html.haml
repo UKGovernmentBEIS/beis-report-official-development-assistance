@@ -8,6 +8,8 @@
 
       = t("page_content.actuals.upload.copy_html", report_actuals_template_path: report_actual_upload_path(@report_presenter, format: :csv))
 
+      = t("page_content.actuals.upload.warning_html")
+
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       - if policy(@report_presenter).upload?

@@ -221,9 +221,10 @@ RSpec.describe Export::SpendingBreakdown do
       end
     end
 
-    context "when there are no actual spend, refunds and forecasts" do
-      let(:activities) { create_list(:project_activity, 5) }
-      subject { described_class.new(source_fund: activities.first.associated_fund, organisation: activities.first.organisation) }
+    context "when there are no activities" do
+      let(:fund) { create(:fund_activity) }
+      let(:organisation) { create(:delivery_partner_organisation) }
+      subject { described_class.new(source_fund: fund, organisation: organisation) }
 
       it "returns the activity attribute headers only" do
         activity_attribute_headers = [
@@ -235,6 +236,33 @@ RSpec.describe Export::SpendingBreakdown do
         ]
         expect(subject.headers).to match_array(activity_attribute_headers)
         expect(subject.rows).to eq []
+      end
+    end
+
+    context "when there are actvities but NONE have actual spend, refunds and forecasts" do
+      before do
+        @organisation = create(:delivery_partner_organisation)
+        @activities = create_list(:project_activity, 3, organisation: @organisation)
+
+        subject {
+          described_class.new(
+            source_fund: @activities.first.source_fund_code,
+            organisation: @organisation,
+          )
+        }
+      end
+
+      it "returns the activity attribute headers only" do
+        activity_attribute_headers = [
+          "RODA identifier",
+          "Delivery partner identifier",
+          "Activity title",
+          "Activity level",
+          "Activity status",
+          "Delivery partner organisation",
+        ]
+        expect(subject.headers).to match_array(activity_attribute_headers)
+        expect(subject.rows.count).to eq 3
       end
     end
   end
