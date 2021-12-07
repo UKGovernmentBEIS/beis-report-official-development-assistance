@@ -42,7 +42,27 @@ class Organisation < ApplicationRecord
   scope :delivery_partners, -> { sorted_by_name.where(role: "delivery_partner") }
   scope :matched_effort_providers, -> { sorted_by_name.where(role: "matched_effort_provider") }
   scope :external_income_providers, -> { sorted_by_name.where(role: "external_income_provider") }
-  scope :implementing, -> { joins(:org_participations).distinct(:id).sorted_by_name }
+  scope :implementing, -> {
+    where(<<~SQL
+      organisations.id IN
+      (
+        (
+          SELECT organisations.id
+          FROM organisations
+                 INNER JOIN org_participations
+                 ON org_participations.organisation_id = organisations.id
+                 WHERE org_participations.role = 3
+        )
+        UNION
+        (
+          SELECT organisations.id
+          FROM organisations WHERE organisations.role = 3
+        )
+      )
+    SQL
+         )
+      .sorted_by_name
+  }
   scope :reporters, -> { sorted_by_name.where(role: ["delivery_partner", "service_owner"]) }
   scope :active, -> { where(active: true) }
 

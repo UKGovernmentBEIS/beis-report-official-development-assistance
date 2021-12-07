@@ -277,21 +277,45 @@ RSpec.describe Organisation, type: :model do
   describe ".implementing" do
     let!(:delivery_partner) { create(:delivery_partner_organisation) }
     let!(:matched_effort_provider) { create(:matched_effort_provider) }
-    let!(:implementing_org) { create(:implementing_organisation) }
-    let!(:unused_implementing_org) { create(:implementing_organisation) }
 
-    before do
-      OrgParticipation.create!(
-        organisation: implementing_org,
-        activity: create(:project_activity),
-        role: "implementing"
-      )
+    let!(:newly_created_implementing_org) do
+      create(:implementing_organisation, role: "implementing_organisation")
     end
 
-    it "includes only organisations with an 'implementing' participation" do
+    let!(:migrated_implementing_org) do
+      create(:implementing_organisation, role: nil).tap do |org|
+        OrgParticipation.create!(
+          organisation: org,
+          activity: create(:project_activity),
+          role: "implementing"
+        )
+      end
+    end
+
+    let!(:other_org) do
+      create(:delivery_partner_organisation, role: "delivery_partner").tap do |org|
+        OrgParticipation.create!(
+          organisation: org,
+          activity: create(:project_activity),
+          role: "implementing"
+        )
+      end
+    end
+
+    it "includes migrated organisations with no role and an 'implementing' participation" do
+      expect(Organisation.implementing).to include(migrated_implementing_org)
+    end
+
+    it "includes new organisations with an 'implementing_organisation' role and no participation" do
+      expect(Organisation.implementing).to include(newly_created_implementing_org)
+    end
+
+    it "includes legacy organisations with another role and an 'implementing' participation" do
+      expect(Organisation.implementing).to include(other_org)
+    end
+
+    it "excludes orgs with non-'implementing_organisation' roles and no participation" do
       aggregate_failures do
-        expect(Organisation.implementing).to include(implementing_org)
-        expect(Organisation.implementing).not_to include(unused_implementing_org)
         expect(Organisation.implementing).not_to include(delivery_partner)
         expect(Organisation.implementing).not_to include(matched_effort_provider)
       end

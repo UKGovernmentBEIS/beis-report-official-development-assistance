@@ -90,7 +90,9 @@ RSpec.feature "BEIS users can view other organisations" do
       context "the role is 'implementing_organisations'" do
         let(:role) { "implementing_organisations" }
 
-        scenario "lists all organisations which have an implementing 'participation'" do
+        scenario "lists all organisations in the 'implementing' scope" do
+          expect(Organisation.implementing.count).to be >= 2
+
           within ".organisations" do
             Organisation.implementing.each do |org|
               expect(page).to have_content(org.name)
