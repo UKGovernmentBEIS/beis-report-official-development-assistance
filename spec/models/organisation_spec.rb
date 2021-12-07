@@ -274,6 +274,30 @@ RSpec.describe Organisation, type: :model do
     end
   end
 
+  describe ".implementing" do
+    let!(:delivery_partner) { create(:delivery_partner_organisation) }
+    let!(:matched_effort_provider) { create(:matched_effort_provider) }
+    let!(:implementing_org) { create(:implementing_organisation) }
+    let!(:unused_implementing_org) { create(:implementing_organisation) }
+
+    before do
+      OrgParticipation.create!(
+        organisation: implementing_org,
+        activity: create(:project_activity),
+        role: "implementing"
+      )
+    end
+
+    it "includes only organisations with an 'implementing' participation" do
+      aggregate_failures do
+        expect(Organisation.implementing).to include(implementing_org)
+        expect(Organisation.implementing).not_to include(unused_implementing_org)
+        expect(Organisation.implementing).not_to include(delivery_partner)
+        expect(Organisation.implementing).not_to include(matched_effort_provider)
+      end
+    end
+  end
+
   describe ".active" do
     it "should contain only active organisations" do
       create_list(:delivery_partner_organisation, 3, active: false)
