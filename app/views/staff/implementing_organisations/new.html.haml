@@ -6,13 +6,16 @@
       %h1.govuk-heading-xl
         = t("page_title.activity.implementing_organisation.new")
 
-      = form_with model: @implementing_organisation, url: activity_implementing_organisations_path(@activity) do |f|
+      = form_with scope: :implementing_organisation, model: @implementing_organisation, url: activity_implementing_organisations_path(@activity) do |f|
         = f.govuk_error_summary
         = f.hidden_field :activity_id, value: @activity.id
-        = f.govuk_text_field :name
-        = f.govuk_collection_select :organisation_type,
-                     organisation_type_options,
-                     :code,
-                     :name
-        = f.govuk_text_field :reference
+        = f.govuk_collection_select :organisation_id,
+                     @implementing_organisations,
+                     :id,
+                     :name,
+                     label: { text: t("form.label.implementing_organisation"), tag: :p, size: 'm' }
         = f.govuk_submit t("default.button.submit")
+
+      .govuk-inset-text
+        = t("form.guidance_html", link: support_email_link)
+

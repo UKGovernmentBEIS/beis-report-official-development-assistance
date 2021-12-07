@@ -5,8 +5,15 @@ class Organisation < ApplicationRecord
   has_many :users
   has_many :funds
   has_many :reports
-  has_many :org_participations, -> { where(role: "implementing").distinct }
+  has_many :org_participations
+  has_many :implementing_org_participations,
+    -> { merge(OrgParticipation.implementing).distinct },
+    class_name: "OrgParticipation"
   has_many :activities, through: :org_participations
+  has_many :implemented_activities,
+    through: :implementing_org_participations,
+    class_name: "Activity",
+    source: :activity
 
   enum role: {
     delivery_partner: 0,
@@ -34,6 +41,7 @@ class Organisation < ApplicationRecord
   scope :delivery_partners, -> { sorted_by_name.where(role: "delivery_partner") }
   scope :matched_effort_providers, -> { sorted_by_name.where(role: "matched_effort_provider") }
   scope :external_income_providers, -> { sorted_by_name.where(role: "external_income_provider") }
+  scope :implementing, -> { sorted_by_name.where(organisation_type: %w[15 21 24 71 80 90]) }
   scope :reporters, -> { sorted_by_name.where(role: ["delivery_partner", "service_owner"]) }
   scope :active, -> { where(active: true) }
 

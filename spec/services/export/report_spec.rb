@@ -8,18 +8,20 @@ RSpec.describe Export::Report do
     @project = create(:project_activity_with_implementing_organisations)
 
     @implementing_organisation =
-      ImplementingOrganisation.create(
+      create(
+        :implementing_organisation,
         name: "The name of the organisation that implements the activity",
-        reference: "IMP-002",
+        iati_reference: "IMP-002",
         organisation_type: "10"
       )
 
     @third_party_project =
       create(
         :third_party_project_activity,
-        parent: @project,
-        implementing_organisations: [@implementing_organisation]
-      )
+        parent: @project
+      ).tap do |project|
+        project.implementing_organisations << @implementing_organisation
+      end
 
     @actual_spend =
       create(

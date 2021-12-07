@@ -2,7 +2,7 @@ class OrgParticipation < ApplicationRecord
   belongs_to :activity
   belongs_to :organisation
 
-  attribute :role, :string, default: :implementing
+  attribute :role, :string, default: "implementing"
 
   enum role: {
     delivery_partner: 0,
@@ -11,6 +11,8 @@ class OrgParticipation < ApplicationRecord
     implementing: 3,
     service_owner: 99,
   }
+
+  scope :implementing, -> { where(role: :implementing) }
 
   # At present this join model is only linking orgs with the "Implementing" role
   # to their "Activity" but we plan to use this for all type of Organisation, e.g.

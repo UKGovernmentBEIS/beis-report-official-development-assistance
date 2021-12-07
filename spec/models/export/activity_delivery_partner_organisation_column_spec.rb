@@ -4,7 +4,8 @@ RSpec.describe Export::ActivityDeliveryPartnerOrganisationColumn do
     DatabaseCleaner.start
     @level_b_activity = create(:programme_activity)
     @level_c_activity = create(:project_activity)
-    @implementing_organisations = create_list(:implementing_organisation, 2, activity: @level_b_activity)
+    @level_b_activity.implementing_organisations = build_list(:implementing_organisation, 2)
+    @implementing_organisations = @level_b_activity.implementing_organisations
   end
 
   after(:all) do

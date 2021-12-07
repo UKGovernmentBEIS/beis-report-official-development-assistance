@@ -19,7 +19,7 @@
       %narrative= activity.extending_organisation.name
   - if activity.has_implementing_organisations?
     - activity.implementing_organisations.each do |organisation|
-      %participating-org{"ref" => organisation.reference, "type" => organisation.organisation_type, "role" => 4}
+      %participating-org{"ref" => organisation.iati_reference, "type" => organisation.organisation_type, "role" => 4}
         %narrative= organisation.name
   - if activity.previous_identifier?
     %other-identifier{"ref" => activity.transparency_identifier, type: "A1"}

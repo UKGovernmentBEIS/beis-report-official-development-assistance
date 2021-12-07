@@ -98,6 +98,11 @@ FactoryBot.define do
           Activity.fund.find_by(source_fund_code: Fund.by_short_name("GCRF").id) || create(:fund_activity, :gcrf)
         end
       end
+
+      after(:create) do |programme, _evaluator|
+        programme.implementing_organisations << programme.organisation
+        programme.reload
+      end
     end
 
     factory :project_activity do
@@ -128,7 +133,10 @@ FactoryBot.define do
         end
 
         after(:create) do |project_activity, evaluator|
-          create_list(:implementing_organisation, evaluator.implementing_organisations_count, activity: project_activity)
+          project_activity.implementing_organisations = create_list(
+            :implementing_organisation,
+            evaluator.implementing_organisations_count
+          )
           project_activity.reload
         end
       end
@@ -174,6 +182,11 @@ FactoryBot.define do
       trait :gcrf_funded do
         source_fund_code { Fund.by_short_name("GCRF").id }
         parent factory: [:project_activity, :gcrf_funded]
+      end
+
+      after(:create) do |project, _evaluator|
+        project.implementing_organisations << create(:implementing_organisation)
+        project.reload
       end
     end
   end

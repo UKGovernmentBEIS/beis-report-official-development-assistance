@@ -11,10 +11,13 @@
 
   %tbody.govuk-table__body
     - implementing_organisations.each do |organisation|
-      %tr.govuk-table__row{id: organisation.id}
+      %tr.govuk-table__row.implementing_organisation{id: organisation.id}
         %td.govuk-table__cell= organisation.name
         %td.govuk-table__cell= organisation.organisation_type
-        %td.govuk-table__cell= organisation.reference
+        %td.govuk-table__cell= organisation.iati_reference
         %td.govuk-table__cell
           - if policy(:project).edit?
-            = link_to t("default.link.edit"), edit_activity_implementing_organisation_path(@activity, organisation), class: "govuk-link govuk-link--no-visited-state"
+            = form_with(scope: :implementing_organisation, model: organisation, url: activity_implementing_organisation_path(@activity, organisation), method: :delete) do |f|
+              = f.hidden_field :organisation_id, value: organisation.id
+              %button.govuk-button.govuk-button--secondary{ name: "delete" }
+                = t("action.implementing_organisation.delete.button")

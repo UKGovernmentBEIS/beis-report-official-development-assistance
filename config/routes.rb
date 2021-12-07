@@ -104,7 +104,7 @@ Rails.application.routes.draw do
     resources :activities, only: [], concerns: [:transactionable, :budgetable, :forecastable, :matched_effortable, :external_incomeable] do
       resource :redaction, only: [:edit, :update], controller: :activity_redactions
       resources :steps, controller: "activity_forms"
-      resources :implementing_organisations, only: [:new, :create, :edit, :update]
+      resources :implementing_organisations, only: [:new, :create, :destroy]
       resources :comments, only: [:new, :create, :edit, :update], controller: "activity_comments"
       resources :outgoing_transfers, except: [:index]
       resources :incoming_transfers, except: [:index]

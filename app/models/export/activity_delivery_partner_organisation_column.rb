@@ -32,8 +32,7 @@ class Export::ActivityDeliveryPartnerOrganisationColumn
   end
 
   def implementing_organisations_for_activities
-    @implementing_organisations ||=
-      ImplementingOrganisation.joins(:activity).where(activity_id: Activity.all.pluck(:id)).pluck(:id, :name)
+    @implementing_organisations ||= Organisation.implementing.pluck(:id, :name)
   end
 
   def organisations
