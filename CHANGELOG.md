@@ -944,9 +944,15 @@
 - Fix setup script
 - Use postgres version 13 in backing-services-docker-compose.yml
 
+## [release-92] 2021-12-07
+
+- Refactor setting of implementing organisations to use unique organisations
+  through new join table
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-91...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-92...HEAD
+[release-92]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-91...release-92
 [release-91]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-90...release-91
 [release-90]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...release-90
 [release-89]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-88...release-89
