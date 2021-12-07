@@ -4,53 +4,93 @@ RSpec.feature "Users can manage the implementing organisations" do
     let(:project) { create(:project_activity, organisation: delivery_partner) }
     let!(:report) { create(:report, :active, organisation: delivery_partner, fund: project.associated_fund) }
 
-    before { authenticate!(user: create(:delivery_partner_user, organisation: delivery_partner)) }
+    let!(:implementing_org) do
+      create(
+        :implementing_organisation,
+        name: "Implementing org",
+        iati_reference: "GB-COH-123456"
+      )
+    end
 
-    scenario "they can add an implementing organisation" do
-      other_public_sector_organisation = ImplementingOrganisation.new(name: "Other public sector organisation", organisation_type: "10", reference: "GB-COH-123456")
+    let!(:other_implementing_org) do
+      create(
+        :implementing_organisation,
+        name: "Another implementing org",
+        iati_reference: "GB-COH-654321"
+      )
+    end
+
+    before do
+      authenticate!(
+        user: create(:delivery_partner_user, organisation: delivery_partner)
+      )
+      create(:delivery_partner_organisation, name: "Another delivery partner")
+    end
+
+    scenario "they can add an implementing org from a list of qualifying organisation" do
+      def then_i_see_a_list_containing_only_implementing_organisations
+        expect(page).to have_select(
+          t("form.label.implementing_organisation"),
+          options: ["Another implementing org", "Implementing org"]
+        )
+      end
+
+      def then_i_see_guidance_about_adding_to_this_list
+        expect(page).to have_content(
+          t("form.guidance_html", link: "support@beisodahelp.zendesk.com")
+        )
+      end
+
+      def when_i_select_the_implementing_organisation(name)
+        select(name, from: t("form.label.implementing_organisation"))
+      end
+
+      def then_i_see_that_the_implementing_org_was_added(implementing_org)
+        expect(current_path).to eq organisation_activity_details_path(project.organisation, project)
+        expect(page).to have_content t("action.implementing_organisation.create.success")
+
+        expect(page).to have_content implementing_org.name
+        expect(page).to have_content implementing_org.iati_reference
+      end
 
       visit organisation_activity_details_path(project.organisation, project)
 
       expect(page).to have_content t("page_content.activity.implementing_organisation.button.new")
       click_on t("page_content.activity.implementing_organisation.button.new")
 
-      expect(page).to have_field t("form.label.implementing_organisation.name")
-      expect(page).to have_select t("form.label.implementing_organisation.organisation_type")
-      expect(page).to have_field t("form.label.implementing_organisation.reference")
+      then_i_see_a_list_containing_only_implementing_organisations
+      then_i_see_guidance_about_adding_to_this_list
+      when_i_select_the_implementing_organisation("Implementing org")
 
-      fill_in t("form.label.implementing_organisation.name"), with: other_public_sector_organisation.name
-      select("Other Public Sector", from: t("form.label.implementing_organisation.organisation_type"))
-      fill_in t("form.label.implementing_organisation.reference"), with: other_public_sector_organisation.reference
       click_on t("default.button.submit")
 
-      expect(current_path).to eq organisation_activity_details_path(project.organisation, project)
-      expect(page).to have_content t("action.implementing_organisation.create.success")
-
-      expect(page).to have_content other_public_sector_organisation.name
-      expect(page).to have_content other_public_sector_organisation.reference
+      then_i_see_that_the_implementing_org_was_added(implementing_org)
     end
 
-    scenario "they can edit an implementing organisation" do
-      other_public_sector_organisation = ImplementingOrganisation.new(name: "Other public sector organisation", organisation_type: "70", reference: "GB-COH-123456")
-      project.implementing_organisations << other_public_sector_organisation
-      Report.for_activity(project).first.update!(state: :active)
-
-      visit organisation_activity_details_path(project.organisation, project)
-
-      expect(page).to have_content other_public_sector_organisation.name
-      expect(page).to have_content other_public_sector_organisation.reference
-
-      within "##{other_public_sector_organisation.id}" do
-        click_on "Edit"
+    scenario "they can remove an implementing org from a list of associated ones" do
+      def given_the_project_has_two_implementing_orgs
+        project.implementing_organisations = [implementing_org, other_implementing_org]
       end
 
-      expect(find_field(t("form.label.implementing_organisation.name")).value).to eq other_public_sector_organisation.name
+      def when_i_delete_the_second_implementing_org
+        visit organisation_activity_details_path(project.organisation, project)
+        expect(page).to have_css(".implementing_organisation", count: 2)
 
-      fill_in t("form.label.implementing_organisation.name"), with: "It is a charity"
-      click_on t("default.button.submit")
+        within(all(".implementing_organisation").last) do
+          click_on "Remove"
+        end
+      end
 
-      expect(page).to have_content t("action.implementing_organisation.update.success")
-      expect(page).to have_content "It is a charity"
+      def then_i_see_only_the_first_org_associated_with_the_project
+        expect(page).to have_content(
+          t("action.implementing_organisation.delete.success")
+        )
+        expect(page).to have_css(".implementing_organisation", count: 1)
+      end
+
+      given_the_project_has_two_implementing_orgs
+      when_i_delete_the_second_implementing_org
+      then_i_see_only_the_first_org_associated_with_the_project
     end
   end
 
@@ -61,22 +101,22 @@ RSpec.feature "Users can manage the implementing organisations" do
     before { authenticate!(user: create(:beis_user)) }
 
     scenario "they can view implementing organisations" do
-      other_public_sector_organisation = ImplementingOrganisation.new(name: "Other public sector organisation", organisation_type: "70", reference: "GB-COH-123456")
+      other_public_sector_organisation = create(:implementing_organisation, name: "Other public sector organisation", organisation_type: "70", iati_reference: "GB-COH-123456")
       project.implementing_organisations << other_public_sector_organisation
 
       visit organisation_activity_details_path(project.organisation, project)
 
       expect(page).to have_content other_public_sector_organisation.name
-      expect(page).to have_content other_public_sector_organisation.reference
+      expect(page).to have_content other_public_sector_organisation.iati_reference
     end
 
-    scenario "they cannot edit implementing organisations" do
-      other_public_sector_organisation = ImplementingOrganisation.new(name: "Other public sector organisation", organisation_type: "70", reference: "GB-COH-123456")
+    scenario "they cannot remove implementing organisations" do
+      other_public_sector_organisation = create(:implementing_organisation, name: "Other public sector organisation", organisation_type: "70", iati_reference: "GB-COH-123456")
       project.implementing_organisations << other_public_sector_organisation
 
       visit organisation_activity_path(project.organisation, project)
 
-      expect(page).not_to have_link t("default.link.edit"), href: edit_activity_implementing_organisation_path(project, other_public_sector_organisation)
+      expect(page).not_to have_link("Remove")
     end
 
     scenario "they cannot add implementing organisations" do

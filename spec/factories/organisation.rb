@@ -23,9 +23,9 @@ FactoryBot.define do
       role { "external_income_provider" }
     end
 
-    factory :participating_organisation do
-      name { "UKRI" }
+    factory :implementing_organisation do
       role { nil }
+      organisation_type { %w[15 21 24 71 80 90].sample }
       alternate_names { ["UK Research and Innovation", "UK Research & Innovation"] }
     end
 

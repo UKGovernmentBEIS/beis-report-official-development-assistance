@@ -2,50 +2,41 @@ class Staff::ImplementingOrganisationsController < Staff::BaseController
   def new
     @activity = Activity.find(params[:activity_id])
     authorize @activity
-
-    @implementing_organisation = ImplementingOrganisation.new
-  end
-
-  def edit
-    @activity = Activity.find(params[:activity_id])
-    authorize @activity
-    @implementing_organisation = ImplementingOrganisation.find(params[:id])
+    @implementing_organisations = Organisation.implementing
+    @implementing_organisation = Organisation.new
   end
 
   def create
     @activity = Activity.find(params[:activity_id])
     authorize @activity
 
-    @implementing_organisation = ImplementingOrganisation.new(implementing_organisation_params)
+    associate_implementing_organisation
 
-    if @implementing_organisation.valid?
-      @implementing_organisation.save
-      flash[:notice] = t("action.implementing_organisation.create.success")
-      redirect_to organisation_activity_details_path(@activity.organisation, @activity)
-    else
-      render :new
-    end
+    flash[:notice] = t("action.implementing_organisation.create.success")
+    redirect_to organisation_activity_details_path(@activity.organisation, @activity)
   end
 
-  def update
+  def destroy
     @activity = Activity.find(params[:activity_id])
-    authorize @activity
-    @implementing_organisation = ImplementingOrganisation.find(params[:id])
+    authorize @activity, :edit?
 
-    @implementing_organisation.assign_attributes(implementing_organisation_params)
+    @activity.implementing_organisations.delete(implementing_organisation)
 
-    if @implementing_organisation.valid?
-      @implementing_organisation.save!
-      flash[:notice] = t("action.implementing_organisation.update.success")
-      redirect_to organisation_activity_details_path(@activity.organisation, @activity)
-    else
-      render :edit
-    end
+    flash[:notice] = t("action.implementing_organisation.delete.success")
+    redirect_to organisation_activity_details_path(@activity.organisation, @activity)
   end
 
   private
 
-  def implementing_organisation_params
-    params.require(:implementing_organisation).permit(:name, :organisation_type, :reference, :activity_id)
+  def implementing_organisation
+    @implementing_organisation ||= Organisation
+      .find(params.require(:implementing_organisation)
+      .fetch(:organisation_id))
+  end
+
+  def associate_implementing_organisation
+    return if @activity.implementing_organisations.include?(implementing_organisation)
+
+    @activity.implementing_organisations << implementing_organisation
   end
 end

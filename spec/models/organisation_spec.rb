@@ -80,7 +80,7 @@ RSpec.describe Organisation, type: :model do
   describe "::find_matching" do
     let!(:canonical) do
       create(
-        :participating_organisation,
+        :implementing_organisation,
         name: "canonical",
         alternate_names: ["uncanonical", "non_canonical"]
       )
@@ -139,13 +139,13 @@ RSpec.describe Organisation, type: :model do
   describe "associations" do
     it { should have_many(:users) }
 
-    let(:organisation) { create(:participating_organisation) }
+    let(:organisation) { create(:implementing_organisation) }
 
     let(:implemented_activity) { create(:programme_activity) }
     let(:other_activity) { create(:programme_activity) }
 
     let!(:implementing_participation) do
-      OrgParticipation.create(
+      OrgParticipation.create!(
         activity: implemented_activity,
         organisation: organisation,
         role: "implementing"
@@ -153,21 +153,21 @@ RSpec.describe Organisation, type: :model do
     end
 
     let!(:other_participation) do
-      OrgParticipation.create(
+      OrgParticipation.create!(
         activity: other_activity,
         organisation: organisation,
         role: "delivery_partner"
       )
     end
 
-    it "associates with org_participations with the 'Implementing' role only" do
-      expect(organisation.org_participations).to include(implementing_participation)
-      expect(organisation.org_participations).not_to include(other_participation)
+    it "associates with #implementing_org_participations with the 'Implementing' role only" do
+      expect(organisation.implementing_org_participations).to include(implementing_participation)
+      expect(organisation.implementing_org_participations).not_to include(other_participation)
     end
 
-    it "associates with activities through the 'Implementing' role only" do
-      expect(organisation.activities).to include(implemented_activity)
-      expect(organisation.activities).not_to include(other_activity)
+    it "associates with #implemented_activities through the 'Implementing' role only" do
+      expect(organisation.implemented_activities).to include(implemented_activity)
+      expect(organisation.implemented_activities).not_to include(other_activity)
     end
   end
 

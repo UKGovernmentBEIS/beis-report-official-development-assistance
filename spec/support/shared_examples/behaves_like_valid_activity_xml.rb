@@ -47,7 +47,7 @@ RSpec.shared_examples "valid activity XML" do
     visit organisation_activity_path(organisation, activity, format: :xml)
 
     implementing_organisations_xml = xml.xpath("iati-activity/participating-org[@role = '4']")
-    implementing_organisation_refs = activity.implementing_organisations.pluck(:reference)
+    implementing_organisation_refs = activity.implementing_organisations.pluck(:iati_reference)
     implementing_organisation_types = activity.implementing_organisations.pluck(:organisation_type)
     implementing_organisation_names = activity.implementing_organisations.pluck(:name)
 

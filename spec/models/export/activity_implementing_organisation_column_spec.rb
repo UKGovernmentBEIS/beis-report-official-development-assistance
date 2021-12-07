@@ -85,14 +85,14 @@ RSpec.describe Export::ActivityImplementingOrganisationColumn do
 
   def activity_with_single_organisation
     activity = create(:project_activity)
-    organisations = create(:implementing_organisation, activity: activity)
-    activity.implementing_organisations = [organisations]
+    organisation = create(:implementing_organisation)
+    activity.implementing_organisations = [organisation]
     activity
   end
 
   def activity_with_multiple_organisations
     activity = create(:project_activity)
-    organisations = create_list(:implementing_organisation, 2, activity: activity)
+    organisations = create_list(:implementing_organisation, 2)
     activity.implementing_organisations = organisations
     activity
   end

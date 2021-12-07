@@ -5,9 +5,9 @@ RSpec.describe FindProjectActivities do
   let(:service_owner) { create(:beis_organisation) }
   let(:other_organisation) { create(:delivery_partner_organisation) }
 
-  let!(:fund_1_organisation_project) { create(:project_activity, organisation: other_organisation, source_fund_code: 1) }
-  let!(:fund_2_organisation_project) { create(:project_activity, organisation: other_organisation, source_fund_code: 2) }
-  let!(:other_project) { create(:project_activity, source_fund_code: 1) }
+  let!(:fund_1_organisation_project) { create(:project_activity_with_implementing_organisations, organisation: other_organisation, source_fund_code: 1) }
+  let!(:fund_2_organisation_project) { create(:project_activity_with_implementing_organisations, organisation: other_organisation, source_fund_code: 2) }
+  let!(:other_project) { create(:project_activity_with_implementing_organisations, source_fund_code: 1) }
 
   describe "#call" do
     context "when the organisation is the service owner" do

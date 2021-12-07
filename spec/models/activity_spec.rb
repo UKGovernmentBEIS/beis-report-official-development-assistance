@@ -627,7 +627,6 @@ RSpec.describe Activity, type: :model do
     it { should belong_to(:extending_organisation).with_foreign_key("extending_organisation_id").optional }
     it { should have_many(:implementing_organisations) }
     it { should have_many(:implementing_org_participations) }
-    it { should have_many(:unique_implementing_organisations) }
     it { should have_many(:budgets) }
     it { should have_many(:actuals) }
     it { should have_many(:refunds) }
@@ -638,6 +637,44 @@ RSpec.describe Activity, type: :model do
     it { should have_many(:external_incomes) }
     it { should have_many(:historical_events) }
     it { should have_one(:commitment) }
+  end
+
+  describe "#implementing_org_participations" do
+    # for unknown reasons it's not possible to build a new OrgParticiption
+    # join entity on an unsaved Activity. i.e.
+    #
+    #    Activity.new#implementing_organisations << implementing_org
+    #
+    # does not set OrgParticipation#activity_id when you come to save the
+    # new activity. Activity then returns a validation error:
+    #
+    #    -> Implementing org participations is invalid
+    #
+    #  This is related to the presence of the condition filtering by
+    #  OrgParticipation#role on the Activity has_many :implementing_organisations
+    #  method. Without this condition, the Activity#implementing_organisations <<
+    #  method works as expected on a new Activity.
+    #
+    #  NB: this is issue only affect new (unsaved) instances of an Activity.
+    #
+    # The workaround is to set the OrgParticipation join entity manually,
+    # which is much less elegant!
+    context "when building a new activity" do
+      let(:activity) { build(:programme_activity) }
+      let(:implementing_org) { create(:implementing_organisation) }
+
+      it "adds and then saves the expected OrgParticipation join entity" do
+        activity.implementing_org_participations << OrgParticipation.new(
+          organisation: implementing_org,
+          role: "implementing",
+          activity: activity
+        )
+
+        activity.save!
+
+        expect(activity.reload.implementing_organisations).to eq([implementing_org])
+      end
+    end
   end
 
   describe "has_one #latest_report association" do
