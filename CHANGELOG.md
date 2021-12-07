@@ -922,7 +922,7 @@
 
 - Actual spend values can no longer be negative, use Adjustments or Refunds to
   document funding flowing back
-- BEIS users can upload 'actual history' – historic actual spend, this is a
+- BEIS users can upload 'actual history' - historic actual spend, this is a
   short term feature to facilitate migration to the application
 - Update terrafom to version 1.0.11
 - Update postgres to version 13
