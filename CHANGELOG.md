@@ -951,6 +951,8 @@
 
 ## [unreleased]
 
+- BEIS users can add and edit implementing organisations
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-92...HEAD
 [release-92]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-91...release-92
 [release-91]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-90...release-91
