@@ -3,17 +3,17 @@
 class Staff::OrganisationsController < Staff::BaseController
   def index
     @role = params[:role]
-    @organisations = policy_scope(Organisation).where(role: @role.singularize).sorted_by_name
+    @organisations = organisations
     authorize @organisations
 
-    add_breadcrumb I18n.t("breadcrumbs.organisation.index"), organisations_path(role: @role)
+    add_breadcrumb I18n.t("breadcrumbs.organisation.#{@role.singularize}.index"), organisations_path(role: @role)
   end
 
   def show
     organisation = Organisation.find(id)
     authorize organisation
 
-    add_breadcrumb I18n.t("breadcrumbs.organisation.index"), organisations_path(role: organisation.role.pluralize)
+    add_breadcrumb I18n.t("breadcrumbs.organisation.#{organisation.role}.index"), organisations_path(role: organisation.role.pluralize)
     add_breadcrumb organisation.name, :organisation_path
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
@@ -23,7 +23,7 @@ class Staff::OrganisationsController < Staff::BaseController
     @organisation = Organisation.new(role: params[:role].singularize)
     authorize @organisation
 
-    add_breadcrumb I18n.t("breadcrumbs.organisation.index"), organisations_path(role: @organisation.role.pluralize)
+    add_breadcrumb I18n.t("breadcrumbs.organisation.#{@organisation.role}.index"), organisations_path(role: @organisation.role.pluralize)
     add_breadcrumb I18n.t("breadcrumbs.organisation.#{@organisation.role}.new"), new_organisation_path(role: params[:role])
   end
 
@@ -44,7 +44,7 @@ class Staff::OrganisationsController < Staff::BaseController
     @organisation = Organisation.find(id)
     authorize @organisation
 
-    add_breadcrumb I18n.t("breadcrumbs.organisation.index"), organisations_path(role: @organisation.role.pluralize)
+    add_breadcrumb I18n.t("breadcrumbs.organisation.#{@organisation.role}.index"), organisations_path(role: @organisation.role.pluralize)
     add_breadcrumb t("breadcrumbs.organisation.edit", name: @organisation.name), :edit_organisation_path
   end
 
@@ -65,6 +65,12 @@ class Staff::OrganisationsController < Staff::BaseController
 
   private def id
     params[:id]
+  end
+
+  private def organisations
+    return policy_scope(Organisation).implementing.sorted_by_name if @role == "implementing_organisations"
+
+    policy_scope(Organisation).where(role: @role.singularize).sorted_by_name
   end
 
   private def organisation_params

@@ -5,7 +5,7 @@
         Organisations
 
       %ul.govuk-tabs__list
-        - ["delivery_partners", "matched_effort_providers", "external_income_providers"].each do |role|
+        - ["delivery_partners", "matched_effort_providers", "external_income_providers", "implementing_organisations"].each do |role|
           %li{ class: "govuk-tabs__list-item #{role == @role ? "govuk-tabs__list-item--selected" : ""}"}
             = link_to t("tabs.organisations.#{role}"), organisations_path(role: role), { class: "govuk-tabs__tab", role: "tab", aria: { controls: "current", selected: (role == @role) } }
 
@@ -30,7 +30,7 @@
 
             %tbody.govuk-table__body
               - organisations.each do |organisation|
-                %tr.govuk-table__row{id: organisation.id}
+                %tr.govuk-table__row.organisation{id: organisation.id}
                   %td.govuk-table__cell= organisation.name
                   %td.govuk-table__cell= organisation.beis_organisation_reference
                   %td.govuk-table__cell

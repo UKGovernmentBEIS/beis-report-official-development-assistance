@@ -9,7 +9,13 @@ RSpec.feature "Users can manage the implementing organisations" do
         :implementing_organisation,
         name: "Implementing org",
         iati_reference: "GB-COH-123456"
-      )
+      ).tap do |org|
+        OrgParticipation.create(
+          organisation: org,
+          activity: create(:project_activity),
+          role: "implementing"
+        )
+      end
     end
 
     let!(:other_implementing_org) do
@@ -17,7 +23,13 @@ RSpec.feature "Users can manage the implementing organisations" do
         :implementing_organisation,
         name: "Another implementing org",
         iati_reference: "GB-COH-654321"
-      )
+      ).tap do |org|
+        OrgParticipation.create(
+          organisation: org,
+          activity: create(:project_activity),
+          role: "implementing"
+        )
+      end
     end
 
     before do
@@ -27,11 +39,11 @@ RSpec.feature "Users can manage the implementing organisations" do
       create(:delivery_partner_organisation, name: "Another delivery partner")
     end
 
-    scenario "they can add an implementing org from a list of qualifying organisation" do
-      def then_i_see_a_list_containing_only_implementing_organisations
+    scenario "they can add an implementing org from a list of all organisations" do
+      def then_i_see_a_list_containing_all_organisations
         expect(page).to have_select(
           t("form.label.implementing_organisation"),
-          options: ["Another implementing org", "Implementing org"]
+          options: Organisation.sorted_by_name.pluck(:name)
         )
       end
 
@@ -58,7 +70,7 @@ RSpec.feature "Users can manage the implementing organisations" do
       expect(page).to have_content t("page_content.activity.implementing_organisation.button.new")
       click_on t("page_content.activity.implementing_organisation.button.new")
 
-      then_i_see_a_list_containing_only_implementing_organisations
+      then_i_see_a_list_containing_all_organisations
       then_i_see_guidance_about_adding_to_this_list
       when_i_select_the_implementing_organisation("Implementing org")
 

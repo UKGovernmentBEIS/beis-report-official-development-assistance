@@ -245,12 +245,14 @@ RSpec.describe Organisation, type: :model do
       delivery_partner_organisation = create(:delivery_partner_organisation)
       matched_effort_provider = create(:matched_effort_provider)
       external_income_provider = create(:external_income_provider)
+      implementing_organisation = create(:implementing_organisation)
       reporters = Organisation.reporters
 
       expect(reporters).to include(delivery_partner_organisation)
       expect(reporters).to include(beis_organisation)
       expect(reporters).not_to include(matched_effort_provider)
       expect(reporters).not_to include(external_income_provider)
+      expect(reporters).not_to include(implementing_organisation)
     end
   end
 
@@ -269,6 +271,54 @@ RSpec.describe Organisation, type: :model do
       matched_effort_providers = create_list(:matched_effort_provider, 2)
 
       expect(Organisation.matched_effort_providers).to match_array(matched_effort_providers)
+    end
+  end
+
+  describe ".implementing" do
+    let!(:delivery_partner) { create(:delivery_partner_organisation) }
+    let!(:matched_effort_provider) { create(:matched_effort_provider) }
+
+    let!(:newly_created_implementing_org) do
+      create(:implementing_organisation, role: "implementing_organisation")
+    end
+
+    let!(:migrated_implementing_org) do
+      create(:implementing_organisation, role: nil).tap do |org|
+        OrgParticipation.create!(
+          organisation: org,
+          activity: create(:project_activity),
+          role: "implementing"
+        )
+      end
+    end
+
+    let!(:other_org) do
+      create(:delivery_partner_organisation, role: "delivery_partner").tap do |org|
+        OrgParticipation.create!(
+          organisation: org,
+          activity: create(:project_activity),
+          role: "implementing"
+        )
+      end
+    end
+
+    it "includes migrated organisations with no role and an 'implementing' participation" do
+      expect(Organisation.implementing).to include(migrated_implementing_org)
+    end
+
+    it "includes new organisations with an 'implementing_organisation' role and no participation" do
+      expect(Organisation.implementing).to include(newly_created_implementing_org)
+    end
+
+    it "includes legacy organisations with another role and an 'implementing' participation" do
+      expect(Organisation.implementing).to include(other_org)
+    end
+
+    it "excludes orgs with non-'implementing_organisation' roles and no participation" do
+      aggregate_failures do
+        expect(Organisation.implementing).not_to include(delivery_partner)
+        expect(Organisation.implementing).not_to include(matched_effort_provider)
+      end
     end
   end
 

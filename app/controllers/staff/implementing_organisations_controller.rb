@@ -2,7 +2,7 @@ class Staff::ImplementingOrganisationsController < Staff::BaseController
   def new
     @activity = Activity.find(params[:activity_id])
     authorize @activity
-    @implementing_organisations = Organisation.implementing
+    @implementing_organisations = Organisation.sorted_by_name
     @implementing_organisation = Organisation.new
   end
 
