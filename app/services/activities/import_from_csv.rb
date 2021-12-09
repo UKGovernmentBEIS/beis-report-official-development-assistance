@@ -235,7 +235,7 @@ module Activities
       end
 
       def organisation
-        @organisation = Organisation.implementing.find_matching(row["Implementing organisation name"])
+        @organisation = Organisation.find_matching(row["Implementing organisation name"])
       end
 
       def participations

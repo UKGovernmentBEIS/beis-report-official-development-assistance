@@ -19,6 +19,7 @@ class Organisation < ApplicationRecord
     delivery_partner: 0,
     matched_effort_provider: 1,
     external_income_provider: 2,
+    implementing_organisation: 3,
     service_owner: 99,
   }
 
@@ -41,7 +42,27 @@ class Organisation < ApplicationRecord
   scope :delivery_partners, -> { sorted_by_name.where(role: "delivery_partner") }
   scope :matched_effort_providers, -> { sorted_by_name.where(role: "matched_effort_provider") }
   scope :external_income_providers, -> { sorted_by_name.where(role: "external_income_provider") }
-  scope :implementing, -> { sorted_by_name.where(organisation_type: %w[15 21 24 71 80 90]) }
+  scope :implementing, -> {
+    where(<<~SQL
+      organisations.id IN
+      (
+        (
+          SELECT organisations.id
+          FROM organisations
+                 INNER JOIN org_participations
+                 ON org_participations.organisation_id = organisations.id
+                 WHERE org_participations.role = 3
+        )
+        UNION
+        (
+          SELECT organisations.id
+          FROM organisations WHERE organisations.role = 3
+        )
+      )
+    SQL
+         )
+      .sorted_by_name
+  }
   scope :reporters, -> { sorted_by_name.where(role: ["delivery_partner", "service_owner"]) }
   scope :active, -> { where(active: true) }
 
@@ -55,6 +76,13 @@ class Organisation < ApplicationRecord
         .contains([name])
       ))
       .first
+  end
+
+  def role
+    # temp hack whilst we figure out how to handle moving role from Org to OrgParticipation
+    return "implementing_organisation" unless read_attribute(:role)
+
+    super
   end
 
   def ensure_beis_organisation_reference_is_uppercase

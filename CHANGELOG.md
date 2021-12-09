@@ -949,9 +949,14 @@
 - Refactor setting of implementing organisations to use unique organisations
   through new join table
 
+## [release-93] 2021-12-9
+
+- BEIS users can add and edit implementing organisations
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-92...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-93...HEAD
+[release-93]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-92...release-93
 [release-92]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-91...release-92
 [release-91]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-90...release-91
 [release-90]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-89...release-90
