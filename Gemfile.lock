@@ -186,7 +186,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
-    i18n-tasks (0.9.35)
+    i18n-tasks (0.9.36)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
       erubi
@@ -503,7 +503,7 @@ DEPENDENCIES
   haml-rails
   high_voltage
   html2haml
-  i18n-tasks (~> 0.9.35)
+  i18n-tasks (~> 0.9.36)
   ipaddr
   jbuilder (~> 2.11)
   launchy
