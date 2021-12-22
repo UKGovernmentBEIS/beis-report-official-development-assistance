@@ -18,7 +18,7 @@ namespace :activities do
     external_income = ExternalIncome.where(activity_id: activity.id)
     history = HistoricalEvent.where(activity_id: activity.id)
     adjustments = Adjustment.where(parent_activity_id: activity.id)
-    implementing_organisations = ImplementingOrganisation.where(activity_id: activity.id)
+    implementing_organisations = OrgParticipation.where(activity_id: activity.id)
     incomming_transfers_count = IncomingTransfer.where(destination_id: activity.id).count
     outgoing_transfers_count = OutgoingTransfer.where(source_id: activity.id).count
 
