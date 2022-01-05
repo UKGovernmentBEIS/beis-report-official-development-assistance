@@ -60,9 +60,12 @@ RSpec.describe Export::S3Uploader do
     end
 
     context "when the response from S3 does not have an _etag_" do
-      it "logs the error"
-      it "logs the error at Rollbar"
-      it "returns _false_"
+      let(:response) { double("response", etag: nil) }
+
+      it "raises an error, including the filename for information" do
+        message = "Error uploading report #{filename}"
+        expect { subject.upload }.to raise_error(Export::S3UploadError, message)
+      end
     end
 
     context "when the attempt to upload the file raises an error" do
