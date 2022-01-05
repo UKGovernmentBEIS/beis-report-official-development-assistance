@@ -5,6 +5,11 @@ RSpec.describe Export::S3Uploader do
   let(:file) { Tempfile.open("tempfile") { |f| f << "my export here" } }
   let(:aws_client) { instance_double(Aws::S3::Client, put_object: response) }
   let(:timestamp) { Time.current }
+  let(:filename) { "export-file-#{timestamp.to_formatted_s(:number)}.csv" }
+
+  let(:s3_object) { double("s3 object", public_url: "https://s3.example.com/xyz321")}
+  let(:s3_bucket) { double("s3 bucket", object: s3_object) }
+  let(:s3_bucket_finder) { instance_double(Aws::S3::Resource, bucket: s3_bucket) }
 
   subject do
     travel_to(timestamp) do
@@ -14,6 +19,7 @@ RSpec.describe Export::S3Uploader do
 
   before do
     allow(Aws::S3::Client).to receive(:new).and_return(aws_client)
+    allow(Aws::S3::Resource).to receive(:new).and_return(s3_bucket_finder)
   end
 
   describe "#upload" do
@@ -34,13 +40,23 @@ RSpec.describe Export::S3Uploader do
     it "sets the filename using a timestamp" do
       subject.upload
 
-      expect(aws_client).to have_received(:put_object).with(
-        hash_including(key: "export-file-#{timestamp.to_formatted_s(:number)}.csv")
-      )
+      expect(aws_client).to have_received(:put_object).with(hash_including(key: filename))
     end
 
     context "when the response from S3 has an _etag_" do
-      it "returns the public_url of the uploaded object"
+      let(:response) { double("response", etag: "abc123") }
+
+      it "uses Aws::S3:Resource to retrieve the uploaded object from its bucket" do
+        subject.upload
+
+        expect(Aws::S3::Resource).to have_received(:new).with(client: aws_client)
+        expect(s3_bucket_finder).to have_received(:bucket).with(Export::S3UploaderConfig.bucket)
+        expect(s3_bucket).to have_received(:object).with(filename)
+      end
+
+      it "returns the public_url of the uploaded object" do
+        expect(subject.upload).to eq("https://s3.example.com/xyz321")
+      end
     end
 
     context "when the response from S3 does not have an _etag_" do

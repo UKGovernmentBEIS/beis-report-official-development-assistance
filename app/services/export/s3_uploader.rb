@@ -9,11 +9,21 @@ module Export
     attr_reader :client, :file, :filename
 
     def upload
-      client.put_object(
+      response = client.put_object(
         bucket: S3UploaderConfig.bucket,
         key: filename,
         body: file
       )
+      if response.etag
+        bucket.object(filename).public_url
+      else
+        false
+      end
+    end
+
+    def bucket
+      resource = Aws::S3::Resource.new(client: client)
+      resource.bucket(S3UploaderConfig.bucket)
     end
   end
 end
