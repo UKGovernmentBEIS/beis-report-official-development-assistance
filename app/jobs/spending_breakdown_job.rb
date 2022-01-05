@@ -3,31 +3,29 @@ class SpendingBreakdownJob < ApplicationJob
 
   def perform(requester_id:, fund_id:)
     requester = User.find(requester_id)
-    fund = Fund.new(fund_id)
-    export = Export::SpendingBreakdown.new(source_fund: fund)
+
+    export = Export::SpendingBreakdown.new(source_fund: Fund.new(fund_id))
     tempfile = save_tempfile(export)
-    download_url = upload_csv_to_s3(tempfile)
+
     DownloadLinkMailer.send_link(
       recipient: requester,
-      file_url: download_url,
+      file_url: upload_csv_to_s3(tempfile),
       file_name: export.filename
     ).deliver
   end
 
   def save_tempfile(export)
-    tmpfile = Tempfile.new
-    CSV.open(tmpfile, "wb", {headers: true}) do |csv|
-      csv << export.headers
-      export.rows.each do |row|
-        csv << row
+    Tempfile.new.tap do |tmpfile|
+      CSV.open(tmpfile, "wb", {headers: true}) do |csv|
+        csv << export.headers
+        export.rows.each do |row|
+          csv << row
+        end
       end
     end
-    tmpfile
   end
 
   def upload_csv_to_s3(file)
-    uploader = Export::S3Uploader.new(file)
-    file_url = uploader.upload
-    file_url
+    Export::S3Uploader.new(file).upload
   end
 end
