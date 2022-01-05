@@ -63,15 +63,20 @@ RSpec.describe Export::S3Uploader do
       let(:response) { double("response", etag: nil) }
 
       it "raises an error, including the filename for information" do
-        message = "Error uploading report #{filename}"
+        message = "Unexpected response. Error uploading report #{filename}"
         expect { subject.upload }.to raise_error(Export::S3UploadError, message)
       end
     end
 
     context "when the attempt to upload the file raises an error" do
-      it "logs the error"
-      it "logs the error at Rollbar"
-      it "returns _false_"
+      before do
+        allow(aws_client).to receive(:put_object).and_raise("There has been a problem!")
+      end
+
+      it "re-raises the error, adding the filename for information" do
+        enriched_message = "There has been a problem! Error uploading report #{filename}"
+        expect { subject.upload }.to raise_error(Export::S3UploadError, enriched_message)
+      end
     end
   end
 end
