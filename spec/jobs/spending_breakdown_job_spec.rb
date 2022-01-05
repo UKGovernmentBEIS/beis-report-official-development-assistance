@@ -9,7 +9,7 @@ RSpec.describe SpendingBreakdownJob, type: :job do
   let(:breakdown) do
     instance_double(
       Export::SpendingBreakdown,
-      filename: double("filename"),
+      filename: "export_1234.csv",
       headers: %w[col1 col2],
       rows: [row1, row2]
     )
@@ -17,15 +17,17 @@ RSpec.describe SpendingBreakdownJob, type: :job do
   let(:tempfile) { double("tempfile") }
   let(:csv) { double("csv", "<<" => true) }
   let(:uploader) { instance_double(Export::S3Uploader, upload: "https://example.com/abc.csv") }
+  let(:email) { double("email", deliver: double) }
 
   describe "#perform" do
     before do
-      allow(User).to receive(:find)
+      allow(User).to receive(:find).and_return(requester)
       allow(Fund).to receive(:new).and_return(fund)
       allow(Export::SpendingBreakdown).to receive(:new).and_return(breakdown)
       allow(Tempfile).to receive(:new).and_return(tempfile)
       allow(CSV).to receive(:open).and_yield(csv)
       allow(Export::S3Uploader).to receive(:new).and_return(uploader)
+      allow(DownloadLinkMailer).to receive(:send_link).and_return(email)
     end
 
     it "asks the user object for the user with a given id" do
@@ -62,6 +64,15 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       expect(uploader).to have_received(:upload)
     end
 
-    it "emails a download link to the requesting user"
+    it "emails a download link to the requesting user" do
+      SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+
+      expect(DownloadLinkMailer).to have_received(:send_link).with(
+        recipient: requester,
+        file_url: "https://example.com/abc.csv",
+        file_name: "export_1234.csv"
+      )
+      expect(email).to have_received(:deliver)
+    end
   end
 end

@@ -4,10 +4,14 @@ class SpendingBreakdownJob < ApplicationJob
   def perform(requester_id:, fund_id:)
     requester = User.find(requester_id)
     fund = Fund.new(fund_id)
-
     export = Export::SpendingBreakdown.new(source_fund: fund)
     tempfile = save_tempfile(export)
     download_url = upload_csv_to_s3(tempfile)
+    DownloadLinkMailer.send_link(
+      recipient: requester,
+      file_url: download_url,
+      file_name: export.filename
+    ).deliver
   end
 
   def save_tempfile(export)
