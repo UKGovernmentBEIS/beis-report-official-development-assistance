@@ -16,16 +16,17 @@ module Export
         key: filename,
         body: file
       )
-
-      raise_error unless response&.etag
+      raise "Unexpected response." unless response&.etag
 
       bucket.object(filename).public_url
+    rescue => error
+      raise_error(error.message)
     end
 
     private
 
-    def raise_error
-      raise S3UploadError, "Error uploading report #{filename}"
+    def raise_error(original_message = nil)
+      raise S3UploadError, [original_message, "Error uploading report #{filename}"].join(" ")
     end
 
     def bucket
