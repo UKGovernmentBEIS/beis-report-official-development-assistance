@@ -64,6 +64,13 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       expect(uploader).to have_received(:upload)
     end
 
+    context "when the uploader raises an error" do
+      it "rescues the error"
+      it "logs the error"
+      it "records the error at Rollbar for exception handling and debugging"
+      it "does not re-raise the error as we don't wish to retry the job"
+    end
+
     it "emails a download link to the requesting user" do
       SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
 
