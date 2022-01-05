@@ -4,8 +4,13 @@ RSpec.describe Export::S3Uploader do
   let(:response) { double("response", etag: double) }
   let(:file) { Tempfile.open("tempfile") { |f| f << "my export here" } }
   let(:aws_client) { instance_double(Aws::S3::Client, put_object: response) }
+  let(:timestamp) { Time.current }
 
-  subject { Export::S3Uploader.new(file) }
+  subject do
+    travel_to(timestamp) do
+      Export::S3Uploader.new(file)
+    end
+  end
 
   before do
     allow(Aws::S3::Client).to receive(:new).and_return(aws_client)
@@ -26,7 +31,13 @@ RSpec.describe Export::S3Uploader do
       )
     end
 
-    it "sets the filename using a timestamp"
+    it "sets the filename using a timestamp" do
+      subject.upload
+
+      expect(aws_client).to have_received(:put_object).with(
+        hash_including(key: "export-file-#{timestamp.to_formatted_s(:number)}.csv")
+      )
+    end
 
     context "when the response from S3 has an _etag_" do
       it "returns the public_url of the uploaded object"
