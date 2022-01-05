@@ -16,6 +16,7 @@ RSpec.describe SpendingBreakdownJob, type: :job do
   end
   let(:tempfile) { double("tempfile") }
   let(:csv) { double("csv", "<<" => true) }
+  let(:uploader) { instance_double(Export::S3Uploader, upload: "https://example.com/abc.csv") }
 
   describe "#perform" do
     before do
@@ -24,6 +25,7 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       allow(Export::SpendingBreakdown).to receive(:new).and_return(breakdown)
       allow(Tempfile).to receive(:new).and_return(tempfile)
       allow(CSV).to receive(:open).and_yield(csv)
+      allow(Export::S3Uploader).to receive(:new).and_return(uploader)
     end
 
     it "asks the user object for the user with a given id" do
@@ -53,7 +55,12 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       expect(csv).to have_received(:<<).with(row2)
     end
 
-    it "uploads the file to S3"
+    it "uploads the file to S3" do
+      SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+
+      expect(Export::S3Uploader).to have_received(:new).with(tempfile)
+      expect(uploader).to have_received(:upload)
+    end
 
     it "emails a download link to the requesting user"
   end

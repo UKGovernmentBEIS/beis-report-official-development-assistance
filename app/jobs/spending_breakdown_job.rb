@@ -7,6 +7,7 @@ class SpendingBreakdownJob < ApplicationJob
 
     export = Export::SpendingBreakdown.new(source_fund: fund)
     tempfile = save_tempfile(export)
+    download_url = upload_csv_to_s3(tempfile)
   end
 
   def save_tempfile(export)
@@ -18,5 +19,11 @@ class SpendingBreakdownJob < ApplicationJob
       end
     end
     tmpfile
+  end
+
+  def upload_csv_to_s3(file)
+    uploader = Export::S3Uploader.new(file)
+    file_url = uploader.upload
+    file_url
   end
 end
