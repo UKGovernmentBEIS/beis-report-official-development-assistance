@@ -6,6 +6,7 @@ ruby "2.7.3"
 
 gem "auth0", "~> 5.6"
 gem "acts_as_tree"
+gem "aws-sdk-s3", "~> 1.109"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "govuk_design_system_formbuilder", "~> 2.7.6"
 gem "haml-rails"

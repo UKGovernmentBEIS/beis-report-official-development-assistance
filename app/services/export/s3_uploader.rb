@@ -1,11 +1,16 @@
 module Export
   class S3Uploader
-    def initialize(_file)
-      # coming soon
+    def initialize(file)
+      @client = Aws::S3::Client.new
+      @file = file
     end
 
+    attr_reader :client, :file
+
     def upload
-      # coming soon
+      client.put_object(
+        body: file
+      )
     end
   end
 end

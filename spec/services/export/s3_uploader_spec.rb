@@ -1,8 +1,23 @@
 require "rails_helper"
 
 RSpec.describe Export::S3Uploader do
+  let(:response) { double("response", etag: double) }
+  let(:file) { Tempfile.open("tempfile") { |f| f << "my export here" } }
+  let(:aws_client) { instance_double(Aws::S3::Client, put_object: response) }
+
+  subject { Export::S3Uploader.new(file) }
+
+  before do
+    allow(Aws::S3::Client).to receive(:new).and_return(aws_client)
+  end
+
   describe "#upload" do
-    it "uploads the given file"
+    it "uploads the given file" do
+      subject.upload
+
+      expect(aws_client).to have_received(:put_object).with(hash_including(body: file))
+    end
+
     it "uploads to the bucket defined in by the S3UploaderConfig"
     it "sets the filename using a timestamp"
 
