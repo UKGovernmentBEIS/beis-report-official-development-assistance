@@ -52,5 +52,9 @@ RSpec.describe SpendingBreakdownJob, type: :job do
       expect(csv).to have_received(:<<).with(row1)
       expect(csv).to have_received(:<<).with(row2)
     end
+
+    it "uploads the file to S3"
+
+    it "emails a download link to the requesting user"
   end
 end
