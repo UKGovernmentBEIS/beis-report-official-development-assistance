@@ -18,7 +18,14 @@ RSpec.describe Export::S3Uploader do
       expect(aws_client).to have_received(:put_object).with(hash_including(body: file))
     end
 
-    it "uploads to the bucket defined in by the S3UploaderConfig"
+    it "uploads to the bucket defined by the S3UploaderConfig" do
+      subject.upload
+
+      expect(aws_client).to have_received(:put_object).with(
+        hash_including(bucket: Export::S3UploaderConfig.bucket)
+      )
+    end
+
     it "sets the filename using a timestamp"
 
     context "when the response from S3 has an _etag_" do

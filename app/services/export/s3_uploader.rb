@@ -9,6 +9,7 @@ module Export
 
     def upload
       client.put_object(
+        bucket: S3UploaderConfig.bucket,
         body: file
       )
     end
