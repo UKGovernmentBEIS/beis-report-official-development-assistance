@@ -1,4 +1,6 @@
 module Export
+  class S3UploadError < StandardError; end
+
   class S3Uploader
     def initialize(file)
       @client = Aws::S3::Client.new
@@ -14,11 +16,16 @@ module Export
         key: filename,
         body: file
       )
-      if response.etag
-        bucket.object(filename).public_url
-      else
-        false
-      end
+
+      raise_error unless response&.etag
+
+      bucket.object(filename).public_url
+    end
+
+    private
+
+    def raise_error
+      raise S3UploadError, "Error uploading report #{filename}"
     end
 
     def bucket
