@@ -12,6 +12,8 @@ class SpendingBreakdownJob < ApplicationJob
       file_url: upload_csv_to_s3(tempfile),
       file_name: export.filename
     ).deliver
+  rescue => error
+    log_error(error, requester)
   end
 
   def save_tempfile(export)
@@ -27,5 +29,11 @@ class SpendingBreakdownJob < ApplicationJob
 
   def upload_csv_to_s3(file)
     Export::S3Uploader.new(file).upload
+  end
+
+  def log_error(error, requester)
+    message = "#{error.message} for #{requester.email}"
+    Rails.logger.error(message)
+    Rollbar.log(:error, message, error)
   end
 end
