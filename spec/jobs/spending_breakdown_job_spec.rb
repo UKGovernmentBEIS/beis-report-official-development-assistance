@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe SpendingBreakdownJob, type: :job do
-  let(:requester) { double(:user) }
+  let(:requester) { double(:user, email: "roger@example.com") }
   let(:fund) { double(:fund) }
   let(:row1) { double("row1") }
   let(:row2) { double("row1") }
@@ -65,10 +65,37 @@ RSpec.describe SpendingBreakdownJob, type: :job do
     end
 
     context "when the uploader raises an error" do
-      it "rescues the error"
-      it "logs the error"
-      it "records the error at Rollbar for exception handling and debugging"
-      it "does not re-raise the error as we don't wish to retry the job"
+      let(:error) { Export::S3UploadError.new("Error uploading filename-xyz") }
+
+      before do
+        allow(uploader).to receive(:upload).and_raise(error)
+        allow(Rails.logger).to receive(:error)
+        allow(Rollbar).to receive(:log)
+      end
+
+      it "logs the error, including the identity of the requester" do
+        SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+
+        expect(Rails.logger).to have_received(:error).with(
+          "Error uploading filename-xyz for roger@example.com"
+        )
+      end
+
+      it "records the error at Rollbar for exception handling and debugging" do
+        SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+
+        expect(Rollbar).to have_received(:log).with(
+          :error,
+          "Error uploading filename-xyz for roger@example.com",
+          error
+        )
+      end
+
+      it "does not re-raise the error as we don't wish to retry the job" do
+        expect {
+          SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+        }.not_to raise_error
+      end
     end
 
     it "emails a download link to the requesting user" do
