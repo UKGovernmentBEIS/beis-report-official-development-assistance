@@ -8,7 +8,7 @@ RSpec.describe Export::S3Uploader do
   let(:timestamp) { Time.current }
   let(:filename) { "export-file-#{timestamp.to_formatted_s(:number)}.csv" }
 
-  let(:s3_object) { double("s3 object", public_url: "https://s3.example.com/xyz321")}
+  let(:s3_object) { double("s3 object", presigned_url: "https://s3.example.com/xyz321") }
   let(:s3_bucket) { double("s3 bucket", object: s3_object) }
   let(:s3_bucket_finder) { instance_double(Aws::S3::Resource, bucket: s3_bucket) }
 
@@ -80,7 +80,16 @@ RSpec.describe Export::S3Uploader do
         expect(s3_bucket).to have_received(:object).with(filename)
       end
 
-      it "returns the public_url of the uploaded object" do
+      it "asks for a presigned_url valid for 24 hours" do
+        subject.upload
+
+        expect(s3_object).to have_received(:presigned_url).with(
+          :get,
+          expires_in: 1.day.in_seconds
+        )
+      end
+
+      it "returns the presigned_url of the uploaded object" do
         expect(subject.upload).to eq("https://s3.example.com/xyz321")
       end
     end
