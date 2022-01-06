@@ -96,6 +96,10 @@ RSpec.describe SpendingBreakdownJob, type: :job do
           SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
         }.not_to raise_error
       end
+
+      it "does not try to send the email with the download link"
+
+      it "sends the email notifying the requester of failure creating the report"
     end
 
     it "emails a download link to the requesting user" do
