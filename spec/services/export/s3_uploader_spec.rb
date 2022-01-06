@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe Export::S3Uploader do
   let(:response) { double("response", etag: double) }
   let(:file) { Tempfile.open("tempfile") { |f| f << "my export here" } }
+  let(:aws_credentials) { double("aws credentials") }
   let(:aws_client) { instance_double(Aws::S3::Client, put_object: response) }
   let(:timestamp) { Time.current }
   let(:filename) { "export-file-#{timestamp.to_formatted_s(:number)}.csv" }
@@ -18,8 +19,33 @@ RSpec.describe Export::S3Uploader do
   end
 
   before do
+    allow(Aws::Credentials).to receive(:new).and_return(aws_credentials)
     allow(Aws::S3::Client).to receive(:new).and_return(aws_client)
     allow(Aws::S3::Resource).to receive(:new).and_return(s3_bucket_finder)
+  end
+
+  describe "#initialize" do
+    context "when instantiating the Aws::S3::Client" do
+      it "sets credentials: using an Aws::Credentials object" do
+        subject
+
+        expect(Aws::Credentials).to have_received(:new).with(
+          Export::S3UploaderConfig.key_id,
+          Export::S3UploaderConfig.secret_key
+        )
+        expect(Aws::S3::Client).to have_received(:new).with(hash_including(
+          credentials: aws_credentials
+        ))
+      end
+
+      it "sets region: using the region from the S3UploaderConfig" do
+        subject
+
+        expect(Aws::S3::Client).to have_received(:new).with(hash_including(
+          region: Export::S3UploaderConfig.region
+        ))
+      end
+    end
   end
 
   describe "#upload" do

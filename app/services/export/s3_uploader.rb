@@ -3,7 +3,13 @@ module Export
 
   class S3Uploader
     def initialize(file)
-      @client = Aws::S3::Client.new
+      @client = Aws::S3::Client.new(
+        region: S3UploaderConfig.region,
+        credentials: Aws::Credentials.new(
+          S3UploaderConfig.key_id,
+          S3UploaderConfig.secret_key
+        )
+      )
       @file = file
       @filename = "export-file-#{Time.current.to_formatted_s(:number)}.csv"
     end
