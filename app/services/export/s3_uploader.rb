@@ -24,7 +24,7 @@ module Export
       )
       raise "Unexpected response." unless response&.etag
 
-      bucket.object(filename).public_url
+      bucket.object(filename).presigned_url(:get, expires_in: 1.day.in_seconds)
     rescue => error
       raise_error(error.message)
     end
