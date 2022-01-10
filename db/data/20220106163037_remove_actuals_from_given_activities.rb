@@ -30,56 +30,56 @@ detail_output_headers = %w[
 
 detail_output_rows = []
 
-CSV.readlines(input_path, encoding: "bom|utf-8", headers: true).each do |row|
-  roda_id = row.fetch("RODA_ID")
-  activity = Activity.find_by!(roda_identifier: roda_id)
-  all_actuals = activity.actuals
-  actuals_for_deletion = all_actuals.reject { |a| ["FQ2 2021-2022", "FQ1 2021-2022"].include?(a.financial_quarter_and_year) }
+ActiveRecord::Base.transaction do 
+  CSV.readlines(input_path, encoding: "bom|utf-8", headers: true).each do |row|
+    roda_id = row.fetch("RODA_ID")
+    activity = Activity.find_by!(roda_identifier: roda_id)
+    all_actuals = activity.actuals
+    actuals_for_deletion = all_actuals.reject { |a| ["FQ2 2021-2022", "FQ1 2021-2022"].include?(a.financial_quarter_and_year) }
 
-  earliest_actual = if all_actuals.any?
-    all_actuals
-      .min_by { |a| [a.financial_year, a.financial_quarter] }
-      .financial_quarter_and_year
-  else
-    "-"
-  end
+    earliest_actual = if all_actuals.any?
+      all_actuals
+        .min_by { |a| [a.financial_year, a.financial_quarter] }
+        .financial_quarter_and_year
+    else
+      "-"
+    end
 
-  latest_actual = if all_actuals.any?
-    all_actuals
-      .max_by { |a| [a.financial_year, a.financial_quarter] }
-      .financial_quarter_and_year
-  else
-    "-"
-  end
+    latest_actual = if all_actuals.any?
+      all_actuals
+        .max_by { |a| [a.financial_year, a.financial_quarter] }
+        .financial_quarter_and_year
+    else
+      "-"
+    end
 
-  refunds = activity.refunds
-  adjustments = activity.adjustments
+    refunds = activity.refunds
+    adjustments = activity.adjustments
 
-  summary_output_rows << [
-    roda_id,
-    activity.id,
-    all_actuals.count,
-    actuals_for_deletion.count,
-    earliest_actual,
-    latest_actual,
-    refunds.count,
-    adjustments.count,
-  ]
-
-  actuals_for_deletion.each do |actual|
-    detail_output_rows << [
+    summary_output_rows << [
       roda_id,
       activity.id,
-      actual.id,
-      actual.value.to_s,
-      actual.date.to_s,
-      actual.financial_quarter_and_year,
+      all_actuals.count,
+      actuals_for_deletion.count,
+      earliest_actual,
+      latest_actual,
+      refunds.count,
+      adjustments.count,
     ]
-    puts "deleting actual #{actual.id}"
-    actual.destroy!
+
+    actuals_for_deletion.each do |actual|
+      detail_output_rows << [
+        roda_id,
+        activity.id,
+        actual.id,
+        actual.value.to_s,
+        actual.date.to_s,
+        actual.financial_quarter_and_year,
+      ]
+      puts "deleting actual #{actual.id}"
+      actual.destroy!
+    end
   end
-rescue => error
-  puts error
 end
 
 CSV.open(summary_output_path, "w", headers: true) do |csv|
