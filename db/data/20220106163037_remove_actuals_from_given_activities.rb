@@ -30,7 +30,7 @@ detail_output_headers = %w[
 
 detail_output_rows = []
 
-ActiveRecord::Base.transaction do 
+ActiveRecord::Base.transaction do
   CSV.readlines(input_path, encoding: "bom|utf-8", headers: true).each do |row|
     roda_id = row.fetch("RODA_ID")
     activity = Activity.find_by!(roda_identifier: roda_id)
