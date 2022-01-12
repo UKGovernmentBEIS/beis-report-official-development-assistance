@@ -8,7 +8,7 @@
 cat RELATIVE-PATH/FILENAME.csv | cf ssh beis-roda-ENVIRONMENT -c "cat > FILENAME.csv"
 ```
 
-Note: `cat` cannot create a directory. This command will fail if a path is passed to `cat >` . This also means that the copied file will be found in the **root** of the remote project; you will need to move the file to the required directory after copying. 
+Note: `cat` cannot create a directory. This command will fail if a path is passed to `cat >` . This also means that the copied file will be found in the home directory of the root user of the remote project(`/root`). You will need to move the file to the required directory after copying. As you are logged in as `root` the file will be accessible at `~/`.
 
 ## Downloading files
 
