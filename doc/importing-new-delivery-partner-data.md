@@ -223,8 +223,10 @@ contains anything earlier, delete those columns.
 - copy the file over to prod
 
 ```
-cat FILENAME.csv | cf ssh beis-roda-prod -c "cat > FILENAME.csv"
+cat RELATIVE-PATH/FILENAME.csv | cf ssh beis-roda-prod -c "cat > FILENAME.csv"
 ```
+
+Note: `cat` cannot create a directory. This command will fail if a path is passed to `cat >` . This also means that the copied file will be found in the **root** of the remote project; you will need to move the file to the required directory after copying. 
 
 - connect to production:
 
