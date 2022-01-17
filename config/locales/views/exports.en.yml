@@ -38,3 +38,7 @@ en:
       index: Exports
       organisation:
         show: Exports for %{name}
+  mailer:
+    download_link:
+      success:
+        subject: "%{application_name} - Your export '%{file_name}' is ready to download"
