@@ -8,4 +8,10 @@ class DownloadLinkMailerPreview < ActionMailer::Preview
       file_name: "spending_breakdown.csv"
     )
   end
+
+  def send_failure_notification
+    DownloadLinkMailer.send_failure_notification(
+      recipient: FactoryBot.build(:beis_user, email: "beis@example.com")
+    )
+  end
 end

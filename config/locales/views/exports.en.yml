@@ -42,3 +42,5 @@ en:
     download_link:
       success:
         subject: "%{application_name} - Your export '%{file_name}' is ready to download"
+      failure:
+        subject: '%{application_name} - Your export failed'
