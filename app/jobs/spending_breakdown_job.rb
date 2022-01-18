@@ -14,6 +14,7 @@ class SpendingBreakdownJob < ApplicationJob
     ).deliver
   rescue => error
     log_error(error, requester)
+    DownloadLinkMailer.send_failure_notification(recipient: requester).deliver
   end
 
   def save_tempfile(export)

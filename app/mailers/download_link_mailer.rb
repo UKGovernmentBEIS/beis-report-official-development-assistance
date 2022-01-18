@@ -13,4 +13,7 @@ class DownloadLinkMailer < ApplicationMailer
       )
     )
   end
+
+  def send_failure_notification(recipient:)
+  end
 end
