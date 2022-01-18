@@ -15,5 +15,13 @@ class DownloadLinkMailer < ApplicationMailer
   end
 
   def send_failure_notification(recipient:)
+    view_mail(
+      ENV["NOTIFY_VIEW_TEMPLATE"],
+      to: recipient.email,
+      subject: t(
+        "mailer.download_link.failure.subject",
+        application_name: t("app.title")
+      )
+    )
   end
 end
