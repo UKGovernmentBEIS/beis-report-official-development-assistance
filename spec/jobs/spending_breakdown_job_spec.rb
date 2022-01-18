@@ -71,6 +71,7 @@ RSpec.describe SpendingBreakdownJob, type: :job, wip: true do
         allow(uploader).to receive(:upload).and_raise(error)
         allow(Rails.logger).to receive(:error)
         allow(Rollbar).to receive(:log)
+        allow(DownloadLinkMailer).to receive(:send_failure_notification).and_return(email)
       end
 
       it "logs the error, including the identity of the requester" do
@@ -103,7 +104,14 @@ RSpec.describe SpendingBreakdownJob, type: :job, wip: true do
         expect(DownloadLinkMailer).not_to have_received(:send_link)
       end
 
-      it "sends the email notifying the requester of failure creating the report"
+      it "sends the email notifying the requester of failure creating the report" do
+        SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
+
+        expect(DownloadLinkMailer)
+          .to have_received(:send_failure_notification)
+          .with(recipient: requester)
+        expect(email).to have_received(:deliver)
+      end
     end
 
     it "emails a download link to the requesting user" do
