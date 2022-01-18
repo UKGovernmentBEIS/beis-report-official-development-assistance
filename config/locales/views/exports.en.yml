@@ -3,6 +3,7 @@ en:
   document_title:
     export:
       index: Exports
+      export_in_progress: Export being prepared
   page_title:
     export:
       index: Exports

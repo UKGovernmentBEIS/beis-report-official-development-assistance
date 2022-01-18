@@ -42,7 +42,7 @@
               %td.govuk-table__cell
                 CSV
               %td.govuk-table__cell
-                = a11y_action_link("Download", spending_breakdown_exports_path(fund_id: fund.id, format: "csv"), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
+                = a11y_action_link("Download", spending_breakdown_exports_path(fund_id: fund.id), t("table.export.spending_breakdown.name", fund: fund.name), ["govuk-link--no-visited-state"])
       %h1.govuk-heading-m
         = t("page_content.export.organisations.title")
 

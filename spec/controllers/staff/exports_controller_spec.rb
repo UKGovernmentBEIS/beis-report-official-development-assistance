@@ -70,4 +70,28 @@ RSpec.describe Staff::ExportsController do
       end
     end
   end
+
+  describe "#spending_breakdown", wip: true do
+    render_views
+    let(:user) { create(:beis_user) }
+
+    before do
+      allow(SpendingBreakdownJob).to receive(:perform_later)
+    end
+
+    it "kicks off async job to create the CSV, upload to S3 & email download link" do
+      get "spending_breakdown", params: {fund_id: fund.id}
+
+      expect(SpendingBreakdownJob).to have_received(:perform_later).with(
+        requester_id: user.id,
+        fund_id: fund.id.to_s
+      )
+    end
+
+    it "responds with the 'export_in_progress' template" do
+      get "spending_breakdown", params: {fund_id: fund.id}
+
+      expect(response).to render_template(:export_in_progress)
+    end
+  end
 end
