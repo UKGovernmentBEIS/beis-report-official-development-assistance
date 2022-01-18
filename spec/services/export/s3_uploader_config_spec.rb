@@ -1,7 +1,7 @@
 require "rails_helper"
 
 module Export
-  RSpec.describe S3UploaderConfig do
+  RSpec.describe S3UploaderConfig, wip: true do
     context "when an expected credential is missing from VCAP_SERVICES" do
       around(:each) do |example|
         vcap_services = <<~JSON
