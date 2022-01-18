@@ -44,16 +44,12 @@ class Staff::ExportsController < Staff::BaseController
 
   def spending_breakdown
     authorize :export, :show_external_income?
-    fund = Fund.new(params[:fund_id])
 
-    respond_to do |format|
-      format.csv do
-        export = Export::SpendingBreakdown.new(source_fund: fund)
+    SpendingBreakdownJob.perform_later(
+      requester_id: current_user.id,
+      fund_id: params[:fund_id]
+    )
 
-        stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
-          export.rows.each { |row| csv << row }
-        end
-      end
-    end
+    render :export_in_progress
   end
 end
