@@ -50,6 +50,11 @@ class Staff::ExportsController < Staff::BaseController
       fund_id: params[:fund_id]
     )
 
+    fund = Fund.new(params[:fund_id])
+    email = current_user.email
+    @message = "The requested spending breakdown for #{fund.name} is being prepared. " \
+               "We will send a download link to #{email} when it is ready."
+
     render :export_in_progress
   end
 end
