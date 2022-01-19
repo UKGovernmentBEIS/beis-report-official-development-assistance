@@ -4,7 +4,7 @@ class Export::SpendingBreakdown
     :delivery_partner_identifier,
     :title,
     :level,
-    :programme_status,
+    :programme_status
   ]
 
   def initialize(source_fund:, organisation: nil)
@@ -49,7 +49,7 @@ class Export::SpendingBreakdown
     [
       @source_fund.short_name,
       @organisation&.beis_organisation_reference,
-      "spending_breakdown.csv",
+      "spending_breakdown.csv"
     ].reject(&:blank?).join("_")
   end
 

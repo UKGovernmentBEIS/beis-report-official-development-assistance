@@ -45,7 +45,7 @@ class Activity
     def set_call_dates
       activity.assign_attributes(
         call_open_date: format_date(date_params_for("call_open_date")),
-        call_close_date: format_date(date_params_for("call_close_date")),
+        call_close_date: format_date(date_params_for("call_close_date"))
       )
     end
 
@@ -96,7 +96,7 @@ class Activity
         policy_marker_desertification: params_for("policy_marker_desertification"),
         policy_marker_disability: params_for("policy_marker_disability"),
         policy_marker_disaster_risk_reduction: params_for("policy_marker_disaster_risk_reduction"),
-        policy_marker_nutrition: params_for("policy_marker_nutrition"),
+        policy_marker_nutrition: params_for("policy_marker_nutrition")
       )
     end
 
@@ -136,7 +136,7 @@ class Activity
       {
         day: date["#{attribute}(3i)"],
         month: date["#{attribute}(2i)"],
-        year: date["#{attribute}(1i)"],
+        year: date["#{attribute}(1i)"]
       }
     end
 

@@ -101,20 +101,20 @@ RSpec.describe Export::ActivityForecastColumns do
 
       it "includes the heading that describe the finances for financial quarter FQ1 2021-2022" do
         expect(subject.headers).to include(
-          "Forecast FQ1 2021-2022",
+          "Forecast FQ1 2021-2022"
         )
       end
 
       it "includes the heading that describe the finances for financial quarter FQ4 2021-2022" do
         expect(subject.headers).to include(
-          "Forecast FQ4 2021-2022",
+          "Forecast FQ4 2021-2022"
         )
       end
 
       it "includes the headings that describe the finances for financial quarters inbetween" do
         expect(subject.headers).to include(
           "Forecast FQ2 2021-2022",
-          "Forecast FQ3 2021-2022",
+          "Forecast FQ3 2021-2022"
         )
       end
     end
@@ -163,20 +163,20 @@ RSpec.describe Export::ActivityForecastColumns do
 
       it "includes the heading that describe the finances for financial quarter FQ1 2021-2022" do
         expect(subject.headers).to include(
-          "Forecast FQ1 2021-2022",
+          "Forecast FQ1 2021-2022"
         )
       end
 
       it "includes the heading that describe the finances for financial quarter FQ4 2021-2022" do
         expect(subject.headers).to include(
-          "Forecast FQ4 2021-2022",
+          "Forecast FQ4 2021-2022"
         )
       end
 
       it "includes the headings that describe the finances for financial quarters inbetween" do
         expect(subject.headers).to include(
           "Forecast FQ2 2021-2022",
-          "Forecast FQ3 2021-2022",
+          "Forecast FQ3 2021-2022"
         )
       end
 
@@ -225,7 +225,7 @@ RSpec.describe Export::ActivityForecastColumns do
           first_column_of_forecasts = subject.rows_for_first_financial_quarter
           activity_value = first_column_of_forecasts.fetch(@activity.id)
 
-          expect(activity_value).to eq BigDecimal(10_000)
+          expect(activity_value).to eq BigDecimal("10_000")
           expect(first_column_of_forecasts.count).to eq 5
         end
 

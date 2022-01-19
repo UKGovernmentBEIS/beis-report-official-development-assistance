@@ -17,8 +17,8 @@ RSpec.feature "BEIS users can download exports" do
       {
         "Activity RODA Identifier" => project.roda_identifier,
         "Activity BEIS Identifier" => project.beis_identifier,
-        "FQ3 2019-2020" => "150.00",
-      },
+        "FQ3 2019-2020" => "150.00"
+      }
     ])
   end
 
@@ -49,7 +49,7 @@ RSpec.feature "BEIS users can download exports" do
         "FQ2 2020-2021" => "0.00",
         "FQ3 2020-2021" => "0.00",
         "FQ4 2020-2021" => "0.00",
-        "FQ1 2021-2022" => "0.00",
+        "FQ1 2021-2022" => "0.00"
       },
       {
         "RODA identifier" => project.roda_identifier,
@@ -65,8 +65,8 @@ RSpec.feature "BEIS users can download exports" do
         "FQ2 2020-2021" => "0.00",
         "FQ3 2020-2021" => "0.00",
         "FQ4 2020-2021" => "0.00",
-        "FQ1 2021-2022" => "240.00",
-      },
+        "FQ1 2021-2022" => "240.00"
+      }
     ])
   end
 
@@ -102,7 +102,7 @@ RSpec.feature "BEIS users can download exports" do
         "FQ3 2020-2021" => "0.00",
         "FQ4 2020-2021" => "0.00",
         "FQ1 2021-2022" => "0.00",
-        "FQ2 2021-2022" => "0.00",
+        "FQ2 2021-2022" => "0.00"
       },
       {
         "RODA identifier" => project2.roda_identifier,
@@ -119,7 +119,7 @@ RSpec.feature "BEIS users can download exports" do
         "FQ3 2020-2021" => "0.00",
         "FQ4 2020-2021" => "0.00",
         "FQ1 2021-2022" => "240.00",
-        "FQ2 2021-2022" => "0.00",
+        "FQ2 2021-2022" => "0.00"
       },
       {
         "RODA identifier" => project2.roda_identifier,
@@ -136,8 +136,8 @@ RSpec.feature "BEIS users can download exports" do
         "FQ3 2020-2021" => "0.00",
         "FQ4 2020-2021" => "0.00",
         "FQ1 2021-2022" => "0.00",
-        "FQ2 2021-2022" => "100.00",
-      },
+        "FQ2 2021-2022" => "100.00"
+      }
     ])
   end
 
@@ -171,8 +171,8 @@ RSpec.feature "BEIS users can download exports" do
         "2018-2019" => "100.00",
         "2019-2020" => "80.00",
         "2020-2021" => "75.00",
-        "2021-2022" => "20.00",
-      },
+        "2021-2022" => "20.00"
+      }
     ])
   end
 
@@ -212,7 +212,7 @@ RSpec.feature "BEIS users can download exports" do
         "2018-2019" => "100.00",
         "2019-2020" => "80.00",
         "2020-2021" => "0.00",
-        "2021-2022" => "20.00",
+        "2021-2022" => "20.00"
       },
       {
         "RODA identifier" => project2.roda_identifier,
@@ -223,7 +223,7 @@ RSpec.feature "BEIS users can download exports" do
         "2018-2019" => "100.00",
         "2019-2020" => "80.00",
         "2020-2021" => "75.00",
-        "2021-2022" => "20.00",
+        "2021-2022" => "20.00"
       },
       {
         "RODA identifier" => project2.roda_identifier,
@@ -234,8 +234,8 @@ RSpec.feature "BEIS users can download exports" do
         "2018-2019" => "0.00",
         "2019-2020" => "0.00",
         "2020-2021" => "0.00",
-        "2021-2022" => "60.00",
-      },
+        "2021-2022" => "60.00"
+      }
     ])
   end
 end

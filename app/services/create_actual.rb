@@ -23,13 +23,11 @@ class CreateActual
       actual.report = report
     end
 
-    result = if actual.valid?
+    if actual.valid?
       Result.new(actual.save, actual)
     else
       Result.new(false, actual)
     end
-
-    result
   end
 
   private

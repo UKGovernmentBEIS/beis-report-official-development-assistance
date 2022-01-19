@@ -182,7 +182,7 @@ RSpec.describe Staff::ActivityFormsController do
       let(:expected_changes) do
         {
           "title" => ["Original title", "Updated title"],
-          "description" => ["Original description", "Updated description"],
+          "description" => ["Original description", "Updated description"]
         }
       end
 

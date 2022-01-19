@@ -9,7 +9,7 @@ class Activity
       "children",
       "comments",
       "transfers",
-      "historical_events",
+      "historical_events"
     ].freeze
 
     def initialize(activity:, current_user:, tab_name: "financials")

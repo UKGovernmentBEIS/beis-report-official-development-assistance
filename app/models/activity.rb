@@ -35,7 +35,7 @@ class Activity < ApplicationRecord
     :channel_of_delivery_code,
     :oda_eligibility,
     :oda_eligibility_lead,
-    :uk_dp_named_contact,
+    :uk_dp_named_contact
   ]
 
   VALIDATION_STEPS = [
@@ -62,7 +62,7 @@ class Activity < ApplicationRecord
     :channel_of_delivery_code_step,
     :oda_eligibility_step,
     :oda_eligibility_lead_step,
-    :uk_dp_named_contact_step,
+    :uk_dp_named_contact_step
   ]
 
   FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete")
@@ -156,12 +156,12 @@ class Activity < ApplicationRecord
     fund: "fund",
     programme: "programme",
     project: "project",
-    third_party_project: "third_party_project",
+    third_party_project: "third_party_project"
   }
 
   enum geography: {
     recipient_region: "Recipient region",
-    recipient_country: "Recipient country",
+    recipient_country: "Recipient country"
   }
 
   enum programme_status: {
@@ -176,7 +176,7 @@ class Activity < ApplicationRecord
     completed: 9,
     stopped: 10,
     cancelled: 11,
-    paused: 12,
+    paused: 12
   }
 
   NON_CURRENT_PROGRAMME_STATUSES = ["completed", "stopped", "cancelled"]
@@ -201,7 +201,7 @@ class Activity < ApplicationRecord
   enum oda_eligibility: {
     never_eligible: 0,
     eligible: 1,
-    no_longer_eligible: 2,
+    no_longer_eligible: 2
   }
 
   scope :programmes, -> { where(level: :programme) }

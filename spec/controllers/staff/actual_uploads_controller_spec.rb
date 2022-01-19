@@ -80,11 +80,11 @@ RSpec.describe Staff::ActualUploadsController do
     let!(:third_party_project_e) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier: "A-A-C-E", created_at: rand(0..60).minutes.ago) }
     let!(:third_party_project_f) { create(:third_party_project_activity, parent: project_c, organisation: report.organisation, roda_identifier: "A-B-D-F", created_at: rand(0..60).minutes.ago) }
 
-    let!(:stopped_project) { create(:project_activity, parent: programme_a, organisation: report.organisation, programme_status: "stopped",) }
-    let!(:cancelled_project) { create(:project_activity, parent: programme_b, organisation: report.organisation, programme_status: "cancelled",) }
-    let!(:completed_project) { create(:project_activity, parent: programme_a, organisation: report.organisation, programme_status: "completed",) }
-    let!(:paused_project) { create(:project_activity, parent: programme_b, organisation: report.organisation, programme_status: "paused",) }
-    let!(:ineligible_project) { create(:project_activity, parent: programme_b, organisation: report.organisation, oda_eligibility: 2,) }
+    let!(:stopped_project) { create(:project_activity, parent: programme_a, organisation: report.organisation, programme_status: "stopped") }
+    let!(:cancelled_project) { create(:project_activity, parent: programme_b, organisation: report.organisation, programme_status: "cancelled") }
+    let!(:completed_project) { create(:project_activity, parent: programme_a, organisation: report.organisation, programme_status: "completed") }
+    let!(:paused_project) { create(:project_activity, parent: programme_b, organisation: report.organisation, programme_status: "paused") }
+    let!(:ineligible_project) { create(:project_activity, parent: programme_b, organisation: report.organisation, oda_eligibility: 2) }
 
     it "returns activities in a predictable order" do
       get :show, params: {report_id: report.id}

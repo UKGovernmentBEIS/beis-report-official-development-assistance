@@ -69,7 +69,7 @@ RSpec.describe "Activity forms", type: :request do
         "planned_start_date(1i)": "2020",
         "planned_end_date(3i)": "01",
         "planned_end_date(2i)": "15",
-        "planned_end_date(1i)": "2021",
+        "planned_end_date(1i)": "2021"
       })
 
       expect(response).to_not redirect_to_next_step

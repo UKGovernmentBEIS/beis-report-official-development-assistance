@@ -11,15 +11,13 @@ class UpdateBudget
 
     convert_and_assign_value(budget, attributes[:value])
 
-    result = if budget.valid?
+    if budget.valid?
       result = Result.new(budget.save, budget)
       record_historical_event(attributes) if result.success?
       result
     else
       Result.new(false, budget)
     end
-
-    result
   end
 
   private
@@ -45,7 +43,7 @@ class UpdateBudget
       :financial_year,
       :providing_organisation_name,
       :providing_organisation_type,
-      :providing_organisation_reference,
+      :providing_organisation_reference
     ].filter_map { |attribute|
       [attribute, budget.saved_change_to_attribute(attribute)] if budget.saved_change_to_attribute?(attribute)
     }.to_h

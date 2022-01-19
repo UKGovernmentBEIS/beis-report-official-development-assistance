@@ -24,7 +24,7 @@ RSpec.feature "Users can create a third-party project" do
           country_delivery_partners: ["National Council for the State Funding Agencies (CONFAP)"],
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
-          sdg_1: 5,)
+          sdg_1: 5)
 
         visit activities_path
 

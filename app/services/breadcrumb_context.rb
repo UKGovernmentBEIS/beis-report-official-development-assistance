@@ -6,7 +6,7 @@ class BreadcrumbContext
   def set(type:, model:)
     session[:breadcrumb_context] = {
       type: type,
-      model: model,
+      model: model
     }
   end
 

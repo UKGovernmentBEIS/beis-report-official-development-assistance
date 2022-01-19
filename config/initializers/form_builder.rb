@@ -45,6 +45,7 @@ module GOVUKDesignSystemFormBuilder
     end
   end
 end
+
 module RodaFormBuilder
   module Elements
     class Select < GOVUKDesignSystemFormBuilder::Base

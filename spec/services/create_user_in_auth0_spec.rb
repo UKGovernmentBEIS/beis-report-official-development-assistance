@@ -30,7 +30,7 @@ RSpec.describe CreateUserInAuth0 do
             "statusCode" => 500,
             "error" => "Foo",
             "message" => "Bar",
-            "errorCode" => "x_error",
+            "errorCode" => "x_error"
           }]
 
           unexpected_error = Auth0::Unsupported.new(params)

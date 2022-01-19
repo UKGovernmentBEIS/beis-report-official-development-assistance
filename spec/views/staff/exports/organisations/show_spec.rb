@@ -3,7 +3,7 @@ RSpec.describe "staff/exports/organisations/show" do
   let(:xml_downloads) do
     [
       double("Iati::XmlDownload", title: "XML Download 1", path: "http://example.com/1"),
-      double("Iati::XmlDownload", title: "XML Download 2", path: "http://example.com/2"),
+      double("Iati::XmlDownload", title: "XML Download 2", path: "http://example.com/2")
     ]
   end
 

@@ -28,7 +28,7 @@ RSpec.describe CreateRefund do
             value: 100.10,
             financial_quarter: 1,
             financial_year: 2020,
-            comment: "Some words",
+            comment: "Some words"
           }
         end
 
@@ -53,7 +53,7 @@ RSpec.describe CreateRefund do
             value: [nil, -attributes[:value].to_d.abs],
             financial_quarter: [nil, attributes[:financial_quarter]],
             financial_year: [nil, attributes[:financial_year]],
-            comment: [nil, attributes[:comment]],
+            comment: [nil, attributes[:comment]]
           }
 
           subject
@@ -74,7 +74,7 @@ RSpec.describe CreateRefund do
             value: 100.10,
             financial_quarter: nil,
             financial_year: nil,
-            comment: "Some words",
+            comment: "Some words"
           }
         end
 
@@ -100,7 +100,7 @@ RSpec.describe CreateRefund do
           value: 100.10,
           financial_quarter: 1,
           financial_year: 2020,
-          comment: "Some words",
+          comment: "Some words"
         }
       end
 

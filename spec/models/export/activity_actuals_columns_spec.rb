@@ -49,7 +49,7 @@ RSpec.describe Export::ActivityActualsColumns do
             "Actual net FQ1 2020-2021",
             "Actual net FQ2 2020-2021",
             "Actual net FQ3 2020-2021",
-            "Actual net FQ4 2020-2021",
+            "Actual net FQ4 2020-2021"
           ]
         )
       end
@@ -68,7 +68,7 @@ RSpec.describe Export::ActivityActualsColumns do
 
       it "contains the financial data for FQ4 2020-2021" do
         expect(value_for_header("Actual net FQ4 2020-2021"))
-          .to eq BigDecimal(300)
+          .to eq BigDecimal("300")
       end
 
       it "contains zero values for the financial quarters inbetween" do
@@ -89,7 +89,7 @@ RSpec.describe Export::ActivityActualsColumns do
             [
               "Actual net FQ1 2020-2021",
               "Actual net FQ2 2020-2021",
-              "Actual net FQ3 2020-2021",
+              "Actual net FQ3 2020-2021"
             ]
           )
         end
@@ -125,7 +125,7 @@ RSpec.describe Export::ActivityActualsColumns do
         last_column_data = subject.rows_for_last_financial_quarter
         value_for_activity = last_column_data.fetch(@activity.id)
 
-        expect(value_for_activity).to eq BigDecimal(300)
+        expect(value_for_activity).to eq BigDecimal("300")
         expect(last_column_data.count).to eq 5
       end
     end
@@ -140,7 +140,7 @@ RSpec.describe Export::ActivityActualsColumns do
         expect(subject.headers).to include(
           "Actual spend FQ1 2020-2021",
           "Refund FQ1 2020-2021",
-          "Actual net FQ1 2020-2021",
+          "Actual net FQ1 2020-2021"
         )
       end
 
@@ -148,7 +148,7 @@ RSpec.describe Export::ActivityActualsColumns do
         expect(subject.headers).to include(
           "Actual spend FQ3 2020-2021",
           "Refund FQ3 2020-2021",
-          "Actual net FQ3 2020-2021",
+          "Actual net FQ3 2020-2021"
         )
       end
 
@@ -156,7 +156,7 @@ RSpec.describe Export::ActivityActualsColumns do
         expect(subject.headers).to include(
           "Actual spend FQ4 2020-2021",
           "Refund FQ4 2020-2021",
-          "Actual net FQ4 2020-2021",
+          "Actual net FQ4 2020-2021"
         )
       end
 
@@ -164,7 +164,7 @@ RSpec.describe Export::ActivityActualsColumns do
         expect(subject.headers).to include(
           "Actual spend FQ2 2020-2021",
           "Refund FQ2 2020-2021",
-          "Actual net FQ2 2020-2021",
+          "Actual net FQ2 2020-2021"
         )
       end
     end
@@ -195,11 +195,11 @@ RSpec.describe Export::ActivityActualsColumns do
       it "contains the financial data for FQ4 2020-2021" do
         aggregate_failures do
           expect(value_for_header("Actual spend FQ4 2020-2021"))
-            .to eq BigDecimal(300)
+            .to eq BigDecimal("300")
           expect(value_for_header("Refund FQ4 2020-2021"))
             .to eq 0
           expect(value_for_header("Actual net FQ4 2020-2021"))
-            .to eq BigDecimal(300)
+            .to eq BigDecimal("300")
         end
       end
 

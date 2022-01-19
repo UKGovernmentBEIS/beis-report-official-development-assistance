@@ -74,14 +74,14 @@ module CodelistHelper
 
   def aid_type_radio_options
     aid_types.to_objects_with_description(
-      code_displayed_in_name: true,
+      code_displayed_in_name: true
     )
   end
 
   def fstc_applies_radio_options
     [
       OpenStruct.new(value: 0, label: I18n.t("form.label.activity.fstc_applies.false")),
-      OpenStruct.new(value: 1, label: I18n.t("form.label.activity.fstc_applies.true")),
+      OpenStruct.new(value: 1, label: I18n.t("form.label.activity.fstc_applies.true"))
     ]
   end
 

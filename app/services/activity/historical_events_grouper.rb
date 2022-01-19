@@ -12,7 +12,7 @@ class Activity
         .group_by { |event|
           {reference: event.reference,
            user: event.user&.email,
-           timestamp: event.created_at.strftime("%d %b %Y at %R"),}
+           timestamp: event.created_at.strftime("%d %b %Y at %R")}
         }
     end
 

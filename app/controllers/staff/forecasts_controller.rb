@@ -105,7 +105,7 @@ class Staff::ForecastsController < Staff::BaseController
       :currency,
       :value,
       :financial_quarter,
-      :financial_year,
+      :financial_year
     )
   end
 

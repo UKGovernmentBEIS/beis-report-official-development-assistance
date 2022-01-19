@@ -224,7 +224,7 @@ module Activities
 
     class ImplementingOrganisationBuilder
       FIELDS = {
-        "implementing_organisation_name" => "Implementing organisation name",
+        "implementing_organisation_name" => "Implementing organisation name"
       }.freeze
 
       attr_accessor :activity, :row
@@ -298,14 +298,14 @@ module Activities
         objectives: "Aims/Objectives (DP Definition)",
         beis_identifier: "BEIS ID",
         uk_dp_named_contact: "UK DP Named Contact",
-        country_delivery_partners: "NF Partner Country DP",
+        country_delivery_partners: "NF Partner Country DP"
       }
 
       ALLOWED_BLANK_FIELDS = [
         "Implementing organisation reference",
         "BEIS ID",
         "UK DP Named Contact (NF)",
-        "NF Partner Country DP",
+        "NF Partner Country DP"
       ]
 
       def initialize(row, method = :create)
@@ -366,7 +366,7 @@ module Activities
         validate_from_codelist(
           gdi,
           "gdi",
-          I18n.t("importer.errors.activity.invalid_gdi"),
+          I18n.t("importer.errors.activity.invalid_gdi")
         )
       end
 
@@ -380,13 +380,13 @@ module Activities
 
         marker
       end
-      alias convert_policy_marker_gender convert_policy_marker
-      alias convert_policy_marker_climate_change_adaptation convert_policy_marker
-      alias convert_policy_marker_climate_change_mitigation convert_policy_marker
-      alias convert_policy_marker_biodiversity convert_policy_marker
-      alias convert_policy_marker_disability convert_policy_marker
-      alias convert_policy_marker_disaster_risk_reduction convert_policy_marker
-      alias convert_policy_marker_nutrition convert_policy_marker
+      alias_method :convert_policy_marker_gender, :convert_policy_marker
+      alias_method :convert_policy_marker_climate_change_adaptation, :convert_policy_marker
+      alias_method :convert_policy_marker_climate_change_mitigation, :convert_policy_marker
+      alias_method :convert_policy_marker_biodiversity, :convert_policy_marker
+      alias_method :convert_policy_marker_disability, :convert_policy_marker
+      alias_method :convert_policy_marker_disaster_risk_reduction, :convert_policy_marker
+      alias_method :convert_policy_marker_nutrition, :convert_policy_marker
 
       def convert_policy_marker_desertification(policy_marker)
         return "not_assessed" if policy_marker.blank?
@@ -421,9 +421,9 @@ module Activities
 
         goal
       end
-      alias convert_sdg_1 convert_sustainable_development_goal
-      alias convert_sdg_2 convert_sustainable_development_goal
-      alias convert_sdg_3 convert_sustainable_development_goal
+      alias_method :convert_sdg_1, :convert_sustainable_development_goal
+      alias_method :convert_sdg_2, :convert_sustainable_development_goal
+      alias_method :convert_sdg_3, :convert_sustainable_development_goal
 
       def convert_benefitting_countries(benefitting_countries)
         benefitting_countries.split("|").map do |code|
@@ -470,7 +470,7 @@ module Activities
         validate_from_codelist(
           sector,
           "sector",
-          I18n.t("importer.errors.activity.invalid_sector"),
+          I18n.t("importer.errors.activity.invalid_sector")
         )
       end
 
@@ -478,7 +478,7 @@ module Activities
         validate_channel_of_delivery_code(
           channel_of_delivery_code,
           "channel_of_delivery_code",
-          I18n.t("importer.errors.activity.invalid_channel_of_delivery_code"),
+          I18n.t("importer.errors.activity.invalid_channel_of_delivery_code")
         )
       end
 
@@ -486,7 +486,7 @@ module Activities
         validate_from_codelist(
           collaboration_type,
           "collaboration_type",
-          I18n.t("importer.errors.activity.invalid_collaboration_type"),
+          I18n.t("importer.errors.activity.invalid_collaboration_type")
         )
       end
 
@@ -494,7 +494,7 @@ module Activities
         validate_from_codelist(
           aid_type,
           "aid_type",
-          I18n.t("importer.errors.activity.invalid_aid_type"),
+          I18n.t("importer.errors.activity.invalid_aid_type")
         )
       end
 

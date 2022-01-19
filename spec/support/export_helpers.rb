@@ -27,7 +27,7 @@ module ExportHelpers
         @activity,
         report: report,
         financial_quarter: row["financial_quarter"].to_i,
-        financial_year: row["financial_year"].to_i,
+        financial_year: row["financial_year"].to_i
       ).set_value(row["value"].to_i)
     end
   end
@@ -38,7 +38,7 @@ module ExportHelpers
       value: row["value"].strip,
       financial_quarter: row["financial_period"][/\d/],
       financial_year: 2020,
-      report: instance_variable_get("@#{row["report"].strip}_report"),
+      report: instance_variable_get("@#{row["report"].strip}_report")
     }
   end
 end

@@ -76,7 +76,7 @@ class Staff::ActualUploadsController < Staff::BaseController
       activity.roda_identifier,
       report.financial_quarter.to_s,
       report.financial_year.to_s,
-      "%.2f" % 0,
+      "%.2f" % 0
     ]
   end
 

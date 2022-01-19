@@ -60,7 +60,7 @@ class CreateRefund
       value: [nil, refund.value],
       financial_quarter: [nil, refund.financial_quarter],
       financial_year: [nil, refund.financial_year],
-      comment: [nil, refund.comment.body],
+      comment: [nil, refund.comment.body]
     }
   end
 end

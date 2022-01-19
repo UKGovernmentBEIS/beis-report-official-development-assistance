@@ -24,7 +24,7 @@ class BenefittingRegion
       new(
         name: region["name"],
         code: region["code"],
-        level: Level.find_by_code(region["level"]),
+        level: Level.find_by_code(region["level"])
       )
     end
   end

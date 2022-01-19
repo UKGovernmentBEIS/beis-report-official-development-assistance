@@ -85,7 +85,7 @@ RSpec.feature "Users can view actuals in tab within a report" do
           parent: project).tap do |activity|
           create_list(:actual, 3, report: report, parent_activity: activity)
           create_list(:refund, 4, report: report, parent_activity: activity)
-        end,
+        end
       ]
 
       visit report_path(report.id)

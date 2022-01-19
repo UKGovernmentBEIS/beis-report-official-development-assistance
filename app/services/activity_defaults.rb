@@ -24,7 +24,7 @@ class ActivityDefaults
       extending_organisation_id: extending_organisation.id,
       originating_report_id: originating_report&.id,
 
-      form_state: form_state,
+      form_state: form_state
     }
   end
 
@@ -74,14 +74,14 @@ class ActivityDefaults
   def generate_roda_identifier
     Activity::RodaIdentifierGenerator.new(
       parent_activity: parent_activity,
-      extending_organisation: extending_organisation,
+      extending_organisation: extending_organisation
     ).generate
   end
 
   def transparency_identifier
     [
       Organisation::SERVICE_OWNER_IATI_REFERENCE,
-      roda_identifier,
+      roda_identifier
     ].join("-")
   end
 

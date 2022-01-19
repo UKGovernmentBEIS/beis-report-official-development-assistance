@@ -3,7 +3,7 @@ class Import::ActualHistory
     roda_identifier: I18n.t("activerecord.attributes.activity.roda_identifier"),
     financial_quarter: I18n.t("activerecord.attributes.default.financial_quarter"),
     financial_year: I18n.t("activerecord.attributes.default.financial_year"),
-    value: I18n.t("activerecord.attributes.default.value"),
+    value: I18n.t("activerecord.attributes.default.value")
   }
 
   attr_reader :errors, :imported
@@ -21,7 +21,7 @@ class Import::ActualHistory
     import_actual_history(@csv)
   end
 
-  alias imported? call
+  alias_method :imported?, :call
 
   private
 
@@ -68,7 +68,7 @@ class Import::ActualHistory
   def record_import_history
     imported.each do |actual|
       changes = {
-        value: [nil, actual.value],
+        value: [nil, actual.value]
       }
       HistoryRecorder.new(user: @user).call(
         changes: changes,
@@ -166,7 +166,7 @@ class Import::ActualHistory
     end
 
     def roda_identifier_valid?
-      activity.present? ? true : false
+      !!activity.present?
     end
 
     def roda_identifier_error

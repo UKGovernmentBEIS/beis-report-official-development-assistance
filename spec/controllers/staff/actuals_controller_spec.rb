@@ -29,7 +29,7 @@ RSpec.describe Staff::ActualsController do
       params = {
         actual: {value: "200.02", financial_quarter: "2"},
         activity_id: "abc123",
-        id: "xyz321",
+        id: "xyz321"
       }
 
       put :update, params: params

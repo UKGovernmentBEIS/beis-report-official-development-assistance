@@ -39,12 +39,12 @@ RSpec.feature "Users can view reports" do
         create_list(:report, 2, :active, organisation: organisations.first),
         create_list(:report, 3, :active, organisation: organisations.last),
         create_list(:report, 3, :awaiting_changes, organisation: organisations.first),
-        create_list(:report, 2, :in_review, organisation: organisations.last),
+        create_list(:report, 2, :in_review, organisation: organisations.last)
       ].flatten
 
       approved_reports = [
         create_list(:report, 3, :approved, organisation: organisations.first),
-        create_list(:report, 1, :approved, organisation: organisations.last),
+        create_list(:report, 1, :approved, organisation: organisations.last)
       ].flatten
 
       visit reports_path
@@ -226,7 +226,7 @@ RSpec.feature "Users can view reports" do
 
       comments_for_report = [
         create_list(:comment, 3, commentable: activities[0], report: report),
-        create_list(:comment, 1, commentable: activities[1], report: report),
+        create_list(:comment, 1, commentable: activities[1], report: report)
       ].flatten
 
       page = ReportPage.new(report)
@@ -417,12 +417,12 @@ RSpec.feature "Users can view reports" do
 
       activity_comments = [
         create_list(:comment, 3, commentable: activities[0], report: report, owner: delivery_partner_user),
-        create_list(:comment, 1, commentable: activities[1], report: report, owner: delivery_partner_user),
+        create_list(:comment, 1, commentable: activities[1], report: report, owner: delivery_partner_user)
       ].flatten
 
       refund_comments = [
         create_list(:comment, 2, commentable: create(:refund, parent_activity: activities[0]), report: report),
-        create_list(:comment, 1, commentable: create(:refund, parent_activity: activities[1]), report: report),
+        create_list(:comment, 1, commentable: create(:refund, parent_activity: activities[1]), report: report)
       ].flatten
 
       adjustment_comments = create_list(:comment, 2, commentable: create(:adjustment, parent_activity: activities[0]), report: report)

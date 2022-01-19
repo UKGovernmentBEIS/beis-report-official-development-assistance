@@ -1,5 +1,6 @@
 class Fund
   class InvalidActivity < StandardError; end
+
   class InvalidFund < StandardError; end
 
   attr_reader :id, :name, :short_name
