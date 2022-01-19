@@ -72,13 +72,13 @@ if [ "$delete_data" == "y" ]; then
             --exclude-table="spatial_ref_sys"
 
     echo "==> Dropping and recreating the roda-development database..."
-    psql -c '\set AUTOCOMMIT on\n DROP DATABASE "roda-development"; CREATE DATABASE "roda-development";' -d postgres
+    psql -c '\set AUTOCOMMIT on\n DROP DATABASE IF EXISTS "roda-development"; CREATE DATABASE "roda-development";' -d postgres
 
     echo "==> Restoring the data from the backup..."
     pg_restore -d roda-development --no-owner --clean "$filename" || true
 
     echo "==> Removing extraneous Postgres extensions..."
-    psql -d roda-development -c 'DROP extension citext; DROP extension postgis; DROP extension "uuid-ossp";'
+    psql -d roda-development -c 'DROP EXTENSION IF EXISTS citext; DROP EXTENSION IF EXISTS postgis; DROP EXTENSION IF EXISTS "uuid-ossp";'
 
     echo "==> Setting database environment..."
     bundle exec rails db:environment:set RAILS_ENV=development
