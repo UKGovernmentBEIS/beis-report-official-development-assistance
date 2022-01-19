@@ -112,51 +112,55 @@ RSpec.feature "Users can view an activity" do
     end
 
     scenario "the financial summary and activity financials can be viewed" do
-      activity = create(:programme_activity, organisation: user.organisation)
+      travel_to Time.zone.local(2021, 12, 15) do
+        activity = create(:programme_activity, organisation: user.organisation)
 
-      q3_21_report = create(
-        :report,
-        :active,
-        organisation: user.organisation,
-        fund: activity.associated_fund
-      )
+        q3_21_report = create(
+          :report,
+          :active,
+          financial_quarter: 3,
+          financial_year: 2021,
+          organisation: user.organisation,
+          fund: activity.associated_fund
+        )
 
-      actual = create(
-        :actual,
-        parent_activity: activity,
-        value: 10,
-        report: q3_21_report,
-        financial_quarter: 3,
-        financial_year: 2021
-      )
+        actual = create(
+          :actual,
+          parent_activity: activity,
+          value: 10,
+          report: q3_21_report,
+          financial_quarter: 3,
+          financial_year: 2021
+        )
 
-      create(
-        :actual,
-        parent_activity:
-        activity,
-        value: 50,
-        report: q3_21_report,
-        financial_quarter: 3,
-        financial_year: 2021
-      )
+        create(
+          :actual,
+          parent_activity:
+          activity,
+          value: 50,
+          report: q3_21_report,
+          financial_quarter: 3,
+          financial_year: 2021
+        )
 
-      budget = create(:budget, parent_activity: activity, value: 10)
-      create(:budget, parent_activity: activity, value: 55)
+        budget = create(:budget, parent_activity: activity, value: 10)
+        create(:budget, parent_activity: activity, value: 55)
 
-      ForecastHistory.new(activity, financial_year: 2021, financial_quarter: 3).set_value(40)
-      ForecastHistory.new(activity, financial_year: 2021, financial_quarter: 4).set_value(30)
+        ForecastHistory.new(activity, financial_year: 2021, financial_quarter: 3).set_value(40)
+        ForecastHistory.new(activity, financial_year: 2021, financial_quarter: 4).set_value(30)
 
-      visit organisation_activity_financials_path(activity.organisation, activity)
-      within ".govuk-tabs__list-item--selected" do
-        expect(page).to have_content "Financials"
+        visit organisation_activity_financials_path(activity.organisation, activity)
+        within ".govuk-tabs__list-item--selected" do
+          expect(page).to have_content "Financials"
+        end
+        within ".financial-summary" do
+          expect(page).to have_content "Total spend to date £60.00"
+          expect(page).to have_content "Total budget to date £65.00"
+          expect(page).to have_content "Total forecasted spend £30.00" # only upcoming periods
+        end
+        expect(page).to have_content actual.value
+        expect(page).to have_content budget.value
       end
-      within ".financial-summary" do
-        expect(page).to have_content "Total spend to date £60.00"
-        expect(page).to have_content "Total budget to date £65.00"
-        expect(page).to have_content "Total forecasted spend £30.00" # only upcoming periods
-      end
-      expect(page).to have_content actual.value
-      expect(page).to have_content budget.value
     end
 
     scenario "the activity child activities can be viewed in a tab" do

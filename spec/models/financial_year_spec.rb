@@ -77,15 +77,19 @@ RSpec.describe FinancialYear do
     end
 
     it "returns the financial year 10 years in the future" do
-      ten_years_from_now = (Date.today + 9.years).year
-      expect(FinancialYear.from_twenty_ten_to_ten_years_ahead).to include FinancialYear.new(ten_years_from_now)
-      expect(FinancialYear.from_twenty_ten_to_ten_years_ahead).not_to include FinancialYear.new(ten_years_from_now + 1)
+      travel_to Time.zone.local(2021, 12, 15) do
+        ten_years_from_now = (Date.today + 9.years).year
+        expect(FinancialYear.from_twenty_ten_to_ten_years_ahead).to include FinancialYear.new(ten_years_from_now)
+        expect(FinancialYear.from_twenty_ten_to_ten_years_ahead).not_to include FinancialYear.new(ten_years_from_now + 1)
+      end
     end
 
     it "returns the years inbetween" do
-      ten_years_from_now = (Date.today + 10.years).year
-      twenty_ten = Date.parse("2010-01-01").year
-      expect(FinancialYear.from_twenty_ten_to_ten_years_ahead.count).to eq ten_years_from_now - twenty_ten
+      travel_to Time.zone.local(2021, 12, 15) do
+        ten_years_from_now = (Date.today + 10.years).year
+        twenty_ten = Date.parse("2010-01-01").year
+        expect(FinancialYear.from_twenty_ten_to_ten_years_ahead.count).to eq ten_years_from_now - twenty_ten
+      end
     end
   end
 end
