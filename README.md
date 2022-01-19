@@ -19,11 +19,15 @@ Once setup has been completed, you can start the server with
 script/server
 ```
 
-## Running the tests
+and the tests should pass
 
 ```bash
 script/test
 ```
+
+### Creating a development database
+
+See "PaaS to Local" at the end of the (Database Backup and Restore) guide.
 
 ## Running backing services with Docker compose
 
@@ -119,5 +123,4 @@ This repository was bootstrapped from [dxw's `rails-template`](https://github.co
 
 ## Documentation
 
-[Detailed documentation](./doc/0_index_of_contents.md) for developers and support staff is found in `doc/`. 
-See [`doc/0_index_of_contents.md`](./doc/0_index_of_contents.md)
+[Detailed documentation](./doc/0_index_of_contents.md) for developers and support staff is found in `doc/`.
