@@ -22,12 +22,11 @@ class FindProjectActivities
       )
       .order("created_at ASC")
 
-    projects = if organisation.service_owner?
+    if organisation.service_owner?
       projects.all
     else
       projects.where(organisation_id: organisation.id)
     end
-    projects
   end
 
   private

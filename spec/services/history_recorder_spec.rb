@@ -18,7 +18,7 @@ RSpec.describe HistoryRecorder do
     let(:changes) do
       {
         "title" => ["Original title", "Updated title"],
-        "description" => ["Original description", "Updated description"],
+        "description" => ["Original description", "Updated description"]
       }
     end
 
@@ -64,7 +64,7 @@ RSpec.describe HistoryRecorder do
       let(:changes) do
         {
           "objectives" => ["Original objective", "New objective"],
-          "form_state" => ["purpose", "objectives"],
+          "form_state" => ["purpose", "objectives"]
         }
       end
 

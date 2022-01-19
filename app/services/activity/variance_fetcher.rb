@@ -17,11 +17,9 @@ class Activity
     private
 
     def activities_with_variance
-      @activities_with_variance ||= begin
-        all_activities_for_report.reject { |activity|
-          activity.variance_for_report_financial_quarter(report: report).zero?
-        }
-      end
+      @activities_with_variance ||= all_activities_for_report.reject { |activity|
+        activity.variance_for_report_financial_quarter(report: report).zero?
+      }
     end
 
     def all_activities_for_report

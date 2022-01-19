@@ -12,14 +12,14 @@ RSpec.describe ExternalIncome::Export do
   let(:external_income) do
     [
       build(:external_income, activity: project, financial_year: 2014, financial_quarter: 1, amount: 10, organisation: delivery_partner),
-      build(:external_income, activity: project, financial_year: 2014, financial_quarter: 1, amount: 20, organisation: delivery_partner),
+      build(:external_income, activity: project, financial_year: 2014, financial_quarter: 1, amount: 20, organisation: delivery_partner)
     ]
   end
 
   # This is where we stub the variables that get returned by `external_incomes` and `activity_ids`
   before do
     allow(Activity).to receive(:where).with(organisation_id: delivery_partner.id, source_fund_code: source_fund.id).and_return([
-      project,
+      project
     ])
 
     allow(ExternalIncome).to receive(:includes).with(activity: :organisation).and_return(external_income_relation)
@@ -58,7 +58,7 @@ RSpec.describe ExternalIncome::Export do
       "Project (level C)",
       delivery_partner.name,
       "Yes",
-      "10.00",
+      "10.00"
     ])
     expect(external_income_data[1]).to eq([project.roda_identifier, "20.00"])
   end
@@ -67,7 +67,7 @@ RSpec.describe ExternalIncome::Export do
     let(:external_income) do
       [
         build(:external_income, activity: project, financial_year: 2014, financial_quarter: 1, amount: 10),
-        build(:external_income, activity: project, financial_year: 2014, financial_quarter: 4, amount: 20),
+        build(:external_income, activity: project, financial_year: 2014, financial_quarter: 4, amount: 20)
       ]
     end
 
@@ -76,7 +76,7 @@ RSpec.describe ExternalIncome::Export do
 
       expect(external_income_data).to eq([
         [project.roda_identifier, "10.00", "0.00", "0.00", "0.00"],
-        [project.roda_identifier, "0.00", "0.00", "0.00", "20.00"],
+        [project.roda_identifier, "0.00", "0.00", "0.00", "20.00"]
       ])
     end
   end
@@ -86,7 +86,7 @@ RSpec.describe ExternalIncome::Export do
 
     it "fetches the external income for all delivery partners" do
       expect(Activity).to receive(:where).with(source_fund_code: source_fund.id).and_return([
-        project,
+        project
       ])
 
       export.rows

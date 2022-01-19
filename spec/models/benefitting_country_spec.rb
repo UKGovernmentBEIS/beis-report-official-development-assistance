@@ -23,9 +23,9 @@ RSpec.describe BenefittingCountry do
         regions: [
           africa,
           south_of_sahara,
-          eastern_africa,
+          eastern_africa
         ]
-      ),
+      )
     ]
   end
 
@@ -38,7 +38,7 @@ RSpec.describe BenefittingCountry do
         regions: [
           africa,
           south_of_sahara,
-          middle_africa,
+          middle_africa
         ]
       ),
       BenefittingCountry.new(
@@ -48,7 +48,7 @@ RSpec.describe BenefittingCountry do
         regions: [
           africa,
           south_of_sahara,
-          middle_africa,
+          middle_africa
         ]
       ),
       BenefittingCountry.new(
@@ -58,7 +58,7 @@ RSpec.describe BenefittingCountry do
         regions: [
           africa,
           south_of_sahara,
-          eastern_africa,
+          eastern_africa
         ]
       ),
       BenefittingCountry.new(
@@ -68,7 +68,7 @@ RSpec.describe BenefittingCountry do
         regions: [
           africa,
           south_of_sahara,
-          eastern_africa,
+          eastern_africa
         ]
       ),
       BenefittingCountry.new(
@@ -77,7 +77,7 @@ RSpec.describe BenefittingCountry do
         graduated: false,
         regions: [
           africa,
-          north_of_sahara,
+          north_of_sahara
         ]
       ),
       BenefittingCountry.new(
@@ -86,9 +86,9 @@ RSpec.describe BenefittingCountry do
         graduated: false,
         regions: [
           asia,
-          middle_east,
+          middle_east
         ]
-      ),
+      )
     ]
   end
 

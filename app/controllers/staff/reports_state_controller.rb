@@ -8,7 +8,7 @@ class Staff::ReportsStateController < Staff::BaseController
     "submitted" => "submit",
     "in_review" => "review",
     "awaiting_changes" => "request_changes",
-    "approved" => "approve",
+    "approved" => "approve"
   }
 
   def edit

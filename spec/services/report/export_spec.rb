@@ -64,7 +64,7 @@ RSpec.describe Report::Export do
         "FC FQ2 2025-2026",
         "FC FQ3 2025-2026",
         "FC FQ4 2025-2026",
-        "FC FQ1 2026-2027",
+        "FC FQ1 2026-2027"
       )
     end
 
@@ -100,7 +100,7 @@ RSpec.describe Report::Export do
           following_report_quarters: an_instance_of(Array),
           actual_quarters: an_instance_of(Actual::Overview::AllQuarters),
           refund_quarters: an_instance_of(Refund::Overview::AllQuarters),
-          change_state: an_instance_of(Array),
+          change_state: an_instance_of(Array)
         ).and_return(stub)
         expect(stub).to receive(:call).and_return([activity.title])
       end
@@ -111,7 +111,7 @@ RSpec.describe Report::Export do
         [activities[2].title],
         [activities[3].title],
         [activities[4].title],
-        [activities[5].title],
+        [activities[5].title]
       ])
     end
   end
@@ -140,7 +140,7 @@ RSpec.describe Report::Export do
         FinancialQuarter.new(2020, 1),
         FinancialQuarter.new(2020, 2),
         FinancialQuarter.new(2020, 3),
-        FinancialQuarter.new(2020, 4),
+        FinancialQuarter.new(2020, 4)
       ]
     end
     let(:following_report_quarters) do
@@ -148,7 +148,7 @@ RSpec.describe Report::Export do
         FinancialQuarter.new(2021, 1),
         FinancialQuarter.new(2021, 2),
         FinancialQuarter.new(2021, 3),
-        FinancialQuarter.new(2021, 4),
+        FinancialQuarter.new(2021, 4)
       ]
     end
 
@@ -156,14 +156,14 @@ RSpec.describe Report::Export do
       [
         Actual.new(financial_quarter: 1, financial_year: 2020, value: 20, parent_activity: activity),
         Actual.new(financial_quarter: 2, financial_year: 2020, value: 40, parent_activity: activity),
-        Actual.new(financial_quarter: 3, financial_year: 2020, value: 80, parent_activity: activity),
+        Actual.new(financial_quarter: 3, financial_year: 2020, value: 80, parent_activity: activity)
       ]
     end
 
     let(:refunds) do
       [
         Refund.new(financial_quarter: 1, financial_year: 2020, value: -5, parent_activity: activity),
-        Refund.new(financial_quarter: 2, financial_year: 2020, value: -10, parent_activity: activity),
+        Refund.new(financial_quarter: 2, financial_year: 2020, value: -10, parent_activity: activity)
       ]
     end
 
@@ -181,7 +181,7 @@ RSpec.describe Report::Export do
         following_report_quarters: following_report_quarters,
         actual_quarters: actual_quarters,
         refund_quarters: refund_quarters,
-        change_state: ["Changed"],
+        change_state: ["Changed"]
       )
     end
 
@@ -241,7 +241,7 @@ RSpec.describe Report::Export do
           comments.map(&:body).join("\n"),
           fund.name,
           extending_organisation.beis_organisation_reference,
-          "http://example.com",
+          "http://example.com"
         ])
       end
 
@@ -262,7 +262,7 @@ RSpec.describe Report::Export do
           "",
           fund.name,
           extending_organisation.beis_organisation_reference,
-          "http://example.com",
+          "http://example.com"
         ])
       end
     end

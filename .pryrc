@@ -36,6 +36,6 @@ if defined?(Rails)
     " ",
     ANSI_RESET,
     sandbox_status,
-    " ",
+    " "
   ].join
 end

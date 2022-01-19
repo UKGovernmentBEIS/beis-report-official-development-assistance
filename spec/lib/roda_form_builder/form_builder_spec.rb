@@ -19,7 +19,7 @@ RSpec.describe RodaFormBuilder::FormBuilder do
     :govuk_password_field,
     :govuk_url_field,
     :govuk_number_field,
-    :govuk_text_area,
+    :govuk_text_area
   ].each do |field|
     describe "##{field}" do
       let(:field_name) { :title }
@@ -50,13 +50,13 @@ RSpec.describe RodaFormBuilder::FormBuilder do
   [
     :govuk_collection_select,
     :govuk_collection_radio_buttons,
-    :govuk_collection_check_boxes,
+    :govuk_collection_check_boxes
   ].each do |field|
     let(:field_name) { :title }
     let(:collection) do
       [
         OpenStruct.new(name: "Foo", code: 1),
-        OpenStruct.new(name: "Bar", code: 2),
+        OpenStruct.new(name: "Bar", code: 2)
       ]
     end
     let(:output) do

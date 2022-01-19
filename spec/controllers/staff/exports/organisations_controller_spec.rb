@@ -4,7 +4,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
   shared_examples "renders XML" do
     it "sets the XML headers correctly" do
       expect(response.headers.to_h).to include({
-        "Content-Disposition" => "attachment; filename=\"GB-GOV-ADTJQ.xml\"",
+        "Content-Disposition" => "attachment; filename=\"GB-GOV-ADTJQ.xml\""
       })
     end
 
@@ -26,7 +26,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
 
     it "sets the CSV headers correctly" do
       expect(response.headers.to_h).to include({
-        "Content-Type" => "text/csv",
+        "Content-Type" => "text/csv"
       })
     end
   end

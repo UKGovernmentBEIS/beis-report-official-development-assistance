@@ -94,8 +94,8 @@ class Staff::RefundsController < Staff::ActivitiesController
         "financial_quarter"
       ))
       .merge(report: refund.report,
-             parent_activity: refund.parent_activity,
-             comment: refund.comment.body)
+        parent_activity: refund.parent_activity,
+        comment: refund.comment.body)
       .merge(persisted: true)
   end
 

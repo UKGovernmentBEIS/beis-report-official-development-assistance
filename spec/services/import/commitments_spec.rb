@@ -101,7 +101,7 @@ RSpec.describe Import::Commitments do
         invalid_errors = [
           Import::Commitments::RowError.new("Value must be greater than 0", 2),
           Import::Commitments::RowError.new("Financial year can't be blank", 2),
-          Import::Commitments::RowError.new("Financial year is not a number", 2),
+          Import::Commitments::RowError.new("Financial year is not a number", 2)
         ]
         unknown_error = Import::Commitments::RowError.new("Unknown RODA identifier UNKNOWN-RODA-ID", 3)
         subject.call(invalid_csv)

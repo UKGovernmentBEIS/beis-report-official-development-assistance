@@ -42,12 +42,10 @@ class Export::ActivityForecastColumns
   end
 
   def forecasts
-    @_forecasts ||= begin
-      if @report.nil?
-        ForecastOverview.new(activity_ids).latest_values
-      else
-        ForecastOverview.new(activity_ids).snapshot(@report).all_quarters.as_records
-      end
+    @_forecasts ||= if @report.nil?
+      ForecastOverview.new(activity_ids).latest_values
+    else
+      ForecastOverview.new(activity_ids).snapshot(@report).all_quarters.as_records
     end
   end
 
@@ -58,7 +56,7 @@ class Export::ActivityForecastColumns
           [
             forecast.parent_activity_id,
             forecast.financial_quarter,
-            forecast.financial_year,
+            forecast.financial_year
           ]
         ] = forecast.value
       }

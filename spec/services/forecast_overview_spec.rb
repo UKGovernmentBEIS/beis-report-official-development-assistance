@@ -30,7 +30,7 @@ RSpec.describe ForecastOverview do
       expect(forecasts).to eq([
         [2017, 1, 10],
         [2017, 2, 20],
-        [2017, 3, 40],
+        [2017, 3, 40]
       ])
     end
 
@@ -48,7 +48,7 @@ RSpec.describe ForecastOverview do
 
         expect(forecasts).to eq([
           [2017, 1, 10],
-          [2017, 3, 40],
+          [2017, 3, 40]
         ])
       end
     end
@@ -104,7 +104,7 @@ RSpec.describe ForecastOverview do
         [2018, 1, 110],
         [2018, 2, 120],
         [2018, 3, 130],
-        [2018, 4, 140],
+        [2018, 4, 140]
       ])
     end
 
@@ -123,7 +123,7 @@ RSpec.describe ForecastOverview do
           [2017, 4, 70],
           [2018, 1, 110],
           [2018, 2, 120],
-          [2018, 3, 130],
+          [2018, 3, 130]
         ])
       end
     end
@@ -151,7 +151,7 @@ RSpec.describe ForecastOverview do
           [2017, 4, 20],
           [2018, 1, 30],
           [2018, 3, 40],
-          [2018, 4, 50],
+          [2018, 4, 50]
         ]
       }
 
@@ -168,7 +168,7 @@ RSpec.describe ForecastOverview do
           [2017, 4, 70],
           [2018, 1, 30],
           [2018, 2, 80],
-          [2018, 4, 50],
+          [2018, 4, 50]
         ]
       }
 
@@ -187,7 +187,7 @@ RSpec.describe ForecastOverview do
         [2017, 1, 10],
         [2017, 2, 60],
         [2017, 3, 100],
-        [2017, 4, 70],
+        [2017, 4, 70]
       ]
 
       expected_values.each do |year, quarter, amount|
@@ -210,7 +210,7 @@ RSpec.describe ForecastOverview do
           [2017, 4, 20],
           [2018, 1, 30],
           [2018, 3, 40],
-          [2018, 4, 50],
+          [2018, 4, 50]
         ]
       }
 
@@ -231,7 +231,7 @@ RSpec.describe ForecastOverview do
         expect(quarters).to eq([
           [2016, 1],
           [2016, 1],
-          [2015, 4],
+          [2015, 4]
         ])
       end
 
@@ -246,7 +246,7 @@ RSpec.describe ForecastOverview do
           [2018, 1, 110],
           [2018, 2, 120],
           [2018, 3, 130],
-          [2018, 4, 140],
+          [2018, 4, 140]
         ])
       end
 
@@ -262,7 +262,7 @@ RSpec.describe ForecastOverview do
             [2018, 1, 110],
             [2018, 2, 120],
             [2018, 3, 130],
-            [2018, 4, 140],
+            [2018, 4, 140]
           ]
         }
 
@@ -279,7 +279,7 @@ RSpec.describe ForecastOverview do
             [2017, 4, 70],
             [2018, 1, 30],
             [2018, 2, 80],
-            [2018, 4, 50],
+            [2018, 4, 50]
           ]
         }
 
@@ -299,7 +299,7 @@ RSpec.describe ForecastOverview do
 
       it "only includes forecasts for the given activity" do
         expect(forecast_values(project_overview.latest_values)).to eq([
-          [2019, 1, 200],
+          [2019, 1, 200]
         ])
 
         expect(overview.latest_values).to all(satisfy { |forecast|
@@ -341,7 +341,7 @@ RSpec.describe ForecastOverview do
       forecasts[[programme, 2023, 1]].set_value(50)
 
       expect(forecast_values).to match_array([
-        [programme, 2023, 1, 50],
+        [programme, 2023, 1, 50]
       ])
     end
 
@@ -367,7 +367,7 @@ RSpec.describe ForecastOverview do
 
         [project_2, 2024, 1, 160],
         [third_party_project_3, 2024, 2, 320],
-        [third_party_project_4, 2024, 3, 640],
+        [third_party_project_4, 2024, 3, 640]
       ])
     end
 
@@ -376,7 +376,7 @@ RSpec.describe ForecastOverview do
       forecasts[[programme, 2023, 1]].set_value(20)
 
       expect(forecast_values).to match_array([
-        [programme, 2023, 1, 20],
+        [programme, 2023, 1, 20]
       ])
     end
 
@@ -386,7 +386,7 @@ RSpec.describe ForecastOverview do
       forecasts[[project_2, 2023, 1]].set_value(20)
 
       expect(forecast_values).to match_array([
-        [project_2, 2023, 1, 20],
+        [project_2, 2023, 1, 20]
       ])
     end
 
@@ -397,7 +397,7 @@ RSpec.describe ForecastOverview do
       forecasts[[project_2, 2023, 1]].set_value(20)
 
       expect(forecast_values).to match_array([
-        [project_2, 2023, 1, 20],
+        [project_2, 2023, 1, 20]
       ])
     end
 
@@ -412,7 +412,7 @@ RSpec.describe ForecastOverview do
 
       expect(forecast_values).to match_array([
         [programme, 2023, 1, 40],
-        [project_2, 2023, 1, 80],
+        [project_2, 2023, 1, 80]
       ])
     end
   end

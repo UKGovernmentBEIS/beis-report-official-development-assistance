@@ -12,10 +12,10 @@ class Refund < Transaction
 
   def value=(amount)
     big_decimal = begin
-                    BigDecimal(amount)
-                  rescue ArgumentError, TypeError
-                    return
-                  end
+      BigDecimal(amount)
+    rescue ArgumentError, TypeError
+      return
+    end
     write_attribute(:value, -big_decimal.abs)
   end
 end

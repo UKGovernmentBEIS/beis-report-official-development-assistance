@@ -22,7 +22,7 @@ class Report
           previous_report_quarters: previous_report_quarters,
           following_report_quarters: following_report_quarters,
           actual_quarters: actual_quarters,
-          refund_quarters: refund_quarters,
+          refund_quarters: refund_quarters
         ).call
       end
     end
@@ -36,12 +36,10 @@ class Report
     attr_reader :report
 
     def activities
-      @activities ||= begin
-        Activity::ProjectsForReportFinder.new(
-          report: report,
-          scope: Activity.all
-        ).call.sort_by { |a| a.level }
-      end
+      @activities ||= Activity::ProjectsForReportFinder.new(
+        report: report,
+        scope: Activity.all
+      ).call.sort_by { |a| a.level }
     end
 
     def actual_quarters
@@ -141,14 +139,14 @@ class Report
         "Disaster Risk Reduction" => :policy_marker_disaster_risk_reduction,
         "Nutrition policy" => :policy_marker_nutrition,
         "Implementing organisations" => :implementing_organisations,
-        "Tied status" => :tied_status_with_code,
+        "Tied status" => :tied_status_with_code
       }
 
       VARIANCE_HEADERS = [
         "Comment",
         "Source fund",
         "Delivery partner short name",
-        "Link to activity in RODA",
+        "Link to activity in RODA"
       ]
 
       def initialize(activity:, report_presenter:, previous_report_quarters:, following_report_quarters:, actual_quarters:, refund_quarters:, change_state:)
@@ -179,7 +177,7 @@ class Report
         previous_report_quarters.map { |quarter|
           [
             actual_value(quarter),
-            refund_value(quarter),
+            refund_value(quarter)
           ]
         }.flatten
       end
@@ -197,7 +195,7 @@ class Report
           activity_presenter.comments_for_report(report_id: report_presenter.id).map(&:body).join("\n"),
           activity_presenter.source_fund&.name,
           activity_presenter.extending_organisation&.beis_organisation_reference,
-          activity_presenter.link_to_roda,
+          activity_presenter.link_to_roda
         ]
       end
 

@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
     client_id = ENV["AUTH0_CLIENT_ID"]
     request_params = {
       returnTo: root_url,
-      client_id: client_id,
+      client_id: client_id
     }
 
     URI::HTTPS.build(host: domain, path: "/v2/logout", query: to_query(request_params))

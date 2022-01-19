@@ -1,7 +1,7 @@
 RSpec::Matchers.define :validate_attribute do |attribute|
   match do |subject|
     validators = subject.class.validators_on(attribute).select { |validator|
-      validator.class == @validator_class
+      validator.instance_of?(@validator_class)
     }
 
     validators.present?

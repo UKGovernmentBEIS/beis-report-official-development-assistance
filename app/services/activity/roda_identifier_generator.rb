@@ -19,14 +19,14 @@ class Activity
       [
         parent_activity.roda_identifier,
         extending_organisation.beis_organisation_reference,
-        component_identifier,
+        component_identifier
       ].join("-")
     end
 
     def project_identifier
       [
         parent_activity.roda_identifier,
-        component_identifier,
+        component_identifier
       ].join("-")
     end
 

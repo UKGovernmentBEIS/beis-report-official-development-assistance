@@ -15,7 +15,7 @@ class ImportForecasts
   COLUMN_HEADINGS = [
     "Activity Name",
     "Activity Delivery Partner Identifier",
-    RODA_ID_KEY,
+    RODA_ID_KEY
   ]
 
   class Generator
@@ -40,7 +40,7 @@ class ImportForecasts
       [
         activity.title,
         activity.delivery_partner_identifier,
-        activity.roda_identifier,
+        activity.roda_identifier
       ] + forecast_values
     end
   end
@@ -149,7 +149,7 @@ class ImportForecasts
     message = [
       "The report #{@report.id} (#{report_organisation}, #{quarter @report} for #{report_fund},",
       "#{@report.state}) is not the latest for that organisation and fund.",
-      "The latest is #{latest_report.id}, for #{quarter latest_report} (#{latest_report.state}).",
+      "The latest is #{latest_report.id}, for #{quarter latest_report} (#{latest_report.state})."
     ]
 
     @errors << Error.new(nil, nil, nil, message.join(" "))

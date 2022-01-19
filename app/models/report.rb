@@ -29,14 +29,14 @@ class Report < ApplicationRecord
     submitted: "submitted",
     in_review: "in_review",
     awaiting_changes: "awaiting_changes",
-    approved: "approved",
+    approved: "approved"
   }
 
   scope :in_historical_order, -> do
     clauses = [
       "reports.financial_year DESC NULLS LAST",
       "reports.financial_quarter DESC NULLS LAST",
-      "reports.created_at DESC",
+      "reports.created_at DESC"
     ]
 
     order(clauses.join(", "))
@@ -84,7 +84,7 @@ class Report < ApplicationRecord
 
     unless Report.where(
       fund: fund,
-      organisation: organisation,
+      organisation: organisation
     ).all?(&:approved?)
       errors.add(:base, I18n.t("activerecord.errors.models.report.unapproved_reports_html"))
     end

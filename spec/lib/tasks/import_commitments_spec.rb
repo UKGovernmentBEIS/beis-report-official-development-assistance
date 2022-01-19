@@ -56,7 +56,7 @@ RSpec.describe "rake commitments:import", type: :task do
       it "outputs the specific errors" do
         errors = [
           Import::Commitments::RowError.new("Value must be greater than 0", 1),
-          Import::Commitments::RowError.new("Value must be greater than 0", 2),
+          Import::Commitments::RowError.new("Value must be greater than 0", 2)
         ]
 
         importer = double(:importer, errors: errors, imported: [])

@@ -10,14 +10,12 @@ class CreateAdjustment
     bail_if_report_not_acceptable
 
     adjustment = create_adjustment
-    result = if adjustment.errors.any?
+    if adjustment.errors.any?
       Result.new(false, adjustment)
     else
       record_historical_event(adjustment)
       Result.new(true, adjustment)
     end
-
-    result
   end
 
   private
@@ -29,7 +27,7 @@ class CreateAdjustment
       adjustment.build_comment(
         body: attributes.fetch(:comment),
         commentable: adjustment,
-        report: report,
+        report: report
       )
       adjustment.build_detail(
         user: user,
@@ -55,7 +53,7 @@ class CreateAdjustment
       report: report,
       value: attributes.fetch(:value),
       financial_quarter: attributes.fetch(:financial_quarter),
-      financial_year: attributes.fetch(:financial_year),
+      financial_year: attributes.fetch(:financial_year)
     }
   end
 
@@ -65,7 +63,7 @@ class CreateAdjustment
       financial_quarter: [nil, attributes.fetch(:financial_quarter)],
       financial_year: [nil, attributes.fetch(:financial_year)],
       comment: [nil, attributes.fetch(:comment)],
-      adjustment_type: [nil, attributes.fetch(:adjustment_type)],
+      adjustment_type: [nil, attributes.fetch(:adjustment_type)]
     }
   end
 

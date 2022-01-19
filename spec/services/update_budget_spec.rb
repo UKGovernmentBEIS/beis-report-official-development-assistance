@@ -44,7 +44,7 @@ RSpec.describe UpdateBudget do
           ActionController::Parameters.new(
             budget_type: :other_official,
             value: 105,
-            financial_year: 2015,
+            financial_year: 2015
           ).permit!
         end
 
@@ -59,7 +59,7 @@ RSpec.describe UpdateBudget do
             changes: {
               budget_type: [budget.budget_type, "other_official"],
               value: [budget.value, 105],
-              financial_year: [budget.financial_year.start_year, 2015],
+              financial_year: [budget.financial_year.start_year, 2015]
             },
             reference: "Change to Budget",
             activity: budget.parent_activity,
@@ -110,7 +110,7 @@ RSpec.describe UpdateBudget do
               budget_type: [budget.budget_type, "other_official"],
               providing_organisation_name: [nil, "Test Organisation"],
               providing_organisation_reference: [nil, "GB-TEST-02"],
-              providing_organisation_type: [nil, "80"],
+              providing_organisation_type: [nil, "80"]
             },
             reference: "Change to Budget",
             activity: budget.parent_activity,
@@ -134,7 +134,7 @@ RSpec.describe UpdateBudget do
       describe "changing to 'direct'" do
         let(:attributes) do
           ActionController::Parameters.new(
-            budget_type: :direct,
+            budget_type: :direct
           ).permit!
         end
         let(:result) { subject.call(attributes: attributes) }
@@ -145,7 +145,7 @@ RSpec.describe UpdateBudget do
               budget_type: [budget.budget_type, "direct"],
               providing_organisation_name: [budget.providing_organisation_name, nil],
               providing_organisation_reference: [budget.providing_organisation_reference, nil],
-              providing_organisation_type: [budget.providing_organisation_type, nil],
+              providing_organisation_type: [budget.providing_organisation_type, nil]
             },
             reference: "Change to Budget",
             activity: budget.parent_activity,

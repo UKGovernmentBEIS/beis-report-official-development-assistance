@@ -20,7 +20,7 @@ RSpec.describe Export::ActivityAttributesColumns do
           I18n.t("activerecord.attributes.activity.roda_identifier"),
           I18n.t("activerecord.attributes.activity.delivery_partner_identifier"),
           I18n.t("activerecord.attributes.activity.programme_status"),
-          I18n.t("activerecord.attributes.activity.benefitting_region"),
+          I18n.t("activerecord.attributes.activity.benefitting_region")
         ]
         expect(subject.headers).to match_array(headers)
       end
@@ -36,7 +36,7 @@ RSpec.describe Export::ActivityAttributesColumns do
           headers = [
             I18n.t("activerecord.attributes.activity.delivery_partner_identifier"),
             I18n.t("activerecord.attributes.activity.roda_identifier"),
-            I18n.t("activerecord.attributes.activity.programme_status"),
+            I18n.t("activerecord.attributes.activity.programme_status")
           ]
           expect(subject.headers).to match_array(headers)
         end
@@ -52,14 +52,14 @@ RSpec.describe Export::ActivityAttributesColumns do
           first_row_activity_presenter.roda_identifier,
           first_row_activity_presenter.delivery_partner_identifier,
           first_row_activity_presenter.programme_status,
-          first_row_activity_presenter.benefitting_region,
+          first_row_activity_presenter.benefitting_region
         ]
 
         last_row_values = [
           last_row_activity_presenter.roda_identifier,
           last_row_activity_presenter.delivery_partner_identifier,
           last_row_activity_presenter.programme_status,
-          last_row_activity_presenter.benefitting_region,
+          last_row_activity_presenter.benefitting_region
         ]
 
         expect(subject.rows.count).to eq 5
@@ -83,7 +83,7 @@ RSpec.describe Export::ActivityAttributesColumns do
             I18n.t("activerecord.attributes.activity.roda_identifier"),
             I18n.t("activerecord.attributes.activity.delivery_partner_identifier"),
             I18n.t("activerecord.attributes.activity.programme_status"),
-            I18n.t("activerecord.attributes.activity.benefitting_region"),
+            I18n.t("activerecord.attributes.activity.benefitting_region")
           ]
           expect(subject.headers).to match_array(headers)
         end

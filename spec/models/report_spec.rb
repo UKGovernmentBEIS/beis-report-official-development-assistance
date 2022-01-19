@@ -219,7 +219,7 @@ RSpec.describe Report, type: :model do
         [
           double("forecast", value: 50_000),
           double("forecast", value: 25_000),
-          double("forecast", value: 25_000),
+          double("forecast", value: 25_000)
         ]
       }
     end
@@ -250,7 +250,7 @@ RSpec.describe Report, type: :model do
       expect(report.activities_updated).to match_array([
         project_updated_in_report,
         other_project_updated_in_report,
-        third_party_project_updated_in_report,
+        third_party_project_updated_in_report
       ])
     end
 

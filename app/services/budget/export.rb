@@ -5,7 +5,7 @@ class Budget
       "Delivery partner identifier",
       "Delivery partner organisation",
       "Level",
-      "Title",
+      "Title"
     ]
 
     def initialize(source_fund:, organisation: nil)
@@ -38,7 +38,7 @@ class Budget
       [
         source_fund.short_name,
         @organisation&.beis_organisation_reference,
-        "budgets.csv",
+        "budgets.csv"
       ].reject(&:blank?).join("_")
     end
 
@@ -52,7 +52,7 @@ class Budget
         activity.delivery_partner_identifier,
         activity.extending_organisation&.name,
         I18n.t("table.body.activity.level.#{activity.level}"),
-        activity.title,
+        activity.title
       ]
     end
 

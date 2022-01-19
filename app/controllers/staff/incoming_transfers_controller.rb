@@ -33,7 +33,7 @@ class Staff::IncomingTransfersController < Staff::BaseController
         :value,
         :destination_id,
         :source_roda_identifier,
-        :beis_identifier,
+        :beis_identifier
       )
   end
 

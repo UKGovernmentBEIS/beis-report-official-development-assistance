@@ -5,7 +5,7 @@ module AuthenticationHelpers
       uid: uid,
       info: {
         name: name,
-        email: email,
+        email: email
       }
     )
   end

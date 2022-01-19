@@ -28,7 +28,7 @@ RSpec.describe Refund::GroupedRefundFetcher do
 
       expect(subject.call).to eq({
         activity1 => activity1_refunds,
-        activity2 => activity2_refunds,
+        activity2 => activity2_refunds
       })
     end
   end

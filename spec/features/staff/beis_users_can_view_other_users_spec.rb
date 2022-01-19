@@ -57,7 +57,7 @@ RSpec.feature "BEIS users can can view other users" do
         a2_user.organisation.name,
         b1_user.organisation.name,
         b2_user.organisation.name,
-        user.organisation.name,
+        user.organisation.name
       ].sort
 
       expect(page.all("td.organisation").collect(&:text)).to match_array(expected_array)

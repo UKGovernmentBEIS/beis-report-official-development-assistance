@@ -99,7 +99,6 @@ RSpec.describe Export::ActivityImplementingOrganisationColumn do
 
   def level_b_activity_with_extending_organisation
     organisation = create(:delivery_partner_organisation)
-    activity = create(:programme_activity, extending_organisation: organisation)
-    activity
+    create(:programme_activity, extending_organisation: organisation)
   end
 end
