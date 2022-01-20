@@ -186,14 +186,8 @@ en:
           title: Report activation complete
           body: "%{report_financial_quarter} %{report_description}"
         failure: Report could not be activated
-      submit:
-        failure: Report could not be submitted
       review:
         failure: Report could not be moved to in review
-      request_changes:
-        failure: Report could not be moved to awaiting changes
-      approve:
-        failure: Report could not be approved
       create:
         success: Report successfully created
       update:
@@ -204,6 +198,7 @@ en:
           title: "%{report_financial_quarter} %{report_organisation} report submitted"
         confirm:
           button: Confirm submission
+        failure: Report could not be submitted
       download:
         button: Download report as CSV file
         failure: Reports could not be downloaded
@@ -221,12 +216,14 @@ en:
           button: Confirm
         complete:
           title: "%{report_financial_quarter} %{report_organisation} report is now awaiting changes"
+        failure: Report could not be moved to awaiting changes
       approve:
         complete:
           title: "%{report_financial_quarter} report for %{report_organisation} approved"
         button: Approve
         confirm:
           button: Confirm approval
+        failure: Report could not be approved
   activerecord:
     errors:
       models:
