@@ -7,7 +7,7 @@ class ExternalIncome
       "Title",
       "Level",
       "Providing organisation",
-      "ODA",
+      "ODA"
     ]
 
     def initialize(source_fund:, organisation: nil)
@@ -31,7 +31,7 @@ class ExternalIncome
       [
         @source_fund.short_name,
         @organisation&.beis_organisation_reference,
-        "external_income.csv",
+        "external_income.csv"
       ].reject(&:blank?).join("_")
     end
 
@@ -43,14 +43,14 @@ class ExternalIncome
         activity.delivery_partner_identifier,
         activity.organisation.name,
         activity.title,
-        I18n.t("table.body.activity.level.#{activity.level}"),
+        I18n.t("table.body.activity.level.#{activity.level}")
       ]
     end
 
     def external_income_data(external_income)
       [
         external_income.organisation.name,
-        I18n.t("table.body.external_income.oda_funding.#{external_income.oda_funding?}"),
+        I18n.t("table.body.external_income.oda_funding.#{external_income.oda_funding?}")
       ]
     end
 

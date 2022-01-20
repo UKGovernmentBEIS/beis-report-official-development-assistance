@@ -28,7 +28,7 @@ RSpec.describe Transaction::GroupedActualsFetcher do
 
       expect(subject.call).to eq({
         activity1 => activity1_actuals,
-        activity2 => activity2_actuals,
+        activity2 => activity2_actuals
       })
     end
   end

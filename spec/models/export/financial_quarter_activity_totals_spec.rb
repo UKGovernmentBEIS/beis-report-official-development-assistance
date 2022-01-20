@@ -4,7 +4,7 @@ RSpec.describe Export::FinancialQuarterActivityTotals do
       [activity.id, 1, 2020, "Refund", nil] => 200,
       [activity.id, 1, 2020, "Actual", nil] => 300,
       [activity.id, 1, 2020, "Adjustment", "Actual"] => -100,
-      [activity.id, 1, 2020, "Adjustment", "Refund"] => -50,
+      [activity.id, 1, 2020, "Adjustment", "Refund"] => -50
     }
   }
 

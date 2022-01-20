@@ -17,7 +17,7 @@ RSpec.describe Actual::Export do
     expect(quarter_headers).to eq []
 
     expect(actual_data).to eq([
-      [project.roda_identifier],
+      [project.roda_identifier]
     ])
   end
 
@@ -30,7 +30,7 @@ RSpec.describe Actual::Export do
     expect(quarter_headers).to eq ["FQ1 2014-2015"]
 
     expect(actual_data).to eq([
-      [project.roda_identifier, "30.00"],
+      [project.roda_identifier, "30.00"]
     ])
   end
 
@@ -43,7 +43,7 @@ RSpec.describe Actual::Export do
     expect(quarter_headers).to eq ["FQ1 2014-2015", "FQ2 2014-2015", "FQ3 2014-2015", "FQ4 2014-2015"]
 
     expect(actual_data).to eq([
-      [project.roda_identifier, "10.00", "0.00", "0.00", "20.00"],
+      [project.roda_identifier, "10.00", "0.00", "0.00", "20.00"]
     ])
   end
 
@@ -58,7 +58,7 @@ RSpec.describe Actual::Export do
 
     expect(actual_data).to match_array([
       [project.roda_identifier, "10.00", "0.00", "0.00", "0.00", "0.00", "0.00"],
-      [third_party_project.roda_identifier, "0.00", "0.00", "0.00", "0.00", "0.00", "20.00"],
+      [third_party_project.roda_identifier, "0.00", "0.00", "0.00", "0.00", "0.00", "20.00"]
     ])
   end
 
@@ -72,7 +72,7 @@ RSpec.describe Actual::Export do
 
     expect(actual_data).to match_array([
       [project.roda_identifier, "10.00"],
-      [third_party_project.roda_identifier, "0.00"],
+      [third_party_project.roda_identifier, "0.00"]
     ])
   end
 end

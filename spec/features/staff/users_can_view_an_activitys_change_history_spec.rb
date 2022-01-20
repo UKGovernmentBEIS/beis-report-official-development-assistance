@@ -10,14 +10,14 @@ RSpec.feature "Users can view an activity's 'Change History' within a tab" do
         organisation: programme.organisation,
         fund: programme.parent,
         financial_quarter: 3,
-        financial_year: 2020,
+        financial_year: 2020
       )
     end
 
     let(:reference) { "Update to Activity purpose" }
     let(:changes) do
       {"title" => ["Original title", "Updated title"],
-       "description" => ["Original description", "Updated description"],}
+       "description" => ["Original description", "Updated description"]}
     end
 
     before do

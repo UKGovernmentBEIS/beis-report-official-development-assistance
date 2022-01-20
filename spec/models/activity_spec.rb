@@ -127,7 +127,7 @@ RSpec.describe Activity, type: :model do
         expect(activity.comments).to match_array([
           activity_comment,
           refund.comment,
-          adjustment.comment,
+          adjustment.comment
         ])
       end
     end
@@ -1408,31 +1408,31 @@ RSpec.describe Activity, type: :model do
           programme1_projects,
           programme2_projects,
           programme1_third_party_project,
-          programme2_third_party_project,
+          programme2_third_party_project
         ].flatten)
       end
 
       it "returns all the activities in a programme" do
         expect(programme1.descendants).to match_array([
           programme1_projects,
-          programme1_third_party_project,
+          programme1_third_party_project
         ].flatten)
 
         expect(programme2.descendants).to match_array([
           programme2_projects,
-          programme2_third_party_project,
+          programme2_third_party_project
         ].flatten)
       end
 
       it "returns all the activities in a project" do
         expect(programme1_projects[0].descendants).to match_array([
-          programme1_third_party_project,
+          programme1_third_party_project
         ].flatten)
         expect(programme1_projects[1].descendants).to eq([])
 
         expect(programme2_projects[0].descendants).to eq([])
         expect(programme2_projects[1].descendants).to match_array([
-          programme2_third_party_project,
+          programme2_third_party_project
         ].flatten)
       end
     end
@@ -1562,7 +1562,7 @@ RSpec.describe Activity, type: :model do
           [programme2, quarter.succ, 2560],
 
           [programme2_projects[0], quarter, 5120],
-          [programme2_projects[1], quarter, 10240],
+          [programme2_projects[1], quarter, 10240]
         ]
 
         forecasts.each do |activity, quarter, value|
@@ -1649,7 +1649,7 @@ RSpec.describe Activity, type: :model do
           programme2_projects1_actual.id,
           programme2_projects2_actual.id,
           programme1_tpp_actual.id,
-          programme2_tpp_actual.id,
+          programme2_tpp_actual.id
         ])
       end
     end

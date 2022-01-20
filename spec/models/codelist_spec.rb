@@ -166,7 +166,7 @@ RSpec.describe Codelist do
         allow(codelist).to receive(:list) do
           [
             {"foo" => "bar"},
-            {"foo" => "baz"},
+            {"foo" => "baz"}
           ]
         end
       end
@@ -179,7 +179,7 @@ RSpec.describe Codelist do
         allow(codelist).to receive(:list) do
           [
             {"code" => "A01"},
-            {"code" => "B01"},
+            {"code" => "B01"}
           ]
         end
       end
@@ -192,7 +192,7 @@ RSpec.describe Codelist do
         allow(codelist).to receive(:list) do
           [
             {"code" => "B01"},
-            {"code" => "C01"},
+            {"code" => "C01"}
           ]
         end
       end

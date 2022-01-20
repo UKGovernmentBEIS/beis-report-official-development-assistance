@@ -78,7 +78,7 @@ Activity.find_or_create_by(third_party_project_params)
   Activity.fund,
   Activity.programme,
   Activity.project,
-  Activity.third_party_project,
+  Activity.third_party_project
 ].each do |set|
   set.each do |activity|
     activity.save!

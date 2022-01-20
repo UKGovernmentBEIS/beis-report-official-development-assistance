@@ -18,10 +18,10 @@ RSpec.describe Activity::GroupedActivitiesFetcher do
         fund => {
           programme => {
             project => [
-              third_party_project,
-            ],
-          },
-        },
+              third_party_project
+            ]
+          }
+        }
       })
     end
 
@@ -44,18 +44,18 @@ RSpec.describe Activity::GroupedActivitiesFetcher do
         fund => {
           programme => {
             project => [
-              third_party_project,
-            ],
-          },
-        },
+              third_party_project
+            ]
+          }
+        }
       })
 
       expect(historic_activities).to eq({
         fund => {
           non_current_programme => {
-            non_current_project_1 => [],
-          },
-        },
+            non_current_project_1 => []
+          }
+        }
       })
     end
   end
@@ -78,10 +78,10 @@ RSpec.describe Activity::GroupedActivitiesFetcher do
         fund => {
           programme => {
             project => [
-              third_party_project,
-            ],
-          },
-        },
+              third_party_project
+            ]
+          }
+        }
       })
     end
   end
@@ -107,16 +107,16 @@ RSpec.describe Activity::GroupedActivitiesFetcher do
       fund => {
         old_programme => {
           old_project_1 => [],
-          new_project_1 => [],
+          new_project_1 => []
         },
         new_programme => {
           old_project_2 => [
             old_third_party_project,
-            new_third_party_project,
+            new_third_party_project
           ],
-          new_project_2 => [],
-        },
-      },
+          new_project_2 => []
+        }
+      }
     })
   end
 end

@@ -37,7 +37,7 @@ RSpec.describe Export::Report do
         @project,
         report: create(:report, financial_quarter: @report.financial_quarter.pred),
         financial_quarter: @report.financial_quarter,
-        financial_year: @report.financial_year,
+        financial_year: @report.financial_year
       ).set_value(10_000)
 
     @comment = create(:comment, commentable: @project, report: @report)

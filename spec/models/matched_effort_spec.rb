@@ -47,7 +47,7 @@ RSpec.describe MatchedEffort, type: :model do
           "training",
           "access_to_data",
           "use_of_facilities",
-          "unspecified",
+          "unspecified"
         ].each do |category|
           context "and the category is `#{category}`" do
             let(:category) { category }
@@ -71,7 +71,7 @@ RSpec.describe MatchedEffort, type: :model do
 
         [
           "fellowship",
-          "other",
+          "other"
         ].each do |category|
           context "and the category is `#{category}`" do
             let(:category) { category }

@@ -5,7 +5,7 @@ require "coveralls"
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
   SimpleCov::Formatter::HTMLFormatter,
-  Coveralls::SimpleCov::Formatter,
+  Coveralls::SimpleCov::Formatter
 ])
 
 SimpleCov.minimum_coverage 98
@@ -31,7 +31,7 @@ require "pundit/matchers"
 RSpec.configure do |config|
   allowed_http_requests = [
     "localhost",
-    "127.0.0.1", # Required for Capybara sessions
+    "127.0.0.1" # Required for Capybara sessions
   ]
 
   WebMock.disable_net_connect!(allow: allowed_http_requests)

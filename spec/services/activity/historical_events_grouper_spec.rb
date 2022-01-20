@@ -49,14 +49,14 @@ RSpec.describe Activity::HistoricalEventsGrouper do
         {
           reference: "Import from CSV",
           user: "fred@example.com",
-          timestamp: "07 Jul 2021 at 10:45",
+          timestamp: "07 Jul 2021 at 10:45"
         } => [event4, event3],
 
         {
           reference: "Update to Activity programme_status",
           user: "john@example.com",
-          timestamp: "02 Jul 2021 at 12:08",
-        } => [event2, event1],
+          timestamp: "02 Jul 2021 at 12:08"
+        } => [event2, event1]
       }
     )
   end

@@ -12,7 +12,7 @@ class Import::Commitments
     "RODA identifier",
     "Commitment value",
     "Financial quarter",
-    "Financial year",
+    "Financial year"
   ]
 
   attr_reader :errors, :imported, :user
@@ -57,7 +57,7 @@ class Import::Commitments
   def record_history
     imported.each do |commitment|
       changes = {
-        value: [nil, commitment.value],
+        value: [nil, commitment.value]
       }
       HistoryRecorder.new(user: user).call(
         changes: changes,

@@ -82,7 +82,7 @@ RSpec.describe "rake activities:import", type: :task do
       let(:errors) do
         [
           Activities::ImportFromCsv::Error.new(1, :title, "Foo", "Blah"),
-          Activities::ImportFromCsv::Error.new(2, :description, "Bar", "Blah"),
+          Activities::ImportFromCsv::Error.new(2, :description, "Bar", "Blah")
         ]
       end
 

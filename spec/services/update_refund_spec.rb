@@ -17,7 +17,7 @@ RSpec.describe UpdateRefund do
         {
           "value" => [-BigDecimal("101.01"), -BigDecimal("202.02")],
           "financial_quarter" => [1, 2],
-          "comment" => [original_comment, "Updated text"],
+          "comment" => [original_comment, "Updated text"]
         }
       end
 

@@ -57,7 +57,7 @@ RSpec.feature "Users can view forecasts in tab within a report" do
         organisation: organisation,
         fund: programme.parent,
         financial_quarter: 3,
-        financial_year: 2020,
+        financial_year: 2020
       )
 
       activities = 2.times.map {

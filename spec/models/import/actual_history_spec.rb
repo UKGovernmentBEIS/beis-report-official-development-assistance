@@ -179,7 +179,7 @@ RSpec.describe Import::ActualHistory do
 
         it "has the correct value" do
           subject.call
-          expect(subject.actual.value).to eq BigDecimal(10_000)
+          expect(subject.actual.value).to eq BigDecimal("10_000")
         end
 
         it "has the correct report" do
@@ -279,7 +279,7 @@ RSpec.describe Import::ActualHistory do
             @activity.roda_identifier,
             current_financial_quarter.quarter.to_s,
             current_financial_quarter.financial_year.start_year.to_s,
-            "100000",
+            "100000"
           ]
         )
       }

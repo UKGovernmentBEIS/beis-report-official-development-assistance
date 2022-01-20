@@ -10,7 +10,7 @@ RSpec.describe CsvFileUpload do
   let(:file) { double("File") }
   let(:params) do
     {
-      csv: file,
+      csv: file
     }
   end
 

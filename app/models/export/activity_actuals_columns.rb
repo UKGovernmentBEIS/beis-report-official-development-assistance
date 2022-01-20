@@ -14,7 +14,7 @@ class Export::ActivityActualsColumns
         [
           "Actual spend #{financial_quarter}",
           "Refund #{financial_quarter}",
-          "Actual net #{financial_quarter}",
+          "Actual net #{financial_quarter}"
         ]
       else
         ["Actual net #{financial_quarter}"]

@@ -6,7 +6,7 @@ RSpec.describe Report::GroupedCommentsFetcher do
     [
       build(:project_activity, id: SecureRandom.uuid),
       build(:project_activity, id: SecureRandom.uuid),
-      build(:project_activity, id: SecureRandom.uuid),
+      build(:project_activity, id: SecureRandom.uuid)
     ]
   end
 
@@ -15,7 +15,7 @@ RSpec.describe Report::GroupedCommentsFetcher do
       build_list(:comment, 3, commentable: activities[0]),
       build_list(:comment, 2, commentable: activities[1]),
       build(:comment, commentable: build(:refund, parent_activity: activities[0]), commentable_type: "Refund"),
-      build(:comment, commentable: build(:adjustment, parent_activity: activities[1]), commentable_type: "Adjustment"),
+      build(:comment, commentable: build(:adjustment, parent_activity: activities[1]), commentable_type: "Adjustment")
     ]
   end
 
@@ -25,7 +25,7 @@ RSpec.describe Report::GroupedCommentsFetcher do
   let(:grouped_comments) do
     {
       activities[0] => first_activity_comments,
-      activities[1] => second_activity_comments,
+      activities[1] => second_activity_comments
     }
   end
 
@@ -44,8 +44,8 @@ RSpec.describe Report::GroupedCommentsFetcher do
         commentable: [
           :parent_activity,
           parent: [
-            parent: [:parent],
-          ],
+            parent: [:parent]
+          ]
         ]
       ).and_return(comments.flatten)
 

@@ -7,7 +7,7 @@ RSpec.describe Activity::RodaIdentifierGenerator do
     subject do
       described_class.new(
         parent_activity: parent_activity,
-        extending_organisation: extending_organisation,
+        extending_organisation: extending_organisation
       ).generate
     end
 

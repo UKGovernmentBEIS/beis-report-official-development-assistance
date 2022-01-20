@@ -10,7 +10,7 @@ RSpec.describe CreateAdjustment do
       errors: [],
       build_comment: double,
       build_detail: double,
-      parent_activity: activity,
+      parent_activity: activity
     )
   end
 
@@ -36,7 +36,7 @@ RSpec.describe CreateAdjustment do
        user: user,
        adjustment_type: "Actual",
        financial_quarter: 2,
-       financial_year: 2020,}
+       financial_year: 2020}
     end
 
     it "uses Report#for_activity to verify that the given report is associated " \
@@ -98,7 +98,7 @@ RSpec.describe CreateAdjustment do
           financial_quarter: [nil, valid_attributes.fetch(:financial_quarter)],
           financial_year: [nil, valid_attributes.fetch(:financial_year)],
           comment: [nil, valid_attributes.fetch(:comment)],
-          adjustment_type: [nil, valid_attributes.fetch(:adjustment_type)],
+          adjustment_type: [nil, valid_attributes.fetch(:adjustment_type)]
         }
 
         creator.call(attributes: valid_attributes)

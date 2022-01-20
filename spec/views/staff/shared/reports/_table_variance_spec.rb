@@ -13,7 +13,7 @@ RSpec.describe "staff/shared/reports/_table_variance" do
 
     render partial: "staff/shared/reports/table_variance", locals: {
       activities: [activity],
-      readonly: false,
+      readonly: false
     }
   end
 

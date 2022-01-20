@@ -1,6 +1,8 @@
 class Codelist
   class UnreadableCodelist < StandardError; end
+
   class UnrecognisedSource < StandardError; end
+
   class KeyNotFound < StandardError; end
 
   include Enumerable
@@ -33,7 +35,7 @@ class Codelist
     def initialize_codelists
       {
         "iati" => codelist_to_hash("IATI/#{IATI_VERSION}"),
-        "beis" => codelist_to_hash("BEIS"),
+        "beis" => codelist_to_hash("BEIS")
       }
     end
   end

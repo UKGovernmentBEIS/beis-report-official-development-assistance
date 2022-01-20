@@ -13,7 +13,7 @@ class UpdateUserInAuth0
     auth0_client.update_user(
       user.identifier,
       email: user.email,
-      name: user.name,
+      name: user.name
     )
   end
 

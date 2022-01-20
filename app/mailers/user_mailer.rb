@@ -8,7 +8,7 @@ class UserMailer < ApplicationMailer
       personalisation: {
         name: user.name,
         link: password_change_link(user: user),
-        service_url: ENV["DOMAIN"],
+        service_url: ENV["DOMAIN"]
       }
     )
   end
@@ -16,7 +16,7 @@ class UserMailer < ApplicationMailer
   def password_change_link(user:)
     Auth0Api.new.client.post_password_change(
       user_id: user.identifier,
-      result_url: organisation_url(user.organisation),
+      result_url: organisation_url(user.organisation)
     )["ticket"]
   end
 end

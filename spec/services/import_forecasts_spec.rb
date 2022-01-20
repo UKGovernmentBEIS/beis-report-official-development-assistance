@@ -25,7 +25,7 @@ RSpec.describe ImportForecasts do
       [
         forecast.financial_quarter,
         forecast.financial_year,
-        forecast.value,
+        forecast.value
       ]
     end
   end
@@ -37,7 +37,7 @@ RSpec.describe ImportForecasts do
       {
         "Activity RODA Identifier" => project.roda_identifier,
         "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
-        "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793",
+        "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793"
       }
     end
 
@@ -60,7 +60,7 @@ RSpec.describe ImportForecasts do
         "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
         "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793",
         "FC 2021/22 FY Q1 (Apr, May, Jun)" => "984150",
-        "FC 2021/22 FY Q2 (Jul, Aug, Sep)" => "206206",
+        "FC 2021/22 FY Q2 (Jul, Aug, Sep)" => "206206"
       }
     end
 
@@ -73,7 +73,7 @@ RSpec.describe ImportForecasts do
         [3, 2020, 200_436.0],
         [4, 2020, 310_793.0],
         [1, 2021, 984_150.0],
-        [2, 2021, 206_206.0],
+        [2, 2021, 206_206.0]
       ])
     end
   end
@@ -85,14 +85,14 @@ RSpec.describe ImportForecasts do
       importer.import([
         {
           "Activity RODA Identifier" => project.roda_identifier,
-          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "40",
-        },
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "40"
+        }
       ])
     end
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        ImportForecasts::Error.new(0, "Activity RODA Identifier", project.roda_identifier, t("importer.errors.forecast.unauthorised")),
+        ImportForecasts::Error.new(0, "Activity RODA Identifier", project.roda_identifier, t("importer.errors.forecast.unauthorised"))
       ])
     end
 
@@ -106,14 +106,14 @@ RSpec.describe ImportForecasts do
       importer.import([
         {
           "Activity RODA Identifier" => "not-really-an-id",
-          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
-        },
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436"
+        }
       ])
     end
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        ImportForecasts::Error.new(0, "Activity RODA Identifier", "not-really-an-id", t("importer.errors.forecast.unknown_identifier")),
+        ImportForecasts::Error.new(0, "Activity RODA Identifier", "not-really-an-id", t("importer.errors.forecast.unknown_identifier"))
       ])
     end
 
@@ -127,14 +127,14 @@ RSpec.describe ImportForecasts do
       importer.import([
         {
           "Activity RODA Identifier" => project.roda_identifier,
-          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "not a number",
-        },
+          "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "not a number"
+        }
       ])
     end
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        ImportForecasts::Error.new(0, "FC 2020/21 FY Q3 (Oct, Nov, Dec)", "not a number", t("importer.errors.forecast.non_numeric_value")),
+        ImportForecasts::Error.new(0, "FC 2020/21 FY Q3 (Oct, Nov, Dec)", "not a number", t("importer.errors.forecast.non_numeric_value"))
       ])
     end
 
@@ -148,14 +148,14 @@ RSpec.describe ImportForecasts do
       importer.import([
         {
           "Activity RODA Identifier" => project.roda_identifier,
-          "FC 2015/16 FY Q3 (Oct, Nov, Dec)" => "200436",
-        },
+          "FC 2015/16 FY Q3 (Oct, Nov, Dec)" => "200436"
+        }
       ])
     end
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        ImportForecasts::Error.new(0, "FC 2015/16 FY Q3 (Oct, Nov, Dec)", "FC 2015/16 FY Q3 (Oct, Nov, Dec)", t("importer.errors.forecast.in_the_past")),
+        ImportForecasts::Error.new(0, "FC 2015/16 FY Q3 (Oct, Nov, Dec)", "FC 2015/16 FY Q3 (Oct, Nov, Dec)", t("importer.errors.forecast.in_the_past"))
       ])
     end
 
@@ -170,8 +170,8 @@ RSpec.describe ImportForecasts do
         {
           "Activity RODA Identifier" => project.roda_identifier,
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "",
-          "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793",
-        },
+          "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793"
+        }
       ])
     end
 
@@ -181,7 +181,7 @@ RSpec.describe ImportForecasts do
 
     it "imports the forecasts, ignoring blank cells" do
       expect(forecast_values).to eq([
-        [4, 2020, 310_793.0],
+        [4, 2020, 310_793.0]
       ])
     end
   end
@@ -195,7 +195,7 @@ RSpec.describe ImportForecasts do
           "Activity RODA Identifier" => project.roda_identifier,
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "10",
           "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "20",
-          "Unknown Column" => "",
+          "Unknown Column" => ""
         },
         {
           "Activity Name" => "",
@@ -203,14 +203,14 @@ RSpec.describe ImportForecasts do
           "Activity RODA Identifier" => project.roda_identifier,
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "10",
           "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "20",
-          "Unknown Column" => "",
-        },
+          "Unknown Column" => ""
+        }
       ])
     end
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        ImportForecasts::Error.new(-1, "Unknown Column", "", t("importer.errors.forecast.unrecognised_column")),
+        ImportForecasts::Error.new(-1, "Unknown Column", "", t("importer.errors.forecast.unrecognised_column"))
       ])
     end
 
@@ -234,7 +234,7 @@ RSpec.describe ImportForecasts do
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
           "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793",
           "FC 2021/22 FY Q1 (Apr, May, Jun)" => "984150",
-          "FC 2021/22 FY Q2 (Jul, Aug, Sep)" => "206206",
+          "FC 2021/22 FY Q2 (Jul, Aug, Sep)" => "206206"
         }
       end
 
@@ -247,7 +247,7 @@ RSpec.describe ImportForecasts do
           [3, 2020, 200_436.0],
           [4, 2020, 310_793.0],
           [1, 2021, 984_150.0],
-          [2, 2021, 206_206.0],
+          [2, 2021, 206_206.0]
         ])
       end
 
@@ -266,8 +266,8 @@ RSpec.describe ImportForecasts do
         importer.import([
           {
             "Activity RODA Identifier" => project.roda_identifier,
-            "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
-          },
+            "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436"
+          }
         ])
       end
 
@@ -279,8 +279,8 @@ RSpec.describe ImportForecasts do
             nil,
             "The report #{selected_report.id} (#{organisation}, FQ1 2020-2021 for #{fund}, approved)\
  is not the latest for that organisation and fund. The latest is #{latest_report.id},\
- for FQ2 2020-2021 (active).",
-          ),
+ for FQ2 2020-2021 (active)."
+          )
         ])
       end
 
@@ -299,12 +299,12 @@ RSpec.describe ImportForecasts do
         importer.import([
           {
             "Activity RODA Identifier" => project.roda_identifier,
-            "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436",
+            "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "200436"
           },
           {
             "Activity RODA Identifier" => unrelated_project.roda_identifier,
-            "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793",
-          },
+            "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "310793"
+          }
         ])
       end
 
@@ -314,8 +314,8 @@ RSpec.describe ImportForecasts do
             1,
             "Activity RODA Identifier",
             unrelated_project.roda_identifier,
-            "The activity is not related to the report, which belongs to #{fund} and #{organisation}.",
-          ),
+            "The activity is not related to the report, which belongs to #{fund} and #{organisation}."
+          )
         ])
       end
 

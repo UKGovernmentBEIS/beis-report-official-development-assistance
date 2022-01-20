@@ -18,7 +18,7 @@ RSpec.describe Report::GroupedReportsFetcher do
 
       expect(described_class.new.approved).to eq({
         organisation1 => organisation1_approved_reports,
-        organisation2 => organisation2_approved_reports,
+        organisation2 => organisation2_approved_reports
       })
     end
   end
@@ -37,7 +37,7 @@ RSpec.describe Report::GroupedReportsFetcher do
 
       expect(described_class.new.current).to eq({
         organisation1 => organisation1_unapproved_reports,
-        organisation2 => organisation2_unapproved_reports,
+        organisation2 => organisation2_unapproved_reports
       })
     end
   end

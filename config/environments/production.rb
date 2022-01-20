@@ -3,7 +3,7 @@
 require "active_support/core_ext/integer/time"
 
 # Load environment variables that are created by Terraform
-require_relative "../../lib/vcap_parser.rb"
+require_relative "../../lib/vcap_parser"
 VcapParser.load_service_environment_variables!
 
 Rails.application.configure do
@@ -102,7 +102,7 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger = ActiveSupport::Logger.new(STDOUT)
+    logger = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end

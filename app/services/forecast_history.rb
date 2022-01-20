@@ -101,8 +101,7 @@ class ForecastHistory
       report: report
     )
 
-    entry = Forecast.unscoped.create!(attributes)
-    entry
+    Forecast.unscoped.create!(attributes)
   end
 
   def revise_entry(entry, value, report = nil)
@@ -122,7 +121,7 @@ class ForecastHistory
       reference: "Revising a forecast for #{old_entry.own_financial_quarter}",
       activity: new_entry.parent_activity,
       trackable: new_entry,
-      report: report,
+      report: report
     )
   end
 
@@ -139,7 +138,7 @@ class ForecastHistory
     {
       parent_activity: @activity,
       financial_quarter: @financial_quarter,
-      financial_year: @financial_year,
+      financial_year: @financial_year
     }
   end
 
@@ -153,7 +152,7 @@ class ForecastHistory
       providing_organisation_name: service_owner.name,
       providing_organisation_type: service_owner.organisation_type,
       providing_organisation_reference: service_owner.iati_reference,
-      currency: @activity.organisation.default_currency,
+      currency: @activity.organisation.default_currency
     }
   end
 
@@ -162,7 +161,7 @@ class ForecastHistory
 
     [
       quarter.start_date,
-      quarter.end_date,
+      quarter.end_date
     ]
   end
 end

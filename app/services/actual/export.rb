@@ -2,7 +2,7 @@ class Actual
   class Export
     HEADERS = [
       "Activity RODA Identifier",
-      "Activity BEIS Identifier",
+      "Activity BEIS Identifier"
     ]
 
     def initialize(activities)

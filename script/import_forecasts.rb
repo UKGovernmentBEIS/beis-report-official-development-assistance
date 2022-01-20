@@ -34,7 +34,7 @@ report = Report.find_by(
   fund: fund,
   organisation: organisation,
   financial_quarter: zero_option_to_nil(options, :quarter),
-  financial_year: zero_option_to_nil(options, :year),
+  financial_year: zero_option_to_nil(options, :year)
 )
 
 unless report

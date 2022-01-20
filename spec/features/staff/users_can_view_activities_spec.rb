@@ -75,7 +75,7 @@ RSpec.feature "Users can view activities" do
 
   context "when the user is signed in as a BEIS user" do
     include_examples "shows activities", {
-      user_type: :beis_user,
+      user_type: :beis_user
     }
     scenario "cannot add a child activity to a programme (level C) activity" do
       delivery_partner_organisation = create(:delivery_partner_organisation)
@@ -93,7 +93,7 @@ RSpec.feature "Users can view activities" do
   context "when the user is signed in as a delivery partner" do
     context "when viewing the activities index page" do
       include_examples "shows activities", {
-        user_type: :delivery_partner_user,
+        user_type: :delivery_partner_user
       }
     end
   end

@@ -19,7 +19,7 @@ RSpec.describe FormHelper, type: :helper do
 
       expect(helper.list_of_delivery_partners).to match_array([
         delivery_partner_1,
-        delivery_partner_2,
+        delivery_partner_2
       ])
     end
   end
@@ -36,7 +36,7 @@ RSpec.describe FormHelper, type: :helper do
       expect(helper.list_of_reporting_organisations).to match_array([
         delivery_partner_1,
         beis,
-        delivery_partner_2,
+        delivery_partner_2
       ])
     end
   end

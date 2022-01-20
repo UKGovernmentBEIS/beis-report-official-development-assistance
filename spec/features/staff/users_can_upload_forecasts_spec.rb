@@ -47,13 +47,13 @@ RSpec.feature "users can upload forecasts" do
         {
           "Activity Name" => project.title,
           "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
-          "Activity RODA Identifier" => project.roda_identifier,
+          "Activity RODA Identifier" => project.roda_identifier
         },
         {
           "Activity Name" => sibling_project.title,
           "Activity Delivery Partner Identifier" => sibling_project.delivery_partner_identifier,
-          "Activity RODA Identifier" => sibling_project.roda_identifier,
-        },
+          "Activity RODA Identifier" => sibling_project.roda_identifier
+        }
       ])
     end
 
@@ -66,7 +66,7 @@ RSpec.feature "users can upload forecasts" do
         "FC 2022/23 FY Q2", "FC 2022/23 FY Q3", "FC 2022/23 FY Q4", "FC 2023/24 FY Q1",
         "FC 2023/24 FY Q2", "FC 2023/24 FY Q3", "FC 2023/24 FY Q4", "FC 2024/25 FY Q1",
         "FC 2024/25 FY Q2", "FC 2024/25 FY Q3", "FC 2024/25 FY Q4", "FC 2025/26 FY Q1",
-        "FC 2025/26 FY Q2", "FC 2025/26 FY Q3", "FC 2025/26 FY Q4", "FC 2026/27 FY Q1",
+        "FC 2025/26 FY Q2", "FC 2025/26 FY Q3", "FC 2025/26 FY Q4", "FC 2026/27 FY Q1"
       ])
     end
 

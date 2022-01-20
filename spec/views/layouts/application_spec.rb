@@ -1,4 +1,5 @@
 RSpec.describe "layouts/application" do
+  # standard:disable Lint/ConstantDefinitionInBlock
   class ActionView::TestCase::TestController
     include Auth
 
@@ -6,6 +7,7 @@ RSpec.describe "layouts/application" do
       nil
     end
   end
+  # standard:enable Lint/ConstantDefinitionInBlock
 
   it "shows the meta tags when ROBOT_NOINDEX is set to true" do
     ClimateControl.modify ROBOT_NOINDEX: "true" do

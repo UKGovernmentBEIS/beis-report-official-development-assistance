@@ -44,7 +44,7 @@ namespace :activities do
     Kernel.puts "# implementing organisations: #{implementing_organisations.count}\n"
 
     Kernel.puts "\nAre you sure you want to delete this activity, all descendants and associated entities? [y/n]\n"
-    answer = STDIN.gets.chomp
+    answer = $stdin.gets.chomp
     case answer
     when "y"
       delete_activity(activity_id: activity.id)

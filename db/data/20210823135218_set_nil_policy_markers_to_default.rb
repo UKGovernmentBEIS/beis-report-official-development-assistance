@@ -8,7 +8,7 @@
   "desertification",
   "disability",
   "disaster_risk_reduction",
-  "nutrition",
+  "nutrition"
 ].each do |policy_marker_category|
   key = "policy_marker_#{policy_marker_category}"
   Activity.where("#{key}": nil).update_all("#{key}": "not_assessed")

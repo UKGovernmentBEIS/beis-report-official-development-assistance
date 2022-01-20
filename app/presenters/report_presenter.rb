@@ -58,7 +58,7 @@ class ReportPresenter < SimpleDelegator
       financial_quarter_and_year,
       fund.roda_identifier,
       organisation.beis_organisation_reference,
-      purpose,
+      purpose
     ].compact.join("-") + ".csv"
   end
 end

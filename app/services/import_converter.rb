@@ -2,14 +2,14 @@ class ImportConverter
   TRANSACTION_HEADER_PATTERNS = [
     /^Act +(?<year>\d{4})\/\d{2} +FY +Q(?<quarter>[1-4]) +\(.*\)$/,
     /^Act +(?<year>\d{4})\/\d{2} +Q(?<quarter>[1-4])$/,
-    /^Q(?<quarter>[1-4]) +(?<year>\d{4})-\d{4} actuals$/,
+    /^Q(?<quarter>[1-4]) +(?<year>\d{4})-\d{4} actuals$/
   ]
 
   FORECAST_HEADER_PATTERNS = [
     /^FC +Q(?<quarter>[1-4]) +(?<year>\d{4})-\d{2}$/,
     /^FC +Q(?<quarter>[1-4]) +(?<year>\d{4})$/,
     /^FC +(?<year>\d{4})\/\d{2} +FY +Q(?<quarter>[1-4]) +\(.*\)$/,
-    /^Q(?<quarter>[1-4]) +(?<year>\d{4})-\d{4} forecast$/,
+    /^Q(?<quarter>[1-4]) +(?<year>\d{4})-\d{4} forecast$/
   ]
 
   IDENTIFIER_HEADERS = ["Activity RODA Identifier"]
