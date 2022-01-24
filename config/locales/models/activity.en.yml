@@ -434,7 +434,6 @@ en:
         finance: Finance type
         aid_type: Aid type
         collaboration_type: Collaboration type
-        channel_of_delivery_code: Channel of delivery code
         policy_marker_gender: Gender - policy marker
         policy_marker_climate_change_adaptation: Climate Change - Adaptation policy marker
         policy_marker_climate_change_mitigation: Climate Change - Mitigation policy marker
@@ -449,15 +448,12 @@ en:
         originating_report_id: Originating report identifier
         source_fund_code: Fund code
         call_present: Call present?
-        transparency_identifier: IATI identifier
         parent_id: Parent activity identifier
         parent: Parent activity
         publish_to_iati: Include in IATI XML export?
-        sector_category: Sector category
         previous_identifier: Previous IATI identifier
         geography: Recipient geography
         extending_organisation_id: Extending organisation identifier
-        sector: Sector
         organisation_id: Organisation identifier
         tied_status: Tied status
         organisation: Organisation
