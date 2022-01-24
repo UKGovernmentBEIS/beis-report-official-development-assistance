@@ -439,8 +439,8 @@ GEM
     standard (1.5.0)
       rubocop (= 1.23.0)
       rubocop-performance (= 1.12.0)
-    strip_attributes (1.11.0)
-      activemodel (>= 3.0, < 7.0)
+    strip_attributes (1.12.0)
+      activemodel (>= 3.0, < 8.0)
     sync (0.5.0)
     temple (0.8.2)
     term-ansicolor (1.7.1)
@@ -480,7 +480,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zache (0.12.0)
-    zeitwerk (2.5.1)
+    zeitwerk (2.5.3)
 
 PLATFORMS
   ruby
