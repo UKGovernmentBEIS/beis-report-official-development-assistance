@@ -36,9 +36,9 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
 COPY Gemfile ${DEPS_HOME}/Gemfile
 COPY Gemfile.lock ${DEPS_HOME}/Gemfile.lock
 
-RUN gem update --system 3.2.16
+RUN gem update --system 3.3.5
 RUN gem update rake 13.0.1
-RUN gem install bundler -v 2.1.4
+RUN gem install bundler -v 2.3.5
 
 RUN bundle config set frozen 'true'
 
