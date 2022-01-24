@@ -2,7 +2,7 @@ module Export
   class S3UploadError < StandardError; end
 
   class S3Uploader
-    def initialize(file)
+    def initialize(file:, filename:)
       @client = Aws::S3::Client.new(
         region: S3UploaderConfig.region,
         credentials: Aws::Credentials.new(
@@ -11,7 +11,7 @@ module Export
         )
       )
       @file = file
-      @filename = "export-file-#{Time.current.to_formatted_s(:number)}.csv"
+      @filename = timestamped_filename(filename)
     end
 
     attr_reader :client, :file, :filename
@@ -24,12 +24,23 @@ module Export
       )
       raise "Unexpected response." unless response&.etag
 
-      bucket.object(filename).presigned_url(:get, expires_in: 1.day.in_seconds)
+      OpenStruct.new(
+        url: bucket.object(filename).presigned_url(:get, expires_in: 1.day.in_seconds),
+        timestamped_filename: filename
+      )
     rescue => error
       raise_error(error.message)
     end
 
     private
+
+    def timestamped_filename(name)
+      pathname = Pathname.new(name)
+      basename = pathname.basename(".*")
+      extension = pathname.extname
+
+      "#{basename}-#{Time.current.to_formatted_s(:number)}#{extension}"
+    end
 
     def raise_error(original_message = nil)
       raise S3UploadError, [original_message, "Error uploading report #{filename}"].join(" ")
