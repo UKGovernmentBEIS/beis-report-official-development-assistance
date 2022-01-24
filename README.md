@@ -27,7 +27,7 @@ script/test
 
 ### Creating a development database
 
-See "PaaS to Local" at the end of the (Database Backup and Restore) guide.
+See "PaaS to Local" at the end of the [Database Backup and Restore](/doc/database-backup-and-restore.md) guide.
 
 ## Running backing services with Docker compose
 
@@ -59,7 +59,7 @@ The repository will include safe defaults for development in `/.env.example` and
 To manage sensitive environment variables:
 
 1. Add the new key and safe default value to the `/.env.example` file eg. `ROLLBAR_TOKEN=ROLLBAR_TOKEN`
-2. Add the new key and real value to your local `/.env` file, which should never be checked into Git. This file will look something like `ROLLBAR_TOKEN=123456789`
+2. Add the new key and real value to your local `/.env.development.local` file, which should never be checked into Git. This file will look something like `ROLLBAR_TOKEN=123456789`
 
 ## Release process
 
