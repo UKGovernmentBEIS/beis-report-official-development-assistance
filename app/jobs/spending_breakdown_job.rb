@@ -5,12 +5,12 @@ class SpendingBreakdownJob < ApplicationJob
     requester = User.find(requester_id)
 
     export = Export::SpendingBreakdown.new(source_fund: Fund.new(fund_id))
-    tempfile = save_tempfile(export)
+    upload = upload_csv_to_s3(file: save_tempfile(export), filename: export.filename)
 
     DownloadLinkMailer.send_link(
       recipient: requester,
-      file_url: upload_csv_to_s3(tempfile),
-      file_name: export.filename
+      file_url: upload.url,
+      file_name: upload.timestamped_filename
     ).deliver
   rescue => error
     log_error(error, requester)
@@ -28,8 +28,8 @@ class SpendingBreakdownJob < ApplicationJob
     end
   end
 
-  def upload_csv_to_s3(file)
-    Export::S3Uploader.new(file).upload
+  def upload_csv_to_s3(file:, filename:)
+    Export::S3Uploader.new(file: file, filename: filename).upload
   end
 
   def log_error(error, requester)

@@ -16,7 +16,13 @@ RSpec.describe SpendingBreakdownJob, type: :job, wip: true do
   end
   let(:tempfile) { double("tempfile") }
   let(:csv) { double("csv", "<<" => true) }
-  let(:uploader) { instance_double(Export::S3Uploader, upload: "https://example.com/abc.csv") }
+  let(:upload) do
+    OpenStruct.new(
+      url: "https://example.com/presigned_url",
+      timestamped_filename: "timestamped_filename.csv"
+    )
+  end
+  let(:uploader) { instance_double(Export::S3Uploader, upload: upload) }
   let(:email) { double("email", deliver: double) }
 
   describe "#perform" do
@@ -60,7 +66,11 @@ RSpec.describe SpendingBreakdownJob, type: :job, wip: true do
     it "uploads the file to S3" do
       SpendingBreakdownJob.perform_now(requester_id: double, fund_id: double)
 
-      expect(Export::S3Uploader).to have_received(:new).with(tempfile)
+      expect(Export::S3Uploader).to have_received(:new)
+        .with(
+          file: tempfile,
+          filename: "export_1234.csv"
+        )
       expect(uploader).to have_received(:upload)
     end
 
@@ -119,8 +129,8 @@ RSpec.describe SpendingBreakdownJob, type: :job, wip: true do
 
       expect(DownloadLinkMailer).to have_received(:send_link).with(
         recipient: requester,
-        file_url: "https://example.com/abc.csv",
-        file_name: "export_1234.csv"
+        file_url: "https://example.com/presigned_url",
+        file_name: "timestamped_filename.csv"
       )
       expect(email).to have_received(:deliver)
     end

@@ -6,7 +6,7 @@ RSpec.describe Export::S3Uploader, wip: true do
   let(:aws_credentials) { double("aws credentials") }
   let(:aws_client) { instance_double(Aws::S3::Client, put_object: response) }
   let(:timestamp) { Time.current }
-  let(:filename) { "export-file-#{timestamp.to_formatted_s(:number)}.csv" }
+  let(:timestamped_filename) { "spending_breakdown-#{timestamp.to_formatted_s(:number)}.csv" }
 
   let(:s3_object) { double("s3 object", presigned_url: "https://s3.example.com/xyz321") }
   let(:s3_bucket) { double("s3 bucket", object: s3_object) }
@@ -14,7 +14,7 @@ RSpec.describe Export::S3Uploader, wip: true do
 
   subject do
     travel_to(timestamp) do
-      Export::S3Uploader.new(file)
+      Export::S3Uploader.new(file: file, filename: "spending_breakdown.csv")
     end
   end
 
@@ -66,7 +66,7 @@ RSpec.describe Export::S3Uploader, wip: true do
     it "sets the filename using a timestamp" do
       subject.upload
 
-      expect(aws_client).to have_received(:put_object).with(hash_including(key: filename))
+      expect(aws_client).to have_received(:put_object).with(hash_including(key: timestamped_filename))
     end
 
     context "when the response from S3 has an _etag_" do
@@ -77,7 +77,7 @@ RSpec.describe Export::S3Uploader, wip: true do
 
         expect(Aws::S3::Resource).to have_received(:new).with(client: aws_client)
         expect(s3_bucket_finder).to have_received(:bucket).with(Export::S3UploaderConfig.bucket)
-        expect(s3_bucket).to have_received(:object).with(filename)
+        expect(s3_bucket).to have_received(:object).with(timestamped_filename)
       end
 
       it "asks for a presigned_url valid for 24 hours" do
@@ -89,8 +89,13 @@ RSpec.describe Export::S3Uploader, wip: true do
         )
       end
 
-      it "returns the presigned_url of the uploaded object" do
-        expect(subject.upload).to eq("https://s3.example.com/xyz321")
+      it "returns the presigned_url of the uploaded object and the timestamped filename" do
+        expect(subject.upload).to eq(
+          OpenStruct.new(
+            url: "https://s3.example.com/xyz321",
+            timestamped_filename: timestamped_filename
+          )
+        )
       end
     end
 
@@ -98,7 +103,7 @@ RSpec.describe Export::S3Uploader, wip: true do
       let(:response) { double("response", etag: nil) }
 
       it "raises an error, including the filename for information" do
-        message = "Unexpected response. Error uploading report #{filename}"
+        message = "Unexpected response. Error uploading report #{timestamped_filename}"
         expect { subject.upload }.to raise_error(Export::S3UploadError, message)
       end
     end
@@ -109,7 +114,7 @@ RSpec.describe Export::S3Uploader, wip: true do
       end
 
       it "re-raises the error, adding the filename for information" do
-        enriched_message = "There has been a problem! Error uploading report #{filename}"
+        enriched_message = "There has been a problem! Error uploading report #{timestamped_filename}"
         expect { subject.upload }.to raise_error(Export::S3UploadError, enriched_message)
       end
     end
