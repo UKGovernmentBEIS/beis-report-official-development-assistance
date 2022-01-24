@@ -70,24 +70,19 @@ You will need to be a user of the services GPaaS account. You're OK if you can s
 
 ### PaaS to local
 
-#### Prerequisites
+You'll need to have credentials for the BEIS GPaaS account. ([GOV.UK
+Platform-as-a-Service](https://www.cloud.service.gov.uk/))
 
-- Cloud Foundry (`cf`) tool installed
-- Credentials for the BEIS Government Platform as a Service (GPaaS) account
-- [GPaaS Conduit plugin installed](#installing-the-cf-conduit-plugin)
+#### Installing Cloud Foundry
 
-To overwrite your local development environment with the contents of a
-live environment, and seed the database with the local users, you can
-run this command:
+A download link for the Cloud Foundry command line tool appears once you are
+logged into GPaaS at https://www.cloud.service.gov.uk/. After downloading it,
+open it in Finder rather than double-clicking it directly, because there may
+be a warning that it is infrequently downloaded that cannot be bypassed when
+opening it from the browser (a second, grey, button will appear to allow
+you to install it anyway.)
 
-```bash
-script/db-restore ENVIRONMENT
-```
-
-(Where `ENVIRONMENT` is one of `pentest`, `prod` or `staging` - default is
-`staging`)
-
-## Installing the CF Conduit plugin
+#### Installing the CF Conduit plugin
 
 [CF Conduit is a Cloud Foundry
 plugin](https://github.com/alphagov/paas-cf-conduit) written by the GPaaS team
@@ -101,3 +96,16 @@ cf install-plugin conduit
 
 This step warns of untrusted packages, we trust that the author is the
 Government Digital Service.
+
+#### Download the database
+
+To overwrite your local development environment with the contents of a
+live environment, and seed the database with fake local users, you can
+run this command:
+
+```bash
+script/db-restore ENVIRONMENT
+```
+
+(Where `ENVIRONMENT` is one of `pentest`, `prod` or `staging` - default is
+`staging`, but `prod` may be more appropriate.
