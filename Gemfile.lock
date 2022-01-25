@@ -208,8 +208,7 @@ GEM
     jwt (2.3.0)
     launchy (2.5.0)
       addressable (~> 2.7)
-    libv8-node (16.10.0.0-x86_64-darwin)
-    libv8-node (16.10.0.0-x86_64-linux)
+    libv8-node (16.10.0.0)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -237,6 +236,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
+    mini_portile2 (2.7.1)
     mini_racer (0.6.2)
       libv8-node (~> 16.10.0.0)
     minitest (5.15.0)
@@ -251,9 +251,8 @@ GEM
     nanoid (2.0.0)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.1-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.13.1-x86_64-linux)
+    nokogiri (1.13.1)
+      mini_portile2 (~> 2.7.0)
       racc (~> 1.4)
     notifications-ruby-client (5.3.0)
       jwt (>= 1.5, < 3)
@@ -489,8 +488,7 @@ GEM
     zeitwerk (2.5.3)
 
 PLATFORMS
-  x86_64-darwin-21
-  x86_64-linux
+  ruby
 
 DEPENDENCIES
   acts_as_tree
