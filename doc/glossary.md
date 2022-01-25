@@ -68,7 +68,7 @@ A fund is recorded as an activity entity, but there is also a `Fund` class that 
 
 ## Implementing organisation
 
-TBD
+An organisation that physically carries out an activity or intervention. [Further information](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/pull/1544)
 
 ## Level
 
