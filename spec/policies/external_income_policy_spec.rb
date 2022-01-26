@@ -12,17 +12,21 @@ RSpec.describe ExternalIncomePolicy do
     context "when the activity is a programme activity owned by the organisation" do
       let(:activity) { build_stubbed(:programme_activity, organisation: user.organisation) }
 
-      it { is_expected.to permit_action(:create) }
-      it { is_expected.to permit_action(:update) }
-      it { is_expected.to permit_action(:destroy) }
+      it "permits all actions" do
+        is_expected.to permit_action(:create)
+        is_expected.to permit_action(:update)
+        is_expected.to permit_action(:destroy)
+      end
     end
 
     context "when the activity is a project activity" do
       let(:activity) { build_stubbed(:project_activity) }
 
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:update) }
-      it { is_expected.to forbid_action(:destroy) }
+      it "forbids all actions" do
+        is_expected.to forbid_action(:create)
+        is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:destroy)
+      end
     end
   end
 
@@ -37,15 +41,19 @@ RSpec.describe ExternalIncomePolicy do
           report.update(state: :active)
         end
 
-        it { is_expected.to permit_action(:create) }
-        it { is_expected.to permit_action(:update) }
-        it { is_expected.to permit_action(:destroy) }
+        it "permits all actions" do
+          is_expected.to permit_action(:create)
+          is_expected.to permit_action(:update)
+          is_expected.to permit_action(:destroy)
+        end
       end
 
       context "when there is no editable report for the organisation" do
-        it { is_expected.to forbid_action(:create) }
-        it { is_expected.to forbid_action(:update) }
-        it { is_expected.to forbid_action(:destroy) }
+        it "forbids all actions" do
+          is_expected.to forbid_action(:create)
+          is_expected.to forbid_action(:update)
+          is_expected.to forbid_action(:destroy)
+        end
       end
     end
 
@@ -57,15 +65,19 @@ RSpec.describe ExternalIncomePolicy do
           report.update(state: :active)
         end
 
-        it { is_expected.to forbid_action(:create) }
-        it { is_expected.to forbid_action(:update) }
-        it { is_expected.to forbid_action(:destroy) }
+        it "forbids all actions" do
+          is_expected.to forbid_action(:create)
+          is_expected.to forbid_action(:update)
+          is_expected.to forbid_action(:destroy)
+        end
       end
 
       context "when there is no editable report for the organisation" do
-        it { is_expected.to forbid_action(:create) }
-        it { is_expected.to forbid_action(:update) }
-        it { is_expected.to forbid_action(:destroy) }
+        it "forbids all actions" do
+          is_expected.to forbid_action(:create)
+          is_expected.to forbid_action(:update)
+          is_expected.to forbid_action(:destroy)
+        end
       end
     end
   end
