@@ -209,6 +209,7 @@ GEM
     launchy (2.5.0)
       addressable (~> 2.7)
     libv8-node (16.10.0.0)
+    libv8-node (16.10.0.0-x86_64-darwin)
     libv8-node (16.10.0.0-x86_64-linux)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -254,6 +255,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.1)
       mini_portile2 (~> 2.7.0)
+      racc (~> 1.4)
+    nokogiri (1.13.1-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.13.1-x86_64-linux)
       racc (~> 1.4)
@@ -492,6 +495,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-darwin
   x86_64-linux
 
 DEPENDENCIES
