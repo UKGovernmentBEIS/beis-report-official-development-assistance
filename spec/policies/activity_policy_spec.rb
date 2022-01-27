@@ -56,7 +56,7 @@ RSpec.describe ActivityPolicy do
     context "when the activity is a project" do
       let(:activity) { create(:project_activity) }
 
-      it "controls actions as expected" do
+      it "only permits show and redact_from_iati" do
         is_expected.to permit_action(:show)
         is_expected.to permit_action(:redact_from_iati)
         is_expected.to forbid_action(:create_refund)
@@ -75,7 +75,7 @@ RSpec.describe ActivityPolicy do
     context "when the activity is a third-party project" do
       let(:activity) { create(:third_party_project_activity) }
 
-      it "controls actions as expected" do
+      it "only permits show and redact_from_iati" do
         is_expected.to permit_action(:show)
         is_expected.to permit_action(:redact_from_iati)
 
@@ -98,7 +98,7 @@ RSpec.describe ActivityPolicy do
     context "when the activity is a fund" do
       let(:activity) { create(:fund_activity) }
 
-      it "controls actions as expected" do
+      it "forbids all actions" do
         is_expected.to forbid_action(:show)
         is_expected.to forbid_action(:create)
         is_expected.to forbid_action(:edit)
@@ -117,7 +117,7 @@ RSpec.describe ActivityPolicy do
       let(:activity) { create(:programme_activity) }
 
       context "and the users organisation is not the extending organisation" do
-        it "controls actions as expected" do
+        it "forbids all actions" do
           is_expected.to forbid_action(:show)
           is_expected.to forbid_action(:create)
           is_expected.to forbid_action(:edit)
@@ -137,7 +137,7 @@ RSpec.describe ActivityPolicy do
           activity.update(extending_organisation: user.organisation)
         end
 
-        it "controls actions as expected" do
+        it "only permits show" do
           is_expected.to permit_action(:show)
 
           is_expected.to forbid_action(:create)
@@ -157,7 +157,7 @@ RSpec.describe ActivityPolicy do
             report.update(state: :active)
           end
 
-          it "controls actions as expected" do
+          it "only permits create_child" do
             is_expected.to permit_action(:create_child)
             is_expected.to forbid_action(:create_transfer)
             is_expected.to forbid_action(:create_refund)
@@ -171,7 +171,7 @@ RSpec.describe ActivityPolicy do
       let(:activity) { create(:project_activity) }
 
       context "and the users organisation is not the extending organisation" do
-        it "controls actions as expected" do
+        it "forbids all actions" do
           is_expected.to forbid_action(:show)
           is_expected.to forbid_action(:create)
           is_expected.to forbid_action(:edit)
@@ -196,7 +196,7 @@ RSpec.describe ActivityPolicy do
             report.update(state: :approved)
           end
 
-          it "controls actions as expected" do
+          it "only permits show" do
             is_expected.to permit_action(:show)
 
             is_expected.to forbid_action(:create)
@@ -217,7 +217,7 @@ RSpec.describe ActivityPolicy do
             report.update(state: :active)
           end
 
-          it "controls actions as expected" do
+          it "only forbids destroy and redact_from_iati" do
             is_expected.to permit_action(:show)
             is_expected.to permit_action(:create)
             is_expected.to permit_action(:edit)
@@ -239,7 +239,7 @@ RSpec.describe ActivityPolicy do
       let(:activity) { create(:third_party_project_activity) }
 
       context "and the users organisation is not the extending organisation" do
-        it "controls actions as expected" do
+        it "forbids all actions" do
           is_expected.to forbid_action(:show)
           is_expected.to forbid_action(:create)
           is_expected.to forbid_action(:edit)
@@ -260,7 +260,7 @@ RSpec.describe ActivityPolicy do
         end
 
         context "and there is no editable report for the users organisation" do
-          it "controls actions as expected" do
+          it "only permits show" do
             is_expected.to permit_action(:show)
 
             is_expected.to forbid_action(:create)
@@ -280,7 +280,7 @@ RSpec.describe ActivityPolicy do
             report.update(state: :active)
           end
 
-          it "controls actions as expected" do
+          it "only forbids destroy, redact_from_iati, and create_child" do
             is_expected.to permit_action(:show)
             is_expected.to permit_action(:create)
             is_expected.to permit_action(:edit)
