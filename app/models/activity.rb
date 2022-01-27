@@ -67,6 +67,8 @@ class Activity < ApplicationRecord
 
   FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete")
 
+  before_validation :strip_control_characters_from_fields!
+
   strip_attributes only: [:delivery_partner_identifier]
 
   validates :level, presence: true
@@ -521,5 +523,25 @@ class Activity < ApplicationRecord
       grouped_projects += third_party_projects.fetch(project.id, []).sort_by { |a| a.roda_identifier.to_s }
     end
     grouped_projects
+  end
+
+  # we delete control characters (the first unprintable bit of ASCII)
+  # that aren't tab (\x09), linefeed (\x0a) or carriage return (\x0d)
+  # https://www.w3.org/International/questions/qa-controls#support
+  XML_1_0_ILLEGAL_CHARACTERS = /[\x00-\x08\x0b\x0c\x0e-\x1f]/.freeze
+
+  private def strip_control_characters(string)
+    return if string.nil?
+
+    string.gsub(XML_1_0_ILLEGAL_CHARACTERS, "")
+  end
+
+  private def strip_control_characters_from_fields!
+    text_fields = Activity.columns.select { |col| %i[string text].include?(col.type) && !col.array }.map(&:name)
+
+    text_fields.each do |attr|
+      stripped_value = strip_control_characters(send(attr))
+      send("#{attr}=", stripped_value)
+    end
   end
 end

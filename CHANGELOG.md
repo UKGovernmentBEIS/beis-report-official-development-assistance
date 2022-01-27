@@ -960,6 +960,7 @@
 ## [unreleased]
 
 - Moved deactivated users to the bottom of the users list
+- Remove control characters from input before validation
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-94...HEAD
 [release-94]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-93...release-94
