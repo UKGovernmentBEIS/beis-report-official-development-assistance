@@ -54,7 +54,7 @@ RSpec.feature "users can upload activities" do
       "Transparency identifier",
       "UK DP Named Contact",
       "NF Partner Country DP",
-      "Benefitting Countries",
+      "Benefitting Countries"
     ])
   end
 

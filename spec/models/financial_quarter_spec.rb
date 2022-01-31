@@ -70,7 +70,7 @@ RSpec.describe FinancialQuarter do
         FinancialQuarter.new(2016, 2),
         FinancialQuarter.new(2016, 3),
         FinancialQuarter.new(2016, 4),
-        FinancialQuarter.new(2017, 1),
+        FinancialQuarter.new(2017, 1)
       ])
     end
   end
@@ -85,7 +85,7 @@ RSpec.describe FinancialQuarter do
         FinancialQuarter.new(2018, 2),
         FinancialQuarter.new(2018, 3),
         FinancialQuarter.new(2018, 4),
-        FinancialQuarter.new(2019, 1),
+        FinancialQuarter.new(2019, 1)
       ])
     end
   end

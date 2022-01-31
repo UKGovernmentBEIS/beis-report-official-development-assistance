@@ -58,17 +58,17 @@ RSpec.describe Iati::XmlDownload do
       before do
         allow(project_relation).to receive(:where).with(
           source_fund_code: Fund.by_short_name("NF").id,
-          extending_organisation: organisation,
+          extending_organisation: organisation
         ).and_return(build_list(:project_activity, 5))
 
         allow(project_relation).to receive(:where).with(
           source_fund_code: Fund.by_short_name("GCRF").id,
-          extending_organisation: organisation,
+          extending_organisation: organisation
         ).and_return(build_list(:project_activity, 5))
 
         allow(third_party_project_relation).to receive(:where).with(
           source_fund_code: Fund.by_short_name("GCRF").id,
-          extending_organisation: organisation,
+          extending_organisation: organisation
         ).and_return(build_list(:project_activity, 5))
       end
 

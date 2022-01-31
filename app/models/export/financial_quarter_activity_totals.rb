@@ -1,7 +1,7 @@
 class Export::FinancialQuarterActivityTotals
   TYPES = {
     actual: "Actual",
-    refund: "Refund",
+    refund: "Refund"
   }
 
   def initialize(type:, activity:, totals:, financial_quarter:)
@@ -21,7 +21,7 @@ class Export::FinancialQuarterActivityTotals
       @financial_quarter.quarter,
       @financial_quarter.financial_year.start_year,
       @transaction_type,
-      nil,
+      nil
     ], 0)
   end
 
@@ -31,7 +31,7 @@ class Export::FinancialQuarterActivityTotals
       @financial_quarter.quarter,
       @financial_quarter.financial_year.start_year,
       "Adjustment",
-      @transaction_type,
+      @transaction_type
     ], 0)
   end
 end

@@ -4,14 +4,14 @@ RSpec.describe "staff/shared/xml/activity" do
   before do
     reporting_organisation = build(:delivery_partner_organisation)
     render partial: "staff/shared/xml/activity",
-           locals: {
-             activity: activity,
-             reporting_organisation: reporting_organisation,
-             transactions: nil,
-             budgets: nil,
-             forecasts: nil,
-             commitment: commitment,
-           }
+      locals: {
+        activity: activity,
+        reporting_organisation: reporting_organisation,
+        transactions: nil,
+        budgets: nil,
+        forecasts: nil,
+        commitment: commitment
+      }
   end
 
   context "when there is a commitment" do

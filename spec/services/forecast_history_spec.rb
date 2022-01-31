@@ -10,7 +10,7 @@ RSpec.describe ForecastHistory do
         entry.forecast_type,
         entry.report&.financial_quarter,
         entry.report&.financial_year,
-        entry.value,
+        entry.value
       ]
     end
   end
@@ -27,7 +27,7 @@ RSpec.describe ForecastHistory do
       history.set_value(10)
 
       expect(history_entries).to eq([
-        ["original", nil, nil, 10],
+        ["original", nil, nil, 10]
       ])
     end
 
@@ -39,7 +39,7 @@ RSpec.describe ForecastHistory do
       history.set_value(-10)
 
       expect(history_entries).to eq([
-        ["original", nil, nil, -10],
+        ["original", nil, nil, -10]
       ])
     end
 
@@ -54,7 +54,7 @@ RSpec.describe ForecastHistory do
 
       expect(history_entries).to eq([
         ["original", nil, nil, 10],
-        ["revised", nil, nil, 20],
+        ["revised", nil, nil, 20]
       ])
     end
 
@@ -70,7 +70,7 @@ RSpec.describe ForecastHistory do
 
       expect(history_entries).to eq([
         ["original", nil, nil, 10],
-        ["revised", nil, nil, 0],
+        ["revised", nil, nil, 0]
       ])
     end
 
@@ -80,7 +80,7 @@ RSpec.describe ForecastHistory do
 
       expect(history_entries).to eq([
         ["original", nil, nil, 10],
-        ["revised", nil, nil, -20],
+        ["revised", nil, nil, -20]
       ])
     end
 
@@ -91,7 +91,7 @@ RSpec.describe ForecastHistory do
 
       expect(history_entries).to eq([
         ["original", nil, nil, 10],
-        ["revised", nil, nil, 30],
+        ["revised", nil, nil, 30]
       ])
     end
 
@@ -102,7 +102,7 @@ RSpec.describe ForecastHistory do
 
       expect(history_entries).to eq([
         ["original", nil, nil, 10],
-        ["revised", nil, nil, 0],
+        ["revised", nil, nil, 0]
       ])
     end
 
@@ -113,7 +113,7 @@ RSpec.describe ForecastHistory do
 
       expect(history_entries).to eq([
         ["original", nil, nil, 10],
-        ["revised", nil, nil, -30],
+        ["revised", nil, nil, -30]
       ])
     end
 
@@ -122,7 +122,7 @@ RSpec.describe ForecastHistory do
       history.set_value(10)
 
       expect(history_entries).to eq([
-        ["original", nil, nil, 10],
+        ["original", nil, nil, 10]
       ])
     end
 
@@ -131,7 +131,7 @@ RSpec.describe ForecastHistory do
       history.set_value(10)
 
       expect(history_entries).to eq([
-        ["original", nil, nil, 10],
+        ["original", nil, nil, 10]
       ])
     end
 
@@ -172,7 +172,7 @@ RSpec.describe ForecastHistory do
       history.set_value(10)
 
       expect(history_entries).to eq([
-        ["original", 1, 2015, 10],
+        ["original", 1, 2015, 10]
       ])
     end
 
@@ -198,7 +198,7 @@ RSpec.describe ForecastHistory do
         history.set_value(20)
 
         expect(history_entries).to eq([
-          ["original", 1, 2015, 20],
+          ["original", 1, 2015, 20]
         ])
       end
 
@@ -224,7 +224,7 @@ RSpec.describe ForecastHistory do
 
         expect(history_entries).to eq([
           ["original", 1, 2015, 10],
-          ["revised", 2, 2015, 20],
+          ["revised", 2, 2015, 20]
         ])
       end
 
@@ -233,7 +233,7 @@ RSpec.describe ForecastHistory do
 
         expect(history_entries).to eq([
           ["original", 1, 2015, 10],
-          ["revised", 2, 2015, 0],
+          ["revised", 2, 2015, 0]
         ])
       end
 
@@ -242,7 +242,7 @@ RSpec.describe ForecastHistory do
 
         expect(history_entries).to eq([
           ["original", 1, 2015, 10],
-          ["revised", 2, 2015, 0],
+          ["revised", 2, 2015, 0]
         ])
       end
 
@@ -252,7 +252,7 @@ RSpec.describe ForecastHistory do
 
         expect(history_entries).to eq([
           ["original", 1, 2015, 10],
-          ["revised", 2, 2015, 30],
+          ["revised", 2, 2015, 30]
         ])
       end
 
@@ -262,7 +262,7 @@ RSpec.describe ForecastHistory do
 
         expect(history_entries).to eq([
           ["original", 1, 2015, 10],
-          ["revised", 2, 2015, 0],
+          ["revised", 2, 2015, 0]
         ])
       end
 
@@ -272,7 +272,7 @@ RSpec.describe ForecastHistory do
 
         expect(history_entries).to eq([
           ["original", 1, 2015, 10],
-          ["revised", 2, 2015, 0],
+          ["revised", 2, 2015, 0]
         ])
       end
 
@@ -285,7 +285,7 @@ RSpec.describe ForecastHistory do
         expect(history_entries).to eq([
           ["original", 1, 2015, 10],
           ["revised", 2, 2015, 20],
-          ["revised", 1, 2016, 30],
+          ["revised", 1, 2016, 30]
         ])
       end
 
@@ -311,7 +311,7 @@ RSpec.describe ForecastHistory do
 
         expect(history_entries).to eq([
           ["original", 1, 2015, 10],
-          ["revised", 3, 2016, 20],
+          ["revised", 3, 2016, 20]
         ])
       end
 
@@ -341,7 +341,7 @@ RSpec.describe ForecastHistory do
       history.set_value(10)
 
       expect(history_entries).to eq([
-        ["original", 1, 2015, 10],
+        ["original", 1, 2015, 10]
       ])
     end
 
@@ -372,7 +372,7 @@ RSpec.describe ForecastHistory do
       history.set_value(10)
 
       expect(history_entries).to eq([
-        ["original", nil, nil, 10],
+        ["original", nil, nil, 10]
       ])
     end
 
@@ -385,7 +385,7 @@ RSpec.describe ForecastHistory do
       history.set_value(20)
 
       expect(history_entries).to eq([
-        ["original", nil, nil, 20],
+        ["original", nil, nil, 20]
       ])
     end
 
@@ -405,7 +405,7 @@ RSpec.describe ForecastHistory do
 
         expect(history_entries).to eq([
           ["original", nil, nil, 10],
-          ["revised", 2, 2015, 20],
+          ["revised", 2, 2015, 20]
         ])
       end
 
@@ -425,7 +425,7 @@ RSpec.describe ForecastHistory do
 
         expect(history_entries).to eq([
           ["original", nil, nil, 10],
-          ["revised", 2, 2015, 30],
+          ["revised", 2, 2015, 30]
         ])
       end
     end

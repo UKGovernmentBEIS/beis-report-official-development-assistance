@@ -6,7 +6,7 @@ class User < ApplicationRecord
   validates :email, with: :email_cannot_be_changed_after_create, on: :update
 
   FORM_FIELD_TRANSLATIONS = {
-    organisation_id: :organisation,
+    organisation_id: :organisation
   }.freeze
 
   scope :active, -> { where(active: true) }

@@ -64,7 +64,7 @@ ActiveRecord::Base.transaction do
       earliest_actual,
       latest_actual,
       refunds.count,
-      adjustments.count,
+      adjustments.count
     ]
 
     actuals_for_deletion.each do |actual|
@@ -74,7 +74,7 @@ ActiveRecord::Base.transaction do
         actual.id,
         actual.value.to_s,
         actual.date.to_s,
-        actual.financial_quarter_and_year,
+        actual.financial_quarter_and_year
       ]
       puts "deleting actual #{actual.id}"
       actual.destroy!

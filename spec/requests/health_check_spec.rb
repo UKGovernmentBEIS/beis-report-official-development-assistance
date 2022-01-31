@@ -12,7 +12,7 @@ RSpec.describe "Health Check", type: :request do
         "built_at" => "2020-01-01T00:00:00Z",
         "sidekiq" => {
           "enqueued" => 0,
-          "retry_size" => 0,
+          "retry_size" => 0
         }
       )
     end

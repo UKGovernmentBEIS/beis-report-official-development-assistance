@@ -31,9 +31,9 @@ RSpec.describe Staff::HomeController do
         {
           fund => {
             programme => {
-              project => third_party_projects,
-            },
-          },
+              project => third_party_projects
+            }
+          }
         }
       end
 

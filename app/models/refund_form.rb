@@ -25,7 +25,7 @@ class RefundForm
       financial_quarter: financial_quarter,
       financial_year: financial_year,
       value: value,
-      comment: comment,
+      comment: comment
     }
   end
 

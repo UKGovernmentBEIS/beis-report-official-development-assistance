@@ -9,7 +9,7 @@ class OrgParticipation < ApplicationRecord
     matched_effort_provider: 1,
     external_income_provider: 2,
     implementing: 3,
-    service_owner: 99,
+    service_owner: 99
   }
 
   scope :implementing, -> { where(role: :implementing) }

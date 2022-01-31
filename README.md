@@ -19,11 +19,15 @@ Once setup has been completed, you can start the server with
 script/server
 ```
 
-## Running the tests
+and the tests should pass
 
 ```bash
 script/test
 ```
+
+### Creating a development database
+
+See "PaaS to Local" at the end of the [Database Backup and Restore](/doc/database-backup-and-restore.md) guide.
 
 ## Running backing services with Docker compose
 
@@ -50,7 +54,7 @@ We use ADRs to document architectural decisions that we make. They can be found 
 
 We use [Dotenv](https://github.com/bkeepers/dotenv) to manage our environment variables locally.
 
-The repository will include safe defaults for development in `/.env.example` and for test in `/.env.test`. We use 'example' instead of 'development' (from the Dotenv docs) to be consistent with current dxw conventions and to make it more explicit that these values are not to be committed.
+The repository will include safe defaults for development in `/.env.example` and for test in `/.env.test`. We use 'example' instead of 'development' (from the Dotenv docs) to be consistent with current dxw conventions and to make it more explicit that the real values are not to be committed.
 
 To manage sensitive environment variables:
 
@@ -119,5 +123,4 @@ This repository was bootstrapped from [dxw's `rails-template`](https://github.co
 
 ## Documentation
 
-[Detailed documentation](./doc/0_index_of_contents.md) for developers and support staff is found in `doc/`. 
-See [`doc/0_index_of_contents.md`](./doc/0_index_of_contents.md)
+[Detailed documentation](./doc/0_index_of_contents.md) for developers and support staff is found in `doc/`.

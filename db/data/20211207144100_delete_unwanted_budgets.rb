@@ -20,7 +20,7 @@ end
 targets = [
   {organisation_name: "AMS", fund: "Newton", level: "project"},
   {organisation_name: "RS", fund: "Newton", level: "project"},
-  {organisation_name: "UKSA", fund: "GCRF", level: "third_party_project"},
+  {organisation_name: "UKSA", fund: "GCRF", level: "third_party_project"}
 ]
 
 targets.each do |target|

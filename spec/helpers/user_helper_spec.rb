@@ -11,7 +11,7 @@ RSpec.describe UserHelper, type: :helper do
       expect(helper.organisation_check_box_options)
         .to match([
           [first_organisation.name, first_organisation.id],
-          [second_organisation.name, second_organisation.id],
+          [second_organisation.name, second_organisation.id]
         ])
     end
   end

@@ -35,7 +35,7 @@ RSpec.describe StubController, type: :controller do
 
         expect(session[:breadcrumb_context]).to eq({
           type: :report,
-          model: report,
+          model: report
         })
       end
     end
@@ -66,7 +66,7 @@ RSpec.describe StubController, type: :controller do
 
         expect(session[:breadcrumb_context]).to eq({
           type: :report,
-          model: report,
+          model: report
         })
       end
     end

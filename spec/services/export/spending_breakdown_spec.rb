@@ -96,7 +96,7 @@ RSpec.describe Export::SpendingBreakdown do
         "Delivery partner identifier",
         "Activity title",
         "Activity level",
-        "Activity status",
+        "Activity status"
       )
     end
 
@@ -108,7 +108,7 @@ RSpec.describe Export::SpendingBreakdown do
       expect(subject.headers).to include(
         "Actual spend FQ1 2020-2021",
         "Refund FQ1 2020-2021",
-        "Actual net FQ1 2020-2021",
+        "Actual net FQ1 2020-2021"
       )
     end
 
@@ -123,20 +123,20 @@ RSpec.describe Export::SpendingBreakdown do
 
     it "includes the heading that describe the forecast for FQ1 2021-2022" do
       expect(subject.headers).to include(
-        "Forecast FQ1 2021-2022",
+        "Forecast FQ1 2021-2022"
       )
     end
 
     it "includes the heading that describe the forecast for FQ4 2021-2022" do
       expect(subject.headers).to include(
-        "Forecast FQ4 2021-2022",
+        "Forecast FQ4 2021-2022"
       )
     end
 
     it "includes the headings that describe the finances for the future financial quarters inbetween" do
       expect(subject.headers).to include(
         "Forecast FQ2 2021-2022",
-        "Forecast FQ3 2021-2022",
+        "Forecast FQ3 2021-2022"
       )
     end
   end
@@ -165,11 +165,11 @@ RSpec.describe Export::SpendingBreakdown do
     end
 
     it "contains the latest version of the forecast for FQ1 2021-2022" do
-      expect(value_for_header("Forecast FQ1 2021-2022")).to eq BigDecimal(20_000)
+      expect(value_for_header("Forecast FQ1 2021-2022")).to eq BigDecimal("20_000")
     end
 
     it "contains the latest versions of the forecast for 2021-2022" do
-      expect(value_for_header("Forecast FQ4 2021-2022")).to eq BigDecimal(10_000)
+      expect(value_for_header("Forecast FQ4 2021-2022")).to eq BigDecimal("10_000")
     end
 
     it "contains a zero for the financial quarters inbetween in which there are no forecasts" do
@@ -232,7 +232,7 @@ RSpec.describe Export::SpendingBreakdown do
           "Delivery partner identifier",
           "Activity title",
           "Activity level",
-          "Activity status",
+          "Activity status"
         ]
         expect(subject.headers).to match_array(activity_attribute_headers)
         expect(subject.rows).to eq []
@@ -247,7 +247,7 @@ RSpec.describe Export::SpendingBreakdown do
         subject {
           described_class.new(
             source_fund: @activities.first.source_fund_code,
-            organisation: @organisation,
+            organisation: @organisation
           )
         }
       end
@@ -259,7 +259,7 @@ RSpec.describe Export::SpendingBreakdown do
           "Activity title",
           "Activity level",
           "Activity status",
-          "Delivery partner organisation",
+          "Delivery partner organisation"
         ]
         expect(subject.headers).to match_array(activity_attribute_headers)
         expect(subject.rows.count).to eq 3

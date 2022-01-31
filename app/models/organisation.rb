@@ -20,7 +20,7 @@ class Organisation < ApplicationRecord
     matched_effort_provider: 1,
     external_income_provider: 2,
     implementing_organisation: 3,
-    service_owner: 99,
+    service_owner: 99
   }
 
   validates_presence_of :organisation_type, :language_code, :default_currency

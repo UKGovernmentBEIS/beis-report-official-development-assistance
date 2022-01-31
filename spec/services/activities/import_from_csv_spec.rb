@@ -63,7 +63,7 @@ RSpec.describe Activities::ImportFromCsv do
       "BEIS ID" => "BEIS_ID_EXAMPLE_01",
       "UK DP Named Contact" => "Jo Soap",
       "NF Partner Country DP" => "Association of Example Companies (AEC) | | Board of Sample Organisations (BSO)",
-      "Implementing organisation name" => "Impl. Org 1",
+      "Implementing organisation name" => "Impl. Org 1"
     }
   end
   let(:new_activity_attributes) do
@@ -71,7 +71,7 @@ RSpec.describe Activities::ImportFromCsv do
       "RODA ID" => "",
       "Parent RODA ID" => parent_activity.roda_identifier,
       "Transparency identifier" => "23232332323",
-      "Implementing organisation name" => "Impl. Org 2",
+      "Implementing organisation name" => "Impl. Org 2"
     })
   end
 
@@ -202,7 +202,7 @@ RSpec.describe Activities::ImportFromCsv do
       invalid_activity_attributes = existing_activity_attributes.merge({"RODA ID" => "FAKE RODA ID"})
       activities = [
         existing_activity_attributes,
-        invalid_activity_attributes,
+        invalid_activity_attributes
       ]
       expect { subject.import(activities) }.to_not change { existing_activity }
 
@@ -291,7 +291,7 @@ RSpec.describe Activities::ImportFromCsv do
 
         expect(subject.errors.map(&:message)).to match_array([
           "Select a category",
-          "is not a known implementing organisation",
+          "is not a known implementing organisation"
         ])
       end
     end
@@ -693,7 +693,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Planned start date" => :planned_start_date,
       "Planned end date" => :planned_end_date,
       "Actual start date" => :actual_start_date,
-      "Actual end date" => :actual_end_date,
+      "Actual end date" => :actual_end_date
     }.each do |attr_name, column_name|
       it "has an error if any the #{attr_name} is invalid" do
         new_activity_attributes[attr_name] = "12/31/2020"
@@ -806,7 +806,7 @@ RSpec.describe Activities::ImportFromCsv do
       let(:expected_changes) do
         {
           "attr_1" => ["old attr_1 value", "new attr_1 value"],
-          "attr_2" => ["old attr_2 value", "new attr_2 value"],
+          "attr_2" => ["old attr_2 value", "new attr_2 value"]
         }
       end
 

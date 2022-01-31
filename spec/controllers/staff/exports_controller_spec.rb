@@ -30,7 +30,7 @@ RSpec.describe Staff::ExportsController do
 
       it "sets the CSV headers correctly" do
         expect(response.headers.to_h).to include({
-          "Content-Type" => "text/csv",
+          "Content-Type" => "text/csv"
         })
       end
 
@@ -62,7 +62,7 @@ RSpec.describe Staff::ExportsController do
 
       it "sets the CSV headers correctly" do
         expect(response.headers.to_h).to include({
-          "Content-Type" => "text/csv",
+          "Content-Type" => "text/csv"
         })
       end
 

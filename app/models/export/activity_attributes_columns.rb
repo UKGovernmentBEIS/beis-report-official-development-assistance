@@ -7,14 +7,14 @@ class Export::ActivityAttributesColumns
     :form_state,
     :extending_organisation_id,
     :geography,
-    :parent_id,
+    :parent_id
   ]
 
   DYNAMIC_ATTRIBUTES = [
     :benefitting_region,
     :flow,
     :finance,
-    :tied_status,
+    :tied_status
   ]
 
   def initialize(activities:, attributes:)

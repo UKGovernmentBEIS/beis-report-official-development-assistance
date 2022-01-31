@@ -21,7 +21,7 @@ module ActivityHelper
   end
 
   def custom_capitalisation(level)
-    "#{level.chars.first.upcase}#{level[1..-1]}"
+    "#{level[0].upcase}#{level[1..]}"
   end
 
   def sdg_options

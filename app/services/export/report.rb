@@ -67,7 +67,7 @@ class Export::Report
       @report.own_financial_quarter,
       @report.fund.source_fund.short_name,
       @report.organisation.beis_organisation_reference,
-      "report.csv",
+      "report.csv"
     ].reject(&:blank?).join("_")
   end
 
@@ -110,11 +110,9 @@ class Export::Report
   end
 
   def activities
-    @activities ||= begin
-      Activity::ProjectsForReportFinder.new(
-        report: @report,
-        scope: Activity.all
-      ).call.order(level: :asc)
-    end
+    @activities ||= Activity::ProjectsForReportFinder.new(
+      report: @report,
+      scope: Activity.all
+    ).call.order(level: :asc)
   end
 end

@@ -20,8 +20,8 @@ class Report
           commentable: [
             :parent_activity,
             parent: [
-              parent: [:parent],
-            ],
+              parent: [:parent]
+            ]
           ]
         )
       else

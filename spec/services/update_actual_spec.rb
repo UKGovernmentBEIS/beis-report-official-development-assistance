@@ -26,7 +26,7 @@ RSpec.describe UpdateActual do
       let(:expected_changes) do
         {
           "value" => [BigDecimal("101.01"), BigDecimal("202.02")],
-          "financial_quarter" => [1, 2],
+          "financial_quarter" => [1, 2]
         }
       end
 

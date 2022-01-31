@@ -36,7 +36,7 @@ FactoryBot.define do
       if activity.roda_identifier.blank? && activity.parent.present?
         activity.roda_identifier = Activity::RodaIdentifierGenerator.new(
           parent_activity: activity.parent,
-          extending_organisation: activity.extending_organisation,
+          extending_organisation: activity.extending_organisation
         ).generate
       end
     end

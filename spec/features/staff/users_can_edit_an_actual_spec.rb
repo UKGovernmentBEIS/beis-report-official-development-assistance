@@ -25,7 +25,7 @@ RSpec.feature "Users can edit an actual" do
       fill_in_actual_form(
         value: "2000.51",
         financial_quarter: "4",
-        financial_year: "2019-2020",
+        financial_year: "2019-2020"
       )
 
       expect(page).to have_content(t("action.actual.update.success"))

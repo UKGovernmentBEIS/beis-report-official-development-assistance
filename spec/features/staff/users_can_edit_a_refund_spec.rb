@@ -32,7 +32,7 @@ RSpec.feature "Users can edit a refund" do
       }.to({
         "financial_year" => 2019,
         "financial_quarter" => 4,
-        "value" => BigDecimal("-100"),
+        "value" => BigDecimal("-100")
       }).and change { refund.comment.reload.body }.to("Comment goes here")
 
       expect(page).to have_content(t("action.refund.update.success"))

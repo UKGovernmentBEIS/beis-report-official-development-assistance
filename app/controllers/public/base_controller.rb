@@ -8,8 +8,8 @@ class Public::BaseController < ApplicationController
       built_at: ENV.fetch("TIME_OF_BUILD", nil),
       sidekiq: {
         enqueued: sidekiq_enqueued_size,
-        retry_size: sidekiq_retry_size,
-      },
+        retry_size: sidekiq_retry_size
+      }
     }, status: :ok
   end
 

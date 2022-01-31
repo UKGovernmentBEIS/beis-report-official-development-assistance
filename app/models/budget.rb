@@ -4,7 +4,7 @@ class Budget < ApplicationRecord
 
   enum budget_type: {
     direct: 0,
-    other_official: 1,
+    other_official: 1
   }
 
   belongs_to :parent_activity, class_name: "Activity"

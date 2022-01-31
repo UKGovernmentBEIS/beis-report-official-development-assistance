@@ -116,7 +116,7 @@ class ImportActuals
       value: "Value",
       receiving_organisation_name: "Receiving Organisation Name",
       receiving_organisation_type: "Receiving Organisation Type",
-      receiving_organisation_reference: "Receiving Organisation IATI Reference",
+      receiving_organisation_reference: "Receiving Organisation IATI Reference"
     }
 
     attr_reader :activity, :errors
@@ -153,7 +153,7 @@ class ImportActuals
     rescue Encoding::CompatibilityError
       @errors[attr_name] = [
         original_value.force_encoding("UTF-8"),
-        I18n.t("importer.errors.actual.invalid_characters"),
+        I18n.t("importer.errors.actual.invalid_characters")
       ]
       nil
     rescue => error
@@ -175,7 +175,7 @@ class ImportActuals
       validate_from_codelist(
         type,
         "organisation_type",
-        I18n.t("importer.errors.actual.invalid_iati_organisation_type"),
+        I18n.t("importer.errors.actual.invalid_iati_organisation_type")
       )
     end
 

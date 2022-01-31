@@ -61,7 +61,7 @@ RSpec.describe Comment, type: :model do
       expect(Comment.for_activity(activity)).to match_array([
         activity_comment,
         refund.comment,
-        adjustment.comment,
+        adjustment.comment
       ])
     end
   end

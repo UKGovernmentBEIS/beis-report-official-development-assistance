@@ -18,13 +18,11 @@ class CreateBudget
       budget.report = editable_report_for_activity(activity: activity)
     end
 
-    result = if budget.valid?
+    if budget.valid?
       Result.new(budget.save, budget)
     else
       Result.new(false, budget)
     end
-
-    result
   end
 
   private

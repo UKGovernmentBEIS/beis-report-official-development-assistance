@@ -112,7 +112,7 @@ RSpec.describe ActivityDefaults do
         expect([
           identifier_parts.first,
           identifier_parts.second,
-          identifier_parts.third,
+          identifier_parts.third
         ].join("-")).to eq(programme.roda_identifier)
         expect(identifier_parts.third).to match(/[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}/)
       end
@@ -161,7 +161,7 @@ RSpec.describe ActivityDefaults do
           identifier_parts.first,
           identifier_parts.second,
           identifier_parts.third,
-          identifier_parts.fourth,
+          identifier_parts.fourth
         ].join("-")).to eq(project.roda_identifier)
         expect(identifier_parts.fourth).to match(/[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}/)
       end

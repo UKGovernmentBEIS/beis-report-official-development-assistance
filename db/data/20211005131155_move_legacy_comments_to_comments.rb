@@ -27,7 +27,7 @@ ActiveRecord::Base.transaction do
         owner_id: legacy_comment.owner_id,
         report_id: legacy_comment.report_id,
         created_at: legacy_comment.created_at,
-        updated_at: legacy_comment.updated_at,
+        updated_at: legacy_comment.updated_at
       )
 
       created_comments << legacy_comment

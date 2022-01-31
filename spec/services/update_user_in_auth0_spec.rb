@@ -20,7 +20,7 @@ RSpec.describe UpdateUserInAuth0 do
       auth0_update_call = stub_auth0_update_user_request(
         auth0_identifier: "auth0|555ffff",
         email: user.email,
-        name: updated_name,
+        name: updated_name
       )
 
       subject.call
@@ -34,7 +34,7 @@ RSpec.describe UpdateUserInAuth0 do
       auth0_update_call = stub_auth0_update_user_request(
         auth0_identifier: "auth0|555ffff",
         email: updated_email,
-        name: user.name,
+        name: user.name
       )
 
       subject.call
@@ -46,7 +46,7 @@ RSpec.describe UpdateUserInAuth0 do
       auth0_update_call = stub_auth0_update_user_request(
         auth0_identifier: "auth0|555ffff",
         email: "new@example.com",
-        name: "New Name",
+        name: "New Name"
       )
 
       subject.call
@@ -63,7 +63,7 @@ RSpec.describe UpdateUserInAuth0 do
             "statusCode" => 500,
             "error" => "Foo",
             "message" => "Bar",
-            "errorCode" => "x_error",
+            "errorCode" => "x_error"
           }]
 
           unexpected_error = Auth0::Unsupported.new(params)

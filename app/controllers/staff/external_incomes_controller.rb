@@ -76,7 +76,7 @@ class Staff::ExternalIncomesController < Staff::BaseController
       :amount,
       :financial_quarter,
       :financial_year,
-      :oda_funding,
+      :oda_funding
     )
   end
 end

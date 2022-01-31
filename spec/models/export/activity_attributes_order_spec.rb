@@ -51,7 +51,7 @@ RSpec.describe Export::ActivityAttributesOrder do
         :gcrf_challenge_area,
         :fund_pillar,
         :country_delivery_partners,
-        :uk_dp_named_contact,
+        :uk_dp_named_contact
       ]
     end
   end

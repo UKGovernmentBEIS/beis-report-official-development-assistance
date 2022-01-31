@@ -66,7 +66,7 @@ RSpec.describe FinancialYear do
       FinancialYear.new(2017),
       FinancialYear.new(2018),
       FinancialYear.new(2019),
-      FinancialYear.new(2020),
+      FinancialYear.new(2020)
     ])
   end
 

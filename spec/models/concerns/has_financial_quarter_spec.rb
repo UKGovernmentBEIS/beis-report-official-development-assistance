@@ -1,9 +1,11 @@
 require "rails_helper"
 
 RSpec.describe HasFinancialQuarter do
+  # standard:disable Lint/ConstantDefinitionInBlock
   TestReport = Struct.new(:financial_quarter, :financial_year) {
     include HasFinancialQuarter
   }
+  # standard:enable Lint/ConstantDefinitionInBlock
 
   describe "#own_financial_quarter" do
     it "returns the financial quarter and year as an object" do

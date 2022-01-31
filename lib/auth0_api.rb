@@ -18,7 +18,7 @@ class Auth0Api
       client_id: ENV["AUTH0_CLIENT_ID"],
       domain: ENV["AUTH0_DOMAIN"],
       token: token,
-      api_version: 2,
+      api_version: 2
     )
   end
 
@@ -32,7 +32,7 @@ class Auth0Api
       grant_type: "client_credentials",
       client_id: ENV["AUTH0_CLIENT_ID"],
       client_secret: ENV["AUTH0_CLIENT_SECRET"],
-      audience: "https://#{ENV["AUTH0_DOMAIN"]}/api/v2/",
+      audience: "https://#{ENV["AUTH0_DOMAIN"]}/api/v2/"
     )
     response = http.request(request)
     JSON.parse(response.read_body)

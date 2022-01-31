@@ -11,44 +11,52 @@ RSpec.describe ActualPolicy do
     context "when the activity is a fund" do
       let(:activity) { create(:fund_activity, organisation: user.organisation) }
 
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:edit) }
-      it { is_expected.to forbid_action(:update) }
+      it "only permits show" do
+        is_expected.to permit_action(:show)
+        is_expected.to forbid_action(:create)
+        is_expected.to forbid_action(:edit)
+        is_expected.to forbid_action(:update)
 
-      it { is_expected.to forbid_action(:destroy) }
+        is_expected.to forbid_action(:destroy)
+      end
     end
 
     context "when the activity is a programme" do
       let(:activity) { create(:programme_activity, organisation: user.organisation) }
 
-      it { is_expected.to permit_action(:show) }
-      it { is_expected.to permit_action(:create) }
-      it { is_expected.to permit_action(:edit) }
-      it { is_expected.to permit_action(:update) }
-      it { is_expected.to permit_action(:destroy) }
+      it "permits all actions" do
+        is_expected.to permit_action(:show)
+        is_expected.to permit_action(:create)
+        is_expected.to permit_action(:edit)
+        is_expected.to permit_action(:update)
+        is_expected.to permit_action(:destroy)
+      end
     end
 
     context "when the activity is a project" do
       let(:activity) { create(:project_activity, organisation: create(:delivery_partner_organisation)) }
 
-      it { is_expected.to permit_action(:show) }
+      it "only permits show" do
+        is_expected.to permit_action(:show)
 
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:edit) }
-      it { is_expected.to forbid_action(:update) }
-      it { is_expected.to forbid_action(:destroy) }
+        is_expected.to forbid_action(:create)
+        is_expected.to forbid_action(:edit)
+        is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:destroy)
+      end
     end
 
     context "when the activity is a third party project" do
       let(:activity) { create(:third_party_project_activity, organisation: create(:delivery_partner_organisation)) }
 
-      it { is_expected.to permit_action(:show) }
+      it "only permits show" do
+        is_expected.to permit_action(:show)
 
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:edit) }
-      it { is_expected.to forbid_action(:update) }
-      it { is_expected.to forbid_action(:destroy) }
+        is_expected.to forbid_action(:create)
+        is_expected.to forbid_action(:edit)
+        is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:destroy)
+      end
     end
   end
 
@@ -58,32 +66,38 @@ RSpec.describe ActualPolicy do
     context "when the activity is a fund" do
       let(:activity) { create(:fund_activity) }
 
-      it { is_expected.to forbid_action(:show) }
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:edit) }
-      it { is_expected.to forbid_action(:update) }
-      it { is_expected.to forbid_action(:destroy) }
+      it "forbids all actions" do
+        is_expected.to forbid_action(:show)
+        is_expected.to forbid_action(:create)
+        is_expected.to forbid_action(:edit)
+        is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:destroy)
+      end
     end
 
     context "when the activity is a programme" do
       let(:activity) { create(:programme_activity) }
 
-      it { is_expected.to forbid_action(:show) }
-      it { is_expected.to forbid_action(:create) }
-      it { is_expected.to forbid_action(:edit) }
-      it { is_expected.to forbid_action(:update) }
-      it { is_expected.to forbid_action(:destroy) }
+      it "forbids all actions" do
+        is_expected.to forbid_action(:show)
+        is_expected.to forbid_action(:create)
+        is_expected.to forbid_action(:edit)
+        is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:destroy)
+      end
     end
 
     context "when the activity is a project" do
       let(:activity) { create(:project_activity) }
 
       context "and the activity does not belong to the users organisation" do
-        it { is_expected.to forbid_action(:show) }
-        it { is_expected.to forbid_action(:create) }
-        it { is_expected.to forbid_action(:edit) }
-        it { is_expected.to forbid_action(:update) }
-        it { is_expected.to forbid_action(:destroy) }
+        it "forbids all actions" do
+          is_expected.to forbid_action(:show)
+          is_expected.to forbid_action(:create)
+          is_expected.to forbid_action(:edit)
+          is_expected.to forbid_action(:update)
+          is_expected.to forbid_action(:destroy)
+        end
       end
 
       context "and the activity does belong to the users organisation" do
@@ -94,24 +108,28 @@ RSpec.describe ActualPolicy do
         context "when there is no editable report" do
           let(:report) { create(:report, :approved) }
 
-          it { is_expected.to permit_action(:show) }
+          it "only permits show" do
+            is_expected.to permit_action(:show)
 
-          it { is_expected.to forbid_action(:create) }
-          it { is_expected.to forbid_action(:edit) }
-          it { is_expected.to forbid_action(:update) }
-          it { is_expected.to forbid_action(:destroy) }
+            is_expected.to forbid_action(:create)
+            is_expected.to forbid_action(:edit)
+            is_expected.to forbid_action(:update)
+            is_expected.to forbid_action(:destroy)
+          end
         end
 
         context "when there is an editable report" do
           let(:report) { create(:report, :active) }
 
           context "and the report is not for the organisation or fund of the activity" do
-            it { is_expected.to permit_action(:show) }
+            it "only permits show" do
+              is_expected.to permit_action(:show)
 
-            it { is_expected.to forbid_action(:create) }
-            it { is_expected.to forbid_action(:edit) }
-            it { is_expected.to forbid_action(:update) }
-            it { is_expected.to forbid_action(:destroy) }
+              is_expected.to forbid_action(:create)
+              is_expected.to forbid_action(:edit)
+              is_expected.to forbid_action(:update)
+              is_expected.to forbid_action(:destroy)
+            end
           end
 
           context "and the report is for the organisation but not the fund of the activity" do
@@ -119,12 +137,14 @@ RSpec.describe ActualPolicy do
               report.update(organisation: activity.organisation)
             end
 
-            it { is_expected.to permit_action(:show) }
+            it "only permits show" do
+              is_expected.to permit_action(:show)
 
-            it { is_expected.to forbid_action(:create) }
-            it { is_expected.to forbid_action(:edit) }
-            it { is_expected.to forbid_action(:update) }
-            it { is_expected.to forbid_action(:destroy) }
+              is_expected.to forbid_action(:create)
+              is_expected.to forbid_action(:edit)
+              is_expected.to forbid_action(:update)
+              is_expected.to forbid_action(:destroy)
+            end
           end
 
           context "and the report is for the organisation and fund of the activity" do
@@ -133,12 +153,14 @@ RSpec.describe ActualPolicy do
             end
 
             context "when the report is not the one in which the actual was created" do
-              it { is_expected.to permit_action(:show) }
-              it { is_expected.to permit_action(:create) }
+              it "only permits show and create" do
+                is_expected.to permit_action(:show)
+                is_expected.to permit_action(:create)
 
-              it { is_expected.to forbid_action(:edit) }
-              it { is_expected.to forbid_action(:update) }
-              it { is_expected.to forbid_action(:destroy) }
+                is_expected.to forbid_action(:edit)
+                is_expected.to forbid_action(:update)
+                is_expected.to forbid_action(:destroy)
+              end
             end
 
             context "when the report is the one in which the actual was created" do
@@ -146,11 +168,13 @@ RSpec.describe ActualPolicy do
                 actual.update(report: report)
               end
 
-              it { is_expected.to permit_action(:show) }
-              it { is_expected.to permit_action(:create) }
-              it { is_expected.to permit_action(:edit) }
-              it { is_expected.to permit_action(:update) }
-              it { is_expected.to permit_action(:destroy) }
+              it "permits all actions" do
+                is_expected.to permit_action(:show)
+                is_expected.to permit_action(:create)
+                is_expected.to permit_action(:edit)
+                is_expected.to permit_action(:update)
+                is_expected.to permit_action(:destroy)
+              end
             end
           end
         end

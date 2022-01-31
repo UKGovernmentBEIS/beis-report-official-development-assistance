@@ -56,7 +56,7 @@ RSpec.feature "users can upload actuals" do
         "Value" => "0.00",
         "Receiving Organisation Name" => nil,
         "Receiving Organisation Type" => nil,
-        "Receiving Organisation IATI Reference" => nil,
+        "Receiving Organisation IATI Reference" => nil
       },
       {
         "Activity Name" => sibling_project.title,
@@ -67,8 +67,8 @@ RSpec.feature "users can upload actuals" do
         "Value" => "0.00",
         "Receiving Organisation Name" => nil,
         "Receiving Organisation Type" => nil,
-        "Receiving Organisation IATI Reference" => nil,
-      },
+        "Receiving Organisation IATI Reference" => nil
+      }
     ])
   end
 

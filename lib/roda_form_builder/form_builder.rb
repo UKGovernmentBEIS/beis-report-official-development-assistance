@@ -13,7 +13,7 @@ module RodaFormBuilder
         doc.xpath("div").first.add_child(content_tag(:p, class: "guidance") {
           [
             "For help responding to this question, refer to the",
-            link_to_new_tab("guidance", guidance_url),
+            link_to_new_tab("guidance", guidance_url)
           ].join(" ").html_safe
         })
 
@@ -34,7 +34,7 @@ module RodaFormBuilder
       :govuk_collection_select,
       :govuk_collection_radio_buttons,
       :govuk_collection_check_boxes,
-      :govuk_date_field,
+      :govuk_date_field
     ].each do |method|
       define_method(method) do |attribute_name, *args, &block|
         with_guidance(attribute_name, super(attribute_name, *args))
