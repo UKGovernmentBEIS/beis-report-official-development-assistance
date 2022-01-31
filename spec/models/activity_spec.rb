@@ -1,6 +1,26 @@
 require "rails_helper"
 
 RSpec.describe Activity, type: :model do
+  describe "#strip_control_characters_from_fields!" do
+    context "for text fields" do
+      it "removes control characters and preserves text" do
+        activity = Activity.new
+        activity.objectives = "kit\x02t\x00en ✓"
+        activity.valid?
+        expect(activity.objectives).to eq "kitten ✓"
+      end
+    end
+
+    context "for string fields" do
+      it "removes control characters and preserves text" do
+        activity = Activity.new
+        activity.title = "kit\x02t\x00en ✓"
+        activity.valid?
+        expect(activity.title).to eq "kitten ✓"
+      end
+    end
+  end
+
   describe "#finance" do
     it "always returns Standard Grant, code '110'" do
       activity = Activity.new
