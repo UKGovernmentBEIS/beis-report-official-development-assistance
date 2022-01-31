@@ -712,6 +712,23 @@ RSpec.describe Activities::ImportFromCsv do
       end
     end
 
+    it "has an error if it fails dates_step validation" do
+      new_activity_attributes["Planned start date"] = nil
+      new_activity_attributes["Actual start date"] = nil
+
+      expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
+
+      expect(subject.created.count).to eq(0)
+      expect(subject.updated.count).to eq(0)
+
+      expect(subject.errors.count).to eq(2)
+      expect(subject.errors.first.csv_row).to eq(2)
+      expect(subject.errors.first.csv_column).to eq("Planned start date")
+      expect(subject.errors.first.column).to eq(:planned_start_date)
+      expect(subject.errors.first.value).to be_nil
+      expect(subject.errors.first.message).to eq(I18n.t("activerecord.errors.models.activity.attributes.dates"))
+    end
+
     it "has an error if the parent activity cannot be found" do
       new_activity_attributes["Parent RODA ID"] = "111111"
 

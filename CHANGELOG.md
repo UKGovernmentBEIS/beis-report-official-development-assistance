@@ -964,6 +964,8 @@
 
 ## [unreleased]
 
+- Ensure that activities validate the presence of `planned_start_date` (or `actual_start_date`) and `planned_end_date` (or `actual_end_date`)
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-95...HEAD
 [release-95]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-94...release-95
 [release-94]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-93...release-94
