@@ -957,12 +957,15 @@
 
 - Remove some historic actuals, backfilled with duplicates
 
-## [unreleased]
+## [release-95] 2022-01-31
 
 - Moved deactivated users to the bottom of the users list
 - Remove control characters from input before validation
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-94...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-95...HEAD
+[release-95]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-94...release-95
 [release-94]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-93...release-94
 [release-93]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-92...release-93
 [release-92]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-91...release-92
