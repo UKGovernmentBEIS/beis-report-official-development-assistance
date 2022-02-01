@@ -42,7 +42,6 @@ RSpec.configure do |config|
   config.include ActiveJob::TestHelper
 
   config.include AuthenticationHelpers
-  config.include Auth0Helpers
   config.include CustomEmailMatchers
   config.include FormHelpers
   config.include ActivityHelpers
