@@ -1,19 +1,28 @@
 require "rails_helper"
 
-RSpec.feature "Users can sign in with Auth0" do
+RSpec.feature "Users can sign in" do
   scenario "successful sign in via header link" do
+    # Given a user exists
     user = create(:administrator)
-    mock_successful_authentication(
-      uid: user.identifier, name: user.name, email: user.email
-    )
 
+    # When I log in with that user's credentials
     visit root_path
     expect(page).to have_content(t("start_page.title"))
 
     expect(page).to have_content(t("header.link.sign_in"))
     click_on t("header.link.sign_in")
 
+    # type in username and password
+    fill_in "Email", with: user.email
+    fill_in "Password", with: user.password
+    click_on "Log in"
+
+    # Then I should be logged in.
     expect(page).to have_content(t("header.link.sign_out"))
+    expect(page).to have_content("Signed in successfully.")
+
+    # And at the home page
+    expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
   end
 
   scenario "successful sign in via button link" do
