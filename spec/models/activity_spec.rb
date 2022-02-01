@@ -586,7 +586,7 @@ RSpec.describe Activity, type: :model do
         activity = build(:project_activity, channel_of_delivery_code: nil)
         expect(activity).to be_invalid
 
-        activity.channel_of_delivery_code = "12004"
+        activity.channel_of_delivery_code = "62009"
         expect(activity).to be_invalid
 
         activity.channel_of_delivery_code = "11000"
@@ -597,7 +597,7 @@ RSpec.describe Activity, type: :model do
         activity = build(:third_party_project_activity, channel_of_delivery_code: nil)
         expect(activity).to be_invalid
 
-        activity.channel_of_delivery_code = "12004"
+        activity.channel_of_delivery_code = "62009"
         expect(activity).to be_invalid
 
         activity.channel_of_delivery_code = "11000"
