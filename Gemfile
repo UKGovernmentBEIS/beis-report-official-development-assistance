@@ -36,6 +36,9 @@ gem "strip_attributes"
 
 gem "breadcrumbs_on_rails"
 
+# Authentication
+gem "devise"
+
 group :development, :test do
   gem "brakeman"
   gem "bullet"
