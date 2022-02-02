@@ -47,6 +47,7 @@ class Activity < ApplicationRecord
     :sector_step,
     :call_present_step,
     :call_dates_step,
+    :dates_step,
     :total_applications_and_awards_step,
     :programme_status_step,
     :country_delivery_partners_step,

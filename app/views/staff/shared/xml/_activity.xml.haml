@@ -24,10 +24,12 @@
   - if activity.previous_identifier?
     %other-identifier{"ref" => activity.transparency_identifier, type: "A1"}
   %activity-status{"code" => activity.iati_status}/
-  %activity-date{"iso-date" => activity.planned_start_date, type: "1"}/
+  - if activity.planned_start_date?
+    %activity-date{"iso-date" => activity.planned_start_date, type: "1"}/
   - if activity.actual_start_date?
     %activity-date{"iso-date" => activity.actual_start_date, type: "2"}/
-  %activity-date{"iso-date" => activity.planned_end_date, type: "3"}/
+  - if activity.planned_end_date?
+    %activity-date{"iso-date" => activity.planned_end_date, type: "3"}/
   - if activity.actual_end_date?
     %activity-date{"iso-date" => activity.actual_end_date, type: "4"}/
   %contact-info{"type" => "1"}
