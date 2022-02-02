@@ -962,11 +962,15 @@
 - Moved deactivated users to the bottom of the users list
 - Remove control characters from input before validation
 
-## [unreleased]
+## [release-96] 2022-02-02
 
 - Ensure that activities validate the presence of `planned_start_date` (or `actual_start_date`) and `planned_end_date` (or `actual_end_date`)
+- Add data migrations for fixing inconsistencies with implementing organisations: add the implementing role to organisations that are missing it; normalise organisation names to uppercase; remove excess spaces from organisation names
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-95...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-96...HEAD
+[release-96]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-95...release-96
 [release-95]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-94...release-95
 [release-94]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-93...release-94
 [release-93]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-92...release-93
