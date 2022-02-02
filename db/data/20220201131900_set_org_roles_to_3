@@ -1,0 +1,15 @@
+IMPLEMENTING = 3
+
+orgs = Organisation
+  .where(role: nil)
+  .left_outer_joins(:org_participations)
+  .where("org_participations.id IS NULL")
+
+puts ("#{orgs.length} affected Organisations found. (Hopefully 99, quitting if not)")
+exit if orgs.length != 99
+
+orgs.each do |org|
+  org.role = IMPLEMENTING
+  warn "#{org.id}: '#{org.name}' becoming an implementing organisation"
+  org.save(validate: false)
+end
