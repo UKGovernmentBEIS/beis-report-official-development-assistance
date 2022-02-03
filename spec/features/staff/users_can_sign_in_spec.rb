@@ -83,24 +83,6 @@ RSpec.feature "Users can sign in" do
     end
   end
 
-  context "when there was an unknown error message and the user is redirected to /auth/failure" do
-    before(:each) do
-      OmniAuth.config.mock_auth[:auth0] = :unknown_failure
-    end
-
-    it "displays a generic error message and logs to Rollbar" do
-      allow(Rollbar).to receive(:log)
-
-      visit root_path
-
-      click_button t("header.link.sign_in")
-
-      expect(page).not_to have_content("unknown_failure")
-      expect(page).to have_content(t("page_content.errors.auth0.error_messages.generic"))
-      expect(Rollbar).to have_received(:log).with(:info, "Unknown response from Auth0", "unknown_failure")
-    end
-  end
-
   context "when the user has been deactivated" do
     scenario "the user cannot log in and sees an informative message" do
       user = create(:delivery_partner_user, active: false, identifier: "deactivated-user")
