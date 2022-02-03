@@ -66,20 +66,15 @@ RSpec.feature "Users can sign in" do
     expect(page).to have_content(t("start_page.title"))
   end
 
-  context "when there was a known error message and the user is redirected to /auth/failure" do
-    before(:each) do
-      OmniAuth.config.mock_auth[:auth0] = :invalid_credentials
-    end
-
+  context "incorrect credentials are supplied" do
     it "displays the error message so they can try to correct the problem themselves" do
+      user = double("User", email: "dont@exist.com", password: "anything")
+
       visit root_path
 
-      expect(page).to have_content(t("header.link.sign_in"))
-      click_on t("header.link.sign_in")
+      log_in_via_form(user)
 
-      expect(page).to have_content(t("page_content.errors.auth0.failed.explanation"))
-      expect(page).to have_content(t("page_content.errors.auth0.error_messages.invalid_credentials"))
-      expect(page).to have_content(t("page_content.errors.auth0.failed.prompt"))
+      expect(page).to have_content("Invalid Email or password")
     end
   end
 
