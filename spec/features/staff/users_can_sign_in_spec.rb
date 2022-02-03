@@ -66,23 +66,6 @@ RSpec.feature "Users can sign in" do
     expect(page).to have_content(t("start_page.title"))
   end
 
-  context "when the Auth0 identifier does not match a user record" do
-    scenario "informs the user their invitation has failed and the team has been notified" do
-      user = create(:administrator, identifier: "a-local-identifier")
-      mock_successful_authentication(
-        uid: "an-unknown-identifier", name: user.name, email: user.email
-      )
-
-      visit root_path
-
-      expect(page).to have_content(t("header.link.sign_in"))
-      click_on t("header.link.sign_in")
-
-      expect(page).to have_content(t("page_title.errors.not_authorised"))
-      expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))
-    end
-  end
-
   context "when there was a known error message and the user is redirected to /auth/failure" do
     before(:each) do
       OmniAuth.config.mock_auth[:auth0] = :invalid_credentials
