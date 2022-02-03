@@ -1,5 +1,13 @@
 require "rails_helper"
 
+def log_in_via_form(user)
+  click_on t("header.link.sign_in")
+  # type in username and password
+  fill_in "Email", with: user.email
+  fill_in "Password", with: user.password
+  click_on "Log in"
+end
+
 RSpec.feature "Users can sign in" do
   scenario "successful sign in via header link" do
     # Given a user exists
@@ -10,12 +18,8 @@ RSpec.feature "Users can sign in" do
     expect(page).to have_content(t("start_page.title"))
 
     expect(page).to have_content(t("header.link.sign_in"))
-    click_on t("header.link.sign_in")
 
-    # type in username and password
-    fill_in "Email", with: user.email
-    fill_in "Password", with: user.password
-    click_on "Log in"
+    log_in_via_form(user)
 
     # Then I should be logged in.
     expect(page).to have_content(t("header.link.sign_out"))
@@ -30,11 +34,7 @@ RSpec.feature "Users can sign in" do
 
     visit reports_path
 
-    mock_successful_authentication(
-      uid: user.identifier, name: user.name, email: user.email
-    )
-
-    click_on t("header.link.sign_in")
+    log_in_via_form(user)
 
     expect(current_path).to eq(reports_path)
   end
