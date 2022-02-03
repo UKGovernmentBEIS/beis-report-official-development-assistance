@@ -25,21 +25,6 @@ RSpec.feature "Users can sign in" do
     expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
   end
 
-  scenario "successful sign in via button link" do
-    user = create(:administrator)
-    mock_successful_authentication(
-      uid: user.identifier, name: user.name, email: user.email
-    )
-
-    visit root_path
-    expect(page).to have_content(t("start_page.title"))
-
-    expect(page).to have_content(t("header.link.sign_in"))
-    click_on t("header.link.sign_in")
-
-    expect(page).to have_content(t("header.link.sign_out"))
-  end
-
   scenario "a user is redirected to a link they originally requested" do
     user = create(:administrator)
 
