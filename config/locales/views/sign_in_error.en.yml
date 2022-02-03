@@ -2,18 +2,9 @@
 en:
   page_content:
     errors:
-      auth0:
-        error_messages:
-          generic: There was a problem signing you in.
-          invalid_credentials: Invalid credentials
-        failed:
-          explanation: Your request to sign in failed
-          prompt: Try signing in again and if you continue to have this issue please contact support.
       not_authorised:
         explanation: Whilst you have successfully signed in you have not been authorised to see this page.
       support_prompt: If you believe this to be in error, please contact the person who invited you to the service.
   page_title:
     errors:
-      auth0:
-        failed: Sign in failed
       not_authorised: You are not authorised
