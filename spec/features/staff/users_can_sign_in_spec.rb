@@ -39,35 +39,24 @@ RSpec.feature "Users can sign in" do
     expect(current_path).to eq(reports_path)
   end
 
-  scenario "a BEIS user lands on their home  page" do
+  scenario "a BEIS user lands on their home page" do
     user = create(:beis_user)
-
-    mock_successful_authentication(
-      uid: user.identifier, name: user.name, email: user.email
-    )
 
     visit root_path
     expect(page).to have_content(t("start_page.title"))
 
-    expect(page).to have_content(t("header.link.sign_in"))
-    click_on t("header.link.sign_in")
+    log_in_via_form(user)
 
     expect(page.current_path).to eql home_path
   end
 
-  scenario "a delivery partenr user lands on their home  page" do
+  scenario "a delivery partner user lands on their home page" do
     user = create(:delivery_partner_user)
-
-    mock_successful_authentication(
-      uid: user.identifier, name: user.name, email: user.email
-    )
 
     visit root_path
     expect(page).to have_content(t("start_page.title"))
 
-    expect(page).to have_content(t("header.link.sign_in"))
-    click_on t("header.link.sign_in")
-
+    log_in_via_form(user)
     expect(page.current_path).to eql home_path
   end
 
