@@ -121,8 +121,6 @@ Rails.application.routes.draw do
   get "/pages/*id" => "pages#show", :as => :page, :format => false
 
   # Authentication
-  get "auth/oauth2/callback" => "auth0#callback"
-  get "auth/failure" => "auth0#failure"
   get "sign_out" => "application#sign_out"
 
   # Errors
