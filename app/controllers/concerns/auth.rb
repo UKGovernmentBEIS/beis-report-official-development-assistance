@@ -26,4 +26,7 @@ module Auth
     current_user.present?
   end
 
+  def after_sign_in_path_for(_user)
+    session[:redirect_path] || home_path
+  end
 end
