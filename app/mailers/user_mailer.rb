@@ -1,4 +1,4 @@
-require "./lib/auth0_api"
+# require "./lib/auth0_api"
 
 class UserMailer < ApplicationMailer
   def welcome(user)
@@ -7,7 +7,7 @@ class UserMailer < ApplicationMailer
       to: user.email,
       personalisation: {
         name: user.name,
-        link: password_change_link(user: user),
+        link: "ftp://TODO", # TODO: take this from Devise: password_change_link(user: user),
         service_url: ENV["DOMAIN"]
       }
     )
