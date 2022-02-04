@@ -6,6 +6,8 @@ Date: 2019-10-28
 
 Superceded by [16. Disable Auth0's requirement for Javascript during the authentication journey](0016-disable-auth0-s-requirement-for-javascript-during-the-authentication-journey.md)
 
+Superceded by [34. Use devise and rotp to manage authentication with sms OTP](0034-use-devise-and-rotp-to-manage-authentication-with-sms-otp.md)
+
 ## Context
 
 We need to allow a number of users to sign in to the service in order to use it.
