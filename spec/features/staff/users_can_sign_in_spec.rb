@@ -22,7 +22,7 @@ RSpec.feature "Users can sign in" do
     log_in_via_form(user)
 
     # Then I should be logged in.
-    expect(page).to have_content(t("header.link.sign_out"))
+    expect(page).to have_link(t("header.link.sign_out"))
     expect(page).to have_content("Signed in successfully.")
 
     # And at the home page
