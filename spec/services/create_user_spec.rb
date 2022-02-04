@@ -21,7 +21,7 @@ RSpec.describe CreateUser do
 
       expect {
         described_class.new(user: user, organisation: build_stubbed(:delivery_partner_organisation)).call
-      }.to have_enqueued_mail(UserMailer, :welcome).with(args: [user])
+      }.to have_enqueued_mail(UserMailer, :welcome).with(user)
     end
 
     context "when an organisation is provided" do
