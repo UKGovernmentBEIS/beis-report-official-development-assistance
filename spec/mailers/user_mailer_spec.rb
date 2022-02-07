@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe UserMailer, type: :mailer do
+RSpec.describe UserMailer, type: :mailer, pending: "To be finished as part of the user invite card" do
   around do |example|
     ClimateControl.modify(
       NOTIFY_WELCOME_EMAIL_TEMPLATE: "123",
