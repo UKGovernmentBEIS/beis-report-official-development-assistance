@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CreateUser do
+RSpec.describe CreateUser, pending: "To be finished as part of the user invite card" do
   let(:user) { build(:administrator) }
   before(:each) do
     stub_auth0_token_request
