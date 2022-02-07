@@ -4,7 +4,6 @@ RSpec.describe Staff::ReportsController do
 
   before do
     allow(subject).to receive(:current_user).and_return(delivery_partner_user)
-    allow(subject).to receive(:logged_in_using_omniauth?).and_return(true)
   end
 
   describe "#index" do
