@@ -36,7 +36,6 @@ RSpec.describe Staff::Exports::OrganisationsController do
 
   before do
     allow(controller).to receive(:current_user).and_return(user)
-    allow(controller).to receive(:logged_in_using_omniauth?).and_return(true)
   end
 
   context "when logged in as a delivery partner" do
