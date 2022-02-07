@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe UpdateUser do
+RSpec.describe UpdateUser, pending: "To be finished as part of the user edit card" do
   let(:user) { create(:administrator, identifier: "auth0|1234") }
 
   let(:updated_email) { "new@example.com" }
