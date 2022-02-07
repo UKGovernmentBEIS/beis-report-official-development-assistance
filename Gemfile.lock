@@ -278,7 +278,7 @@ GEM
     omniauth-oauth2 (1.7.2)
       oauth2 (~> 1.4)
       omniauth (>= 1.9, < 3)
-    omniauth-rails_csrf_protection (1.0.0)
+    omniauth-rails_csrf_protection (1.0.1)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
     parallel (1.21.0)
@@ -531,7 +531,7 @@ DEPENDENCIES
   monetize
   nanoid
   omniauth-auth0 (~> 3.0)
-  omniauth-rails_csrf_protection (~> 1.0.0)
+  omniauth-rails_csrf_protection (~> 1.0.1)
   parser (~> 3.0.1.0)
   pg
   pry-byebug
