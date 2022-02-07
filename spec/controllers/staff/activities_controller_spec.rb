@@ -16,7 +16,6 @@ RSpec.describe Staff::ActivitiesController do
 
     before do
       allow(subject).to receive(:current_user).and_return(delivery_partner_user)
-      allow(subject).to receive(:logged_in_using_omniauth?).and_return(true)
     end
 
     it "does not show fund (level A) activities" do
@@ -50,7 +49,6 @@ RSpec.describe Staff::ActivitiesController do
 
     before do
       allow(controller).to receive(:current_user).and_return(user)
-      allow(controller).to receive(:logged_in_using_omniauth?).and_return(true)
       allow(Activity::GroupedActivitiesFetcher).to receive(:new).and_return(fetcher)
     end
 
@@ -124,7 +122,6 @@ RSpec.describe Staff::ActivitiesController do
 
       before do
         allow(controller).to receive(:current_user).and_return(user)
-        allow(controller).to receive(:logged_in_using_omniauth?).and_return(true)
         allow(controller).to receive(:prepare_default_activity_trail)
       end
 
