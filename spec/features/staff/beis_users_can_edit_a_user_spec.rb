@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "BEIS users can editing other users" do
+RSpec.feature "BEIS users can edit other users", pending: "To be finished as part of the user edit card" do
   let!(:user) { create(:delivery_partner_user, organisation: create(:delivery_partner_organisation)) }
 
   before do
