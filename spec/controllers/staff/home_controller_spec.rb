@@ -4,7 +4,6 @@ RSpec.describe Staff::HomeController do
   describe "show" do
     before do
       allow(controller).to receive(:current_user).and_return(user)
-      allow(controller).to receive(:logged_in_using_omniauth?).and_return(true)
     end
 
     context "when signed in as a BEIS user" do
