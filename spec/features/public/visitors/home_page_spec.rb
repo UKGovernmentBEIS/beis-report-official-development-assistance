@@ -30,7 +30,7 @@ RSpec.feature "Home page" do
 
     scenario "they are shown the start page" do
       visit root_path
-      expect(page).to have_button(t("header.link.sign_in"))
+      expect(page).to have_link(t("header.link.sign_in"))
     end
   end
 end

@@ -12,13 +12,13 @@ class UpdateUser
     User.transaction do
       user.organisation = organisation
 
-      begin
-        UpdateUserInAuth0.new(user: user).call
-      rescue Auth0::Exception => e
-        result.success = false
-        Rails.logger.error("Error updating user #{user.email} to Auth0 during UpdateUser with #{e.message}.")
-        raise ActiveRecord::Rollback
-      end
+      # begin
+      #   UpdateUserInAuth0.new(user: user).call
+      # rescue Auth0::Exception => e
+      #   result.success = false
+      #   Rails.logger.error("Error updating user #{user.email} to Auth0 during UpdateUser with #{e.message}.")
+      #   raise ActiveRecord::Rollback
+      # end
 
       user.save
     end

@@ -7,7 +7,6 @@ RSpec.describe Staff::OrganisationReportsController do
 
     before do
       allow(controller).to receive(:current_user).and_return(user)
-      allow(controller).to receive(:logged_in_using_omniauth?).and_return(true)
     end
 
     it "calls the reports fetcher with the expected organisation" do

@@ -4,7 +4,6 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "2.7.3"
 
-gem "auth0", "~> 5.6"
 gem "acts_as_tree"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "govuk_design_system_formbuilder", "~> 2.7.6"
@@ -38,8 +37,7 @@ gem "strip_attributes"
 gem "breadcrumbs_on_rails"
 
 # Authentication
-gem "omniauth-auth0", "~> 3.0"
-gem "omniauth-rails_csrf_protection", "~> 1.0.0"
+gem "devise"
 
 group :development, :test do
   gem "brakeman"
