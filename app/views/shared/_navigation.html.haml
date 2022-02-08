@@ -27,5 +27,5 @@
         %li{ class: navigation_item_class(users_path) }
           = link_to t("page_title.users.index"), users_path, class: "govuk-header__link"
 
-      %li{ class: navigation_item_class(sign_out_path) }
+      %li{ class: navigation_item_class(destroy_user_session_path) }
         = link_to t("header.link.sign_out"), destroy_user_session_path, method: :delete, class: "govuk-header__link"
