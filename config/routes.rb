@@ -120,9 +120,6 @@ Rails.application.routes.draw do
   # Static pages
   get "/pages/*id" => "pages#show", :as => :page, :format => false
 
-  # Authentication
-  get "sign_out" => "application#sign_out"
-
   # Errors
   get "/404", to: "errors#not_found"
   get "/422", to: "errors#unacceptable"
