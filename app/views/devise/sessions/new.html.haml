@@ -1,0 +1,19 @@
+= content_for :page_title_prefix, "Log in"
+
+.govuk-grid-row
+  .govuk-grid-column-one-third
+    = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+      .govuk-form-group
+        %fieldset.govuk-fieldset
+          %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+            %h1.govuk-fieldset__heading
+              Log in
+
+          = f.govuk_email_field :email, autofocus: true, autocomplete: "email"
+          = f.govuk_password_field :password, autocomplete: "current-password"
+
+          - if devise_mapping.rememberable?
+            .govuk-checkboxes{"data-module" => "govuk-checkboxes"}
+              = f.govuk_check_box :remember_me, true, multiple: false, label: { text: "Remember me" }
+      .actions
+        = f.govuk_submit "Log in"
