@@ -45,6 +45,9 @@
 *.xls*
 *.xml*
 
+# but we might want XML files in the fixtures:
+!/spec/fixtures/**/*.xml*
+
 # bundler state
 /.bundle
 /vendor/bundle/
