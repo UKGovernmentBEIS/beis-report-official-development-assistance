@@ -33,7 +33,7 @@ module GOVUKDesignSystemFormBuilder
     # would be unconventional and also require a hack.
     #
     # 3. We cannot overwride the @attribute_name on create since that will have
-    # the same affect as point 1.
+    # the same effect as point 1.
     private def translated_attribute_name(attribute_name:)
       translations = @builder.object.class.try("::FORM_FIELD_TRANSLATIONS") || {}
 
