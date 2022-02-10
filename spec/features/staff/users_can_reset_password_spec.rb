@@ -9,8 +9,8 @@ RSpec.feature "Users can reset their password" do
     visit root_path
     click_link "Sign in"
     click_link "Forgot password?"
-    fill_in "Email", with: user.email
-    click_on "Send me reset password instructions"
+    fill_in "Email address", with: user.email
+    click_on "Submit"
 
     # Then I receive an email with the reset link
     expect(user).to have_received_email.with_subject("Reset password instructions")
