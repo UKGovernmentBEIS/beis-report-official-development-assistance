@@ -17,3 +17,5 @@
               = f.govuk_check_box :remember_me, true, multiple: false, label: { text: "Remember me" }
       .actions
         = f.govuk_submit "Log in"
+
+    = link_to "Forgot password?", new_user_password_path
