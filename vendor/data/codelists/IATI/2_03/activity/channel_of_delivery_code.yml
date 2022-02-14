@@ -20,22 +20,22 @@ data:
   status: active
 - code: '11001'
   category: '11000'
-  name: Central Government
+  name: Donor Government > Central Government
   description:
   status: active
 - code: '11002'
   category: '11000'
-  name: Local Government
+  name: Donor Government > Local Government
   description:
   status: active
 - code: '11003'
   category: '11000'
-  name: Public corporations
+  name: Donor Government > Public corporations
   description:
   status: active
 - code: '11004'
   category: '11000'
-  name: Other public entities in donor country
+  name: Donor Government > Other public entities in donor country
   description:
   status: active
 - code: '12000'
@@ -44,22 +44,22 @@ data:
   status: active
 - code: '12001'
   category: '12000'
-  name: Central Government
+  name: Recipient Government > Central Government
   description:
   status: active
 - code: '12002'
   category: '12000'
-  name: Local Government
+  name: Recipient Government > Local Government
   description:
   status: active
 - code: '12003'
   category: '12000'
-  name: Public corporations
+  name: Recipient Government > Public corporations
   description:
   status: active
 - code: '12004'
   category: '12000'
-  name: Other public entities in recipient country
+  name: Recipient Government > Other public entities in recipient country
   description:
   status: active
 - code: '13000'
