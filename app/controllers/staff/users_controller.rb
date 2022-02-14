@@ -29,16 +29,12 @@ class Staff::UsersController < Staff::BaseController
     @service_owner = service_owner
     @delivery_partners = delivery_partners
 
-    if @user.valid?
-      result = CreateUser.new(user: @user, organisation: organisation).call
-      if result.success?
-        flash.now[:notice] = t("action.user.create.success")
-        redirect_to user_path(@user.reload.id)
-      else
-        flash.now[:error] = t("action.user.create.failed", error: result.error_message)
-        render :new
-      end
+    result = CreateUser.new(user: @user, organisation: organisation).call
+    if result.success?
+      flash.now[:notice] = t("action.user.create.success")
+      redirect_to user_path(@user.reload.id)
     else
+      flash.now[:error] = t("action.user.create.failed", error: result.error_message)
       render :new
     end
   end
@@ -89,7 +85,7 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def organisation
-    Organisation.find(organisation_id)
+    Organisation.find_by(id: organisation_id)
   end
 
   private def service_owner
