@@ -24,7 +24,6 @@ class Staff::UsersController < Staff::BaseController
 
   def create
     @user = User.new(user_params)
-    @user.active = params[:user][:active]
     authorize @user
     @organisations = policy_scope(Organisation)
 
@@ -54,7 +53,6 @@ class Staff::UsersController < Staff::BaseController
     @delivery_partners = delivery_partners
 
     @user.assign_attributes(user_params)
-    @user.active = params[:user][:active]
 
     if @user.valid?
       result = UpdateUser.new(user: @user, organisation: organisation).call
@@ -72,7 +70,7 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :organisation_id)
+    params.require(:user).permit(:name, :email, :organisation_id, :active)
   end
 
   def id
