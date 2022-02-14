@@ -10,12 +10,11 @@ RSpec.feature "BEIS users can invite new users to the service" do
   #   end
   # end
 
-  context "when the user is authenticated", pending: "To be finished as part of the user invite card" do
+  context "when the user is authenticated" do
     let(:user) { create(:administrator) }
 
     before do
       authenticate!(user: user)
-      stub_auth0_token_request
     end
 
     context "when the user belongs to BEIS" do
@@ -26,15 +25,6 @@ RSpec.feature "BEIS users can invite new users to the service" do
         second_organisation = create(:delivery_partner_organisation)
         new_user_name = "Foo Bar"
         new_user_email = "email@example.com"
-        auth0_identifier = "auth0|00991122"
-
-        stub_auth0_create_user_request(
-          email: new_user_email,
-          auth0_identifier: auth0_identifier
-        )
-        stub_auth0_post_password_change(
-          auth0_identifier: auth0_identifier
-        )
 
         perform_enqueued_jobs do
           create_user(organisation, new_user_name, new_user_email)
@@ -44,12 +34,15 @@ RSpec.feature "BEIS users can invite new users to the service" do
         expect(page).not_to have_content(second_organisation.name)
 
         new_user = User.where(email: new_user_email).first
+        expect(new_user).to have_received_email
 
-        expect(new_user).to have_received_email.with_personalisations(
-          "name" => new_user_name,
-          "link" => "https://testdomain/lo/reset?ticket=123#",
-          "service_url" => "test.local"
-        )
+        email = ActionMailer::Base.deliveries.last
+        personalisations = email[:personalisation].unparsed_value
+        reset_password_link_regex = %r{http://test.local/users/password/edit\?reset_password_token=.*}
+
+        expect(personalisations[:link]).to match(reset_password_link_regex)
+        expect(personalisations[:name]).to eql(new_user_name)
+        expect(personalisations[:service_url]).to eql("test.local")
       end
 
       context "when the name and email are not provided" do
@@ -66,53 +59,9 @@ RSpec.feature "BEIS users can invite new users to the service" do
           expect(page).to have_content(t("activerecord.errors.models.user.attributes.email.blank"))
         end
       end
-
-      context "when there was an error creating the user in auth0" do
-        context "when there was a generic error" do
-          it "doesn't create the user, displays an error and displays organisations" do
-            stub_auth0_token_request
-            new_email = "email@example.com"
-            organisation = create(:delivery_partner_organisation)
-            stub_auth0_create_user_request_failure(email: new_email)
-
-            visit new_user_path
-
-            expect(page).to have_content(t("page_title.users.new"))
-            fill_in "user[name]", with: "foo"
-            fill_in "user[email]", with: new_email
-            choose organisation.name
-
-            expect {
-              click_button t("default.button.submit")
-            }.not_to change { User.count }
-
-            expect(page).to have_content(t("action.user.create.failed", error: "The user already exists."))
-            expect(page).to have_content(organisation.name)
-          end
-        end
-
-        context "when the email was invalid" do
-          it "doesn't create user, displays 'email invalid' but still displays organisations" do
-            new_email = "tom"
-            organisation = create(:delivery_partner_organisation)
-            stub_auth0_create_user_request_failure(email: new_email)
-
-            visit new_user_path
-            fill_in "user[name]", with: "tom"
-            fill_in "user[email]", with: "tom"
-            choose organisation.name
-
-            click_button t("default.button.submit")
-
-            expect(page).to have_content("Email is invalid")
-            expect(page).not_to have_content(t("action.user.create.failed"))
-            expect(page).to have_content(organisation.name)
-          end
-        end
-      end
     end
 
-    context "when the user does not belongs to BEIS" do
+    context "when the user does not belong to BEIS" do
       let(:user) { create(:delivery_partner_user) }
 
       it "does not show them the manage user button" do

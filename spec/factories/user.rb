@@ -19,5 +19,9 @@ FactoryBot.define do
     factory :inactive_user do
       active { false }
     end
+
+    trait :new_user do
+      password { nil }
+    end
   end
 end
