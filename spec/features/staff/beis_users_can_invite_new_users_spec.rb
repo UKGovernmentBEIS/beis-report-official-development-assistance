@@ -34,15 +34,12 @@ RSpec.feature "BEIS users can invite new users to the service" do
         expect(page).not_to have_content(second_organisation.name)
 
         new_user = User.where(email: new_user_email).first
-        expect(new_user).to have_received_email
-
-        email = ActionMailer::Base.deliveries.last
-        personalisations = email[:personalisation].unparsed_value
         reset_password_link_regex = %r{http://test.local/users/password/edit\?reset_password_token=.*}
-
-        expect(personalisations[:link]).to match(reset_password_link_regex)
-        expect(personalisations[:name]).to eql(new_user_name)
-        expect(personalisations[:service_url]).to eql("test.local")
+        expect(new_user).to have_received_email.with_personalisations(
+          link: match(reset_password_link_regex),
+          name: new_user_name,
+          service_url: "test.local"
+        )
       end
 
       context "when the name and email are not provided" do
