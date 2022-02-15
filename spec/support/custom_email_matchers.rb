@@ -36,7 +36,7 @@ module CustomEmailMatchers
     def has_personalisations?
       return true unless @expected_personalisations
 
-      personalisation == @expected_personalisations
+      RSpec::Matchers::BuiltIn::Include.new(@expected_personalisations)
     end
 
     def personalisation
