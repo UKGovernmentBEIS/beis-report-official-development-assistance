@@ -165,7 +165,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
         @find_programme_activities_stub = double("FindProgrammeActivities", call: @activities)
         allow(FindProgrammeActivities).to receive(:new).and_return(@find_programme_activities_stub)
 
-        get :programme_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
+        get :programme_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml, skip_validation: 1}
       end
 
       include_examples "renders XML"
@@ -185,7 +185,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
         allow(FindProjectActivities).to receive(:new).and_return(@find_project_activities_stub)
         allow(@find_project_activities_stub).to receive(:call).and_return(@find_project_activities_stub)
 
-        get :project_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
+        get :project_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml, skip_validation: 1}
       end
 
       include_examples "renders XML"
@@ -206,7 +206,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
         allow(FindThirdPartyProjectActivities).to receive(:new).and_return(@find_third_party_project_activities_stub)
         allow(@find_third_party_project_activities_stub).to receive(:call).and_return(@find_third_party_project_activities_stub)
 
-        get :third_party_project_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml}
+        get :third_party_project_activities, params: {id: organisation.id, fund: fund.short_name, format: :xml, skip_validation: 1}
       end
 
       include_examples "renders XML"
