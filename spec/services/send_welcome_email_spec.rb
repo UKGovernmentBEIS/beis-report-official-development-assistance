@@ -7,7 +7,7 @@ RSpec.describe SendWelcomeEmail do
     it "enqueues the welcome email to be sent" do
       expect {
         described_class.new(user: user).call
-      }.to have_enqueued_mail(UserMailer, :welcome).with(args: [user])
+      }.to have_enqueued_mail(UserMailer, :welcome).with(user)
     end
   end
 end

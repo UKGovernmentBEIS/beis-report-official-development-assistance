@@ -4,7 +4,7 @@ Date: 2020-11-20
 
 ## Status
 
-Accepted
+Superceded by [34. Use devise and rotp to manage authentication with sms OTP](0034-use-devise-and-rotp-to-manage-authentication-with-sms-otp.md)
 
 ## Context
 

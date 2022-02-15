@@ -214,7 +214,7 @@ RSpec.describe CodelistHelper, type: :helper do
 
     describe "#channel_of_delivery_codes" do
       it "returns the list of items whose codes are allowed by BEIS" do
-        expect(helper.channel_of_delivery_codes.size).to eql 8
+        expect(helper.channel_of_delivery_codes.size).to eql 32
       end
 
       it "returns items with their IATI code and name" do
