@@ -1,8 +1,9 @@
 require "rails_helper"
 require "csv"
 
-RSpec.describe "rake invalid_activities" do
+RSpec.describe "rake activities:invalid" do
   it "creates a csv file on tmp folder with a list of invalid activities in RODA" do
+    domain = "https://report-official-development-assistance.service.gov.uk/"
     activities = create_list(:project_activity, 5)
 
     first_invalid_activity = activities.first.tap { |a| a.update_columns(gdi: nil, collaboration_type: nil) }
@@ -18,13 +19,13 @@ RSpec.describe "rake invalid_activities" do
       expect(first_invalid_activity_row).to include(first_invalid_activity.title)
       expect(first_invalid_activity_row).to include(first_invalid_activity.organisation.name)
       expect(first_invalid_activity_row).to include(first_invalid_activity.level)
-      expect(first_invalid_activity_row).to include(Rails.application.routes.url_helpers.organisation_activity_details_url(first_invalid_activity.organisation, first_invalid_activity.id, host: ENV["DOMAIN"]))
+      expect(first_invalid_activity_row).to include(Rails.application.routes.url_helpers.organisation_activity_details_url(first_invalid_activity.organisation, first_invalid_activity.id, host: domain))
 
       second_invalid_activity_row = invalid_activities_from_csv.detect { |row| row.include?(second_invalid_activity.roda_identifier) }
       expect(second_invalid_activity_row).to include(second_invalid_activity.title)
       expect(second_invalid_activity_row).to include(second_invalid_activity.organisation.name)
       expect(second_invalid_activity_row).to include(second_invalid_activity.level)
-      expect(second_invalid_activity_row).to include(Rails.application.routes.url_helpers.organisation_activity_details_url(second_invalid_activity.organisation, second_invalid_activity.id, host: ENV["DOMAIN"]))
+      expect(second_invalid_activity_row).to include(Rails.application.routes.url_helpers.organisation_activity_details_url(second_invalid_activity.organisation, second_invalid_activity.id, host: domain))
     end
   end
 end
