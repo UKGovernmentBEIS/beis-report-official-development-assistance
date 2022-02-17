@@ -974,6 +974,9 @@
 
 ## [unreleased]
 
+- No longer hide all the organisations when creating a user if one wasn't picked to start with
+- Correctly highlight the absence of an organisation when creating a user if one wasn't picked to start with
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-97...HEAD
 [release-97]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-96...release-97
 [release-96]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-95...release-96
