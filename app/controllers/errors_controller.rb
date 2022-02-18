@@ -1,6 +1,6 @@
 class ErrorsController < ApplicationController
   include Auth
-  include Pundit
+  include Pundit::Authorization
 
   def not_found
     render "pages/errors/not_found",

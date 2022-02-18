@@ -1,4 +1,4 @@
 class PagesController < ApplicationController
   include HighVoltage::StaticPage
-  include Pundit
+  include Pundit::Authorization
 end
