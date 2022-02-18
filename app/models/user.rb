@@ -16,6 +16,10 @@ class User < ApplicationRecord
 
   delegate :service_owner?, :delivery_partner?, to: :organisation
 
+  def active_for_authentication?
+    active
+  end
+
   private
 
   def email_cannot_be_changed_after_create
