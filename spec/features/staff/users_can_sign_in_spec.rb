@@ -1,10 +1,13 @@
 require "rails_helper"
 
-def log_in_via_form(user)
+def log_in_via_form(user, remember_me: false)
   click_on t("header.link.sign_in")
   # type in username and password
   fill_in "Email", with: user.email
   fill_in "Password", with: user.password
+
+  check "Remember me" if remember_me
+
   click_on "Log in"
 end
 
@@ -58,6 +61,24 @@ RSpec.feature "Users can sign in" do
 
     log_in_via_form(user)
     expect(page.current_path).to eql home_path
+  end
+
+  scenario "Logins can be remembered for 30 days" do
+    user = create(:beis_user)
+
+    visit root_path
+    expect(page).to have_content(t("start_page.title"))
+
+    log_in_via_form(user, remember_me: true)
+
+    travel 29.days do
+      visit reports_path
+      expect(page).to have_content("Create a new report")
+    end
+    travel 31.days do
+      visit reports_path
+      expect(page).to have_content("Sign in")
+    end
   end
 
   scenario "protected pages cannot be visited unless signed in" do
