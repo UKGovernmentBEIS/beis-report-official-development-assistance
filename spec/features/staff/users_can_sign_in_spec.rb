@@ -101,28 +101,19 @@ RSpec.feature "Users can sign in" do
 
   context "when the user has been deactivated" do
     scenario "the user cannot log in and sees an informative message" do
-      pending "a viable Devise hook to use with User#active"
       user = create(:delivery_partner_user, active: false, identifier: "deactivated-user")
 
       visit root_path
-
-      expect(page).to have_content(t("header.link.sign_in"))
       log_in_via_form(user)
 
-      expect(page).to have_content(t("page_title.errors.not_authorised"))
-      expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))
+      expect(page).to have_content("Your account is not active. If you believe this to be in error, please contact the person who invited you to the service.")
     end
 
     scenario "a user who is logged in and then deactivated sees an error message" do
-      pending "a viable Devise hook to use with User#active"
       user = create(:delivery_partner_user)
 
-      mock_successful_authentication(
-        uid: user.identifier, name: user.name, email: user.email
-      )
-
       visit root_path
-      click_on t("header.link.sign_in")
+      log_in_via_form(user)
 
       expect(page.current_path).to eql home_path
 
@@ -131,8 +122,7 @@ RSpec.feature "Users can sign in" do
 
       visit home_path
 
-      expect(page).to have_content(t("page_title.errors.not_authorised"))
-      expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))
+      expect(page).to have_content("Your account is not active. If you believe this to be in error, please contact the person who invited you to the service.")
     end
   end
 end
