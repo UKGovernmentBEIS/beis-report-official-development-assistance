@@ -486,6 +486,7 @@ DEPENDENCIES
   mini_racer
   monetize
   nanoid
+  notifications-ruby-client
   parser (~> 3.0.1.0)
   pg
   pry-byebug
