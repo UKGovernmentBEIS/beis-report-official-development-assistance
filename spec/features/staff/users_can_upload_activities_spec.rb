@@ -14,7 +14,7 @@ RSpec.feature "users can upload activities" do
   before do
     authenticate!(user: user)
     visit report_activities_path(report)
-    click_link t("action.activity.upload.link")
+    click_link t("page_content.activities.button.upload")
   end
 
   scenario "downloading the CSV template" do

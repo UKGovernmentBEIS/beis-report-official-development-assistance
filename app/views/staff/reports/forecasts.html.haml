@@ -19,11 +19,9 @@
           = t("page_content.tab_content.forecasts.guidance_html")
 
           - if policy(@report_presenter).upload?
-            = link_to t("action.forecast.upload.link"), new_report_forecast_upload_path(@report_presenter), class: "govuk-button govuk-button--secondary"
+            = render partial: "staff/reports/forecasts_upload"
 
           %h3.govuk-heading-m
             = t("page_content.tab_content.forecasts.per_activity_heading")
 
           = render partial: "shared/forecasts/forecasts_by_activity"
-
-

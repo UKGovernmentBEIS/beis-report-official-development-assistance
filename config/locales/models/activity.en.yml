@@ -282,6 +282,8 @@ en:
     activities:
       button:
         create: Add activity
+        download_template: Download activity data template
+        upload: Upload activity data
       cta:
         html: To create a new Activity, first choose the %{organisations_link} you wish to create the Activity under
       organisation: Organisation
@@ -335,6 +337,14 @@ en:
     activities:
       current: Current
       historic: Historic
+      providing:
+        heading: Providing Activities Data
+        copy: Activities data can be added by using the application interface or by uploading data.
+      upload:
+        heading: Upload data
+        copy_html: <p class="govuk-body">Large numbers of activities can be added via the activities upload.</p>
+          <p class="govuk-body">For guidance on uploading activities data, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005510061-Understanding-the-Bulk-Upload-Functionality-to-Report-your-Data">guidance in the help centre (opens in new tab)</a>.</p>
+        warning: Ensure you use the correct template (available below) when uploading activities data.
   page_title:
     activity:
       index: Activities

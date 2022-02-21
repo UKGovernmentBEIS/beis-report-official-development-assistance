@@ -1,0 +1,17 @@
+%h3.govuk-heading-m
+  = t("tabs.activities.providing.heading")
+
+%p.govuk-body
+  = t("tabs.activities.providing.copy")
+
+%h3.govuk-heading-s
+  = t("tabs.activities.upload.heading")
+
+= t("tabs.activities.upload.copy_html")
+
+.govuk-inset-text
+  = t("tabs.activities.upload.warning")
+
+.govuk-button-group
+  = link_to t("page_content.activities.button.download_template"), report_activity_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary"
+  = link_to t("page_content.activities.button.upload"), new_report_activity_upload_path(@report_presenter), class: "govuk-button govuk-button"

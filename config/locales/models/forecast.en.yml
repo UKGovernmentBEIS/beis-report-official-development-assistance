@@ -41,10 +41,22 @@ en:
           original: Original
           revised: Revised
         edit_noun: forecast
+  tabs:
+    forecasts:
+      providing:
+        heading: Providing Forecast Data
+        copy: Forecast data can be added by using the application interface or by uploading data.
+      upload:
+        heading: Upload data
+        copy_html: <p class="govuk-body">Large numbers of forecasts can be added via the forecast upload.</p>
+          <p class="govuk-body">For guidance on uploading forecasts data, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005510061-Understanding-the-Bulk-Upload-Functionality-to-Report-your-Data">guidance in the help centre (opens in new tab)</a>.</p>
+        warning: Ensure you use the correct template (available below) when uploading forecast data.
   page_content:
     forecasts:
       button:
         create: Add forecasted spend
+        download_template: Download forecast data template
+        upload: Upload forecast data
   page_title:
     forecast:
       edit: Edit forecasted spend for %{quarter}
