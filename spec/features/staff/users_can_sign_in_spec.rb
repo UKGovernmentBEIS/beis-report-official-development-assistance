@@ -1,4 +1,5 @@
 require "rails_helper"
+require "notify/otp_message"
 
 def log_in_via_form(user, remember_me: false)
   click_on t("header.link.sign_in")
@@ -35,6 +36,12 @@ RSpec.feature "Users can sign in" do
   end
 
   context "user has MFA enabled" do
+    let(:notify_client) { spy("Notifications::Client") }
+
+    before do
+      allow_any_instance_of(Notify::OTPMessage).to receive(:client).and_return(notify_client)
+    end
+
     scenario "successful sign in via header link" do
       # Given a user with 2FA enabled exists
       user = create(:administrator, :mfa_enabled)
@@ -44,14 +51,16 @@ RSpec.feature "Users can sign in" do
       log_in_via_form(user)
 
       # Then I should receive an OTP to my mobile number
-      # ... something something GOV.UK Notify ...
-      # expect(something).to have_received_sms.with(user.current_otp)
+      expect(notify_client).to have_received(:send_sms).with({
+        phone_number: user.mobile_number,
+        template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+        personalisation: {otp: user.current_otp}
+      })
 
       # When I enter the one-time password
       fill_in "Please enter your six-digit verification code", with: user.current_otp
       click_on "Continue"
 
-      # save_and_open_page
       # Then I should be logged in.
       expect(page).to have_link(t("header.link.sign_out"))
       expect(page).to have_content("Signed in successfully.")
