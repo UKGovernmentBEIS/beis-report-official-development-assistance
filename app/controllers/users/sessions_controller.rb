@@ -57,6 +57,8 @@ class Users::SessionsController < Devise::SessionsController
     if user_params[:otp_attempt].present? && session[:otp_user_id]
       authenticate_user_with_otp_two_factor(user)
     elsif user&.valid_password?(user_params[:password])
+      send_otp(user) if user.mobile_number
+
       prompt_for_otp_two_factor(user)
     end
   end
@@ -97,5 +99,9 @@ class Users::SessionsController < Devise::SessionsController
 
     session[:otp_user_id] = user.id
     render "devise/sessions/two_factor"
+  end
+
+  def send_otp(user)
+    Notify::OTPMessage.new(user.mobile_number, user.current_otp).deliver
   end
 end

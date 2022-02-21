@@ -5,7 +5,7 @@ FactoryBot.define do
     email { Faker::Internet.email }
     active { true }
     password { SecureRandom.uuid }
-    mobile_phone_number { Faker::PhoneNumber.phone_number }
+    mobile_number { Faker::PhoneNumber.phone_number }
 
     organisation factory: :beis_organisation
 
