@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :rememberable, :validatable, :recoverable
+  devise :two_factor_authenticatable, :rememberable, :validatable, :recoverable,
+    otp_secret_encryption_key: ENV["SECRET_KEY_BASE"]
+
   belongs_to :organisation
   has_many :historical_events
   validates_presence_of :name, :email
