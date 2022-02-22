@@ -40,7 +40,12 @@ variable "notify_welcome_email_template" {
 
 variable "notify_view_template" {
   type        = string
-  description = "Notify welcome email template"
+  description = "Notify generic view template"
+}
+
+variable "notify_otp_verification_template" {
+  type        = string
+  description = "Notify OTP SMS template"
 }
 
 variable "rollbar_access_token" {
