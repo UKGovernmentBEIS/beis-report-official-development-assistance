@@ -17,19 +17,20 @@ resource "cloudfoundry_app" "beis-roda-worker" {
   service_binding { service_instance = cloudfoundry_service_instance.beis-roda-postgres.id }
   service_binding { service_instance = cloudfoundry_user_provided_service.papertrail.id }
   environment = {
-    "RAILS_LOG_TO_STDOUT"           = "true"
-    "RAILS_SERVE_STATIC_FILES"      = "enabled"
-    "RAILS_ENV"                     = "production"
-    "SECRET_KEY_BASE"               = var.secret_key_base
-    "DOMAIN"                        = "https://${var.custom_hostname}.${var.custom_domain}"
-    "AUTH0_CLIENT_ID"               = var.auth0_client_id
-    "AUTH0_CLIENT_SECRET"           = var.auth0_client_secret
-    "AUTH0_DOMAIN"                  = var.auth0_domain
-    "NOTIFY_KEY"                    = var.notify_key
-    "NOTIFY_WELCOME_EMAIL_TEMPLATE" = var.notify_welcome_email_template
-    "NOTIFY_VIEW_TEMPLATE"          = var.notify_view_template
-    "ROLLBAR_ENV"                   = "paas-${var.environment}"
-    "ROLLBAR_ACCESS_TOKEN"          = var.rollbar_access_token
-    "ROLLBAR_DISABLED"              = var.rollbar_disabled
+    "RAILS_LOG_TO_STDOUT"              = "true"
+    "RAILS_SERVE_STATIC_FILES"         = "enabled"
+    "RAILS_ENV"                        = "production"
+    "SECRET_KEY_BASE"                  = var.secret_key_base
+    "DOMAIN"                           = "https://${var.custom_hostname}.${var.custom_domain}"
+    "AUTH0_CLIENT_ID"                  = var.auth0_client_id
+    "AUTH0_CLIENT_SECRET"              = var.auth0_client_secret
+    "AUTH0_DOMAIN"                     = var.auth0_domain
+    "NOTIFY_KEY"                       = var.notify_key
+    "NOTIFY_WELCOME_EMAIL_TEMPLATE"    = var.notify_welcome_email_template
+    "NOTIFY_VIEW_TEMPLATE"             = var.notify_view_template
+    "NOTIFY_OTP_VERIFICATION_TEMPLATE" = var.notify_otp_verification_template
+    "ROLLBAR_ENV"                      = "paas-${var.environment}"
+    "ROLLBAR_ACCESS_TOKEN"             = var.rollbar_access_token
+    "ROLLBAR_DISABLED"                 = var.rollbar_disabled
   }
 }
