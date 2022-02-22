@@ -29,7 +29,7 @@ en:
         csv_file: Upload a spreadsheet containing forecast information in CSV format.
         csv_file_recover_from_error_html: Upload a spreadsheet containing forecast information in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
         receiving_organisation: The organisation receiving the money from this transaction.
-        receiving_organisation_reference_html: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
+        receiving_organisation_reference_html: For example, GB-COH-12345. To lookup codes or for more information see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
   table:
     header:
       forecast:
