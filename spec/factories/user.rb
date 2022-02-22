@@ -23,5 +23,9 @@ FactoryBot.define do
     trait :new_user do
       password { nil }
     end
+
+    trait :mfa_enabled do
+      otp_required_for_login { true }
+    end
   end
 end
