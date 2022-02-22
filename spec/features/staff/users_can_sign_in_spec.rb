@@ -50,16 +50,19 @@ RSpec.feature "Users can sign in" do
       visit root_path
       log_in_via_form(user)
 
+      otp_at_time_of_login = user.current_otp
       # Then I should receive an OTP to my mobile number
       expect(notify_client).to have_received(:send_sms).with({
         phone_number: user.mobile_number,
         template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
-        personalisation: {otp: user.current_otp}
+        personalisation: {otp: otp_at_time_of_login}
       })
 
-      # When I enter the one-time password
-      fill_in "Please enter your six-digit verification code", with: user.current_otp
-      click_on "Continue"
+      # When I enter the one-time password before it expires
+      travel 3.minutes do
+        fill_in "Please enter your six-digit verification code", with: otp_at_time_of_login
+        click_on "Continue"
+      end
 
       # Then I should be logged in.
       expect(page).to have_link(t("header.link.sign_out"))
