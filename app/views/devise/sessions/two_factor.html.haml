@@ -1,0 +1,15 @@
+= content_for :page_title_prefix, "Log in"
+
+.govuk-grid-row
+  .govuk-grid-column-one-third
+    = form_for(resource, as: resource_name, url: session_path(resource_name), method: :post) do |f|
+      .govuk-form-group
+        %fieldset.govuk-fieldset
+          %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+            %h1.govuk-fieldset__heading
+              Verify your login
+
+          = f.govuk_text_field :otp_attempt, label: { text: "Please enter your six-digit verification code" }
+
+      .actions
+        = f.govuk_submit "Continue"
