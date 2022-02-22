@@ -12,24 +12,53 @@ def log_in_via_form(user, remember_me: false)
 end
 
 RSpec.feature "Users can sign in" do
-  scenario "successful sign in via header link" do
-    # Given a user exists
-    user = create(:administrator)
+  context "user does not have 2FA enabled" do
+    scenario "successful sign in via header link" do
+      # Given a user exists
+      user = create(:administrator)
 
-    # When I log in with that user's credentials
-    visit root_path
-    expect(page).to have_content(t("start_page.title"))
+      # When I log in with that user's credentials
+      visit root_path
+      expect(page).to have_content(t("start_page.title"))
 
-    expect(page).to have_content(t("header.link.sign_in"))
+      expect(page).to have_content(t("header.link.sign_in"))
 
-    log_in_via_form(user)
+      log_in_via_form(user)
 
-    # Then I should be logged in.
-    expect(page).to have_link(t("header.link.sign_out"))
-    expect(page).to have_content("Signed in successfully.")
+      # Then I should be logged in.
+      expect(page).to have_link(t("header.link.sign_out"))
+      expect(page).to have_content("Signed in successfully.")
 
-    # And at the home page
-    expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
+      # And at the home page
+      expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
+    end
+  end
+
+  context "user has MFA enabled" do
+    scenario "successful sign in via header link" do
+      # Given a user with 2FA enabled exists
+      user = create(:administrator, :mfa_enabled)
+
+      # When I log in with that user's email and password
+      visit root_path
+      log_in_via_form(user)
+
+      # Then I should receive an OTP to my mobile number
+      # ... something something GOV.UK Notify ...
+      # expect(something).to have_received_sms.with(user.current_otp)
+
+      # When I enter the one-time password
+      fill_in "Please enter your six-digit verification code", with: user.current_otp
+      click_on "Continue"
+
+      # save_and_open_page
+      # Then I should be logged in.
+      expect(page).to have_link(t("header.link.sign_out"))
+      expect(page).to have_content("Signed in successfully.")
+
+      # And at the home page
+      expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
+    end
   end
 
   scenario "a user is redirected to a link they originally requested" do
