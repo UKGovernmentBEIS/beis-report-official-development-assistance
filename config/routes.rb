@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: "users/sessions"
+  }
+
   # If the DOMAIN env var is present, and the request doesn't come from that
   # hostname, redirect us to the canonical hostname with the path and query string present
   if ENV["CANONICAL_HOSTNAME"].present?
