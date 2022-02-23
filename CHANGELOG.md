@@ -976,6 +976,7 @@
 
 - No longer hide all the organisations when creating a user if one wasn't picked to start with
 - Correctly highlight the absence of an organisation when creating a user if one wasn't picked to start with
+- Make activities and forecasts CSV upload buttons consistent with actuals
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-97...HEAD
 [release-97]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-96...release-97
