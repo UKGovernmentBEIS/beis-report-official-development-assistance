@@ -45,9 +45,9 @@ en:
         description: For example, 2020 quarter one spend on the Early Career Research Network project.
         disbursement_channel: The channel through which the funds will flow for this actual.
         providing_organisation: The organisation where this actual is coming from.
-        providing_organisation_reference_html: For example, GB-GOV-13. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
+        providing_organisation_reference_html: For example, GB-GOV-13. To lookup codes or for more information see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
         receiving_organisation: The organisation receiving the money from this actual spend.
-        receiving_organisation_reference_html: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
+        receiving_organisation_reference_html: For example, GB-COH-12345. To lookup codes or for more information see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>.
   table:
     caption:
       actual:

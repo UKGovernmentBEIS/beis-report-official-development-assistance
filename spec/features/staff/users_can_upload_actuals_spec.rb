@@ -16,7 +16,7 @@ RSpec.feature "users can upload actuals" do
   before do
     authenticate!(user: user)
     visit report_actuals_path(report)
-    click_link t("action.actual.upload.link")
+    click_link t("page_content.actuals.button.upload")
   end
 
   def expect_to_see_successful_upload_summary_with(count:, total:)

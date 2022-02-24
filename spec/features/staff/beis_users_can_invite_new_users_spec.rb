@@ -11,9 +11,6 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
     before do
       authenticate!(user: user)
-    end
-
-    before do
       stub_auth0_token_request
     end
 
@@ -68,7 +65,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
       context "when there was an error creating the user in auth0" do
         context "when there was a generic error" do
-          it "does not create the user and displays an error message" do
+          it "doesn't create the user, displays an error and displays organisations" do
             stub_auth0_token_request
             new_email = "email@example.com"
             organisation = create(:delivery_partner_organisation)
@@ -86,11 +83,12 @@ RSpec.feature "BEIS users can invite new users to the service" do
             }.not_to change { User.count }
 
             expect(page).to have_content(t("action.user.create.failed", error: "The user already exists."))
+            expect(page).to have_content(organisation.name)
           end
         end
 
         context "when the email was invalid" do
-          it "does not create the user and displays an invalid email message" do
+          it "doesn't create user, displays 'email invalid' but still displays organisations" do
             new_email = "tom"
             organisation = create(:delivery_partner_organisation)
             stub_auth0_create_user_request_failure(email: new_email)
@@ -104,6 +102,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
             expect(page).to have_content("Email is invalid")
             expect(page).not_to have_content(t("action.user.create.failed"))
+            expect(page).to have_content(organisation.name)
           end
         end
       end

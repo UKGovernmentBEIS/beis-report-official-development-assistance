@@ -7,7 +7,7 @@
         %h1.govuk-heading-xl
           = t("importer.success.heading")
         = render partial: "shared/forecasts/forecasts_by_activity"
-        = link_to t("importer.success.back_link"), report_forecasts_path(@report_presenter), class: "govuk-button govuk-button"
+        = link_to t("importer.success.back_link"), report_forecasts_path(@report_presenter), class: "govuk-button"
 
     - else
       .govuk-grid-column-two-thirds
@@ -18,4 +18,3 @@
     - if @errors.any?
       .govuk-grid-column-full
         = render partial: "error_table"
-

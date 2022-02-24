@@ -26,7 +26,8 @@ class Staff::UsersController < Staff::BaseController
     @user = User.new(user_params)
     @user.active = params[:user][:active]
     authorize @user
-    @organisations = policy_scope(Organisation)
+    @service_owner = service_owner
+    @delivery_partners = delivery_partners
 
     if @user.valid?
       result = CreateUser.new(user: @user, organisation: organisation).call

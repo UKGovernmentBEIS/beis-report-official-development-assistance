@@ -1,5 +1,5 @@
 class FindProjectActivities
-  include Pundit
+  include Pundit::Authorization
 
   attr_accessor :organisation, :user, :fund_code
 

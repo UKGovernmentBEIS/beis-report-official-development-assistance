@@ -29,7 +29,7 @@ en:
         csv_file: Upload a spreadsheet containing forecast information in CSV format.
         csv_file_recover_from_error_html: Upload a spreadsheet containing forecast information in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
         receiving_organisation: The organisation receiving the money from this transaction.
-        receiving_organisation_reference_html: For example, GB-COH-12345. To lookup codes or for more infomation see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
+        receiving_organisation_reference_html: For example, GB-COH-12345. To lookup codes or for more information see <a href="http://org-id.guide/" target="_blank" class="govuk-link">the organisation finder service (Opens in new window)</a>
   table:
     header:
       forecast:
@@ -41,10 +41,22 @@ en:
           original: Original
           revised: Revised
         edit_noun: forecast
+  tabs:
+    forecasts:
+      providing:
+        heading: Providing Forecast Data
+        copy: Forecast data can be added by using the application interface or by uploading data.
+      upload:
+        heading: Upload data
+        copy_html: <p class="govuk-body">Large numbers of forecasts can be added via the forecast upload.</p>
+          <p class="govuk-body">For guidance on uploading forecasts data, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005510061-Understanding-the-Bulk-Upload-Functionality-to-Report-your-Data">guidance in the help centre (opens in new tab)</a>.</p>
+        warning: Ensure you use the correct template (available below) when uploading forecast data.
   page_content:
     forecasts:
       button:
         create: Add forecasted spend
+        download_template: Download forecast data template
+        upload: Upload forecast data
   page_title:
     forecast:
       edit: Edit forecasted spend for %{quarter}

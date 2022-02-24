@@ -56,6 +56,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "binding_of_caller"
   gem "better_errors"
   gem "html2haml"
   gem "listen", ">= 3.0.5", "< 3.8"

@@ -1,6 +1,6 @@
 class Activity
   class Tab
-    include Pundit
+    include Pundit::Authorization
 
     VALID_TAB_NAMES = [
       "financials",
