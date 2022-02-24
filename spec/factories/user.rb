@@ -6,6 +6,7 @@ FactoryBot.define do
     active { true }
     password { SecureRandom.uuid }
     mobile_number { Faker::PhoneNumber.phone_number }
+    mobile_number_confirmed_at { 1.day.ago }
 
     organisation factory: :beis_organisation
 
@@ -27,6 +28,11 @@ FactoryBot.define do
 
     trait :mfa_enabled do
       otp_required_for_login { true }
+    end
+
+    trait :no_mobile_number do
+      mobile_number              { nil }
+      mobile_number_confirmed_at { nil }
     end
   end
 end
