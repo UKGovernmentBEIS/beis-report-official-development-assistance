@@ -44,7 +44,7 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def user_params
-    params.require(:user).permit(:email, :password, :remember_me, :otp_attempt)
+    params.require(:user).permit(:email, :password, :remember_me, :otp_attempt, :mobile_number)
   end
 
   def valid_otp_attempt?(user)
@@ -56,10 +56,17 @@ class Users::SessionsController < Devise::SessionsController
 
     if user_params[:otp_attempt].present? && session[:otp_user_id]
       authenticate_user_with_otp_two_factor(user)
-    elsif user&.valid_password?(user_params[:password])
-      send_otp(user) if user.mobile_number
-
+    elsif user_params[:mobile_number].present? && session[:otp_user_id]
+      user.update!(mobile_number: user_params[:mobile_number])
+      send_otp(user)
       prompt_for_otp_two_factor(user)
+    elsif user&.valid_password?(user_params[:password])
+      if user.mobile_number.nil?
+        prompt_for_mobile_number(user)
+      else
+        send_otp(user)
+        prompt_for_otp_two_factor(user)
+      end
     end
   end
 
@@ -79,7 +86,7 @@ class Users::SessionsController < Devise::SessionsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_in_params
-    devise_parameter_sanitizer.permit(:sign_in, keys: [:otp_attempt])
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:otp_attempt, :mobile_number])
   end
 
   def find_user
@@ -99,6 +106,13 @@ class Users::SessionsController < Devise::SessionsController
 
     session[:otp_user_id] = user.id
     render "devise/sessions/two_factor"
+  end
+
+  def prompt_for_mobile_number(user)
+    @user = user
+
+    session[:otp_user_id] = user.id
+    render "devise/sessions/mobile_number"
   end
 
   def send_otp(user)
