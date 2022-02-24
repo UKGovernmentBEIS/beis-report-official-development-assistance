@@ -42,34 +42,80 @@ RSpec.feature "Users can sign in" do
       allow_any_instance_of(Notify::OTPMessage).to receive(:client).and_return(notify_client)
     end
 
-    scenario "successful sign in via header link" do
-      # Given a user with 2FA enabled exists
-      user = create(:administrator, :mfa_enabled)
+    context "user has a confirmed mobile number" do
+      scenario "successful sign in via header link" do
+        # Given a user with 2FA enabled exists
+        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.now)
 
-      # When I log in with that user's email and password
-      visit root_path
-      log_in_via_form(user)
+        # When I log in with that user's email and password
+        visit root_path
+        log_in_via_form(user)
 
-      otp_at_time_of_login = user.current_otp
-      # Then I should receive an OTP to my mobile number
-      expect(notify_client).to have_received(:send_sms).with({
-        phone_number: user.mobile_number,
-        template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
-        personalisation: {otp: otp_at_time_of_login}
-      })
+        otp_at_time_of_login = user.current_otp
+        # Then I should receive an OTP to my mobile number
+        expect(notify_client).to have_received(:send_sms).with({
+          phone_number: user.mobile_number,
+          template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+          personalisation: { otp: otp_at_time_of_login }
+        })
 
-      # When I enter the one-time password before it expires
-      travel 3.minutes do
-        fill_in "Please enter your six-digit verification code", with: otp_at_time_of_login
-        click_on "Continue"
+        # When I enter the one-time password before it expires
+        travel 3.minutes do
+          fill_in "Please enter your six-digit verification code", with: otp_at_time_of_login
+          click_on "Continue"
+        end
+
+        # Then I should be logged in
+        expect(page).to have_link(t("header.link.sign_out"))
+        expect(page).to have_content("Signed in successfully.")
+
+        # And at the home page
+        expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
+
+        # And my mobile number should be confirmed
+        expect(user.reload.mobile_number_confirmed_at).to be_present
       end
+    end
 
-      # Then I should be logged in.
-      expect(page).to have_link(t("header.link.sign_out"))
-      expect(page).to have_content("Signed in successfully.")
+    context "user fails to confirm their mobile number" do
+      scenario "a successful login happens but the mobile number has not been confirmed" do
 
-      # And at the home page
-      expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
+      end
+    end
+
+    context "User has no mobile number provisioned" do
+      scenario "successful mobile confirmation" do
+        # Given that I am a RODA user
+        user = create(:delivery_partner_user, :mfa_enabled, :no_mobile_number)
+
+        # When I log in for the first time,
+        visit root_path
+        log_in_via_form(user)
+
+        # Then I am prompted for my mobile number
+        expect(page).to have_content("Enter your mobile number")
+
+        # And I enter my mobile number
+        fill_in "Enter your mobile number", with: "07700900000"
+        click_on "Continue"
+
+        user = user.reload # Mobile number has changed
+
+        # Then I should receive an automated text message,
+        expect(notify_client).to have_received(:send_sms).with({
+          phone_number: user.mobile_number,
+          template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+          personalisation: { otp: user.current_otp }
+        })
+
+        # When I enter the code
+        fill_in "Please enter your six-digit verification code", with: user.current_otp
+        click_on "Continue"
+
+        # Then I am successfully logged in.
+        expect(page).to have_link(t("header.link.sign_out"))
+        expect(page).to have_content("Signed in successfully.")
+      end
     end
   end
 
