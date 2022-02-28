@@ -75,6 +75,25 @@ RSpec.feature "Users can sign in" do
         # And I should be at the home page
         expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
       end
+
+      scenario "unsuccessful OTP attempt" do
+        # Given a user with 2FA enabled and a confirmed mobile number exists
+        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.now)
+
+        # When I log in with that user's email and password
+        visit root_path
+        log_in_via_form(user)
+
+        # And I enter an incorrect OTP
+        fill_in "Please enter your six-digit verification code", with: "000000"
+        click_on "Continue"
+
+        # Then I should not be logged in
+        expect(page).to have_content("Invalid two-factor verification code")
+        expect(page).not_to have_link(t("header.link.sign_out"))
+        visit root_path
+        expect(page).to have_content("Sign in")
+      end
     end
 
     context "user initially entered an incorrect mobile number" do
