@@ -31,7 +31,7 @@ FactoryBot.define do
     end
 
     trait :no_mobile_number do
-      mobile_number              { nil }
+      mobile_number { nil }
       mobile_number_confirmed_at { nil }
     end
   end
