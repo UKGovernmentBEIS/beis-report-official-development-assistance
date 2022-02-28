@@ -18,6 +18,12 @@ class Users::SessionsController < Devise::SessionsController
 
   protect_from_forgery with: :exception, prepend: true, except: :destroy
 
+  def edit_mobile_number
+    @user = self.resource = find_user
+
+    render "devise/sessions/mobile_number"
+  end
+
   protected
 
   # we also need to completely override Devise's require_no_authentication such that
@@ -76,6 +82,7 @@ class Users::SessionsController < Devise::SessionsController
       session.delete(:otp_user_id)
 
       remember_me(user) if user_params[:remember_me] == "1"
+      user.mobile_number_confirmed_at = Time.zone.now
       user.save!
       sign_in(user, event: :authentication)
     else
