@@ -13,7 +13,7 @@ require "notify/otp_message"
 class Users::SessionsController < Devise::SessionsController
   before_action :configure_sign_in_params, only: :create
 
-  prepend_before_action :authenticate_with_otp_two_factor,
+  prepend_before_action :handle_otp_flow,
     if: -> { action_name == "create" && otp_two_factor_enabled? }
 
   protect_from_forgery with: :exception, prepend: true, except: :destroy
@@ -57,7 +57,7 @@ class Users::SessionsController < Devise::SessionsController
     user.validate_and_consume_otp!(user_params[:otp_attempt])
   end
 
-  def authenticate_with_otp_two_factor
+  def handle_otp_flow
     user = self.resource = find_user
 
     if user_params[:otp_attempt].present? && session[:otp_user_id]
