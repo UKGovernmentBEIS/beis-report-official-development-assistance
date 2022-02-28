@@ -44,19 +44,22 @@ RSpec.feature "Users can sign in" do
 
     context "user has a confirmed mobile number" do
       scenario "successful sign in via header link" do
-        # Given a user with 2FA enabled exists
+        # Given a user with 2FA enabled and a confirmed mobile number exists
         user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.now)
 
         # When I log in with that user's email and password
         visit root_path
         log_in_via_form(user)
 
+        # Then there should be no link to check my mobile number
+        expect(page).not_to have_link "Check your mobile number is correct"
+
         otp_at_time_of_login = user.current_otp
-        # Then I should receive an OTP to my mobile number
+        # And I should receive an OTP to my mobile number
         expect(notify_client).to have_received(:send_sms).with({
           phone_number: user.mobile_number,
           template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
-          personalisation: { otp: otp_at_time_of_login }
+          personalisation: {otp: otp_at_time_of_login}
         })
 
         # When I enter the one-time password before it expires
@@ -69,17 +72,58 @@ RSpec.feature "Users can sign in" do
         expect(page).to have_link(t("header.link.sign_out"))
         expect(page).to have_content("Signed in successfully.")
 
-        # And at the home page
+        # And I should be at the home page
         expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
-
-        # And my mobile number should be confirmed
-        expect(user.reload.mobile_number_confirmed_at).to be_present
       end
     end
 
-    context "user fails to confirm their mobile number" do
-      scenario "a successful login happens but the mobile number has not been confirmed" do
+    context "user initially entered an incorrect mobile number" do
+      scenario "the email/password are correct but the user still needs confirm their mobile number" do
+        incorrect_number = "123456wrong"
+        # Given a user with 2FA enabled exists
+        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: nil, mobile_number: incorrect_number)
 
+        # When I log in with that user's email and password
+        visit root_path
+        log_in_via_form(user)
+
+        # But I do not receive a message despite it having been sent
+        expect(notify_client).to have_received(:send_sms).once.with({
+          phone_number: incorrect_number,
+          template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+          personalisation: {otp: user.current_otp}
+        })
+
+        # When I follow the link to check my mobile number
+        click_link "Check your mobile number is correct"
+
+        # Then I should see the incorrect number
+        expect(page).to have_field("Enter your mobile number", with: incorrect_number)
+
+        # When I update my number
+        correct_number = "07799000000"
+        fill_in "Enter your mobile number", with: correct_number
+        click_on "Continue"
+
+        # Then I should receive an OTP to my mobile number
+        expect(notify_client).to have_received(:send_sms).once.with({
+          phone_number: correct_number,
+          template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+          personalisation: {otp: user.current_otp}
+        })
+
+        # When I enter the one-time password before it expires
+        fill_in "Please enter your six-digit verification code", with: user.current_otp
+        expect(user.mobile_number_confirmed_at).to be_nil
+        click_on "Continue"
+
+        # Then my mobile number should be confirmed
+        expect(user.reload.mobile_number_confirmed_at).to be_a(ActiveSupport::TimeWithZone)
+
+        # And I should be logged in at the home page
+        expect(page).to have_link(t("header.link.sign_out"))
+        expect(page).to have_content("Signed in successfully.")
+        expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
       end
     end
 
@@ -105,7 +149,7 @@ RSpec.feature "Users can sign in" do
         expect(notify_client).to have_received(:send_sms).with({
           phone_number: user.mobile_number,
           template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
-          personalisation: { otp: user.current_otp }
+          personalisation: {otp: user.current_otp}
         })
 
         # When I enter the code
