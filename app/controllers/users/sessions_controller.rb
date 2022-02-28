@@ -65,13 +65,13 @@ class Users::SessionsController < Devise::SessionsController
     elsif user_params[:mobile_number].present? && session[:otp_user_id]
       user.update!(mobile_number: user_params[:mobile_number])
       send_otp(user)
-      prompt_for_otp_two_factor(user)
+      prompt_for(user, "otp_attempt")
     elsif user&.valid_password?(user_params[:password])
       if user.mobile_number.nil?
-        prompt_for_mobile_number(user)
+        prompt_for(user, "mobile_number")
       else
         send_otp(user)
-        prompt_for_otp_two_factor(user)
+        prompt_for(user, "otp_attempt")
       end
     end
   end
@@ -87,7 +87,7 @@ class Users::SessionsController < Devise::SessionsController
       sign_in(user, event: :authentication)
     else
       flash.now[:alert] = t("devise.failure.invalid_two_factor")
-      prompt_for_otp_two_factor(user)
+      prompt_for(user, "otp_attempt")
     end
   end
 
@@ -108,18 +108,11 @@ class Users::SessionsController < Devise::SessionsController
     find_user&.otp_required_for_login
   end
 
-  def prompt_for_otp_two_factor(user)
+  def prompt_for(user, template)
     @user = user
 
     session[:otp_user_id] = user.id
-    render "devise/sessions/two_factor"
-  end
-
-  def prompt_for_mobile_number(user)
-    @user = user
-
-    session[:otp_user_id] = user.id
-    render "devise/sessions/mobile_number"
+    render "devise/sessions/#{template}"
   end
 
   def send_otp(user)
