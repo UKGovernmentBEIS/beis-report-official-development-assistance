@@ -15,7 +15,7 @@
                                 pattern: "[0-9]*",
                                 autocomplete: "one-time-code"
 
-  - unless resource.mobile_number_confirmed_at
+  - unless resource.mobile_number_confirmed_at.present?
     .govuk-grid-row
       .govuk-grid-column-two-thirds
         %p.govuk-body
