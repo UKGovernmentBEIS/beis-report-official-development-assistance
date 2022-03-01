@@ -82,8 +82,9 @@ class Users::SessionsController < Devise::SessionsController
       session.delete(:otp_user_id)
 
       remember_me(user) if user_params[:remember_me] == "1"
-      user.mobile_number_confirmed_at = Time.zone.now
+      user.mobile_number_confirmed_at ||= Time.zone.now
       user.save!
+
       sign_in(user, event: :authentication)
     else
       flash.now[:alert] = t("devise.failure.invalid_two_factor")
