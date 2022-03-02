@@ -46,6 +46,10 @@ en:
         identifier: Identifier
         organisation: Organisation
         active: Active?
+        confirmed_for_mfa:
+          label: Mobile number confirmed for authentication?
+          "false": "No"
+          "true": "Yes"
   page_content:
     users:
       button:
