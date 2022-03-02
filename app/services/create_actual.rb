@@ -23,11 +23,12 @@ class CreateActual
       actual.report = report
     end
 
-    if actual.valid?
-      Result.new(actual.save, actual)
-    else
-      Result.new(false, actual)
+    if actual.comment
+      actual.comment.report = @report
+      actual.comment.commentable = actual
     end
+
+    Result.new(actual.save, actual)
   end
 
   private

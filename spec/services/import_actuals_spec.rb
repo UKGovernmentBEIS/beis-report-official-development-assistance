@@ -28,7 +28,8 @@ RSpec.describe ImportActuals do
         "Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
         "Receiving Organisation Type" => "80",
-        "Receiving Organisation IATI Reference" => ""
+        "Receiving Organisation IATI Reference" => "",
+        "Comment" => "Puppy"
       }
     end
 
@@ -38,6 +39,7 @@ RSpec.describe ImportActuals do
 
     it "imports a single actual" do
       expect(report.actuals.count).to eq(1)
+      expect(report.actuals.first.comment.body).to eq("Puppy")
     end
 
     it "assigns the attributes from the row data" do
@@ -337,7 +339,8 @@ RSpec.describe ImportActuals do
         "Financial Year" => "2020",
         "Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
-        "Receiving Organisation Type" => "80"
+        "Receiving Organisation Type" => "80",
+        "Comment" => "A comment!"
       }
     end
 
@@ -348,7 +351,8 @@ RSpec.describe ImportActuals do
         "Financial Year" => "2020",
         "Value" => "150.00",
         "Receiving Organisation Name" => "Example Corporation",
-        "Receiving Organisation Type" => "70"
+        "Receiving Organisation Type" => "70",
+        "Comment" => ""
       }
     end
 
@@ -359,7 +363,8 @@ RSpec.describe ImportActuals do
         "Financial Year" => "2019",
         "Value" => "£5,000",
         "Receiving Organisation Name" => "Example Foundation",
-        "Receiving Organisation Type" => "60"
+        "Receiving Organisation Type" => "60",
+        "Comment" => "Not blank"
       }
     end
 
@@ -375,6 +380,8 @@ RSpec.describe ImportActuals do
       expect(importer.errors).to eq([])
       expect(importer.imported_actuals.count).to eq(3)
       expect(importer.imported_actuals).to match_array(report.actuals)
+      expect(report.actuals.first.comment.body).to eq("A comment!")
+      expect(report.actuals.second.comment).to be_nil
     end
 
     it "assigns each actual to the correct report" do

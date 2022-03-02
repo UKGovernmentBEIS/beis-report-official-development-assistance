@@ -116,7 +116,8 @@ class ImportActuals
       value: "Value",
       receiving_organisation_name: "Receiving Organisation Name",
       receiving_organisation_type: "Receiving Organisation Type",
-      receiving_organisation_reference: "Receiving Organisation IATI Reference"
+      receiving_organisation_reference: "Receiving Organisation IATI Reference",
+      comment: "Comment"
     }
 
     attr_reader :activity, :errors
@@ -159,6 +160,10 @@ class ImportActuals
     rescue => error
       @errors[attr_name] = [original_value, error.message]
       nil
+    end
+
+    def convert_comment(body)
+      Comment.new(body: body) if body.present?
     end
 
     def convert_activity(id)
