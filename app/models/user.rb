@@ -22,6 +22,10 @@ class User < ApplicationRecord
     active
   end
 
+  def confirmed_for_mfa?
+    mobile_number.present? && mobile_number_confirmed_at.present?
+  end
+
   private
 
   def ensure_otp_secret!

@@ -37,6 +37,8 @@ RSpec.feature "BEIS users can can view other users" do
       expect(page).to have_content(t("page_title.users.show"))
       expect(page).to have_content(another_user.name)
       expect(page).to have_content(another_user.email)
+      expect(page).to have_content("Active? Yes")
+      expect(page).to have_content("Mobile number confirmed for authentication? Yes")
     end
 
     scenario "users are grouped by their organisation name in alphabetical order" do
@@ -78,7 +80,7 @@ RSpec.feature "BEIS users can can view other users" do
         find("tr", text: another_user.name).click_link(t("default.link.show"))
       end
 
-      expect(page).to have_content(t("form.user.active.false"))
+      expect(page).to have_content("Active? No")
     end
   end
 end
