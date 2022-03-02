@@ -4,8 +4,10 @@ RSpec.describe Activities::ImportFromCsv do
   let(:organisation) { create(:delivery_partner_organisation) }
   let(:uploader) { create(:delivery_partner_user, organisation: organisation) }
   let(:parent_activity) { create(:programme_activity, :newton_funded, extending_organisation: organisation) }
+  let(:fund_activity) { create(:fund_activity) }
+  let!(:report) { create(:report, fund: fund_activity) }
 
-  let!(:orig_impl_org) { create(:implementing_organisation, name: "Original Impl. Org") }
+  let(:orig_impl_org) { create(:implementing_organisation, name: "Original Impl. Org") }
 
   before do
     create(:implementing_organisation, name: "Impl. Org 1")
@@ -63,7 +65,8 @@ RSpec.describe Activities::ImportFromCsv do
       "BEIS ID" => "BEIS_ID_EXAMPLE_01",
       "UK DP Named Contact" => "Jo Soap",
       "NF Partner Country DP" => "Association of Example Companies (AEC) | | Board of Sample Organisations (BSO)",
-      "Implementing organisation name" => "Impl. Org 1"
+      "Implementing organisation name" => "Impl. Org 1",
+      "Comments" => "Cat"
     }
   end
   let(:new_activity_attributes) do
@@ -71,11 +74,12 @@ RSpec.describe Activities::ImportFromCsv do
       "RODA ID" => "",
       "Parent RODA ID" => parent_activity.roda_identifier,
       "Transparency identifier" => "23232332323",
-      "Implementing organisation name" => "Impl. Org 2"
+      "Implementing organisation name" => "Impl. Org 2",
+      "Comments" => "Kitten"
     })
   end
 
-  subject { described_class.new(uploader: uploader, delivery_partner_organisation: organisation) }
+  subject { described_class.new(uploader: uploader, delivery_partner_organisation: organisation, report: report) }
 
   context "when updating an existing activity" do
     let(:activity_policy_double) { instance_double("ActivityPolicy", update?: true) }
@@ -801,12 +805,40 @@ RSpec.describe Activities::ImportFromCsv do
 
     it "creates and imports activities" do
       rows = [existing_activity_attributes, new_activity_attributes]
+
       expect { subject.import(rows) }.to change { Activity.count }.by(1)
 
       expect(subject.created.count).to eq(1)
       expect(subject.updated.count).to eq(1)
 
       expect(subject.errors.count).to eq(0)
+    end
+
+    it "imports a new comment and an existing comment" do
+      rows = [existing_activity_attributes, new_activity_attributes]
+      subject.import(rows)
+
+      existing_activity = Activity.where(transparency_identifier: existing_activity_attributes["Transparency identifier"]).first
+      new_activity = Activity.where(transparency_identifier: new_activity_attributes["Transparency identifier"]).first
+
+      expect(subject.errors.count).to eq(0)
+      # If there is a comment text, we add it to the activity
+      expect(existing_activity.comments.first.body).to eq("Cat")
+      expect(new_activity.comments.first.body).to eq("Kitten")
+    end
+
+    it "handles a lack of comments gracefully" do
+      rows = [existing_activity_attributes, new_activity_attributes]
+      rows[0]["Comments"] = ""
+      rows[1]["Comments"] = ""
+      subject.import(rows)
+
+      existing_activity = Activity.where(transparency_identifier: existing_activity_attributes["Transparency identifier"]).first
+      new_activity = Activity.where(transparency_identifier: new_activity_attributes["Transparency identifier"]).first
+
+      expect(subject.errors.count).to eq(0)
+      expect(existing_activity.comments).to be_empty
+      expect(new_activity.comments).to be_empty
     end
 
     describe "recording changes" do
@@ -817,8 +849,6 @@ RSpec.describe Activities::ImportFromCsv do
           report: report
         )
       end
-
-      let(:report) { double("report") }
 
       let(:expected_changes) do
         {

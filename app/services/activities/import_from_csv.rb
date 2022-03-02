@@ -17,10 +17,10 @@ module Activities
     attr_reader :errors, :created, :updated
 
     def self.column_headings
-      ["Parent RODA ID"] + Converter::FIELDS.values - ["BEIS ID"]
+      ["Parent RODA ID"] + Converter::FIELDS.values - ["BEIS ID"] + ["Comments"]
     end
 
-    def initialize(uploader:, delivery_partner_organisation:, report: nil)
+    def initialize(uploader:, delivery_partner_organisation:, report:)
       @uploader = uploader
       @uploader_organisation = uploader.organisation
       @delivery_partner_organisation = delivery_partner_organisation
@@ -54,7 +54,7 @@ module Activities
 
     def create_activity(row, index)
       if row["Parent RODA ID"].present?
-        creator = ActivityCreator.new(row: row, uploader: @uploader, delivery_partner_organisation: @delivery_partner_organisation)
+        creator = ActivityCreator.new(row: row, uploader: @uploader, delivery_partner_organisation: @delivery_partner_organisation, report: @report)
         creator.create
         created << creator.activity unless creator.errors.any?
 
@@ -90,7 +90,7 @@ module Activities
     class ActivityUpdater
       attr_reader :errors, :activity, :row, :report
 
-      def initialize(row:, uploader:, delivery_partner_organisation:, report: nil)
+      def initialize(row:, uploader:, delivery_partner_organisation:, report:)
         @errors = {}
         @activity = find_activity_by_roda_id(row["RODA ID"])
         @uploader = uploader
@@ -127,6 +127,10 @@ module Activities
           end
         else
           @activity.implementing_organisations = []
+        end
+
+        if row["Comments"].present?
+          @activity.comments.build(body: row["Comments"], report: @report, owner: @uploader, commentable: @activity)
         end
 
         changes = @activity.changes
@@ -166,13 +170,14 @@ module Activities
     class ActivityCreator
       attr_reader :errors, :row, :activity
 
-      def initialize(row:, uploader:, delivery_partner_organisation:)
+      def initialize(row:, uploader:, delivery_partner_organisation:, report:)
         @uploader = uploader
         @delivery_partner_organisation = delivery_partner_organisation
         @errors = {}
         @row = row
         @converter = Converter.new(row)
         @parent_activity = fetch_parent(@row["Parent RODA ID"])
+        @report = report
 
         if @parent_activity && !ActivityPolicy.new(@uploader, @parent_activity).create_child?
           @errors[:parent_id] = [nil, I18n.t("importer.errors.activity.unauthorised")]
@@ -203,7 +208,11 @@ module Activities
           @activity.implementing_org_participations = participations
         end
 
-        return if @activity.save(context: Activity::VALIDATION_STEPS)
+        if row["Comments"].present?
+          @activity.comments.build(body: row["Comments"], report: @report, owner: @uploader, commentable: @activity)
+        end
+
+        return true if @activity.save(context: Activity::VALIDATION_STEPS)
 
         @activity.errors.each do |error|
           @errors[error.attribute] ||= [@converter.raw(error.attribute), error.message]
