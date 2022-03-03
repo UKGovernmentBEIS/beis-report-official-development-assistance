@@ -4,6 +4,9 @@
   = f.govuk_text_field :name
   = f.govuk_email_field :email, disabled: (action_name == "edit")
 
+  = f.govuk_check_boxes_fieldset :reset_mfa, multiple: false, legend: { text: t("form.legend.user.reset_mfa") }, hint: { text: t("form.hint.user.reset_mfa") } do
+    = f.govuk_check_box :reset_mfa, true, multiple: false, label: { text: t("form.label.user.reset_mfa") }
+
   - if @service_owner.present?
     = f.govuk_radio_buttons_fieldset :organisation, classes: "user-organisations" do
       = f.govuk_radio_button :organisation_id, @service_owner.id, label: { text: @service_owner.name }, link_errors: true
