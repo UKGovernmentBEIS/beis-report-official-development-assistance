@@ -17,13 +17,16 @@ en:
         email: Email address
         identifier: Auth0 identifier
         name: Full name
+        reset_mfa: Reset the mobile number used for authentication
     legend:
       user:
         active: What is the user's status?
         organisation_id: What organisation does this user belong to?
+        reset_mfa: Reset the user's mobile number?
     hint:
       user:
         active: Deactivated users cannot log in
+        reset_mfa: The user will have to provide their mobile number on their next log in attempt
     user:
       active:
         active: Activate
@@ -46,6 +49,10 @@ en:
         identifier: Identifier
         organisation: Organisation
         active: Active?
+        confirmed_for_mfa:
+          label: Mobile number confirmed for authentication?
+          "false": "No"
+          "true": "Yes"
   page_content:
     users:
       button:
