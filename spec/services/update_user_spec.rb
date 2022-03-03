@@ -26,5 +26,18 @@ RSpec.describe UpdateUser do
         expect(user.reload.organisation).to eql(organisation)
       end
     end
+
+    context "when reset MFA is requested" do
+      it "resets the user's mobile number and its confirmation time" do
+        described_class.new(
+          user: user,
+          organisation: user.organisation,
+          reset_mfa: true
+        ).call
+
+        expect(user.reload.mobile_number).to be_nil
+        expect(user.mobile_number_confirmed_at).to be_nil
+      end
+    end
   end
 end

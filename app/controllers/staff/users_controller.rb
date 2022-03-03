@@ -53,13 +53,14 @@ class Staff::UsersController < Staff::BaseController
     @service_owner = service_owner
     @delivery_partners = delivery_partners
 
-    @user.assign_attributes(user_params)
+    reset_mfa = user_params.delete(:reset_mfa)
+    @user.assign_attributes(user_params.except(:reset_mfa))
 
     if @user.valid?
-      result = UpdateUser.new(user: @user, organisation: organisation).call
+      result = UpdateUser.new(user: @user, organisation: organisation, reset_mfa: reset_mfa).call
 
       if result.success?
-        flash.now[:notice] = t("action.user.update.success")
+        flash[:notice] = t("action.user.update.success")
         redirect_to user_path(@user)
       else
         flash.now[:error] = t("action.user.update.failed")
@@ -71,7 +72,7 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :organisation_id, :active)
+    params.require(:user).permit(:name, :email, :organisation_id, :active, :reset_mfa)
   end
 
   def id
