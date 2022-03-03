@@ -43,6 +43,27 @@ RSpec.feature "BEIS users can edit other users" do
     expect(page).to have_content("New Name")
   end
 
+  scenario "the user's MFA (mobile number and confirmed_at) can be reset" do
+    # When I am logged in as a BEIS user
+    administrator_user = create(:beis_user)
+    authenticate!(user: administrator_user)
+
+    # And a user with a confirmed mobile number exists
+    visit users_path
+    find("tr", text: user.name).click_link("View")
+    expect(page).to have_content("Mobile number confirmed for authentication? Yes")
+
+    # When I reset that user's MFA
+    visit users_path
+    find("tr", text: user.name).click_link("Edit")
+    check "Reset the mobile number used for authentication"
+    click_on t("default.button.submit")
+
+    # Then that user should no longer be confirmed for MFA
+    expect(page).to have_content("User successfully updated")
+    expect(page).to have_content("Mobile number confirmed for authentication? No")
+  end
+
   scenario "an active user can be deactivated" do
     administrator_user = create(:beis_user)
     authenticate!(user: administrator_user)
