@@ -14,6 +14,13 @@ newton_fund_params = FactoryBot.build(:fund_activity,
 
 _newton_fund = Activity.find_or_create_by(newton_fund_params)
 
+ooda_fund_params = FactoryBot.build(:fund_activity,
+  roda_identifier: "OODA",
+  title: "Other ODA",
+  organisation: beis).attributes
+
+_ooda_fund = Activity.find_or_create_by(ooda_fund_params)
+
 delivery_partner = User.all.find(&:delivery_partner?).organisation
 
 first_programme_params = FactoryBot.build(:programme_activity,
