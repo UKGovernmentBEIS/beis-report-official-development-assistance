@@ -73,6 +73,16 @@ FactoryBot.define do
           Activity.find_or_initialize_by(roda_identifier: "NF")
         end
       end
+
+      trait :ooda do
+        roda_identifier { "OODA" }
+        title { "Other ODA" }
+        source_fund_code { Fund.by_short_name("OODA").id }
+
+        initialize_with do
+          Activity.find_or_initialize_by(roda_identifier: "OODA")
+        end
+      end
     end
 
     factory :programme_activity do
@@ -96,6 +106,13 @@ FactoryBot.define do
         source_fund_code { Fund.by_short_name("GCRF").id }
         parent do
           Activity.fund.find_by(source_fund_code: Fund.by_short_name("GCRF").id) || create(:fund_activity, :gcrf)
+        end
+      end
+
+      trait :ooda_funded do
+        source_fund_code { Fund.by_short_name("OODA").id }
+        parent do
+          Activity.fund.find_by(source_fund_code: Fund.by_short_name("OODA").id) || create(:fund_activity, :ooda)
         end
       end
 
