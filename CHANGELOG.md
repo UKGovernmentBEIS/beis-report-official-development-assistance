@@ -978,12 +978,13 @@
 - Correctly highlight the absence of an organisation when creating a user if one wasn't picked to start with
 - Make activities and forecasts CSV upload buttons consistent with actuals
 
-## [unreleased]
+## [release-99] 2022-03-08
 
 - Allow Actuals to have a comment and display on Actual and Comment report tabs
 - Add comments to Activities and Actuals via bulk CSV upload
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-98...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-99...HEAD
+[release-99]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-98...release-99
 [release-98]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-97...release-98
 [release-97]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-96...release-97
 [release-96]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-95...release-96
