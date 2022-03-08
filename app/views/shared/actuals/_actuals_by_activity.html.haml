@@ -23,6 +23,11 @@
                   = actual.financial_quarter_and_year
                 %td.govuk-table__cell--numeric{class: "govuk-!-width-one-half", scope: "col"}
                   = actual.value
+                  - if actual.comment
+                    %tr.govuk-table__row
+                      %td.govuk-table__cell--numeric{class: "govuk-!-width-full", scope: "col", colspan: 2}
+                        = actual.comment.body
+
 
     %tr.govuk-table__row.totals
       %td.govuk-table__cell Total

@@ -15,7 +15,7 @@ RSpec.describe Transaction::GroupedActualsFetcher do
 
     before do
       allow(report).to receive(:actuals).and_return(actuals_stub)
-      allow(actuals_stub).to receive(:includes).with([:parent_activity]).and_return(actuals)
+      allow(actuals_stub).to receive(:includes).with([:parent_activity, :comment]).and_return(actuals)
     end
 
     it "returns actuals grouped by activity" do

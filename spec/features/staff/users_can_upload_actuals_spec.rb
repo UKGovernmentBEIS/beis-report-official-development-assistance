@@ -56,7 +56,8 @@ RSpec.feature "users can upload actuals" do
         "Value" => "0.00",
         "Receiving Organisation Name" => nil,
         "Receiving Organisation Type" => nil,
-        "Receiving Organisation IATI Reference" => nil
+        "Receiving Organisation IATI Reference" => nil,
+        "Comment" => nil
       },
       {
         "Activity Name" => sibling_project.title,
@@ -67,7 +68,8 @@ RSpec.feature "users can upload actuals" do
         "Value" => "0.00",
         "Receiving Organisation Name" => nil,
         "Receiving Organisation Type" => nil,
-        "Receiving Organisation IATI Reference" => nil
+        "Receiving Organisation IATI Reference" => nil,
+        "Comment" => nil
       }
     ])
   end
@@ -79,19 +81,35 @@ RSpec.feature "users can upload actuals" do
   end
 
   scenario "uploading a valid set of actuals" do
+    # Given that I am logged in as a delivery partner
+    # And a report exists that is waiting for actuals to be uploaded
+
     ids = [project, sibling_project].map(&:roda_identifier)
 
+    # When I upload some actuals with comments
     upload_csv <<~CSV
-      Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
-      #{ids[0]}                | 1                 | 2020           | 20    | Example University          | 80                          |
-      #{ids[1]}                | 1                 | 2020           | 30    | Example Foundation          | 60                          |
+      Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
+      #{ids[0]}                | 1                 | 2020           | 20    | Example University          | 80                          |                                       | A unique comment
+      #{ids[1]}                | 1                 | 2020           | 30    | Example Foundation          | 60                          |                                       |
     CSV
 
+    # Then I should see a summary of my upload
     expect(Actual.count).to eq(2)
     expect(page).to have_text(t("action.actual.upload.success"))
     expect(page).not_to have_css("table.govuk-table.errors")
+    expect(page).to have_text("A unique comment")
 
-    expect_to_see_successful_upload_summary_with(count: 2, total: 50)
+    # two Actual rows, one comment
+    expect_to_see_successful_upload_summary_with(count: 3, total: 50)
+
+    # When I go back to the report
+    click_on "Back to report"
+    expect(page).to have_text("A unique comment")
+
+    # And I open the comments tab
+    click_on "Comments"
+    # Then I should see my actuals comment is there
+    expect(page).to have_text("A unique comment")
   end
 
   scenario "uploading a valid set of actuals with no organisation data" do

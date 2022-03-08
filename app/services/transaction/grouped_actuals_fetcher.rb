@@ -6,7 +6,7 @@ class Transaction
 
     def call
       report.actuals
-        .includes([:parent_activity])
+        .includes([:parent_activity, :comment])
         .map { |actual| TransactionPresenter.new(actual) }
         .group_by { |actual| ActivityPresenter.new(actual.parent_activity) }
     end
