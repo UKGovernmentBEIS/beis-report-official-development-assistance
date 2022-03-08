@@ -9,6 +9,16 @@ RSpec.feature "Users can reset their password" do
     visit root_path
     click_link "Sign in"
     click_link "Forgot password?"
+
+    # When I fill in a valid email address that is not registered
+    fill_in "Email address", with: "notregistered@example.org"
+    click_on "Submit"
+
+    # Then I should see a generic message that doesn't disclose that the email is not registered
+    expect(page).to have_content("If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.")
+
+    # When I fill in my email address
+    click_link "Forgot password?"
     fill_in "Email address", with: user.email
     click_on "Submit"
 
