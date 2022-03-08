@@ -980,6 +980,9 @@
 
 ## [unreleased]
 
+- Allow Actuals to have a comment and display on Actual and Comment report tabs
+- Add comments to Activities and Actuals via bulk CSV upload
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-98...HEAD
 [release-98]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-97...release-98
 [release-97]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-96...release-97

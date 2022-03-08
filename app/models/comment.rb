@@ -11,10 +11,14 @@ class Comment < ApplicationRecord
     joins("left outer join activities on activities.id = comments.commentable_id AND comments.commentable_type = 'Activity'")
       .joins("left outer join transactions AS refunds on refunds.id = comments.commentable_id AND comments.commentable_type = 'Refund'")
       .joins("left outer join transactions AS adjustments on adjustments.id = comments.commentable_id AND comments.commentable_type = 'Adjustment'")
+      .joins("left outer join transactions AS actuals on actuals.id = comments.commentable_id AND comments.commentable_type = 'Actuals'")
   }
   scope :for_activity, ->(activity) {
     with_commentables
-      .where("refunds.parent_activity_id = :activity_id OR adjustments.parent_activity_id = :activity_id OR activities.id = :activity_id", {activity_id: activity.id})
+      .where("refunds.parent_activity_id = :activity_id OR
+              adjustments.parent_activity_id = :activity_id OR
+              activities.id = :activity_id OR
+              actuals.id = :activity_id", {activity_id: activity.id})
   }
 
   def set_commentable_type
@@ -22,13 +26,9 @@ class Comment < ApplicationRecord
   end
 
   def associated_activity
-    case commentable_type
-    when "Activity"
-      commentable
-    when "Refund"
-      commentable.parent_activity
-    when "Adjustment"
-      commentable.parent_activity
-    end
+    return commentable if commentable_type == "Activity"
+
+    # Expected other values of commentable_type Refund, Adjustment and Actual
+    commentable.parent_activity
   end
 end

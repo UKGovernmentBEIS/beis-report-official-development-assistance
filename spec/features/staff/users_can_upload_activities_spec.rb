@@ -12,7 +12,10 @@ RSpec.feature "users can upload activities" do
   end
 
   before do
+    # Given I'm logged in as a DP
     authenticate!(user: user)
+
+    # And I am on the Activities Upload page
     visit report_activities_path(report)
     click_link t("page_content.activities.button.upload")
   end
@@ -54,7 +57,8 @@ RSpec.feature "users can upload activities" do
       "Transparency identifier",
       "UK DP Named Contact",
       "NF Partner Country DP",
-      "Benefitting Countries"
+      "Benefitting Countries",
+      "Comments"
     ])
   end
 
@@ -73,13 +77,16 @@ RSpec.feature "users can upload activities" do
   scenario "uploading a valid set of activities" do
     old_count = Activity.count
 
+    # When I upload a valid Activity CSV with comments
     attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_activities_upload.csv").path
     click_button t("action.activity.upload.button")
 
     expect(Activity.count - old_count).to eq(2)
+    # Then I should see confirmation that I have uploaded new activities
     expect(page).to have_text(t("action.activity.upload.success"))
     expect(page).to have_table(t("table.caption.activity.new_activities"))
 
+    # And I should see the uploaded activities titles
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[2]", text: "Programme - Award (round 5)")
     end
@@ -87,6 +94,23 @@ RSpec.feature "users can upload activities" do
     within "//tbody/tr[2]" do
       expect(page).to have_xpath("td[2]", text: "Isolation and redesign of single-celled examples")
     end
+
+    activity_links = within("tbody") { page.find_all(:css, "a").map { |a| a["href"] } }
+
+    # When I visit an activity with a comment
+    visit activity_links.first
+    click_on "Comments"
+
+    # Then I should see the comment body
+    expect(page).to have_content("A comment")
+    expect(page).to have_content("Comment reported in")
+
+    # When I visit an activity which had an empty comment in the CSV
+    visit activity_links.last
+    click_on "Comments"
+
+    # Then I should see that there are no comments
+    expect(page).not_to have_content("Comment reported in")
   end
 
   scenario "uploading a set of activities with a BOM at the start" do
