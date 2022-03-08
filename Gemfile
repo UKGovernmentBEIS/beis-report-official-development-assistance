@@ -38,6 +38,7 @@ gem "breadcrumbs_on_rails"
 
 # Authentication
 gem "devise"
+gem "devise-two-factor"
 
 group :development, :test do
   gem "brakeman"
