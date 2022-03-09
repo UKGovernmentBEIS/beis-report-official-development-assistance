@@ -51,7 +51,11 @@ RSpec.feature "Users can sign in" do
         visit root_path
         log_in_via_form(user)
 
-        # Then there should be no link to check my mobile number
+        # Then I am informed that the code has been sent to a phone with the last 4 digits
+        mobile_number_ending = user.mobile_number.last(4)
+        expect(page).to have_content("We've sent a one-time password to your mobile number ending in #{mobile_number_ending}")
+
+        # And there should be no link to check my mobile number
         expect(page).not_to have_link "Check your mobile number is correct"
 
         otp_at_time_of_login = user.current_otp
@@ -93,6 +97,41 @@ RSpec.feature "Users can sign in" do
         expect(page).not_to have_link(t("header.link.sign_out"))
         visit root_path
         expect(page).to have_content("Sign in")
+      end
+
+      scenario "resending the code" do
+        # Given a user with 2FA enabled and a confirmed mobile number exists
+        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.now)
+
+        # And I log in with that user's email and password
+        visit root_path
+        log_in_via_form(user)
+
+        # And I receive an OTP to my mobile number
+        otp_at_time_of_login = user.current_otp
+        expect(notify_client).to have_received(:send_sms).with({
+          phone_number: user.mobile_number,
+          template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+          personalisation: {otp: otp_at_time_of_login}
+        }).once
+
+        travel 1.minute do
+          # When I request the code to be re-sent
+          expect(page).to have_content("Didn't get a message?")
+          click_on "Resend code"
+          otp_at_time_of_resend = user.reload.current_otp
+
+          # Then I am informed that the code has been sent
+          mobile_number_ending = user.mobile_number.last(4)
+          expect(page).to have_content("We've sent a new one-time password to your mobile number ending in #{mobile_number_ending}")
+
+          # And I should receive an OTP to my mobile number
+          expect(notify_client).to have_received(:send_sms).with({
+            phone_number: user.mobile_number,
+            template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+            personalisation: {otp: otp_at_time_of_resend}
+          }).once
+        end
       end
     end
 
