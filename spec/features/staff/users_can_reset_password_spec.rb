@@ -21,8 +21,8 @@ RSpec.feature "Users can reset their password" do
     visit reset_password_link
 
     # And I set a new password
-    fill_in "New password", with: "letmein!"
-    fill_in "Confirm new password", with: "letmein!"
+    fill_in "New password", with: "LlEeTtMmEeIin1!"
+    fill_in "Confirm new password", with: "LlEeTtMmEeIin1!"
     click_on "Change my password"
 
     # Then my password should be changed and I should be logged in

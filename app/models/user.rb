@@ -1,11 +1,10 @@
 class User < ApplicationRecord
-  devise :two_factor_authenticatable, :rememberable, :validatable, :recoverable,
+  devise :two_factor_authenticatable, :rememberable, :secure_validatable, :recoverable,
     otp_secret_encryption_key: ENV["SECRET_KEY_BASE"]
 
   belongs_to :organisation
   has_many :historical_events
   validates_presence_of :name, :email
-  validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}
   validates :email, with: :email_cannot_be_changed_after_create, on: :update
 
   before_save :ensure_otp_secret!, if: -> { otp_required_for_login && otp_secret.nil? }
