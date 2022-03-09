@@ -15,12 +15,15 @@
                                 pattern: "[0-9]*",
                                 autocomplete: "one-time-code"
 
-  - unless resource.mobile_number_confirmed_at.present?
-    .govuk-grid-row
-      .govuk-grid-column-two-thirds
-        %p.govuk-body
-          Didn't get a message?
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %p.govuk-body
+        Didn't get a message?
+
+        - unless resource.mobile_number_confirmed_at.present?
           = link_to "Check your mobile number is correct", edit_mobile_number_path
+        - else
+          = link_to "Resend code", resend_otp_path, method: :post
 
   .govuk-grid-row
     .govuk-grid-column-one-third

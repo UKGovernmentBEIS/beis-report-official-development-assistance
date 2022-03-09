@@ -20,6 +20,11 @@ class Users::SessionsController < Devise::SessionsController
     render "devise/sessions/mobile_number"
   end
 
+  def resend_otp
+    self.resource = find_user
+    send_and_prompt_for_otp
+  end
+
   protected
 
   # Given a login +mfa_phase+, take the appropriate action.
@@ -97,6 +102,13 @@ class Users::SessionsController < Devise::SessionsController
 
   def send_and_prompt_for_otp
     Notify::OTPMessage.new(user.mobile_number, user.current_otp).deliver
+
+    mobile_number_ending = resource.mobile_number.last(4)
+    code_sent_message = action_name == "resend_otp" ?
+      "We've sent a new one-time password to your mobile number ending in #{mobile_number_ending}" :
+      "We've sent a one-time password to your mobile number ending in #{mobile_number_ending}"
+
+    flash.now[:success] = code_sent_message
     prompt_for "otp_attempt"
   end
 

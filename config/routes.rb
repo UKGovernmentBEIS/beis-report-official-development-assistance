@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   devise_scope :user do
     devise_for :users, controllers: {sessions: "users/sessions"}
     get :edit_mobile_number, to: "users/sessions#edit_mobile_number"
+    post :resend_otp, to: "users/sessions#resend_otp"
   end
 
   # If the DOMAIN env var is present, and the request doesn't come from that
