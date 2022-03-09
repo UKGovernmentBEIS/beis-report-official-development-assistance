@@ -3,13 +3,12 @@
 %h1.govuk-heading-l Change your password
 
 .govuk-grid-row
-  .govuk-grid-column-one-third
+  .govuk-grid-column-two-thirds
     = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
-      = render "devise/shared/error_messages", resource: resource
-
+      = f.govuk_error_summary
       = f.hidden_field :reset_password_token
 
-      = f.govuk_password_field :password, autofocus: true, autocomplete: "new-password", label: {text: "New password"}, hint: {text: "(#{@minimum_password_length} characters minimum)"}
+      = f.govuk_password_field :password, autofocus: true, autocomplete: "new-password", label: {text: "New password"}, hint: {text: t("form.hint.user.new_password")}
 
       = f.govuk_password_field :password_confirmation, label: {text: "Confirm new password"}, autocomplete: "new-password"
 
