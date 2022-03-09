@@ -4,7 +4,7 @@ FactoryBot.define do
     name { Faker::Name.name }
     email { Faker::Internet.email }
     active { true }
-    password { SecureRandom.uuid }
+    password { "Ab1!#{SecureRandom.uuid}" }
     mobile_number { Faker::PhoneNumber.phone_number }
     mobile_number_confirmed_at { 1.day.ago }
     otp_required_for_login { false }
