@@ -20,7 +20,19 @@ RSpec.feature "Users can reset their password" do
     reset_password_link = email.body.raw_source.match(/(https?:\/\/\S+)/)
     visit reset_password_link
 
-    # And I set a new password
+    # Then I should see a password hint with the full requirements
+    expect(page).to have_content("Minimum 15 characters; must contain at least one digit, one lowercase letter, one uppercase letter, and one punctuation mark or symbol")
+
+    # When I try to set a password that doesn't fulfill the requirements
+    fill_in "New password", with: "LlEeTtMmEeIinnn"
+    fill_in "Confirm new password", with: "LlEeTtMmEeIinnn"
+    click_on "Change my password"
+
+    # Then I should see an error message complying with GOV.UK guidelines
+    expect(page).to have_content("There is a problem")
+    expect(page).to have_content("Password must contain at least one digit")
+
+    # When I set a password that fulfills the requirements
     fill_in "New password", with: "LlEeTtMmEeIin1!"
     fill_in "Confirm new password", with: "LlEeTtMmEeIin1!"
     click_on "Change my password"
