@@ -87,4 +87,5 @@ en:
               blank: Enter a full name
             email:
               blank: Enter an email address
+              invalid: is not a valid email
               cannot_be_changed: "cannot be changed once a user has been created"

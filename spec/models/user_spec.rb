@@ -25,4 +25,31 @@ RSpec.describe User, type: :model do
     it { is_expected.to delegate_method(:service_owner?).to(:organisation) }
     it { is_expected.to delegate_method(:delivery_partner?).to(:organisation) }
   end
+
+  it "validates the email format" do
+    user = build(:administrator, email: "bogus")
+
+    expect(user).to be_invalid
+    expect(user.errors[:email]).to eq(["is not a valid email"])
+  end
+
+  describe "password requirements" do
+    it "should have a minimum length" do
+      user = build(:administrator, password: "Ab3$")
+
+      expect(user.valid?).to be_falsey
+      expect(user.errors.messages[:password]).to include("Password is too short (minimum is 15 characters)")
+    end
+
+    it "should contain the required characters" do
+      user = build(:administrator, password: "AaBbCc123456789")
+
+      expect(user.valid?).to be_falsey
+      expect(user.errors.messages[:password]).to include("Password must contain at least one punctuation mark or symbol")
+
+      user.password = "AaBbCc123456789!"
+
+      expect(user.valid?).to be_truthy
+    end
+  end
 end
