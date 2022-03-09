@@ -9,6 +9,16 @@ RSpec.feature "Users can reset their password" do
     visit root_path
     click_link "Sign in"
     click_link "Forgot password?"
+
+    # When I fill in a valid email address that is not registered
+    fill_in "Email address", with: "notregistered@example.org"
+    click_on "Submit"
+
+    # Then I should see a generic message that doesn't disclose that the email is not registered
+    expect(page).to have_content("If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.")
+
+    # When I fill in my email address
+    click_link "Forgot password?"
     fill_in "Email address", with: user.email
     click_on "Submit"
 
@@ -20,9 +30,21 @@ RSpec.feature "Users can reset their password" do
     reset_password_link = email.body.raw_source.match(/(https?:\/\/\S+)/)
     visit reset_password_link
 
-    # And I set a new password
-    fill_in "New password", with: "letmein!"
-    fill_in "Confirm new password", with: "letmein!"
+    # Then I should see a password hint with the full requirements
+    expect(page).to have_content("Minimum 15 characters; must contain at least one digit, one lowercase letter, one uppercase letter, and one punctuation mark or symbol")
+
+    # When I try to set a password that doesn't fulfill the requirements
+    fill_in "New password", with: "LlEeTtMmEeIinnn"
+    fill_in "Confirm new password", with: "LlEeTtMmEeIinnn"
+    click_on "Change my password"
+
+    # Then I should see an error message complying with GOV.UK guidelines
+    expect(page).to have_content("There is a problem")
+    expect(page).to have_content("Password must contain at least one digit")
+
+    # When I set a password that fulfills the requirements
+    fill_in "New password", with: "LlEeTtMmEeIin1!"
+    fill_in "Confirm new password", with: "LlEeTtMmEeIin1!"
     click_on "Change my password"
 
     # Then my password should be changed and I should be logged in

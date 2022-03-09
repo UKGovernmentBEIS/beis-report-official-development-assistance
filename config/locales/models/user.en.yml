@@ -26,6 +26,7 @@ en:
     hint:
       user:
         active: Deactivated users cannot log in
+        new_password: Minimum 15 characters; must contain at least one digit, one lowercase letter, one uppercase letter, and one punctuation mark or symbol
         reset_mfa: The user will have to provide their mobile number on their next log in attempt
     user:
       active:
@@ -87,4 +88,5 @@ en:
               blank: Enter a full name
             email:
               blank: Enter an email address
+              invalid: is not a valid email
               cannot_be_changed: "cannot be changed once a user has been created"
