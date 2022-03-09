@@ -9,8 +9,8 @@ delivery_partner = User.find_or_initialize_by(
   identifier: "auth0|5e5e1ee731555a0cb0ab5a75"
 )
 
-administrator.password = "letmein"
-delivery_partner.password = "letmein"
+administrator.password = "LlEeTtMmEeIiNn!1"
+delivery_partner.password = "LlEeTtMmEeIiNn!1"
 
 beis = Organisation.service_owner
 administrator.organisation = beis
