@@ -88,8 +88,8 @@ class ImportActuals
       attrs = @converter.to_h
       assign_default_values(attrs)
 
-      creator = CreateActual.new(activity: @activity, report: @report)
-      result = creator.call(attributes: attrs)
+      creator = CreateActual.new(activity: @activity, report: @report, actual_class: @converter.actual_type)
+      result = creator.call(attributes: attrs.except(:refund_value))
       return unless result
 
       result.object.errors.each do |error|
@@ -113,12 +113,15 @@ class ImportActuals
       activity: "Activity RODA Identifier",
       financial_quarter: "Financial Quarter",
       financial_year: "Financial Year",
-      value: "Value",
+      value: "Actual Value",
+      refund_value: "Refund Value",
       receiving_organisation_name: "Receiving Organisation Name",
       receiving_organisation_type: "Receiving Organisation Type",
       receiving_organisation_reference: "Receiving Organisation IATI Reference",
       comment: "Comment"
     }
+
+    NON_VALUE_FIELDS = FIELDS.without :value, :refund_value
 
     attr_reader :activity, :errors
 
@@ -127,6 +130,16 @@ class ImportActuals
       @errors = {}
       @attributes = convert_to_attributes
       @activity = @attributes.delete(:activity)
+    end
+
+    # We must have precisely one value, and we will check if
+    # the other is empty when we validate the value it contains
+    def actual_type
+      return Actual if @row["Refund Value"].nil?
+      return Refund if @row["Actual Value"].nil?
+      # TODO: make this nicer, actually return value that's bad
+      @errors[:value] = [@row["Actual Value"], "One of Actual Value and Refund Value must be numeric and the other must be blank"]
+      @errors[:refund_value] = [@row["Refund Value"], "One of Actual Value and Refund Value must be numeric and the other must be blank"]
     end
 
     def raw(attr_name)
@@ -138,8 +151,19 @@ class ImportActuals
     end
 
     def convert_to_attributes
-      FIELDS.each_with_object({}) do |(attr_name, column_name), attrs|
+      attrs = {value: convert_values}
+      NON_VALUE_FIELDS.each_with_object(attrs) do |(attr_name, column_name), attrs|
         attrs[attr_name] = convert_to_attribute(attr_name, @row[column_name])
+      end
+    end
+
+    def convert_values
+      if actual_type == Actual
+        # convert_value(@row["Actual Value"])]
+        convert_to_attribute(:value, @row["Actual Value"])
+      else
+        convert_to_attribute(:refund_value, @row["Refund Value"])
+        # convert_value(@row["Refund Value"])
       end
     end
 
@@ -175,6 +199,8 @@ class ImportActuals
     rescue ConvertFinancialValue::Error
       raise I18n.t("importer.errors.actual.non_numeric_value")
     end
+
+    alias_method :convert_refund_value, :convert_value
 
     def convert_receiving_organisation_type(type)
       validate_from_codelist(

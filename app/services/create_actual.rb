@@ -1,10 +1,10 @@
 class CreateActual
   attr_accessor :activity, :report, :actual
 
-  def initialize(activity:, report: nil)
+  def initialize(activity:, report: nil, actual_class: Actual)
     self.activity = activity
     self.report = report || Report.editable_for_activity(activity)
-    self.actual = Actual.new
+    self.actual = actual_class.new
   end
 
   def call(attributes: {})
