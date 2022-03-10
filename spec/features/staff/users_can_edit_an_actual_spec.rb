@@ -13,7 +13,7 @@ RSpec.feature "Users can edit an actual" do
     let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
     let!(:actual) { create(:actual, parent_activity: activity, report: report) }
 
-    scenario "editing a actual on a programme" do
+    scenario "editing an actual on a programme" do
       visit organisation_activity_path(activity.organisation, activity)
 
       expect(page).to have_content(actual.value)
@@ -56,7 +56,13 @@ RSpec.feature "Users can edit an actual" do
           click_link("Edit")
         end
 
-        fill_in "actual[value]", with: 221.12
+        fill_in "Actual amount", with: "notanumber"
+        click_on(t("default.button.submit"))
+
+        expect(page).to have_content("Value must be a valid number")
+        expect(page).to have_field("Actual amount", with: "notanumber")
+
+        fill_in "Actual amount", with: 221.12
 
         click_on(t("default.button.submit"))
 

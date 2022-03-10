@@ -1,6 +1,7 @@
 = f.govuk_error_summary
 
-= f.govuk_text_field :value, width: 'one-third'
+= f.govuk_text_field :value, width: 'one-third',
+  label: { text: t("form.label.actual.value"), tag: :p, size: 's' }
 
 = f.govuk_fieldset legend: { text: nil } do
   .govuk-grid-row
@@ -20,14 +21,18 @@
 
 = f.govuk_fieldset legend: { text: t("form.legend.actual.receiving_organisation") } do
   %span.govuk-hint= t("form.hint.actual.receiving_organisation")
-  = f.govuk_text_field :receiving_organisation_name
+  = f.govuk_text_field :receiving_organisation_name,
+    label: { text: t("form.label.actual.receiving_organisation_name") }
 
   = f.govuk_collection_select :receiving_organisation_type,
                       organisation_type_options,
                       :code,
-                      :name
+                      :name,
+                      label: { text: t("form.label.actual.receiving_organisation_type") }
 
-  = f.govuk_text_field :receiving_organisation_reference
+  = f.govuk_text_field :receiving_organisation_reference,
+    label: { text: t("form.label.actual.receiving_organisation_reference") },
+    hint: { text: t("form.hint.actual.receiving_organisation_reference_html") }
 
 = f.govuk_submit t("default.button.submit")
 
