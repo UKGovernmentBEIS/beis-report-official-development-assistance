@@ -137,7 +137,7 @@ class ImportActuals
     # the other is empty when we validate the value it contains
     def actual_type
       return Actual if @row["Refund Value"].nil?
-      return Refund if @row["Actual Value"].nil?
+      return Refund if @row["Actual Value"].nil? || @row["Actual Value"] == "0.00"
       # TODO: for some reason I can't use t("importer.errors.actual.non_numeric_value") here.
       @errors[:value] = [@row["Actual Value"], "One of Actual Value and Refund Value must be numeric and the other must be blank"]
       @errors[:refund_value] = [@row["Refund Value"], "One of Actual Value and Refund Value must be numeric and the other must be blank"]

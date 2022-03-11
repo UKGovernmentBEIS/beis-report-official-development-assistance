@@ -1,3 +1,8 @@
+# NOTE:
+# This spec primarily interacts with import_actuals and create_actual,
+# rather than the non-existant import_actuals or the actually
+# existing create_refund
+
 RSpec.feature "users can upload refunds" do
   # Given that I am logged in as a Delivery Partner,
   # And a report exists that is waiting for refunds to be uploaded
@@ -62,6 +67,21 @@ RSpec.feature "users can upload refunds" do
     click_on("Actuals")
 
     # Then I should see my Refund amount and comment are there
+    expect(page).to have_text("-£1,234.56")
+    expect(page).to have_text("Ocelot")
+  end
+
+  scenario "Upload a valid refund with a zero actual" do
+    click_link t("page_content.actuals.button.upload")
+    id = project.roda_identifier
+
+    # When I upload some refunds with comments
+    upload_csv <<~CSV
+      Activity RODA Identifier | Financial Quarter | Financial Year | Actual Value | Refund Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
+      #{id}                    | 1                 | 2020           | 0.00         | 1234.56      | Example University          | 80                          |                                       | Ocelot
+    CSV
+
+    # Then I see my refund amount and comment in the Refund section
     expect(page).to have_text("-£1,234.56")
     expect(page).to have_text("Ocelot")
   end
