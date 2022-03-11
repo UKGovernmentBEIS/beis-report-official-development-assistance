@@ -1,3 +1,4 @@
+# This originally handled only Actuals, but now also handles Refunds as well.
 class ImportActuals
   Error = Struct.new(:row, :column, :value, :message) {
     def csv_row
@@ -137,7 +138,7 @@ class ImportActuals
     def actual_type
       return Actual if @row["Refund Value"].nil?
       return Refund if @row["Actual Value"].nil?
-      # TODO: make this nicer, actually return value that's bad
+      # TODO: for some reason I can't use t("importer.errors.actual.non_numeric_value") here.
       @errors[:value] = [@row["Actual Value"], "One of Actual Value and Refund Value must be numeric and the other must be blank"]
       @errors[:refund_value] = [@row["Refund Value"], "One of Actual Value and Refund Value must be numeric and the other must be blank"]
     end

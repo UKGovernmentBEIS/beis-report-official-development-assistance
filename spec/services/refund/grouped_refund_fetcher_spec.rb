@@ -15,7 +15,7 @@ RSpec.describe Refund::GroupedRefundFetcher do
 
     before do
       allow(report).to receive(:refunds).and_return(refunds_stub)
-      allow(refunds_stub).to receive(:includes).with([:parent_activity]).and_return(refunds)
+      allow(refunds_stub).to receive(:includes).with([:parent_activity, :comment]).and_return(refunds)
     end
 
     it "returns refunds grouped by activity" do

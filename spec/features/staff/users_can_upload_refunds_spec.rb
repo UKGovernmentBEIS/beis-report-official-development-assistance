@@ -36,36 +36,50 @@ RSpec.feature "users can upload refunds" do
     expect(page).to have_text(",Actual Value,Refund Value,")
   end
 
-  scenario "Upload a refund" do
+  scenario "Upload a valid refund" do
     click_link t("page_content.actuals.button.upload")
     id = project.roda_identifier
 
     # When I upload some refunds with comments
     upload_csv <<~CSV
       Activity RODA Identifier | Financial Quarter | Financial Year | Actual Value | Refund Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
-      #{id}                    | 1                 | 2020           |              | 1234.56      | Example University          | 80                          |                                       | Refund 1234
+      #{id}                    | 1                 | 2020           |              | 1234.56      | Example University          | 80                          |                                       | Ocelot
     CSV
 
-    # Then I see my refunds in the Refund section
-    expect(page).to have_text("1,234.56")
-    expect(page).to have_text("Refund 1234")
+    # Then I see my refund amount and comment in the Refund section
+    expect(page).to have_text("-£1,234.56")
+    expect(page).to have_text("Ocelot")
+
+    # When I go back to the Report and open the Comments tab
+    click_on("Back to report")
+    click_on("Comments")
+
+    # Then I should see my Refunds comment is there
+    expect(page).to have_text("Ocelot")
+    expect(page).to have_text("Refund") # the type of the Comment
+
+    # When I open the Actuals tab
+    click_on("Actuals")
+
+    # Then I should see my Refund amount and comment are there
+    expect(page).to have_text("-£1,234.56")
+    expect(page).to have_text("Ocelot")
   end
 
-  # When I upload an Actuals & Refunds CSV with a refund and comments,
-  # Then I should see a summary of my refund with comments,
+  scenario "Upload a row with both values" do
+    # When I upload an Actuals & Refunds row which has a row with an Actual Value and Refund Value
+    click_link t("page_content.actuals.button.upload")
+    id = project.roda_identifier
 
-  # When I go back to the Report,
-  # And I open the Comments tab,
-  # Then I should see my Refunds comment is there.
-  # When I open the Actuals tab
-  # Then I should see my Refunds in there.
+    # When I upload some refunds with comments
+    upload_csv <<~CSV
+      Activity RODA Identifier | Financial Quarter | Financial Year | Actual Value | Refund Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
+      #{id}                    | 1                 | 2020           | 1234.56      | 42.00        | Example University          | 80                          |                                       | Refund 1234
+    CSV
 
-  # When I download the Actuals & Refunds template CSV
-  # Then I see an Actual Value and Refund Value column
+    # Then it shows an error for that row in the list of validation errors
 
-  # When I upload an Actuals & Refunds row which has a row with an Actual Value and Refund Value
-  # Then it shows an error for that row in the list of validation errors
-
-  # When I upload an Actuals & Refunds row which has a Refund Value and a Comment
-  # We can see the refund exists
+    expect(page).to have_text("1234.56")
+    expect(page).to have_text(t("importer.errors.actual.non_numeric_value")).once
+  end
 end
