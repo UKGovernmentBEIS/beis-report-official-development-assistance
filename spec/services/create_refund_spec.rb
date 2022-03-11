@@ -35,7 +35,7 @@ RSpec.describe CreateRefund do
         it "creates a refund" do
           expect(refund).to receive(:save).at_least(:once)
 
-          created_refund = subject
+          created_refund = subject.object
 
           expect(created_refund).to be_a(Refund)
 
@@ -45,7 +45,7 @@ RSpec.describe CreateRefund do
           expect(created_refund.financial_quarter).to eq(1)
           expect(created_refund.financial_year).to eq(2020)
           expect(created_refund.comment.body).to eq("Some words")
-          expect(subject.comment.report).to eq(report)
+          expect(created_refund.comment.report).to eq(report)
         end
 
         it "creates historical events" do

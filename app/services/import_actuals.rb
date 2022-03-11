@@ -89,7 +89,11 @@ class ImportActuals
       attrs = @converter.to_h
       assign_default_values(attrs)
 
-      creator = CreateActual.new(activity: @activity, report: @report, actual_class: @converter.actual_type)
+      creator = if @converter.actual_class == Refund
+        CreateRefund.new(activity: @activity, report: @report, user: @uploader)
+      else
+        CreateActual.new(activity: @activity, report: @report, user: @uploader)
+      end
       result = creator.call(attributes: attrs.except(:refund_value))
       return unless result
 
@@ -135,12 +139,10 @@ class ImportActuals
 
     # We must have precisely one value, and we will check if
     # the other is empty when we validate the value it contains
-    def actual_type
+    def actual_class
       return Actual if @row["Refund Value"].nil?
       return Refund if @row["Actual Value"].nil? || @row["Actual Value"] == "0.00"
-      # TODO: for some reason I can't use t("importer.errors.actual.non_numeric_value") here.
-      @errors[:value] = [@row["Actual Value"], "One of Actual Value and Refund Value must be numeric and the other must be blank"]
-      @errors[:refund_value] = [@row["Refund Value"], "One of Actual Value and Refund Value must be numeric and the other must be blank"]
+      @errors[:value] = [@row["Actual Value"], I18n.t("importer.errors.actual.non_numeric_value")]
     end
 
     def raw(attr_name)
@@ -159,12 +161,10 @@ class ImportActuals
     end
 
     def convert_values
-      if actual_type == Actual
-        # convert_value(@row["Actual Value"])]
+      if actual_class == Actual
         convert_to_attribute(:value, @row["Actual Value"])
       else
         convert_to_attribute(:refund_value, @row["Refund Value"])
-        # convert_value(@row["Refund Value"])
       end
     end
 
@@ -185,10 +185,6 @@ class ImportActuals
     rescue => error
       @errors[attr_name] = [original_value, error.message]
       nil
-    end
-
-    def convert_comment(body)
-      Comment.new(body: body) if body.present?
     end
 
     def convert_activity(id)

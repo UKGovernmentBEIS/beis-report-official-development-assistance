@@ -19,13 +19,6 @@ RSpec.describe CreateActual do
       expect(result.success?).to be true
     end
 
-    context "when passed Refund" do
-      it "returns a refund" do
-        result = described_class.new(activity: activity, actual_class: Refund).call(attributes: ActionController::Parameters.new(value: "1234").permit!)
-        expect(result.object).to be_a(Refund)
-      end
-    end
-
     context "when passed Actual" do
       it "returns an actual" do
         result = described_class.new(activity: activity).call(attributes: ActionController::Parameters.new(value: "1234").permit!)

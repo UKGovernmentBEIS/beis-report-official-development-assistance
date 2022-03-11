@@ -30,7 +30,7 @@ RSpec.describe ImportActuals do
         "Receiving Organisation Name" => "Example University",
         "Receiving Organisation Type" => "80",
         "Receiving Organisation IATI Reference" => "",
-        "Comment" => "Refund"
+        "Comment" => "This is a Refund"
       }
     end
 
@@ -40,7 +40,7 @@ RSpec.describe ImportActuals do
 
     it "imports a single refund" do
       expect(report.refunds.count).to eq(1)
-      expect(report.refunds.first.comment.body).to eq("Refund")
+      expect(report.refunds.first.comment.body).to eq("This is a Refund")
     end
   end
 
