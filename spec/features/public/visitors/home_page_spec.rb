@@ -1,7 +1,7 @@
 RSpec.feature "Home page" do
   scenario "visit the home page" do
     visit root_path
-    expect(page).to have_content(t("app.title"))
+    expect(page).to have_content("Report your Official Development Assistance")
   end
 
   context "when signed in as a BEIS user" do
@@ -30,7 +30,7 @@ RSpec.feature "Home page" do
 
     scenario "they are shown the start page" do
       visit root_path
-      expect(page).to have_button(t("header.link.sign_in"))
+      expect(page).to have_button("Sign in")
     end
   end
 end

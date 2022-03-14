@@ -11,26 +11,26 @@ RSpec.feature "Users can edit an activity" do
       third_party_project_activity = create(:third_party_project_activity, parent: project_activity)
 
       visit organisation_activity_path(project_activity.organisation, project_activity)
-      click_on t("tabs.activity.details")
+      click_on "Details"
 
       within ".publish_to_iati" do
-        click_on(t("default.link.edit"))
+        click_on("Edit")
       end
 
-      choose t("summary.label.activity.publish_to_iati.false")
-      click_button t("form.button.activity.submit")
+      choose "No"
+      click_button "Continue"
 
-      click_on t("tabs.activity.details")
+      click_on "Details"
 
       within ".publish_to_iati" do
-        expect(page).to have_content(t("summary.label.activity.publish_to_iati.false"))
+        expect(page).to have_content("No")
       end
 
       visit organisation_activity_path(third_party_project_activity.organisation, third_party_project_activity)
-      click_on t("tabs.activity.details")
+      click_on "Details"
 
       within ".publish_to_iati" do
-        expect(page).to have_content(t("summary.label.activity.publish_to_iati.false"))
+        expect(page).to have_content("No")
       end
 
       expect_change_to_be_recorded_as_historical_event(
@@ -59,13 +59,13 @@ RSpec.feature "Users can edit an activity" do
           visit organisation_activity_details_path(activity.organisation, activity)
 
           within(".description") do
-            click_on(t("default.link.edit"))
+            click_on("Edit")
           end
 
           fill_in "activity[description]", with: updated_description
-          click_button t("form.button.activity.submit")
+          click_button "Continue"
 
-          expect(page).to have_content t("action.fund.update.success")
+          expect(page).to have_content "Fund (level A) successfully updated"
           expect(page.current_path).to eq organisation_activity_details_path(activity.organisation, activity)
 
           expect_change_to_be_recorded_as_historical_event(
@@ -108,7 +108,7 @@ RSpec.feature "Users can edit an activity" do
           visit organisation_activity_details_path(activity.organisation, activity)
 
           within(".transparency-identifier") do
-            expect(page).to_not have_content t("default.link.edit")
+            expect(page).to_not have_content "Edit"
           end
         end
       end
@@ -120,9 +120,9 @@ RSpec.feature "Users can edit an activity" do
           visit organisation_activity_details_path(activity.organisation, activity)
 
           within(".description") do
-            click_on(t("default.link.edit"))
+            click_on("Edit")
           end
-          click_button t("form.button.activity.submit")
+          click_button "Continue"
 
           within("#main-content") do
             expect(page).to have_content t("form.legend.activity.sector_category", level: "fund (level A)")
@@ -139,11 +139,11 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".title") do
-          click_on(t("default.link.edit"))
+          click_on("Edit")
         end
 
-        click_button t("form.button.activity.submit")
-        expect(page).to have_content(t("action.programme.update.success"))
+        click_button "Continue"
+        expect(page).to have_content("Programme (level B) successfully updated")
       end
     end
   end
@@ -160,11 +160,11 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".title") do
-          click_on(t("default.link.edit"))
+          click_on("Edit")
         end
 
-        click_button t("form.button.activity.submit")
-        expect(page).to have_content(t("action.project.update.success"))
+        click_button "Continue"
+        expect(page).to have_content("Project (level C) successfully updated")
       end
 
       scenario "the delivery partner identifier cannot be changed" do
@@ -176,25 +176,25 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".planned_start_date") do
-          click_on(t("default.link.edit"))
+          click_on("Edit")
         end
 
         fill_in "activity[planned_start_date(2i)]", with: "15"
 
-        click_button t("form.button.activity.submit")
-        expect(page).to have_content t("activerecord.errors.models.activity.attributes.planned_start_date.invalid")
+        click_button "Continue"
+        expect(page).to have_content "Please enter a valid date"
       end
 
       it "the policy markers can be added" do
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".policy_marker_gender") do
-          click_on(t("default.link.edit"))
+          click_on("Edit")
           expect(page.current_url).to match(activity_step_path(activity, :policy_markers, anchor: "gender"))
         end
 
         choose "activity-policy-marker-gender-significant-objective-field"
-        click_button t("form.button.activity.submit")
+        click_button "Continue"
 
         expect(page).to have_css(".policy_marker_gender", text: "Significant objective")
 
@@ -215,7 +215,7 @@ RSpec.feature "Users can edit an activity" do
 
         expect(page.find(:css, "#activity-policy-marker-desertification-significant-objective-field")).to be_checked
 
-        click_button t("form.button.activity.submit")
+        click_button "Continue"
 
         expect(page).to have_css(".policy_marker_desertification", text: "Significant objective")
       end
@@ -229,11 +229,11 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".title") do
-          click_on(t("default.link.edit"))
+          click_on("Edit")
         end
 
-        click_button t("form.button.activity.submit")
-        expect(page).to have_content(t("action.third_party_project.update.success"))
+        click_button "Continue"
+        expect(page).to have_content("Third-party project (level D) successfully updated")
       end
     end
 
@@ -247,12 +247,12 @@ RSpec.feature "Users can edit an activity" do
         visit organisation_activity_details_path(activity.organisation, activity)
 
         within(".collaboration_type") do
-          click_on(t("default.link.edit"))
+          click_on("Edit")
         end
         choose "Bilateral"
-        click_button t("form.button.activity.submit")
+        click_button "Continue"
 
-        expect(page).to have_content(t("action.project.update.success"))
+        expect(page).to have_content("Project (level C) successfully updated")
         expect(activity.reload.collaboration_type).to eql("1")
       end
     end

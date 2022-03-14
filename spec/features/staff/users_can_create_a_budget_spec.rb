@@ -11,11 +11,11 @@ RSpec.describe "Users can create a budget" do
 
         visit organisation_activity_path(fund_activity.organisation, fund_activity)
 
-        click_on(t("page_content.budgets.button.create"))
+        click_on("Add budget")
 
         fill_in_and_submit_budget_form
 
-        expect(page).to have_content(t("action.budget.create.success"))
+        expect(page).to have_content("Budget successfully created")
       end
     end
 
@@ -26,11 +26,11 @@ RSpec.describe "Users can create a budget" do
 
         visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
-        click_on(t("page_content.budgets.button.create"))
+        click_on("Add budget")
 
         fill_in_and_submit_budget_form
 
-        expect(page).to have_content(t("action.budget.create.success"))
+        expect(page).to have_content("Budget successfully created")
       end
 
       scenario "successfully creates a budget in the past" do
@@ -39,14 +39,14 @@ RSpec.describe "Users can create a budget" do
 
         visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
-        click_on(t("page_content.budgets.button.create"))
+        click_on("Add budget")
 
         expect(page).to have_checked_field("budget[budget_type]", with: "direct", visible: false)
         select "2010-2011", from: "budget[financial_year]"
         fill_in "budget[value]", with: "1000.00"
-        click_button t("default.button.submit")
+        click_button "Submit"
 
-        expect(page).to have_content(t("action.budget.create.success"))
+        expect(page).to have_content("Budget successfully created")
       end
 
       scenario "sees validation errors for missing attributes" do
@@ -55,13 +55,13 @@ RSpec.describe "Users can create a budget" do
 
         visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
-        click_on(t("page_content.budgets.button.create"))
+        click_on("Add budget")
 
-        click_button t("default.button.submit")
+        click_button "Submit"
 
         expect(page).to have_content("There is a problem")
-        expect(page).to have_content(t("activerecord.errors.models.budget.attributes.financial_year.blank"))
-        expect(page).to have_content t("activerecord.errors.models.budget.attributes.value.blank")
+        expect(page).to have_content("Select a financial year")
+        expect(page).to have_content "Enter a budget amount"
       end
 
       scenario "sees validation error when the value is more than allowed" do
@@ -70,14 +70,14 @@ RSpec.describe "Users can create a budget" do
 
         visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
-        click_on(t("page_content.budgets.button.create"))
+        click_on("Add budget")
 
         select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
         choose("budget[budget_type]", option: "direct")
         fill_in "budget[value]", with: "10000000000000.00"
-        click_button t("default.button.submit")
+        click_button "Submit"
 
-        expect(page).to have_content t("activerecord.errors.models.budget.attributes.value.less_than_or_equal_to")
+        expect(page).to have_content "Value must not be more than 99,999,999,999.00"
       end
     end
   end
@@ -100,8 +100,8 @@ RSpec.describe "Users can create a budget" do
       scenario "they can view but not create budgets" do
         visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
-        expect(page).to have_content(t("page_content.activity.budgets"))
-        expect(page).not_to have_content(t("page_content.budgets.button.create"))
+        expect(page).to have_content("Budgets")
+        expect(page).not_to have_content("Add budget")
       end
     end
 
@@ -111,11 +111,11 @@ RSpec.describe "Users can create a budget" do
 
         visit organisation_activity_path(project_activity.organisation, project_activity)
 
-        click_on(t("page_content.budgets.button.create"))
+        click_on("Add budget")
 
         fill_in_and_submit_budget_form
 
-        expect(page).to have_content(t("action.budget.create.success"))
+        expect(page).to have_content("Budget successfully created")
       end
 
       scenario "successfully creates an external budget", js: true do
@@ -123,32 +123,32 @@ RSpec.describe "Users can create a budget" do
 
         visit organisation_activity_path(project_activity.organisation, project_activity)
 
-        click_on(t("page_content.budgets.button.create"))
+        click_on("Add budget")
 
         choose("Other official development assistance")
         fill_in("Providing organisation name", with: "Any org in the world")
         select("International NGO")
         select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
         fill_in "budget[value]", with: "1000.00"
-        click_button t("default.button.submit")
+        click_button "Submit"
 
-        expect(page).to have_content(t("action.budget.create.success"))
+        expect(page).to have_content("Budget successfully created")
       end
 
       scenario "for an external budget it shows an error if the user doesn't input a providing organisation name and type", js: true do
         _report = create(:report, :active, organisation: user.organisation, fund: fund_activity)
 
         visit organisation_activity_path(programme_activity.organisation, project_activity)
-        click_on(t("page_content.budgets.button.create"))
+        click_on("Add budget")
 
         choose("Other official development assistance")
         select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
         fill_in "budget[value]", with: "1000.00"
-        click_button t("default.button.submit")
+        click_button "Submit"
 
         expect(page).to have_content("There is a problem")
-        expect(page).to have_content t("activerecord.errors.models.budget.attributes.providing_organisation_name.blank")
-        expect(page).to have_content t("activerecord.errors.models.budget.attributes.providing_organisation_type.blank")
+        expect(page).to have_content "Enter the name of the providing organisation"
+        expect(page).to have_content "Select the type of the providing organisation"
       end
 
       context "without JavaScript" do
@@ -156,16 +156,16 @@ RSpec.describe "Users can create a budget" do
           _report = create(:report, :active, organisation: user.organisation, fund: fund_activity)
 
           visit organisation_activity_path(project_activity.organisation, project_activity)
-          click_on(t("page_content.budgets.button.create"))
+          click_on("Add budget")
 
           choose("Other official development assistance")
           select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
           fill_in "budget[value]", with: "1000.00"
-          click_button t("default.button.submit")
+          click_button "Submit"
 
           expect(page).to have_content("There is a problem")
-          expect(page).to have_content t("activerecord.errors.models.budget.attributes.providing_organisation_name.blank")
-          expect(page).to have_content t("activerecord.errors.models.budget.attributes.providing_organisation_type.blank")
+          expect(page).to have_content "Enter the name of the providing organisation"
+          expect(page).to have_content "Select the type of the providing organisation"
         end
       end
     end
@@ -177,6 +177,6 @@ RSpec.describe "Users can create a budget" do
     expect(page).to have_checked_field("budget[budget_type]", with: "direct", visible: false)
     select "#{Date.current.year}-#{Date.current.next_year.year}", from: "budget[financial_year]"
     fill_in "budget[value]", with: "1000.00"
-    click_button t("default.button.submit")
+    click_button "Submit"
   end
 end

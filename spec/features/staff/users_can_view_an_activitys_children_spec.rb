@@ -12,16 +12,16 @@ RSpec.feature "Users can an activitys children" do
 
       visit organisation_activity_path(user.organisation.id, project)
 
-      click_on t("tabs.activity.details")
+      click_on "Details"
       within(".activity-details") do
         click_on programme.title
       end
-      click_on t("tabs.activity.children")
+      click_on "Child activities"
 
-      expect(page).to_not have_content t("summary.label.activity.publish_to_iati.label")
+      expect(page).to_not have_content "Publish to IATI?"
 
       within("##{project.id}") do
-        expect(page).to_not have_content t("summary.label.activity.publish_to_iati.true")
+        expect(page).to_not have_content "Yes"
       end
     end
 
@@ -34,9 +34,9 @@ RSpec.feature "Users can an activitys children" do
       within(".activity-details") do
         click_on(programme.title)
       end
-      click_on t("tabs.activity.children")
+      click_on "Child activities"
       click_on activity.title
-      click_on t("tabs.activity.details")
+      click_on "Details"
 
       activity_presenter = ActivityPresenter.new(activity)
 

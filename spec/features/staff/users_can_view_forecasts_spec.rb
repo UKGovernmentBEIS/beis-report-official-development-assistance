@@ -15,7 +15,7 @@ RSpec.describe "Users can view forecasts" do
 
       visit organisation_activity_path(user.organisation, project)
 
-      expect(page).to have_content t("page_content.activity.forecasts")
+      expect(page).to have_content "Forecasted spend"
       expect(page).to have_selector "##{forecast.id}"
     end
 
@@ -25,7 +25,7 @@ RSpec.describe "Users can view forecasts" do
 
       visit organisation_activity_path(user.organisation, third_party_project)
 
-      expect(page).to have_content t("page_content.activity.forecasts")
+      expect(page).to have_content "Forecasted spend"
       expect(page).to have_selector "##{forecast.id}"
     end
   end
@@ -40,7 +40,7 @@ RSpec.describe "Users can view forecasts" do
 
       visit organisation_activity_path(beis_user.organisation, project)
 
-      expect(page).to have_content t("page_content.activity.forecasts")
+      expect(page).to have_content "Forecasted spend"
       expect(page).to have_selector "##{forecast.id}"
     end
 
@@ -50,7 +50,7 @@ RSpec.describe "Users can view forecasts" do
 
       visit organisation_activity_path(beis_user.organisation, third_party_project)
 
-      expect(page).to have_content t("page_content.activity.forecasts")
+      expect(page).to have_content "Forecasted spend"
       expect(page).to have_selector "##{forecast.id}"
     end
   end

@@ -20,19 +20,19 @@ RSpec.feature "Users can edit organisations" do
     visit organisation_path(beis_organisation)
 
     within ".govuk-header__navigation" do
-      click_link t("page_title.organisation.index")
+      click_link "Organisations"
     end
 
     within("##{another_organisation.id}") do
-      click_link t("default.link.edit")
+      click_link "Edit"
     end
 
-    expect(page).to have_content(t("page_title.organisation.edit"))
+    expect(page).to have_content("Edit organisation")
     fill_in "organisation[name]", with: ""
 
-    click_button t("default.button.submit")
-    expect(page).to_not have_content t("action.organisation.update.success")
-    expect(page).to have_content t("activerecord.errors.models.organisation.attributes.name.blank")
+    click_button "Submit"
+    expect(page).to_not have_content "Organisation successfully updated"
+    expect(page).to have_content "Enter an organisation name"
   end
 
   context "when the organisation is a matched effort provider organisation" do
@@ -44,23 +44,23 @@ RSpec.feature "Users can edit organisations" do
       visit organisation_path(beis_organisation)
 
       within ".govuk-header__navigation" do
-        click_link t("page_title.organisation.index")
+        click_link "Organisations"
       end
 
-      click_link t("tabs.organisations.matched_effort_providers")
+      click_link "Matched effort providers"
 
       within("##{another_organisation.id}") do
-        click_link t("default.link.edit")
+        click_link "Edit"
       end
 
-      choose t("form.label.organisation.active.false"), name: "organisation[active]"
+      choose "Inactive", name: "organisation[active]"
       expect {
-        click_button t("default.button.submit")
+        click_button "Submit"
       }.to change {
         another_organisation.reload.active
       }.from(true).to(false)
 
-      expect(page).to have_content t("action.organisation.update.success")
+      expect(page).to have_content "Organisation successfully updated"
     end
   end
 
@@ -73,23 +73,23 @@ RSpec.feature "Users can edit organisations" do
       visit organisation_path(beis_organisation)
 
       within ".govuk-header__navigation" do
-        click_link t("page_title.organisation.index")
+        click_link "Organisations"
       end
 
-      click_link t("tabs.organisations.external_income_providers")
+      click_link "External income providers"
 
       within("##{another_organisation.id}") do
-        click_link t("default.link.edit")
+        click_link "Edit"
       end
 
-      choose t("form.label.organisation.active.false"), name: "organisation[active]"
+      choose "Inactive", name: "organisation[active]"
       expect {
-        click_button t("default.button.submit")
+        click_button "Submit"
       }.to change {
         another_organisation.reload.active
       }.from(true).to(false)
 
-      expect(page).to have_content t("action.organisation.update.success")
+      expect(page).to have_content "Organisation successfully updated"
     end
   end
 
@@ -97,20 +97,20 @@ RSpec.feature "Users can edit organisations" do
     visit organisation_path(beis_organisation)
 
     within ".govuk-header__navigation" do
-      click_link t("page_title.organisation.index")
+      click_link "Organisations"
     end
 
     within("##{another_organisation.id}") do
-      click_link t("default.link.edit")
+      click_link "Edit"
     end
 
-    expect(page).to have_content(t("page_title.organisation.edit"))
+    expect(page).to have_content("Edit organisation")
     fill_in "organisation[name]", with: organisation_name
     fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
     select "Government", from: "organisation[organisation_type]"
     select "Czech", from: "organisation[language_code]"
     select "Zloty", from: "organisation[default_currency]"
-    click_button t("default.button.submit")
-    expect(page).to have_content t("action.organisation.update.success")
+    click_button "Submit"
+    expect(page).to have_content "Organisation successfully updated"
   end
 end

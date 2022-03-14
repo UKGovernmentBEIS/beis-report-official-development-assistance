@@ -27,7 +27,7 @@ RSpec.feature "Users can view an activity's other funding" do
 
     it "lists the matched efforts" do
       visit organisation_activity_path(activity.organisation, activity)
-      click_on t("tabs.activity.other_funding")
+      click_on "Other funding"
 
       expect(page).to have_content(matched_effort_provider.name)
       expect(page).to have_content("In kind")
@@ -37,7 +37,7 @@ RSpec.feature "Users can view an activity's other funding" do
 
     it "lists the external incomes" do
       visit organisation_activity_path(activity.organisation, activity)
-      click_on t("tabs.activity.other_funding")
+      click_on "Other funding"
 
       expect(page).to have_content(external_income_provider.name)
       expect(page).to have_content("Q1 2021-2022")
@@ -52,14 +52,14 @@ RSpec.feature "Users can view an activity's other funding" do
 
     it "lists the matched efforts" do
       visit organisation_activity_path(activity.organisation, activity)
-      click_on t("tabs.activity.other_funding")
+      click_on "Other funding"
 
       expect(page).to have_content(matched_effort_provider.name)
     end
 
     it "lists the external incomes" do
       visit organisation_activity_path(activity.organisation, activity)
-      click_on t("tabs.activity.other_funding")
+      click_on "Other funding"
 
       expect(page).to have_content(external_income_provider.name)
     end

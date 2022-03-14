@@ -15,7 +15,7 @@ RSpec.feature "Users can view an activitys details" do
         expect(page).to have_content "Details"
       end
       expect(page).to have_content activity.title
-      expect(page).to have_link t("page_content.activity.implementing_organisation.button.new")
+      expect(page).to have_link "Add implementing organisation"
     end
 
     scenario "activities have human readable date format" do
@@ -28,7 +28,7 @@ RSpec.feature "Users can view an activitys details" do
           organisation: user.organisation)
 
         visit organisation_activity_path(user.organisation, activity)
-        click_on t("tabs.activity.details")
+        click_on "Details"
 
         within(".planned_start_date") do
           expect(page).to have_content("3 Feb 2020")

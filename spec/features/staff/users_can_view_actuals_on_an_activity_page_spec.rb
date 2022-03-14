@@ -64,9 +64,9 @@ RSpec.feature "Users can view actuals on an activity page" do
 
         visit organisation_activity_path(project_activity.organisation, project_activity)
 
-        expect(page).to_not have_content(t("page_content.actuals.button.create"))
+        expect(page).to_not have_content("Add an actual")
         within("tr##{actual.id}") do
-          expect(page).not_to have_content(t("default.link.edit"))
+          expect(page).not_to have_content("Edit")
         end
       end
     end

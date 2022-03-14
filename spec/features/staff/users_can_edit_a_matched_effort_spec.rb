@@ -23,7 +23,7 @@ RSpec.describe "Users can create a matched effort" do
 
       fill_in_matched_effort_form(matched_effort)
 
-      expect(page).to have_content(t("action.matched_effort.update.success"))
+      expect(page).to have_content("The matched effort has been successfully updated")
 
       expect(matched_effort.reload.organisation).to eq(matched_effort_provider)
       expect(matched_effort.notes).to eq("Here are some new notes")
@@ -31,9 +31,9 @@ RSpec.describe "Users can create a matched effort" do
 
     scenario "they see errors when a required field is missing" do
       select("", from: "matched_effort[organisation_id]")
-      click_on t("default.button.submit")
+      click_on "Submit"
 
-      expect(page).to_not have_content(t("action.matched_effort.update.success"))
+      expect(page).to_not have_content("The matched effort has been successfully updated")
 
       expect(page).to have_content("Organisation can't be blank")
     end

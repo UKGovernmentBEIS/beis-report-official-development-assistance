@@ -12,7 +12,7 @@ RSpec.describe "Users can create a matched effort" do
       visit organisation_activity_path(project.organisation, project)
 
       click_on "Other funding"
-      click_on t("page_content.matched_effort.button.create")
+      click_on "Add matched effort"
     end
 
     scenario "they can add a matched effort" do
@@ -28,7 +28,7 @@ RSpec.describe "Users can create a matched effort" do
 
       fill_in_matched_effort_form(template)
 
-      expect(page).to have_content(t("action.matched_effort.create.success"))
+      expect(page).to have_content("The matched effort has been successfully created")
 
       matched_effort = MatchedEffort.order("created_at ASC").last
 
@@ -57,7 +57,7 @@ RSpec.describe "Users can create a matched effort" do
 
       fill_in_matched_effort_form(template)
 
-      expect(page).to_not have_content(t("action.matched_effort.create.success"))
+      expect(page).to_not have_content("The matched effort has been successfully created")
       expect(page).to have_content(
         t(
           "activerecord.errors.models.matched_effort.attributes.category.invalid",
@@ -71,7 +71,7 @@ RSpec.describe "Users can create a matched effort" do
     scenario "they recieve errors when required fields are left blank" do
       page.find(:xpath, "//input[@value='in_kind']").set(true)
 
-      click_on t("default.button.submit")
+      click_on "Submit"
 
       expect(page).to have_content("Organisation can't be blank")
       expect(page).to have_content("Category can't be blank")

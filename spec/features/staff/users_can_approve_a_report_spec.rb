@@ -12,8 +12,8 @@ RSpec.feature "Users can approve reports" do
 
       perform_enqueued_jobs do
         visit report_path(report)
-        click_link t("action.report.approve.button")
-        click_button t("action.report.approve.confirm.button")
+        click_link "Approve"
+        click_button "Confirm approval"
       end
 
       expect(page).to have_content "approved"
@@ -21,10 +21,10 @@ RSpec.feature "Users can approve reports" do
 
       expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count + 1)
 
-      expect(beis_user).to have_received_email.with_subject(t("mailer.report.approved.service_owner.subject", application_name: t("app.title")))
+      expect(beis_user).to have_received_email.with_subject(t("mailer.report.approved.service_owner.subject", application_name: "Report your Official Development Assistance"))
 
       organisation.users.each do |user|
-        expect(user).to have_received_email.with_subject(t("mailer.report.approved.delivery_partner.subject", application_name: t("app.title")))
+        expect(user).to have_received_email.with_subject(t("mailer.report.approved.delivery_partner.subject", application_name: "Report your Official Development Assistance"))
       end
     end
 
@@ -35,7 +35,7 @@ RSpec.feature "Users can approve reports" do
         visit report_path(report)
 
         within("#main-content") do
-          expect(page).not_to have_link t("action.report.approve.button")
+          expect(page).not_to have_link "Approve"
         end
       end
     end
@@ -53,7 +53,7 @@ RSpec.feature "Users can approve reports" do
 
       visit report_path(report)
 
-      expect(page).not_to have_link t("action.report.approve.button")
+      expect(page).not_to have_link "Approve"
 
       visit edit_report_state_path(report)
 

@@ -14,7 +14,7 @@ RSpec.feature "BEIS users can editing other users" do
     target_user = create(:delivery_partner_user, name: "Old Name", email: "old@example.com")
 
     visit organisation_path(user.organisation)
-    click_on(t("page_title.users.index"))
+    click_on("Users")
 
     find("tr", text: target_user.name).click_link("Edit")
 
@@ -39,10 +39,10 @@ RSpec.feature "BEIS users can editing other users" do
     # Navigate from the landing page
     visit organisation_path(user.organisation)
 
-    click_on(t("page_title.users.index"))
+    click_on("Users")
 
     # Navigate to the users page
-    expect(page).to have_content(t("page_title.users.index"))
+    expect(page).to have_content("Users")
 
     # Find the target user and click on edit button
 
@@ -52,7 +52,7 @@ RSpec.feature "BEIS users can editing other users" do
     fill_in "user[name]", with: updated_name
 
     # Submit the form
-    click_button t("form.button.user.submit")
+    click_button "Submit"
 
     # Verify the user was updated
     expect(page).to have_content(updated_name)
@@ -63,11 +63,11 @@ RSpec.feature "BEIS users can editing other users" do
     authenticate!(user: administrator_user)
 
     visit organisation_path(administrator_user.organisation)
-    click_on t("page_title.users.index")
+    click_on "Users"
     find("tr", text: user.name).click_link("Edit")
 
-    choose t("form.user.active.inactive")
-    click_on t("default.button.submit")
+    choose "Deactivate"
+    click_on "Submit"
 
     expect(user.reload.active).to be false
   end
@@ -78,11 +78,11 @@ RSpec.feature "BEIS users can editing other users" do
     authenticate!(user: administrator_user)
 
     visit organisation_path(administrator_user.organisation)
-    click_on t("page_title.users.index")
+    click_on "Users"
     find("tr", text: user.name).click_link("Edit")
 
-    choose t("form.user.active.active")
-    click_on t("default.button.submit")
+    choose "Activate"
+    click_on "Submit"
 
     expect(user.reload.active).to be true
   end

@@ -71,9 +71,9 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         visit organisation_activity_path(project_activity.organisation, project_activity)
 
-        expect(page).to_not have_content(t("page_content.budgets.button.create"))
+        expect(page).to_not have_content("Add budget")
         within("tr##{budget.id}") do
-          expect(page).not_to have_content(t("default.link.edit"))
+          expect(page).not_to have_content("Edit")
         end
       end
     end
@@ -91,9 +91,9 @@ RSpec.feature "Users can view budgets on an activity page" do
 
         visit activities_path
         within "#activity-#{project_activity.id}" do
-          click_link t("table.body.activity.view_activity")
+          click_link "View"
         end
-        click_link t("tabs.activity.details")
+        click_link "Details"
         within(".activity-details") do
           click_link programme_activity.title
         end
@@ -109,7 +109,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
         within "##{budget.id}" do
-          expect(page).to_not have_content t("default.link.edit")
+          expect(page).to_not have_content "Edit"
         end
       end
     end
@@ -125,7 +125,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         visit activities_path
 
         click_link programme_activity.title
-        click_on t("tabs.activity.children")
+        click_on "Child activities"
         click_link project_activity.title
 
         budget_information_is_shown_on_page(budget_presenter)
@@ -141,12 +141,12 @@ RSpec.feature "Users can view budgets on an activity page" do
         visit activities_path
 
         click_link programme_activity.title
-        click_on t("tabs.activity.children")
+        click_on "Child activities"
         click_link project_activity.title
 
-        expect(page).to have_content(t("page_content.budgets.button.create"))
+        expect(page).to have_content("Add budget")
         within("tr##{budget.id}") do
-          expect(page).to have_content(t("default.link.edit"))
+          expect(page).to have_content("Edit")
         end
       end
     end

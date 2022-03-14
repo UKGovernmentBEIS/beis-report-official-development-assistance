@@ -16,14 +16,14 @@ RSpec.feature "users can upload actuals" do
   before do
     authenticate!(user: user)
     visit report_actuals_path(report)
-    click_link t("page_content.actuals.button.upload")
+    click_link "Upload actuals data"
   end
 
   def expect_to_see_successful_upload_summary_with(count:, total:)
-    expect(page).to have_text(t("page_title.actual.upload_success"))
+    expect(page).to have_text("Successful uploads")
     expect(page).to have_css(".actuals tr", count: count)
     expect(page).to have_link(
-      t("importer.success.actual.back_link"),
+      "Back to report",
       href: report_actuals_path(report)
     )
     within ".totals" do
@@ -37,7 +37,7 @@ RSpec.feature "users can upload actuals" do
     expect(page.html).to include t("page_content.actuals.upload.copy_html",
       report_actuals_template_path: report_actual_upload_path(report, format: :csv))
 
-    expect(page.html).to include t("page_content.actuals.upload.warning_html")
+    expect(page.html).to include "Uploading actuals data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details."
   end
 
   scenario "downloading a CSV template with activities for the current report" do
@@ -75,9 +75,9 @@ RSpec.feature "users can upload actuals" do
   end
 
   scenario "not uploading a file" do
-    click_button t("action.actual.upload.button")
+    click_button "Upload and continue"
     expect(Actual.count).to eq(0)
-    expect(page).to have_text(t("action.actual.upload.file_missing_or_invalid"))
+    expect(page).to have_text("Please upload a valid CSV file")
   end
 
   scenario "uploading a valid set of actuals" do
@@ -95,7 +95,7 @@ RSpec.feature "users can upload actuals" do
 
     # Then I should see a summary of my upload
     expect(Actual.count).to eq(2)
-    expect(page).to have_text(t("action.actual.upload.success"))
+    expect(page).to have_text("The transactions were successfully imported.")
     expect(page).not_to have_css("table.govuk-table.errors")
     expect(page).to have_text("A unique comment")
 
@@ -122,7 +122,7 @@ RSpec.feature "users can upload actuals" do
     CSV
 
     expect(Actual.count).to eq(2)
-    expect(page).to have_text(t("action.actual.upload.success"))
+    expect(page).to have_text("The transactions were successfully imported.")
 
     expect_to_see_successful_upload_summary_with(count: 2, total: 50)
   end
@@ -137,7 +137,7 @@ RSpec.feature "users can upload actuals" do
     CSV
 
     expect(Actual.count).to eq(1)
-    expect(page).to have_text(t("action.actual.upload.success"))
+    expect(page).to have_text("The transactions were successfully imported.")
 
     expect_to_see_successful_upload_summary_with(count: 1, total: 30)
   end
@@ -152,20 +152,20 @@ RSpec.feature "users can upload actuals" do
     CSV
 
     expect(Actual.count).to eq(0)
-    expect(page).not_to have_text(t("action.actual.upload.success"))
+    expect(page).not_to have_text("The transactions were successfully imported.")
 
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[1]", text: "Value")
       expect(page).to have_xpath("td[2]", text: "2")
       expect(page).to have_xpath("td[3]", text: "fish")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.actual.non_numeric_value"))
+      expect(page).to have_xpath("td[4]", text: "The value must be numeric")
     end
 
     within "//tbody/tr[2]" do
       expect(page).to have_xpath("td[1]", text: "Receiving Organisation Type")
       expect(page).to have_xpath("td[2]", text: "3")
       expect(page).to have_xpath("td[3]", text: "61")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.actual.invalid_iati_organisation_type"))
+      expect(page).to have_xpath("td[4]", text: "The receiving organisation type must be a valid IATI Organisation Type code")
     end
   end
 
@@ -183,13 +183,13 @@ RSpec.feature "users can upload actuals" do
     file.close
 
     attach_file "report[actual_csv]", file.path
-    click_button t("action.actual.upload.button")
+    click_button "Upload and continue"
 
     file.unlink
 
     expect(Actual.count).to eq(0)
 
-    expect(page).to have_content(t("action.forecast.upload.file_missing_or_invalid"))
+    expect(page).to have_content("Please upload a valid CSV file")
   end
 
   scenario "uploading a valid set of actuals with a BOM at the start of the file" do
@@ -203,7 +203,7 @@ RSpec.feature "users can upload actuals" do
     CSV
 
     expect(Actual.count).to eq(2)
-    expect(page).to have_text(t("action.actual.upload.success"))
+    expect(page).to have_text("The transactions were successfully imported.")
 
     expect_to_see_successful_upload_summary_with(count: 2, total: 50)
   end
@@ -214,7 +214,7 @@ RSpec.feature "users can upload actuals" do
     file.close
 
     attach_file "report[actual_csv]", file.path
-    click_button t("action.actual.upload.button")
+    click_button "Upload and continue"
 
     file.unlink
   end

@@ -15,7 +15,7 @@ RSpec.feature "Users can view comments on an activity page" do
       refund = create(:refund, parent_activity: activity, report: report)
 
       visit organisation_activity_details_path(user.organisation, activity)
-      click_on t("tabs.activity.comments")
+      click_on "Comments"
 
       within "#comment_#{comment.id}" do
         expect(page).to have_content comment.body

@@ -14,19 +14,19 @@ RSpec.feature "BEIS users can edit a report" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on t("default.link.edit")
+        click_on "Edit"
       end
 
       fill_in "report[deadline(3i)]", with: "31"
       fill_in "report[deadline(2i)]", with: "1"
       fill_in "report[deadline(1i)]", with: "2021"
 
-      click_on t("default.button.submit")
+      click_on "Submit"
 
-      expect(page).to have_content t("action.report.update.success")
+      expect(page).to have_content "Report successfully updated"
       within "##{report.id}" do
         expect(page).to have_content("31 Jan 2021")
-        click_on t("default.link.edit")
+        click_on "Edit"
       end
       expect(page).to have_field("report[deadline(1i)]", with: "2021")
       expect(page).to have_field("report[deadline(2i)]", with: "1")
@@ -40,17 +40,17 @@ RSpec.feature "BEIS users can edit a report" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on t("default.link.edit")
+        click_on "Edit"
       end
 
       fill_in "report[deadline(3i)]", with: "31"
       fill_in "report[deadline(2i)]", with: "1"
       fill_in "report[deadline(1i)]", with: "2001"
 
-      click_on t("default.button.submit")
+      click_on "Submit"
 
-      expect(page).to_not have_content t("action.report.update.success")
-      expect(page).to have_content t("activerecord.errors.models.report.attributes.deadline.not_in_past")
+      expect(page).to_not have_content "Report successfully updated"
+      expect(page).to have_content "The deadline must be a date in the future"
     end
 
     scenario "the deadline cannot be very far in the future" do
@@ -60,16 +60,16 @@ RSpec.feature "BEIS users can edit a report" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on t("default.link.edit")
+        click_on "Edit"
       end
 
       fill_in "report[deadline(3i)]", with: "31"
       fill_in "report[deadline(2i)]", with: "1"
       fill_in "report[deadline(1i)]", with: "200020"
 
-      click_on t("default.button.submit")
+      click_on "Submit"
 
-      expect(page).to_not have_content t("action.report.update.success")
+      expect(page).to_not have_content "Report successfully updated"
       expect(page).to have_content t("activerecord.errors.models.report.attributes.deadline.between", min: 10, max: 25)
     end
 
@@ -80,14 +80,14 @@ RSpec.feature "BEIS users can edit a report" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on t("default.link.edit")
+        click_on "Edit"
       end
 
       fill_in "report[description]", with: "Quarter 4 2020"
 
-      click_on t("default.button.submit")
+      click_on "Submit"
 
-      expect(page).to have_content t("action.report.update.success")
+      expect(page).to have_content "Report successfully updated"
 
       within "##{report.id}" do
         expect(page).to have_content("Quarter 4 2020")
@@ -118,7 +118,7 @@ RSpec.feature "BEIS users can edit a report" do
       visit reports_path
 
       within "##{report.id}" do
-        expect(page).to_not have_content(t("default.link.edit"))
+        expect(page).to_not have_content("Edit")
       end
     end
   end

@@ -10,7 +10,7 @@ RSpec.feature "users can add benefitting countries" do
 
       visit activity_step_path(activity, :benefitting_countries)
 
-      expect(page).to have_content t("form.legend.activity.benefitting_countries")
+      expect(page).to have_content "What countries will benefit from this activity?"
       expect(page).to have_content("Afghanistan")
       expect(page).to have_content("Zimbabwe")
       expect(page).to have_selector(".country-checkbox", count: all_non_graduated_benefitting_countires.count)
@@ -18,7 +18,7 @@ RSpec.feature "users can add benefitting countries" do
       check "Gambia"
       check "Pakistan"
       check "Egypt"
-      click_button t("form.button.activity.submit")
+      click_button "Continue"
 
       activity.reload
       expect(activity.benefitting_countries).to match_array(["GM", "PK", "EG"])
@@ -32,10 +32,10 @@ RSpec.feature "users can add benefitting countries" do
 
       visit activity_step_path(activity, :benefitting_countries)
 
-      expect(page).to have_content t("form.legend.activity.benefitting_countries")
+      expect(page).to have_content "What countries will benefit from this activity?"
 
       check t("page_content.activity.benefitting_region_check_box", region: caribbean_region.name)
-      click_button t("form.button.activity.submit")
+      click_button "Continue"
 
       activity.reload
       expect(activity.benefitting_countries).to match_array(country_codes)

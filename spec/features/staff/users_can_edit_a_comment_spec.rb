@@ -14,7 +14,7 @@ RSpec.describe "Users can edit a comment" do
       context "when the report is editable" do
         scenario "the user cannot edit comments" do
           visit organisation_activity_comments_path(activity.organisation, activity)
-          expect(page).not_to have_content t("page_content.comment.edit")
+          expect(page).not_to have_content "Edit comment"
         end
       end
 
@@ -22,7 +22,7 @@ RSpec.describe "Users can edit a comment" do
         let(:report) { create(:report, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
         scenario "the user cannot edit comments" do
           visit organisation_activity_comments_path(activity.organisation, activity)
-          expect(page).not_to have_content t("page_content.comment.edit")
+          expect(page).not_to have_content "Edit comment"
         end
       end
     end
@@ -37,7 +37,7 @@ RSpec.describe "Users can edit a comment" do
           expect(form).to have_report_summary_information
           form.complete(comment: "Amendments have been made")
 
-          expect(page).to have_content t("action.comment.update.success")
+          expect(page).to have_content "Comment successfully updated"
           expect(page).to have_content form.comment
         end
       end
@@ -46,7 +46,7 @@ RSpec.describe "Users can edit a comment" do
         let(:report) { create(:report, :approved, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
         scenario "the user cannot edit any comments" do
           visit organisation_activity_comments_path(activity.organisation, activity)
-          expect(page).not_to have_content t("default.link.edit")
+          expect(page).not_to have_content "Edit"
         end
       end
     end

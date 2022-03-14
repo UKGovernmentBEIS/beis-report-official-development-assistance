@@ -8,12 +8,12 @@ RSpec.feature "Users can sign in with Auth0" do
     )
 
     visit root_path
-    expect(page).to have_content(t("start_page.title"))
+    expect(page).to have_content("Report your official development assistance (ODA)")
 
-    expect(page).to have_content(t("header.link.sign_in"))
-    click_on t("header.link.sign_in")
+    expect(page).to have_content("Sign in")
+    click_on "Sign in"
 
-    expect(page).to have_content(t("header.link.sign_out"))
+    expect(page).to have_content("Sign out")
   end
 
   scenario "successful sign in via button link" do
@@ -23,12 +23,12 @@ RSpec.feature "Users can sign in with Auth0" do
     )
 
     visit root_path
-    expect(page).to have_content(t("start_page.title"))
+    expect(page).to have_content("Report your official development assistance (ODA)")
 
-    expect(page).to have_content(t("header.link.sign_in"))
-    click_on t("header.link.sign_in")
+    expect(page).to have_content("Sign in")
+    click_on "Sign in"
 
-    expect(page).to have_content(t("header.link.sign_out"))
+    expect(page).to have_content("Sign out")
   end
 
   scenario "a user is redirected to a link they originally requested" do
@@ -40,7 +40,7 @@ RSpec.feature "Users can sign in with Auth0" do
       uid: user.identifier, name: user.name, email: user.email
     )
 
-    click_on t("header.link.sign_in")
+    click_on "Sign in"
 
     expect(current_path).to eq(reports_path)
   end
@@ -53,10 +53,10 @@ RSpec.feature "Users can sign in with Auth0" do
     )
 
     visit root_path
-    expect(page).to have_content(t("start_page.title"))
+    expect(page).to have_content("Report your official development assistance (ODA)")
 
-    expect(page).to have_content(t("header.link.sign_in"))
-    click_on t("header.link.sign_in")
+    expect(page).to have_content("Sign in")
+    click_on "Sign in"
 
     expect(page.current_path).to eql home_path
   end
@@ -69,10 +69,10 @@ RSpec.feature "Users can sign in with Auth0" do
     )
 
     visit root_path
-    expect(page).to have_content(t("start_page.title"))
+    expect(page).to have_content("Report your official development assistance (ODA)")
 
-    expect(page).to have_content(t("header.link.sign_in"))
-    click_on t("header.link.sign_in")
+    expect(page).to have_content("Sign in")
+    click_on "Sign in"
 
     expect(page.current_path).to eql home_path
   end
@@ -80,7 +80,7 @@ RSpec.feature "Users can sign in with Auth0" do
   scenario "protected pages cannot be visited unless signed in" do
     visit root_path
 
-    expect(page).to have_content(t("start_page.title"))
+    expect(page).to have_content("Report your official development assistance (ODA)")
   end
 
   context "when the Auth0 identifier does not match a user record" do
@@ -92,11 +92,11 @@ RSpec.feature "Users can sign in with Auth0" do
 
       visit root_path
 
-      expect(page).to have_content(t("header.link.sign_in"))
-      click_on t("header.link.sign_in")
+      expect(page).to have_content("Sign in")
+      click_on "Sign in"
 
-      expect(page).to have_content(t("page_title.errors.not_authorised"))
-      expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))
+      expect(page).to have_content("You are not authorised")
+      expect(page).to have_content("Whilst you have successfully signed in you have not been authorised to see this page.")
     end
   end
 
@@ -108,12 +108,12 @@ RSpec.feature "Users can sign in with Auth0" do
     it "displays the error message so they can try to correct the problem themselves" do
       visit root_path
 
-      expect(page).to have_content(t("header.link.sign_in"))
-      click_on t("header.link.sign_in")
+      expect(page).to have_content("Sign in")
+      click_on "Sign in"
 
-      expect(page).to have_content(t("page_content.errors.auth0.failed.explanation"))
-      expect(page).to have_content(t("page_content.errors.auth0.error_messages.invalid_credentials"))
-      expect(page).to have_content(t("page_content.errors.auth0.failed.prompt"))
+      expect(page).to have_content("Your request to sign in failed")
+      expect(page).to have_content("Invalid credentials")
+      expect(page).to have_content("Try signing in again and if you continue to have this issue please contact support.")
     end
   end
 
@@ -127,10 +127,10 @@ RSpec.feature "Users can sign in with Auth0" do
 
       visit root_path
 
-      click_button t("header.link.sign_in")
+      click_button "Sign in"
 
       expect(page).not_to have_content("unknown_failure")
-      expect(page).to have_content(t("page_content.errors.auth0.error_messages.generic"))
+      expect(page).to have_content("There was a problem signing you in.")
       expect(Rollbar).to have_received(:log).with(:info, "Unknown response from Auth0", "unknown_failure")
     end
   end
@@ -144,11 +144,11 @@ RSpec.feature "Users can sign in with Auth0" do
 
       visit root_path
 
-      expect(page).to have_content(t("header.link.sign_in"))
-      click_on t("header.link.sign_in")
+      expect(page).to have_content("Sign in")
+      click_on "Sign in"
 
-      expect(page).to have_content(t("page_title.errors.not_authorised"))
-      expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))
+      expect(page).to have_content("You are not authorised")
+      expect(page).to have_content("Whilst you have successfully signed in you have not been authorised to see this page.")
     end
 
     scenario "a user who is logged in and then deactivated sees an error message" do
@@ -159,7 +159,7 @@ RSpec.feature "Users can sign in with Auth0" do
       )
 
       visit root_path
-      click_on t("header.link.sign_in")
+      click_on "Sign in"
 
       expect(page.current_path).to eql home_path
 
@@ -168,8 +168,8 @@ RSpec.feature "Users can sign in with Auth0" do
 
       visit home_path
 
-      expect(page).to have_content(t("page_title.errors.not_authorised"))
-      expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))
+      expect(page).to have_content("You are not authorised")
+      expect(page).to have_content("Whilst you have successfully signed in you have not been authorised to see this page.")
     end
   end
 end

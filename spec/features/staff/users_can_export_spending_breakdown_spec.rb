@@ -11,7 +11,7 @@ RSpec.feature "Users can export spending breakdown" do
       expect(page.status_code).to eq 200
 
       headers = CSV.parse(page.body.delete_prefix("\ufeff"), headers: true).headers
-      expect(headers).to include(t("activerecord.attributes.activity.roda_identifier"))
+      expect(headers).to include("RODA identifier")
     end
 
     scenario "they can download the spending breakdown export for a single organisation" do
@@ -24,7 +24,7 @@ RSpec.feature "Users can export spending breakdown" do
       expect(page.status_code).to eq 200
 
       headers = CSV.parse(page.body.delete_prefix("\ufeff"), headers: true).headers
-      expect(headers).to include(t("activerecord.attributes.activity.roda_identifier"))
+      expect(headers).to include("RODA identifier")
     end
   end
 
@@ -54,7 +54,7 @@ RSpec.feature "Users can export spending breakdown" do
       expect(page.status_code).to eq 200
 
       headers = CSV.parse(page.body.delete_prefix("\ufeff"), headers: true).headers
-      expect(headers).to include(t("activerecord.attributes.activity.roda_identifier"))
+      expect(headers).to include("RODA identifier")
     end
   end
 end

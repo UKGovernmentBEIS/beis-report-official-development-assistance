@@ -47,7 +47,7 @@ RSpec.feature "Users can view project level activities" do
 
       visit organisation_activity_path(project.organisation, project)
 
-      expect(page).to_not have_content t("default.button.download_as_xml")
+      expect(page).to_not have_content "Download as XML"
     end
   end
 
@@ -61,7 +61,7 @@ RSpec.feature "Users can view project level activities" do
       visit organisation_activity_path(project.organisation, project)
 
       expect(page).to have_content project.title
-      expect(page).to have_no_button t("action.activity.add_child")
+      expect(page).to have_no_button "Add child activity"
     end
 
     scenario "can download a project as XML" do
@@ -73,9 +73,9 @@ RSpec.feature "Users can view project level activities" do
 
       visit organisation_activity_path(project.organisation, project)
 
-      expect(page).to have_content t("default.button.download_as_xml")
+      expect(page).to have_content "Download as XML"
 
-      click_on t("default.button.download_as_xml")
+      click_on "Download as XML"
 
       expect(page.response_headers["Content-Type"]).to include("application/xml")
 

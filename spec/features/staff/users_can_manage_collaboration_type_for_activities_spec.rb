@@ -14,7 +14,7 @@ RSpec.feature "Users can add a collaboration type for an activity" do
     context "and they save this step without changing the selected radio button" do
       it "saves collaboration_type as value '1' (Bilateral)" do
         visit activity_step_path(activity, :collaboration_type)
-        click_button t("form.button.activity.submit")
+        click_button "Continue"
 
         expect(activity.reload.collaboration_type).to eq("1")
       end
@@ -26,13 +26,13 @@ RSpec.feature "Users can add a collaboration type for an activity" do
       programme = create(:programme_activity, organisation: user.organisation, collaboration_type: "2")
       visit organisation_activity_details_path(programme.organisation, programme)
       within(".collaboration_type") do
-        click_on(t("default.link.edit"))
+        click_on("Edit")
       end
 
       expect(find_field("activity-collaboration-type-2-field")).to be_checked
 
       choose "Bilateral, core contributions to NGOs and other private bodies / PPPs"
-      click_button t("form.button.activity.submit")
+      click_button "Continue"
 
       expect(programme.reload.collaboration_type).to eq("3")
     end

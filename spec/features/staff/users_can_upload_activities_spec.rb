@@ -17,11 +17,11 @@ RSpec.feature "users can upload activities" do
 
     # And I am on the Activities Upload page
     visit report_activities_path(report)
-    click_link t("page_content.activities.button.upload")
+    click_link "Upload activity data"
   end
 
   scenario "downloading the CSV template" do
-    click_link t("action.activity.download.button")
+    click_link "Download CSV template"
 
     csv_data = page.body.delete_prefix("\uFEFF")
     rows = CSV.parse(csv_data, headers: false).first
@@ -63,15 +63,15 @@ RSpec.feature "users can upload activities" do
   end
 
   scenario "not uploading a file" do
-    click_button t("action.activity.upload.button")
+    click_button "Upload and continue"
 
-    expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
+    expect(page).to have_text("Please upload a valid CSV file")
   end
 
   scenario "uploading an empty file" do
     upload_csv(Activities::ImportFromCsv.column_headings.join(", "))
 
-    expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
+    expect(page).to have_text("Please upload a valid CSV file")
   end
 
   scenario "uploading a valid set of activities" do
@@ -79,12 +79,12 @@ RSpec.feature "users can upload activities" do
 
     # When I upload a valid Activity CSV with comments
     attach_file "report[activity_csv]", File.new("spec/fixtures/csv/valid_activities_upload.csv").path
-    click_button t("action.activity.upload.button")
+    click_button "Upload and continue"
 
     expect(Activity.count - old_count).to eq(2)
     # Then I should see confirmation that I have uploaded new activities
-    expect(page).to have_text(t("action.activity.upload.success"))
-    expect(page).to have_table(t("table.caption.activity.new_activities"))
+    expect(page).to have_text("The activities were successfully imported.")
+    expect(page).to have_table("New activities")
 
     # And I should see the uploaded activities titles
     within "//tbody/tr[1]" do
@@ -116,9 +116,9 @@ RSpec.feature "users can upload activities" do
   scenario "uploading a set of activities with a BOM at the start" do
     freeze_time do
       attach_file "report[activity_csv]", File.new("spec/fixtures/csv/excel_upload.csv").path
-      click_button t("action.activity.upload.button")
+      click_button "Upload and continue"
 
-      expect(page).to have_text(t("action.activity.upload.success"))
+      expect(page).to have_text("The activities were successfully imported.")
 
       new_activities = Activity.where(created_at: DateTime.now)
 
@@ -132,23 +132,23 @@ RSpec.feature "users can upload activities" do
     old_count = Activity.count
 
     attach_file "report[activity_csv]", File.new("spec/fixtures/csv/invalid_activities_upload.csv").path
-    click_button t("action.activity.upload.button")
+    click_button "Upload and continue"
 
     expect(Activity.count - old_count).to eq(0)
-    expect(page).not_to have_text(t("action.activity.upload.success"))
+    expect(page).not_to have_text("The activities were successfully imported.")
 
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[1]", text: "Benefitting Countries")
       expect(page).to have_xpath("td[2]", text: "2")
       expect(page).to have_xpath("td[3]", text: "ZZ")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.invalid_benefitting_countries"))
+      expect(page).to have_xpath("td[4]", text: "The benefitting countries are invalid")
     end
 
     within "//tbody/tr[2]" do
       expect(page).to have_xpath("td[1]", text: "Free Standing Technical Cooperation")
       expect(page).to have_xpath("td[2]", text: "3")
       expect(page).to have_xpath("td[3]", text: "")
-      expect(page).to have_xpath("td[4]", text: t("activerecord.errors.models.activity.attributes.fstc_applies.inclusion"))
+      expect(page).to have_xpath("td[4]", text: "You must select \"Yes\" or \"No\"")
     end
   end
 
@@ -161,23 +161,23 @@ RSpec.feature "users can upload activities" do
       old_count = Activity.count
 
       attach_file "report[activity_csv]", File.new("spec/fixtures/csv/unpermitted_activities_upload.csv").path
-      click_button t("action.activity.upload.button")
+      click_button "Upload and continue"
 
       expect(Activity.count - old_count).to eq(0)
-      expect(page).not_to have_text(t("action.activity.upload.success"))
+      expect(page).not_to have_text("The activities were successfully imported.")
 
       within "//tbody/tr[1]" do
         expect(page).to have_xpath("td[1]", text: "Parent RODA ID")
         expect(page).to have_xpath("td[2]", text: "2")
         expect(page).to have_xpath("td[3]", text: "")
-        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.unauthorised"))
+        expect(page).to have_xpath("td[4]", text: "You are not authorised to report against this activity")
       end
 
       within "//tbody/tr[2]" do
         expect(page).to have_xpath("td[1]", text: "RODA ID")
         expect(page).to have_xpath("td[2]", text: "3")
         expect(page).to have_xpath("td[3]", text: "")
-        expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.unauthorised"))
+        expect(page).to have_xpath("td[4]", text: "You are not authorised to report against this activity")
       end
     end
   end
@@ -193,8 +193,8 @@ RSpec.feature "users can upload activities" do
       #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | BR                    |
     CSV
 
-    expect(page).to have_text(t("action.activity.upload.success"))
-    expect(page).to have_table(t("table.caption.activity.updated_activities"))
+    expect(page).to have_text("The activities were successfully imported.")
+    expect(page).to have_table("Updated activities")
 
     expect_change_to_be_recorded_as_historical_event(
       field: "title",
@@ -230,13 +230,13 @@ RSpec.feature "users can upload activities" do
       #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | new-id-oh-no                |
     CSV
 
-    expect(page).not_to have_text(t("action.activity.upload.success"))
+    expect(page).not_to have_text("The activities were successfully imported.")
 
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[1]", text: "Delivery partner identifier")
       expect(page).to have_xpath("td[2]", text: "2")
       expect(page).to have_xpath("td[3]", text: "new-id-oh-no")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.cannot_update.delivery_partner_identifier_present"))
+      expect(page).to have_xpath("td[4]", text: "The delivery partner identifier cannot be changed. Please remove the DP identifier from this row and try again.")
     end
   end
 
@@ -266,7 +266,7 @@ RSpec.feature "users can upload activities" do
     file.close
 
     attach_file "report[activity_csv]", file.path
-    click_button t("action.activity.upload.button")
+    click_button "Upload and continue"
 
     file.unlink
   end

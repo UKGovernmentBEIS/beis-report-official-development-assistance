@@ -9,7 +9,7 @@ RSpec.feature "BEIS users upload actual history" do
     scenario "they can see the actuals history upload interface" do
       visit report_actuals_path(report)
 
-      expect(page).to have_content(t("actions.uploads.actual_histories.new_upload"))
+      expect(page).to have_content("Upload actual history data")
     end
 
     scenario "they can successfully upload a file" do
@@ -22,7 +22,7 @@ RSpec.feature "BEIS users upload actual history" do
       visit new_report_uploads_actual_history_path(report)
       upload_fixture(file_content)
 
-      expect(page).to have_content(t("actions.uploads.actual_histories.success"))
+      expect(page).to have_content("Actual history uploaded successfully")
       expect(page).to have_content(activity.title)
       expect(page).to have_content(activity.roda_identifier)
       expect(page).to have_content("10,000")
@@ -31,9 +31,9 @@ RSpec.feature "BEIS users upload actual history" do
 
     scenario "when the file is missing" do
       visit new_report_uploads_actual_history_path(report)
-      click_button t("actions.uploads.actual_histories.upload.button")
+      click_button "Upload and continue"
 
-      expect(page).to have_content(t("actions.uploads.actual_histories.missing"))
+      expect(page).to have_content("You must provide an actual history data file")
     end
 
     scenario "when the file cannot be parsed" do
@@ -45,7 +45,7 @@ RSpec.feature "BEIS users upload actual history" do
       visit new_report_uploads_actual_history_path(report)
       upload_fixture(file_content)
 
-      expect(page).to have_content(t("actions.uploads.actual_histories.invalid"))
+      expect(page).to have_content("Actual history data file is invalid")
     end
 
     scenario "when the contents of the upload has errors" do
@@ -58,7 +58,7 @@ RSpec.feature "BEIS users upload actual history" do
       visit new_report_uploads_actual_history_path(report)
       upload_fixture(file_content)
 
-      expect(page).to have_content(t("actions.uploads.actual_histories.failed"))
+      expect(page).to have_content("Actual history upload failed")
       expect(page).to have_content("Value")
       expect(page).to have_content("1")
       expect(page).to have_content("Ten thousand pounds")
@@ -77,7 +77,7 @@ RSpec.feature "BEIS users upload actual history" do
 
       visit report_actuals_path(report)
 
-      expect(page).not_to have_content(t("actions.uploads.actual_histories.new_upload"))
+      expect(page).not_to have_content("Upload actual history data")
     end
   end
 
@@ -87,7 +87,7 @@ RSpec.feature "BEIS users upload actual history" do
     file.close
 
     attach_file "report[actual_csv_file]", file.path
-    click_button t("actions.uploads.actual_histories.upload.button")
+    click_button "Upload and continue"
 
     file.unlink
   end

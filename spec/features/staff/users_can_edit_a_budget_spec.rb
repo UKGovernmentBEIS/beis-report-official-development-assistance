@@ -9,7 +9,7 @@ RSpec.describe "Users can edit a budget" do
     before do
       visit organisation_activity_path(user.organisation, activity)
       within("##{budget.id}") do
-        click_on t("default.link.edit")
+        click_on "Edit"
       end
     end
 
@@ -17,10 +17,10 @@ RSpec.describe "Users can edit a budget" do
       fill_in "budget[value]", with: "20"
 
       expect {
-        click_on t("default.button.submit")
+        click_on "Submit"
       }.to change { HistoricalEvent.count }.by(1)
 
-      expect(page).to have_content(t("action.budget.update.success"))
+      expect(page).to have_content("Budget successfully updated")
       within("##{budget.id}") do
         expect(page).to have_content("20.00")
       end
@@ -37,9 +37,9 @@ RSpec.describe "Users can edit a budget" do
     end
 
     scenario "a budget can be successfully deleted" do
-      click_on t("default.button.delete")
+      click_on "Delete"
 
-      expect(page).to have_content(t("action.budget.destroy.success"))
+      expect(page).to have_content("Budget successfully deleted")
       expect(page).to_not have_content("10.00")
 
       expect { budget.reload }.to raise_error { ActiveRecord::RecordNotFound }
@@ -56,7 +56,7 @@ RSpec.describe "Users can edit a budget" do
     before do
       visit organisation_activity_path(user.organisation, activity)
       within("##{budget.id}") do
-        click_on t("default.link.edit")
+        click_on "Edit"
       end
     end
 
@@ -64,10 +64,10 @@ RSpec.describe "Users can edit a budget" do
       fill_in "budget[value]", with: "20"
 
       expect {
-        click_on t("default.button.submit")
+        click_on "Submit"
       }.to change { HistoricalEvent.count }.by(1)
 
-      expect(page).to have_content(t("action.budget.update.success"))
+      expect(page).to have_content("Budget successfully updated")
       within("##{budget.id}") do
         expect(page).to have_content("20.00")
       end
@@ -84,9 +84,9 @@ RSpec.describe "Users can edit a budget" do
     end
 
     scenario "a budget can be successfully deleted" do
-      click_on t("default.button.delete")
+      click_on "Delete"
 
-      expect(page).to have_content(t("action.budget.destroy.success"))
+      expect(page).to have_content("Budget successfully deleted")
       expect(page).to_not have_content("10.00")
 
       expect { budget.reload }.to raise_error { ActiveRecord::RecordNotFound }
@@ -95,10 +95,10 @@ RSpec.describe "Users can edit a budget" do
     scenario "validation errors work as expected" do
       fill_in "budget[value]", with: ""
 
-      click_on t("default.button.submit")
+      click_on "Submit"
 
       expect(page).to have_content("There is a problem")
-      expect(page).to have_content(t("activerecord.errors.models.budget.attributes.value.blank"))
+      expect(page).to have_content("Enter a budget amount")
     end
   end
 end

@@ -9,7 +9,7 @@ RSpec.feature "Users can view forecasts in tab within a report" do
 
     def expect_to_see_a_table_of_forecasts_grouped_by_activity(activities, report)
       expect(page).to have_content(
-        t("page_content.tab_content.forecasts.per_activity_heading")
+        "Forecast spend per activity"
       )
 
       forecasts = ForecastOverview.new(activities.map(&:id))
@@ -95,8 +95,8 @@ RSpec.feature "Users can view forecasts in tab within a report" do
 
       click_link "Forecasts"
 
-      expect(page).to have_content(t("page_content.tab_content.forecasts.heading"))
-      expect(page).to have_link(t("page_content.forecasts.button.upload"))
+      expect(page).to have_content("Forecasts in this report")
+      expect(page).to have_link("Upload forecast data")
 
       # guidance with 2 links
       expect(page).to have_content("This page shows all the new or updated forecasts")
@@ -117,7 +117,7 @@ RSpec.feature "Users can view forecasts in tab within a report" do
 
         click_link "Forecasts"
 
-        expect(page).not_to have_link(t("action.forecast.upload.link"))
+        expect(page).not_to have_link("Upload forecasts")
       end
     end
   end

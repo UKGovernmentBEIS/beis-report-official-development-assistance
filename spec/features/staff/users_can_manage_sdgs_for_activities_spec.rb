@@ -13,7 +13,7 @@ RSpec.feature "Users can add Sustainable Development Goals for an activity" do
       select "Gender Equality", from: "activity[sdg_2]"
       select "Climate Action", from: "activity[sdg_3]"
 
-      click_button t("form.button.activity.submit")
+      click_button "Continue"
 
       activity.reload
 
@@ -28,9 +28,9 @@ RSpec.feature "Users can add Sustainable Development Goals for an activity" do
       choose "activity[sdgs_apply]", option: "true"
       select "N/A", from: "activity[sdg_1]"
 
-      click_button t("form.button.activity.submit")
+      click_button "Continue"
 
-      expect(page).to have_content t("activerecord.errors.models.activity.attributes.sdg_1.blank")
+      expect(page).to have_content "Select the first most relevant goal"
     end
 
     scenario "when selecting 'SDGs do not apply' radio button, no SDGs are stored" do
@@ -43,7 +43,7 @@ RSpec.feature "Users can add Sustainable Development Goals for an activity" do
 
       choose "activity[sdgs_apply]", option: "false"
 
-      click_button t("form.button.activity.submit")
+      click_button "Continue"
 
       activity.reload
 

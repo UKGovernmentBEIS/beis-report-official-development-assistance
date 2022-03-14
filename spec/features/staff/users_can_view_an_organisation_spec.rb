@@ -15,7 +15,7 @@ RSpec.feature "Users can view an organisation" do
       scenario "does not see a back link on their organisation page" do
         visit organisation_path(user.organisation)
 
-        expect(page).to_not have_content(t("default.link.back"))
+        expect(page).to_not have_content("Back")
       end
     end
 
@@ -26,11 +26,11 @@ RSpec.feature "Users can view an organisation" do
         visit organisation_path(user.organisation)
 
         within ".govuk-header__navigation" do
-          click_link t("page_title.organisation.index")
+          click_link "Organisations"
         end
 
         within("##{other_organisation.id}") do
-          click_link t("default.link.show")
+          click_link "View"
         end
         expect(page).to have_content(other_organisation.name)
       end
@@ -53,7 +53,7 @@ RSpec.feature "Users can view an organisation" do
     scenario "does not see a back link on their organisation home page" do
       visit organisation_path(organisation)
 
-      expect(page).to_not have_content(t("default.link.back"))
+      expect(page).to_not have_content("Back")
     end
   end
 end

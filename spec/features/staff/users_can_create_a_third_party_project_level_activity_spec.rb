@@ -10,9 +10,9 @@ RSpec.feature "Users can create a third-party project" do
 
         visit activities_path
         click_on project.title
-        click_on t("tabs.activity.children")
+        click_on "Child activities"
 
-        expect(page).to_not have_button(t("action.activity.add_child"))
+        expect(page).to_not have_button("Add child activity")
       end
 
       scenario "a new third party project can be added to the project" do
@@ -29,14 +29,14 @@ RSpec.feature "Users can create a third-party project" do
         visit activities_path
 
         click_on(project.title)
-        click_on t("tabs.activity.children")
+        click_on "Child activities"
 
-        click_on(t("action.activity.add_child"))
+        click_on("Add child activity")
 
         form = ActivityForm.new(activity: activity, level: "project", fund: "gcrf")
         form.complete!
 
-        expect(page).to have_content t("action.third_party_project.create.success")
+        expect(page).to have_content "Third-party project (level D) successfully created"
         expect(project.child_activities.count).to eq 1
 
         created_activity = form.created_activity
@@ -85,9 +85,9 @@ RSpec.feature "Users can create a third-party project" do
           visit activities_path
 
           click_on(project.title)
-          click_on t("tabs.activity.children")
+          click_on "Child activities"
 
-          expect(page).to have_no_button t("action.activity.add_child")
+          expect(page).to have_no_button "Add child activity"
         end
       end
     end

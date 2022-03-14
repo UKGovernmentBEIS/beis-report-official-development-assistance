@@ -26,7 +26,7 @@ RSpec.describe "Users can edit a forecast" do
 
       expect { click_button "Submit" }.to not_create_a_historical_event
 
-      expect(page).to have_content t("action.forecast.update.success")
+      expect(page).to have_content "Forecasted spend successfully updated"
       expect(page).to have_content "£20,000"
     end
 
@@ -49,7 +49,7 @@ RSpec.describe "Users can edit a forecast" do
         report: Report.editable_for_activity(project)
       )
 
-      click_on I18n.t("tabs.activity.historical_events")
+      click_on "Change history"
 
       expect(page).to have_content("Revising a forecast for #{FinancialQuarter.new(2018, 4)}")
     end
@@ -68,7 +68,7 @@ RSpec.describe "Users can edit a forecast" do
 
       visit organisation_activity_path(project.organisation, project)
 
-      expect(page).not_to have_link t("default.link.edit"),
+      expect(page).not_to have_link "Edit",
         href: edit_activity_forecasts_path(project, forecast.financial_year, forecast.financial_quarter)
     end
 
@@ -82,7 +82,7 @@ RSpec.describe "Users can edit a forecast" do
       fill_in "Forecasted spend amount", with: ""
       click_button "Submit"
 
-      expect(page).to have_content t("activerecord.errors.models.forecast.attributes.value.not_a_number")
+      expect(page).to have_content "Value must be a valid number"
     end
   end
 end

@@ -68,8 +68,8 @@ RSpec.feature "Users can view an activity's 'Change History' within a tab" do
 
       click_link "Change history"
 
-      expect(page).to have_css("h2", text: t("page_title.activity.change_history"))
-      expect(page).to have_content(t("page_content.tab_content.change_history.guidance"))
+      expect(page).to have_css("h2", text: "Change history")
+      expect(page).to have_content("Changes made to this activity")
 
       expect_to_see_change_history_with_reference(
         events: HistoricalEvent.last(2),

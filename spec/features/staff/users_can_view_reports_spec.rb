@@ -49,7 +49,7 @@ RSpec.feature "Users can view reports" do
 
       visit reports_path
 
-      expect(page).to have_content t("page_title.report.index")
+      expect(page).to have_content "Reports"
 
       expect_to_see_a_table_of_reports_grouped_by_organisation(
         selector: "#current",
@@ -70,7 +70,7 @@ RSpec.feature "Users can view reports" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on t("default.link.show")
+        click_on "View"
       end
 
       expect(page).to have_content report.financial_quarter
@@ -83,7 +83,7 @@ RSpec.feature "Users can view reports" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on t("default.link.show")
+        click_on "View"
       end
 
       expect(page).to have_content report.description
@@ -107,7 +107,7 @@ RSpec.feature "Users can view reports" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on t("default.link.show")
+        click_on "View"
       end
 
       within ".govuk-tabs" do
@@ -124,7 +124,7 @@ RSpec.feature "Users can view reports" do
 
         visit report_path(report.id)
 
-        expect(page).not_to have_content t("form.label.report.description")
+        expect(page).not_to have_content "Report description"
       end
     end
 
@@ -146,13 +146,13 @@ RSpec.feature "Users can view reports" do
       visit reports_path
 
       within "##{report.id}" do
-        click_on t("default.link.show")
+        click_on "View"
       end
 
       expect(page).to have_content("Download a CSV file to review offline.")
       expect(page).to have_link("guidance in the help centre (opens in new tab)")
 
-      click_link t("action.report.download.button")
+      click_link "Download report as CSV file"
 
       expect(page.response_headers["Content-Type"]).to include("text/csv")
       expect(page.status_code).to eq 200
@@ -175,10 +175,10 @@ RSpec.feature "Users can view reports" do
         visit reports_path
 
         within "##{report.id}" do
-          click_on t("default.link.show")
+          click_on "View"
         end
 
-        click_on t("action.report.download.button")
+        click_on "Download report as CSV file"
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
         header = page.response_headers["Content-Disposition"]
@@ -191,7 +191,7 @@ RSpec.feature "Users can view reports" do
       scenario "an empty state is shown" do
         visit reports_path
 
-        expect(page).to have_content t("table.body.report.no_reports")
+        expect(page).to have_content "You have no current reports. Once active, any new reports will appear here. You can view approved reports in the Approved tab."
       end
     end
 
@@ -202,7 +202,7 @@ RSpec.feature "Users can view reports" do
       before do
         visit reports_path
         within "##{report.id}" do
-          click_on t("default.link.show")
+          click_on "View"
         end
       end
 
@@ -266,7 +266,7 @@ RSpec.feature "Users can view reports" do
 
       visit reports_path
 
-      expect(page).to have_content t("page_title.report.index")
+      expect(page).to have_content "Reports"
 
       expect_to_see_a_table_of_reports(selector: "#current", reports: reports_awaiting_changes)
       expect_to_see_a_table_of_reports(selector: "#approved", reports: approved_reports)
@@ -281,7 +281,7 @@ RSpec.feature "Users can view reports" do
         expect_to_see_a_table_of_reports(selector: "#current", reports: [report])
 
         within "##{report.id}" do
-          click_on t("default.link.show")
+          click_on "View"
         end
 
         expect(page).to have_content report.financial_quarter
@@ -294,7 +294,7 @@ RSpec.feature "Users can view reports" do
         visit reports_path
 
         within "##{report.id}" do
-          click_on t("default.link.show")
+          click_on "View"
         end
 
         expect(page).to have_content report.description
@@ -322,13 +322,13 @@ RSpec.feature "Users can view reports" do
         travel_to quarter_two_2019 do
           visit reports_path
           within "##{report.id}" do
-            click_on t("default.link.show")
+            click_on "View"
           end
 
-          click_on t("tabs.report.variance.heading")
+          click_on "Variance"
 
-          expect(page).to have_content t("table.header.activity.identifier")
-          expect(page).to have_content t("table.header.activity.forecasted_spend")
+          expect(page).to have_content "RODA Identifier"
+          expect(page).to have_content "Forecasted spend"
           within "##{activity.id}" do
             expect(page).to have_content "£1,000.00"
             expect(page).to have_content "£1,100.00"
@@ -346,8 +346,8 @@ RSpec.feature "Users can view reports" do
 
         visit report_actuals_path(report)
 
-        expect(page.html).to include t("tabs.actuals.upload.copy_html")
-        expect(page).to have_link t("page_content.actuals.button.download_template"),
+        expect(page.html).to include "Large numbers of actuals can be added via the actuals upload."
+        expect(page).to have_link "Download actuals data template",
           href: report_actual_upload_path(report, format: :csv)
         expect(page).to have_link "guidance in the help centre (opens in new tab)",
           href: "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload"
@@ -363,7 +363,7 @@ RSpec.feature "Users can view reports" do
         within "##{budget.id}" do
           expect(page).to have_content budget.parent_activity.roda_identifier
           expect(page).to have_content budget.value
-          expect(page).to have_link t("default.link.edit"), href: edit_activity_budget_path(budget.parent_activity, budget)
+          expect(page).to have_link "Edit", href: edit_activity_budget_path(budget.parent_activity, budget)
         end
       end
 
@@ -396,13 +396,13 @@ RSpec.feature "Users can view reports" do
 
         visit reports_path
         within "##{report.id}" do
-          click_on t("default.link.show")
+          click_on "View"
         end
 
         expect(page).to have_content("Download a CSV file to review offline.")
         expect(page).to have_link("guidance in the help centre (opens in new tab)")
 
-        click_link t("action.report.download.button")
+        click_link "Download report as CSV file"
 
         expect(page.response_headers["Content-Type"]).to include("text/csv")
 

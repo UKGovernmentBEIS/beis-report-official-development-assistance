@@ -22,7 +22,7 @@ RSpec.describe "Users can edit an external income" do
 
       fill_in_external_income_form(external_income)
 
-      expect(page).to have_content(t("action.external_income.update.success"))
+      expect(page).to have_content("The external income has been successfully updated")
 
       expect(external_income.reload.organisation).to eq(external_income_provider)
       expect(external_income.financial_quarter).to eq(4)
@@ -31,9 +31,9 @@ RSpec.describe "Users can edit an external income" do
 
     scenario "they see errors when a required field is missing" do
       select("", from: "external_income[organisation_id]")
-      click_on t("default.button.submit")
+      click_on "Submit"
 
-      expect(page).to_not have_content(t("action.external_income.update.success"))
+      expect(page).to_not have_content("The external income has been successfully updated")
 
       expect(page).to have_content("Organisation can't be blank")
     end

@@ -8,7 +8,7 @@ RSpec.feature "Users can manage Sectors" do
         activity = create(:fund_activity, :at_identifier_step, delivery_partner_identifier: "GCRF", organisation: user.organisation)
         visit activity_step_path(activity, :sector_category)
         choose "Basic Education"
-        click_button t("form.button.activity.submit")
+        click_button "Continue"
 
         expect(page).to have_current_path(activity_step_path(activity, :sector))
         expect(page).to have_content t("form.legend.activity.sector", sector_category: t("activity.sector_category.#{activity.reload.sector_category}"), level: "fund (level A)")
@@ -27,9 +27,9 @@ RSpec.feature "Users can manage Sectors" do
         expect(page).to have_current_path(activity_step_path(activity, :sector_category))
 
         choose "Basic Education"
-        click_button t("form.button.activity.submit")
+        click_button "Continue"
         choose "Early childhood education"
-        click_button t("form.button.activity.submit")
+        click_button "Continue"
 
         expect(page).to have_current_path(organisation_activity_details_path(user.organisation, activity))
         within ".sector" do

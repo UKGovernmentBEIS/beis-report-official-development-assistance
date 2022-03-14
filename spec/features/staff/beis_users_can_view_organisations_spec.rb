@@ -8,10 +8,10 @@ RSpec.feature "BEIS users can view other organisations" do
 
   RSpec.shared_examples "lists delivery partner organisations" do
     scenario "it lists delivery partner organisations" do
-      expect(page).to have_content(t("page_title.organisation.index"))
-      expect(page).to have_content(t("page_title.organisations.delivery_partners"))
+      expect(page).to have_content("Organisations")
+      expect(page).to have_content("Delivery partners")
 
-      expect(page.find("li.govuk-tabs__list-item--selected a.govuk-tabs__tab")).to have_text(t("tabs.organisations.delivery_partners"))
+      expect(page.find("li.govuk-tabs__list-item--selected a.govuk-tabs__tab")).to have_text("Delivery partners")
 
       delivery_partner_organisations.each do |organisation|
         expect(page).to have_content(organisation.beis_organisation_reference)
@@ -26,9 +26,9 @@ RSpec.feature "BEIS users can view other organisations" do
 
   RSpec.shared_examples "lists matched effort provider organisations" do
     scenario "it lists matched effort provider organisations" do
-      expect(page).to have_content(t("page_title.organisation.index"))
-      expect(page.find("li.govuk-tabs__list-item--selected a.govuk-tabs__tab")).to have_text(t("tabs.organisations.matched_effort_providers"))
-      expect(page).to have_content(t("page_title.organisations.matched_effort_providers"))
+      expect(page).to have_content("Organisations")
+      expect(page.find("li.govuk-tabs__list-item--selected a.govuk-tabs__tab")).to have_text("Matched effort providers")
+      expect(page).to have_content("Matched effort providers")
 
       matched_effort_provider_organisations.each do |organisation|
         expect(page).to have_content(organisation.name)
@@ -42,9 +42,9 @@ RSpec.feature "BEIS users can view other organisations" do
 
   RSpec.shared_examples "lists external income provider organisations" do
     scenario "it lists external income provider organisations" do
-      expect(page).to have_content(t("page_title.organisation.index"))
-      expect(page.find("li.govuk-tabs__list-item--selected a.govuk-tabs__tab")).to have_text(t("tabs.organisations.external_income_providers"))
-      expect(page).to have_content(t("page_title.organisations.external_income_providers"))
+      expect(page).to have_content("Organisations")
+      expect(page.find("li.govuk-tabs__list-item--selected a.govuk-tabs__tab")).to have_text("External income providers")
+      expect(page).to have_content("External income providers")
 
       matched_effort_provider_organisations.each do |organisation|
         expect(page).to_not have_content(organisation.name)
@@ -110,7 +110,7 @@ RSpec.feature "BEIS users can view other organisations" do
 
         context "when viewing the matched effort providers tab" do
           before do
-            click_on t("tabs.organisations.matched_effort_providers")
+            click_on "Matched effort providers"
           end
 
           it "includes type of organisation in breadcrumb" do
@@ -122,7 +122,7 @@ RSpec.feature "BEIS users can view other organisations" do
 
         context "when viewing the external income providers tab" do
           before do
-            click_on t("tabs.organisations.external_income_providers")
+            click_on "External income providers"
           end
 
           it "includes type of organisation in breadcrumb" do
@@ -140,7 +140,7 @@ RSpec.feature "BEIS users can view other organisations" do
 
         context "when viewing the delivery partner organisations tab" do
           before do
-            click_on t("tabs.organisations.delivery_partners")
+            click_on "Delivery partners"
           end
 
           include_examples "lists delivery partner organisations"
@@ -148,7 +148,7 @@ RSpec.feature "BEIS users can view other organisations" do
 
         context "when viewing the external income providers tab" do
           before do
-            click_on t("tabs.organisations.external_income_providers")
+            click_on "External income providers"
           end
 
           include_examples "lists external income provider organisations"
@@ -162,7 +162,7 @@ RSpec.feature "BEIS users can view other organisations" do
 
         context "when viewing the delivery partner organisations tab" do
           before do
-            click_on t("tabs.organisations.delivery_partners")
+            click_on "Delivery partners"
           end
 
           include_examples "lists delivery partner organisations"
@@ -170,7 +170,7 @@ RSpec.feature "BEIS users can view other organisations" do
 
         context "when viewing the matched effort providers tab" do
           before do
-            click_on t("tabs.organisations.matched_effort_providers")
+            click_on "Matched effort providers"
           end
 
           include_examples "lists matched effort provider organisations"

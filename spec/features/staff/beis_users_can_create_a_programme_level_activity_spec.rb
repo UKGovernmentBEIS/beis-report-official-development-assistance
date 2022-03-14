@@ -31,7 +31,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       form = ActivityForm.new(activity: activity, level: "programme", fund: "gcrf")
       form.complete!
 
-      expect(page).to have_content(t("action.programme.create.success"))
+      expect(page).to have_content("Programme (level B) successfully created")
 
       created_activity = form.created_activity
 
@@ -86,7 +86,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       form = ActivityForm.new(activity: activity, level: "programme", fund: "newton")
       form.complete!
 
-      expect(page).to have_content(t("action.programme.create.success"))
+      expect(page).to have_content("Programme (level B) successfully created")
 
       created_activity = form.created_activity
 

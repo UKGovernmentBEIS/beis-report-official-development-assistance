@@ -35,11 +35,11 @@ RSpec.feature "Users can view an activity" do
         visit organisation_activity_children_path(fund.organisation, fund)
 
         within(".programmes") do
-          expect(page).to_not have_content t("summary.label.activity.publish_to_iati.label")
+          expect(page).to_not have_content "Publish to IATI?"
         end
 
         within("##{programme.id}") do
-          expect(page).to_not have_content t("summary.label.activity.publish_to_iati.true")
+          expect(page).to_not have_content "Yes"
         end
       end
     end
@@ -74,7 +74,7 @@ RSpec.feature "Users can view an activity" do
         visit organisation_activity_children_path(programme.organisation, programme)
 
         within(".projects") do
-          expect(page).to have_content t("summary.label.activity.publish_to_iati.label")
+          expect(page).to have_content "Publish to IATI?"
         end
 
         within("##{project.id}") do
@@ -103,7 +103,7 @@ RSpec.feature "Users can view an activity" do
 
         visit organisation_activity_children_path(project.organisation, project)
 
-        expect(page).to have_content t("summary.label.activity.publish_to_iati.label")
+        expect(page).to have_content "Publish to IATI?"
 
         within("##{third_party_project.id}") do
           expect(page).to have_content "Yes"
@@ -211,7 +211,7 @@ RSpec.feature "Users can view an activity" do
           actual_end_date: Date.new(2020, 1, 29))
 
         visit organisation_activity_path(user.organisation, activity)
-        click_on t("tabs.activity.details")
+        click_on "Details"
 
         within(".planned_start_date") do
           expect(page).to have_content("3 Feb 2020")
@@ -252,10 +252,10 @@ RSpec.feature "Users can view an activity" do
 
       visit organisation_activity_children_path(project.organisation, project)
 
-      expect(page).to_not have_content t("summary.label.activity.publish_to_iati.label")
+      expect(page).to_not have_content "Publish to IATI?"
 
       within("##{third_party_project.id}") do
-        expect(page).to_not have_content t("summary.label.activity.publish_to_iati.true")
+        expect(page).to_not have_content "Yes"
       end
     end
   end

@@ -56,22 +56,22 @@ RSpec.feature "Users can create an adjustment (correcting spend in an approved r
   end
 
   def when_i_submit_the_new_adjustment_form_correctly
-    click_on t("page_content.adjustment.button.create")
+    click_on "Add an adjustment"
     fill_in "adjustment_form[value]", with: "100.01"
     select "Actual", from: "adjustment_form[adjustment_type]"
     choose "1", name: "adjustment_form[financial_quarter]"
     select "2020-2021", from: "adjustment_form[financial_year]"
     fill_in "adjustment_form[comment]", with: "There was a typo in the original 'actual'"
-    click_on(t("default.button.submit"))
+    click_on("Submit")
   end
 
   def when_i_submit_the_new_adjustment_form_incorrectly
-    click_on t("page_content.adjustment.button.create")
-    click_on(t("default.button.submit"))
+    click_on "Add an adjustment"
+    click_on("Submit")
   end
 
   def then_i_expect_to_see_the_new_adjustment
-    expect(page).to have_content(t("action.adjustment.create.success"))
+    expect(page).to have_content("Adjustment successfully created")
     adjustment = activity.adjustments.first
 
     fail "Expect activity to have an adjustment" unless adjustment
@@ -143,13 +143,13 @@ RSpec.feature "Users can create an adjustment (correcting spend in an approved r
   end
 
   def when_i_try_to_create_an_adjustment_for_the_current_financial_period
-    click_on t("page_content.adjustment.button.create")
+    click_on "Add an adjustment"
     fill_in "adjustment_form[value]", with: "100.01"
     select "Actual", from: "adjustment_form[adjustment_type]"
     choose "2", name: "adjustment_form[financial_quarter]"
     select "2021-2022", from: "adjustment_form[financial_year]"
     fill_in "adjustment_form[comment]", with: "There was a typo in the original 'actual'"
-    click_on(t("default.button.submit"))
+    click_on("Submit")
   end
 
   def then_i_should_see_an_explanation_of_when_adjustments_are_appropriate
@@ -162,6 +162,6 @@ RSpec.feature "Users can create an adjustment (correcting spend in an approved r
   def when_i_choose_a_valid_financial_period
     choose "1", name: "adjustment_form[financial_quarter]"
     select "2020-2021", from: "adjustment_form[financial_year]"
-    click_on(t("default.button.submit"))
+    click_on("Submit")
   end
 end

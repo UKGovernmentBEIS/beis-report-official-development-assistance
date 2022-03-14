@@ -13,7 +13,7 @@ RSpec.feature "BEIS users can create organisations" do
       visit organisation_path(user.organisation)
 
       within ".govuk-header__navigation" do
-        click_link t("page_title.organisation.index")
+        click_link "Organisations"
       end
     end
 
@@ -28,23 +28,23 @@ RSpec.feature "BEIS users can create organisations" do
     end
 
     scenario "successfully creating a delivery partner organisation" do
-      click_link t("page_content.organisations.delivery_partners.button.create")
+      click_link "Add delivery partner organisation"
 
       then_breadcrumb_shows_type_of_organisation(
         name: "Delivery partners",
         link: organisations_path(role: "delivery_partners")
       )
 
-      expect(page).to have_content(t("page_title.organisation.delivery_partner.new"))
+      expect(page).to have_content("Create a new delivery partner organisation")
       fill_in "organisation[name]", with: "My New Organisation"
       fill_in "organisation[beis_organisation_reference]", with: "MNO"
       fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
       select "Government", from: "organisation[organisation_type]"
       select "Czech", from: "organisation[language_code]"
       select "Zloty", from: "organisation[default_currency]"
-      click_button t("default.button.submit")
+      click_button "Submit"
 
-      expect(page).to have_content(t("action.organisation.create.success"))
+      expect(page).to have_content("Organisation successfully created")
       expect(page).to_not have_field("organisation[active]", type: "radio")
 
       organisation = Organisation.order("created_at ASC").last
@@ -60,29 +60,29 @@ RSpec.feature "BEIS users can create organisations" do
     end
 
     scenario "successfully creating a matched effort provider organisation" do
-      click_link t("tabs.organisations.matched_effort_providers")
+      click_link "Matched effort providers"
 
-      click_link t("page_content.organisations.matched_effort_providers.button.create")
+      click_link "Add matched effort provider organisation"
 
       then_breadcrumb_shows_type_of_organisation(
         name: "Matched effort providers",
         link: organisations_path(role: "matched_effort_providers")
       )
 
-      expect(page).to have_content(t("page_title.organisation.matched_effort_provider.new"))
+      expect(page).to have_content("Create a new matched effort provider organisation")
       expect(page).to have_field("organisation[active]", type: "radio")
 
       fill_in "organisation[name]", with: "My New Organisation"
       select "Government", from: "organisation[organisation_type]"
       select "Czech", from: "organisation[language_code]"
       select "Zloty", from: "organisation[default_currency]"
-      choose t("form.label.organisation.active.true"), name: "organisation[active]"
+      choose "Active", name: "organisation[active]"
 
-      click_button t("default.button.submit")
+      click_button "Submit"
 
       organisation = Organisation.order("created_at ASC").last
 
-      expect(page).to have_content(t("action.organisation.create.success"))
+      expect(page).to have_content("Organisation successfully created")
 
       expect(organisation.name).to eq("My New Organisation")
       expect(organisation.organisation_type).to eq("10")
@@ -93,28 +93,28 @@ RSpec.feature "BEIS users can create organisations" do
     end
 
     scenario "successfully creating a external income provider organisation" do
-      click_link t("tabs.organisations.external_income_providers")
+      click_link "External income providers"
 
-      click_link t("page_content.organisations.external_income_providers.button.create")
+      click_link "Add external income provider organisation"
       then_breadcrumb_shows_type_of_organisation(
         name: "External income provider",
         link: organisations_path(role: "external_income_providers")
       )
 
-      expect(page).to have_content(t("page_title.organisation.external_income_provider.new"))
+      expect(page).to have_content("Create a new external income provider organisation")
       expect(page).to have_field("organisation[active]", type: "radio")
 
       fill_in "organisation[name]", with: "My New External Income Provider"
       select "Other", from: "organisation[organisation_type]"
       select "Russian", from: "organisation[language_code]"
       select "Russian Ruble", from: "organisation[default_currency]"
-      choose t("form.label.organisation.active.true"), name: "organisation[active]"
+      choose "Active", name: "organisation[active]"
 
-      click_button t("default.button.submit")
+      click_button "Submit"
 
       organisation = Organisation.order("created_at ASC").last
 
-      expect(page).to have_content(t("action.organisation.create.success"))
+      expect(page).to have_content("Organisation successfully created")
 
       expect(organisation.name).to eq("My New External Income Provider")
       expect(organisation.organisation_type).to eq("90")
@@ -126,9 +126,9 @@ RSpec.feature "BEIS users can create organisations" do
 
     scenario "successfully creating an implementing organisation" do
       def given_i_am_on_the_new_implementing_organisation_page
-        click_link t("tabs.organisations.implementing_organisations")
-        click_link t("page_content.organisations.implementing_organisations.button.create")
-        expect(page).to have_content(t("page_title.organisation.implementing_organisation.new"))
+        click_link "Implementing organisations"
+        click_link "Add implementing organisation"
+        expect(page).to have_content("Create a new implementing organisation")
         then_breadcrumb_shows_type_of_organisation(
           name: "Implementing organisations",
           link: organisations_path(role: "implementing_organisations")
@@ -136,7 +136,7 @@ RSpec.feature "BEIS users can create organisations" do
       end
 
       def and_i_submit_the_new_implementing_organisation_form
-        click_button t("default.button.submit")
+        click_button "Submit"
       end
 
       def then_i_expect_to_see_that_an_implementing_organisation_has_mandatory_fields
@@ -160,7 +160,7 @@ RSpec.feature "BEIS users can create organisations" do
       def then_i_expect_to_see_the_created_implementing_organisation(organisation)
         presented_org = OrganisationPresenter.new(organisation)
 
-        expect(page).to have_content(t("action.organisation.create.success"))
+        expect(page).to have_content("Organisation successfully created")
         expect(page).to have_content(presented_org.name)
         expect(page).to have_content(presented_org.iati_reference)
         expect(page).to have_content(presented_org.language_code)
@@ -180,14 +180,14 @@ RSpec.feature "BEIS users can create organisations" do
     end
 
     scenario "presence validation works as expected" do
-      click_link t("page_content.organisations.delivery_partners.button.create")
+      click_link "Add delivery partner organisation"
 
-      expect(page).to have_content(t("page_title.organisation.delivery_partner.new"))
+      expect(page).to have_content("Create a new delivery partner organisation")
       fill_in "organisation[name]", with: "My New Organisation"
 
-      click_button t("default.button.submit")
-      expect(page).to_not have_content t("action.organisation.create.success")
-      expect(page).to have_content t("activerecord.errors.models.organisation.attributes.organisation_type.blank")
+      click_button "Submit"
+      expect(page).to_not have_content "Organisation successfully created"
+      expect(page).to have_content "Enter an organisation type"
     end
   end
 
@@ -196,7 +196,7 @@ RSpec.feature "BEIS users can create organisations" do
 
     it "does not show them the manage user button" do
       visit organisation_path(user.organisation)
-      expect(page).not_to have_link(t("page_title.organisation.index"))
+      expect(page).not_to have_link("Organisations")
     end
   end
 end

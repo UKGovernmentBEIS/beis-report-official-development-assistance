@@ -18,7 +18,7 @@ RSpec.feature "Organisation show page" do
       scenario "they see a edit details button" do
         visit organisation_path(beis_user.organisation)
 
-        expect(page).to have_link t("page_content.organisation.button.edit_details"), href: edit_organisation_path(beis_user.organisation)
+        expect(page).to have_link "Edit details", href: edit_organisation_path(beis_user.organisation)
       end
     end
   end
@@ -31,7 +31,7 @@ RSpec.feature "Organisation show page" do
     scenario "they do not see the edit details button" do
       visit organisation_path(delivery_partner_user.organisation)
 
-      expect(page).not_to have_link t("page_content.organisation.button.edit_details"), href: edit_organisation_path(delivery_partner_user.organisation)
+      expect(page).not_to have_link "Edit details", href: edit_organisation_path(delivery_partner_user.organisation)
     end
   end
 end

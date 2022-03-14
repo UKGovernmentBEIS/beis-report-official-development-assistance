@@ -8,11 +8,11 @@ RSpec.feature "Users can create an actual" do
 
       visit organisation_activity_path(activity.organisation, activity)
 
-      click_on(t("page_content.actuals.button.create"))
+      click_on("Add an actual")
 
-      expect(page).to have_content t("page_title.actual.new")
-      expect(page).to have_content t("form.label.actual.value")
-      expect(page).to have_content t("form.legend.actual.receiving_organisation")
+      expect(page).to have_content "Add an actual"
+      expect(page).to have_content "Actual amount"
+      expect(page).to have_content "Receiving organisation (optional)"
     end
 
     scenario "successfully creates a actual on an activity" do
@@ -20,11 +20,11 @@ RSpec.feature "Users can create an actual" do
 
       visit organisation_activity_path(activity.organisation, activity)
 
-      click_on(t("page_content.actuals.button.create"))
+      click_on("Add an actual")
 
       fill_in_actual_form
 
-      expect(page).to have_content(t("action.actual.create.success"))
+      expect(page).to have_content("Actual successfully created")
     end
 
     context "when all values are missing" do
@@ -33,11 +33,11 @@ RSpec.feature "Users can create an actual" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        click_on(t("page_content.actuals.button.create"))
-        click_on(t("default.button.submit"))
+        click_on("Add an actual")
+        click_on("Submit")
 
-        expect(page).to_not have_content(t("action.actual.create.success"))
-        expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.blank")
+        expect(page).to_not have_content("Actual successfully created")
+        expect(page).to have_content "Enter an actual spend amount"
       end
     end
 
@@ -47,12 +47,12 @@ RSpec.feature "Users can create an actual" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        click_on(t("page_content.actuals.button.create"))
+        click_on("Add an actual")
         fill_in "actual[value]", with: "234r.67"
-        click_on(t("default.button.submit"))
+        click_on("Submit")
 
-        expect(page).to_not have_content(t("action.actual.create.success"))
-        expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.not_a_number")
+        expect(page).to_not have_content("Actual successfully created")
+        expect(page).to have_content "Value must be a valid number"
       end
     end
 
@@ -62,14 +62,14 @@ RSpec.feature "Users can create an actual" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        click_on(t("page_content.actuals.button.create"))
+        click_on("Add an actual")
 
         fill_in "actual[value]", with: "100000000000"
         choose "4", name: "actual[financial_quarter]"
         select "2019-2020", from: "actual[financial_year]"
-        click_on(t("default.button.submit"))
+        click_on("Submit")
 
-        expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.less_than_or_equal_to")
+        expect(page).to have_content "Value must be less than or equal to 99,999,999,999.00"
       end
 
       scenario "Value cannot be 0" do
@@ -77,14 +77,14 @@ RSpec.feature "Users can create an actual" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        click_on(t("page_content.actuals.button.create"))
+        click_on("Add an actual")
 
         fill_in "actual[value]", with: "0"
         choose "4", name: "actual[financial_quarter]"
         select "2019-2020", from: "actual[financial_year]"
-        click_on(t("default.button.submit"))
+        click_on("Submit")
 
-        expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.other_than")
+        expect(page).to have_content "Value must not be zero"
       end
 
       scenario "Value cannot be negative" do
@@ -92,16 +92,16 @@ RSpec.feature "Users can create an actual" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        click_on(t("page_content.actuals.button.create"))
+        click_on("Add an actual")
 
         fill_in "actual[value]", with: "-500000"
         choose "4", name: "actual[financial_quarter]"
         select "2019-2020", from: "actual[financial_year]"
         fill_in "actual[receiving_organisation_name]", with: "Company"
         select "Government", from: "actual[receiving_organisation_type]"
-        click_on(t("default.button.submit"))
+        click_on("Submit")
 
-        expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.greater_than")
+        expect(page).to have_content "Value cannot be negative"
       end
 
       scenario "When the value includes a pound sign" do
@@ -109,7 +109,7 @@ RSpec.feature "Users can create an actual" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        click_on(t("page_content.actuals.button.create"))
+        click_on("Add an actual")
 
         fill_in_actual_form(value: "£123", expectations: false)
 
@@ -121,7 +121,7 @@ RSpec.feature "Users can create an actual" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        click_on(t("page_content.actuals.button.create"))
+        click_on("Add an actual")
 
         fill_in_actual_form(value: "abc123def", expectations: false)
 
@@ -133,7 +133,7 @@ RSpec.feature "Users can create an actual" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        click_on(t("page_content.actuals.button.create"))
+        click_on("Add an actual")
 
         fill_in_actual_form(value: "100.12", expectations: false)
 
@@ -145,7 +145,7 @@ RSpec.feature "Users can create an actual" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        click_on(t("page_content.actuals.button.create"))
+        click_on("Add an actual")
 
         fill_in_actual_form(value: "123,000,000", expectations: false)
 
@@ -159,14 +159,14 @@ RSpec.feature "Users can create an actual" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        click_on(t("page_content.actuals.button.create"))
+        click_on("Add an actual")
 
         fill_in_actual_form(
           receiving_organisation: OpenStruct.new(name: "Example receiver", reference: "GB-COH-123", type: nil),
           expectations: false
         )
 
-        expect(page).to have_content(t("activerecord.errors.models.actual.attributes.receiving_organisation_type.blank"))
+        expect(page).to have_content("Select the organisation type")
       end
 
       it "shows an error when the organisation name is blank, but not the type" do
@@ -174,14 +174,14 @@ RSpec.feature "Users can create an actual" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        click_on(t("page_content.actuals.button.create"))
+        click_on("Add an actual")
 
         fill_in_actual_form(
           receiving_organisation: OpenStruct.new(name: nil, reference: "GB-COH-123", type: "Private Sector"),
           expectations: false
         )
 
-        expect(page).to have_content(t("activerecord.errors.models.actual.attributes.receiving_organisation_name.blank"))
+        expect(page).to have_content("Enter a receiving organisation name")
       end
 
       it "shows errors if the organisation reference is present, but not the name or reference" do
@@ -189,15 +189,15 @@ RSpec.feature "Users can create an actual" do
 
         visit organisation_activity_path(activity.organisation, activity)
 
-        click_on(t("page_content.actuals.button.create"))
+        click_on("Add an actual")
 
         fill_in_actual_form(
           receiving_organisation: OpenStruct.new(name: nil, reference: "GB-COH-123", type: nil),
           expectations: false
         )
 
-        expect(page).to have_content(t("activerecord.errors.models.actual.attributes.receiving_organisation_name.blank"))
-        expect(page).to have_content(t("activerecord.errors.models.actual.attributes.receiving_organisation_type.blank"))
+        expect(page).to have_content("Enter a receiving organisation name")
+        expect(page).to have_content("Select the organisation type")
       end
     end
 
@@ -206,9 +206,9 @@ RSpec.feature "Users can create an actual" do
 
       visit organisation_activity_path(activity.organisation, activity)
 
-      click_on(t("page_content.actuals.button.create"))
+      click_on("Add an actual")
 
-      click_on(t("form.link.activity.back"))
+      click_on("Back to activity details")
 
       expect(page).to have_content(activity.title)
     end
@@ -227,7 +227,7 @@ RSpec.feature "Users can create an actual" do
 
       visit organisation_activity_path(programme_activity.organisation, programme_activity)
 
-      expect(page).not_to have_content(t("page_content.actuals.button.create"))
+      expect(page).not_to have_content("Add an actual")
     end
 
     context "and the activity is a third-party project" do
@@ -237,7 +237,7 @@ RSpec.feature "Users can create an actual" do
         project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
 
         visit organisation_activity_path(user.organisation, project)
-        click_on(t("page_content.actuals.button.create"))
+        click_on("Add an actual")
 
         fill_in_actual_form
 
@@ -253,7 +253,7 @@ RSpec.feature "Users can create an actual" do
 
       visit organisation_activity_path(activity.organisation, activity)
 
-      expect(page).not_to have_link t("page_content.actuals.button.create"), href: new_activity_actual_path(activity)
+      expect(page).not_to have_link "Add an actual", href: new_activity_actual_path(activity)
     end
   end
 end

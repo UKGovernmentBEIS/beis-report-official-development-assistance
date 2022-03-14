@@ -7,7 +7,7 @@ RSpec.describe "Users can search for activities" do
   before do
     visit "/"
     fill_in :query, with: "roda-id"
-    click_button t("form.activity_search.submit")
+    click_button "Search"
   end
 
   scenario "searching by RODA identifier" do
@@ -21,9 +21,9 @@ RSpec.describe "Users can search for activities" do
 
   scenario "searching for an empty string shows an error message" do
     fill_in :query, with: ""
-    click_button t("form.activity_search.submit")
+    click_button "Search"
 
-    expect(page).to have_content(t("page_content.activity_search.empty_query"))
+    expect(page).to have_content("The search query must contain at least 1 character!")
   end
 
   scenario "user sees breadcrumb context when accessing an activity from search results" do

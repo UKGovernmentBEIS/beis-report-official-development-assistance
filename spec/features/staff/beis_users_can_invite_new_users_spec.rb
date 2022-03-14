@@ -52,14 +52,14 @@ RSpec.feature "BEIS users can invite new users to the service" do
         it "shows the user validation errors instead" do
           visit new_user_path
 
-          expect(page).to have_content(t("page_title.users.new"))
+          expect(page).to have_content("Create user")
           fill_in "user[name]", with: "" # deliberately omit a value
           fill_in "user[email]", with: "" # deliberately omit a value
 
-          click_button t("default.button.submit")
+          click_button "Submit"
 
-          expect(page).to have_content(t("activerecord.errors.models.user.attributes.name.blank"))
-          expect(page).to have_content(t("activerecord.errors.models.user.attributes.email.blank"))
+          expect(page).to have_content("Enter a full name")
+          expect(page).to have_content("Enter an email address")
         end
       end
 
@@ -73,13 +73,13 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
             visit new_user_path
 
-            expect(page).to have_content(t("page_title.users.new"))
+            expect(page).to have_content("Create user")
             fill_in "user[name]", with: "foo"
             fill_in "user[email]", with: new_email
             choose organisation.name
 
             expect {
-              click_button t("default.button.submit")
+              click_button "Submit"
             }.not_to change { User.count }
 
             expect(page).to have_content(t("action.user.create.failed", error: "The user already exists."))
@@ -98,10 +98,10 @@ RSpec.feature "BEIS users can invite new users to the service" do
             fill_in "user[email]", with: "tom"
             choose organisation.name
 
-            click_button t("default.button.submit")
+            click_button "Submit"
 
             expect(page).to have_content("Email is invalid")
-            expect(page).not_to have_content(t("action.user.create.failed"))
+            expect(page).not_to have_content("The service failed to create the new user. The error received was: %{error}")
             expect(page).to have_content(organisation.name)
           end
         end
@@ -113,7 +113,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
 
       it "does not show them the manage user button" do
         visit organisation_path(user.organisation)
-        expect(page).not_to have_content(t("page_title.users.index"))
+        expect(page).not_to have_content("Users")
       end
     end
   end
@@ -121,13 +121,13 @@ RSpec.feature "BEIS users can invite new users to the service" do
   def create_user(organisation, new_user_name, new_user_email)
     # Navigate from the landing page
     visit organisation_path(organisation)
-    click_on(t("page_title.users.index"))
+    click_on("Users")
 
     # Navigate to the users page
-    expect(page).to have_content(t("page_title.users.index"))
+    expect(page).to have_content("Users")
 
     # Create a new user
-    click_on(t("page_content.users.button.create"))
+    click_on("Add user")
 
     # We expect to see BEIS separately on this page
     within(".user-organisations") do
@@ -137,12 +137,12 @@ RSpec.feature "BEIS users can invite new users to the service" do
     end
 
     # Fill out the form
-    expect(page).to have_content(t("page_title.users.new"))
+    expect(page).to have_content("Create user")
     fill_in "user[name]", with: new_user_name
     fill_in "user[email]", with: new_user_email
     choose organisation.name
 
     # Submit the form
-    click_button t("default.button.submit")
+    click_button "Submit"
   end
 end

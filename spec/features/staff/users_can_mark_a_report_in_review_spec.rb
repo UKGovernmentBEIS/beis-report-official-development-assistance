@@ -10,8 +10,8 @@ RSpec.feature "Users can move reports into review" do
       report = create(:report, state: :submitted)
 
       visit report_path(report)
-      click_link t("table.body.report.action.in_review")
-      click_button t("action.report.in_review.confirm.button")
+      click_link "Mark as in review"
+      click_button "Confirm"
 
       expect(page).to have_content "in review"
       expect(report.reload.state).to eql "in_review"
@@ -23,7 +23,7 @@ RSpec.feature "Users can move reports into review" do
 
         visit report_path(report)
 
-        expect(page).not_to have_link t("table.body.report.action.in_review")
+        expect(page).not_to have_link "Mark as in review"
       end
     end
   end
@@ -40,7 +40,7 @@ RSpec.feature "Users can move reports into review" do
 
       visit report_path(report)
 
-      expect(page).not_to have_link t("table.body.report.action.in_review")
+      expect(page).not_to have_link "Mark as in review"
 
       visit edit_report_state_path(report)
 

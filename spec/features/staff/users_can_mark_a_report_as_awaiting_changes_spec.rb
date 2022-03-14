@@ -12,8 +12,8 @@ RSpec.feature "Users can move reports into awaiting changes & view reports await
 
       perform_enqueued_jobs do
         visit report_path(report)
-        click_link t("action.report.request_changes.button")
-        click_button t("action.report.request_changes.confirm.button")
+        click_link "Request changes"
+        click_button "Confirm"
       end
 
       expect(page).to have_content "awaiting changes"
@@ -22,7 +22,7 @@ RSpec.feature "Users can move reports into awaiting changes & view reports await
       expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count)
 
       organisation.users.each do |user|
-        expect(user).to have_received_email.with_subject(t("mailer.report.awaiting_changes.subject", application_name: t("app.title")))
+        expect(user).to have_received_email.with_subject(t("mailer.report.awaiting_changes.subject", application_name: "Report your Official Development Assistance"))
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.feature "Users can move reports into awaiting changes & view reports await
 
         visit report_path(report)
 
-        expect(page).not_to have_link t("action.report.request_changes.button")
+        expect(page).not_to have_link "Request changes"
       end
     end
   end
@@ -49,7 +49,7 @@ RSpec.feature "Users can move reports into awaiting changes & view reports await
 
       visit report_path(report)
 
-      expect(page).not_to have_link t("action.report.request_changes.button")
+      expect(page).not_to have_link "Request changes"
     end
   end
 end

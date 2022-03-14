@@ -19,7 +19,7 @@ RSpec.feature "Users can edit an actual" do
       expect(page).to have_content(actual.value)
 
       within("##{actual.id}") do
-        click_on(t("default.link.edit"))
+        click_on("Edit")
       end
 
       fill_in_actual_form(
@@ -28,7 +28,7 @@ RSpec.feature "Users can edit an actual" do
         financial_year: "2019-2020"
       )
 
-      expect(page).to have_content(t("action.actual.update.success"))
+      expect(page).to have_content("Actual sucessfully updated")
     end
   end
 
@@ -49,7 +49,7 @@ RSpec.feature "Users can edit an actual" do
       scenario "can be edited, with 'change history'" do
         visit organisation_activity_path(activity.organisation, activity)
 
-        expect(page).to have_link t("default.link.edit"), href: edit_activity_actual_path(activity, actual)
+        expect(page).to have_link "Edit", href: edit_activity_actual_path(activity, actual)
 
         within ".actuals" do
           expect(page).to have_content("£110.01")
@@ -58,7 +58,7 @@ RSpec.feature "Users can edit an actual" do
 
         fill_in "actual[value]", with: 221.12
 
-        click_on(t("default.button.submit"))
+        click_on("Submit")
 
         within ".actuals" do
           expect(page).to have_content("£221.12")
@@ -73,7 +73,7 @@ RSpec.feature "Users can edit an actual" do
       scenario "does not show the edit link" do
         visit organisation_activity_path(activity.organisation, activity)
 
-        expect(page).not_to have_link t("default.link.edit"), href: edit_activity_actual_path(activity, actual)
+        expect(page).not_to have_link "Edit", href: edit_activity_actual_path(activity, actual)
       end
     end
   end

@@ -13,11 +13,11 @@ RSpec.feature "Users can delete an actual" do
       visit organisation_activity_path(activity.organisation, activity)
 
       within("##{actual.id}") do
-        click_on(t("default.link.edit"))
+        click_on("Edit")
       end
 
-      expect { click_on t("default.button.delete") }.to change { Actual.count }.by(-1)
-      expect(page).to have_content(t("action.actual.destroy.success"))
+      expect { click_on "Delete" }.to change { Actual.count }.by(-1)
+      expect(page).to have_content("Actual sucessfully deleted")
     end
   end
 
@@ -30,11 +30,11 @@ RSpec.feature "Users can delete an actual" do
       visit organisation_activity_path(activity.organisation, activity)
 
       within("##{actual.id}") do
-        click_on(t("default.link.edit"))
+        click_on("Edit")
       end
 
-      expect { click_on t("default.button.delete") }.to change { Actual.count }.by(-1)
-      expect(page).to have_content(t("action.actual.destroy.success"))
+      expect { click_on "Delete" }.to change { Actual.count }.by(-1)
+      expect(page).to have_content("Actual sucessfully deleted")
     end
   end
 end

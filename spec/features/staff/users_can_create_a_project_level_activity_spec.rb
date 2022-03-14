@@ -8,9 +8,9 @@ RSpec.feature "Users can create a project" do
         programme_activity = create(:programme_activity, :newton_funded, extending_organisation: user.organisation)
 
         visit organisation_activity_path(programme_activity.organisation, programme_activity)
-        click_on t("tabs.activity.children")
+        click_on "Child activities"
 
-        expect(page).to have_no_button(t("action.activity.add_child"))
+        expect(page).to have_no_button("Add child activity")
       end
 
       scenario "a new project can be added to the programme" do
@@ -25,13 +25,13 @@ RSpec.feature "Users can create a project" do
 
         visit activities_path
         click_on programme.title
-        click_on t("tabs.activity.children")
-        click_on t("action.activity.add_child")
+        click_on "Child activities"
+        click_on "Add child activity"
 
         form = ActivityForm.new(activity: activity, level: "project", fund: "newton")
         form.complete!
 
-        expect(page).to have_content t("action.project.create.success")
+        expect(page).to have_content "Project (level C) successfully created"
         expect(programme.child_activities.count).to eq 1
 
         created_activity = form.created_activity
@@ -83,10 +83,10 @@ RSpec.feature "Users can create a project" do
 
         visit organisation_activity_path(programme.organisation, programme)
 
-        click_link t("tabs.activity.children")
-        click_button t("action.activity.add_child")
+        click_link "Child activities"
+        click_button "Add child activity"
         fill_in "activity[delivery_partner_identifier]", with: "foo"
-        click_button t("form.button.activity.submit")
+        click_button "Continue"
 
         expect(page).to have_content t("form.legend.activity.purpose", level: "project (level C)")
       end

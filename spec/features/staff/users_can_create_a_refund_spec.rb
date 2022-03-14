@@ -66,7 +66,7 @@ RSpec.feature "Users can create a refund" do
   end
 
   def and_i_expect_to_see_that_a_new_refund_has_been_created
-    expect(page).to have_content(t("action.refund.create.success"))
+    expect(page).to have_content("Refund successfully created")
 
     newly_created_refund = Refund.last
 

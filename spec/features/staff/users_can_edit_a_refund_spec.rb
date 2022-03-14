@@ -26,7 +26,7 @@ RSpec.feature "Users can edit a refund" do
       fill_in "refund_form[comment]", with: "Comment goes here"
 
       expect {
-        click_on(t("default.button.submit"))
+        click_on("Submit")
       }.to change {
         refund.reload.attributes.slice("financial_year", "financial_quarter", "value")
       }.to({
@@ -35,13 +35,13 @@ RSpec.feature "Users can edit a refund" do
         "value" => BigDecimal("-100")
       }).and change { refund.comment.reload.body }.to("Comment goes here")
 
-      expect(page).to have_content(t("action.refund.update.success"))
+      expect(page).to have_content("Refund successfully updated")
 
       and_the_refund_update_appears_in_the_change_history
     end
 
     scenario "they can delete a refund" do
-      expect { click_on t("default.button.delete") }.to change(Refund, :count).by(-1)
+      expect { click_on "Delete" }.to change(Refund, :count).by(-1)
     end
   end
 

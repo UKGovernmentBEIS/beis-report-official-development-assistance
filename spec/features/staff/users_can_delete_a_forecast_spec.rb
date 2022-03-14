@@ -18,10 +18,10 @@ RSpec.describe "Users can delete a forecast" do
         click_on "Edit"
       end
 
-      click_on t("default.button.delete")
+      click_on "Delete"
 
       expect(page).to have_title t("document_title.activity.financials", name: project.title)
-      expect(page).to have_content t("action.forecast.destroy.success")
+      expect(page).to have_content "Forecasted spend successfully deleted"
 
       expect(page).to_not have_selector "##{forecast.id}"
     end

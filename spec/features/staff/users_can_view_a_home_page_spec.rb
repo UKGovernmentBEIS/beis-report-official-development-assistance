@@ -37,7 +37,7 @@ RSpec.feature "users can view a home page" do
       visit home_path
 
       expect(page.current_path).to eql home_path
-      expect(page).to have_content t("page_content.reports.title")
+      expect(page).to have_content "Reports"
       expect(page).to have_button("Search")
       expect(page).to have_content(programme.title)
     end

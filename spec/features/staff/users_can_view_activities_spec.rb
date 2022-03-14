@@ -17,7 +17,7 @@ RSpec.feature "Users can view activities" do
     scenario "they can see and navigate current delivery partner activities", js: true do
       visit activities_path(organisation_id: organisation.id)
 
-      expect(page).to have_content t("page_title.activity.index")
+      expect(page).to have_content "Activities"
 
       expect(page).to have_css(".govuk-tabs__tab", count: 2)
       expect(page).to have_css(".govuk-tabs__tab", text: "Current")
@@ -84,9 +84,9 @@ RSpec.feature "Users can view activities" do
       _report = create(:report, :active, fund: gcrf, organisation: delivery_partner_organisation)
 
       visit organisation_activity_path(programme.organisation, programme)
-      click_on t("tabs.activity.children")
+      click_on "Child activities"
 
-      expect(page).to_not have_link(t("action.activity.add_child"), exact: true)
+      expect(page).to_not have_link("Add child activity", exact: true)
     end
   end
 

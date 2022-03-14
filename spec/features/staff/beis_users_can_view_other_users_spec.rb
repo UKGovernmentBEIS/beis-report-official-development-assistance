@@ -20,21 +20,21 @@ RSpec.feature "BEIS users can can view other users" do
 
       # Navigate from the landing page
       visit organisation_path(user.organisation)
-      click_on(t("page_title.users.index"))
+      click_on("Users")
 
       # Navigate to the users page
-      expect(page).to have_content(t("page_title.users.index"))
+      expect(page).to have_content("Users")
       expect(page).to have_content(another_user.name)
       expect(page).to have_content(another_user.email)
       expect(page).to have_content(another_user.organisation.name)
-      expect(page).to have_content(t("form.user.active.true"))
+      expect(page).to have_content("Yes")
 
       # Navigate to the individual user page
       within(".users") do
-        find("tr", text: another_user.name).click_link(t("default.link.show"))
+        find("tr", text: another_user.name).click_link("View")
       end
 
-      expect(page).to have_content(t("page_title.users.show"))
+      expect(page).to have_content("User")
       expect(page).to have_content(another_user.name)
       expect(page).to have_content(another_user.email)
     end
@@ -50,7 +50,7 @@ RSpec.feature "BEIS users can can view other users" do
 
       # Navigate from the landing page
       visit organisation_path(user.organisation)
-      click_on(t("page_title.users.index"))
+      click_on("Users")
 
       expected_array = [
         a1_user.organisation.name,
@@ -68,17 +68,17 @@ RSpec.feature "BEIS users can can view other users" do
 
       # Navigate from the landing page
       visit organisation_path(user.organisation)
-      click_on(t("page_title.users.index"))
+      click_on("Users")
 
       # The details include whether the user is active
-      expect(page).to have_content(t("form.user.active.false"))
+      expect(page).to have_content("No")
 
       # Navigate to the individual user page
       within(".users") do
-        find("tr", text: another_user.name).click_link(t("default.link.show"))
+        find("tr", text: another_user.name).click_link("View")
       end
 
-      expect(page).to have_content(t("form.user.active.false"))
+      expect(page).to have_content("No")
     end
   end
 end

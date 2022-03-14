@@ -18,14 +18,14 @@ RSpec.feature "users can upload forecasts" do
   before do
     authenticate!(user: user)
     visit report_forecasts_path(report)
-    click_link t("page_content.forecasts.button.upload")
+    click_link "Upload forecast data"
   end
 
   def expect_to_see_successful_upload_summary_with(count:, total:)
-    expect(page).to have_text(t("importer.success.heading"))
+    expect(page).to have_text("Successful uploads")
     expect(page).to have_css(".forecasts tr", count: count)
     expect(page).to have_link(
-      t("importer.success.back_link"),
+      "Back to report",
       href: report_forecasts_path(report)
     )
     within ".totals" do
@@ -35,7 +35,7 @@ RSpec.feature "users can upload forecasts" do
 
   describe "downloading a CSV template with activities for the current report" do
     before do
-      click_link t("action.forecast.download.button")
+      click_link "Download CSV template"
       @csv_data = page.body.delete_prefix("\uFEFF")
     end
 
@@ -106,9 +106,9 @@ RSpec.feature "users can upload forecasts" do
   end
 
   scenario "not uploading a file" do
-    click_button t("action.forecast.upload.button")
+    click_button "Upload and continue"
     expect(Forecast.unscoped.count).to eq(0)
-    expect(page).to have_text(t("action.forecast.upload.file_missing_or_invalid"))
+    expect(page).to have_text("Please upload a valid CSV file")
   end
 
   scenario "uploading a valid set of forecasts" do
@@ -121,7 +121,7 @@ RSpec.feature "users can upload forecasts" do
     CSV
 
     expect(Forecast.unscoped.count).to eq(6)
-    expect(page).to have_text(t("action.forecast.upload.success"))
+    expect(page).to have_text("The forecasts were successfully imported.")
     expect_to_see_successful_upload_summary_with(count: 6, total: "£110.00")
   end
 
@@ -135,17 +135,17 @@ RSpec.feature "users can upload forecasts" do
     CSV
 
     expect(Forecast.unscoped.count).to eq(0)
-    expect(page).not_to have_text(t("action.forecast.upload.success"))
+    expect(page).not_to have_text("The forecasts were successfully imported.")
 
     # upload info not present
-    expect(page).not_to have_text(t("importer.success.heading"))
-    expect(page).not_to have_link(t("importer.success.back_link"))
+    expect(page).not_to have_text("Successful uploads")
+    expect(page).not_to have_link("Back to report")
 
     within "//tbody/tr[1]" do
       expect(page).to have_xpath("td[1]", text: "FC 2021/22 FY Q3")
       expect(page).to have_xpath("td[2]", text: "3")
       expect(page).to have_xpath("td[3]", text: "not a number")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.forecast.non_numeric_value"))
+      expect(page).to have_xpath("td[4]", text: "The value must be numeric")
     end
   end
 
@@ -159,7 +159,7 @@ RSpec.feature "users can upload forecasts" do
     CSV
 
     expect(Forecast.unscoped.count).to eq(3)
-    expect(page).to have_text(t("action.forecast.upload.success"))
+    expect(page).to have_text("The forecasts were successfully imported.")
     expect_to_see_successful_upload_summary_with(count: 3, total: "£110.00")
   end
 
@@ -176,13 +176,13 @@ RSpec.feature "users can upload forecasts" do
     file.close
 
     attach_file "report[forecast_csv]", file.path
-    click_button t("action.forecast.upload.button")
+    click_button "Upload and continue"
 
     file.unlink
 
     expect(Forecast.unscoped.count).to eq(0)
 
-    expect(page).to have_content(t("action.forecast.upload.file_missing_or_invalid"))
+    expect(page).to have_content("Please upload a valid CSV file")
   end
 
   scenario "uploading a set of forecasts with a BOM at the start of the file" do
@@ -196,7 +196,7 @@ RSpec.feature "users can upload forecasts" do
     CSV
 
     expect(Forecast.unscoped.count).to eq(6)
-    expect(page).to have_text(t("action.forecast.upload.success"))
+    expect(page).to have_text("The forecasts were successfully imported.")
     expect_to_see_successful_upload_summary_with(count: 6, total: "£210.00")
   end
 
@@ -206,7 +206,7 @@ RSpec.feature "users can upload forecasts" do
     file.close
 
     attach_file "report[forecast_csv]", file.path
-    click_button t("action.forecast.upload.button")
+    click_button "Upload and continue"
 
     file.unlink
   end

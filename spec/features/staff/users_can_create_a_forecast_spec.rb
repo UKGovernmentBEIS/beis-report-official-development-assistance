@@ -10,16 +10,16 @@ RSpec.describe "Users can create a forecast" do
 
       visit organisation_activity_path(project.organisation, project)
 
-      expect(page).to have_content t("page_content.activity.forecasts")
+      expect(page).to have_content "Forecasted spend"
 
-      click_on t("page_content.forecasts.button.create")
+      click_on "Add forecasted spend"
 
-      expect(page).to have_content t("page_title.forecast.new")
+      expect(page).to have_content "Add forecasted spend"
 
       fill_in_forecast_form_for_activity(project)
 
       expect(page).to have_current_path organisation_activity_path(user.organisation, project)
-      expect(page).to have_content t("action.forecast.create.success")
+      expect(page).to have_content "Forecasted spend successfully created"
     end
 
     scenario "they can go back if they try to add a forecast in error" do
@@ -28,9 +28,9 @@ RSpec.describe "Users can create a forecast" do
       visit activities_path
       click_on project.title
 
-      click_on t("page_content.forecasts.button.create")
+      click_on "Add forecasted spend"
 
-      click_on t("form.link.activity.back")
+      click_on "Back to activity details"
 
       expect(page).to have_title t("document_title.activity.financials", name: project.title)
     end
@@ -42,7 +42,7 @@ RSpec.describe "Users can create a forecast" do
           project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
           visit activities_path
           click_on project.title
-          click_on t("page_content.forecasts.button.create")
+          click_on "Add forecasted spend"
 
           expect(page).to have_checked_field "Q1"
           expect(page).to have_select "Financial year", selected: "2019-2020"
@@ -57,7 +57,7 @@ RSpec.describe "Users can create a forecast" do
           project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
           visit activities_path
           click_on project.title
-          click_on t("page_content.forecasts.button.create")
+          click_on "Add forecasted spend"
 
           expect(page).to have_checked_field "Q4"
           expect(page).to have_select "Financial year", selected: "2019-2020"
@@ -70,7 +70,7 @@ RSpec.describe "Users can create a forecast" do
 
       visit organisation_activity_path(activity.organisation, activity)
 
-      expect(page).not_to have_link t("page_content.forecasts.button.create"),
+      expect(page).not_to have_link "Add forecasted spend",
         href: new_activity_forecast_path(activity)
     end
 
@@ -83,7 +83,7 @@ RSpec.describe "Users can create a forecast" do
       visit activities_path
 
       click_on(project.title)
-      click_on(t("page_content.forecasts.button.create"))
+      click_on("Add forecasted spend")
 
       fill_in_forecast_form_for_activity(project)
 
@@ -99,8 +99,8 @@ RSpec.describe "Users can create a forecast" do
       visit activities_path
       click_on project.title
 
-      expect(page).to have_content t("page_content.activity.forecasts")
-      expect(page).not_to have_link t("page_content.forecasts.button.create")
+      expect(page).to have_content "Forecasted spend"
+      expect(page).not_to have_link "Add forecasted spend"
     end
 
     scenario "they receive an error message if the forecast is not in the future" do
@@ -110,7 +110,7 @@ RSpec.describe "Users can create a forecast" do
         visit activities_path
         click_on project.title
 
-        click_on t("page_content.forecasts.button.create")
+        click_on "Add forecasted spend"
 
         report = Report.editable_for_activity(project)
         year = report.financial_year
@@ -120,7 +120,7 @@ RSpec.describe "Users can create a forecast" do
           financial_year: "#{year}-#{year + 1}"
         )
 
-        expect(page).to have_content t("activerecord.errors.models.forecast.attributes.financial_quarter.in_the_past")
+        expect(page).to have_content "The forecast must be for a future financial quarter"
       end
     end
 
@@ -130,7 +130,7 @@ RSpec.describe "Users can create a forecast" do
       visit activities_path
       click_on project.title
 
-      click_on t("page_content.forecasts.button.create")
+      click_on "Add forecasted spend"
 
       report = Report.editable_for_activity(project)
       year = report.financial_year
@@ -141,7 +141,7 @@ RSpec.describe "Users can create a forecast" do
         value: ""
       )
 
-      expect(page).to have_content t("activerecord.errors.models.forecast.attributes.value.not_a_number")
+      expect(page).to have_content "Value must be a valid number"
     end
   end
 
@@ -156,11 +156,11 @@ RSpec.describe "Users can create a forecast" do
 
       visit organisation_activity_path(project.organisation, project)
 
-      expect(page).not_to have_link t("page_content.forecasts.button.create"), href: new_activity_forecast_path(project)
+      expect(page).not_to have_link "Add forecasted spend", href: new_activity_forecast_path(project)
 
       visit new_activity_forecast_path(project)
 
-      expect(page).to have_content t("page_title.errors.not_authorised")
+      expect(page).to have_content "You are not authorised"
     end
   end
 end

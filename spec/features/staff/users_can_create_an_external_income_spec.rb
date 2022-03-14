@@ -12,7 +12,7 @@ RSpec.describe "Users can create a external income" do
       visit organisation_activity_path(project.organisation, project)
 
       click_on "Other funding"
-      click_on t("page_content.external_income.button.create")
+      click_on "Add external income"
     end
 
     scenario "they can add an external income" do
@@ -25,7 +25,7 @@ RSpec.describe "Users can create a external income" do
 
       fill_in_external_income_form(template)
 
-      expect(page).to have_content(t("action.external_income.create.success"))
+      expect(page).to have_content("The external income has been successfully created")
 
       external_income = ExternalIncome.order("created_at ASC").last
 
@@ -44,7 +44,7 @@ RSpec.describe "Users can create a external income" do
     end
 
     scenario "they are shown errors when required fields are left blank" do
-      click_on t("default.button.submit")
+      click_on "Submit"
 
       expect(page).to have_content("Organisation can't be blank")
       expect(page).to have_content("Financial quarter can't be blank")
