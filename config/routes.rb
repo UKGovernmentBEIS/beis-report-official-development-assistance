@@ -2,7 +2,10 @@
 
 Rails.application.routes.draw do
   devise_scope :user do
-    devise_for :users, controllers: {sessions: "users/sessions"}
+    devise_for :users, controllers: {
+      passwords: "users/passwords",
+      sessions: "users/sessions"
+    }
     get :edit_mobile_number, to: "users/sessions#edit_mobile_number"
     post :resend_otp, to: "users/sessions#resend_otp"
   end
