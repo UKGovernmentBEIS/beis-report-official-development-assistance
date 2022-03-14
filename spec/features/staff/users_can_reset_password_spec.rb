@@ -1,9 +1,16 @@
 require "rails_helper"
+require "notify/otp_message"
 
 RSpec.feature "Users can reset their password" do
+  let(:notify_client) { spy("Notifications::Client") }
+
+  before do
+    allow_any_instance_of(Notify::OTPMessage).to receive(:client).and_return(notify_client)
+  end
+
   scenario "successful password reset" do
     # Given a user exists
-    user = create(:administrator)
+    user = create(:administrator, :mfa_enabled)
 
     # When I follow the reset password link
     visit root_path
@@ -47,7 +54,7 @@ RSpec.feature "Users can reset their password" do
     fill_in "Confirm new password", with: "LlEeTtMmEeIin1!"
     click_on "Change my password"
 
-    # Then my password should be changed and I should be logged in
-    expect(page).to have_content("Your password has been changed successfully. You are now signed in.")
+    # Then I should be asked to log in with my new password
+    expect(page).to have_content("Your password has been changed successfully. Please log in with your new password")
   end
 end
