@@ -20,4 +20,12 @@ class UserMailer < ApplicationMailer
       to: user.email,
       subject: t("devise.mailer.reset_password_instructions.subject"))
   end
+
+  def first_time_devise_reset_password_instructions(user, token, opts = {})
+    @token = token
+
+    view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
+      to: user.email,
+      subject: t("devise.mailer.first_time_devise_reset_password_instructions.subject"))
+  end
 end
