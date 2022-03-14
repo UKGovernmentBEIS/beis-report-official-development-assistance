@@ -16,6 +16,8 @@ class UserMailer < ApplicationMailer
   end
 
   def reset_password_instructions(user, token, opts = {})
+    return unless user.active?
+
     @token = token
 
     view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],

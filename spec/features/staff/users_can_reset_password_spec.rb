@@ -57,4 +57,24 @@ RSpec.feature "Users can reset their password" do
     # Then I should be asked to log in with my new password
     expect(page).to have_content("Your password has been changed successfully. Please log in with your new password")
   end
+
+  context "when the user has been deactivated" do
+    scenario "the user cannot reset their password" do
+      # Given a deactivated user exists
+      user = create(:delivery_partner_user, active: false, identifier: "deactivated-user")
+
+      # When I follow the reset password link
+      visit root_path
+      click_link "Sign in"
+      click_link "Forgot password?"
+
+      # And I fill in my email address
+      fill_in "Email address", with: user.email
+      click_on "Submit"
+
+      # Then I don't receive an email with the reset link
+      email = ActionMailer::Base.deliveries.last
+      expect(email).to be_nil
+    end
+  end
 end
