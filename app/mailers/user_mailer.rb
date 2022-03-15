@@ -1,5 +1,3 @@
-# require "./lib/auth0_api"
-
 class UserMailer < ApplicationMailer
   def welcome(user)
     token = user.send(:set_reset_password_token)
