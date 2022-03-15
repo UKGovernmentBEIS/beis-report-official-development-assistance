@@ -24,6 +24,8 @@ en:
         subject: "Confirmation instructions"
       reset_password_instructions:
         subject: "Reset password instructions"
+      first_time_devise_reset_password_instructions:
+        subject: "Action required: RODA password reset"
       unlock_instructions:
         subject: "Unlock instructions"
       email_changed:
