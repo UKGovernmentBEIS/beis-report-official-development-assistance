@@ -1,0 +1,28 @@
+= content_for :page_title_prefix, "Log in"
+
+= form_for(resource, as: resource_name, url: session_path(resource_name), method: :post) do |f|
+  .govuk-grid-row
+    .govuk-grid-column-one-third
+      .govuk-form-group
+        %fieldset.govuk-fieldset
+          %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+            %h1.govuk-fieldset__heading
+              Verify your login
+
+          = f.govuk_text_field :otp_attempt,
+                                label: { text: "Please enter your six-digit verification code" },
+                                inputmode: "numeric",
+                                pattern: "[0-9]*",
+                                autocomplete: "one-time-code"
+
+  - unless resource.mobile_number_confirmed_at.present?
+    .govuk-grid-row
+      .govuk-grid-column-two-thirds
+        %p.govuk-body
+          Didn't get a message?
+          = link_to "Check your mobile number is correct", edit_mobile_number_path
+
+  .govuk-grid-row
+    .govuk-grid-column-one-third
+      .actions
+        = f.govuk_submit "Continue"

@@ -42,7 +42,6 @@ RSpec.configure do |config|
   config.include ActiveJob::TestHelper
 
   config.include AuthenticationHelpers
-  config.include Auth0Helpers
   config.include CustomEmailMatchers
   config.include FormHelpers
   config.include ActivityHelpers
@@ -50,6 +49,7 @@ RSpec.configure do |config|
   config.include TimeTravelHelpers
   config.include TransactionHelpers
   config.include ExportHelpers
+  config.include Devise::Test::ControllerHelpers, type: :controller
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

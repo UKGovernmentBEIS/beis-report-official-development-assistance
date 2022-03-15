@@ -4,7 +4,6 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "2.7.3"
 
-gem "auth0", "~> 5.6"
 gem "acts_as_tree"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "govuk_design_system_formbuilder", "~> 3.0.2"
@@ -17,6 +16,7 @@ gem "mail-notify"
 gem "monetize"
 gem "mini_racer"
 gem "nanoid"
+gem "notifications-ruby-client"
 gem "parser", "~> 3.0.1.0"
 gem "pry-rails"
 gem "puma", "~> 5.6"
@@ -38,8 +38,9 @@ gem "strip_attributes"
 gem "breadcrumbs_on_rails"
 
 # Authentication
-gem "omniauth-auth0", "~> 3.0"
-gem "omniauth-rails_csrf_protection", "~> 1.0.0"
+gem "devise"
+gem "devise-two-factor"
+gem "devise-security"
 
 group :development, :test do
   gem "brakeman"

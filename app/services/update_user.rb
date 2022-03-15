@@ -1,9 +1,10 @@
 class UpdateUser
-  attr_accessor :user, :organisation
+  attr_accessor :user, :organisation, :reset_mfa
 
-  def initialize(user:, organisation: [])
+  def initialize(user:, organisation:, reset_mfa: false)
     self.user = user
     self.organisation = organisation
+    self.reset_mfa = reset_mfa
   end
 
   def call
@@ -12,12 +13,9 @@ class UpdateUser
     User.transaction do
       user.organisation = organisation
 
-      begin
-        UpdateUserInAuth0.new(user: user).call
-      rescue Auth0::Exception => e
-        result.success = false
-        Rails.logger.error("Error updating user #{user.email} to Auth0 during UpdateUser with #{e.message}.")
-        raise ActiveRecord::Rollback
+      if reset_mfa
+        user.mobile_number = nil
+        user.mobile_number_confirmed_at = nil
       end
 
       user.save

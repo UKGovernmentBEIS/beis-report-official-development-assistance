@@ -23,14 +23,4 @@ RSpec.feature "Home page" do
       expect(page.current_path).to eq home_path
     end
   end
-
-  context "when signed in as a user who is not active" do
-    let(:user) { create(:delivery_partner_user, active: false) }
-    before { authenticate!(user: user) }
-
-    scenario "they are shown the start page" do
-      visit root_path
-      expect(page).to have_button(t("header.link.sign_in"))
-    end
-  end
 end

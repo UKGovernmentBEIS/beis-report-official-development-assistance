@@ -1,0 +1,15 @@
+= content_for :page_title_prefix, "Enter your mobile number"
+
+.govuk-grid-row
+  .govuk-grid-column-one-third
+    = form_for(resource, as: resource_name, url: session_path(resource_name), method: :post) do |f|
+      .govuk-form-group
+        %fieldset.govuk-fieldset
+          %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+            %h1.govuk-fieldset__heading
+              Enter your mobile number
+
+          = f.govuk_text_field :mobile_number, label: { text: "Enter your mobile number" }
+
+      .actions
+        = f.govuk_submit "Continue"

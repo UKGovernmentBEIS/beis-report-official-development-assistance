@@ -1,7 +1,6 @@
 RSpec.shared_examples "a transfer controller" do
   before do
     allow(controller).to receive(:current_user).and_return(user)
-    allow(controller).to receive(:logged_in_using_omniauth?).and_return(true)
   end
 
   context "when logged in as a beis user" do

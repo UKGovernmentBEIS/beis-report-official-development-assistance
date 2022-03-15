@@ -44,6 +44,7 @@ jobs:
       TF_VAR_notify_key: ${{ secrets.PROD_NOTIFY_KEY }}
       TF_VAR_notify_welcome_email_template: ${{ secrets.PROD_NOTIFY_WELCOME_EMAIL_TEMPLATE }}
       TF_VAR_notify_view_template: "b541df04-add8-458e-a7d3-2e156386e150"
+      TF_VAR_notify_otp_verification_template: "1a832f2e-b13b-47f0-b32a-9cd6672364d2"
       TF_VAR_rollbar_access_token: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
       TF_VAR_additional_hostnames: ${{ secrets.PROD_ADDITIONAL_HOSTNAMES }}
       TF_VAR_papertrail_destination: ${{ secrets.PROD_PAPERTRAIL_DESTINATION }}
@@ -73,6 +74,7 @@ jobs:
       TF_VAR_notify_key: ${{ secrets.STAGING_NOTIFY_KEY }}
       TF_VAR_notify_welcome_email_template: ${{ secrets.STAGING_NOTIFY_WELCOME_EMAIL_TEMPLATE }}
       TF_VAR_notify_view_template: "b541df04-add8-458e-a7d3-2e156386e150"
+      TF_VAR_notify_otp_verification_template: "1a832f2e-b13b-47f0-b32a-9cd6672364d2"
       TF_VAR_rollbar_access_token: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
       TF_VAR_additional_hostnames: ${{ secrets.STAGING_ADDITIONAL_HOSTNAMES }}
       TF_VAR_papertrail_destination: ${{ secrets.STAGING_PAPERTRAIL_DESTINATION }}
@@ -102,6 +104,7 @@ jobs:
       TF_VAR_notify_key: ${{ secrets.TRAINING_NOTIFY_KEY }}
       TF_VAR_notify_welcome_email_template: ${{ secrets.TRAINING_NOTIFY_WELCOME_EMAIL_TEMPLATE }}
       TF_VAR_notify_view_template: "b541df04-add8-458e-a7d3-2e156386e150"
+      TF_VAR_notify_otp_verification_template: "1a832f2e-b13b-47f0-b32a-9cd6672364d2"
       TF_VAR_rollbar_access_token: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
       TF_VAR_additional_hostnames: ${{ secrets.TRAINING_ADDITIONAL_HOSTNAMES }}
       TF_VAR_papertrail_destination: ${{ secrets.TRAINING_PAPERTRAIL_DESTINATION }}

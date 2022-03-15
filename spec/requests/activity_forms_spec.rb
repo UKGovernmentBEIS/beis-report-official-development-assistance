@@ -6,9 +6,7 @@ RSpec.describe "Activity forms", type: :request do
 
   before do
     host! "test.local"
-    mock_successful_authentication(uid: user.identifier, name: user.name, email: user.email)
-    get "/auth/oauth2/callback"
-    follow_redirect!
+    login_as(user)
   end
 
   let(:activity) { create(:project_activity, organisation: user.organisation, extending_organisation: user.organisation) }

@@ -1,11 +1,7 @@
 require "rails_helper"
 
-RSpec.feature "BEIS users can editing other users" do
+RSpec.feature "BEIS users can edit other users" do
   let!(:user) { create(:delivery_partner_user, organisation: create(:delivery_partner_organisation)) }
-
-  before do
-    stub_auth0_token_request
-  end
 
   scenario "the email address is disabled" do
     user = create(:beis_user)
@@ -22,26 +18,15 @@ RSpec.feature "BEIS users can editing other users" do
     expect(email_field).to be_disabled
   end
 
-  scenario "the details of the user can be updated" do
+  scenario "the user's name can be updated" do
     user = create(:beis_user)
     authenticate!(user: user)
 
     target_user = create(:delivery_partner_user, name: "Old Name", email: "old@example.com")
 
-    updated_name = "New Name"
-
-    stub_auth0_update_user_request(
-      auth0_identifier: target_user.identifier,
-      name: updated_name,
-      email: target_user.email
-    )
-
-    # Navigate from the landing page
-    visit organisation_path(user.organisation)
-
-    click_on(t("page_title.users.index"))
-
     # Navigate to the users page
+    visit users_path
+
     expect(page).to have_content(t("page_title.users.index"))
 
     # Find the target user and click on edit button
@@ -49,24 +34,46 @@ RSpec.feature "BEIS users can editing other users" do
     find("tr", text: target_user.name).click_link("Edit")
 
     # Fill out the form
-    fill_in "user[name]", with: updated_name
+    fill_in "user[name]", with: "New Name"
 
     # Submit the form
     click_button t("form.button.user.submit")
 
     # Verify the user was updated
-    expect(page).to have_content(updated_name)
+    expect(page).to have_content("New Name")
+  end
+
+  scenario "the user's MFA (mobile number and confirmed_at) can be reset" do
+    # When I am logged in as a BEIS user
+    administrator_user = create(:beis_user)
+    authenticate!(user: administrator_user)
+
+    # And a user with a confirmed mobile number exists
+    visit users_path
+    find("tr", text: user.name).click_link("View")
+    expect(page).to have_content("Mobile number confirmed for authentication? Yes")
+
+    # When I reset that user's MFA
+    visit users_path
+    find("tr", text: user.name).click_link("Edit")
+    check "Reset the mobile number used for authentication"
+    click_on t("default.button.submit")
+
+    # Then that user should no longer be confirmed for MFA
+    expect(page).to have_content("User successfully updated")
+    expect(page).to have_content("Mobile number confirmed for authentication? No")
   end
 
   scenario "an active user can be deactivated" do
     administrator_user = create(:beis_user)
     authenticate!(user: administrator_user)
 
-    visit organisation_path(administrator_user.organisation)
-    click_on t("page_title.users.index")
+    # Navigate to the users page
+    visit users_path
+
     find("tr", text: user.name).click_link("Edit")
 
-    choose t("form.user.active.inactive")
+    choose "Deactivate"
     click_on t("default.button.submit")
 
     expect(user.reload.active).to be false
@@ -77,11 +84,12 @@ RSpec.feature "BEIS users can editing other users" do
     user = create(:inactive_user, organisation: create(:delivery_partner_organisation))
     authenticate!(user: administrator_user)
 
-    visit organisation_path(administrator_user.organisation)
-    click_on t("page_title.users.index")
+    # Navigate to the users page
+    visit users_path
+
     find("tr", text: user.name).click_link("Edit")
 
-    choose t("form.user.active.active")
+    choose "Activate"
     click_on t("default.button.submit")
 
     expect(user.reload.active).to be true

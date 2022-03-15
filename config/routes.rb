@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  devise_scope :user do
+    devise_for :users, controllers: {sessions: "users/sessions"}
+    get :edit_mobile_number, to: "users/sessions#edit_mobile_number"
+  end
+
   # If the DOMAIN env var is present, and the request doesn't come from that
   # hostname, redirect us to the canonical hostname with the path and query string present
   if ENV["CANONICAL_HOSTNAME"].present?
@@ -118,11 +123,6 @@ Rails.application.routes.draw do
 
   # Static pages
   get "/pages/*id" => "pages#show", :as => :page, :format => false
-
-  # Authentication
-  get "auth/oauth2/callback" => "auth0#callback"
-  get "auth/failure" => "auth0#failure"
-  get "sign_out" => "application#sign_out"
 
   # Errors
   get "/404", to: "errors#not_found"

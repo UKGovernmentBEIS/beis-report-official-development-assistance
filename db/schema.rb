@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_25_101740) do
+ActiveRecord::Schema.define(version: 2022_03_01_145502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -321,8 +321,21 @@ ActiveRecord::Schema.define(version: 2022_01_25_101740) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "organisation_id"
     t.boolean "active", default: true
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.string "encrypted_otp_secret"
+    t.string "encrypted_otp_secret_iv"
+    t.string "encrypted_otp_secret_salt"
+    t.integer "consumed_timestep"
+    t.string "mobile_number"
+    t.datetime "mobile_number_confirmed_at"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.boolean "otp_required_for_login", default: true
     t.index ["identifier"], name: "index_users_on_identifier"
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "activities", "activities", column: "parent_id", on_delete: :restrict

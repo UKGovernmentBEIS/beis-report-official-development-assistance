@@ -18,18 +18,6 @@ module Auth
     end
   end
 
-  def current_user
-    @current_user ||= if session.dig(:userinfo)
-      User.active.includes(:organisation).find_by!(identifier: signed_in_user_identifier) do |user|
-        user.name = session.dig(:userinfo, "info", "name")
-        user.email = session.dig(:userinfo, "info", "email")
-      end
-    end
-  rescue ActiveRecord::RecordNotFound
-    repudiate!
-    raise UserNotAuthorised
-  end
-
   def signed_in_user_identifier
     session.dig(:userinfo, "uid")
   end
@@ -38,8 +26,7 @@ module Auth
     current_user.present?
   end
 
-  private def repudiate!
-    session.delete(:userinfo)
-    @current_user = nil
+  def after_sign_in_path_for(_user)
+    session[:redirect_path] || home_path
   end
 end

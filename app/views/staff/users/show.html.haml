@@ -35,3 +35,8 @@
             = t("summary.label.user.active")
           %dd.govuk-summary-list__value
             = t("form.user.active.#{@user.active}")
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            = t("summary.label.user.confirmed_for_mfa.label")
+          %dd.govuk-summary-list__value
+            = t("summary.label.user.confirmed_for_mfa.#{@user.confirmed_for_mfa?}")
