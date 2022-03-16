@@ -13,11 +13,8 @@ class CreateRefund
     refund.parent_activity = activity
     refund.report = editable_report_for(activity)
     assign_refund_and_comment(attributes)
-    save_value = refund.save
-
-    raise Error, validation_error_message(refund) if refund.errors.any?
-
-    record_historical_event(refund)
+    save_successful = refund.save
+    record_historical_event(refund) if save_successful
 
     Result.new(save_successful, refund)
   end

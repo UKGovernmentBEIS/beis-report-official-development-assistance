@@ -68,6 +68,20 @@ RSpec.describe CreateRefund do
         end
       end
 
+      context "when there isn't a comment" do
+        let(:attributes) do
+          {
+            value: 100.10,
+            financial_quarter: 1,
+            financial_year: 2020
+          }
+        end
+
+        it "has an error" do
+          expect(subject.object.errors.messages.values.to_s).to include("Enter a comment describing the need for the refund")
+        end
+      end
+
       context "when the atrributes are invalid" do
         let(:attributes) do
           {
@@ -79,7 +93,7 @@ RSpec.describe CreateRefund do
         end
 
         it "raises an error with the validation errors" do
-          expect { subject }.to raise_error(CreateRefund::Error, /Select a financial year/)
+          expect(subject.object.errors.messages.values.to_s).to include("Select a financial year")
         end
 
         it "does not create a historical event" do
