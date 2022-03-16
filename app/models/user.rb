@@ -32,7 +32,7 @@ class User < ApplicationRecord
   end
 
   def email_cannot_be_changed_after_create
-    if email_changed?
+    if email.to_s.squish.downcase != email_was.to_s.squish.downcase
       errors.add(:email, :cannot_be_changed)
     end
   end
