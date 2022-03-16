@@ -40,6 +40,7 @@ RSpec.feature "BEIS users can edit other users" do
     click_button t("form.button.user.submit")
 
     # Verify the user was updated
+    expect(page).to have_content("User successfully updated")
     expect(page).to have_content("New Name")
   end
 
@@ -76,6 +77,7 @@ RSpec.feature "BEIS users can edit other users" do
     choose "Deactivate"
     click_on t("default.button.submit")
 
+    expect(page).to have_content("User successfully updated")
     expect(user.reload.active).to be false
   end
 
@@ -92,6 +94,32 @@ RSpec.feature "BEIS users can edit other users" do
     choose "Activate"
     click_on t("default.button.submit")
 
+    expect(page).to have_content("User successfully updated")
     expect(user.reload.active).to be true
+  end
+
+  context "editing a user with a non-lowercase email address" do
+    before do
+      # Given a non-lowercase email address exists
+      # Devise lowercases emails on creation so this is for pre-existing addresses
+      # We need to simulate this situation by updating without validation
+      user.update_column(:email, "ForenameMacSurname@ClanMacSurname.org")
+      expect(user.email).to eql("ForenameMacSurname@ClanMacSurname.org")
+    end
+
+    it "does not register the automated Devise-caused case change as an error" do
+      # When I am logged in as a BEIS user
+      administrator_user = create(:beis_user)
+      authenticate!(user: administrator_user)
+
+      visit users_path
+      find("tr", text: user.name).click_link("Edit")
+
+      # Submit the form
+      click_button t("form.button.user.submit")
+
+      # Verify the user was updated
+      expect(page).to have_content("User successfully updated")
+    end
   end
 end

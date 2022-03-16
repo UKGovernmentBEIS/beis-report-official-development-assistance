@@ -13,6 +13,18 @@ RSpec.describe User, type: :model do
       expect(user).to be_invalid
       expect(user.errors[:email]).to eq([I18n.t("activerecord.errors.models.user.attributes.email.cannot_be_changed")])
     end
+
+    it "is not case sensitive" do
+      # When a non-lowercase email address exists (Devise lowercases emails on creation so this is for pre-existing addresses)
+      user = create(:delivery_partner_user)
+      user.update_column(:email, "ForenameMacSurname@ClanMacSurname.org")
+      expect(user.email).to eql("ForenameMacSurname@ClanMacSurname.org")
+
+      # And Devise automatically lowercases the address on editing
+      user.email = "forenamemacsurname@clanmacsurname.org"
+
+      expect(user).to be_valid
+    end
   end
 
   describe "associations" do

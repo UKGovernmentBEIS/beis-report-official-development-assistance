@@ -81,7 +81,7 @@ class Users::SessionsController < Devise::SessionsController
     if session[:otp_user_id]
       User.find(session[:otp_user_id])
     elsif user_params[:email]
-      User.find_by(email: user_params[:email]).tap do |user|
+      User.find_for_authentication(email: user_params[:email]).tap do |user|
         session[:otp_user_id] = user&.id
       end
     end

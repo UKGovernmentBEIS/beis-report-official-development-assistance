@@ -180,6 +180,23 @@ RSpec.feature "Users can sign in" do
         expect(page).to have_content("Signed in successfully.")
       end
     end
+
+    scenario "they can sign in using a different capitalisation of their email address" do
+      # Given a user exists
+      user = create(:administrator, :mfa_enabled, email: "forename.lastname@somesite.org")
+
+      # When I go to log in
+      visit root_path
+      click_on t("header.link.sign_in")
+
+      # And I use a different capitalisation of the email than that in the database
+      fill_in "Email", with: "Forename.Lastname@SOMEsite.org"
+      fill_in "Password", with: user.password
+      click_on "Log in"
+
+      # Then I should be prompted for the OTP
+      expect(page).to have_field("Please enter your six-digit verification code")
+    end
   end
 
   scenario "a user is redirected to a link they originally requested" do
