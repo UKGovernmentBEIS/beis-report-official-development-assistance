@@ -13,7 +13,8 @@ class ActivitySearch
       :roda_identifier,
       :delivery_partner_identifier,
       :beis_identifier,
-      :previous_identifier
+      :previous_identifier,
+      :transparency_identifier
     ]
 
     result = search_fields
