@@ -994,6 +994,7 @@
 - OTP resend for delivery failures
 - Relax user model validation to permit capitalisation changes and whitespace removal from email addresses
 - Use Devise case-insensitive method when retrieving users for authentication
+- Add functionality to search for activities by IATI identifier
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-99...HEAD
 [release-99]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-98...release-99

@@ -58,6 +58,18 @@ RSpec.describe ActivitySearch do
       end
     end
 
+    describe "searching for IATI identifiers" do
+      let(:query) { bob_programme.transparency_identifier }
+
+      before do
+        bob_programme.update!(transparency_identifier: "programme-iati-id")
+      end
+
+      it "returns the matching activities" do
+        expect(activity_search.results).to match_array [bob_programme]
+      end
+    end
+
     describe "searching by title" do
       let(:query) { "Search" }
 
@@ -109,6 +121,18 @@ RSpec.describe ActivitySearch do
 
       it "returns nothing" do
         expect(activity_search.results).to match_array []
+      end
+    end
+
+    describe "searching for their own project's IATI identifiers" do
+      let(:query) { alice_project.transparency_identifier }
+
+      before do
+        alice_project.update!(transparency_identifier: "project-iati-id")
+      end
+
+      it "returns the matching activities" do
+        expect(activity_search.results).to match_array [alice_project]
       end
     end
 

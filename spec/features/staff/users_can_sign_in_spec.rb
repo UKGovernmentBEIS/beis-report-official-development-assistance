@@ -31,7 +31,7 @@ RSpec.feature "Users can sign in" do
       expect(page).to have_content("Signed in successfully.")
 
       # And at the home page
-      expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
+      expect(page).to have_content("You can search by RODA, Delivery Partner, BEIS, or IATI identifier, or by the activity's title")
     end
   end
 
@@ -73,7 +73,7 @@ RSpec.feature "Users can sign in" do
         expect(page).to have_content("Signed in successfully.")
 
         # And I should be at the home page
-        expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
+        expect(page).to have_content("You can search by RODA, Delivery Partner, BEIS, or IATI identifier, or by the activity's title")
       end
 
       scenario "unsuccessful OTP attempt" do
@@ -142,7 +142,7 @@ RSpec.feature "Users can sign in" do
         # And I should be logged in at the home page
         expect(page).to have_link(t("header.link.sign_out"))
         expect(page).to have_content("Signed in successfully.")
-        expect(page).to have_content("You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title")
+        expect(page).to have_content("You can search by RODA, Delivery Partner, BEIS, or IATI identifier, or by the activity's title")
       end
     end
 
