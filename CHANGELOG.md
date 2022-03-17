@@ -983,7 +983,23 @@
 - Allow Actuals to have a comment and display on Actual and Comment report tabs
 - Add comments to Activities and Actuals via bulk CSV upload
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-99...HEAD
+## [release-100] 2022-03-17
+
+- Log in with local Devise. This replaces Auth0. Uses BEIS password policy linked with GOV.UK guidelines and dxw policy
+- Self-service reset user password through Devise via "Forgot your password?" link
+- User invitations via Users / Create User
+- Remember my login for 30 days
+- User deactivation via Devise
+- Two-factor authentication via SMS/OTP and a phased login including mobile number provision/confirmation
+- OTP resend for delivery failures
+- Relax user model validation to permit capitalisation changes and whitespace removal from email addresses
+- Use Devise case-insensitive method when retrieving users for authentication
+- Add functionality to search for activities by IATI identifier
+
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-100...HEAD
+[release-100]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-99...release-100
 [release-99]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-98...release-99
 [release-98]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-97...release-98
 [release-97]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-96...release-97

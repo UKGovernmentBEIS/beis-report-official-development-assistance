@@ -1,34 +1,202 @@
 require "rails_helper"
+require "notify/otp_message"
 
-RSpec.feature "Users can sign in with Auth0" do
-  scenario "successful sign in via header link" do
-    user = create(:administrator)
-    mock_successful_authentication(
-      uid: user.identifier, name: user.name, email: user.email
-    )
+def log_in_via_form(user, remember_me: false)
+  click_on t("header.link.sign_in")
+  # type in username and password
+  fill_in "Email", with: user.email
+  fill_in "Password", with: user.password
 
-    visit root_path
-    expect(page).to have_content(t("start_page.title"))
+  check "Remember me" if remember_me
 
-    expect(page).to have_content(t("header.link.sign_in"))
-    click_on t("header.link.sign_in")
+  click_on "Log in"
+end
 
-    expect(page).to have_content(t("header.link.sign_out"))
+RSpec.feature "Users can sign in" do
+  context "user does not have 2FA enabled" do
+    scenario "successful sign in via header link" do
+      # Given a user exists
+      user = create(:administrator)
+
+      # When I log in with that user's credentials
+      visit root_path
+      expect(page).to have_content(t("start_page.title"))
+
+      expect(page).to have_content(t("header.link.sign_in"))
+
+      log_in_via_form(user)
+
+      # Then I should be logged in.
+      expect(page).to have_link(t("header.link.sign_out"))
+      expect(page).to have_content("Signed in successfully.")
+
+      # And at the home page
+      expect(page).to have_content("You can search by RODA, Delivery Partner, BEIS, or IATI identifier, or by the activity's title")
+    end
   end
 
-  scenario "successful sign in via button link" do
-    user = create(:administrator)
-    mock_successful_authentication(
-      uid: user.identifier, name: user.name, email: user.email
-    )
+  context "user has MFA enabled" do
+    let(:notify_client) { spy("Notifications::Client") }
 
-    visit root_path
-    expect(page).to have_content(t("start_page.title"))
+    before do
+      allow_any_instance_of(Notify::OTPMessage).to receive(:client).and_return(notify_client)
+    end
 
-    expect(page).to have_content(t("header.link.sign_in"))
-    click_on t("header.link.sign_in")
+    context "user has a confirmed mobile number" do
+      scenario "successful sign in via header link" do
+        # Given a user with 2FA enabled and a confirmed mobile number exists
+        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.now)
 
-    expect(page).to have_content(t("header.link.sign_out"))
+        # When I log in with that user's email and password
+        visit root_path
+        log_in_via_form(user)
+
+        # Then there should be no link to check my mobile number
+        expect(page).not_to have_link "Check your mobile number is correct"
+
+        otp_at_time_of_login = user.current_otp
+        # And I should receive an OTP to my mobile number
+        expect(notify_client).to have_received(:send_sms).with({
+          phone_number: user.mobile_number,
+          template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+          personalisation: {otp: otp_at_time_of_login}
+        })
+
+        # When I enter the one-time password before it expires
+        travel 3.minutes do
+          fill_in "Please enter your six-digit verification code", with: otp_at_time_of_login
+          click_on "Continue"
+        end
+
+        # Then I should be logged in
+        expect(page).to have_link(t("header.link.sign_out"))
+        expect(page).to have_content("Signed in successfully.")
+
+        # And I should be at the home page
+        expect(page).to have_content("You can search by RODA, Delivery Partner, BEIS, or IATI identifier, or by the activity's title")
+      end
+
+      scenario "unsuccessful OTP attempt" do
+        # Given a user with 2FA enabled and a confirmed mobile number exists
+        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.now)
+
+        # When I log in with that user's email and password
+        visit root_path
+        log_in_via_form(user)
+
+        # And I enter an incorrect OTP
+        fill_in "Please enter your six-digit verification code", with: "000000"
+        click_on "Continue"
+
+        # Then I should not be logged in
+        expect(page).to have_content("Invalid two-factor verification code")
+        expect(page).not_to have_link(t("header.link.sign_out"))
+        visit root_path
+        expect(page).to have_content("Sign in")
+      end
+    end
+
+    context "user initially entered an incorrect mobile number" do
+      scenario "the email/password are correct but the user still needs confirm their mobile number" do
+        incorrect_number = "123456wrong"
+        # Given a user with 2FA enabled exists
+        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: nil, mobile_number: incorrect_number)
+
+        # When I log in with that user's email and password
+        visit root_path
+        log_in_via_form(user)
+
+        # But I do not receive a message despite it having been sent
+        expect(notify_client).to have_received(:send_sms).once.with({
+          phone_number: incorrect_number,
+          template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+          personalisation: {otp: user.current_otp}
+        })
+
+        # When I follow the link to check my mobile number
+        click_link "Check your mobile number is correct"
+
+        # Then I should see the incorrect number
+        expect(page).to have_field("Enter your mobile number", with: incorrect_number)
+
+        # When I update my number
+        correct_number = "07799000000"
+        fill_in "Enter your mobile number", with: correct_number
+        click_on "Continue"
+
+        # Then I should receive an OTP to my mobile number
+        expect(notify_client).to have_received(:send_sms).once.with({
+          phone_number: correct_number,
+          template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+          personalisation: {otp: user.current_otp}
+        })
+
+        # When I enter the one-time password before it expires
+        fill_in "Please enter your six-digit verification code", with: user.current_otp
+        expect(user.mobile_number_confirmed_at).to be_nil
+        click_on "Continue"
+
+        # Then my mobile number should be confirmed
+        expect(user.reload.mobile_number_confirmed_at).to be_a(ActiveSupport::TimeWithZone)
+
+        # And I should be logged in at the home page
+        expect(page).to have_link(t("header.link.sign_out"))
+        expect(page).to have_content("Signed in successfully.")
+        expect(page).to have_content("You can search by RODA, Delivery Partner, BEIS, or IATI identifier, or by the activity's title")
+      end
+    end
+
+    context "User has no mobile number provisioned" do
+      scenario "successful mobile confirmation" do
+        # Given that I am a RODA user
+        user = create(:delivery_partner_user, :mfa_enabled, :no_mobile_number)
+
+        # When I log in for the first time,
+        visit root_path
+        log_in_via_form(user)
+
+        # Then I am prompted for my mobile number
+        expect(page).to have_content("Enter your mobile number")
+
+        # And I enter my mobile number
+        fill_in "Enter your mobile number", with: "07700900000"
+        click_on "Continue"
+
+        user = user.reload # Mobile number has changed
+
+        # Then I should receive an automated text message,
+        expect(notify_client).to have_received(:send_sms).with({
+          phone_number: user.mobile_number,
+          template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+          personalisation: {otp: user.current_otp}
+        })
+
+        # When I enter the code
+        fill_in "Please enter your six-digit verification code", with: user.current_otp
+        click_on "Continue"
+
+        # Then I am successfully logged in.
+        expect(page).to have_link(t("header.link.sign_out"))
+        expect(page).to have_content("Signed in successfully.")
+      end
+    end
+
+    scenario "they can sign in using a different capitalisation of their email address" do
+      # Given a user exists
+      user = create(:administrator, :mfa_enabled, email: "forename.lastname@somesite.org")
+
+      # When I go to log in
+      visit root_path
+      click_on t("header.link.sign_in")
+
+      # And I use a different capitalisation of the email than that in the database
+      fill_in "Email", with: "Forename.Lastname@SOMEsite.org"
+      fill_in "Password", with: user.password
+      click_on "Log in"
+
+      # Then I should be prompted for the OTP
+      expect(page).to have_field("Please enter your six-digit verification code")
+    end
   end
 
   scenario "a user is redirected to a link they originally requested" do
@@ -36,45 +204,48 @@ RSpec.feature "Users can sign in with Auth0" do
 
     visit reports_path
 
-    mock_successful_authentication(
-      uid: user.identifier, name: user.name, email: user.email
-    )
-
-    click_on t("header.link.sign_in")
+    log_in_via_form(user)
 
     expect(current_path).to eq(reports_path)
   end
 
-  scenario "a BEIS user lands on their home  page" do
+  scenario "a BEIS user lands on their home page" do
     user = create(:beis_user)
-
-    mock_successful_authentication(
-      uid: user.identifier, name: user.name, email: user.email
-    )
 
     visit root_path
     expect(page).to have_content(t("start_page.title"))
 
-    expect(page).to have_content(t("header.link.sign_in"))
-    click_on t("header.link.sign_in")
+    log_in_via_form(user)
 
     expect(page.current_path).to eql home_path
   end
 
-  scenario "a delivery partenr user lands on their home  page" do
+  scenario "a delivery partner user lands on their home page" do
     user = create(:delivery_partner_user)
-
-    mock_successful_authentication(
-      uid: user.identifier, name: user.name, email: user.email
-    )
 
     visit root_path
     expect(page).to have_content(t("start_page.title"))
 
-    expect(page).to have_content(t("header.link.sign_in"))
-    click_on t("header.link.sign_in")
-
+    log_in_via_form(user)
     expect(page.current_path).to eql home_path
+  end
+
+  scenario "Logins can be remembered for 30 days" do
+    user = create(:beis_user)
+
+    visit root_path
+    expect(page).to have_content(t("start_page.title"))
+
+    log_in_via_form(user, remember_me: true)
+
+    travel 29.days do
+      visit reports_path
+      expect(page).to have_content("Create a new report")
+    end
+    travel 31.days do
+      visit reports_path
+      expect(page).to have_content("Sign in")
+    end
   end
 
   scenario "protected pages cannot be visited unless signed in" do
@@ -83,83 +254,33 @@ RSpec.feature "Users can sign in with Auth0" do
     expect(page).to have_content(t("start_page.title"))
   end
 
-  context "when the Auth0 identifier does not match a user record" do
-    scenario "informs the user their invitation has failed and the team has been notified" do
-      user = create(:administrator, identifier: "a-local-identifier")
-      mock_successful_authentication(
-        uid: "an-unknown-identifier", name: user.name, email: user.email
-      )
-
-      visit root_path
-
-      expect(page).to have_content(t("header.link.sign_in"))
-      click_on t("header.link.sign_in")
-
-      expect(page).to have_content(t("page_title.errors.not_authorised"))
-      expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))
-    end
-  end
-
-  context "when there was a known error message and the user is redirected to /auth/failure" do
-    before(:each) do
-      OmniAuth.config.mock_auth[:auth0] = :invalid_credentials
-    end
-
+  context "incorrect credentials are supplied" do
     it "displays the error message so they can try to correct the problem themselves" do
-      visit root_path
-
-      expect(page).to have_content(t("header.link.sign_in"))
-      click_on t("header.link.sign_in")
-
-      expect(page).to have_content(t("page_content.errors.auth0.failed.explanation"))
-      expect(page).to have_content(t("page_content.errors.auth0.error_messages.invalid_credentials"))
-      expect(page).to have_content(t("page_content.errors.auth0.failed.prompt"))
-    end
-  end
-
-  context "when there was an unknown error message and the user is redirected to /auth/failure" do
-    before(:each) do
-      OmniAuth.config.mock_auth[:auth0] = :unknown_failure
-    end
-
-    it "displays a generic error message and logs to Rollbar" do
-      allow(Rollbar).to receive(:log)
+      user = double("User", email: "dont@exist.com", password: "anything")
 
       visit root_path
 
-      click_button t("header.link.sign_in")
+      log_in_via_form(user)
 
-      expect(page).not_to have_content("unknown_failure")
-      expect(page).to have_content(t("page_content.errors.auth0.error_messages.generic"))
-      expect(Rollbar).to have_received(:log).with(:info, "Unknown response from Auth0", "unknown_failure")
+      expect(page).to have_content("Invalid Email or password")
     end
   end
 
   context "when the user has been deactivated" do
     scenario "the user cannot log in and sees an informative message" do
       user = create(:delivery_partner_user, active: false, identifier: "deactivated-user")
-      mock_successful_authentication(
-        uid: "deactivated-user", name: user.name, email: user.email
-      )
 
       visit root_path
+      log_in_via_form(user)
 
-      expect(page).to have_content(t("header.link.sign_in"))
-      click_on t("header.link.sign_in")
-
-      expect(page).to have_content(t("page_title.errors.not_authorised"))
-      expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))
+      expect(page).to have_content("Your account is not active. If you believe this to be in error, please contact the person who invited you to the service.")
     end
 
     scenario "a user who is logged in and then deactivated sees an error message" do
       user = create(:delivery_partner_user)
 
-      mock_successful_authentication(
-        uid: user.identifier, name: user.name, email: user.email
-      )
-
       visit root_path
-      click_on t("header.link.sign_in")
+      log_in_via_form(user)
 
       expect(page.current_path).to eql home_path
 
@@ -168,8 +289,7 @@ RSpec.feature "Users can sign in with Auth0" do
 
       visit home_path
 
-      expect(page).to have_content(t("page_title.errors.not_authorised"))
-      expect(page).to have_content(t("page_content.errors.not_authorised.explanation"))
+      expect(page).to have_content("Your account is not active. If you believe this to be in error, please contact the person who invited you to the service.")
     end
   end
 end

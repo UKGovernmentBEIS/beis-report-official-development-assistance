@@ -24,21 +24,16 @@ class Staff::UsersController < Staff::BaseController
 
   def create
     @user = User.new(user_params)
-    @user.active = params[:user][:active]
     authorize @user
     @service_owner = service_owner
     @delivery_partners = delivery_partners
 
-    if @user.valid?
-      result = CreateUser.new(user: @user, organisation: organisation).call
-      if result.success?
-        flash.now[:notice] = t("action.user.create.success")
-        redirect_to user_path(@user.reload.id)
-      else
-        flash.now[:error] = t("action.user.create.failed", error: result.error_message)
-        render :new
-      end
+    result = CreateUser.new(user: @user, organisation: organisation).call
+    if result.success?
+      flash.now[:notice] = t("action.user.create.success")
+      redirect_to user_path(@user.reload.id)
     else
+      flash.now[:error] = t("action.user.create.failed", error: result.error_message)
       render :new
     end
   end
@@ -58,14 +53,14 @@ class Staff::UsersController < Staff::BaseController
     @service_owner = service_owner
     @delivery_partners = delivery_partners
 
-    @user.assign_attributes(user_params)
-    @user.active = params[:user][:active]
+    reset_mfa = user_params.delete(:reset_mfa)
+    @user.assign_attributes(user_params.except(:reset_mfa))
 
     if @user.valid?
-      result = UpdateUser.new(user: @user, organisation: organisation).call
+      result = UpdateUser.new(user: @user, organisation: organisation, reset_mfa: reset_mfa).call
 
       if result.success?
-        flash.now[:notice] = t("action.user.update.success")
+        flash[:notice] = t("action.user.update.success")
         redirect_to user_path(@user)
       else
         flash.now[:error] = t("action.user.update.failed")
@@ -77,7 +72,7 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :organisation_id)
+    params.require(:user).permit(:name, :email, :organisation_id, :active, :reset_mfa)
   end
 
   def id
@@ -89,7 +84,7 @@ class Staff::UsersController < Staff::BaseController
   end
 
   def organisation
-    Organisation.find(organisation_id)
+    Organisation.find_by(id: organisation_id)
   end
 
   private def service_owner

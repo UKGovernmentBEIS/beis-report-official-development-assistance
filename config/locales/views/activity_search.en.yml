@@ -15,6 +15,6 @@ en:
   form:
     activity_search:
       query: Enter your search query
-      hint: You can search by RODA, Delivery Partner, or BEIS identifier, or by the activity's title
+      hint: You can search by RODA, Delivery Partner, BEIS, or IATI identifier, or by the activity's title
       heading: Search for activities
       submit: Search

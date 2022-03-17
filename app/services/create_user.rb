@@ -9,29 +9,14 @@ class CreateUser
   def call
     result = Result.new(true)
 
-    User.transaction do
-      user.organisation = organisation
-      user.save
-      begin
-        CreateUserInAuth0.new(user: user).call
-      rescue Auth0::Exception => e
-        result.success = false
-        result.error_message = extract_auth0_error_message(e)
-        Rails.logger.error("Error adding user #{user.email} to Auth0 during CreateUser with: #{result.error_message}")
-        raise ActiveRecord::Rollback
-      end
-    end
+    user.organisation = organisation
+    # This password will never be used: the user must set a new password upon first login
+    # but it must fulfill the password_complexity requirements we set in
+    # config/initializers/devise_security
+    user.password = "Ab3!#{SecureRandom.uuid}"
+    result.success = user.save
 
     SendWelcomeEmail.new(user: user).call if user.persisted?
     result
-  end
-
-  private def extract_auth0_error_message(result)
-    begin
-      message = JSON.parse(result.message)["message"]
-    rescue JSON::ParserError
-      message = I18n.t("default.error.unknown")
-    end
-    message
   end
 end

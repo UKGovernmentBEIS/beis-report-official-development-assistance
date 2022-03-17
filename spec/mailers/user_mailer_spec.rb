@@ -11,14 +11,11 @@ RSpec.describe UserMailer, type: :mailer do
   end
 
   let(:user) { create(:administrator) }
-  before(:each) do
-    stub_auth0_token_request
-  end
+
+  before { allow(user).to receive(:send).with(:set_reset_password_token).and_return("123abc") }
 
   describe("#welcome") do
     it "sends a welcome email to the user with a set password link" do
-      stub_auth0_post_password_change(auth0_identifier: user.identifier)
-
       mail = described_class.welcome(user)
 
       expect(mail.to).to eq([user.email])
@@ -28,18 +25,10 @@ RSpec.describe UserMailer, type: :mailer do
       name = personalisation_header["unparsed_value"]["name"]
       link = personalisation_header["unparsed_value"]["link"]
       service_url = personalisation_header["unparsed_value"]["service_url"]
+
       expect(name).to eq(user.name)
-      expect(link).to eq("https://testdomain/lo/reset?ticket=123#")
+      expect(link).to eq("http://test.local/users/password/edit?reset_password_token=123abc")
       expect(service_url).to eq("test.local")
-    end
-
-    it "asks Auth0 for a password change token" do
-      stub_auth0_post_password_change(auth0_identifier: user.identifier)
-
-      mail = described_class.welcome(user)
-      expect(mail.to).to eq([user.email])
-
-      expect(stub_auth0_post_password_change).to have_been_requested
     end
   end
 end

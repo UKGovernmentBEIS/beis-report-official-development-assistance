@@ -9,7 +9,6 @@ class Transaction < ApplicationRecord
   belongs_to :parent_activity, class_name: "Activity"
   belongs_to :report, optional: true
   has_many :historical_events, dependent: :destroy, as: :trackable
-  has_many :comments, dependent: :destroy, as: :commentable
 
   validates_with TransactionOrganisationValidator
   validates_presence_of :report, unless: -> { parent_activity&.organisation&.service_owner? }
