@@ -55,7 +55,7 @@ class ImportActuals
 
     def import_row
       @converter = Converter.new(@row)
-      return if @converter.zero_value_actual?
+      return if @converter.zero_value?
 
       @errors.update(@converter.errors)
 
@@ -223,7 +223,7 @@ class ImportActuals
       code
     end
 
-    def zero_value_actual?
+    def zero_value?
       @attributes[:value].present? && @attributes[:value].zero?
     end
   end
