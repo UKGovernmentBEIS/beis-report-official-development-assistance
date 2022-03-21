@@ -38,9 +38,6 @@ jobs:
       TF_VAR_docker_password: ${{ secrets.DOCKER_PASSWORD }}
       TF_VAR_environment: "prod"
       TF_VAR_secret_key_base: ${{ secrets.PROD_SECRET_KEY_BASE }}
-      TF_VAR_auth0_client_id: ${{ secrets.PROD_AUTH0_CLIENT_ID }}
-      TF_VAR_auth0_client_secret: ${{ secrets.PROD_AUTH0_CLIENT_SECRET }}
-      TF_VAR_auth0_domain: ${{ secrets.PROD_AUTH0_DOMAIN }}
       TF_VAR_notify_key: ${{ secrets.PROD_NOTIFY_KEY }}
       TF_VAR_notify_welcome_email_template: ${{ secrets.PROD_NOTIFY_WELCOME_EMAIL_TEMPLATE }}
       TF_VAR_notify_view_template: "b541df04-add8-458e-a7d3-2e156386e150"
@@ -68,9 +65,6 @@ jobs:
       TF_VAR_docker_password: ${{ secrets.DOCKER_PASSWORD }}
       TF_VAR_environment: "staging"
       TF_VAR_secret_key_base: ${{ secrets.STAGING_SECRET_KEY_BASE }}
-      TF_VAR_auth0_client_id: ${{ secrets.STAGING_AUTH0_CLIENT_ID }}
-      TF_VAR_auth0_client_secret: ${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}
-      TF_VAR_auth0_domain: ${{ secrets.STAGING_AUTH0_DOMAIN }}
       TF_VAR_notify_key: ${{ secrets.STAGING_NOTIFY_KEY }}
       TF_VAR_notify_welcome_email_template: ${{ secrets.STAGING_NOTIFY_WELCOME_EMAIL_TEMPLATE }}
       TF_VAR_notify_view_template: "b541df04-add8-458e-a7d3-2e156386e150"
@@ -98,9 +92,6 @@ jobs:
       TF_VAR_docker_password: ${{ secrets.DOCKER_PASSWORD }}
       TF_VAR_environment: "pentest"
       TF_VAR_secret_key_base: ${{ secrets.TRAINING_SECRET_KEY_BASE }}
-      TF_VAR_auth0_client_id: ${{ secrets.TRAINING_AUTH0_CLIENT_ID }}
-      TF_VAR_auth0_client_secret: ${{ secrets.TRAINING_AUTH0_CLIENT_SECRET }}
-      TF_VAR_auth0_domain: ${{ secrets.TRAINING_AUTH0_DOMAIN }}
       TF_VAR_notify_key: ${{ secrets.TRAINING_NOTIFY_KEY }}
       TF_VAR_notify_welcome_email_template: ${{ secrets.TRAINING_NOTIFY_WELCOME_EMAIL_TEMPLATE }}
       TF_VAR_notify_view_template: "b541df04-add8-458e-a7d3-2e156386e150"
