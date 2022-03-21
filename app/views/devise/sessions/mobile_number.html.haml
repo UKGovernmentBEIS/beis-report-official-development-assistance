@@ -9,6 +9,7 @@
             %h1.govuk-fieldset__heading
               Enter your mobile number
 
+          = f.govuk_error_summary
           = f.govuk_text_field :mobile_number, label: { text: "Enter your mobile number" }
 
       .actions
