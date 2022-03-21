@@ -999,6 +999,7 @@
 ## [unreleased] ...
 
 - Add 'Other ODA' fund
+- Change the HTML title tag of the Users page to be Users, not Home
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-100...HEAD
 [release-100]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-99...release-100
