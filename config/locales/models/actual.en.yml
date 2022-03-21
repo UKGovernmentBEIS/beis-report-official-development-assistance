@@ -59,23 +59,23 @@ en:
         receiving_organisation: Receiver
   tabs:
     actuals:
-      heading: Actuals
-      copy: Listed below are the actuals that have been added to this report.
+      heading: Actuals / Refunds
+      copy: Listed below are the actuals and refunds that have been added to this report.
       providing:
-        heading: Providing actuals data
-        copy: Actuals data can be added by using the application interface or by uploading data.
+        heading: Providing actuals and refunds data
+        copy: Actuals and refunds data can be added by using the application interface or by uploading data.
       upload:
         heading: Upload data
         copy_html:
-          <p class="govuk-body">Large numbers of actuals can be added via the actuals upload.</p>
-          <p class="govuk-body">For guidance on uploading actuals data, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload">guidance in the help centre (opens in new tab)</a>.</p>
-        warning: Ensure you use the correct template (available below) when uploading actuals data.
+          <p class="govuk-body">Large numbers of actuals and refunds can be added via the actuals upload.</p>
+          <p class="govuk-body">For guidance on uploading actuals and refunds, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload">guidance in the help centre (opens in new tab)</a>.</p>
+        warning: Ensure you use the correct template (available below) when uploading the actuals and refunds.
   page_content:
     actuals:
       button:
         create: Add an actual
-        upload: Upload actuals data
-        download_template: Download actuals data template
+        upload: Upload actuals and refunds data
+        download_template: Download actuals and refunds data template
       edit_noun: actual spend
       table:
         headers:
@@ -83,22 +83,22 @@ en:
           receiving_organisation: Receiver
       upload:
         copy_html:
-          <p class="govuk-body">Large numbers of actuals can be added to the report by uploading them here.</p>
+          <p class="govuk-body">Large numbers of actuals and refunds can be added to the report by uploading them here.</p>
           <p class="govuk-body">The basic steps are:</p>
           <ol class="govuk-list govuk-list--number">
-          <li>Prepare the actuals data</li>
-          <li>Use the <a class="govuk-link" href="%{report_actuals_template_path}">actuals data template</a> as is or as a guide if required</li>
+          <li>Prepare the actuals and refunds data</li>
+          <li>Use the <a class="govuk-link" href="%{report_actuals_template_path}">actuals and refunds data template</a> as is or as a guide if required</li>
           <li>Ensure the file is saved as UTF-8 CSV, <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005515621-Uploading-your-Activity-Actuals-or-Forecasts-data-via-the-Templates-to-RODA">see guidance in the help centre (opens in new tab)</a></li>
           <li>Upload and verify the data here</li>
           </ol>
           <p class="govuk-body">For more detailed guidance on uploading actuals data, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload">guidance in the help centre (opens in new tab)</a></p>
         warning_html:
-          <div class="govuk-warning-text"><span class="govuk-warning-text__icon" aria-hidden="true">!</span><strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>Uploading actuals data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details.</strong></div>
+          <div class="govuk-warning-text"><span class="govuk-warning-text__icon" aria-hidden="true">!</span><strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>Uploading actuals and refunds data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details.</strong></div>
   page_title:
     actual:
       edit: Edit actual spend
       new: Add an actual
-      upload: Upload actuals data
+      upload: Upload actuals and refunds data
       upload_success: Successful uploads
   breadcrumb:
     actual:
