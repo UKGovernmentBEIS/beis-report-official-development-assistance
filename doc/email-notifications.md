@@ -3,9 +3,7 @@ The application sends various notifications by email, this document outlines how
 this works from a technical standpoint.
 
 ## Account emails
-Most emails that relate to user accounts are sent by Auth0.
-
-All others are sent by the applicaiton via GOV.UK Notify.
+Emails that relate to user accounts are sent by GOV.UK Notify.
 
 ## Mail Notify Gem
 We use this gem to interact with the GOV.UK Notify service.
