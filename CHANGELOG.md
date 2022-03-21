@@ -996,7 +996,9 @@
 - Use Devise case-insensitive method when retrieving users for authentication
 - Add functionality to search for activities by IATI identifier
 
-## [unreleased]
+## [unreleased] ...
+
+- Add 'Other ODA' fund
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-100...HEAD
 [release-100]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-99...release-100

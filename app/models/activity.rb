@@ -86,7 +86,7 @@ class Activity < ApplicationRecord
   validates :total_awards, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :programme_status, presence: true, on: :programme_status_step
   validates :country_delivery_partners, presence: true, on: :country_delivery_partners_step, if: :requires_country_delivery_partners?
-  validates :gdi, presence: true, on: :gdi_step
+  validates :gdi, presence: true, on: :gdi_step, unless: proc { |activity| activity.fund? }
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
   validates :covid19_related, presence: true, on: :covid19_related_step
   validates :collaboration_type, presence: true, on: :collaboration_type_step, if: :requires_collaboration_type?
