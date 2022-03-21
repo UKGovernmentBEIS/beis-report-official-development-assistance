@@ -5,9 +5,6 @@ if defined?(Dotenv)
     "DOMAIN",
     "DATABASE_URL",
     "REDIS_URL",
-    "SECRET_KEY_BASE",
-    "AUTH0_CLIENT_ID",
-    "AUTH0_CLIENT_SECRET",
-    "AUTH0_DOMAIN"
+    "SECRET_KEY_BASE"
   )
 end

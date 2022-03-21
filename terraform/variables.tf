@@ -13,21 +13,6 @@ variable "secret_key_base" {
   description = "secret key base for rails apps"
 }
 
-variable "auth0_client_id" {
-  type        = string
-  description = "AUTH0 Client ID"
-}
-
-variable "auth0_client_secret" {
-  type        = string
-  description = "AUTH0 Client Secret"
-}
-
-variable "auth0_domain" {
-  type        = string
-  description = "AUTH0 domanin"
-}
-
 variable "notify_key" {
   type        = string
   description = "Notify key"
