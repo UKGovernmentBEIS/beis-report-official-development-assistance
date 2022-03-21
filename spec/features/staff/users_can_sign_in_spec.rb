@@ -179,6 +179,42 @@ RSpec.feature "Users can sign in" do
         expect(page).to have_link(t("header.link.sign_out"))
         expect(page).to have_content("Signed in successfully.")
       end
+
+      context "user enters an invalid mobile number" do
+        let(:govuk_response) { double("Response", code: 400, body: "ValidationError: phone_number Not enough digits") }
+
+        scenario "the email/password are correct but the mobile number is invalid" do
+          # Given a user with 2FA enabled exists
+          user = create(:administrator, :mfa_enabled, :no_mobile_number)
+
+          # When I log in for the first time
+          visit root_path
+          log_in_via_form(user)
+
+          # Then I am prompted for my mobile number
+          expect(page).to have_content("Enter your mobile number")
+
+          # And I enter an invalid mobile number
+          invalid_number = "123456"
+          fill_in "Enter your mobile number", with: invalid_number
+
+          # And the notify service raises an error
+          allow(notify_client).to receive(:send_sms).once.with({
+            phone_number: invalid_number,
+            template_id: ENV["NOTIFY_OTP_VERIFICATION_TEMPLATE"],
+            personalisation: {otp: user.current_otp}
+          }).and_raise(Notifications::Client::BadRequestError.new(govuk_response))
+
+          click_on "Continue"
+
+          # Then I should see an informative message
+          expect(page).to have_content("There is a problem")
+          expect(page).to have_content("Not enough digits")
+
+          # And I should be able to edit my mobile number
+          expect(page).to have_field("Enter your mobile number")
+        end
+      end
     end
 
     scenario "they can sign in using a different capitalisation of their email address" do
