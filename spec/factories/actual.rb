@@ -26,5 +26,12 @@ FactoryBot.define do
       receiving_organisation_reference { nil }
       receiving_organisation_type { nil }
     end
+
+    trait :with_comment do
+      after(:create) do |actual, _evaluator|
+        create(:comment, commentable: actual, report: actual.report)
+        actual.reload
+      end
+    end
   end
 end
