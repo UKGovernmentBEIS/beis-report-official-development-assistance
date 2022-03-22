@@ -43,14 +43,23 @@ RSpec.describe Iati::XmlDownload do
         allow(third_party_project_relation).to receive(:where).and_return(build_list(:project_activity, 5))
       end
 
-      it "returns all XML download paths for all levels and funds in the correct order" do
-        paths = described_class.all_for_organisation(organisation)
+      it "returns all XML downloads ordered by levels, then funds" do
+        downloads = described_class.all_for_organisation(organisation)
 
-        expect(paths.count).to eq(6)
+        expect(downloads.count).to eq(9)
 
-        expect(paths.map { |p| p.fund.short_name }).to eq(["NF", "GCRF", "NF", "GCRF", "NF", "GCRF"])
-        expect(paths.map(&:level)).to eq(["programme", "programme", "project", "project", "third_party_project", "third_party_project"])
-        expect(paths.map(&:organisation).uniq).to eq([organisation])
+        expect(downloads.map { |p| p.fund.short_name }).to eq(%w[
+          NF GCRF OODA
+          NF GCRF OODA
+          NF GCRF OODA
+        ])
+
+        expect(downloads.map(&:level)).to eq(%w[
+          programme programme programme
+          project project project
+          third_party_project third_party_project third_party_project
+        ])
+        expect(downloads.map(&:organisation).uniq).to eq([organisation])
       end
     end
 

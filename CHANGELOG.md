@@ -996,9 +996,17 @@
 - Use Devise case-insensitive method when retrieving users for authentication
 - Add functionality to search for activities by IATI identifier
 
-## [unreleased]
+## [release-101] 2022-03-22
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-100...HEAD
+- Add 'Other ODA' fund
+- Change the HTML title tag of the Users page to be Users, not Home
+- Prevent server errors when a mobile number is invalid
+- Fix bug where comments on actuals were not being included in activity comments
+
+## [unreleased] ...
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-101...HEAD
+[release-101]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-100...release-101
 [release-100]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-99...release-100
 [release-99]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-98...release-99
 [release-98]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-97...release-98

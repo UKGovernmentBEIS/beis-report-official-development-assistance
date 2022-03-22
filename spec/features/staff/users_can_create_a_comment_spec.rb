@@ -74,7 +74,7 @@ RSpec.describe "Users can create a comment" do
           let(:report) { create(:report, :active, fund: activity.associated_fund, organisation: create(:delivery_partner_organisation)) }
           scenario "the user cannot add a comment" do
             visit report_path(report)
-            expect(page).to have_content t("not_authorised.default")
+            expect(page).to have_content t("page_title.errors.not_authorised")
           end
         end
       end

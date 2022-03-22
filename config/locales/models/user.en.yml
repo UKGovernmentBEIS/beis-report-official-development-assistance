@@ -15,7 +15,6 @@ en:
     label:
       user:
         email: Email address
-        identifier: Auth0 identifier
         name: Full name
         reset_mfa: Reset the mobile number used for authentication
     legend:

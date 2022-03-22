@@ -24,9 +24,6 @@ resource "cloudfoundry_app" "beis-roda-app" {
     "DOMAIN"                                 = "https://${var.custom_hostname}.${var.custom_domain}"
     "CANONICAL_HOSTNAME"                     = "${var.custom_hostname}.${var.custom_domain}"
     "ADDITIONAL_HOSTNAMES"                   = var.additional_hostnames
-    "AUTH0_CLIENT_ID"                        = var.auth0_client_id
-    "AUTH0_CLIENT_SECRET"                    = var.auth0_client_secret
-    "AUTH0_DOMAIN"                           = var.auth0_domain
     "NOTIFY_KEY"                             = var.notify_key
     "NOTIFY_WELCOME_EMAIL_TEMPLATE"          = var.notify_welcome_email_template
     "NOTIFY_VIEW_TEMPLATE"                   = var.notify_view_template

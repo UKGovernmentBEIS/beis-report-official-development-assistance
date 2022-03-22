@@ -96,8 +96,16 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def send_and_prompt_for_otp
-    Notify::OTPMessage.new(user.mobile_number, user.current_otp).deliver
-    prompt_for "otp_attempt"
+    message = Notify::OTPMessage.new(user.mobile_number, user.current_otp)
+
+    if message.deliver
+      prompt_for "otp_attempt"
+    else
+      self.resource = find_user
+      self.resource.errors.add(:mobile_number, message.error)
+
+      render "devise/sessions/mobile_number"
+    end
   end
 
   # we also need to completely override Devise's require_no_authentication such that

@@ -79,12 +79,6 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
-  config.around(:each) do |example|
-    ClimateControl.modify AUTH0_DOMAIN: "testdomain" do
-      example.run
-    end
-  end
-
   config.before(:each) do |example|
     ActionMailer::Base.delivery_method = :test
     ActionMailer::Base.perform_deliveries = true

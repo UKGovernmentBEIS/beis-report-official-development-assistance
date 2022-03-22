@@ -119,6 +119,54 @@ RSpec.feature "BEIS users can create a programme level activity" do
     end
   end
 
+  context "when the source fund is OODA" do
+    let(:identifier) { "a-fund-has-an-accountable-organisation" }
+    let!(:activity) do
+      build(:programme_activity, :ooda_funded,
+        delivery_partner_identifier: identifier,
+        benefitting_countries: ["AG", "HT"],
+        sdgs_apply: true,
+        sdg_1: 5)
+    end
+
+    scenario "an activity can be created" do
+      visit organisation_activities_path(delivery_partner)
+      click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
+
+      form = ActivityForm.new(activity: activity, level: "programme", fund: "ooda")
+      form.complete!
+
+      expect(page).to have_content(t("action.programme.create.success"))
+
+      created_activity = form.created_activity
+
+      expect(created_activity.title).to eq(activity.title)
+      expect(created_activity.description).to eq(activity.description)
+      expect(created_activity.objectives).to eq(activity.objectives)
+      expect(created_activity.sector_category).to eq(activity.sector_category)
+      expect(created_activity.sector).to eq(activity.sector)
+      expect(created_activity.programme_status).to eq(activity.programme_status)
+      expect(created_activity.planned_start_date).to eq(activity.planned_start_date)
+      expect(created_activity.planned_end_date).to eq(activity.planned_end_date)
+      expect(created_activity.actual_start_date).to eq(activity.actual_start_date)
+      expect(created_activity.actual_end_date).to eq(activity.actual_end_date)
+      expect(created_activity.benefitting_countries).to match_array(activity.benefitting_countries)
+      expect(created_activity.gdi).to eq(activity.gdi)
+      expect(created_activity.aid_type).to eq(activity.aid_type)
+      expect(created_activity.collaboration_type).to eq(activity.collaboration_type)
+      expect(created_activity.sdgs_apply).to eq(activity.sdgs_apply)
+      expect(created_activity.sdg_1).to eq(activity.sdg_1)
+      expect(created_activity.covid19_related).to eq(activity.covid19_related)
+      expect(created_activity.oda_eligibility).to eq(activity.oda_eligibility)
+
+      expect(created_activity.accountable_organisation_name).to eq("Department for Business, Energy and Industrial Strategy")
+      expect(created_activity.accountable_organisation_reference).to eq("GB-GOV-13")
+      expect(created_activity.accountable_organisation_type).to eq("10")
+
+      expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
+    end
+  end
+
   def expect_implementing_organisation_to_be_the_delivery_partner(
     activity:,
     organisation:

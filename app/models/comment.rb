@@ -11,14 +11,14 @@ class Comment < ApplicationRecord
     joins("left outer join activities on activities.id = comments.commentable_id AND comments.commentable_type = 'Activity'")
       .joins("left outer join transactions AS refunds on refunds.id = comments.commentable_id AND comments.commentable_type = 'Refund'")
       .joins("left outer join transactions AS adjustments on adjustments.id = comments.commentable_id AND comments.commentable_type = 'Adjustment'")
-      .joins("left outer join transactions AS actuals on actuals.id = comments.commentable_id AND comments.commentable_type = 'Actuals'")
+      .joins("left outer join transactions AS actuals on actuals.id = comments.commentable_id AND comments.commentable_type = 'Actual'")
   }
   scope :for_activity, ->(activity) {
     with_commentables
       .where("refunds.parent_activity_id = :activity_id OR
               adjustments.parent_activity_id = :activity_id OR
               activities.id = :activity_id OR
-              actuals.id = :activity_id", {activity_id: activity.id})
+              actuals.parent_activity_id = :activity_id", {activity_id: activity.id})
   }
 
   def set_commentable_type
