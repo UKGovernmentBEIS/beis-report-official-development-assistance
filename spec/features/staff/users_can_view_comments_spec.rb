@@ -11,6 +11,7 @@ RSpec.feature "Users can view comments on an activity page" do
       report = create(:report, :active, fund: activity.associated_fund, organisation: user.organisation)
 
       comment = create(:comment, commentable: activity, report: report, owner: user)
+      actual = create(:actual, :with_comment, parent_activity: activity, report: report)
       adjustment = create(:adjustment, parent_activity: activity, report: report)
       refund = create(:refund, parent_activity: activity, report: report)
 
@@ -21,6 +22,12 @@ RSpec.feature "Users can view comments on an activity page" do
         expect(page).to have_content comment.body
         expect(page).to have_content report.description
         expect(page).to have_content "Comment"
+      end
+
+      within "#comment_#{actual.comment.id}" do
+        expect(page).to have_content actual.comment.body
+        expect(page).to have_content report.description
+        expect(page).to have_content "Actual"
       end
 
       within "#comment_#{adjustment.comment.id}" do

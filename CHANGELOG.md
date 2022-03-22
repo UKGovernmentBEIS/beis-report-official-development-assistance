@@ -1001,6 +1001,7 @@
 - Add 'Other ODA' fund
 - Change the HTML title tag of the Users page to be Users, not Home
 - Prevent server errors when a mobile number is invalid
+- Fix bug where comments on actuals were not being included in activity comments
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-100...HEAD
 [release-100]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-99...release-100
