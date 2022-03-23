@@ -51,7 +51,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "foreman"
-  gem "i18n-tasks", "~> 0.9.35"
+  gem "i18n-tasks", "~> 1.0.0"
   gem "rspec-rails"
   gem "standard"
 end
