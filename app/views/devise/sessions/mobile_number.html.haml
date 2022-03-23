@@ -9,6 +9,9 @@
             %h1.govuk-fieldset__heading
               Enter your mobile number
 
+          - if devise_mapping.rememberable? && params[:user].present?
+            = f.hidden_field :remember_me, value: params[:user][:remember_me]
+
           = f.govuk_error_summary
           = f.govuk_text_field :mobile_number, label: { text: "Enter your mobile number" }
 
