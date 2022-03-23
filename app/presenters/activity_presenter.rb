@@ -25,7 +25,7 @@ class ActivityPresenter < SimpleDelegator
 
   def sector_with_code
     return if sector.blank?
-    "#{sector} (#{to_model.sector})"
+    "#{to_model.sector}: #{sector}"
   end
 
   def call_present

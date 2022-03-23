@@ -101,10 +101,10 @@ RSpec.describe ActivityPresenter do
 
   describe "#sector_with_code" do
     context "when the sector exists" do
-      it "returns the locale value for the code with the code in brackets" do
+      it "returns the code followed by the locale value separated by a colon" do
         activity = build(:project_activity, sector: "11110")
         result = described_class.new(activity).sector_with_code
-        expect(result).to eql("Education policy and administrative management (11110)")
+        expect(result).to eql("11110: Education policy and administrative management")
       end
     end
 

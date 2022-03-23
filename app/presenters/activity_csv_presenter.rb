@@ -27,6 +27,12 @@ class ActivityCsvPresenter < ActivityPresenter
     super ? "yes" : "no"
   end
 
+  # We want the sectors to be displayed with their codes
+  def sector
+    return if super.blank?
+    "#{to_model.sector}: #{super}"
+  end
+
   private
 
   def list_of_benefitting_countries(country_code_list)

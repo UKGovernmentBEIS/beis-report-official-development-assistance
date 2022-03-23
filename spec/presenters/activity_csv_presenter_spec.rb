@@ -1,6 +1,16 @@
 require "rails_helper"
 
 RSpec.describe ActivityCsvPresenter do
+  describe "#sector" do
+    context "when there is a non-empty sector" do
+      it "returns 'sector code: description'" do
+        activity = build(:project_activity, sector: 11110)
+        result = described_class.new(activity).sector
+        expect(result).to eq("11110: Education policy and administrative management")
+      end
+    end
+  end
+
   describe "#benefitting_countries" do
     context "when there are benefitting countries" do
       it "returns the benefitting countries separated by semicolons" do

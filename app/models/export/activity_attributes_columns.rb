@@ -29,9 +29,8 @@ class Export::ActivityAttributesColumns
   def rows
     return [] if @activities.empty?
     @activities.map { |activity|
-      values = @attributes.map { |att|
-        ActivityCsvPresenter.new(activity).send(att)
-      }
+      presenter = ActivityCsvPresenter.new(activity)
+      values = @attributes.map { |att| presenter.send(att) }
       [activity.id, values]
     }.to_h
   end
