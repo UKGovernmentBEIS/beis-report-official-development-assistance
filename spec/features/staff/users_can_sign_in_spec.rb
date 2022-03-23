@@ -94,6 +94,40 @@ RSpec.feature "Users can sign in" do
         visit root_path
         expect(page).to have_content("Sign in")
       end
+
+      scenario "logins can be remembered for 30 days" do
+        # Given a user with 2FA enabled and a confirmed mobile number exists
+        user = create(:administrator, :mfa_enabled, mobile_number_confirmed_at: DateTime.now)
+
+        # When I log in with MFA and choose Remember me
+        visit root_path
+        log_in_via_form(user, remember_me: true)
+        fill_in "Please enter your six-digit verification code", with: user.current_otp
+        click_on "Continue"
+
+        # Then I should be logged in
+        expect(page).to have_link(t("header.link.sign_out"))
+        expect(page).to have_content("Signed in successfully.")
+
+        # And I should be at the home page
+        expect(page).to have_content("You can search by RODA, Delivery Partner, BEIS, or IATI identifier, or by the activity's title")
+
+        # When I visit the site 29 days later
+        travel 29.days do
+          visit reports_path
+
+          # Then I should still be logged in
+          expect(page).to have_content("Create a new report")
+        end
+
+        # When I visit the site 31 days later
+        travel 31.days do
+          visit reports_path
+
+          # Then I should be logged out
+          expect(page).to have_content("Sign in")
+        end
+      end
     end
 
     context "user initially entered an incorrect mobile number" do
@@ -153,7 +187,7 @@ RSpec.feature "Users can sign in" do
 
         # When I log in for the first time,
         visit root_path
-        log_in_via_form(user)
+        log_in_via_form(user, remember_me: true)
 
         # Then I am prompted for my mobile number
         expect(page).to have_content("Enter your mobile number")
@@ -178,6 +212,14 @@ RSpec.feature "Users can sign in" do
         # Then I am successfully logged in.
         expect(page).to have_link(t("header.link.sign_out"))
         expect(page).to have_content("Signed in successfully.")
+
+        # When I visit the site 29 days later
+        travel 29.days do
+          visit reports_path
+
+          # Then I should still be logged in
+          expect(page).to have_link(t("header.link.sign_out"))
+        end
       end
 
       context "user enters an invalid mobile number" do
@@ -264,24 +306,6 @@ RSpec.feature "Users can sign in" do
 
     log_in_via_form(user)
     expect(page.current_path).to eql home_path
-  end
-
-  scenario "Logins can be remembered for 30 days" do
-    user = create(:beis_user)
-
-    visit root_path
-    expect(page).to have_content(t("start_page.title"))
-
-    log_in_via_form(user, remember_me: true)
-
-    travel 29.days do
-      visit reports_path
-      expect(page).to have_content("Create a new report")
-    end
-    travel 31.days do
-      visit reports_path
-      expect(page).to have_content("Sign in")
-    end
   end
 
   scenario "protected pages cannot be visited unless signed in" do

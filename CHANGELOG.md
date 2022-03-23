@@ -1005,6 +1005,8 @@
 
 ## [unreleased] ...
 
+- Fix bug where Remember me was not working for users logging in with MFA
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-101...HEAD
 [release-101]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-100...release-101
 [release-100]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-99...release-100

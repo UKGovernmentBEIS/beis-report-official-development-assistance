@@ -11,6 +11,8 @@ require "notify/otp_message"
 # Much of this is taken from step 4 of
 # https://www.jamesridgway.co.uk/implementing-a-two-step-otp-u2f-login-workflow-with-rails-and-devise/
 class Users::SessionsController < Devise::SessionsController
+  include Devise::Controllers::Rememberable
+
   prepend_before_action :handle_mfa_flow, if: -> { action_name == "create" && otp_two_factor_enabled? }
 
   protect_from_forgery with: :exception, prepend: true, except: :destroy
@@ -59,7 +61,7 @@ class Users::SessionsController < Devise::SessionsController
       # Remove any lingering user data from login
       session.delete(:otp_user_id)
 
-      remember_me(user) if user_params[:remember_me] == "1"
+      remember_me(user) if user_params[:remember_me].in?(Devise::TRUE_VALUES)
       user.mobile_number_confirmed_at ||= Time.zone.now
       user.save!
 
