@@ -47,12 +47,13 @@ module CodelistHelper
   end
 
   def sector_category_radio_options
-    Codelist.new(type: "sector_category").to_objects(with_empty_item: false)
+    list = Codelist.new(type: "sector_category").to_objects(with_empty_item: false)
+    list.each { |item| item.name = "#{item.code}: #{item.name}" }
   end
 
   def sector_radio_options(category: nil)
     options = Codelist.new(type: "sector").to_objects_with_categories
-    options.each { |option| option.name = "#{option.name} (#{option.code})" }
+    options.each { |option| option.name = "#{option.code}: #{option.name}" }
     if category.present?
       options.filter { |sector| sector.category == category.to_s }
     else
