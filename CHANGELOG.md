@@ -1006,6 +1006,7 @@
 ## [unreleased] ...
 
 - Fix bug where Remember me was not working for users logging in with MFA
+- Add sector and sector category codes to radio button text when adding a new activity
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-101...HEAD
 [release-101]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-100...release-101

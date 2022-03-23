@@ -47,7 +47,8 @@ module CodelistHelper
   end
 
   def sector_category_radio_options
-    Codelist.new(type: "sector_category").to_objects(with_empty_item: false)
+    list = Codelist.new(type: "sector_category").to_objects(with_empty_item: false)
+    list.each { |item| item.name = "#{item.name} (#{item.code})" }
   end
 
   def sector_radio_options(category: nil)
