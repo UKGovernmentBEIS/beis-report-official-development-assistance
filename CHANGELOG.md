@@ -1003,9 +1003,14 @@
 - Prevent server errors when a mobile number is invalid
 - Fix bug where comments on actuals were not being included in activity comments
 
+## [release-102] 2022-03-23
+
+- Fix bug where Remember me was not working for users logging in with MFA
+
 ## [unreleased] ...
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-101...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-102...HEAD
+[release-102]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-101...release-102
 [release-101]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-100...release-101
 [release-100]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-99...release-100
 [release-99]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-98...release-99

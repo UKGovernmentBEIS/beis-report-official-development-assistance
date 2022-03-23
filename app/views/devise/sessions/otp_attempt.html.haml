@@ -9,6 +9,9 @@
             %h1.govuk-fieldset__heading
               Verify your login
 
+          - if devise_mapping.rememberable? && params[:user].present?
+            = f.hidden_field :remember_me, value: params[:user][:remember_me]
+
           = f.govuk_text_field :otp_attempt,
                                 label: { text: "Please enter your six-digit verification code" },
                                 inputmode: "numeric",
