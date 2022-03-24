@@ -1002,6 +1002,7 @@
 - Change the HTML title tag of the Users page to be Users, not Home
 - Prevent server errors when a mobile number is invalid
 - Fix bug where comments on actuals were not being included in activity comments
+- Add bulk uploading to Refunds via the Actual importer
 
 ## [release-102] 2022-03-23
 

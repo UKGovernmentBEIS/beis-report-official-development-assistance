@@ -53,7 +53,8 @@ RSpec.feature "users can upload actuals" do
         "Activity RODA Identifier" => project.roda_identifier,
         "Financial Quarter" => report.financial_quarter.to_s,
         "Financial Year" => report.financial_year.to_s,
-        "Value" => "0.00",
+        "Actual Value" => "0.00",
+        "Refund Value" => nil,
         "Receiving Organisation Name" => nil,
         "Receiving Organisation Type" => nil,
         "Receiving Organisation IATI Reference" => nil,
@@ -65,7 +66,8 @@ RSpec.feature "users can upload actuals" do
         "Activity RODA Identifier" => sibling_project.roda_identifier,
         "Financial Quarter" => report.financial_quarter.to_s,
         "Financial Year" => report.financial_year.to_s,
-        "Value" => "0.00",
+        "Actual Value" => "0.00",
+        "Refund Value" => nil,
         "Receiving Organisation Name" => nil,
         "Receiving Organisation Type" => nil,
         "Receiving Organisation IATI Reference" => nil,
@@ -88,9 +90,9 @@ RSpec.feature "users can upload actuals" do
 
     # When I upload some actuals with comments
     upload_csv <<~CSV
-      Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
-      #{ids[0]}                | 1                 | 2020           | 20    | Example University          | 80                          |                                       | A unique comment
-      #{ids[1]}                | 1                 | 2020           | 30    | Example Foundation          | 60                          |                                       |
+      Activity RODA Identifier | Financial Quarter | Financial Year | Actual Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference | Comment
+      #{ids[0]}                | 1                 | 2020           | 20           | Example University          | 80                          |                                       | A unique comment
+      #{ids[1]}                | 1                 | 2020           | 30           | Example Foundation          | 60                          |                                       |
     CSV
 
     # Then I should see a summary of my upload
@@ -116,9 +118,9 @@ RSpec.feature "users can upload actuals" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
-      Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
-      #{ids[0]}                | 1                 | 2020           | 20    |                             |                             |
-      #{ids[1]}                | 1                 | 2020           | 30    |                             |                             |
+      Activity RODA Identifier | Financial Quarter | Financial Year | Actual Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1                 | 2020           | 20           |                             |                             |
+      #{ids[1]}                | 1                 | 2020           | 30           |                             |                             |
     CSV
 
     expect(Actual.count).to eq(2)
@@ -131,9 +133,9 @@ RSpec.feature "users can upload actuals" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
-      Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
-      #{ids[0]}                | 1                 | 2020           | 0.00  | Example University          | 80                          |
-      #{ids[1]}                | 1                 | 2020           | 30    | Example Foundation          | 60                          |
+      Activity RODA Identifier | Financial Quarter | Financial Year | Actual Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1                 | 2020           | 0.00         | Example University          | 80                          |
+      #{ids[1]}                | 1                 | 2020           | 30           | Example Foundation          | 60                          |
     CSV
 
     expect(Actual.count).to eq(1)
@@ -146,16 +148,16 @@ RSpec.feature "users can upload actuals" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     upload_csv <<~CSV
-      Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
-      #{ids[0]}                | 1                 | 2020           | fish  | Example University          | 80                          |
-      #{ids[1]}                | 1                 | 2020           | 30    | Example Foundation          | 61                          |
+      Activity RODA Identifier | Financial Quarter | Financial Year | Actual Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1                 | 2020           | fish         | Example University          | 80                          |
+      #{ids[1]}                | 1                 | 2020           | 30           | Example Foundation          | 61                          |
     CSV
 
     expect(Actual.count).to eq(0)
     expect(page).not_to have_text(t("action.actual.upload.success"))
 
     within "//tbody/tr[1]" do
-      expect(page).to have_xpath("td[1]", text: "Value")
+      expect(page).to have_xpath("td[1]", text: "Actual Value")
       expect(page).to have_xpath("td[2]", text: "2")
       expect(page).to have_xpath("td[3]", text: "fish")
       expect(page).to have_xpath("td[4]", text: t("importer.errors.actual.non_numeric_value"))
@@ -173,7 +175,7 @@ RSpec.feature "users can upload actuals" do
     ids = [project, sibling_project].map(&:roda_identifier)
 
     csv = <<~CSV
-      Activity RODA Identifier,Financial Quarter,Financial Year,,Value,Receiving Organisation Name,Receiving Organisation Type,Receiving Organisation IATI Reference
+      Activity RODA Identifier,Financial Quarter,Financial Year,,Actual Value,Receiving Organisation Name,Receiving Organisation Type,Receiving Organisation IATI Reference
       #{ids[0]},1,2020,\xA320,Example University,80
       #{ids[1]},1,2020,\xA330,Example Foundation,60
     CSV
@@ -197,9 +199,9 @@ RSpec.feature "users can upload actuals" do
     bom = "\uFEFF"
 
     upload_csv bom + <<~CSV
-      Activity RODA Identifier | Financial Quarter | Financial Year | Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
-      #{ids[0]}                | 1                 | 2020           | 20    | Example University          | 80                          |
-      #{ids[1]}                | 2                 | 2020           | 30    | Example Foundation          | 60                          |
+      Activity RODA Identifier | Financial Quarter | Financial Year | Actual Value | Receiving Organisation Name | Receiving Organisation Type | Receiving Organisation IATI Reference
+      #{ids[0]}                | 1                 | 2020           | 20           | Example University          | 80                          |
+      #{ids[1]}                | 2                 | 2020           | 30           | Example Foundation          | 60                          |
     CSV
 
     expect(Actual.count).to eq(2)

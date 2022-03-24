@@ -40,7 +40,7 @@ en:
       forecasts:
         heading: Forecasts
       actuals:
-        heading: Actuals
+        heading: Actuals / Refunds
       variance:
         heading: Variance
         body: This tab shows the variance between forecasted and actual spend, including any adjustments, in this reporting cycle.
@@ -151,7 +151,7 @@ en:
         complete: This report is approved
       variance: "%{report_financial_quarter} %{report_description} variance"
       forecasts: "%{report_financial_quarter} %{report_description} forecasts"
-      actuals: "%{report_financial_quarter} %{report_description} actuals"
+      actuals: "%{report_financial_quarter} %{report_description} actuals and refunds"
       budgets: "%{report_financial_quarter} %{report_description} budgets"
       activities: "%{report_financial_quarter} %{report_description} activities"
       comments: "%{report_financial_quarter} %{report_description} comments"
@@ -159,7 +159,7 @@ en:
     report:
       upload_activities: Upload bulk activity data
       upload_forecasts: Upload forecast data
-      upload_actuals:  Upload actuals data
+      upload_actuals:  Upload actuals and refunds data
   mailer:
     report:
       activated:

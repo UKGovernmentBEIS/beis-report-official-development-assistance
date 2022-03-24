@@ -1,14 +1,19 @@
 class CreateActual
-  attr_accessor :activity, :report, :actual
+  attr_accessor :activity, :report, :actual, :user
 
-  def initialize(activity:, report: nil)
+  def initialize(activity:, report: nil, user: nil)
     self.activity = activity
     self.report = report || Report.editable_for_activity(activity)
     self.actual = Actual.new
+    self.user = user
   end
 
   def call(attributes: {})
     actual.parent_activity = activity
+
+    body = attributes.delete(:comment)
+    actual.build_comment(body: body, commentable: actual, report: @report) if body.present?
+
     actual.assign_attributes(attributes)
 
     convert_and_assign_value(actual, attributes[:value])
@@ -21,11 +26,6 @@ class CreateActual
 
     unless activity.organisation.service_owner?
       actual.report = report
-    end
-
-    if actual.comment
-      actual.comment.report = @report
-      actual.comment.commentable = actual
     end
 
     Result.new(actual.save, actual)
