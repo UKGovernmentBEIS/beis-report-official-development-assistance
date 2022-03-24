@@ -8,6 +8,12 @@ RSpec.describe Staff::ActualUploadsController do
     allow(controller).to receive(:current_user).and_return(user)
   end
 
+  RSpec::Matchers.define :have_upload_button do
+    match do |actual|
+      RSpec::Matchers::BuiltIn::Match.new("#{t("action.actual.upload.button")}</button>").matches?(actual)
+    end
+  end
+
   describe "#new" do
     render_views
 
@@ -19,7 +25,7 @@ RSpec.describe Staff::ActualUploadsController do
       it "shows the upload button" do
         get :new, params: {report_id: report.id}
 
-        expect(response.body).to include(t("action.actual.upload.button"))
+        expect(response.body).to have_upload_button
       end
     end
 
@@ -29,17 +35,15 @@ RSpec.describe Staff::ActualUploadsController do
       it "shows the upload button" do
         get :new, params: {report_id: report.id}
 
-        expect(response.body).to include(t("action.actual.upload.button"))
+        expect(response.body).to have_upload_button
       end
     end
 
     context "with a report in review" do
       let(:state) { :in_review }
-
       it "doesn't show the upload button" do
         get :new, params: {report_id: report.id}
-
-        expect(response.body).to_not include(t("action.actual.upload.button"))
+        expect(response.body).to_not have_upload_button
       end
     end
 
@@ -52,7 +56,7 @@ RSpec.describe Staff::ActualUploadsController do
         it "doesn't show the upload button" do
           get :new, params: {report_id: report.id}
 
-          expect(response.body).to_not include(t("action.actual.upload.button"))
+          expect(response.body).to_not have_upload_button
         end
       end
 
@@ -62,7 +66,7 @@ RSpec.describe Staff::ActualUploadsController do
         it "doesn't show the upload button" do
           get :new, params: {report_id: report.id}
 
-          expect(response.body).to_not include(t("action.actual.upload.button"))
+          expect(response.body).to_not have_upload_button
         end
       end
     end

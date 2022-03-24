@@ -19,7 +19,7 @@ en:
   form:
     label:
       actual:
-        csv_file: Provide actuals data to upload
+        csv_file: Provide actuals and refunds data to upload
         csv_file_recover_from_error: Re-upload CSV spreadsheet
         currency: Currency
         description: Describe the actual
@@ -39,7 +39,7 @@ en:
         receiving_organisation: Receiving organisation (optional)
     hint:
       actual:
-        csv_file: Select the file that contains the actuals data for this report.
+        csv_file: Select the UTF-8 CSV file that contains the actuals and refunds data for this report.
         csv_file_recover_from_error_html: Upload a spreadsheet containing actual spend information in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
         date: If you're reporting quarterly data, select the last day of the quarter. For example, 31 12 2020
         description: For example, 2020 quarter one spend on the Early Career Research Network project.
@@ -60,10 +60,16 @@ en:
   tabs:
     actuals:
       heading: Actuals / Refunds
-      copy: Listed below are the actuals and refunds that have been added to this report.
+      copy: Actuals and refunds that have already been added to this report are listed below.
       providing:
-        heading: Providing actuals and refunds data
-        copy: Actuals and refunds data can be added by using the application interface or by uploading data.
+        heading: Adding more actuals and refunds data
+        copy_html: |
+          To add more actuals on this page:
+          <ul class="govuk-list govuk-list--bullet">
+          <li>Download the actuals data template</li>
+          <li>Complete the template with your additional actuals data</li>
+          <li>Upload the template</li>
+          </ul>
       upload:
         heading: Upload data
         copy_html:
@@ -83,22 +89,22 @@ en:
           receiving_organisation: Receiver
       upload:
         copy_html:
-          <p class="govuk-body">Large numbers of actuals and refunds can be added to the report by uploading them here.</p>
-          <p class="govuk-body">The basic steps are:</p>
+          <p class="govuk-body">You can add large numbers of actuals and refunds to this report at once.</p>
+
+          <p class="govuk-body">To add actuals and refunds data:</p>
           <ol class="govuk-list govuk-list--number">
-          <li>Prepare the actuals and refunds data</li>
-          <li>Use the <a class="govuk-link" href="%{report_actuals_template_path}">actuals and refunds data template</a> as is or as a guide if required</li>
-          <li>Ensure the file is saved as UTF-8 CSV, <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005515621-Uploading-your-Activity-Actuals-or-Forecasts-data-via-the-Templates-to-RODA">see guidance in the help centre (opens in new tab)</a></li>
-          <li>Upload and verify the data here</li>
+            <li>Download the <a class="govuk-link" href="%{report_actuals_template_path}">actuals and refunds template</a> as is or as a guide if required</li>
+            <li>Complete the template with your additional actuals and refunds</li>
+            <li>Save the file in the CSV format with the UTF-8 encoding</li>
+            <li>Click the Browse button below and find the file you want to upload, then click Upload and continue.</li>
           </ol>
-          <p class="govuk-body">For more detailed guidance on uploading actuals data, see the <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload">guidance in the help centre (opens in new tab)</a></p>
         warning_html:
           <div class="govuk-warning-text"><span class="govuk-warning-text__icon" aria-hidden="true">!</span><strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>Uploading actuals and refunds data is an append operation. Uploading the same data twice will result in duplication. See the guidance for more details.</strong></div>
   page_title:
     actual:
       edit: Edit actual spend
       new: Add an actual
-      upload: Upload actuals and refunds data
+      upload: Upload actuals and refunds
       upload_success: Successful uploads
   breadcrumb:
     actual:
