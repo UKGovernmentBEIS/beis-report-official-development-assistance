@@ -12,19 +12,7 @@ class Export::ActivityCommentsColumn
     return [] if @activities.empty?
 
     @activities.map { |activity|
-      [activity.id, comments_for_activity(activity).join("\n----\n")]
+      [activity.id, activity.comments_for_report(report_id: @report.id).pluck(:body).join("\n----\n")]
     }.to_h
-  end
-
-  private
-
-  def all_comments_for_report
-    @_comments ||= @report.comments.includes(:commentable)
-  end
-
-  def comments_for_activity(activity)
-    all_comments_for_report.select { |comment|
-      comment.associated_activity.id == activity.id
-    }.pluck :body
   end
 end
