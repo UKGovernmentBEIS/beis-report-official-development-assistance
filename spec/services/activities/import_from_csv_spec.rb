@@ -448,7 +448,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.call_present).to eq(false)
     end
 
-    it "has an error if the benefiting countries are invalid" do
+    it "has an error if the benefitting countries are invalid" do
       new_activity_attributes["Benefitting Countries"] = "ffsdfdsfsfds"
 
       expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
@@ -464,7 +464,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.invalid_benefitting_countries"))
     end
 
-    it "has an error if the benefiting countries are graduated or not from the list" do
+    it "has an error if the benefitting countries are graduated or not from the list" do
       new_activity_attributes["Benefitting Countries"] = ["UK", "SC"]
 
       expect { subject.import([new_activity_attributes]) }.to_not change { Activity.count }
