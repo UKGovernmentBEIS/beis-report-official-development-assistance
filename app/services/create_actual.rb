@@ -1,6 +1,4 @@
 class CreateActual
-  attr_accessor :activity, :report, :actual, :user
-
   def initialize(activity:, report: nil, user: nil)
     self.activity = activity
     self.report = report || Report.editable_for_activity(activity)
@@ -38,6 +36,8 @@ class CreateActual
   end
 
   private
+
+  attr_accessor :activity, :report, :actual, :user
 
   def convert_and_assign_value(actual, value)
     actual.value = ConvertFinancialValue.new.convert(value.to_s)
