@@ -10,6 +10,7 @@ class Staff::ActualsController < Staff::BaseController
 
     @actual = ActualForm.new(
       parent_activity: @activity,
+      report: @report,
       financial_quarter: @report&.financial_quarter,
       financial_year: @report&.financial_year
     )
@@ -23,7 +24,7 @@ class Staff::ActualsController < Staff::BaseController
   def create
     @activity = activity
     authorize @activity
-    @actual = ActualForm.new(actual_params)
+    @actual = ActualForm.new(actual_params.merge({parent_activity: @activity}))
 
     actual_created = @actual.valid? && CreateActual.new(
       activity: @activity,

@@ -13,7 +13,7 @@ RSpec.feature "Users can create an actual" do
       expect(page).to have_content t("page_title.actual.new")
       expect(page).to have_content t("form.label.actual.value")
       expect(page).to have_content t("form.legend.actual.receiving_organisation")
-      expect(page).to have_field("Comment")
+      expect(page).to_not have_field("Comment")
     end
 
     scenario "successfully creates an actual on an activity" do
@@ -23,27 +23,9 @@ RSpec.feature "Users can create an actual" do
 
       click_on(t("page_content.actuals.button.create"))
 
-      fill_in_actual_form(comment: "Comment body goes here")
+      fill_in_actual_form
 
       expect(page).to have_content(t("action.actual.create.success"))
-
-      actual = Actual.last
-      expect(actual.comment.body).to eql("Comment body goes here")
-    end
-
-    scenario "an empty comment body doesn't create a comment" do
-      activity = create(:programme_activity, :with_report, organisation: user.organisation)
-
-      visit organisation_activity_path(activity.organisation, activity)
-
-      click_on(t("page_content.actuals.button.create"))
-
-      fill_in_actual_form(comment: "  ")
-
-      expect(page).to have_content(t("action.actual.create.success"))
-
-      actual = Actual.last
-      expect(actual.comment).to be_nil
     end
 
     context "when all values are missing" do
@@ -229,7 +211,7 @@ RSpec.feature "Users can create an actual" do
     end
   end
 
-  context "when they are a government delivery partner organisation user" do
+  context "when they are a delivery partner organisation user" do
     before { authenticate!(user: user) }
     let(:user) { create(:delivery_partner_user) }
     let(:beis_user) { create(:beis_user) }
@@ -246,11 +228,12 @@ RSpec.feature "Users can create an actual" do
     end
 
     context "and the activity is a third-party project" do
-      scenario "the actual is associated with the currently active report" do
-        fund = create(:fund_activity)
-        programme = create(:programme_activity, parent: fund)
-        project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
+      let(:fund) { create(:fund_activity) }
+      let(:programme) { create(:programme_activity, parent: fund) }
+      let(:project) { create(:project_activity, :with_report, organisation: user.organisation, parent: programme) }
+      let(:report) { Report.editable_for_activity(project) }
 
+      scenario "the actual is associated with the currently active report" do
         visit organisation_activity_path(user.organisation, project)
         click_on(t("page_content.actuals.button.create"))
 
@@ -260,6 +243,18 @@ RSpec.feature "Users can create an actual" do
         report = Report.find_by(fund: fund, organisation: project.organisation)
         expect(actual.report).to eq(report)
         expect(actual.comment.body).to eql("Variance due to Covid")
+      end
+
+      scenario "an empty comment body doesn't create a comment" do
+        visit organisation_activity_path(user.organisation, project)
+        click_on(t("page_content.actuals.button.create"))
+
+        fill_in_actual_form(comment: "  ")
+
+        expect(page).to have_content(t("action.actual.create.success"))
+
+        actual = Actual.last
+        expect(actual.comment).to be_nil
       end
     end
 

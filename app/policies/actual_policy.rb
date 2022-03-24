@@ -20,6 +20,14 @@ class ActualPolicy < ApplicationPolicy
     can_update_or_delete?
   end
 
+  def create_comment?
+    return false if beis_user?
+
+    delivery_partner_user? &&
+      editable_report_for_organisation_and_fund.present? &&
+      editable_report_for_organisation_and_fund == record.report
+  end
+
   private def can_update_or_delete?
     return false if record.parent_activity.level.nil?
     return true if beis_user? && parent_activity_is_a_programme?

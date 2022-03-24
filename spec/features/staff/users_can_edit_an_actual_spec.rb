@@ -7,13 +7,13 @@ RSpec.feature "Users can edit an actual" do
   end
 
   context "when the user belongs to BEIS" do
-    before { authenticate!(user: user) }
     let(:user) { create(:beis_user) }
     let!(:activity) { create(:programme_activity, organisation: user.organisation) }
-    let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
-    let!(:actual) { create(:actual, :with_comment, parent_activity: activity, report: report) }
+    let!(:actual) { create(:actual, parent_activity: activity) }
 
-    scenario "editing an actual on a programme" do
+    before { authenticate!(user: user) }
+
+    scenario "they can edit an actual on a programme but not add a comment" do
       visit organisation_activity_path(activity.organisation, activity)
 
       expect(page).to have_content(actual.value)
@@ -22,17 +22,15 @@ RSpec.feature "Users can edit an actual" do
         click_on(t("default.link.edit"))
       end
 
-      expect(page).to have_field("Comment", with: actual.comment.body)
+      expect(page).to_not have_field("Comment")
 
       fill_in_actual_form(
         value: "2000.51",
         financial_quarter: "4",
-        financial_year: "2019-2020",
-        comment: "Edited comment body"
+        financial_year: "2019-2020"
       )
 
       expect(page).to have_content(t("action.actual.update.success"))
-      expect(actual.reload.comment.reload.body).to eql("Edited comment body")
     end
   end
 
