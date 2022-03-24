@@ -420,6 +420,11 @@ RSpec.feature "Users can view reports" do
         create_list(:comment, 1, commentable: activities[1], report: report, owner: delivery_partner_user)
       ].flatten
 
+      actual_comments = [
+        create_list(:comment, 1, commentable: create(:actual, parent_activity: activities[0]), report: report),
+        create_list(:comment, 1, commentable: create(:actual, parent_activity: activities[1]), report: report)
+      ].flatten
+
       refund_comments = [
         create_list(:comment, 2, commentable: create(:refund, parent_activity: activities[0]), report: report),
         create_list(:comment, 1, commentable: create(:refund, parent_activity: activities[1]), report: report)
@@ -427,7 +432,7 @@ RSpec.feature "Users can view reports" do
 
       adjustment_comments = create_list(:comment, 2, commentable: create(:adjustment, parent_activity: activities[0]), report: report)
 
-      comments_for_report = activity_comments + refund_comments + adjustment_comments
+      comments_for_report = activity_comments + actual_comments + refund_comments + adjustment_comments
 
       page = ReportPage.new(report)
       page.visit_comments_page
