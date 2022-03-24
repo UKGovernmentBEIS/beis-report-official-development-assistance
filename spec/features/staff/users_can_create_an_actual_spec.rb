@@ -13,6 +13,7 @@ RSpec.feature "Users can create an actual" do
       expect(page).to have_content t("page_title.actual.new")
       expect(page).to have_content t("form.label.actual.value")
       expect(page).to have_content t("form.legend.actual.receiving_organisation")
+      expect(page).to have_field("Comment")
     end
 
     scenario "successfully creates an actual on an activity" do
@@ -22,9 +23,27 @@ RSpec.feature "Users can create an actual" do
 
       click_on(t("page_content.actuals.button.create"))
 
-      fill_in_actual_form
+      fill_in_actual_form(comment: "Comment body goes here")
 
       expect(page).to have_content(t("action.actual.create.success"))
+
+      actual = Actual.last
+      expect(actual.comment.body).to eql("Comment body goes here")
+    end
+
+    scenario "an empty comment body doesn't create a comment" do
+      activity = create(:programme_activity, :with_report, organisation: user.organisation)
+
+      visit organisation_activity_path(activity.organisation, activity)
+
+      click_on(t("page_content.actuals.button.create"))
+
+      fill_in_actual_form(comment: "  ")
+
+      expect(page).to have_content(t("action.actual.create.success"))
+
+      actual = Actual.last
+      expect(actual.comment).to be_nil
     end
 
     context "when all values are missing" do
@@ -235,11 +254,12 @@ RSpec.feature "Users can create an actual" do
         visit organisation_activity_path(user.organisation, project)
         click_on(t("page_content.actuals.button.create"))
 
-        fill_in_actual_form
+        fill_in_actual_form(comment: "Variance due to Covid")
 
         actual = Actual.last
         report = Report.find_by(fund: fund, organisation: project.organisation)
         expect(actual.report).to eq(report)
+        expect(actual.comment.body).to eql("Variance due to Covid")
       end
     end
 

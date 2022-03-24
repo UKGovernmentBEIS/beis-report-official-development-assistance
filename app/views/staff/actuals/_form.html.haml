@@ -34,8 +34,7 @@
     label: { text: t("form.label.actual.receiving_organisation_reference") },
     hint: { text: t("form.hint.actual.receiving_organisation_reference_html") }
 
-- if action_name == "edit" || action_name == "update"
-  = f.govuk_text_area :comment,
-    value: f.object.comment
+= f.govuk_text_area :comment,
+  value: f.object.comment
 
 = f.govuk_submit t("default.button.submit")

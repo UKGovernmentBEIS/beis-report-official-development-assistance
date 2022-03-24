@@ -11,8 +11,14 @@ class CreateActual
   def call(attributes: {})
     actual.parent_activity = activity
 
-    body = attributes.delete(:comment)
-    actual.build_comment(body: body, commentable: actual, report: @report) if body.present?
+    comment_body = attributes.delete(:comment).to_s.strip
+    if comment_body.present?
+      actual.build_comment(
+        body: comment_body,
+        commentable: actual,
+        report: report
+      )
+    end
 
     actual.assign_attributes(attributes)
 
