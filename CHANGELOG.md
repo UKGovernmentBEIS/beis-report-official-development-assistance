@@ -1002,13 +1002,14 @@
 - Change the HTML title tag of the Users page to be Users, not Home
 - Prevent server errors when a mobile number is invalid
 - Fix bug where comments on actuals were not being included in activity comments
-- Add bulk uploading to Refunds via the Actual importer
 
 ## [release-102] 2022-03-23
 
 - Fix bug where Remember me was not working for users logging in with MFA
 
 ## [unreleased] ...
+
+- Add bulk uploading to Refunds via the Actual importer
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-102...HEAD
 [release-102]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-101...release-102
