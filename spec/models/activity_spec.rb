@@ -1280,7 +1280,7 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "#comments_for_report" do
-    it "returns the comment associated to this activity and a particular report" do
+    it "returns the comments associated to this activity and a particular report" do
       project = create(:project_activity, :with_report)
       report = Report.for_activity(project).first
       comment = create(:comment, commentable: project, report_id: report.id, body: "Here's my comment")

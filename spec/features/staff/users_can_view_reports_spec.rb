@@ -118,7 +118,7 @@ RSpec.feature "Users can view reports" do
       expect(page).to have_content updated_activity.title
     end
 
-    context "when there is no report descripiton" do
+    context "when there is no report description" do
       scenario "the summary does not include the empty value" do
         report = create(:report, :active, organisation: build(:delivery_partner_organisation), description: nil)
 
@@ -341,7 +341,7 @@ RSpec.feature "Users can view reports" do
         end
       end
 
-      scenario "they see helpful content about uploading acutals spend data and a link to the template on the actuals tab" do
+      scenario "they see helpful content about uploading actuals spend data and a link to the template on the actuals tab" do
         report = create(:report, :active, organisation: delivery_partner_user.organisation)
 
         visit report_actuals_path(report)

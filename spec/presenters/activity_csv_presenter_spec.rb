@@ -88,7 +88,7 @@ RSpec.describe ActivityCsvPresenter do
       expect(result).to be_nil
     end
 
-    it "shows a list of implementing organisations seperated by the pipe symbol" do
+    it "shows a list of implementing organisations separated by the pipe symbol" do
       implementing_organisation_one = build(:implementing_organisation)
       implementing_organisation_two = build(:implementing_organisation)
       activity = create(:project_activity)

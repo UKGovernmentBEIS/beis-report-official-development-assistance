@@ -55,7 +55,7 @@ variable "docker_password" {
 
 variable "additional_hostnames" {
   type        = string
-  description = "Additional hostnames for the application to be allowed to use (comma seperated)"
+  description = "Additional hostnames for the application to be allowed to use (comma separated)"
 }
 
 variable "google_tag_manager_container_id" {
