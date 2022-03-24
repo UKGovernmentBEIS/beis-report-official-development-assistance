@@ -43,10 +43,11 @@ RSpec.describe Export::ActivityCommentsColumn do
       end
 
       context "when the activity has multiple comments" do
-        it "returns the body of each comment seperated by `----`" do
+        it "returns the body of each comment separated by `----`" do
           value_for_activity = subject.rows.fetch(@activity_with_multiple_comments_in_report.id)
 
           expect(value_for_activity).to include "----"
+          expect(value_for_activity).to include(@actual_comment.body)
           expect(value_for_activity).to include(@refund_comment.body)
           expect(value_for_activity).to include(@adjustment_comment.body)
         end
@@ -81,6 +82,8 @@ RSpec.describe Export::ActivityCommentsColumn do
 
   def create_activity_with_multiple_comments_in_report
     @activity_with_multiple_comments_in_report = create(:project_activity)
+    actual = create(:actual, parent_activity: @activity_with_multiple_comments_in_report)
+    @actual_comment = create(:comment, commentable: actual, commentable_type: "Actual", report: @report)
     refund = create(:refund, parent_activity: @activity_with_multiple_comments_in_report)
     @refund_comment = create(:comment, commentable: refund, commentable_type: "Refund", report: @report)
     adjustment = create(:adjustment, parent_activity: @activity_with_multiple_comments_in_report)

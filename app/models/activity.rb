@@ -145,7 +145,8 @@ class Activity < ApplicationRecord
   has_many :source_transfers, foreign_key: "source_id", class_name: "OutgoingTransfer"
   has_many :destination_transfers, foreign_key: "destination_id", class_name: "OutgoingTransfer"
 
-  has_many :comments, ->(activity) { unscope(:where).for_activity(activity) }, foreign_key: "commentable_id", as: :commentable
+  has_many :comments, foreign_key: "commentable_id", as: :commentable
+  has_many :comments_on_self_and_transactions, ->(activity) { unscope(:where).for_activity(activity) }, class_name: "Comment", foreign_key: "commentable_id"
   has_many :matched_efforts
   has_many :external_incomes
   has_many :historical_events, dependent: :destroy
@@ -476,7 +477,7 @@ class Activity < ApplicationRecord
   end
 
   def comments_for_report(report_id:)
-    comments.where(report_id: report_id)
+    comments_on_self_and_transactions.where(report_id: report_id)
   end
 
   def requires_collaboration_type?

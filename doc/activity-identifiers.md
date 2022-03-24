@@ -52,7 +52,7 @@ parents will have a hybrid identifier.
 The main motivation for this change was to remove both BEIS and delivery
 partners from the creation of the identifiers, which was a heavy burden and
 slowed the reporting process drastically, users no longer have to enter any
-information into the service in order to create a new activity and it's
+information into the service in order to create a new activity and its
 identifier.
 
 The RODA identifier retains the constraints of the legacy version.
