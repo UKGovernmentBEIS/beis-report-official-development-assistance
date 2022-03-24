@@ -1010,6 +1010,8 @@
 ## [unreleased] ...
 
 - Add bulk uploading to Refunds via the Actual importer
+- Rename `activity.comments` association to better reflect its purpose of collecting all comments on an
+activity and on its child transactions (which can be actuals, refunds, and adjustments)
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-102...HEAD
 [release-102]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-101...release-102

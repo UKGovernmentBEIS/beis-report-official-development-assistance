@@ -130,7 +130,7 @@ module Activities
         end
 
         if row["Comments"].present?
-          @activity.comments.build(body: row["Comments"], report: @report, owner: @uploader, commentable: @activity)
+          @activity.comments.build(body: row["Comments"], report: @report, owner: @uploader)
         end
 
         changes = @activity.changes

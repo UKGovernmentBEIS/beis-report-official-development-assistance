@@ -131,29 +131,6 @@ RSpec.describe Activity, type: :model do
         expect(reportable_activities).to_not include(ineligible_project)
       end
     end
-
-    describe ".comments" do
-      it "fetches comments related to a given activity" do
-        activity = create(:project_activity)
-        actual = create(:actual, :with_comment, parent_activity: activity)
-        refund = create(:refund, parent_activity: activity)
-        adjustment = create(:adjustment, parent_activity: activity)
-
-        activity_comment = create(:comment, commentable: activity)
-
-        _comments = create_list(:comment, 5)
-        _actuals = create_list(:actual, 2, :with_comment)
-        _refunds = create_list(:refund, 2)
-        _adjustments = create_list(:adjustment, 2)
-
-        expect(activity.comments).to match_array([
-          activity_comment,
-          actual.comment,
-          refund.comment,
-          adjustment.comment
-        ])
-      end
-    end
   end
 
   describe "sanitisation" do
@@ -660,6 +637,30 @@ RSpec.describe Activity, type: :model do
     it { should have_many(:external_incomes) }
     it { should have_many(:historical_events) }
     it { should have_one(:commitment) }
+    it { should have_many(:comments) }
+
+    describe ".comments_on_self_and_transactions" do
+      it "fetches comments related to a given activity including comments on its child transactions" do
+        activity = create(:project_activity)
+        actual = create(:actual, :with_comment, parent_activity: activity)
+        refund = create(:refund, parent_activity: activity)
+        adjustment = create(:adjustment, parent_activity: activity)
+
+        activity_comment = create(:comment, commentable: activity)
+
+        _comments = create_list(:comment, 5)
+        _actuals = create_list(:actual, 2, :with_comment)
+        _refunds = create_list(:refund, 2)
+        _adjustments = create_list(:adjustment, 2)
+
+        expect(activity.comments_on_self_and_transactions).to match_array([
+          activity_comment,
+          actual.comment,
+          refund.comment,
+          adjustment.comment
+        ])
+      end
+    end
   end
 
   describe "#implementing_org_participations" do
