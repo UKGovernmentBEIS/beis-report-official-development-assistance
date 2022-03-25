@@ -47,4 +47,13 @@ module ActivityHelper
       )
     end
   end
+
+  def edit_comment_path_for(commentable, comment)
+    case commentable.class.name
+      when "Activity"
+        edit_activity_comment_path(commentable, comment)
+      when "Actual"
+        edit_activity_actual_path(commentable.parent_activity, commentable)
+    end
+  end
 end
