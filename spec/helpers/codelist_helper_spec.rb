@@ -84,8 +84,8 @@ RSpec.describe CodelistHelper, type: :helper do
         options = helper.aid_type_radio_options
 
         expect(options.length).to eq 8
-        expect(options.first.name).to eq "Core contributions to multilateral institutions (B02)"
-        expect(options.last.name).to eq "Administrative costs not included elsewhere (G01)"
+        expect(options.first.name).to eq "B02: Core contributions to multilateral institutions"
+        expect(options.last.name).to eq "G01: Administrative costs not included elsewhere"
       end
     end
 

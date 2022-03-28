@@ -11,7 +11,7 @@ class ActivityPresenter < SimpleDelegator
 
   def aid_type_with_code
     return if aid_type.blank?
-    "#{aid_type} (#{to_model.aid_type})"
+    "#{to_model.aid_type}: #{aid_type}"
   end
 
   def covid19_related
@@ -114,7 +114,7 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def flow_with_code
-    "#{flow} (#{to_model.flow})"
+    "#{to_model.flow}: #{flow}"
   end
 
   def policy_marker_gender
@@ -220,12 +220,20 @@ class ActivityPresenter < SimpleDelegator
     custom_capitalisation(activity_level)
   end
 
+  def tied_status
+    translate("activity.tied_status.#{super}")
+  end
+
   def tied_status_with_code
-    "#{translate("activity.tied_status.#{tied_status}")} (#{tied_status})"
+    "#{to_model.tied_status}: #{translate("activity.tied_status.#{to_model.tied_status}")}"
+  end
+
+  def finance
+    translate("activity.finance.#{super}")
   end
 
   def finance_with_code
-    "#{translate("activity.finance.#{finance}")} (#{finance})"
+    "#{to_model.finance}: #{translate("activity.finance.#{to_model.finance}")}"
   end
 
   def fund_pillar

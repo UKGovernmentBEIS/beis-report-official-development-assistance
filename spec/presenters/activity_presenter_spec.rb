@@ -53,10 +53,10 @@ RSpec.describe ActivityPresenter do
 
   describe "#aid_type_with_code" do
     context "when the aid_type exists" do
-      it "returns the locale value for the code with the code in brackets" do
+      it "returns the code and the locale value separated by a colon" do
         activity = build(:project_activity, aid_type: "A01")
         result = described_class.new(activity).aid_type_with_code
-        expect(result).to eql("General budget support (A01)")
+        expect(result).to eql("A01: General budget support")
       end
     end
 
@@ -415,7 +415,7 @@ RSpec.describe ActivityPresenter do
   describe "#flow_with_code" do
     it "returns the default flow string & code number" do
       fund = create(:project_activity)
-      expect(described_class.new(fund).flow_with_code).to eql("ODA (10)")
+      expect(described_class.new(fund).flow_with_code).to eql("10: ODA")
     end
   end
 
@@ -634,16 +634,16 @@ RSpec.describe ActivityPresenter do
   end
 
   describe "#tied_status_with_code" do
-    it "returns the tied status string & code number" do
+    it "returns the code number & tied status string" do
       fund = create(:project_activity)
-      expect(described_class.new(fund).tied_status_with_code).to eql("Untied (5)")
+      expect(described_class.new(fund).tied_status_with_code).to eql("5: Untied")
     end
   end
 
   describe "#finance_with_code" do
-    it "returns the finance string & code number" do
+    it "returns the code number & finance string" do
       fund = create(:project_activity)
-      expect(described_class.new(fund).finance_with_code).to eql("Standard grant (110)")
+      expect(described_class.new(fund).finance_with_code).to eql("110: Standard grant")
     end
   end
 

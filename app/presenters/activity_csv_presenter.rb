@@ -27,10 +27,28 @@ class ActivityCsvPresenter < ActivityPresenter
     super ? "yes" : "no"
   end
 
-  # We want the sectors to be displayed with their codes
+  # We want the sectors, aid type and flow to be displayed with their codes
+  # so we replicate X_with_code without creating an infinite loop
   def sector
     return if super.blank?
     "#{to_model.sector}: #{super}"
+  end
+
+  def aid_type
+    return if super.blank?
+    "#{to_model.aid_type}: #{super}"
+  end
+
+  def flow
+    "#{to_model.flow}: #{super}"
+  end
+
+  def finance
+    "#{to_model.finance}: #{super}"
+  end
+
+  def tied_status
+    "#{to_model.tied_status}: #{super}"
   end
 
   private

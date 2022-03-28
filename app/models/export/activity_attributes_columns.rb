@@ -19,7 +19,7 @@ class Export::ActivityAttributesColumns
 
   def initialize(activities:, attributes:)
     @activities = activities
-    @attributes = clean_attrbutes(attributes)
+    @attributes = clean_attributes(attributes)
   end
 
   def headers
@@ -37,7 +37,7 @@ class Export::ActivityAttributesColumns
 
   private
 
-  def clean_attrbutes(attributes)
+  def clean_attributes(attributes)
     attributes.reject do |att|
       next if DYNAMIC_ATTRIBUTES.include?(att)
       attribute_error(att) unless Activity.has_attribute?(att)
