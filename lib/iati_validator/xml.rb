@@ -4,6 +4,7 @@ module IATIValidator
   class XML
     attr_reader :errors
     class InvalidError < StandardError
+      attr_reader :errors, :url
       def initialize(errors, url)
         @errors = errors
         @url = url

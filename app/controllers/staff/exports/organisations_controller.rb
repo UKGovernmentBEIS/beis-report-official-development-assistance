@@ -111,10 +111,9 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
       response.headers["Content-Disposition"] = "attachment; filename=\"#{@organisation.iati_reference}.xml\""
       render xml: output
     else
-      # prevent Missing template pages/errors/internal_server_error :formats=>[:xml]
-      # (we wanted XML, but the error's HTML-only)
-      request.format = :html
-      raise IATIValidator::XML::InvalidError.new(validator.errors, request.url)
+      exception = IATIValidator::XML::InvalidError.new(validator.errors, request.url)
+      Rollbar.error(exception)
+      render "pages/errors/invalid_xml", locals: {exception: exception}, status: 500, formats: :html
     end
   end
 
