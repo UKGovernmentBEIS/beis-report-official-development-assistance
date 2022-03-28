@@ -328,7 +328,7 @@ RSpec.feature "Users can sign in" do
 
   context "when the user has been deactivated" do
     scenario "the user cannot log in and sees an informative message" do
-      user = create(:delivery_partner_user, active: false, identifier: "deactivated-user")
+      user = create(:delivery_partner_user, active: false)
 
       visit root_path
       log_in_via_form(user)

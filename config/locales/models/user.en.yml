@@ -46,7 +46,6 @@ en:
       user:
         name: Full name
         email: Email address
-        identifier: Identifier
         organisation: Organisation
         active: Active?
         confirmed_for_mfa:
