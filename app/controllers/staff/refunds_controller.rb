@@ -20,12 +20,12 @@ class Staff::RefundsController < Staff::ActivitiesController
     authorize @activity
     @refund = RefundForm.new(refund_params)
 
-    return render :new unless @refund.valid?
-
-    CreateRefund.new(
+    refund_created = @refund.valid? && CreateRefund.new(
       activity: @activity,
       user: current_user
-    ).call(attributes: @refund.attributes)
+    ).call(attributes: @refund.attributes).success?
+
+    return render :new unless refund_created
 
     flash[:notice] = t("action.refund.create.success")
     redirect_to organisation_activity_path(@activity.organisation, @activity)
@@ -45,19 +45,15 @@ class Staff::RefundsController < Staff::ActivitiesController
     @refund = RefundForm.new(attributes_for_editing.merge(refund_params))
     authorize(@refund, policy_class: RefundPolicy)
 
-    return render :edit unless @refund.valid?
-
-    result = UpdateRefund.new(
+    refund_edited = @refund.valid? && UpdateRefund.new(
       refund: Refund.find(id),
       user: current_user
-    ).call(attributes: refund_params)
+    ).call(attributes: refund_params).success?
 
-    if result.success?
-      flash[:notice] = t("action.refund.update.success")
-      redirect_to organisation_activity_path(activity.organisation, activity)
-    else
-      render :edit
-    end
+    return render :edit unless refund_edited
+
+    flash[:notice] = t("action.refund.update.success")
+    redirect_to organisation_activity_path(activity.organisation, activity)
   end
 
   def destroy
