@@ -1,4 +1,4 @@
-RSpec.feature "Users can an activitys children" do
+RSpec.feature "Users can view an activity's children" do
   context "when the user is signed in as a delivery partner" do
     let(:user) { create(:delivery_partner_user) }
 
