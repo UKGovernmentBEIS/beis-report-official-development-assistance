@@ -2,6 +2,7 @@
 
 class Staff::ReportCommentsController < Staff::BaseController
   include Secured
+  include HideFromBullet
   include Reports::Breadcrumbed
 
   def show
@@ -13,6 +14,9 @@ class Staff::ReportCommentsController < Staff::BaseController
     @report_presenter = ReportPresenter.new(@report)
     @grouped_comments = Report::GroupedCommentsFetcher.new(report: @report, user: current_user).all
 
-    render "staff/reports/comments"
+    # Comments are polymorphic; Bullet doesn't like this, see commit message for details
+    skip_bullet do
+      render "staff/reports/comments"
+    end
   end
 end
