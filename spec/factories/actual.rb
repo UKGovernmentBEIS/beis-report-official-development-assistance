@@ -21,6 +21,13 @@ FactoryBot.define do
     association :parent_activity, factory: :project_activity
     association :report
 
+    trait :with_comment do
+      after(:create) do |actual, _evaluator|
+        create(:comment, commentable: actual, report: actual.report)
+        actual.reload
+      end
+    end
+
     trait :without_receiving_organisation do
       receiving_organisation_name { nil }
       receiving_organisation_reference { nil }

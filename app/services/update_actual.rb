@@ -6,6 +6,20 @@ class UpdateActual
   end
 
   def call(attributes: {})
+    comment_body = attributes.delete(:comment).to_s.strip
+    if comment_body.present?
+      if actual.comment.present?
+        actual.comment.body = comment_body
+      else
+        actual.build_comment(
+          body: comment_body,
+          report: actual.report
+        )
+      end
+    elsif actual.comment.present?
+      actual.comment.destroy
+    end
+
     actual.assign_attributes(attributes)
 
     convert_and_assign_value(actual, attributes[:value])

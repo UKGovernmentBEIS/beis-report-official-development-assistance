@@ -2,7 +2,7 @@ class ActualForm
   include ActiveModel::Model
 
   attr_accessor :financial_quarter, :financial_year, :report,
-    :value, :parent_activity, :id,
+    :value, :parent_activity, :id, :comment,
     :receiving_organisation_name, :receiving_organisation_type, :receiving_organisation_reference
 
   validates :financial_quarter, presence: true
@@ -25,6 +25,7 @@ class ActualForm
     @parent_activity = params[:parent_activity]
     @report = params[:report]
     @id = params[:id]
+    @comment = params[:comment]
     @persisted = params[:persisted]
   end
 
@@ -35,7 +36,8 @@ class ActualForm
       value: value,
       receiving_organisation_name: receiving_organisation_name,
       receiving_organisation_type: receiving_organisation_type,
-      receiving_organisation_reference: receiving_organisation_reference
+      receiving_organisation_reference: receiving_organisation_reference,
+      comment: comment
     }
   end
 

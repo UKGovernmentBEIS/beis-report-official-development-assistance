@@ -88,7 +88,8 @@ class Staff::ActualsController < Staff::BaseController
       :financial_year,
       :receiving_organisation_name,
       :receiving_organisation_reference,
-      :receiving_organisation_type
+      :receiving_organisation_type,
+      :comment
     )
   end
 
@@ -107,6 +108,7 @@ class Staff::ActualsController < Staff::BaseController
         "receiving_organisation_reference"
       ))
       .merge(report: actual.report,
+        comment: actual.comment&.body,
         parent_activity: actual.parent_activity)
       .merge(persisted: true)
   end

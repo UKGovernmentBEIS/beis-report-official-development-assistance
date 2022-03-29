@@ -5,9 +5,9 @@ en:
       create:
         success: Actual successfully created
       update:
-        success: Actual sucessfully updated
+        success: Actual successfully updated
       destroy:
-        success: Actual sucessfully deleted
+        success: Actual successfully deleted
       download:
         button: Download CSV template
         hint_html: "<p class='govuk-body'>This CSV contains activity data related to your current report.</p><p class='govuk-body'>Edit it to add the actual spend amounts for your organisation's activities, then upload it through the form.</p>"

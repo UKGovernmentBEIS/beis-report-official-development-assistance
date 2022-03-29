@@ -5,6 +5,7 @@ module FormHelpers
     value: "1000.01",
     financial_quarter: "4",
     financial_year: "2019-2020",
+    comment: nil,
     receiving_organisation: OpenStruct.new(name: "Example receiver", reference: "GB-COH-123", type: "Private Sector"))
 
     fill_in "Actual amount", with: value
@@ -13,6 +14,7 @@ module FormHelpers
     fill_in "Receiving organisation name", with: receiving_organisation.name
     select receiving_organisation.type, from: "Receiving organisation type" if receiving_organisation.type.present?
     fill_in "IATI Reference (optional)", with: receiving_organisation.reference
+    fill_in "Comment", with: comment if comment
 
     click_on(t("default.button.submit"))
 
