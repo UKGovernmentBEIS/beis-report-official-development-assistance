@@ -17,6 +17,8 @@ RSpec.feature "Users can create a refund" do
       given_i_am_on_the_new_refund_form
       and_i_submit_the_new_refund_form_incorrectly
       then_i_expect_to_see_how_i_need_to_correct_the_refund_form
+      when_i_submit_the_new_refund_form_with_a_non_numeric_value
+      then_i_should_see_that_my_value_was_non_numeric
     end
   end
 
@@ -55,10 +57,23 @@ RSpec.feature "Users can create a refund" do
     )
   end
 
+  def when_i_submit_the_new_refund_form_with_a_non_numeric_value
+    @refund_form.complete(
+      value: "I am not numerical",
+      financial_quarter: 4,
+      financial_year: 2019,
+      comment: "Comment goes here"
+    )
+  end
+
   def then_i_expect_to_see_how_i_need_to_correct_the_refund_form
     expect(page).to have_content("Select a financial quarter")
     expect(page).to have_content("Select a financial year")
     expect(page).to have_content("Enter a refund amount")
+  end
+
+  def then_i_should_see_that_my_value_was_non_numeric
+    expect(page).to have_content("Refund amount must be a valid number")
   end
 
   def then_a_new_refund_should_be_created
