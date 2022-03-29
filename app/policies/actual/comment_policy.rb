@@ -1,7 +1,7 @@
 class Actual
   class CommentPolicy < ApplicationPolicy
     def update?
-      false
+      ActualPolicy.new(user, record.commentable).update?
     end
   end
 end

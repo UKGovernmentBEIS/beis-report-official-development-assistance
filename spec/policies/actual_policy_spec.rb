@@ -16,6 +16,7 @@ RSpec.describe ActualPolicy do
         is_expected.to forbid_action(:create)
         is_expected.to forbid_action(:edit)
         is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:create_comment)
 
         is_expected.to forbid_action(:destroy)
       end
@@ -24,12 +25,14 @@ RSpec.describe ActualPolicy do
     context "when the activity is a programme" do
       let(:activity) { create(:programme_activity, organisation: user.organisation) }
 
-      it "permits all actions" do
+      it "permits all actions except create_comment" do
         is_expected.to permit_action(:show)
         is_expected.to permit_action(:create)
         is_expected.to permit_action(:edit)
         is_expected.to permit_action(:update)
         is_expected.to permit_action(:destroy)
+
+        is_expected.to forbid_action(:create_comment)
       end
     end
 
@@ -42,6 +45,7 @@ RSpec.describe ActualPolicy do
         is_expected.to forbid_action(:create)
         is_expected.to forbid_action(:edit)
         is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:create_comment)
         is_expected.to forbid_action(:destroy)
       end
     end
@@ -55,6 +59,7 @@ RSpec.describe ActualPolicy do
         is_expected.to forbid_action(:create)
         is_expected.to forbid_action(:edit)
         is_expected.to forbid_action(:update)
+        is_expected.to forbid_action(:create_comment)
         is_expected.to forbid_action(:destroy)
       end
     end
@@ -72,6 +77,7 @@ RSpec.describe ActualPolicy do
         is_expected.to forbid_action(:edit)
         is_expected.to forbid_action(:update)
         is_expected.to forbid_action(:destroy)
+        is_expected.to forbid_action(:create_comment)
       end
     end
 
@@ -84,23 +90,25 @@ RSpec.describe ActualPolicy do
         is_expected.to forbid_action(:edit)
         is_expected.to forbid_action(:update)
         is_expected.to forbid_action(:destroy)
+        is_expected.to forbid_action(:create_comment)
       end
     end
 
     context "when the activity is a project" do
       let(:activity) { create(:project_activity) }
 
-      context "and the activity does not belong to the users organisation" do
+      context "and the activity does not belong to the user's organisation" do
         it "forbids all actions" do
           is_expected.to forbid_action(:show)
           is_expected.to forbid_action(:create)
           is_expected.to forbid_action(:edit)
           is_expected.to forbid_action(:update)
           is_expected.to forbid_action(:destroy)
+          is_expected.to forbid_action(:create_comment)
         end
       end
 
-      context "and the activity does belong to the users organisation" do
+      context "and the activity does belong to the user's organisation" do
         before do
           activity.update(organisation: user.organisation)
         end
@@ -115,6 +123,7 @@ RSpec.describe ActualPolicy do
             is_expected.to forbid_action(:edit)
             is_expected.to forbid_action(:update)
             is_expected.to forbid_action(:destroy)
+            is_expected.to forbid_action(:create_comment)
           end
         end
 
@@ -129,6 +138,7 @@ RSpec.describe ActualPolicy do
               is_expected.to forbid_action(:edit)
               is_expected.to forbid_action(:update)
               is_expected.to forbid_action(:destroy)
+              is_expected.to forbid_action(:create_comment)
             end
           end
 
@@ -144,6 +154,7 @@ RSpec.describe ActualPolicy do
               is_expected.to forbid_action(:edit)
               is_expected.to forbid_action(:update)
               is_expected.to forbid_action(:destroy)
+              is_expected.to forbid_action(:create_comment)
             end
           end
 
@@ -160,6 +171,7 @@ RSpec.describe ActualPolicy do
                 is_expected.to forbid_action(:edit)
                 is_expected.to forbid_action(:update)
                 is_expected.to forbid_action(:destroy)
+                is_expected.to forbid_action(:create_comment)
               end
             end
 
@@ -174,6 +186,7 @@ RSpec.describe ActualPolicy do
                 is_expected.to permit_action(:edit)
                 is_expected.to permit_action(:update)
                 is_expected.to permit_action(:destroy)
+                is_expected.to permit_action(:create_comment)
               end
             end
           end

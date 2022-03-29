@@ -4,10 +4,7 @@ class Staff::RefundsController < Staff::ActivitiesController
 
   def new
     @activity = activity
-    @refund = RefundForm.new
-
-    @refund.parent_activity = @activity
-    @refund.report = @report
+    @refund = RefundForm.new(parent_activity: @activity)
 
     authorize(@refund, policy_class: RefundPolicy)
 
@@ -25,10 +22,12 @@ class Staff::RefundsController < Staff::ActivitiesController
       user: current_user
     ).call(attributes: @refund.attributes).success?
 
-    return render :new unless refund_created
-
-    flash[:notice] = t("action.refund.create.success")
-    redirect_to organisation_activity_path(@activity.organisation, @activity)
+    if refund_created
+      flash[:notice] = t("action.refund.create.success")
+      redirect_to organisation_activity_path(@activity.organisation, @activity)
+    else
+      render :new
+    end
   end
 
   def edit
@@ -45,15 +44,17 @@ class Staff::RefundsController < Staff::ActivitiesController
     @refund = RefundForm.new(attributes_for_editing.merge(refund_params))
     authorize(@refund, policy_class: RefundPolicy)
 
-    refund_edited = @refund.valid? && UpdateRefund.new(
+    refund_updated = @refund.valid? && UpdateRefund.new(
       refund: Refund.find(id),
       user: current_user
     ).call(attributes: refund_params).success?
 
-    return render :edit unless refund_edited
-
-    flash[:notice] = t("action.refund.update.success")
-    redirect_to organisation_activity_path(activity.organisation, activity)
+    if refund_updated
+      flash[:notice] = t("action.refund.update.success")
+      redirect_to organisation_activity_path(activity.organisation, activity)
+    else
+      render :edit
+    end
   end
 
   def destroy

@@ -8,3 +8,5 @@
 
       = form_with model: @actual, url: activity_actuals_path(@activity) do |f|
         = render partial: "form", locals: { f: f, organisations: @organisations }
+
+        = link_to t("form.link.activity.back"), organisation_activity_path(@activity.organisation, @activity), class: "govuk-button govuk-button--secondary", "data-module": "govuk-button", role: "button"

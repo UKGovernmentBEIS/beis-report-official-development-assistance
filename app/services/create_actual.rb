@@ -1,6 +1,4 @@
 class CreateActual
-  attr_accessor :activity, :report, :actual, :user
-
   def initialize(activity:, report: nil, user: nil)
     self.activity = activity
     self.report = report || Report.editable_for_activity(activity)
@@ -11,8 +9,14 @@ class CreateActual
   def call(attributes: {})
     actual.parent_activity = activity
 
-    body = attributes.delete(:comment)
-    actual.build_comment(body: body, commentable: actual, report: @report) if body.present?
+    comment_body = attributes.delete(:comment).to_s.strip
+    if comment_body.present?
+      actual.build_comment(
+        body: comment_body,
+        commentable: actual,
+        report: report
+      )
+    end
 
     actual.assign_attributes(attributes)
 
@@ -32,6 +36,8 @@ class CreateActual
   end
 
   private
+
+  attr_accessor :activity, :report, :actual, :user
 
   def convert_and_assign_value(actual, value)
     actual.value = ConvertFinancialValue.new.convert(value.to_s)
