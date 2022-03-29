@@ -1017,9 +1017,14 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix an error where a new refund creation would silently fail when the value was non-numeric
 - Users can add and edit comments on actuals through the form
 
+## [release-104] 2022-03-29
+
+- Fix attempt to use an unloaded gem that was causing the report's comments tab to raise server error
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-103...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-104...HEAD
+[release-104]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-103...release-104
 [release-103]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-102...release-103
 [release-102]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-101...release-102
 [release-101]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-100...release-101
