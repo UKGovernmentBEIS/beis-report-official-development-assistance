@@ -1,9 +1,11 @@
 module HideFromBullet
   def skip_bullet
-    previous_value = Bullet.enable?
-    Bullet.enable = false
+    if defined?(Bullet)
+      previous_value = Bullet.enable?
+      Bullet.enable = false
+    end
     yield
   ensure
-    Bullet.enable = previous_value
+    Bullet.enable = previous_value if defined?(Bullet)
   end
 end
