@@ -1007,7 +1007,7 @@
 
 - Fix bug where Remember me was not working for users logging in with MFA
 
-## [unreleased] ...
+## [release-103] 2022-03-29
 
 - Add bulk uploading to Refunds via the Actual importer
 - Rename `activity.comments` association to better reflect its purpose of collecting all comments on an
@@ -1017,7 +1017,10 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix an error where a new refund creation would silently fail when the value was non-numeric
 - Users can add and edit comments on actuals through the form
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-102...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-103...HEAD
+[release-103]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-102...release-103
 [release-102]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-101...release-102
 [release-101]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-100...release-101
 [release-100]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-99...release-100
