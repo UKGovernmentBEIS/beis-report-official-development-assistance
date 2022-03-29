@@ -26,7 +26,7 @@ RSpec.describe Staff::ActualsController do
 
     it "asks the UpdateActual service to persist the changes" do
       params = {
-        actual: {value: "200.02", financial_quarter: "2"},
+        actual_form: {value: "200.02", financial_quarter: "2"},
         activity_id: "abc123",
         id: "xyz321"
       }

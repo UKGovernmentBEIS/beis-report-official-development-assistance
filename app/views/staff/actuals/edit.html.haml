@@ -8,3 +8,5 @@
 
       = form_with model: @actual, url: activity_actual_path(@activity) do |f|
         = render partial: "form", locals: { f: f, organisations: @organisations }
+
+        = link_to t("default.button.delete"), activity_actual_path(@activity, @actual), method: "delete" , class: "govuk-button govuk-button--warning", "data-module": "govuk-button", role: "button", data: { confirm: "Are you sure you want to delete this actual spend?" }

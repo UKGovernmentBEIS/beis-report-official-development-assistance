@@ -3,7 +3,7 @@ class CreateRefund
 
   attr_accessor :activity, :report, :refund, :user
 
-  def initialize(activity:, user:)
+  def initialize(activity:, user:, report: nil)
     self.activity = activity
     self.user = user
     self.refund = Refund.new
@@ -13,13 +13,10 @@ class CreateRefund
     refund.parent_activity = activity
     refund.report = editable_report_for(activity)
     assign_refund_and_comment(attributes)
-    refund.save
+    save_successful = refund.save
+    record_historical_event(refund) if save_successful
 
-    raise Error, validation_error_message(refund) if refund.errors.any?
-
-    record_historical_event(refund)
-
-    refund
+    Result.new(save_successful, refund)
   end
 
   private

@@ -77,7 +77,7 @@ class Codelist
 
   def to_objects_with_description(code_displayed_in_name: false, entity: "activity", type: "")
     data = list.collect { |item|
-      name = code_displayed_in_name ? "#{item["name"]} (#{item["code"]})" : item["name"]
+      name = code_displayed_in_name ? "#{item["code"]}: #{item["name"]}" : item["name"]
       description = I18n.t("form.hint.activity.options.#{type}.#{item["code"]}", default: item["description"])
 
       OpenStruct.new(name: name, code: item["code"], description: description)

@@ -108,4 +108,25 @@ RSpec.describe ActivityHelper, type: :helper do
       expect(benefitting_countries_with_percentages([])).to eq([])
     end
   end
+
+  describe "#edit_comment_path_for" do
+    let(:activity) { create(:project_activity) }
+    let(:comment) { create(:comment, commentable: commentable) }
+
+    context "when the comment is on an activity" do
+      let(:commentable) { activity }
+
+      it "generates a link to edit the comment" do
+        expect(helper.edit_comment_path_for(commentable, comment)).to eql(edit_activity_comment_path(commentable, comment))
+      end
+    end
+
+    context "when the comment is on an actual" do
+      let(:commentable) { create(:actual, parent_activity: activity) }
+
+      it "generates a link to edit the actual" do
+        expect(helper.edit_comment_path_for(commentable, comment)).to eql(edit_activity_actual_path(activity, commentable))
+      end
+    end
+  end
 end

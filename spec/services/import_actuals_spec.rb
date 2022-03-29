@@ -19,13 +19,38 @@ RSpec.describe ImportActuals do
     ImportActuals.new(report: report, uploader: reporter)
   end
 
+  describe "importing a single refund" do
+    let :actual_row do
+      {
+        "Activity RODA Identifier" => project.roda_identifier,
+        "Financial Quarter" => "4",
+        "Financial Year" => "2019",
+        "Actual Value" => nil,
+        "Refund Value" => "12.00",
+        "Receiving Organisation Name" => "Example University",
+        "Receiving Organisation Type" => "80",
+        "Receiving Organisation IATI Reference" => "",
+        "Comment" => "This is a Refund"
+      }
+    end
+
+    before do
+      importer.import([actual_row])
+    end
+
+    it "imports a single refund" do
+      expect(report.refunds.count).to eq(1)
+      expect(report.refunds.first.comment.body).to eq("This is a Refund")
+    end
+  end
+
   describe "importing a single actual" do
     let :actual_row do
       {
         "Activity RODA Identifier" => project.roda_identifier,
         "Financial Quarter" => "4",
         "Financial Year" => "2019",
-        "Value" => "50.00",
+        "Actual Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
         "Receiving Organisation Type" => "80",
         "Receiving Organisation IATI Reference" => "",
@@ -175,7 +200,7 @@ RSpec.describe ImportActuals do
 
     context "with additional formatting in the Value field" do
       let :actual_row do
-        super().merge("Value" => "£ 12,345.67")
+        super().merge("Actual Value" => "£ 12,345.67")
       end
 
       it "imports the actual" do
@@ -188,9 +213,14 @@ RSpec.describe ImportActuals do
       end
     end
 
-    context "when the Value is blank" do
+    # Note: the higher-level behaviour is that CSV rows with a blank value
+    # are skipped entirely. But here it's an error for there to be no data.
+    context "when the Actual Value and the Refund Value are blank" do
       let :actual_row do
-        super().merge("Value" => "")
+        super().merge(
+          "Actual Value" => "",
+          "Refund Value" => ""
+        )
       end
 
       it "does not import any actuals" do
@@ -199,14 +229,15 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Value", "", t("importer.errors.actual.non_numeric_value"))
+          ImportActuals::Error.new(0, "Actual Value", "", t("importer.errors.actual.non_numeric_value")),
+          ImportActuals::Error.new(0, "Refund Value", "", t("importer.errors.actual.non_numeric_value"))
         ])
       end
     end
 
     context "when the Value is zero" do
       let :actual_row do
-        super().merge("Value" => "0")
+        super().merge("Actual Value" => "0")
       end
 
       it "does not import any actuals" do
@@ -220,7 +251,7 @@ RSpec.describe ImportActuals do
 
     context "when the Value is not numeric" do
       let :actual_row do
-        super().merge("Value" => "This is not a number")
+        super().merge("Actual Value" => "This is not a number")
       end
 
       it "does not import any actuals" do
@@ -229,14 +260,14 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Value", "This is not a number", t("importer.errors.actual.non_numeric_value"))
+          ImportActuals::Error.new(0, "Actual Value", "This is not a number", t("importer.errors.actual.non_numeric_value"))
         ])
       end
     end
 
     context "when the Value is partially numeric" do
       let :actual_row do
-        super().merge("Value" => "3a4b5.c67")
+        super().merge("Actual Value" => "3a4b5.c67")
       end
 
       it "does not import any actuals" do
@@ -245,7 +276,7 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Value", "3a4b5.c67", t("importer.errors.actual.non_numeric_value"))
+          ImportActuals::Error.new(0, "Actual Value", "3a4b5.c67", t("importer.errors.actual.non_numeric_value"))
         ])
       end
     end
@@ -337,7 +368,7 @@ RSpec.describe ImportActuals do
         "Activity RODA Identifier" => sibling_project.roda_identifier,
         "Financial Quarter" => "3",
         "Financial Year" => "2020",
-        "Value" => "50.00",
+        "Actual Value" => "50.00",
         "Receiving Organisation Name" => "Example University",
         "Receiving Organisation Type" => "80",
         "Comment" => "A comment!"
@@ -349,7 +380,7 @@ RSpec.describe ImportActuals do
         "Activity RODA Identifier" => project.roda_identifier,
         "Financial Quarter" => "3",
         "Financial Year" => "2020",
-        "Value" => "150.00",
+        "Actual Value" => "150.00",
         "Receiving Organisation Name" => "Example Corporation",
         "Receiving Organisation Type" => "70",
         "Comment" => ""
@@ -361,7 +392,7 @@ RSpec.describe ImportActuals do
         "Activity RODA Identifier" => sibling_project.roda_identifier,
         "Financial Quarter" => "3",
         "Financial Year" => "2019",
-        "Value" => "£5,000",
+        "Actual Value" => "£5,000",
         "Receiving Organisation Name" => "Example Foundation",
         "Receiving Organisation Type" => "60",
         "Comment" => "Not blank"
@@ -404,7 +435,7 @@ RSpec.describe ImportActuals do
 
     context "when any row is not valid" do
       let :third_actual_row do
-        super().merge("Value" => "fish")
+        super().merge("Actual Value" => "fish")
       end
 
       it "does not import any actuals" do
@@ -414,14 +445,14 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(2, "Value", "fish", t("importer.errors.actual.non_numeric_value"))
+          ImportActuals::Error.new(2, "Actual Value", "fish", t("importer.errors.actual.non_numeric_value"))
         ])
       end
     end
 
     context "when there are multiple errors" do
       let :first_actual_row do
-        super().merge("Receiving Organisation Type" => "81", "Value" => "fish")
+        super().merge("Receiving Organisation Type" => "81", "Actual Value" => "fish")
       end
 
       let :third_actual_row do
@@ -437,8 +468,8 @@ RSpec.describe ImportActuals do
 
         expect(errors.size).to eq(3)
         expect(errors).to eq([
+          ImportActuals::Error.new(0, "Actual Value", "fish", t("importer.errors.actual.non_numeric_value")),
           ImportActuals::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.actual.invalid_iati_organisation_type")),
-          ImportActuals::Error.new(0, "Value", "fish", t("importer.errors.actual.non_numeric_value")),
           ImportActuals::Error.new(2, "Financial Quarter", third_actual_row["Financial Quarter"], t("activerecord.errors.models.actual.attributes.financial_quarter.inclusion"))
         ])
       end

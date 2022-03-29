@@ -6,7 +6,7 @@ class Refund
 
     def call
       report.refunds
-        .includes([:parent_activity])
+        .includes([:parent_activity, :comment])
         .map { |refund| RefundPresenter.new(refund) }
         .group_by { |refund| ActivityPresenter.new(refund.parent_activity) }
     end

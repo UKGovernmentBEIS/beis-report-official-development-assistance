@@ -68,7 +68,7 @@ RSpec.describe "Users can create a matched effort" do
       expect(page.find(:xpath, "//input[@value='#{template.category}']").checked?).to be false
     end
 
-    scenario "they recieve errors when required fields are left blank" do
+    scenario "they receive errors when required fields are left blank" do
       page.find(:xpath, "//input[@value='in_kind']").set(true)
 
       click_on t("default.button.submit")

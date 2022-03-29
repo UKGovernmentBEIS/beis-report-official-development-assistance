@@ -137,7 +137,7 @@ RSpec.describe Export::ActivityForecastColumns do
         expect(value_for_header("Forecast FQ3 2021-2022").to_s).to eql "0"
       end
 
-      it "includes a row for each acitvity" do
+      it "includes a row for each activity" do
         expect(subject.rows.count).to eq(5)
       end
     end
@@ -203,7 +203,7 @@ RSpec.describe Export::ActivityForecastColumns do
         expect(value_for_header("Forecast FQ3 2021-2022").to_s).to eql "0"
       end
 
-      it "includes a row for each acitvity" do
+      it "includes a row for each activity" do
         expect(subject.rows.count).to eq(5)
       end
     end

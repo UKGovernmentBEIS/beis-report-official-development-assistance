@@ -3,7 +3,6 @@ RSpec.describe "Users can edit a comment" do
   let(:delivery_partner_user) { create(:delivery_partner_user) }
 
   let(:activity) { create(:project_activity, organisation: delivery_partner_user.organisation) }
-  let(:actual) { create(:actual, report: report, activity: activity) }
   let(:report) { create(:report, :active, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
   let!(:comment) { create(:comment, commentable: activity, report_id: report.id, owner: delivery_partner_user) }
 
@@ -39,6 +38,14 @@ RSpec.describe "Users can edit a comment" do
 
           expect(page).to have_content t("action.comment.update.success")
           expect(page).to have_content form.comment
+        end
+
+        scenario "the user can edit comments on actuals belonging to the same organisation" do
+          actual = create(:actual, :with_comment, report: report, parent_activity: activity)
+
+          visit organisation_activity_comments_path(comment.commentable.organisation, comment.commentable)
+
+          expect(page).to have_link("Edit", href: edit_activity_actual_path(activity, actual))
         end
       end
 

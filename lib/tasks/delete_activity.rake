@@ -84,7 +84,7 @@ def delete_activity(activity_id:)
   Kernel.puts "\n==============================================\n"
   Kernel.puts "Deleted associations for activity with ID #{activity_id}\n"
   Kernel.puts "----------------------------------------------\n"
-  Kernel.puts "#{actuals_deleted.count} acutals deleted\n"
+  Kernel.puts "#{actuals_deleted.count} actuals deleted\n"
   Kernel.puts "#{refunds_deleted.count} refunds deleted\n"
   Kernel.puts "#{adjustments_deleted.count} adjustments deleted\n"
   Kernel.puts "#{budgets_deleted.count} budgets deleted\n"

@@ -19,7 +19,7 @@ class Export::ActivityAttributesColumns
 
   def initialize(activities:, attributes:)
     @activities = activities
-    @attributes = clean_attrbutes(attributes)
+    @attributes = clean_attributes(attributes)
   end
 
   def headers
@@ -29,16 +29,15 @@ class Export::ActivityAttributesColumns
   def rows
     return [] if @activities.empty?
     @activities.map { |activity|
-      values = @attributes.map { |att|
-        ActivityCsvPresenter.new(activity).send(att)
-      }
+      presenter = ActivityCsvPresenter.new(activity)
+      values = @attributes.map { |att| presenter.send(att) }
       [activity.id, values]
     }.to_h
   end
 
   private
 
-  def clean_attrbutes(attributes)
+  def clean_attributes(attributes)
     attributes.reject do |att|
       next if DYNAMIC_ATTRIBUTES.include?(att)
       attribute_error(att) unless Activity.has_attribute?(att)

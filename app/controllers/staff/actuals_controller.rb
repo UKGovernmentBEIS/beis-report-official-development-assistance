@@ -6,14 +6,16 @@ class Staff::ActualsController < Staff::BaseController
 
   def new
     @activity = activity
-    @actual = Actual.new
-    @actual.parent_activity = @activity
-
     @report = Report.editable_for_activity(@activity)
-    @actual.financial_quarter = @report&.financial_quarter
-    @actual.financial_year = @report&.financial_year
 
-    authorize(@actual)
+    @actual = ActualForm.new(
+      parent_activity: @activity,
+      report: @report,
+      financial_quarter: @report&.financial_quarter,
+      financial_year: @report&.financial_year
+    )
+
+    authorize(@actual, policy_class: ActualPolicy)
 
     prepare_default_activity_trail(@activity)
     add_breadcrumb t("breadcrumb.actual.new"), new_activity_actual_path(@activity)
@@ -22,12 +24,15 @@ class Staff::ActualsController < Staff::BaseController
   def create
     @activity = activity
     authorize @activity
+    @actual = ActualForm.new(actual_params.merge({parent_activity: @activity}))
 
-    result = CreateActual.new(activity: @activity)
-      .call(attributes: actual_params)
-    @actual = result.object
+    actual_created = @actual.valid? && CreateActual.new(
+      activity: @activity,
+      user: current_user,
+      report: Report.editable_for_activity(@activity)
+    ).call(attributes: @actual.attributes).success?
 
-    if result.success?
+    if actual_created
       flash[:notice] = t("action.actual.create.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
@@ -36,26 +41,27 @@ class Staff::ActualsController < Staff::BaseController
   end
 
   def edit
-    @actual = Actual.find(id)
-    authorize @actual
-
     @activity = Activity.find(activity_id)
+    @actual = ActualForm.new(attributes_for_editing)
+
+    authorize(@actual, policy_class: ActualPolicy)
 
     prepare_default_activity_trail(@activity)
-    add_breadcrumb t("breadcrumb.actual.edit"), edit_activity_actual_path(@activity, @actual)
+    add_breadcrumb t("breadcrumb.actual.edit"), edit_activity_actual_path(@activity, @actual.id)
   end
 
   def update
-    @actual = Actual.find(id)
-    authorize @actual
     @activity = activity
-    result = UpdateActual.new(
-      actual: @actual,
+    @actual = ActualForm.new(attributes_for_editing.merge(actual_params))
+    authorize(@actual, policy_class: ActualPolicy)
+
+    actual_updated = @actual.valid? && UpdateActual.new(
+      actual: Actual.find(id),
       user: current_user,
       report: Report.editable_for_activity(@activity)
-    ).call(attributes: actual_params)
+    ).call(attributes: actual_params).success?
 
-    if result.success?
+    if actual_updated
       flash[:notice] = t("action.actual.update.success")
       redirect_to organisation_activity_path(@activity.organisation, @activity)
     else
@@ -77,14 +83,35 @@ class Staff::ActualsController < Staff::BaseController
   private
 
   def actual_params
-    params.require(:actual).permit(
+    params.require(:actual_form).permit(
       :value,
       :financial_quarter,
       :financial_year,
       :receiving_organisation_name,
       :receiving_organisation_reference,
-      :receiving_organisation_type
+      :receiving_organisation_type,
+      :comment
     )
+  end
+
+  def attributes_for_editing
+    actual = Actual.find(id)
+
+    HashWithIndifferentAccess
+      .new
+      .merge(actual.attributes.slice(
+        "id",
+        "value",
+        "financial_year",
+        "financial_quarter",
+        "receiving_organisation_name",
+        "receiving_organisation_type",
+        "receiving_organisation_reference"
+      ))
+      .merge(report: actual.report,
+        comment: actual.comment&.body,
+        parent_activity: actual.parent_activity)
+      .merge(persisted: true)
   end
 
   def activity_id

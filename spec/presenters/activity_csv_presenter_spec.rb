@@ -1,9 +1,59 @@
 require "rails_helper"
 
 RSpec.describe ActivityCsvPresenter do
+  describe "#sector" do
+    context "when there is a non-empty sector" do
+      it "returns 'sector code: description'" do
+        activity = build(:project_activity, sector: 11110)
+        result = described_class.new(activity).sector
+        expect(result).to eq("11110: Education policy and administrative management")
+      end
+    end
+  end
+
+  describe "#aid_type" do
+    context "when there is a non-empty aid_type" do
+      it "returns 'aid type code: description'" do
+        activity = build(:project_activity, aid_type: "D02")
+        result = described_class.new(activity).aid_type
+        expect(result).to eq("D02: Other technical assistance")
+      end
+    end
+  end
+
+  describe "#flow" do
+    context "when there is a non-empty flow" do
+      it "returns 'flow code: description'" do
+        activity = build(:project_activity)
+        result = described_class.new(activity).flow
+        expect(result).to eq("10: ODA")
+      end
+    end
+  end
+
+  describe "#finance" do
+    context "when there is a non-empty finance" do
+      it "returns 'finance code: description'" do
+        activity = build(:project_activity)
+        result = described_class.new(activity).finance
+        expect(result).to eq("110: Standard grant")
+      end
+    end
+  end
+
+  describe "#tied_status" do
+    context "when there is a non-empty tied status" do
+      it "returns 'tied status code: description'" do
+        activity = build(:project_activity)
+        result = described_class.new(activity).tied_status
+        expect(result).to eq("5: Untied")
+      end
+    end
+  end
+
   describe "#benefitting_countries" do
     context "when there are benefitting countries" do
-      it "returns the benefiting countries separated by semicolons" do
+      it "returns the benefitting countries separated by semicolons" do
         activity = build(:project_activity, benefitting_countries: ["AR", "EC", "BR"])
         result = described_class.new(activity).benefitting_countries
         expect(result).to eql("Argentina; Ecuador; Brazil")
@@ -28,15 +78,15 @@ RSpec.describe ActivityCsvPresenter do
   end
 
   describe "#intended_beneficiaries" do
-    context "when there are other benefiting countries" do
-      it "returns the benefiting countries separated by semicolons" do
+    context "when there are other benefitting countries" do
+      it "returns the benefitting countries separated by semicolons" do
         activity = build(:project_activity, intended_beneficiaries: ["AR", "EC", "BR"])
         result = described_class.new(activity).intended_beneficiaries
         expect(result).to eql("Argentina; Ecuador; Brazil")
       end
     end
 
-    context "when there are no other benefiting countries" do
+    context "when there are no other benefitting countries" do
       it "returns nil" do
         activity = build(:project_activity, intended_beneficiaries: nil)
         result = described_class.new(activity).intended_beneficiaries
@@ -88,7 +138,7 @@ RSpec.describe ActivityCsvPresenter do
       expect(result).to be_nil
     end
 
-    it "shows a list of implementing organisations seperated by the pipe symbol" do
+    it "shows a list of implementing organisations separated by the pipe symbol" do
       implementing_organisation_one = build(:implementing_organisation)
       implementing_organisation_two = build(:implementing_organisation)
       activity = create(:project_activity)

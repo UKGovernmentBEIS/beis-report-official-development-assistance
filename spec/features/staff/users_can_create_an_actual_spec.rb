@@ -13,9 +13,10 @@ RSpec.feature "Users can create an actual" do
       expect(page).to have_content t("page_title.actual.new")
       expect(page).to have_content t("form.label.actual.value")
       expect(page).to have_content t("form.legend.actual.receiving_organisation")
+      expect(page).to_not have_field("Comment")
     end
 
-    scenario "successfully creates a actual on an activity" do
+    scenario "successfully creates an actual on an activity" do
       activity = create(:programme_activity, :with_report, organisation: user.organisation)
 
       visit organisation_activity_path(activity.organisation, activity)
@@ -37,7 +38,7 @@ RSpec.feature "Users can create an actual" do
         click_on(t("default.button.submit"))
 
         expect(page).to_not have_content(t("action.actual.create.success"))
-        expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.blank")
+        expect(page).to have_content("Enter an actual spend amount")
       end
     end
 
@@ -48,11 +49,12 @@ RSpec.feature "Users can create an actual" do
         visit organisation_activity_path(activity.organisation, activity)
 
         click_on(t("page_content.actuals.button.create"))
-        fill_in "actual[value]", with: "234r.67"
+        fill_in "Actual amount", with: "234r.67"
         click_on(t("default.button.submit"))
 
         expect(page).to_not have_content(t("action.actual.create.success"))
-        expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.not_a_number")
+        expect(page).to have_content("Value must be a valid number")
+        expect(page).to have_field("Actual amount", with: "234r.67")
       end
     end
 
@@ -64,9 +66,7 @@ RSpec.feature "Users can create an actual" do
 
         click_on(t("page_content.actuals.button.create"))
 
-        fill_in "actual[value]", with: "100000000000"
-        choose "4", name: "actual[financial_quarter]"
-        select "2019-2020", from: "actual[financial_year]"
+        fill_in "Actual amount", with: "100000000000"
         click_on(t("default.button.submit"))
 
         expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.less_than_or_equal_to")
@@ -79,9 +79,7 @@ RSpec.feature "Users can create an actual" do
 
         click_on(t("page_content.actuals.button.create"))
 
-        fill_in "actual[value]", with: "0"
-        choose "4", name: "actual[financial_quarter]"
-        select "2019-2020", from: "actual[financial_year]"
+        fill_in "Actual amount", with: "0"
         click_on(t("default.button.submit"))
 
         expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.other_than")
@@ -94,11 +92,7 @@ RSpec.feature "Users can create an actual" do
 
         click_on(t("page_content.actuals.button.create"))
 
-        fill_in "actual[value]", with: "-500000"
-        choose "4", name: "actual[financial_quarter]"
-        select "2019-2020", from: "actual[financial_year]"
-        fill_in "actual[receiving_organisation_name]", with: "Company"
-        select "Government", from: "actual[receiving_organisation_type]"
+        fill_in "Actual amount", with: "-500000"
         click_on(t("default.button.submit"))
 
         expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.greater_than")
@@ -113,7 +107,8 @@ RSpec.feature "Users can create an actual" do
 
         fill_in_actual_form(value: "£123", expectations: false)
 
-        expect(page).to have_content "123"
+        expect(page).to have_content("Actual successfully created")
+        expect(page).to have_content "£123.00"
       end
 
       scenario "When the value includes alphabetical characters" do
@@ -125,7 +120,7 @@ RSpec.feature "Users can create an actual" do
 
         fill_in_actual_form(value: "abc123def", expectations: false)
 
-        expect(page).to have_content "123"
+        expect(page).to have_content t("activerecord.errors.models.actual.attributes.value.not_a_number")
       end
 
       scenario "When the value includes decimal places" do
@@ -137,7 +132,8 @@ RSpec.feature "Users can create an actual" do
 
         fill_in_actual_form(value: "100.12", expectations: false)
 
-        expect(page).to have_content "100.12"
+        expect(page).to have_content("Actual successfully created")
+        expect(page).to have_content "£100.12"
       end
 
       scenario "When the value includes commas" do
@@ -149,6 +145,7 @@ RSpec.feature "Users can create an actual" do
 
         fill_in_actual_form(value: "123,000,000", expectations: false)
 
+        expect(page).to have_content("Actual successfully created")
         expect(page).to have_content "£123,000,000"
       end
     end
@@ -214,7 +211,7 @@ RSpec.feature "Users can create an actual" do
     end
   end
 
-  context "when they are a government delivery partner organisation user" do
+  context "when they are a delivery partner organisation user" do
     before { authenticate!(user: user) }
     let(:user) { create(:delivery_partner_user) }
     let(:beis_user) { create(:beis_user) }
@@ -231,19 +228,33 @@ RSpec.feature "Users can create an actual" do
     end
 
     context "and the activity is a third-party project" do
-      scenario "the actual is associated with the currently active report" do
-        fund = create(:fund_activity)
-        programme = create(:programme_activity, parent: fund)
-        project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
+      let(:fund) { create(:fund_activity) }
+      let(:programme) { create(:programme_activity, parent: fund) }
+      let(:project) { create(:project_activity, :with_report, organisation: user.organisation, parent: programme) }
+      let(:report) { Report.editable_for_activity(project) }
 
+      scenario "the actual is associated with the currently active report" do
         visit organisation_activity_path(user.organisation, project)
         click_on(t("page_content.actuals.button.create"))
 
-        fill_in_actual_form
+        fill_in_actual_form(comment: "Variance due to Covid")
 
         actual = Actual.last
         report = Report.find_by(fund: fund, organisation: project.organisation)
         expect(actual.report).to eq(report)
+        expect(actual.comment.body).to eql("Variance due to Covid")
+      end
+
+      scenario "an empty comment body doesn't create a comment" do
+        visit organisation_activity_path(user.organisation, project)
+        click_on(t("page_content.actuals.button.create"))
+
+        fill_in_actual_form(comment: "  ")
+
+        expect(page).to have_content(t("action.actual.create.success"))
+
+        actual = Actual.last
+        expect(actual.comment).to be_nil
       end
     end
 

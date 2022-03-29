@@ -39,7 +39,7 @@
                       = comment.body
                       - if policy([comment.commentable, comment]).update?
                         %span.govuk-body-s
-                          (#{a11y_action_link(t("default.link.edit"), edit_activity_comment_path(@activity, comment))})
+                          (#{a11y_action_link(t("default.link.edit"), edit_comment_path_for(comment.commentable, comment))})
                   .govuk-summary-list__row
                     %dt.govuk-summary-list__key
                       Date

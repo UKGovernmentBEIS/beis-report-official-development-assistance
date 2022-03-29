@@ -24,6 +24,10 @@
                     = refund.financial_quarter_and_year
                   %td.govuk-table__cell--numeric{class: "govuk-!-width-one-half", scope: "col"}
                     = refund.value
+                  - if refund.comment
+                    %tr.govuk-table__row
+                      %td.govuk-table__cell--numeric{class: "govuk-!-width-full", scope: "col", colspan: 2}
+                        = refund.comment.body
 
       %tr.govuk-table__row.totals
         %td.govuk-table__cell Total
