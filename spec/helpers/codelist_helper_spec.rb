@@ -54,17 +54,17 @@ RSpec.describe CodelistHelper, type: :helper do
         options = helper.sector_radio_options
 
         expect(options.length).to eq 295
-        expect(options).to include OpenStruct.new(name: "Women's rights organisations and movements, and government institutions (15170)", code: "15170", category: "151")
-        expect(options).to include OpenStruct.new(name: "Action relating to debt (60010)", code: "60010", category: "600")
+        expect(options).to include OpenStruct.new(name: "15170: Women's rights organisations and movements, and government institutions", code: "15170", category: "151")
+        expect(options).to include OpenStruct.new(name: "60010: Action relating to debt", code: "60010", category: "600")
       end
 
       it "returns only the sectors from the category when one is passed" do
         options = helper.sector_radio_options(category: 112)
 
         expect(options.length).to eq 7
-        expect(options).to include OpenStruct.new(name: "Basic life skills for youth (11231)", code: "11231", category: "112")
-        expect(options).to include OpenStruct.new(name: "School feeding (11250)", code: "11250", category: "112")
-        expect(options).not_to include OpenStruct.new(name: "Immediate post-emergency reconstruction and rehabilitation", code: "73010", category: "730")
+        expect(options).to include OpenStruct.new(name: "11231: Basic life skills for youth", code: "11231", category: "112")
+        expect(options).to include OpenStruct.new(name: "11250: School feeding", code: "11250", category: "112")
+        expect(options).not_to include OpenStruct.new(name: "73010: Immediate post-emergency reconstruction and rehabilitation", code: "73010", category: "730")
       end
     end
 
@@ -84,8 +84,8 @@ RSpec.describe CodelistHelper, type: :helper do
         options = helper.aid_type_radio_options
 
         expect(options.length).to eq 8
-        expect(options.first.name).to eq "Core contributions to multilateral institutions (B02)"
-        expect(options.last.name).to eq "Administrative costs not included elsewhere (G01)"
+        expect(options.first.name).to eq "B02: Core contributions to multilateral institutions"
+        expect(options.last.name).to eq "G01: Administrative costs not included elsewhere"
       end
     end
 
