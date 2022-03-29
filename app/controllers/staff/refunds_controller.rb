@@ -4,10 +4,7 @@ class Staff::RefundsController < Staff::ActivitiesController
 
   def new
     @activity = activity
-    @refund = RefundForm.new
-
-    @refund.parent_activity = @activity
-    @refund.report = @report
+    @refund = RefundForm.new(parent_activity: @activity)
 
     authorize(@refund, policy_class: RefundPolicy)
 
