@@ -1028,6 +1028,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Declare `remember_user_token` on cookies statement
 - Fix declared duration of default session from 24 hours to the actual value of 12 hours
 - Organisations are sorted by active status on the organisations page (applies to all types of organisation: delivery partner, matched effort providers, external income providers, and implementing organisations)
+- Reduce "Password Reset" link validity period to 24 hours
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-104...HEAD
 [release-104]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-103...release-104
