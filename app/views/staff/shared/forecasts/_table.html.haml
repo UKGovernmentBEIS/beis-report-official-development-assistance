@@ -7,6 +7,8 @@
         %th.govuk-table__header
           =t("table.header.forecast.value")
         %th.govuk-table__header
+          %span.govuk-visually-hidden
+            = t("table.header.default.actions")
 
     %tbody.govuk-table__body
       - forecasts.each do |forecast|
@@ -15,6 +17,9 @@
           %td.govuk-table__cell= forecast.value
           %td.govuk-table__cell
             - if policy(forecast).edit?
-              = a11y_action_link(t('default.link.edit'),
+              = a11y_action_link(t("default.link.edit"),
                 edit_activity_forecasts_path(forecast.parent_activity, forecast.financial_year, forecast.financial_quarter),
                 t("table.body.forecast.edit_noun"))
+            - else
+              %span.govuk-visually-hidden
+                = t("table.cell.default.no_actions_available")

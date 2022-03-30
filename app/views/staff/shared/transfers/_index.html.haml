@@ -30,6 +30,9 @@
             %th.govuk-table__header{scope: "col"}
               =t("fields.#{transfer_type}.beis_identifier")
             %th.govuk-table__header{scope: "col"}
+              %span.govuk-visually-hidden
+                = t("table.header.default.actions")
+
         %tbody.govuk-table__body
           - transfers.each do |transfer|
             %tr.govuk-table__row
@@ -45,4 +48,7 @@
               %td.govuk-table__cell
                 - if policy(transfer).update?
                   = link_to "Edit", send("edit_activity_#{transfer_type}_path", @activity.id, transfer.id)
+                - else
+                  %span.govuk-visually-hidden
+                    = t("table.cell.default.no_actions_available")
 
