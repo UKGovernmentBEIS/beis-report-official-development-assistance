@@ -38,10 +38,11 @@ class Organisation < ApplicationRecord
     if: proc { |organisation| organisation.is_reporter? },
     format: {with: /\A[A-Z]{2,5}\z/, message: I18n.t("activerecord.errors.models.organisation.attributes.beis_organisation_reference.format")}
 
+  scope :sorted_by_active, -> { order(active: :desc) }
   scope :sorted_by_name, -> { order(name: :asc) }
-  scope :delivery_partners, -> { sorted_by_name.where(role: "delivery_partner") }
-  scope :matched_effort_providers, -> { sorted_by_name.where(role: "matched_effort_provider") }
-  scope :external_income_providers, -> { sorted_by_name.where(role: "external_income_provider") }
+  scope :delivery_partners, -> { sorted_by_active.sorted_by_name.where(role: "delivery_partner") }
+  scope :matched_effort_providers, -> { sorted_by_active.sorted_by_name.where(role: "matched_effort_provider") }
+  scope :external_income_providers, -> { sorted_by_active.sorted_by_name.where(role: "external_income_provider") }
   scope :implementing, -> {
     where(<<~SQL
       organisations.id IN
@@ -61,7 +62,7 @@ class Organisation < ApplicationRecord
       )
     SQL
          )
-      .sorted_by_name
+      .sorted_by_active.sorted_by_name
   }
   scope :reporters, -> { sorted_by_name.where(role: ["delivery_partner", "service_owner"]) }
   scope :active, -> { where(active: true) }

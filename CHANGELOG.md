@@ -1023,6 +1023,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 ## [unreleased]
 
+- Organisations are sorted by active status on the organisations page (applies to all types of organisation: delivery partner, matched effort providers, external income providers, and implementing organisations)
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-104...HEAD
 [release-104]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-103...release-104
 [release-103]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-102...release-103
