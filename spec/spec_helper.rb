@@ -34,6 +34,8 @@ RSpec.configure do |config|
     "127.0.0.1" # Required for Capybara sessions
   ]
 
+  config.filter_run_excluding full_iati_test: true
+
   WebMock.disable_net_connect!(allow: allowed_http_requests)
 
   # rspec-expectations config goes here. You can use an alternate

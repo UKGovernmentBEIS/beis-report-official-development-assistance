@@ -456,6 +456,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
+  addressable
   better_errors
   binding_of_caller
   bootsnap (>= 1.1.0)
