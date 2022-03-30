@@ -14,7 +14,7 @@
         = t("document_title.activity.index", delivery_partner_name: @organisation.name)
 
       .govuk-tabs
-        %ul.govuk-tabs__list
+        %ul.govuk-tabs__list{role: "tablist"}
           %li.govuk-tabs__list-item
             = link_to t("tabs.activities.current"),
               organisation_activities_path(@organisation),
