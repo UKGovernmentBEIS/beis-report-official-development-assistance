@@ -9,12 +9,12 @@
           %li.govuk-tabs__list-item.govuk-tabs__list-item--selected{role: "presentation"}
             = link_to t("tabs.activities.current"),
               organisation_activities_path(@organisation),
-              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "current", selected: true } }
+              { class: "govuk-tabs__tab", role: "tab", aria: { selected: true } }
 
           %li.govuk-tabs__list-item{role: "presentation"}
             = link_to t("tabs.activities.historic"),
               historic_organisation_activities_path(@organisation),
-              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "historic", selected: false } }
+              { class: "govuk-tabs__tab", role: "tab", aria: { selected: false } }
 
         .govuk-tabs__panel
           %h2.govuk-heading-l
