@@ -34,6 +34,9 @@ en:
       default:
         action: Action
         actions: Actions
+    cell:
+      default:
+        no_actions_available: No actions available
   activerecord:
     attributes:
       default:

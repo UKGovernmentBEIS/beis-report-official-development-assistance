@@ -9,6 +9,8 @@
         %th.govuk-table__header
           = t("table.header.actual.receiving_organisation")
         %th.govuk-table__header
+          %span.govuk-visually-hidden
+            = t("table.header.default.actions")
 
     %tbody.govuk-table__body
       - actuals.each do |actual|
@@ -19,3 +21,7 @@
           %td.govuk-table__cell
             - if policy(actual).edit?
               = a11y_action_link(t('default.link.edit'), edit_activity_actual_path(actual.parent_activity_id, actual), t("page_content.actuals.edit_noun"))
+            - else
+              %span.govuk-visually-hidden
+                = t("table.cell.default.no_actions_available")
+
