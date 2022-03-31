@@ -4,10 +4,10 @@
       %h2.govuk-tabs__title
         Organisations
 
-      %ul.govuk-tabs__list
+      %ul.govuk-tabs__list{role: "tablist"}
         - ["delivery_partners", "matched_effort_providers", "external_income_providers", "implementing_organisations"].each do |role|
           %li{ class: "govuk-tabs__list-item #{role == @role ? "govuk-tabs__list-item--selected" : ""}"}
-            = link_to t("tabs.organisations.#{role}"), organisations_path(role: role), { class: "govuk-tabs__tab", role: "tab", aria: { controls: "current", selected: (role == @role) } }
+            = link_to t("tabs.organisations.#{role}"), organisations_path(role: role), { class: "govuk-tabs__tab", role: "tab", aria: { selected: (role == @role) } }
 
       .govuk-tabs__panel
         %h2.govuk-heading-l
@@ -31,7 +31,10 @@
             %tbody.govuk-table__body
               - organisations.each do |organisation|
                 %tr.govuk-table__row.organisation{id: organisation.id}
-                  %td.govuk-table__cell= organisation.name
+                  %td.govuk-table__cell
+                    = organisation.name
+                    - unless organisation.active
+                      %span.govuk-tag.govuk-tag--grey= t('form.label.organisation.active.false')
                   %td.govuk-table__cell= organisation.beis_organisation_reference
                   %td.govuk-table__cell
                     - if policy(organisation).show?

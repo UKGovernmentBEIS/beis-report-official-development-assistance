@@ -32,6 +32,7 @@ en:
         name: Name
         iati_reference: International Aid Transparency Initiative (IATI) reference
         beis_organisation_reference: Short name
+        active: Active?
   tabs:
     organisations:
       implementing_organisations: Implementing organisations

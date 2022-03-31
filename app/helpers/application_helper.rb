@@ -18,8 +18,8 @@ module ApplicationHelper
     if context.blank?
       link_to(text, href, class: css_classes)
     else
-      span = content_tag :span, context, class: "govuk-visually-hidden"
-      link_to("#{text} #{raw(span)}".html_safe, href, class: css_classes)
+      span = content_tag :span, " #{context}", class: "govuk-visually-hidden"
+      link_to("#{text}#{raw(span)}".html_safe, href, class: css_classes)
     end
   end
 
@@ -32,7 +32,7 @@ module ApplicationHelper
   end
 
   def breadcrumb_tags
-    content_tag :div, class: "govuk-breadcrumbs" do
+    content_tag :nav, class: "govuk-breadcrumbs", aria: {label: "Breadcrumbs"} do
       content_tag :ol, class: "govuk-breadcrumbs__list" do
         render_breadcrumbs tag: :li, separator: ""
       end

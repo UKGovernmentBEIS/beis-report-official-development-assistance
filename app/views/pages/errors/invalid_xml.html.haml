@@ -1,0 +1,18 @@
+= content_for :page_title_prefix, t("page_title.errors.invalid_xml")
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h2.govuk-heading-xl
+        = t("page_title.errors.invalid_xml")
+      %p.govuk-body
+        = t("page_content.errors.invalid_xml.explanation_html", url: exception.skip_validation_url)
+      %h3.govuk-heading-l
+        Errors
+      - exception.errors.each do |error|
+        %p.govuk-body
+          = error
+      %p.govuk-body
+
+      %p.govuk-body
+        = link_to t("default.link.go_home"), root_path, class: "govuk-link"

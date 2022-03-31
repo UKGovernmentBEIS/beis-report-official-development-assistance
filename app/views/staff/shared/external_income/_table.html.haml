@@ -10,6 +10,8 @@
       %th.govuk-table__header
         =t("table.header.matched_effort.amount")
       %th.govuk-table__header
+        %span.govuk-visually-hidden
+          = t("table.header.default.actions")
 
   %tbody.govuk-table__body
     - external_incomes.each do |external_income|

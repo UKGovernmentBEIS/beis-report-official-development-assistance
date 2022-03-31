@@ -8,6 +8,8 @@
       %th.govuk-table__header
         =t("table.header.implementing_organisation.reference")
       %th.govuk-table__header
+        %span.govuk-visually-hidden
+          = t("table.header.default.actions")
 
   %tbody.govuk-table__body
     - implementing_organisations.each do |organisation|
@@ -21,3 +23,6 @@
               = f.hidden_field :organisation_id, value: organisation.id
               %button.govuk-button.govuk-button--secondary{ name: "delete" }
                 = t("action.implementing_organisation.delete.button")
+          - else
+            %span.govuk-visually-hidden
+              = t("table.cell.default.no_actions_available")

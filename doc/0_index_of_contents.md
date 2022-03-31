@@ -4,8 +4,8 @@
 
 - **[Glossary of terms (glossary)](./glossary.md)**
 
-- **[Activity CSV Importer
-  (activity-csv-importer.md)](./activity-csv-importer.md)**: We need to import
+- **[Importing new delivery partner data
+  (importing-new-delivery-partner-data.md)](./importing-new-delivery-partner-data.md)**: We need to import
   legacy data for delivery partners, so they don't have to manually re-key it
   into RODA.
 
@@ -79,11 +79,6 @@
   (manage-environment-variables.md)](./manage-environment-variables.md)**:
   Environment variables are passed to live environments through Terraform by
   either Github Actions or a manual deployment.
-
-- **[Create new reports
-  (support_tasks/create_new_report.md)](./support_tasks/create_new_report.md)**:
-  Manually create a new report, most commonly required when a new delivery
-  partner joins ODA reporting.
 
 - **[Reset a user's MFA
   (support_tasks/reset_mfa.md)](./support_tasks/reset_mfa.md)**:

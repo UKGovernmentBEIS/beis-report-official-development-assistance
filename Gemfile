@@ -5,6 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "2.7.3"
 
 gem "acts_as_tree"
+gem "addressable"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "govuk_design_system_formbuilder", "~> 3.0.2"
 gem "haml-rails"
@@ -51,7 +52,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "foreman"
-  gem "i18n-tasks", "~> 0.9.35"
+  gem "i18n-tasks", "~> 1.0.5"
   gem "rspec-rails"
   gem "standard"
 end

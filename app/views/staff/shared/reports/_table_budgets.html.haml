@@ -11,6 +11,8 @@
         %th.govuk-table__header
           =t("table.header.budget.value")
         %th.govuk-table__header
+          %span.govuk-visually-hidden
+            = t("table.header.default.actions")
 
     %tbody.govuk-table__body
       - budgets.each do |budget|
@@ -21,3 +23,6 @@
           %td.govuk-table__cell
             - if policy(budget).edit?
               = link_to t("default.link.edit"), edit_activity_budget_path(budget.parent_activity, budget)
+            - else
+              %span.govuk-visually-hidden
+                = t("table.cell.default.no_actions_available")

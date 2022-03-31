@@ -14,16 +14,16 @@
         = t("document_title.activity.index", delivery_partner_name: @organisation.name)
 
       .govuk-tabs
-        %ul.govuk-tabs__list
+        %ul.govuk-tabs__list{role: "tablist"}
           %li.govuk-tabs__list-item
             = link_to t("tabs.activities.current"),
               organisation_activities_path(@organisation),
-              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "current", selected: false } }
+              { class: "govuk-tabs__tab", role: "tab", aria: { selected: false } }
 
           %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
             = link_to t("tabs.activities.historic"),
               historic_organisation_activities_path(@organisation),
-              { class: "govuk-tabs__tab", role: "tab", aria: { controls: "historic", selected: true } }
+              { class: "govuk-tabs__tab", role: "tab", aria: { selected: true } }
 
         .govuk-tabs__panel
           %h2.govuk-heading-l

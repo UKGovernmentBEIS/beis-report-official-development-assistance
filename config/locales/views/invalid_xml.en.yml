@@ -1,0 +1,11 @@
+---
+en:
+  page_content:
+    errors:
+      invalid_xml:
+        explanation_html: |
+          The XML did not pass IATI validation and will not be suitable for use.
+          You can <a href='%{url}'>download the invalid XML</a> anyway.
+  page_title:
+    errors:
+      invalid_xml: Invalid XML generated

@@ -1,3 +1,5 @@
+require "iati_validator/xml"
+
 class Staff::Exports::OrganisationsController < Staff::BaseController
   include Secured
   include StreamCsvDownload
@@ -103,9 +105,16 @@ class Staff::Exports::OrganisationsController < Staff::BaseController
   end
 
   def render_xml
-    response.headers["Content-Disposition"] = "attachment; filename=\"#{@organisation.iati_reference}.xml\""
-
-    render "staff/exports/organisations/show"
+    output = render_to_string "staff/exports/organisations/show"
+    validator = IATIValidator::XML.new(output)
+    if validator.valid? || params[:skip_validation]
+      response.headers["Content-Disposition"] = "attachment; filename=\"#{@organisation.iati_reference}.xml\""
+      render xml: output
+    else
+      exception = IATIValidator::XML::InvalidError.new(validator.errors, request.url)
+      Rollbar.error(exception)
+      render "pages/errors/invalid_xml", locals: {exception: exception}, status: 500, formats: :html
+    end
   end
 
   def authorise_show
