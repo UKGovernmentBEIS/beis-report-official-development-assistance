@@ -27,14 +27,14 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe "#a11y_action_link" do
     it "gives action links more context available to a screen reader" do
-      span = content_tag :span, "Pear", class: "govuk-visually-hidden"
-      accessible_action_link = link_to("Edit #{raw(span)}".html_safe, "pear.com", class: "govuk-link")
+      span = content_tag :span, " Pear", class: "govuk-visually-hidden"
+      accessible_action_link = link_to("Edit#{raw(span)}".html_safe, "pear.com", class: "govuk-link")
       expect(helper.a11y_action_link("Edit", "pear.com", "Pear")).to eql accessible_action_link
     end
 
     it "merges any supplied css classes" do
-      span = content_tag :span, "Pear", class: "govuk-visually-hidden"
-      accessible_action_link = link_to("Edit #{raw(span)}".html_safe, "pear.com", class: "pear govuk-link")
+      span = content_tag :span, " Pear", class: "govuk-visually-hidden"
+      accessible_action_link = link_to("Edit#{raw(span)}".html_safe, "pear.com", class: "pear govuk-link")
       expect(helper.a11y_action_link("Edit", "pear.com", "Pear", ["pear"])).to eql accessible_action_link
     end
 
