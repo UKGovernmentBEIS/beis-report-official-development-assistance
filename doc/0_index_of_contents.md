@@ -4,8 +4,8 @@
 
 - **[Glossary of terms (glossary)](./glossary.md)**
 
-- **[Activity CSV Importer
-  (activity-csv-importer.md)](./activity-csv-importer.md)**: We need to import
+- **[Importing new delivery partner data
+  (importing-new-delivery-partner-data.md)](./importing-new-delivery-partner-data.md)**: We need to import
   legacy data for delivery partners, so they don't have to manually re-key it
   into RODA.
 
