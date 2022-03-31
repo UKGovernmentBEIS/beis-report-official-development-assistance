@@ -76,18 +76,35 @@
           %tr.govuk-table__row
             %td.govuk-table__cell{scope: "row"} _roda_session
             %td.govuk-table__cell Identifies your session in RODA
-            %td.govuk-table__cell When you close your browser or 24 hours
+            %td.govuk-table__cell When you close your browser or 12 hours
           %tr.govuk-table__row
             %td.govuk-table__cell{scope: "row"} govuk-cookie-consent
             %td.govuk-table__cell Identifies if cookies have been accepted or not
             %td.govuk-table__cell 90 days
 
+      %h2.govuk-heading-m
+        Functional cookies
+
+      %p.govuk-body
+        These cookies are used to enhance your use of the service by remembering your choices:
+
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: "col"} Name
+            %th.govuk-table__header{scope: "col"} Purpose
+            %th.govuk-table__header{scope: "col"} Expires
+        %tbody.govuk-table__body
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: "row"} remember_user_token
+            %td.govuk-table__cell Remembers your RODA login if you selected "Remember me" when signing in
+            %td.govuk-table__cell 30 days
 
       %h2.govuk-heading-m
         Gathering your feedback
 
       %p.govuk-body
-        We use google forms software to collect information about what you
+        We use Google Forms software to collect information about what you
         thought of the RODA service. We do this to help make sure the site is
         meeting the needs of its users and to help us make improvements.
 
@@ -105,4 +122,4 @@
             reloading this page
 
       %p.govuk-body.published-dates
-        Last updated 21 May 2020
+        Last updated 31 March 2022
