@@ -1021,7 +1021,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 - Fix attempt to use an unloaded gem that was causing the report's comments tab to raise server error
 
-## [unreleased]
+## [release-105] 2022-03-31
 
 - Validate XML against IATI schema on export
 - Fix some accessibility issues with tables and tab lists
@@ -1029,8 +1029,12 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix declared duration of default session from 24 hours to the actual value of 12 hours
 - Organisations are sorted by active status on the organisations page (applies to all types of organisation: delivery partner, matched effort providers, external income providers, and implementing organisations)
 - Reduce "Password Reset" link validity period to 24 hours
+- Acknowledge the hotfix release at c041ad3e8b2ca727ca7d12dd07327c3cabdfa044 for a critical Puma fix 
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-104...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-105...HEAD
+[release-105]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-104...release-105
 [release-104]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-103...release-104
 [release-103]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-102...release-103
 [release-102]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-101...release-102
