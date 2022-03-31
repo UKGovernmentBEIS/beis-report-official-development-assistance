@@ -2,23 +2,27 @@
 
 ## Activity
 
-Generic term for any project undertaken by an organisation with BEIS money. Top level things such as funds (of which there are only two) are also activities in the code. See also fund, programme, project, third-party project. `Activity` in the code, with distinction by the `level` attribute.
+Generic term for any project undertaken by an organisation with BEIS money. Top level things such as funds are also activities in the code. See also fund, programme, project, third-party project. `Activity` in the code, with distinction by the `level` attribute.
 
 ## Actual spend
 
-Also: actuals, transaction(s)
+Also: actuals
 
 Money spent for an activity. For historical reasons, some actuals have negative values, but newer actuals should only ever have positive values.
+
+Subclass of `Transaction`
 
 ## Adjustments
 
 Corrections made to fix inconsistencies with reported actuals.
 
+Subclass of `Transaction`
+
 ## Budget
 
 Money allocated for an activity.
 
-RODA currently recognises three types of budgets: direct, transferred, and external. Direct budgets are subtyped by the associated fund (GCRF or Newton).
+RODA currently recognises two types of budgets: direct and external.
 
 ## Codelists
 
@@ -62,7 +66,7 @@ Money anticipated to be spent for an activity during a financial quarter.
 
 Also "level A"
 
-One of two sources of financing for development assistance projects.
+A source of financing for development assistance projects.
 
 A fund is recorded as an activity entity, but there is also a `Fund` class that is not database-persisted.
 
@@ -89,6 +93,8 @@ An activity managed by a DP, recording how money is received and spent from BEIS
 ## Refunds
 
 Represent money returned, that will be deducted when calculating net spends. Always stored as negative values.
+
+Subclass of `Transaction`
 
 ## Report
 
