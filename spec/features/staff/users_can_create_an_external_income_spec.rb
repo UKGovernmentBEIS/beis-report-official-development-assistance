@@ -1,5 +1,6 @@
 RSpec.describe "Users can create a external income" do
   context "when signed in as a delivery partner" do
+    let(:financial_quarter) { FinancialQuarter.new(Time.current.year, 1) }
     let(:user) { create(:delivery_partner_user) }
     let(:programme) { create(:programme_activity, extending_organisation: user.organisation) }
 
@@ -19,8 +20,8 @@ RSpec.describe "Users can create a external income" do
       template = build(:external_income,
         organisation: external_income_provider,
         amount: "2345",
-        financial_quarter: 1,
-        financial_year: 2021,
+        financial_quarter: financial_quarter.quarter,
+        financial_year: financial_quarter.financial_year.start_year,
         oda_funding: true)
 
       fill_in_external_income_form(template)
@@ -30,14 +31,14 @@ RSpec.describe "Users can create a external income" do
       external_income = ExternalIncome.order("created_at ASC").last
 
       expect(external_income.organisation).to eq(external_income_provider)
-      expect(external_income.financial_quarter).to eq(1)
-      expect(external_income.financial_year).to eq(2021)
+      expect(external_income.financial_quarter).to eq(financial_quarter.quarter)
+      expect(external_income.financial_year).to eq(financial_quarter.financial_year.start_year)
       expect(external_income.amount).to eq(2345.00)
       expect(external_income.oda_funding).to eq(true)
 
       within("table.implementing_organisations") do
         expect(page).to have_content(external_income_provider.name)
-        expect(page).to have_content("FQ1 2021-2022")
+        expect(page).to have_content(financial_quarter.to_s)
         expect(page).to have_content("£2,345.00")
         expect(page).to have_content("Yes")
       end
