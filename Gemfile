@@ -52,7 +52,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "foreman"
-  gem "i18n-tasks", "~> 1.0.5"
+  gem "i18n-tasks", "~> 1.0.7"
   gem "rspec-rails"
   gem "standard"
 end
