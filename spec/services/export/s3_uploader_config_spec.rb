@@ -8,7 +8,7 @@ module Export
           {
             "aws-s3-bucket":[
                 {
-                   "name": "s3-export-download-bucket",
+                   "name": "beis-roda-staging-s3-export-download-bucket",
                    "credentials":{
                       "bucket_name":"exports_bucket",
                       "aws_access_key_id":"KEY_ID",
@@ -32,7 +32,7 @@ module Export
           {
             "aws-s3-bucket":[
                 {
-                   "name": "s3-export-download-bucket",
+                   "name": "beis-roda-staging-s3-export-download-bucket",
                    "incorrect_credentials_key":{
                       "bucket_name":"exports_bucket",
                       "aws_access_key_id":"KEY_ID",
@@ -95,7 +95,7 @@ module Export
           {
             "aws-s3-bucket":[
                 {
-                   "name": "s3-export-download-bucket",
+                   "name": "beis-roda-staging-s3-export-download-bucket",
                    "credentials":{
                       "bucket_name":"exports_bucket",
                       "aws_access_key_id":"KEY_ID",

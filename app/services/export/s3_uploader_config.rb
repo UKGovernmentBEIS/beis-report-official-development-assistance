@@ -19,7 +19,7 @@ module Export
     def self.credentials
       JSON.parse(ENV.fetch("VCAP_SERVICES"))
         .fetch("aws-s3-bucket")
-        .find { |config| config.fetch("name").match?(/^s3-export-download-bucket/) }
+        .find { |config| config.fetch("name").match?(/s3-export-download-bucket/) }
         .fetch("credentials")
     rescue KeyError, NoMethodError => _error
       raise "AWS S3 credentials not found"
