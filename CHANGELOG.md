@@ -1035,9 +1035,14 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 - Data migration to remove 33 ineligible countries from 57 activities
 
+## [release-107] 2022-04-06
+
+- Remove 33 ineligible countries from RODA configuration
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-106...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-107...HEAD
+[release-107]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-106...release-107
 [release-106]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-105...release-106
 [release-105]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-104...release-105
 [release-104]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-103...release-104
