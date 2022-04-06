@@ -98,14 +98,6 @@ data:
       - "298"
       - "289"
       - "1027"
-  - name: Mayotte
-    recipient_code: "258"
-    code: YT
-    graduated: no
-    regions:
-      - "298"
-      - "289"
-      - "1027"
   - name: Mozambique
     recipient_code: "259"
     code: MZ
@@ -442,22 +434,6 @@ data:
       - "298"
       - "289"
       - "1030"
-  - name: Bahamas
-    recipient_code: "328"
-    code: BS
-    graduated: no
-    regions:
-      - "498"
-      - "389"
-      - "1031"
-  - name: Barbados
-    recipient_code: "329"
-    code: BB
-    graduated: no
-    regions:
-      - "498"
-      - "389"
-      - "1031"
   - name: Cuba
     recipient_code: "338"
     code: CU
@@ -490,38 +466,6 @@ data:
       - "498"
       - "389"
       - "1031"
-  - name: Netherlands Antilles
-    recipient_code: "361"
-    code: AN
-    graduated: no
-    regions:
-      - "498"
-      - "389"
-      - "1031"
-  - name: Aruba
-    recipient_code: "373"
-    code: AW
-    graduated: no
-    regions:
-      - "498"
-      - "389"
-      - "1031"
-  - name: Trinidad and Tobago
-    recipient_code: "375"
-    code: TT
-    graduated: no
-    regions:
-      - "498"
-      - "389"
-      - "1031"
-  - name: Anguilla
-    recipient_code: "376"
-    code: AI
-    graduated: no
-    regions:
-      - "498"
-      - "389"
-      - "1031"
   - name: Antigua and Barbuda
     recipient_code: "377"
     code: AG
@@ -546,14 +490,6 @@ data:
       - "498"
       - "389"
       - "1031"
-  - name: Saint Kitts and Nevis
-    recipient_code: "382"
-    code: KN
-    graduated: no
-    regions:
-      - "498"
-      - "389"
-      - "1031"
   - name: Saint Lucia
     recipient_code: "383"
     code: LC
@@ -573,30 +509,6 @@ data:
   - name: Montserrat
     recipient_code: "385"
     code: MS
-    graduated: no
-    regions:
-      - "498"
-      - "389"
-      - "1031"
-  - name: Cayman Islands
-    recipient_code: "386"
-    code: KY
-    graduated: no
-    regions:
-      - "498"
-      - "389"
-      - "1031"
-  - name: Turks and Caicos Islands
-    recipient_code: "387"
-    code: TC
-    graduated: no
-    regions:
-      - "498"
-      - "389"
-      - "1031"
-  - name: British Virgin Islands
-    recipient_code: "388"
-    code: VG
     graduated: no
     regions:
       - "498"
@@ -701,13 +613,6 @@ data:
     regions:
       - "498"
       - "489"
-  - name: Falkland Islands (Malvinas)
-    recipient_code: "443"
-    code: FK
-    graduated: no
-    regions:
-      - "498"
-      - "489"
   - name: Guyana
     recipient_code: "446"
     code: GY
@@ -743,13 +648,6 @@ data:
     regions:
       - "498"
       - "489"
-  - name: Brunei Darussalam
-    recipient_code: "725"
-    code: BN
-    graduated: no
-    regions:
-      - "798"
-      - "789"
   - name: Cambodia
     recipient_code: "728"
     code: KH
@@ -760,20 +658,6 @@ data:
   - name: China (People's Republic of)
     recipient_code: "730"
     code: CN
-    graduated: no
-    regions:
-      - "798"
-      - "789"
-  - name: Chinese Taipei
-    recipient_code: "732"
-    code: TW
-    graduated: no
-    regions:
-      - "798"
-      - "789"
-  - name: Hong Kong (China)
-    recipient_code: "735"
-    code: HK
     graduated: no
     regions:
       - "798"
@@ -792,23 +676,9 @@ data:
     regions:
       - "798"
       - "789"
-  - name: Korea
-    recipient_code: "742"
-    code: KR
-    graduated: no
-    regions:
-      - "798"
-      - "789"
   - name: Lao People's Democratic Republic
     recipient_code: "745"
     code: LA
-    graduated: no
-    regions:
-      - "798"
-      - "789"
-  - name: Macau (China)
-    recipient_code: "748"
-    code: MO
     graduated: no
     regions:
       - "798"
@@ -834,13 +704,6 @@ data:
     regions:
       - "798"
       - "789"
-  - name: Singapore
-    recipient_code: "761"
-    code: SG
-    graduated: no
-    regions:
-      - "798"
-      - "789"
   - name: Thailand
     recipient_code: "764"
     code: TH
@@ -862,13 +725,6 @@ data:
     regions:
       - "798"
       - "789"
-  - name: Bahrain
-    recipient_code: "530"
-    code: BH
-    graduated: no
-    regions:
-      - "798"
-      - "589"
   - name: Iran
     recipient_code: "540"
     code: IR
@@ -879,13 +735,6 @@ data:
   - name: Iraq
     recipient_code: "543"
     code: IQ
-    graduated: no
-    regions:
-      - "798"
-      - "589"
-  - name: Israel
-    recipient_code: "546"
-    code: IL
     graduated: no
     regions:
       - "798"
@@ -904,13 +753,6 @@ data:
     regions:
       - "798"
       - "589"
-  - name: Kuwait
-    recipient_code: "552"
-    code: KW
-    graduated: no
-    regions:
-      - "798"
-      - "589"
   - name: Lebanon
     recipient_code: "555"
     code: LB
@@ -918,37 +760,9 @@ data:
     regions:
       - "798"
       - "589"
-  - name: Oman
-    recipient_code: "558"
-    code: OM
-    graduated: no
-    regions:
-      - "798"
-      - "589"
-  - name: Qatar
-    recipient_code: "561"
-    code: QA
-    graduated: no
-    regions:
-      - "798"
-      - "589"
-  - name: Saudi Arabia
-    recipient_code: "566"
-    code: SA
-    graduated: no
-    regions:
-      - "798"
-      - "589"
   - name: Syrian Arab Republic
     recipient_code: "573"
     code: SY
-    graduated: no
-    regions:
-      - "798"
-      - "589"
-  - name: United Arab Emirates
-    recipient_code: "576"
-    code: AE
     graduated: no
     regions:
       - "798"
@@ -1096,24 +910,6 @@ data:
       - "798"
       - "689"
       - "679"
-  - name: Cyprus
-    recipient_code: "30"
-    code: CY
-    graduated: no
-    regions:
-      - "89"
-  - name: Gibraltar
-    recipient_code: "35"
-    code: GI
-    graduated: no
-    regions:
-      - "89"
-  - name: Malta
-    recipient_code: "45"
-    code: MT
-    graduated: no
-    regions:
-      - "89"
   - name: Turkey
     recipient_code: "55"
     code: TR
@@ -1123,18 +919,6 @@ data:
   - name: Kosovo
     recipient_code: "57"
     code: XK
-    graduated: no
-    regions:
-      - "89"
-  - name: Slovenia
-    recipient_code: "61"
-    code: SI
-    graduated: no
-    regions:
-      - "89"
-  - name: Croatia
-    recipient_code: "62"
-    code: HR
     graduated: no
     regions:
       - "89"
@@ -1193,13 +977,6 @@ data:
     regions:
       - "889"
       - "1033"
-  - name: New Caledonia
-    recipient_code: "850"
-    code: NC
-    graduated: no
-    regions:
-      - "889"
-      - "1033"
   - name: Vanuatu
     recipient_code: "854"
     code: VU
@@ -1235,13 +1012,6 @@ data:
     regions:
       - "889"
       - "1034"
-  - name: Northern Mariana Islands
-    recipient_code: "858"
-    code: MP
-    graduated: no
-    regions:
-      - "889"
-      - "1034"
   - name: Marshall Islands
     recipient_code: "859"
     code: MH
@@ -1263,13 +1033,6 @@ data:
     regions:
       - "889"
       - "1034"
-  - name: French Polynesia
-    recipient_code: "840"
-    code: PF
-    graduated: no
-    regions:
-      - "889"
-      - "1035"
   - name: Niue
     recipient_code: "856"
     code: NU
