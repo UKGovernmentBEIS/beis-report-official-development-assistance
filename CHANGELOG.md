@@ -1031,9 +1031,14 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Reduce "Password Reset" link validity period to 24 hours
 - Acknowledge the hotfix release at c041ad3e8b2ca727ca7d12dd07327c3cabdfa044 for a critical Puma fix 
 
+## [release-106] 2022-04-06
+
+- Data migration to remove 33 ineligible countries from 57 activities
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-105...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-106...HEAD
+[release-106]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-105...release-106
 [release-105]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-104...release-105
 [release-104]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-103...release-104
 [release-103]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-102...release-103

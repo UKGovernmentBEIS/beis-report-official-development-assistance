@@ -3,7 +3,14 @@ RSpec.describe Export::Report do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
 
-    @report = create(:report)
+    financial_quarter = FinancialQuarter.for_date(Date.parse("31-Mar-2022"))
+    financial_year = FinancialYear.for_date(Date.parse("31-Mar-2022"))
+
+    @report = create(
+      :report,
+      financial_quarter: financial_quarter.to_i,
+      financial_year: financial_year.to_i
+    )
 
     @project = create(:project_activity_with_implementing_organisations)
 
@@ -32,10 +39,16 @@ RSpec.describe Export::Report do
         financial_year: @report.financial_year
       )
 
+    previous_report = create(
+      :report,
+      financial_quarter: financial_quarter.pred.to_i,
+      financial_year: financial_year.to_i
+    )
+
     @forecast =
       ForecastHistory.new(
         @project,
-        report: create(:report, financial_quarter: @report.financial_quarter.pred),
+        report: previous_report,
         financial_quarter: @report.financial_quarter,
         financial_year: @report.financial_year
       ).set_value(10_000)
