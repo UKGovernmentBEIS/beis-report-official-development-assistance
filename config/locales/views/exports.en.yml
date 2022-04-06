@@ -3,6 +3,7 @@ en:
   document_title:
     export:
       index: Exports
+      export_in_progress: Export being prepared
   page_title:
     export:
       index: Exports
@@ -38,3 +39,9 @@ en:
       index: Exports
       organisation:
         show: Exports for %{name}
+  mailer:
+    download_link:
+      success:
+        subject: "%{application_name} - Your export '%{file_name}' is ready to download"
+      failure:
+        subject: '%{application_name} - Your export failed'
