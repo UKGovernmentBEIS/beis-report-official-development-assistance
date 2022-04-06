@@ -71,7 +71,7 @@ RSpec.describe Staff::ExportsController do
     end
   end
 
-  describe "#spending_breakdown", wip: true do
+  describe "#spending_breakdown" do
     render_views
     let(:user) { create(:beis_user) }
 

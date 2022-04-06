@@ -1,5 +1,5 @@
 RSpec.feature "Users can export spending breakdown" do
-  context "as a BEIS user", wip: true do
+  context "as a BEIS user" do
     before do
       authenticate! user: create(:beis_user, email: "beis@example.com")
     end

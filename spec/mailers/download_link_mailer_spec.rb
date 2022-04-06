@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe DownloadLinkMailer, type: :mailer, wip: true do
+RSpec.describe DownloadLinkMailer, type: :mailer do
   let(:user) { double("beis user", email: "beis@example.com") }
 
   describe "#send_link(recipient:, file_url:, file_name:)" do

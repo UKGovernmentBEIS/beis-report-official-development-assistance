@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Export::S3Uploader, wip: true do
+RSpec.describe Export::S3Uploader do
   let(:response) { double("response", etag: double) }
   let(:file) { Tempfile.open("tempfile") { |f| f << "my export here" } }
   let(:aws_credentials) { double("aws credentials") }

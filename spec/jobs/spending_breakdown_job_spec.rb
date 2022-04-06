@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe SpendingBreakdownJob, type: :job, wip: true do
+RSpec.describe SpendingBreakdownJob, type: :job do
   let(:requester) { double(:user, email: "roger@example.com") }
   let(:fund) { double(:fund) }
   let(:row1) { double("row1") }
