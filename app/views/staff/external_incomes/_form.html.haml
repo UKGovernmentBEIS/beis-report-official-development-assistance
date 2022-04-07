@@ -11,7 +11,7 @@
           legend: { text: "Financial quarter" }
       .govuk-grid-column-one-third
         = f.govuk_collection_select :financial_year,
-          list_of_financial_years,
+          list_of_financial_years(FinancialYear.next_ten.prepend(FinancialYear.new(Date.today.year).pred)),
           :id,
           :name,
           label: { text: "Financial year", tag: :h2, size: "m" }
