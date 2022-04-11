@@ -1039,12 +1039,17 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 - Remove 33 ineligible countries from RODA configuration
 
-## [unreleased]
+## [release-108] 2022-04-11
 
 - Fix spending breakdown report by running asynchronously and emailing a download link
   to the requester.
+- Fix missing Q4 21/22 option in external income by including "previous" year  as well as 
+  the next ten. 
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-107...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-108...HEAD
+[release-108]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-107...release-108
 [release-107]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-106...release-107
 [release-106]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-105...release-106
 [release-105]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-104...release-105
