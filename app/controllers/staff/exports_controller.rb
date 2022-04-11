@@ -44,16 +44,17 @@ class Staff::ExportsController < Staff::BaseController
 
   def spending_breakdown
     authorize :export, :show_external_income?
+
+    SpendingBreakdownJob.perform_later(
+      requester_id: current_user.id,
+      fund_id: params[:fund_id]
+    )
+
     fund = Fund.new(params[:fund_id])
+    email = current_user.email
+    @message = "The requested spending breakdown for #{fund.name} is being prepared. " \
+               "We will send a download link to #{email} when it is ready."
 
-    respond_to do |format|
-      format.csv do
-        export = Export::SpendingBreakdown.new(source_fund: fund)
-
-        stream_csv_download(filename: export.filename, headers: export.headers) do |csv|
-          export.rows.each { |row| csv << row }
-        end
-      end
-    end
+    render :export_in_progress
   end
 end

@@ -98,8 +98,9 @@ module FormHelpers
   end
 
   def fill_in_external_income_form(template = build(:external_income))
+    current_year = FinancialYear.new(Date.today.year).to_s
     page.find(:xpath, "//input[@value='#{template.financial_quarter}']").set(true)
-    select template.financial_year, from: "external_income[financial_year]"
+    select current_year, from: "external_income[financial_year]"
     select template.organisation.name, from: "external_income[organisation_id]"
     fill_in "external_income[amount]", with: template.amount
     check "external_income[oda_funding]" if template.oda_funding

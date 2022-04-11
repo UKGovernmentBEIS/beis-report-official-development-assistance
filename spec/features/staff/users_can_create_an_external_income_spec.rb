@@ -44,6 +44,13 @@ RSpec.describe "Users can create a external income" do
       end
     end
 
+    context "when the current fin. year has advanced from the period being reported" do
+      scenario "can choose the previous financial year" do
+        options = page.all("#external-income-financial-year-field option").map(&:text)
+        expect(options).to include(FinancialYear.new(Date.today.year).pred.to_s)
+      end
+    end
+
     scenario "they are shown errors when required fields are left blank" do
       click_on t("default.button.submit")
 
