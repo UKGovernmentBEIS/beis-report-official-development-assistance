@@ -108,7 +108,7 @@ CMD ["bundle", "exec", "puma"]
 # ------------------------------------------------------------------------------
 FROM web as test
 
-RUN apt-get install -qq -y firefox-esr \
+RUN apt-get install -qq -y --fix-missing firefox-esr \
   shellcheck
 
 ARG gecko_driver_version=0.26.0

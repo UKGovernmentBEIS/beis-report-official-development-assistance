@@ -1046,9 +1046,13 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix missing Q4 21/22 option in external income by including "previous" year  as well as 
   the next ten. 
 
+## [release-109] 2022-05-18
+- Generates public (rather than pre-signed) URL for download link to fetch reports from S3 bucket
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-108...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-109...HEAD
+[release-109]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-108...release-109
 [release-108]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-107...release-108
 [release-107]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-106...release-107
 [release-106]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-105...release-106
