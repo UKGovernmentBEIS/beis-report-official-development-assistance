@@ -25,7 +25,7 @@ module Export
       raise "Unexpected response." unless response&.etag
 
       OpenStruct.new(
-        url: bucket.object(filename).presigned_url(:get, expires_in: 1.day.in_seconds),
+        url: bucket.object(filename).public_url,
         timestamped_filename: filename
       )
     rescue => error
