@@ -474,7 +474,12 @@ module Activities
       end
 
       def convert_programme_status(programme_status)
-        status = Activity.programme_statuses.key(programme_status.to_i)
+        begin
+          numeric_status = Integer(programme_status)
+        rescue
+          I18n.t("importer.errors.activity.invalid_programme_status")
+        end
+        status = Activity.programme_statuses.key(numeric_status)
 
         raise I18n.t("importer.errors.activity.invalid_programme_status") if status.nil?
 
