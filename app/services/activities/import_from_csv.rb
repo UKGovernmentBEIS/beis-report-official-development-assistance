@@ -460,7 +460,13 @@ module Activities
       end
 
       def convert_oda_eligibility(oda_eligibility)
-        option = Activity.oda_eligibilities.key(oda_eligibility.to_i)
+        begin
+          numeric_eligibility = Integer(oda_eligibility)
+        rescue
+          raise I18n.t("importer.errors.activity.invalid_oda_eligibility")
+        end
+
+        option = Activity.oda_eligibilities.key(numeric_eligibility)
 
         raise I18n.t("importer.errors.activity.invalid_oda_eligibility") if option.nil?
 
