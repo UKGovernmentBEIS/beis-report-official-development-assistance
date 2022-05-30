@@ -479,7 +479,7 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when oda_eligibility is invalid" do
+    context "when oda_eligibility is an invalid text string" do
       subject(:activity) { build(:project_activity, oda_eligibility: "kitten") }
 
       it "should not be valid" do
