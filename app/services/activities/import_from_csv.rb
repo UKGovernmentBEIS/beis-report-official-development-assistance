@@ -414,7 +414,7 @@ module Activities
         valid_codes = gcrf_challenge_area_options.map { |area| area.code.to_s }
         raise I18n.t("importer.errors.activity.invalid_gcrf_challenge_area") unless valid_codes.include?(gcrf_challenge_area)
 
-        gcrf_challenge_area.to_i
+        Integer(gcrf_challenge_area)
       end
 
       def convert_gcrf_strategic_area(gcrf_strategic_area)
