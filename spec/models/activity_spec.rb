@@ -1368,6 +1368,12 @@ RSpec.describe Activity, type: :model do
         expect(activity.iati_status).to eql "2"
       end
     end
+
+    context "when the programme status is an invalid text string" do
+      it "raises an error" do
+        expect { Activity.new(programme_status: "kitten") }.to raise_error
+      end
+    end
   end
 
   describe ".hierarchically_grouped_projects" do
