@@ -414,7 +414,7 @@ module Activities
         valid_codes = gcrf_challenge_area_options.map { |area| area.code.to_s }
         raise I18n.t("importer.errors.activity.invalid_gcrf_challenge_area") unless valid_codes.include?(gcrf_challenge_area)
 
-        gcrf_challenge_area.to_i
+        Integer(gcrf_challenge_area)
       end
 
       def convert_gcrf_strategic_area(gcrf_strategic_area)
@@ -460,7 +460,13 @@ module Activities
       end
 
       def convert_oda_eligibility(oda_eligibility)
-        option = Activity.oda_eligibilities.key(oda_eligibility.to_i)
+        begin
+          numeric_eligibility = Integer(oda_eligibility)
+        rescue
+          raise I18n.t("importer.errors.activity.invalid_oda_eligibility")
+        end
+
+        option = Activity.oda_eligibilities.key(numeric_eligibility)
 
         raise I18n.t("importer.errors.activity.invalid_oda_eligibility") if option.nil?
 
@@ -468,7 +474,12 @@ module Activities
       end
 
       def convert_programme_status(programme_status)
-        status = Activity.programme_statuses.key(programme_status.to_i)
+        begin
+          numeric_status = Integer(programme_status)
+        rescue
+          I18n.t("importer.errors.activity.invalid_programme_status")
+        end
+        status = Activity.programme_statuses.key(numeric_status)
 
         raise I18n.t("importer.errors.activity.invalid_programme_status") if status.nil?
 

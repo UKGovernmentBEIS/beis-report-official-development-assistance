@@ -1050,6 +1050,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Generates public (rather than pre-signed) URL for download link to fetch reports from S3 bucket
 
 ## [unreleased]
+- Do not parse arbitary text in oda_eligibilities or programme_status as being 0.
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-109...HEAD
 [release-109]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-108...release-109

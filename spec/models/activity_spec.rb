@@ -479,6 +479,14 @@ RSpec.describe Activity, type: :model do
       end
     end
 
+    context "when oda_eligibility is an invalid text string" do
+      subject(:activity) { build(:project_activity, oda_eligibility: "kitten") }
+
+      it "should raise an error" do
+        expect { activity }.to raise_error("'kitten' is not a valid oda_eligibility")
+      end
+    end
+
     context "when saving in the oda_eligibility_lead_step context" do
       context "and the activity is a fund" do
         subject { build(:project_activity, level: :fund) }
@@ -1358,6 +1366,12 @@ RSpec.describe Activity, type: :model do
       it "returns the corresponding IATI status code" do
         activity = Activity.new(programme_status: "spend_in_progress")
         expect(activity.iati_status).to eql "2"
+      end
+    end
+
+    context "when the programme status is an invalid text string" do
+      it "raises an error" do
+        expect { Activity.new(programme_status: "kitten") }.to raise_error
       end
     end
   end
