@@ -21,7 +21,7 @@ module Activities
         Converter::FIELDS.values -
         ["BEIS ID"] +
         ["Comments"] +
-        ["Implementing organisation name"]
+        ["Implementing organisation names"]
     end
 
     def initialize(uploader:, delivery_partner_organisation:, report:)
@@ -120,14 +120,13 @@ module Activities
           @activity.sdgs_apply = true
         end
 
-        if row["Implementing organisation name"].present?
+        if row["Implementing organisation names"].present?
           implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
-          implementing_organisation = implementing_organisation_builder.organisation
-
-          if implementing_organisation.present?
-            @activity.implementing_organisations = [implementing_organisation]
-          else
+          implementing_organisations = implementing_organisation_builder.organisations
+          if implementing_organisations.include?(nil)
             implementing_organisation_builder.add_errors(@errors)
+          else
+            @activity.implementing_organisations = implementing_organisations
           end
         else
           @activity.implementing_organisations = []
@@ -207,7 +206,7 @@ module Activities
         end
 
         implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
-        if row["Implementing organisation name"].present?
+        if row["Implementing organisation names"].present?
           participations = implementing_organisation_builder.participations
           @activity.implementing_org_participations = participations
         end
@@ -222,7 +221,7 @@ module Activities
           @errors[error.attribute] ||= [@converter.raw(error.attribute), error.message]
         end
 
-        implementing_organisation_builder.add_errors(@errors) if @activity.implementing_organisations.any?
+        implementing_organisation_builder.add_errors(@errors) if @activity.implementing_organisations.include?(nil)
       end
 
       private def fetch_parent(roda_id)
@@ -237,30 +236,48 @@ module Activities
 
     class ImplementingOrganisationBuilder
       FIELDS = {
-        "implementing_organisation_name" => "Implementing organisation name"
+        "implementing_organisation_names" => "Implementing organisation names"
       }.freeze
 
-      attr_accessor :activity, :row
+      attr_accessor :activity, :org_names
 
       def initialize(activity, row)
         @activity = activity
-        @row = row
+        @org_names = split_org_names(row)
       end
 
-      def organisation
-        @organisation = Organisation.find_matching(row["Implementing organisation name"])
+      def organisations
+        @organisations ||= org_names.map { |name| Organisation.find_matching(name) }
       end
 
       def participations
-        [OrgParticipation.new(activity: activity, organisation: organisation)]
+        organisations.map do |organisation|
+          OrgParticipation.new(activity: activity, organisation: organisation)
+        end
       end
 
       def add_errors(errors)
-        return if organisation.present?
+        return unless organisations.include?(nil)
 
         errors.delete(:implementing_organisations)
-        errors["implementing_organisation_name"] = [row["Implementing organisation name"], "is not a known implementing organisation"]
+
+        unknown_names = []
+        organisations.each_with_index do |item, idx|
+          next if item
+          unknown_names << org_names[idx]
+        end
+
+        errors["implementing_organisation_names"] =
+          [unknown_names.join(" | "), "is/are not a known implementing organisation(s)"]
         errors
+      end
+
+      private
+
+      def split_org_names(row)
+        return [] unless row["Implementing organisation names"]
+
+        row["Implementing organisation names"].split("|").map(&:strip)
       end
     end
 
