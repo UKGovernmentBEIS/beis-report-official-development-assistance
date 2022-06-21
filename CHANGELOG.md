@@ -1029,7 +1029,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix declared duration of default session from 24 hours to the actual value of 12 hours
 - Organisations are sorted by active status on the organisations page (applies to all types of organisation: delivery partner, matched effort providers, external income providers, and implementing organisations)
 - Reduce "Password Reset" link validity period to 24 hours
-- Acknowledge the hotfix release at c041ad3e8b2ca727ca7d12dd07327c3cabdfa044 for a critical Puma fix 
+- Acknowledge the hotfix release at c041ad3e8b2ca727ca7d12dd07327c3cabdfa044 for a critical Puma fix
 
 ## [release-106] 2022-04-06
 
@@ -1043,16 +1043,17 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 - Fix spending breakdown report by running asynchronously and emailing a download link
   to the requester.
-- Fix missing Q4 21/22 option in external income by including "previous" year  as well as 
-  the next ten. 
+- Fix missing Q4 21/22 option in external income by including "previous" year  as well as
+  the next ten.
 
 ## [release-109] 2022-05-18
 - Generates public (rather than pre-signed) URL for download link to fetch reports from S3 bucket
 
-## [unreleased]
+## [release-110] 2022-06-21
 - Do not parse arbitary text in oda_eligibilities or programme_status as being 0.
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-109...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-110...HEAD
+[release-110]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-109...release-110
 [release-109]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-108...release-109
 [release-108]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-107...release-108
 [release-107]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-106...release-107
