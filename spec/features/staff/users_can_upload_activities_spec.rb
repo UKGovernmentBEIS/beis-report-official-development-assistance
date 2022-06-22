@@ -58,7 +58,8 @@ RSpec.feature "users can upload activities" do
       "UK DP Named Contact",
       "NF Partner Country DP",
       "Benefitting Countries",
-      "Comments"
+      "Comments",
+      "Implementing organisation names"
     ])
   end
 

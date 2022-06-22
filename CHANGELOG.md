@@ -1052,7 +1052,13 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 ## [release-110] 2022-06-21
 - Do not parse arbitary text in oda_eligibilities or programme_status as being 0.
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-110...HEAD
+## [release-111] 2022-06-22
+- Fix handling of implementing organisations when updating activities through CSV upload
+
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-111...HEAD
+[release-111]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-110...release-111
 [release-110]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-109...release-110
 [release-109]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-108...release-109
 [release-108]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-107...release-108
