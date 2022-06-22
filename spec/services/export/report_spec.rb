@@ -12,7 +12,10 @@ RSpec.describe Export::Report do
       financial_year: financial_year.to_i
     )
 
-    @project = create(:project_activity_with_implementing_organisations)
+    @project = create(
+      :project_activity_with_implementing_organisations,
+      implementing_organisations_count: 2
+    )
 
     @implementing_organisation =
       create(
@@ -113,8 +116,13 @@ RSpec.describe Export::Report do
 
         expect(roda_identifier_value_for_row(first_row))
           .to eq(@project.roda_identifier)
+
+        # includes names of both implementing organisations
         expect(implementing_organisation_value_for_row(first_row))
-          .to include(@project.implementing_organisations.first.name)
+          .to match(@project.implementing_organisations.first.name)
+        expect(implementing_organisation_value_for_row(first_row))
+          .to match(@project.implementing_organisations.second.name)
+
         expect(delivery_partner_organisation_value_for_row(first_row))
           .to eq(@project.organisation.name)
         expect(change_state_value_for_row(first_row))
