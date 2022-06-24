@@ -120,6 +120,9 @@ module Activities
           @activity.sdgs_apply = true
         end
 
+        # Note: users may depend on "|" successfully wiping the Implementing Organisations
+        # and an empty value not changing the Implementing Organisations. See
+        # https://dxw.zendesk.com/agent/tickets/16160
         if row["Implementing organisation names"].present?
           implementing_organisation_builder = ImplementingOrganisationBuilder.new(@activity, row)
           implementing_organisations = implementing_organisation_builder.organisations
@@ -128,8 +131,6 @@ module Activities
           else
             @activity.implementing_organisations = implementing_organisations
           end
-        else
-          @activity.implementing_organisations = []
         end
 
         if row["Comments"].present?
