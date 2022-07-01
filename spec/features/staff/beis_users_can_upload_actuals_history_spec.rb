@@ -60,7 +60,7 @@ RSpec.feature "BEIS users upload actual history" do
 
       expect(page).to have_content(t("actions.uploads.actual_histories.failed"))
       expect(page).to have_content("Value")
-      expect(page).to have_content("1")
+      expect(page).to have_content("2")
       expect(page).to have_content("Ten thousand pounds")
       expect(page).to have_content("Value must be a valid number")
     end
