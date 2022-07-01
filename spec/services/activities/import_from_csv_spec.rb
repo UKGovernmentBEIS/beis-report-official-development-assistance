@@ -138,7 +138,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.created.count).to eq(0)
       expect(subject.updated.count).to eq(1)
 
-      expect(existing_activity.implementing_organisations.count).to be_zero
+      expect(existing_activity.implementing_organisations.count).to equal(1)
     end
 
     it "updates an existing activity" do
@@ -950,6 +950,30 @@ RSpec.describe Activities::ImportFromCsv do
         rows = [existing_activity_attributes]
 
         expect { subject.import(rows) }.to change { OrgParticipation.implementing.count }.by(-2)
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(1)
+
+        expect(subject.errors.count).to eq(0)
+      end
+
+      it "doesn't erase existing imp orgs if not provided" do
+        rows = [existing_activity_attributes]
+        rows.first["Implementing organisation names"] = ""
+
+        expect { subject.import(rows) }.to change { OrgParticipation.implementing.count }.by(0)
+
+        expect(subject.created.count).to eq(0)
+        expect(subject.updated.count).to eq(1)
+
+        expect(subject.errors.count).to eq(0)
+      end
+
+      it "erases existing imp orgs if requested" do
+        rows = [existing_activity_attributes]
+        rows.first["Implementing organisation names"] = "|"
+
+        expect { subject.import(rows) }.to change { OrgParticipation.implementing.count }.by(-3)
 
         expect(subject.created.count).to eq(0)
         expect(subject.updated.count).to eq(1)
