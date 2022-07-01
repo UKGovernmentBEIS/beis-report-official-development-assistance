@@ -1055,10 +1055,13 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 ## [release-111] 2022-06-22
 - Fix handling of implementing organisations when updating activities through CSV upload
 
-## [unreleased]
+## [release-112] 2022-07-01
 - Blank Implementing Organisations fields leave the current Implementing Organisations list unchanged
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-111...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-112...HEAD
+[release-112]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-111...release-112
 [release-111]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-110...release-111
 [release-110]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-109...release-110
 [release-109]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-108...release-109
