@@ -35,6 +35,6 @@ jobs:
           fetch-depth: 0
           ref: ${{ env.ref }}
       - name: Automatic Rebase
-        uses: cirrus-actions/rebase@1.5
+        uses: cirrus-actions/rebase@1.7
         env:
           GITHUB_TOKEN: ${{ env.AUTO_REBASE_PERSONAL_ACCESS_TOKEN }}
