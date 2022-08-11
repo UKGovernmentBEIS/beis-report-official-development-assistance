@@ -22,3 +22,26 @@ ul.govuk-list.govuk-error-summary__list li {
   @include govuk-font($size: 19, $weight: bold)
   color:  $govuk-error-colour;
 }
+
+.environment-info-wrapper {
+  @include govuk-font($size: 19, $weight: normal);
+  width: 2em;
+  height: 1000px;
+  position: fixed;
+  left: 200px;
+  top: -25px;
+  background-color: orange;
+  transform: rotate(50deg);
+  transform-origin: top;
+  z-index: 998;
+  border-color: orangered;
+  border-width: 1px;
+  border-style: dotted;
+}
+
+.environment-info-content {
+  transform: rotate(-91deg);
+  position: relative;
+  bottom: -8em;
+  z-index: 999;
+}
