@@ -50,4 +50,84 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(helper.link_to_new_tab("Data dictionary", "http://data.dictionary")).to eql(link_to("Data dictionary (opens in new tab)", "http://data.dictionary", class: "govuk-link", target: "_blank", rel: "noreferrer noopener"))
     end
   end
+
+  describe "#environment_name" do
+    context "when the hostname is not empty" do
+      context "when the hostname is 'www'" do
+        it "returns 'production'" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+            expect(helper.environment_name).to eql("production")
+          end
+        end
+      end
+
+      context "when the hostname is 'training'" do
+        it "returns 'training" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+            expect(helper.environment_name).to eql("training")
+          end
+        end
+      end
+
+      context "when the hostname is 'pentest'" do
+        it "returns 'training" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "pentest.report-official-development-assistance.service.gov.uk" do
+            expect(helper.environment_name).to eql("training")
+          end
+        end
+      end
+
+      context "when the hostname is 'sandbox'" do
+        it "returns 'training" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "sandbox.report-official-development-assistance.service.gov.uk" do
+            expect(helper.environment_name).to eql("sandbox")
+          end
+        end
+      end
+
+      context "when the hostname is 'staging'" do
+        it "returns 'training" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "staging.report-official-development-assistance.service.gov.uk" do
+            expect(helper.environment_name).to eql("staging")
+          end
+        end
+      end
+
+      context "when the hostname is something not listed" do
+        it "returns the Rails environment" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "something" do
+            expect(helper.environment_name).to eql("test")
+          end
+        end
+      end
+    end
+
+    context "when the hostname is not set" do
+      it "returns the Rails environment" do
+        ClimateControl.modify CANONICAL_HOSTNAME: nil do
+          expect(helper.environment_name).to eql("test")
+        end
+      end
+    end
+  end
+
+  describe "#display_env_banner?" do
+    context "when the environment_name is one of training, staging, sandbox, or development" do
+      it "returns true" do
+        %w[training staging sandbox development].each do |env_name|
+          allow(helper).to receive(:environment_name).and_return(env_name)
+          expect(helper.display_env_banner?).to eql(true)
+        end
+      end
+    end
+
+    context "when the environment_name is anything else" do
+      it "returns false" do
+        ["production", "something", "", nil].each do |env_name|
+          allow(helper).to receive(:environment_name).and_return(env_name)
+          expect(helper.display_env_banner?).to eql(false)
+        end
+      end
+    end
+  end
 end
