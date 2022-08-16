@@ -18,8 +18,12 @@
 #
 # In this migration we add "graduated" countries to the list of benefitting countries
 # in the case of 4 historic activities.
+#
+# In the case of 3 of these activities, we replace the existing benefitting country, because
+# BEIS have informed us that it was only added to pass RODA validation, and the "graduated"
+# country is the only benefitting country.
 
-changes = [
+replacement_changes = [
   {
     roda_identifier: "NF-EP_CH_PA2-2015-EDBEP2K",
     graduated_country_name: "Chile",
@@ -34,7 +38,10 @@ changes = [
     roda_identifier: "GCRF-AH_C_LGI-2016AH/P009158/1",
     graduated_country_name: "Chile",
     graduated_country_code: "CL"
-  },
+  }
+]
+
+additive_changes = [
   {
     roda_identifier: "GCRF-NE_17A_Grow-2016NE/P021050/1",
     graduated_country_name: "Seychelles",
@@ -42,11 +49,22 @@ changes = [
   }
 ]
 
-changes.each do |change|
+additive_changes.each do |change|
   activity = Activity.find_by!(roda_identifier: change.fetch(:roda_identifier))
   puts "BEFORE: Activity #{activity.roda_identifier} initially has benefitting countries: #{activity.benefitting_countries}"
 
   activity.benefitting_countries << change.fetch(:graduated_country_code)
+  activity.save!
+  activity.reload
+
+  puts "AFTER: Activity #{activity.roda_identifier} now has benefitting countries: #{activity.benefitting_countries}"
+end
+
+replacement_changes.each do |change|
+  activity = Activity.find_by!(roda_identifier: change.fetch(:roda_identifier))
+  puts "BEFORE: Activity #{activity.roda_identifier} initially has benefitting countries: #{activity.benefitting_countries}"
+
+  activity.benefitting_countries = [change.fetch(:graduated_country_code)]
   activity.save!
   activity.reload
 
