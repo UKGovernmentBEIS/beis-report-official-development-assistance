@@ -38,4 +38,23 @@ module ApplicationHelper
       end
     end
   end
+
+  def environment_name
+    hostname = ENV.fetch("CANONICAL_HOSTNAME", "").split(".").first
+
+    case hostname
+    when "www"
+      "production"
+    when "staging", "sandbox", "training"
+      hostname
+    when "pentest"
+      "training"
+    else
+      Rails.env
+    end
+  end
+
+  def display_env_banner?
+    environment_name.in? %w[training staging sandbox development]
+  end
 end
