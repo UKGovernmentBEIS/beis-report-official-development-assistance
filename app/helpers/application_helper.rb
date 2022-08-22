@@ -54,7 +54,13 @@ module ApplicationHelper
     end
   end
 
-  def display_env_banner?
+  def display_env_name?
     environment_name.in? %w[training staging sandbox development]
+  end
+
+  def environment_mailer_prefix
+    return unless display_env_name?
+
+    "[#{environment_name.titleize}] "
   end
 end

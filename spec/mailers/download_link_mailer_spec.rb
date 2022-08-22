@@ -48,6 +48,28 @@ RSpec.describe DownloadLinkMailer, type: :mailer do
     it "includes a link for requesting support" do
       expect(mail.body).to include("https://beisodahelp.zendesk.com")
     end
+
+    context "when the email is from the training site" do
+      it "includes the site in the email subject" do
+        ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eq(
+            "[Training] Report your Official Development Assistance - " \
+            "Your export 'spending_breakdown.csv' is ready to download"
+          )
+        end
+      end
+    end
+
+    context "when the email is from the production site" do
+      it "does not include the site in the email subject" do
+        ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eq(
+            "Report your Official Development Assistance - " \
+            "Your export 'spending_breakdown.csv' is ready to download"
+          )
+        end
+      end
+    end
   end
 
   describe "#send_failure_notification(recipient:)" do
@@ -80,6 +102,26 @@ RSpec.describe DownloadLinkMailer, type: :mailer do
 
     it "includes a link for requesting support" do
       expect(mail.body).to include("https://beisodahelp.zendesk.com")
+    end
+
+    context "when the email is from the training site" do
+      it "includes the site in the email subject" do
+        ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eq(
+            "[Training] Report your Official Development Assistance - Your export failed"
+          )
+        end
+      end
+    end
+
+    context "when the email is from the production site" do
+      it "does not include the site in the email subject" do
+        ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eq(
+            "Report your Official Development Assistance - Your export failed"
+          )
+        end
+      end
     end
   end
 end

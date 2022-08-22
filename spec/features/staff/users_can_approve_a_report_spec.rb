@@ -21,10 +21,10 @@ RSpec.feature "Users can approve reports" do
 
       expect(ActionMailer::Base.deliveries.count).to eq(organisation.users.count + 1)
 
-      expect(beis_user).to have_received_email.with_subject(t("mailer.report.approved.service_owner.subject", application_name: t("app.title")))
+      expect(beis_user).to have_received_email.with_subject(t("mailer.report.approved.service_owner.subject", application_name: t("app.title"), environment_name: nil))
 
       organisation.users.each do |user|
-        expect(user).to have_received_email.with_subject(t("mailer.report.approved.delivery_partner.subject", application_name: t("app.title")))
+        expect(user).to have_received_email.with_subject(t("mailer.report.approved.delivery_partner.subject", application_name: t("app.title"), environment_name: nil))
       end
     end
 

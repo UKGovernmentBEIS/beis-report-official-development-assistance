@@ -111,12 +111,12 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
-  describe "#display_env_banner?" do
+  describe "#display_env_name?" do
     context "when the environment_name is one of training, staging, sandbox, or development" do
       it "returns true" do
         %w[training staging sandbox development].each do |env_name|
           allow(helper).to receive(:environment_name).and_return(env_name)
-          expect(helper.display_env_banner?).to eql(true)
+          expect(helper.display_env_name?).to eql(true)
         end
       end
     end
@@ -125,7 +125,27 @@ RSpec.describe ApplicationHelper, type: :helper do
       it "returns false" do
         ["production", "something", "", nil].each do |env_name|
           allow(helper).to receive(:environment_name).and_return(env_name)
-          expect(helper.display_env_banner?).to eql(false)
+          expect(helper.display_env_name?).to eql(false)
+        end
+      end
+    end
+  end
+
+  describe "#environment_mailer_prefix" do
+    context "when the environment_name is one of training, staging, sandbox, or development" do
+      it "returns the titleised environment name enclosed in square brackets and with a trailing space" do
+        %w[training staging sandbox development].each do |env_name|
+          allow(helper).to receive(:environment_name).and_return(env_name)
+          expect(helper.environment_mailer_prefix).to eql("[#{env_name.titleize}] ")
+        end
+      end
+    end
+
+    context "when the environment_name is anything else" do
+      it "returns nil" do
+        ["production", "something", "", nil].each do |env_name|
+          allow(helper).to receive(:environment_name).and_return(env_name)
+          expect(helper.environment_mailer_prefix).to be_nil
         end
       end
     end

@@ -8,7 +8,8 @@ class UserMailer < ApplicationMailer
       personalisation: {
         name: user.name,
         link: edit_user_password_url(reset_password_token: token),
-        service_url: ENV["DOMAIN"]
+        service_url: ENV["DOMAIN"],
+        environment_mailer_prefix: environment_mailer_prefix
       }
     )
   end
@@ -18,7 +19,7 @@ class UserMailer < ApplicationMailer
 
     view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
       to: user.email,
-      subject: t("devise.mailer.reset_password_instructions.subject"))
+      subject: t("devise.mailer.reset_password_instructions.subject", environment_name: environment_mailer_prefix))
   end
 
   def first_time_devise_reset_password_instructions(user, token, opts = {})
@@ -26,6 +27,6 @@ class UserMailer < ApplicationMailer
 
     view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
       to: user.email,
-      subject: t("devise.mailer.first_time_devise_reset_password_instructions.subject"))
+      subject: t("devise.mailer.first_time_devise_reset_password_instructions.subject", environment_name: environment_mailer_prefix))
   end
 end

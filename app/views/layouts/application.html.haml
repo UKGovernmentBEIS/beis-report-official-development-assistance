@@ -48,7 +48,7 @@
             %a.govuk-header__link.govuk-header__link--service-name{href: "/"}
               = t('app.title')
 
-    - if display_env_banner?
+    - if display_env_name?
       .environment-info-wrapper
         .environment-info-content{role: "region", aria: { label: "#{environment_name} environment" }}
           = environment_name
