@@ -1058,12 +1058,15 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 ## [release-112] 2022-07-01
 - Blank Implementing Organisations fields leave the current Implementing Organisations list unchanged
 
-## [unreleased]
+## [release-113] 2022-08-22
 
 - Display a banner on non-production environments to make it clearer to users which site they're using
 - Show the environment name (e.g. "training") in the subject of emails sent by the application
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-112...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-113...HEAD
+[release-113]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-112...release-113
 [release-112]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-111...release-112
 [release-111]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-110...release-111
 [release-110]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-109...release-110
