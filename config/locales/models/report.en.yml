@@ -163,19 +163,19 @@ en:
   mailer:
     report:
       activated:
-        subject: "%{application_name} - A report has been activated"
+        subject: "%{environment_name}%{application_name} - A report has been activated"
       submitted:
         delivery_partner:
-          subject: "%{application_name} - Your report has been submitted"
+          subject: "%{environment_name}%{application_name} - Your report has been submitted"
         service_owner:
-          subject: "%{application_name} - A delivery partner has submitted a report"
+          subject: "%{environment_name}%{application_name} - A delivery partner has submitted a report"
       approved:
         delivery_partner:
-          subject: "%{application_name} - Your report has been approved"
+          subject: "%{environment_name}%{application_name} - Your report has been approved"
         service_owner:
-          subject: "%{application_name} - A report has been approved"
+          subject: "%{environment_name}%{application_name} - A report has been approved"
       awaiting_changes:
-        subject: "%{application_name} - A report is awaiting changes"
+        subject: "%{environment_name}%{application_name} - A report is awaiting changes"
   action:
     report:
       activate:

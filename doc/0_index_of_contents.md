@@ -75,6 +75,9 @@
   Users cannot delete activities via the web app. Requests to delete activities
   usually come in via Zendesk support tickets.
 
+- **[Update the data on the "training" environment (support_tasks/training_db_sync.md)](./support_tasks/training_db_sync.md)**:
+  From time to time we need to drop the training db and replace it with a copy of the production data. User credentials are scrubbed each time.
+
 - **[Manage environment variables
   (manage-environment-variables.md)](./manage-environment-variables.md)**:
   Environment variables are passed to live environments through Terraform by

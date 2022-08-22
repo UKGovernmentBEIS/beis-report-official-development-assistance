@@ -51,7 +51,7 @@ jobs:
           fetch-depth: 0
         if: ${{ env.AUTO_REBASE_PERSONAL_ACCESS_TOKEN != '' }}
       - name: Automatic Rebase
-        uses: cirrus-actions/rebase@1.4
+        uses: cirrus-actions/rebase@1.7
         env:
           GITHUB_TOKEN: ${{ env.AUTO_REBASE_PERSONAL_ACCESS_TOKEN }}
         if: ${{ env.AUTO_REBASE_PERSONAL_ACCESS_TOKEN != '' }}

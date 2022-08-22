@@ -32,6 +32,22 @@ RSpec.describe ReportMailer, type: :mailer do
         expect { mail.body }.to raise_error(ArgumentError, "User must be active to receive report-related emails")
       end
     end
+
+    context "when the email is from the training site" do
+      it "includes the site in the email subject" do
+        ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eq("[Training] Report your Official Development Assistance - A report has been activated")
+        end
+      end
+    end
+
+    context "when the email is from the production site" do
+      it "does not include the site in the email subject" do
+        ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eq("Report your Official Development Assistance - A report has been activated")
+        end
+      end
+    end
   end
 
   describe "#submitted" do
@@ -56,6 +72,22 @@ RSpec.describe ReportMailer, type: :mailer do
       it "contains the expected body" do
         expect(mail.body).to include("BEIS have received your report")
       end
+
+      context "when the email is from the training site" do
+        it "includes the site in the email subject" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+            expect(mail.subject).to eq("[Training] Report your Official Development Assistance - Your report has been submitted")
+          end
+        end
+      end
+
+      context "when the email is from the production site" do
+        it "does not include the site in the email subject" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+            expect(mail.subject).to eq("Report your Official Development Assistance - Your report has been submitted")
+          end
+        end
+      end
     end
 
     context "when the user is a service owner" do
@@ -76,6 +108,22 @@ RSpec.describe ReportMailer, type: :mailer do
 
       it "contains the expected body" do
         expect(mail.body).to include("A delivery partner has submitted a report.")
+      end
+
+      context "when the email is from the training site" do
+        it "includes the site in the email subject" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+            expect(mail.subject).to eq("[Training] Report your Official Development Assistance - A delivery partner has submitted a report")
+          end
+        end
+      end
+
+      context "when the email is from the production site" do
+        it "does not include the site in the email subject" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+            expect(mail.subject).to eq("Report your Official Development Assistance - A delivery partner has submitted a report")
+          end
+        end
       end
     end
 
@@ -119,6 +167,22 @@ RSpec.describe ReportMailer, type: :mailer do
         expect(mail.body).to include("BEIS have approved your report.")
       end
 
+      context "when the email is from the training site" do
+        it "includes the site in the email subject" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+            expect(mail.subject).to eq("[Training] Report your Official Development Assistance - Your report has been approved")
+          end
+        end
+      end
+
+      context "when the email is from the production site" do
+        it "does not include the site in the email subject" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+            expect(mail.subject).to eq("Report your Official Development Assistance - Your report has been approved")
+          end
+        end
+      end
+
       context "when the user is inactive" do
         before do
           user.update!(active: false)
@@ -148,6 +212,22 @@ RSpec.describe ReportMailer, type: :mailer do
 
       it "contains the expected body" do
         expect(mail.body).to include("A report has been approved.")
+      end
+
+      context "when the email is from the training site" do
+        it "includes the site in the email subject" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+            expect(mail.subject).to eq("[Training] Report your Official Development Assistance - A report has been approved")
+          end
+        end
+      end
+
+      context "when the email is from the production site" do
+        it "does not include the site in the email subject" do
+          ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+            expect(mail.subject).to eq("Report your Official Development Assistance - A report has been approved")
+          end
+        end
       end
     end
 
@@ -187,6 +267,22 @@ RSpec.describe ReportMailer, type: :mailer do
 
       it "should raise an error" do
         expect { mail.body }.to raise_error(ArgumentError, "User must be active to receive report-related emails")
+      end
+    end
+
+    context "when the email is from the training site" do
+      it "includes the site in the email subject" do
+        ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eq("[Training] Report your Official Development Assistance - A report is awaiting changes")
+        end
+      end
+    end
+
+    context "when the email is from the production site" do
+      it "does not include the site in the email subject" do
+        ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eq("Report your Official Development Assistance - A report is awaiting changes")
+        end
       end
     end
   end

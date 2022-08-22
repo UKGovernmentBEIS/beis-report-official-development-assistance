@@ -6,7 +6,7 @@ ruby "2.7.3"
 
 gem "acts_as_tree"
 gem "addressable"
-gem "aws-sdk-s3", "~> 1.109"
+gem "aws-sdk-s3", "~> 1.114"
 gem "bootsnap", ">= 1.1.0", require: false
 gem "govuk_design_system_formbuilder", "~> 3.0.2"
 gem "haml-rails"
@@ -24,8 +24,8 @@ gem "pry-rails"
 gem "puma", "~> 5.6"
 gem "pundit"
 gem "rollbar"
-gem "rails", "~> 6.1.5"
-gem "redis", "< 4.2"
+gem "rails", "~> 6.1.6"
+gem "redis"
 gem "redis-namespace"
 gem "redis-actionpack"
 gem "redis-store"
@@ -53,7 +53,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "foreman"
-  gem "i18n-tasks", "~> 1.0.5"
+  gem "i18n-tasks", "~> 1.0.11"
   gem "rspec-rails"
   gem "standard"
 end
@@ -81,7 +81,7 @@ group :test do
   gem "rails-controller-testing"
   gem "shoulda-matchers"
   gem "selenium-webdriver"
-  gem "webmock", "~> 3.14"
+  gem "webmock", "~> 3.17"
 end
 
 group :production do

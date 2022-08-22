@@ -42,6 +42,6 @@ en:
   mailer:
     download_link:
       success:
-        subject: "%{application_name} - Your export '%{file_name}' is ready to download"
+        subject: "%{environment_name}%{application_name} - Your export '%{file_name}' is ready to download"
       failure:
-        subject: '%{application_name} - Your export failed'
+        subject: "%{environment_name}%{application_name} - Your export failed"

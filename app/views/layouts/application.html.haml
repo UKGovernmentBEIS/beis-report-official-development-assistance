@@ -48,6 +48,11 @@
             %a.govuk-header__link.govuk-header__link--service-name{href: "/"}
               = t('app.title')
 
+    - if display_env_name?
+      .environment-info-wrapper
+        .environment-info-content{role: "region", aria: { label: "#{environment_name} environment" }}
+          = environment_name
+
     .govuk-width-container
       .govuk-phase-banner{role: "region", aria: { label: "Beta: feedback requested" }}
         %p.govuk-phase-banner__content

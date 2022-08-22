@@ -6,7 +6,7 @@ class ReportMailer < ApplicationMailer
 
     view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
       to: @user.email,
-      subject: t("mailer.report.activated.subject", application_name: t("app.title")))
+      subject: t("mailer.report.activated.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix))
   end
 
   def submitted
@@ -23,7 +23,7 @@ class ReportMailer < ApplicationMailer
     if @role.present?
       view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
         to: @user.email,
-        subject: t("mailer.report.submitted.#{@role}.subject", application_name: t("app.title")))
+        subject: t("mailer.report.submitted.#{@role}.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix))
     else
       raise ArgumentError, "User must either be a service owner or belong to the organisation making the report"
     end
@@ -43,7 +43,7 @@ class ReportMailer < ApplicationMailer
     if @role.present?
       view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
         to: @user.email,
-        subject: t("mailer.report.approved.#{@role}.subject", application_name: t("app.title")))
+        subject: t("mailer.report.approved.#{@role}.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix))
     else
       raise ArgumentError, "User must either be a service owner or belong to the organisation making the report"
     end
@@ -56,7 +56,7 @@ class ReportMailer < ApplicationMailer
 
     view_mail(ENV["NOTIFY_VIEW_TEMPLATE"],
       to: @user.email,
-      subject: t("mailer.report.awaiting_changes.subject", application_name: t("app.title")))
+      subject: t("mailer.report.awaiting_changes.subject", application_name: t("app.title"), environment_name: environment_mailer_prefix))
   end
 
   private def raise_unless_active_user

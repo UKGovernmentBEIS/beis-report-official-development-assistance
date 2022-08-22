@@ -51,6 +51,14 @@ module Roda
 
     config.active_job.queue_adapter = :sidekiq
 
+    config.active_record.yaml_column_permitted_classes = [
+      ActiveSupport::TimeWithZone,
+      ActiveSupport::TimeZone,
+      BigDecimal,
+      Date,
+      Time
+    ]
+
     # GOV.UK Notify
     config.action_mailer.delivery_method = :notify
     config.action_mailer.deliver_later_queue_name = "mailers"
