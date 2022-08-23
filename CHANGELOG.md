@@ -1067,6 +1067,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 - Temporary allow activities to be added with the earliest actual start date of mid 2005 for historical data migration
 - Fix issue where welcome emails wouldn't be sent on production
+- Send welcome email subject from the application instead of trying to pesonalise the templated subject
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-113...HEAD
 [release-113]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-112...release-113

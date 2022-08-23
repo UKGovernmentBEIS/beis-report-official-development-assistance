@@ -26,8 +26,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
       expect(new_user).to have_received_email.with_personalisations(
         link: match(reset_password_link_regex),
         name: new_user_name,
-        service_url: "test.local",
-        environment_mailer_prefix: nil
+        service_url: "test.local"
       )
     end
 
