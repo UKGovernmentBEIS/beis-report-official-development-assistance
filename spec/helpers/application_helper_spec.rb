@@ -142,10 +142,10 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
 
     context "when the environment_name is anything else" do
-      it "returns nil" do
+      it "returns an empty string" do
         ["production", "something", "", nil].each do |env_name|
           allow(helper).to receive(:environment_name).and_return(env_name)
-          expect(helper.environment_mailer_prefix).to be_nil
+          expect(helper.environment_mailer_prefix).to eql("")
         end
       end
     end

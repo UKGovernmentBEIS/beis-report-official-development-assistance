@@ -59,7 +59,7 @@ module ApplicationHelper
   end
 
   def environment_mailer_prefix
-    return unless display_env_name?
+    return "" unless display_env_name?
 
     "[#{environment_name.titleize}] "
   end
