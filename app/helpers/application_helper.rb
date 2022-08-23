@@ -40,7 +40,7 @@ module ApplicationHelper
   end
 
   def environment_name
-    hostname = ENV.fetch("CANONICAL_HOSTNAME", "").split(".").first
+    hostname = ENV.fetch("DOMAIN", "").sub("https://", "").split(".").first
 
     case hostname
     when "www"

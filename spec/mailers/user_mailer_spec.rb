@@ -38,7 +38,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     context "when the email is from the training site" do
       it "includes the environment name in the email personalisations" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
           environment_mailer_prefix = personalisation_header["environment_mailer_prefix"]
 
           expect(environment_mailer_prefix).to eql("[Training] ")
@@ -48,7 +48,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     context "when the email is from the production site" do
       it "does not include the environment name in the email personalisations" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
           environment_mailer_prefix = personalisation_header["environment_mailer_prefix"]
 
           expect(environment_mailer_prefix).to eql("")
@@ -62,7 +62,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     context "when the email is from the training site" do
       it "includes the environment name in the email subject" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "training.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eql("[Training] Reset password instructions")
         end
       end
@@ -70,7 +70,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     context "when the email is from the production site" do
       it "does not include the environment name in the email subject" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eql("Reset password instructions")
         end
       end
@@ -82,7 +82,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     context "when the email is from the training site" do
       it "includes the environment name in the email subject" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eql("[Training] Action required: RODA password reset")
         end
       end
@@ -90,7 +90,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     context "when the email is from the production site" do
       it "does not include the environment name in the email subject" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eql("Action required: RODA password reset")
         end
       end
