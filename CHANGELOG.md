@@ -1065,6 +1065,8 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 
 ## [unreleased]
 
+- Temporary allow activities to be added with the earliest actual start date of mid 2005 for historical data migration
+
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-113...HEAD
 [release-113]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-112...release-113
 [release-112]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-111...release-112
