@@ -52,59 +52,59 @@ RSpec.describe ApplicationHelper, type: :helper do
   end
 
   describe "#environment_name" do
-    context "when the hostname is not empty" do
-      context "when the hostname is 'www'" do
+    context "when the domain is not empty" do
+      context "when the domain is 'https://www'" do
         it "returns 'production'" do
-          ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+          ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
             expect(helper.environment_name).to eql("production")
           end
         end
       end
 
-      context "when the hostname is 'training'" do
+      context "when the domain is 'https://training'" do
         it "returns 'training" do
-          ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+          ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
             expect(helper.environment_name).to eql("training")
           end
         end
       end
 
-      context "when the hostname is 'pentest'" do
+      context "when the domain is 'https://pentest'" do
         it "returns 'training" do
-          ClimateControl.modify CANONICAL_HOSTNAME: "pentest.report-official-development-assistance.service.gov.uk" do
+          ClimateControl.modify DOMAIN: "https://pentest.report-official-development-assistance.service.gov.uk" do
             expect(helper.environment_name).to eql("training")
           end
         end
       end
 
-      context "when the hostname is 'sandbox'" do
-        it "returns 'training" do
-          ClimateControl.modify CANONICAL_HOSTNAME: "sandbox.report-official-development-assistance.service.gov.uk" do
+      context "when the domain is 'https://sandbox'" do
+        it "returns 'sandbox" do
+          ClimateControl.modify DOMAIN: "sandbox.report-official-development-assistance.service.gov.uk" do
             expect(helper.environment_name).to eql("sandbox")
           end
         end
       end
 
-      context "when the hostname is 'staging'" do
-        it "returns 'training" do
-          ClimateControl.modify CANONICAL_HOSTNAME: "staging.report-official-development-assistance.service.gov.uk" do
+      context "when the domain is 'https://staging'" do
+        it "returns 'staging" do
+          ClimateControl.modify DOMAIN: "https://staging.report-official-development-assistance.service.gov.uk" do
             expect(helper.environment_name).to eql("staging")
           end
         end
       end
 
-      context "when the hostname is something not listed" do
+      context "when the domain is something not listed" do
         it "returns the Rails environment" do
-          ClimateControl.modify CANONICAL_HOSTNAME: "something" do
+          ClimateControl.modify DOMAIN: "https://something" do
             expect(helper.environment_name).to eql("test")
           end
         end
       end
     end
 
-    context "when the hostname is not set" do
+    context "when the domain is not set" do
       it "returns the Rails environment" do
-        ClimateControl.modify CANONICAL_HOSTNAME: nil do
+        ClimateControl.modify DOMAIN: nil do
           expect(helper.environment_name).to eql("test")
         end
       end

@@ -51,7 +51,7 @@ RSpec.describe DownloadLinkMailer, type: :mailer do
 
     context "when the email is from the training site" do
       it "includes the site in the email subject" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eq(
             "[Training] Report your Official Development Assistance - " \
             "Your export 'spending_breakdown.csv' is ready to download"
@@ -62,7 +62,7 @@ RSpec.describe DownloadLinkMailer, type: :mailer do
 
     context "when the email is from the production site" do
       it "does not include the site in the email subject" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eq(
             "Report your Official Development Assistance - " \
             "Your export 'spending_breakdown.csv' is ready to download"
@@ -106,7 +106,7 @@ RSpec.describe DownloadLinkMailer, type: :mailer do
 
     context "when the email is from the training site" do
       it "includes the site in the email subject" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eq(
             "[Training] Report your Official Development Assistance - Your export failed"
           )
@@ -116,7 +116,7 @@ RSpec.describe DownloadLinkMailer, type: :mailer do
 
     context "when the email is from the production site" do
       it "does not include the site in the email subject" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eq(
             "Report your Official Development Assistance - Your export failed"
           )
