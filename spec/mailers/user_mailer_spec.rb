@@ -24,34 +24,29 @@ RSpec.describe UserMailer, type: :mailer do
 
     it "sends a welcome email to the user with a set password link" do
       expect(mail.to).to eq([user.email])
+      expect(mail.subject).to eql("Invitation to the BEIS RODA service")
 
       name = personalisation_header["name"]
       link = personalisation_header["link"]
       service_url = personalisation_header["service_url"]
-      environment_mailer_prefix = personalisation_header["environment_mailer_prefix"]
 
       expect(name).to eq(user.name)
       expect(link).to eq("http://test.local/users/password/edit?reset_password_token=123abc")
       expect(service_url).to eq("test.local")
-      expect(environment_mailer_prefix).to be_nil
     end
 
     context "when the email is from the training site" do
       it "includes the environment name in the email personalisations" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
-          environment_mailer_prefix = personalisation_header["environment_mailer_prefix"]
-
-          expect(environment_mailer_prefix).to eql("[Training] ")
+        ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eql("[Training] Invitation to the BEIS RODA service")
         end
       end
     end
 
     context "when the email is from the production site" do
       it "does not include the environment name in the email personalisations" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
-          environment_mailer_prefix = personalisation_header["environment_mailer_prefix"]
-
-          expect(environment_mailer_prefix).to be_nil
+        ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
+          expect(mail.subject).to eql("Invitation to the BEIS RODA service")
         end
       end
     end
@@ -62,7 +57,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     context "when the email is from the training site" do
       it "includes the environment name in the email subject" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "training.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eql("[Training] Reset password instructions")
         end
       end
@@ -70,7 +65,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     context "when the email is from the production site" do
       it "does not include the environment name in the email subject" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eql("Reset password instructions")
         end
       end
@@ -82,7 +77,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     context "when the email is from the training site" do
       it "includes the environment name in the email subject" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "training.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eql("[Training] Action required: RODA password reset")
         end
       end
@@ -90,7 +85,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     context "when the email is from the production site" do
       it "does not include the environment name in the email subject" do
-        ClimateControl.modify CANONICAL_HOSTNAME: "www.report-official-development-assistance.service.gov.uk" do
+        ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
           expect(mail.subject).to eql("Action required: RODA password reset")
         end
       end

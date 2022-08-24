@@ -27,9 +27,19 @@ RSpec.describe DateWithinBoundariesValidator do
     end
   end
 
+  # Temporarily suspended as BEIS are inputting historical activities with a longer-ago start date
   describe "when date is more than 10 years ago" do
-    it "is not valid" do
+    xit "is not valid" do
       subject.date = 11.years.ago
+      expect(subject.valid?).to be false
+    end
+  end
+
+  # TODO: Remove this test when historical activities migration is complete
+  # The earliest date BEIS have provided is 2005 (17 years ago)
+  describe "when date is more than 17 years ago" do
+    it "is not valid" do
+      subject.date = 18.years.ago
       expect(subject.valid?).to be false
     end
   end
