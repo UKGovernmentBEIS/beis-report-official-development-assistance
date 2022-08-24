@@ -1072,9 +1072,11 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 ## [unreleased]
 
 - Display total of refunds in the report summary
+
 - Fix the misspelling of "FSTC" in a codelist and in the service using the codelist
 - Add parent programme ID and title, and parent project ID and title where applicable, to activity rows in report CSVs
 - Make the message shown when there are no approved reports more accurate
+- Ensure CSV export of report has consistent columns if there are no forecasts
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-114...HEAD
 [release-114]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-113...release-114
