@@ -20,6 +20,8 @@ en:
       unconfirmed: "You have to confirm your email address before continuing."
       invalid_two_factor: "Invalid two-factor verification code."
     mailer:
+      welcome:
+        subject: "%{environment_name}Invitation to the BEIS RODA service"
       confirmation_instructions:
         subject: "Confirmation instructions"
       reset_password_instructions:
