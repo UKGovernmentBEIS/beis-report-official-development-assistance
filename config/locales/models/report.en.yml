@@ -73,6 +73,7 @@ en:
         activities_updated: Updated activities
         actuals_total: Total of actuals
         forecasts_total: Total of forecasts
+        refunds_total: Total of refunds
     report:
       activate:
         confirm: By activating this report, you will allow Delivery Partner users to add new data, and amend existing data. These changes will associate to this report only.

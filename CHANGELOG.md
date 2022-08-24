@@ -1069,7 +1069,9 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix issue where welcome emails wouldn't be sent on production
 - Send welcome email subject from the application instead of trying to pesonalise the templated subject
 
-## [unreleased] 
+## [unreleased]
+
+- Display total of refunds in the report summary
 
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-114...HEAD

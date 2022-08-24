@@ -90,6 +90,12 @@ RSpec.feature "Users can view reports" do
       expect(page).to have_content l(report.deadline)
       expect(page).not_to have_content t("page_content.report.summary.editable.#{report.editable?}")
       expect(page).to have_content report.organisation.name
+
+      expect(page).to have_content t("page_content.tab_content.summary.activities_added")
+      expect(page).to have_content t("page_content.tab_content.summary.activities_updated")
+      expect(page).to have_content t("page_content.tab_content.summary.actuals_total")
+      expect(page).to have_content t("page_content.tab_content.summary.forecasts_total")
+      expect(page).to have_content t("page_content.tab_content.summary.refunds_total")
     end
 
     scenario "the report includes a list of newly created and updated activities" do
@@ -301,6 +307,12 @@ RSpec.feature "Users can view reports" do
         expect(page).to have_content l(report.deadline)
         expect(page).to have_content t("page_content.report.summary.editable.#{report.editable?}")
         expect(page).not_to have_content report.organisation.name
+
+        expect(page).to have_content t("page_content.tab_content.summary.activities_added")
+        expect(page).to have_content t("page_content.tab_content.summary.activities_updated")
+        expect(page).to have_content t("page_content.tab_content.summary.actuals_total")
+        expect(page).to have_content t("page_content.tab_content.summary.forecasts_total")
+        expect(page).to have_content t("page_content.tab_content.summary.refunds_total")
       end
 
       scenario "the report shows the total forecasted and actual spend and the variance" do
