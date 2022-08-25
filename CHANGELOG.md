@@ -1072,7 +1072,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 ## [unreleased]
 
 - Display total of refunds in the report summary
-
+- Fix the misspelling of "FSTC" in a codelist and in the service using the codelist
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-114...HEAD
 [release-114]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-113...release-114

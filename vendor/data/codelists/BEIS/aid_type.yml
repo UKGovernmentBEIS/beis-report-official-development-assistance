@@ -14,7 +14,7 @@ data:
       assets. See Annex 2 of the DAC Directives for a comprehensive list of agencies
       core contributions to which may be reported under B02 (Section I. Multilateral
       institutions).
-    ftsc_applies: false
+    fstc_applies: false
     collaboration_type: "2"
   - category: B
     code: B03
@@ -57,7 +57,7 @@ data:
       Experts, consultants, teachers, academics, researchers, volunteers
       and contributions to public and private bodies for sending experts to developing
       countries.
-    ftsc_applies: true
+    fstc_applies: true
   - category: D
     code: D02
     name: Other technical assistance
@@ -70,17 +70,17 @@ data:
       universities and organisations); local scholarships; development-oriented social
       and cultural programmes. This category also covers ad hoc contributions such as
       conferences, seminars and workshops, exchange visits, publications, etc.
-    ftsc_applies: true
+    fstc_applies: true
   - category: E
     code: E01
     name: Scholarships/training in donor country
     description: Financial aid awards for individual students and contributions to trainees.
-    ftsc_applies: true
+    fstc_applies: true
   - category: E
     code: E02
     name: Imputed student costs
     description: Indirect (“imputed”) costs of tuition in donor countries.
-    ftsc_applies: true
+    fstc_applies: true
   - category: G
     code: G01
     name: Administrative costs not included elsewhere
@@ -91,7 +91,7 @@ data:
       auditing activities. As regards the salaries component of administrative costs,
       it relates to in-house agency staff and contractors only; costs associated with
       donor experts/consultants are to be reported under category C or D01.
-    ftsc_applies: false
+    fstc_applies: false
 metadata:
   url: http://www.oecd.org/dac/stats/dacandcrscodelists.htm
   name: Aid Type
