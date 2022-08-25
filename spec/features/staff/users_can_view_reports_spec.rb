@@ -198,7 +198,7 @@ RSpec.feature "Users can view reports" do
         visit reports_path
 
         within("#current") do
-          expect(page).to have_content t("table.body.report.no_reports")
+          expect(page).to have_content t("table.body.report.no_current_reports")
         end
       end
     end
@@ -208,7 +208,7 @@ RSpec.feature "Users can view reports" do
         visit reports_path
 
         within("#approved") do
-          expect(page).to have_content t("table.body.report.no_reports")
+          expect(page).to have_content t("table.body.report.no_approved_reports")
         end
       end
     end
@@ -478,7 +478,7 @@ RSpec.feature "Users can view reports" do
 
         within("#current") do
           expect(page).not_to have_content report.description
-          expect(page).to have_content t("table.body.report.no_reports")
+          expect(page).to have_content t("table.body.report.no_current_reports")
         end
       end
     end
@@ -491,7 +491,7 @@ RSpec.feature "Users can view reports" do
 
         within("#approved") do
           expect(page).not_to have_content report.description
-          expect(page).to have_content t("table.body.report.no_reports")
+          expect(page).to have_content t("table.body.report.no_approved_reports")
         end
       end
     end
