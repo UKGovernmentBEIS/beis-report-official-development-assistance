@@ -193,11 +193,23 @@ RSpec.feature "Users can view reports" do
       end
     end
 
-    context "when there are no reports in a given state" do
-      scenario "an empty state is shown" do
+    context "when there are no active reports" do
+      scenario "they see an empty state on the current tab" do
         visit reports_path
 
-        expect(page).to have_content t("table.body.report.no_reports")
+        within("#current") do
+          expect(page).to have_content t("table.body.report.no_reports")
+        end
+      end
+    end
+
+    context "when there are no approved reports" do
+      scenario "they see an empty state on the approved tab" do
+        visit reports_path
+
+        within("#approved") do
+          expect(page).to have_content t("table.body.report.no_reports")
+        end
       end
     end
 
@@ -465,6 +477,19 @@ RSpec.feature "Users can view reports" do
         visit reports_path
 
         within("#current") do
+          expect(page).not_to have_content report.description
+          expect(page).to have_content t("table.body.report.no_reports")
+        end
+      end
+    end
+
+    context "when there are no approved reports" do
+      scenario "they see an empty state on the approved tab" do
+        report = create(:report, organisation: delivery_partner_user.organisation)
+
+        visit reports_path
+
+        within("#approved") do
           expect(page).not_to have_content report.description
           expect(page).to have_content t("table.body.report.no_reports")
         end
