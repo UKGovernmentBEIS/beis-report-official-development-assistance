@@ -401,6 +401,10 @@ en:
     attributes:
       activity:
         roda_identifier: RODA identifier
+        parent_programme_identifier: Parent level B ID
+        parent_programme_title: Parent level B title
+        parent_project_identifier: Parent level C ID
+        parent_project_title: Parent level C title
         transparency_identifier: IATI identifier
         beis_identifier: Original BEIS tracker identifier
         level: Activity level

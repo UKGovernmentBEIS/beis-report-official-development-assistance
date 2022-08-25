@@ -51,6 +51,24 @@ class ActivityCsvPresenter < ActivityPresenter
     "#{to_model.tied_status}: #{super}"
   end
 
+  def parent_programme_identifier
+    return parent.roda_identifier if to_model.level == "project"
+    return parent.parent.roda_identifier if to_model.level == "third_party_project"
+  end
+
+  def parent_programme_title
+    return parent.title if to_model.level == "project"
+    return parent.parent.title if to_model.level == "third_party_project"
+  end
+
+  def parent_project_identifier
+    return parent.roda_identifier if to_model.level == "third_party_project"
+  end
+
+  def parent_project_title
+    return parent.title if to_model.level == "third_party_project"
+  end
+
   private
 
   def list_of_benefitting_countries(country_code_list)

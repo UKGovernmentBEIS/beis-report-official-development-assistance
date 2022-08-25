@@ -14,7 +14,11 @@ class Export::ActivityAttributesColumns
     :benefitting_region,
     :flow,
     :finance,
-    :tied_status
+    :tied_status,
+    :parent_programme_identifier,
+    :parent_programme_title,
+    :parent_project_identifier,
+    :parent_project_title
   ]
 
   def initialize(activities:, attributes:)
@@ -28,7 +32,7 @@ class Export::ActivityAttributesColumns
 
   def rows
     return [] if @activities.empty?
-    @activities.map { |activity|
+    @activities.includes([:parent]).map { |activity|
       presenter = ActivityCsvPresenter.new(activity)
       values = @attributes.map { |att| presenter.send(att) }
       [activity.id, values]

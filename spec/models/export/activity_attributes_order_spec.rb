@@ -1,9 +1,13 @@
 RSpec.describe Export::ActivityAttributesOrder do
   describe ".attributes_in_order" do
-    it "describes the attributes and order for the exporting a report" do
+    it "describes the attributes and order for exporting a report" do
       expect(described_class.attributes_in_order).to eq [
         :roda_identifier,
         :level,
+        :parent_programme_identifier,
+        :parent_programme_title,
+        :parent_project_identifier,
+        :parent_project_title,
         :delivery_partner_identifier,
         :beis_identifier,
         :transparency_identifier,

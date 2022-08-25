@@ -3,6 +3,10 @@ class Export::ActivityAttributesOrder
     [
       :roda_identifier,
       :level,
+      :parent_programme_identifier,
+      :parent_programme_title,
+      :parent_project_identifier,
+      :parent_project_title,
       :delivery_partner_identifier,
       :beis_identifier,
       :transparency_identifier,
