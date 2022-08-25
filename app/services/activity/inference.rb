@@ -18,8 +18,8 @@ class Activity
           rule.fix(:collaboration_type, item["collaboration_type"])
         end
 
-        if item.key?("ftsc_applies")
-          rule.fix(:fstc_applies, item["ftsc_applies"])
+        if item.key?("fstc_applies")
+          rule.fix(:fstc_applies, item["fstc_applies"])
         end
       end
 
