@@ -1371,7 +1371,7 @@ RSpec.describe Activity, type: :model do
 
     context "when the programme status is an invalid text string" do
       it "raises an error" do
-        expect { Activity.new(programme_status: "kitten") }.to raise_error
+        expect { Activity.new(programme_status: "kitten") }.to raise_error("'kitten' is not a valid programme_status")
       end
     end
   end
