@@ -459,13 +459,14 @@ RSpec.feature "Users can view reports" do
     end
 
     context "when there are no active reports" do
-      scenario "they see no reports on the current tab" do
+      scenario "they see an empty state on the current tab" do
         report = create(:report, :approved, organisation: delivery_partner_user.organisation)
 
         visit reports_path
 
         within("#current") do
           expect(page).not_to have_content report.description
+          expect(page).to have_content t("table.body.report.no_reports")
         end
       end
     end
