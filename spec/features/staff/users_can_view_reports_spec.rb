@@ -457,15 +457,17 @@ RSpec.feature "Users can view reports" do
       expect(page).to_not have_edit_buttons_for_comments(adjustment_comments)
       expect(page).to_not have_edit_buttons_for_comments(comments_for_report)
     end
-  end
 
-  context "when there are no active reports" do
-    scenario "they see no reports" do
-      report = create(:report, :approved)
+    context "when there are no active reports" do
+      scenario "they see no reports on the current tab" do
+        report = create(:report, :approved, organisation: delivery_partner_user.organisation)
 
-      visit reports_path
+        visit reports_path
 
-      expect(page).not_to have_content report.description
+        within("#current") do
+          expect(page).not_to have_content report.description
+        end
+      end
     end
   end
 end
