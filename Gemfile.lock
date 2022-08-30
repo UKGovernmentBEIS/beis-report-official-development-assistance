@@ -460,7 +460,7 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webmock (3.17.1)
+    webmock (3.18.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -550,7 +550,7 @@ DEPENDENCIES
   strip_attributes
   tzinfo-data
   web-console (>= 3.3.0)
-  webmock (~> 3.17)
+  webmock (~> 3.18)
   webpacker (>= 5.4.3)
   wicked
 
