@@ -2,7 +2,8 @@ RSpec.describe Export::ActivityAttributesColumns do
   before(:all) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
-    @activities = create_list(:project_activity, 5)
+    create_list(:project_activity, 5)
+    @activities = Activity.where(level: "project")
   end
 
   after(:all) do
@@ -12,12 +13,14 @@ RSpec.describe Export::ActivityAttributesColumns do
   subject { Export::ActivityAttributesColumns.new(activities: @activities, attributes: attributes) }
 
   context "when the attributes exist on the Activity model" do
-    let(:attributes) { [:roda_identifier, :delivery_partner_identifier, :programme_status, :benefitting_region] }
+    let(:attributes) { [:roda_identifier, :parent_programme_identifier, :parent_programme_title, :delivery_partner_identifier, :programme_status, :benefitting_region] }
 
     describe "#headers" do
       it "returns an array of the column headers for the attributes" do
         headers = [
           I18n.t("activerecord.attributes.activity.roda_identifier"),
+          I18n.t("activerecord.attributes.activity.parent_programme_identifier"),
+          I18n.t("activerecord.attributes.activity.parent_programme_title"),
           I18n.t("activerecord.attributes.activity.delivery_partner_identifier"),
           I18n.t("activerecord.attributes.activity.programme_status"),
           I18n.t("activerecord.attributes.activity.benefitting_region")
@@ -25,7 +28,7 @@ RSpec.describe Export::ActivityAttributesColumns do
         expect(subject.headers).to match_array(headers)
       end
 
-      it "includes a dynmic (non-active record) attribute header" do
+      it "includes a dynamic (non-active record) attribute header" do
         expect(subject.headers).to include(I18n.t("activerecord.attributes.activity.benefitting_region"))
       end
 
@@ -50,6 +53,8 @@ RSpec.describe Export::ActivityAttributesColumns do
 
         first_row_values = [
           first_row_activity_presenter.roda_identifier,
+          first_row_activity_presenter.parent_programme_identifier,
+          first_row_activity_presenter.parent_programme_title,
           first_row_activity_presenter.delivery_partner_identifier,
           first_row_activity_presenter.programme_status,
           first_row_activity_presenter.benefitting_region
@@ -57,6 +62,8 @@ RSpec.describe Export::ActivityAttributesColumns do
 
         last_row_values = [
           last_row_activity_presenter.roda_identifier,
+          last_row_activity_presenter.parent_programme_identifier,
+          last_row_activity_presenter.parent_programme_title,
           last_row_activity_presenter.delivery_partner_identifier,
           last_row_activity_presenter.programme_status,
           last_row_activity_presenter.benefitting_region
@@ -67,7 +74,7 @@ RSpec.describe Export::ActivityAttributesColumns do
         expect(subject.rows.fetch(@activities.last.id)).to match_array(last_row_values)
       end
 
-      it "Returns the values in the correct format" do
+      it "returns the values in the correct format" do
         last_row_programme_status = ActivityCsvPresenter.new(@activities.last).programme_status
 
         expect(subject.rows.fetch(@activities.last.id)).to include last_row_programme_status
@@ -81,6 +88,8 @@ RSpec.describe Export::ActivityAttributesColumns do
         it "returns the headers" do
           headers = [
             I18n.t("activerecord.attributes.activity.roda_identifier"),
+            I18n.t("activerecord.attributes.activity.parent_programme_identifier"),
+            I18n.t("activerecord.attributes.activity.parent_programme_title"),
             I18n.t("activerecord.attributes.activity.delivery_partner_identifier"),
             I18n.t("activerecord.attributes.activity.programme_status"),
             I18n.t("activerecord.attributes.activity.benefitting_region")

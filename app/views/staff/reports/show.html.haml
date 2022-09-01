@@ -40,3 +40,8 @@
                     = t("page_content.tab_content.summary.forecasts_total")
                   %dd.govuk-summary-list__value
                     = @report_presenter.summed_forecasts_for_reportable_activities
+                .govuk-summary-list__row
+                  %dt.govuk-summary-list__key
+                    = t("page_content.tab_content.summary.refunds_total")
+                  %dd.govuk-summary-list__value
+                    = @report_presenter.summed_refunds

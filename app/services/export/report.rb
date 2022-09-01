@@ -54,8 +54,8 @@ class Export::Report
       row << delivery_partner_organisation_rows.fetch(activity.id, nil)
       row << change_state_rows.fetch(activity.id, nil)
       row << actuals_rows.fetch(activity.id, nil) if actuals_rows.any?
-      row << variance_rows.fetch(activity.id, nil) if actuals_rows.any? && forecast_rows.any?
-      row << forecast_rows.fetch(activity.id, nil) if forecast_rows.any?
+      row << variance_rows.fetch(activity.id, nil) if actuals_rows.any? && has_forecast_rows?
+      row << forecast_rows.fetch(activity.id, nil) if has_forecast_rows?
       row << comment_rows.fetch(activity.id, nil)
       row << link_rows.fetch(activity.id, nil)
       row.flatten
@@ -95,6 +95,10 @@ class Export::Report
 
   def forecast_rows
     @_forecast_rows ||= @forecast_columns.rows
+  end
+
+  def has_forecast_rows?
+    forecast_rows.values.flatten.any?
   end
 
   def variance_rows

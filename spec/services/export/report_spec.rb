@@ -67,6 +67,72 @@ RSpec.describe Export::Report do
     DatabaseCleaner.clean
   end
 
+  context "when there are activities but no forecasts" do
+    before do
+      financial_quarter = FinancialQuarter.for_date(Date.parse("31-Mar-2022"))
+      financial_year = FinancialYear.for_date(Date.parse("31-Mar-2022"))
+
+      @report_without_forecasts = create(
+        :report,
+        financial_quarter: financial_quarter.to_i,
+        financial_year: financial_year.to_i
+      )
+
+      @project_for_report_without_forecasts = create(
+        :project_activity_with_implementing_organisations,
+        implementing_organisations_count: 2
+      )
+
+      @actual_spend_for_report_without_forecasts =
+        create(
+          :actual,
+          parent_activity_id: @project_for_report_without_forecasts.id,
+          report: @report_without_forecasts,
+          financial_quarter: @report_without_forecasts.financial_quarter,
+          financial_year: @report_without_forecasts.financial_year
+        )
+
+      relation = Activity.where(id: @project_for_report_without_forecasts.id)
+      finder_double = double(Activity::ProjectsForReportFinder, call: relation)
+      allow(Activity::ProjectsForReportFinder).to receive(:new).and_return(finder_double)
+    end
+
+    subject { described_class.new(report: @report_without_forecasts) }
+
+    describe "#headers" do
+      it "returns the headers without Variances or Forecasts" do
+        headers = subject.headers
+
+        expect(headers).to include(@headers_for_report.first)
+        expect(headers).to include(@headers_for_report.last)
+        expect(headers).to include("Implementing organisations")
+        expect(headers).to include("Delivery partner organisation")
+        expect(headers).to include("Change state")
+        expect(headers).to include("Actual net #{@actual_spend_for_report_without_forecasts.own_financial_quarter}")
+        expect(headers.to_s).to_not include("Variance")
+        expect(headers.to_s).to_not include("Forecast")
+        expect(headers).to include("Comments in report")
+        expect(headers).to include("Link to activity")
+      end
+    end
+
+    describe "#rows" do
+      it "returns the rows correctly" do
+        first_row = subject.rows.first.to_a
+
+        expect(roda_identifier_value_for_row(first_row))
+          .to eq(@project_for_report_without_forecasts.roda_identifier)
+
+        expect(delivery_partner_organisation_value_for_row(first_row))
+          .to eq(@project_for_report_without_forecasts.organisation.name)
+        expect(change_state_value_for_row(first_row))
+          .to eq("Unchanged")
+        expect(actual_spend_for_row(first_row))
+          .to eq(@actual_spend_for_report_without_forecasts.value)
+      end
+    end
+  end
+
   context "when there are activities" do
     subject { described_class.new(report: @report) }
 
@@ -141,7 +207,7 @@ RSpec.describe Export::Report do
     end
 
     describe "row caching" do
-      it "export rows method if only called once" do
+      it "calls the export rows method only once" do
         rows_data_double = double(Hash, fetch: [], empty?: false, any?: true)
 
         attribute_double = double(rows: rows_data_double)
@@ -159,10 +225,12 @@ RSpec.describe Export::Report do
         actuals_double = double(rows: rows_data_double, headers: rows_data_double, rows_for_last_financial_quarter: double(Hash, fetch: 100))
         allow(Export::ActivityActualsColumns).to receive(:new).and_return(actuals_double)
 
-        variance_double = double(rows: rows_data_double)
+        forecasts_rows_data_double = double(Hash, fetch: [], empty?: false, any?: true, values: [{"id" => [100]}])
+
+        variance_double = double(rows: forecasts_rows_data_double)
         allow(Export::ActivityVarianceColumn).to receive(:new).and_return(variance_double)
 
-        forecasts_double = double(rows: rows_data_double, headers: rows_data_double, rows_for_first_financial_quarter: double(Hash, fetch: 50))
+        forecasts_double = double(rows: forecasts_rows_data_double, headers: rows_data_double, rows_for_first_financial_quarter: double(Hash, fetch: 50))
         allow(Export::ActivityForecastColumns).to receive(:new).and_return(forecasts_double)
 
         comments_double = double(rows: rows_data_double)

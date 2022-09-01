@@ -160,4 +160,140 @@ RSpec.describe ActivityCsvPresenter do
       expect(described_class.new(activity).fstc_applies).to eq "no"
     end
   end
+
+  describe "#parent_programme_identifier" do
+    let(:programme) { build(:programme_activity, roda_identifier: "lvl-b") }
+    let(:project) { build(:project_activity, parent: programme, roda_identifier: "lvl-c") }
+
+    context "when the activity is a third_party_project" do
+      it "returns the RODA ID of the programme to which this third_party_project ultimately belongs" do
+        activity = build(:third_party_project_activity, parent: project)
+        result = described_class.new(activity).parent_programme_identifier
+        expect(result).to eq("lvl-b")
+      end
+    end
+
+    context "when the activity is a project" do
+      it "returns the RODA ID of the programme to which this project belongs" do
+        result = described_class.new(project).parent_programme_identifier
+        expect(result).to eq("lvl-b")
+      end
+    end
+
+    context "when the activity is a programme" do
+      it "returns nil" do
+        result = described_class.new(programme).parent_programme_identifier
+        expect(result).to be_nil
+      end
+    end
+
+    context "when the activity is a fund" do
+      it "returns nil" do
+        result = described_class.new(programme.parent).parent_programme_identifier
+        expect(result).to be_nil
+      end
+    end
+  end
+
+  describe "#parent_programme_title" do
+    let(:programme) { build(:programme_activity, title: "Level B activity") }
+    let(:project) { build(:project_activity, parent: programme, title: "Level C activity") }
+
+    context "when the activity is a third_party_project" do
+      it "returns the title of the programme to which this third_party_project ultimately belongs" do
+        activity = build(:third_party_project_activity, parent: project)
+        result = described_class.new(activity).parent_programme_title
+        expect(result).to eq("Level B activity")
+      end
+    end
+
+    context "when the activity is a project" do
+      it "returns the title of the programme to which this project belongs" do
+        result = described_class.new(project).parent_programme_title
+        expect(result).to eq("Level B activity")
+      end
+    end
+
+    context "when the activity is a programme" do
+      it "returns nil" do
+        result = described_class.new(programme).parent_programme_title
+        expect(result).to be_nil
+      end
+    end
+
+    context "when the activity is a fund" do
+      it "returns nil" do
+        result = described_class.new(programme.parent).parent_programme_title
+        expect(result).to be_nil
+      end
+    end
+  end
+
+  describe "#parent_project_identifier" do
+    let(:programme) { build(:programme_activity, roda_identifier: "lvl-b") }
+    let(:project) { build(:project_activity, parent: programme, roda_identifier: "lvl-c") }
+
+    context "when the activity is a third_party_project" do
+      it "returns the RODA ID of the project to which this third_party_project belongs" do
+        activity = build(:third_party_project_activity, parent: project)
+        result = described_class.new(activity).parent_project_identifier
+        expect(result).to eq("lvl-c")
+      end
+    end
+
+    context "when the activity is a project" do
+      it "returns nil" do
+        result = described_class.new(project).parent_project_identifier
+        expect(result).to be_nil
+      end
+    end
+
+    context "when the activity is a programme" do
+      it "returns nil" do
+        result = described_class.new(programme).parent_project_identifier
+        expect(result).to be_nil
+      end
+    end
+
+    context "when the activity is a fund" do
+      it "returns nil" do
+        result = described_class.new(programme.parent).parent_project_identifier
+        expect(result).to be_nil
+      end
+    end
+  end
+
+  describe "#parent_project_title" do
+    let(:programme) { build(:programme_activity, title: "Level B activity") }
+    let(:project) { build(:project_activity, parent: programme, title: "Level C activity") }
+
+    context "when the activity is a third_party_project" do
+      it "returns the title of the project to which this third_party_project ultimately belongs" do
+        activity = build(:third_party_project_activity, parent: project)
+        result = described_class.new(activity).parent_project_title
+        expect(result).to eq("Level C activity")
+      end
+    end
+
+    context "when the activity is a project" do
+      it "returns nil" do
+        result = described_class.new(project).parent_project_title
+        expect(result).to be_nil
+      end
+    end
+
+    context "when the activity is a programme" do
+      it "returns nil" do
+        result = described_class.new(programme).parent_project_title
+        expect(result).to be_nil
+      end
+    end
+
+    context "when the activity is a fund" do
+      it "returns nil" do
+        result = described_class.new(programme.parent).parent_project_title
+        expect(result).to be_nil
+      end
+    end
+  end
 end

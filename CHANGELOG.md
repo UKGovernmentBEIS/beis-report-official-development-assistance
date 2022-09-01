@@ -1069,10 +1069,18 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Fix issue where welcome emails wouldn't be sent on production
 - Send welcome email subject from the application instead of trying to pesonalise the templated subject
 
-## [unreleased] 
+## [release-115] 2022-09-01
 
+- Display total of refunds in the report summary
+- Fix the misspelling of "FSTC" in a codelist and in the service using the codelist
+- Add parent programme ID and title, and parent project ID and title where applicable, to activity rows in report CSVs
+- Make the message shown when there are no approved reports more accurate
+- Ensure CSV export of report has consistent columns if there are no forecasts
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-114...HEAD
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-115...HEAD
+[release-115]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-114...release-115
 [release-114]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-113...release-114
 [release-113]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-112...release-113
 [release-112]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-111...release-112

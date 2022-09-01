@@ -90,6 +90,12 @@ RSpec.feature "Users can view reports" do
       expect(page).to have_content l(report.deadline)
       expect(page).not_to have_content t("page_content.report.summary.editable.#{report.editable?}")
       expect(page).to have_content report.organisation.name
+
+      expect(page).to have_content t("page_content.tab_content.summary.activities_added")
+      expect(page).to have_content t("page_content.tab_content.summary.activities_updated")
+      expect(page).to have_content t("page_content.tab_content.summary.actuals_total")
+      expect(page).to have_content t("page_content.tab_content.summary.forecasts_total")
+      expect(page).to have_content t("page_content.tab_content.summary.refunds_total")
     end
 
     scenario "the report includes a list of newly created and updated activities" do
@@ -187,11 +193,23 @@ RSpec.feature "Users can view reports" do
       end
     end
 
-    context "when there are no reports in a given state" do
-      scenario "an empty state is shown" do
+    context "when there are no active reports" do
+      scenario "they see an empty state on the current tab" do
         visit reports_path
 
-        expect(page).to have_content t("table.body.report.no_reports")
+        within("#current") do
+          expect(page).to have_content t("table.body.report.no_current_reports")
+        end
+      end
+    end
+
+    context "when there are no approved reports" do
+      scenario "they see an empty state on the approved tab" do
+        visit reports_path
+
+        within("#approved") do
+          expect(page).to have_content t("table.body.report.no_approved_reports")
+        end
       end
     end
 
@@ -301,6 +319,12 @@ RSpec.feature "Users can view reports" do
         expect(page).to have_content l(report.deadline)
         expect(page).to have_content t("page_content.report.summary.editable.#{report.editable?}")
         expect(page).not_to have_content report.organisation.name
+
+        expect(page).to have_content t("page_content.tab_content.summary.activities_added")
+        expect(page).to have_content t("page_content.tab_content.summary.activities_updated")
+        expect(page).to have_content t("page_content.tab_content.summary.actuals_total")
+        expect(page).to have_content t("page_content.tab_content.summary.forecasts_total")
+        expect(page).to have_content t("page_content.tab_content.summary.refunds_total")
       end
 
       scenario "the report shows the total forecasted and actual spend and the variance" do
@@ -445,15 +469,31 @@ RSpec.feature "Users can view reports" do
       expect(page).to_not have_edit_buttons_for_comments(adjustment_comments)
       expect(page).to_not have_edit_buttons_for_comments(comments_for_report)
     end
-  end
 
-  context "when there are no active reports" do
-    scenario "they see no reports" do
-      report = create(:report, :approved)
+    context "when there are no active reports" do
+      scenario "they see an empty state on the current tab" do
+        report = create(:report, :approved, organisation: delivery_partner_user.organisation)
 
-      visit reports_path
+        visit reports_path
 
-      expect(page).not_to have_content report.description
+        within("#current") do
+          expect(page).not_to have_content report.description
+          expect(page).to have_content t("table.body.report.no_current_reports")
+        end
+      end
+    end
+
+    context "when there are no approved reports" do
+      scenario "they see an empty state on the approved tab" do
+        report = create(:report, organisation: delivery_partner_user.organisation)
+
+        visit reports_path
+
+        within("#approved") do
+          expect(page).not_to have_content report.description
+          expect(page).to have_content t("table.body.report.no_approved_reports")
+        end
+      end
     end
   end
 end
