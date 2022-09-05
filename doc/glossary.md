@@ -30,9 +30,9 @@ Originally designating the specific codes (and their metadata) used by IATI. The
 
 Extended to include BEIS-specific codes and metadata, also stored in the `vendor` folder. We prefer to record any such codes in a YAML file rather than in constants.
 
-## DP
+## PO
 
-Delivery partner
+Partner organisation (formerly Delivery partner)
 
 An organisation that collaborates with BEIS to deliver aid to one or more countries or regions.
 
@@ -82,13 +82,13 @@ The only way of organising activities in a hierarchy that all the organisations 
 
 Also "level B"
 
-An activity (a way of organising money, organisations, and people involved) recording how BEIS money is allocated and spent by a specific delivery partner organisation. BEIS is the organisation that manages programmes.
+An activity (a way of organising money, organisations, and people involved) recording how BEIS money is allocated and spent by a specific partner organisation. BEIS is the organisation that manages programmes.
 
 ## Project
 
 Also "level C"
 
-An activity managed by a DP, recording how money is received and spent from BEIS on a specific activity (such an aid programme, a public health campaign etc). The DP is responsible for correctly reporting all the financial details, target areas, etc.
+An activity managed by a PO, recording how money is received and spent from BEIS on a specific activity (such an aid programme, a public health campaign etc). The PO is responsible for correctly reporting all the financial details, target areas, etc.
 
 ## Refunds
 
@@ -111,7 +111,7 @@ Statistics on International Development
 
 Also "level D"
 
-An activity that is done on behalf of a DP by a third party, such as an university. It's the delivery partner that manages this activity and reports on the financials to BEIS, i.e. `third_party_project.extending_organisation = delivery_partner`
+An activity that is done on behalf of a PO by a third party, such as an university. It's the partner organisation that manages this activity and reports on the financials to BEIS, i.e. `third_party_project.extending_organisation = delivery_partner`
 
 ## Outgoing Transfer
 
