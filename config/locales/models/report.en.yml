@@ -118,7 +118,7 @@ en:
         description: Report description
         fund: Fund (level A)
         organisation: Organisation
-        organisation_id: Delivery partner organisation
+        organisation_id: Partner organisation
         state: State
         deadline: Deadline
         level_a_activity: Fund (level A)
