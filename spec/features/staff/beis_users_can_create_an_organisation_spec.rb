@@ -31,7 +31,7 @@ RSpec.feature "BEIS users can create organisations" do
       click_link t("page_content.organisations.delivery_partners.button.create")
 
       then_breadcrumb_shows_type_of_organisation(
-        name: "Delivery partners",
+        name: "Partner organisations",
         link: organisations_path(role: "delivery_partners")
       )
 
