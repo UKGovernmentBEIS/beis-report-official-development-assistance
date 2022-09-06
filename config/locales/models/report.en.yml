@@ -78,18 +78,18 @@ en:
         refunds_total: Total of refunds
     report:
       activate:
-        confirm: By activating this report, you will allow Delivery Partner users to add new data, and amend existing data. These changes will associate to this report only.
+        confirm: By activating this report, you will allow Partner Organisation users to add new data, and amend existing data. These changes will associate to this report only.
         complete:
           heading: What happens next
           html:
             <p class="govuk-body">
-            This report is now activated and the delivery partner now has access to edit data, finalise and submit the report in RODA before the deadline.
+            This report is now activated and the partner organisation now has access to edit data, finalise and submit the report in RODA before the deadline.
             </p>
             <p class="govuk-body">
             NOTE - the deadline is not enforced in RODA. If a report is not submitted within the timeframe it will need to be followed up outside of the service, i.e. by email
             </p>
             <p class="govuk-body">
-            The Service Manager will send the delivery partner an email notifying them that RODA is now open and their reporting cycle has begun.  ODA PMO Finance Lead will send the commissioning email confirming the deadline and relevant service updates to DPs 2 weeks before the report submission deadline.
+            The Service Manager will send the partner organisation an email notifying them that RODA is now open and their reporting cycle has begun.  ODA PMO Finance Lead will send the commissioning email confirming the deadline and relevant service updates to POs 2 weeks before the report submission deadline.
             </p>
       summary:
         editable:
@@ -239,4 +239,4 @@ en:
               between: Date must be between %{min} years ago and %{max} years in the future
             financial_quarter:
               inclusion: Enter a financial quarter between 1 and 4
-          unapproved_reports_html: "Cannot create new report: There is an unapproved report for the same delivery partner organisation and fund. Previous reports must be approved before creating a new report."
+          unapproved_reports_html: "Cannot create new report: There is an unapproved report for the same partner organisation and fund. Previous reports must be approved before creating a new report."
