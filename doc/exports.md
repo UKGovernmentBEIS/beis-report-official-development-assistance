@@ -35,11 +35,11 @@ Net total:                 10,450
 ```
 
 ### BEIS users
-- Can download a file per __Fund__ containing all delivery partner
-organisation activities, this export is expensive to run and takes time.
-- Can download a file per __Fund__ containing only a single delivery partner
+- Can download a file per __Fund__ containing all partner organisation
+  activities, this export is expensive to run and takes time.
+- Can download a file per __Fund__ containing only a single partner
   organisation activities
 
-### Delivery partner users
+### Partner Organisation users
 - Can download an export per __Fund__ containing only their own associated
   organisation activities
