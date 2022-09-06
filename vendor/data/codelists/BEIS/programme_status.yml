@@ -6,7 +6,7 @@ data:
     iati_status_code: 2
   - code: 2
     name: Planned
-    description: Scoping negotiations and/or workshops have begun but no formal commitment has been made between the UK Delivery Partner. Scoping activity. Financial allocation has been made
+    description: Scoping negotiations and/or workshops have begun but no formal commitment has been made between the UK Partner Organisation. Scoping activity. Financial allocation has been made
     iati_status_code: 1
   - code: 3
     name: Agreement in place
