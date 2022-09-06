@@ -171,7 +171,7 @@ en:
         delivery_partner:
           subject: "%{environment_name}%{application_name} - Your report has been submitted"
         service_owner:
-          subject: "%{environment_name}%{application_name} - A delivery partner has submitted a report"
+          subject: "%{environment_name}%{application_name} - A partner organisation has submitted a report"
       approved:
         delivery_partner:
           subject: "%{environment_name}%{application_name} - Your report has been approved"
