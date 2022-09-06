@@ -572,5 +572,5 @@ en:
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:
           parent_present: There is an existing RODA ID present, but there is a parent activity specified too, which will overwrite the existing parent. Please remove the parent ID from this row and try again.
-          delivery_partner_identifier_present: The delivery partner identifier cannot be changed. Please remove the DP identifier from this row and try again.
+          delivery_partner_identifier_present: The partner organisation identifier cannot be changed. Please remove the PO identifier from this row and try again.
         unauthorised: You are not authorised to report against this activity

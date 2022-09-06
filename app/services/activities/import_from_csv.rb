@@ -71,8 +71,8 @@ module Activities
     def update_activity(row, index)
       if row["Parent RODA ID"].present?
         add_error(index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
-      elsif row["Delivery Partner Identifier"].present?
-        add_error(index, :delivery_partner_identifier, row["Delivery Partner Identifier"], I18n.t("importer.errors.activity.cannot_update.delivery_partner_identifier_present")) && return
+      elsif row["Partner Organisation Identifier"].present?
+        add_error(index, :delivery_partner_identifier, row["Partner Organisation Identifier"], I18n.t("importer.errors.activity.cannot_update.delivery_partner_identifier_present")) && return
       else
         updater = ActivityUpdater.new(
           row: row,
@@ -293,7 +293,7 @@ module Activities
         title: "Title",
         description: "Description",
         benefitting_countries: "Benefitting Countries",
-        delivery_partner_identifier: "Delivery partner identifier",
+        delivery_partner_identifier: "Partner organisation identifier",
         gdi: "GDI",
         gcrf_strategic_area: "GCRF Strategic Area",
         gcrf_challenge_area: "GCRF Challenge Area",
@@ -326,17 +326,17 @@ module Activities
         policy_marker_nutrition: "DFID policy marker - Nutrition",
         aid_type: "Aid type",
         fstc_applies: "Free Standing Technical Cooperation",
-        objectives: "Aims/Objectives (DP Definition)",
+        objectives: "Aims/Objectives (PO Definition)",
         beis_identifier: "BEIS ID",
-        uk_dp_named_contact: "UK DP Named Contact",
-        country_delivery_partners: "NF Partner Country DP"
+        uk_dp_named_contact: "UK PO Named Contact",
+        country_delivery_partners: "NF Partner Country PO"
       }
 
       ALLOWED_BLANK_FIELDS = [
         "Implementing organisation reference",
         "BEIS ID",
-        "UK DP Named Contact (NF)",
-        "NF Partner Country DP"
+        "UK PO Named Contact (NF)",
+        "NF Partner Country PO"
       ]
 
       def initialize(row, method = :create)

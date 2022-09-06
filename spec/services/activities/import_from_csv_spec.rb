@@ -28,7 +28,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Title" => "Here is a title",
       "Description" => "Some description goes here...",
       "Benefitting Countries" => "KH|KP|ID",
-      "Delivery partner identifier" => "1234567890",
+      "Partner organisation identifier" => "1234567890",
       "GDI" => "1",
       "GCRF Strategic Area" => "17A|RF",
       "GCRF Challenge Area" => "4",
@@ -61,10 +61,10 @@ RSpec.describe Activities::ImportFromCsv do
       "DFID policy marker - Nutrition" => "",
       "Aid type" => "B03",
       "Free Standing Technical Cooperation" => "1",
-      "Aims/Objectives (DP Definition)" => "Foo bar baz",
+      "Aims/Objectives (PO Definition)" => "Foo bar baz",
       "BEIS ID" => "BEIS_ID_EXAMPLE_01",
-      "UK DP Named Contact" => "Jo Soap",
-      "NF Partner Country DP" => "Association of Example Companies (AEC) | | Board of Sample Organisations (BSO)",
+      "UK PO Named Contact" => "Jo Soap",
+      "NF Partner Country PO" => "Association of Example Companies (AEC) | | Board of Sample Organisations (BSO)",
       "Implementing organisation names" => "Impl. Org 1",
       "Comments" => "Cat"
     }
@@ -154,7 +154,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.gdi).to eq("1")
       expect(existing_activity.gcrf_strategic_area).to eq(["17A", "RF"])
       expect(existing_activity.gcrf_challenge_area).to eq(4)
-      expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Delivery partner identifier"])
+      expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Partner organisation identifier"])
       expect(existing_activity.fund_pillar).to eq(existing_activity_attributes["Newton Fund Pillar"].to_i)
       expect(existing_activity.covid19_related).to eq(0)
       expect(existing_activity.oda_eligibility).to eq("never_eligible")
@@ -181,9 +181,9 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.policy_marker_nutrition).to eq("not_assessed")
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
       expect(existing_activity.fstc_applies).to eq(true)
-      expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives (DP Definition)"])
+      expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives (PO Definition)"])
       expect(existing_activity.beis_identifier).to eq(existing_activity_attributes["BEIS ID"])
-      expect(existing_activity.uk_dp_named_contact).to eq(existing_activity_attributes["UK DP Named Contact"])
+      expect(existing_activity.uk_dp_named_contact).to eq(existing_activity_attributes["UK PO Named Contact"])
       expect(existing_activity.sdgs_apply).to eql(true)
 
       expect(existing_activity.implementing_organisations.count).to eql(1)
@@ -378,7 +378,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.benefitting_countries).to eq(["KH", "KP", "ID"])
       expect(new_activity.gdi).to eq("1")
       expect(new_activity.gcrf_challenge_area).to eq(4)
-      expect(new_activity.delivery_partner_identifier).to eq(new_activity_attributes["Delivery partner identifier"])
+      expect(new_activity.delivery_partner_identifier).to eq(new_activity_attributes["Partner organisation identifier"])
       expect(new_activity.covid19_related).to eq(0)
       expect(new_activity.oda_eligibility).to eq("never_eligible")
       expect(new_activity.oda_eligibility_lead).to eq(new_activity_attributes["ODA Eligibility Lead"])
@@ -398,9 +398,9 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.collaboration_type).to eq(new_activity_attributes["Collaboration type (Bi/Multi Marker)"])
       expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
       expect(new_activity.fstc_applies).to eq(true)
-      expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (DP Definition)"])
+      expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (PO Definition)"])
       expect(new_activity.beis_identifier).to eq(new_activity_attributes["BEIS ID"])
-      expect(new_activity.uk_dp_named_contact).to eq(new_activity_attributes["UK DP Named Contact"])
+      expect(new_activity.uk_dp_named_contact).to eq(new_activity_attributes["UK PO Named Contact"])
       expect(new_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
       expect(new_activity.sdgs_apply).to eql(true)
     end
