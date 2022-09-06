@@ -37,6 +37,8 @@ en:
     cell:
       default:
         no_actions_available: No actions available
+      organisations:
+        details: details
   activerecord:
     attributes:
       default:
