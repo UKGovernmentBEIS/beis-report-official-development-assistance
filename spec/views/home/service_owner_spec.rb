@@ -17,8 +17,8 @@ RSpec.describe "staff/home/service_owner" do
 
   it "has links to a delivery partners details, activities, exports and reports" do
     expect(rendered).to have_link("Partner Org 1", href: "/organisations/id")
-    expect(rendered).to have_link("View activities", href: "/organisation/id/activities")
-    expect(rendered).to have_link("View exports", href: "/exports/organisation/id")
-    expect(rendered).to have_link("View reports", href: "/organisation/id/reports")
+    expect(rendered).to have_link(t("table.cell.organisations.view_activities"), href: "/organisation/id/activities")
+    expect(rendered).to have_link(t("table.cell.organisations.view_exports"), href: "/exports/organisation/id")
+    expect(rendered).to have_link(t("table.cell.organisations.view_reports"), href: "/organisation/id/reports")
   end
 end
