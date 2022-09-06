@@ -191,7 +191,7 @@ RSpec.describe ImportForecasts do
       importer.import([
         {
           "Activity Name" => "",
-          "Activity Delivery Partner Identifier" => "",
+          "Activity Partner Organisation Identifier" => "",
           "Activity RODA Identifier" => project.roda_identifier,
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "10",
           "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "20",
@@ -199,7 +199,7 @@ RSpec.describe ImportForecasts do
         },
         {
           "Activity Name" => "",
-          "Activity Delivery Partner Identifier" => "",
+          "Activity Partner Organisation Identifier" => "",
           "Activity RODA Identifier" => project.roda_identifier,
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "10",
           "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "20",

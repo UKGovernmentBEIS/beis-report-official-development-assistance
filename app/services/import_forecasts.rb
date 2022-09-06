@@ -14,7 +14,7 @@ class ImportForecasts
 
   COLUMN_HEADINGS = [
     "Activity Name",
-    "Activity Delivery Partner Identifier",
+    "Activity Partner Organisation Identifier",
     RODA_ID_KEY
   ]
 
