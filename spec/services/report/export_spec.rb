@@ -73,7 +73,7 @@ RSpec.describe Report::Export do
         "VAR FQ2 2021-2022",
         "Comment",
         "Source fund",
-        "Delivery partner short name",
+        "Partner organisation short name",
         "Link to activity in RODA"
       )
     end
