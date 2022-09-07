@@ -8,7 +8,7 @@
       %th.govuk-table__header{scope: "col"}
         = t("table.header.default.actions")
   %tbody.govuk-table__body
-    - @delivery_partner_organisations.each do |delivery_partner_organisation|
+    - delivery_partner_organisations.each do |delivery_partner_organisation|
       %tr.govuk-table__row
         %td.govuk-table__cell
           = a11y_action_link delivery_partner_organisation.name, organisation_path(delivery_partner_organisation), t("table.cell.organisations.details"), ["govuk-link--no-visited-state"]

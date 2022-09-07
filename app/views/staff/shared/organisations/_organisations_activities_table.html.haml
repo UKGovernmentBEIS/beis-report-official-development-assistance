@@ -10,7 +10,7 @@
       %th.govuk-table__header{scope: "col", class: "govuk-!-width-one-quarter" }
         = t("table.header.default.action")
   %tbody.govuk-table__body
-    - @delivery_partner_organisations.each do |delivery_partner_organisation|
+    - delivery_partner_organisations.each do |delivery_partner_organisation|
       %tr.govuk-table__row
         %td.govuk-table__cell
           = delivery_partner_organisation.name

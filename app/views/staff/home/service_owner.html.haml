@@ -3,4 +3,4 @@
     .govuk-grid-column-full
       = render partial: "staff/searches/form"
 
-      = render partial: "delivery_partner_organisations_table", locals: @delivery_partner_organisaitons
+      = render partial: "delivery_partner_organisations_table", locals: { delivery_partner_organisations: @delivery_partner_organisations }
