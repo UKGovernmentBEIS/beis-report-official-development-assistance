@@ -107,7 +107,7 @@ en:
         fstc_applies:
           "true": "Yes (1)"
           "false": "No (0)"
-        uk_dp_named_contact: Who is the UK delivery partner named contact for this activity?
+        uk_dp_named_contact: Who is the UK partner organisation named contact for this activity?
         csv_file: Upload CSV spreadsheet
         csv_file_recover_from_error: Re-upload CSV spreadsheet
     legend:
@@ -120,7 +120,7 @@ en:
         call_open_date: Call open date
         call_close_date: Call close date
         channel_of_delivery_code: Channel of delivery code
-        country_delivery_partners: Country delivery partner
+        country_delivery_partners: Country partner organisation
         gcrf_strategic_area: What GCRF Strategic area does your activity relate to?
         gcrf_challenge_area: GCRF challenge area
         fund_pillar: What Newton Fund Pillar does this activity fall under?
@@ -164,7 +164,7 @@ en:
         aid_type: Where an activity is not G01 or E01 we would expect most of our activity to be classified as D02 but there will be cases where C01 is more appropriate.
         call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
         call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
-        country_delivery_partners: "Please provide up to ten country delivery partners. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
+        country_delivery_partners: "Please provide up to ten country partner organisations. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
         fund_pillar: The Newton Fund largely comprises three pillar activities, which all activities must fall under. Use 'Not applicable' for delivery, other non-programme/project lines.
         delivery_partner_identifier: This should be the reference you use to identify this activity in your internal systems and other third-party services. Once set, this value cannot be changed, see the guidance below for more information and support.
         gcrf_strategic_area: Select no more than two areas.
@@ -183,9 +183,9 @@ en:
         description: There is no character limit to this field. However, when this data is published to Statistics in International Development the description will be truncated at 4000 characters.
         level: Select the type of activity
         level_step:
-          fund: The amount of funding each delivery partner will receive
-          programme: A breakdown of each delivery partner's funding detailed and confirmed in allocation letters and MOUs
-          project: The activities of a delivery partner and details of how the funding is forecast and spent
+          fund: The amount of funding each partner organisation will receive
+          programme: A breakdown of each partner organisation's funding detailed and confirmed in allocation letters and MOUs
+          project: The activities of a partner organisation and details of how the funding is forecast and spent
           third_party_project: The activities of third parties such as universities and how the funding is forecast and spent
         parent: Which existing %{parent_level} will this new %{level} belong to?
         policy_markers:
@@ -250,7 +250,7 @@ en:
         updated_activities: Updated activities
         new_activities_report: New activities added in this report
         updated_activities_report: Activities updated in this report
-        activities_by_delivery_partner: Activities by delivery partner
+        activities_by_delivery_partner: Activities by partner organisation
     header:
       activity:
         identifier: RODA Identifier
@@ -321,7 +321,7 @@ en:
     breadcrumbs:
       current_index: Current activities
       historic_index: Historic activities
-      activities_by_delivery_partner: Activities by delivery partner
+      activities_by_delivery_partner: Activities by partner organisation
       organisation_current_index: "%{org_name} current activities"
       organisation_historic_index: "%{org_name} historic activities"
   tabs:
@@ -370,7 +370,7 @@ en:
         channel_of_delivery_code: Channel of delivery code
         collaboration_type: Collaboration type
         country: What country will benefit from this activity?
-        country_delivery_partners: Country delivery partner
+        country_delivery_partners: Country partner organisation
         covid19_related: Is this activity related to Covid-19?
         dates: What are the start and end dates for the %{level}?
         fund_pillar: What Newton Fund Pillar does this activity fall under?
@@ -395,7 +395,7 @@ en:
         sector_category: What is the focus area category for this %{level}?
         sustainable_development_goals: Sustainable Development Goals
         total_applications_and_awards: Applications and awards
-        uk_dp_named_contact: Who is the UK delivery partner named contact for this activity?
+        uk_dp_named_contact: Who is the UK partner organisation named contact for this activity?
         wicked_finish: ""
   activerecord:
     attributes:
@@ -408,7 +408,7 @@ en:
         transparency_identifier: IATI identifier
         beis_identifier: Original BEIS tracker identifier
         level: Activity level
-        delivery_partner_identifier: Delivery partner identifier
+        delivery_partner_identifier: Partner organisation identifier
         recipient_region: Recipient region
         recipient_country: Recipient country
         intended_beneficiaries: Intended beneficiaries
@@ -430,7 +430,7 @@ en:
         oda_eligibility_lead: ODA eligibility lead contact name
         covid19_related: Covid-19 related research
         programme_status: Activity status
-        country_delivery_partners: Newton Fund Country Delivery Partners
+        country_delivery_partners: Newton Fund Country Partner Organisations
         uk_dp_named_contact: Activity contact name
         call_open_date: Call open date
         call_close_date: Call close date
@@ -471,7 +471,7 @@ en:
         organisation_id: Organisation identifier
         tied_status: Tied status
         organisation: Organisation
-        delivery_partner_organisation: Delivery partner organisation
+        delivery_partner_organisation: Partner organisation
     errors:
       models:
         activity:
@@ -481,7 +481,7 @@ en:
               not_in_future: Actual end date must not be in the future
               invalid: Please enter a valid date
             country_delivery_partners:
-              blank: Enter at least one country delivery partner
+              blank: Enter at least one country partner organisation
             dates: Enter an actual start date or a planned start date for the activity
             actual_start_date:
               between: Date must be between %{min} years ago and %{max} years in the future
@@ -536,9 +536,9 @@ en:
               programme:
                 invalid: Programmes must be associated with the Service Owner Organisation
               project:
-                invalid: Projects must be associated with a Delivery Partner Organisation
+                invalid: Projects must be associated with a Partner Organisation
               third_party_project:
-                invalid: Third Party Projects must be associated with a Delivery Partner Organisation
+                invalid: Third Party Projects must be associated with a Partner Organisation
   importer:
     errors:
       activity:
@@ -572,5 +572,5 @@ en:
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:
           parent_present: There is an existing RODA ID present, but there is a parent activity specified too, which will overwrite the existing parent. Please remove the parent ID from this row and try again.
-          delivery_partner_identifier_present: The delivery partner identifier cannot be changed. Please remove the DP identifier from this row and try again.
+          delivery_partner_identifier_present: The partner organisation identifier cannot be changed. Please remove the PO identifier from this row and try again.
         unauthorised: You are not authorised to report against this activity

@@ -37,8 +37,8 @@ RSpec.feature "BEIS users can download exports" do
     expect(document).to match_array([
       {
         "RODA identifier" => project.roda_identifier,
-        "Delivery partner identifier" => project.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner.name,
+        "Partner organisation identifier" => project.delivery_partner_identifier,
+        "Partner organisation" => delivery_partner.name,
         "Title" => project.title,
         "Level" => "Project (level C)",
         "Providing organisation" => ext_income1.organisation.name,
@@ -53,8 +53,8 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project.roda_identifier,
-        "Delivery partner identifier" => project.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner.name,
+        "Partner organisation identifier" => project.delivery_partner_identifier,
+        "Partner organisation" => delivery_partner.name,
         "Title" => project.title,
         "Level" => "Project (level C)",
         "Providing organisation" => ext_income2.organisation.name,
@@ -89,8 +89,8 @@ RSpec.feature "BEIS users can download exports" do
     expect(document).to match_array([
       {
         "RODA identifier" => project1.roda_identifier,
-        "Delivery partner identifier" => project1.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner1.name,
+        "Partner organisation identifier" => project1.delivery_partner_identifier,
+        "Partner organisation" => delivery_partner1.name,
         "Title" => project1.title,
         "Level" => "Project (level C)",
         "Providing organisation" => ext_income1.organisation.name,
@@ -106,8 +106,8 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project2.roda_identifier,
-        "Delivery partner identifier" => project2.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner2.name,
+        "Partner organisation identifier" => project2.delivery_partner_identifier,
+        "Partner organisation" => delivery_partner2.name,
         "Title" => project2.title,
         "Level" => "Project (level C)",
         "Providing organisation" => ext_income2.organisation.name,
@@ -123,8 +123,8 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project2.roda_identifier,
-        "Delivery partner identifier" => project2.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner2.name,
+        "Partner organisation identifier" => project2.delivery_partner_identifier,
+        "Partner organisation" => delivery_partner2.name,
         "Title" => project2.title,
         "Level" => "Project (level C)",
         "Providing organisation" => ext_income3.organisation.name,
@@ -164,8 +164,8 @@ RSpec.feature "BEIS users can download exports" do
     expect(document).to match_array([
       {
         "RODA identifier" => project.roda_identifier,
-        "Delivery partner identifier" => project.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner.name,
+        "Partner organisation identifier" => project.delivery_partner_identifier,
+        "Partner organisation" => delivery_partner.name,
         "Level" => "Project (level C)",
         "Title" => project.title,
         "2018-2019" => "100.00",
@@ -205,8 +205,8 @@ RSpec.feature "BEIS users can download exports" do
     expect(document).to match_array([
       {
         "RODA identifier" => project1.roda_identifier,
-        "Delivery partner identifier" => project1.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner1.name,
+        "Partner organisation identifier" => project1.delivery_partner_identifier,
+        "Partner organisation" => delivery_partner1.name,
         "Level" => "Project (level C)",
         "Title" => project1.title,
         "2018-2019" => "100.00",
@@ -216,8 +216,8 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project2.roda_identifier,
-        "Delivery partner identifier" => project2.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner2.name,
+        "Partner organisation identifier" => project2.delivery_partner_identifier,
+        "Partner organisation" => delivery_partner2.name,
         "Level" => "Project (level C)",
         "Title" => project2.title,
         "2018-2019" => "100.00",
@@ -227,8 +227,8 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project2.roda_identifier,
-        "Delivery partner identifier" => project2.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner2.name,
+        "Partner organisation identifier" => project2.delivery_partner_identifier,
+        "Partner organisation" => delivery_partner2.name,
         "Level" => "Project (level C)",
         "Title" => project2.title,
         "2018-2019" => "0.00",

@@ -36,7 +36,7 @@ en:
   tabs:
     organisations:
       implementing_organisations: Implementing organisations
-      delivery_partners: Delivery partners
+      delivery_partners: Partner organisations
       matched_effort_providers: Matched effort providers
       external_income_providers: External income providers
   summary:
@@ -55,7 +55,7 @@ en:
           create: Add implementing organisation
       delivery_partners:
         button:
-          create: Add delivery partner organisation
+          create: Add partner organisation
       matched_effort_providers:
         button:
           create: Add matched effort provider organisation
@@ -91,14 +91,14 @@ en:
       implementing_organisation:
         new: Create a new implementing organisation
       delivery_partner:
-        new: Create a new delivery partner organisation
+        new: Create a new partner organisation
       matched_effort_provider:
         new: Create a new matched effort provider organisation
       external_income_provider:
         new: Create a new external income provider organisation
     organisations:
       implementing_organisations: Implementing organisations
-      delivery_partners: Delivery partners
+      delivery_partners: Partner organisations
       matched_effort_providers: Matched effort providers
       external_income_providers: External income providers
   breadcrumbs:
@@ -109,8 +109,8 @@ en:
         new: Create a new implementing organisation
         index: Implementing organisations
       delivery_partner:
-        new: Create a new delivery partner organisation
-        index: Delivery partners
+        new: Create a new partner organisation
+        index: Partner organisations
       matched_effort_provider:
         new: Create a new matched effort provider organisation
         index: Matched effort providers

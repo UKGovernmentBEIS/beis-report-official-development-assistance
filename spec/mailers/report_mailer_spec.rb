@@ -98,7 +98,7 @@ RSpec.describe ReportMailer, type: :mailer do
       end
 
       it "has the correct title" do
-        expect(mail.subject).to eq("Report your Official Development Assistance - A delivery partner has submitted a report")
+        expect(mail.subject).to eq("Report your Official Development Assistance - A partner organisation has submitted a report")
       end
 
       it "contains the report's details" do
@@ -107,13 +107,13 @@ RSpec.describe ReportMailer, type: :mailer do
       end
 
       it "contains the expected body" do
-        expect(mail.body).to include("A delivery partner has submitted a report.")
+        expect(mail.body).to include("A partner organisation has submitted a report.")
       end
 
       context "when the email is from the training site" do
         it "includes the site in the email subject" do
           ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
-            expect(mail.subject).to eq("[Training] Report your Official Development Assistance - A delivery partner has submitted a report")
+            expect(mail.subject).to eq("[Training] Report your Official Development Assistance - A partner organisation has submitted a report")
           end
         end
       end
@@ -121,7 +121,7 @@ RSpec.describe ReportMailer, type: :mailer do
       context "when the email is from the production site" do
         it "does not include the site in the email subject" do
           ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
-            expect(mail.subject).to eq("Report your Official Development Assistance - A delivery partner has submitted a report")
+            expect(mail.subject).to eq("Report your Official Development Assistance - A partner organisation has submitted a report")
           end
         end
       end

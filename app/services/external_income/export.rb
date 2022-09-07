@@ -2,8 +2,8 @@ class ExternalIncome
   class Export
     HEADERS = [
       "RODA identifier",
-      "Delivery partner identifier",
-      "Delivery partner organisation",
+      "Partner organisation identifier",
+      "Partner organisation",
       "Title",
       "Level",
       "Providing organisation",

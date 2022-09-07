@@ -4,9 +4,9 @@
 
 - **[Glossary of terms (glossary)](./glossary.md)**
 
-- **[Importing new delivery partner data
-  (importing-new-delivery-partner-data.md)](./importing-new-delivery-partner-data.md)**: We need to import
-  legacy data for delivery partners, so they don't have to manually re-key it
+- **[Importing new partner organisation data
+  (importing-new-partner-organisation-data.md)](./importing-new-partner-organisation-data.md)**: We need to import
+  legacy data for partner organisations, so they don't have to manually re-key it
   into RODA.
 
 - **[Activity Identifiers
@@ -88,7 +88,7 @@
   Reset a user's multi-factor authentication settings, so that they can configure a new method, e.g. if they have a new mobile phone number.
 
 - **[Pull back a submitted report (support_tasks/pull_back_submitted_report.md)](./support_tasks/pull_back_submitted_report.md)**:
-  Allow a delivery partner to resume editing a submitted report.
+  Allow a partner organisation to resume editing a submitted report.
 
 - **[Change a report's financial period (support_tasks/change_financial_period.md)](./support_tasks/change_financial_period.md)**:
   If a report is created with the wrong financial period it is a little fiddly to change.

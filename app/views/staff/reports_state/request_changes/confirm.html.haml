@@ -7,7 +7,7 @@
         = t("page_title.report.request_changes.confirm", report_organisation: @report.organisation.name, report_financial_quarter: @report_presenter.financial_quarter_and_year)
 
       %p.govuk-body
-        You are about to re-open an existing report. This will allow Delivery Partner users to amend or add more data to the existing report.
+        You are about to re-open an existing report. This will allow Partner Organisation users to amend or add more data to the existing report.
 
       = form_for @report_presenter, url: report_state_path(@report_presenter) do |f|
         = hidden_field_tag :state, "awaiting_changes"
