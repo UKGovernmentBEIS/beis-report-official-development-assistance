@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Iati::XmlDownload do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
 
   let(:level) { "third_party_project" }
   let(:fund) { Fund.new(2) }

@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Staff::ActivityFormsController do
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
 
   before do
     allow(controller).to receive(:current_user).and_return(user)

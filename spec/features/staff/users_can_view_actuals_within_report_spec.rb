@@ -1,6 +1,6 @@
 RSpec.feature "Users can view actuals in tab within a report" do
   context "as a partner organisation user" do
-    let(:organisation) { create(:delivery_partner_organisation) }
+    let(:organisation) { create(:partner_organisation) }
     let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
     before do

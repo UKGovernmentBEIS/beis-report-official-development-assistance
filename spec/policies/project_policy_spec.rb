@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ProjectPolicy do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
   let(:project) { create(:project_activity, organisation: organisation) }
   let(:another_project) { create(:project_activity) }
 

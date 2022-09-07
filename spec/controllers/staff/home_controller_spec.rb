@@ -8,7 +8,7 @@ RSpec.describe Staff::HomeController do
 
     context "when signed in as a BEIS user" do
       let(:user) { create(:beis_user) }
-      let(:partner_organisations) { create_list(:delivery_partner_organisation, 5) }
+      let(:partner_organisations) { create_list(:partner_organisation, 5) }
 
       it "fetches the partner organisations" do
         get :show

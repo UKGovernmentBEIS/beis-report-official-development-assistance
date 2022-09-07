@@ -79,7 +79,7 @@ RSpec.describe ImportForecasts do
   end
 
   context "when the reporter is not authorised to report on the Activity" do
-    let(:reporter_organisation) { create(:delivery_partner_organisation) }
+    let(:reporter_organisation) { create(:partner_organisation) }
 
     before do
       importer.import([

@@ -9,7 +9,7 @@ RSpec.feature "users can view a home page" do
 
   context "when a BEIS user" do
     let(:beis_user) { create(:beis_user) }
-    let!(:partner_organisation) { create(:delivery_partner_organisation) }
+    let!(:partner_organisation) { create(:partner_organisation) }
 
     before do
       authenticate! user: beis_user

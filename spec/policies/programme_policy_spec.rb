@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ProgrammePolicy do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
   let(:programme) { create(:programme_activity, extending_organisation: organisation) }
   let(:another_programme) { create(:programme_activity) }
 

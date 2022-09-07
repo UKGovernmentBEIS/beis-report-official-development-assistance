@@ -33,7 +33,7 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "they can see a list of all active and approved reports" do
-      organisations = create_list(:delivery_partner_organisation, 2)
+      organisations = create_list(:partner_organisation, 2)
 
       unapproved_reports = [
         create_list(:report, 2, :active, organisation: organisations.first),
@@ -78,7 +78,7 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "the report includes a summary" do
-      report = create(:report, :active, organisation: build(:delivery_partner_organisation))
+      report = create(:report, :active, organisation: build(:partner_organisation))
 
       visit reports_path
 
@@ -99,7 +99,7 @@ RSpec.feature "Users can view reports" do
     end
 
     scenario "the report includes a list of newly created and updated activities" do
-      partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:partner_organisation)
       fund = create(:fund_activity)
       programme = create(:programme_activity, parent: fund)
       project = create(:project_activity, parent: programme)
@@ -126,7 +126,7 @@ RSpec.feature "Users can view reports" do
 
     context "when there is no report description" do
       scenario "the summary does not include the empty value" do
-        report = create(:report, :active, organisation: build(:delivery_partner_organisation), description: nil)
+        report = create(:report, :active, organisation: build(:partner_organisation), description: nil)
 
         visit report_path(report.id)
 
@@ -408,7 +408,7 @@ RSpec.feature "Users can view reports" do
       end
 
       scenario "cannot view a report belonging to another partner organisation" do
-        another_report = create(:report, organisation: create(:delivery_partner_organisation))
+        another_report = create(:report, organisation: create(:partner_organisation))
 
         visit report_path(another_report)
 

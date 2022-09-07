@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Export::OrganisationPolicy do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
 
   subject { described_class.new(user, organisation) }
 

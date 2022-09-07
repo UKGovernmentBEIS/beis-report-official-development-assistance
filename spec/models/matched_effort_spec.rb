@@ -20,7 +20,7 @@ RSpec.describe MatchedEffort, type: :model do
       end
 
       context "when organisation is not a matched effort provider" do
-        let(:organisation) { create(:delivery_partner_organisation) }
+        let(:organisation) { create(:partner_organisation) }
 
         it { should be_invalid }
       end

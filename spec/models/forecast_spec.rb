@@ -19,7 +19,7 @@ RSpec.describe Forecast, type: :model do
     it { should validate_presence_of(:value) }
 
     context "when the activity belongs to a partner organisation" do
-      before { activity.update(organisation: build_stubbed(:delivery_partner_organisation)) }
+      before { activity.update(organisation: build_stubbed(:partner_organisation)) }
 
       it "should validate the presence of report" do
         actual = build_stubbed(:actual, parent_activity: activity, report: nil)

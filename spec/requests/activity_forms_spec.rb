@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Activity forms", type: :request do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
   before do

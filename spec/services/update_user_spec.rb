@@ -8,7 +8,7 @@ RSpec.describe UpdateUser do
 
   describe "#call" do
     it "returns a successful result" do
-      result = described_class.new(user: user, organisation: build_stubbed(:delivery_partner_organisation)).call
+      result = described_class.new(user: user, organisation: build_stubbed(:partner_organisation)).call
 
       expect(result.success?).to eq(true)
       expect(result.failure?).to eq(false)
@@ -16,7 +16,7 @@ RSpec.describe UpdateUser do
 
     context "when an organisation is provided" do
       it "associates the user to it" do
-        organisation = create(:delivery_partner_organisation)
+        organisation = create(:partner_organisation)
 
         described_class.new(
           user: user,

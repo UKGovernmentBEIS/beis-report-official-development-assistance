@@ -7,7 +7,7 @@ FactoryBot.define do
     deadline { 1.year.from_now }
 
     association :fund, factory: :fund_activity
-    association :organisation, factory: :delivery_partner_organisation
+    association :organisation, factory: :partner_organisation
 
     trait :approved do
       state { :approved }

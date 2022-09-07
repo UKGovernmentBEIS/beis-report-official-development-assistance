@@ -1,6 +1,6 @@
 RSpec.feature "Users can view an organisation as XML" do
   let(:user) { create(:beis_user) }
-  let!(:organisation) { create(:delivery_partner_organisation) }
+  let!(:organisation) { create(:partner_organisation) }
 
   context "when the user belongs to BEIS" do
     before { authenticate!(user: user) }

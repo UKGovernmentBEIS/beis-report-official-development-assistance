@@ -1,7 +1,7 @@
 RSpec.feature "Users can move reports into awaiting changes & view reports awaiting changes" do
   context "signed in as a BEIS user" do
     let(:beis_user) { create(:beis_user) }
-    let(:organisation) { create(:delivery_partner_organisation, users: create_list(:delivery_partner_user, 3)) }
+    let(:organisation) { create(:partner_organisation, users: create_list(:delivery_partner_user, 3)) }
 
     before do
       authenticate!(user: beis_user)

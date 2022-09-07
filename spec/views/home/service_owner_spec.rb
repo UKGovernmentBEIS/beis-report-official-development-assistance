@@ -1,8 +1,8 @@
 RSpec.describe "staff/home/service_owner" do
   before do
     assign(:current_user, build(:beis_user))
-    organisation = build(:delivery_partner_organisation, name: "Partner Org 1")
-    assign(:partner_organisations, [organisation, build(:delivery_partner_organisation)])
+    organisation = build(:partner_organisation, name: "Partner Org 1")
+    assign(:partner_organisations, [organisation, build(:partner_organisation)])
 
     stub_template "staff/shared/reports/_delivery_partners_organisations_table" => "table of partner organisations"
     stub_template "staff/searches/_form" => "search form"

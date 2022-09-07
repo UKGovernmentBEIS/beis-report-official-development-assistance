@@ -1,12 +1,12 @@
 RSpec.feature "BEIS users can create a programme level activity" do
   let(:user) { create(:beis_user) }
-  let(:partner_organisation) { create(:delivery_partner_organisation) }
+  let(:partner_organisation) { create(:partner_organisation) }
   before { authenticate!(user: user) }
 
   context "with a new fund and partner organisation" do
     scenario "they see the button to add a new programme (level B activity)" do
       fund = create(:fund_activity, :gcrf)
-      partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:partner_organisation)
 
       visit organisation_activities_path(partner_organisation)
 

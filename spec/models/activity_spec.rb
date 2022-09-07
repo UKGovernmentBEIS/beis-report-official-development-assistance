@@ -51,7 +51,7 @@ RSpec.describe Activity, type: :model do
 
   describe ".new_child" do
     let(:parent_activity) { create(:fund_activity, :newton) }
-    let(:partner_organisation) { create(:delivery_partner_organisation) }
+    let(:partner_organisation) { create(:partner_organisation) }
 
     before do
       allow_any_instance_of(ActivityDefaults).to receive(:call).and_return(
@@ -75,7 +75,7 @@ RSpec.describe Activity, type: :model do
 
     it "accepts a block that can override any default values" do
       parent_activity = create(:fund_activity, :newton)
-      partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:partner_organisation)
 
       activity = Activity.new_child(
         parent_activity: parent_activity,
@@ -594,7 +594,7 @@ RSpec.describe Activity, type: :model do
     end
 
     describe "parent association" do
-      let(:organisation) { build(:delivery_partner_organisation) }
+      let(:organisation) { build(:partner_organisation) }
       subject { Activity.new(level: level, organisation: organisation) }
 
       context "with a fund" do
@@ -887,7 +887,7 @@ RSpec.describe Activity, type: :model do
       context "when the activity organisation is a government type" do
         it "returns BEIS" do
           beis = create(:beis_organisation)
-          government_partner_org = build(:delivery_partner_organisation, organisation_type: "10")
+          government_partner_org = build(:partner_organisation, organisation_type: "10")
 
           project = build(:project_activity, organisation: government_partner_org)
           expect(project.providing_organisation).to eql beis
@@ -897,7 +897,7 @@ RSpec.describe Activity, type: :model do
       context "when the activity organisation is a non-government type" do
         it "returns BEIS" do
           beis = create(:beis_organisation)
-          non_government_partner_org = create(:delivery_partner_organisation, organisation_type: "22")
+          non_government_partner_org = create(:partner_organisation, organisation_type: "22")
 
           project = build(:project_activity, organisation: non_government_partner_org)
           expect(project.providing_organisation).to eql beis
@@ -909,7 +909,7 @@ RSpec.describe Activity, type: :model do
       context "when the activity organisation is a government type" do
         it "returns BEIS" do
           beis = create(:beis_organisation)
-          government_partner_org = build(:delivery_partner_organisation, organisation_type: "10")
+          government_partner_org = build(:partner_organisation, organisation_type: "10")
 
           project = build(:project_activity, organisation: government_partner_org)
           expect(project.providing_organisation).to eql beis
@@ -918,7 +918,7 @@ RSpec.describe Activity, type: :model do
 
       context "when the activity organisation is a non-government type" do
         it "returns the activity organisation i.e the partner organisation" do
-          non_government_partner_org = create(:delivery_partner_organisation, organisation_type: "22")
+          non_government_partner_org = create(:partner_organisation, organisation_type: "22")
 
           third_party_project = build(:third_party_project_activity, organisation: non_government_partner_org)
           expect(third_party_project.providing_organisation).to eql non_government_partner_org
@@ -953,7 +953,7 @@ RSpec.describe Activity, type: :model do
 
   describe "#accountable_organisation" do
     let(:beis) { build_stubbed(:beis_organisation) }
-    let(:partner_organisation) { build_stubbed(:delivery_partner_organisation) }
+    let(:partner_organisation) { build_stubbed(:partner_organisation) }
 
     before do
       allow_any_instance_of(Activity).to receive(:service_owner).and_return(beis)
@@ -980,7 +980,7 @@ RSpec.describe Activity, type: :model do
     end
 
     context "with a non-government partner organisation" do
-      let(:partner_organisation) { build_stubbed(:delivery_partner_organisation, :non_government) }
+      let(:partner_organisation) { build_stubbed(:partner_organisation, :non_government) }
 
       it "returns the partner organisation if the activity is a project" do
         activity = build_stubbed(:project_activity, extending_organisation: partner_organisation)
@@ -996,7 +996,7 @@ RSpec.describe Activity, type: :model do
 
   describe "accountable_organisation_* getters" do
     let(:beis) { build_stubbed(:beis_organisation) }
-    let(:partner_organisation) { build_stubbed(:delivery_partner_organisation, :non_government) }
+    let(:partner_organisation) { build_stubbed(:partner_organisation, :non_government) }
     let(:activity) { build_stubbed(:project_activity, extending_organisation: partner_organisation) }
 
     before do
@@ -1695,7 +1695,7 @@ RSpec.describe Activity, type: :model do
     describe "#reportable_actuals_for_level" do
       context "when the activity is a programme" do
         it "sums up the actuals of the activity and child activities by financial quarter" do
-          organisation = create(:delivery_partner_organisation)
+          organisation = create(:partner_organisation)
           programme = create(:programme_activity, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
           projects = create_list(:project_activity, 2, parent: programme)
           third_party_project = create(:third_party_project_activity, parent: projects[0])
@@ -1719,7 +1719,7 @@ RSpec.describe Activity, type: :model do
 
       context "when the activity is a project or third-party project" do
         it "returns all the actuals with that activity only" do
-          organisation = create(:delivery_partner_organisation)
+          organisation = create(:partner_organisation)
           project = create(:project_activity, :with_transparency_identifier, organisation: organisation)
           third_party_project = create(:third_party_project_activity, parent: project, organisation: organisation)
 

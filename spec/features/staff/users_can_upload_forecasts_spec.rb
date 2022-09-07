@@ -1,5 +1,5 @@
 RSpec.feature "users can upload forecasts" do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
   let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
   let!(:project) { create(:project_activity, :newton_funded, organisation: organisation) }

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ThirdPartyProjectPolicy do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
   let(:third_party_project) { create(:third_party_project_activity, organisation: organisation) }
   let(:another_third_party_project) { create(:third_party_project_activity) }
 

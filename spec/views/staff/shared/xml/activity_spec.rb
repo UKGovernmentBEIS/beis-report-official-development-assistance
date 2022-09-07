@@ -2,7 +2,7 @@ RSpec.describe "staff/shared/xml/activity" do
   let(:activity) { create(:programme_activity) }
 
   before do
-    reporting_organisation = build(:delivery_partner_organisation)
+    reporting_organisation = build(:partner_organisation)
     render partial: "staff/shared/xml/activity",
       locals: {
         activity: activity,

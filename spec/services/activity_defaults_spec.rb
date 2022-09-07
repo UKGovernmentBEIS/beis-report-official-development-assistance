@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe ActivityDefaults do
   let(:beis) { create(:beis_organisation) }
-  let(:partner_organisation) { create(:delivery_partner_organisation) }
+  let(:partner_organisation) { create(:partner_organisation) }
 
   let(:fund) { create(:fund_activity, :gcrf) }
   let(:programme) { create(:programme_activity, :gcrf_funded, parent: fund) }
@@ -14,7 +14,7 @@ RSpec.describe ActivityDefaults do
   before do
     # some reports which we don't expect to be returned as 'originating_report'
     # for 'project' (level C)
-    _other_org = create(:report, :active, organisation: create(:delivery_partner_organisation), fund: fund)
+    _other_org = create(:report, :active, organisation: create(:partner_organisation), fund: fund)
     _other_fund = create(:report, :active, organisation: partner_organisation, fund: create(:fund_activity, :newton))
     _approved = create(:report, :approved, organisation: partner_organisation, fund: fund)
   end

@@ -1,5 +1,5 @@
 RSpec.feature "Users can create a refund" do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
 
   RSpec.shared_examples "create refunds" do
     before { authenticate!(user: user) }

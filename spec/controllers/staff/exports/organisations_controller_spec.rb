@@ -31,7 +31,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
     end
   end
 
-  let(:organisation) { create(:delivery_partner_organisation, iati_reference: "GB-GOV-ADTJQ") }
+  let(:organisation) { create(:partner_organisation, iati_reference: "GB-GOV-ADTJQ") }
   let(:fund) { Fund.by_short_name("NF") }
 
   before do

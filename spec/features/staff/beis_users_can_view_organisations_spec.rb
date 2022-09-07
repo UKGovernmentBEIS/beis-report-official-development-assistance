@@ -63,7 +63,7 @@ RSpec.feature "BEIS users can view other organisations" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
 
-    let!(:partner_organisations) { create_list(:delivery_partner_organisation, 3) }
+    let!(:partner_organisations) { create_list(:partner_organisation, 3) }
     let!(:matched_effort_provider_organisations) { create_list(:matched_effort_provider, 2) }
     let!(:external_income_provider_organisations) { create_list(:external_income_provider, 2) }
     before do

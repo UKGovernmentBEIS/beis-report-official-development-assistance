@@ -146,7 +146,7 @@ RSpec.describe Budget::Export do
   end
 
   context "when an organisation is specified" do
-    let(:organisation) { build(:delivery_partner_organisation) }
+    let(:organisation) { build(:partner_organisation) }
 
     subject { described_class.new(source_fund: fund, organisation: organisation) }
 

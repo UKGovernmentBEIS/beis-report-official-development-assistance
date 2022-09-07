@@ -93,7 +93,7 @@ FactoryBot.define do
       collaboration_type { "1" }
 
       association :organisation, factory: :beis_organisation
-      association :extending_organisation, factory: :delivery_partner_organisation
+      association :extending_organisation, factory: :partner_organisation
 
       trait :newton_funded do
         source_fund_code { Fund.by_short_name("NF").id }
@@ -141,8 +141,8 @@ FactoryBot.define do
       policy_marker_disaster_risk_reduction { "not_assessed" }
       policy_marker_nutrition { "not_assessed" }
 
-      association :organisation, factory: :delivery_partner_organisation
-      association :extending_organisation, factory: :delivery_partner_organisation
+      association :organisation, factory: :partner_organisation
+      association :extending_organisation, factory: :partner_organisation
 
       factory :project_activity_with_implementing_organisations do
         transient do
@@ -188,8 +188,8 @@ FactoryBot.define do
       policy_marker_disaster_risk_reduction { "not_assessed" }
       policy_marker_nutrition { "not_assessed" }
 
-      association :organisation, factory: :delivery_partner_organisation
-      association :extending_organisation, factory: :delivery_partner_organisation
+      association :organisation, factory: :partner_organisation
+      association :extending_organisation, factory: :partner_organisation
 
       trait :newton_funded do
         source_fund_code { Fund.by_short_name("NF").id }

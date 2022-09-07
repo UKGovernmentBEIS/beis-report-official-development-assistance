@@ -7,7 +7,7 @@ FactoryBot.define do
     default_currency { "GBP" }
     language_code { "en" }
 
-    factory :delivery_partner_organisation do
+    factory :partner_organisation do
       role { "delivery_partner" }
 
       trait :non_government do

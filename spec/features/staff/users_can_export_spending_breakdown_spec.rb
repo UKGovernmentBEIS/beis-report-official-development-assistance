@@ -16,7 +16,7 @@ RSpec.feature "Users can export spending breakdown" do
     end
 
     scenario "they can download the spending breakdown export for a single organisation" do
-      partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:partner_organisation)
 
       visit exports_path
       click_link partner_organisation.name
@@ -30,7 +30,7 @@ RSpec.feature "Users can export spending breakdown" do
   end
 
   context "as a partner organisation user" do
-    let(:organisation) { create(:delivery_partner_organisation) }
+    let(:organisation) { create(:partner_organisation) }
 
     before do
       authenticate! user: create(:delivery_partner_user, organisation: organisation)
@@ -42,7 +42,7 @@ RSpec.feature "Users can export spending breakdown" do
     end
 
     scenario "they cannot download spending breakdown for an organisation they are not associated with" do
-      other_organisation = create(:delivery_partner_organisation)
+      other_organisation = create(:partner_organisation)
       visit spending_breakdown_exports_organisation_path(other_organisation)
 
       expect(page.status_code).to eq 401

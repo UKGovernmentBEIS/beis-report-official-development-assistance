@@ -3,7 +3,7 @@ RSpec.describe Export::SpendingBreakdown do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
 
-    @organisation = create(:delivery_partner_organisation, beis_organisation_reference: "BC")
+    @organisation = create(:partner_organisation, beis_organisation_reference: "BC")
     @activity = create(:project_activity, organisation: @organisation)
     @source_fund = Fund.new(1)
 
@@ -223,7 +223,7 @@ RSpec.describe Export::SpendingBreakdown do
 
     context "when there are no activities" do
       let(:fund) { create(:fund_activity) }
-      let(:organisation) { create(:delivery_partner_organisation) }
+      let(:organisation) { create(:partner_organisation) }
       subject { described_class.new(source_fund: fund, organisation: organisation) }
 
       it "returns the activity attribute headers only" do
@@ -241,7 +241,7 @@ RSpec.describe Export::SpendingBreakdown do
 
     context "when there are actvities but NONE have actual spend, refunds and forecasts" do
       before do
-        @organisation = create(:delivery_partner_organisation)
+        @organisation = create(:partner_organisation)
         @activities = create_list(:project_activity, 3, organisation: @organisation)
 
         subject {

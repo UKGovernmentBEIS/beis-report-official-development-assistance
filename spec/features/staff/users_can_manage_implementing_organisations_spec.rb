@@ -1,6 +1,6 @@
 RSpec.feature "Users can manage the implementing organisations" do
   context "when they are signed in as a partner organisation user" do
-    let(:partner_organisation) { create(:delivery_partner_organisation) }
+    let(:partner_organisation) { create(:partner_organisation) }
     let(:project) { create(:project_activity, organisation: partner_organisation) }
     let!(:report) { create(:report, :active, organisation: partner_organisation, fund: project.associated_fund) }
 
@@ -36,7 +36,7 @@ RSpec.feature "Users can manage the implementing organisations" do
       authenticate!(
         user: create(:delivery_partner_user, organisation: partner_organisation)
       )
-      create(:delivery_partner_organisation, name: "Another partner organisation")
+      create(:partner_organisation, name: "Another partner organisation")
     end
 
     scenario "they can add an implementing org from a list of all organisations" do
@@ -107,7 +107,7 @@ RSpec.feature "Users can manage the implementing organisations" do
   end
 
   context "when they are signed in as a BEIS user" do
-    let(:partner_organisation) { create(:delivery_partner_organisation) }
+    let(:partner_organisation) { create(:partner_organisation) }
     let(:project) { create(:project_activity, organisation: partner_organisation) }
 
     before { authenticate!(user: create(:beis_user)) }

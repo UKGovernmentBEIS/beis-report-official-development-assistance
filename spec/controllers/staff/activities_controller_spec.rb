@@ -62,7 +62,7 @@ RSpec.describe Staff::ActivitiesController do
       end
 
       it "allows fetching of another organisation's activities" do
-        organisation = create(:delivery_partner_organisation)
+        organisation = create(:partner_organisation)
 
         get route, params: {organisation_id: organisation.id}
 
@@ -94,7 +94,7 @@ RSpec.describe Staff::ActivitiesController do
       end
 
       it "fetches the activities for the user's organisation when the organisation ID is that of another organisation" do
-        organisation = create(:delivery_partner_organisation)
+        organisation = create(:partner_organisation)
 
         get route, params: {organisation_id: organisation.id}
 
@@ -118,7 +118,7 @@ RSpec.describe Staff::ActivitiesController do
   describe "#show" do
     context "when viewing historical events" do
       let(:user) { create(:delivery_partner_user, organisation: organisation) }
-      let(:organisation) { create(:delivery_partner_organisation) }
+      let(:organisation) { create(:partner_organisation) }
 
       before do
         allow(controller).to receive(:current_user).and_return(user)

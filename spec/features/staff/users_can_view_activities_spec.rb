@@ -1,7 +1,7 @@
 RSpec.feature "Users can view activities" do
   shared_examples "shows activities" do |params|
     let(:user) { create(params[:user_type]) }
-    let(:organisation) { params[:user_type] == :beis_user ? create(:delivery_partner_organisation) : user.organisation }
+    let(:organisation) { params[:user_type] == :beis_user ? create(:partner_organisation) : user.organisation }
 
     let!(:fund) { create(:fund_activity, :newton) }
     let!(:programme) { create(:programme_activity, parent: fund, extending_organisation: organisation) }
@@ -63,8 +63,8 @@ RSpec.feature "Users can view activities" do
     end
 
     scenario "does not see activities which belong to a different organisation" do
-      other_programme = create(:programme_activity, extending_organisation: create(:delivery_partner_organisation))
-      other_project = create(:project_activity, organisation: create(:delivery_partner_organisation))
+      other_programme = create(:programme_activity, extending_organisation: create(:partner_organisation))
+      other_project = create(:project_activity, organisation: create(:partner_organisation))
 
       visit activities_path(organisation_id: organisation.id)
 
@@ -78,7 +78,7 @@ RSpec.feature "Users can view activities" do
       user_type: :beis_user
     }
     scenario "cannot add a child activity to a programme (level C) activity" do
-      partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:partner_organisation)
       gcrf = create(:fund_activity, :gcrf)
       programme = create(:programme_activity, parent: gcrf, extending_organisation: partner_organisation)
       _report = create(:report, :active, fund: gcrf, organisation: partner_organisation)

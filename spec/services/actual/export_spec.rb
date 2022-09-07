@@ -1,5 +1,5 @@
 RSpec.describe Actual::Export do
-  let(:partner_organisation) { create(:delivery_partner_organisation) }
+  let(:partner_organisation) { create(:partner_organisation) }
   let(:activities) { Activity.where(organisation: partner_organisation) }
   let(:export) { Actual::Export.new(activities) }
 

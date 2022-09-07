@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe FindProgrammeActivities do
   let(:user) { create(:beis_user) }
   let(:service_owner) { create(:beis_organisation) }
-  let(:other_organisation) { create(:delivery_partner_organisation) }
+  let(:other_organisation) { create(:partner_organisation) }
 
   let!(:extending_organisation_programme) { create(:programme_activity, extending_organisation: other_organisation) }
   let!(:other_programme) { create(:programme_activity) }
@@ -27,7 +27,7 @@ RSpec.describe FindProgrammeActivities do
 
     context "when a fund is passed" do
       it "includes only the programmes for the organisaiton and the fund" do
-        partner_organisation = create(:delivery_partner_organisation)
+        partner_organisation = create(:partner_organisation)
         source_fund_code = 1
         programme = create(:programme_activity, source_fund_code: source_fund_code, extending_organisation: partner_organisation)
         programme_from_another_fund = create(:programme_activity, source_fund_code: 2, extending_organisation: partner_organisation)

@@ -103,7 +103,7 @@ RSpec.describe ImportActuals do
     end
 
     context "when the reporter is not authorised to report on the Activity" do
-      let(:reporter_organisation) { create(:delivery_partner_organisation) }
+      let(:reporter_organisation) { create(:partner_organisation) }
 
       it "does not import any actuals" do
         expect(report.actuals.count).to eq(0)

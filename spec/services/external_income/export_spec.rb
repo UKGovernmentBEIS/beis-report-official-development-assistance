@@ -1,5 +1,5 @@
 RSpec.describe ExternalIncome::Export do
-  let!(:partner_organisation) { build(:delivery_partner_organisation) }
+  let!(:partner_organisation) { build(:partner_organisation) }
   let!(:fund) { build(:fund_activity, :newton) }
 
   let(:project) { build(:project_activity, source_fund: fund, organisation: partner_organisation, id: SecureRandom.uuid) }

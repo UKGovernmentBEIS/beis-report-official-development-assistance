@@ -5,7 +5,7 @@ RSpec.describe OrganisationValidator do
     subject { build(:fund_activity, organisation: organisation) }
 
     context "when the organisation is a partner organisation" do
-      let(:organisation) { build(:delivery_partner_organisation) }
+      let(:organisation) { build(:partner_organisation) }
 
       it { should be_invalid }
     end
@@ -21,7 +21,7 @@ RSpec.describe OrganisationValidator do
     subject { build(:fund_activity, organisation: organisation) }
 
     context "when the organisation is a partner organisation" do
-      let(:organisation) { build(:delivery_partner_organisation) }
+      let(:organisation) { build(:partner_organisation) }
 
       it { should be_invalid }
     end
@@ -37,7 +37,7 @@ RSpec.describe OrganisationValidator do
     subject { build(:project_activity, organisation: organisation) }
 
     context "when the organisation is a partner organisation" do
-      let(:organisation) { build(:delivery_partner_organisation) }
+      let(:organisation) { build(:partner_organisation) }
 
       it { should be_valid }
     end
@@ -53,7 +53,7 @@ RSpec.describe OrganisationValidator do
     subject { build(:third_party_project_activity, organisation: organisation) }
 
     context "when the organisation is a partner organisation" do
-      let(:organisation) { build(:delivery_partner_organisation) }
+      let(:organisation) { build(:partner_organisation) }
 
       it { should be_valid }
     end
