@@ -37,6 +37,11 @@ en:
     cell:
       default:
         no_actions_available: No actions available
+      organisations:
+        details: details
+        view_activities: View activities
+        view_exports: View exports
+        view_reports: View reports
   activerecord:
     attributes:
       default:
