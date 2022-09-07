@@ -92,7 +92,7 @@ RSpec.describe ActivityPolicy do
     end
   end
 
-  context "as a Delivery partner user" do
+  context "as a partner organisation user" do
     let(:user) { create(:delivery_partner_user) }
 
     context "when the activity is a fund" do

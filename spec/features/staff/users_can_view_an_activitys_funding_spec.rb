@@ -22,7 +22,7 @@ RSpec.feature "Users can view an activity's other funding" do
       amount: 150_000)
   end
 
-  context "when the user is signed in as a delivery partner" do
+  context "when the user is signed in as a partner organisation user" do
     before { authenticate!(user: user) }
 
     it "lists the matched efforts" do

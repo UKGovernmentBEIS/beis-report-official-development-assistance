@@ -83,7 +83,7 @@ RSpec.feature "users can upload actuals" do
   end
 
   scenario "uploading a valid set of actuals" do
-    # Given that I am logged in as a delivery partner
+    # Given that I am logged in as a partner organisation user
     # And a report exists that is waiting for actuals to be uploaded
 
     ids = [project, sibling_project].map(&:roda_identifier)

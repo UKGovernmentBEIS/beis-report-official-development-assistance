@@ -30,7 +30,7 @@ RSpec.describe ExternalIncomePolicy do
     end
   end
 
-  context "as a Delivery partner user" do
+  context "as a partner organisation user" do
     let(:user) { build_stubbed(:delivery_partner_user) }
 
     context "when the external income belongs to an activity owned by the user" do

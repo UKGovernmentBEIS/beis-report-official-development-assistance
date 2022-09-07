@@ -1,5 +1,5 @@
 RSpec.describe "Users can create a external income" do
-  context "when signed in as a delivery partner" do
+  context "when signed in as a partner organisation user" do
     let(:financial_quarter) { FinancialQuarter.new(Time.current.year, 1) }
     let(:user) { create(:delivery_partner_user) }
     let(:programme) { create(:programme_activity, extending_organisation: user.organisation) }

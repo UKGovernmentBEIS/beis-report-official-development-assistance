@@ -25,7 +25,7 @@ RSpec.feature "users can view a home page" do
     end
   end
 
-  context "when a delivery partner user" do
+  context "when a partner organisation user" do
     let(:partner_org_user) { create(:delivery_partner_user) }
     let!(:programme) { create(:programme_activity, extending_organisation: partner_org_user.organisation) }
 

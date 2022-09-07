@@ -44,7 +44,7 @@ RSpec.describe Staff::Uploads::ActualHistoriesController do
     end
   end
 
-  context "as a delivery partner user" do
+  context "as a partner organisation user" do
     let(:user) { create(:delivery_partner_user) }
 
     before do

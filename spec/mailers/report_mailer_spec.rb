@@ -53,7 +53,7 @@ RSpec.describe ReportMailer, type: :mailer do
   describe "#submitted" do
     let(:mail) { ReportMailer.with(user: user, report: report).submitted }
 
-    context "when the user is a delivery partner in the organisation that the report belongs to" do
+    context "when the user is a partner organisation user in the organisation that the report belongs to" do
       let(:user) { create(:administrator, organisation: organisation) }
 
       it "sends the email to the user's email address" do
@@ -127,7 +127,7 @@ RSpec.describe ReportMailer, type: :mailer do
       end
     end
 
-    context "when the user is a delivery partner in a different organisation" do
+    context "when the user is a partner organisation user in a different organisation" do
       let(:user) { create(:administrator, organisation: build(:delivery_partner_organisation)) }
 
       it "should raise an error" do
@@ -147,7 +147,7 @@ RSpec.describe ReportMailer, type: :mailer do
   describe "#approved" do
     let(:mail) { ReportMailer.with(user: user, report: report).approved }
 
-    context "when the user is a delivery partner in the organisation that the report belongs to" do
+    context "when the user is a partner organisation user in the organisation that the report belongs to" do
       let(:user) { create(:administrator, organisation: organisation) }
 
       it "sends the email to the user's email address" do
@@ -231,7 +231,7 @@ RSpec.describe ReportMailer, type: :mailer do
       end
     end
 
-    context "when the user is a delivery partner in a different organisation" do
+    context "when the user is a partner organisation user in a different organisation" do
       let(:user) { create(:administrator, organisation: build(:delivery_partner_organisation)) }
 
       it "should raise an error" do

@@ -23,7 +23,7 @@ RSpec.feature "Organisation show page" do
     end
   end
 
-  context "when signed in as a delivery partner user" do
+  context "when signed in as a partner organisation user" do
     before do
       authenticate!(user: partner_org_user)
     end

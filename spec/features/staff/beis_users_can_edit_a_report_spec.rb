@@ -130,7 +130,7 @@ RSpec.feature "BEIS users can edit a report" do
     end
   end
 
-  context "Logged in as a Delivery Partner user" do
+  context "Logged in as a partner organisation user" do
     let(:user) { create(:delivery_partner_user) }
 
     scenario "they cannot edit a Report" do

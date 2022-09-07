@@ -27,15 +27,15 @@ RSpec.describe Activity::CommentPolicy do
     end
   end
 
-  context "when the owner is a Delivery Partner user" do
+  context "when the owner is a partner organisation user" do
     let(:user) { create(:delivery_partner_user) }
 
     describe "#show" do
-      context "when the attached report is viewable by the delivery partner" do
+      context "when the attached report is viewable by the partner organisation user" do
         it { is_expected.to permit_action(:show) }
       end
 
-      context "when the attached report is not viewable by the delivery partner" do
+      context "when the attached report is not viewable by the partner organisation user" do
         let(:comment) { create(:comment, commentable: activity, report: create(:report), owner: user) }
         it { is_expected.to forbid_action(:show) }
       end

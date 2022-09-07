@@ -39,7 +39,7 @@ RSpec.describe ActivityHelper, type: :helper do
     end
 
     context "when the parent is a fund" do
-      context "and the user is delivery partner" do
+      context "and the user is partner organisation user" do
         it "returns the parent title without a link" do
           parent_activity = create(:fund_activity)
           _activity = create(:programme_activity, parent: parent_activity)

@@ -90,7 +90,7 @@ RSpec.feature "Users can view activities" do
     end
   end
 
-  context "when the user is signed in as a delivery partner" do
+  context "when the user is signed in as a partner organisation user" do
     context "when viewing the activities index page" do
       include_examples "shows activities", {
         user_type: :delivery_partner_user

@@ -1,4 +1,4 @@
-RSpec.feature "Delivery partner users can edit a transfer" do
+RSpec.feature "Partner organisation users can edit a transfer" do
   let(:user) { create(:delivery_partner_user) }
   before { authenticate!(user: user) }
 

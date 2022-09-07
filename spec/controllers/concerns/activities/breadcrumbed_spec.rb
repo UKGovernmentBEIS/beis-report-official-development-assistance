@@ -19,7 +19,7 @@ RSpec.describe StubController, type: :controller do
     allow(subject).to receive(:organisation_activity_path).and_return("activity_path")
   end
 
-  context "for a delivery partner user" do
+  context "for a partner organisation user" do
     before do
       allow(subject).to receive(:current_user).and_return(user)
     end

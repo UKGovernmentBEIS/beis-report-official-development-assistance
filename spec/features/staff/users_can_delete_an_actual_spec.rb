@@ -21,7 +21,7 @@ RSpec.feature "Users can delete an actual" do
     end
   end
 
-  context "when signed in as a delivery partner" do
+  context "when signed in as a partner organisation user" do
     before { authenticate!(user: partner_org_user) }
 
     let!(:activity) { create(:project_activity, organisation: partner_org_user.organisation) }

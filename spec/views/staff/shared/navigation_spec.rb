@@ -25,7 +25,7 @@ RSpec.describe "shared/_navigation" do
     end
   end
 
-  context "when the current user is a delivery partner" do
+  context "when the current user is a partner organisation user" do
     let(:user) { build(:delivery_partner_user) }
 
     it "does not show the link to the exports index" do

@@ -1,5 +1,5 @@
 RSpec.feature "Users can manage the implementing organisations" do
-  context "when they are signed in as a delivery partner" do
+  context "when they are signed in as a partner organisation user" do
     let(:partner_organisation) { create(:delivery_partner_organisation) }
     let(:project) { create(:project_activity, organisation: partner_organisation) }
     let!(:report) { create(:report, :active, organisation: partner_organisation, fund: project.associated_fund) }

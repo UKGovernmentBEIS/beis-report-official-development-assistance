@@ -5,7 +5,7 @@ RSpec.describe "Users can view forecasts" do
     ForecastOverview.new(activity).latest_values.last
   end
 
-  context "when signed in as a delivery partner" do
+  context "when signed in as a partner organisation user" do
     let(:user) { create(:delivery_partner_user) }
     before { authenticate!(user: user) }
 

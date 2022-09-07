@@ -4,7 +4,7 @@
 # existing create_refund
 
 RSpec.feature "users can upload refunds" do
-  # Given that I am logged in as a Delivery Partner,
+  # Given that I am logged in as a partner organisation user,
   # And a report exists that is waiting for refunds to be uploaded
   let(:organisation) { create(:delivery_partner_organisation) }
   let(:user) { create(:delivery_partner_user, organisation: organisation) }

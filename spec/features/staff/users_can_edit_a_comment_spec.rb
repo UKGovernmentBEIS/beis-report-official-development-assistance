@@ -26,7 +26,7 @@ RSpec.describe "Users can edit a comment" do
       end
     end
 
-    context "when the user is a Delivery Partner user" do
+    context "when the user is a partner organisation user" do
       before { authenticate!(user: partner_org_user) }
 
       context "when the report is editable" do

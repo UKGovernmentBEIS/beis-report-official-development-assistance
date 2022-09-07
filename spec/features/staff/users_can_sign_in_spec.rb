@@ -298,7 +298,7 @@ RSpec.feature "Users can sign in" do
     expect(page.current_path).to eql home_path
   end
 
-  scenario "a delivery partner user lands on their home page" do
+  scenario "a partner organisation user lands on their home page" do
     user = create(:delivery_partner_user)
 
     visit root_path

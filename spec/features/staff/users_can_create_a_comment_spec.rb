@@ -36,7 +36,7 @@ RSpec.describe "Users can create a comment" do
         end
       end
 
-      context "when the user is a Delivery Partner user" do
+      context "when the user is a partner organisation user" do
         before { authenticate!(user: partner_org_user) }
 
         context "when the report is editable" do
@@ -82,7 +82,7 @@ RSpec.describe "Users can create a comment" do
   end
 
   context "from the activity comments tab" do
-    context "when the user is a Delivery Partner user" do
+    context "when the user is a partner organisation user" do
       before { authenticate!(user: partner_org_user) }
 
       context "when the report is editable" do

@@ -28,7 +28,7 @@ RSpec.feature "Users can move reports into review" do
     end
   end
 
-  context "signed in as a Delivery partner user" do
+  context "signed in as a partner organisation user" do
     let(:partner_org_user) { create(:delivery_partner_user) }
 
     before do

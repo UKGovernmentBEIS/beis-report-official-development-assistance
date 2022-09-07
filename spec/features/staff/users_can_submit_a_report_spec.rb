@@ -1,5 +1,5 @@
 RSpec.feature "Users can submit a report" do
-  context "as a Delivery partner user" do
+  context "as a partner organisation user" do
     let!(:service_owner) { create(:beis_user) }
     let(:organisation) { create(:delivery_partner_organisation, users: create_list(:delivery_partner_user, 2)) }
     let(:partner_org_user) { create(:delivery_partner_user, organisation: organisation) }

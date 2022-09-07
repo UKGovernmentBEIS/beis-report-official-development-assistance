@@ -11,7 +11,7 @@ RSpec.describe Staff::ActivitiesController do
     end
   end
 
-  context "when signed in as a delivery partner user" do
+  context "when signed in as a partner organisation user" do
     let(:user) { create(:delivery_partner_user) }
 
     before do
@@ -74,7 +74,7 @@ RSpec.describe Staff::ActivitiesController do
       end
     end
 
-    context "when signed in as a delivery partner" do
+    context "when signed in as a partner organisation user" do
       let(:user) { create(:delivery_partner_user) }
 
       it "assigns the activities correctly" do

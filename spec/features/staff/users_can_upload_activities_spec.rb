@@ -12,7 +12,7 @@ RSpec.feature "users can upload activities" do
   end
 
   before do
-    # Given I'm logged in as a DP
+    # Given I'm logged in as a PO
     authenticate!(user: user)
 
     # And I am on the Activities Upload page

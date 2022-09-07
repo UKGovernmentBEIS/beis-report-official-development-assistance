@@ -38,7 +38,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
     allow(controller).to receive(:current_user).and_return(user)
   end
 
-  context "when logged in as a delivery partner" do
+  context "when logged in as a partner organisation user" do
     let(:user) { create(:delivery_partner_user, organisation: organisation) }
 
     describe "#show" do

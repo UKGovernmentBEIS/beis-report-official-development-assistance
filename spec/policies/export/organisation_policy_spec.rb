@@ -19,7 +19,7 @@ RSpec.describe Export::OrganisationPolicy do
     end
   end
 
-  context "for a delivery partner" do
+  context "for a partner organisation user" do
     let(:user) { create(:delivery_partner_user) }
 
     it "controls access as expected" do

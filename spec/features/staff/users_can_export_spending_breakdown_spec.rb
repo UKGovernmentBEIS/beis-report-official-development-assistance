@@ -29,7 +29,7 @@ RSpec.feature "Users can export spending breakdown" do
     end
   end
 
-  context "as a delivery partner user" do
+  context "as a partner organisation user" do
     let(:organisation) { create(:delivery_partner_organisation) }
 
     before do

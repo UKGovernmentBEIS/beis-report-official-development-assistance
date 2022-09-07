@@ -21,7 +21,7 @@ RSpec.describe Staff::HomeController do
       end
     end
 
-    context "when signed in as a delivery partner" do
+    context "when signed in as a partner organisation user" do
       let(:fund) { build_stubbed(:fund_activity) }
       let(:programme) { build_stubbed(:programme_activity) }
       let(:project) { build_stubbed(:project_activity) }

@@ -71,7 +71,7 @@ RSpec.describe ForecastPolicy do
     end
   end
 
-  context "when signed in as a Delivery partner user" do
+  context "when signed in as a partner organisation user" do
     let(:user) { create(:delivery_partner_user) }
 
     context "when the activity is a fund" do

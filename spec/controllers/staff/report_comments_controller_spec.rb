@@ -20,7 +20,7 @@ RSpec.describe Staff::ReportCommentsController do
       end
     end
 
-    context "when signed in as a delivery partner" do
+    context "when signed in as a partner organisation user" do
       let(:user) { create(:delivery_partner_user) }
 
       context "when the report belongs to the user's organisation" do
