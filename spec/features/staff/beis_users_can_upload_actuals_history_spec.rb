@@ -66,11 +66,11 @@ RSpec.feature "BEIS users upload actual history" do
     end
   end
 
-  context "as a delvivery partner user" do
-    let(:delivery_partner_user) { create(:delivery_partner_user) }
+  context "as a delivery partner user" do
+    let(:user) { create(:delivery_partner_user) }
     let(:report) { create(:report, organisation: beis_user.organisation) }
 
-    before { authenticate!(user: delivery_partner_user) }
+    before { authenticate!(user: user) }
 
     scenario "they cannot see the actuals history upload interface" do
       report = create(:report)

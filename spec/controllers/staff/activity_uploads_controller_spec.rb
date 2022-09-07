@@ -79,7 +79,7 @@ RSpec.describe Staff::ActivityUploadsController do
 
         expect(Activities::ImportFromCsv).to have_received(:new).with(
           uploader: user,
-          delivery_partner_organisation: organisation,
+          partner_organisation: organisation,
           report: report
         )
 

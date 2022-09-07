@@ -8,7 +8,7 @@ class Export::Report
         .new(activities: activities, attributes: attributes_in_order)
     @implementing_organisations =
       Export::ActivityImplementingOrganisationColumn.new(activities_relation: activities)
-    @delivery_partner_organisations =
+    @partner_organisations =
       Export::ActivityDeliveryPartnerOrganisationColumn.new(activities_relation: activities)
     @change_state_column =
       Export::ActivityChangeStateColumn.new(activities: activities, report: @report)
@@ -36,7 +36,7 @@ class Export::Report
     headers = []
     headers << @activity_attributes.headers
     headers << @implementing_organisations.headers
-    headers << @delivery_partner_organisations.headers
+    headers << @partner_organisations.headers
     headers << @change_state_column.headers
     headers << @actuals_columns.headers if @actuals_columns.headers.any?
     headers << @variance_column.headers if @actuals_columns.headers.any? && @forecast_columns.headers.any?
@@ -51,7 +51,7 @@ class Export::Report
       row = []
       row << attribute_rows.fetch(activity.id, nil)
       row << implementing_organisations_rows.fetch(activity.id, nil)
-      row << delivery_partner_organisation_rows.fetch(activity.id, nil)
+      row << partner_organisation_rows.fetch(activity.id, nil)
       row << change_state_rows.fetch(activity.id, nil)
       row << actuals_rows.fetch(activity.id, nil) if actuals_rows.any?
       row << variance_rows.fetch(activity.id, nil) if actuals_rows.any? && has_forecast_rows?
@@ -81,8 +81,8 @@ class Export::Report
     @_implementing_organisation_rows ||= @implementing_organisations.rows
   end
 
-  def delivery_partner_organisation_rows
-    @_delivery_partner_organisation_rows ||= @delivery_partner_organisations.rows
+  def partner_organisation_rows
+    @_partner_organisation_rows ||= @partner_organisations.rows
   end
 
   def change_state_rows

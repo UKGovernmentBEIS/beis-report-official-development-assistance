@@ -1,10 +1,10 @@
 RSpec.describe "Users can create a comment" do
   let(:beis_user) { create(:beis_user) }
-  let(:delivery_partner_user) { create(:delivery_partner_user) }
+  let(:partner_org_user) { create(:delivery_partner_user) }
 
-  let(:activity) { create(:project_activity, organisation: delivery_partner_user.organisation) }
+  let(:activity) { create(:project_activity, organisation: partner_org_user.organisation) }
   let(:actual) { create(:actual, report: report, activity: activity) }
-  let!(:report) { create(:report, :active, fund: activity.associated_fund, organisation: delivery_partner_user.organisation, financial_year: 2020, financial_quarter: 1) }
+  let!(:report) { create(:report, :active, fund: activity.associated_fund, organisation: partner_org_user.organisation, financial_year: 2020, financial_quarter: 1) }
 
   context "from the report variance tab" do
     context "when the activity has variance" do
@@ -27,7 +27,7 @@ RSpec.describe "Users can create a comment" do
         end
 
         context "when the report is not editable" do
-          let(:report) { create(:report, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
+          let(:report) { create(:report, fund: activity.associated_fund, organisation: partner_org_user.organisation) }
           scenario "the user cannot add a comment" do
             visit report_path(report)
             click_on t("tabs.report.variance.heading")
@@ -37,7 +37,7 @@ RSpec.describe "Users can create a comment" do
       end
 
       context "when the user is a Delivery Partner user" do
-        before { authenticate!(user: delivery_partner_user) }
+        before { authenticate!(user: partner_org_user) }
 
         context "when the report is editable" do
           context "when there are no comments about this activity" do
@@ -62,7 +62,7 @@ RSpec.describe "Users can create a comment" do
         end
 
         context "when the report is not editable" do
-          let(:report) { create(:report, :approved, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
+          let(:report) { create(:report, :approved, fund: activity.associated_fund, organisation: partner_org_user.organisation) }
           scenario "the user cannot add a comment" do
             visit report_path(report)
             click_on t("tabs.report.variance.heading")
@@ -83,7 +83,7 @@ RSpec.describe "Users can create a comment" do
 
   context "from the activity comments tab" do
     context "when the user is a Delivery Partner user" do
-      before { authenticate!(user: delivery_partner_user) }
+      before { authenticate!(user: partner_org_user) }
 
       context "when the report is editable" do
         scenario "the user can create a comment" do
@@ -98,7 +98,7 @@ RSpec.describe "Users can create a comment" do
       end
 
       context "when the report is not editable" do
-        let(:report) { create(:report, :approved, fund: activity.associated_fund, organisation: delivery_partner_user.organisation) }
+        let(:report) { create(:report, :approved, fund: activity.associated_fund, organisation: partner_org_user.organisation) }
         scenario "the user cannot create a comment" do
           visit organisation_activity_comments_path(activity.organisation, activity)
           expect(page).not_to have_content t("page_content.comment.add")

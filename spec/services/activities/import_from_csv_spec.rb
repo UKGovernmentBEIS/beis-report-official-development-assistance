@@ -79,7 +79,7 @@ RSpec.describe Activities::ImportFromCsv do
     })
   end
 
-  subject { described_class.new(uploader: uploader, delivery_partner_organisation: organisation, report: report) }
+  subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: report) }
 
   describe "::column_headings" do
     it "includes a column for implementing organisation names" do
@@ -856,7 +856,7 @@ RSpec.describe Activities::ImportFromCsv do
       subject do
         described_class.new(
           uploader: uploader,
-          delivery_partner_organisation: organisation,
+          partner_organisation: organisation,
           report: report
         )
       end

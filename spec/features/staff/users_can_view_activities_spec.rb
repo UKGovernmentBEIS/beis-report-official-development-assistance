@@ -78,10 +78,10 @@ RSpec.feature "Users can view activities" do
       user_type: :beis_user
     }
     scenario "cannot add a child activity to a programme (level C) activity" do
-      delivery_partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:delivery_partner_organisation)
       gcrf = create(:fund_activity, :gcrf)
-      programme = create(:programme_activity, parent: gcrf, extending_organisation: delivery_partner_organisation)
-      _report = create(:report, :active, fund: gcrf, organisation: delivery_partner_organisation)
+      programme = create(:programme_activity, parent: gcrf, extending_organisation: partner_organisation)
+      _report = create(:report, :active, fund: gcrf, organisation: partner_organisation)
 
       visit organisation_activity_path(programme.organisation, programme)
       click_on t("tabs.activity.children")

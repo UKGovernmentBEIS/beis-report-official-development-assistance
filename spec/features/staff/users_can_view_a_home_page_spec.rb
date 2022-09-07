@@ -9,7 +9,7 @@ RSpec.feature "users can view a home page" do
 
   context "when a BEIS user" do
     let(:beis_user) { create(:beis_user) }
-    let!(:delivery_partner_organisation) { create(:delivery_partner_organisation) }
+    let!(:partner_organisation) { create(:delivery_partner_organisation) }
 
     before do
       authenticate! user: beis_user
@@ -21,16 +21,16 @@ RSpec.feature "users can view a home page" do
       expect(page.current_path).to eql home_path
       expect(page).to have_button("Search")
       expect(page).to have_table("Partner organisations")
-      expect(page).to have_content(delivery_partner_organisation.name)
+      expect(page).to have_content(partner_organisation.name)
     end
   end
 
   context "when a delivery partner user" do
-    let(:delivery_partner_user) { create(:delivery_partner_user) }
-    let!(:programme) { create(:programme_activity, extending_organisation: delivery_partner_user.organisation) }
+    let(:partner_org_user) { create(:delivery_partner_user) }
+    let!(:programme) { create(:programme_activity, extending_organisation: partner_org_user.organisation) }
 
     before do
-      authenticate! user: delivery_partner_user
+      authenticate! user: partner_org_user
     end
 
     scenario "they see their home page and the right content" do

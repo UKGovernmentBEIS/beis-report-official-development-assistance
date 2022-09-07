@@ -12,16 +12,16 @@ RSpec.describe Staff::ActivitiesController do
   end
 
   context "when signed in as a delivery partner user" do
-    let(:delivery_partner_user) { create(:delivery_partner_user) }
+    let(:user) { create(:delivery_partner_user) }
 
     before do
-      allow(subject).to receive(:current_user).and_return(delivery_partner_user)
+      allow(subject).to receive(:current_user).and_return(user)
     end
 
     it "does not show fund (level A) activities" do
       fund_activity = create(:fund_activity)
 
-      get :show, params: {organisation_id: delivery_partner_user.organisation.id, id: fund_activity.id}
+      get :show, params: {organisation_id: user.organisation.id, id: fund_activity.id}
 
       expect(response).to have_http_status(:unauthorized)
     end

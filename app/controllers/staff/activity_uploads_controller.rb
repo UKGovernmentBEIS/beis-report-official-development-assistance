@@ -38,7 +38,7 @@ class Staff::ActivityUploadsController < Staff::BaseController
     if upload.valid?
       importer = Activities::ImportFromCsv.new(
         uploader: current_user,
-        delivery_partner_organisation: current_user.organisation,
+        partner_organisation: current_user.organisation,
         report: report
       )
       importer.import(upload.rows)

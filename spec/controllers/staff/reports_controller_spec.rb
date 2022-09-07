@@ -1,9 +1,9 @@
 RSpec.describe Staff::ReportsController do
-  let(:delivery_partner_user) { create(:delivery_partner_user) }
-  let(:organisation) { delivery_partner_user.organisation }
+  let(:user) { create(:delivery_partner_user) }
+  let(:organisation) { user.organisation }
 
   before do
-    allow(subject).to receive(:current_user).and_return(delivery_partner_user)
+    allow(subject).to receive(:current_user).and_return(user)
   end
 
   describe "#index" do
@@ -14,7 +14,7 @@ RSpec.describe Staff::ReportsController do
 
   describe "#show" do
     it "returns the report file successfully" do
-      report = create(:report, organisation: delivery_partner_user.organisation)
+      report = create(:report, organisation: user.organisation)
       export_double = double(Export::Report, filename: "export.csv", headers: [], rows: [])
       allow(Export::Report).to receive(:new).with(report: report).and_return(export_double)
 
@@ -26,7 +26,7 @@ RSpec.describe Staff::ReportsController do
     end
 
     it "returns the legacy report file successfully" do
-      report = create(:report, organisation: delivery_partner_user.organisation)
+      report = create(:report, organisation: user.organisation)
       export_double = double(Report::Export, filename: "legacy_export.csv", headers: [], rows: [])
       allow(Report::Export).to receive(:new).with(report: report).and_return(export_double)
 

@@ -16,10 +16,10 @@ RSpec.feature "Users can export spending breakdown" do
     end
 
     scenario "they can download the spending breakdown export for a single organisation" do
-      delivery_partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:delivery_partner_organisation)
 
       visit exports_path
-      click_link delivery_partner_organisation.name
+      click_link partner_organisation.name
       click_link "Download Newton Fund spending breakdown"
 
       expect(page.status_code).to eq 200

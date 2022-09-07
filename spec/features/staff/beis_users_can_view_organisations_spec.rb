@@ -13,7 +13,7 @@ RSpec.feature "BEIS users can view other organisations" do
 
       expect(page.find("li.govuk-tabs__list-item--selected a.govuk-tabs__tab")).to have_text(t("tabs.organisations.delivery_partners"))
 
-      delivery_partner_organisations.each do |organisation|
+      partner_organisations.each do |organisation|
         expect(page).to have_content(organisation.beis_organisation_reference)
         expect(page).to have_content(organisation.name)
       end
@@ -34,7 +34,7 @@ RSpec.feature "BEIS users can view other organisations" do
         expect(page).to have_content(organisation.name)
       end
 
-      delivery_partner_organisations.each do |organisation|
+      partner_organisations.each do |organisation|
         expect(page).to_not have_content(organisation.name)
       end
     end
@@ -50,7 +50,7 @@ RSpec.feature "BEIS users can view other organisations" do
         expect(page).to_not have_content(organisation.name)
       end
 
-      delivery_partner_organisations.each do |organisation|
+      partner_organisations.each do |organisation|
         expect(page).to_not have_content(organisation.name)
       end
 
@@ -63,7 +63,7 @@ RSpec.feature "BEIS users can view other organisations" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
 
-    let!(:delivery_partner_organisations) { create_list(:delivery_partner_organisation, 3) }
+    let!(:partner_organisations) { create_list(:delivery_partner_organisation, 3) }
     let!(:matched_effort_provider_organisations) { create_list(:matched_effort_provider, 2) }
     let!(:external_income_provider_organisations) { create_list(:external_income_provider, 2) }
     before do

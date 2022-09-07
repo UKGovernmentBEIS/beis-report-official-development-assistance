@@ -24,10 +24,10 @@ module Activities
         ["Implementing organisation names"]
     end
 
-    def initialize(uploader:, delivery_partner_organisation:, report:)
+    def initialize(uploader:, partner_organisation:, report:)
       @uploader = uploader
       @uploader_organisation = uploader.organisation
-      @delivery_partner_organisation = delivery_partner_organisation
+      @partner_organisation = partner_organisation
       @report = report
       @errors = []
       @created = []
@@ -58,7 +58,7 @@ module Activities
 
     def create_activity(row, index)
       if row["Parent RODA ID"].present?
-        creator = ActivityCreator.new(row: row, uploader: @uploader, delivery_partner_organisation: @delivery_partner_organisation, report: @report)
+        creator = ActivityCreator.new(row: row, uploader: @uploader, partner_organisation: @partner_organisation, report: @report)
         creator.create
         created << creator.activity unless creator.errors.any?
 
@@ -77,7 +77,7 @@ module Activities
         updater = ActivityUpdater.new(
           row: row,
           uploader: @uploader,
-          delivery_partner_organisation: @delivery_partner_organisation,
+          partner_organisation: @partner_organisation,
           report: @report
         )
         updater.update
@@ -94,11 +94,11 @@ module Activities
     class ActivityUpdater
       attr_reader :errors, :activity, :row, :report
 
-      def initialize(row:, uploader:, delivery_partner_organisation:, report:)
+      def initialize(row:, uploader:, partner_organisation:, report:)
         @errors = {}
         @activity = find_activity_by_roda_id(row["RODA ID"])
         @uploader = uploader
-        @delivery_partner_organisation = delivery_partner_organisation
+        @partner_organisation = partner_organisation
         @row = row
         @report = report
         @converter = Converter.new(row, :update)
@@ -174,9 +174,9 @@ module Activities
     class ActivityCreator
       attr_reader :errors, :row, :activity
 
-      def initialize(row:, uploader:, delivery_partner_organisation:, report:)
+      def initialize(row:, uploader:, partner_organisation:, report:)
         @uploader = uploader
-        @delivery_partner_organisation = delivery_partner_organisation
+        @partner_organisation = partner_organisation
         @errors = {}
         @row = row
         @converter = Converter.new(row)
@@ -196,7 +196,7 @@ module Activities
 
         @activity = Activity.new_child(
           parent_activity: @parent_activity,
-          delivery_partner_organisation: @delivery_partner_organisation
+          partner_organisation: @partner_organisation
         ) { |a|
           a.form_state = "complete"
         }
@@ -570,8 +570,8 @@ module Activities
         parse_date(actual_end_date, I18n.t("importer.errors.activity.invalid_actual_end_date"))
       end
 
-      def convert_country_delivery_partners(delivery_partners)
-        delivery_partners.split("|").map(&:strip).reject(&:blank?)
+      def convert_country_delivery_partners(partner_orgs)
+        partner_orgs.split("|").map(&:strip).reject(&:blank?)
       end
 
       def parse_date(date, message)

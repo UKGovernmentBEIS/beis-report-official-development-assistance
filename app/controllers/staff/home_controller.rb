@@ -3,8 +3,8 @@ class Staff::HomeController < Staff::BaseController
     authorize :home, :show?
 
     if current_user.service_owner?
-      @delivery_partner_organisations = Organisation.delivery_partners
-      authorize @delivery_partner_organisations
+      @partner_organisations = Organisation.delivery_partners
+      authorize @partner_organisations
       render :service_owner
     else
       @grouped_activities = Activity::GroupedActivitiesFetcher.new(

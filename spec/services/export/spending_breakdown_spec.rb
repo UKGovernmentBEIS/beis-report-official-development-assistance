@@ -183,8 +183,8 @@ RSpec.describe Export::SpendingBreakdown do
       attribute_double = double(rows: rows_data_double)
       allow(Export::ActivityAttributesColumns).to receive(:new).and_return(attribute_double)
 
-      delivery_partner_organisation_double = double(rows: rows_data_double)
-      allow(Export::ActivityDeliveryPartnerOrganisationColumn).to receive(:new).and_return(delivery_partner_organisation_double)
+      partner_organisation_double = double(rows: rows_data_double)
+      allow(Export::ActivityDeliveryPartnerOrganisationColumn).to receive(:new).and_return(partner_organisation_double)
 
       actuals_double = double(rows: rows_data_double, last_financial_quarter: FinancialQuarter.new(2, 2021))
       allow(Export::ActivityActualsColumns).to receive(:new).and_return(actuals_double)
@@ -198,7 +198,7 @@ RSpec.describe Export::SpendingBreakdown do
         .to have_received(:rows)
         .once
 
-      expect(delivery_partner_organisation_double)
+      expect(partner_organisation_double)
         .to have_received(:rows)
         .once
 

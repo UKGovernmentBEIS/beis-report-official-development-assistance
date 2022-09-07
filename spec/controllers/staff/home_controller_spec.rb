@@ -8,12 +8,12 @@ RSpec.describe Staff::HomeController do
 
     context "when signed in as a BEIS user" do
       let(:user) { create(:beis_user) }
-      let(:delivery_partners) { create_list(:delivery_partner_organisation, 5) }
+      let(:partner_organisations) { create_list(:delivery_partner_organisation, 5) }
 
       it "fetches the delivery partners" do
         get :show
 
-        expect(assigns(:delivery_partner_organisations)).to match_array(delivery_partners)
+        expect(assigns(:partner_organisations)).to match_array(partner_organisations)
       end
 
       it "renders the service owner view" do

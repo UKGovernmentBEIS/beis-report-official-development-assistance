@@ -227,28 +227,28 @@ RSpec.describe Organisation, type: :model do
   describe ".delivery_partners" do
     it "should only contain organisations that are delivery partners" do
       beis_organisation = create(:beis_organisation)
-      delivery_partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:delivery_partner_organisation)
       matched_effort_provider = create(:matched_effort_provider)
       external_income_provider = create(:external_income_provider)
-      delivery_partners = Organisation.delivery_partners
+      partner_organisations = Organisation.delivery_partners
 
-      expect(delivery_partners).to include(delivery_partner_organisation)
-      expect(delivery_partners).not_to include(beis_organisation)
-      expect(delivery_partners).not_to include(matched_effort_provider)
-      expect(delivery_partners).not_to include(external_income_provider)
+      expect(partner_organisations).to include(partner_organisation)
+      expect(partner_organisations).not_to include(beis_organisation)
+      expect(partner_organisations).not_to include(matched_effort_provider)
+      expect(partner_organisations).not_to include(external_income_provider)
     end
   end
 
   describe ".reporters" do
     it "should only contain delivery partners and service owners" do
       beis_organisation = create(:beis_organisation)
-      delivery_partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:delivery_partner_organisation)
       matched_effort_provider = create(:matched_effort_provider)
       external_income_provider = create(:external_income_provider)
       implementing_organisation = create(:implementing_organisation)
       reporters = Organisation.reporters
 
-      expect(reporters).to include(delivery_partner_organisation)
+      expect(reporters).to include(partner_organisation)
       expect(reporters).to include(beis_organisation)
       expect(reporters).not_to include(matched_effort_provider)
       expect(reporters).not_to include(external_income_provider)
@@ -275,7 +275,7 @@ RSpec.describe Organisation, type: :model do
   end
 
   describe ".implementing" do
-    let!(:delivery_partner) { create(:delivery_partner_organisation) }
+    let!(:partner_organisation) { create(:delivery_partner_organisation) }
     let!(:matched_effort_provider) { create(:matched_effort_provider) }
 
     let!(:newly_created_implementing_org) do
@@ -316,7 +316,7 @@ RSpec.describe Organisation, type: :model do
 
     it "excludes orgs with non-'implementing_organisation' roles and no participation" do
       aggregate_failures do
-        expect(Organisation.implementing).not_to include(delivery_partner)
+        expect(Organisation.implementing).not_to include(partner_organisation)
         expect(Organisation.implementing).not_to include(matched_effort_provider)
       end
     end
@@ -326,9 +326,9 @@ RSpec.describe Organisation, type: :model do
     it "should contain only active organisations" do
       create_list(:delivery_partner_organisation, 3, active: false)
       matched_effort_providers = create_list(:matched_effort_provider, 2, active: true)
-      delivery_partner_organisations = create_list(:delivery_partner_organisation, 3, active: true)
+      partner_organisations = create_list(:delivery_partner_organisation, 3, active: true)
 
-      expect(Organisation.active).to match_array(matched_effort_providers + delivery_partner_organisations)
+      expect(Organisation.active).to match_array(matched_effort_providers + partner_organisations)
     end
   end
 

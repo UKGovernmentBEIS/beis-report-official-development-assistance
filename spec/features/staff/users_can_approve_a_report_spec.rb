@@ -42,10 +42,10 @@ RSpec.feature "Users can approve reports" do
   end
 
   context "signed in as a Delivery partner user" do
-    let(:delivery_partner_user) { create(:delivery_partner_user) }
+    let(:partner_org_user) { create(:delivery_partner_user) }
 
     before do
-      authenticate!(user: delivery_partner_user)
+      authenticate!(user: partner_org_user)
     end
 
     scenario "they cannot mark a report as approved" do

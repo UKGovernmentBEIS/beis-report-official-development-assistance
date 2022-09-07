@@ -224,16 +224,16 @@ class Activity < ApplicationRecord
     where(programme_status: ["completed", "stopped", "cancelled"])
   }
 
-  def self.new_child(parent_activity:, delivery_partner_organisation:, &block)
+  def self.new_child(parent_activity:, partner_organisation:, &block)
     attributes = ActivityDefaults.new(
       parent_activity: parent_activity,
-      delivery_partner_organisation: delivery_partner_organisation
+      partner_organisation: partner_organisation
     ).call
 
     new(attributes, &block).tap do |new_activity|
       if new_activity.programme?
         new_activity.implementing_org_participations << OrgParticipation.new(
-          organisation: delivery_partner_organisation,
+          organisation: partner_organisation,
           role: "implementing",
           activity: new_activity
         )

@@ -43,10 +43,10 @@ RSpec.feature "Users can view actuals on an activity page" do
     end
 
     context "when the activity is a project" do
-      let(:delivery_partner_user) { create(:delivery_partner_user) }
+      let(:partner_org_user) { create(:delivery_partner_user) }
       let(:fund_activity) { create(:fund_activity, organisation: user.organisation) }
       let(:programme_activity) { create(:programme_activity, parent: fund_activity, organisation: user.organisation) }
-      let(:project_activity) { create(:project_activity, parent: programme_activity, organisation: delivery_partner_user.organisation) }
+      let(:project_activity) { create(:project_activity, parent: programme_activity, organisation: partner_org_user.organisation) }
 
       scenario "actual information is shown on the page" do
         actual = create(:actual, parent_activity: project_activity)

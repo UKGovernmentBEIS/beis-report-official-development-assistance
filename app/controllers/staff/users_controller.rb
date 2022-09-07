@@ -17,7 +17,7 @@ class Staff::UsersController < Staff::BaseController
     @user = User.new
     authorize @user
     @service_owner = service_owner
-    @delivery_partners = delivery_partners
+    @partner_organisations = delivery_partners
 
     add_breadcrumb t("breadcrumb.users.new"), new_user_path
   end
@@ -26,7 +26,7 @@ class Staff::UsersController < Staff::BaseController
     @user = User.new(user_params)
     authorize @user
     @service_owner = service_owner
-    @delivery_partners = delivery_partners
+    @partner_organisations = delivery_partners
 
     result = CreateUser.new(user: @user, organisation: organisation).call
     if result.success?
@@ -42,7 +42,7 @@ class Staff::UsersController < Staff::BaseController
     @user = User.find(id)
     authorize @user
     @service_owner = service_owner
-    @delivery_partners = delivery_partners
+    @partner_organisations = delivery_partners
 
     add_breadcrumb t("breadcrumb.users.edit"), edit_user_path(@user)
   end
@@ -51,7 +51,7 @@ class Staff::UsersController < Staff::BaseController
     @user = User.find(id)
     authorize @user
     @service_owner = service_owner
-    @delivery_partners = delivery_partners
+    @partner_organisations = delivery_partners
 
     reset_mfa = user_params.delete(:reset_mfa)
     @user.assign_attributes(user_params.except(:reset_mfa))

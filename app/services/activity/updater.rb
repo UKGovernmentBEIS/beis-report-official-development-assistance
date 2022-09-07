@@ -54,11 +54,11 @@ class Activity
     end
 
     def set_country_delivery_partners
-      country_delivery_partners = activity_params
+      country_partner_orgs = activity_params
         .permit(country_delivery_partners: [])
         .fetch("country_delivery_partners", []).reject(&:blank?)
 
-      activity.assign_attributes(country_delivery_partners: country_delivery_partners)
+      activity.assign_attributes(country_delivery_partners: country_partner_orgs)
     end
 
     def set_dates

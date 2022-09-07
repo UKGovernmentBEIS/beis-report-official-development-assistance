@@ -1,14 +1,14 @@
 RSpec.feature "BEIS users can create a programme level activity" do
   let(:user) { create(:beis_user) }
-  let(:delivery_partner) { create(:delivery_partner_organisation) }
+  let(:partner_organisation) { create(:delivery_partner_organisation) }
   before { authenticate!(user: user) }
 
   context "with a new fund and delivery partner" do
     scenario "they see the button to add a new programme (level B activity)" do
       fund = create(:fund_activity, :gcrf)
-      delivery_partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:delivery_partner_organisation)
 
-      visit organisation_activities_path(delivery_partner_organisation)
+      visit organisation_activities_path(partner_organisation)
 
       expect(page).to have_button(t("form.button.activity.new_child", name: fund.title))
     end
@@ -25,7 +25,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     end
 
     scenario "an activity can be created" do
-      visit organisation_activities_path(delivery_partner)
+      visit organisation_activities_path(partner_organisation)
       click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
 
       form = ActivityForm.new(activity: activity, level: "programme", fund: "gcrf")
@@ -64,7 +64,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
       expect_implementing_organisation_to_be_the_delivery_partner(
         activity: created_activity,
-        organisation: delivery_partner
+        organisation: partner_organisation
       )
     end
   end
@@ -80,7 +80,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     end
 
     scenario "an activity can be created" do
-      visit organisation_activities_path(delivery_partner)
+      visit organisation_activities_path(partner_organisation)
       click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
 
       form = ActivityForm.new(activity: activity, level: "programme", fund: "newton")
@@ -130,7 +130,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     end
 
     scenario "an activity can be created" do
-      visit organisation_activities_path(delivery_partner)
+      visit organisation_activities_path(partner_organisation)
       click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
 
       form = ActivityForm.new(activity: activity, level: "programme", fund: "ooda")

@@ -3,7 +3,7 @@ RSpec.describe "staff/shared/activities/_activity" do
   let(:user) { build(:delivery_partner_user) }
   let(:activity) { build(:programme_activity) }
   let(:activity_presenter) { ActivityPresenter.new(activity) }
-  let(:country_delivery_partners) { ["ACME Inc"] }
+  let(:country_partner_orgs) { ["ACME Inc"] }
   let(:body) { Capybara.string(rendered) }
 
   before do
@@ -46,13 +46,13 @@ RSpec.describe "staff/shared/activities/_activity" do
 
   context "With a Newton fund" do
     context "when the activity is a programme activity" do
-      let(:activity) { build(:programme_activity, :newton_funded, country_delivery_partners: country_delivery_partners) }
+      let(:activity) { build(:programme_activity, :newton_funded, country_delivery_partners: country_partner_orgs) }
 
       it { is_expected.to show_basic_details }
     end
 
     context "when the activity is a project activity" do
-      let(:activity) { build(:project_activity, :newton_funded, country_delivery_partners: country_delivery_partners) }
+      let(:activity) { build(:project_activity, :newton_funded, country_delivery_partners: country_partner_orgs) }
 
       it { is_expected.to show_basic_details }
       it { is_expected.to show_project_details }
@@ -60,7 +60,7 @@ RSpec.describe "staff/shared/activities/_activity" do
     end
 
     context "when the activity is a third party project activity" do
-      let(:activity) { build(:third_party_project_activity, :newton_funded, country_delivery_partners: country_delivery_partners) }
+      let(:activity) { build(:third_party_project_activity, :newton_funded, country_delivery_partners: country_partner_orgs) }
 
       it { is_expected.to show_basic_details }
       it { is_expected.to show_project_details }
