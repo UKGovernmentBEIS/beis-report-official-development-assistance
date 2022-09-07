@@ -62,7 +62,7 @@ RSpec.describe Activity::CommentPolicy do
         it { is_expected.to forbid_action(:update) }
       end
 
-      context "when the comment was made by a user in the same Delivery Partner organisation" do
+      context "when the comment was made by a user in the same partner organisation" do
         let(:comment) { create(:comment, commentable: activity, report: report, owner: create(:delivery_partner_user, organisation: user.organisation)) }
         it { is_expected.to permit_action(:update) }
       end

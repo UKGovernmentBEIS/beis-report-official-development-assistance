@@ -6,8 +6,8 @@ RSpec.feature "BEIS users can view other organisations" do
     end
   end
 
-  RSpec.shared_examples "lists delivery partner organisations" do
-    scenario "it lists delivery partner organisations" do
+  RSpec.shared_examples "lists partner organisations" do
+    scenario "it lists partner organisations" do
       expect(page).to have_content(t("page_title.organisation.index"))
       expect(page).to have_content(t("page_title.organisations.delivery_partners"))
 
@@ -115,7 +115,7 @@ RSpec.feature "BEIS users can view other organisations" do
       context "the role is 'delivery_partners'" do
         let(:role) { "delivery_partners" }
 
-        include_examples "lists delivery partner organisations"
+        include_examples "lists partner organisations"
 
         context "when viewing the matched effort providers tab" do
           before do
@@ -147,12 +147,12 @@ RSpec.feature "BEIS users can view other organisations" do
 
         include_examples "lists matched effort provider organisations"
 
-        context "when viewing the delivery partner organisations tab" do
+        context "when viewing the partner organisations tab" do
           before do
             click_on t("tabs.organisations.delivery_partners")
           end
 
-          include_examples "lists delivery partner organisations"
+          include_examples "lists partner organisations"
         end
 
         context "when viewing the external income providers tab" do
@@ -169,12 +169,12 @@ RSpec.feature "BEIS users can view other organisations" do
 
         include_examples "lists external income provider organisations"
 
-        context "when viewing the delivery partner organisations tab" do
+        context "when viewing the partner organisations tab" do
           before do
             click_on t("tabs.organisations.delivery_partners")
           end
 
-          include_examples "lists delivery partner organisations"
+          include_examples "lists partner organisations"
         end
 
         context "when viewing the matched effort providers tab" do
@@ -192,7 +192,7 @@ RSpec.feature "BEIS users can view other organisations" do
         visit organisations_path
       end
 
-      include_examples "lists delivery partner organisations"
+      include_examples "lists partner organisations"
     end
 
     def then_breadcrumb_shows_type_of_organisation(name:)

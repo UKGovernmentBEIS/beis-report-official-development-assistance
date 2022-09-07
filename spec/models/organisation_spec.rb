@@ -17,7 +17,7 @@ RSpec.describe Organisation, type: :model do
       it { should validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
     end
 
-    context "when the organisation is a delivery partner" do
+    context "when the organisation is a partner organisation" do
       subject { build(:delivery_partner_organisation) }
       it { should validate_presence_of(:beis_organisation_reference) }
       it { should validate_presence_of(:iati_reference) }
@@ -182,7 +182,7 @@ RSpec.describe Organisation, type: :model do
       end
     end
 
-    context "when an organisation is a delivery partner" do
+    context "when an organisation is a partner organisation" do
       it " should return false" do
         other_organisation = create(:delivery_partner_organisation)
 
@@ -225,7 +225,7 @@ RSpec.describe Organisation, type: :model do
   end
 
   describe ".delivery_partners" do
-    it "should only contain organisations that are delivery partners" do
+    it "should only contain organisations that are partner organisations" do
       beis_organisation = create(:beis_organisation)
       partner_organisation = create(:delivery_partner_organisation)
       matched_effort_provider = create(:matched_effort_provider)
@@ -240,7 +240,7 @@ RSpec.describe Organisation, type: :model do
   end
 
   describe ".reporters" do
-    it "should only contain delivery partners and service owners" do
+    it "should only contain partner organisations and service owners" do
       beis_organisation = create(:beis_organisation)
       partner_organisation = create(:delivery_partner_organisation)
       matched_effort_provider = create(:matched_effort_provider)
@@ -350,7 +350,7 @@ RSpec.describe Organisation, type: :model do
   end
 
   describe "#is_reporter?" do
-    it "should be true for delivery partners" do
+    it "should be true for partner organisations" do
       organisation = build(:delivery_partner_organisation)
       expect(organisation.is_reporter?).to eq true
     end

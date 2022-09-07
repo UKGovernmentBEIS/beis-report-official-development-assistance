@@ -3,7 +3,7 @@ RSpec.feature "BEIS users can download exports" do
     authenticate! user: create(:beis_user)
   end
 
-  scenario "downloading the actuals for a delivery partner" do
+  scenario "downloading the actuals for a partner organisation" do
     partner_organisation = create(:delivery_partner_organisation)
     project = create(:project_activity, organisation: partner_organisation)
     create(:actual, parent_activity: project, financial_year: 2019, financial_quarter: 3, value: 150)
@@ -22,7 +22,7 @@ RSpec.feature "BEIS users can download exports" do
     ])
   end
 
-  scenario "downloading the external income for a delivery partner" do
+  scenario "downloading the external income for a partner organisation" do
     partner_organisation = create(:delivery_partner_organisation)
     project = create(:project_activity, :newton_funded, organisation: partner_organisation)
     ext_income1 = create(:external_income, activity: project, financial_year: 2019, financial_quarter: 3, amount: 120)
@@ -70,7 +70,7 @@ RSpec.feature "BEIS users can download exports" do
     ])
   end
 
-  scenario "downloading the external income for all delivery partners" do
+  scenario "downloading the external income for all partner organisations" do
     partner_organisation1, partner_organisation2 = create_list(:delivery_partner_organisation, 2)
     project1 = create(:project_activity, :newton_funded, organisation: partner_organisation1)
     project2 = create(:project_activity, :newton_funded, organisation: partner_organisation2)
@@ -141,7 +141,7 @@ RSpec.feature "BEIS users can download exports" do
     ])
   end
 
-  scenario "downloading budgets for a delivery partner" do
+  scenario "downloading budgets for a partner organisation" do
     partner_organisation = create(:delivery_partner_organisation)
 
     report = create(:report)
@@ -176,7 +176,7 @@ RSpec.feature "BEIS users can download exports" do
     ])
   end
 
-  scenario "downloading budgets for all delivery partners" do
+  scenario "downloading budgets for all partner organisations" do
     partner_organisation1, partner_organisation2 = create_list(:delivery_partner_organisation, 2)
 
     report = create(:report)

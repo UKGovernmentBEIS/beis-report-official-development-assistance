@@ -111,7 +111,7 @@ RSpec.describe ActivityCsvPresenter do
   end
 
   describe "#country_delivery_partners" do
-    context "when there are more than one country delivery partners" do
+    context "when there are more than one country partner organisations" do
       it "returns them separated by pipes" do
         activity = build(:programme_activity, country_delivery_partners: ["National Council for the State Funding Agencies (CONFAP)",
           "Chinese Academy of Sciences",
@@ -121,7 +121,7 @@ RSpec.describe ActivityCsvPresenter do
       end
     end
 
-    context "when there are no country delivery partners" do
+    context "when there are no country partner organisations" do
       it "returns nil" do
         activity = build(:programme_activity, country_delivery_partners: nil)
         result = described_class.new(activity).country_delivery_partners

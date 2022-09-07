@@ -48,7 +48,7 @@ RSpec.describe ActivityDefaults do
         expect(subject[:organisation_id]).to eq(beis.id)
       end
 
-      it "sets the extending organisation to the delivery partner organisation" do
+      it "sets the extending organisation to the partner organisation" do
         expect(subject[:extending_organisation_id]).to eq(partner_organisation.id)
       end
 
@@ -89,11 +89,11 @@ RSpec.describe ActivityDefaults do
         expect(subject[:source_fund_code]).to eq(programme.source_fund.id)
       end
 
-      it "sets the organisation to the delivery partner organisation" do
+      it "sets the organisation to the partner organisation" do
         expect(subject[:organisation_id]).to eq(partner_organisation.id)
       end
 
-      it "sets the extending organisation to the delivery partner organisation" do
+      it "sets the extending organisation to the partner organisation" do
         expect(subject[:extending_organisation_id]).to eq(partner_organisation.id)
       end
 
@@ -137,11 +137,11 @@ RSpec.describe ActivityDefaults do
         expect(subject[:source_fund_code]).to eq(fund.source_fund.id)
       end
 
-      it "sets the organisation to the delivery partner organisation" do
+      it "sets the organisation to the partner organisation" do
         expect(subject[:organisation_id]).to eq(partner_organisation.id)
       end
 
-      it "sets the extending organisation to the delivery partner organisation" do
+      it "sets the extending organisation to the partner organisation" do
         expect(subject[:extending_organisation_id]).to eq(partner_organisation.id)
       end
 

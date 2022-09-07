@@ -14,7 +14,7 @@ RSpec.feature "Users can view activities" do
       authenticate!(user: user)
     end
 
-    scenario "they can see and navigate current delivery partner activities", js: true do
+    scenario "they can see and navigate current partner organisation activities", js: true do
       visit activities_path(organisation_id: organisation.id)
 
       expect(page).to have_content t("page_title.activity.index")

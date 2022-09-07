@@ -32,7 +32,7 @@ RSpec.describe "shared/_navigation" do
       expect(rendered).to_not have_link(t("page_title.export.index"), href: exports_path)
     end
 
-    it "shows the link to the delivery partner's organisation export page" do
+    it "shows the link to the partner organisation's organisation export page" do
       expect(rendered).to have_link(t("page_title.export.index"), href: exports_organisation_path(id: user.organisation_id))
     end
   end

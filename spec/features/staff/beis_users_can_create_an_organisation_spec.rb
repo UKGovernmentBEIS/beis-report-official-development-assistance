@@ -27,7 +27,7 @@ RSpec.feature "BEIS users can create organisations" do
       end
     end
 
-    scenario "successfully creating a delivery partner organisation" do
+    scenario "successfully creating a partner organisation" do
       click_link t("page_content.organisations.delivery_partners.button.create")
 
       then_breadcrumb_shows_type_of_organisation(

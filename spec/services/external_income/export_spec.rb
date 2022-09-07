@@ -37,12 +37,12 @@ RSpec.describe ExternalIncome::Export do
   end
 
   describe "#filename" do
-    it "concatenates the fund short name and the DP org short name" do
+    it "concatenates the fund short name and the partner org short name" do
       expect(export.filename).to eql("#{source_fund.short_name}_#{partner_organisation.beis_organisation_reference}_external_income.csv")
     end
   end
 
-  it "fetches the external income for the delivery partner organisation" do
+  it "fetches the external income for the partner organisation" do
     expect(Activity).to receive(:where).with(organisation_id: partner_organisation.id, source_fund_code: source_fund.id)
 
     export.rows
@@ -84,7 +84,7 @@ RSpec.describe ExternalIncome::Export do
   context "when the organisation is not provided" do
     let(:export) { described_class.new(source_fund: source_fund) }
 
-    it "fetches the external income for all delivery partners" do
+    it "fetches the external income for all partner organisations" do
       expect(Activity).to receive(:where).with(source_fund_code: source_fund.id).and_return([
         project
       ])

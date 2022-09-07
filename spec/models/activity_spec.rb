@@ -917,7 +917,7 @@ RSpec.describe Activity, type: :model do
       end
 
       context "when the activity organisation is a non-government type" do
-        it "returns the activity organisation i.e the delivery partner" do
+        it "returns the activity organisation i.e the partner organisation" do
           non_government_partner_org = create(:delivery_partner_organisation, organisation_type: "22")
 
           third_party_project = build(:third_party_project_activity, organisation: non_government_partner_org)
@@ -979,15 +979,15 @@ RSpec.describe Activity, type: :model do
       expect(activity.accountable_organisation).to eql beis
     end
 
-    context "with a non-government delivery partner organisation" do
+    context "with a non-government partner organisation" do
       let(:partner_organisation) { build_stubbed(:delivery_partner_organisation, :non_government) }
 
-      it "returns the delivery partner if the activity is a project" do
+      it "returns the partner organisation if the activity is a project" do
         activity = build_stubbed(:project_activity, extending_organisation: partner_organisation)
         expect(activity.accountable_organisation).to eql partner_organisation
       end
 
-      it "returns the delivery partner if the activity is a third-party project" do
+      it "returns the partner organisation if the activity is a third-party project" do
         activity = build_stubbed(:third_party_project_activity, extending_organisation: partner_organisation)
         expect(activity.accountable_organisation).to eql partner_organisation
       end

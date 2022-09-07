@@ -211,7 +211,7 @@ RSpec.feature "Users can create an actual" do
     end
   end
 
-  context "when they are a delivery partner organisation user" do
+  context "when they are a partner organisation user" do
     before { authenticate!(user: user) }
     let(:user) { create(:delivery_partner_user) }
     let(:beis_user) { create(:beis_user) }

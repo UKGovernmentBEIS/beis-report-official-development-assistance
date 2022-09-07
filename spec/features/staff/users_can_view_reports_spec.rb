@@ -64,7 +64,7 @@ RSpec.feature "Users can view reports" do
       )
     end
 
-    scenario "can view a report belonging to any delivery partner" do
+    scenario "can view a report belonging to any partner organisation" do
       report = create(:report, :active)
 
       visit reports_path
@@ -407,7 +407,7 @@ RSpec.feature "Users can view reports" do
         expect(page).not_to have_content report.organisation.name
       end
 
-      scenario "cannot view a report belonging to another delivery partner" do
+      scenario "cannot view a report belonging to another partner organisation" do
         another_report = create(:report, organisation: create(:delivery_partner_organisation))
 
         visit report_path(another_report)

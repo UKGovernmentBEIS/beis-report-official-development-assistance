@@ -44,7 +44,7 @@ RSpec.describe CreateActual do
       end
     end
 
-    context "when the activity belongs to a delivery partner organisation" do
+    context "when the activity belongs to a partner organisation" do
       it "does set the report" do
         activity.update(organisation: build_stubbed(:delivery_partner_organisation))
         editable_report_for_activity = create(:report, :active, organisation: activity.organisation, fund: activity.associated_fund)

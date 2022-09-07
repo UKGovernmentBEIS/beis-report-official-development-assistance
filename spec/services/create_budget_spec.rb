@@ -10,7 +10,7 @@ RSpec.describe CreateBudget do
       expect(result.object.parent_activity).to eq(activity)
     end
 
-    context "when the activity belongs to a delivery partner" do
+    context "when the activity belongs to a partner organisation" do
       it "sets the value of report to the editable report for the activity" do
         activity.update(organisation: build_stubbed(:delivery_partner_organisation))
         editable_report_for_activity = create(:report, :active, organisation: activity.organisation, fund: activity.associated_fund)

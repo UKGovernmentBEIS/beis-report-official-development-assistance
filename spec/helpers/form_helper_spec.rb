@@ -9,7 +9,7 @@ RSpec.describe FormHelper, type: :helper do
   end
 
   describe "#list_of_delivery_partners" do
-    it "asks for a list of organisations that are delivery partners" do
+    it "asks for a list of organisations that are partner organisations" do
       _beis = create(:beis_organisation)
       partner_organisation_1 = create(:delivery_partner_organisation, name: "aaaaa")
       partner_organisation_2 = create(:delivery_partner_organisation, name: "zzzzz")
@@ -25,7 +25,7 @@ RSpec.describe FormHelper, type: :helper do
   end
 
   describe "#list_of_reporting_organisations" do
-    it "asks for a list of organisations that are delivery partners or the `service_owner`" do
+    it "asks for a list of organisations that are partner organisations or the `service_owner`" do
       beis = create(:beis_organisation)
       partner_organisation_1 = create(:delivery_partner_organisation, name: "aaaaa")
       partner_organisation_2 = create(:delivery_partner_organisation, name: "zzzzz")

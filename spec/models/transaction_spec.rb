@@ -19,7 +19,7 @@ RSpec.describe Transaction, type: :model do
 
     it { should validate_attribute(:date).with(:date_within_boundaries) }
 
-    context "when the activity belongs to a delivery partner organisation" do
+    context "when the activity belongs to a partner organisation" do
       before { activity.update(organisation: build_stubbed(:delivery_partner_organisation)) }
 
       it "should validate the presence of report" do

@@ -167,7 +167,7 @@ RSpec.feature "Users can edit an activity" do
         expect(page).to have_content(t("action.project.update.success"))
       end
 
-      scenario "the delivery partner identifier cannot be changed" do
+      scenario "the partner organisation identifier cannot be changed" do
         visit activity_step_path(activity, :identifier)
         expect(page).not_to have_content("Enter your unique identifier")
       end

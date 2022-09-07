@@ -143,7 +143,7 @@ RSpec.describe ForecastHistory do
     end
   end
 
-  context "for a level C activity, owned by a delivery partner" do
+  context "for a level C activity, owned by a partner organisation" do
     let(:partner_organisation) { create(:delivery_partner_organisation) }
     let(:activity) { create(:project_activity, organisation: partner_organisation) }
 

@@ -36,7 +36,7 @@ RSpec.feature "Users can manage the implementing organisations" do
       authenticate!(
         user: create(:delivery_partner_user, organisation: partner_organisation)
       )
-      create(:delivery_partner_organisation, name: "Another delivery partner")
+      create(:delivery_partner_organisation, name: "Another partner organisation")
     end
 
     scenario "they can add an implementing org from a list of all organisations" do

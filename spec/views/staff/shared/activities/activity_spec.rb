@@ -140,14 +140,14 @@ RSpec.describe "staff/shared/activities/_activity" do
 
       it { is_expected.to show_the_edit_add_actions }
 
-      it "does not show an edit link for the delivery partner identifier" do
+      it "does not show an edit link for the partner organisation identifier" do
         expect(body.find(".identifier")).to_not have_content(t("default.link.edit"))
       end
 
-      context "when the project does not have a delivery partner identifier" do
+      context "when the project does not have a partner organisation identifier" do
         let(:activity) { build(:project_activity, delivery_partner_identifier: nil, organisation: user.organisation) }
 
-        scenario "shows an edit link for the delivery partner identifier" do
+        scenario "shows an edit link for the partner organisation identifier" do
           expect(body.find(".identifier")).to have_content(t("default.link.add"))
         end
       end
@@ -161,7 +161,7 @@ RSpec.describe "staff/shared/activities/_activity" do
         end
       end
 
-      it "shows a link to edit the UK DP named contact" do
+      it "shows a link to edit the UK PO named contact" do
         expect(body.find(".uk_dp_named_contact")).to have_content(t("default.link.edit"))
       end
     end

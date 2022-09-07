@@ -10,7 +10,7 @@ RSpec.describe Staff::HomeController do
       let(:user) { create(:beis_user) }
       let(:partner_organisations) { create_list(:delivery_partner_organisation, 5) }
 
-      it "fetches the delivery partners" do
+      it "fetches the partner organisations" do
         get :show
 
         expect(assigns(:partner_organisations)).to match_array(partner_organisations)
@@ -59,7 +59,7 @@ RSpec.describe Staff::HomeController do
         expect(assigns(:grouped_activities)).to eq(activities)
       end
 
-      it "renders the delivery partner view" do
+      it "renders the partner organisation view" do
         expect(get(:show)).to render_template(:delivery_partner)
       end
     end

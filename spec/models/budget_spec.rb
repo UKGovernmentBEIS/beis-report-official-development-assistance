@@ -53,7 +53,7 @@ RSpec.describe Budget do
       end
     end
 
-    context "when the activity belongs to a delivery partner" do
+    context "when the activity belongs to a partner organisation" do
       it "should validate that the report association exists" do
         activity = build(:project_activity, organisation: build_stubbed(:delivery_partner_organisation))
         report_for_activity = build_stubbed(:report, organisation: activity.organisation, fund: activity.associated_fund)

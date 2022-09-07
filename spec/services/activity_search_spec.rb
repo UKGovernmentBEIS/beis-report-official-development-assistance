@@ -26,7 +26,7 @@ RSpec.describe ActivitySearch do
       end
     end
 
-    describe "searching for delivery partner identifiers" do
+    describe "searching for partner organisation identifiers" do
       let(:query) { alice_project.delivery_partner_identifier }
 
       it "returns the matching activities" do
@@ -97,7 +97,7 @@ RSpec.describe ActivitySearch do
     end
   end
 
-  context "for delivery partners" do
+  context "for partner organisations" do
     let(:user) { alice }
 
     describe "searching for a fund's RODA identifier" do
@@ -108,7 +108,7 @@ RSpec.describe ActivitySearch do
       end
     end
 
-    describe "searching for their own delivery partner identifiers" do
+    describe "searching for their own partner organisation identifiers" do
       let(:query) { alice_project.delivery_partner_identifier }
 
       it "returns the matching activities" do
@@ -116,7 +116,7 @@ RSpec.describe ActivitySearch do
       end
     end
 
-    describe "searching for another delivery partner's identifiers" do
+    describe "searching for another partner organisation's identifiers" do
       let(:query) { bob_project.delivery_partner_identifier }
 
       it "returns nothing" do
