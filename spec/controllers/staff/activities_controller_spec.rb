@@ -12,7 +12,7 @@ RSpec.describe Staff::ActivitiesController do
   end
 
   context "when signed in as a partner organisation user" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
 
     before do
       allow(subject).to receive(:current_user).and_return(user)
@@ -75,7 +75,7 @@ RSpec.describe Staff::ActivitiesController do
     end
 
     context "when signed in as a partner organisation user" do
-      let(:user) { create(:delivery_partner_user) }
+      let(:user) { create(:partner_organisation_user) }
 
       it "assigns the activities correctly" do
         get route, params: {organisation_id: user.organisation.id}
@@ -117,7 +117,7 @@ RSpec.describe Staff::ActivitiesController do
 
   describe "#show" do
     context "when viewing historical events" do
-      let(:user) { create(:delivery_partner_user, organisation: organisation) }
+      let(:user) { create(:partner_organisation_user, organisation: organisation) }
       let(:organisation) { create(:partner_organisation) }
 
       before do

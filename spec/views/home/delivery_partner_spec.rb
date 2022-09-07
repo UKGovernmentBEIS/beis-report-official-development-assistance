@@ -1,7 +1,7 @@
 RSpec.describe "staff/home/delivery_partner" do
   context "when there are no active reports" do
     before do
-      assign(:current_user, build(:delivery_partner_user))
+      assign(:current_user, build(:partner_organisation_user))
       assign(:grouped_activities, [])
       assign(:reports, nil)
 
@@ -22,7 +22,7 @@ RSpec.describe "staff/home/delivery_partner" do
 
   context "when there are active reports" do
     before do
-      assign(:current_user, build(:delivery_partner_user))
+      assign(:current_user, build(:partner_organisation_user))
       assign(:grouped_activities, [])
       assign(:reports, build_list(:report, 2, :active))
 

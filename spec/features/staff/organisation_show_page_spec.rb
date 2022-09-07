@@ -1,5 +1,5 @@
 RSpec.feature "Organisation show page" do
-  let(:partner_org_user) { create(:delivery_partner_user) }
+  let(:partner_org_user) { create(:partner_organisation_user) }
   let(:beis_user) { create(:beis_user) }
 
   context "when signed in as a BEIS user" do

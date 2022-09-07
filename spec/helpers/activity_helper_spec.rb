@@ -43,7 +43,7 @@ RSpec.describe ActivityHelper, type: :helper do
         it "returns the parent title without a link" do
           parent_activity = create(:fund_activity)
           _activity = create(:programme_activity, parent: parent_activity)
-          user = create(:delivery_partner_user)
+          user = create(:partner_organisation_user)
 
           expect(helper.link_to_activity_parent(parent: parent_activity, user: user)).to eql parent_activity.title
         end

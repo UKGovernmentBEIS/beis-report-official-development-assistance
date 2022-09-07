@@ -31,7 +31,7 @@ RSpec.describe MatchedEffortPolicy do
   end
 
   context "as a partner organisation user" do
-    let(:user) { build_stubbed(:delivery_partner_user) }
+    let(:user) { build_stubbed(:partner_organisation_user) }
 
     context "when the matched effort belongs to an activity owned by the user" do
       let(:activity) { build_stubbed(:project_activity, organisation: user.organisation) }

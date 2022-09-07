@@ -14,7 +14,7 @@ FactoryBot.define do
       organisation factory: :beis_organisation
     end
 
-    factory :delivery_partner_user do
+    factory :partner_organisation_user do
       organisation factory: :partner_organisation
     end
 

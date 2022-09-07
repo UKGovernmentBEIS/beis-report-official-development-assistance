@@ -1,7 +1,7 @@
 RSpec.describe ActivitySearch do
   let(:beis_user) { create(:beis_user) }
-  let(:alice) { create(:delivery_partner_user) }
-  let(:bob) { create(:delivery_partner_user) }
+  let(:alice) { create(:partner_organisation_user) }
+  let(:bob) { create(:partner_organisation_user) }
 
   let!(:fund) { create(:fund_activity, roda_identifier: "ABC") }
 

@@ -16,7 +16,7 @@ RSpec.describe User, type: :model do
 
     it "is not case sensitive" do
       # When a non-lowercase email address exists (Devise lowercases emails on creation so this is for pre-existing addresses)
-      user = create(:delivery_partner_user)
+      user = create(:partner_organisation_user)
       user.update_column(:email, "ForenameMacSurname@ClanMacSurname.org")
       expect(user.email).to eql("ForenameMacSurname@ClanMacSurname.org")
 

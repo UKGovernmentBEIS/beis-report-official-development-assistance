@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe UpdateBudget do
   let(:budget) { create(:budget, :direct) }
-  let(:user) { create(:delivery_partner_user) }
+  let(:user) { create(:partner_organisation_user) }
   let(:history_recorder) { double("HistoryRecorder", call: nil) }
 
   subject { described_class.new(budget: budget, user: user) }

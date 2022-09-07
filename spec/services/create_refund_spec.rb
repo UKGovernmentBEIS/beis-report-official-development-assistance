@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe CreateRefund do
   let(:activity) { build(:project_activity) }
   let(:report) { build(:report) }
-  let(:user) { build(:delivery_partner_user) }
+  let(:user) { build(:partner_organisation_user) }
   let(:refund) { build(:refund) }
   let(:history_recorder) { instance_double("HistoryRecorder", call: nil) }
 

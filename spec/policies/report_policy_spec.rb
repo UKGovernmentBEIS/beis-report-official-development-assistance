@@ -97,7 +97,7 @@ RSpec.describe ReportPolicy do
   end
 
   context "as a partner organisation user" do
-    let(:user) { build_stubbed(:delivery_partner_user) }
+    let(:user) { build_stubbed(:partner_organisation_user) }
 
     it "includes only reports that the users organisation is reporting in the resolved scope" do
       report = create(:report, organisation: user.organisation)

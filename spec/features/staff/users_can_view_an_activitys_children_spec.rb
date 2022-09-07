@@ -1,6 +1,6 @@
 RSpec.feature "Users can view an activity's children" do
   context "when the user is signed in as a partner organisation user" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
 
     before do
       authenticate!(user: user)

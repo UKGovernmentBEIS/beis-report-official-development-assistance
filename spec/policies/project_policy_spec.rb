@@ -27,7 +27,7 @@ RSpec.describe ProjectPolicy do
   end
 
   context "as a user that does NOT belong to BEIS" do
-    let(:user) { build_stubbed(:delivery_partner_user, organisation: organisation) }
+    let(:user) { build_stubbed(:partner_organisation_user, organisation: organisation) }
 
     it "controls actions as expected" do
       is_expected.to permit_action(:index)

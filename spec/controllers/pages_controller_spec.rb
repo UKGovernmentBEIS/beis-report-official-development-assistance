@@ -10,7 +10,7 @@ RSpec.describe PagesController, "#show" do
 
       context "when user is logged in" do
         before do
-          stub_user = create(:delivery_partner_user)
+          stub_user = create(:partner_organisation_user)
           allow(controller).to receive(:authenticated?).and_return(true)
           allow(controller).to receive(:current_user).and_return(stub_user)
         end

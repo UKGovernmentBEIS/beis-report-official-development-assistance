@@ -18,7 +18,7 @@ RSpec.describe UserPolicy do
   end
 
   context "as user that does NOT belong to BEIS" do
-    let(:user) { build_stubbed(:delivery_partner_user) }
+    let(:user) { build_stubbed(:partner_organisation_user) }
 
     it "forbids all actions" do
       is_expected.to forbid_action(:index)

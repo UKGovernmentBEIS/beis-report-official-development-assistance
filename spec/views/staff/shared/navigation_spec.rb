@@ -26,7 +26,7 @@ RSpec.describe "shared/_navigation" do
   end
 
   context "when the current user is a partner organisation user" do
-    let(:user) { build(:delivery_partner_user) }
+    let(:user) { build(:partner_organisation_user) }
 
     it "does not show the link to the exports index" do
       expect(rendered).to_not have_link(t("page_title.export.index"), href: exports_path)

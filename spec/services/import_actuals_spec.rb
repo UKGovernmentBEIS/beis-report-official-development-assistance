@@ -4,7 +4,7 @@ RSpec.describe ImportActuals do
   let(:project) { create(:project_activity, title: "Example Project", description: "Longer description") }
 
   let(:reporter_organisation) { project.organisation }
-  let(:reporter) { create(:delivery_partner_user, organisation: reporter_organisation) }
+  let(:reporter) { create(:partner_organisation_user, organisation: reporter_organisation) }
 
   let! :report do
     create(:report,

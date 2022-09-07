@@ -43,7 +43,7 @@ RSpec.feature "Users can view actuals on an activity page" do
     end
 
     context "when the activity is a project" do
-      let(:partner_org_user) { create(:delivery_partner_user) }
+      let(:partner_org_user) { create(:partner_organisation_user) }
       let(:fund_activity) { create(:fund_activity, organisation: user.organisation) }
       let(:programme_activity) { create(:programme_activity, parent: fund_activity, organisation: user.organisation) }
       let(:project_activity) { create(:project_activity, parent: programme_activity, organisation: partner_org_user.organisation) }

@@ -213,7 +213,7 @@ RSpec.feature "Users can create an actual" do
 
   context "when they are a partner organisation user" do
     before { authenticate!(user: user) }
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
     let(:beis_user) { create(:beis_user) }
 
     scenario "they cannot create actuals on a programme" do

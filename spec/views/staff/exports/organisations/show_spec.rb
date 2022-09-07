@@ -45,7 +45,7 @@ RSpec.describe "staff/exports/organisations/show" do
   end
 
   context "when the current user is a partner organisation user" do
-    let(:user) { build(:delivery_partner_user, organisation: organisation) }
+    let(:user) { build(:partner_organisation_user, organisation: organisation) }
 
     it "does not show the link to download all actuals" do
       expect(rendered).to_not have_export_row(report: "All actuals", path: actuals_exports_organisation_path(organisation, format: "csv"))

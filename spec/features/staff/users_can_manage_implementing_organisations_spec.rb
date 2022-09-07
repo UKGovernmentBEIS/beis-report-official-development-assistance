@@ -34,7 +34,7 @@ RSpec.feature "Users can manage the implementing organisations" do
 
     before do
       authenticate!(
-        user: create(:delivery_partner_user, organisation: partner_organisation)
+        user: create(:partner_organisation_user, organisation: partner_organisation)
       )
       create(:partner_organisation, name: "Another partner organisation")
     end

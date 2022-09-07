@@ -233,7 +233,7 @@ RSpec.feature "Users can view an activity" do
   end
 
   context "when the user is signed in as a partner organisation user" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
 
     scenario "a programme activity does not link to its parent activity" do

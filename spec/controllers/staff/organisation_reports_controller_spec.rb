@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Staff::OrganisationReportsController do
   describe "#index" do
     let(:organisation) { create(:partner_organisation) }
-    let(:user) { create(:delivery_partner_user, organisation: organisation) }
+    let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
     before do
       allow(controller).to receive(:current_user).and_return(user)

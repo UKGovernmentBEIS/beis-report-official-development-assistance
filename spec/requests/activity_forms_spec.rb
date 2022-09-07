@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Activity forms", type: :request do
   let(:organisation) { create(:partner_organisation) }
-  let(:user) { create(:delivery_partner_user, organisation: organisation) }
+  let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
   before do
     host! "test.local"

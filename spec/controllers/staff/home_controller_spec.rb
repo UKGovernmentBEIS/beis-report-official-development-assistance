@@ -37,7 +37,7 @@ RSpec.describe Staff::HomeController do
       end
 
       let(:fetcher) { instance_double(Activity::GroupedActivitiesFetcher, call: activities) }
-      let(:user) { create(:delivery_partner_user) }
+      let(:user) { create(:partner_organisation_user) }
 
       before do
         allow(Activity::GroupedActivitiesFetcher).to receive(:new).and_return(fetcher)

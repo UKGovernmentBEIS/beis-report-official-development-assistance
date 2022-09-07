@@ -36,7 +36,7 @@ RSpec.describe Report::GroupedCommentsFetcher do
   end
 
   context "when the user is a partner organisation user" do
-    let(:user) { build(:delivery_partner_user) }
+    let(:user) { build(:partner_organisation_user) }
 
     it "returns comments, grouped by activity" do
       expect(comment_relation).to receive(:includes).with(

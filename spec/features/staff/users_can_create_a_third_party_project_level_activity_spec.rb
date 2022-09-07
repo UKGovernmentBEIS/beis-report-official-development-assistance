@@ -1,6 +1,6 @@
 RSpec.feature "Users can create a third-party project" do
   context "when the user does NOT belong to BEIS" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
 
     context "when viewing a project" do

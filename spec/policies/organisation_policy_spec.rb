@@ -20,7 +20,7 @@ RSpec.describe OrganisationPolicy do
 
   context "as user that does NOT belong to BEIS" do
     context "when the user belongs to that organisation" do
-      let(:user) { build_stubbed(:delivery_partner_user, organisation: organisation) }
+      let(:user) { build_stubbed(:partner_organisation_user, organisation: organisation) }
 
       it "controls actions as expected" do
         is_expected.to forbid_action(:index)
@@ -33,7 +33,7 @@ RSpec.describe OrganisationPolicy do
     end
 
     context "when the user does NOT belong to that organisation" do
-      let(:user) { build_stubbed(:delivery_partner_user, organisation: create(:partner_organisation)) }
+      let(:user) { build_stubbed(:partner_organisation_user, organisation: create(:partner_organisation)) }
 
       it "forbids all actions" do
         is_expected.to forbid_action(:index)

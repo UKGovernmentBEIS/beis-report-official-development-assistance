@@ -1,6 +1,6 @@
 RSpec.feature "Users can create a project" do
   context "when they are a delivery parther" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
 
     context "when viewing a programme" do

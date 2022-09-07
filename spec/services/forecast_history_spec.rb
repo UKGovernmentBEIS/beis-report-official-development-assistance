@@ -1,6 +1,6 @@
 RSpec.describe ForecastHistory do
   let(:edited_report) { nil }
-  let(:user) { create(:delivery_partner_user) }
+  let(:user) { create(:partner_organisation_user) }
   let(:history) { ForecastHistory.new(activity, financial_quarter: 3, financial_year: 2020, report: edited_report, user: user) }
   let(:reporting_cycle) { ReportingCycle.new(activity, 1, 2015) }
 

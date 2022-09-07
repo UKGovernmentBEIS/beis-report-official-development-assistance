@@ -1,5 +1,5 @@
 RSpec.describe Staff::ReportsController do
-  let(:user) { create(:delivery_partner_user) }
+  let(:user) { create(:partner_organisation_user) }
   let(:organisation) { user.organisation }
 
   before do

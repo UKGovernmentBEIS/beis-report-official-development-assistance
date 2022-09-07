@@ -25,7 +25,7 @@ RSpec.describe ProgrammePolicy do
   end
 
   context "as a user that does NOT belong to BEIS" do
-    let(:user) { create(:delivery_partner_user, organisation: organisation) }
+    let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
     it "only permits index and show" do
       is_expected.to permit_action(:index)

@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Activities::ImportFromCsv do
   let(:organisation) { create(:partner_organisation) }
-  let(:uploader) { create(:delivery_partner_user, organisation: organisation) }
+  let(:uploader) { create(:partner_organisation_user, organisation: organisation) }
   let(:parent_activity) { create(:programme_activity, :newton_funded, extending_organisation: organisation) }
   let(:fund_activity) { create(:fund_activity) }
   let!(:report) { create(:report, fund: fund_activity) }

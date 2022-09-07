@@ -6,7 +6,7 @@ RSpec.describe "Users can view forecasts" do
   end
 
   context "when signed in as a partner organisation user" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
 
     scenario "they can view forecasts on projects" do

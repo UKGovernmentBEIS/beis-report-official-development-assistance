@@ -1,6 +1,6 @@
 RSpec.describe "staff/shared/activities/_activity" do
   let(:policy_stub) { ActivityPolicy.new(user, activity) }
-  let(:user) { build(:delivery_partner_user) }
+  let(:user) { build(:partner_organisation_user) }
   let(:activity) { build(:programme_activity) }
   let(:activity_presenter) { ActivityPresenter.new(activity) }
   let(:country_partner_orgs) { ["ACME Inc"] }

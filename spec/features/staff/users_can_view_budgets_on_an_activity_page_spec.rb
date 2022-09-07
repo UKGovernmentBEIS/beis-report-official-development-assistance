@@ -48,7 +48,7 @@ RSpec.feature "Users can view budgets on an activity page" do
     end
 
     context "when the activity is project level" do
-      let(:partner_org_user) { create(:delivery_partner_user) }
+      let(:partner_org_user) { create(:partner_organisation_user) }
       scenario "budget information is shown on the page" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
@@ -80,7 +80,7 @@ RSpec.feature "Users can view budgets on an activity page" do
   end
 
   context "when the user is a partner organisation user" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
 
     context "when the activity is programme level" do
       scenario "budget information is shown on the page" do

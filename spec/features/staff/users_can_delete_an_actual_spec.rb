@@ -1,5 +1,5 @@
 RSpec.feature "Users can delete an actual" do
-  let(:partner_org_user) { create(:delivery_partner_user) }
+  let(:partner_org_user) { create(:partner_organisation_user) }
   let(:beis_user) { create(:beis_user) }
 
   let!(:activity) { create(:programme_activity) }

@@ -21,7 +21,7 @@ RSpec.describe Staff::ReportCommentsController do
     end
 
     context "when signed in as a partner organisation user" do
-      let(:user) { create(:delivery_partner_user) }
+      let(:user) { create(:partner_organisation_user) }
 
       context "when the report belongs to the user's organisation" do
         let(:report) { build(:report, :active, id: SecureRandom.uuid, organisation: user.organisation) }

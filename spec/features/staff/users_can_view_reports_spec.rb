@@ -259,7 +259,7 @@ RSpec.feature "Users can view reports" do
   end
 
   context "as a partner organisation user" do
-    let(:partner_org_user) { create(:delivery_partner_user) }
+    let(:partner_org_user) { create(:partner_organisation_user) }
 
     def expect_to_see_a_table_of_reports(selector:, reports:)
       within selector do

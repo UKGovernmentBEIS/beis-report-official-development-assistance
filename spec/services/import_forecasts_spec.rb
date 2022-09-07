@@ -8,7 +8,7 @@ RSpec.describe ImportForecasts do
   let(:selected_report) { nil }
 
   let(:reporter_organisation) { project.organisation }
-  let(:reporter) { create(:delivery_partner_user, organisation: reporter_organisation) }
+  let(:reporter) { create(:partner_organisation_user, organisation: reporter_organisation) }
 
   let :importer do
     ImportForecasts.new(uploader: reporter, report: selected_report)
@@ -326,7 +326,7 @@ RSpec.describe ImportForecasts do
   end
 
   describe "setting an uploader and a report" do
-    let(:reporter) { create(:delivery_partner_user, organisation: reporter_organisation) }
+    let(:reporter) { create(:partner_organisation_user, organisation: reporter_organisation) }
     let(:selected_report) { latest_report }
 
     it "is forbidden" do

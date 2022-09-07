@@ -66,7 +66,7 @@ RSpec.describe ActualPolicy do
   end
 
   context "when signed in as a partner organisation user" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
 
     context "when the activity is a fund" do
       let(:activity) { create(:fund_activity) }

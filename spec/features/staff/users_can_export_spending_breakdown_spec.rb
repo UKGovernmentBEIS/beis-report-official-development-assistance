@@ -33,7 +33,7 @@ RSpec.feature "Users can export spending breakdown" do
     let(:organisation) { create(:partner_organisation) }
 
     before do
-      authenticate! user: create(:delivery_partner_user, organisation: organisation)
+      authenticate! user: create(:partner_organisation_user, organisation: organisation)
     end
 
     scenario "they cannot download spending breakdown for all organisations" do

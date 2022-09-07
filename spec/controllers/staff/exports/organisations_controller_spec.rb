@@ -39,7 +39,7 @@ RSpec.describe Staff::Exports::OrganisationsController do
   end
 
   context "when logged in as a partner organisation user" do
-    let(:user) { create(:delivery_partner_user, organisation: organisation) }
+    let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
     describe "#show" do
       it "only adds a breadcrumb for the current page" do

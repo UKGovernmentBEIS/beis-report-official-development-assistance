@@ -20,7 +20,7 @@ RSpec.describe Export::OrganisationPolicy do
   end
 
   context "for a partner organisation user" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
 
     it "controls access as expected" do
       is_expected.to forbid_action(:index)

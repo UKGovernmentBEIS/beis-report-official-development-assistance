@@ -1,6 +1,6 @@
 RSpec.feature "users can upload activities" do
   let(:organisation) { create(:partner_organisation) }
-  let(:user) { create(:delivery_partner_user, organisation: organisation) }
+  let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
   let!(:programme) { create(:programme_activity, :newton_funded, extending_organisation: organisation, roda_identifier: "AFUND-B-PROG", parent: create(:fund_activity, roda_identifier: "AFUND")) }
 

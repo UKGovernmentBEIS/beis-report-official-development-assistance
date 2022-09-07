@@ -13,7 +13,7 @@ RSpec.describe Staff::ExportsController do
     end
 
     context "when logged in as a partner organisation user" do
-      let(:user) { create(:delivery_partner_user) }
+      let(:user) { create(:partner_organisation_user) }
 
       it "does not allow the user to access the report" do
         expect(response.status).to eq(401)
@@ -45,7 +45,7 @@ RSpec.describe Staff::ExportsController do
     end
 
     context "when logged in as a partner organisation user" do
-      let(:user) { create(:delivery_partner_user) }
+      let(:user) { create(:partner_organisation_user) }
 
       it "does not allow the user to access the report" do
         expect(response.status).to eq(401)

@@ -1,7 +1,7 @@
 RSpec.feature "Users can approve reports" do
   context "signed in as a BEIS user" do
     let!(:beis_user) { create(:beis_user) }
-    let(:organisation) { create(:partner_organisation, users: create_list(:delivery_partner_user, 3)) }
+    let(:organisation) { create(:partner_organisation, users: create_list(:partner_organisation_user, 3)) }
 
     before do
       authenticate!(user: beis_user)
@@ -42,7 +42,7 @@ RSpec.feature "Users can approve reports" do
   end
 
   context "signed in as a partner organisation user" do
-    let(:partner_org_user) { create(:delivery_partner_user) }
+    let(:partner_org_user) { create(:partner_organisation_user) }
 
     before do
       authenticate!(user: partner_org_user)

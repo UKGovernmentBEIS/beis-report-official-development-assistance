@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :historical_event do
-    user { create(:delivery_partner_user) }
+    user { create(:partner_organisation_user) }
     activity { create(:project_activity) }
     trackable { activity }
     report { create(:report) }

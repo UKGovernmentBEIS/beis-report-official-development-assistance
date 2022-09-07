@@ -3,7 +3,7 @@ RSpec.feature "Users can view commitment values" do
     authenticate!(user: user)
   end
 
-  let(:user) { create(:delivery_partner_user) }
+  let(:user) { create(:partner_organisation_user) }
   let(:activity) { create(:project_activity, organisation: user.organisation) }
 
   context "when there is a commitment value" do

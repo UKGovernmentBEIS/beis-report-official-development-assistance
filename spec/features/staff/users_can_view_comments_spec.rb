@@ -4,7 +4,7 @@ RSpec.feature "Users can view comments on an activity page" do
   end
 
   context "when the user is a partner organisation user" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
 
     scenario "they can view all comments associated with an activity" do
       activity = create(:project_activity, organisation: user.organisation)

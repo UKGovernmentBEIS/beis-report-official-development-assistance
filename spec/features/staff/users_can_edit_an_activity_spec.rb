@@ -149,7 +149,7 @@ RSpec.feature "Users can edit an activity" do
   end
 
   context "when signed in as a partner organisation user" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
 
     context "when the activity is a project" do

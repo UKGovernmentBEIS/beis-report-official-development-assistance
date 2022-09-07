@@ -1,6 +1,6 @@
 RSpec.describe "Users can create a comment" do
   let(:beis_user) { create(:beis_user) }
-  let(:partner_org_user) { create(:delivery_partner_user) }
+  let(:partner_org_user) { create(:partner_organisation_user) }
 
   let(:activity) { create(:project_activity, organisation: partner_org_user.organisation) }
   let(:actual) { create(:actual, report: report, activity: activity) }

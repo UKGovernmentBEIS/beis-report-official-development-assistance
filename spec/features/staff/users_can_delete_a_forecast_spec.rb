@@ -1,6 +1,6 @@
 RSpec.describe "Users can delete a forecast" do
   context "when signed in as a partner organisation user" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
 
     before { authenticate!(user: user) }
 

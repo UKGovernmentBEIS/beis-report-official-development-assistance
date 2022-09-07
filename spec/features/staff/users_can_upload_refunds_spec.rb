@@ -7,7 +7,7 @@ RSpec.feature "users can upload refunds" do
   # Given that I am logged in as a partner organisation user,
   # And a report exists that is waiting for refunds to be uploaded
   let(:organisation) { create(:partner_organisation) }
-  let(:user) { create(:delivery_partner_user, organisation: organisation) }
+  let(:user) { create(:partner_organisation_user, organisation: organisation) }
   #  only used for fund so far from project
   let(:project) { create(:project_activity, :newton_funded, organisation: organisation) } # was bang
 
