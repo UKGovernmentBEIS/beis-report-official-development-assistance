@@ -5,7 +5,7 @@ according to where the identifier comes from, what it's used for, and what rules
 it has to conform to. The identifiers are named:
 
 - Previous Identifier
-- Delivery Partner Identifier
+- Partner Organisation Identifier
 - RODA Identifier
 - Transparency Identifier
 
@@ -18,25 +18,25 @@ modify the ingested value before storing it.
 If an activity has a Previous Identifier stored, then that will be used to
 identify the activity when re-exporting information about it to IATI.
 
-## Delivery Partner Identifier
+## Partner Organisation Identifier
 
-This is the identifier by which a Delivery Partner refers to the activity in
+This is the identifier by which a Partner Organisation refers to the activity in
 their own records. It has no syntactic restrictions; it can contain any
 characters the user wants and RODA does not assume anything about its structure
 or about the other systems that use this identifier.
 
-The Delivery Partner Identifier should not be used for anything within RODA
-other than displaying it so that a Delivery Partner can cross-reference with
+The Partner Organisation Identifier should not be used for anything within RODA
+other than displaying it so that a Partner Organisation can cross-reference with
 their own records. It should not be exported to third-party organisations.
 
 It can be explicitly added to an activity via the service, and it may be edited
 at any time.
 
 This identifier is also populated by the ingest process -- RODA makes a best
-guess as to what the Delivery Partner Identifier for an ingested activity is,
+guess as to what the Partner Organisation Identifier for an ingested activity is,
 based on the Previous Identifier. It removes the strings `GB-GOV-13-`, `GCRF-`,
 and `NEWT-` from the start of the Previous Identifier, and stores the result as
-the Delivery Partner Identifier.
+the Partner Organisation Identifier.
 
 ## RODA Identifier
 
@@ -49,8 +49,8 @@ The RODA identifier still reflects the hierarchy of activities, with each level
 adding to the parent identifier. For this reason, new activities added to older
 parents will have a hybrid identifier.
 
-The main motivation for this change was to remove both BEIS and delivery
-partners from the creation of the identifiers, which was a heavy burden and
+The main motivation for this change was to remove both BEIS and
+partner organisations from the creation of the identifiers, which was a heavy burden and
 slowed the reporting process drastically, users no longer have to enter any
 information into the service in order to create a new activity and its
 identifier.
@@ -92,7 +92,7 @@ enters `UKSA` then the combined RODA Identifier for the level B activity becomes
 The full schema for a RODA Identifier at level D is `A-B-CD`, where `A` is the
 component from level A, `B` the component from level B, and so on. BEIS will set
 the identifiers at levels A and B, and the `A-B` portion must be at most 18
-characters long. Delivery Partners will set the identifiers at levels C and D,
+characters long. Partners Organisations will set the identifiers at levels C and D,
 and the `CD` portion must be at most 21 characters long.
 
 Because these identifiers are used to identify activities in exported data, they

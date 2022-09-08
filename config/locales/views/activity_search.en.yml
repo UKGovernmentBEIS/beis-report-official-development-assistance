@@ -9,12 +9,12 @@ en:
       table:
         title: Title
         roda_identifier: RODA Identifier
-        delivery_partner_identifier: Delivery Partner Identifier
+        delivery_partner_identifier: Partner Organisation Identifier
       no_results: No results.
       empty_query: The search query must contain at least 1 character!
   form:
     activity_search:
       query: Enter your search query
-      hint: You can search by RODA, Delivery Partner, BEIS, or IATI identifier, or by the activity's title
+      hint: You can search by RODA, Partner Organisation, BEIS, or IATI identifier, or by the activity's title
       heading: Search for activities
       submit: Search

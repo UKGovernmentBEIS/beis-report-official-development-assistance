@@ -3,7 +3,7 @@
 
 # Report Official Development Assistance (RODA)
 
-This service enables the Department for Business, Energy and Industrial Strategy (BEIS) and their delivery partners to collect and report information on the spending of Official Development Assistance (ODA).
+This service enables the Department for Business, Energy and Industrial Strategy (BEIS) and their partner organisations to collect and report information on the spending of Official Development Assistance (ODA).
 
 ## Getting started
 

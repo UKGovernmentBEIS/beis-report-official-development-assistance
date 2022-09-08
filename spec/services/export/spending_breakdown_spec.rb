@@ -93,15 +93,15 @@ RSpec.describe Export::SpendingBreakdown do
     it "includes the five headings that describe the activity" do
       expect(subject.headers).to include(
         "RODA identifier",
-        "Delivery partner identifier",
+        "Partner organisation identifier",
         "Activity title",
         "Activity level",
         "Activity status"
       )
     end
 
-    it "includes the delivery partner organisation" do
-      expect(subject.headers).to include("Delivery partner organisation")
+    it "includes the partner organisation" do
+      expect(subject.headers).to include("Partner organisation")
     end
 
     it "includes the three headings that describe the finances for FQ1 2020-2021" do
@@ -145,15 +145,15 @@ RSpec.describe Export::SpendingBreakdown do
     it "contains the appropriate activity values" do
       aggregate_failures do
         expect(value_for_header("RODA identifier")).to eql(@activity.roda_identifier)
-        expect(value_for_header("Delivery partner identifier")).to eql(@activity.delivery_partner_identifier)
+        expect(value_for_header("Partner organisation identifier")).to eql(@activity.delivery_partner_identifier)
         expect(value_for_header("Activity title")).to eql(@activity.title)
         expect(value_for_header("Activity level")).to eql("Project (level C)")
         expect(value_for_header("Activity status")).to eql("Spend in progress")
       end
     end
 
-    it "contains the appropriate delivery partner name" do
-      expect(value_for_header("Delivery partner organisation")).to eq @activity.organisation.name
+    it "contains the appropriate partner organisation name" do
+      expect(value_for_header("Partner organisation")).to eq @activity.organisation.name
     end
 
     it "contains the financial data for financial quarter 1 2020-2021" do
@@ -229,7 +229,7 @@ RSpec.describe Export::SpendingBreakdown do
       it "returns the activity attribute headers only" do
         activity_attribute_headers = [
           "RODA identifier",
-          "Delivery partner identifier",
+          "Partner organisation identifier",
           "Activity title",
           "Activity level",
           "Activity status"
@@ -255,11 +255,11 @@ RSpec.describe Export::SpendingBreakdown do
       it "returns the activity attribute headers only" do
         activity_attribute_headers = [
           "RODA identifier",
-          "Delivery partner identifier",
+          "Partner organisation identifier",
           "Activity title",
           "Activity level",
           "Activity status",
-          "Delivery partner organisation"
+          "Partner organisation"
         ]
         expect(subject.headers).to match_array(activity_attribute_headers)
         expect(subject.rows.count).to eq 3

@@ -1,6 +1,6 @@
 %table.govuk-table#delivery_partner_organisations
   %caption.govuk-table__caption.govuk-table__caption--m
-    Delivery partner organisations
+    Partner organisations
   %thead.govuk-table__head
     %tr.govuk-table__row
       %th.govuk-table__header{scope: "col"}
@@ -11,9 +11,8 @@
     - @delivery_partner_organisations.each do |delivery_partner_organisation|
       %tr.govuk-table__row
         %td.govuk-table__cell
-          = delivery_partner_organisation.name
+          = a11y_action_link delivery_partner_organisation.name, organisation_path(delivery_partner_organisation), t("table.cell.organisations.details"), ["govuk-link--no-visited-state"]
         %td.govuk-table__cell
-          = a11y_action_link "View details ", organisation_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state"]
-          = a11y_action_link "View activities", organisation_activities_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-7"]
-          = a11y_action_link "View exports", exports_organisation_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-7"]
-          = a11y_action_link "View reports", organisation_reports_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-7"]
+          = a11y_action_link t("table.cell.organisations.view_activities"), organisation_activities_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state"]
+          = a11y_action_link t("table.cell.organisations.view_exports"), exports_organisation_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-7"]
+          = a11y_action_link t("table.cell.organisations.view_reports"), organisation_reports_path(delivery_partner_organisation), "for #{delivery_partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-7"]

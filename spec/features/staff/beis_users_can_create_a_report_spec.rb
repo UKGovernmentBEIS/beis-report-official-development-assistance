@@ -30,7 +30,7 @@ RSpec.feature "BEIS users can create a report" do
     choose "Q3"
     select "2018-2019", from: "Financial year"
     choose "Newton Fund"
-    select "ACME Ltd", from: "Delivery partner organisation"
+    select "ACME Ltd", from: "Partner organisation"
     click_on "Submit"
     expect(page).to have_content("success")
   end

@@ -4,7 +4,7 @@ class Export::ActivityDeliveryPartnerOrganisationColumn
   end
 
   def headers
-    ["Delivery partner organisation"]
+    ["Partner organisation"]
   end
 
   def rows

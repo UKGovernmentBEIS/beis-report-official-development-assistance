@@ -106,7 +106,7 @@ RSpec.describe Export::Report do
         expect(headers).to include(@headers_for_report.first)
         expect(headers).to include(@headers_for_report.last)
         expect(headers).to include("Implementing organisations")
-        expect(headers).to include("Delivery partner organisation")
+        expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
         expect(headers).to include("Actual net #{@actual_spend_for_report_without_forecasts.own_financial_quarter}")
         expect(headers.to_s).to_not include("Variance")
@@ -149,7 +149,7 @@ RSpec.describe Export::Report do
         expect(headers).to include(@headers_for_report.first)
         expect(headers).to include(@headers_for_report.last)
         expect(headers).to include("Implementing organisations")
-        expect(headers).to include("Delivery partner organisation")
+        expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
         expect(headers).to include("Actual net #{@actual_spend.own_financial_quarter}")
         expect(headers).to include("Variance #{@actual_spend.own_financial_quarter}")
@@ -296,7 +296,7 @@ RSpec.describe Export::Report do
         expect(headers).to include(@headers_for_report.first)
         expect(headers).to include(@headers_for_report.last)
         expect(headers).to include("Implementing organisations")
-        expect(headers).to include("Delivery partner organisation")
+        expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
       end
     end

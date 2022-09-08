@@ -2,8 +2,8 @@ class Budget
   class Export
     HEADERS = [
       "RODA identifier",
-      "Delivery partner identifier",
-      "Delivery partner organisation",
+      "Partner organisation identifier",
+      "Partner organisation",
       "Level",
       "Title"
     ]
