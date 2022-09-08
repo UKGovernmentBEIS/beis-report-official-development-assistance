@@ -217,7 +217,7 @@ RSpec.describe Export::Report do
         allow(Export::ActivityImplementingOrganisationColumn).to receive(:new).and_return(implementing_organisation_double)
 
         partner_organisation_double = double(rows: rows_data_double)
-        allow(Export::ActivityDeliveryPartnerOrganisationColumn).to receive(:new).and_return(partner_organisation_double)
+        allow(Export::ActivityPartnerOrganisationColumn).to receive(:new).and_return(partner_organisation_double)
 
         change_state_double = double(rows: rows_data_double)
         allow(Export::ActivityChangeStateColumn).to receive(:new).and_return(change_state_double)

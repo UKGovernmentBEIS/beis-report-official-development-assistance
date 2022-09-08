@@ -201,12 +201,12 @@ RSpec.describe ActivityDefaults do
 
     it "raises an exception if partner_organisation parameter is not an instance of Organisation" do
       expect { described_class.new(parent_activity: programme, partner_organisation: Class.new) }
-        .to raise_error(described_class::InvalidDeliveryPartnerOrganisation)
+        .to raise_error(described_class::InvalidPartnerOrganisation)
     end
 
     it "raises an exception if partner_organisation is BEIS" do
       expect { described_class.new(parent_activity: fund, partner_organisation: beis) }
-        .to raise_error(described_class::InvalidDeliveryPartnerOrganisation)
+        .to raise_error(described_class::InvalidPartnerOrganisation)
     end
   end
 end

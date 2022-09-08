@@ -15,7 +15,7 @@ class Export::SpendingBreakdown
     @activity_attributes =
       Export::ActivityAttributesColumns.new(activities: @activities, attributes: ACTIVITY_ATTRIBUTES)
     @partner_organisations =
-      Export::ActivityDeliveryPartnerOrganisationColumn.new(activities_relation: @activities)
+      Export::ActivityPartnerOrganisationColumn.new(activities_relation: @activities)
     @actual_columns =
       Export::ActivityActualsColumns.new(activities: @activities, include_breakdown: true)
     @forecast_columns =

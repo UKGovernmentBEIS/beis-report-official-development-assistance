@@ -9,7 +9,7 @@ class Export::Report
     @implementing_organisations =
       Export::ActivityImplementingOrganisationColumn.new(activities_relation: activities)
     @partner_organisations =
-      Export::ActivityDeliveryPartnerOrganisationColumn.new(activities_relation: activities)
+      Export::ActivityPartnerOrganisationColumn.new(activities_relation: activities)
     @change_state_column =
       Export::ActivityChangeStateColumn.new(activities: activities, report: @report)
     @actuals_columns =

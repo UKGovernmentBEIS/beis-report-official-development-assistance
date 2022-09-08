@@ -1,4 +1,4 @@
-class Export::ActivityDeliveryPartnerOrganisationColumn
+class Export::ActivityPartnerOrganisationColumn
   def initialize(activities_relation:)
     @activities_relation = valid_activities_relation(activities_relation)
   end

@@ -1,7 +1,7 @@
 class ActivityDefaults
   class InvalidParentActivity < RuntimeError; end
 
-  class InvalidDeliveryPartnerOrganisation < RuntimeError; end
+  class InvalidPartnerOrganisation < RuntimeError; end
 
   attr_reader :parent_activity, :partner_organisation
 
@@ -89,7 +89,7 @@ class ActivityDefaults
     raise InvalidParentActivity unless parent_activity.is_a?(Activity)
     raise InvalidParentActivity if parent_activity.third_party_project?
 
-    raise InvalidDeliveryPartnerOrganisation unless partner_organisation.is_a?(Organisation)
-    raise InvalidDeliveryPartnerOrganisation if partner_organisation.service_owner?
+    raise InvalidPartnerOrganisation unless partner_organisation.is_a?(Organisation)
+    raise InvalidPartnerOrganisation if partner_organisation.service_owner?
   end
 end
