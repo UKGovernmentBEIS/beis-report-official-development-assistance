@@ -1,7 +1,7 @@
 class Export::SpendingBreakdown
   ACTIVITY_ATTRIBUTES = [
     :roda_identifier,
-    :delivery_partner_identifier,
+    :partner_organisation_identifier,
     :title,
     :level,
     :programme_status

@@ -70,13 +70,13 @@ class Activity < ApplicationRecord
 
   before_validation :strip_control_characters_from_fields!
 
-  strip_attributes only: [:delivery_partner_identifier]
+  strip_attributes only: [:partner_organisation_identifier]
 
   validates :level, presence: true
   validates :parent, absence: true, if: proc { |activity| activity.fund? }
   validates :parent, presence: true, unless: proc { |activity| activity.fund? }
   validates_with OrganisationValidator
-  validates :delivery_partner_identifier, presence: true, on: :identifier_step
+  validates :partner_organisation_identifier, presence: true, on: :identifier_step
   validates :title, :description, presence: true, on: :purpose_step
   validates :objectives, presence: true, on: :objectives_step, unless: proc { |activity| activity.fund? }
   validates :sector_category, presence: true, on: :sector_category_step
@@ -108,7 +108,7 @@ class Activity < ApplicationRecord
   validates :uk_dp_named_contact, presence: true, on: :uk_dp_named_contact_step, if: :is_project?
   validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :is_project?
 
-  validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
+  validates :partner_organisation_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier, uniqueness: true, allow_nil: true
   validates :transparency_identifier, uniqueness: true, allow_nil: true
   validates :planned_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.actual_start_date.present? }

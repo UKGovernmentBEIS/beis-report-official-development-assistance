@@ -145,7 +145,7 @@ RSpec.describe "staff/shared/activities/_activity" do
       end
 
       context "when the project does not have a partner organisation identifier" do
-        let(:activity) { build(:project_activity, delivery_partner_identifier: nil, organisation: user.organisation) }
+        let(:activity) { build(:project_activity, partner_organisation_identifier: nil, organisation: user.organisation) }
 
         scenario "shows an edit link for the partner organisation identifier" do
           expect(body.find(".identifier")).to have_content(t("default.link.add"))
@@ -245,7 +245,7 @@ RSpec.describe "staff/shared/activities/_activity" do
 
   RSpec::Matchers.define :show_basic_details do
     match do |actual|
-      expect(rendered).to have_content activity_presenter.delivery_partner_identifier
+      expect(rendered).to have_content activity_presenter.partner_organisation_identifier
       expect(rendered).to have_content activity_presenter.title
       expect(rendered).to have_content activity_presenter.description
       expect(rendered).to have_content activity_presenter.sector

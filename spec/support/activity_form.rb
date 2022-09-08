@@ -14,7 +14,7 @@ class ActivityForm
   end
 
   def created_activity
-    Activity.find_by(delivery_partner_identifier: activity.delivery_partner_identifier)
+    Activity.find_by(partner_organisation_identifier: activity.partner_organisation_identifier)
   end
 
   private
@@ -127,9 +127,9 @@ class ActivityForm
   end
 
   def fill_in_identifier_step
-    expect(page).to have_content I18n.t("form.label.activity.delivery_partner_identifier")
-    expect(page).to have_content I18n.t("form.hint.activity.delivery_partner_identifier")
-    fill_in "activity[delivery_partner_identifier]", with: activity.delivery_partner_identifier
+    expect(page).to have_content I18n.t("form.label.activity.partner_organisation_identifier")
+    expect(page).to have_content I18n.t("form.hint.activity.partner_organisation_identifier")
+    fill_in "activity[partner_organisation_identifier]", with: activity.partner_organisation_identifier
     click_button I18n.t("form.button.activity.submit")
   end
 

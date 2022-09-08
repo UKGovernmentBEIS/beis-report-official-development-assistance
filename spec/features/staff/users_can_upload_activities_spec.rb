@@ -237,7 +237,7 @@ RSpec.feature "users can upload activities" do
       expect(page).to have_xpath("td[1]", text: "Partner organisation identifier")
       expect(page).to have_xpath("td[2]", text: "2")
       expect(page).to have_xpath("td[3]", text: "new-id-oh-no")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.cannot_update.delivery_partner_identifier_present"))
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.cannot_update.partner_organisation_identifier_present"))
     end
   end
 

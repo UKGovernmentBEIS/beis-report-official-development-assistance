@@ -145,7 +145,7 @@ RSpec.describe Export::SpendingBreakdown do
     it "contains the appropriate activity values" do
       aggregate_failures do
         expect(value_for_header("RODA identifier")).to eql(@activity.roda_identifier)
-        expect(value_for_header("Partner organisation identifier")).to eql(@activity.delivery_partner_identifier)
+        expect(value_for_header("Partner organisation identifier")).to eql(@activity.partner_organisation_identifier)
         expect(value_for_header("Activity title")).to eql(@activity.title)
         expect(value_for_header("Activity level")).to eql("Project (level C)")
         expect(value_for_header("Activity status")).to eql("Spend in progress")

@@ -8,7 +8,7 @@ RSpec.describe Export::ActivityAttributesOrder do
         :parent_programme_title,
         :parent_project_identifier,
         :parent_project_title,
-        :delivery_partner_identifier,
+        :partner_organisation_identifier,
         :beis_identifier,
         :transparency_identifier,
         :title,

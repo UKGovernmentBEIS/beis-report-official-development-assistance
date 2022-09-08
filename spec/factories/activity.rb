@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :__activity do
     title { Faker::Lorem.sentence }
-    delivery_partner_identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
+    partner_organisation_identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
     roda_identifier { nil }
     beis_identifier { nil }
     description { Faker::Lorem.paragraph }
@@ -210,7 +210,7 @@ FactoryBot.define do
 
   trait :at_identifier_step do
     form_state { "identifier" }
-    delivery_partner_identifier { nil }
+    partner_organisation_identifier { nil }
     title { nil }
     description { nil }
     objectives { nil }
@@ -296,8 +296,8 @@ FactoryBot.define do
 
   trait :with_transparency_identifier do
     after(:create) do |activity|
-      parent_identifier = activity.parent.present? ? "#{activity.parent.delivery_partner_identifier}-" : ""
-      activity.transparency_identifier = "#{parent_identifier}#{activity.delivery_partner_identifier}"
+      parent_identifier = activity.parent.present? ? "#{activity.parent.partner_organisation_identifier}-" : ""
+      activity.transparency_identifier = "#{parent_identifier}#{activity.partner_organisation_identifier}"
       activity.save
     end
   end

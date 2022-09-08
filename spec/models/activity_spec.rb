@@ -134,7 +134,7 @@ RSpec.describe Activity, type: :model do
   end
 
   describe "sanitisation" do
-    it { should strip_attribute(:delivery_partner_identifier) }
+    it { should strip_attribute(:partner_organisation_identifier) }
   end
 
   describe "validations" do
@@ -173,21 +173,21 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when delivery_partner_identifier is blank" do
-      subject(:activity) { build(:project_activity, delivery_partner_identifier: nil) }
+    context "when partner_organisation_identifier is blank" do
+      subject(:activity) { build(:project_activity, partner_organisation_identifier: nil) }
       it "should not be valid" do
         expect(activity.valid?(:identifier_step)).to be_falsey
       end
     end
 
-    describe "#delivery_partner_identifier" do
-      context "when an activity exists with the same delivery_partner_identifier" do
+    describe "#partner_organisation_identifier" do
+      context "when an activity exists with the same partner_organisation_identifier" do
         context "shares the same parent" do
           it "should be invalid" do
             fund = create(:fund_activity)
-            create(:programme_activity, delivery_partner_identifier: "GB-GOV-13-001", parent: fund)
+            create(:programme_activity, partner_organisation_identifier: "GB-GOV-13-001", parent: fund)
 
-            new_programme_activity = build(:programme_activity, delivery_partner_identifier: "GB-GOV-13-001", parent: fund)
+            new_programme_activity = build(:programme_activity, partner_organisation_identifier: "GB-GOV-13-001", parent: fund)
 
             expect(new_programme_activity).not_to be_valid
           end
@@ -196,11 +196,11 @@ RSpec.describe Activity, type: :model do
         context "does NOT share the same parent" do
           it "should be valid" do
             create(:fund_activity) do |fund|
-              create(:programme_activity, delivery_partner_identifier: "GB-GOV-13-001", parent: fund)
+              create(:programme_activity, partner_organisation_identifier: "GB-GOV-13-001", parent: fund)
             end
 
             other_fund = create(:fund_activity)
-            new_programme_activity = build(:programme_activity, delivery_partner_identifier: "GB-GOV-13-001", parent: other_fund)
+            new_programme_activity = build(:programme_activity, partner_organisation_identifier: "GB-GOV-13-001", parent: other_fund)
 
             expect(new_programme_activity).to be_valid
           end
@@ -1696,7 +1696,7 @@ RSpec.describe Activity, type: :model do
       context "when the activity is a programme" do
         it "sums up the actuals of the activity and child activities by financial quarter" do
           organisation = create(:partner_organisation)
-          programme = create(:programme_activity, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
+          programme = create(:programme_activity, :with_transparency_identifier, extending_organisation: organisation, partner_organisation_identifier: "IND-ENT-IFIER")
           projects = create_list(:project_activity, 2, parent: programme)
           third_party_project = create(:third_party_project_activity, parent: projects[0])
 

@@ -37,7 +37,7 @@ RSpec.feature "BEIS users can download exports" do
     expect(document).to match_array([
       {
         "RODA identifier" => project.roda_identifier,
-        "Partner organisation identifier" => project.delivery_partner_identifier,
+        "Partner organisation identifier" => project.partner_organisation_identifier,
         "Partner organisation" => partner_organisation.name,
         "Title" => project.title,
         "Level" => "Project (level C)",
@@ -53,7 +53,7 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project.roda_identifier,
-        "Partner organisation identifier" => project.delivery_partner_identifier,
+        "Partner organisation identifier" => project.partner_organisation_identifier,
         "Partner organisation" => partner_organisation.name,
         "Title" => project.title,
         "Level" => "Project (level C)",
@@ -89,7 +89,7 @@ RSpec.feature "BEIS users can download exports" do
     expect(document).to match_array([
       {
         "RODA identifier" => project1.roda_identifier,
-        "Partner organisation identifier" => project1.delivery_partner_identifier,
+        "Partner organisation identifier" => project1.partner_organisation_identifier,
         "Partner organisation" => partner_organisation1.name,
         "Title" => project1.title,
         "Level" => "Project (level C)",
@@ -106,7 +106,7 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project2.roda_identifier,
-        "Partner organisation identifier" => project2.delivery_partner_identifier,
+        "Partner organisation identifier" => project2.partner_organisation_identifier,
         "Partner organisation" => partner_organisation2.name,
         "Title" => project2.title,
         "Level" => "Project (level C)",
@@ -123,7 +123,7 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project2.roda_identifier,
-        "Partner organisation identifier" => project2.delivery_partner_identifier,
+        "Partner organisation identifier" => project2.partner_organisation_identifier,
         "Partner organisation" => partner_organisation2.name,
         "Title" => project2.title,
         "Level" => "Project (level C)",
@@ -164,7 +164,7 @@ RSpec.feature "BEIS users can download exports" do
     expect(document).to match_array([
       {
         "RODA identifier" => project.roda_identifier,
-        "Partner organisation identifier" => project.delivery_partner_identifier,
+        "Partner organisation identifier" => project.partner_organisation_identifier,
         "Partner organisation" => partner_organisation.name,
         "Level" => "Project (level C)",
         "Title" => project.title,
@@ -205,7 +205,7 @@ RSpec.feature "BEIS users can download exports" do
     expect(document).to match_array([
       {
         "RODA identifier" => project1.roda_identifier,
-        "Partner organisation identifier" => project1.delivery_partner_identifier,
+        "Partner organisation identifier" => project1.partner_organisation_identifier,
         "Partner organisation" => partner_organisation1.name,
         "Level" => "Project (level C)",
         "Title" => project1.title,
@@ -216,7 +216,7 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project2.roda_identifier,
-        "Partner organisation identifier" => project2.delivery_partner_identifier,
+        "Partner organisation identifier" => project2.partner_organisation_identifier,
         "Partner organisation" => partner_organisation2.name,
         "Level" => "Project (level C)",
         "Title" => project2.title,
@@ -227,7 +227,7 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project2.roda_identifier,
-        "Partner organisation identifier" => project2.delivery_partner_identifier,
+        "Partner organisation identifier" => project2.partner_organisation_identifier,
         "Partner organisation" => partner_organisation2.name,
         "Level" => "Project (level C)",
         "Title" => project2.title,

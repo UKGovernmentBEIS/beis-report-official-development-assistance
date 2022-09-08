@@ -27,7 +27,7 @@ RSpec.describe ActivitySearch do
     end
 
     describe "searching for partner organisation identifiers" do
-      let(:query) { alice_project.delivery_partner_identifier }
+      let(:query) { alice_project.partner_organisation_identifier }
 
       it "returns the matching activities" do
         expect(activity_search.results).to match_array [alice_project]
@@ -109,7 +109,7 @@ RSpec.describe ActivitySearch do
     end
 
     describe "searching for their own partner organisation identifiers" do
-      let(:query) { alice_project.delivery_partner_identifier }
+      let(:query) { alice_project.partner_organisation_identifier }
 
       it "returns the matching activities" do
         expect(activity_search.results).to match_array [alice_project]
@@ -117,7 +117,7 @@ RSpec.describe ActivitySearch do
     end
 
     describe "searching for another partner organisation's identifiers" do
-      let(:query) { bob_project.delivery_partner_identifier }
+      let(:query) { bob_project.partner_organisation_identifier }
 
       it "returns nothing" do
         expect(activity_search.results).to match_array []

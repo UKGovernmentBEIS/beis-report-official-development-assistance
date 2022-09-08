@@ -72,7 +72,7 @@ module Activities
       if row["Parent RODA ID"].present?
         add_error(index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
       elsif row["Partner Organisation Identifier"].present?
-        add_error(index, :delivery_partner_identifier, row["Partner Organisation Identifier"], I18n.t("importer.errors.activity.cannot_update.delivery_partner_identifier_present")) && return
+        add_error(index, :partner_organisation_identifier, row["Partner Organisation Identifier"], I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present")) && return
       else
         updater = ActivityUpdater.new(
           row: row,
@@ -293,7 +293,7 @@ module Activities
         title: "Title",
         description: "Description",
         benefitting_countries: "Benefitting Countries",
-        delivery_partner_identifier: "Partner organisation identifier",
+        partner_organisation_identifier: "Partner organisation identifier",
         gdi: "GDI",
         gcrf_strategic_area: "GCRF Strategic Area",
         gcrf_challenge_area: "GCRF Challenge Area",

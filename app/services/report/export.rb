@@ -92,7 +92,7 @@ class Report
         "Transparency identifier" => :transparency_identifier,
         "BEIS identifier" => :beis_identifier,
         "Level" => :level,
-        "Partner organisation identifier" => :delivery_partner_identifier,
+        "Partner organisation identifier" => :partner_organisation_identifier,
         "Recipient region" => :recipient_region,
         "Recipient country" => :recipient_country,
         "Intended beneficiaries" => :intended_beneficiaries,

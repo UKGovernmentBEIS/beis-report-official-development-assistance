@@ -85,7 +85,7 @@ RSpec.feature "Users can create a project" do
 
         click_link t("tabs.activity.children")
         click_button t("action.activity.add_child")
-        fill_in "activity[delivery_partner_identifier]", with: "foo"
+        fill_in "activity[partner_organisation_identifier]", with: "foo"
         click_button t("form.button.activity.submit")
 
         expect(page).to have_content t("form.legend.activity.purpose", level: "project (level C)")

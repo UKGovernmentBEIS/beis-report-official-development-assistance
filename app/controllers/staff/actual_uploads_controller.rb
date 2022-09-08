@@ -72,7 +72,7 @@ class Staff::ActualUploadsController < Staff::BaseController
   private def csv_row(activity)
     [
       activity.title,
-      activity.delivery_partner_identifier,
+      activity.partner_organisation_identifier,
       activity.roda_identifier,
       report.financial_quarter.to_s,
       report.financial_year.to_s,

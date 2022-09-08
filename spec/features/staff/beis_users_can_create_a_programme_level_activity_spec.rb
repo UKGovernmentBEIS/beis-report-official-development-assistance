@@ -18,7 +18,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     let(:identifier) { "a-fund-has-an-accountable-organisation" }
     let!(:activity) do
       build(:programme_activity, :gcrf_funded,
-        delivery_partner_identifier: identifier,
+        partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         sdgs_apply: true,
         sdg_1: 5)
@@ -73,7 +73,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     let(:identifier) { "a-fund-has-an-accountable-organisation" }
     let!(:activity) do
       build(:programme_activity, :newton_funded,
-        delivery_partner_identifier: identifier,
+        partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         sdgs_apply: true,
         sdg_1: 5)
@@ -123,7 +123,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     let(:identifier) { "a-fund-has-an-accountable-organisation" }
     let!(:activity) do
       build(:programme_activity, :ooda_funded,
-        delivery_partner_identifier: identifier,
+        partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         sdgs_apply: true,
         sdg_1: 5)

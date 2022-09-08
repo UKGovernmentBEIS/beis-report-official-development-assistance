@@ -27,12 +27,12 @@
 
   .govuk-summary-list__row.identifier
     %dt.govuk-summary-list__key
-      = t("activerecord.attributes.activity.delivery_partner_identifier")
+      = t("activerecord.attributes.activity.partner_organisation_identifier")
     %dd.govuk-summary-list__value
-      = activity_presenter.delivery_partner_identifier
+      = activity_presenter.partner_organisation_identifier
     %dd.govuk-summary-list__actions
-      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :identifier) && activity_presenter.delivery_partner_identifier.blank?
-        = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :identifier), t("activerecord.attributes.activity.delivery_partner_identifier").downcase)
+      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :identifier) && activity_presenter.partner_organisation_identifier.blank?
+        = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :identifier), t("activerecord.attributes.activity.partner_organisation_identifier").downcase)
 
   .govuk-summary-list__row.roda_identifier
     %dt.govuk-summary-list__key

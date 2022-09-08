@@ -52,7 +52,7 @@ RSpec.describe ExternalIncome::Export do
     expect(quarter_headers).to eq ["FQ1 2014-2015"]
     expect(export.rows[0]).to eq([
       project.roda_identifier,
-      project.delivery_partner_identifier,
+      project.partner_organisation_identifier,
       partner_organisation.name,
       project.title,
       "Project (level C)",

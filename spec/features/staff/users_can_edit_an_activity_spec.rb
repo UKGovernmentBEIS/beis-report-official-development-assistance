@@ -260,7 +260,7 @@ RSpec.feature "Users can edit an activity" do
 end
 
 def assert_all_edit_links_go_to_the_correct_form_step(activity:)
-  if activity.delivery_partner_identifier.blank?
+  if activity.partner_organisation_identifier.blank?
     within(".activity-details .identifier") do
       expect(page).to have_link(href: activity_step_path(activity, :identifier))
     end

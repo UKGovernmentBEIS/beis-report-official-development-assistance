@@ -9,7 +9,7 @@ guidance_ids:
     call_open_date: 1500005354941
     channel_of_delivery_code: 1500005355401
     collaboration_type: 1500005355681
-    delivery_partner_identifier: 1500005350001
+    partner_organisation_identifier: 1500005350001
     description: 1500005354681
     policy_marker_biodiversity: 1500005355921
     policy_marker_climate_change_adaptation: 1500005355721

@@ -40,7 +40,7 @@ class ExternalIncome
     def activity_data(activity)
       [
         activity.roda_identifier,
-        activity.delivery_partner_identifier,
+        activity.partner_organisation_identifier,
         activity.organisation.name,
         activity.title,
         I18n.t("table.body.activity.level.#{activity.level}")

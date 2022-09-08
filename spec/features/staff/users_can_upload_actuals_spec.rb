@@ -49,7 +49,7 @@ RSpec.feature "users can upload actuals" do
     expect(rows).to match_array([
       {
         "Activity Name" => project.title,
-        "Activity Partner Organisation Identifier" => project.delivery_partner_identifier,
+        "Activity Partner Organisation Identifier" => project.partner_organisation_identifier,
         "Activity RODA Identifier" => project.roda_identifier,
         "Financial Quarter" => report.financial_quarter.to_s,
         "Financial Year" => report.financial_year.to_s,
@@ -62,7 +62,7 @@ RSpec.feature "users can upload actuals" do
       },
       {
         "Activity Name" => sibling_project.title,
-        "Activity Partner Organisation Identifier" => sibling_project.delivery_partner_identifier,
+        "Activity Partner Organisation Identifier" => sibling_project.partner_organisation_identifier,
         "Activity RODA Identifier" => sibling_project.roda_identifier,
         "Financial Quarter" => report.financial_quarter.to_s,
         "Financial Year" => report.financial_year.to_s,

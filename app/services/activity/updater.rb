@@ -31,7 +31,7 @@ class Activity
     end
 
     def set_identifier
-      assign_attributes_for_step("delivery_partner_identifier")
+      assign_attributes_for_step("partner_organisation_identifier")
     end
 
     def set_purpose

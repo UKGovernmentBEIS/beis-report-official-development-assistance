@@ -39,7 +39,7 @@ class ImportForecasts
 
       [
         activity.title,
-        activity.delivery_partner_identifier,
+        activity.partner_organisation_identifier,
         activity.roda_identifier
       ] + forecast_values
     end
