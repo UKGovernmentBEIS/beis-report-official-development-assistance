@@ -471,7 +471,7 @@ en:
         organisation_id: Organisation identifier
         tied_status: Tied status
         organisation: Organisation
-        delivery_partner_organisation: Partner organisation
+        partner_organisation: Partner organisation
     errors:
       models:
         activity:

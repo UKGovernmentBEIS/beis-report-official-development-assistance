@@ -2,7 +2,7 @@
   - if current_user.service_owner?
     .govuk-summary-list__row
       %dt.govuk-summary-list__key
-        = t("activerecord.attributes.activity.delivery_partner_organisation")
+        = t("activerecord.attributes.activity.partner_organisation")
       %dd.govuk-summary-list__value
         = activity_presenter.extending_organisation.name
 
