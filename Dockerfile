@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # base
 # ------------------------------------------------------------------------------
-FROM ruby:2.7.3 AS base
+FROM ruby:2.7.6 AS base
 MAINTAINER dxw <rails@dxw.com>
 
 RUN apt-get update && apt-get install -qq -y \
