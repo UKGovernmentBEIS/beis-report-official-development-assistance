@@ -13,7 +13,7 @@ class Staff::ActivitiesController < Staff::BaseController
     if @organisation.service_owner?
       @partner_organisations = Organisation.partner_organisations
 
-      add_breadcrumb t("page_content.breadcrumbs.activities_by_delivery_partner"), organisation_activities_path(Organisation.service_owner)
+      add_breadcrumb t("page_content.breadcrumbs.activities_by_partner_organisation"), organisation_activities_path(Organisation.service_owner)
 
       render "staff/activities/index_beis"
     else

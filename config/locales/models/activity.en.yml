@@ -250,7 +250,7 @@ en:
         updated_activities: Updated activities
         new_activities_report: New activities added in this report
         updated_activities_report: Activities updated in this report
-        activities_by_delivery_partner: Activities by partner organisation
+        activities_by_partner_organisation: Activities by partner organisation
     header:
       activity:
         identifier: RODA Identifier
@@ -321,7 +321,7 @@ en:
     breadcrumbs:
       current_index: Current activities
       historic_index: Historic activities
-      activities_by_delivery_partner: Activities by partner organisation
+      activities_by_partner_organisation: Activities by partner organisation
       organisation_current_index: "%{org_name} current activities"
       organisation_historic_index: "%{org_name} historic activities"
   tabs:
