@@ -38,7 +38,7 @@ en:
           "false": "No"
         channel_of_delivery_code: Channel of delivery code
         collaboration_type: What is the collaboration type for this activity?
-        country_delivery_partners: Name and acronym
+        country_partner_organisations: Name and acronym
         gcrf_challenge_area_options:
           "0": Not applicable
           "1": Secure and resilient food systems supported by sustainable marine resources and agriculture
@@ -120,7 +120,7 @@ en:
         call_open_date: Call open date
         call_close_date: Call close date
         channel_of_delivery_code: Channel of delivery code
-        country_delivery_partners: Country partner organisation
+        country_partner_organisations: Country partner organisation
         gcrf_strategic_area: What GCRF Strategic area does your activity relate to?
         gcrf_challenge_area: GCRF challenge area
         fund_pillar: What Newton Fund Pillar does this activity fall under?
@@ -164,7 +164,7 @@ en:
         aid_type: Where an activity is not G01 or E01 we would expect most of our activity to be classified as D02 but there will be cases where C01 is more appropriate.
         call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
         call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
-        country_delivery_partners: "Please provide up to ten country partner organisations. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
+        country_partner_organisations: "Please provide up to ten country partner organisations. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
         fund_pillar: The Newton Fund largely comprises three pillar activities, which all activities must fall under. Use 'Not applicable' for delivery, other non-programme/project lines.
         partner_organisation_identifier: This should be the reference you use to identify this activity in your internal systems and other third-party services. Once set, this value cannot be changed, see the guidance below for more information and support.
         gcrf_strategic_area: Select no more than two areas.
@@ -370,7 +370,7 @@ en:
         channel_of_delivery_code: Channel of delivery code
         collaboration_type: Collaboration type
         country: What country will benefit from this activity?
-        country_delivery_partners: Country partner organisation
+        country_partner_organisations: Country partner organisation
         covid19_related: Is this activity related to Covid-19?
         dates: What are the start and end dates for the %{level}?
         fund_pillar: What Newton Fund Pillar does this activity fall under?
@@ -430,7 +430,7 @@ en:
         oda_eligibility_lead: ODA eligibility lead contact name
         covid19_related: Covid-19 related research
         programme_status: Activity status
-        country_delivery_partners: Newton Fund Country Partner Organisations
+        country_partner_organisations: Newton Fund Country Partner Organisations
         uk_dp_named_contact: Activity contact name
         call_open_date: Call open date
         call_close_date: Call close date
@@ -480,7 +480,7 @@ en:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_in_future: Actual end date must not be in the future
               invalid: Please enter a valid date
-            country_delivery_partners:
+            country_partner_organisations:
               blank: Enter at least one country partner organisation
             dates: Enter an actual start date or a planned start date for the activity
             actual_start_date:

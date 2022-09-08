@@ -18,7 +18,7 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.fund?
     when :programme_status
       skip_step if @activity.fund?
-    when :country_delivery_partners
+    when :country_partner_organisations
       skip_step unless @activity.is_newton_funded?
     when :call_present
       skip_step unless @activity.requires_call_dates?

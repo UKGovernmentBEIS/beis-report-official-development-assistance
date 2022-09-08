@@ -1,0 +1,9 @@
+= render layout: "wrapper" do |f|
+  %h1.govuk-heading-xl= @page_title
+  %span.govuk-hint= t("form.hint.activity.country_partner_organisations")
+
+  = f.govuk_error_summary
+
+  - (0..9).each do |index|
+    .govuk-form-group
+      = text_field_tag "activity[country_partner_organisations][]", f.object.country_partner_organisations ? f.object.country_partner_organisations[index] : "", class: "govuk-input"

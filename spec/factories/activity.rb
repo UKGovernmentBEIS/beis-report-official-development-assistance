@@ -89,7 +89,7 @@ FactoryBot.define do
       parent factory: :fund_activity
       level { :programme }
       objectives { Faker::Lorem.paragraph }
-      country_delivery_partners { ["National Council for the State Funding Agencies (CONFAP)"] }
+      country_partner_organisations { ["National Council for the State Funding Agencies (CONFAP)"] }
       collaboration_type { "1" }
 
       association :organisation, factory: :beis_organisation
@@ -218,7 +218,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
-    country_delivery_partners { nil }
+    country_partner_organisations { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -247,7 +247,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
-    country_delivery_partners { nil }
+    country_partner_organisations { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }

@@ -217,13 +217,13 @@ class ActivityForm
   end
 
   def fill_in_country_partner_organisations
-    expect(page).to have_content I18n.t("form.legend.activity.country_delivery_partners")
-    expect(page).to have_content I18n.t("form.hint.activity.country_delivery_partners")
+    expect(page).to have_content I18n.t("form.legend.activity.country_partner_organisations")
+    expect(page).to have_content I18n.t("form.hint.activity.country_partner_organisations")
 
-    all("[name='activity[country_delivery_partners][]']").each_with_index do |element, index|
-      break if activity.country_delivery_partners[index].blank?
+    all("[name='activity[country_partner_organisations][]']").each_with_index do |element, index|
+      break if activity.country_partner_organisations[index].blank?
 
-      element.set(activity.country_delivery_partners[index])
+      element.set(activity.country_partner_organisations[index])
     end
 
     click_button I18n.t("form.button.activity.submit")

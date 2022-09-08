@@ -18,7 +18,7 @@ RSpec.feature "Users can create a project" do
         report = create(:report, :active, organisation: user.organisation, fund: programme.associated_fund)
 
         activity = build(:project_activity, :newton_funded,
-          country_delivery_partners: ["National Council for the State Funding Agencies (CONFAP)"],
+          country_partner_organisations: ["National Council for the State Funding Agencies (CONFAP)"],
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5)
@@ -53,7 +53,7 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.planned_end_date).to eq(activity.planned_end_date)
         expect(created_activity.actual_start_date).to eq(activity.actual_start_date)
         expect(created_activity.actual_end_date).to eq(activity.actual_end_date)
-        expect(created_activity.country_delivery_partners).to eq(activity.country_delivery_partners)
+        expect(created_activity.country_partner_organisations).to eq(activity.country_partner_organisations)
         expect(created_activity.benefitting_countries).to match_array(activity.benefitting_countries)
         expect(created_activity.gdi).to eq(activity.gdi)
         expect(created_activity.aid_type).to eq(activity.aid_type)

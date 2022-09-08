@@ -113,7 +113,7 @@ class Report
         "ODA eligibility lead" => :oda_eligibility_lead,
         "Covid-19 related research" => :covid19_related,
         "Activity status" => :programme_status,
-        "Country partner organisations" => :country_delivery_partners,
+        "Country partner organisations" => :country_partner_organisations,
         "UK PO named contact" => :uk_dp_named_contact,
         "Call open date" => :call_open_date,
         "Call close date" => :call_close_date,

@@ -13,7 +13,7 @@ class ActivityCsvPresenter < ActivityPresenter
     super.to_s
   end
 
-  def country_delivery_partners
+  def country_partner_organisations
     return if super.blank?
     super.join("|")
   end

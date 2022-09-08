@@ -46,13 +46,13 @@ RSpec.describe "staff/shared/activities/_activity" do
 
   context "With a Newton fund" do
     context "when the activity is a programme activity" do
-      let(:activity) { build(:programme_activity, :newton_funded, country_delivery_partners: country_partner_orgs) }
+      let(:activity) { build(:programme_activity, :newton_funded, country_partner_organisations: country_partner_orgs) }
 
       it { is_expected.to show_basic_details }
     end
 
     context "when the activity is a project activity" do
-      let(:activity) { build(:project_activity, :newton_funded, country_delivery_partners: country_partner_orgs) }
+      let(:activity) { build(:project_activity, :newton_funded, country_partner_organisations: country_partner_orgs) }
 
       it { is_expected.to show_basic_details }
       it { is_expected.to show_project_details }
@@ -60,7 +60,7 @@ RSpec.describe "staff/shared/activities/_activity" do
     end
 
     context "when the activity is a third party project activity" do
-      let(:activity) { build(:third_party_project_activity, :newton_funded, country_delivery_partners: country_partner_orgs) }
+      let(:activity) { build(:third_party_project_activity, :newton_funded, country_partner_organisations: country_partner_orgs) }
 
       it { is_expected.to show_basic_details }
       it { is_expected.to show_project_details }
@@ -320,8 +320,8 @@ RSpec.describe "staff/shared/activities/_activity" do
 
   RSpec::Matchers.define :show_newton_specific_details do
     match do |actual|
-      expect(rendered).to have_css(".govuk-summary-list__row.country_delivery_partners")
-      activity_presenter.country_delivery_partners.each do |delivery_partner|
+      expect(rendered).to have_css(".govuk-summary-list__row.country_partner_organisations")
+      activity_presenter.country_partner_organisations.each do |delivery_partner|
         expect(rendered).to have_content(delivery_partner)
       end
       expect(rendered).to have_content activity_presenter.fund_pillar

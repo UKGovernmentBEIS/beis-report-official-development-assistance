@@ -302,25 +302,25 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when country_delivery_partners is blank/empty array on a Newton funded programme" do
+    context "when country_partner_organisations is blank/empty array on a Newton funded programme" do
       subject(:newton_fund) { build(:fund_activity, :newton) }
-      subject(:activity) { build(:programme_activity, parent: newton_fund, country_delivery_partners: nil) }
+      subject(:activity) { build(:programme_activity, parent: newton_fund, country_partner_organisations: nil) }
       it "should not be valid" do
-        expect(activity.valid?(:country_delivery_partners_step)).to be_falsey
+        expect(activity.valid?(:country_partner_organisations_step)).to be_falsey
       end
     end
 
-    context "when country_delivery_partners is blank on a Newton funded project" do
+    context "when country_partner_organisations is blank on a Newton funded project" do
       subject(:newton_fund) { build(:fund_activity, :newton) }
       subject(:newton_programme) { build(:programme_activity, parent: newton_fund) }
-      subject(:activity) { build(:project_activity, parent: newton_programme, country_delivery_partners: nil) }
+      subject(:activity) { build(:project_activity, parent: newton_programme, country_partner_organisations: nil) }
       it "should be valid" do
         expect(activity.valid?).to be_truthy
       end
     end
 
-    context "when country_delivery_partners is blank on a non-Newton funded programme" do
-      subject(:activity) { build(:programme_activity, :gcrf_funded, country_delivery_partners: nil) }
+    context "when country_partner_organisations is blank on a non-Newton funded programme" do
+      subject(:activity) { build(:programme_activity, :gcrf_funded, country_partner_organisations: nil) }
       it "should be valid" do
         expect(activity.valid?).to be_truthy
       end

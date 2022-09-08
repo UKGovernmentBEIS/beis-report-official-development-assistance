@@ -190,7 +190,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.implementing_organisations.first.name)
         .to eq("Impl. Org 1")
 
-      expect(existing_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
+      expect(existing_activity.country_partner_organisations).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
       expect(existing_activity.form_state).to eq "complete"
     end
 
@@ -401,7 +401,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (PO Definition)"])
       expect(new_activity.beis_identifier).to eq(new_activity_attributes["BEIS ID"])
       expect(new_activity.uk_dp_named_contact).to eq(new_activity_attributes["UK PO Named Contact"])
-      expect(new_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
+      expect(new_activity.country_partner_organisations).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
       expect(new_activity.sdgs_apply).to eql(true)
     end
 

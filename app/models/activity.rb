@@ -19,7 +19,7 @@ class Activity < ApplicationRecord
     :call_dates,
     :total_applications_and_awards,
     :programme_status,
-    :country_delivery_partners,
+    :country_partner_organisations,
     :dates,
     :benefitting_countries,
     :gdi,
@@ -50,7 +50,7 @@ class Activity < ApplicationRecord
     :dates_step,
     :total_applications_and_awards_step,
     :programme_status_step,
-    :country_delivery_partners_step,
+    :country_partner_organisations_step,
     :gdi_step,
     :aid_type_step,
     :collaboration_type_step,
@@ -85,7 +85,7 @@ class Activity < ApplicationRecord
   validates :total_applications, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :total_awards, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :programme_status, presence: true, on: :programme_status_step
-  validates :country_delivery_partners, presence: true, on: :country_delivery_partners_step, if: :requires_country_partner_organisations?
+  validates :country_partner_organisations, presence: true, on: :country_partner_organisations_step, if: :requires_country_partner_organisations?
   validates :gdi, presence: true, on: :gdi_step, unless: proc { |activity| activity.fund? }
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
   validates :covid19_related, presence: true, on: :covid19_related_step

@@ -329,7 +329,7 @@ module Activities
         objectives: "Aims/Objectives (PO Definition)",
         beis_identifier: "BEIS ID",
         uk_dp_named_contact: "UK PO Named Contact",
-        country_delivery_partners: "NF Partner Country PO"
+        country_partner_organisations: "NF Partner Country PO"
       }
 
       ALLOWED_BLANK_FIELDS = [
@@ -570,7 +570,7 @@ module Activities
         parse_date(actual_end_date, I18n.t("importer.errors.activity.invalid_actual_end_date"))
       end
 
-      def convert_country_delivery_partners(partner_orgs)
+      def convert_country_partner_organisations(partner_orgs)
         partner_orgs.split("|").map(&:strip).reject(&:blank?)
       end
 
