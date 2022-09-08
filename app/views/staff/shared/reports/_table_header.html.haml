@@ -16,7 +16,7 @@
       =t("table.header.report.fund")
     %th.govuk-table__header
       =t("table.header.report.description")
-    - if type == "current" && current_user.delivery_partner?
+    - if type == "current" && current_user.partner_organisation?
       %th.govuk-table__header
         =t("table.header.report.can_edit")
     %th.govuk-table__header

@@ -36,6 +36,6 @@ class ApplicationPolicy
   end
 
   protected def partner_organisation_user?
-    user.delivery_partner?
+    user.partner_organisation?
   end
 end

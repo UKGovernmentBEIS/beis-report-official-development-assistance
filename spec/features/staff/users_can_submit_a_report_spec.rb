@@ -30,7 +30,7 @@ RSpec.feature "Users can submit a report" do
         expect(service_owner).to have_received_email.with_subject(t("mailer.report.submitted.service_owner.subject", application_name: t("app.title"), environment_name: nil))
 
         organisation.users.each do |user|
-          expect(user).to have_received_email.with_subject(t("mailer.report.submitted.delivery_partner.subject", application_name: t("app.title"), environment_name: nil))
+          expect(user).to have_received_email.with_subject(t("mailer.report.submitted.partner_organisation.subject", application_name: t("app.title"), environment_name: nil))
         end
       end
     end

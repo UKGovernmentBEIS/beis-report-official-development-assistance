@@ -24,9 +24,9 @@ Rails.application.routes.draw do
     resources :users
     resources :activities, only: [:index]
 
-    roles = %w[implementing_organisations delivery_partners matched_effort_providers external_income_providers]
+    roles = %w[implementing_organisations partner_organisations matched_effort_providers external_income_providers]
     constraints role: /#{roles.join("|")}/ do
-      get "organisations/(:role)", to: "organisations#index", defaults: {role: "delivery_partners"}, as: :organisations
+      get "organisations/(:role)", to: "organisations#index", defaults: {role: "partner_organisations"}, as: :organisations
       get "organisations/(:role)/new", to: "organisations#new", as: :new_organisation
     end
 

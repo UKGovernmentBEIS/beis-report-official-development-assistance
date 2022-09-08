@@ -8,7 +8,7 @@ FactoryBot.define do
     language_code { "en" }
 
     factory :partner_organisation do
-      role { "delivery_partner" }
+      role { "partner_organisation" }
 
       trait :non_government do
         organisation_type { "22" }

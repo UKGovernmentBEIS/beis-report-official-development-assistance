@@ -15,7 +15,7 @@ class ReportMailer < ApplicationMailer
     raise_unless_active_user
 
     @role = if @user.organisation == @report_presenter.organisation
-      :delivery_partner
+      :partner_organisation
     elsif @user.organisation.service_owner?
       :service_owner
     end
@@ -35,7 +35,7 @@ class ReportMailer < ApplicationMailer
     raise_unless_active_user
 
     @role = if @user.organisation == @report_presenter.organisation
-      :delivery_partner
+      :partner_organisation
     elsif @user.organisation.service_owner?
       :service_owner
     end

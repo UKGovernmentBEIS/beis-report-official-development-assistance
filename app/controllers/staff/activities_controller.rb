@@ -93,7 +93,7 @@ class Staff::ActivitiesController < Staff::BaseController
 
     return current_user.organisation.id unless Organisation.exists?(organisation_id)
     return current_user.organisation.id if organisation_id.blank?
-    return current_user.organisation.id if requested_organisation_is_not_current_users?(organisation_id) && current_user.delivery_partner?
+    return current_user.organisation.id if requested_organisation_is_not_current_users?(organisation_id) && current_user.partner_organisation?
     organisation_id
   end
 

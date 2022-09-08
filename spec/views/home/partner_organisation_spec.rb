@@ -1,4 +1,4 @@
-RSpec.describe "staff/home/delivery_partner" do
+RSpec.describe "staff/home/partner_organisation" do
   context "when there are no active reports" do
     before do
       assign(:current_user, build(:partner_organisation_user))

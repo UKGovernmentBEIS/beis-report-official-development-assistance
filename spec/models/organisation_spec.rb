@@ -156,7 +156,7 @@ RSpec.describe Organisation, type: :model do
       OrgParticipation.create!(
         activity: other_activity,
         organisation: organisation,
-        role: "delivery_partner"
+        role: "partner_organisation"
       )
     end
 
@@ -293,7 +293,7 @@ RSpec.describe Organisation, type: :model do
     end
 
     let!(:other_org) do
-      create(:partner_organisation, role: "delivery_partner").tap do |org|
+      create(:partner_organisation, role: "partner_organisation").tap do |org|
         OrgParticipation.create!(
           organisation: org,
           activity: create(:project_activity),

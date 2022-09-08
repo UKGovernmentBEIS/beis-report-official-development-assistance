@@ -16,7 +16,7 @@ class Organisation < ApplicationRecord
     source: :activity
 
   enum role: {
-    delivery_partner: 0,
+    partner_organisation: 0,
     matched_effort_provider: 1,
     external_income_provider: 2,
     implementing_organisation: 3,
@@ -40,7 +40,7 @@ class Organisation < ApplicationRecord
 
   scope :sorted_by_active, -> { order(active: :desc) }
   scope :sorted_by_name, -> { order(name: :asc) }
-  scope :partner_organisations, -> { sorted_by_active.sorted_by_name.where(role: "delivery_partner") }
+  scope :partner_organisations, -> { sorted_by_active.sorted_by_name.where(role: "partner_organisation") }
   scope :matched_effort_providers, -> { sorted_by_active.sorted_by_name.where(role: "matched_effort_provider") }
   scope :external_income_providers, -> { sorted_by_active.sorted_by_name.where(role: "external_income_provider") }
   scope :implementing, -> {
@@ -64,7 +64,7 @@ class Organisation < ApplicationRecord
          )
       .sorted_by_active.sorted_by_name
   }
-  scope :reporters, -> { sorted_by_name.where(role: ["delivery_partner", "service_owner"]) }
+  scope :reporters, -> { sorted_by_name.where(role: ["partner_organisation", "service_owner"]) }
   scope :active, -> { where(active: true) }
 
   before_validation :ensure_beis_organisation_reference_is_uppercase
@@ -97,7 +97,7 @@ class Organisation < ApplicationRecord
   end
 
   def is_reporter?
-    service_owner? || delivery_partner?
+    service_owner? || partner_organisation?
   end
 
   def self.service_owner

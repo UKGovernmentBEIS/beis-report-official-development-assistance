@@ -13,7 +13,7 @@ class Staff::HomeController < Staff::BaseController
         scope: :current
       ).call
       @reports = Report::OrganisationReportsFetcher.new(organisation: current_user.organisation).current
-      render :delivery_partner
+      render :partner_organisation
     end
   end
 end

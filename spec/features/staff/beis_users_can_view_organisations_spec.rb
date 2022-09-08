@@ -9,9 +9,9 @@ RSpec.feature "BEIS users can view other organisations" do
   RSpec.shared_examples "lists partner organisations" do
     scenario "it lists partner organisations" do
       expect(page).to have_content(t("page_title.organisation.index"))
-      expect(page).to have_content(t("page_title.organisations.delivery_partners"))
+      expect(page).to have_content(t("page_title.organisations.partner_organisations"))
 
-      expect(page.find("li.govuk-tabs__list-item--selected a.govuk-tabs__tab")).to have_text(t("tabs.organisations.delivery_partners"))
+      expect(page.find("li.govuk-tabs__list-item--selected a.govuk-tabs__tab")).to have_text(t("tabs.organisations.partner_organisations"))
 
       partner_organisations.each do |organisation|
         expect(page).to have_content(organisation.beis_organisation_reference)
@@ -112,8 +112,8 @@ RSpec.feature "BEIS users can view other organisations" do
         end
       end
 
-      context "the role is 'delivery_partners'" do
-        let(:role) { "delivery_partners" }
+      context "the role is 'partner_organisations'" do
+        let(:role) { "partner_organisations" }
 
         include_examples "lists partner organisations"
 
@@ -149,7 +149,7 @@ RSpec.feature "BEIS users can view other organisations" do
 
         context "when viewing the partner organisations tab" do
           before do
-            click_on t("tabs.organisations.delivery_partners")
+            click_on t("tabs.organisations.partner_organisations")
           end
 
           include_examples "lists partner organisations"
@@ -171,7 +171,7 @@ RSpec.feature "BEIS users can view other organisations" do
 
         context "when viewing the partner organisations tab" do
           before do
-            click_on t("tabs.organisations.delivery_partners")
+            click_on t("tabs.organisations.partner_organisations")
           end
 
           include_examples "lists partner organisations"

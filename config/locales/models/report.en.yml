@@ -168,12 +168,12 @@ en:
       activated:
         subject: "%{environment_name}%{application_name} - A report has been activated"
       submitted:
-        delivery_partner:
+        partner_organisation:
           subject: "%{environment_name}%{application_name} - Your report has been submitted"
         service_owner:
           subject: "%{environment_name}%{application_name} - A partner organisation has submitted a report"
       approved:
-        delivery_partner:
+        partner_organisation:
           subject: "%{environment_name}%{application_name} - Your report has been approved"
         service_owner:
           subject: "%{environment_name}%{application_name} - A report has been approved"

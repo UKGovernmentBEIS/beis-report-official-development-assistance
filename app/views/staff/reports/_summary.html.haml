@@ -21,7 +21,7 @@
       = t("form.label.report.state")
     %dd.govuk-summary-list__value
       = @report_presenter.state
-  - if current_user.delivery_partner?
+  - if current_user.partner_organisation?
     .govuk-summary-list__row
       %dt.govuk-summary-list__key
         = t("page_content.report.summary.editable.title")

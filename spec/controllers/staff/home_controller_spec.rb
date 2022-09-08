@@ -60,7 +60,7 @@ RSpec.describe Staff::HomeController do
       end
 
       it "renders the partner organisation view" do
-        expect(get(:show)).to render_template(:delivery_partner)
+        expect(get(:show)).to render_template(:partner_organisation)
       end
     end
   end

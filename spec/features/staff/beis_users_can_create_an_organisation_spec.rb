@@ -28,14 +28,14 @@ RSpec.feature "BEIS users can create organisations" do
     end
 
     scenario "successfully creating a partner organisation" do
-      click_link t("page_content.organisations.delivery_partners.button.create")
+      click_link t("page_content.organisations.partner_organisations.button.create")
 
       then_breadcrumb_shows_type_of_organisation(
         name: "Partner organisations",
-        link: organisations_path(role: "delivery_partners")
+        link: organisations_path(role: "partner_organisations")
       )
 
-      expect(page).to have_content(t("page_title.organisation.delivery_partner.new"))
+      expect(page).to have_content(t("page_title.organisation.partner_organisation.new"))
       fill_in "organisation[name]", with: "My New Organisation"
       fill_in "organisation[beis_organisation_reference]", with: "MNO"
       fill_in "organisation[iati_reference]", with: "CZH-GOV-1234"
@@ -55,7 +55,7 @@ RSpec.feature "BEIS users can create organisations" do
       expect(organisation.organisation_type).to eq("10")
       expect(organisation.language_code).to eq("cs")
       expect(organisation.default_currency).to eq("PLN")
-      expect(organisation.role).to eq("delivery_partner")
+      expect(organisation.role).to eq("partner_organisation")
       expect(organisation.active).to eq(true)
     end
 
@@ -180,9 +180,9 @@ RSpec.feature "BEIS users can create organisations" do
     end
 
     scenario "presence validation works as expected" do
-      click_link t("page_content.organisations.delivery_partners.button.create")
+      click_link t("page_content.organisations.partner_organisations.button.create")
 
-      expect(page).to have_content(t("page_title.organisation.delivery_partner.new"))
+      expect(page).to have_content(t("page_title.organisation.partner_organisation.new"))
       fill_in "organisation[name]", with: "My New Organisation"
 
       click_button t("default.button.submit")

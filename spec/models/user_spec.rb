@@ -35,7 +35,7 @@ RSpec.describe User, type: :model do
 
   describe "delegations" do
     it { is_expected.to delegate_method(:service_owner?).to(:organisation) }
-    it { is_expected.to delegate_method(:delivery_partner?).to(:organisation) }
+    it { is_expected.to delegate_method(:partner_organisation?).to(:organisation) }
   end
 
   it "validates the email format" do
