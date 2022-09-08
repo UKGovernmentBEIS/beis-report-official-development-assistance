@@ -224,13 +224,13 @@ RSpec.describe Organisation, type: :model do
     end
   end
 
-  describe ".delivery_partners" do
+  describe ".partner_organisations" do
     it "should only contain organisations that are partner organisations" do
       beis_organisation = create(:beis_organisation)
       partner_organisation = create(:partner_organisation)
       matched_effort_provider = create(:matched_effort_provider)
       external_income_provider = create(:external_income_provider)
-      partner_organisations = Organisation.delivery_partners
+      partner_organisations = Organisation.partner_organisations
 
       expect(partner_organisations).to include(partner_organisation)
       expect(partner_organisations).not_to include(beis_organisation)

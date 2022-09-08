@@ -8,7 +8,7 @@ RSpec.describe FormHelper, type: :helper do
     end
   end
 
-  describe "#list_of_delivery_partners" do
+  describe "#list_of_partner_organisations" do
     it "asks for a list of organisations that are partner organisations" do
       _beis = create(:beis_organisation)
       partner_organisation_1 = create(:partner_organisation, name: "aaaaa")
@@ -17,7 +17,7 @@ RSpec.describe FormHelper, type: :helper do
       _matched_effort_provider = create(:matched_effort_provider)
       _external_income_provider = create(:external_income_provider)
 
-      expect(helper.list_of_delivery_partners).to match_array([
+      expect(helper.list_of_partner_organisations).to match_array([
         partner_organisation_1,
         partner_organisation_2
       ])

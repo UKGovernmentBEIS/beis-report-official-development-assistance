@@ -30,13 +30,13 @@ class ReportPolicy < ApplicationPolicy
   def change_state?
     case record.state
     when "active"
-      delivery_partner_user? && record.organisation == user.organisation
+      partner_organisation_user? && record.organisation == user.organisation
     when "submitted"
       beis_user?
     when "in_review"
       beis_user?
     when "awaiting_changes"
-      delivery_partner_user? && record.organisation == user.organisation
+      partner_organisation_user? && record.organisation == user.organisation
     when "approved"
       false
     end

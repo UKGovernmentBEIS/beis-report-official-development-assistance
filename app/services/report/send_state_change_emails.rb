@@ -26,7 +26,7 @@ class Report
     end
 
     def send_submitted
-      send_mail_to_users(:submitted, (delivery_partners + service_owners))
+      send_mail_to_users(:submitted, (partner_organisation_users + service_owners))
     end
 
     def send_awaiting_changes
@@ -34,16 +34,16 @@ class Report
     end
 
     def send_approved
-      send_mail_to_users(:approved, (delivery_partners + service_owners))
+      send_mail_to_users(:approved, (partner_organisation_users + service_owners))
     end
 
-    def send_mail_to_users(action, users = delivery_partners)
+    def send_mail_to_users(action, users = partner_organisation_users)
       users.each do |user|
         ReportMailer.with(report: report, user: user).send(action).deliver_later
       end
     end
 
-    def delivery_partners
+    def partner_organisation_users
       @report.organisation.users.active
     end
 

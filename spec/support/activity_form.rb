@@ -47,7 +47,7 @@ class ActivityForm
     fill_in_sector_category_step
     fill_in_sector_step
     fill_in_programme_status
-    fill_in_country_delivery_partners
+    fill_in_country_partner_organisations
     fill_in_dates
     fill_in_benefitting_countries
     fill_in_gdi
@@ -110,7 +110,7 @@ class ActivityForm
     fill_in_call_details
     fill_in_call_applications
     fill_in_programme_status
-    fill_in_country_delivery_partners
+    fill_in_country_partner_organisations
     fill_in_dates
     fill_in_benefitting_countries
     fill_in_gdi
@@ -216,7 +216,7 @@ class ActivityForm
     click_button I18n.t("form.button.activity.submit")
   end
 
-  def fill_in_country_delivery_partners
+  def fill_in_country_partner_organisations
     expect(page).to have_content I18n.t("form.legend.activity.country_delivery_partners")
     expect(page).to have_content I18n.t("form.hint.activity.country_delivery_partners")
 

@@ -3,7 +3,7 @@ class Staff::HomeController < Staff::BaseController
     authorize :home, :show?
 
     if current_user.service_owner?
-      @partner_organisations = Organisation.delivery_partners
+      @partner_organisations = Organisation.partner_organisations
       authorize @partner_organisations
       render :service_owner
     else

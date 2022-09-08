@@ -40,7 +40,7 @@ class Organisation < ApplicationRecord
 
   scope :sorted_by_active, -> { order(active: :desc) }
   scope :sorted_by_name, -> { order(name: :asc) }
-  scope :delivery_partners, -> { sorted_by_active.sorted_by_name.where(role: "delivery_partner") }
+  scope :partner_organisations, -> { sorted_by_active.sorted_by_name.where(role: "delivery_partner") }
   scope :matched_effort_providers, -> { sorted_by_active.sorted_by_name.where(role: "matched_effort_provider") }
   scope :external_income_providers, -> { sorted_by_active.sorted_by_name.where(role: "external_income_provider") }
   scope :implementing, -> {

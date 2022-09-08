@@ -30,7 +30,7 @@
             = f.govuk_radio_button :fund_id, fund.id, label: { text: fund.title }
 
         = f.govuk_collection_select :organisation_id,
-          list_of_delivery_partners,
+          list_of_partner_organisations,
           :id,
           :name,
           { include_blank: true }

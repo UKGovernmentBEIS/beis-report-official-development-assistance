@@ -35,7 +35,7 @@ class ApplicationPolicy
     user.service_owner?
   end
 
-  protected def delivery_partner_user?
+  protected def partner_organisation_user?
     user.delivery_partner?
   end
 end

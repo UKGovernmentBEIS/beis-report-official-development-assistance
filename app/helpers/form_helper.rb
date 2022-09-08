@@ -20,8 +20,8 @@ module FormHelper
     ].flatten
   end
 
-  def list_of_delivery_partners
-    @list_of_delivery_partners ||= Organisation.delivery_partners
+  def list_of_partner_organisations
+    @list_of_partner_organisations ||= Organisation.partner_organisations
   end
 
   def list_of_reporting_organisations

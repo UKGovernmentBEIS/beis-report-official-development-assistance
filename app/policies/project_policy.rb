@@ -8,11 +8,11 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def create?
-    delivery_partner_user?
+    partner_organisation_user?
   end
 
   def update?
-    delivery_partner_user?
+    partner_organisation_user?
   end
 
   def destroy?
