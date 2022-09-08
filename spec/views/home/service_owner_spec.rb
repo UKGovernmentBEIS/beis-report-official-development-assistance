@@ -4,7 +4,7 @@ RSpec.describe "staff/home/service_owner" do
     organisation = build(:partner_organisation, name: "Partner Org 1")
     assign(:partner_organisations, [organisation, build(:partner_organisation)])
 
-    stub_template "staff/shared/reports/_delivery_partners_organisations_table" => "table of partner organisations"
+    stub_template "staff/shared/reports/_partner_organisations_table" => "table of partner organisations"
     stub_template "staff/searches/_form" => "search form"
 
     allow(view).to receive(:organisation_path).and_return("/organisations/id")
