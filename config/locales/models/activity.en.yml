@@ -15,7 +15,7 @@ en:
     activity:
       edit: Activity %{name} - Publish to IATI
       show: Activity %{name}
-      index: Activities for %{delivery_partner_name}
+      index: Activities for %{partner_organisation_name}
       details: Activity %{name} - Details
       other_funding: Activity %{name} - Other funding
       financials: Activity %{name} - Financials

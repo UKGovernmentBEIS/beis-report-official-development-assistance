@@ -1,4 +1,4 @@
-= content_for :page_title_prefix, t("document_title.activity.index", delivery_partner_name: @organisation.name)
+= content_for :page_title_prefix, t("document_title.activity.index", partner_organisation_name: @organisation.name)
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
@@ -11,7 +11,7 @@
   .govuk-grid-row
     .govuk-grid-column-full
       %h2.govuk-heading-l
-        = t("document_title.activity.index", delivery_partner_name: @organisation.name)
+        = t("document_title.activity.index", partner_organisation_name: @organisation.name)
 
       .govuk-tabs
         %ul.govuk-tabs__list{role: "tablist"}
