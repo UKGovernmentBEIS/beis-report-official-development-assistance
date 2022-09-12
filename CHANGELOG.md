@@ -1084,6 +1084,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Replace references to `delivery_partner` with `partner_organisation` (or `partner_organisation_user` depending on context)
   across the code, including a database migration to rename `delivery_partner_identifier` to `partner_organisation_identifier`
 - Replace references to `country_delivery_partners` with `country_partner_organisations`, including database migration
+- Add Level B activity bulk upload form and link from partner organisations table
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-115...HEAD
 [release-115]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-114...release-115

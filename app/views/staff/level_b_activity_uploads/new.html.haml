@@ -1,0 +1,31 @@
+= content_for :page_title_prefix, t("page_title.activity.upload_level_b", organisation_name: @organisation.name)
+
+%main.govuk-main-wrapper#main-content{ role: "main" }
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = t("page_title.activity.upload_level_b", organisation_name: @organisation.name)
+
+      %p.govuk-body
+        Use the template to ensure your data is in the correct format.
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h2.govuk-heading-m
+        = link_to t("action.activity.bulk_download.button"), "", class: "govuk-link"
+
+      %p.govuk-body
+        = t("action.activity.bulk_download.hint_html")
+
+      .govuk-body.upload-form
+        = form_with model: @organisation, url: "#", method: :get do |f|
+
+          = f.govuk_file_field :activity_csv,
+            label: { text: t("form.label.activity.csv_file") },
+            hint: { text: t("form.hint.activity.csv_file") }
+
+          = f.govuk_submit t("action.activity.upload.button")
+
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %p.govuk-body= link_to "Back to home", organisations_path

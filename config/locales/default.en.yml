@@ -39,6 +39,7 @@ en:
         no_actions_available: No actions available
       organisations:
         details: details
+        upload_data: Upload data
         view_activities: View activities
         view_exports: View exports
         view_reports: View reports
