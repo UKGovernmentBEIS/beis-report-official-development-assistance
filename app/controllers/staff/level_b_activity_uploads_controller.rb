@@ -19,6 +19,33 @@ class Staff::LevelBActivityUploadsController < Staff::BaseController
     stream_csv_download(filename: filename, headers: csv_headers)
   end
 
+  def update
+    authorize organisation, :bulk_upload?
+
+    @organisation_presenter = OrganisationPresenter.new(organisation)
+    upload = CsvFileUpload.new(params[:organisation], :activity_csv)
+    @success = false
+
+    if upload.valid?
+      importer = Activities::ImportFromCsv.new(
+        uploader: current_user,
+        partner_organisation: organisation,
+        report: nil
+      )
+      importer.import(upload.rows)
+      @errors = importer.errors
+      @activities = {created: importer.created, updated: importer.updated}
+
+      if @errors.empty?
+        @success = true
+        flash.now[:notice] = t("action.activity.upload.success")
+      end
+    else
+      @errors = []
+      flash.now[:error] = t("action.activity.upload.file_missing_or_invalid")
+    end
+  end
+
   private
 
   def csv_headers
