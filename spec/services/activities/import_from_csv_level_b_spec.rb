@@ -39,7 +39,7 @@ RSpec.describe Activities::ImportFromCsv do
       "Collaboration type (Bi/Multi Marker)" => "1",
       "Aid type" => "B03",
       "Free Standing Technical Cooperation" => "1",
-      "Aims/Objectives (PO Definition)" => "Foo bar baz",
+      "Aims/Objectives" => "Foo bar baz",
       "UK PO Named Contact" => "Jo Soap",
       "NF Partner Country PO" => "Association of Example Companies (AEC) | | Board of Sample Organisations (BSO)"
     }
@@ -131,9 +131,9 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_level_b_activity.collaboration_type).to eq(existing_level_b_activity_attributes["Collaboration type (Bi/Multi Marker)"])
       expect(existing_level_b_activity.aid_type).to eq(existing_level_b_activity_attributes["Aid type"])
       expect(existing_level_b_activity.fstc_applies).to eq(true)
-      expect(existing_level_b_activity.objectives).to eq(existing_level_b_activity_attributes["Aims/Objectives (PO Definition)"])
+      expect(existing_level_b_activity.objectives).to eq(existing_level_b_activity_attributes["Aims/Objectives"])
       expect(existing_level_b_activity.beis_identifier).to eq(existing_level_b_activity_attributes["BEIS ID"])
-      expect(existing_level_b_activity.uk_dp_named_contact).to eq(existing_level_b_activity_attributes["UK PO Named Contact"])
+      expect(existing_level_b_activity.uk_po_named_contact).to eq(existing_level_b_activity_attributes["UK PO Named Contact"])
       expect(existing_level_b_activity.sdgs_apply).to eql(true)
       expect(existing_level_b_activity.country_partner_organisations).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
       expect(existing_level_b_activity.form_state).to eq "complete"
@@ -282,9 +282,9 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.collaboration_type).to eq(new_activity_attributes["Collaboration type (Bi/Multi Marker)"])
       expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
       expect(new_activity.fstc_applies).to eq(true)
-      expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (PO Definition)"])
+      expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives"])
       expect(new_activity.beis_identifier).to eq("")
-      expect(new_activity.uk_dp_named_contact).to eq(new_activity_attributes["UK PO Named Contact"])
+      expect(new_activity.uk_po_named_contact).to eq(new_activity_attributes["UK PO Named Contact"])
       expect(new_activity.country_partner_organisations).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
       expect(new_activity.sdgs_apply).to eql(true)
     end
