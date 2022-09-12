@@ -1,7 +1,7 @@
 RSpec.feature "Users can approve reports" do
   context "signed in as a BEIS user" do
     let!(:beis_user) { create(:beis_user) }
-    let(:organisation) { create(:delivery_partner_organisation, users: create_list(:delivery_partner_user, 3)) }
+    let(:organisation) { create(:partner_organisation, users: create_list(:partner_organisation_user, 3)) }
 
     before do
       authenticate!(user: beis_user)
@@ -24,7 +24,7 @@ RSpec.feature "Users can approve reports" do
       expect(beis_user).to have_received_email.with_subject(t("mailer.report.approved.service_owner.subject", application_name: t("app.title"), environment_name: nil))
 
       organisation.users.each do |user|
-        expect(user).to have_received_email.with_subject(t("mailer.report.approved.delivery_partner.subject", application_name: t("app.title"), environment_name: nil))
+        expect(user).to have_received_email.with_subject(t("mailer.report.approved.partner_organisation.subject", application_name: t("app.title"), environment_name: nil))
       end
     end
 
@@ -41,11 +41,11 @@ RSpec.feature "Users can approve reports" do
     end
   end
 
-  context "signed in as a Delivery partner user" do
-    let(:delivery_partner_user) { create(:delivery_partner_user) }
+  context "signed in as a partner organisation user" do
+    let(:partner_org_user) { create(:partner_organisation_user) }
 
     before do
-      authenticate!(user: delivery_partner_user)
+      authenticate!(user: partner_org_user)
     end
 
     scenario "they cannot mark a report as approved" do

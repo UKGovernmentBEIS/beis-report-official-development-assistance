@@ -1,6 +1,6 @@
 RSpec.feature "users can upload forecasts" do
-  let(:organisation) { create(:delivery_partner_organisation) }
-  let(:user) { create(:delivery_partner_user, organisation: organisation) }
+  let(:organisation) { create(:partner_organisation) }
+  let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
   let!(:project) { create(:project_activity, :newton_funded, organisation: organisation) }
   let!(:sibling_project) { create(:project_activity, :newton_funded, organisation: organisation, parent: project.parent) }
@@ -46,12 +46,12 @@ RSpec.feature "users can upload forecasts" do
       expect(activity_data).to match_array([
         {
           "Activity Name" => project.title,
-          "Activity Partner Organisation Identifier" => project.delivery_partner_identifier,
+          "Activity Partner Organisation Identifier" => project.partner_organisation_identifier,
           "Activity RODA Identifier" => project.roda_identifier
         },
         {
           "Activity Name" => sibling_project.title,
-          "Activity Partner Organisation Identifier" => sibling_project.delivery_partner_identifier,
+          "Activity Partner Organisation Identifier" => sibling_project.partner_organisation_identifier,
           "Activity RODA Identifier" => sibling_project.roda_identifier
         }
       ])

@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Activities::ImportFromCsv do
-  let(:organisation) { create(:delivery_partner_organisation) }
-  let(:uploader) { create(:delivery_partner_user, organisation: organisation) }
+  let(:organisation) { create(:partner_organisation) }
+  let(:uploader) { create(:partner_organisation_user, organisation: organisation) }
   let(:parent_activity) { create(:programme_activity, :newton_funded, extending_organisation: organisation) }
   let(:fund_activity) { create(:fund_activity) }
   let!(:report) { create(:report, fund: fund_activity) }
@@ -79,7 +79,7 @@ RSpec.describe Activities::ImportFromCsv do
     })
   end
 
-  subject { described_class.new(uploader: uploader, delivery_partner_organisation: organisation, report: report) }
+  subject { described_class.new(uploader: uploader, partner_organisation: organisation, report: report) }
 
   describe "::column_headings" do
     it "includes a column for implementing organisation names" do
@@ -154,7 +154,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.gdi).to eq("1")
       expect(existing_activity.gcrf_strategic_area).to eq(["17A", "RF"])
       expect(existing_activity.gcrf_challenge_area).to eq(4)
-      expect(existing_activity.delivery_partner_identifier).to eq(existing_activity_attributes["Partner organisation identifier"])
+      expect(existing_activity.partner_organisation_identifier).to eq(existing_activity_attributes["Partner organisation identifier"])
       expect(existing_activity.fund_pillar).to eq(existing_activity_attributes["Newton Fund Pillar"].to_i)
       expect(existing_activity.covid19_related).to eq(0)
       expect(existing_activity.oda_eligibility).to eq("never_eligible")
@@ -190,7 +190,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.implementing_organisations.first.name)
         .to eq("Impl. Org 1")
 
-      expect(existing_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
+      expect(existing_activity.country_partner_organisations).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
       expect(existing_activity.form_state).to eq "complete"
     end
 
@@ -378,7 +378,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.benefitting_countries).to eq(["KH", "KP", "ID"])
       expect(new_activity.gdi).to eq("1")
       expect(new_activity.gcrf_challenge_area).to eq(4)
-      expect(new_activity.delivery_partner_identifier).to eq(new_activity_attributes["Partner organisation identifier"])
+      expect(new_activity.partner_organisation_identifier).to eq(new_activity_attributes["Partner organisation identifier"])
       expect(new_activity.covid19_related).to eq(0)
       expect(new_activity.oda_eligibility).to eq("never_eligible")
       expect(new_activity.oda_eligibility_lead).to eq(new_activity_attributes["ODA Eligibility Lead"])
@@ -401,7 +401,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (PO Definition)"])
       expect(new_activity.beis_identifier).to eq(new_activity_attributes["BEIS ID"])
       expect(new_activity.uk_dp_named_contact).to eq(new_activity_attributes["UK PO Named Contact"])
-      expect(new_activity.country_delivery_partners).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
+      expect(new_activity.country_partner_organisations).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
       expect(new_activity.sdgs_apply).to eql(true)
     end
 
@@ -856,7 +856,7 @@ RSpec.describe Activities::ImportFromCsv do
       subject do
         described_class.new(
           uploader: uploader,
-          delivery_partner_organisation: organisation,
+          partner_organisation: organisation,
           report: report
         )
       end

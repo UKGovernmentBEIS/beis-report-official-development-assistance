@@ -4,7 +4,7 @@ RSpec.feature "BEIS users can create a report" do
   let(:beis_user) { create(:beis_user) }
   let!(:newton_fund) { create(:fund_activity, :newton) }
   let!(:gcrf_fund) { create(:fund_activity, :gcrf) }
-  let!(:delivery_partner_organisation) { create(:delivery_partner_organisation, name: "ACME Ltd") }
+  let!(:partner_organisation) { create(:partner_organisation, name: "ACME Ltd") }
 
   before { travel_to DateTime.parse("2021-01-01") }
   after { travel_back }

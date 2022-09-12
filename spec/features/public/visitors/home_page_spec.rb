@@ -14,8 +14,8 @@ RSpec.feature "Home page" do
     end
   end
 
-  context "when signed in as a delivery partner user" do
-    let(:user) { create(:delivery_partner_user) }
+  context "when signed in as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
 
     scenario "they are redirected to their organisation show page" do

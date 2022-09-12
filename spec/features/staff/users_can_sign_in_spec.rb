@@ -183,7 +183,7 @@ RSpec.feature "Users can sign in" do
     context "User has no mobile number provisioned" do
       scenario "successful mobile confirmation" do
         # Given that I am a RODA user
-        user = create(:delivery_partner_user, :mfa_enabled, :no_mobile_number)
+        user = create(:partner_organisation_user, :mfa_enabled, :no_mobile_number)
 
         # When I log in for the first time,
         visit root_path
@@ -298,8 +298,8 @@ RSpec.feature "Users can sign in" do
     expect(page.current_path).to eql home_path
   end
 
-  scenario "a delivery partner user lands on their home page" do
-    user = create(:delivery_partner_user)
+  scenario "a partner organisation user lands on their home page" do
+    user = create(:partner_organisation_user)
 
     visit root_path
     expect(page).to have_content(t("start_page.title"))
@@ -328,7 +328,7 @@ RSpec.feature "Users can sign in" do
 
   context "when the user has been deactivated" do
     scenario "the user cannot log in and sees an informative message" do
-      user = create(:delivery_partner_user, active: false)
+      user = create(:partner_organisation_user, active: false)
 
       visit root_path
       log_in_via_form(user)
@@ -337,7 +337,7 @@ RSpec.feature "Users can sign in" do
     end
 
     scenario "a user who is logged in and then deactivated sees an error message" do
-      user = create(:delivery_partner_user)
+      user = create(:partner_organisation_user)
 
       visit root_path
       log_in_via_form(user)

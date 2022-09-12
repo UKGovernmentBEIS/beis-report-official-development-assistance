@@ -1,5 +1,5 @@
 RSpec.feature "Users can edit a refund" do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
 
   RSpec.shared_examples "edit refunds" do
     let!(:refund) { create(:refund, parent_activity: activity, report: report) }
@@ -53,9 +53,9 @@ RSpec.feature "Users can edit a refund" do
     end
   end
 
-  context "when logged in as a delivery partner" do
+  context "when logged in as a partner organisation user" do
     include_examples "edit refunds" do
-      let(:user) { create(:delivery_partner_user, organisation: organisation) }
+      let(:user) { create(:partner_organisation_user, organisation: organisation) }
       let(:activity) { create(:project_activity, organisation: organisation) }
       let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
     end

@@ -123,7 +123,7 @@ RSpec.describe Export::Report do
         expect(roda_identifier_value_for_row(first_row))
           .to eq(@project_for_report_without_forecasts.roda_identifier)
 
-        expect(delivery_partner_organisation_value_for_row(first_row))
+        expect(partner_organisation_value_for_row(first_row))
           .to eq(@project_for_report_without_forecasts.organisation.name)
         expect(change_state_value_for_row(first_row))
           .to eq("Unchanged")
@@ -189,7 +189,7 @@ RSpec.describe Export::Report do
         expect(implementing_organisation_value_for_row(first_row))
           .to match(@project.implementing_organisations.second.name)
 
-        expect(delivery_partner_organisation_value_for_row(first_row))
+        expect(partner_organisation_value_for_row(first_row))
           .to eq(@project.organisation.name)
         expect(change_state_value_for_row(first_row))
           .to eq("Unchanged")
@@ -216,8 +216,8 @@ RSpec.describe Export::Report do
         implementing_organisation_double = double(rows: rows_data_double)
         allow(Export::ActivityImplementingOrganisationColumn).to receive(:new).and_return(implementing_organisation_double)
 
-        delivery_partner_organisation_double = double(rows: rows_data_double)
-        allow(Export::ActivityDeliveryPartnerOrganisationColumn).to receive(:new).and_return(delivery_partner_organisation_double)
+        partner_organisation_double = double(rows: rows_data_double)
+        allow(Export::ActivityPartnerOrganisationColumn).to receive(:new).and_return(partner_organisation_double)
 
         change_state_double = double(rows: rows_data_double)
         allow(Export::ActivityChangeStateColumn).to receive(:new).and_return(change_state_double)
@@ -249,7 +249,7 @@ RSpec.describe Export::Report do
           .to have_received(:rows)
           .once
 
-        expect(delivery_partner_organisation_double)
+        expect(partner_organisation_double)
           .to have_received(:rows)
           .once
 
@@ -326,7 +326,7 @@ RSpec.describe Export::Report do
     row[@headers_for_report.length]
   end
 
-  def delivery_partner_organisation_value_for_row(row)
+  def partner_organisation_value_for_row(row)
     row[@headers_for_report.length + 1]
   end
 

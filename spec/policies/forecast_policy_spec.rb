@@ -71,8 +71,8 @@ RSpec.describe ForecastPolicy do
     end
   end
 
-  context "when signed in as a Delivery partner user" do
-    let(:user) { create(:delivery_partner_user) }
+  context "when signed in as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
 
     context "when the activity is a fund" do
       let(:activity) { create(:fund_activity) }
@@ -134,7 +134,7 @@ RSpec.describe ForecastPolicy do
 
           context "and the report is not for the organisation or fund of the activity" do
             before do
-              report.update!(organisation: create(:delivery_partner_organisation), fund: create(:fund_activity))
+              report.update!(organisation: create(:partner_organisation), fund: create(:fund_activity))
             end
 
             it "controls actions as expected" do

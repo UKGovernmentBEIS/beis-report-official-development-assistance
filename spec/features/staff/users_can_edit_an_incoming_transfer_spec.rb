@@ -1,5 +1,5 @@
 RSpec.feature "BEIS users can edit an incoming transfer" do
-  let(:user) { create(:delivery_partner_user) }
+  let(:user) { create(:partner_organisation_user) }
   before { authenticate!(user: user) }
 
   include_examples "editing a transfer" do

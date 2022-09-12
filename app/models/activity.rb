@@ -19,7 +19,7 @@ class Activity < ApplicationRecord
     :call_dates,
     :total_applications_and_awards,
     :programme_status,
-    :country_delivery_partners,
+    :country_partner_organisations,
     :dates,
     :benefitting_countries,
     :gdi,
@@ -50,7 +50,7 @@ class Activity < ApplicationRecord
     :dates_step,
     :total_applications_and_awards_step,
     :programme_status_step,
-    :country_delivery_partners_step,
+    :country_partner_organisations_step,
     :gdi_step,
     :aid_type_step,
     :collaboration_type_step,
@@ -70,13 +70,13 @@ class Activity < ApplicationRecord
 
   before_validation :strip_control_characters_from_fields!
 
-  strip_attributes only: [:delivery_partner_identifier]
+  strip_attributes only: [:partner_organisation_identifier]
 
   validates :level, presence: true
   validates :parent, absence: true, if: proc { |activity| activity.fund? }
   validates :parent, presence: true, unless: proc { |activity| activity.fund? }
   validates_with OrganisationValidator
-  validates :delivery_partner_identifier, presence: true, on: :identifier_step
+  validates :partner_organisation_identifier, presence: true, on: :identifier_step
   validates :title, :description, presence: true, on: :purpose_step
   validates :objectives, presence: true, on: :objectives_step, unless: proc { |activity| activity.fund? }
   validates :sector_category, presence: true, on: :sector_category_step
@@ -85,7 +85,7 @@ class Activity < ApplicationRecord
   validates :total_applications, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :total_awards, presence: true, on: :total_applications_and_awards_step, if: :call_present?
   validates :programme_status, presence: true, on: :programme_status_step
-  validates :country_delivery_partners, presence: true, on: :country_delivery_partners_step, if: :requires_country_delivery_partners?
+  validates :country_partner_organisations, presence: true, on: :country_partner_organisations_step, if: :requires_country_partner_organisations?
   validates :gdi, presence: true, on: :gdi_step, unless: proc { |activity| activity.fund? }
   validates :fstc_applies, inclusion: {in: [true, false]}, on: :fstc_applies_step
   validates :covid19_related, presence: true, on: :covid19_related_step
@@ -108,7 +108,7 @@ class Activity < ApplicationRecord
   validates :uk_dp_named_contact, presence: true, on: :uk_dp_named_contact_step, if: :is_project?
   validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :is_project?
 
-  validates :delivery_partner_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
+  validates :partner_organisation_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
   validates :roda_identifier, uniqueness: true, allow_nil: true
   validates :transparency_identifier, uniqueness: true, allow_nil: true
   validates :planned_start_date, presence: {message: I18n.t("activerecord.errors.models.activity.attributes.dates")}, on: :dates_step, unless: proc { |a| a.actual_start_date.present? }
@@ -224,16 +224,16 @@ class Activity < ApplicationRecord
     where(programme_status: ["completed", "stopped", "cancelled"])
   }
 
-  def self.new_child(parent_activity:, delivery_partner_organisation:, &block)
+  def self.new_child(parent_activity:, partner_organisation:, &block)
     attributes = ActivityDefaults.new(
       parent_activity: parent_activity,
-      delivery_partner_organisation: delivery_partner_organisation
+      partner_organisation: partner_organisation
     ).call
 
     new(attributes, &block).tap do |new_activity|
       if new_activity.programme?
         new_activity.implementing_org_participations << OrgParticipation.new(
-          organisation: delivery_partner_organisation,
+          organisation: partner_organisation,
           role: "implementing",
           activity: new_activity
         )
@@ -500,7 +500,7 @@ class Activity < ApplicationRecord
     !fund? && source_fund.present? && source_fund.newton?
   end
 
-  def requires_country_delivery_partners?
+  def requires_country_partner_organisations?
     is_newton_funded? && programme?
   end
 

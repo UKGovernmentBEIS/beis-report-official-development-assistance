@@ -3,11 +3,11 @@
 class Staff::ActivityChildrenController < Staff::BaseController
   def create
     parent_activity = Activity.find(params[:activity_id])
-    delivery_partner_organisation = Organisation.find(params[:organisation_id])
+    partner_organisation = Organisation.find(params[:organisation_id])
 
     activity = Activity.new_child(
       parent_activity: parent_activity,
-      delivery_partner_organisation: delivery_partner_organisation
+      partner_organisation: partner_organisation
     )
 
     authorize activity

@@ -9,8 +9,8 @@ RSpec.feature "BEIS users can invite new users to the service" do
     let(:user) { create(:beis_user) }
 
     scenario "a new user can be created" do
-      organisation = create(:delivery_partner_organisation)
-      second_organisation = create(:delivery_partner_organisation)
+      organisation = create(:partner_organisation)
+      second_organisation = create(:partner_organisation)
       new_user_name = "Foo Bar"
       new_user_email = "email@example.com"
 
@@ -47,7 +47,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
   end
 
   context "when the user does not belong to BEIS" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
 
     it "does not show them the manage user button" do
       visit organisation_path(user.organisation)

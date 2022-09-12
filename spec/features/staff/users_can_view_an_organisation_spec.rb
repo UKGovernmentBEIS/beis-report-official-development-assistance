@@ -20,7 +20,7 @@ RSpec.feature "Users can view an organisation" do
     end
 
     context "viewing another organisation" do
-      let!(:other_organisation) { create(:delivery_partner_organisation) }
+      let!(:other_organisation) { create(:partner_organisation) }
 
       scenario "can see the other organisation's page" do
         visit organisation_path(user.organisation)
@@ -38,7 +38,7 @@ RSpec.feature "Users can view an organisation" do
   end
 
   context "when the user does not belong to BEIS" do
-    let(:organisation) { create(:delivery_partner_organisation) }
+    let(:organisation) { create(:partner_organisation) }
 
     before do
       authenticate!(user: create(:administrator, organisation: organisation))

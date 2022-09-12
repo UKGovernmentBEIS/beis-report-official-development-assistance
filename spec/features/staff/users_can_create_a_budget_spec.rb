@@ -83,7 +83,7 @@ RSpec.describe "Users can create a budget" do
   end
 
   context "when the user does NOT belong to BEIS" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
     let(:fund_activity) { create(:fund_activity) }
     let(:programme_activity) {
       create(:programme_activity,

@@ -16,7 +16,7 @@ RSpec.describe Budget do
     it { should validate_presence_of(:budget_type) }
 
     describe "providing organisation" do
-      let(:another_org) { create(:delivery_partner_organisation) }
+      let(:another_org) { create(:partner_organisation) }
 
       context "when the budget_type is a direct type" do
         subject { build(:budget, providing_organisation_id: another_org.id, parent_activity: build(:programme_activity)) }
@@ -53,9 +53,9 @@ RSpec.describe Budget do
       end
     end
 
-    context "when the activity belongs to a delivery partner" do
+    context "when the activity belongs to a partner organisation" do
       it "should validate that the report association exists" do
-        activity = build(:project_activity, organisation: build_stubbed(:delivery_partner_organisation))
+        activity = build(:project_activity, organisation: build_stubbed(:partner_organisation))
         report_for_activity = build_stubbed(:report, organisation: activity.organisation, fund: activity.associated_fund)
         budget = build(:budget, parent_activity: activity, report: nil)
 

@@ -1,7 +1,7 @@
 RSpec.feature "Users can create an adjustment (correcting spend in an approved report)" do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
 
-  let(:user) { create(:delivery_partner_user, organisation: organisation) }
+  let(:user) { create(:partner_organisation_user, organisation: organisation) }
   let(:activity) { create(:project_activity, organisation: organisation) }
 
   before { authenticate!(user: user) }

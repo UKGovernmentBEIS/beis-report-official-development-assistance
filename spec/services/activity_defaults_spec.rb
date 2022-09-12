@@ -2,28 +2,28 @@ require "rails_helper"
 
 RSpec.describe ActivityDefaults do
   let(:beis) { create(:beis_organisation) }
-  let(:delivery_partner_organisation) { create(:delivery_partner_organisation) }
+  let(:partner_organisation) { create(:partner_organisation) }
 
   let(:fund) { create(:fund_activity, :gcrf) }
   let(:programme) { create(:programme_activity, :gcrf_funded, parent: fund) }
   let(:project) { create(:project_activity, :gcrf_funded, parent: programme) }
   let(:third_party_project) { create(:third_party_project_activity, :gcrf_funded, parent: project) }
 
-  let!(:current_report) { create(:report, :active, organisation: delivery_partner_organisation, fund: fund) }
+  let!(:current_report) { create(:report, :active, organisation: partner_organisation, fund: fund) }
 
   before do
     # some reports which we don't expect to be returned as 'originating_report'
     # for 'project' (level C)
-    _other_org = create(:report, :active, organisation: create(:delivery_partner_organisation), fund: fund)
-    _other_fund = create(:report, :active, organisation: delivery_partner_organisation, fund: create(:fund_activity, :newton))
-    _approved = create(:report, :approved, organisation: delivery_partner_organisation, fund: fund)
+    _other_org = create(:report, :active, organisation: create(:partner_organisation), fund: fund)
+    _other_fund = create(:report, :active, organisation: partner_organisation, fund: create(:fund_activity, :newton))
+    _approved = create(:report, :approved, organisation: partner_organisation, fund: fund)
   end
 
   describe "#call" do
     let(:activity_defaults) do
       described_class.new(
         parent_activity: parent_activity,
-        delivery_partner_organisation: delivery_partner_organisation
+        partner_organisation: partner_organisation
       )
     end
 
@@ -48,8 +48,8 @@ RSpec.describe ActivityDefaults do
         expect(subject[:organisation_id]).to eq(beis.id)
       end
 
-      it "sets the extending organisation to the delivery partner organisation" do
-        expect(subject[:extending_organisation_id]).to eq(delivery_partner_organisation.id)
+      it "sets the extending organisation to the partner organisation" do
+        expect(subject[:extending_organisation_id]).to eq(partner_organisation.id)
       end
 
       it "sets the form_state to 'identifier', as we already have the level and parent" do
@@ -65,7 +65,7 @@ RSpec.describe ActivityDefaults do
 
         expect(identifier_parts.count).to eq(3)
         expect(identifier_parts.first).to eq(fund.roda_identifier)
-        expect(identifier_parts.second).to eq(delivery_partner_organisation.beis_organisation_reference)
+        expect(identifier_parts.second).to eq(partner_organisation.beis_organisation_reference)
         expect(identifier_parts.third).to match(/[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}/)
       end
 
@@ -89,12 +89,12 @@ RSpec.describe ActivityDefaults do
         expect(subject[:source_fund_code]).to eq(programme.source_fund.id)
       end
 
-      it "sets the organisation to the delivery partner organisation" do
-        expect(subject[:organisation_id]).to eq(delivery_partner_organisation.id)
+      it "sets the organisation to the partner organisation" do
+        expect(subject[:organisation_id]).to eq(partner_organisation.id)
       end
 
-      it "sets the extending organisation to the delivery partner organisation" do
-        expect(subject[:extending_organisation_id]).to eq(delivery_partner_organisation.id)
+      it "sets the extending organisation to the partner organisation" do
+        expect(subject[:extending_organisation_id]).to eq(partner_organisation.id)
       end
 
       it "sets the form_state to 'identifier', as we already have the level and parent" do
@@ -137,12 +137,12 @@ RSpec.describe ActivityDefaults do
         expect(subject[:source_fund_code]).to eq(fund.source_fund.id)
       end
 
-      it "sets the organisation to the delivery partner organisation" do
-        expect(subject[:organisation_id]).to eq(delivery_partner_organisation.id)
+      it "sets the organisation to the partner organisation" do
+        expect(subject[:organisation_id]).to eq(partner_organisation.id)
       end
 
-      it "sets the extending organisation to the delivery partner organisation" do
-        expect(subject[:extending_organisation_id]).to eq(delivery_partner_organisation.id)
+      it "sets the extending organisation to the partner organisation" do
+        expect(subject[:extending_organisation_id]).to eq(partner_organisation.id)
       end
 
       it "sets the form_state to 'identifier', as we already have the level and parent" do
@@ -190,23 +190,23 @@ RSpec.describe ActivityDefaults do
 
   describe "#initialize" do
     it "raises an exception if parent_activity parameter is not an instance of Activity" do
-      expect { described_class.new(parent_activity: Class.new, delivery_partner_organisation: delivery_partner_organisation) }
+      expect { described_class.new(parent_activity: Class.new, partner_organisation: partner_organisation) }
         .to raise_error(described_class::InvalidParentActivity)
     end
 
     it "raises an exception if parent_activity is a third-party project" do
-      expect { described_class.new(parent_activity: third_party_project, delivery_partner_organisation: delivery_partner_organisation) }
+      expect { described_class.new(parent_activity: third_party_project, partner_organisation: partner_organisation) }
         .to raise_error(described_class::InvalidParentActivity)
     end
 
-    it "raises an exception if delivery_partner_organisation parameter is not an instance of Organisation" do
-      expect { described_class.new(parent_activity: programme, delivery_partner_organisation: Class.new) }
-        .to raise_error(described_class::InvalidDeliveryPartnerOrganisation)
+    it "raises an exception if partner_organisation parameter is not an instance of Organisation" do
+      expect { described_class.new(parent_activity: programme, partner_organisation: Class.new) }
+        .to raise_error(described_class::InvalidPartnerOrganisation)
     end
 
-    it "raises an exception if delivery_partner_organisation is BEIS" do
-      expect { described_class.new(parent_activity: fund, delivery_partner_organisation: beis) }
-        .to raise_error(described_class::InvalidDeliveryPartnerOrganisation)
+    it "raises an exception if partner_organisation is BEIS" do
+      expect { described_class.new(parent_activity: fund, partner_organisation: beis) }
+        .to raise_error(described_class::InvalidPartnerOrganisation)
     end
   end
 end

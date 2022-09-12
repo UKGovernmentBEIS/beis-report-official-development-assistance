@@ -11,9 +11,9 @@ class Staff::ActivitiesController < Staff::BaseController
   def index
     @organisation = Organisation.find(organisation_id)
     if @organisation.service_owner?
-      @delivery_partner_organisations = Organisation.delivery_partners
+      @partner_organisations = Organisation.partner_organisations
 
-      add_breadcrumb t("page_content.breadcrumbs.activities_by_delivery_partner"), organisation_activities_path(Organisation.service_owner)
+      add_breadcrumb t("page_content.breadcrumbs.activities_by_partner_organisation"), organisation_activities_path(Organisation.service_owner)
 
       render "staff/activities/index_beis"
     else
@@ -65,7 +65,7 @@ class Staff::ActivitiesController < Staff::BaseController
   def historic
     @organisation = Organisation.find(organisation_id)
     if @organisation.service_owner?
-      @delivery_partner_organisations = Organisation.delivery_partners
+      @partner_organisations = Organisation.partner_organisations
       render "staff/activities/index_beis"
     else
       @grouped_activities = Activity::GroupedActivitiesFetcher.new(
@@ -93,7 +93,7 @@ class Staff::ActivitiesController < Staff::BaseController
 
     return current_user.organisation.id unless Organisation.exists?(organisation_id)
     return current_user.organisation.id if organisation_id.blank?
-    return current_user.organisation.id if requested_organisation_is_not_current_users?(organisation_id) && current_user.delivery_partner?
+    return current_user.organisation.id if requested_organisation_is_not_current_users?(organisation_id) && current_user.partner_organisation?
     organisation_id
   end
 

@@ -1,5 +1,5 @@
 RSpec.feature "Users can view an activity's other funding" do
-  let(:user) { create(:delivery_partner_user) }
+  let(:user) { create(:partner_organisation_user) }
   let(:matched_effort_provider) { create(:matched_effort_provider) }
   let(:external_income_provider) { create(:external_income_provider) }
   let!(:activity) { create(:project_activity, organisation: user.organisation) }
@@ -22,7 +22,7 @@ RSpec.feature "Users can view an activity's other funding" do
       amount: 150_000)
   end
 
-  context "when the user is signed in as a delivery partner" do
+  context "when the user is signed in as a partner organisation user" do
     before { authenticate!(user: user) }
 
     it "lists the matched efforts" do
@@ -66,7 +66,7 @@ RSpec.feature "Users can view an activity's other funding" do
   end
 
   context "when the user is not a member of the activity's organisation" do
-    before { authenticate!(user: create(:delivery_partner_user)) }
+    before { authenticate!(user: create(:partner_organisation_user)) }
 
     it "does not allow the user to view the funding" do
       visit organisation_activity_other_funding_path(activity.organisation, activity)

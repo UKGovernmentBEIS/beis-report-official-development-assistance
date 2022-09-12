@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Staff::ActualsController do
-  let(:user) { create(:delivery_partner_user, organisation: organisation) }
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:user) { create(:partner_organisation_user, organisation: organisation) }
+  let(:organisation) { create(:partner_organisation) }
   let(:activity) { build_stubbed(:project_activity) }
   let(:report) { double("report") }
   let(:result) { Result.new(false) }

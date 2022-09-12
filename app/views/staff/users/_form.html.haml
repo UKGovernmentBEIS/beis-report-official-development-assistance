@@ -10,9 +10,9 @@
   - if @service_owner.present?
     = f.govuk_radio_buttons_fieldset :organisation, classes: "user-organisations" do
       = f.govuk_radio_button :organisation_id, @service_owner.id, label: { text: @service_owner.name }, link_errors: true
-      - if @delivery_partners.any?
+      - if @partner_organisations.any?
         = f.govuk_radio_divider
-        - @delivery_partners.each do |dp|
+        - @partner_organisations.each do |dp|
           = f.govuk_radio_button :organisation_id, dp.id, label: { text: dp.name }
   - else
     .govuk-inset-text

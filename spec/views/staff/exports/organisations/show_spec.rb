@@ -1,5 +1,5 @@
 RSpec.describe "staff/exports/organisations/show" do
-  let(:organisation) { build(:delivery_partner_organisation, id: SecureRandom.uuid) }
+  let(:organisation) { build(:partner_organisation, id: SecureRandom.uuid) }
   let(:xml_downloads) do
     [
       double("Iati::XmlDownload", title: "XML Download 1", path: "http://example.com/1"),
@@ -44,8 +44,8 @@ RSpec.describe "staff/exports/organisations/show" do
     end
   end
 
-  context "when the current user is a delivery partner" do
-    let(:user) { build(:delivery_partner_user, organisation: organisation) }
+  context "when the current user is a partner organisation user" do
+    let(:user) { build(:partner_organisation_user, organisation: organisation) }
 
     it "does not show the link to download all actuals" do
       expect(rendered).to_not have_export_row(report: "All actuals", path: actuals_exports_organisation_path(organisation, format: "csv"))

@@ -1,6 +1,6 @@
 require "iati_validator/xml"
 RSpec.describe "XML Validation", type: :request do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
   let(:user) { create(:beis_user) }
 
   before do

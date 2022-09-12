@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Report::OrganisationReportsFetcher do
-  let(:organisation) { build(:delivery_partner_organisation) }
+  let(:organisation) { build(:partner_organisation) }
 
   let(:fetcher) { described_class.new(organisation: organisation) }
 

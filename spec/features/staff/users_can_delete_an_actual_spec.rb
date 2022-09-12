@@ -1,9 +1,9 @@
 RSpec.feature "Users can delete an actual" do
-  let(:delivery_partner_user) { create(:delivery_partner_user) }
+  let(:partner_org_user) { create(:partner_organisation_user) }
   let(:beis_user) { create(:beis_user) }
 
   let!(:activity) { create(:programme_activity) }
-  let!(:report) { create(:report, :active, organisation: delivery_partner_user.organisation, fund: activity.associated_fund) }
+  let!(:report) { create(:report, :active, organisation: partner_org_user.organisation, fund: activity.associated_fund) }
   let!(:actual) { create(:actual, parent_activity: activity, report: report) }
 
   context "when the user belongs to BEIS" do
@@ -21,10 +21,10 @@ RSpec.feature "Users can delete an actual" do
     end
   end
 
-  context "when signed in as a delivery partner" do
-    before { authenticate!(user: delivery_partner_user) }
+  context "when signed in as a partner organisation user" do
+    before { authenticate!(user: partner_org_user) }
 
-    let!(:activity) { create(:project_activity, organisation: delivery_partner_user.organisation) }
+    let!(:activity) { create(:project_activity, organisation: partner_org_user.organisation) }
 
     scenario "deleting an actual on a project" do
       visit organisation_activity_path(activity.organisation, activity)

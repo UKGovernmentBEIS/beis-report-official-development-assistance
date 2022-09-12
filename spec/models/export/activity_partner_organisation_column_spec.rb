@@ -1,4 +1,4 @@
-RSpec.describe Export::ActivityDeliveryPartnerOrganisationColumn do
+RSpec.describe Export::ActivityPartnerOrganisationColumn do
   before(:all) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start

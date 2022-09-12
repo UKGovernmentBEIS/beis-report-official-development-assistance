@@ -1,6 +1,6 @@
 RSpec.feature "Users can create a third-party project" do
   context "when the user does NOT belong to BEIS" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
 
     context "when viewing a project" do
@@ -21,7 +21,7 @@ RSpec.feature "Users can create a third-party project" do
         _report = create(:report, :active, organisation: user.organisation, fund: project.associated_fund)
 
         activity = build(:third_party_project_activity, :gcrf_funded,
-          country_delivery_partners: ["National Council for the State Funding Agencies (CONFAP)"],
+          country_partner_organisations: ["National Council for the State Funding Agencies (CONFAP)"],
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5)

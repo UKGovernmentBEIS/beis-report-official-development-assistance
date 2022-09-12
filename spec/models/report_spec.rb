@@ -13,7 +13,7 @@ RSpec.describe Report, type: :model do
 
     context "in the :new validation context" do
       it "validates there are no unapproved reports for the organisation and fund" do
-        organisation = create(:delivery_partner_organisation)
+        organisation = create(:partner_organisation)
         existing_approved_report = create(:report, :approved, organisation: organisation)
         existing_unapproved_report = create(:report, state: "awaiting_changes", organisation: organisation)
 
@@ -59,7 +59,7 @@ RSpec.describe Report, type: :model do
       end
 
       describe "Ensuring that a new report does not attempt to rewrite history" do
-        let(:organisation) { create(:delivery_partner_organisation) }
+        let(:organisation) { create(:partner_organisation) }
         let(:fund) { create(:fund_activity) }
         context "where a report already exists for a period later than that of the new report" do
           it "is not valid" do
@@ -94,7 +94,7 @@ RSpec.describe Report, type: :model do
   end
 
   describe ".editable_for_activity" do
-    let!(:organisation) { create(:delivery_partner_organisation) }
+    let!(:organisation) { create(:partner_organisation) }
     let!(:project) { create(:project_activity, organisation: organisation) }
     let!(:project_in_another_fund) { create(:project_activity, organisation: organisation) }
 

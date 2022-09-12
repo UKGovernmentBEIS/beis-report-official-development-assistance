@@ -18,7 +18,7 @@ class Staff::ActivityFormsController < Staff::BaseController
       skip_step if @activity.fund?
     when :programme_status
       skip_step if @activity.fund?
-    when :country_delivery_partners
+    when :country_partner_organisations
       skip_step unless @activity.is_newton_funded?
     when :call_present
       skip_step unless @activity.requires_call_dates?
@@ -48,7 +48,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :fstc_applies
       skip_step unless Activity::Inference.service.editable?(@activity, :fstc_applies)
     when :identifier
-      skip_step if @activity.delivery_partner_identifier.present?
+      skip_step if @activity.partner_organisation_identifier.present?
     end
 
     render_wizard

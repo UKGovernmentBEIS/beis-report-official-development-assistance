@@ -1,6 +1,6 @@
 RSpec.describe Actual::Export do
-  let(:delivery_partner) { create(:delivery_partner_organisation) }
-  let(:activities) { Activity.where(organisation: delivery_partner) }
+  let(:partner_organisation) { create(:partner_organisation) }
+  let(:activities) { Activity.where(organisation: partner_organisation) }
   let(:export) { Actual::Export.new(activities) }
 
   let :quarter_headers do
@@ -12,7 +12,7 @@ RSpec.describe Actual::Export do
   end
 
   it "exports an empty data set" do
-    project = create(:project_activity, organisation: delivery_partner)
+    project = create(:project_activity, organisation: partner_organisation)
 
     expect(quarter_headers).to eq []
 
@@ -22,7 +22,7 @@ RSpec.describe Actual::Export do
   end
 
   it "exports one quarter of spend for a single project" do
-    project = create(:project_activity, organisation: delivery_partner)
+    project = create(:project_activity, organisation: partner_organisation)
 
     create(:actual, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 10)
     create(:actual, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 20)
@@ -35,7 +35,7 @@ RSpec.describe Actual::Export do
   end
 
   it "exports two quarters of spend for a single project with zeros for intervening quarters" do
-    project = create(:project_activity, organisation: delivery_partner)
+    project = create(:project_activity, organisation: partner_organisation)
 
     create(:actual, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 10)
     create(:actual, parent_activity: project, financial_year: 2014, financial_quarter: 4, value: 20)
@@ -48,8 +48,8 @@ RSpec.describe Actual::Export do
   end
 
   it "exports actual spend for two activities across different quarters" do
-    project = create(:project_activity, organisation: delivery_partner)
-    third_party_project = create(:third_party_project_activity, organisation: delivery_partner)
+    project = create(:project_activity, organisation: partner_organisation)
+    third_party_project = create(:third_party_project_activity, organisation: partner_organisation)
 
     create(:actual, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 10)
     create(:actual, parent_activity: third_party_project, financial_year: 2015, financial_quarter: 2, value: 20)
@@ -63,8 +63,8 @@ RSpec.describe Actual::Export do
   end
 
   it "includes activities that do not have any actuals recorded" do
-    project = create(:project_activity, organisation: delivery_partner)
-    third_party_project = create(:third_party_project_activity, organisation: delivery_partner)
+    project = create(:project_activity, organisation: partner_organisation)
+    third_party_project = create(:third_party_project_activity, organisation: partner_organisation)
 
     create(:actual, parent_activity: project, financial_year: 2014, financial_quarter: 1, value: 10)
 

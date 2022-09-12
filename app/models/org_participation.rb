@@ -5,7 +5,7 @@ class OrgParticipation < ApplicationRecord
   attribute :role, :string, default: "implementing"
 
   enum role: {
-    delivery_partner: 0,
+    partner_organisation: 0,
     matched_effort_provider: 1,
     external_income_provider: 2,
     implementing: 3,
@@ -18,7 +18,7 @@ class OrgParticipation < ApplicationRecord
   # to their "Activity" but we plan to use this for all type of Organisation, e.g.
   #
   #  Activity#has_one
-  #    :delivery_partner
+  #    :partner_organisation
   #    through: :extending_org_participation
   #
   # Activity#has_one

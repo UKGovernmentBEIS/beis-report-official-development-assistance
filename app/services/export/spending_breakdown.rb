@@ -1,7 +1,7 @@
 class Export::SpendingBreakdown
   ACTIVITY_ATTRIBUTES = [
     :roda_identifier,
-    :delivery_partner_identifier,
+    :partner_organisation_identifier,
     :title,
     :level,
     :programme_status
@@ -14,8 +14,8 @@ class Export::SpendingBreakdown
 
     @activity_attributes =
       Export::ActivityAttributesColumns.new(activities: @activities, attributes: ACTIVITY_ATTRIBUTES)
-    @delivery_partner_organisations =
-      Export::ActivityDeliveryPartnerOrganisationColumn.new(activities_relation: @activities)
+    @partner_organisations =
+      Export::ActivityPartnerOrganisationColumn.new(activities_relation: @activities)
     @actual_columns =
       Export::ActivityActualsColumns.new(activities: @activities, include_breakdown: true)
     @forecast_columns =
@@ -26,7 +26,7 @@ class Export::SpendingBreakdown
     return @activity_attributes.headers if actuals_rows.empty? && forecast_rows.empty?
 
     @activity_attributes.headers +
-      @delivery_partner_organisations.headers +
+      @partner_organisations.headers +
       @actual_columns.headers +
       @forecast_columns.headers
   end
@@ -35,11 +35,11 @@ class Export::SpendingBreakdown
     return [] if actuals_rows.empty? && forecast_rows.empty?
 
     attribute_row_data = @activity_attributes.rows
-    delivery_partner_organisations_row_data = @delivery_partner_organisations.rows
+    partner_organisations_row_data = @partner_organisations.rows
 
     activities.map do |activity|
       attribute_row_data.fetch(activity.id, nil) +
-        delivery_partner_organisations_row_data.fetch(activity.id, nil) +
+        partner_organisations_row_data.fetch(activity.id, nil) +
         actuals_rows.fetch(activity.id, nil) +
         forecast_rows.fetch(activity.id, nil)
     end

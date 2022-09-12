@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Export::OrganisationPolicy do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
 
   subject { described_class.new(user, organisation) }
 
@@ -19,8 +19,8 @@ RSpec.describe Export::OrganisationPolicy do
     end
   end
 
-  context "for a delivery partner" do
-    let(:user) { create(:delivery_partner_user) }
+  context "for a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
 
     it "controls access as expected" do
       is_expected.to forbid_action(:index)

@@ -55,8 +55,8 @@ RSpec.describe ForecastOverview do
   end
 
   context "for a level C activity, with report-pinned history" do
-    let(:delivery_partner) { create(:delivery_partner_organisation) }
-    let(:activity) { create(:project_activity, organisation: delivery_partner) }
+    let(:partner_organisation) { create(:partner_organisation) }
+    let(:activity) { create(:project_activity, organisation: partner_organisation) }
     let(:reporting_cycle) { ReportingCycle.new(activity, 4, 2015) }
 
     #   Report:     2015-Q4     2016-Q1     2016-Q2
@@ -288,7 +288,7 @@ RSpec.describe ForecastOverview do
     end
 
     context "when there are forecasts for multiple activities" do
-      let(:project) { create(:project_activity, parent: activity.parent, organisation: delivery_partner) }
+      let(:project) { create(:project_activity, parent: activity.parent, organisation: partner_organisation) }
       let(:project_history) { ForecastHistory.new(project, financial_quarter: 1, financial_year: 2019) }
       let(:project_overview) { ForecastOverview.new(project) }
 
@@ -311,7 +311,7 @@ RSpec.describe ForecastOverview do
 
   context "for a set of activities across different levels" do
     let!(:programme) { create(:programme_activity) }
-    let(:organisation) { create(:delivery_partner_organisation) }
+    let(:organisation) { create(:partner_organisation) }
 
     let!(:project_1) { create(:project_activity, parent: programme, organisation: organisation) }
     let!(:third_party_project_1) { create(:third_party_project_activity, parent: project_1, organisation: organisation) }

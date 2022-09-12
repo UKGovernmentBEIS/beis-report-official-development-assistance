@@ -16,8 +16,8 @@ RSpec.describe ExportPolicy do
     end
   end
 
-  context "as a Delivery partner user" do
-    let(:user) { create(:delivery_partner_user) }
+  context "as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
 
     it "controls actions as expected" do
       is_expected.to forbid_action(:index)

@@ -24,10 +24,10 @@ module Activities
         ["Implementing organisation names"]
     end
 
-    def initialize(uploader:, delivery_partner_organisation:, report:)
+    def initialize(uploader:, partner_organisation:, report:)
       @uploader = uploader
       @uploader_organisation = uploader.organisation
-      @delivery_partner_organisation = delivery_partner_organisation
+      @partner_organisation = partner_organisation
       @report = report
       @errors = []
       @created = []
@@ -58,7 +58,7 @@ module Activities
 
     def create_activity(row, index)
       if row["Parent RODA ID"].present?
-        creator = ActivityCreator.new(row: row, uploader: @uploader, delivery_partner_organisation: @delivery_partner_organisation, report: @report)
+        creator = ActivityCreator.new(row: row, uploader: @uploader, partner_organisation: @partner_organisation, report: @report)
         creator.create
         created << creator.activity unless creator.errors.any?
 
@@ -72,12 +72,12 @@ module Activities
       if row["Parent RODA ID"].present?
         add_error(index, :parent_id, row["Parent RODA ID"], I18n.t("importer.errors.activity.cannot_update.parent_present")) && return
       elsif row["Partner Organisation Identifier"].present?
-        add_error(index, :delivery_partner_identifier, row["Partner Organisation Identifier"], I18n.t("importer.errors.activity.cannot_update.delivery_partner_identifier_present")) && return
+        add_error(index, :partner_organisation_identifier, row["Partner Organisation Identifier"], I18n.t("importer.errors.activity.cannot_update.partner_organisation_identifier_present")) && return
       else
         updater = ActivityUpdater.new(
           row: row,
           uploader: @uploader,
-          delivery_partner_organisation: @delivery_partner_organisation,
+          partner_organisation: @partner_organisation,
           report: @report
         )
         updater.update
@@ -94,11 +94,11 @@ module Activities
     class ActivityUpdater
       attr_reader :errors, :activity, :row, :report
 
-      def initialize(row:, uploader:, delivery_partner_organisation:, report:)
+      def initialize(row:, uploader:, partner_organisation:, report:)
         @errors = {}
         @activity = find_activity_by_roda_id(row["RODA ID"])
         @uploader = uploader
-        @delivery_partner_organisation = delivery_partner_organisation
+        @partner_organisation = partner_organisation
         @row = row
         @report = report
         @converter = Converter.new(row, :update)
@@ -174,9 +174,9 @@ module Activities
     class ActivityCreator
       attr_reader :errors, :row, :activity
 
-      def initialize(row:, uploader:, delivery_partner_organisation:, report:)
+      def initialize(row:, uploader:, partner_organisation:, report:)
         @uploader = uploader
-        @delivery_partner_organisation = delivery_partner_organisation
+        @partner_organisation = partner_organisation
         @errors = {}
         @row = row
         @converter = Converter.new(row)
@@ -196,7 +196,7 @@ module Activities
 
         @activity = Activity.new_child(
           parent_activity: @parent_activity,
-          delivery_partner_organisation: @delivery_partner_organisation
+          partner_organisation: @partner_organisation
         ) { |a|
           a.form_state = "complete"
         }
@@ -293,7 +293,7 @@ module Activities
         title: "Title",
         description: "Description",
         benefitting_countries: "Benefitting Countries",
-        delivery_partner_identifier: "Partner organisation identifier",
+        partner_organisation_identifier: "Partner organisation identifier",
         gdi: "GDI",
         gcrf_strategic_area: "GCRF Strategic Area",
         gcrf_challenge_area: "GCRF Challenge Area",
@@ -329,7 +329,7 @@ module Activities
         objectives: "Aims/Objectives (PO Definition)",
         beis_identifier: "BEIS ID",
         uk_dp_named_contact: "UK PO Named Contact",
-        country_delivery_partners: "NF Partner Country PO"
+        country_partner_organisations: "NF Partner Country PO"
       }
 
       ALLOWED_BLANK_FIELDS = [
@@ -570,8 +570,8 @@ module Activities
         parse_date(actual_end_date, I18n.t("importer.errors.activity.invalid_actual_end_date"))
       end
 
-      def convert_country_delivery_partners(delivery_partners)
-        delivery_partners.split("|").map(&:strip).reject(&:blank?)
+      def convert_country_partner_organisations(partner_orgs)
+        partner_orgs.split("|").map(&:strip).reject(&:blank?)
       end
 
       def parse_date(date, message)

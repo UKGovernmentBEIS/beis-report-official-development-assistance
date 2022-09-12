@@ -37,7 +37,7 @@ RSpec.describe ActualPolicy do
     end
 
     context "when the activity is a project" do
-      let(:activity) { create(:project_activity, organisation: create(:delivery_partner_organisation)) }
+      let(:activity) { create(:project_activity, organisation: create(:partner_organisation)) }
 
       it "only permits show" do
         is_expected.to permit_action(:show)
@@ -51,7 +51,7 @@ RSpec.describe ActualPolicy do
     end
 
     context "when the activity is a third party project" do
-      let(:activity) { create(:third_party_project_activity, organisation: create(:delivery_partner_organisation)) }
+      let(:activity) { create(:third_party_project_activity, organisation: create(:partner_organisation)) }
 
       it "only permits show" do
         is_expected.to permit_action(:show)
@@ -65,8 +65,8 @@ RSpec.describe ActualPolicy do
     end
   end
 
-  context "when signed in as a Delivery partner user" do
-    let(:user) { create(:delivery_partner_user) }
+  context "when signed in as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
 
     context "when the activity is a fund" do
       let(:activity) { create(:fund_activity) }

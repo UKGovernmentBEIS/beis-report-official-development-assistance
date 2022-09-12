@@ -1,6 +1,6 @@
 RSpec.feature "users can upload activities" do
-  let(:organisation) { create(:delivery_partner_organisation) }
-  let(:user) { create(:delivery_partner_user, organisation: organisation) }
+  let(:organisation) { create(:partner_organisation) }
+  let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
   let!(:programme) { create(:programme_activity, :newton_funded, extending_organisation: organisation, roda_identifier: "AFUND-B-PROG", parent: create(:fund_activity, roda_identifier: "AFUND")) }
 
@@ -12,7 +12,7 @@ RSpec.feature "users can upload activities" do
   end
 
   before do
-    # Given I'm logged in as a DP
+    # Given I'm logged in as a PO
     authenticate!(user: user)
 
     # And I am on the Activities Upload page
@@ -154,7 +154,7 @@ RSpec.feature "users can upload activities" do
   end
 
   context "uploading a set of activities the user doesn't have permission to modify" do
-    let(:another_organisation) { create(:delivery_partner_organisation) }
+    let(:another_organisation) { create(:partner_organisation) }
     let!(:another_programme) { create(:programme_activity, parent: programme.associated_fund, extending_organisation: another_organisation, roda_identifier: "AFUND-BB-PROG") }
     let!(:existing_activity) { create(:project_activity, parent: programme, roda_identifier: "AFUND-B-PROG-EX42") }
 
@@ -220,7 +220,7 @@ RSpec.feature "users can upload activities" do
     end
   end
 
-  scenario "attempting to change the delivery partner identifier of an existing activity" do
+  scenario "attempting to change the partner organisation identifier of an existing activity" do
     activity_to_update = create(:project_activity, :gcrf_funded, organisation: organisation) { |activity|
       activity.implementing_organisations = [create(:implementing_organisation)]
     }
@@ -237,7 +237,7 @@ RSpec.feature "users can upload activities" do
       expect(page).to have_xpath("td[1]", text: "Partner organisation identifier")
       expect(page).to have_xpath("td[2]", text: "2")
       expect(page).to have_xpath("td[3]", text: "new-id-oh-no")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.cannot_update.delivery_partner_identifier_present"))
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.cannot_update.partner_organisation_identifier_present"))
     end
   end
 

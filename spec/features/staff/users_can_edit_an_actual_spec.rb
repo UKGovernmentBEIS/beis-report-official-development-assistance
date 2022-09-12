@@ -34,8 +34,8 @@ RSpec.feature "Users can edit an actual" do
     end
   end
 
-  context "when signed in as a delivery partner" do
-    let(:user) { create(:delivery_partner_user) }
+  context "when signed in as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
     let(:activity) { create(:project_activity, organisation: user.organisation) }
     let(:actual) { create(:actual, :with_comment, parent_activity: activity) }
     let(:report) { create(:report, organisation: activity.organisation, fund: activity.associated_fund) }

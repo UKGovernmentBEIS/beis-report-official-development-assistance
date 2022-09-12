@@ -3,7 +3,7 @@ RSpec.describe Export::SpendingBreakdown do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
 
-    @organisation = create(:delivery_partner_organisation, beis_organisation_reference: "BC")
+    @organisation = create(:partner_organisation, beis_organisation_reference: "BC")
     @activity = create(:project_activity, organisation: @organisation)
     @source_fund = Fund.new(1)
 
@@ -145,7 +145,7 @@ RSpec.describe Export::SpendingBreakdown do
     it "contains the appropriate activity values" do
       aggregate_failures do
         expect(value_for_header("RODA identifier")).to eql(@activity.roda_identifier)
-        expect(value_for_header("Partner organisation identifier")).to eql(@activity.delivery_partner_identifier)
+        expect(value_for_header("Partner organisation identifier")).to eql(@activity.partner_organisation_identifier)
         expect(value_for_header("Activity title")).to eql(@activity.title)
         expect(value_for_header("Activity level")).to eql("Project (level C)")
         expect(value_for_header("Activity status")).to eql("Spend in progress")
@@ -183,8 +183,8 @@ RSpec.describe Export::SpendingBreakdown do
       attribute_double = double(rows: rows_data_double)
       allow(Export::ActivityAttributesColumns).to receive(:new).and_return(attribute_double)
 
-      delivery_partner_organisation_double = double(rows: rows_data_double)
-      allow(Export::ActivityDeliveryPartnerOrganisationColumn).to receive(:new).and_return(delivery_partner_organisation_double)
+      partner_organisation_double = double(rows: rows_data_double)
+      allow(Export::ActivityPartnerOrganisationColumn).to receive(:new).and_return(partner_organisation_double)
 
       actuals_double = double(rows: rows_data_double, last_financial_quarter: FinancialQuarter.new(2, 2021))
       allow(Export::ActivityActualsColumns).to receive(:new).and_return(actuals_double)
@@ -198,7 +198,7 @@ RSpec.describe Export::SpendingBreakdown do
         .to have_received(:rows)
         .once
 
-      expect(delivery_partner_organisation_double)
+      expect(partner_organisation_double)
         .to have_received(:rows)
         .once
 
@@ -223,7 +223,7 @@ RSpec.describe Export::SpendingBreakdown do
 
     context "when there are no activities" do
       let(:fund) { create(:fund_activity) }
-      let(:organisation) { create(:delivery_partner_organisation) }
+      let(:organisation) { create(:partner_organisation) }
       subject { described_class.new(source_fund: fund, organisation: organisation) }
 
       it "returns the activity attribute headers only" do
@@ -241,7 +241,7 @@ RSpec.describe Export::SpendingBreakdown do
 
     context "when there are actvities but NONE have actual spend, refunds and forecasts" do
       before do
-        @organisation = create(:delivery_partner_organisation)
+        @organisation = create(:partner_organisation)
         @activities = create_list(:project_activity, 3, organisation: @organisation)
 
         subject {

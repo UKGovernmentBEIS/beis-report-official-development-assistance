@@ -1,7 +1,7 @@
 RSpec.describe ActivitySearch do
   let(:beis_user) { create(:beis_user) }
-  let(:alice) { create(:delivery_partner_user) }
-  let(:bob) { create(:delivery_partner_user) }
+  let(:alice) { create(:partner_organisation_user) }
+  let(:bob) { create(:partner_organisation_user) }
 
   let!(:fund) { create(:fund_activity, roda_identifier: "ABC") }
 
@@ -26,8 +26,8 @@ RSpec.describe ActivitySearch do
       end
     end
 
-    describe "searching for delivery partner identifiers" do
-      let(:query) { alice_project.delivery_partner_identifier }
+    describe "searching for partner organisation identifiers" do
+      let(:query) { alice_project.partner_organisation_identifier }
 
       it "returns the matching activities" do
         expect(activity_search.results).to match_array [alice_project]
@@ -97,7 +97,7 @@ RSpec.describe ActivitySearch do
     end
   end
 
-  context "for delivery partners" do
+  context "for partner organisations" do
     let(:user) { alice }
 
     describe "searching for a fund's RODA identifier" do
@@ -108,16 +108,16 @@ RSpec.describe ActivitySearch do
       end
     end
 
-    describe "searching for their own delivery partner identifiers" do
-      let(:query) { alice_project.delivery_partner_identifier }
+    describe "searching for their own partner organisation identifiers" do
+      let(:query) { alice_project.partner_organisation_identifier }
 
       it "returns the matching activities" do
         expect(activity_search.results).to match_array [alice_project]
       end
     end
 
-    describe "searching for another delivery partner's identifiers" do
-      let(:query) { bob_project.delivery_partner_identifier }
+    describe "searching for another partner organisation's identifiers" do
+      let(:query) { bob_project.partner_organisation_identifier }
 
       it "returns nothing" do
         expect(activity_search.results).to match_array []

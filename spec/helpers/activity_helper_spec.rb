@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ActivityHelper, type: :helper do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
 
   describe "#step_is_complete_or_next?" do
     context "when the activity has passed the identification step" do
@@ -39,11 +39,11 @@ RSpec.describe ActivityHelper, type: :helper do
     end
 
     context "when the parent is a fund" do
-      context "and the user is delivery partner" do
+      context "and the user is partner organisation user" do
         it "returns the parent title without a link" do
           parent_activity = create(:fund_activity)
           _activity = create(:programme_activity, parent: parent_activity)
-          user = create(:delivery_partner_user)
+          user = create(:partner_organisation_user)
 
           expect(helper.link_to_activity_parent(parent: parent_activity, user: user)).to eql parent_activity.title
         end

@@ -26,7 +26,7 @@ class ActivityPolicy < ApplicationPolicy
   def create_transfer?
     return beis_user? if record.fund? || record.programme?
 
-    if delivery_partner_user?
+    if partner_organisation_user?
       record.organisation == user.organisation && Report.editable.for_activity(record).exists?
     end
   end
@@ -52,7 +52,7 @@ class ActivityPolicy < ApplicationPolicy
   def update?
     return true if beis_user? && record.organisation == user.organisation
 
-    if delivery_partner_user?
+    if partner_organisation_user?
       return false if record.organisation != user.organisation
       return false if record.fund? || record.programme?
       return false unless editable_report?

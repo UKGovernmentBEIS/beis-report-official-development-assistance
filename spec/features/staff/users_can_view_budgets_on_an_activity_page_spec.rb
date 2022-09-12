@@ -48,11 +48,11 @@ RSpec.feature "Users can view budgets on an activity page" do
     end
 
     context "when the activity is project level" do
-      let(:delivery_partner_user) { create(:delivery_partner_user) }
+      let(:partner_org_user) { create(:partner_organisation_user) }
       scenario "budget information is shown on the page" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
-        project_activity = create(:project_activity, parent: programme_activity, organisation: delivery_partner_user.organisation)
+        project_activity = create(:project_activity, parent: programme_activity, organisation: partner_org_user.organisation)
 
         budget = create(:budget, parent_activity: project_activity)
         budget_presenter = BudgetPresenter.new(budget)
@@ -65,7 +65,7 @@ RSpec.feature "Users can view budgets on an activity page" do
       scenario "a BEIS user cannot edit/create a budget" do
         fund_activity = create(:fund_activity, organisation: user.organisation)
         programme_activity = create(:programme_activity, parent: fund_activity, organisation: user.organisation)
-        project_activity = create(:project_activity, parent: programme_activity, organisation: delivery_partner_user.organisation)
+        project_activity = create(:project_activity, parent: programme_activity, organisation: partner_org_user.organisation)
 
         budget = create(:budget, parent_activity: project_activity)
 
@@ -79,8 +79,8 @@ RSpec.feature "Users can view budgets on an activity page" do
     end
   end
 
-  context "when the user is a delivery partner" do
-    let(:user) { create(:delivery_partner_user) }
+  context "when the user is a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
 
     context "when the activity is programme level" do
       scenario "budget information is shown on the page" do
@@ -131,7 +131,7 @@ RSpec.feature "Users can view budgets on an activity page" do
         budget_information_is_shown_on_page(budget_presenter)
       end
 
-      scenario "a delivery partner can edit/create a budget" do
+      scenario "a partner organisation user can edit/create a budget" do
         programme_activity = create(:programme_activity, extending_organisation: user.organisation)
         report = create(:report, :active, organisation: user.organisation, fund: programme_activity.associated_fund)
         project_activity = create(:project_activity, parent: programme_activity, organisation: user.organisation)

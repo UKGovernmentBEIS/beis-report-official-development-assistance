@@ -31,15 +31,15 @@ RSpec.describe Staff::Exports::OrganisationsController do
     end
   end
 
-  let(:organisation) { create(:delivery_partner_organisation, iati_reference: "GB-GOV-ADTJQ") }
+  let(:organisation) { create(:partner_organisation, iati_reference: "GB-GOV-ADTJQ") }
   let(:fund) { Fund.by_short_name("NF") }
 
   before do
     allow(controller).to receive(:current_user).and_return(user)
   end
 
-  context "when logged in as a delivery partner" do
-    let(:user) { create(:delivery_partner_user, organisation: organisation) }
+  context "when logged in as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
     describe "#show" do
       it "only adds a breadcrumb for the current page" do

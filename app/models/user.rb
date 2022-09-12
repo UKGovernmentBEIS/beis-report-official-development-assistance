@@ -15,7 +15,7 @@ class User < ApplicationRecord
 
   scope :active, -> { where(active: true) }
 
-  delegate :service_owner?, :delivery_partner?, to: :organisation
+  delegate :service_owner?, :partner_organisation?, to: :organisation
 
   def active_for_authentication?
     active

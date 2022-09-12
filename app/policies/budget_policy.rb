@@ -11,7 +11,7 @@ class BudgetPolicy < ApplicationPolicy
       return true if record.parent_activity.fund? || record.parent_activity.programme?
     end
 
-    if delivery_partner_user?
+    if partner_organisation_user?
       return true if editable_report_for_organisation_and_fund.present?
     end
 
@@ -25,7 +25,7 @@ class BudgetPolicy < ApplicationPolicy
       return true if record.parent_activity.fund? || record.parent_activity.programme?
     end
 
-    if delivery_partner_user? && editable_report_for_organisation_and_fund.present?
+    if partner_organisation_user? && editable_report_for_organisation_and_fund.present?
       return true if editable_report_for_organisation_and_fund == record.report
     end
 

@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Report::GroupedReportsFetcher do
-  let(:organisation1) { build(:delivery_partner_organisation) }
-  let(:organisation2) { build(:delivery_partner_organisation) }
+  let(:organisation1) { build(:partner_organisation) }
+  let(:organisation2) { build(:partner_organisation) }
 
   describe "#approved" do
     it "returns approved reports grouped by organisation and sorted by organisation name" do

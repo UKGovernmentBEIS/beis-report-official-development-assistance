@@ -7,7 +7,7 @@
     %td.govuk-table__cell= report.state
   %td.govuk-table__cell= report.fund.source_fund.short_name
   %td.govuk-table__cell= report.description
-  - if type == "current" && current_user.delivery_partner?
+  - if type == "current" && current_user.partner_organisation?
     %td.govuk-table__cell= report.can_edit_message
   %td.govuk-table__cell
     - if policy(:report).edit?

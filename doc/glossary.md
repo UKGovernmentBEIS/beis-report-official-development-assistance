@@ -111,7 +111,7 @@ Statistics on International Development
 
 Also "level D"
 
-An activity that is done on behalf of a PO by a third party, such as an university. It's the partner organisation that manages this activity and reports on the financials to BEIS, i.e. `third_party_project.extending_organisation = delivery_partner`
+An activity that is done on behalf of a PO by a third party, such as an university. It's the partner organisation that manages this activity and reports on the financials to BEIS, i.e. `third_party_project.extending_organisation = partner_organisation`
 
 ## Outgoing Transfer
 

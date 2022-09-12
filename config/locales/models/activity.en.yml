@@ -15,7 +15,7 @@ en:
     activity:
       edit: Activity %{name} - Publish to IATI
       show: Activity %{name}
-      index: Activities for %{delivery_partner_name}
+      index: Activities for %{partner_organisation_name}
       details: Activity %{name} - Details
       other_funding: Activity %{name} - Other funding
       financials: Activity %{name} - Financials
@@ -38,7 +38,7 @@ en:
           "false": "No"
         channel_of_delivery_code: Channel of delivery code
         collaboration_type: What is the collaboration type for this activity?
-        country_delivery_partners: Name and acronym
+        country_partner_organisations: Name and acronym
         gcrf_challenge_area_options:
           "0": Not applicable
           "1": Secure and resilient food systems supported by sustainable marine resources and agriculture
@@ -57,7 +57,7 @@ en:
         geography_options:
           recipient_region: Region
           recipient_country: Country
-        delivery_partner_identifier: Enter your unique identifier
+        partner_organisation_identifier: Enter your unique identifier
         intended_beneficiaries: What are the intended beneficiaries?
         objectives: Aims/Objectives of the activity
         oda_eligibility:
@@ -120,7 +120,7 @@ en:
         call_open_date: Call open date
         call_close_date: Call close date
         channel_of_delivery_code: Channel of delivery code
-        country_delivery_partners: Country partner organisation
+        country_partner_organisations: Country partner organisation
         gcrf_strategic_area: What GCRF Strategic area does your activity relate to?
         gcrf_challenge_area: GCRF challenge area
         fund_pillar: What Newton Fund Pillar does this activity fall under?
@@ -164,9 +164,9 @@ en:
         aid_type: Where an activity is not G01 or E01 we would expect most of our activity to be classified as D02 but there will be cases where C01 is more appropriate.
         call_open_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity start date! Date call will be/was launched. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the opening date of the first call (outline) only is sufficient
         call_close_date: (Enter as dd/mm/yyyy) - This is not the same as IATI Activity End date! Date call will be/was closed. Estimate sufficient until Activity Status is 'Decided'. Where there will be calls for outline and then full proposals, the closing date of the first call (outline) only is sufficient
-        country_delivery_partners: "Please provide up to ten country partner organisations. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
+        country_partner_organisations: "Please provide up to ten country partner organisations. A name is required, provide a acronym where applicable, for example: 'National Council for the State Funding Agencies (CONFAP)'"
         fund_pillar: The Newton Fund largely comprises three pillar activities, which all activities must fall under. Use 'Not applicable' for delivery, other non-programme/project lines.
-        delivery_partner_identifier: This should be the reference you use to identify this activity in your internal systems and other third-party services. Once set, this value cannot be changed, see the guidance below for more information and support.
+        partner_organisation_identifier: This should be the reference you use to identify this activity in your internal systems and other third-party services. Once set, this value cannot be changed, see the guidance below for more information and support.
         gcrf_strategic_area: Select no more than two areas.
         gcrf_challenge_area: Select the most relevant GCRF challenge area for this activity. For broad programme calls, please select the challenge area most commonly represented across the individual projects within the programme. If the activity is a delivery line, you may select 'Not applicable'.
         gdi: Global Development Impact policy refocuses the way we use our ODA funding when partnering with certain countries, seeking to promote the global development impact over the local or domestic. Current GDI-Applicable countries include China and India
@@ -250,7 +250,7 @@ en:
         updated_activities: Updated activities
         new_activities_report: New activities added in this report
         updated_activities_report: Activities updated in this report
-        activities_by_delivery_partner: Activities by partner organisation
+        activities_by_partner_organisation: Activities by partner organisation
     header:
       activity:
         identifier: RODA Identifier
@@ -321,7 +321,7 @@ en:
     breadcrumbs:
       current_index: Current activities
       historic_index: Historic activities
-      activities_by_delivery_partner: Activities by partner organisation
+      activities_by_partner_organisation: Activities by partner organisation
       organisation_current_index: "%{org_name} current activities"
       organisation_historic_index: "%{org_name} historic activities"
   tabs:
@@ -370,7 +370,7 @@ en:
         channel_of_delivery_code: Channel of delivery code
         collaboration_type: Collaboration type
         country: What country will benefit from this activity?
-        country_delivery_partners: Country partner organisation
+        country_partner_organisations: Country partner organisation
         covid19_related: Is this activity related to Covid-19?
         dates: What are the start and end dates for the %{level}?
         fund_pillar: What Newton Fund Pillar does this activity fall under?
@@ -408,7 +408,7 @@ en:
         transparency_identifier: IATI identifier
         beis_identifier: Original BEIS tracker identifier
         level: Activity level
-        delivery_partner_identifier: Partner organisation identifier
+        partner_organisation_identifier: Partner organisation identifier
         recipient_region: Recipient region
         recipient_country: Recipient country
         intended_beneficiaries: Intended beneficiaries
@@ -430,7 +430,7 @@ en:
         oda_eligibility_lead: ODA eligibility lead contact name
         covid19_related: Covid-19 related research
         programme_status: Activity status
-        country_delivery_partners: Newton Fund Country Partner Organisations
+        country_partner_organisations: Newton Fund Country Partner Organisations
         uk_dp_named_contact: Activity contact name
         call_open_date: Call open date
         call_close_date: Call close date
@@ -471,7 +471,7 @@ en:
         organisation_id: Organisation identifier
         tied_status: Tied status
         organisation: Organisation
-        delivery_partner_organisation: Partner organisation
+        partner_organisation: Partner organisation
     errors:
       models:
         activity:
@@ -480,7 +480,7 @@ en:
               between: Date must be between %{min} years ago and %{max} years in the future
               not_in_future: Actual end date must not be in the future
               invalid: Please enter a valid date
-            country_delivery_partners:
+            country_partner_organisations:
               blank: Enter at least one country partner organisation
             dates: Enter an actual start date or a planned start date for the activity
             actual_start_date:
@@ -505,7 +505,7 @@ en:
               blank: Enter objectives
             parent:
               blank: Select a parent activity
-            delivery_partner_identifier:
+            partner_organisation_identifier:
               blank: Enter a unique identifier
             title:
               blank: Enter a title
@@ -572,5 +572,5 @@ en:
         cannot_create: There is no RODA fragment or parent activity present, so cannot create an Activity
         cannot_update:
           parent_present: There is an existing RODA ID present, but there is a parent activity specified too, which will overwrite the existing parent. Please remove the parent ID from this row and try again.
-          delivery_partner_identifier_present: The partner organisation identifier cannot be changed. Please remove the PO identifier from this row and try again.
+          partner_organisation_identifier_present: The partner organisation identifier cannot be changed. Please remove the PO identifier from this row and try again.
         unauthorised: You are not authorised to report against this activity

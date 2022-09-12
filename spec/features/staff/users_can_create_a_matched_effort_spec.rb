@@ -1,6 +1,6 @@
 RSpec.describe "Users can create a matched effort" do
-  context "when signed in as a delivery partner" do
-    let(:user) { create(:delivery_partner_user) }
+  context "when signed in as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
     let(:programme) { create(:programme_activity, extending_organisation: user.organisation) }
 
     let!(:project) { create(:project_activity, :with_report, organisation: user.organisation, parent: programme) }

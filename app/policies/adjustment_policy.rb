@@ -1,14 +1,14 @@
 class AdjustmentPolicy < ApplicationPolicy
   def new?
     return false if record.parent_activity.level.nil?
-    return true if delivery_partner_user? && editable_report_exists?
+    return true if partner_organisation_user? && editable_report_exists?
 
     false
   end
 
   def create?
     return false if record.parent_activity.level.nil?
-    return true if delivery_partner_user? && editable_report_exists?
+    return true if partner_organisation_user? && editable_report_exists?
 
     false
   end

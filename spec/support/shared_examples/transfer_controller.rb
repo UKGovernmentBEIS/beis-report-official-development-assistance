@@ -39,8 +39,8 @@ RSpec.shared_examples "a transfer controller" do
     end
   end
 
-  context "when logged in as a delivery partner user" do
-    let(:user) { create(:delivery_partner_user) }
+  context "when logged in as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
 
     context "when the activity is a programme" do
       let(:activity) { create(:programme_activity) }

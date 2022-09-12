@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe UpdateRefund do
   let(:refund) { create(:refund, value: BigDecimal("101.01"), financial_quarter: 1) }
-  let(:user) { create(:delivery_partner_user) }
+  let(:user) { create(:partner_organisation_user) }
   let(:history_recorder) { instance_double(HistoryRecorder, call: double) }
   let(:updater) { described_class.new(refund: refund, user: user) }
   let!(:original_comment) { refund.comment.body }

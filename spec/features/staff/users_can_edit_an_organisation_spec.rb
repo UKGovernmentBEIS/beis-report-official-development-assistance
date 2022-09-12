@@ -1,6 +1,6 @@
 RSpec.feature "Users can edit organisations" do
   let!(:beis_organisation) { create(:beis_organisation) }
-  let!(:another_organisation) { create(:delivery_partner_organisation) }
+  let!(:another_organisation) { create(:partner_organisation) }
 
   context "when the user is not logged in" do
     it "redirects the user to the root path" do

@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe OrganisationPresenter do
-  let(:organisation) { FactoryBot.build(:delivery_partner_organisation, language_code: "EN", default_currency: "GBP") }
+  let(:organisation) { FactoryBot.build(:partner_organisation, language_code: "EN", default_currency: "GBP") }
 
   describe "#language_code" do
     it "converts to readable form" do

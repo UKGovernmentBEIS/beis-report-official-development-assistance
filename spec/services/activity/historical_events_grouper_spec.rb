@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Activity::HistoricalEventsGrouper do
-  let(:user1) { create(:delivery_partner_user, email: "john@example.com") }
-  let(:user2) { create(:delivery_partner_user, email: "fred@example.com") }
+  let(:user1) { create(:partner_organisation_user, email: "john@example.com") }
+  let(:user2) { create(:partner_organisation_user, email: "fred@example.com") }
   let(:activity) { create(:project_activity) }
 
   let!(:event1) do

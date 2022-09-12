@@ -31,7 +31,7 @@ class Activity
     end
 
     def set_identifier
-      assign_attributes_for_step("delivery_partner_identifier")
+      assign_attributes_for_step("partner_organisation_identifier")
     end
 
     def set_purpose
@@ -53,12 +53,12 @@ class Activity
       activity.assign_attributes(total_applications: params_for("total_applications"), total_awards: params_for("total_awards"))
     end
 
-    def set_country_delivery_partners
-      country_delivery_partners = activity_params
-        .permit(country_delivery_partners: [])
-        .fetch("country_delivery_partners", []).reject(&:blank?)
+    def set_country_partner_organisations
+      country_partner_orgs = activity_params
+        .permit(country_partner_organisations: [])
+        .fetch("country_partner_organisations", []).reject(&:blank?)
 
-      activity.assign_attributes(country_delivery_partners: country_delivery_partners)
+      activity.assign_attributes(country_partner_organisations: country_partner_orgs)
     end
 
     def set_dates

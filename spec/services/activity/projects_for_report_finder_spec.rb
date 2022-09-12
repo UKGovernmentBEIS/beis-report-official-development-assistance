@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Activity::ProjectsForReportFinder do
   it "only returns projects and third party projects that are for the report's organisation and fund" do
-    organisation = create(:delivery_partner_organisation)
+    organisation = create(:partner_organisation)
     newton_fund = create(:fund_activity, :newton)
     report = create(:report, organisation: organisation, fund: newton_fund)
 

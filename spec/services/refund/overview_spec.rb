@@ -1,6 +1,6 @@
 RSpec.describe Refund::Overview do
-  let(:delivery_partner) { create(:delivery_partner_organisation) }
-  let(:project) { create(:project_activity, organisation: delivery_partner) }
+  let(:partner_organisation) { create(:partner_organisation) }
+  let(:project) { create(:project_activity, organisation: partner_organisation) }
   let(:reporting_cycle) { ReportingCycle.new(project, 4, 2018) }
   let(:include_adjustments) { false }
   let(:overview) { described_class.new(report: report, include_adjustments: include_adjustments) }

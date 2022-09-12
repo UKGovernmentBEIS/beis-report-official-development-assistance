@@ -12,7 +12,7 @@ module TransferPolicy
   def create?
     return beis_user? if target_activity.fund? || target_activity.programme?
 
-    if delivery_partner_user?
+    if partner_organisation_user?
       user.organisation == target_activity.organisation && editable_report_for_organisation_and_fund.present?
     end
   end
@@ -20,7 +20,7 @@ module TransferPolicy
   def update?
     return beis_user? if target_activity.fund? || target_activity.programme?
 
-    if delivery_partner_user?
+    if partner_organisation_user?
       user.organisation == target_activity.organisation && record.report&.editable?
     end
   end
@@ -28,7 +28,7 @@ module TransferPolicy
   def destroy?
     return beis_user? if target_activity.programme?
 
-    if delivery_partner_user?
+    if partner_organisation_user?
       user.organisation == target_activity.organisation && record.report&.editable?
     end
   end

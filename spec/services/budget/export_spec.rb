@@ -89,7 +89,7 @@ RSpec.describe Budget::Export do
           expect(subject.rows).to match_array([
             [
               activity1.roda_identifier,
-              activity1.delivery_partner_identifier,
+              activity1.partner_organisation_identifier,
               activity1.extending_organisation.name,
               "Project (level C)",
               activity1.title,
@@ -100,7 +100,7 @@ RSpec.describe Budget::Export do
             ],
             [
               activity1.roda_identifier,
-              activity1.delivery_partner_identifier,
+              activity1.partner_organisation_identifier,
               activity1.extending_organisation.name,
               "Project (level C)",
               activity1.title,
@@ -111,7 +111,7 @@ RSpec.describe Budget::Export do
             ],
             [
               activity2.roda_identifier,
-              activity2.delivery_partner_identifier,
+              activity2.partner_organisation_identifier,
               activity2.extending_organisation.name,
               "Project (level C)",
               activity2.title,
@@ -122,7 +122,7 @@ RSpec.describe Budget::Export do
             ],
             [
               activity2.roda_identifier,
-              activity2.delivery_partner_identifier,
+              activity2.partner_organisation_identifier,
               activity2.extending_organisation.name,
               "Project (level C)",
               activity2.title,
@@ -146,7 +146,7 @@ RSpec.describe Budget::Export do
   end
 
   context "when an organisation is specified" do
-    let(:organisation) { build(:delivery_partner_organisation) }
+    let(:organisation) { build(:partner_organisation) }
 
     subject { described_class.new(source_fund: fund, organisation: organisation) }
 

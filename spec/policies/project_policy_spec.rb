@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ProjectPolicy do
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:organisation) { create(:partner_organisation) }
   let(:project) { create(:project_activity, organisation: organisation) }
   let(:another_project) { create(:project_activity) }
 
@@ -27,7 +27,7 @@ RSpec.describe ProjectPolicy do
   end
 
   context "as a user that does NOT belong to BEIS" do
-    let(:user) { build_stubbed(:delivery_partner_user, organisation: organisation) }
+    let(:user) { build_stubbed(:partner_organisation_user, organisation: organisation) }
 
     it "controls actions as expected" do
       is_expected.to permit_action(:index)

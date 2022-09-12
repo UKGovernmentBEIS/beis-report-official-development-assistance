@@ -42,8 +42,8 @@ RSpec.feature "BEIS users can can view other users" do
     end
 
     scenario "users are grouped by their organisation name in alphabetical order" do
-      a_organisation = create(:delivery_partner_organisation, name: "A Organisation")
-      b_organisation = create(:delivery_partner_organisation, name: "B Organisation")
+      a_organisation = create(:partner_organisation, name: "A Organisation")
+      b_organisation = create(:partner_organisation, name: "B Organisation")
 
       a1_user = create(:administrator, organisation: a_organisation)
       a2_user = create(:administrator, organisation: a_organisation)

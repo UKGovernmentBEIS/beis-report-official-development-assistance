@@ -7,7 +7,7 @@ class RefundPolicy < ApplicationPolicy
   def create?
     return false if record.parent_activity.level.nil?
     return true if beis_user? && editable_report_for_organisation_and_fund.present? && parent_activity_is_a_programme?
-    return true if delivery_partner_user? && editable_report_for_organisation_and_fund.present?
+    return true if partner_organisation_user? && editable_report_for_organisation_and_fund.present?
 
     false
   end
@@ -26,7 +26,7 @@ class RefundPolicy < ApplicationPolicy
     return false if record.parent_activity.level.nil?
     return true if beis_user? && parent_activity_is_a_programme?
 
-    if delivery_partner_user? && editable_report_for_organisation_and_fund.present?
+    if partner_organisation_user? && editable_report_for_organisation_and_fund.present?
       return true if editable_report_for_organisation_and_fund == record.report
     end
 

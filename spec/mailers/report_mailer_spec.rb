@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe ReportMailer, type: :mailer do
   let(:fund) { create(:fund_activity, :gcrf) }
-  let(:organisation) { create(:delivery_partner_organisation, beis_organisation_reference: "ABC") }
+  let(:organisation) { create(:partner_organisation, beis_organisation_reference: "ABC") }
   let(:user) { create(:administrator) }
   let(:report) { create(:report, financial_quarter: 4, financial_year: 2020, deadline: DateTime.parse("2021-01-01"), fund: fund, organisation: organisation) }
 
@@ -53,7 +53,7 @@ RSpec.describe ReportMailer, type: :mailer do
   describe "#submitted" do
     let(:mail) { ReportMailer.with(user: user, report: report).submitted }
 
-    context "when the user is a delivery partner in the organisation that the report belongs to" do
+    context "when the user is a partner organisation user in the organisation that the report belongs to" do
       let(:user) { create(:administrator, organisation: organisation) }
 
       it "sends the email to the user's email address" do
@@ -127,8 +127,8 @@ RSpec.describe ReportMailer, type: :mailer do
       end
     end
 
-    context "when the user is a delivery partner in a different organisation" do
-      let(:user) { create(:administrator, organisation: build(:delivery_partner_organisation)) }
+    context "when the user is a partner organisation user in a different organisation" do
+      let(:user) { create(:administrator, organisation: build(:partner_organisation)) }
 
       it "should raise an error" do
         expect { mail.body }.to raise_error(ArgumentError, "User must either be a service owner or belong to the organisation making the report")
@@ -147,7 +147,7 @@ RSpec.describe ReportMailer, type: :mailer do
   describe "#approved" do
     let(:mail) { ReportMailer.with(user: user, report: report).approved }
 
-    context "when the user is a delivery partner in the organisation that the report belongs to" do
+    context "when the user is a partner organisation user in the organisation that the report belongs to" do
       let(:user) { create(:administrator, organisation: organisation) }
 
       it "sends the email to the user's email address" do
@@ -231,8 +231,8 @@ RSpec.describe ReportMailer, type: :mailer do
       end
     end
 
-    context "when the user is a delivery partner in a different organisation" do
-      let(:user) { create(:administrator, organisation: build(:delivery_partner_organisation)) }
+    context "when the user is a partner organisation user in a different organisation" do
+      let(:user) { create(:administrator, organisation: build(:partner_organisation)) }
 
       it "should raise an error" do
         expect { mail.body }.to raise_error(ArgumentError, "User must either be a service owner or belong to the organisation making the report")

@@ -16,7 +16,7 @@ module ActivityHelper
 
   def link_to_activity_parent(parent:, user:)
     return if parent.nil?
-    return parent.title if parent.fund? && user.delivery_partner?
+    return parent.title if parent.fund? && user.partner_organisation?
     link_to parent.title, organisation_activity_path(parent.organisation, parent), {class: "govuk-link govuk-link--no-visited-state"}
   end
 

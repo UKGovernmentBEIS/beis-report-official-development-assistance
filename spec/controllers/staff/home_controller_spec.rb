@@ -8,12 +8,12 @@ RSpec.describe Staff::HomeController do
 
     context "when signed in as a BEIS user" do
       let(:user) { create(:beis_user) }
-      let(:delivery_partners) { create_list(:delivery_partner_organisation, 5) }
+      let(:partner_organisations) { create_list(:partner_organisation, 5) }
 
-      it "fetches the delivery partners" do
+      it "fetches the partner organisations" do
         get :show
 
-        expect(assigns(:delivery_partner_organisations)).to match_array(delivery_partners)
+        expect(assigns(:partner_organisations)).to match_array(partner_organisations)
       end
 
       it "renders the service owner view" do
@@ -21,7 +21,7 @@ RSpec.describe Staff::HomeController do
       end
     end
 
-    context "when signed in as a delivery partner" do
+    context "when signed in as a partner organisation user" do
       let(:fund) { build_stubbed(:fund_activity) }
       let(:programme) { build_stubbed(:programme_activity) }
       let(:project) { build_stubbed(:project_activity) }
@@ -37,7 +37,7 @@ RSpec.describe Staff::HomeController do
       end
 
       let(:fetcher) { instance_double(Activity::GroupedActivitiesFetcher, call: activities) }
-      let(:user) { create(:delivery_partner_user) }
+      let(:user) { create(:partner_organisation_user) }
 
       before do
         allow(Activity::GroupedActivitiesFetcher).to receive(:new).and_return(fetcher)
@@ -59,8 +59,8 @@ RSpec.describe Staff::HomeController do
         expect(assigns(:grouped_activities)).to eq(activities)
       end
 
-      it "renders the delivery partner view" do
-        expect(get(:show)).to render_template(:delivery_partner)
+      it "renders the partner organisation view" do
+        expect(get(:show)).to render_template(:partner_organisation)
       end
     end
   end

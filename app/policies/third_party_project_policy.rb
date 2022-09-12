@@ -1,6 +1,6 @@
 class ThirdPartyProjectPolicy < ProjectPolicy
   def create?
-    delivery_partner_user? && editable_report?
+    partner_organisation_user? && editable_report?
   end
 
   private

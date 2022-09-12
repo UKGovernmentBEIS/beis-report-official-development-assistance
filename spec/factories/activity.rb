@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :__activity do
     title { Faker::Lorem.sentence }
-    delivery_partner_identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
+    partner_organisation_identifier { "GCRF-#{Faker::Alphanumeric.alpha(number: 5).upcase!}" }
     roda_identifier { nil }
     beis_identifier { nil }
     description { Faker::Lorem.paragraph }
@@ -89,11 +89,11 @@ FactoryBot.define do
       parent factory: :fund_activity
       level { :programme }
       objectives { Faker::Lorem.paragraph }
-      country_delivery_partners { ["National Council for the State Funding Agencies (CONFAP)"] }
+      country_partner_organisations { ["National Council for the State Funding Agencies (CONFAP)"] }
       collaboration_type { "1" }
 
       association :organisation, factory: :beis_organisation
-      association :extending_organisation, factory: :delivery_partner_organisation
+      association :extending_organisation, factory: :partner_organisation
 
       trait :newton_funded do
         source_fund_code { Fund.by_short_name("NF").id }
@@ -141,8 +141,8 @@ FactoryBot.define do
       policy_marker_disaster_risk_reduction { "not_assessed" }
       policy_marker_nutrition { "not_assessed" }
 
-      association :organisation, factory: :delivery_partner_organisation
-      association :extending_organisation, factory: :delivery_partner_organisation
+      association :organisation, factory: :partner_organisation
+      association :extending_organisation, factory: :partner_organisation
 
       factory :project_activity_with_implementing_organisations do
         transient do
@@ -188,8 +188,8 @@ FactoryBot.define do
       policy_marker_disaster_risk_reduction { "not_assessed" }
       policy_marker_nutrition { "not_assessed" }
 
-      association :organisation, factory: :delivery_partner_organisation
-      association :extending_organisation, factory: :delivery_partner_organisation
+      association :organisation, factory: :partner_organisation
+      association :extending_organisation, factory: :partner_organisation
 
       trait :newton_funded do
         source_fund_code { Fund.by_short_name("NF").id }
@@ -210,7 +210,7 @@ FactoryBot.define do
 
   trait :at_identifier_step do
     form_state { "identifier" }
-    delivery_partner_identifier { nil }
+    partner_organisation_identifier { nil }
     title { nil }
     description { nil }
     objectives { nil }
@@ -218,7 +218,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
-    country_delivery_partners { nil }
+    country_partner_organisations { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -247,7 +247,7 @@ FactoryBot.define do
     sector { nil }
     call_present { nil }
     programme_status { nil }
-    country_delivery_partners { nil }
+    country_partner_organisations { nil }
     planned_start_date { nil }
     planned_end_date { nil }
     actual_start_date { nil }
@@ -296,8 +296,8 @@ FactoryBot.define do
 
   trait :with_transparency_identifier do
     after(:create) do |activity|
-      parent_identifier = activity.parent.present? ? "#{activity.parent.delivery_partner_identifier}-" : ""
-      activity.transparency_identifier = "#{parent_identifier}#{activity.delivery_partner_identifier}"
+      parent_identifier = activity.parent.present? ? "#{activity.parent.partner_organisation_identifier}-" : ""
+      activity.transparency_identifier = "#{parent_identifier}#{activity.partner_organisation_identifier}"
       activity.save
     end
   end

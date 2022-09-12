@@ -1,13 +1,13 @@
 require "rails_helper"
 
 RSpec.feature "BEIS users can edit other users" do
-  let!(:user) { create(:delivery_partner_user, organisation: create(:delivery_partner_organisation)) }
+  let!(:user) { create(:partner_organisation_user, organisation: create(:partner_organisation)) }
 
   scenario "the email address is disabled" do
     user = create(:beis_user)
     authenticate!(user: user)
 
-    target_user = create(:delivery_partner_user, name: "Old Name", email: "old@example.com")
+    target_user = create(:partner_organisation_user, name: "Old Name", email: "old@example.com")
 
     visit organisation_path(user.organisation)
     click_on(t("page_title.users.index"))
@@ -22,7 +22,7 @@ RSpec.feature "BEIS users can edit other users" do
     user = create(:beis_user)
     authenticate!(user: user)
 
-    target_user = create(:delivery_partner_user, name: "Old Name", email: "old@example.com")
+    target_user = create(:partner_organisation_user, name: "Old Name", email: "old@example.com")
 
     # Navigate to the users page
     visit users_path
@@ -83,7 +83,7 @@ RSpec.feature "BEIS users can edit other users" do
 
   scenario "an inactive user can be reactivated" do
     administrator_user = create(:beis_user)
-    user = create(:inactive_user, organisation: create(:delivery_partner_organisation))
+    user = create(:inactive_user, organisation: create(:partner_organisation))
     authenticate!(user: administrator_user)
 
     # Navigate to the users page
