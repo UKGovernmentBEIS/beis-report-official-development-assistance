@@ -111,7 +111,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.first.message).to eq(I18n.t("importer.errors.activity.not_found"))
     end
 
-    it "has an error when the ID present, but there is a parent present" do
+    it "has an error when both the ID and Parent ID are present, as this may overwrite the existing Parent ID" do
       existing_activity_attributes["Parent RODA ID"] = parent_activity.roda_identifier
 
       expect { subject.import([existing_activity_attributes]) }.to_not change { existing_activity }
