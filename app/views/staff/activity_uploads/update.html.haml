@@ -9,15 +9,15 @@
   - unless @errors.empty?
     .govuk-grid-row
       .govuk-grid-column-full
-        = render partial: "error_table"
+        = render partial: "staff/shared/activity_uploads/error_table"
 
   - if @success
     - if @activities[:created].any?
-      = render partial: "activities_table", locals: { action: "created", activities: @activities[:created], table_caption: t("table.caption.activity.new_activities") }
+      = render partial: "staff/shared/activity_uploads/activities_table", locals: { action: "created", activities: @activities[:created], table_caption: t("table.caption.activity.new_activities") }
     - if @activities[:updated].any?
-      = render partial: "activities_table", locals: { action: "updated", activities: @activities[:updated], table_caption: t("table.caption.activity.updated_activities") }
+      = render partial: "staff/shared/activity_uploads/activities_table", locals: { action: "updated", activities: @activities[:updated], table_caption: t("table.caption.activity.updated_activities") }
   - else
-    = render partial: "upload_form"
+    = render partial: "staff/shared/activity_uploads/upload_form", locals: { model: @report_presenter, path_helper: "report_activity_upload_path" }
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
