@@ -321,8 +321,8 @@ RSpec.describe "staff/shared/activities/_activity" do
   RSpec::Matchers.define :show_newton_specific_details do
     match do |actual|
       expect(rendered).to have_css(".govuk-summary-list__row.country_partner_organisations")
-      activity_presenter.country_partner_organisations.each do |delivery_partner|
-        expect(rendered).to have_content(delivery_partner)
+      activity_presenter.country_partner_organisations.each do |partner_organisation|
+        expect(rendered).to have_content(partner_organisation)
       end
       expect(rendered).to have_content activity_presenter.fund_pillar
     end
