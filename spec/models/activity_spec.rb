@@ -509,25 +509,25 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context "when saving in the uk_dp_named_contact context" do
+    context "when saving in the uk_po_named_contact context" do
       context "and the activity is a fund" do
         subject { build(:project_activity, level: :fund) }
-        it { should_not validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
+        it { should_not validate_presence_of(:uk_po_named_contact).on(:uk_po_named_contact_step) }
       end
 
       context "and the activity is a programme" do
         subject { build(:project_activity, level: :programme) }
-        it { should_not validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
+        it { should_not validate_presence_of(:uk_po_named_contact).on(:uk_po_named_contact_step) }
       end
 
       context "when the activity is a project" do
         subject { build(:project_activity) }
-        it { should validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
+        it { should validate_presence_of(:uk_po_named_contact).on(:uk_po_named_contact_step) }
       end
 
       context "when the activity is a third party project" do
         subject { build(:third_party_project_activity) }
-        it { should validate_presence_of(:uk_dp_named_contact).on(:uk_dp_named_contact_step) }
+        it { should validate_presence_of(:uk_po_named_contact).on(:uk_po_named_contact_step) }
       end
     end
 

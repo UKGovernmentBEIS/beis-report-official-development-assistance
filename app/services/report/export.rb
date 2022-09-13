@@ -114,7 +114,7 @@ class Report
         "Covid-19 related research" => :covid19_related,
         "Activity status" => :programme_status,
         "Country partner organisations" => :country_partner_organisations,
-        "UK PO named contact" => :uk_dp_named_contact,
+        "UK PO named contact" => :uk_po_named_contact,
         "Call open date" => :call_open_date,
         "Call close date" => :call_close_date,
         "Planned start date" => :planned_start_date,

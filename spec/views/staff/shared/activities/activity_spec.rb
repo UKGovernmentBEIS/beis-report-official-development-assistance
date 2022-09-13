@@ -162,7 +162,7 @@ RSpec.describe "staff/shared/activities/_activity" do
       end
 
       it "shows a link to edit the UK PO named contact" do
-        expect(body.find(".uk_dp_named_contact")).to have_content(t("default.link.edit"))
+        expect(body.find(".uk_po_named_contact")).to have_content(t("default.link.edit"))
       end
     end
   end
@@ -307,7 +307,7 @@ RSpec.describe "staff/shared/activities/_activity" do
       expect(rendered).to have_content activity_presenter.channel_of_delivery_code
 
       expect(rendered).to have_content activity_presenter.oda_eligibility_lead
-      expect(rendered).to have_content activity_presenter.uk_dp_named_contact
+      expect(rendered).to have_content activity_presenter.uk_po_named_contact
 
       expect(rendered).to have_content activity_presenter.call_open_date
       expect(rendered).to have_content activity_presenter.call_close_date

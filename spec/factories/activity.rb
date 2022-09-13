@@ -26,7 +26,7 @@ FactoryBot.define do
     gcrf_strategic_area { ["17A", "RF"] }
     gcrf_challenge_area { 0 }
     oda_eligibility_lead { Faker::Name.name }
-    uk_dp_named_contact { Faker::Name.name }
+    uk_po_named_contact { Faker::Name.name }
     fund_pillar { "0" }
     channel_of_delivery_code { "11000" }
 
