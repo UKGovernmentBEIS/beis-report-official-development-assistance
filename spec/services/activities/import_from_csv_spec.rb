@@ -814,7 +814,7 @@ RSpec.describe Activities::ImportFromCsv do
       allow(HistoryRecorder).to receive(:new).and_return(history_recorder)
     end
 
-    it "creates and imports activities" do
+    it "creates and updates activities" do
       rows = [existing_activity_attributes, new_activity_attributes]
 
       expect { subject.import(rows) }.to change { Activity.count }.by(1)
@@ -903,7 +903,7 @@ RSpec.describe Activities::ImportFromCsv do
       end
     end
 
-    it "creates and imports implementing organisations" do
+    it "creates and updates implementing organisations" do
       rows = [existing_activity_attributes, new_activity_attributes]
 
       expect(OrgParticipation.all.map { |p| p.organisation.name })
@@ -921,7 +921,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(subject.errors.count).to eq(0)
     end
 
-    it "imports multiple implementing organisations" do
+    it "imports multiple implementing organisations for the same activity" do
       rows = [existing_activity_attributes.merge({
         "Implementing organisation names" => "Impl. Org 1 | Impl. Org 2"
       })]
