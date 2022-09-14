@@ -31,7 +31,7 @@ RSpec.feature "users can upload activities" do
       "Activity Status",
       "Actual end date", "Actual start date",
       "Aid type",
-      "Aims/Objectives (PO Definition)",
+      "Aims/Objectives",
       "Call close date", "Call open date",
       "Channel of delivery code",
       "Collaboration type (Bi/Multi Marker)",

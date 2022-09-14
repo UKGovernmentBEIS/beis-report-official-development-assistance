@@ -61,7 +61,7 @@ RSpec.describe Activities::ImportFromCsv do
       "DFID policy marker - Nutrition" => "",
       "Aid type" => "B03",
       "Free Standing Technical Cooperation" => "1",
-      "Aims/Objectives (PO Definition)" => "Foo bar baz",
+      "Aims/Objectives" => "Foo bar baz",
       "BEIS ID" => "BEIS_ID_EXAMPLE_01",
       "UK PO Named Contact" => "Jo Soap",
       "NF Partner Country PO" => "Association of Example Companies (AEC) | | Board of Sample Organisations (BSO)",
@@ -181,7 +181,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(existing_activity.policy_marker_nutrition).to eq("not_assessed")
       expect(existing_activity.aid_type).to eq(existing_activity_attributes["Aid type"])
       expect(existing_activity.fstc_applies).to eq(true)
-      expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives (PO Definition)"])
+      expect(existing_activity.objectives).to eq(existing_activity_attributes["Aims/Objectives"])
       expect(existing_activity.beis_identifier).to eq(existing_activity_attributes["BEIS ID"])
       expect(existing_activity.uk_po_named_contact).to eq(existing_activity_attributes["UK PO Named Contact"])
       expect(existing_activity.sdgs_apply).to eql(true)
@@ -398,7 +398,7 @@ RSpec.describe Activities::ImportFromCsv do
       expect(new_activity.collaboration_type).to eq(new_activity_attributes["Collaboration type (Bi/Multi Marker)"])
       expect(new_activity.aid_type).to eq(new_activity_attributes["Aid type"])
       expect(new_activity.fstc_applies).to eq(true)
-      expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives (PO Definition)"])
+      expect(new_activity.objectives).to eq(new_activity_attributes["Aims/Objectives"])
       expect(new_activity.beis_identifier).to eq(new_activity_attributes["BEIS ID"])
       expect(new_activity.uk_po_named_contact).to eq(new_activity_attributes["UK PO Named Contact"])
       expect(new_activity.country_partner_organisations).to eq(["Association of Example Companies (AEC)", "Board of Sample Organisations (BSO)"])
