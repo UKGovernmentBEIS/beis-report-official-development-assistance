@@ -8,7 +8,7 @@ gem "acts_as_tree"
 gem "addressable"
 gem "aws-sdk-s3", "~> 1.114"
 gem "bootsnap", ">= 1.1.0", require: false
-gem "govuk_design_system_formbuilder", "~> 3.0.2"
+gem "govuk_design_system_formbuilder", "~> 3.1.2"
 gem "haml-rails"
 gem "high_voltage"
 gem "ipaddr"
