@@ -326,7 +326,7 @@ module Activities
         policy_marker_nutrition: "DFID policy marker - Nutrition",
         aid_type: "Aid type",
         fstc_applies: "Free Standing Technical Cooperation",
-        objectives: "Aims/Objectives (PO Definition)",
+        objectives: "Aims/Objectives",
         beis_identifier: "BEIS ID",
         uk_po_named_contact: "UK PO Named Contact",
         country_partner_organisations: "NF Partner Country PO"

@@ -1085,6 +1085,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
   across the code, including a database migration to rename `delivery_partner_identifier` to `partner_organisation_identifier`
 - Replace references to `country_delivery_partners` with `country_partner_organisations`, including database migration
 - Replace code references to `uk_dp_named_contact` with `uk_po_named_contact`, including database migration
+- Remove "PO Definition" from "Aims/Objectives" CSV headers
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-115...HEAD
 [release-115]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-114...release-115
