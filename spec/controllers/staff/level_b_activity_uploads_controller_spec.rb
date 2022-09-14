@@ -17,6 +17,16 @@ RSpec.describe Staff::LevelBActivityUploadsController do
 
       expect(response.body).to include(t("action.activity.bulk_download.button"))
     end
+
+    context "when signed in as a partner organisation user" do
+      let(:user) { create(:partner_organisation_user) }
+
+      it "responds with a 401" do
+        get :new, params: {organisation_id: organisation.id}
+
+        expect(response.status).to eq(401)
+      end
+    end
   end
 
   describe "#show" do
