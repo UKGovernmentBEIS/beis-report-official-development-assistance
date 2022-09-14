@@ -328,7 +328,7 @@ module Activities
         fstc_applies: "Free Standing Technical Cooperation",
         objectives: "Aims/Objectives (PO Definition)",
         beis_identifier: "BEIS ID",
-        uk_dp_named_contact: "UK PO Named Contact",
+        uk_po_named_contact: "UK PO Named Contact",
         country_partner_organisations: "NF Partner Country PO"
       }
 

@@ -107,7 +107,7 @@ en:
         fstc_applies:
           "true": "Yes (1)"
           "false": "No (0)"
-        uk_dp_named_contact: Who is the UK partner organisation named contact for this activity?
+        uk_po_named_contact: Who is the UK partner organisation named contact for this activity?
         csv_file: Upload CSV spreadsheet
         csv_file_recover_from_error: Re-upload CSV spreadsheet
     legend:
@@ -395,7 +395,7 @@ en:
         sector_category: What is the focus area category for this %{level}?
         sustainable_development_goals: Sustainable Development Goals
         total_applications_and_awards: Applications and awards
-        uk_dp_named_contact: Who is the UK partner organisation named contact for this activity?
+        uk_po_named_contact: Who is the UK partner organisation named contact for this activity?
         wicked_finish: ""
   activerecord:
     attributes:
@@ -431,7 +431,7 @@ en:
         covid19_related: Covid-19 related research
         programme_status: Activity status
         country_partner_organisations: Newton Fund Country Partner Organisations
-        uk_dp_named_contact: Activity contact name
+        uk_po_named_contact: Activity contact name
         call_open_date: Call open date
         call_close_date: Call close date
         planned_start_date: Planned start date

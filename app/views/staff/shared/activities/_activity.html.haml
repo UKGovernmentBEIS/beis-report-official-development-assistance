@@ -87,14 +87,14 @@
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:sector)}"), activity_step_path(activity_presenter, :sector_category), t("activerecord.attributes.activity.sector"))
 
   - if activity_presenter.is_project?
-    .govuk-summary-list__row.uk_dp_named_contact
+    .govuk-summary-list__row.uk_po_named_contact
       %dt.govuk-summary-list__key
-        = t("activerecord.attributes.activity.uk_dp_named_contact")
+        = t("activerecord.attributes.activity.uk_po_named_contact")
       %dd.govuk-summary-list__value
-        = activity_presenter.uk_dp_named_contact
+        = activity_presenter.uk_po_named_contact
       %dd.govuk-summary-list__actions
-        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :uk_dp_named_contact)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:uk_dp_named_contact)}"), activity_step_path(activity_presenter, :uk_dp_named_contact), t("activerecord.attributes.activity.uk_dp_named_contact"))
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :uk_po_named_contact)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:uk_po_named_contact)}"), activity_step_path(activity_presenter, :uk_po_named_contact), t("activerecord.attributes.activity.uk_po_named_contact"))
 
   - if activity_presenter.requires_call_dates?
     .govuk-summary-list__row.call_present

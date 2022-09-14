@@ -385,8 +385,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   end
 
   if activity.is_project?
-    within(".uk_dp_named_contact") do
-      expect(page).to have_link(href: activity_step_path(activity, :uk_dp_named_contact))
+    within(".uk_po_named_contact") do
+      expect(page).to have_link(href: activity_step_path(activity, :uk_po_named_contact))
     end
   end
 end

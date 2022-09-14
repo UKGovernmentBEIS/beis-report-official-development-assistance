@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_08_160836) do
+ActiveRecord::Schema.define(version: 2022_09_13_155750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 2022_09_08_160836) do
     t.text "objectives"
     t.string "oda_eligibility_lead"
     t.string "beis_identifier"
-    t.string "uk_dp_named_contact"
+    t.string "uk_po_named_contact"
     t.string "country_partner_organisations", array: true
     t.integer "gcrf_challenge_area"
     t.integer "fund_pillar"

@@ -162,7 +162,7 @@ RSpec.describe "staff/shared/activities/_activity" do
       end
 
       it "shows a link to edit the UK PO named contact" do
-        expect(body.find(".uk_dp_named_contact")).to have_content(t("default.link.edit"))
+        expect(body.find(".uk_po_named_contact")).to have_content(t("default.link.edit"))
       end
     end
   end
@@ -307,7 +307,7 @@ RSpec.describe "staff/shared/activities/_activity" do
       expect(rendered).to have_content activity_presenter.channel_of_delivery_code
 
       expect(rendered).to have_content activity_presenter.oda_eligibility_lead
-      expect(rendered).to have_content activity_presenter.uk_dp_named_contact
+      expect(rendered).to have_content activity_presenter.uk_po_named_contact
 
       expect(rendered).to have_content activity_presenter.call_open_date
       expect(rendered).to have_content activity_presenter.call_close_date
@@ -321,8 +321,8 @@ RSpec.describe "staff/shared/activities/_activity" do
   RSpec::Matchers.define :show_newton_specific_details do
     match do |actual|
       expect(rendered).to have_css(".govuk-summary-list__row.country_partner_organisations")
-      activity_presenter.country_partner_organisations.each do |delivery_partner|
-        expect(rendered).to have_content(delivery_partner)
+      activity_presenter.country_partner_organisations.each do |partner_organisation|
+        expect(rendered).to have_content(partner_organisation)
       end
       expect(rendered).to have_content activity_presenter.fund_pillar
     end

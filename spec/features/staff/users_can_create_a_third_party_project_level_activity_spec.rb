@@ -74,7 +74,7 @@ RSpec.feature "Users can create a third-party project" do
         expect(created_activity.covid19_related).to eq(activity.covid19_related)
         expect(created_activity.oda_eligibility).to eq(activity.oda_eligibility)
         expect(created_activity.oda_eligibility_lead).to eq(activity.oda_eligibility_lead)
-        expect(created_activity.uk_dp_named_contact).to eq(activity.uk_dp_named_contact)
+        expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
       end
 
       context "without an editable report" do

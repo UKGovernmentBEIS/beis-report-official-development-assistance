@@ -365,8 +365,8 @@ class ActivityForm
   end
 
   def fill_in_named_contact
-    expect(page).to have_content I18n.t("form.label.activity.uk_dp_named_contact")
-    fill_in "activity[uk_dp_named_contact]", with: activity.uk_dp_named_contact
+    expect(page).to have_content I18n.t("form.label.activity.uk_po_named_contact")
+    fill_in "activity[uk_po_named_contact]", with: activity.uk_po_named_contact
     click_button I18n.t("form.button.activity.submit")
   end
 

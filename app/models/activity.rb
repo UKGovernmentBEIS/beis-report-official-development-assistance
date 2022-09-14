@@ -35,7 +35,7 @@ class Activity < ApplicationRecord
     :channel_of_delivery_code,
     :oda_eligibility,
     :oda_eligibility_lead,
-    :uk_dp_named_contact
+    :uk_po_named_contact
   ]
 
   VALIDATION_STEPS = [
@@ -63,7 +63,7 @@ class Activity < ApplicationRecord
     :channel_of_delivery_code_step,
     :oda_eligibility_step,
     :oda_eligibility_lead_step,
-    :uk_dp_named_contact_step
+    :uk_po_named_contact_step
   ]
 
   FORM_STATE_VALIDATION_LIST = FORM_STEPS.map(&:to_s).push("complete")
@@ -105,7 +105,7 @@ class Activity < ApplicationRecord
   validates :gcrf_strategic_area, presence: true, length: {maximum: 2}, on: :gcrf_strategic_area_step, if: :is_gcrf_funded?
   validates :oda_eligibility, presence: true, on: :oda_eligibility_step
   validates :oda_eligibility_lead, presence: true, on: :oda_eligibility_lead_step, if: :is_project?
-  validates :uk_dp_named_contact, presence: true, on: :uk_dp_named_contact_step, if: :is_project?
+  validates :uk_po_named_contact, presence: true, on: :uk_po_named_contact_step, if: :is_project?
   validates_with ChannelOfDeliveryCodeValidator, on: :channel_of_delivery_code_step, if: :is_project?
 
   validates :partner_organisation_identifier, uniqueness: {scope: :parent_id}, allow_nil: true
