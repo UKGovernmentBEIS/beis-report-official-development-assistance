@@ -61,6 +61,7 @@ en:
           recipient_region: Region
           recipient_country: Country
         partner_organisation_identifier: Enter your unique identifier
+        partner_organisation_identifier_level_b: Enter your unique identifier (optional)
         intended_beneficiaries: What are the intended beneficiaries?
         objectives: Aims/Objectives of the activity
         oda_eligibility:
