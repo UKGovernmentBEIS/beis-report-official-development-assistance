@@ -50,7 +50,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
   end
 
   scenario "uploading an empty file" do
-    upload_csv(Activities::ImportFromCsv.column_headings.join(", "))
+    upload_empty_csv
 
     expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
   end
@@ -161,6 +161,12 @@ RSpec.feature "BEIS users can upload Level B activities" do
     end
   end
 
+  scenario "upload a set of activities from the error page after a failed upload" do
+    2.times { upload_empty_csv }
+
+    expect(page).to have_text(t("action.activity.upload.file_missing_or_invalid"))
+  end
+
   def expect_change_to_be_recorded_as_historical_event(
     field:,
     previous_value:,
@@ -188,5 +194,9 @@ RSpec.feature "BEIS users can upload Level B activities" do
     click_button t("action.activity.upload.button")
 
     file.unlink
+  end
+
+  def upload_empty_csv
+    upload_csv(Activities::ImportFromCsv.column_headings.join(", "))
   end
 end
