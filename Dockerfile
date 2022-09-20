@@ -28,7 +28,7 @@ RUN mkdir -p ${DEPS_HOME}
 WORKDIR ${DEPS_HOME}
 # End
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
   && apt-get install -y nodejs \
   && npm install --global yarn
 
