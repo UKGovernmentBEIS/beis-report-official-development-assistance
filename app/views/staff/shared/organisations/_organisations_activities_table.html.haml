@@ -17,4 +17,5 @@
         %td.govuk-table__cell
           = partner_organisation.beis_organisation_reference
         %td.govuk-table__cell
-          = a11y_action_link  t("table.actions.activity.view_activities"), organisation_activities_path(partner_organisation), "for #{partner_organisation.name}", ["govuk-link", "govuk-link--no-visited-state"]
+          = a11y_action_link t("table.actions.activity.view_activities"), organisation_activities_path(partner_organisation), "for #{partner_organisation.name}", ["govuk-link--no-visited-state"]
+          = a11y_action_link t("table.cell.organisations.upload_data"), new_organisation_level_b_activity_upload_path(partner_organisation), "for #{partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-5"]
