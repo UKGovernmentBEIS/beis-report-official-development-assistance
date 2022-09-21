@@ -16,4 +16,11 @@ class OrganisationPresenter < SimpleDelegator
   def organisation_type
     I18n.t("organisation.organisation_type.#{super}")
   end
+
+  def filename_for_activities_template
+    [
+      beis_organisation_reference,
+      "Level_B_activities_upload"
+    ].compact.join("-") + ".csv"
+  end
 end

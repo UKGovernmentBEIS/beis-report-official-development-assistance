@@ -24,6 +24,12 @@ module Activities
         ["Implementing organisation names"]
     end
 
+    def self.level_b_column_headings
+      ["Parent RODA ID"] +
+        Converter::FIELDS.values -
+        sub_level_b_column_headings
+    end
+
     def initialize(uploader:, partner_organisation:, report:)
       @uploader = uploader
       @uploader_organisation = uploader.organisation
@@ -89,6 +95,29 @@ module Activities
 
     def add_error(row_number, column, value, message)
       @errors << Error.new(row_number, column, value, message)
+    end
+
+    class << self
+      private
+
+      def sub_level_b_column_headings
+        [
+          "BEIS ID",
+          "Call close date", "Call open date",
+          "DFID policy marker - Biodiversity",
+          "DFID policy marker - Climate Change - Adaptation",
+          "DFID policy marker - Climate Change - Mitigation",
+          "DFID policy marker - Desertification",
+          "DFID policy marker - Disability",
+          "DFID policy marker - Disaster Risk Reduction",
+          "DFID policy marker - Gender",
+          "DFID policy marker - Nutrition",
+          "ODA Eligibility Lead",
+          "Total applications",
+          "Total awards",
+          "UK PO Named Contact"
+        ]
+      end
     end
 
     class ActivityUpdater

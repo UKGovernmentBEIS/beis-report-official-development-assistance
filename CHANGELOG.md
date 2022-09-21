@@ -1086,6 +1086,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Replace references to `country_delivery_partners` with `country_partner_organisations`, including database migration
 - Replace code references to `uk_dp_named_contact` with `uk_po_named_contact`, including database migration
 - Remove "PO Definition" from "Aims/Objectives" CSV headers
+- Add ability for BEIS users to create and update Level B activities in bulk by uploading a CSV 
 
 ## [unreleased]
 
