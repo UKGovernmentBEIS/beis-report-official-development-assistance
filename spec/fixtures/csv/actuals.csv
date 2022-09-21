@@ -1,3 +1,3 @@
-﻿delivery_partner_identifier,description,transaction_type,date,currency,value,providing_organisation_name,providing_organisation_type,providing_organisation_reference
+﻿partner_organisation_identifier,description,transaction_type,date,currency,value,providing_organisation_name,providing_organisation_type,providing_organisation_reference
 EXAMPLE_01,2020/21 Q1,Disbursement,30/06/2020,Pound Sterling,-3989.75,Academy of Medical Sciences,"Academic, Training and Research ",GB-COH-03520281
 EXAMPLE_02,2018/19 Q2,Disbursement,30/06/2020,Pound Sterling,104626,UK Space Agency,Government,GB-GOV-EA31

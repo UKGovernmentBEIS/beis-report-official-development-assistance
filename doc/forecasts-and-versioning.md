@@ -208,7 +208,7 @@ sequence order to decide which version is most recent.
 
 ### Forecasts at level C/D
 
-Activities at level C and D belong to delivery partners and their data goes
+Activities at level C and D belong to partner organisations and their data goes
 through the assurance process, with the partner submitting quarterly reports
 which are checked by BEIS.
 

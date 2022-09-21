@@ -18,7 +18,7 @@
               %th.govuk-table__header{scope: "col"}
                 = t("page_content.activity_search.table.roda_identifier")
               %th.govuk-table__header{scope: "col"}
-                = t("page_content.activity_search.table.delivery_partner_identifier")
+                = t("page_content.activity_search.table.partner_organisation_identifier")
           %tbody.govuk-table__body
             - @activity_search.results.each do |activity|
               %tr.govuk-table__row
@@ -28,7 +28,7 @@
                 %td.govuk-table__cell
                   = activity.roda_identifier
                 %td.govuk-table__cell
-                  = activity.delivery_partner_identifier
+                  = activity.partner_organisation_identifier
       - else
         %p.govuk-body
           = t("page_content.activity_search.no_results")

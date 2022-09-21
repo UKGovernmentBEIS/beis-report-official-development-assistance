@@ -1,5 +1,5 @@
-RSpec.feature "Delivery partner users can create an incoming transfer" do
-  let(:user) { create(:delivery_partner_user) }
+RSpec.feature "Partner organisation users can create an incoming transfer" do
+  let(:user) { create(:partner_organisation_user) }
   before { authenticate!(user: user) }
 
   include_examples "creating a transfer" do

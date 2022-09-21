@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe FindProjectActivities do
   let(:user) { create(:beis_user) }
   let(:service_owner) { create(:beis_organisation) }
-  let(:other_organisation) { create(:delivery_partner_organisation) }
+  let(:other_organisation) { create(:partner_organisation) }
 
   let!(:fund_1_organisation_project) { create(:project_activity_with_implementing_organisations, organisation: other_organisation, source_fund_code: 1) }
   let!(:fund_2_organisation_project) { create(:project_activity_with_implementing_organisations, organisation: other_organisation, source_fund_code: 2) }

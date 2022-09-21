@@ -17,8 +17,8 @@ RSpec.describe Organisation, type: :model do
       it { should validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
     end
 
-    context "when the organisation is a delivery partner" do
-      subject { build(:delivery_partner_organisation) }
+    context "when the organisation is a partner organisation" do
+      subject { build(:partner_organisation) }
       it { should validate_presence_of(:beis_organisation_reference) }
       it { should validate_presence_of(:iati_reference) }
       it { should validate_uniqueness_of(:iati_reference).ignoring_case_sensitivity }
@@ -44,31 +44,31 @@ RSpec.describe Organisation, type: :model do
 
     describe "#iati_reference" do
       it "returns true if it does matches a known structure XX-XXX-" do
-        organisation = build(:delivery_partner_organisation, iati_reference: "GB-GOV-13")
+        organisation = build(:partner_organisation, iati_reference: "GB-GOV-13")
         result = organisation.valid?
         expect(result).to eq(true)
       end
 
       it "returns true if it does match an unexpected value of the same XX-XXX- structure" do
-        organisation = build(:delivery_partner_organisation, iati_reference: "GB-COH-1234567asdfghj")
+        organisation = build(:partner_organisation, iati_reference: "GB-COH-1234567asdfghj")
         result = organisation.valid?
         expect(result).to eq(true)
       end
 
       it "returns true if the country code is 3 characters long" do
-        organisation = build(:delivery_partner_organisation, iati_reference: "CZH-COH-111")
+        organisation = build(:partner_organisation, iati_reference: "CZH-COH-111")
         result = organisation.valid?
         expect(result).to eq(true)
       end
 
       it "returns false if it doesn't match the structure XX-XXX-" do
-        organisation = build(:delivery_partner_organisation, iati_reference: "1234")
+        organisation = build(:partner_organisation, iati_reference: "1234")
         result = organisation.valid?
         expect(result).to eq(false)
       end
 
       it "returns an error message if it is invalid" do
-        organisation = build(:delivery_partner_organisation, iati_reference: "1234")
+        organisation = build(:partner_organisation, iati_reference: "1234")
         organisation.valid?
         expect(organisation.errors.messages[:iati_reference]).to include(
           t("activerecord.errors.models.organisation.attributes.iati_reference.format")
@@ -104,25 +104,25 @@ RSpec.describe Organisation, type: :model do
 
   describe "#beis_organisation_reference" do
     it "makes the organisation valid if it is between 2 and 5 characters long" do
-      organisation = build(:delivery_partner_organisation, beis_organisation_reference: "ABCD")
+      organisation = build(:partner_organisation, beis_organisation_reference: "ABCD")
       result = organisation.valid?
       expect(result).to eq(true)
     end
 
     it "makes the organisation invalid if it is over 5 characters long" do
-      organisation = build(:delivery_partner_organisation, beis_organisation_reference: "ABCDEF")
+      organisation = build(:partner_organisation, beis_organisation_reference: "ABCDEF")
       result = organisation.valid?
       expect(result).to eq(false)
     end
 
     it "makes the organisation invalid if contains non alphabetical characters" do
-      organisation = build(:delivery_partner_organisation, beis_organisation_reference: "123")
+      organisation = build(:partner_organisation, beis_organisation_reference: "123")
       result = organisation.valid?
       expect(result).to eq(false)
     end
 
     it "returns an error message if it is invalid" do
-      organisation = build(:delivery_partner_organisation, beis_organisation_reference: "ABCDEF")
+      organisation = build(:partner_organisation, beis_organisation_reference: "ABCDEF")
       organisation.valid?
       expect(organisation.errors.messages[:beis_organisation_reference]).to include(
         t("activerecord.errors.models.organisation.attributes.beis_organisation_reference.format")
@@ -156,7 +156,7 @@ RSpec.describe Organisation, type: :model do
       OrgParticipation.create!(
         activity: other_activity,
         organisation: organisation,
-        role: "delivery_partner"
+        role: "partner_organisation"
       )
     end
 
@@ -182,9 +182,9 @@ RSpec.describe Organisation, type: :model do
       end
     end
 
-    context "when an organisation is a delivery partner" do
+    context "when an organisation is a partner organisation" do
       it " should return false" do
-        other_organisation = create(:delivery_partner_organisation)
+        other_organisation = create(:partner_organisation)
 
         result = other_organisation.service_owner?
 
@@ -212,9 +212,9 @@ RSpec.describe Organisation, type: :model do
 
   describe ".sorted_by_name" do
     it "should sort name name a->z" do
-      a_organisation = create(:delivery_partner_organisation, name: "A", created_at: 3.days.ago)
-      b_organisation = create(:delivery_partner_organisation, name: "B", created_at: 1.days.ago)
-      c_organisation = create(:delivery_partner_organisation, name: "C", created_at: 2.days.ago)
+      a_organisation = create(:partner_organisation, name: "A", created_at: 3.days.ago)
+      b_organisation = create(:partner_organisation, name: "B", created_at: 1.days.ago)
+      c_organisation = create(:partner_organisation, name: "C", created_at: 2.days.ago)
 
       result = Organisation.sorted_by_name
 
@@ -224,31 +224,31 @@ RSpec.describe Organisation, type: :model do
     end
   end
 
-  describe ".delivery_partners" do
-    it "should only contain organisations that are delivery partners" do
+  describe ".partner_organisations" do
+    it "should only contain organisations that are partner organisations" do
       beis_organisation = create(:beis_organisation)
-      delivery_partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:partner_organisation)
       matched_effort_provider = create(:matched_effort_provider)
       external_income_provider = create(:external_income_provider)
-      delivery_partners = Organisation.delivery_partners
+      partner_organisations = Organisation.partner_organisations
 
-      expect(delivery_partners).to include(delivery_partner_organisation)
-      expect(delivery_partners).not_to include(beis_organisation)
-      expect(delivery_partners).not_to include(matched_effort_provider)
-      expect(delivery_partners).not_to include(external_income_provider)
+      expect(partner_organisations).to include(partner_organisation)
+      expect(partner_organisations).not_to include(beis_organisation)
+      expect(partner_organisations).not_to include(matched_effort_provider)
+      expect(partner_organisations).not_to include(external_income_provider)
     end
   end
 
   describe ".reporters" do
-    it "should only contain delivery partners and service owners" do
+    it "should only contain partner organisations and service owners" do
       beis_organisation = create(:beis_organisation)
-      delivery_partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:partner_organisation)
       matched_effort_provider = create(:matched_effort_provider)
       external_income_provider = create(:external_income_provider)
       implementing_organisation = create(:implementing_organisation)
       reporters = Organisation.reporters
 
-      expect(reporters).to include(delivery_partner_organisation)
+      expect(reporters).to include(partner_organisation)
       expect(reporters).to include(beis_organisation)
       expect(reporters).not_to include(matched_effort_provider)
       expect(reporters).not_to include(external_income_provider)
@@ -258,7 +258,7 @@ RSpec.describe Organisation, type: :model do
 
   describe ".matched_effort_providers" do
     it "should contain only organisations that are matched effort providers" do
-      create_list(:delivery_partner_organisation, 3)
+      create_list(:partner_organisation, 3)
       matched_effort_providers = create_list(:matched_effort_provider, 2)
 
       expect(Organisation.matched_effort_providers).to match_array(matched_effort_providers)
@@ -267,7 +267,7 @@ RSpec.describe Organisation, type: :model do
 
   describe ".external_income_providers" do
     it "should contain only organisations that are external income providers" do
-      create_list(:delivery_partner_organisation, 3)
+      create_list(:partner_organisation, 3)
       matched_effort_providers = create_list(:matched_effort_provider, 2)
 
       expect(Organisation.matched_effort_providers).to match_array(matched_effort_providers)
@@ -275,7 +275,7 @@ RSpec.describe Organisation, type: :model do
   end
 
   describe ".implementing" do
-    let!(:delivery_partner) { create(:delivery_partner_organisation) }
+    let!(:partner_organisation) { create(:partner_organisation) }
     let!(:matched_effort_provider) { create(:matched_effort_provider) }
 
     let!(:newly_created_implementing_org) do
@@ -293,7 +293,7 @@ RSpec.describe Organisation, type: :model do
     end
 
     let!(:other_org) do
-      create(:delivery_partner_organisation, role: "delivery_partner").tap do |org|
+      create(:partner_organisation, role: "partner_organisation").tap do |org|
         OrgParticipation.create!(
           organisation: org,
           activity: create(:project_activity),
@@ -316,7 +316,7 @@ RSpec.describe Organisation, type: :model do
 
     it "excludes orgs with non-'implementing_organisation' roles and no participation" do
       aggregate_failures do
-        expect(Organisation.implementing).not_to include(delivery_partner)
+        expect(Organisation.implementing).not_to include(partner_organisation)
         expect(Organisation.implementing).not_to include(matched_effort_provider)
       end
     end
@@ -324,34 +324,34 @@ RSpec.describe Organisation, type: :model do
 
   describe ".active" do
     it "should contain only active organisations" do
-      create_list(:delivery_partner_organisation, 3, active: false)
+      create_list(:partner_organisation, 3, active: false)
       matched_effort_providers = create_list(:matched_effort_provider, 2, active: true)
-      delivery_partner_organisations = create_list(:delivery_partner_organisation, 3, active: true)
+      partner_organisations = create_list(:partner_organisation, 3, active: true)
 
-      expect(Organisation.active).to match_array(matched_effort_providers + delivery_partner_organisations)
+      expect(Organisation.active).to match_array(matched_effort_providers + partner_organisations)
     end
   end
 
   describe "#is_government?" do
     it "should be true for a Government organisation_type" do
-      organisation = create(:delivery_partner_organisation, organisation_type: 10)
+      organisation = create(:partner_organisation, organisation_type: 10)
       expect(organisation.is_government?).to eq true
     end
 
     it "should be true for a Government organisation_type" do
-      organisation = create(:delivery_partner_organisation, organisation_type: 11)
+      organisation = create(:partner_organisation, organisation_type: 11)
       expect(organisation.is_government?).to eq true
     end
 
     it "should be false for an NGO organisation_type" do
-      organisation = create(:delivery_partner_organisation, organisation_type: 21)
+      organisation = create(:partner_organisation, organisation_type: 21)
       expect(organisation.is_government?).to eq false
     end
   end
 
   describe "#is_reporter?" do
-    it "should be true for delivery partners" do
-      organisation = build(:delivery_partner_organisation)
+    it "should be true for partner organisations" do
+      organisation = build(:partner_organisation)
       expect(organisation.is_reporter?).to eq true
     end
 
@@ -373,7 +373,7 @@ RSpec.describe Organisation, type: :model do
 
   describe "#ensure_beis_organisation_reference_is_uppercase" do
     it "converts the value of beis_organisation_reference to uppercase" do
-      organisation = build(:delivery_partner_organisation, beis_organisation_reference: "test")
+      organisation = build(:partner_organisation, beis_organisation_reference: "test")
 
       expect(organisation.valid?).to be_truthy
       expect(organisation.beis_organisation_reference).to eql "TEST"

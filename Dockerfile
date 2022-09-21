@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # base
 # ------------------------------------------------------------------------------
-FROM ruby:2.7.3 AS base
+FROM ruby:2.7.6 AS base
 MAINTAINER dxw <rails@dxw.com>
 
 RUN apt-get update && apt-get install -qq -y \
@@ -28,7 +28,7 @@ RUN mkdir -p ${DEPS_HOME}
 WORKDIR ${DEPS_HOME}
 # End
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
   && apt-get install -y nodejs \
   && npm install --global yarn
 

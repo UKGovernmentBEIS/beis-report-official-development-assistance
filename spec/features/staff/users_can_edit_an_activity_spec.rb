@@ -148,8 +148,8 @@ RSpec.feature "Users can edit an activity" do
     end
   end
 
-  context "when signed in as a delivery partner user" do
-    let(:user) { create(:delivery_partner_user) }
+  context "when signed in as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
 
     context "when the activity is a project" do
@@ -167,7 +167,7 @@ RSpec.feature "Users can edit an activity" do
         expect(page).to have_content(t("action.project.update.success"))
       end
 
-      scenario "the delivery partner identifier cannot be changed" do
+      scenario "the partner organisation identifier cannot be changed" do
         visit activity_step_path(activity, :identifier)
         expect(page).not_to have_content("Enter your unique identifier")
       end
@@ -260,7 +260,7 @@ RSpec.feature "Users can edit an activity" do
 end
 
 def assert_all_edit_links_go_to_the_correct_form_step(activity:)
-  if activity.delivery_partner_identifier.blank?
+  if activity.partner_organisation_identifier.blank?
     within(".activity-details .identifier") do
       expect(page).to have_link(href: activity_step_path(activity, :identifier))
     end
@@ -385,8 +385,8 @@ def assert_all_edit_links_go_to_the_correct_form_step(activity:)
   end
 
   if activity.is_project?
-    within(".uk_dp_named_contact") do
-      expect(page).to have_link(href: activity_step_path(activity, :uk_dp_named_contact))
+    within(".uk_po_named_contact") do
+      expect(page).to have_link(href: activity_step_path(activity, :uk_po_named_contact))
     end
   end
 end

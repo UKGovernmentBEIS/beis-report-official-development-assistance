@@ -1,6 +1,6 @@
 RSpec.feature "users can upload actuals" do
-  let(:organisation) { create(:delivery_partner_organisation) }
-  let(:user) { create(:delivery_partner_user, organisation: organisation) }
+  let(:organisation) { create(:partner_organisation) }
+  let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
   let!(:project) { create(:project_activity, :newton_funded, organisation: organisation) }
   let!(:sibling_project) { create(:project_activity, :newton_funded, organisation: organisation, parent: project.parent) }
@@ -49,7 +49,7 @@ RSpec.feature "users can upload actuals" do
     expect(rows).to match_array([
       {
         "Activity Name" => project.title,
-        "Activity Delivery Partner Identifier" => project.delivery_partner_identifier,
+        "Activity Partner Organisation Identifier" => project.partner_organisation_identifier,
         "Activity RODA Identifier" => project.roda_identifier,
         "Financial Quarter" => report.financial_quarter.to_s,
         "Financial Year" => report.financial_year.to_s,
@@ -62,7 +62,7 @@ RSpec.feature "users can upload actuals" do
       },
       {
         "Activity Name" => sibling_project.title,
-        "Activity Delivery Partner Identifier" => sibling_project.delivery_partner_identifier,
+        "Activity Partner Organisation Identifier" => sibling_project.partner_organisation_identifier,
         "Activity RODA Identifier" => sibling_project.roda_identifier,
         "Financial Quarter" => report.financial_quarter.to_s,
         "Financial Year" => report.financial_year.to_s,
@@ -83,7 +83,7 @@ RSpec.feature "users can upload actuals" do
   end
 
   scenario "uploading a valid set of actuals" do
-    # Given that I am logged in as a delivery partner
+    # Given that I am logged in as a partner organisation user
     # And a report exists that is waiting for actuals to be uploaded
 
     ids = [project, sibling_project].map(&:roda_identifier)

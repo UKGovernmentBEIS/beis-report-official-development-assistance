@@ -1077,9 +1077,20 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Make the message shown when there are no approved reports more accurate
 - Ensure CSV export of report has consistent columns if there are no forecasts
 
+## [release-116] 2022-09-21
+
+- Replace "View details" link in the Partner Organisation table for BEIS users with a link on Organisation name instead
+- Replace "Delivery partner" with "Partner organisation" and "DP" with "PO" in user-facing text, including CSV column headers
+- Replace references to `delivery_partner` with `partner_organisation` (or `partner_organisation_user` depending on context)
+  across the code, including a database migration to rename `delivery_partner_identifier` to `partner_organisation_identifier`
+- Replace references to `country_delivery_partners` with `country_partner_organisations`, including database migration
+- Replace code references to `uk_dp_named_contact` with `uk_po_named_contact`, including database migration
+- Remove "PO Definition" from "Aims/Objectives" CSV headers
+
 ## [unreleased]
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-115...HEAD
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-116...HEAD
+[release-116]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-115...116
 [release-115]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-114...release-115
 [release-114]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-113...release-114
 [release-113]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-112...release-113

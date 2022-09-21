@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Activity::RodaIdentifierGenerator do
   describe "#generate" do
-    let(:extending_organisation) { build(:delivery_partner_organisation) }
+    let(:extending_organisation) { build(:partner_organisation) }
 
     subject do
       described_class.new(

@@ -11,7 +11,7 @@ RSpec.feature "Users can view an activity as XML" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
-            delivery_partner_identifier: "IND-ENT-IFIER",
+            partner_organisation_identifier: "IND-ENT-IFIER",
             previous_identifier: "PREV-IND-ENT-IFIER",
             transparency_identifier: "GB-GOV-13-IND-ENT-IFIER")
         }
@@ -36,7 +36,7 @@ RSpec.feature "Users can view an activity as XML" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
-            delivery_partner_identifier: "IND-ENT-IFIER",
+            partner_organisation_identifier: "IND-ENT-IFIER",
             benefitting_countries: ["CV"])
         }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
@@ -54,7 +54,7 @@ RSpec.feature "Users can view an activity as XML" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
-            delivery_partner_identifier: "IND-ENT-IFIER",
+            partner_organisation_identifier: "IND-ENT-IFIER",
             benefitting_countries: ["CV", "BZ"])
         }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
@@ -80,7 +80,7 @@ RSpec.feature "Users can view an activity as XML" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
-            delivery_partner_identifier: "IND-ENT-IFIER",
+            partner_organisation_identifier: "IND-ENT-IFIER",
             recipient_region: "489")
         }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
@@ -103,7 +103,7 @@ RSpec.feature "Users can view an activity as XML" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
-            delivery_partner_identifier: "IND-ENT-IFIER",
+            partner_organisation_identifier: "IND-ENT-IFIER",
             recipient_region: "489",
             benefitting_countries: ["CV"])
         }
@@ -121,7 +121,7 @@ RSpec.feature "Users can view an activity as XML" do
         let(:activity) {
           create(:fund_activity,
             organisation: organisation,
-            delivery_partner_identifier: "IND-ENT-IFIER",
+            partner_organisation_identifier: "IND-ENT-IFIER",
             actual_start_date: nil,
             actual_end_date: nil)
         }
@@ -138,7 +138,7 @@ RSpec.feature "Users can view an activity as XML" do
       end
 
       context "when the activity has a collaboration_type" do
-        let(:activity) { create(:programme_activity, organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER", collaboration_type: "1") }
+        let(:activity) { create(:programme_activity, organisation: organisation, partner_organisation_identifier: "IND-ENT-IFIER", collaboration_type: "1") }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it "contains the relevant collaboration_type code" do
@@ -150,7 +150,7 @@ RSpec.feature "Users can view an activity as XML" do
       context "when the activity has policy markers" do
         let(:activity) {
           create(:project_activity,
-            delivery_partner_identifier: "IND-ENT-IFIER",
+            partner_organisation_identifier: "IND-ENT-IFIER",
             policy_marker_gender: "not_targeted",
             policy_marker_biodiversity: "significant_objective",
             policy_marker_disability: "principal_objective",
@@ -184,7 +184,7 @@ RSpec.feature "Users can view an activity as XML" do
       end
 
       context "when the activity is Covid19-related" do
-        let(:activity) { create(:programme_activity, organisation: organisation, delivery_partner_identifier: "ID-ENT-IFIER", covid19_related: "1") }
+        let(:activity) { create(:programme_activity, organisation: organisation, partner_organisation_identifier: "ID-ENT-IFIER", covid19_related: "1") }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it "appends 'COVID-19' to the activity description" do
@@ -194,7 +194,7 @@ RSpec.feature "Users can view an activity as XML" do
       end
 
       context "when the activity is a fund activity" do
-        let(:activity) { create(:fund_activity, :with_transparency_identifier, organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER") }
+        let(:activity) { create(:fund_activity, :with_transparency_identifier, organisation: organisation, partner_organisation_identifier: "IND-ENT-IFIER") }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"
@@ -206,7 +206,7 @@ RSpec.feature "Users can view an activity as XML" do
       end
 
       context "when the activity is a programme activity" do
-        let(:activity) { create(:programme_activity, :with_transparency_identifier, organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER") }
+        let(:activity) { create(:programme_activity, :with_transparency_identifier, organisation: organisation, partner_organisation_identifier: "IND-ENT-IFIER") }
         let(:xml) { Nokogiri::XML::Document.parse(page.body) }
 
         it_behaves_like "valid activity XML"

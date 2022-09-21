@@ -1,7 +1,7 @@
 RSpec.describe "Users can edit a budget" do
   before { authenticate!(user: user) }
 
-  context "when signed in beis user" do
+  context "when signed in as a beis user" do
     let(:user) { create(:beis_user) }
     let!(:activity) { create(:programme_activity, organisation: user.organisation) }
     let!(:budget) { create(:budget, parent_activity: activity, value: "10", financial_year: 2018) }
@@ -46,8 +46,8 @@ RSpec.describe "Users can edit a budget" do
     end
   end
 
-  context "when signed in as delivery partner user" do
-    let(:user) { create(:delivery_partner_user) }
+  context "when signed in as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
     let(:activity) { create(:project_activity, organisation: user.organisation) }
     let(:report) { create(:report, :active, organisation: user.organisation, fund: activity.associated_fund) }
 

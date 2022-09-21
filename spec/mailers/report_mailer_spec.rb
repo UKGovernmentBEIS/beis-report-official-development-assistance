@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe ReportMailer, type: :mailer do
   let(:fund) { create(:fund_activity, :gcrf) }
-  let(:organisation) { create(:delivery_partner_organisation, beis_organisation_reference: "ABC") }
+  let(:organisation) { create(:partner_organisation, beis_organisation_reference: "ABC") }
   let(:user) { create(:administrator) }
   let(:report) { create(:report, financial_quarter: 4, financial_year: 2020, deadline: DateTime.parse("2021-01-01"), fund: fund, organisation: organisation) }
 
@@ -53,7 +53,7 @@ RSpec.describe ReportMailer, type: :mailer do
   describe "#submitted" do
     let(:mail) { ReportMailer.with(user: user, report: report).submitted }
 
-    context "when the user is a delivery partner in the organisation that the report belongs to" do
+    context "when the user is a partner organisation user in the organisation that the report belongs to" do
       let(:user) { create(:administrator, organisation: organisation) }
 
       it "sends the email to the user's email address" do
@@ -98,7 +98,7 @@ RSpec.describe ReportMailer, type: :mailer do
       end
 
       it "has the correct title" do
-        expect(mail.subject).to eq("Report your Official Development Assistance - A delivery partner has submitted a report")
+        expect(mail.subject).to eq("Report your Official Development Assistance - A partner organisation has submitted a report")
       end
 
       it "contains the report's details" do
@@ -107,13 +107,13 @@ RSpec.describe ReportMailer, type: :mailer do
       end
 
       it "contains the expected body" do
-        expect(mail.body).to include("A delivery partner has submitted a report.")
+        expect(mail.body).to include("A partner organisation has submitted a report.")
       end
 
       context "when the email is from the training site" do
         it "includes the site in the email subject" do
           ClimateControl.modify DOMAIN: "https://training.report-official-development-assistance.service.gov.uk" do
-            expect(mail.subject).to eq("[Training] Report your Official Development Assistance - A delivery partner has submitted a report")
+            expect(mail.subject).to eq("[Training] Report your Official Development Assistance - A partner organisation has submitted a report")
           end
         end
       end
@@ -121,14 +121,14 @@ RSpec.describe ReportMailer, type: :mailer do
       context "when the email is from the production site" do
         it "does not include the site in the email subject" do
           ClimateControl.modify DOMAIN: "https://www.report-official-development-assistance.service.gov.uk" do
-            expect(mail.subject).to eq("Report your Official Development Assistance - A delivery partner has submitted a report")
+            expect(mail.subject).to eq("Report your Official Development Assistance - A partner organisation has submitted a report")
           end
         end
       end
     end
 
-    context "when the user is a delivery partner in a different organisation" do
-      let(:user) { create(:administrator, organisation: build(:delivery_partner_organisation)) }
+    context "when the user is a partner organisation user in a different organisation" do
+      let(:user) { create(:administrator, organisation: build(:partner_organisation)) }
 
       it "should raise an error" do
         expect { mail.body }.to raise_error(ArgumentError, "User must either be a service owner or belong to the organisation making the report")
@@ -147,7 +147,7 @@ RSpec.describe ReportMailer, type: :mailer do
   describe "#approved" do
     let(:mail) { ReportMailer.with(user: user, report: report).approved }
 
-    context "when the user is a delivery partner in the organisation that the report belongs to" do
+    context "when the user is a partner organisation user in the organisation that the report belongs to" do
       let(:user) { create(:administrator, organisation: organisation) }
 
       it "sends the email to the user's email address" do
@@ -231,8 +231,8 @@ RSpec.describe ReportMailer, type: :mailer do
       end
     end
 
-    context "when the user is a delivery partner in a different organisation" do
-      let(:user) { create(:administrator, organisation: build(:delivery_partner_organisation)) }
+    context "when the user is a partner organisation user in a different organisation" do
+      let(:user) { create(:administrator, organisation: build(:partner_organisation)) }
 
       it "should raise an error" do
         expect { mail.body }.to raise_error(ArgumentError, "User must either be a service owner or belong to the organisation making the report")

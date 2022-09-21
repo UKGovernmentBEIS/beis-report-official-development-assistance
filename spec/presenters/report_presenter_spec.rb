@@ -45,7 +45,7 @@ RSpec.describe ReportPresenter do
         financial_quarter: 1,
         financial_year: 2020,
         fund: create(:fund_activity, :gcrf),
-        organisation: build(:delivery_partner_organisation, beis_organisation_reference: "BOR"),
+        organisation: build(:partner_organisation, beis_organisation_reference: "BOR"),
         description: "My report")
     }
 

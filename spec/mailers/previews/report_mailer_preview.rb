@@ -8,8 +8,8 @@ class ReportMailerPreview < ActionMailer::Preview
     ).activated
   end
 
-  def submitted_delivery_partner
-    organisation = FactoryBot.build(:delivery_partner_organisation)
+  def submitted_partner_organisation
+    organisation = FactoryBot.build(:partner_organisation)
 
     ReportMailer.with(
       user: FactoryBot.build(:administrator, organisation: organisation),

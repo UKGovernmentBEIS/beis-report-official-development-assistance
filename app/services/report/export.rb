@@ -92,7 +92,7 @@ class Report
         "Transparency identifier" => :transparency_identifier,
         "BEIS identifier" => :beis_identifier,
         "Level" => :level,
-        "Delivery partner identifier" => :delivery_partner_identifier,
+        "Partner organisation identifier" => :partner_organisation_identifier,
         "Recipient region" => :recipient_region,
         "Recipient country" => :recipient_country,
         "Intended beneficiaries" => :intended_beneficiaries,
@@ -113,8 +113,8 @@ class Report
         "ODA eligibility lead" => :oda_eligibility_lead,
         "Covid-19 related research" => :covid19_related,
         "Activity status" => :programme_status,
-        "Country delivery partners" => :country_delivery_partners,
-        "UK DP named contact" => :uk_dp_named_contact,
+        "Country partner organisations" => :country_partner_organisations,
+        "UK PO named contact" => :uk_po_named_contact,
         "Call open date" => :call_open_date,
         "Call close date" => :call_close_date,
         "Planned start date" => :planned_start_date,
@@ -145,7 +145,7 @@ class Report
       VARIANCE_HEADERS = [
         "Comment",
         "Source fund",
-        "Delivery partner short name",
+        "Partner organisation short name",
         "Link to activity in RODA"
       ]
 

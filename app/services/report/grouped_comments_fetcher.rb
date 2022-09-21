@@ -14,7 +14,7 @@ class Report
     attr_reader :report, :user
 
     def comments
-      if user.delivery_partner?
+      if user.partner_organisation?
         report.comments.includes(
           owner: [:organisation],
           commentable: [

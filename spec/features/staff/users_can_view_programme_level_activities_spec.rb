@@ -17,7 +17,7 @@ RSpec.feature "Users can view programme level activities" do
   end
 
   context "when the user does NOT belong to BEIS" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
 
     it "shows the programme level activity" do
       authenticate!(user: user)

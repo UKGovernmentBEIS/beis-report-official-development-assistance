@@ -1,6 +1,6 @@
 RSpec.feature "Users can view an activity's 'Change History' within a tab" do
-  context "as a Delivery Partner user" do
-    let(:user) { create(:delivery_partner_user) }
+  context "as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
     let(:programme) { create(:programme_activity) }
     let(:activity) { create(:project_activity, organisation: user.organisation, parent: programme) }
     let(:report) do

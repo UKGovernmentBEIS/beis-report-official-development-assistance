@@ -10,7 +10,7 @@ class StubController < Staff::BaseController
 end
 
 RSpec.describe StubController, type: :controller do
-  let(:user) { create(:delivery_partner_user) }
+  let(:user) { create(:partner_organisation_user) }
   let(:beis_user) { create(:beis_user) }
 
   before do

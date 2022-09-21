@@ -2,13 +2,13 @@
 
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-ruby "2.7.3"
+ruby "2.7.6"
 
 gem "acts_as_tree"
 gem "addressable"
 gem "aws-sdk-s3", "~> 1.114"
 gem "bootsnap", ">= 1.1.0", require: false
-gem "govuk_design_system_formbuilder", "~> 3.0.2"
+gem "govuk_design_system_formbuilder", "~> 3.1.2"
 gem "haml-rails"
 gem "high_voltage"
 gem "ipaddr"
@@ -24,7 +24,7 @@ gem "pry-rails"
 gem "puma", "~> 5.6"
 gem "pundit"
 gem "rollbar"
-gem "rails", "~> 6.1.6"
+gem "rails", "~> 6.1.7"
 gem "redis"
 gem "redis-namespace"
 gem "redis-actionpack"
@@ -53,7 +53,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "foreman"
-  gem "i18n-tasks", "~> 1.0.11"
+  gem "i18n-tasks", "~> 1.0.12"
   gem "rspec-rails"
   gem "standard"
 end

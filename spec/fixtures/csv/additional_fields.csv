@@ -1,4 +1,4 @@
-﻿delivery_partner_identifier,programme_status,call_open_date,call_close_date,gdi,oda_eligibility,intended_beneficiaries,total_applications,total_awards
+﻿partner_organisation_identifier,programme_status,call_open_date,call_close_date,gdi,oda_eligibility,intended_beneficiaries,total_applications,total_awards
 EXAMPLE_01,Spend in Progress,01/02/2016,20/12/2020,Not Applicable,Eligible,Colombia|Mexico|Paraguay,,
 EXAMPLE_02,Spend in Progress,28/02/2018,28/02/2021,Not Applicable,Eligible,Peru,,
 EXAMPLE_03,Completed,01/01/2015,01/03/2015,Not Applicable,,,2,1

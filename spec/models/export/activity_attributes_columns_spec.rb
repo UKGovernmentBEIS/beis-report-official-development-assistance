@@ -13,7 +13,7 @@ RSpec.describe Export::ActivityAttributesColumns do
   subject { Export::ActivityAttributesColumns.new(activities: @activities, attributes: attributes) }
 
   context "when the attributes exist on the Activity model" do
-    let(:attributes) { [:roda_identifier, :parent_programme_identifier, :parent_programme_title, :delivery_partner_identifier, :programme_status, :benefitting_region] }
+    let(:attributes) { [:roda_identifier, :parent_programme_identifier, :parent_programme_title, :partner_organisation_identifier, :programme_status, :benefitting_region] }
 
     describe "#headers" do
       it "returns an array of the column headers for the attributes" do
@@ -21,7 +21,7 @@ RSpec.describe Export::ActivityAttributesColumns do
           I18n.t("activerecord.attributes.activity.roda_identifier"),
           I18n.t("activerecord.attributes.activity.parent_programme_identifier"),
           I18n.t("activerecord.attributes.activity.parent_programme_title"),
-          I18n.t("activerecord.attributes.activity.delivery_partner_identifier"),
+          I18n.t("activerecord.attributes.activity.partner_organisation_identifier"),
           I18n.t("activerecord.attributes.activity.programme_status"),
           I18n.t("activerecord.attributes.activity.benefitting_region")
         ]
@@ -33,11 +33,11 @@ RSpec.describe Export::ActivityAttributesColumns do
       end
 
       describe "ordering" do
-        let(:attributes) { [:delivery_partner_identifier, :roda_identifier, :programme_status] }
+        let(:attributes) { [:partner_organisation_identifier, :roda_identifier, :programme_status] }
 
         it "returns the values in the order they were passed in" do
           headers = [
-            I18n.t("activerecord.attributes.activity.delivery_partner_identifier"),
+            I18n.t("activerecord.attributes.activity.partner_organisation_identifier"),
             I18n.t("activerecord.attributes.activity.roda_identifier"),
             I18n.t("activerecord.attributes.activity.programme_status")
           ]
@@ -55,7 +55,7 @@ RSpec.describe Export::ActivityAttributesColumns do
           first_row_activity_presenter.roda_identifier,
           first_row_activity_presenter.parent_programme_identifier,
           first_row_activity_presenter.parent_programme_title,
-          first_row_activity_presenter.delivery_partner_identifier,
+          first_row_activity_presenter.partner_organisation_identifier,
           first_row_activity_presenter.programme_status,
           first_row_activity_presenter.benefitting_region
         ]
@@ -64,7 +64,7 @@ RSpec.describe Export::ActivityAttributesColumns do
           last_row_activity_presenter.roda_identifier,
           last_row_activity_presenter.parent_programme_identifier,
           last_row_activity_presenter.parent_programme_title,
-          last_row_activity_presenter.delivery_partner_identifier,
+          last_row_activity_presenter.partner_organisation_identifier,
           last_row_activity_presenter.programme_status,
           last_row_activity_presenter.benefitting_region
         ]
@@ -90,7 +90,7 @@ RSpec.describe Export::ActivityAttributesColumns do
             I18n.t("activerecord.attributes.activity.roda_identifier"),
             I18n.t("activerecord.attributes.activity.parent_programme_identifier"),
             I18n.t("activerecord.attributes.activity.parent_programme_title"),
-            I18n.t("activerecord.attributes.activity.delivery_partner_identifier"),
+            I18n.t("activerecord.attributes.activity.partner_organisation_identifier"),
             I18n.t("activerecord.attributes.activity.programme_status"),
             I18n.t("activerecord.attributes.activity.benefitting_region")
           ]

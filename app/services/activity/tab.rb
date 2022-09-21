@@ -73,7 +73,7 @@ class Activity
 
     def comments_with_includes
       comments = Comment.for_activity(@activity)
-      if current_user.delivery_partner?
+      if current_user.partner_organisation?
         comments.includes(:commentable, :report, owner: [:organisation])
       else
         comments.includes(:commentable, :report)

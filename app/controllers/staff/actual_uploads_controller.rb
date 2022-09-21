@@ -66,13 +66,13 @@ class Staff::ActualUploadsController < Staff::BaseController
   end
 
   private def csv_headers
-    ["Activity Name", "Activity Delivery Partner Identifier"] + ImportActuals.column_headings
+    ["Activity Name", "Activity Partner Organisation Identifier"] + ImportActuals.column_headings
   end
 
   private def csv_row(activity)
     [
       activity.title,
-      activity.delivery_partner_identifier,
+      activity.partner_organisation_identifier,
       activity.roda_identifier,
       report.financial_quarter.to_s,
       report.financial_year.to_s,

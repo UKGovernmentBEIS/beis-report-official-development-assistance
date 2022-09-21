@@ -7,7 +7,7 @@ class Staff::ExportsController < Staff::BaseController
 
     add_breadcrumb t("breadcrumbs.export.index"), :exports_path
 
-    @organisations = policy_scope(Organisation).delivery_partners
+    @organisations = policy_scope(Organisation).partner_organisations
   end
 
   def external_income

@@ -106,7 +106,7 @@ RSpec.describe Export::Report do
         expect(headers).to include(@headers_for_report.first)
         expect(headers).to include(@headers_for_report.last)
         expect(headers).to include("Implementing organisations")
-        expect(headers).to include("Delivery partner organisation")
+        expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
         expect(headers).to include("Actual net #{@actual_spend_for_report_without_forecasts.own_financial_quarter}")
         expect(headers.to_s).to_not include("Variance")
@@ -123,7 +123,7 @@ RSpec.describe Export::Report do
         expect(roda_identifier_value_for_row(first_row))
           .to eq(@project_for_report_without_forecasts.roda_identifier)
 
-        expect(delivery_partner_organisation_value_for_row(first_row))
+        expect(partner_organisation_value_for_row(first_row))
           .to eq(@project_for_report_without_forecasts.organisation.name)
         expect(change_state_value_for_row(first_row))
           .to eq("Unchanged")
@@ -149,7 +149,7 @@ RSpec.describe Export::Report do
         expect(headers).to include(@headers_for_report.first)
         expect(headers).to include(@headers_for_report.last)
         expect(headers).to include("Implementing organisations")
-        expect(headers).to include("Delivery partner organisation")
+        expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
         expect(headers).to include("Actual net #{@actual_spend.own_financial_quarter}")
         expect(headers).to include("Variance #{@actual_spend.own_financial_quarter}")
@@ -189,7 +189,7 @@ RSpec.describe Export::Report do
         expect(implementing_organisation_value_for_row(first_row))
           .to match(@project.implementing_organisations.second.name)
 
-        expect(delivery_partner_organisation_value_for_row(first_row))
+        expect(partner_organisation_value_for_row(first_row))
           .to eq(@project.organisation.name)
         expect(change_state_value_for_row(first_row))
           .to eq("Unchanged")
@@ -216,8 +216,8 @@ RSpec.describe Export::Report do
         implementing_organisation_double = double(rows: rows_data_double)
         allow(Export::ActivityImplementingOrganisationColumn).to receive(:new).and_return(implementing_organisation_double)
 
-        delivery_partner_organisation_double = double(rows: rows_data_double)
-        allow(Export::ActivityDeliveryPartnerOrganisationColumn).to receive(:new).and_return(delivery_partner_organisation_double)
+        partner_organisation_double = double(rows: rows_data_double)
+        allow(Export::ActivityPartnerOrganisationColumn).to receive(:new).and_return(partner_organisation_double)
 
         change_state_double = double(rows: rows_data_double)
         allow(Export::ActivityChangeStateColumn).to receive(:new).and_return(change_state_double)
@@ -249,7 +249,7 @@ RSpec.describe Export::Report do
           .to have_received(:rows)
           .once
 
-        expect(delivery_partner_organisation_double)
+        expect(partner_organisation_double)
           .to have_received(:rows)
           .once
 
@@ -296,7 +296,7 @@ RSpec.describe Export::Report do
         expect(headers).to include(@headers_for_report.first)
         expect(headers).to include(@headers_for_report.last)
         expect(headers).to include("Implementing organisations")
-        expect(headers).to include("Delivery partner organisation")
+        expect(headers).to include("Partner organisation")
         expect(headers).to include("Change state")
       end
     end
@@ -326,7 +326,7 @@ RSpec.describe Export::Report do
     row[@headers_for_report.length]
   end
 
-  def delivery_partner_organisation_value_for_row(row)
+  def partner_organisation_value_for_row(row)
     row[@headers_for_report.length + 1]
   end
 

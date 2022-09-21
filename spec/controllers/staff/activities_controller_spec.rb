@@ -11,17 +11,17 @@ RSpec.describe Staff::ActivitiesController do
     end
   end
 
-  context "when signed in as a delivery partner user" do
-    let(:delivery_partner_user) { create(:delivery_partner_user) }
+  context "when signed in as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
 
     before do
-      allow(subject).to receive(:current_user).and_return(delivery_partner_user)
+      allow(subject).to receive(:current_user).and_return(user)
     end
 
     it "does not show fund (level A) activities" do
       fund_activity = create(:fund_activity)
 
-      get :show, params: {organisation_id: delivery_partner_user.organisation.id, id: fund_activity.id}
+      get :show, params: {organisation_id: user.organisation.id, id: fund_activity.id}
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -62,7 +62,7 @@ RSpec.describe Staff::ActivitiesController do
       end
 
       it "allows fetching of another organisation's activities" do
-        organisation = create(:delivery_partner_organisation)
+        organisation = create(:partner_organisation)
 
         get route, params: {organisation_id: organisation.id}
 
@@ -74,8 +74,8 @@ RSpec.describe Staff::ActivitiesController do
       end
     end
 
-    context "when signed in as a delivery partner" do
-      let(:user) { create(:delivery_partner_user) }
+    context "when signed in as a partner organisation user" do
+      let(:user) { create(:partner_organisation_user) }
 
       it "assigns the activities correctly" do
         get route, params: {organisation_id: user.organisation.id}
@@ -94,7 +94,7 @@ RSpec.describe Staff::ActivitiesController do
       end
 
       it "fetches the activities for the user's organisation when the organisation ID is that of another organisation" do
-        organisation = create(:delivery_partner_organisation)
+        organisation = create(:partner_organisation)
 
         get route, params: {organisation_id: organisation.id}
 
@@ -117,8 +117,8 @@ RSpec.describe Staff::ActivitiesController do
 
   describe "#show" do
     context "when viewing historical events" do
-      let(:user) { create(:delivery_partner_user, organisation: organisation) }
-      let(:organisation) { create(:delivery_partner_organisation) }
+      let(:user) { create(:partner_organisation_user, organisation: organisation) }
+      let(:organisation) { create(:partner_organisation) }
 
       before do
         allow(controller).to receive(:current_user).and_return(user)

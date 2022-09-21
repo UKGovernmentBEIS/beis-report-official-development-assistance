@@ -61,7 +61,7 @@ RSpec.describe Activity::GroupedActivitiesFetcher do
   end
 
   context "when the organisation is not a service owner" do
-    let(:organisation) { create(:delivery_partner_organisation) }
+    let(:organisation) { create(:partner_organisation) }
 
     it "filters by extending organisation" do
       fund = create(:fund_activity)
@@ -87,7 +87,7 @@ RSpec.describe Activity::GroupedActivitiesFetcher do
   end
 
   it "orders the activities by created date" do
-    organisation = create(:delivery_partner_organisation)
+    organisation = create(:partner_organisation)
     fund = create(:fund_activity)
     old_programme = create(:programme_activity, extending_organisation: organisation, parent: fund, created_at: 1.month.ago)
     new_programme = create(:programme_activity, extending_organisation: organisation, parent: fund, created_at: 3.days.ago)

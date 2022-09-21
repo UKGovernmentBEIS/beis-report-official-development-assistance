@@ -3,13 +3,13 @@ RSpec.feature "BEIS users can download exports" do
     authenticate! user: create(:beis_user)
   end
 
-  scenario "downloading the actuals for a delivery partner" do
-    delivery_partner = create(:delivery_partner_organisation)
-    project = create(:project_activity, organisation: delivery_partner)
+  scenario "downloading the actuals for a partner organisation" do
+    partner_organisation = create(:partner_organisation)
+    project = create(:project_activity, organisation: partner_organisation)
     create(:actual, parent_activity: project, financial_year: 2019, financial_quarter: 3, value: 150)
 
     visit exports_path
-    click_link delivery_partner.name
+    click_link partner_organisation.name
     click_link "Download All actuals"
     document = CSV.parse(page.body.delete_prefix("\uFEFF"), headers: true).map(&:to_h)
 
@@ -22,14 +22,14 @@ RSpec.feature "BEIS users can download exports" do
     ])
   end
 
-  scenario "downloading the external income for a delivery partner" do
-    delivery_partner = create(:delivery_partner_organisation)
-    project = create(:project_activity, :newton_funded, organisation: delivery_partner)
+  scenario "downloading the external income for a partner organisation" do
+    partner_organisation = create(:partner_organisation)
+    project = create(:project_activity, :newton_funded, organisation: partner_organisation)
     ext_income1 = create(:external_income, activity: project, financial_year: 2019, financial_quarter: 3, amount: 120)
     ext_income2 = create(:external_income, activity: project, financial_year: 2021, financial_quarter: 1, amount: 240)
 
     visit exports_path
-    click_link delivery_partner.name
+    click_link partner_organisation.name
     click_link "Newton Fund external income"
     document = CSV.parse(page.body.delete_prefix("\uFEFF"), headers: true).map(&:to_h)
 
@@ -37,8 +37,8 @@ RSpec.feature "BEIS users can download exports" do
     expect(document).to match_array([
       {
         "RODA identifier" => project.roda_identifier,
-        "Delivery partner identifier" => project.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner.name,
+        "Partner organisation identifier" => project.partner_organisation_identifier,
+        "Partner organisation" => partner_organisation.name,
         "Title" => project.title,
         "Level" => "Project (level C)",
         "Providing organisation" => ext_income1.organisation.name,
@@ -53,8 +53,8 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project.roda_identifier,
-        "Delivery partner identifier" => project.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner.name,
+        "Partner organisation identifier" => project.partner_organisation_identifier,
+        "Partner organisation" => partner_organisation.name,
         "Title" => project.title,
         "Level" => "Project (level C)",
         "Providing organisation" => ext_income2.organisation.name,
@@ -70,10 +70,10 @@ RSpec.feature "BEIS users can download exports" do
     ])
   end
 
-  scenario "downloading the external income for all delivery partners" do
-    delivery_partner1, delivery_partner2 = create_list(:delivery_partner_organisation, 2)
-    project1 = create(:project_activity, :newton_funded, organisation: delivery_partner1)
-    project2 = create(:project_activity, :newton_funded, organisation: delivery_partner2)
+  scenario "downloading the external income for all partner organisations" do
+    partner_organisation1, partner_organisation2 = create_list(:partner_organisation, 2)
+    project1 = create(:project_activity, :newton_funded, organisation: partner_organisation1)
+    project2 = create(:project_activity, :newton_funded, organisation: partner_organisation2)
 
     ext_income1 = create(:external_income, activity: project1, financial_year: 2019, financial_quarter: 3, amount: 120)
     ext_income2 = create(:external_income, activity: project2, financial_year: 2021, financial_quarter: 1, amount: 240)
@@ -89,8 +89,8 @@ RSpec.feature "BEIS users can download exports" do
     expect(document).to match_array([
       {
         "RODA identifier" => project1.roda_identifier,
-        "Delivery partner identifier" => project1.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner1.name,
+        "Partner organisation identifier" => project1.partner_organisation_identifier,
+        "Partner organisation" => partner_organisation1.name,
         "Title" => project1.title,
         "Level" => "Project (level C)",
         "Providing organisation" => ext_income1.organisation.name,
@@ -106,8 +106,8 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project2.roda_identifier,
-        "Delivery partner identifier" => project2.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner2.name,
+        "Partner organisation identifier" => project2.partner_organisation_identifier,
+        "Partner organisation" => partner_organisation2.name,
         "Title" => project2.title,
         "Level" => "Project (level C)",
         "Providing organisation" => ext_income2.organisation.name,
@@ -123,8 +123,8 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project2.roda_identifier,
-        "Delivery partner identifier" => project2.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner2.name,
+        "Partner organisation identifier" => project2.partner_organisation_identifier,
+        "Partner organisation" => partner_organisation2.name,
         "Title" => project2.title,
         "Level" => "Project (level C)",
         "Providing organisation" => ext_income3.organisation.name,
@@ -141,12 +141,12 @@ RSpec.feature "BEIS users can download exports" do
     ])
   end
 
-  scenario "downloading budgets for a delivery partner" do
-    delivery_partner = create(:delivery_partner_organisation)
+  scenario "downloading budgets for a partner organisation" do
+    partner_organisation = create(:partner_organisation)
 
     report = create(:report)
 
-    project = create(:project_activity, :newton_funded, extending_organisation: delivery_partner)
+    project = create(:project_activity, :newton_funded, extending_organisation: partner_organisation)
 
     create(:budget, financial_year: 2018, value: 100, parent_activity: project, report: report)
     create(:budget, financial_year: 2019, value: 80, parent_activity: project, report: report)
@@ -154,7 +154,7 @@ RSpec.feature "BEIS users can download exports" do
     create(:budget, financial_year: 2021, value: 20, parent_activity: project, report: report)
 
     visit exports_path
-    click_link delivery_partner.name
+    click_link partner_organisation.name
     click_link "Newton Fund budgets"
 
     document = CSV.parse(page.body.delete_prefix("\uFEFF"), headers: true).map(&:to_h)
@@ -164,8 +164,8 @@ RSpec.feature "BEIS users can download exports" do
     expect(document).to match_array([
       {
         "RODA identifier" => project.roda_identifier,
-        "Delivery partner identifier" => project.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner.name,
+        "Partner organisation identifier" => project.partner_organisation_identifier,
+        "Partner organisation" => partner_organisation.name,
         "Level" => "Project (level C)",
         "Title" => project.title,
         "2018-2019" => "100.00",
@@ -176,14 +176,14 @@ RSpec.feature "BEIS users can download exports" do
     ])
   end
 
-  scenario "downloading budgets for all delivery partners" do
-    delivery_partner1, delivery_partner2 = create_list(:delivery_partner_organisation, 2)
+  scenario "downloading budgets for all partner organisations" do
+    partner_organisation1, partner_organisation2 = create_list(:partner_organisation, 2)
 
     report = create(:report)
 
     programme = create(:programme_activity)
-    project1 = create(:project_activity, :newton_funded, extending_organisation: delivery_partner1, parent: programme)
-    project2 = create(:project_activity, :newton_funded, extending_organisation: delivery_partner2, parent: programme)
+    project1 = create(:project_activity, :newton_funded, extending_organisation: partner_organisation1, parent: programme)
+    project2 = create(:project_activity, :newton_funded, extending_organisation: partner_organisation2, parent: programme)
 
     create(:budget, financial_year: 2018, value: 100, parent_activity: project1, report: report)
     create(:budget, financial_year: 2019, value: 80, parent_activity: project1, report: report)
@@ -205,8 +205,8 @@ RSpec.feature "BEIS users can download exports" do
     expect(document).to match_array([
       {
         "RODA identifier" => project1.roda_identifier,
-        "Delivery partner identifier" => project1.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner1.name,
+        "Partner organisation identifier" => project1.partner_organisation_identifier,
+        "Partner organisation" => partner_organisation1.name,
         "Level" => "Project (level C)",
         "Title" => project1.title,
         "2018-2019" => "100.00",
@@ -216,8 +216,8 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project2.roda_identifier,
-        "Delivery partner identifier" => project2.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner2.name,
+        "Partner organisation identifier" => project2.partner_organisation_identifier,
+        "Partner organisation" => partner_organisation2.name,
         "Level" => "Project (level C)",
         "Title" => project2.title,
         "2018-2019" => "100.00",
@@ -227,8 +227,8 @@ RSpec.feature "BEIS users can download exports" do
       },
       {
         "RODA identifier" => project2.roda_identifier,
-        "Delivery partner identifier" => project2.delivery_partner_identifier,
-        "Delivery partner organisation" => delivery_partner2.name,
+        "Partner organisation identifier" => project2.partner_organisation_identifier,
+        "Partner organisation" => partner_organisation2.name,
         "Level" => "Project (level C)",
         "Title" => project2.title,
         "2018-2019" => "0.00",

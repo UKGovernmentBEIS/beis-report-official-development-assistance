@@ -1,16 +1,16 @@
 RSpec.feature "Users can submit a report" do
-  context "as a Delivery partner user" do
+  context "as a partner organisation user" do
     let!(:service_owner) { create(:beis_user) }
-    let(:organisation) { create(:delivery_partner_organisation, users: create_list(:delivery_partner_user, 2)) }
-    let(:delivery_partner_user) { create(:delivery_partner_user, organisation: organisation) }
+    let(:organisation) { create(:partner_organisation, users: create_list(:partner_organisation_user, 2)) }
+    let(:partner_org_user) { create(:partner_organisation_user, organisation: organisation) }
 
     before do
-      authenticate!(user: delivery_partner_user)
+      authenticate!(user: partner_org_user)
     end
 
     context "when the report is active" do
       scenario "they can submit a report" do
-        report = create(:report, :active, organisation: delivery_partner_user.organisation)
+        report = create(:report, :active, organisation: partner_org_user.organisation)
         report_presenter = ReportPresenter.new(report)
 
         perform_enqueued_jobs do
@@ -30,14 +30,14 @@ RSpec.feature "Users can submit a report" do
         expect(service_owner).to have_received_email.with_subject(t("mailer.report.submitted.service_owner.subject", application_name: t("app.title"), environment_name: nil))
 
         organisation.users.each do |user|
-          expect(user).to have_received_email.with_subject(t("mailer.report.submitted.delivery_partner.subject", application_name: t("app.title"), environment_name: nil))
+          expect(user).to have_received_email.with_subject(t("mailer.report.submitted.partner_organisation.subject", application_name: t("app.title"), environment_name: nil))
         end
       end
     end
 
     context "when the report is awaiting changes" do
       scenario "they can submit a report" do
-        report = create(:report, :awaiting_changes, organisation: delivery_partner_user.organisation)
+        report = create(:report, :awaiting_changes, organisation: partner_org_user.organisation)
         report_presenter = ReportPresenter.new(report)
 
         visit report_path(report)
@@ -54,7 +54,7 @@ RSpec.feature "Users can submit a report" do
 
     context "when the report is submitted" do
       scenario "they cannot submit a submitted report" do
-        report = create(:report, state: :submitted, organisation: delivery_partner_user.organisation)
+        report = create(:report, state: :submitted, organisation: partner_org_user.organisation)
 
         visit report_path(report)
 

@@ -6,7 +6,7 @@ module Export
 
     def show?
       return true if user.service_owner?
-      return true if user.delivery_partner? && user.organisation == record
+      return true if user.partner_organisation? && user.organisation == record
     end
 
     def show_external_income?

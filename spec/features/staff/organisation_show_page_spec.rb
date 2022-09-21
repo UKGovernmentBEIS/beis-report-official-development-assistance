@@ -1,5 +1,5 @@
 RSpec.feature "Organisation show page" do
-  let(:delivery_partner_user) { create(:delivery_partner_user) }
+  let(:partner_org_user) { create(:partner_organisation_user) }
   let(:beis_user) { create(:beis_user) }
 
   context "when signed in as a BEIS user" do
@@ -23,15 +23,15 @@ RSpec.feature "Organisation show page" do
     end
   end
 
-  context "when signed in as a delivery partner user" do
+  context "when signed in as a partner organisation user" do
     before do
-      authenticate!(user: delivery_partner_user)
+      authenticate!(user: partner_org_user)
     end
 
     scenario "they do not see the edit details button" do
-      visit organisation_path(delivery_partner_user.organisation)
+      visit organisation_path(partner_org_user.organisation)
 
-      expect(page).not_to have_link t("page_content.organisation.button.edit_details"), href: edit_organisation_path(delivery_partner_user.organisation)
+      expect(page).not_to have_link t("page_content.organisation.button.edit_details"), href: edit_organisation_path(partner_org_user.organisation)
     end
   end
 end

@@ -73,7 +73,7 @@ RSpec.describe Report::Export do
         "VAR FQ2 2021-2022",
         "Comment",
         "Source fund",
-        "Delivery partner short name",
+        "Partner organisation short name",
         "Link to activity in RODA"
       )
     end
@@ -129,7 +129,7 @@ RSpec.describe Report::Export do
 
   describe Report::Export::Row do
     # The row generates URLs, so we need to make sure the objects have UUIDs
-    let(:organisation) { build(:delivery_partner_organisation, id: SecureRandom.uuid) }
+    let(:organisation) { build(:partner_organisation, id: SecureRandom.uuid) }
     let(:activity) { build(:project_activity, id: SecureRandom.uuid, organisation: organisation) }
 
     let(:report_presenter) { ReportPresenter.new(build(:report)) }
@@ -202,7 +202,7 @@ RSpec.describe Report::Export do
       let(:forecast_snapshot) { double("ForecastOverview::Snapshot", all_quarters: forecast_quarters, value_for_report_quarter: 0) }
       let(:forecast_overview) { double("ForecastOverview") }
       let(:fund) { Fund.new(1) }
-      let(:extending_organisation) { build(:delivery_partner_organisation) }
+      let(:extending_organisation) { build(:partner_organisation) }
 
       it "includes the actuals and refunds for the previous quarters" do
         expect(subject.previous_quarter_actuals_and_refunds).to eq(["20.00", "-5.00", "40.00", "-10.00", "80.00", "0.00", "0.00", "0.00"])
@@ -223,7 +223,7 @@ RSpec.describe Report::Export do
       it "includes the variance data" do
         fund = Fund.new("1")
         comments = [build(:comment, body: "First comment"), build(:comment, body: "Additional content")]
-        extending_organisation = build(:delivery_partner_organisation)
+        extending_organisation = build(:partner_organisation)
 
         expect(ForecastOverview).to receive(:new).with(activity_presenter).at_least(:once).and_return(forecast_overview)
         expect(forecast_overview).to receive(:snapshot).with(report_presenter).at_least(:once).and_return(forecast_snapshot)

@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Staff::ActivityFormsController do
-  let(:user) { create(:delivery_partner_user, organisation: organisation) }
-  let(:organisation) { create(:delivery_partner_organisation) }
+  let(:user) { create(:partner_organisation_user, organisation: organisation) }
+  let(:organisation) { create(:partner_organisation) }
 
   before do
     allow(controller).to receive(:current_user).and_return(user)
@@ -117,8 +117,8 @@ RSpec.describe Staff::ActivityFormsController do
         end
       end
 
-      context "country_delivery_partners" do
-        subject { get_step :country_delivery_partners }
+      context "country_partner_organisations" do
+        subject { get_step :country_partner_organisations }
 
         context "when the activity is newton funded" do
           let(:activity) { create(:project_activity, :newton_funded, organisation: organisation, parent: programme) }

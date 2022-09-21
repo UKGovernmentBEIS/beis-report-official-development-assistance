@@ -27,12 +27,12 @@
 
   .govuk-summary-list__row.identifier
     %dt.govuk-summary-list__key
-      = t("activerecord.attributes.activity.delivery_partner_identifier")
+      = t("activerecord.attributes.activity.partner_organisation_identifier")
     %dd.govuk-summary-list__value
-      = activity_presenter.delivery_partner_identifier
+      = activity_presenter.partner_organisation_identifier
     %dd.govuk-summary-list__actions
-      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :identifier) && activity_presenter.delivery_partner_identifier.blank?
-        = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :identifier), t("activerecord.attributes.activity.delivery_partner_identifier").downcase)
+      - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :identifier) && activity_presenter.partner_organisation_identifier.blank?
+        = a11y_action_link(t("default.link.add"), activity_step_path(activity_presenter, :identifier), t("activerecord.attributes.activity.partner_organisation_identifier").downcase)
 
   .govuk-summary-list__row.roda_identifier
     %dt.govuk-summary-list__key
@@ -87,14 +87,14 @@
         = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:sector)}"), activity_step_path(activity_presenter, :sector_category), t("activerecord.attributes.activity.sector"))
 
   - if activity_presenter.is_project?
-    .govuk-summary-list__row.uk_dp_named_contact
+    .govuk-summary-list__row.uk_po_named_contact
       %dt.govuk-summary-list__key
-        = t("activerecord.attributes.activity.uk_dp_named_contact")
+        = t("activerecord.attributes.activity.uk_po_named_contact")
       %dd.govuk-summary-list__value
-        = activity_presenter.uk_dp_named_contact
+        = activity_presenter.uk_po_named_contact
       %dd.govuk-summary-list__actions
-        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :uk_dp_named_contact)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:uk_dp_named_contact)}"), activity_step_path(activity_presenter, :uk_dp_named_contact), t("activerecord.attributes.activity.uk_dp_named_contact"))
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :uk_po_named_contact)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:uk_po_named_contact)}"), activity_step_path(activity_presenter, :uk_po_named_contact), t("activerecord.attributes.activity.uk_po_named_contact"))
 
   - if activity_presenter.requires_call_dates?
     .govuk-summary-list__row.call_present
@@ -156,18 +156,18 @@
           = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:programme_status)}"), activity_step_path(activity_presenter, :programme_status), t("activerecord.attributes.activity.programme_status"))
 
   - if activity_presenter.is_newton_funded?
-    .govuk-summary-list__row.country_delivery_partners
+    .govuk-summary-list__row.country_partner_organisations
       %dt.govuk-summary-list__key
-        = t("activerecord.attributes.activity.country_delivery_partners")
+        = t("activerecord.attributes.activity.country_partner_organisations")
       %dd.govuk-summary-list__value
-        - if activity_presenter.country_delivery_partners.present?
+        - if activity_presenter.country_partner_organisations.present?
           %ul.govuk-list
-            - activity_presenter.country_delivery_partners.each do |cdp|
+            - activity_presenter.country_partner_organisations.each do |cdp|
               %li
                 = cdp
       %dd.govuk-summary-list__actions
-        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :country_delivery_partners)
-          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:country_delivery_partners)}"), activity_step_path(activity_presenter, :country_delivery_partners), t("activerecord.attributes.activity.country_delivery_partners"))
+        - if policy(activity_presenter).update? && step_is_complete_or_next?(activity: activity_presenter, step: :country_partner_organisations)
+          = a11y_action_link(t("default.link.#{activity_presenter.call_to_action(:country_partner_organisations)}"), activity_step_path(activity_presenter, :country_partner_organisations), t("activerecord.attributes.activity.country_partner_organisations"))
 
   .govuk-summary-list__row.planned_start_date
     %dt.govuk-summary-list__key

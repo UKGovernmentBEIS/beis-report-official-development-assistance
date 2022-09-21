@@ -1,9 +1,10 @@
 RSpec.describe "staff/home/service_owner" do
   before do
     assign(:current_user, build(:beis_user))
-    assign(:delivery_partner_organisations, build_list(:delivery_partner_organisation, 2))
+    organisation = build(:partner_organisation, name: "Partner Org 1")
+    assign(:partner_organisations, [organisation, build(:partner_organisation)])
 
-    stub_template "staff/shared/reports/_delivery_partners_organisations_table" => "table of delivery partners"
+    stub_template "staff/shared/reports/_partner_organisations_table" => "table of partner organisations"
     stub_template "staff/searches/_form" => "search form"
 
     allow(view).to receive(:organisation_path).and_return("/organisations/id")
@@ -14,10 +15,10 @@ RSpec.describe "staff/home/service_owner" do
     render
   end
 
-  it "has links to a delivery partners details, activities, exports and reports" do
-    expect(rendered).to have_link("View details", href: "/organisations/id")
-    expect(rendered).to have_link("View activities", href: "/organisation/id/activities")
-    expect(rendered).to have_link("View exports", href: "/exports/organisation/id")
-    expect(rendered).to have_link("View reports", href: "/organisation/id/reports")
+  it "has links to a partner organisation's details, activities, exports and reports" do
+    expect(rendered).to have_link("Partner Org 1", href: "/organisations/id")
+    expect(rendered).to have_link(t("table.cell.organisations.view_activities"), href: "/organisation/id/activities")
+    expect(rendered).to have_link(t("table.cell.organisations.view_exports"), href: "/exports/organisation/id")
+    expect(rendered).to have_link(t("table.cell.organisations.view_reports"), href: "/organisation/id/reports")
   end
 end

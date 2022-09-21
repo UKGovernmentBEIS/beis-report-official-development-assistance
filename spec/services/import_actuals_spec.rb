@@ -4,7 +4,7 @@ RSpec.describe ImportActuals do
   let(:project) { create(:project_activity, title: "Example Project", description: "Longer description") }
 
   let(:reporter_organisation) { project.organisation }
-  let(:reporter) { create(:delivery_partner_user, organisation: reporter_organisation) }
+  let(:reporter) { create(:partner_organisation_user, organisation: reporter_organisation) }
 
   let! :report do
     create(:report,
@@ -103,7 +103,7 @@ RSpec.describe ImportActuals do
     end
 
     context "when the reporter is not authorised to report on the Activity" do
-      let(:reporter_organisation) { create(:delivery_partner_organisation) }
+      let(:reporter_organisation) { create(:partner_organisation) }
 
       it "does not import any actuals" do
         expect(report.actuals.count).to eq(0)

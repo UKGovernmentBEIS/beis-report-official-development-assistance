@@ -1,9 +1,9 @@
 RSpec.describe "staff/shared/activities/_activity" do
   let(:policy_stub) { ActivityPolicy.new(user, activity) }
-  let(:user) { build(:delivery_partner_user) }
+  let(:user) { build(:partner_organisation_user) }
   let(:activity) { build(:programme_activity) }
   let(:activity_presenter) { ActivityPresenter.new(activity) }
-  let(:country_delivery_partners) { ["ACME Inc"] }
+  let(:country_partner_orgs) { ["ACME Inc"] }
   let(:body) { Capybara.string(rendered) }
 
   before do
@@ -46,13 +46,13 @@ RSpec.describe "staff/shared/activities/_activity" do
 
   context "With a Newton fund" do
     context "when the activity is a programme activity" do
-      let(:activity) { build(:programme_activity, :newton_funded, country_delivery_partners: country_delivery_partners) }
+      let(:activity) { build(:programme_activity, :newton_funded, country_partner_organisations: country_partner_orgs) }
 
       it { is_expected.to show_basic_details }
     end
 
     context "when the activity is a project activity" do
-      let(:activity) { build(:project_activity, :newton_funded, country_delivery_partners: country_delivery_partners) }
+      let(:activity) { build(:project_activity, :newton_funded, country_partner_organisations: country_partner_orgs) }
 
       it { is_expected.to show_basic_details }
       it { is_expected.to show_project_details }
@@ -60,7 +60,7 @@ RSpec.describe "staff/shared/activities/_activity" do
     end
 
     context "when the activity is a third party project activity" do
-      let(:activity) { build(:third_party_project_activity, :newton_funded, country_delivery_partners: country_delivery_partners) }
+      let(:activity) { build(:third_party_project_activity, :newton_funded, country_partner_organisations: country_partner_orgs) }
 
       it { is_expected.to show_basic_details }
       it { is_expected.to show_project_details }
@@ -140,14 +140,14 @@ RSpec.describe "staff/shared/activities/_activity" do
 
       it { is_expected.to show_the_edit_add_actions }
 
-      it "does not show an edit link for the delivery partner identifier" do
+      it "does not show an edit link for the partner organisation identifier" do
         expect(body.find(".identifier")).to_not have_content(t("default.link.edit"))
       end
 
-      context "when the project does not have a delivery partner identifier" do
-        let(:activity) { build(:project_activity, delivery_partner_identifier: nil, organisation: user.organisation) }
+      context "when the project does not have a partner organisation identifier" do
+        let(:activity) { build(:project_activity, partner_organisation_identifier: nil, organisation: user.organisation) }
 
-        scenario "shows an edit link for the delivery partner identifier" do
+        scenario "shows an edit link for the partner organisation identifier" do
           expect(body.find(".identifier")).to have_content(t("default.link.add"))
         end
       end
@@ -161,8 +161,8 @@ RSpec.describe "staff/shared/activities/_activity" do
         end
       end
 
-      it "shows a link to edit the UK DP named contact" do
-        expect(body.find(".uk_dp_named_contact")).to have_content(t("default.link.edit"))
+      it "shows a link to edit the UK PO named contact" do
+        expect(body.find(".uk_po_named_contact")).to have_content(t("default.link.edit"))
       end
     end
   end
@@ -245,7 +245,7 @@ RSpec.describe "staff/shared/activities/_activity" do
 
   RSpec::Matchers.define :show_basic_details do
     match do |actual|
-      expect(rendered).to have_content activity_presenter.delivery_partner_identifier
+      expect(rendered).to have_content activity_presenter.partner_organisation_identifier
       expect(rendered).to have_content activity_presenter.title
       expect(rendered).to have_content activity_presenter.description
       expect(rendered).to have_content activity_presenter.sector
@@ -307,7 +307,7 @@ RSpec.describe "staff/shared/activities/_activity" do
       expect(rendered).to have_content activity_presenter.channel_of_delivery_code
 
       expect(rendered).to have_content activity_presenter.oda_eligibility_lead
-      expect(rendered).to have_content activity_presenter.uk_dp_named_contact
+      expect(rendered).to have_content activity_presenter.uk_po_named_contact
 
       expect(rendered).to have_content activity_presenter.call_open_date
       expect(rendered).to have_content activity_presenter.call_close_date
@@ -320,9 +320,9 @@ RSpec.describe "staff/shared/activities/_activity" do
 
   RSpec::Matchers.define :show_newton_specific_details do
     match do |actual|
-      expect(rendered).to have_css(".govuk-summary-list__row.country_delivery_partners")
-      activity_presenter.country_delivery_partners.each do |delivery_partner|
-        expect(rendered).to have_content(delivery_partner)
+      expect(rendered).to have_css(".govuk-summary-list__row.country_partner_organisations")
+      activity_presenter.country_partner_organisations.each do |partner_organisation|
+        expect(rendered).to have_content(partner_organisation)
       end
       expect(rendered).to have_content activity_presenter.fund_pillar
     end

@@ -3,8 +3,8 @@ class Staff::HomeController < Staff::BaseController
     authorize :home, :show?
 
     if current_user.service_owner?
-      @delivery_partner_organisations = Organisation.delivery_partners
-      authorize @delivery_partner_organisations
+      @partner_organisations = Organisation.partner_organisations
+      authorize @partner_organisations
       render :service_owner
     else
       @grouped_activities = Activity::GroupedActivitiesFetcher.new(
@@ -13,7 +13,7 @@ class Staff::HomeController < Staff::BaseController
         scope: :current
       ).call
       @reports = Report::OrganisationReportsFetcher.new(organisation: current_user.organisation).current
-      render :delivery_partner
+      render :partner_organisation
     end
   end
 end

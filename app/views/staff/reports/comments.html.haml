@@ -27,7 +27,7 @@
                   = t("table.header.comments.type")
                 %th.govuk-table__cell
                   = t("table.header.comments.comment")
-                - if current_user.delivery_partner?
+                - if current_user.partner_organisation?
                   %th.govuk-table__cell
                     %span.govuk-visually-hidden
                       = t("table.header.default.actions")
@@ -42,7 +42,7 @@
                     %td.govuk-table__cell= I18n.l(comment.created_at.to_date)
                     %td.govuk-table__cell= comment.commentable_type
                     %td.govuk-table__cell= comment.body
-                    - if current_user.delivery_partner?
+                    - if current_user.partner_organisation?
                       %td.govuk-table__cell
                         - if policy([comment.commentable, comment]).update?
                           = a11y_action_link(t("default.link.edit"), edit_activity_comment_path(activity, comment), t("table.body.report.comment").downcase)

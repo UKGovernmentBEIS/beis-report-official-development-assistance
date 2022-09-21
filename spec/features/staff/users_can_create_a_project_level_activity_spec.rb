@@ -1,6 +1,6 @@
 RSpec.feature "Users can create a project" do
   context "when they are a delivery parther" do
-    let(:user) { create(:delivery_partner_user) }
+    let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
 
     context "when viewing a programme" do
@@ -18,7 +18,7 @@ RSpec.feature "Users can create a project" do
         report = create(:report, :active, organisation: user.organisation, fund: programme.associated_fund)
 
         activity = build(:project_activity, :newton_funded,
-          country_delivery_partners: ["National Council for the State Funding Agencies (CONFAP)"],
+          country_partner_organisations: ["National Council for the State Funding Agencies (CONFAP)"],
           benefitting_countries: ["AG", "HT"],
           sdgs_apply: true,
           sdg_1: 5)
@@ -53,7 +53,7 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.planned_end_date).to eq(activity.planned_end_date)
         expect(created_activity.actual_start_date).to eq(activity.actual_start_date)
         expect(created_activity.actual_end_date).to eq(activity.actual_end_date)
-        expect(created_activity.country_delivery_partners).to eq(activity.country_delivery_partners)
+        expect(created_activity.country_partner_organisations).to eq(activity.country_partner_organisations)
         expect(created_activity.benefitting_countries).to match_array(activity.benefitting_countries)
         expect(created_activity.gdi).to eq(activity.gdi)
         expect(created_activity.aid_type).to eq(activity.aid_type)
@@ -72,7 +72,7 @@ RSpec.feature "Users can create a project" do
         expect(created_activity.covid19_related).to eq(activity.covid19_related)
         expect(created_activity.oda_eligibility).to eq(activity.oda_eligibility)
         expect(created_activity.oda_eligibility_lead).to eq(activity.oda_eligibility_lead)
-        expect(created_activity.uk_dp_named_contact).to eq(activity.uk_dp_named_contact)
+        expect(created_activity.uk_po_named_contact).to eq(activity.uk_po_named_contact)
         expect(created_activity.implementing_organisations).to be_none
       end
 
@@ -85,7 +85,7 @@ RSpec.feature "Users can create a project" do
 
         click_link t("tabs.activity.children")
         click_button t("action.activity.add_child")
-        fill_in "activity[delivery_partner_identifier]", with: "foo"
+        fill_in "activity[partner_organisation_identifier]", with: "foo"
         click_button t("form.button.activity.submit")
 
         expect(page).to have_content t("form.legend.activity.purpose", level: "project (level C)")

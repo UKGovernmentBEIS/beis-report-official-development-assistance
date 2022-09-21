@@ -12,7 +12,7 @@ en:
       edit: Edit outgoing transfer
       confirm: Are these transfer details correct?
   intro:
-    outgoing_transfer: Transfer funds to another delivery partner activity
+    outgoing_transfer: Transfer funds to another partner organisation activity
   action:
     outgoing_transfer:
       create:

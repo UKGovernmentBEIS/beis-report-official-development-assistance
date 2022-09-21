@@ -1,6 +1,6 @@
 RSpec.feature "Users can view an organisation as XML" do
   let(:user) { create(:beis_user) }
-  let!(:organisation) { create(:delivery_partner_organisation) }
+  let!(:organisation) { create(:partner_organisation) }
 
   context "when the user belongs to BEIS" do
     before { authenticate!(user: user) }
@@ -112,7 +112,7 @@ RSpec.feature "Users can view an organisation as XML" do
         end
 
         it "sums up the total actuals of all the programmes and their child activities by quarter" do
-          programme = create(:programme_activity, :newton_funded, :with_transparency_identifier, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
+          programme = create(:programme_activity, :newton_funded, :with_transparency_identifier, extending_organisation: organisation, partner_organisation_identifier: "IND-ENT-IFIER")
           other_programme = create(:programme_activity, parent: programme.parent, extending_organisation: organisation)
 
           activity_projects = create_list(:project_activity, 2, parent: programme)
@@ -141,7 +141,7 @@ RSpec.feature "Users can view an organisation as XML" do
 
       context "when downloading project level activities" do
         it "includes all actuals for those projects only" do
-          project = create(:project_activity_with_implementing_organisations, :gcrf_funded, :with_transparency_identifier, organisation: organisation, extending_organisation: organisation, delivery_partner_identifier: "IND-ENT-IFIER")
+          project = create(:project_activity_with_implementing_organisations, :gcrf_funded, :with_transparency_identifier, organisation: organisation, extending_organisation: organisation, partner_organisation_identifier: "IND-ENT-IFIER")
           other_project = create(:project_activity, :gcrf_funded, parent: project.parent, organisation: organisation, extending_organisation: organisation)
 
           third_party_project = create(:third_party_project_activity, :gcrf_funded, parent: project)

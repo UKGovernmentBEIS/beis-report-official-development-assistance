@@ -14,7 +14,7 @@ class ActivityForm
   end
 
   def created_activity
-    Activity.find_by(delivery_partner_identifier: activity.delivery_partner_identifier)
+    Activity.find_by(partner_organisation_identifier: activity.partner_organisation_identifier)
   end
 
   private
@@ -47,7 +47,7 @@ class ActivityForm
     fill_in_sector_category_step
     fill_in_sector_step
     fill_in_programme_status
-    fill_in_country_delivery_partners
+    fill_in_country_partner_organisations
     fill_in_dates
     fill_in_benefitting_countries
     fill_in_gdi
@@ -110,7 +110,7 @@ class ActivityForm
     fill_in_call_details
     fill_in_call_applications
     fill_in_programme_status
-    fill_in_country_delivery_partners
+    fill_in_country_partner_organisations
     fill_in_dates
     fill_in_benefitting_countries
     fill_in_gdi
@@ -127,9 +127,9 @@ class ActivityForm
   end
 
   def fill_in_identifier_step
-    expect(page).to have_content I18n.t("form.label.activity.delivery_partner_identifier")
-    expect(page).to have_content I18n.t("form.hint.activity.delivery_partner_identifier")
-    fill_in "activity[delivery_partner_identifier]", with: activity.delivery_partner_identifier
+    expect(page).to have_content I18n.t("form.label.activity.partner_organisation_identifier")
+    expect(page).to have_content I18n.t("form.hint.activity.partner_organisation_identifier")
+    fill_in "activity[partner_organisation_identifier]", with: activity.partner_organisation_identifier
     click_button I18n.t("form.button.activity.submit")
   end
 
@@ -216,14 +216,14 @@ class ActivityForm
     click_button I18n.t("form.button.activity.submit")
   end
 
-  def fill_in_country_delivery_partners
-    expect(page).to have_content I18n.t("form.legend.activity.country_delivery_partners")
-    expect(page).to have_content I18n.t("form.hint.activity.country_delivery_partners")
+  def fill_in_country_partner_organisations
+    expect(page).to have_content I18n.t("form.legend.activity.country_partner_organisations")
+    expect(page).to have_content I18n.t("form.hint.activity.country_partner_organisations")
 
-    all("[name='activity[country_delivery_partners][]']").each_with_index do |element, index|
-      break if activity.country_delivery_partners[index].blank?
+    all("[name='activity[country_partner_organisations][]']").each_with_index do |element, index|
+      break if activity.country_partner_organisations[index].blank?
 
-      element.set(activity.country_delivery_partners[index])
+      element.set(activity.country_partner_organisations[index])
     end
 
     click_button I18n.t("form.button.activity.submit")
@@ -365,8 +365,8 @@ class ActivityForm
   end
 
   def fill_in_named_contact
-    expect(page).to have_content I18n.t("form.label.activity.uk_dp_named_contact")
-    fill_in "activity[uk_dp_named_contact]", with: activity.uk_dp_named_contact
+    expect(page).to have_content I18n.t("form.label.activity.uk_po_named_contact")
+    fill_in "activity[uk_po_named_contact]", with: activity.uk_po_named_contact
     click_button I18n.t("form.button.activity.submit")
   end
 

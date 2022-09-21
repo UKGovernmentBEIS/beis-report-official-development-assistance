@@ -1,4 +1,4 @@
-# Importing delivery partner data to the application
+# Importing partner organisation data to the application
 
 ## General
 
@@ -20,7 +20,7 @@ modified for the import and the original files.
 
 We have a Trello card for each import to be run for each
 
-- delivery partner organisation
+- partner organisation
 - fund
 
 All of the files will be attached to the card:
@@ -62,7 +62,7 @@ cf ssh beis-roda-prod
 bin/rails console
 ```
 
-- get the `organisation` id for the delivery partner
+- get the `organisation` id for the partner organisation
 
 ```
 organisation_id = Organisation.find_by(name: "NAME").id
@@ -117,15 +117,15 @@ Import activities in order:
 ### Prep activity data
 
 - correct any headers
-- for GCRF activities add a column `UK DP Named Contact` and set all rows to
+- for GCRF activities add a column `UK PO Named Contact` and set all rows to
   `Must be provided`
 - add any missing values if possible - if not raise the issue in Slack
 - save as UTF8 csv file
 
 ### Import activity data in production
 
-You will need your user account to be associated to the delivery partner
-organisation for which you are running the import. You will also need to note
+You will need your user account to be associated to the partner organisation
+for which you are running the import. You will also need to note
 this organisation ID to run the import.
 
 - copy the file over to production
@@ -134,7 +134,7 @@ this organisation ID to run the import.
 cat FILENAME.csv | cf ssh beis-roda-prod -c "cat > FILENAME.csv"
 ```
 
-- find the id of the `Organisation` that the import is for i.e. the Delivery Partner
+- find the id of the `Organisation` that the import is for i.e. the Partner Organisation
 - connect to production:
 
 ```
@@ -278,7 +278,7 @@ You already have the prepared file from the script run earlier.
 
 ## Import actual spend data into production
 
-- setup your user account to belong to the correct `Organisation` i.e. the Delivery Partner
+- setup your user account to belong to the correct `Organisation` i.e. the Partner Organisation
 - connect to prod:
 
 ```
@@ -324,4 +324,4 @@ me.update(organisation_id: ORGANISATION_ID)
 - move the Trello card to 'ready for review'
 - let the team know in Slack that the import is complete:
 
-:dolphin: Onboarding data complete for <DP NAME> <FUND NAME> :dolphin:
+:dolphin: Onboarding data complete for <PO NAME> <FUND NAME> :dolphin:

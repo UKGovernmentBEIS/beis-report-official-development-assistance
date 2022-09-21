@@ -1,6 +1,6 @@
 RSpec.describe ForecastHistory do
   let(:edited_report) { nil }
-  let(:user) { create(:delivery_partner_user) }
+  let(:user) { create(:partner_organisation_user) }
   let(:history) { ForecastHistory.new(activity, financial_quarter: 3, financial_year: 2020, report: edited_report, user: user) }
   let(:reporting_cycle) { ReportingCycle.new(activity, 1, 2015) }
 
@@ -143,9 +143,9 @@ RSpec.describe ForecastHistory do
     end
   end
 
-  context "for a level C activity, owned by a delivery partner" do
-    let(:delivery_partner) { create(:delivery_partner_organisation) }
-    let(:activity) { create(:project_activity, organisation: delivery_partner) }
+  context "for a level C activity, owned by a partner organisation" do
+    let(:partner_organisation) { create(:partner_organisation) }
+    let(:activity) { create(:project_activity, organisation: partner_organisation) }
 
     before { reporting_cycle.tick }
 
@@ -328,8 +328,8 @@ RSpec.describe ForecastHistory do
   end
 
   context "adding data to a specific report" do
-    let(:delivery_partner) { create(:delivery_partner_organisation) }
-    let(:activity) { create(:project_activity, organisation: delivery_partner) }
+    let(:partner_organisation) { create(:partner_organisation) }
+    let(:activity) { create(:project_activity, organisation: partner_organisation) }
     let(:edited_report) { Report.in_historical_order.first }
 
     before do
@@ -351,8 +351,8 @@ RSpec.describe ForecastHistory do
   end
 
   context "for a level C activity whose history includes a historic report" do
-    let(:delivery_partner) { create(:delivery_partner_organisation) }
-    let(:activity) { create(:project_activity, organisation: delivery_partner) }
+    let(:partner_organisation) { create(:partner_organisation) }
+    let(:activity) { create(:project_activity, organisation: partner_organisation) }
 
     before do
       reporting_cycle.tick

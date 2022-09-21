@@ -1,6 +1,6 @@
 RSpec.feature "users can add benefitting countries" do
-  context "when the user is signed as a delivery partner user" do
-    let(:user) { create(:delivery_partner_user) }
+  context "when the user is signed as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
     let(:activity) { create(:project_activity, organisation: user.organisation) }
     let!(:report) { create(:report, :active, fund: activity.associated_fund, organisation: user.organisation) }

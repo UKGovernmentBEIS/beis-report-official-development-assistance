@@ -8,35 +8,35 @@ RSpec.describe FormHelper, type: :helper do
     end
   end
 
-  describe "#list_of_delivery_partners" do
-    it "asks for a list of organisations that are delivery partners" do
+  describe "#list_of_partner_organisations" do
+    it "asks for a list of organisations that are partner organisations" do
       _beis = create(:beis_organisation)
-      delivery_partner_1 = create(:delivery_partner_organisation, name: "aaaaa")
-      delivery_partner_2 = create(:delivery_partner_organisation, name: "zzzzz")
+      partner_organisation_1 = create(:partner_organisation, name: "aaaaa")
+      partner_organisation_2 = create(:partner_organisation, name: "zzzzz")
 
       _matched_effort_provider = create(:matched_effort_provider)
       _external_income_provider = create(:external_income_provider)
 
-      expect(helper.list_of_delivery_partners).to match_array([
-        delivery_partner_1,
-        delivery_partner_2
+      expect(helper.list_of_partner_organisations).to match_array([
+        partner_organisation_1,
+        partner_organisation_2
       ])
     end
   end
 
   describe "#list_of_reporting_organisations" do
-    it "asks for a list of organisations that are delivery partners or the `service_owner`" do
+    it "asks for a list of organisations that are partner organisations or the `service_owner`" do
       beis = create(:beis_organisation)
-      delivery_partner_1 = create(:delivery_partner_organisation, name: "aaaaa")
-      delivery_partner_2 = create(:delivery_partner_organisation, name: "zzzzz")
+      partner_organisation_1 = create(:partner_organisation, name: "aaaaa")
+      partner_organisation_2 = create(:partner_organisation, name: "zzzzz")
 
       _matched_effort_provider = create(:matched_effort_provider)
       _external_income_provider = create(:external_income_provider)
 
       expect(helper.list_of_reporting_organisations).to match_array([
-        delivery_partner_1,
+        partner_organisation_1,
         beis,
-        delivery_partner_2
+        partner_organisation_2
       ])
     end
   end

@@ -88,4 +88,4 @@
     = render partial: "staff/shared/xml/commitment", locals: { commitment: commitment }
   - if activity.project?
     - activity.parent_activities.each do |parent_activity|
-      %related-activity{"ref" => parent_activity.delivery_partner_identifier, "type" => 1}
+      %related-activity{"ref" => parent_activity.partner_organisation_identifier, "type" => 1}

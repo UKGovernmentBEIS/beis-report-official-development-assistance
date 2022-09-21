@@ -1,4 +1,4 @@
-RSpec.describe Export::ActivityDeliveryPartnerOrganisationColumn do
+RSpec.describe Export::ActivityPartnerOrganisationColumn do
   before(:all) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
@@ -16,13 +16,13 @@ RSpec.describe Export::ActivityDeliveryPartnerOrganisationColumn do
 
   describe "#headers" do
     it "returns the correct header" do
-      expect(subject.headers).to match_array(["Delivery partner organisation"])
+      expect(subject.headers).to match_array(["Partner organisation"])
     end
   end
 
   describe "#rows" do
     context "when the activity is a level B (programme)" do
-      it "returns all implementing organistion names" do
+      it "returns all implementing organisation names" do
         row_value = subject.rows.fetch(@level_b_activity.id)
 
         implementing_organisation_name = @implementing_organisations.first.name

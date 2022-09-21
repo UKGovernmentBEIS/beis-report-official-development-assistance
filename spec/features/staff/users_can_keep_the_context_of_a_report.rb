@@ -1,5 +1,5 @@
 RSpec.feature "Users can keep the context of a report" do
-  let(:user) { create(:delivery_partner_user) }
+  let(:user) { create(:partner_organisation_user) }
   let(:report) { create(:report, :active, organisation: user.organisation) }
   let(:programme) { create(:programme_activity, :newton_funded, extending_organisation: user.organisation) }
 

@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe FindThirdPartyProjectActivities do
   let(:user) { create(:beis_user) }
   let(:service_owner) { create(:beis_organisation) }
-  let(:other_organisation) { create(:delivery_partner_organisation) }
+  let(:other_organisation) { create(:partner_organisation) }
 
   let!(:fund_1_organisation_project) { create(:third_party_project_activity, organisation: other_organisation, source_fund_code: 1) }
   let!(:fund_2_organisation_project) { create(:third_party_project_activity, organisation: other_organisation, source_fund_code: 2) }

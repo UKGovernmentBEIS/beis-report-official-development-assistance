@@ -1,14 +1,14 @@
 RSpec.feature "BEIS users can create a programme level activity" do
   let(:user) { create(:beis_user) }
-  let(:delivery_partner) { create(:delivery_partner_organisation) }
+  let(:partner_organisation) { create(:partner_organisation) }
   before { authenticate!(user: user) }
 
-  context "with a new fund and delivery partner" do
+  context "with a new fund and partner organisation" do
     scenario "they see the button to add a new programme (level B activity)" do
       fund = create(:fund_activity, :gcrf)
-      delivery_partner_organisation = create(:delivery_partner_organisation)
+      partner_organisation = create(:partner_organisation)
 
-      visit organisation_activities_path(delivery_partner_organisation)
+      visit organisation_activities_path(partner_organisation)
 
       expect(page).to have_button(t("form.button.activity.new_child", name: fund.title))
     end
@@ -18,14 +18,14 @@ RSpec.feature "BEIS users can create a programme level activity" do
     let(:identifier) { "a-fund-has-an-accountable-organisation" }
     let!(:activity) do
       build(:programme_activity, :gcrf_funded,
-        delivery_partner_identifier: identifier,
+        partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         sdgs_apply: true,
         sdg_1: 5)
     end
 
     scenario "an activity can be created" do
-      visit organisation_activities_path(delivery_partner)
+      visit organisation_activities_path(partner_organisation)
       click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
 
       form = ActivityForm.new(activity: activity, level: "programme", fund: "gcrf")
@@ -62,9 +62,9 @@ RSpec.feature "BEIS users can create a programme level activity" do
 
       expect(created_activity.transparency_identifier).to eql("GB-GOV-13-#{created_activity.roda_identifier}")
 
-      expect_implementing_organisation_to_be_the_delivery_partner(
+      expect_implementing_organisation_to_be_the_partner_organisation(
         activity: created_activity,
-        organisation: delivery_partner
+        organisation: partner_organisation
       )
     end
   end
@@ -73,14 +73,14 @@ RSpec.feature "BEIS users can create a programme level activity" do
     let(:identifier) { "a-fund-has-an-accountable-organisation" }
     let!(:activity) do
       build(:programme_activity, :newton_funded,
-        delivery_partner_identifier: identifier,
+        partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         sdgs_apply: true,
         sdg_1: 5)
     end
 
     scenario "an activity can be created" do
-      visit organisation_activities_path(delivery_partner)
+      visit organisation_activities_path(partner_organisation)
       click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
 
       form = ActivityForm.new(activity: activity, level: "programme", fund: "newton")
@@ -100,7 +100,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
       expect(created_activity.planned_end_date).to eq(activity.planned_end_date)
       expect(created_activity.actual_start_date).to eq(activity.actual_start_date)
       expect(created_activity.actual_end_date).to eq(activity.actual_end_date)
-      expect(created_activity.country_delivery_partners).to eq(activity.country_delivery_partners)
+      expect(created_activity.country_partner_organisations).to eq(activity.country_partner_organisations)
       expect(created_activity.benefitting_countries).to match_array(activity.benefitting_countries)
       expect(created_activity.gdi).to eq(activity.gdi)
       expect(created_activity.aid_type).to eq(activity.aid_type)
@@ -123,14 +123,14 @@ RSpec.feature "BEIS users can create a programme level activity" do
     let(:identifier) { "a-fund-has-an-accountable-organisation" }
     let!(:activity) do
       build(:programme_activity, :ooda_funded,
-        delivery_partner_identifier: identifier,
+        partner_organisation_identifier: identifier,
         benefitting_countries: ["AG", "HT"],
         sdgs_apply: true,
         sdg_1: 5)
     end
 
     scenario "an activity can be created" do
-      visit organisation_activities_path(delivery_partner)
+      visit organisation_activities_path(partner_organisation)
       click_on t("form.button.activity.new_child", name: activity.associated_fund.title)
 
       form = ActivityForm.new(activity: activity, level: "programme", fund: "ooda")
@@ -167,7 +167,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
     end
   end
 
-  def expect_implementing_organisation_to_be_the_delivery_partner(
+  def expect_implementing_organisation_to_be_the_partner_organisation(
     activity:,
     organisation:
   )

@@ -1,10 +1,10 @@
-class Export::ActivityDeliveryPartnerOrganisationColumn
+class Export::ActivityPartnerOrganisationColumn
   def initialize(activities_relation:)
     @activities_relation = valid_activities_relation(activities_relation)
   end
 
   def headers
-    ["Delivery partner organisation"]
+    ["Partner organisation"]
   end
 
   def rows

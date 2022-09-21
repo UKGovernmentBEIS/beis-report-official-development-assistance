@@ -7,7 +7,7 @@ class ActualPolicy < ApplicationPolicy
   def create?
     return false if record.parent_activity.level.nil?
     return true if beis_user? && parent_activity_is_a_programme?
-    return true if delivery_partner_user? && editable_report_for_organisation_and_fund.present?
+    return true if partner_organisation_user? && editable_report_for_organisation_and_fund.present?
 
     false
   end
@@ -23,7 +23,7 @@ class ActualPolicy < ApplicationPolicy
   def create_comment?
     return false if beis_user?
 
-    delivery_partner_user? &&
+    partner_organisation_user? &&
       editable_report_for_organisation_and_fund.present? &&
       editable_report_for_organisation_and_fund == record.report
   end
@@ -32,7 +32,7 @@ class ActualPolicy < ApplicationPolicy
     return false if record.parent_activity.level.nil?
     return true if beis_user? && parent_activity_is_a_programme?
 
-    if delivery_partner_user? && editable_report_for_organisation_and_fund.present?
+    if partner_organisation_user? && editable_report_for_organisation_and_fund.present?
       return true if editable_report_for_organisation_and_fund == record.report
     end
 

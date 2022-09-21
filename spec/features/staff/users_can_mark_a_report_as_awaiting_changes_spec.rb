@@ -1,7 +1,7 @@
 RSpec.feature "Users can move reports into awaiting changes & view reports awaiting changes" do
   context "signed in as a BEIS user" do
     let(:beis_user) { create(:beis_user) }
-    let(:organisation) { create(:delivery_partner_organisation, users: create_list(:delivery_partner_user, 3)) }
+    let(:organisation) { create(:partner_organisation, users: create_list(:partner_organisation_user, 3)) }
 
     before do
       authenticate!(user: beis_user)
@@ -37,15 +37,15 @@ RSpec.feature "Users can move reports into awaiting changes & view reports await
     end
   end
 
-  context "signed in as a Delivery partner user" do
-    let(:delivery_partner_user) { create(:delivery_partner_user) }
+  context "signed in as a partner organisation user" do
+    let(:partner_org_user) { create(:partner_organisation_user) }
 
     before do
-      authenticate!(user: delivery_partner_user)
+      authenticate!(user: partner_org_user)
     end
 
     scenario "they cannot mark a report as in awaiting changes" do
-      report = create(:report, state: :in_review, organisation: delivery_partner_user.organisation)
+      report = create(:report, state: :in_review, organisation: partner_org_user.organisation)
 
       visit report_path(report)
 

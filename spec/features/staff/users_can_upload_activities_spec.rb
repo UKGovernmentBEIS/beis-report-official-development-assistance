@@ -1,6 +1,6 @@
 RSpec.feature "users can upload activities" do
-  let(:organisation) { create(:delivery_partner_organisation) }
-  let(:user) { create(:delivery_partner_user, organisation: organisation) }
+  let(:organisation) { create(:partner_organisation) }
+  let(:user) { create(:partner_organisation_user, organisation: organisation) }
 
   let!(:programme) { create(:programme_activity, :newton_funded, extending_organisation: organisation, roda_identifier: "AFUND-B-PROG", parent: create(:fund_activity, roda_identifier: "AFUND")) }
 
@@ -12,7 +12,7 @@ RSpec.feature "users can upload activities" do
   end
 
   before do
-    # Given I'm logged in as a DP
+    # Given I'm logged in as a PO
     authenticate!(user: user)
 
     # And I am on the Activities Upload page
@@ -31,7 +31,7 @@ RSpec.feature "users can upload activities" do
       "Activity Status",
       "Actual end date", "Actual start date",
       "Aid type",
-      "Aims/Objectives (DP Definition)",
+      "Aims/Objectives",
       "Call close date", "Call open date",
       "Channel of delivery code",
       "Collaboration type (Bi/Multi Marker)",
@@ -41,7 +41,7 @@ RSpec.feature "users can upload activities" do
       "DFID policy marker - Climate Change - Mitigation", "DFID policy marker - Desertification",
       "DFID policy marker - Disability", "DFID policy marker - Disaster Risk Reduction",
       "DFID policy marker - Gender", "DFID policy marker - Nutrition",
-      "Delivery partner identifier",
+      "Partner organisation identifier",
       "Free Standing Technical Cooperation",
       "GCRF Strategic Area",
       "GCRF Challenge Area",
@@ -55,8 +55,8 @@ RSpec.feature "users can upload activities" do
       "Title",
       "Total applications", "Total awards",
       "Transparency identifier",
-      "UK DP Named Contact",
-      "NF Partner Country DP",
+      "UK PO Named Contact",
+      "NF Partner Country PO",
       "Benefitting Countries",
       "Comments",
       "Implementing organisation names"
@@ -154,7 +154,7 @@ RSpec.feature "users can upload activities" do
   end
 
   context "uploading a set of activities the user doesn't have permission to modify" do
-    let(:another_organisation) { create(:delivery_partner_organisation) }
+    let(:another_organisation) { create(:partner_organisation) }
     let!(:another_programme) { create(:programme_activity, parent: programme.associated_fund, extending_organisation: another_organisation, roda_identifier: "AFUND-BB-PROG") }
     let!(:existing_activity) { create(:project_activity, parent: programme, roda_identifier: "AFUND-B-PROG-EX42") }
 
@@ -220,24 +220,24 @@ RSpec.feature "users can upload activities" do
     end
   end
 
-  scenario "attempting to change the delivery partner identifier of an existing activity" do
+  scenario "attempting to change the partner organisation identifier of an existing activity" do
     activity_to_update = create(:project_activity, :gcrf_funded, organisation: organisation) { |activity|
       activity.implementing_organisations = [create(:implementing_organisation)]
     }
     create(:report, :active, fund: activity_to_update.associated_fund, organisation: organisation)
 
     upload_csv <<~CSV
-      RODA ID                               | Title     | Channel of delivery code                       | Sector | Delivery Partner Identifier |
+      RODA ID                               | Title     | Channel of delivery code                       | Sector | Partner Organisation Identifier |
       #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | new-id-oh-no                |
     CSV
 
     expect(page).not_to have_text(t("action.activity.upload.success"))
 
     within "//tbody/tr[1]" do
-      expect(page).to have_xpath("td[1]", text: "Delivery partner identifier")
+      expect(page).to have_xpath("td[1]", text: "Partner organisation identifier")
       expect(page).to have_xpath("td[2]", text: "2")
       expect(page).to have_xpath("td[3]", text: "new-id-oh-no")
-      expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.cannot_update.delivery_partner_identifier_present"))
+      expect(page).to have_xpath("td[4]", text: t("importer.errors.activity.cannot_update.partner_organisation_identifier_present"))
     end
   end
 

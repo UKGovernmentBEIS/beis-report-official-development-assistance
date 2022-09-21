@@ -10,8 +10,8 @@ RSpec.feature "Users can view the site navigation" do
     end
   end
 
-  context "when the user is signed in as a delivery partner user" do
-    let(:user) { create(:delivery_partner_user) }
+  context "when the user is signed in as a partner organisation user" do
+    let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
 
     it "shows the appropriate naviation" do

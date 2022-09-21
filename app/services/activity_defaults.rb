@@ -1,13 +1,13 @@
 class ActivityDefaults
   class InvalidParentActivity < RuntimeError; end
 
-  class InvalidDeliveryPartnerOrganisation < RuntimeError; end
+  class InvalidPartnerOrganisation < RuntimeError; end
 
-  attr_reader :parent_activity, :delivery_partner_organisation
+  attr_reader :parent_activity, :partner_organisation
 
-  def initialize(parent_activity:, delivery_partner_organisation:)
+  def initialize(parent_activity:, partner_organisation:)
     @parent_activity = parent_activity
-    @delivery_partner_organisation = delivery_partner_organisation
+    @partner_organisation = partner_organisation
 
     check_params!
   end
@@ -45,11 +45,11 @@ class ActivityDefaults
   def organisation
     return service_owner if level == "programme"
 
-    delivery_partner_organisation
+    partner_organisation
   end
 
   def extending_organisation
-    delivery_partner_organisation
+    partner_organisation
   end
 
   def originating_report
@@ -89,7 +89,7 @@ class ActivityDefaults
     raise InvalidParentActivity unless parent_activity.is_a?(Activity)
     raise InvalidParentActivity if parent_activity.third_party_project?
 
-    raise InvalidDeliveryPartnerOrganisation unless delivery_partner_organisation.is_a?(Organisation)
-    raise InvalidDeliveryPartnerOrganisation if delivery_partner_organisation.service_owner?
+    raise InvalidPartnerOrganisation unless partner_organisation.is_a?(Organisation)
+    raise InvalidPartnerOrganisation if partner_organisation.service_owner?
   end
 end

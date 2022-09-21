@@ -8,7 +8,7 @@ RSpec.describe ImportForecasts do
   let(:selected_report) { nil }
 
   let(:reporter_organisation) { project.organisation }
-  let(:reporter) { create(:delivery_partner_user, organisation: reporter_organisation) }
+  let(:reporter) { create(:partner_organisation_user, organisation: reporter_organisation) }
 
   let :importer do
     ImportForecasts.new(uploader: reporter, report: selected_report)
@@ -79,7 +79,7 @@ RSpec.describe ImportForecasts do
   end
 
   context "when the reporter is not authorised to report on the Activity" do
-    let(:reporter_organisation) { create(:delivery_partner_organisation) }
+    let(:reporter_organisation) { create(:partner_organisation) }
 
     before do
       importer.import([
@@ -191,7 +191,7 @@ RSpec.describe ImportForecasts do
       importer.import([
         {
           "Activity Name" => "",
-          "Activity Delivery Partner Identifier" => "",
+          "Activity Partner Organisation Identifier" => "",
           "Activity RODA Identifier" => project.roda_identifier,
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "10",
           "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "20",
@@ -199,7 +199,7 @@ RSpec.describe ImportForecasts do
         },
         {
           "Activity Name" => "",
-          "Activity Delivery Partner Identifier" => "",
+          "Activity Partner Organisation Identifier" => "",
           "Activity RODA Identifier" => project.roda_identifier,
           "FC 2020/21 FY Q3 (Oct, Nov, Dec)" => "10",
           "FC 2020/21 FY Q4 (Jan, Feb, Mar)" => "20",
@@ -326,7 +326,7 @@ RSpec.describe ImportForecasts do
   end
 
   describe "setting an uploader and a report" do
-    let(:reporter) { create(:delivery_partner_user, organisation: reporter_organisation) }
+    let(:reporter) { create(:partner_organisation_user, organisation: reporter_organisation) }
     let(:selected_report) { latest_report }
 
     it "is forbidden" do
