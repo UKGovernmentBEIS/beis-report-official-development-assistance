@@ -23,6 +23,8 @@ RSpec.describe VcapParser do
     end
 
     it "loads redis URL to the ENV" do
+      cached_redis_url = ENV["REDIS_URL"]
+
       vcap_json = '
         {
           "redis": [
@@ -38,6 +40,8 @@ RSpec.describe VcapParser do
         VcapParser.load_service_environment_variables!
         expect(ENV["REDIS_URL"]).to eq("rediss://x:REDACTED@HOST:6379")
       end
+
+      ENV["REDIS_URL"] = cached_redis_url
     end
 
     it "does not error if VCAP_SERVICES is not set" do
