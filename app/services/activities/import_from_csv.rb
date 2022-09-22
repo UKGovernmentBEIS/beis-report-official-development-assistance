@@ -112,6 +112,7 @@ module Activities
           "DFID policy marker - Disaster Risk Reduction",
           "DFID policy marker - Gender",
           "DFID policy marker - Nutrition",
+          "Channel of delivery code",
           "ODA Eligibility Lead",
           "Total applications",
           "Total awards",
