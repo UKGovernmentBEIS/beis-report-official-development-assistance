@@ -28,7 +28,6 @@ FactoryBot.define do
     oda_eligibility_lead { Faker::Name.name }
     uk_po_named_contact { Faker::Name.name }
     fund_pillar { "0" }
-    channel_of_delivery_code { "11000" }
 
     form_state { "complete" }
 
@@ -140,6 +139,7 @@ FactoryBot.define do
       policy_marker_disability { "not_assessed" }
       policy_marker_disaster_risk_reduction { "not_assessed" }
       policy_marker_nutrition { "not_assessed" }
+      channel_of_delivery_code { "11000" }
 
       association :organisation, factory: :partner_organisation
       association :extending_organisation, factory: :partner_organisation
@@ -187,6 +187,7 @@ FactoryBot.define do
       policy_marker_disability { "not_assessed" }
       policy_marker_disaster_risk_reduction { "not_assessed" }
       policy_marker_nutrition { "not_assessed" }
+      channel_of_delivery_code { "11000" }
 
       association :organisation, factory: :partner_organisation
       association :extending_organisation, factory: :partner_organisation

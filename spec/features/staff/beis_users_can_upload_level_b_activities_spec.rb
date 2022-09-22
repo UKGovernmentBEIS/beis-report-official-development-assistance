@@ -36,7 +36,6 @@ RSpec.feature "BEIS users can upload Level B activities" do
       "Planned start date", "Planned end date",
       "Actual start date", "Actual end date",
       "Sector",
-      "Channel of delivery code",
       "Collaboration type (Bi/Multi Marker)",
       "Aid type",
       "Free Standing Technical Cooperation",
@@ -136,8 +135,8 @@ RSpec.feature "BEIS users can upload Level B activities" do
     activity_to_update = create(:fund_activity, :newton)
 
     upload_csv <<~CSV
-      RODA ID                               | Title     | Channel of delivery code                       | Sector | Benefitting Countries |
-      #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | BR                    |
+      RODA ID                               | Title     | Sector | Benefitting Countries |
+      #{activity_to_update.roda_identifier} | New Title | 11110  | BR                    |
     CSV
 
     expect(page).to have_text(t("action.activity.upload.success"))
@@ -168,8 +167,8 @@ RSpec.feature "BEIS users can upload Level B activities" do
     activity_to_update = create(:project_activity, :gcrf_funded, organisation: organisation)
 
     upload_csv <<~CSV
-      RODA ID                               | Title     | Channel of delivery code                       | Sector | Partner Organisation Identifier |
-      #{activity_to_update.roda_identifier} | New Title | #{activity_to_update.channel_of_delivery_code} | 11110  | new-id-oh-no                |
+      RODA ID                               | Title     | Sector | Partner Organisation Identifier |
+      #{activity_to_update.roda_identifier} | New Title | 11110  | new-id-oh-no                    |
     CSV
 
     expect(page).not_to have_text(t("action.activity.upload.success"))
