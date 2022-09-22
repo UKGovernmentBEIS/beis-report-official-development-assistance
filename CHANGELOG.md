@@ -1087,13 +1087,16 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Replace code references to `uk_dp_named_contact` with `uk_po_named_contact`, including database migration
 - Remove "PO Definition" from "Aims/Objectives" CSV headers
 
-## [unreleased]
+## [release-117] 2022-09-23
 
 - Add ability for BEIS users to create and update Level B activities in bulk by uploading a CSV
 - Make partner organisation identifier optional for Level B activities (both via the individual new activity form and bulk upload)
 
-[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-116...HEAD
-[release-116]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-115...116
+## [unreleased]
+
+[unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-117...HEAD
+[release-117]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-116...release-117
+[release-116]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-115...release-116
 [release-115]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-114...release-115
 [release-114]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-113...release-114
 [release-113]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-112...release-113
