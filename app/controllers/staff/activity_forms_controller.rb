@@ -48,6 +48,7 @@ class Staff::ActivityFormsController < Staff::BaseController
     when :fstc_applies
       skip_step unless Activity::Inference.service.editable?(@activity, :fstc_applies)
     when :identifier
+      @label_text = @activity.is_project? ? t("form.label.activity.partner_organisation_identifier") : t("form.label.activity.partner_organisation_identifier_level_b")
       skip_step if @activity.partner_organisation_identifier.present?
     end
 

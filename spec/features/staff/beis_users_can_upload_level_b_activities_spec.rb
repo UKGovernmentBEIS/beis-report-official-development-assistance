@@ -1,3 +1,5 @@
+require "csv"
+
 RSpec.feature "BEIS users can upload Level B activities" do
   let(:organisation) { create(:partner_organisation) }
   let!(:newton_fund) { create(:fund_activity, :newton) }
@@ -67,6 +69,25 @@ RSpec.feature "BEIS users can upload Level B activities" do
     visit organisation_activities_path(organisation)
 
     # And I should see the uploaded activities titles
+    within "//tbody" do
+      expect(page).to have_content("Programme - Award (round 5)")
+      expect(page).to have_content("Isolation and redesign of single-celled examples")
+    end
+  end
+
+  scenario "uploading a valid set of activities with a partner organisation identifier" do
+    old_count = Activity.count
+
+    csv = CSV.read("spec/fixtures/csv/valid_level_b_activities_upload.csv", headers: true)
+    csv["Partner organisation identifier"] = ["example-id-1", "example-id-2"]
+    csv_text = csv.to_s
+
+    upload_csv csv_text
+
+    expect(Activity.count - old_count).to eq(2)
+
+    visit organisation_activities_path(organisation)
+
     within "//tbody" do
       expect(page).to have_content("Programme - Award (round 5)")
       expect(page).to have_content("Isolation and redesign of single-celled examples")

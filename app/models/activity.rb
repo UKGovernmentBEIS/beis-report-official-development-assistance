@@ -76,7 +76,7 @@ class Activity < ApplicationRecord
   validates :parent, absence: true, if: proc { |activity| activity.fund? }
   validates :parent, presence: true, unless: proc { |activity| activity.fund? }
   validates_with OrganisationValidator
-  validates :partner_organisation_identifier, presence: true, on: :identifier_step
+  validates :partner_organisation_identifier, presence: true, on: :identifier_step, if: :is_project?
   validates :title, :description, presence: true, on: :purpose_step
   validates :objectives, presence: true, on: :objectives_step, unless: proc { |activity| activity.fund? }
   validates :sector_category, presence: true, on: :sector_category_step
