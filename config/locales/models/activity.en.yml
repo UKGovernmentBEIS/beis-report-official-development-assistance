@@ -3,6 +3,9 @@ en:
   action:
     activity:
       add_child: Add child activity
+      bulk_download:
+        button: Download CSV template
+        hint_html: "<p class='govuk-body'>This CSV contains all the columns that can be used to create or update Level B activities.</p><p class='govuk-body'>Edit it to add the values for the selected organisation's activities, then upload it through the form.</p>"
       download:
         button: Download CSV template
         hint_html: "<p class='govuk-body'>This CSV contains all the columns that can be used to create or update activities related to your current report.</p><p class='govuk-body'>Edit it to add the values for your organisation's activities, then upload it through the form.</p>"
@@ -58,6 +61,7 @@ en:
           recipient_region: Region
           recipient_country: Country
         partner_organisation_identifier: Enter your unique identifier
+        partner_organisation_identifier_level_b: Enter your unique identifier (optional)
         intended_beneficiaries: What are the intended beneficiaries?
         objectives: Aims/Objectives of the activity
         oda_eligibility:
@@ -355,6 +359,7 @@ en:
       financials: Financials
       children: Child activities
       upload: Upload bulk activity data
+      upload_level_b: Bulk upload activity data for %{organisation_name}
       other_funding: Other funding
       transfers: Transfers
       change_history: Change history

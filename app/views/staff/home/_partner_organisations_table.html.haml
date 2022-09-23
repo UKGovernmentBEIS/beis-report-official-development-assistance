@@ -13,6 +13,7 @@
         %td.govuk-table__cell
           = a11y_action_link partner_organisation.name, organisation_path(partner_organisation), t("table.cell.organisations.details"), ["govuk-link--no-visited-state"]
         %td.govuk-table__cell
-          = a11y_action_link t("table.cell.organisations.view_activities"), organisation_activities_path(partner_organisation), "for #{partner_organisation.name}", ["govuk-link--no-visited-state"]
-          = a11y_action_link t("table.cell.organisations.view_exports"), exports_organisation_path(partner_organisation), "for #{partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-7"]
-          = a11y_action_link t("table.cell.organisations.view_reports"), organisation_reports_path(partner_organisation), "for #{partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-7"]
+          = a11y_action_link t("table.cell.organisations.upload_data"), new_organisation_level_b_activity_upload_path(partner_organisation), "for #{partner_organisation.name}", ["govuk-link--no-visited-state"]
+          = a11y_action_link t("table.cell.organisations.view_activities"), organisation_activities_path(partner_organisation), "for #{partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-5"]
+          = a11y_action_link t("table.cell.organisations.view_exports"), exports_organisation_path(partner_organisation), "for #{partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-5"]
+          = a11y_action_link t("table.cell.organisations.view_reports"), organisation_reports_path(partner_organisation), "for #{partner_organisation.name}", ["govuk-link--no-visited-state", "govuk-!-margin-left-5"]

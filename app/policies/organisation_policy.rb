@@ -7,6 +7,10 @@ class OrganisationPolicy < ApplicationPolicy
     beis_user? || associated_user?
   end
 
+  def bulk_upload?
+    beis_user?
+  end
+
   def create?
     beis_user?
   end
