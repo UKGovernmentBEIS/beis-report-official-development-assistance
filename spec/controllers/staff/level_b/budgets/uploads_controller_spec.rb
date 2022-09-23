@@ -17,4 +17,15 @@ RSpec.describe Staff::LevelB::Budgets::UploadsController do
       expect(response.body).to include(t("action.budget.bulk_download.button"))
     end
   end
+
+  describe "#show" do
+    it "downloads the CSV template with the correct filename" do
+      get :show
+
+      expect(response.headers.to_h).to include({
+        "Content-Type" => "text/csv",
+        "Content-Disposition" => "attachment; filename=Level_B_budgets_upload.csv"
+      })
+    end
+  end
 end
