@@ -49,6 +49,12 @@ Rails.application.routes.draw do
       end
     end
 
+    namespace :level_b do
+      namespace :budgets do
+        resource :upload, only: [:new]
+      end
+    end
+
     resources :organisations, except: [:destroy, :index, :new] do
       get "reports" => "organisation_reports#index"
       resources :activities, except: [:create, :destroy] do
