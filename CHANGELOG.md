@@ -1095,6 +1095,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 ## [unreleased]
 
 - Refactor the importers (including associated uploads controllers and views) to use a unified approach for all entities being imported
+- Add Level B budget bulk upload form
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-117...HEAD
 [release-117]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-116...release-117
