@@ -372,7 +372,7 @@ RSpec.feature "Users can view reports" do
 
         expect(page.html).to include t("tabs.actuals.upload.copy_html")
         expect(page).to have_link t("page_content.actuals.button.download_template"),
-          href: report_actual_upload_path(report, format: :csv)
+          href: report_actuals_upload_path(report, format: :csv)
         expect(page).to have_link "guidance in the help centre (opens in new tab)",
           href: "https://beisodahelp.zendesk.com/hc/en-gb/articles/1500005601882-Downloading-the-Actuals-Template-in-order-to-Bulk-Upload"
       end

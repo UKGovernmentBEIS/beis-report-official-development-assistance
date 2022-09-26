@@ -6,7 +6,7 @@
       %h1.govuk-heading-xl
         = t("page_title.actual.upload")
 
-      = t("page_content.actuals.upload.copy_html", report_actuals_template_path: report_actual_upload_path(@report_presenter, format: :csv))
+      = t("page_content.actuals.upload.copy_html", report_actuals_template_path: report_actuals_upload_path(@report_presenter, format: :csv))
 
       = t("page_content.actuals.upload.warning_html")
 
@@ -14,7 +14,7 @@
     .govuk-grid-column-two-thirds
       - if policy(@report_presenter).upload?
         .govuk-body.upload-form
-          = form_for @report_presenter, url: report_actual_upload_path(@report_presenter) do |f|
+          = form_for @report_presenter, url: report_actuals_upload_path(@report_presenter) do |f|
 
             = f.govuk_file_field :actual_csv,
               label: { text: t("form.label.actual.csv_file") },

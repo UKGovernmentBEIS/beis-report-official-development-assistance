@@ -32,16 +32,16 @@ RSpec.feature "users can upload actuals" do
   end
 
   scenario "they get helpful guidance and a link to actuals upload template on the upload page" do
-    visit new_report_actual_upload_path(report)
+    visit new_report_actuals_upload_path(report)
 
     expect(page.html).to include t("page_content.actuals.upload.copy_html",
-      report_actuals_template_path: report_actual_upload_path(report, format: :csv))
+      report_actuals_template_path: report_actuals_upload_path(report, format: :csv))
 
     expect(page.html).to include t("page_content.actuals.upload.warning_html")
   end
 
   scenario "downloading a CSV template with activities for the current report" do
-    visit report_actual_upload_path(report, format: :csv)
+    visit report_actuals_upload_path(report, format: :csv)
 
     csv_data = page.body.delete_prefix("\uFEFF")
     rows = CSV.parse(csv_data, headers: true).map(&:to_h)
