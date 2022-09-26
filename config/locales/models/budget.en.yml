@@ -96,3 +96,14 @@ en:
               blank: Enter the name of the providing organisation
             providing_organisation_type:
               blank: Select the type of the providing organisation
+  importer:
+    errors:
+      budget:
+        cannot_create: There is no activity RODA ID present, so cannot create a budget
+        invalid_budget_type: The budget type code is not valid
+        invalid_financial_year: The financial year is not valid
+        invalid_providing_organisation_name: The providing organisation is not valid
+        invalid_providing_organisation_reference: The IATI reference is not valid
+        invalid_providing_organisation_type: The providing organisation type code is not valid
+        invalid_value: The budget amount is not valid
+        parent_not_found: The parent activity cannot be found
