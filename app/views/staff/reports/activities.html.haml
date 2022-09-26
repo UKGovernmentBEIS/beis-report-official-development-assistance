@@ -18,6 +18,6 @@
           - if policy(@report_presenter).upload?
             = render partial: "staff/reports/activities_upload"
 
-          = render partial: "staff/shared/activity_uploads/activities_table", locals: { table_caption: t("table.caption.activity.new_activities_report"), activities: @new_activities }
+          = render partial: "staff/shared/activities/uploads/activities_table", locals: { table_caption: t("table.caption.activity.new_activities_report"), activities: @new_activities }
 
-          = render partial: "staff/shared/activity_uploads/activities_table", locals: { table_caption: t("table.caption.activity.updated_activities_report"), activities: @updated_activities }
+          = render partial: "staff/shared/activities/uploads/activities_table", locals: { table_caption: t("table.caption.activity.updated_activities_report"), activities: @updated_activities }

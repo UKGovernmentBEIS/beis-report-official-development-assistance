@@ -1,4 +1,4 @@
-= content_for :page_title_prefix, t("page_title.activity.upload_level_b", organisation_name: @organisation_presenter.name)
+= content_for :page_title_prefix, t("page_title.activity.upload")
 
 %main.govuk-main-wrapper#main-content{ role: "main" }
   .govuk-grid-row
@@ -17,8 +17,8 @@
     - if @activities[:updated].any?
       = render partial: "staff/shared/activities/uploads/activities_table", locals: { action: "updated", activities: @activities[:updated], table_caption: t("table.caption.activity.updated_activities") }
   - else
-    = render partial: "staff/shared/activities/uploads/upload_form", locals: { model: @organisation_presenter, path_helper: "organisation_level_b_activity_upload_path" }
+    = render partial: "staff/shared/activities/uploads/upload_form", locals: { model: @report_presenter, path_helper: "report_activities_upload_path" }
 
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %p.govuk-body= link_to "Back to home", organisations_path
+      = link_to "Back to report", report_path(@report_presenter), class: "govuk-link"

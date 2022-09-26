@@ -2,7 +2,7 @@
 
 require "csv"
 
-class Staff::ActivityUploadsController < Staff::BaseController
+class Staff::Activities::UploadsController < Staff::BaseController
   include Secured
   include StreamCsvDownload
   include Reports::Breadcrumbed
@@ -13,7 +13,7 @@ class Staff::ActivityUploadsController < Staff::BaseController
     @report_presenter = ReportPresenter.new(report)
 
     prepare_default_report_trail(report)
-    add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activity_upload_path(report)
+    add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activities_upload_path(report)
   end
 
   def show
@@ -33,10 +33,10 @@ class Staff::ActivityUploadsController < Staff::BaseController
     @success = false
 
     prepare_default_report_trail(report)
-    add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activity_upload_path(report)
+    add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activities_upload_path(report)
 
     if upload.valid?
-      importer = Activities::ImportFromCsv.new(
+      importer = ::Activities::ImportFromCsv.new(
         uploader: current_user,
         partner_organisation: current_user.organisation,
         report: report
