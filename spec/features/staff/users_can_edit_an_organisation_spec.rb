@@ -3,6 +3,10 @@ RSpec.feature "Users can edit organisations" do
   let!(:another_organisation) { create(:partner_organisation) }
 
   context "when the user is not logged in" do
+    before do
+      logout
+    end
+
     it "redirects the user to the root path" do
       visit edit_organisation_path(beis_organisation)
       expect(current_path).to eq(root_path)
