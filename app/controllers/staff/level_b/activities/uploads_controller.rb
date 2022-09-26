@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Staff::LevelBActivityUploadsController < Staff::BaseController
+class Staff::LevelB::Activities::UploadsController < Staff::BaseController
   include Secured
   include StreamCsvDownload
 
@@ -27,7 +27,7 @@ class Staff::LevelBActivityUploadsController < Staff::BaseController
     @success = false
 
     if upload.valid?
-      importer = Activities::ImportFromCsv.new(
+      importer = ::Activities::ImportFromCsv.new(
         uploader: current_user,
         partner_organisation: organisation,
         report: nil
@@ -49,7 +49,7 @@ class Staff::LevelBActivityUploadsController < Staff::BaseController
   private
 
   def csv_headers
-    ["RODA ID"] + Activities::ImportFromCsv.level_b_column_headings
+    ["RODA ID"] + ::Activities::ImportFromCsv.level_b_column_headings
   end
 
   def organisation

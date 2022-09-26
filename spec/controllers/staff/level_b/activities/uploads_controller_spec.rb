@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Staff::LevelBActivityUploadsController do
+RSpec.describe Staff::LevelB::Activities::UploadsController do
   let(:organisation) { create(:partner_organisation, beis_organisation_reference: "porg") }
   let(:user) { create(:beis_user) }
   before { authenticate!(user: user) }

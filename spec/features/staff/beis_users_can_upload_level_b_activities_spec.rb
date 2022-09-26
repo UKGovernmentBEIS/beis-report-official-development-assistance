@@ -8,7 +8,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
   before { authenticate!(user: user) }
 
   before do
-    visit new_organisation_level_b_activity_upload_path(organisation)
+    visit new_organisation_level_b_activities_upload_path(organisation)
   end
 
   scenario "downloading the CSV template" do

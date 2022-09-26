@@ -61,7 +61,11 @@ Rails.application.routes.draw do
           get tab, to: "activities#show", defaults: {tab: tab}
         end
       end
-      resource :level_b_activity_upload, only: [:new, :show, :update]
+      namespace :level_b do
+        namespace :activities do
+          resource :upload, only: [:new, :show, :update]
+        end
+      end
     end
 
     resources :reports, only: [:new, :create, :show, :edit, :update, :index] do

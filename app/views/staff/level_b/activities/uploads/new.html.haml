@@ -13,14 +13,14 @@
     .govuk-grid-column-two-thirds
       %h2.govuk-heading-m
         = link_to t("action.activity.bulk_download.button"),
-          organisation_level_b_activity_upload_path(@organisation_presenter.id, format: :csv),
+          organisation_level_b_activities_upload_path(@organisation_presenter.id, format: :csv),
           class: "govuk-link"
 
       %p.govuk-body
         = t("action.activity.bulk_download.hint_html")
 
       .govuk-body.upload-form
-        = form_with model: @organisation_presenter, url: organisation_level_b_activity_upload_path do |f|
+        = form_with model: @organisation_presenter, url: organisation_level_b_activities_upload_path do |f|
 
           = f.govuk_file_field :activity_csv,
             label: { text: t("form.label.activity.csv_file") },
