@@ -7,6 +7,7 @@ RSpec.describe LevelBPolicy do
     let(:user) { build_stubbed(:beis_user) }
 
     it "permits all actions" do
+      is_expected.to permit_action(:activity_upload)
       is_expected.to permit_action(:budget_upload)
     end
   end
@@ -15,6 +16,7 @@ RSpec.describe LevelBPolicy do
     let(:user) { build_stubbed(:partner_organisation_user) }
 
     it "forbids all actions" do
+      is_expected.to forbid_action(:activity_upload)
       is_expected.to forbid_action(:budget_upload)
     end
   end
