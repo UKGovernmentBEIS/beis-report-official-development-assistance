@@ -1,4 +1,4 @@
-class Staff::Uploads::ActualHistoriesController < Staff::BaseController
+class Staff::Actuals::HistoryUploadsController < Staff::BaseController
   include Reports::Breadcrumbed
 
   def new
@@ -65,6 +65,6 @@ class Staff::Uploads::ActualHistoriesController < Staff::BaseController
 
   def set_breadcrumb
     prepare_default_report_trail(@report)
-    add_breadcrumb t("breadcrumb.uploads.actual_histories"), new_report_uploads_actual_history_path(@report)
+    add_breadcrumb t("breadcrumb.uploads.actual_histories"), new_report_actuals_history_upload_path(@report)
   end
 end

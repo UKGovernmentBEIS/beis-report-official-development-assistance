@@ -82,9 +82,7 @@ Rails.application.routes.draw do
       end
       namespace :actuals do
         resource :upload, only: [:new, :show, :update]
-      end
-      namespace :uploads do
-        resource :actual_history, only: [:new, :update]
+        resource :history_upload, only: [:new, :update]
       end
     end
 
