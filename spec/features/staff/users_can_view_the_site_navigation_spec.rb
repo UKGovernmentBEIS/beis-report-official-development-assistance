@@ -1,5 +1,9 @@
 RSpec.feature "Users can view the site navigation" do
   context "when the user is not signed in" do
+    before do
+      logout
+    end
+
     it "does not show the navigation" do
       activity = create(:project_activity)
 

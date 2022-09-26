@@ -1,5 +1,9 @@
 RSpec.feature "Users can edit an actual" do
   context "when the user is not logged in" do
+    before do
+      logout
+    end
+
     it "redirects the user to the root path" do
       visit activity_step_path(double(Activity, id: "123"), :identifier)
       expect(current_path).to eq(root_path)

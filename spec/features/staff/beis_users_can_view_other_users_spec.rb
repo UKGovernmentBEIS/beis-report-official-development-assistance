@@ -2,6 +2,10 @@ require "rails_helper"
 
 RSpec.feature "BEIS users can can view other users" do
   context "when the user is not logged in" do
+    before do
+      logout
+    end
+
     it "redirects the user to the root path" do
       visit users_path
       expect(current_path).to eq(root_path)

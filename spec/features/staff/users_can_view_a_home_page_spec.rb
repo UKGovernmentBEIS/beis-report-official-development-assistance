@@ -1,5 +1,9 @@
 RSpec.feature "users can view a home page" do
   context "when not signed in" do
+    before do
+      logout
+    end
+
     scenario "they cannot reach the home page and are redirected to the sign in" do
       visit home_path
 

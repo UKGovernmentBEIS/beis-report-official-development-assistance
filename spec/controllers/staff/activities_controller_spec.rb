@@ -2,6 +2,10 @@ require "rails_helper"
 
 RSpec.describe Staff::ActivitiesController do
   context "when the user is not logged in" do
+    before do
+      logout
+    end
+
     it "redirects the user to the root path" do
       activity = create(:programme_activity)
       get :index

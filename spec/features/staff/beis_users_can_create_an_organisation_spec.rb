@@ -1,5 +1,9 @@
 RSpec.feature "BEIS users can create organisations" do
   context "when the user is not logged in" do
+    before do
+      logout
+    end
+
     it "redirects the user to the root path" do
       visit new_organisation_path
       expect(current_path).to eq(root_path)
