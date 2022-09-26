@@ -29,6 +29,6 @@
   },
   "homepage": "https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance#readme",
   "devDependencies": {
-    "webpack-dev-server": "^4.3.0"
+    "webpack-dev-server": "^4.11.1"
   }
 }
