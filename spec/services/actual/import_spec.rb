@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ImportActuals do
+RSpec.describe Actual::Import do
   let(:project) { create(:project_activity, title: "Example Project", description: "Longer description") }
 
   let(:reporter_organisation) { project.organisation }
@@ -16,7 +16,7 @@ RSpec.describe ImportActuals do
   end
 
   let :importer do
-    ImportActuals.new(report: report, uploader: reporter)
+    Actual::Import.new(report: report, uploader: reporter)
   end
 
   describe "importing a single refund" do
@@ -111,7 +111,7 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Activity RODA Identifier", project.roda_identifier, t("importer.errors.actual.unauthorised"))
+          Actual::Import::Error.new(0, "Activity RODA Identifier", project.roda_identifier, t("importer.errors.actual.unauthorised"))
         ])
       end
     end
@@ -129,7 +129,7 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Activity RODA Identifier", another_project.roda_identifier, t("importer.errors.actual.unauthorised"))
+          Actual::Import::Error.new(0, "Activity RODA Identifier", another_project.roda_identifier, t("importer.errors.actual.unauthorised"))
         ])
       end
     end
@@ -145,7 +145,7 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Activity RODA Identifier", "not-a-real-id", t("importer.errors.actual.unknown_identifier"))
+          Actual::Import::Error.new(0, "Activity RODA Identifier", "not-a-real-id", t("importer.errors.actual.unknown_identifier"))
         ])
       end
     end
@@ -161,7 +161,7 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Financial Quarter", "", t("activerecord.errors.models.actual.attributes.financial_quarter.inclusion"))
+          Actual::Import::Error.new(0, "Financial Quarter", "", t("activerecord.errors.models.actual.attributes.financial_quarter.inclusion"))
         ])
       end
     end
@@ -177,7 +177,7 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Financial Year", "", t("activerecord.errors.models.actual.attributes.financial_year.blank"))
+          Actual::Import::Error.new(0, "Financial Year", "", t("activerecord.errors.models.actual.attributes.financial_year.blank"))
         ])
       end
     end
@@ -193,7 +193,7 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Financial Quarter", "5", t("activerecord.errors.models.actual.attributes.financial_quarter.inclusion"))
+          Actual::Import::Error.new(0, "Financial Quarter", "5", t("activerecord.errors.models.actual.attributes.financial_quarter.inclusion"))
         ])
       end
     end
@@ -229,8 +229,8 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Actual Value", "", t("importer.errors.actual.non_numeric_value")),
-          ImportActuals::Error.new(0, "Refund Value", "", t("importer.errors.actual.non_numeric_value"))
+          Actual::Import::Error.new(0, "Actual Value", "", t("importer.errors.actual.non_numeric_value")),
+          Actual::Import::Error.new(0, "Refund Value", "", t("importer.errors.actual.non_numeric_value"))
         ])
       end
     end
@@ -260,7 +260,7 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Actual Value", "This is not a number", t("importer.errors.actual.non_numeric_value"))
+          Actual::Import::Error.new(0, "Actual Value", "This is not a number", t("importer.errors.actual.non_numeric_value"))
         ])
       end
     end
@@ -276,7 +276,7 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Actual Value", "3a4b5.c67", t("importer.errors.actual.non_numeric_value"))
+          Actual::Import::Error.new(0, "Actual Value", "3a4b5.c67", t("importer.errors.actual.non_numeric_value"))
         ])
       end
     end
@@ -292,7 +292,7 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Receiving Organisation Name", "", t("activerecord.errors.models.actual.attributes.receiving_organisation_name.blank"))
+          Actual::Import::Error.new(0, "Receiving Organisation Name", "", t("activerecord.errors.models.actual.attributes.receiving_organisation_name.blank"))
         ])
       end
     end
@@ -309,7 +309,7 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.actual.invalid_iati_organisation_type"))
+          Actual::Import::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.actual.invalid_iati_organisation_type"))
         ])
       end
     end
@@ -445,7 +445,7 @@ RSpec.describe ImportActuals do
 
       it "returns an error" do
         expect(importer.errors).to eq([
-          ImportActuals::Error.new(2, "Actual Value", "fish", t("importer.errors.actual.non_numeric_value"))
+          Actual::Import::Error.new(2, "Actual Value", "fish", t("importer.errors.actual.non_numeric_value"))
         ])
       end
     end
@@ -468,9 +468,9 @@ RSpec.describe ImportActuals do
 
         expect(errors.size).to eq(3)
         expect(errors).to eq([
-          ImportActuals::Error.new(0, "Actual Value", "fish", t("importer.errors.actual.non_numeric_value")),
-          ImportActuals::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.actual.invalid_iati_organisation_type")),
-          ImportActuals::Error.new(2, "Financial Quarter", third_actual_row["Financial Quarter"], t("activerecord.errors.models.actual.attributes.financial_quarter.inclusion"))
+          Actual::Import::Error.new(0, "Actual Value", "fish", t("importer.errors.actual.non_numeric_value")),
+          Actual::Import::Error.new(0, "Receiving Organisation Type", "81", t("importer.errors.actual.invalid_iati_organisation_type")),
+          Actual::Import::Error.new(2, "Financial Quarter", third_actual_row["Financial Quarter"], t("activerecord.errors.models.actual.attributes.financial_quarter.inclusion"))
         ])
       end
     end
