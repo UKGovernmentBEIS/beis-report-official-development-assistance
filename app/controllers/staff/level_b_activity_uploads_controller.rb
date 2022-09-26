@@ -5,13 +5,13 @@ class Staff::LevelBActivityUploadsController < Staff::BaseController
   include StreamCsvDownload
 
   def new
-    authorize organisation, :bulk_upload?
+    authorize :level_b, :activity_upload?
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
   end
 
   def show
-    authorize organisation, :bulk_upload?
+    authorize :level_b, :activity_upload?
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
     filename = @organisation_presenter.filename_for_activities_template
@@ -20,7 +20,7 @@ class Staff::LevelBActivityUploadsController < Staff::BaseController
   end
 
   def update
-    authorize organisation, :bulk_upload?
+    authorize :level_b, :activity_upload?
 
     @organisation_presenter = OrganisationPresenter.new(organisation)
     upload = CsvFileUpload.new(params[:organisation], :activity_csv)
