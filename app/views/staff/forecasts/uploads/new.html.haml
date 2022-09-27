@@ -12,14 +12,14 @@
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h2.govuk-heading-m
-        = link_to t("action.forecast.download.button"), report_forecast_upload_path(@report_presenter, format: :csv), class: "govuk-link"
+        = link_to t("action.forecast.download.button"), report_forecasts_upload_path(@report_presenter, format: :csv), class: "govuk-link"
 
       %p.govuk-body
         = t("action.forecast.download.hint_html")
 
       - if policy(@report_presenter).upload?
         .govuk-body.upload-form
-          = form_for @report_presenter, url: report_forecast_upload_path(@report_presenter) do |f|
+          = form_for @report_presenter, url: report_forecasts_upload_path(@report_presenter) do |f|
 
             = f.govuk_file_field :forecast_csv,
               label: { text: t("form.label.forecast.csv_file") },

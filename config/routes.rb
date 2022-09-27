@@ -70,7 +70,6 @@ Rails.application.routes.draw do
 
     resources :reports, only: [:new, :create, :show, :edit, :update, :index] do
       resource :state, only: [:edit, :update], controller: :reports_state
-      resource :forecast_upload, only: [:new, :show, :update]
       get "variance" => "report_variance#show"
       get "forecasts" => "report_forecasts#show"
       get "actuals" => "report_actuals#show"
@@ -83,6 +82,9 @@ Rails.application.routes.draw do
       namespace :actuals do
         resource :upload, only: [:new, :show, :update]
         resource :history_upload, only: [:new, :update]
+      end
+      namespace :forecasts do
+        resource :upload, only: [:new, :show, :update]
       end
     end
 

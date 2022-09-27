@@ -1,0 +1,9 @@
+.govuk-grid-row
+  .govuk-grid-column-full
+    = form_for @report_presenter, url: report_forecasts_upload_path(@report_presenter) do |f|
+
+      = f.govuk_file_field :forecast_csv,
+        label: { text: t("form.label.forecast.csv_file_recover_from_error") },
+        hint: { text: t("form.hint.forecast.csv_file_recover_from_error_html", link: report_forecasts_upload_path(@report_presenter, format: :csv)) }
+
+      = f.govuk_submit t("action.forecast.upload.button")

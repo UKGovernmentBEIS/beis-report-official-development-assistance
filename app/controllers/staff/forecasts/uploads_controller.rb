@@ -2,7 +2,7 @@
 
 require "csv"
 
-class Staff::ForecastUploadsController < Staff::BaseController
+class Staff::Forecasts::UploadsController < Staff::BaseController
   include Secured
   include StreamCsvDownload
   include Reports::Breadcrumbed
@@ -13,7 +13,7 @@ class Staff::ForecastUploadsController < Staff::BaseController
     @report_presenter = ReportPresenter.new(report)
 
     prepare_default_report_trail(report)
-    add_breadcrumb t("breadcrumb.report.upload_forecasts"), new_report_forecast_upload_path(report)
+    add_breadcrumb t("breadcrumb.report.upload_forecasts"), new_report_forecasts_upload_path(report)
   end
 
   def show
@@ -38,7 +38,7 @@ class Staff::ForecastUploadsController < Staff::BaseController
     @success = false
 
     prepare_default_report_trail(report)
-    add_breadcrumb t("breadcrumb.report.upload_forecasts"), new_report_forecast_upload_path(report)
+    add_breadcrumb t("breadcrumb.report.upload_forecasts"), new_report_forecasts_upload_path(report)
 
     if upload.valid?
       importer = ImportForecasts.new(uploader: current_user)
