@@ -20,7 +20,7 @@ class Staff::Actuals::HistoryUploadsController < Staff::BaseController
 
     return handle_invalid_file unless upload.valid?
 
-    importer = Import::ActualHistory.new(report: @report, csv: upload.rows, user: current_user)
+    importer = Actual::HistoryImport.new(report: @report, csv: upload.rows, user: current_user)
     @errors = importer.errors
     @imported_actuals = importer.imported
 

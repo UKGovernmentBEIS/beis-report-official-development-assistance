@@ -1,4 +1,4 @@
-RSpec.describe Import::ActualHistory do
+RSpec.describe Actual::HistoryImport do
   before(:all) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
@@ -136,7 +136,7 @@ RSpec.describe Import::ActualHistory do
     end
   end
 
-  describe Import::ActualHistory::RowImport do
+  describe Actual::HistoryImport::RowImport do
     context "with valid row data" do
       let(:row) {
         CSV::Row.new(
