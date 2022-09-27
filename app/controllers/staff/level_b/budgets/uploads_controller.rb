@@ -10,13 +10,7 @@ class Staff::LevelB::Budgets::UploadsController < Staff::BaseController
     authorize :level_b, :budget_upload?
 
     headers = [
-      "Type",
-      "Financial year",
-      "Budget amount",
-      "Providing organisation",
-      "Providing organisation type",
-      "IATI reference",
-      "Activity RODA ID",
+      *::Budget::Import::Converter::FIELDS.values,
       "Fund RODA ID",
       "Partner organisation name"
     ]
