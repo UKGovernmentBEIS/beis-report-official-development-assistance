@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ImportForecasts do
+RSpec.describe Forecast::Import do
   let(:project) { create(:project_activity) }
 
   let(:reporting_cycle) { ReportingCycle.new(project, 1, 2020) }
@@ -11,7 +11,7 @@ RSpec.describe ImportForecasts do
   let(:reporter) { create(:partner_organisation_user, organisation: reporter_organisation) }
 
   let :importer do
-    ImportForecasts.new(uploader: reporter, report: selected_report)
+    Forecast::Import.new(uploader: reporter, report: selected_report)
   end
 
   before do
@@ -92,7 +92,7 @@ RSpec.describe ImportForecasts do
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        ImportForecasts::Error.new(0, "Activity RODA Identifier", project.roda_identifier, t("importer.errors.forecast.unauthorised"))
+        Forecast::Import::Error.new(0, "Activity RODA Identifier", project.roda_identifier, t("importer.errors.forecast.unauthorised"))
       ])
     end
 
@@ -113,7 +113,7 @@ RSpec.describe ImportForecasts do
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        ImportForecasts::Error.new(0, "Activity RODA Identifier", "not-really-an-id", t("importer.errors.forecast.unknown_identifier"))
+        Forecast::Import::Error.new(0, "Activity RODA Identifier", "not-really-an-id", t("importer.errors.forecast.unknown_identifier"))
       ])
     end
 
@@ -134,7 +134,7 @@ RSpec.describe ImportForecasts do
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        ImportForecasts::Error.new(0, "FC 2020/21 FY Q3 (Oct, Nov, Dec)", "not a number", t("importer.errors.forecast.non_numeric_value"))
+        Forecast::Import::Error.new(0, "FC 2020/21 FY Q3 (Oct, Nov, Dec)", "not a number", t("importer.errors.forecast.non_numeric_value"))
       ])
     end
 
@@ -155,7 +155,7 @@ RSpec.describe ImportForecasts do
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        ImportForecasts::Error.new(0, "FC 2015/16 FY Q3 (Oct, Nov, Dec)", "FC 2015/16 FY Q3 (Oct, Nov, Dec)", t("importer.errors.forecast.in_the_past"))
+        Forecast::Import::Error.new(0, "FC 2015/16 FY Q3 (Oct, Nov, Dec)", "FC 2015/16 FY Q3 (Oct, Nov, Dec)", t("importer.errors.forecast.in_the_past"))
       ])
     end
 
@@ -210,7 +210,7 @@ RSpec.describe ImportForecasts do
 
     it "reports an error" do
       expect(importer.errors).to eq([
-        ImportForecasts::Error.new(-1, "Unknown Column", "", t("importer.errors.forecast.unrecognised_column"))
+        Forecast::Import::Error.new(-1, "Unknown Column", "", t("importer.errors.forecast.unrecognised_column"))
       ])
     end
 
@@ -273,7 +273,7 @@ RSpec.describe ImportForecasts do
 
       it "reports an error" do
         expect(importer.errors).to eq([
-          ImportForecasts::Error.new(
+          Forecast::Import::Error.new(
             nil,
             nil,
             nil,
@@ -310,7 +310,7 @@ RSpec.describe ImportForecasts do
 
       it "reports an error" do
         expect(importer.errors).to eq([
-          ImportForecasts::Error.new(
+          Forecast::Import::Error.new(
             1,
             "Activity RODA Identifier",
             unrelated_project.roda_identifier,

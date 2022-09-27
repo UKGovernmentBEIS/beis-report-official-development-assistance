@@ -20,7 +20,7 @@ class Staff::Forecasts::UploadsController < Staff::BaseController
     authorize report, :show?
 
     @report_presenter = ReportPresenter.new(report)
-    generator = ImportForecasts::Generator.new(report)
+    generator = Forecast::Import::Generator.new(report)
     filename = @report_presenter.filename_for_forecasts_template
 
     stream_csv_download(filename: filename, headers: generator.column_headings) do |csv|
@@ -41,7 +41,7 @@ class Staff::Forecasts::UploadsController < Staff::BaseController
     add_breadcrumb t("breadcrumb.report.upload_forecasts"), new_report_forecasts_upload_path(report)
 
     if upload.valid?
-      importer = ImportForecasts.new(uploader: current_user)
+      importer = Forecast::Import.new(uploader: current_user)
       importer.import(upload.rows)
       @errors = importer.errors
 

@@ -54,7 +54,7 @@ puts "\nIs this correct? [y/n]"
 confirmation = gets
 exit unless confirmation.strip == "y"
 
-importer = ImportForecasts.new(report: report)
+importer = Forecast::Import.new(report: report)
 rows = CSV.parse(File.read(options.fetch(:input)), headers: true)
 
 importer.import(rows)
