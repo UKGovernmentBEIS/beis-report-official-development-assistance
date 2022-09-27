@@ -217,6 +217,6 @@ RSpec.feature "BEIS users can upload Level B activities" do
   end
 
   def upload_empty_csv
-    upload_csv(Activities::ImportFromCsv.column_headings.join(", "))
+    upload_csv(Activity::Import.column_headings.join(", "))
   end
 end

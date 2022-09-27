@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Activities::ImportFromCsv do
+RSpec.describe Activity::Import do
   let(:organisation) { create(:partner_organisation) }
   let(:uploader) { create(:partner_organisation_user, organisation: organisation) }
   let(:parent_activity) { create(:programme_activity, :newton_funded, extending_organisation: organisation) }

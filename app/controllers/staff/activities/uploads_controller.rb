@@ -36,7 +36,7 @@ class Staff::Activities::UploadsController < Staff::BaseController
     add_breadcrumb t("breadcrumb.report.upload_activities"), new_report_activities_upload_path(report)
 
     if upload.valid?
-      importer = ::Activities::ImportFromCsv.new(
+      importer = Activity::Import.new(
         uploader: current_user,
         partner_organisation: current_user.organisation,
         report: report
@@ -60,6 +60,6 @@ class Staff::Activities::UploadsController < Staff::BaseController
   end
 
   private def csv_headers
-    ["RODA ID"] + Activities::ImportFromCsv.column_headings
+    ["RODA ID"] + Activity::Import.column_headings
   end
 end

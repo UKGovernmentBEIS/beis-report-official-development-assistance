@@ -52,7 +52,7 @@ RSpec.describe Staff::Activities::UploadsController do
 
     let(:importer) do
       instance_double(
-        Activities::ImportFromCsv,
+        Activity::Import,
         import: true,
         errors: [],
         created: double,
@@ -62,7 +62,7 @@ RSpec.describe Staff::Activities::UploadsController do
 
     before do
       allow(CsvFileUpload).to receive(:new).and_return(upload)
-      allow(Activities::ImportFromCsv).to receive(:new).and_return(importer)
+      allow(Activity::Import).to receive(:new).and_return(importer)
     end
 
     it "asks CsvFileUpload to prepare the uploaded activities" do
@@ -77,7 +77,7 @@ RSpec.describe Staff::Activities::UploadsController do
       it "asks ImportFromCsv to import the uploaded rows" do
         put :update, params: {report_id: report.id, report: file_upload}
 
-        expect(Activities::ImportFromCsv).to have_received(:new).with(
+        expect(Activity::Import).to have_received(:new).with(
           uploader: user,
           partner_organisation: organisation,
           report: report
@@ -93,7 +93,7 @@ RSpec.describe Staff::Activities::UploadsController do
       it "does NOT ask ImportFromCsv to import the uploaded rows" do
         put :update, params: {report_id: report.id, report: file_upload}
 
-        expect(Activities::ImportFromCsv).not_to have_received(:new)
+        expect(Activity::Import).not_to have_received(:new)
       end
     end
   end

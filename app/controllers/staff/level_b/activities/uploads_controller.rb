@@ -27,7 +27,7 @@ class Staff::LevelB::Activities::UploadsController < Staff::BaseController
     @success = false
 
     if upload.valid?
-      importer = ::Activities::ImportFromCsv.new(
+      importer = Activity::Import.new(
         uploader: current_user,
         partner_organisation: organisation,
         report: nil
@@ -49,7 +49,7 @@ class Staff::LevelB::Activities::UploadsController < Staff::BaseController
   private
 
   def csv_headers
-    ["RODA ID"] + ::Activities::ImportFromCsv.level_b_column_headings
+    ["RODA ID"] + Activity::Import.level_b_column_headings
   end
 
   def organisation

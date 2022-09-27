@@ -1,5 +1,5 @@
-module Activities
-  class ImportFromCsv
+class Activity
+  class Import
     Error = Struct.new(:row, :column, :value, :message) {
       def csv_row
         row + 2

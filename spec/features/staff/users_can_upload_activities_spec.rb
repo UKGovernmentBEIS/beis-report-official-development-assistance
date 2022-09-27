@@ -279,6 +279,6 @@ RSpec.feature "users can upload activities" do
   end
 
   def upload_empty_csv
-    upload_csv(Activities::ImportFromCsv.column_headings.join(", "))
+    upload_csv(Activity::Import.column_headings.join(", "))
   end
 end
