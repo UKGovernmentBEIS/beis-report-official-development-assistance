@@ -1,0 +1,17 @@
+%table{ class: "govuk-table govuk-!-margin-bottom-9" }
+  %caption.govuk-table__caption.govuk-table__caption--m
+    = table_caption
+  %thead.govuk-table__head
+    %tr.govuk-table__row
+      %th.govuk-table__header{scope: "col"} Activity RODA ID
+      %th.govuk-table__header{scope: "col"} Type
+      %th.govuk-table__header{scope: "col"} Financial year
+      %th.govuk-table__header{scope: "col"} Budget amount
+  %tbody.govuk-table__body
+    - budgets.each do |budget|
+      - budget_presenter = BudgetPresenter.new(budget)
+      %tr.govuk-table__row
+        %td.govuk-table__cell= budget_presenter.parent_activity.roda_identifier
+        %td.govuk-table__cell= budget_presenter.budget_type
+        %td.govuk-table__cell= budget_presenter.financial_year
+        %td.govuk-table__cell= budget_presenter.value

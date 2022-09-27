@@ -13,6 +13,8 @@ en:
         hint_html: "<p class='govuk-body'>This CSV contains all the columns that can be used to create or update budgets.</p><p class='govuk-body'>Edit it to add the values for the relevant budgets, then upload it through the form.</p>"
       upload:
         button: Upload and continue
+        file_missing_or_invalid: Please upload a valid CSV file
+        success: The budgets were successfully imported
   form:
     label:
       budget:
@@ -25,6 +27,7 @@ en:
           direct: Direct
           other_official: Other official development assistance
         csv_file: Upload CSV spreadsheet
+        csv_file_recover_from_error: Re-upload CSV spreadsheet
     legend:
       budget:
         budget_type: Type
@@ -40,7 +43,11 @@ en:
           direct: Budget allocated directly from the parent activity
           other_official: Budget allocated from an external organisation that is still considered ODA funding
         csv_file: Upload a spreadsheet containing budget data in CSV format.
+        csv_file_recover_from_error_html: Upload a spreadsheet containing activity data in CSV format. We recommend <a href="%{link}" class="govuk-link">downloading this CSV template</a>.
   table:
+    caption:
+      budget:
+        new_budgets: New budgets
     header:
       budget:
         financial_year: Financial year

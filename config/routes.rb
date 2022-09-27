@@ -51,7 +51,7 @@ Rails.application.routes.draw do
 
     namespace :level_b do
       namespace :budgets do
-        resource :upload, only: [:new, :show]
+        resource :upload, only: [:new, :show, :create]
       end
     end
 

@@ -19,4 +19,26 @@ class Staff::LevelB::Budgets::UploadsController < Staff::BaseController
 
     stream_csv_download(filename: "Level_B_budgets_upload.csv", headers: headers)
   end
+
+  def create
+    authorize :level_b, :budget_upload?
+
+    upload = CsvFileUpload.new(params[:budget_upload], :csv)
+    @success = false
+
+    if upload.valid?
+      importer = Budget::Import.new(uploader: current_user)
+      importer.import(upload.rows)
+      @errors = importer.errors
+      @budgets = {created: importer.created}
+
+      if @errors.empty?
+        @success = true
+        flash.now[:notice] = t("action.budget.upload.success")
+      end
+    else
+      @errors = []
+      flash.now[:error] = t("action.budget.upload.file_missing_or_invalid")
+    end
+  end
 end
