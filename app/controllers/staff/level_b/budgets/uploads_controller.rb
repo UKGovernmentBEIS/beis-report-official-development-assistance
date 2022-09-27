@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Staff::LevelB::Budgets::UploadsController < Staff::BaseController
   include Secured
   include StreamCsvDownload
