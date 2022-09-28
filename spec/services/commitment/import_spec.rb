@@ -1,4 +1,4 @@
-RSpec.describe Import::Commitments do
+RSpec.describe Commitment::Import do
   before(:all) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
@@ -99,11 +99,11 @@ RSpec.describe Import::Commitments do
 
       it "includes them in the list of errors" do
         invalid_errors = [
-          Import::Commitments::RowError.new("Value must be greater than 0", 2),
-          Import::Commitments::RowError.new("Financial year can't be blank", 2),
-          Import::Commitments::RowError.new("Financial year is not a number", 2)
+          Commitment::Import::RowError.new("Value must be greater than 0", 2),
+          Commitment::Import::RowError.new("Financial year can't be blank", 2),
+          Commitment::Import::RowError.new("Financial year is not a number", 2)
         ]
-        unknown_error = Import::Commitments::RowError.new("Unknown RODA identifier UNKNOWN-RODA-ID", 3)
+        unknown_error = Commitment::Import::RowError.new("Unknown RODA identifier UNKNOWN-RODA-ID", 3)
         subject.call(invalid_csv)
 
         expect(subject.errors.count).to eq 4
@@ -119,7 +119,7 @@ RSpec.describe Import::Commitments do
     end
   end
 
-  describe Import::Commitments::RowImporter do
+  describe Commitment::Import::RowImporter do
     context "with a valid set of attributes in the row" do
       let(:row) {
         CSV::Row.new(
