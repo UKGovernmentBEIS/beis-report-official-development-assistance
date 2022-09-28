@@ -13,5 +13,5 @@
   = t("tabs.activities.upload.warning")
 
 .govuk-button-group
-  = link_to t("page_content.activities.button.download_template"), report_activity_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary"
-  = link_to t("page_content.activities.button.upload"), new_report_activity_upload_path(@report_presenter), class: "govuk-button"
+  = link_to t("page_content.activities.button.download_template"), report_activities_upload_path(@report_presenter, format: :csv), class: "govuk-button govuk-button--secondary"
+  = link_to t("page_content.activities.button.upload"), new_report_activities_upload_path(@report_presenter), class: "govuk-button"

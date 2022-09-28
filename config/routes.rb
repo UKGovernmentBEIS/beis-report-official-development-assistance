@@ -61,22 +61,30 @@ Rails.application.routes.draw do
           get tab, to: "activities#show", defaults: {tab: tab}
         end
       end
-      resource :level_b_activity_upload, only: [:new, :show, :update]
+      namespace :level_b do
+        namespace :activities do
+          resource :upload, only: [:new, :show, :update]
+        end
+      end
     end
 
     resources :reports, only: [:new, :create, :show, :edit, :update, :index] do
       resource :state, only: [:edit, :update], controller: :reports_state
-      resource :activity_upload, only: [:new, :show, :update]
-      resource :forecast_upload, only: [:new, :show, :update]
-      resource :actual_upload, only: [:new, :show, :update]
       get "variance" => "report_variance#show"
       get "forecasts" => "report_forecasts#show"
       get "actuals" => "report_actuals#show"
       get "budgets" => "report_budgets#show"
       get "activities" => "report_activities#show"
       get "comments" => "report_comments#show"
-      namespace :uploads do
-        resource :actual_history, only: [:new, :update]
+      namespace :activities do
+        resource :upload, only: [:new, :show, :update]
+      end
+      namespace :actuals do
+        resource :upload, only: [:new, :show, :update]
+        resource :history_upload, only: [:new, :update]
+      end
+      namespace :forecasts do
+        resource :upload, only: [:new, :show, :update]
       end
     end
 

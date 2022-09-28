@@ -8,7 +8,7 @@ RSpec.feature "BEIS users can upload Level B activities" do
   before { authenticate!(user: user) }
 
   before do
-    visit new_organisation_level_b_activity_upload_path(organisation)
+    visit new_organisation_level_b_activities_upload_path(organisation)
   end
 
   scenario "downloading the CSV template" do
@@ -217,6 +217,6 @@ RSpec.feature "BEIS users can upload Level B activities" do
   end
 
   def upload_empty_csv
-    upload_csv(Activities::ImportFromCsv.column_headings.join(", "))
+    upload_csv(Activity::Import.column_headings.join(", "))
   end
 end

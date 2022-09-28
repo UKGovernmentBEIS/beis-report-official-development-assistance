@@ -19,7 +19,7 @@ RSpec.feature "BEIS users upload actual history" do
           #{activity.roda_identifier},1,2021, 10000
         CSV
 
-      visit new_report_uploads_actual_history_path(report)
+      visit new_report_actuals_history_upload_path(report)
       upload_fixture(file_content)
 
       expect(page).to have_content(t("actions.uploads.actual_histories.success"))
@@ -30,7 +30,7 @@ RSpec.feature "BEIS users upload actual history" do
     end
 
     scenario "when the file is missing" do
-      visit new_report_uploads_actual_history_path(report)
+      visit new_report_actuals_history_upload_path(report)
       click_button t("actions.uploads.actual_histories.upload.button")
 
       expect(page).to have_content(t("actions.uploads.actual_histories.missing"))
@@ -42,7 +42,7 @@ RSpec.feature "BEIS users upload actual history" do
           invalid;csv;content
         CSV
 
-      visit new_report_uploads_actual_history_path(report)
+      visit new_report_actuals_history_upload_path(report)
       upload_fixture(file_content)
 
       expect(page).to have_content(t("actions.uploads.actual_histories.invalid"))
@@ -55,7 +55,7 @@ RSpec.feature "BEIS users upload actual history" do
           #{activity.roda_identifier},1,2021, Ten thousand pounds
         CSV
 
-      visit new_report_uploads_actual_history_path(report)
+      visit new_report_actuals_history_upload_path(report)
       upload_fixture(file_content)
 
       expect(page).to have_content(t("actions.uploads.actual_histories.failed"))

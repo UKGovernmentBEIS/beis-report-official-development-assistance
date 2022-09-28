@@ -14,7 +14,7 @@ namespace :commitments do
 
     csv = CSV.read(path, {headers: true, encoding: "bom|utf-8"})
 
-    importer = Import::Commitments.new(user)
+    importer = Commitment::Import.new(user)
 
     if importer.call(csv)
       importer.imported.each do |commitment|
