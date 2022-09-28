@@ -66,6 +66,7 @@ class ForecastHistory
     elsif latest_entry
       new_entry = revise_entry(latest_entry, value, report)
       record_historical_event(latest_entry, new_entry, report)
+      new_entry
     else
       create_original_entry(value, report)
     end

@@ -211,6 +211,10 @@ RSpec.describe ForecastHistory do
       it "does not create a historical event when the value is first set" do
         expect { history.set_value(20) }.to not_create_a_historical_event
       end
+
+      it "returns a _Forecast_" do
+        expect(history.set_value(20)).to be_a(Forecast)
+      end
     end
 
     context "when the original entry is part of an approved report" do
@@ -298,6 +302,10 @@ RSpec.describe ForecastHistory do
           report: Report.editable_for_activity(activity)
         )
       end
+
+      it "returns a _Forecast_" do
+        expect(history.set_value(20)).to be_a(Forecast)
+      end
     end
 
     context "when the original entry is part of an older approved report" do
@@ -323,6 +331,10 @@ RSpec.describe ForecastHistory do
           new_value: 20,
           report: Report.editable_for_activity(activity)
         )
+      end
+
+      it "returns a _Forecast_" do
+        expect(history.set_value(20)).to be_a(Forecast)
       end
     end
   end
