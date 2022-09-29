@@ -69,7 +69,7 @@ RSpec.describe Staff::LevelB::Activities::UploadsController do
     context "when upload is valid" do
       before { allow(upload).to receive(:valid?).and_return(true) }
 
-      it "asks ImportFromCsv to import the uploaded rows" do
+      it "asks Activity::Import to import the uploaded rows" do
         put :update, params: {organisation_id: organisation.id, organisation: file_upload}
 
         expect(Activity::Import).to have_received(:new).with(
@@ -85,7 +85,7 @@ RSpec.describe Staff::LevelB::Activities::UploadsController do
     context "when upload is NOT valid" do
       before { allow(upload).to receive(:valid?).and_return(false) }
 
-      it "does NOT ask ImportFromCsv to import the uploaded rows" do
+      it "does NOT ask Activity::Import to import the uploaded rows" do
         put :update, params: {organisation_id: organisation.id, organisation: file_upload}
 
         expect(Activity::Import).not_to have_received(:new)
