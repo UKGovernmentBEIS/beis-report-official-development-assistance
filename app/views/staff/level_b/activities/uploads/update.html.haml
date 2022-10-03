@@ -4,7 +4,7 @@
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-xl
-        = t("page_title.activity.upload")
+        = t("page_title.activity.upload_level_b", organisation_name: @organisation_presenter.name)
 
   - unless @errors.empty?
     .govuk-grid-row
