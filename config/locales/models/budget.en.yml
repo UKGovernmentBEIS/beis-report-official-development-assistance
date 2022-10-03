@@ -65,6 +65,7 @@ en:
   page_title:
     budget:
       edit: Edit budget
+      index: Budgets
       new: Create budget
       upload_level_b: Bulk upload budget data for Level B activities
   breadcrumb:
