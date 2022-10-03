@@ -265,16 +265,28 @@ class Activity < ApplicationRecord
   end
 
   def total_spend(financial_quarter = nil)
-    actuals = own_and_descendants_actuals
+    entity_types = %w[actuals adjustments refunds]
+    b = binding
 
-    if financial_quarter
-      actuals = actuals.where(
-        financial_year: financial_quarter.financial_year.to_i,
-        financial_quarter: financial_quarter.to_i
-      )
+    entity_types.each do |entity_type|
+      model = entity_type.singularize.humanize.constantize
+
+      b.local_variable_set(entity_type, send(:own_and_descendants_associates, model))
     end
 
-    actuals.sum(:value)
+    if financial_quarter
+      entity_types.each do |entity_type|
+        b.local_variable_set(
+          entity_type,
+          b.local_variable_get(entity_type).where(
+            financial_year: financial_quarter.financial_year.to_i,
+            financial_quarter: financial_quarter.to_i
+          )
+        )
+      end
+    end
+
+    entity_types.map { |entity_type| b.local_variable_get(entity_type).sum(:value) }.sum
   end
 
   def total_budget
@@ -292,14 +304,15 @@ class Activity < ApplicationRecord
     future_forecasts.sum(&:value)
   end
 
-  def own_and_descendants_actuals
+  def own_and_descendants_associates(model)
     activity_ids = descendants.pluck(:id).append(id)
-    Actual.where(parent_activity_id: activity_ids)
+
+    model.where(parent_activity_id: activity_ids)
   end
 
   def reportable_actuals_for_level
     if programme?
-      spend_by_financial_quarter(own_and_descendants_actuals.order("date DESC"))
+      spend_by_financial_quarter(own_and_descendants_associates(Actual).order("date DESC"))
     else
       actuals.order("date DESC")
     end

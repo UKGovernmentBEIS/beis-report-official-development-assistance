@@ -1522,6 +1522,20 @@ RSpec.describe Activity, type: :model do
           expect(programme2_projects[0].total_spend).to eq(200)
           expect(programme2_projects[1].total_spend).to eq(400)
         end
+
+        it "accounts for refunds and adjustments" do
+          create(:refund, value: 25, parent_activity: programme2_projects[1])
+
+          expect(programme2_projects[1].total_spend).to eq(375)
+          expect(programme2.total_spend).to eq(775)
+          expect(fund.total_spend).to eq(1575)
+
+          create(:adjustment, value: 5, parent_activity: programme2_projects[1])
+
+          expect(programme2_projects[1].total_spend).to eq(380)
+          expect(programme2.total_spend).to eq(780)
+          expect(fund.total_spend).to eq(1580)
+        end
       end
 
       context "when quarter is specified" do
@@ -1666,7 +1680,7 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    describe "#own_and_descendants_actuals" do
+    describe "#own_and_descendants_associates" do
       let!(:fund_actual) { create(:actual, value: 100, parent_activity: fund) }
       let!(:programme1_actual) { create(:actual, value: 100, parent_activity: programme1) }
       let!(:programme2_actual) { create(:actual, value: 100, parent_activity: programme2) }
@@ -1678,7 +1692,7 @@ RSpec.describe Activity, type: :model do
       let!(:programme2_tpp_actual) { create(:actual, value: 100, parent_activity: programme2_third_party_project) }
 
       it "returns all the actuals belonging to the activity and to the descendant activities" do
-        expect(fund.own_and_descendants_actuals.pluck(:id)).to match_array([
+        expect(fund.own_and_descendants_associates(Actual).pluck(:id)).to match_array([
           fund_actual.id,
           programme1_actual.id,
           programme2_actual.id,
