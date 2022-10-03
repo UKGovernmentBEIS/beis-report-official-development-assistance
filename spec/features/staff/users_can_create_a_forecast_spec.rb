@@ -4,6 +4,8 @@ RSpec.describe "Users can create a forecast" do
 
     before { authenticate!(user: user) }
 
+    after { logout }
+
     scenario "they can add a forecast" do
       programme = create(:programme_activity, extending_organisation: user.organisation)
       project = create(:project_activity, :with_report, organisation: user.organisation, parent: programme)
@@ -149,6 +151,8 @@ RSpec.describe "Users can create a forecast" do
     let(:beis_user) { create(:beis_user) }
 
     before { authenticate!(user: beis_user) }
+
+    after { logout }
 
     scenario "they cannot add a forecast" do
       programme = create(:programme_activity)

@@ -8,6 +8,7 @@ RSpec.feature "Users can delete an actual" do
 
   context "when the user belongs to BEIS" do
     before { authenticate!(user: beis_user) }
+    after { logout }
 
     scenario "deleting a actual on a programme" do
       visit organisation_activity_path(activity.organisation, activity)
@@ -23,6 +24,7 @@ RSpec.feature "Users can delete an actual" do
 
   context "when signed in as a partner organisation user" do
     before { authenticate!(user: partner_org_user) }
+    after { logout }
 
     let!(:activity) { create(:project_activity, organisation: partner_org_user.organisation) }
 

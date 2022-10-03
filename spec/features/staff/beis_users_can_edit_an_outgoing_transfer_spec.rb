@@ -1,6 +1,7 @@
 RSpec.feature "BEIS users can edit a transfer" do
   let(:user) { create(:beis_user) }
   before { authenticate!(user: user) }
+  after { logout }
 
   include_examples "editing a transfer" do
     let(:source_activity) { create(:programme_activity) }

@@ -6,6 +6,8 @@ RSpec.feature "Users can view an activity's children" do
       authenticate!(user: user)
     end
 
+    after { logout }
+
     scenario "they do not see a Publish to Iati column & status against child activities" do
       programme = create(:programme_activity, extending_organisation: user.organisation)
       project = create(:project_activity, organisation: user.organisation, parent: programme)

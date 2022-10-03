@@ -4,6 +4,7 @@ RSpec.feature "BEIS users can invite new users to the service" do
   before do
     authenticate!(user: user)
   end
+  after { logout }
 
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }

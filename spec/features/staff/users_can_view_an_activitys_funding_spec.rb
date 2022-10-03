@@ -25,6 +25,8 @@ RSpec.feature "Users can view an activity's other funding" do
   context "when the user is signed in as a partner organisation user" do
     before { authenticate!(user: user) }
 
+    after { logout }
+
     it "lists the matched efforts" do
       visit organisation_activity_path(activity.organisation, activity)
       click_on t("tabs.activity.other_funding")
@@ -50,6 +52,8 @@ RSpec.feature "Users can view an activity's other funding" do
 
     before { authenticate!(user: beis_user) }
 
+    after { logout }
+
     it "lists the matched efforts" do
       visit organisation_activity_path(activity.organisation, activity)
       click_on t("tabs.activity.other_funding")
@@ -67,6 +71,8 @@ RSpec.feature "Users can view an activity's other funding" do
 
   context "when the user is not a member of the activity's organisation" do
     before { authenticate!(user: create(:partner_organisation_user)) }
+
+    after { logout }
 
     it "does not allow the user to view the funding" do
       visit organisation_activity_other_funding_path(activity.organisation, activity)

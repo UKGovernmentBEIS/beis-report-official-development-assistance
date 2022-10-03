@@ -2,6 +2,8 @@ RSpec.feature "Users can view programme level activities" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
 
+    after { logout }
+
     it "shows the programme level activity" do
       authenticate!(user: user)
 
@@ -18,6 +20,8 @@ RSpec.feature "Users can view programme level activities" do
 
   context "when the user does NOT belong to BEIS" do
     let(:user) { create(:partner_organisation_user) }
+
+    after { logout }
 
     it "shows the programme level activity" do
       authenticate!(user: user)

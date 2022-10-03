@@ -9,6 +9,8 @@ RSpec.describe "Users can edit an external income" do
 
     before { authenticate!(user: user) }
 
+    after { logout }
+
     before do
       visit organisation_activity_path(project.organisation, project)
       click_on "Other funding"

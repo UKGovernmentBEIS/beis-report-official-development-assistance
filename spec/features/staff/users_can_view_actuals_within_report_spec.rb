@@ -7,6 +7,8 @@ RSpec.feature "Users can view actuals in tab within a report" do
       authenticate!(user: user)
     end
 
+    after { logout }
+
     def expect_to_see_a_table_of_actuals_grouped_by_activity(activities)
       fail "We expect some activities to be present" if activities.none?
 

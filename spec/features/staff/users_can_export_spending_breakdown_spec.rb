@@ -3,6 +3,7 @@ RSpec.feature "Users can export spending breakdown" do
     before do
       authenticate! user: create(:beis_user, email: "beis@example.com")
     end
+    after { logout }
 
     scenario "they can request a spending breakdown export for all organisations" do
       visit exports_path
@@ -35,6 +36,8 @@ RSpec.feature "Users can export spending breakdown" do
     before do
       authenticate! user: create(:partner_organisation_user, organisation: organisation)
     end
+
+    after { logout }
 
     scenario "they cannot download spending breakdown for all organisations" do
       visit exports_path

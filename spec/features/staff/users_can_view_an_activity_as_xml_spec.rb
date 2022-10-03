@@ -7,6 +7,8 @@ RSpec.feature "Users can view an activity as XML" do
     context "when the user belongs to BEIS" do
       before { authenticate!(user: user) }
 
+      after { logout }
+
       context "when the activity has a previous activity identifier" do
         let(:activity) {
           create(:fund_activity,

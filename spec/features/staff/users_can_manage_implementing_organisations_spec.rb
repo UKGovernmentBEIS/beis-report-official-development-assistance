@@ -39,6 +39,8 @@ RSpec.feature "Users can manage the implementing organisations" do
       create(:partner_organisation, name: "Another partner organisation")
     end
 
+    after { logout }
+
     scenario "they can add an implementing org from a list of all organisations" do
       def then_i_see_a_list_containing_all_organisations
         expect(page).to have_select(
@@ -111,6 +113,7 @@ RSpec.feature "Users can manage the implementing organisations" do
     let(:project) { create(:project_activity, organisation: partner_organisation) }
 
     before { authenticate!(user: create(:beis_user)) }
+    after { logout }
 
     scenario "they can view implementing organisations" do
       other_public_sector_organisation = create(:implementing_organisation, name: "Other public sector organisation", organisation_type: "70", iati_reference: "GB-COH-123456")

@@ -5,6 +5,7 @@ RSpec.feature "BEIS users upload actual history" do
     let(:report) { create(:report, fund: activity.associated_fund, organisation: activity.organisation) }
 
     before { authenticate!(user: beis_user) }
+    after { logout }
 
     scenario "they can see the actuals history upload interface" do
       visit report_actuals_path(report)
@@ -71,6 +72,7 @@ RSpec.feature "BEIS users upload actual history" do
     let(:report) { create(:report, organisation: beis_user.organisation) }
 
     before { authenticate!(user: user) }
+    after { logout }
 
     scenario "they cannot see the actuals history upload interface" do
       report = create(:report)

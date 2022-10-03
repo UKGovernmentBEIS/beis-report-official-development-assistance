@@ -3,6 +3,7 @@ RSpec.feature "Users can create a refund" do
 
   RSpec.shared_examples "create refunds" do
     before { authenticate!(user: user) }
+    after { logout }
 
     scenario "they can create a refund for an activity" do
       given_i_am_on_the_new_refund_form

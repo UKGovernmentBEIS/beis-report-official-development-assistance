@@ -2,6 +2,8 @@ RSpec.feature "Users can edit organisations" do
   let!(:beis_organisation) { create(:beis_organisation) }
   let!(:another_organisation) { create(:partner_organisation) }
 
+  after { logout }
+
   context "when the user is not logged in" do
     before do
       logout

@@ -4,6 +4,7 @@ RSpec.feature "Users can view an organisation" do
     before do
       authenticate!(user: user)
     end
+    after { logout }
 
     context "viewing their own organisation" do
       scenario "can see their own organisation page" do
@@ -43,6 +44,8 @@ RSpec.feature "Users can view an organisation" do
     before do
       authenticate!(user: create(:administrator, organisation: organisation))
     end
+
+    after { logout }
 
     scenario "can see their organisation page" do
       visit organisation_path(organisation)

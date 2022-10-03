@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.feature "BEIS users can edit other users" do
   let!(:user) { create(:partner_organisation_user, organisation: create(:partner_organisation)) }
+  after { logout }
 
   scenario "the email address is disabled" do
     user = create(:beis_user)

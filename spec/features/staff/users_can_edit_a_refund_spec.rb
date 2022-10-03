@@ -19,6 +19,8 @@ RSpec.feature "Users can edit a refund" do
       and_i_see_the_refund_value_field_with_a_negative_amount
     end
 
+    after { logout }
+
     scenario "they can edit a refund for an activity" do
       fill_in "refund_form[value]", with: "100"
       choose "4", name: "refund_form[financial_quarter]"

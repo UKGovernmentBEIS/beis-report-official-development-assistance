@@ -13,6 +13,8 @@ RSpec.describe "Users can edit a forecast" do
       history.set_value(40)
     end
 
+    after { logout }
+
     scenario "they can edit a forecast" do
       visit organisation_activity_path(project.organisation, project)
 

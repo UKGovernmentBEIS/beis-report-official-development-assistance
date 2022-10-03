@@ -19,6 +19,8 @@ RSpec.feature "users can view a home page" do
       authenticate! user: beis_user
     end
 
+    after { logout }
+
     scenario "they see the home page and the right content" do
       visit home_path
 
@@ -36,6 +38,8 @@ RSpec.feature "users can view a home page" do
     before do
       authenticate! user: partner_org_user
     end
+
+    after { logout }
 
     scenario "they see their home page and the right content" do
       visit home_path

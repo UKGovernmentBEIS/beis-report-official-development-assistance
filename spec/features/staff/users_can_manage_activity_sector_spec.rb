@@ -2,6 +2,7 @@ RSpec.feature "Users can manage Sectors" do
   context "when they belong to BEIS" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     context "with a new activity" do
       scenario "they can provide the sector category" do

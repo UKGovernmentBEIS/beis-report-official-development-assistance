@@ -6,6 +6,8 @@ RSpec.feature "Users can move reports into review" do
       authenticate!(user: beis_user)
     end
 
+    after { logout }
+
     scenario "they can mark a report as in review" do
       report = create(:report, state: :submitted)
 
@@ -34,6 +36,8 @@ RSpec.feature "Users can move reports into review" do
     before do
       authenticate!(user: partner_org_user)
     end
+
+    after { logout }
 
     scenario "they cannot mark a report as in review" do
       report = create(:report, state: :submitted)

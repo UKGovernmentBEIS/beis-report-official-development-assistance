@@ -7,6 +7,8 @@ RSpec.feature "Users can move reports into awaiting changes & view reports await
       authenticate!(user: beis_user)
     end
 
+    after { logout }
+
     scenario "they can mark a report as awaiting changes" do
       report = create(:report, state: :in_review, organisation: organisation)
 
@@ -43,6 +45,8 @@ RSpec.feature "Users can move reports into awaiting changes & view reports await
     before do
       authenticate!(user: partner_org_user)
     end
+
+    after { logout }
 
     scenario "they cannot mark a report as in awaiting changes" do
       report = create(:report, state: :in_review, organisation: partner_org_user.organisation)

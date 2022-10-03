@@ -7,6 +7,8 @@ RSpec.feature "Users can activate reports" do
       authenticate!(user: beis_user)
     end
 
+    after { logout }
+
     context "when the report is already active" do
       scenario "it cannot be activated again" do
         report = create(:report, :active)

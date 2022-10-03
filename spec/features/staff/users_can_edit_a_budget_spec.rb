@@ -1,5 +1,6 @@
 RSpec.describe "Users can edit a budget" do
   before { authenticate!(user: user) }
+  after { logout }
 
   context "when signed in as a beis user" do
     let(:user) { create(:beis_user) }

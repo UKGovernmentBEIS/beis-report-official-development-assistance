@@ -15,6 +15,8 @@ RSpec.describe "Users can create a matched effort" do
       click_on t("page_content.matched_effort.button.create")
     end
 
+    after { logout }
+
     scenario "they can add a matched effort" do
       template = build(:matched_effort,
         organisation: matched_effort_provider,

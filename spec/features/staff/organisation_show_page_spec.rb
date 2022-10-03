@@ -8,6 +8,8 @@ RSpec.feature "Organisation show page" do
         authenticate!(user: beis_user)
       end
 
+      after { logout }
+
       scenario "they see the organisation details" do
         visit organisation_path(beis_user.organisation)
 
@@ -27,6 +29,8 @@ RSpec.feature "Organisation show page" do
     before do
       authenticate!(user: partner_org_user)
     end
+
+    after { logout }
 
     scenario "they do not see the edit details button" do
       visit organisation_path(partner_org_user.organisation)

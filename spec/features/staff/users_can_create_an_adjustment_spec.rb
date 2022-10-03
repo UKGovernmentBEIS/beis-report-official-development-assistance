@@ -6,6 +6,8 @@ RSpec.feature "Users can create an adjustment (correcting spend in an approved r
 
   before { authenticate!(user: user) }
 
+  after { logout }
+
   scenario "can create an adjustment for an activity" do
     given_an_active_report_exists
     and_i_am_looking_at_the_activity_financials_tab

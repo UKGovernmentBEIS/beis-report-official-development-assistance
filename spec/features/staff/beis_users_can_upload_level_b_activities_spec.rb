@@ -11,6 +11,8 @@ RSpec.feature "BEIS users can upload Level B activities" do
     visit new_organisation_level_b_activities_upload_path(organisation)
   end
 
+  after { logout }
+
   scenario "downloading the CSV template" do
     click_link t("action.activity.bulk_download.button")
 

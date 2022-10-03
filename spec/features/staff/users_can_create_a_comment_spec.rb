@@ -17,6 +17,7 @@ RSpec.describe "Users can create a comment" do
 
       context "when the user is a BEIS user" do
         before { authenticate!(user: beis_user) }
+        after { logout }
 
         context "when the report is editable" do
           scenario "the user cannot add a comment" do
@@ -38,6 +39,7 @@ RSpec.describe "Users can create a comment" do
 
       context "when the user is a partner organisation user" do
         before { authenticate!(user: partner_org_user) }
+        after { logout }
 
         context "when the report is editable" do
           context "when there are no comments about this activity" do
@@ -84,6 +86,7 @@ RSpec.describe "Users can create a comment" do
   context "from the activity comments tab" do
     context "when the user is a partner organisation user" do
       before { authenticate!(user: partner_org_user) }
+      after { logout }
 
       context "when the report is editable" do
         scenario "the user can create a comment" do

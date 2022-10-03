@@ -1,7 +1,11 @@
 RSpec.feature "Users can view an activity" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
+
     before { authenticate!(user: user) }
+
+    after { logout }
+
     context "and the activity is a fund" do
       scenario "the child programme activities can be viewed" do
         fund = create(:fund_activity)
@@ -234,7 +238,10 @@ RSpec.feature "Users can view an activity" do
 
   context "when the user is signed in as a partner organisation user" do
     let(:user) { create(:partner_organisation_user) }
+
     before { authenticate!(user: user) }
+
+    after { logout }
 
     scenario "a programme activity does not link to its parent activity" do
       activity = create(:programme_activity, extending_organisation: user.organisation)

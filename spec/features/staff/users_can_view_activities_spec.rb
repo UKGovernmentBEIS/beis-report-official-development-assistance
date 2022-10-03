@@ -14,6 +14,8 @@ RSpec.feature "Users can view activities" do
       authenticate!(user: user)
     end
 
+    after { logout }
+
     scenario "they can see and navigate current partner organisation activities", js: true do
       visit activities_path(organisation_id: organisation.id)
 

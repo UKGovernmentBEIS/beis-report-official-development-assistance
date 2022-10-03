@@ -7,6 +7,8 @@ RSpec.feature "Users can approve reports" do
       authenticate!(user: beis_user)
     end
 
+    after { logout }
+
     scenario "they can mark a report as approved" do
       report = create(:report, state: :in_review, organisation: organisation)
 
@@ -47,6 +49,8 @@ RSpec.feature "Users can approve reports" do
     before do
       authenticate!(user: partner_org_user)
     end
+
+    after { logout }
 
     scenario "they cannot mark a report as approved" do
       report = create(:report, state: :in_review)

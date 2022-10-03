@@ -7,7 +7,11 @@ RSpec.feature "BEIS users can create a report" do
   let!(:partner_organisation) { create(:partner_organisation, name: "ACME Ltd") }
 
   before { travel_to DateTime.parse("2021-01-01") }
-  after { travel_back }
+
+  after do
+    travel_back
+    logout
+  end
 
   scenario "they can create a new report with all the required attributes" do
     given_i_am_a_logged_in_beis_user

@@ -5,6 +5,7 @@ RSpec.feature "Users can edit an activity" do
   context "when signed in as a BEIS user" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     it "allows the user to redact the activity from Iati" do
       project_activity = create(:project_activity)
@@ -151,6 +152,7 @@ RSpec.feature "Users can edit an activity" do
   context "when signed in as a partner organisation user" do
     let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     context "when the activity is a project" do
       let(:activity) { create(:project_activity, organisation: user.organisation) }

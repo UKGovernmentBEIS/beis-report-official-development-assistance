@@ -3,11 +3,14 @@ require "rails_helper"
 RSpec.describe Staff::LevelB::Activities::UploadsController do
   let(:organisation) { create(:partner_organisation, beis_organisation_reference: "porg") }
   let(:user) { create(:beis_user) }
+
   before { authenticate!(user: user) }
 
   before do
     allow(controller).to receive(:current_user).and_return(user)
   end
+
+  after { logout }
 
   describe "#new" do
     render_views

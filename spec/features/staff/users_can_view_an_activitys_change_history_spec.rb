@@ -24,6 +24,8 @@ RSpec.feature "Users can view an activity's 'Change History' within a tab" do
       authenticate!(user: user)
     end
 
+    after { logout }
+
     def setup_historical_events(report:)
       HistoryRecorder
         .new(user: user)

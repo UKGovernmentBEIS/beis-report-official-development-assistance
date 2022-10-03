@@ -8,6 +8,8 @@ RSpec.feature "Users can submit a report" do
       authenticate!(user: partner_org_user)
     end
 
+    after { logout }
+
     context "when the report is active" do
       scenario "they can submit a report" do
         report = create(:report, :active, organisation: partner_org_user.organisation)
@@ -73,6 +75,8 @@ RSpec.feature "Users can submit a report" do
     before do
       authenticate!(user: beis_user)
     end
+
+    after { logout }
 
     scenario "they cannot submit a report" do
       report = create(:report, :active)
