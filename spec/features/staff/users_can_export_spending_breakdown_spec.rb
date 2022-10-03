@@ -48,7 +48,7 @@ RSpec.feature "Users can export spending breakdown" do
       expect(page.status_code).to eq 401
     end
 
-    scenario "they can download spending breakdown for an organissation they are associated with" do
+    scenario "they can download spending breakdown for an organisation they are associated with" do
       visit exports_organisation_path(organisation)
       click_link "Download Newton Fund spending breakdown"
 

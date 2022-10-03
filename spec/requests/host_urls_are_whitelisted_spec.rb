@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "host urls are checked against a whitelist", type: :request do
-  scenario "a whitelisted host is accepted and and OK response is received" do
+  scenario "a whitelisted host is accepted and an OK response is received" do
     get root_path, headers: {"Host" => "test.local"}
     expect(response).to have_http_status("200")
   end
