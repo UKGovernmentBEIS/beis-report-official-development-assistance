@@ -2,6 +2,7 @@ RSpec.feature "BEIS users can download exports" do
   before do
     authenticate! user: create(:beis_user)
   end
+  after { logout }
 
   scenario "downloading the actuals for a partner organisation" do
     partner_organisation = create(:partner_organisation)

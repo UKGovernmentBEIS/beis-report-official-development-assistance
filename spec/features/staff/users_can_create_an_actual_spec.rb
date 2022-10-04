@@ -1,7 +1,9 @@
 RSpec.feature "Users can create an actual" do
   context "when the user belongs to BEIS" do
-    before { authenticate!(user: user) }
     let(:user) { create(:beis_user) }
+
+    before { authenticate!(user: user) }
+    after { logout }
 
     scenario "the form only shows relevant fields" do
       activity = create(:programme_activity, :with_report, organisation: user.organisation)
@@ -212,9 +214,11 @@ RSpec.feature "Users can create an actual" do
   end
 
   context "when they are a partner organisation user" do
-    before { authenticate!(user: user) }
     let(:user) { create(:partner_organisation_user) }
     let(:beis_user) { create(:beis_user) }
+
+    before { authenticate!(user: user) }
+    after { logout }
 
     scenario "they cannot create actuals on a programme" do
       fund_activity = create(:fund_activity, :with_report)

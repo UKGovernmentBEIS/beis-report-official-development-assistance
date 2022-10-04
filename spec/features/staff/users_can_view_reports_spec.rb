@@ -6,6 +6,8 @@ RSpec.feature "Users can view reports" do
       authenticate!(user: beis_user)
     end
 
+    after { logout }
+
     def expect_to_see_a_table_of_reports_grouped_by_organisation(selector:, reports:, organisations:)
       within selector do
         expect(page.find_all("th[scope=rowgroup]").count).to eq(organisations.count)
@@ -277,6 +279,8 @@ RSpec.feature "Users can view reports" do
     before do
       authenticate!(user: partner_org_user)
     end
+
+    after { logout }
 
     scenario "they can see a list of all their active and approved reports" do
       reports_awaiting_changes = create_list(:report, 2, organisation: partner_org_user.organisation, state: :awaiting_changes)

@@ -17,6 +17,8 @@ RSpec.feature "Users can edit an actual" do
 
     before { authenticate!(user: user) }
 
+    after { logout }
+
     scenario "they can edit an actual on a programme but not add a comment" do
       visit organisation_activity_path(activity.organisation, activity)
 
@@ -45,6 +47,8 @@ RSpec.feature "Users can edit an actual" do
     let(:report) { create(:report, organisation: activity.organisation, fund: activity.associated_fund) }
 
     before { authenticate!(user: user) }
+
+    after { logout }
 
     context "when the actual can be edited" do
       before do

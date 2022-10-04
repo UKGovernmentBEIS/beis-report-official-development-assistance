@@ -20,6 +20,7 @@ RSpec.feature "BEIS users can create organisations" do
         click_link t("page_title.organisation.index")
       end
     end
+    after { logout }
 
     def then_breadcrumb_shows_type_of_organisation(name:, link: nil)
       within ".govuk-breadcrumbs" do

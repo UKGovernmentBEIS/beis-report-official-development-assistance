@@ -2,6 +2,7 @@ RSpec.feature "Users can create a project" do
   context "when they are a delivery parther" do
     let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     context "when viewing a programme" do
       scenario "a new project cannot be added to the programme when a report does not exist" do

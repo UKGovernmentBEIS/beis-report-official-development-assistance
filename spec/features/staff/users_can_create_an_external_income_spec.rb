@@ -9,6 +9,8 @@ RSpec.describe "Users can create a external income" do
 
     before { authenticate!(user: user) }
 
+    after { logout }
+
     before do
       visit organisation_activity_path(project.organisation, project)
 

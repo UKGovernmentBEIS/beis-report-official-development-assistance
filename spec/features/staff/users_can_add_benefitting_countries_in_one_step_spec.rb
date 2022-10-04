@@ -1,9 +1,11 @@
 RSpec.feature "users can add benefitting countries" do
   context "when the user is signed as a partner organisation user" do
     let(:user) { create(:partner_organisation_user) }
-    before { authenticate!(user: user) }
     let(:activity) { create(:project_activity, organisation: user.organisation) }
     let!(:report) { create(:report, :active, fund: activity.associated_fund, organisation: user.organisation) }
+
+    before { authenticate!(user: user) }
+    after { logout }
 
     scenario "the user can select benefitting countries based on the full list of all countries" do
       all_non_graduated_benefitting_countires = BenefittingCountry.non_graduated

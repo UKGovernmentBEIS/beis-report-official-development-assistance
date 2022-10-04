@@ -8,6 +8,7 @@ RSpec.describe "Users can view forecasts" do
   context "when signed in as a partner organisation user" do
     let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     scenario "they can view forecasts on projects" do
       project = create(:project_activity, organisation: user.organisation)
@@ -33,6 +34,7 @@ RSpec.describe "Users can view forecasts" do
   context "when signed in as a beis user" do
     let(:beis_user) { create(:beis_user) }
     before { authenticate!(user: beis_user) }
+    after { logout }
 
     scenario "they can view forecasts on projects" do
       project = create(:project_activity)

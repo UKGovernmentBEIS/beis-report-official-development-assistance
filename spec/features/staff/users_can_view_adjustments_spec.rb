@@ -6,6 +6,8 @@ RSpec.feature "Users can view adjustments (irrespective of report state)" do
 
   before { authenticate!(user: user) }
 
+  after { logout }
+
   scenario "can view adjustments for an activity" do
     given_an_active_report_exists
     and_an_adjustment_exists

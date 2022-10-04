@@ -2,6 +2,7 @@ RSpec.feature "Users can view fund level activities" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     scenario "can view a fund level activity" do
       fund_activity = create(:fund_activity)

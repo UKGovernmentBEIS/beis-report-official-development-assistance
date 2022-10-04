@@ -6,6 +6,8 @@ RSpec.feature "Users can view an activity's financials" do
       authenticate!(user: user)
     end
 
+    after { logout }
+
     scenario "the activity financials can be viewed" do
       activity = create(:project_activity, organisation: user.organisation)
       actual = create(:actual, parent_activity: activity)

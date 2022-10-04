@@ -33,7 +33,7 @@ RSpec.describe Export::ActivityImplementingOrganisationColumn do
         end
 
         context "when the activity has multiple implementing organisations" do
-          it "returns all implementing organistion names sperated with a pipe (|)" do
+          it "returns all implementing organisation names separated with a pipe (|)" do
             row_value = subject.rows.fetch(@activity_with_multiple_organisations.id)
 
             expect(row_value.first).to include("|")

@@ -20,6 +20,8 @@ RSpec.feature "users can upload activities" do
     click_link t("page_content.activities.button.upload")
   end
 
+  after { logout }
+
   scenario "downloading the CSV template" do
     click_link t("action.activity.download.button")
 

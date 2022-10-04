@@ -1,7 +1,9 @@
 RSpec.feature "Users can add a collaboration type for an activity" do
   let(:user) { create(:beis_user) }
-  before { authenticate!(user: user) }
   let(:activity) { create(:programme_activity, :at_collaboration_type_step, organisation: user.organisation) }
+
+  before { authenticate!(user: user) }
+  after { logout }
 
   context "when the user creates a new activity, on the collaboration_type form step" do
     scenario "the activity has a pre-selected radio button for collaboration_type with value '1 -Bilateral'" do

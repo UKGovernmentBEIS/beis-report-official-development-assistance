@@ -19,6 +19,8 @@ RSpec.feature "BEIS users can can view other users" do
       authenticate!(user: user)
     end
 
+    after { logout }
+
     scenario "an active user can be viewed" do
       another_user = create(:administrator)
 

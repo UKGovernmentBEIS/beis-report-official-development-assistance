@@ -6,6 +6,8 @@ RSpec.feature "Users can view an activity's details" do
       authenticate!(user: user)
     end
 
+    after { logout }
+
     scenario "the activity details can be viewed" do
       activity = create(:project_activity, organisation: user.organisation)
 

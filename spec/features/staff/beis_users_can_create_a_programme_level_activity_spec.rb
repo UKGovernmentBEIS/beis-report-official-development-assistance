@@ -2,6 +2,7 @@ RSpec.feature "BEIS users can create a programme level activity" do
   let(:user) { create(:beis_user) }
   let(:partner_organisation) { create(:partner_organisation) }
   before { authenticate!(user: user) }
+  after { logout }
 
   context "with a new fund and partner organisation" do
     scenario "they see the button to add a new programme (level B activity)" do

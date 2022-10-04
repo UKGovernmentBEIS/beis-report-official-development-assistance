@@ -17,6 +17,8 @@ RSpec.describe "Users can create a matched effort" do
       find("a[href='#{edit_activity_matched_effort_path(project, matched_effort)}']").click
     end
 
+    after { logout }
+
     scenario "they can edit a matched effort" do
       matched_effort.organisation = matched_effort_provider
       matched_effort.notes = "Here are some new notes"

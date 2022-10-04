@@ -4,6 +4,7 @@ RSpec.feature "Users can view an organisation as XML" do
 
   context "when the user belongs to BEIS" do
     before { authenticate!(user: user) }
+    after { logout }
 
     context "when the user is viewing an organisation's export page" do
       context "when the organisation has projects" do

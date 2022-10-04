@@ -4,6 +4,8 @@ RSpec.describe "Users can delete a forecast" do
 
     before { authenticate!(user: user) }
 
+    after { logout }
+
     scenario "the history is deleted" do
       organisation = user.organisation
       project = create(:project_activity, organisation: user.organisation)

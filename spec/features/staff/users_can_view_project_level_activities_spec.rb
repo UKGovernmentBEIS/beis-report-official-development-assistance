@@ -2,6 +2,7 @@ RSpec.feature "Users can view project level activities" do
   context "when the user does NOT belong to BEIS" do
     let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     scenario "can view a project" do
       fund = create(:fund_activity)
@@ -54,6 +55,7 @@ RSpec.feature "Users can view project level activities" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     scenario "can view a project but not create one" do
       project = create(:project_activity)

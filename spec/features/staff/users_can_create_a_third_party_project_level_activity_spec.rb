@@ -2,6 +2,7 @@ RSpec.feature "Users can create a third-party project" do
   context "when the user does NOT belong to BEIS" do
     let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     context "when viewing a project" do
       scenario "a new third party project cannot be added to the programme when a report does not exist" do

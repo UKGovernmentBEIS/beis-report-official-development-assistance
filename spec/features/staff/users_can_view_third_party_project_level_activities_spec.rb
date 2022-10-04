@@ -2,6 +2,7 @@ RSpec.feature "Users can view third-party project level activities" do
   context "when the user does NOT belong to BEIS" do
     let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     scenario "can view a third-party project" do
       project = create(:project_activity, organisation: user.organisation)
@@ -38,6 +39,7 @@ RSpec.feature "Users can view third-party project level activities" do
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     scenario "can view a third-party project but not create one" do
       third_party_project = create(:third_party_project_activity)

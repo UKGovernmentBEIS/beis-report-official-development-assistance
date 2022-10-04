@@ -11,6 +11,8 @@ RSpec.feature "Users can keep the context of a report" do
     click_on "View activity"
   end
 
+  after { logout }
+
   scenario "users can see the report breadcrumbs when accessing an activity from a report" do
     within ".govuk-breadcrumbs" do
       expect(page).to have_content "Home"

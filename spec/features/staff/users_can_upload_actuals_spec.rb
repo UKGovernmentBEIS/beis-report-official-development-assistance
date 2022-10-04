@@ -19,6 +19,8 @@ RSpec.feature "users can upload actuals" do
     click_link t("page_content.actuals.button.upload")
   end
 
+  after { logout }
+
   def expect_to_see_successful_upload_summary_with(count:, total:)
     expect(page).to have_text(t("page_title.actual.upload_success"))
     expect(page).to have_css(".actuals tr", count: count)

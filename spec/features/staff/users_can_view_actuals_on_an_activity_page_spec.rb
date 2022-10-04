@@ -2,6 +2,7 @@ RSpec.feature "Users can view actuals on an activity page" do
   before do
     authenticate!(user: user)
   end
+  after { logout }
 
   context "when the user belongs to BEIS" do
     let(:user) { create(:beis_user) }

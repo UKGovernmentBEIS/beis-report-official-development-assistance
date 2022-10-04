@@ -4,7 +4,10 @@ RSpec.feature "BEIS users can edit a report" do
   context "Logged in as a BEIS user" do
     let(:beis_user) { create(:beis_user) }
     before { travel_to DateTime.parse("2021-01-01") }
-    after { travel_back }
+    after do
+      travel_back
+      logout
+    end
 
     scenario "they can edit a Report to set the deadline" do
       user = create(:beis_user)
@@ -132,6 +135,7 @@ RSpec.feature "BEIS users can edit a report" do
 
   context "Logged in as a partner organisation user" do
     let(:user) { create(:partner_organisation_user) }
+    after { logout }
 
     scenario "they cannot edit a Report" do
       report = create(:report, :active, organisation: user.organisation)

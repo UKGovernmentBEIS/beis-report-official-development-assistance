@@ -8,7 +8,7 @@ RSpec.describe "staff/home/partner_organisation" do
       allow(view).to receive(:organisation_reports_path).and_return("/reports/id")
 
       stub_template "staff/shared/reports/_table" => "table of reports"
-      stub_template "staff/shared/activties/tree_view/_table_tabbed" => "tree view"
+      stub_template "staff/shared/activities/tree_view/_table_tabbed" => "tree view"
       stub_template "staff/searches/_form" => "search form"
 
       render
@@ -29,7 +29,7 @@ RSpec.describe "staff/home/partner_organisation" do
       allow(view).to receive(:organisation_reports_path).and_return("/reports/id")
 
       stub_template "staff/shared/reports/_table" => "table of reports"
-      stub_template "staff/shared/activties/tree_view/_table_tabbed" => "tree view"
+      stub_template "staff/shared/activities/tree_view/_table_tabbed" => "tree view"
       stub_template "staff/searches/_form" => "search form"
 
       render

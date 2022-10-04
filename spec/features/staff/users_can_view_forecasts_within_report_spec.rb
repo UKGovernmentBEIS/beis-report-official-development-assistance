@@ -7,6 +7,8 @@ RSpec.feature "Users can view forecasts in tab within a report" do
       authenticate!(user: user)
     end
 
+    after { logout }
+
     def expect_to_see_a_table_of_forecasts_grouped_by_activity(activities, report)
       expect(page).to have_content(
         t("page_content.tab_content.forecasts.per_activity_heading")

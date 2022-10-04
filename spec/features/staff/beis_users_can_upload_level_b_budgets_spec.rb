@@ -18,6 +18,8 @@ RSpec.feature "BEIS users can upload Level B budgets" do
     visit new_level_b_budgets_upload_path
   end
 
+  after { logout }
+
   scenario "viewing the page for downloading or uploading a CSV template" do
     expect(page).to have_content(t("page_title.budget.upload_level_b"))
   end

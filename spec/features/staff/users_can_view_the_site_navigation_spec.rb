@@ -17,6 +17,7 @@ RSpec.feature "Users can view the site navigation" do
   context "when the user is signed in as a partner organisation user" do
     let(:user) { create(:partner_organisation_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     it "shows the appropriate naviation" do
       visit organisation_path(user.organisation)
@@ -32,6 +33,7 @@ RSpec.feature "Users can view the site navigation" do
   context "when the user is signed in as a BEIS user" do
     let(:user) { create(:beis_user) }
     before { authenticate!(user: user) }
+    after { logout }
 
     it "shows the appropriate naviation" do
       visit organisation_path(user.organisation)

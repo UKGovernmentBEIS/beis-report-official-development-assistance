@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.feature "Users can sign out" do
+  after { logout }
+
   scenario "success" do
     # Given a user exists
     user = create(:administrator)

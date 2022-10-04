@@ -34,13 +34,13 @@ RSpec.describe Export::ActivityPartnerOrganisationColumn do
     end
 
     context "when the activity is any other level" do
-      it "returns all organistion names" do
+      it "returns all organisation names" do
         row_value = subject.rows.fetch(@level_c_activity.id)
         expect(row_value).to match_array(@level_c_activity.organisation.name)
       end
     end
 
-    it "returns an errors when initialised without an ActivityRecord::Relation" do
+    it "returns an error when initialised without an ActivityRecord::Relation" do
       expect { described_class.new(activities_relation: [@level_b_activity, @level_c_activity]) }
         .to raise_error(ArgumentError)
     end

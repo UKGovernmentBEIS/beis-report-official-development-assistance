@@ -21,6 +21,8 @@ RSpec.feature "users can upload forecasts" do
     click_link t("page_content.forecasts.button.upload")
   end
 
+  after { logout }
+
   def expect_to_see_successful_upload_summary_with(count:, total:)
     expect(page).to have_text(t("importer.success.heading"))
     expect(page).to have_css(".forecasts tr", count: count)

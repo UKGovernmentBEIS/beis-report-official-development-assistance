@@ -1,7 +1,9 @@
 RSpec.feature "Users can add Sustainable Development Goals for an activity" do
   let(:user) { create(:beis_user) }
-  before { authenticate!(user: user) }
   let(:activity) { create(:programme_activity, :at_sustainable_development_goals_step, organisation: user.organisation) }
+
+  before { authenticate!(user: user) }
+  after { logout }
 
   context "when the user creates a new activity, on the sustainable_development_goals form step" do
     scenario "they can choose up to three SDGs" do

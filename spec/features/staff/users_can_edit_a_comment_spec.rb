@@ -9,6 +9,7 @@ RSpec.describe "Users can edit a comment" do
   context "editing a comment from the activity view" do
     context "when the user is a BEIS user" do
       before { authenticate!(user: beis_user) }
+      after { logout }
 
       context "when the report is editable" do
         scenario "the user cannot edit comments" do
@@ -28,6 +29,7 @@ RSpec.describe "Users can edit a comment" do
 
     context "when the user is a partner organisation user" do
       before { authenticate!(user: partner_org_user) }
+      after { logout }
 
       context "when the report is editable" do
         scenario "the user can edit any comments left by users in the same organisation" do

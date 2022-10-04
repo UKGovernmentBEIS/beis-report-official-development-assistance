@@ -23,6 +23,8 @@ RSpec.feature "users can upload refunds" do
     visit report_actuals_path(report)
   end
 
+  after { logout }
+
   def upload_csv(content)
     file = Tempfile.new("actuals.csv")
     file.write(content.gsub(/ *\| */, ","))

@@ -92,6 +92,8 @@ RSpec.feature "BEIS users can view other organisations" do
       authenticate!(user: user)
     end
 
+    after { logout }
+
     context "when a role is provided" do
       before do
         visit organisations_path(role: role)
