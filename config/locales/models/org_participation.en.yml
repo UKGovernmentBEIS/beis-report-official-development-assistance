@@ -1,0 +1,9 @@
+---
+en:
+  activerecord:
+    errors:
+      models:
+        org_participation:
+          attributes:
+            organisation:
+              inactive: Implementing organisation must be active

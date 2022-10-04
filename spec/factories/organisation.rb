@@ -10,6 +10,10 @@ FactoryBot.define do
     factory :partner_organisation do
       role { "partner_organisation" }
 
+      trait :inactive do
+        active { false }
+      end
+
       trait :non_government do
         organisation_type { "22" }
       end

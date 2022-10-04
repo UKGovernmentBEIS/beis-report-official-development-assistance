@@ -1101,6 +1101,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Point the "Back to home" link on the Level B activities bulk upload to the home page instead of the organisations page
 - Comments in report CSVs are delimited by a pipe, instead of a newline, to enable BEIS users' QA workflow
 - Fix the command invoking the password reset script when updating training environment with the latest data from production
+- Prevent inactive organisations being added to activities as implementing organisations
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-117...HEAD
 [release-117]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-116...release-117
