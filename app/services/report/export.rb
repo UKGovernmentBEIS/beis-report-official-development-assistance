@@ -1,4 +1,6 @@
 class Report
+  # this service creates the legacy report export and should not have any further updates
+
   class Export
     def initialize(report:)
       @report = report

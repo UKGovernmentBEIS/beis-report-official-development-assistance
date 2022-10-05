@@ -1,4 +1,6 @@
 RSpec.describe Report::Export do
+  # this service creates the legacy report export and should not have any further updates
+
   subject { described_class.new(report: report) }
 
   let(:report) { build(:report) }
