@@ -1098,6 +1098,7 @@ activity and on its child transactions (which can be actuals, refunds, and adjus
 - Ensure `Forecast.set_value` always returns a forecast or nil; this will ensure that uploaded forecasts are correctly displayed back to the user on the success page
 - Add Level B budget bulk upload functionality - form with errors/confirmation view; link in top nav
 - Include refunds and adjustments in the calculation of an activity's total spend (previously only actuals were included)
+- Point the "Back to home" link on the Level B activities bulk upload to the home page instead of the organisations page
 
 [unreleased]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-117...HEAD
 [release-117]: https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/compare/release-116...release-117
