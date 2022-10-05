@@ -43,10 +43,10 @@ RSpec.describe Export::ActivityCommentsColumn do
       end
 
       context "when the activity has multiple comments" do
-        it "returns the body of each comment separated by `----`" do
+        it "returns the body of each comment separated by `|`" do
           value_for_activity = subject.rows.fetch(@activity_with_multiple_comments_in_report.id)
 
-          expect(value_for_activity).to include "----"
+          expect(value_for_activity).to include "|"
           expect(value_for_activity).to include(@actual_comment.body)
           expect(value_for_activity).to include(@refund_comment.body)
           expect(value_for_activity).to include(@adjustment_comment.body)
