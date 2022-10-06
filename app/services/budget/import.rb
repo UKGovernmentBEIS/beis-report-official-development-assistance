@@ -93,13 +93,13 @@ class Budget
       attr_reader :errors
 
       FIELDS = {
-        budget_type: "Type",
+        parent_activity_id: "Activity RODA ID",
         financial_year: "Financial year",
         value: "Budget amount",
+        budget_type: "Type",
         providing_organisation_name: "Providing organisation",
         providing_organisation_type: "Providing organisation type",
-        providing_organisation_reference: "IATI reference",
-        parent_activity_id: "Activity RODA ID"
+        providing_organisation_reference: "IATI reference"
       }
 
       ALLOWED_BLANK_FIELDS = ["IATI reference"]

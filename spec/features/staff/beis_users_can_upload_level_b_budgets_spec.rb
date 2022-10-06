@@ -31,15 +31,13 @@ RSpec.feature "BEIS users can upload Level B budgets" do
     rows = CSV.parse(csv_data, headers: false).first
 
     expect(rows).to match_array([
-      "Type",
+      "Activity RODA ID",
       "Financial year",
       "Budget amount",
+      "Type",
       "Providing organisation",
       "Providing organisation type",
-      "IATI reference",
-      "Activity RODA ID",
-      "Fund RODA ID",
-      "Partner organisation name"
+      "IATI reference"
     ])
   end
 
