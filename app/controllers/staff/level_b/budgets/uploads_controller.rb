@@ -11,13 +11,7 @@ class Staff::LevelB::Budgets::UploadsController < Staff::BaseController
   def show
     authorize :level_b, :budget_upload?
 
-    headers = [
-      *::Budget::Import::Converter::FIELDS.values,
-      "Fund RODA ID",
-      "Partner organisation name"
-    ]
-
-    stream_csv_download(filename: "Level_B_budgets_upload.csv", headers: headers)
+    stream_csv_download(filename: "Level_B_budgets_upload.csv", headers: ::Budget::Import::Converter::FIELDS.values)
   end
 
   def create
