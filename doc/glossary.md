@@ -70,6 +70,8 @@ A source of financing for development assistance projects.
 
 A fund is recorded as an activity entity, but there is also a `Fund` class that is not database-persisted.
 
+`Fund` instances have an `activity` method for getting the activity entity, but they also draw in basic information from a `fund_types` codelist (ID, name and short name). `Fund` provides class and instance methods used in various contexts such as views, when exporting/downloading data, and when needing to get the source fund of an activity (of any level).
+
 ## Implementing organisation
 
 An organisation that physically carries out an activity or intervention. [Further information](https://github.com/UKGovernmentBEIS/beis-report-official-development-assistance/pull/1544)
@@ -103,6 +105,7 @@ A record of the financials relating to an organisation's activities during a spe
 Actuals are what money the organisation spent during the financial quarter relevant to the report.
 
 ## SID
+
 Statistics on International Development
 
 "This publication provides statistics about the amount of Official Development Assistance (ODA) the UK provided in [year], including UK ODA as a percentage of Gross National Income (GNI) (the ODA:GNI ratio) and various other breakdowns of ODA spend."
